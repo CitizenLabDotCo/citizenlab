@@ -1,15 +1,14 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { Subscription, BehaviorSubject, combineLatest, of, Observable } from 'rxjs';
-import { switchMap, map, distinctUntilChanged, filter } from 'rxjs/operators';
 import { isEqual, isEmpty } from 'lodash-es';
 import streams from 'utils/streams';
 
 // services
-import { updateUser, IUserData, mapUserToDiff } from 'services/users';
-import { lockedFieldsStream } from 'services/auth';
+import { updateUser, mapUserToDiff } from 'services/users';
 import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetLockedFields, { GetLockedFieldsChildProps } from 'resources/GetLockedFields';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
 import { Formik } from 'formik';
@@ -18,7 +17,7 @@ import eventEmitter from 'utils/eventEmitter';
 // components
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import { convertUrlToUploadFileObservable } from 'utils/fileTools';
+import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
 import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
 import CustomFieldsForm from 'components/CustomFieldsForm';
@@ -42,11 +41,12 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 
 // Types
 interface InputProps {
-  user: IUserData;
 }
 
 interface DataProps {
-  customFieldsShema: GetCustomFieldsSchemaChildProps;
+  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  authUser: GetAuthUserChildProps;
+  lockedFields: GetLockedFieldsChildProps;
 }
 
 interface State {
@@ -58,8 +58,6 @@ type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
 class ProfileForm extends PureComponent<Props, State> {
   localeOptions: IOption[] = [];
-  user$: BehaviorSubject<IUserData>;
-  subscriptions: Subscription[];
 
   constructor(props: InputProps) {
     super(props as any);
@@ -67,42 +65,13 @@ class ProfileForm extends PureComponent<Props, State> {
       avatar: null,
       customFieldsFormData: null
     };
-    this.user$ = new BehaviorSubject(null as any);
-    this.subscriptions = [];
   }
 
   componentDidMount() {
-    const user$ = this.user$.pipe(
-      filter(user => user !== null),
-      distinctUntilChanged((x, y) => isEqual(x, y))
-    );
-
-    this.user$.next(this.props.user);
-
-    this.subscriptions = [
-      combineLatest(
-        user$,
-      ).pipe(
-        switchMap(([user]) => {
-          const avatarUrl = user.attributes.avatar && user.attributes.avatar.medium;
-          const avatar$: Observable<UploadFile | null> = (avatarUrl ? convertUrlToUploadFileObservable(avatarUrl, null, null) : of(null));
-
-          return avatar$.pipe(
-            map(avatar => ({ user, avatar }))
-          );
-        })
-      ).subscribe(({ user, avatar }) => {
-        this.setState({
-          avatar: (avatar ? [avatar] : null),
-          customFieldsFormData: user.attributes.custom_field_values
-        });
-      })
-    ];
-
-    console.log(this.props);
-
     // Create options arrays only once, avoid re-calculating them on each render
     this.setLocaleOptions();
+
+    this.transformAPIAvatar();
   }
 
   setLocaleOptions = () => {
@@ -112,28 +81,38 @@ class ProfileForm extends PureComponent<Props, State> {
     }));
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { user, tenantLocales } = this.props;
-    if (!isEqual(user, prevProps.user)) {
-      this.user$.next(user);
+  transformAPIAvatar = () => {
+    const { authUser  } = this.props;
+    if (isNilOrError(authUser)) return;
+    const avatarUrl = authUser.attributes.avatar && authUser.attributes.avatar.medium;
+    if (avatarUrl) {
+      convertUrlToUploadFile(avatarUrl, null, null).then(fileAvatar => {
+        this.setState({ avatar: fileAvatar ? [fileAvatar] : null });
+      });
     }
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { tenantLocales, authUser } = this.props;
 
     // update locale options if tenant locales would change
     if (!isEqual(tenantLocales, prevProps.tenantLocales)) {
       this.setLocaleOptions();
     }
-  }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    if (authUser?.attributes.avatar?.medium !== prevProps.authUser?.attributes.avatar?.medium) {
+      this.transformAPIAvatar();
+    }
   }
 
   handleFormikSubmit = async (values, formikActions) => {
     let newValues = values;
     const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
-    const { customFieldsShema } = this.props;
+    const { customFieldsSchema, authUser } = this.props;
 
-    if (!isNilOrError(customFieldsShema) && customFieldsShema.hasCustomFields) {
+    if (isNilOrError(authUser)) return;
+
+    if (!isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
       newValues = {
         ...values,
         custom_field_values: this.state.customFieldsFormData
@@ -143,7 +122,7 @@ class ProfileForm extends PureComponent<Props, State> {
     setStatus('');
 
     try {
-      await updateUser(this.props.user.id, newValues);
+      await updateUser(authUser.id, newValues);
       streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`] });
       resetForm();
       setStatus('success');
@@ -160,8 +139,16 @@ class ProfileForm extends PureComponent<Props, State> {
 
   formikRender = (props) => {
     const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
-    const { customFieldsShema } = this.props;
-    const hasCustomFields = !isNilOrError(customFieldsShema) && customFieldsShema.hasCustomFields;
+    const { customFieldsSchema, lockedFields, authUser } = this.props;
+
+    // Won't be called with a nil or error user.
+    if (isNilOrError(authUser)) return null;
+
+    const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+
+    const customFieldsValues = this.state.customFieldsFormData || authUser.attributes.custom_field_values;
+
+    const lockedFieldsNames = isNilOrError(lockedFields) ? [] : lockedFields.map(field => field.attributes.name);
 
     const { formatMessage } = this.props.intl;
 
@@ -254,6 +241,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.first_name}
               onChange={createChangeHandler('first_name')}
               onBlur={createBlurHandler('first_name')}
+              disabled={lockedFieldsNames.includes('first_name')}
             />
             <Error apiErrors={errors.first_name} />
           </SectionField>
@@ -267,6 +255,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.last_name}
               onChange={createChangeHandler('last_name')}
               onBlur={createBlurHandler('last_name')}
+              disabled={lockedFieldsNames.includes('last_name')}
             />
             <Error apiErrors={errors.last_name} />
           </SectionField>
@@ -280,6 +269,7 @@ class ProfileForm extends PureComponent<Props, State> {
               value={values.email}
               onChange={createChangeHandler('email')}
               onBlur={createBlurHandler('email')}
+              disabled={lockedFieldsNames.includes('email')}
             />
             <Error apiErrors={errors.email} />
           </SectionField>
@@ -328,7 +318,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
         {hasCustomFields &&
           <CustomFieldsForm
-            formData={this.state.customFieldsFormData}
+            formData={customFieldsValues}
             onChange={handleCustomFieldsFormOnChange}
             onSubmit={handleCustomFieldsFormOnSubmit}
           />
@@ -351,10 +341,11 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   render() {
-    if (isNilOrError(this.props.customFieldsShema)) return null;
+    const { authUser, customFieldsSchema, lockedFields } = this.props;
+    if (isNilOrError(customFieldsSchema) || isNilOrError(authUser) || isNilOrError(lockedFields)) return null;
     return (
       <Formik
-        initialValues={mapUserToDiff(this.props.user)}
+        initialValues={mapUserToDiff(authUser)}
         onSubmit={this.handleFormikSubmit}
         render={this.formikRender as any}
       />
@@ -365,7 +356,9 @@ class ProfileForm extends PureComponent<Props, State> {
 const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 
 const Data = adopt<DataProps, InputProps>({
-  customFieldsSchema: <GetCustomFieldsSchema />
+  authUser: <GetAuthUser />,
+  lockedFields: <GetLockedFields />,
+  customFieldsSchema: <GetCustomFieldsSchema/>
 });
 
 export default (inputProps: InputProps) => (

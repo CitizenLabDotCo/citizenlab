@@ -56,9 +56,7 @@ export default () => {
         </ScreenReaderOnly>
         <Wrapper>
           <VerificationStatus />
-          <ProfileForm
-            user={authUser.data}
-          />
+          <ProfileForm />
           <ProfileDeletion/>
           <CampaignsConsentForm />
         </Wrapper>

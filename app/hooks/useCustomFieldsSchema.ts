@@ -1,16 +1,9 @@
 import { useState, useEffect } from 'react';
-import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+import { customFieldsSchemaForUsersStream, CustomFieldsInfos } from 'services/userCustomFields';
 import { localeStream } from 'services/locale';
 import { combineLatest } from 'rxjs';
 import { isEmpty, get } from 'lodash-es';
 import { hasCustomFields } from 'utils/customFields';
-
-interface CustomFieldsInfos {
-  schema: any;
-  uiSchema: any;
-  hasRequiredFields: boolean;
-  hasCustomFields: boolean;
-}
 
 export type CustomFieldsSchema = CustomFieldsInfos | undefined | null | Error;
 

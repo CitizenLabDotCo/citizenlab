@@ -24,7 +24,7 @@ import { darken } from 'polished';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
-import { ContextShape } from './VerificationModal';
+import { ContextShape, isProjectContext } from './VerificationModal';
 
 const Container = styled.div`
   width: 100%;
@@ -168,7 +168,7 @@ interface Props {
 
 const VerificationMethods = memo<Props>(({ context, onMethodSelected, className, theme }) => {
 
-  const participationConditions = useParticipationConditions(context);
+  const participationConditions = useParticipationConditions(isProjectContext(context) ? context : null);
   const withContext = !!context;
 
   const authUser = useAuthUser();
