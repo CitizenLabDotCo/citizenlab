@@ -17,6 +17,10 @@ module EmailCampaigns
       end
     end
 
+    def index?
+      user&.active?
+    end
+
     def update?
       user&.active? &&
         user.id == record.user_id &&
