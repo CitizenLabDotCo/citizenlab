@@ -61,9 +61,17 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.unread',
     defaultMessage: 'Not viewed',
   },
-  empty: {
-    id: 'app.containers.Admin.Moderation.empty',
-    defaultMessage: 'Table is empty',
+  noReadItems: {
+    id: 'app.containers.Admin.Moderation.noReadItems',
+    defaultMessage: 'There are no items marked as viewed',
+  },
+  noUnreadItems: {
+    id: 'app.containers.Admin.Moderation.noUnreadItems',
+    defaultMessage: 'There are no items marked as not viewed',
+  },
+  noItems: {
+    id: 'app.containers.Admin.Moderation.noItems',
+    defaultMessage: 'There is no items',
   },
   readMore: {
     id: 'app.containers.Admin.Moderation.readMore',
@@ -72,5 +80,9 @@ export default defineMessages({
   collapse: {
     id: 'app.containers.Admin.Moderation.collapse',
     defaultMessage: 'Collapse',
+  },
+  markAs: {
+    id: 'app.containers.Admin.Moderation.markAs',
+    defaultMessage: 'Mark as',
   },
 });

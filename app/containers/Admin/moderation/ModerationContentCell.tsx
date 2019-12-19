@@ -10,7 +10,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
@@ -82,7 +82,7 @@ const ModerationContentCell = memo<Props>(({ content, className }) => {
             onMouseDown={removeFocus}
             onClick={handleOnReadMore}
           >
-            {!expanded ? <FormattedMessage {...messages.readMore} /> : <FormattedMessage {...messages.collapse} />}
+            {!expanded ? <><FormattedMessage {...messages.readMore} />...</> : <FormattedMessage {...messages.collapse} />}
           </ReadMoreButton>
         }
       </Content>

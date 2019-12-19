@@ -9,7 +9,7 @@ import { isPage } from 'utils/helperUtils';
 // styling
 import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken, rgba } from 'polished';
+import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -24,27 +24,31 @@ const TabIcon = styled(Icon)`
 `;
 
 const Tab = styled.button<{ activeTabColor: string }>`
-  color: ${({ activeTabColor }) => activeTabColor};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   display: flex;
   white-space: nowrap;
   align-items: center;
   margin: 0;
-  margin-left: -1px;
   padding: 12px 18px;
   background: #fff;
-  border: solid 1px ${({ activeTabColor }) => activeTabColor};
+  border: solid 1px ${colors.separation};
   cursor: pointer;
   transition: all 80ms ease-out;
 
   ${TabIcon} {
-    fill: ${({ activeTabColor }) => activeTabColor};
+    fill: ${colors.label};
+  }
+
+  &.last {
+    border-left: none;
   }
 
   &.active {
     color: #fff;
     z-index: 1;
+    border-color: ${({ activeTabColor }) => activeTabColor};
     background: ${({ activeTabColor }) => activeTabColor};
 
     ${TabIcon} {
@@ -117,7 +121,7 @@ const Tabs = memo<Props>(({ items, selectedValue, activeTabColor, onClick, theme
           aria-selected={selectedValue === item.value}
           aria-controls={item.value}
           key={item.value}
-          className={`item${index + 1} ${selectedValue === item.value ? 'active' : ''}`}
+          className={`item${index + 1} ${selectedValue === item.value ? 'active' : ''} ${index + 1 === items.length ? 'last' : ''}`}
           onMouseDown={removeFocus}
           onClick={handleTabOnClick}
           data-itemvalue={item.value}
