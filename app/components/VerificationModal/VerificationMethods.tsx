@@ -244,6 +244,8 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
             >
               {method.attributes.name === 'cow' ? (
                 <FormattedMessage {...messages.verifyCow} />
+              ) : method.attributes.name === 'bosa_fas' ? (
+                <FormattedMessage {...messages.verifyBOSA} />
               ) : method.attributes.name === 'bogus' ?
                   'Bogus verification (testing)'
                   : method.attributes.name === 'id_card_lookup' ? (
