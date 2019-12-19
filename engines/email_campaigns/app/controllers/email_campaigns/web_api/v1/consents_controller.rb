@@ -4,10 +4,11 @@ module EmailCampaigns
     before_action :set_consent, only: [:update]
 
     def index
-      Consent.create_all_for_user!(current_user)
+      authorize Consent
+      Consent.create_all_for_user!(current_user_by_unsubscription_token)
       
       @consents = policy_scope(Consent)
-        .where(user: current_user)
+        .where(user: current_user_by_unsubscription_token)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
 
@@ -28,9 +29,27 @@ module EmailCampaigns
       @campaign = Campaign.find(params[:campaign_id])
       @consent = Consent.find_by!(
         campaign_type: @campaign.type,
-        user: current_user
+        user: current_user_by_unsubscription_token
       )
       update
+    end
+
+
+    def current_user_by_unsubscription_token
+      token = UnsubscriptionToken.find_by(token: params[:unsubscription_token])
+      if token
+        token.user
+      else
+        current_user
+      end
+    end
+
+    def pundit_user
+      current_user_by_unsubscription_token
+    end
+
+    def secure_controller?
+      false
     end
 
     private
