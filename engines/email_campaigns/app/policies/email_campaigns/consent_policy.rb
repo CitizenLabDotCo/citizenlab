@@ -23,5 +23,9 @@ module EmailCampaigns
         DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
     end
 
+    def update_by_campaign_id?
+      update?
+    end
+
   end
 end

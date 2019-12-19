@@ -4,10 +4,10 @@ module EmailCampaigns
     before_action :set_consent, only: [:update]
 
     def index
-      Consent.create_all_for_user!(User.find(params[:user_id]))
+      Consent.create_all_for_user!(current_user)
       
       @consents = policy_scope(Consent)
-        .where(user_id: params[:user_id])
+        .where(user: current_user)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
 
@@ -22,6 +22,15 @@ module EmailCampaigns
       else
         render json: { errors: @consent.errors.details }, status: :unprocessable_entity
       end
+    end
+
+    def update_by_campaign_id
+      @campaign = Campaign.find(params[:campaign_id])
+      @consent = Consent.find_by!(
+        campaign_type: @campaign.type,
+        user: current_user
+      )
+      update
     end
 
     private
