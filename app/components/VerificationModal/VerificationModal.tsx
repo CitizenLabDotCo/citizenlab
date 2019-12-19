@@ -35,11 +35,11 @@ export type ContextShape = ProjectContext
 | null;
 
 export function isProjectContext(obj: ContextShape): obj is ProjectContext {
-  return (obj as ProjectContext).id !== undefined;
+  return (obj as ProjectContext)?.id !== undefined;
 }
 
 export function isErrorContext(obj: ContextShape): obj is ErrorContext {
-  return (obj as ErrorContext).error !== undefined;
+  return (obj as ErrorContext)?.error !== undefined;
 }
 
 export function isProjectOrErrorContext(obj: ContextShape) {

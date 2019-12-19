@@ -22,6 +22,7 @@ const DateInputWrapper: any = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
   border: solid 1px #ccc;
+  width: 100%;
 
   .SingleDatePickerInput {
     outline: none;
