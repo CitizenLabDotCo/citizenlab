@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 
 // Components
-import CampaignsConsentForm from 'components/EmailCampaignsConsentForm';
+import ConsentForm from 'components/ConsentForm';
 
 // Styles
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ export default class ProfileEditor extends PureComponent<Props, State> {
   render() {
     return (
       <Container id="e2e-user-edit-profile-page">
-        {/* <CampaignsConsentForm consents={} /> */}
+        {/* <ConsentForm consents={} /> */}
       </Container>
     );
   }

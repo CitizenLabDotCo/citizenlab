@@ -35,7 +35,7 @@ interface State {
   saveButtonStatus: 'enabled' | 'disabled' | 'error' | 'success';
 }
 
-export default class EmailCampaignsConsentForm extends PureComponent<Props, State> {
+export default class ConsentForm extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props as any);
