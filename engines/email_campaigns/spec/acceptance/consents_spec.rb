@@ -13,8 +13,7 @@ resource "Campaign consents" do
     header 'Authorization', "Bearer #{token}"
   end
 
-
-  get "/web_api/v1/users/:user_id/consents" do
+  get "/web_api/v1/consents" do
 
     before do
       @campaigns = [
@@ -63,8 +62,6 @@ resource "Campaign consents" do
       end
     end
 
-    let(:user_id) { @user.id }
-
     example_request "List all campaign consents for the user" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
@@ -93,6 +90,25 @@ resource "Campaign consents" do
     example_request "Update a campaign consent" do
       expect(response_status).to eq 200
       json_response = json_parse(response_body)
+      expect(json_response.dig(:data,:attributes,:consented)).to eq consented
+    end
+  end
+
+  patch "web_api/v1/consents/by_campaign_id/:campaign_id" do
+    with_options scope: :consent do
+      parameter :consented, "Boolean that indicates whether the user consents", required: true
+    end
+    ValidationErrorHelper.new.error_fields(self, EmailCampaigns::Consent)
+
+    let(:campaign) { create(:manual_campaign) }
+    let!(:consent) { create(:consent, user: @user, campaign_type: campaign.type) }
+    let(:campaign_id) { campaign.id }
+    let(:consented) { false }
+
+    example_request "Update a campaign consent by campaign id" do
+      expect(response_status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:data,:id)).to eq consent.id
       expect(json_response.dig(:data,:attributes,:consented)).to eq consented
     end
   end
