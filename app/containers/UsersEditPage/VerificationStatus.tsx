@@ -54,7 +54,7 @@ const ShieldIcon = styled(Icon)`
 `;
 
 const Content = styled.div`
-  flex: 1 1 auto;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   margin-left: 20px;
@@ -115,6 +115,13 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
               <Text>
                 <FormattedMessage {...messages.verifiedText} />
               </Text>
+              <Button
+                style="text"
+                padding="0px"
+                text={<FormattedMessage {...messages.verifyAgain} />}
+                whiteSpace="wrap"
+                onClick={openVerificationModal}
+              />
             </Content>
           </>
           :
