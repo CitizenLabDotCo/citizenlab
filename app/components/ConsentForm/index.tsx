@@ -14,7 +14,6 @@ import Checkbox from 'components/UI/Checkbox';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
 import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
 
 const CheckboxContainer = styled.div`
@@ -27,6 +26,7 @@ const ConsentList = styled.div`
 
 type Props = {
   consents: IConsentData[];
+  trackEventName: string;
 };
 
 interface State {
@@ -71,11 +71,12 @@ export default class ConsentForm extends PureComponent<Props, State> {
   }
 
   handleOnSubmit = () => {
+    const { trackEventName } = this.props;
     const { consentChanges } = this.state;
     let consentUpdates: Promise<IConsent>[] = [];
 
     // analytics
-    trackEventByName(tracks.clickChangeEmailNotificationSettings.name, { extra: { consentChanges } });
+    trackEventByName(trackEventName, { extra: { consentChanges } });
 
     this.setState({ isSaving: true, saveButtonStatus: 'disabled' });
     if (consentChanges) {
