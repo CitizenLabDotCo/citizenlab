@@ -8,6 +8,8 @@ import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-in
 import Button from '../Button';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
+import Icon from 'components/UI/Icon';
+import IconTooltip from '../IconTooltip';
 
 export const FormSection = styled.div`
   max-width: 620px;
@@ -83,6 +85,19 @@ const OptionalText: any = styled.span`
   font-weight: ${(props) => (props as any).thin ? 300 : 400};
 `;
 
+const SmallLock = styled(Icon)`
+  height: 20px;
+  width: 20px;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  display: inline;
+  margin-left: 5px;
+  svg {
+    fill: ${({ theme }) => theme.colorText};
+  }
+`;
+
 interface FormLabelGenericProps {
   id?: string;
   htmlFor?: string;
@@ -95,6 +110,8 @@ interface FormLabelGenericProps {
 }
 
 export interface FormLabelProps extends FormLabelGenericProps {
+  locked?: boolean;
+  lockedMessage?: Messages['key'];
   labelMessage: Messages['key'];
   labelMessageValues?: OriginalFormattedMessage.Props['values'];
   subtextMessage?: Messages['key'];
@@ -114,28 +131,38 @@ export const FormLabel = memo(({
   thin,
   noSpace,
   optional,
+  locked,
+  lockedMessage
 }: FormLabelProps) => (
-  <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
-    <FormattedMessage {...labelMessage} values={labelMessageValues} />
-    {optional &&
-      <OptionalText thin={thin}>
-        {' ('}
-        <FormattedMessage {...messages.optional} />
-        {')'}
-      </OptionalText>
-    }
-    {subtextMessage &&
-      <>
-        <br/>
-        <FormSubtextStyled>
-          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
-        </FormSubtextStyled>
-      </>
-    }
-    {!noSpace && <Spacer />}
-    {children}
-  </FormLabelStyled>
-));
+    <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
+      <FormattedMessage {...labelMessage} values={labelMessageValues} />
+      {optional &&
+        <OptionalText thin={thin}>
+          {' ('}
+          <FormattedMessage {...messages.optional} />
+          {')'}
+        </OptionalText>
+      }
+      {locked && (lockedMessage
+        ? (
+          <StyledIconTooltip
+            content={<FormattedMessage {...lockedMessage} />}
+            icon="lock"
+          />
+        ) : <SmallLock name="lock" />)
+      }
+      {subtextMessage &&
+        <>
+          <br />
+          <FormSubtextStyled>
+            <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
+          </FormSubtextStyled>
+        </>
+      }
+      {!noSpace && <Spacer />}
+      {children}
+    </FormLabelStyled>
+  ));
 
 interface FormLabelValueProps extends FormLabelGenericProps {
   labelValue: JSX.Element | string;
@@ -153,26 +180,26 @@ export const FormLabelValue = memo(({
   noSpace,
   optional
 }: FormLabelValueProps) => (
-  <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
-    {labelValue}
-    {optional &&
-      <OptionalText thin={thin}>
-        {' ('}
-        <FormattedMessage {...messages.optional} />
-        {')'}
-      </OptionalText>
-    }
-    {subtextValue &&
-      <>
-        <br/>
-        <FormSubtextStyled>
-          {subtextValue}
-        </FormSubtextStyled>
-      </>
-    }
-    {!noSpace && <Spacer />}
-  </FormLabelStyled>
-));
+    <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
+      {labelValue}
+      {optional &&
+        <OptionalText thin={thin}>
+          {' ('}
+          <FormattedMessage {...messages.optional} />
+          {')'}
+        </OptionalText>
+      }
+      {subtextValue &&
+        <>
+          <br />
+          <FormSubtextStyled>
+            {subtextValue}
+          </FormSubtextStyled>
+        </>
+      }
+      {!noSpace && <Spacer />}
+    </FormLabelStyled>
+  ));
 
 interface FormSubmitFooterProps extends IMessageInfo {
   disabled?: boolean;
@@ -232,9 +259,9 @@ export const FormSubmitFooter = withTheme(memo(({
   disabled,
   ...otherProps
 }: FormSubmitFooterProps) => (
-  <SubmitFooterContainer className={className}>
-    <StyledContentContainer mode="page">
-      <SubmitFooterInner>
+    <SubmitFooterContainer className={className}>
+      <StyledContentContainer mode="page">
+        <SubmitFooterInner>
           <Button
             fontWeight="500"
             padding="13px 22px"
@@ -250,15 +277,15 @@ export const FormSubmitFooter = withTheme(memo(({
             <FormattedMessage {...message} values={values} />
           </Button>
           <ScreenReaderOnly aria-live="polite">
-            {disabled ? <FormattedMessage {...messages.buttonDisabled}/> : <FormattedMessage {...messages.buttonEnabled} />}
+            {disabled ? <FormattedMessage {...messages.buttonDisabled} /> : <FormattedMessage {...messages.buttonEnabled} />}
           </ScreenReaderOnly>
           {error && <ErrorContainer className="e2e-error-form">
             <FormattedMessage {...errorMessage} />
           </ErrorContainer>}
-      </SubmitFooterInner>
-    </StyledContentContainer>
-  </SubmitFooterContainer>
-)));
+        </SubmitFooterInner>
+      </StyledContentContainer>
+    </SubmitFooterContainer>
+  )));
 
 const ErrorContainer = styled.div`
   color: ${colors.clRedError};
@@ -267,7 +294,7 @@ const ErrorContainer = styled.div`
 export const FormError = memo(({
   message
 }: IMessageInfo) => (
-  <ErrorContainer className="e2e-error-form">
-    <FormattedMessage {...message} />
-  </ErrorContainer>
-));
+    <ErrorContainer className="e2e-error-form">
+      <FormattedMessage {...message} />
+    </ErrorContainer>
+  ));

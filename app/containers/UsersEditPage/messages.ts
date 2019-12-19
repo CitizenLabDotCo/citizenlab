@@ -204,5 +204,9 @@ export default defineMessages({
   verifyAgain: {
     id: 'app.containers.UsersEditPage.verifyAgain',
     defaultMessage: 'Information about you are outdated ? Click here to verify again.',
+  },
+  blockedVerified: {
+    id: 'app.containers.UsersEditPage.blockedVerified',
+    defaultMessage: 'You can\'t edit the field because it contains verified informtion',
   }
 });
