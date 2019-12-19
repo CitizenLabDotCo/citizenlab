@@ -34,10 +34,10 @@ export function phaseFileStream(phaseId: string, fileId: string, streamParams: I
   return streams.get<IPhaseFile>({ apiEndpoint: `${apiEndpoint}/${phaseId}/files/${fileId}`, ...streamParams });
 }
 
-export function addPhaseFile(phaseId: string, base64: string, name: string, ordering: number | null = null) {
-  return streams.add<IPhaseFile>(`${apiEndpoint}/${phaseId}/files`, { file: { name, ordering, file: base64 } });
+export async function addPhaseFile(phaseId: string, base64: string, name: string, ordering: number | null = null) {
+  return await streams.add<IPhaseFile>(`${apiEndpoint}/${phaseId}/files`, { file: { name, ordering, file: base64 } });
 }
 
-export function deletePhaseFile(phaseId: string, fileId: string) {
-  return streams.delete(`${apiEndpoint}/${phaseId}/files/${fileId}`, fileId);
+export async function deletePhaseFile(phaseId: string, fileId: string) {
+  return await streams.delete(`${apiEndpoint}/${phaseId}/files/${fileId}`, fileId);
 }
