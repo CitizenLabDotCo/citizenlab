@@ -21,7 +21,7 @@ export interface ILockedField {
   type: 'locked_attribute';
   id: string;
   attributes: {
-    name: 'first_name' | 'last_name' | 'email' | 'gender' | 'birthyear';
+    name: 'first_name' | 'last_name' | 'email';
   };
 }
 

@@ -24,16 +24,18 @@ import CustomFieldsForm from 'components/CustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
 import QuillEditor from 'components/UI/QuillEditor';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import styled from 'styled-components';
 
 // typings
 import { IOption, UploadFile, CLErrorsJSON } from 'typings';
@@ -53,6 +55,15 @@ interface State {
   avatar: UploadFile[] | null;
   customFieldsFormData: any;
 }
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 5px;
+`;
 
 type Props = InputProps & DataProps & InjectedIntlProps & InjectedLocalized;
 
@@ -82,7 +93,7 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   transformAPIAvatar = () => {
-    const { authUser  } = this.props;
+    const { authUser } = this.props;
     if (isNilOrError(authUser)) return;
     const avatarUrl = authUser.attributes.avatar && authUser.attributes.avatar.medium;
     if (avatarUrl) {
@@ -100,7 +111,7 @@ class ProfileForm extends PureComponent<Props, State> {
       this.setLocaleOptions();
     }
 
-    if (authUser?.attributes.avatar?.medium !== prevProps.authUser?.attributes.avatar?.medium) {
+    if (authUser ?.attributes.avatar ?.medium !== prevProps.authUser ?.attributes.avatar ?.medium) {
       this.transformAPIAvatar();
     }
   }
@@ -233,49 +244,78 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="firstName" labelMessage={messages.firstNames} />
-            <Input
-              type="text"
-              name="first_name"
-              id="firstName"
-              value={values.first_name}
-              onChange={createChangeHandler('first_name')}
-              onBlur={createBlurHandler('first_name')}
-              disabled={lockedFieldsNames.includes('first_name')}
+            <FormLabel
+              thin
+              htmlFor="firstName"
+              labelMessage={messages.firstNames}
+              lockedMessage={messages.blockedVerified}
             />
+            <InputContainer>
+              <Input
+                type="text"
+                name="first_name"
+                id="firstName"
+                value={values.first_name}
+                onChange={createChangeHandler('first_name')}
+                onBlur={createBlurHandler('first_name')}
+                disabled={lockedFieldsNames.includes('first_name')}
+              />
+              {lockedFieldsNames.includes('email') &&
+                <StyledIconTooltip
+                  content={<FormattedMessage {...messages.blockedVerified} />}
+                  icon="lock"
+                />
+              }
+            </InputContainer>
             <Error apiErrors={errors.first_name} />
           </SectionField>
 
           <SectionField>
             <FormLabel thin htmlFor="lastName" labelMessage={messages.lastName} />
-            <Input
-              type="text"
-              name="last_name"
-              id="lastName"
-              value={values.last_name}
-              onChange={createChangeHandler('last_name')}
-              onBlur={createBlurHandler('last_name')}
-              disabled={lockedFieldsNames.includes('last_name')}
-            />
+            <InputContainer>
+              <Input
+                type="text"
+                name="last_name"
+                id="lastName"
+                value={values.last_name}
+                onChange={createChangeHandler('last_name')}
+                onBlur={createBlurHandler('last_name')}
+                disabled={lockedFieldsNames.includes('last_name')}
+              />
+              {lockedFieldsNames.includes('email') &&
+                <StyledIconTooltip
+                  content={<FormattedMessage {...messages.blockedVerified} />}
+                  icon="lock"
+                />
+              }
+            </InputContainer>
             <Error apiErrors={errors.last_name} />
           </SectionField>
 
           <SectionField>
             <FormLabel thin htmlFor="email" labelMessage={messages.email} />
-            <Input
-              type="email"
-              name="email"
-              id="email"
-              value={values.email}
-              onChange={createChangeHandler('email')}
-              onBlur={createBlurHandler('email')}
-              disabled={lockedFieldsNames.includes('email')}
-            />
+            <InputContainer>
+              <Input
+                type="email"
+                name="email"
+                id="email"
+                value={values.email}
+                onChange={createChangeHandler('email')}
+                onBlur={createBlurHandler('email')}
+                disabled={lockedFieldsNames.includes('email')}
+              />
+              {lockedFieldsNames.includes('email') &&
+                <StyledIconTooltip
+                  content={<FormattedMessage {...messages.blockedVerified} />}
+                  icon="lock"
+                />
+              }
+            </InputContainer>
             <Error apiErrors={errors.email} />
           </SectionField>
 
           <SectionField>
-            <FormLabel thin labelMessage={messages.bio} id="label-bio"/>
+            <FormLabel thin labelMessage={messages.bio} id="label-bio" />
             <QuillEditor
               id="bio_multiloc"
               noImages
@@ -358,7 +398,7 @@ const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   lockedFields: <GetLockedFields />,
-  customFieldsSchema: <GetCustomFieldsSchema/>
+  customFieldsSchema: <GetCustomFieldsSchema />
 });
 
 export default (inputProps: InputProps) => (
