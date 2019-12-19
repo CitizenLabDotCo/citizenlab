@@ -141,19 +141,25 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     };
   }
 
-  componentDidMount() {
-    const { idea, participationContextId, participationContextType } = this.props;
+  disabledReasonNotVerified = () => {
+    const { idea } = this.props;
     const disabledReason = !isNilOrError(idea) && get(idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
-    if (disabledReason === 'not_verified') {
+
+    return disabledReason === 'not_verified';
+  }
+
+  isVerificationRequired = () => {
+    const { participationContextId, participationContextType } = this.props;
+    if (this.disabledReasonNotVerified()) {
       verificationNeeded('ActionBudget', participationContextId, participationContextType, 'budgeting');
     }
   }
+
+  componentDidMount() {
+    this.isVerificationRequired();
+  }
   componentDidUpdate() {
-    const { idea, participationContextId, participationContextType } = this.props;
-    const disabledReason = !isNilOrError(idea) && get(idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
-    if (disabledReason === 'not_verified') {
-      verificationNeeded('ActionBudget', participationContextId, participationContextType, 'budgeting');
-    }
+    this.isVerificationRequired();
   }
 
   isDisabled = () => {
