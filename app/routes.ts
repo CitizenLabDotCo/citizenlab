@@ -80,6 +80,15 @@ export default function createRoutes() {
           })
         },
         {
+          path: 'email-settings',
+          name: 'emailSettings',
+          component: Loadable({
+            loader: () => import('containers/EmailSettingsPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
           path: 'profile/:slug',
           name: 'usersShowPage',
           component: Loadable({
