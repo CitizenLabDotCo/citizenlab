@@ -9,7 +9,7 @@ module EmailCampaigns
         end
 
         def unsubscription_token
-          object.email_campaigns_unsubscription_token.token
+          object.email_campaigns_unsubscription_token&.token
         end
 
       end

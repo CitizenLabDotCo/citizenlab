@@ -73,51 +73,52 @@ class TenantTemplateService
     @template = {'models' => {}}
 
     Apartment::Tenant.switch(tenant.schema_name) do
-      @template['models']['area']                      = yml_areas
-      @template['models']['custom_field']              = yml_custom_fields
-      @template['models']['custom_field_option']       = yml_custom_field_options
-      @template['models']['topic']                     = yml_topics
-      @template['models']['user']                      = yml_users
-      @template['models']['project']                   = yml_projects
-      @template['models']['project_file']              = yml_project_files
-      @template['models']['project_image']             = yml_project_images
-      @template['models']['projects_topic']            = yml_projects_topics
-      @template['models']['phase']                     = yml_phases
-      @template['models']['phase_file']                = yml_phase_files
-      @template['models']['areas_project']             = yml_areas_projects
-      @template['models']['email_campaigns/campaigns'] = yml_campaigns
-      @template['models']['basket']                    = yml_baskets
-      @template['models']['event']                     = yml_events
-      @template['models']['event_file']                = yml_event_files
-      @template['models']['group']                     = yml_groups
-      @template['models']['groups_project']            = yml_groups_projects
-      @template['models']['permission']                = yml_permissions
-      @template['models']['groups_permission']         = yml_groups_permissions 
-      @template['models']['membership']                = yml_memberships
-      @template['models']['page']                      = yml_pages
-      @template['models']['page_link']                 = yml_page_links
-      @template['models']['page_file']                 = yml_page_files
-      @template['models']['idea_status']               = yml_idea_statuses
-      @template['models']['idea']                      = yml_ideas
-      @template['models']['areas_idea']                = yml_areas_ideas
-      @template['models']['baskets_idea']              = yml_baskets_ideas
-      @template['models']['idea_file']                 = yml_idea_files
-      @template['models']['idea_image']                = yml_idea_images
-      @template['models']['ideas_phase']               = yml_ideas_phases
-      @template['models']['ideas_topic']               = yml_ideas_topics
-      @template['models']['initiative_status']         = yml_initiative_statuses
-      @template['models']['initiative']                = yml_initiatives
-      @template['models']['areas_initiative']          = yml_areas_initiatives
-      @template['models']['initiative_file']           = yml_initiative_files
-      @template['models']['initiative_image']          = yml_initiative_images
-      @template['models']['initiatives_topic']         = yml_initiatives_topics
-      @template['models']['official_feedback']         = yml_official_feedback
-      @template['models']['comment']                   = yml_comments
-      @template['models']['vote']                      = yml_votes
-      @template['models']['polls/question']            = yml_poll_questions
-      @template['models']['polls/option']              = yml_poll_options
-      @template['models']['polls/response']            = yml_poll_responses
-      @template['models']['polls/response_option']     = yml_poll_response_options
+      @template['models']['area']                                  = yml_areas
+      @template['models']['custom_field']                          = yml_custom_fields
+      @template['models']['custom_field_option']                   = yml_custom_field_options
+      @template['models']['topic']                                 = yml_topics
+      @template['models']['user']                                  = yml_users
+      @template['models']['email_campaigns/unsubscription_token']  = yml_unsubscription_tokens
+      @template['models']['project']                               = yml_projects
+      @template['models']['project_file']                          = yml_project_files
+      @template['models']['project_image']                         = yml_project_images
+      @template['models']['projects_topic']                        = yml_projects_topics
+      @template['models']['phase']                                 = yml_phases
+      @template['models']['phase_file']                            = yml_phase_files
+      @template['models']['areas_project']                         = yml_areas_projects
+      @template['models']['email_campaigns/campaigns']             = yml_campaigns
+      @template['models']['basket']                                = yml_baskets
+      @template['models']['event']                                 = yml_events
+      @template['models']['event_file']                            = yml_event_files
+      @template['models']['group']                                 = yml_groups
+      @template['models']['groups_project']                        = yml_groups_projects
+      @template['models']['permission']                            = yml_permissions
+      @template['models']['groups_permission']                     = yml_groups_permissions 
+      @template['models']['membership']                            = yml_memberships
+      @template['models']['page']                                  = yml_pages
+      @template['models']['page_link']                             = yml_page_links
+      @template['models']['page_file']                             = yml_page_files
+      @template['models']['idea_status']                           = yml_idea_statuses
+      @template['models']['idea']                                  = yml_ideas
+      @template['models']['areas_idea']                            = yml_areas_ideas
+      @template['models']['baskets_idea']                          = yml_baskets_ideas
+      @template['models']['idea_file']                             = yml_idea_files
+      @template['models']['idea_image']                            = yml_idea_images
+      @template['models']['ideas_phase']                           = yml_ideas_phases
+      @template['models']['ideas_topic']                           = yml_ideas_topics
+      @template['models']['initiative_status']                     = yml_initiative_statuses
+      @template['models']['initiative']                            = yml_initiatives
+      @template['models']['areas_initiative']                      = yml_areas_initiatives
+      @template['models']['initiative_file']                       = yml_initiative_files
+      @template['models']['initiative_image']                      = yml_initiative_images
+      @template['models']['initiatives_topic']                     = yml_initiatives_topics
+      @template['models']['official_feedback']                     = yml_official_feedback
+      @template['models']['comment']                               = yml_comments
+      @template['models']['vote']                                  = yml_votes
+      @template['models']['polls/question']                        = yml_poll_questions
+      @template['models']['polls/option']                          = yml_poll_options
+      @template['models']['polls/response']                        = yml_poll_responses
+      @template['models']['polls/response_option']                 = yml_poll_response_options
     end
     @template
   end
@@ -507,6 +508,18 @@ class TenantTemplateService
         'updated_at'       => c.updated_at.to_s,
       }
     end
+  end
+
+  def yml_unsubscription_tokens
+    EmailCampaigns::UnsubscriptionToken.all.map do |ut|
+      user_ref = lookup_ref(ut.user_id, :user)
+      if user_ref # only add tokens for users we include in template
+        {
+          'user_ref'        => user_ref,
+          'token'           => ut.token
+        }
+      end
+    end.compact
   end
 
   def yml_baskets
