@@ -21,13 +21,14 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
@@ -45,6 +46,29 @@ const StyledFormLabelValue = styled(FormLabelValue)`
 
 const InvisibleSubmitButton = styled.button`
   visibility: hidden;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const StyledIconTooltip = styled(IconTooltip)`
+  margin-left: 5px;
+`;
+
+const StyledSelect = styled(Select)`
+  flex-grow: 1;
+`;
+const StyledTextArea = styled(TextArea)`
+  flex-grow: 1;
+`;
+const StyledMultipleSelect = styled(MultipleSelect)`
+  flex-grow: 1;
+`;
+const StyledDateInput = styled(DateInput)`
+  flex-grow: 1;
+
 `;
 
 export interface InputProps {
@@ -159,14 +183,22 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
     const onChange = (value) => props.onChange(value);
 
     return (
-      <Input
-        type="text"
-        value={props.value}
-        onChange={onChange}
-        key={props.id}
-        id={props.id}
-        disabled={props.disabled}
-      />
+      <InputContainer>
+        <Input
+          type="text"
+          value={props.value}
+          onChange={onChange}
+          key={props.id}
+          id={props.id}
+          disabled={props.disabled}
+        />
+        {props.options.verificationLocked &&
+          <StyledIconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+          />
+        }
+      </InputContainer>
     );
   }
 
@@ -174,14 +206,22 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
     const onChange = (value) => props.onChange(value);
 
     return (
-      <TextArea
-        onChange={onChange}
-        rows={6}
-        value={props.value}
-        key={props.id}
-        id={props.id}
-        disabled={props.disabled}
-      />
+      <InputContainer>
+        <StyledTextArea
+          onChange={onChange}
+          rows={6}
+          value={props.value}
+          key={props.id}
+          id={props.id}
+          disabled={props.disabled}
+        />
+        {props.options.verificationLocked &&
+          <StyledIconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+          />
+        }
+      </InputContainer>
     );
   }
 
@@ -197,16 +237,24 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
       };
 
       return (
-        <Select
-          value={selectedOption}
-          options={props.options.enumOptions}
-          onChange={onChange}
-          key={props.id}
-          id={props.id}
-          disabled={props.disabled}
-          aria-label={props.label}
-          canBeEmpty={true}
-        />
+        <InputContainer>
+          <StyledSelect
+            value={selectedOption}
+            options={props.options.enumOptions}
+            onChange={onChange}
+            key={props.id}
+            id={props.id}
+            disabled={props.disabled}
+            aria-label={props.label}
+            canBeEmpty={true}
+          />
+          {props.options.verificationLocked &&
+            <StyledIconTooltip
+              content={<FormattedMessage {...messages.blockedVerified} />}
+              icon="lock"
+            />
+          }
+        </InputContainer>
       );
     }
 
@@ -221,14 +269,22 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
       };
 
       return (
-        <MultipleSelect
-          value={selectedOptions}
-          options={props.options.enumOptions}
-          onChange={onChange}
-          inputId={props.id}
-          disabled={props.disabled}
-          aria-label={props.label}
-        />
+        <InputContainer>
+          <StyledMultipleSelect
+            value={selectedOptions}
+            options={props.options.enumOptions}
+            onChange={onChange}
+            inputId={props.id}
+            disabled={props.disabled}
+            aria-label={props.label}
+          />
+          {props.options.verificationLocked &&
+            <StyledIconTooltip
+              content={<FormattedMessage {...messages.blockedVerified} />}
+              icon="lock"
+            />
+          }
+        </InputContainer>
       );
     }
 
@@ -239,19 +295,26 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
     const onChange = () => props.onChange((isBoolean(props.value) ? !props.value : true));
     const { title } = props.schema;
     const id = props.id;
-    console.log(props);
 
     if (isString(id)) {
       return (
         <>
           {title && <StyledFormLabelValue noSpace htmlFor={id} thin labelValue={title} />}
-          <Checkbox
-            id={id}
-            checked={(isBoolean(props.value) ? props.value : false)}
-            onChange={onChange}
-            label={(props.schema.description || null)}
-            disabled={props.disabled}
-          />
+          <InputContainer>
+            <Checkbox
+              id={id}
+              checked={(isBoolean(props.value) ? props.value : false)}
+              onChange={onChange}
+              label={(props.schema.description || null)}
+              disabled={props.disabled}
+            />
+            {props.options.verificationLocked &&
+              <StyledIconTooltip
+                content={<FormattedMessage {...messages.blockedVerified} />}
+                icon="lock"
+              />
+            }
+          </InputContainer>
         </>
       );
     }
@@ -263,11 +326,19 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
     const onChange = (value: moment.Moment | null) => props.onChange(value ? value.format('YYYY-MM-DD') : null);
 
     return (
-      <DateInput
-        value={(props.value ? moment(props.value, 'YYYY-MM-DD') : null)}
-        onChange={onChange}
-        disabled={props.disabled}
-      />
+      <InputContainer>
+        <StyledDateInput
+          value={(props.value ? moment(props.value, 'YYYY-MM-DD') : null)}
+          onChange={onChange}
+          disabled={props.disabled}
+        />
+        {props.options.verificationLocked &&
+          <StyledIconTooltip
+            content={<FormattedMessage {...messages.blockedVerified} />}
+            icon="lock"
+          />
+        }
+      </InputContainer>
     );
   }
 

@@ -207,6 +207,6 @@ export default defineMessages({
   },
   blockedVerified: {
     id: 'app.containers.UsersEditPage.blockedVerified',
-    defaultMessage: 'You can\'t edit the field because it contains verified informtion',
+    defaultMessage: 'You can\'t edit this field because it contains verified informtion',
   }
 });
