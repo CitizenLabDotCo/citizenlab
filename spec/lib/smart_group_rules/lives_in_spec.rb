@@ -72,4 +72,90 @@ describe SmartGroupRules::LivesIn do
     end
   end
 
+  describe "description_multiloc" do
+    before do
+      CustomField.create!(
+        resource_type: 'User',
+        key: 'domicile',
+        title_multiloc: {'en' => 'Place of residence', 'fr-FR' => 'Domicile', 'nl-NL' => 'Woonplaats'},
+        input_type: 'select',
+        required: false,
+        ordering: 2,
+        enabled: true,
+        code: 'domicile'
+      ) 
+    end
+
+    let(:area) {create(:area, title_multiloc: {
+      'en'    => 'Brussels',
+      'fr-FR' => 'Bruxelles',
+      'nl-NL' => 'Brussel'
+    })}
+    
+    let(:lives_in_has_value_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'has_value',
+      'value'     => area.id
+    })}
+    let(:lives_in_outside_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'has_value',
+      'value'     => 'outside'
+    })}
+    let(:lives_in_not_has_value_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'not_has_value',
+      'value'     => area.id
+    })}
+    let(:lives_in_not_outside_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'not_has_value',
+      'value'     => 'outside'
+    })}
+    let(:lives_in_is_empty_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'is_empty'
+    })}
+    let(:lives_in_not_is_empty_rule) {SmartGroupRules::LivesIn.from_json({
+      'ruleType'  => 'lives_in',
+      'predicate' => 'not_is_empty'
+    })}
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(lives_in_has_value_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence is Brussels',
+        'fr-FR' => 'Domicile est Bruxelles',
+        'nl-NL' => 'Woonplaats is Brussel'
+      })
+      expect(lives_in_outside_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence is somewhere else',
+        'fr-FR' => 'Domicile est ailleurs',
+        'nl-NL' => 'Woonplaats is ergens anders'
+      })
+      expect(lives_in_not_has_value_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence isn\'t Brussels',
+        'fr-FR' => 'Domicile n\'est pas Bruxelles',
+        'nl-NL' => 'Woonplaats is niet Brussel'
+      })
+      expect(lives_in_not_outside_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence is not somewhere else',
+        'fr-FR' => 'Domicile n\'est pas ailleurs',
+        'nl-NL' => 'Woonplaats is niet ergens anders'
+      })
+      expect(lives_in_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence has no value',
+        'fr-FR' => 'Domicile n\'as pas de value',
+        'nl-NL' => 'Woonplaats heeft geen waarde'
+      })
+      expect(lives_in_not_is_empty_rule.description_multiloc).to eq ({
+        'en'    => 'Place of residence has any value',
+        'fr-FR' => 'Domicile peut avoir n\'importe quel value',
+        'nl-NL' => 'Woonplaats heeft om het even welke waarde'
+      })
+    end
+  end
+
 end

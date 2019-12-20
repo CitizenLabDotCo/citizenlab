@@ -290,6 +290,16 @@ if ['public','example_org'].include? Apartment::Tenant.current
           {
             name: 'bogus'
           },
+          {
+            name: 'id_card_lookup',
+            method_name_multiloc: {en: 'Enter social security number'},
+            card_id_multiloc: {en: 'Social security number'},
+            card_id_placeholder: "xx-xxxxx-xx",
+            card_id_tooltip_multiloc: {
+              en: 'You can find this number on you ID card. We check your number without storing it.'
+            },
+            explainer_image_url: "http://localhost:4000/id_card_explainer.jpg"
+          },
         ],
       },
     }
@@ -449,6 +459,7 @@ if Apartment::Tenant.current == 'localhost'
           commenting_enabled: rand(4) != 0,
           voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
           voting_limited_max: rand(15)+1,
+          location_allowed: rand(4) != 0,
         })
       end
       project.save!
@@ -493,6 +504,7 @@ if Apartment::Tenant.current == 'localhost'
               commenting_enabled: rand(4) != 0,
               voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
               voting_limited_max: rand(15)+1,
+              location_allowed: rand(4) != 0,
             })
           end
           if phase.budgeting?
@@ -718,6 +730,10 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     InitiativeStatusService.new.automated_transitions!
+
+    10.times do |i|
+      Verification::IdCard.create!(card_id: i.to_s*3)
+    end
   end
 
 end

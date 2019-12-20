@@ -272,6 +272,18 @@ workflows:
           ssh_host: "35.183.23.116"
           compose_file: docker-compose-production-canada.yml
           env_file: ".env-production-canada"
+      - deploy-to-swarm:
+          requires:
+            - test
+            - push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.67.181.38"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
   check-for-inconsistent-data:
     triggers:
       - schedule:
