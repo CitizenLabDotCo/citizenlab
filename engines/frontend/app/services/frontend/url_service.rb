@@ -76,12 +76,11 @@ module Frontend
     end
 
     def verification_success_url options={}
-      "#{verification_url(options)}?verification-success"
+      verification_url(options)
     end
 
     def verification_failure_url options={}
-      error = options[:error]
-      "#{verification_url(options)}?verification-error&error=#{error}"
+      verification_url(options)
     end
 
     def invite_url token, options={}
