@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { includes } from 'lodash-es';
+import { includes, cloneDeep } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
@@ -9,13 +9,17 @@ import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import Select from 'components/UI/Select';
 import Icon from 'components/UI/Icon';
-import Label from 'components/UI/Label';
+// import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
+import Tabs from 'components/UI/Tabs';
 import Dropdown, { DropdownListItem } from 'components/UI/Dropdown';
 import { PageTitle } from 'components/admin/Section';
 
 // hooks
 import useModerations from 'hooks/useModerations';
+
+// services
+import { updateModerationStatus, IModerationData, TModerationStatuses } from 'services/moderations';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -56,29 +60,30 @@ const BetaLabel = styled.span`
 `;
 
 const Filters = styled.div`
-  min-height: 69px;
+  min-height: 44px;
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 50px;
 `;
 
-const Filter = styled.div`
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-`;
+// const Filter = styled.div`
+//   width: 250px;
+//   display: flex;
+//   flex-direction: column;
+// `;
 
-const FilterLabel = styled(Label)`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  margin-bottom: 5px;
-`;
+// const FilterLabel = styled(Label)`
+//   color: ${colors.adminTextColor};
+//   font-size: ${fontSizes.base}px;
+//   font-weight: 500;
+//   margin-bottom: 5px;
+// `;
 
 const MarkAsButtonWrapper = styled.div`
   height: 100%;
   display: flex;
   position: relative;
+  margin-right: 20px;
 `;
 
 const MarkAsButton = styled(Button)``;
@@ -210,7 +215,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   ];
 
   const { list, pageSize, moderationStatus, currentPage, lastPage, onModerationStatusChange, onPageNumberChange, onPageSizeChange } = useModerations({
-    pageSize: pageSizes[0].value
+    pageSize: pageSizes[0].value,
+    // moderationStatus: 'unread'
   });
 
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -224,8 +230,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [list, selectedRows]);
 
-  const handleOnModerationStatusChange = useCallback((option: IOption) => {
-    onModerationStatusChange(option.value);
+  // const handleOnModerationStatusChange = useCallback((option: IOption) => {
+  //   onModerationStatusChange(option.value);
+  // }, [onModerationStatusChange]);
+
+  const handleOnModerationStatusChange = useCallback((value: TModerationStatuses) => {
+    onModerationStatusChange(value);
   }, [onModerationStatusChange]);
 
   const handePageNumberChange = useCallback((pageNumber: number) => {
@@ -246,6 +256,19 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     setMarkAsDropdownOpened(!markAsDropdownOpened);
   }, [markAsDropdownOpened]);
 
+  const markAs = useCallback((moderationStatus: TModerationStatuses) => async (event: React.MouseEvent) => {
+    const copiedSelectedRows = cloneDeep(selectedRows);
+    event.preventDefault();
+    setMarkAsDropdownOpened(false);
+    setSelectedRows([]);
+    await Promise.all(
+      copiedSelectedRows.map((moderationId) => {
+        const moderation = (list as IModerationData[]).find(item => item.id === moderationId) as IModerationData;
+        return updateModerationStatus(moderation.id, moderation.attributes.moderatable_type, moderationStatus);
+      })
+    );
+  }, [selectedRows, list]);
+
   useEffect(() => {
     setSelectedRows([]);
   }, [currentPage, moderationStatus, pageSize]);
@@ -261,20 +284,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </PageTitleWrapper>
 
         <Filters>
-          {selectedRows.length === 0 ? (
-            <Filter>
-              <FilterLabel htmlFor="status-filter">
-                <FormattedMessage {...messages.status} />
-              </FilterLabel>
-              <Select
-                id="status-filter"
-                options={moderationStatuses}
-                onChange={handleOnModerationStatusChange}
-                value={moderationStatus ? moderationStatus : 'all'}
-                canBeEmpty={false}
-              />
-            </Filter>
-          ) : (
+          {selectedRows.length > 0 &&
             <MarkAsButtonWrapper>
               <MarkAsButton
                 icon="label"
@@ -291,17 +301,22 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 onClickOutside={toggleMarkAsDropdown}
                 content={
                   <>
-                    <DropdownListItem>
+                    <DropdownListItem onClick={markAs('read')}>
                       <FormattedMessage {...messages.read} />
                     </DropdownListItem>
-                    <DropdownListItem>
+                    <DropdownListItem onClick={markAs('unread')}>
                       <FormattedMessage {...messages.unread} />
                     </DropdownListItem>
                   </>
                 }
               />
             </MarkAsButtonWrapper>
-          )}
+          }
+          <Tabs
+            items={moderationStatuses}
+            selectedValue={moderationStatus || 'all'}
+            onClick={handleOnModerationStatusChange}
+          />
         </Filters>
 
         {list.length > 0 ? (

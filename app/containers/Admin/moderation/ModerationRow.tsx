@@ -17,7 +17,7 @@ import { colors } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
-import { IModeration } from 'services/moderations';
+import { IModerationData } from 'services/moderations';
 import { Multiloc } from 'typings';
 
 const Container = styled.tr<{ bgColor: string }>`
@@ -33,7 +33,7 @@ const ContextType = styled.span`
 `;
 
 interface Props {
-  moderation: IModeration;
+  moderation: IModerationData;
   selected: boolean;
   onSelect: (moderationId: string) => void;
   className?: string;
