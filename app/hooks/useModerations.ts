@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { moderationsStream, IModeration, TModerationStatuses } from 'services/moderations';
+import { moderationsStream, IModerationData, TModerationStatuses } from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -17,7 +17,7 @@ export default function useModerations({ pageNumber = 1, pageSize = 12, moderati
   const pageSize$ = new BehaviorSubject(pageSize);
   const moderationStatus$ = new BehaviorSubject(moderationStatus);
 
-  const [list, setList] = useState<IModeration[] | undefined | null | Error>(undefined);
+  const [list, setList] = useState<IModerationData[] | undefined | null | Error>(undefined);
   const [internalPageSize, setInternalPageSize] = useState(pageSize);
   const [internalModerationStatus, setInternalModerationStatus] = useState(moderationStatus);
   const [currentPage, setCurrentPage] = useState(1);

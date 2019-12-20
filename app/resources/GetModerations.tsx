@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { moderationsStream, IModeration, TModerationStatuses } from 'services/moderations';
+import { moderationsStream, IModerationData, TModerationStatuses } from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -19,7 +19,7 @@ interface Props extends InputProps {
 }
 
 interface State {
-  list: IModeration[] | undefined | null | Error;
+  list: IModerationData[] | undefined | null | Error;
   currentPage: number;
   lastPage: number;
 }
