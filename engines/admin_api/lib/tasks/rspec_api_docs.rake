@@ -7,6 +7,6 @@ RSpec::Core::RakeTask.new('admin_api:docs:generate' => :environment) do |t, task
   ENV["DOCS_DIR"] = Rails.root.join('doc', 'admin_api').to_s
   ENV["API_NAME"] = "CitizenLab Admin API"
 
-  t.pattern = 'engines/admin_api/spec/acceptance/**/*_spec.rb'
-  t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter"]
+  t.pattern = '{spec,engines/**/spec}/acceptance/**/*_spec.rb'
+  t.rspec_opts = ["-t admin_api --format RspecApiDocumentation::ApiFormatter"]
 end

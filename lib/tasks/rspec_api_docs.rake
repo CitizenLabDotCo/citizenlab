@@ -7,5 +7,5 @@ RSpec::Core::RakeTask.new('web_api:docs:generate' => :environment) do |t, task_a
   ENV["DOC_FORMAT"] = "html"
   ENV["API_NAME"] = "CitizenLab Front Web API"
   t.pattern = '{spec,engines/**/spec}/acceptance/**/*_spec.rb'
-  t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter --exclude-pattern=\"engines/{admin_api,public_api}/**/*_spec.rb\""]
+  t.rspec_opts = ["--format RspecApiDocumentation::ApiFormatter --exclude-pattern=\"engines/{admin_api,public_api}/**/*_spec.rb\" -t ~admin_api"]
 end

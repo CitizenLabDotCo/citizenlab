@@ -20,8 +20,8 @@ class PermissionPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?(record.permittable.project.id))
   end
 
-  def groups_inclusion?
-    true
+  def participation_conditions?
+    true # or user&.active?
   end
 
 end

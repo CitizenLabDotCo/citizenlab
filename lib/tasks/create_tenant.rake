@@ -15,7 +15,7 @@ namespace :cl2_back do
         core: {
           allowed: true,
           enabled: true,
-          locales: ['en-GB','nl-BE'],
+          locales: ['en-GB','nl-BE', 'fr-BE'],
           organization_type: 'medium_city',
           organization_name: {
             "en-GB" => 'Wonderville',
@@ -155,6 +155,16 @@ namespace :cl2_back do
             },
             {
               name: 'bogus'
+            },
+            {
+              name: 'id_card_lookup',
+              method_name_multiloc: {en: 'Enter social security number'},
+              card_id_multiloc: {en: 'Social security number'},
+              card_id_placeholder: "xx-xxxxx-xx",
+              card_id_tooltip_multiloc: {
+                en: 'You can find this number on you ID card. We check your number without storing it.'
+              },
+              explainer_image_url: "http://localhost:4000/id_card_explainer.jpg"
             },
           ]
         },

@@ -6,6 +6,7 @@ module Verification
       Methods::Bogus.new,
       OmniauthMethods::BosaFAS.new,
       OmniauthMethods::FranceConnect.new,
+      Methods::IdCardLookup.new,
     ]
 
     def initialize sfxv_service=SideFxVerificationService.new
