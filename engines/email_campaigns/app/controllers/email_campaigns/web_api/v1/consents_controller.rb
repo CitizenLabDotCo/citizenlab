@@ -2,10 +2,10 @@ module EmailCampaigns
   class WebApi::V1::ConsentsController < EmailCampaignsController
 
     before_action :set_consent, only: [:update]
+    before_action :ensure_consents, only: [:index, :update, :update_by_campaign_id]
 
     def index
       authorize Consent
-      Consent.create_all_for_user!(current_user_by_unsubscription_token)
       
       @consents = policy_scope(Consent)
         .where(user: current_user_by_unsubscription_token)
@@ -53,6 +53,10 @@ module EmailCampaigns
     end
 
     private
+
+    def ensure_consents
+      Consent.create_all_for_user!(current_user_by_unsubscription_token)
+    end
 
     def set_consent
       @consent = Consent.find(params[:id])
