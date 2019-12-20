@@ -55,7 +55,9 @@ module EmailCampaigns
     private
 
     def ensure_consents
-      Consent.create_all_for_user!(current_user_by_unsubscription_token)
+      if current_user_by_unsubscription_token
+        Consent.create_all_for_user!(current_user_by_unsubscription_token)
+      end
     end
 
     def set_consent
