@@ -26,8 +26,8 @@ class OmniauthCallbackController < ApplicationController
       begin
         handle_verification(auth, @user)
         redirect_to(add_uri_params(
-          Frontend::UrlService.new.verification_success_url(locale: @user.locale, location: omniauth_params['location']),
-          omniauth_params.merge('verification-success': true).except('location')
+          Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
+          omniauth_params.merge('verification-success': true).except('pathname')
         ))
       rescue Verification::VerificationService::VerificationTakenError => e
         fail_verification('taken')
@@ -109,9 +109,9 @@ class OmniauthCallbackController < ApplicationController
   end
 
   def fail_verification error
-    omniauth_params = request.env['omniauth.params'].except('token', 'location')
+    omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
     redirect_to(add_uri_params(
-      Frontend::UrlService.new.verification_failure_url(location: request.env['omniauth.params']['location']),
+      Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
       omniauth_params.merge('verification-error': true, error: error)
     ))
   end

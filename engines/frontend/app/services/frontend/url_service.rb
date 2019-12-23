@@ -59,7 +59,7 @@ module Frontend
     end
 
     def verification_url options={}
-      pathname = options[:location]
+      pathname = options[:pathname]
       "#{home_url(options)}#{pathname}"
     end
 

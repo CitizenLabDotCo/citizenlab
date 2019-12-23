@@ -50,7 +50,7 @@ describe "bosa_fas verification" do
   end
 
   it "successfully verifies a user" do
-    get "/auth/bosa_fas?token=#{@token}&random-passthrough-param=somevalue&location=/yipie"
+    get "/auth/bosa_fas?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
     follow_redirect!
 
     expect(response).to redirect_to("/en/yipie?random-passthrough-param=somevalue&verification-success=true")
@@ -76,14 +76,14 @@ describe "bosa_fas verification" do
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '93051822361', 'bosa_fas')
     )
 
-    get "/auth/bosa_fas?token=#{@token}&location=/some-page"
+    get "/auth/bosa_fas?token=#{@token}&pathname=/some-page"
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification-error=true&error=taken')
   end
 
   it "fails when the authentication token is not passed" do
-    get "/auth/bosa_fas?location=/whatever-page"
+    get "/auth/bosa_fas?pathname=/whatever-page"
     follow_redirect!
 
     expect(response).to redirect_to('/whatever-page?verification-error=true&error=no_token_passed')
