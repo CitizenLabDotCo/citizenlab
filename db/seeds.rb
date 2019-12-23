@@ -300,6 +300,9 @@ if ['public','example_org'].include? Apartment::Tenant.current
             },
             explainer_image_url: "http://localhost:4000/id_card_explainer.jpg"
           },
+          {
+            name: 'franceconnect'
+          },
         ],
       },
     }

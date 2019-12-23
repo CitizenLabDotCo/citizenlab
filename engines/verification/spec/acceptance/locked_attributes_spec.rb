@@ -22,7 +22,7 @@ resource "Users - Locked attributes" do
     example_request "List locked built-in attributes for authenticated user" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
-      expect(json_response[:data].map{|d| d[:attributes][:name]}).to eq ['first_name', 'last_name', 'gender', 'birthyear']
+      expect(json_response[:data].map{|d| d[:attributes][:name]}).to eq ['first_name', 'last_name']
     end
   end
 

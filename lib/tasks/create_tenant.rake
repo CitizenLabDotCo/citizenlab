@@ -166,6 +166,9 @@ namespace :cl2_back do
               },
               explainer_image_url: "http://localhost:4000/id_card_explainer.jpg"
             },
+            {
+              name: 'franceconnect'
+            },
           ]
         },
       }
