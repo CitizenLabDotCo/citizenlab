@@ -27,7 +27,7 @@ describe Verification::VerificationService do
 
       allow_any_instance_of(Verification::Methods::Cow)
         .to receive(:verify_sync)
-        .and_return('fakeuuid')
+        .and_return({uid: 'fakeuuid'})
 
       expect(sfxv_service)
         .to receive(:before_create)
@@ -40,7 +40,62 @@ describe Verification::VerificationService do
       service.verify_sync(params)
     end
 
-    it "Adds a verification" do
+    it "updates the user with received attributes from verify_sync" do
+      allow(sfxv_service).to receive(:before_create)
+      allow(sfxv_service).to receive(:after_create)
+
+      params = {
+        user: user,
+        method_name: 'bogus',
+        verification_parameters: {}
+      }
+
+      allow_any_instance_of(Verification::Methods::Bogus)
+        .to receive(:verify_sync)
+        .and_return({
+          uid: '123',
+          attributes: {first_name: 'BOB'},
+        })
+
+      service.verify_sync(params)
+
+      expect(user.reload.first_name).to eq 'BOB'
+    end
+
+    it "updates the user with received custom_field_values from verify_sync" do
+      allow(sfxv_service).to receive(:before_create)
+      allow(sfxv_service).to receive(:after_create)
+      cf1 = create(:custom_field)
+      cf2 = create(:custom_field)
+      user.update!(custom_field_values: {
+        cf1.key => 'original',
+        cf2.key => 'original',
+      })
+
+      params = {
+        user: user,
+        method_name: 'bogus',
+        verification_parameters: {}
+      }
+
+      allow_any_instance_of(Verification::Methods::Bogus)
+        .to receive(:verify_sync)
+        .and_return({
+          uid: '123',
+          custom_field_values: {
+            cf2.key => 'changed'
+          },
+        })
+
+      service.verify_sync(params)
+
+      expect(user.reload.custom_field_values).to eq({
+        cf1.key => 'original',
+        cf2.key => 'changed'
+      })
+    end
+
+    it "adds a verification" do
       allow(sfxv_service).to receive(:before_create)
       allow(sfxv_service).to receive(:after_create)
 
@@ -55,7 +110,7 @@ describe Verification::VerificationService do
       expect_any_instance_of(Verification::Methods::Cow)
         .to receive(:verify_sync)
         .with(params[:verification_parameters])
-        .and_return('001529382')
+        .and_return({uid: '001529382'})
 
       service.verify_sync(params)
 
@@ -81,7 +136,7 @@ describe Verification::VerificationService do
       expect_any_instance_of(Verification::Methods::Cow)
         .to receive(:verify_sync)
         .with(params1[:verification_parameters])
-        .and_return('001529382')
+        .and_return({uid: '001529382'})
 
       service.verify_sync(params1)
 
@@ -94,7 +149,7 @@ describe Verification::VerificationService do
       expect_any_instance_of(Verification::Methods::Cow)
         .to receive(:verify_sync)
         .with(params2[:verification_parameters])
-        .and_return('001529382')
+        .and_return({uid: '001529382'})
 
       expect{service.verify_sync(params2)}.to raise_error(Verification::VerificationService::VerificationTakenError)
     end

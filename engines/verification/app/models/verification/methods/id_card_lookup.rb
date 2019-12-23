@@ -61,7 +61,9 @@ module Verification
         if card_id.blank?
           raise VerificationService::ParameterInvalidError.new('card_id')
         elsif IdCard.find_by_card_id(card_id)
-          IdCardService.new.normalize(card_id)
+          {
+            uid: IdCardService.new.normalize(card_id)
+          }
         else
           raise VerificationService::NoMatchError.new
         end

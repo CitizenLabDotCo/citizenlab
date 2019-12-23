@@ -31,14 +31,32 @@ module Verification
         when "not_entitled"
           raise VerificationService::NotEntitledError.new
         when "taken"
-          1
+          {
+            uid: 1
+          }
         else
           if desired_error.present?
             raise VerificationService::ParameterInvalidError.new("desired_error")
           else
-            SecureRandom.alphanumeric(24)
+            {
+              uid: SecureRandom.alphanumeric(24),
+              attributes: {
+                last_name: 'BOGUS'
+              },
+              custom_field_values: {
+                gender: 'female'
+              }
+            }
           end
         end
+      end
+
+      def locked_attributes
+        [:last_name]
+      end
+
+      def locked_custom_fields
+        [:gender]
       end
     end
   end
