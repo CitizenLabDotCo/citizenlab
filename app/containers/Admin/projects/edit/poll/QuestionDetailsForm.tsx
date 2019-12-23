@@ -8,6 +8,8 @@ import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
 import Select from 'components/UI/Select';
+import Input from 'components/UI/Input';
+import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings
 import { IOption } from 'typings';
@@ -19,8 +21,6 @@ import messages from './messages';
 // Style
 import styled from 'styled-components';
 import { InjectedIntlProps } from 'react-intl';
-import Input from 'components/UI/Input';
-import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 const FormContainer = styled.div`
   display: flex;

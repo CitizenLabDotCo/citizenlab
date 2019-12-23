@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PollForm/> boundaries renders correctly when questions is [] 1`] = `""`;

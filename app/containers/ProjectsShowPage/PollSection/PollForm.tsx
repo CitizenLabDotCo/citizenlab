@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError, toggleElementArray } from 'utils/helperUtils';
+import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
 import { IParticipationContextType } from 'typings';
 
@@ -70,7 +70,7 @@ interface State {
   };
 }
 
-class PollForm extends PureComponent<Props, State> {
+export class PollForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,7 +86,7 @@ class PollForm extends PureComponent<Props, State> {
     this.setState(state => {
       const oldAnswer = state.answers[questionId] || [];
 
-      toggleElementArray(oldAnswer, optionId);
+      toggleElementInArray(oldAnswer, optionId);
 
       return ({ answers: { ...state.answers, [questionId]: oldAnswer } });
     });
