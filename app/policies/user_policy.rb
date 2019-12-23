@@ -62,10 +62,10 @@ class UserPolicy < ApplicationPolicy
 
   def permitted_attributes
     shared = [:first_name, :last_name, :email, :password, :avatar, :locale, custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES]
-    if user && user.admin?
+    if user&.admin?
       shared += [roles: [:type, :project_id]]
     end
-    locked_attributes = Verification::VerificationService.new.locked_attributes(user)
+    locked_attributes = Verification::VerificationService.new.locked_attributes(record)
     shared - locked_attributes
   end
 
@@ -76,7 +76,7 @@ class UserPolicy < ApplicationPolicy
   private
 
   def allowed_custom_field_keys
-    locked_keys = Verification::VerificationService.new.locked_custom_fields(user)
+    locked_keys = Verification::VerificationService.new.locked_custom_fields(record)
     enabled_fields = CustomField
       .fields_for('User')
       .where.not(key: locked_keys)
