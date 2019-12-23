@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import messages from './messages';
-import { IConsentData, updateConsent, IConsent } from 'services/campaignConsents';
+import { IConsentData, updateConsent, IConsent, updateConsentWithToken } from 'services/campaignConsents';
 import styled from 'styled-components';
 
 // utils
@@ -27,6 +27,7 @@ const ConsentList = styled.div`
 type Props = {
   consents: IConsentData[];
   trackEventName: string;
+  token?: string;
 };
 
 interface State {
@@ -71,7 +72,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
   }
 
   handleOnSubmit = () => {
-    const { trackEventName } = this.props;
+    const { trackEventName, token } = this.props;
     const { consentChanges } = this.state;
     let consentUpdates: Promise<IConsent>[] = [];
 
@@ -81,7 +82,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     this.setState({ isSaving: true, saveButtonStatus: 'disabled' });
     if (consentChanges) {
       consentUpdates = Object.keys(consentChanges).map(consentId => {
-        return updateConsent(consentId, { consented: this.isConsented(consentId) });
+        return token ? updateConsentWithToken(consentId, this.isConsented(consentId), token) : updateConsent(consentId, this.isConsented(consentId));
       });
     }
 
