@@ -67,6 +67,19 @@ module Verification
         [:dna_string]
       end
 
+      # A list of user attributes that should be unchangeable by the user,
+      # when they're verified using this method
+      def locked_attributes
+        [:email]
+      end
+
+      # A list of custom field keys that should be unchangeable by the user,
+      # when they're verified using this method. Make sure that tenants that
+      # are using this method have the custom field in place and enabled
+      def locked_custom_fields
+        [:gender]
+      end
+
     end
   end
 end
@@ -110,6 +123,15 @@ module Verification
       #   doesn't have sufficient civil rights to be considered verified
       # * VerificationService::ParameterInvalidError When a given input parameter 
       #   is invalid
+      #
+      # It has to return a hash with following keys:
+      # {
+      #   uid: The unique uid string of the user for this method
+      #   attributes: Hash of attributes that should be set on the user
+      #   custom_field_values: Hash of custom field values that should be merged into the user's current values
+      # }
+      # Only the `uid` key is required
+    }
       def verify_sync dna_string:
         raise ParameterInvalidError.new("dna_string") if invalid_dna?(dna_string)
         response = check_dna_db(
