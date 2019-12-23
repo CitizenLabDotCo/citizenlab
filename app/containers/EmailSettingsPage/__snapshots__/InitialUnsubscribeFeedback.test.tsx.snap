@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InitialUnsubscribeFeedback/> renders 1`] = `
+<InitialUnsubscribeFeedback__Message
+  status="success"
+>
+  <FormattedMessage
+    defaultMessage="You successfully unsubscribed from this campaign. You will not receive this type of email anymore, see the form below to review your other consents."
+    id="EmailSettingsPage.initialUnsubscribeSuccess"
+  />
+</InitialUnsubscribeFeedback__Message>
+`;

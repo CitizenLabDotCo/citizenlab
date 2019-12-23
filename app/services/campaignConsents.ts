@@ -36,3 +36,7 @@ export function consentsStream(userId: string) {
 export function updateConsent(consentId: string, object) {
   return streams.update<IConsent>(`${API_PATH}/consents/${consentId}`, consentId, { consent: object });
 }
+
+export function updateConsentByCampaignIDWIthToken(campaignId: string, consented: boolean, unsubToken: string) {
+  return streams.update<IConsent>(`${API_PATH}/consents/by_campaign_id/${campaignId}`, campaignId, { consent: { consented }, unsubscription_token: unsubToken });
+}

@@ -3,10 +3,15 @@ import React, { PureComponent } from 'react';
 
 // Components
 import ConsentForm from 'components/ConsentForm';
+import InitialUnsubscribeFeedback from './InitialUnsubscribeFeedback';
 
 // Styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { withRouter, WithRouterProps } from 'react-router';
+
+// services
+import { updateConsentByCampaignIDWIthToken } from 'services/campaignConsents';
 
 const Container = styled.div`
   width: 100%;
@@ -19,23 +24,45 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
-interface Props {}
+interface Props { }
 
-interface State {}
+interface State {
+  initialUnsubscribeStatus: 'error' | 'success' | 'loading' | null;
+}
 
-export default class ProfileEditor extends PureComponent<Props, State> {
+export class EmailSettingPage extends PureComponent<Props & WithRouterProps, State> {
 
-  constructor(props: Props) {
+  constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
+      initialUnsubscribeStatus: null
     };
   }
 
+  componentDidMount() {
+    const { query } = this.props.location;
+
+    this.setState({ initialUnsubscribeStatus: 'loading' });
+    if (typeof query.unsubscription_token === 'string' && typeof query.campaign_id === 'string') {
+      updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(() => {
+        this.setState({ initialUnsubscribeStatus: 'success' });
+      }).catch(() => {
+        this.setState({ initialUnsubscribeStatus: 'error' });
+      });
+    }
+
+  }
+
   render() {
+    const { initialUnsubscribeStatus } = this.state;
     return (
       <Container id="e2e-user-edit-profile-page">
+        {initialUnsubscribeStatus && (
+          <InitialUnsubscribeFeedback status={initialUnsubscribeStatus} />
+        )}
         {/* <ConsentForm consents={} /> */}
       </Container>
     );
   }
 }
+export default withRouter(EmailSettingPage);
