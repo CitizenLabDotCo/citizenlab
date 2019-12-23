@@ -1,40 +1,42 @@
 import React from 'react';
-import { Subscription, of } from 'rxjs';
-import { IConsentData, consentsStream, IConsents } from 'services/campaignConsents';
+import { Subscription, of, BehaviorSubject } from 'rxjs';
+import { IConsentData, consentsWithTokenStream, IConsents } from 'services/campaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
-import { authUserStream } from 'services/auth';
 import { switchMap } from 'rxjs/operators';
 
 interface InputProps { }
 
-type children = (renderProps: GetCampaignConsentsChildProps) => JSX.Element | null;
+type children = (renderProps: GetCampaignConsentsWithTokenChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
+  token: string | null;
 }
 
 interface State {
   consents: IConsentData[] | undefined | null | Error;
 }
 
-export type GetCampaignConsentsChildProps = IConsentData[] | undefined | null | Error;
+export type GetCampaignConsentsWithTokenChildProps = IConsentData[] | undefined | null | Error;
 
-export default class GetConsents extends React.Component<Props, State> {
+export default class GetCampaignConsentsWithToken extends React.Component<Props, State> {
   private subscriptions: Subscription[];
+  private token$: BehaviorSubject<string | null> = new BehaviorSubject(null);
 
   constructor(props: Props) {
     super(props);
     this.state = {
       consents: undefined
     };
+    this.token$.next(props.token);
   }
 
   componentDidMount() {
     this.subscriptions = [
-      authUserStream().observable
-        .pipe(switchMap((user) => {
-          if (!isNilOrError(user)) {
-            return consentsStream().observable;
+      this.token$
+        .pipe(switchMap((token) => {
+          if (!!token) {
+            return consentsWithTokenStream(token).observable;
           } else {
             return of(null);
           }

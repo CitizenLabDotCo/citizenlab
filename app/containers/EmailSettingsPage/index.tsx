@@ -12,6 +12,9 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import { updateConsentByCampaignIDWIthToken } from 'services/campaignConsents';
+import { adopt } from 'react-adopt';
+import GetCampaignConsentsWithToken, { GetCampaignConsentsWithTokenChildProps } from 'resources/GetCampaignConsentsWithToken';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -24,15 +27,17 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
-interface Props { }
+interface DataProps {
+  consents: GetCampaignConsentsWithTokenChildProps;
+}
 
 interface State {
   initialUnsubscribeStatus: 'error' | 'success' | 'loading' | null;
 }
 
-export class EmailSettingPage extends PureComponent<Props & WithRouterProps, State> {
+export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps, State> {
 
-  constructor(props: Props & WithRouterProps) {
+  constructor(props: DataProps & WithRouterProps) {
     super(props);
     this.state = {
       initialUnsubscribeStatus: null
@@ -55,14 +60,42 @@ export class EmailSettingPage extends PureComponent<Props & WithRouterProps, Sta
 
   render() {
     const { initialUnsubscribeStatus } = this.state;
+    const { consents, location } = this.props;
+    const token = typeof location.query.unsubscription_token === 'string'
+      ? location.query.unsubscription_token
+      : undefined;
+
     return (
       <Container id="e2e-user-edit-profile-page">
         {initialUnsubscribeStatus && (
           <InitialUnsubscribeFeedback status={initialUnsubscribeStatus} />
         )}
-        {/* <ConsentForm consents={} /> */}
+        {!isNilOrError(consents) && (
+          <ConsentForm
+            consents={consents}
+            trackEventName="Unsubcribed from unsubscribe link flow"
+            token={token}
+          />
+        )}
       </Container>
     );
   }
 }
-export default withRouter(EmailSettingPage);
+
+const EmailSettingPageWithHoc = withRouter(EmailSettingPage);
+
+const Data = adopt<DataProps, WithRouterProps>({
+  consents: ({ location, render }) => (
+    <GetCampaignConsentsWithToken
+      token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
+    >
+      {render}
+    </GetCampaignConsentsWithToken>
+  )
+});
+
+export default (inputProps: WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataprops => <EmailSettingPageWithHoc {...inputProps} {...dataprops} />}
+  </Data>
+);
