@@ -13,14 +13,9 @@ import { EmailSettingPage } from './';
 const location = { query: { unsubscription_token: 'token', campaign_id: 'campaignId' } };
 
 describe('<EmailSettingPage/>', () => {
-  it('renders', () => {
-    const Wrapper = shallow(<EmailSettingPage location={location} />);
-    expect(Wrapper).toMatchSnapshot();
-  });
   it('calls the update and initially renders the lodaing indicator', async () => {
     const Wrapper = shallow(<EmailSettingPage location={location} />);
-    expect(Wrapper).toMatchSnapshot();
-    expect(Wrapper.find('InitialUnsubscribeFeedback').prop('status')).toBe('loading');
+    expect(Wrapper.find('EmailSettingsPage__StyledInitialFeedback').prop('status')).toBe('loading');
     expect(updateConsentByCampaignIDWIthToken).toHaveBeenCalledTimes(1);
     expect(updateConsentByCampaignIDWIthToken).toHaveBeenNthCalledWith(1, 'campaignId', false, 'token');
   });
@@ -28,7 +23,7 @@ describe('<EmailSettingPage/>', () => {
     const Wrapper = shallow(<EmailSettingPage location={location} />);
     await updateConsentByCampaignIDWIthToken();
     Wrapper.update();
-    expect(Wrapper.find('InitialUnsubscribeFeedback').prop('status')).toBe('success');
+    expect(Wrapper.find('EmailSettingsPage__StyledInitialFeedback').prop('status')).toBe('success');
   });
   it('shows error indicator when initial update fails', async () => {
     jest.useRealTimers();
@@ -37,7 +32,7 @@ describe('<EmailSettingPage/>', () => {
     await updateConsentByCampaignIDWIthToken().catch(() => {
       Wrapper.update();
 
-      expect(Wrapper.find('InitialUnsubscribeFeedback').prop('status')).toBe('error');
+      expect(Wrapper.find('EmailSettingsPage__StyledInitialFeedback').prop('status')).toBe('error');
     });
   });
 });
