@@ -47,15 +47,16 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   componentDidMount() {
     const { query } = this.props.location;
 
-    this.setState({ initialUnsubscribeStatus: 'loading' });
-    if (typeof query.unsubscription_token === 'string' && typeof query.campaign_id === 'string') {
+    if (!(typeof query.unsubscription_token === 'string' && typeof query.campaign_id === 'string')) {
+      this.setState({ initialUnsubscribeStatus: 'error' });
+    } else {
+      this.setState({ initialUnsubscribeStatus: 'loading' });
       updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(() => {
         this.setState({ initialUnsubscribeStatus: 'success' });
       }).catch(() => {
         this.setState({ initialUnsubscribeStatus: 'error' });
       });
     }
-
   }
 
   render() {
