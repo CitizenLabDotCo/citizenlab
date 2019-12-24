@@ -1,4 +1,7 @@
 {
+  "EmailSettingsPage.initialUnsubscribeError": "",
+  "EmailSettingsPage.initialUnsubscribeLoading": "",
+  "EmailSettingsPage.initialUnsubscribeSuccess": "",
   "UI.FormComponents.buttonDisabled": "Schaltfläche \"Versenden\" deaktiviert",
   "UI.FormComponents.buttonEnabled": "Schaltfläche \"Versenden\" aktiviert",
   "UI.FormComponents.optional": "optional",
