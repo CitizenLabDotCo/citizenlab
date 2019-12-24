@@ -4,12 +4,16 @@ import React from 'react';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// components
+import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
+
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
   color: ${colors.clBlueDarker};
+  font-size: ${fontSizes.large}px;
 `;
 
 interface Props {
@@ -18,15 +22,17 @@ interface Props {
 
 const InitialUnsubscribeFeedback = ({ status }: Props) => {
   return (
-    <Message status={status}>
-      {status === 'success' ? (
-        <FormattedMessage {...messages.initialUnsubscribeSuccess} />
-      ) : status === 'error' ? (
-        <FormattedMessage {...messages.initialUnsubscribeError} />
-      ) : status === 'loading' ? (
-        <FormattedMessage {...messages.initialUnsubscribeLoading} />
-      ) : null}
-    </Message>
+    <FormSection>
+      <Message status={status}>
+        {status === 'success' ? (
+          <FormattedMessage {...messages.initialUnsubscribeSuccess} />
+        ) : status === 'error' ? (
+          <FormattedMessage {...messages.initialUnsubscribeError} />
+        ) : status === 'loading' ? (
+          <FormattedMessage {...messages.initialUnsubscribeLoading} />
+        ) : null}
+      </Message>
+    </FormSection>
   );
 };
 

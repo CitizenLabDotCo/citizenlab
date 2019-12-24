@@ -29,6 +29,14 @@ const Container = styled.div`
   overflow-x: hidden;
 `;
 
+const StyledInitialFeedback = styled(InitialUnsubscribeFeedback)`
+  flex-grow: 1;
+`;
+
+const StyledConsentForm = styled(ConsentForm)`
+  flex-grow: 1;
+`;
+
 interface DataProps {
   consents: GetCampaignConsentsWithTokenChildProps;
 }
@@ -73,16 +81,18 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
 
     return (
       <Container id="e2e-user-edit-profile-page">
-        {initialUnsubscribeStatus && (
-          <InitialUnsubscribeFeedback status={initialUnsubscribeStatus} />
-        )}
-        {!isNilOrError(consents) && (
-          <ConsentForm
-            consents={consents}
-            trackEventName="Unsubcribed from unsubscribe link flow"
-            token={token}
-          />
-        )}
+        <div>
+          {initialUnsubscribeStatus && (
+            <StyledInitialFeedback status={initialUnsubscribeStatus} />
+          )}
+          {!isNilOrError(consents) && (
+            <StyledConsentForm
+              consents={consents}
+              trackEventName="Unsubcribed from unsubscribe link flow"
+              token={token}
+            />
+          )}
+        </div>
       </Container>
     );
   }
