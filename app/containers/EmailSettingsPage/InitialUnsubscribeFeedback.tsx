@@ -23,7 +23,7 @@ interface Props {
 const InitialUnsubscribeFeedback = ({ status }: Props) => {
   return (
     <FormSection>
-      <Message status={status}>
+      <Message status={status} aria-live="polite">
         {status === 'success' ? (
           <FormattedMessage {...messages.initialUnsubscribeSuccess} />
         ) : status === 'error' ? (
