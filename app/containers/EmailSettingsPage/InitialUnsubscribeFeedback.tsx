@@ -5,7 +5,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
+import { FormSection } from 'components/UI/FormComponents';
 
 // styling
 import styled from 'styled-components';
