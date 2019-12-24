@@ -15,6 +15,8 @@ import { updateConsentByCampaignIDWIthToken } from 'services/campaignConsents';
 import { adopt } from 'react-adopt';
 import GetCampaignConsentsWithToken, { GetCampaignConsentsWithTokenChildProps } from 'resources/GetCampaignConsentsWithToken';
 import { isNilOrError } from 'utils/helperUtils';
+import streams from 'utils/streams';
+import { API_PATH } from 'containers/App/constants';
 
 const Container = styled.div`
   width: 100%;
@@ -53,6 +55,9 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
       this.setState({ initialUnsubscribeStatus: 'loading' });
       updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(() => {
         this.setState({ initialUnsubscribeStatus: 'success' });
+        streams.fetchAllWith({
+          apiEndpoint: [`${API_PATH}/consents?unsubscription_token=${query.unsubscription_token}`],
+        });
       }).catch(() => {
         this.setState({ initialUnsubscribeStatus: 'error' });
       });
