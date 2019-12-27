@@ -1,6 +1,6 @@
 module EmailCampaigns
   class WebApi::V1::CampaignSerializer < ::WebApi::V1::BaseSerializer
-    attributes :created_at, :updated_at, :category
+    attributes :created_at, :updated_at
 
     attribute :campaign_name do |object|
       object.class.campaign_name
