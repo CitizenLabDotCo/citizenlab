@@ -1,11 +1,5 @@
 import React, { PureComponent } from 'react';
-import messages from './messages';
 import { IConsentData, updateConsent, IConsent, updateConsentWithToken, getCategorizedConsents } from 'services/campaignConsents';
-import styled from 'styled-components';
-
-// utils
-import { isNilOrError } from 'utils/helperUtils';
-import { find } from 'lodash-es';
 
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -16,12 +10,33 @@ import Checkbox from 'components/UI/Checkbox';
 import { trackEventByName } from 'utils/analytics';
 import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
 
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+import styled from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
+import Button from 'components/UI/Button';
+
+const CategoryCheckboxContainer = styled.div`
+  margin-bottom: 16px;
+  label {
+    font-size: ${fontSizes.large}px;
+  }
+  display: flex;
+  justify-content: space-between;
+`;
+
 const CheckboxContainer = styled.div`
   margin-bottom: 16px;
+  margin-left: 15px;
 `;
 
 const ConsentList = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+`;
+
+const StyledSubmitWrapper = styled(SubmitWrapper)`
+  margin-top: 20px;
 `;
 
 type Props = {
@@ -35,22 +50,26 @@ interface State {
   isSaving: boolean;
   saveButtonStatus: 'enabled' | 'disabled' | 'error' | 'success';
   categorizedConsents: { [category: string]: IConsentData[] };
+  isCategoryOpen: { [category: string]: boolean };
 }
 
 export default class ConsentForm extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props as any);
+
+    const categorizedConsents = getCategorizedConsents(props.consents);
+
+    const isCategoryOpen = {} as { [category: string]: boolean };
+    Object.keys(categorizedConsents).forEach(category => isCategoryOpen[category] = !categorizedConsents[category].every(consent => consent.attributes.consented));
+
     this.state = {
+      categorizedConsents,
+      isCategoryOpen,
       consentChanges: {},
       isSaving: false,
       saveButtonStatus: 'disabled',
-      categorizedConsents: getCategorizedConsents(props.consents)
     };
-  }
-
-  calculateCategoryChecks = () => {
-
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -96,20 +115,26 @@ export default class ConsentForm extends PureComponent<Props, State> {
 
     if (this.isConsentedCategory(category)) {
       categorizedConsents[category].forEach(consent => this.unconsent(consent));
+      this.setState(({ isCategoryOpen }) => ({ isCategoryOpen: { ...isCategoryOpen, [category]: true } }));
     } else {
       categorizedConsents[category].forEach(consent => this.consent(consent));
+      this.setState(({ isCategoryOpen }) => ({ isCategoryOpen: { ...isCategoryOpen, [category]: false } }));
     }
+  }
+
+  handleToggleOpenCategory = (category) => (event) => {
+    event.stopPropagation();
+    this.setState(({ isCategoryOpen }) => ({ isCategoryOpen: { ...isCategoryOpen, [category]: !isCategoryOpen[category] } }));
   }
 
   isConsented = (consentId) => {
     const { consents } = this.props;
-    const consent = find(consents, { id: consentId }) as IConsentData;
+    const consent = consents.find(consent => consent.id === consentId);
     if (typeof (this.state.consentChanges[consentId]) === 'undefined') {
       return (consent && consent.attributes.consented);
     } else {
       return this.state.consentChanges[consentId];
     }
-    return false;
   }
 
   isConsentedCategory = (category) => {
@@ -144,37 +169,43 @@ export default class ConsentForm extends PureComponent<Props, State> {
   }
 
   render() {
-    const { isSaving, saveButtonStatus, categorizedConsents } = this.state;
+    const { isSaving, saveButtonStatus, categorizedConsents, isCategoryOpen } = this.state;
 
     return (
       <FormSection>
         <form action="">
           <FormSectionTitle message={messages.notificationsTitle} subtitleMessage={messages.notificationsSubTitle} />
-          <ConsentList>
             {Object.entries(categorizedConsents).map(([category, consents]) => (
-              <>
-                <CheckboxContainer key={category}>
+              <ConsentList key={category}>
+                <CategoryCheckboxContainer>
                   <Checkbox
                     id={category}
                     checked={this.isConsentedCategory(category)}
                     onChange={this.handleOnChangeCategory(category)}
-                    label={category}
+                    label={<FormattedMessage {...messages[`${category}Category`]} />}
                   />
-                </CheckboxContainer>
-                {consents.map(consent => (
-                  <CheckboxContainer key={consent.id}>
-                    <Checkbox
-                      id={consent.id}
-                      checked={this.isConsented(consent.id)}
-                      onChange={this.handleOnChange(consent)}
-                      label={<T value={consent.attributes.campaign_type_description_multiloc} />}
-                    />
-                  </CheckboxContainer>
-                ))}
-              </>
+                  <Button onClick={this.handleToggleOpenCategory(category)} style="text">
+                    {isCategoryOpen[category]
+                      ? <FormattedMessage {...messages.hideDetails} />
+                      : <FormattedMessage {...messages.seeDetails} />
+                    }
+                  </Button>
+                </CategoryCheckboxContainer>
+                {isCategoryOpen[category] &&
+                  consents.map(consent => (
+                    <CheckboxContainer key={consent.id}>
+                      <Checkbox
+                        id={consent.id}
+                        checked={this.isConsented(consent.id)}
+                        onChange={this.handleOnChange(consent)}
+                        label={<T value={consent.attributes.campaign_type_description_multiloc} />}
+                      />
+                    </CheckboxContainer>
+                  ))
+                }
+              </ConsentList>
             ))}
-          </ConsentList>
-          <SubmitWrapper
+          <StyledSubmitWrapper
             status={saveButtonStatus}
             style="primary"
             loading={isSaving}
