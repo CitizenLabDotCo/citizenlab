@@ -19,7 +19,7 @@ module EmailCampaigns
     before_send :only_manual_send
 
     def self.category
-      return 'official'
+      'official'
     end
 
     def generate_commands recipient:, time: nil, activity: nil
