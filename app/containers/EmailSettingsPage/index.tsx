@@ -57,6 +57,10 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
     };
   }
 
+  closeInitialUnsubscribe = () => {
+    this.setState({ initialUnsubscribeStatus: null });
+  }
+
   componentDidMount() {
     const { query } = this.props.location;
 
@@ -93,6 +97,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
               consents={consents}
               trackEventName="Unsubcribed from unsubscribe link flow"
               token={token}
+              runOnSave={this.closeInitialUnsubscribe}
             />
           )}
         </div>

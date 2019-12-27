@@ -45,6 +45,7 @@ type Props = {
   consents: IConsentData[];
   trackEventName: string;
   token?: string;
+  runOnSave?: () => void;
 };
 
 interface State {
@@ -151,7 +152,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
   }
 
   handleOnSubmit = () => {
-    const { trackEventName, token } = this.props;
+    const { trackEventName, token, runOnSave } = this.props;
     const { consentChanges } = this.state;
     let consentUpdates: Promise<IConsent>[] = [];
 
@@ -171,6 +172,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
         isSaving: false,
         saveButtonStatus: 'success'
       });
+      runOnSave && runOnSave();
     }).catch(() => {
       this.setState({ saveButtonStatus: 'error' });
     });
