@@ -2,7 +2,7 @@ module EmailCampaigns
   class WebApi::V1::ConsentSerializer < ::WebApi::V1::BaseSerializer
     attributes :consented, :created_at, :updated_at
 
-    attribute :category do |object|
+    attribute :campaign_name do |object|
       object.campaign_type.safe_constantize&.campaign_name
     end
 
