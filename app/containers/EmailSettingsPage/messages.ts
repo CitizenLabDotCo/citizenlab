@@ -5,7 +5,7 @@ import {
 export default defineMessages({
   initialUnsubscribeSuccess: {
     id: 'EmailSettingsPage.initialUnsubscribeSuccess',
-    defaultMessage: 'You successfully unsubscribed from this campaign.'
+    defaultMessage: 'You successfully unsubscribed from {campaignTitle}.'
   },
   initialUnsubscribeError: {
     id: 'EmailSettingsPage.initialUnsubscribeError',

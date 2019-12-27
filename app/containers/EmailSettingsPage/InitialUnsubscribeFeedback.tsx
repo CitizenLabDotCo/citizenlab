@@ -10,6 +10,8 @@ import { FormSection } from 'components/UI/FormComponents';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { Multiloc } from 'typings';
+import T from 'components/T';
 
 const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
   color: ${colors.clBlueDarker};
@@ -18,14 +20,18 @@ const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
 
 interface Props {
   status: 'success' | 'error' | 'loading';
+  unsubscribedCampaignMultiloc: Multiloc | null;
 }
 
-const InitialUnsubscribeFeedback = ({ status }: Props) => {
+const InitialUnsubscribeFeedback = ({ status, unsubscribedCampaignMultiloc }: Props) => {
   return (
     <FormSection>
       <Message status={status} aria-live="polite">
-        {status === 'success' ? (
-          <FormattedMessage {...messages.initialUnsubscribeSuccess} />
+        {status === 'success' && unsubscribedCampaignMultiloc ? (
+          <FormattedMessage
+            {...messages.initialUnsubscribeSuccess}
+            values={{ campaignTitle: <T value={unsubscribedCampaignMultiloc} /> }}
+          />
         ) : status === 'error' ? (
           <FormattedMessage {...messages.initialUnsubscribeError} />
         ) : status === 'loading' ? (
