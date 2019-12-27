@@ -24,6 +24,10 @@ module EmailCampaigns
       end
     end
 
+    def self.category
+      'weekly'
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       top_ideas = top_ideas recipient
@@ -67,7 +71,7 @@ module EmailCampaigns
     end
 
     def top_ideas recipient
-      ti_service = TrendingIdeaService.new 
+      ti_service = TrendingIdeaService.new
       top_ideas = IdeaPolicy::Scope.new(recipient, Idea).resolve
         .published
 
@@ -144,7 +148,7 @@ module EmailCampaigns
               versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           },
-          header_bg: { 
+          header_bg: {
             versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
@@ -155,8 +159,8 @@ module EmailCampaigns
       Initiative.published
         .left_outer_joins(:initiative_status_changes, :initiative_images)
         .where(
-          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
-          InitiativeStatus.where(code: 'threshold_reached').ids.first, 
+          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?',
+          InitiativeStatus.where(code: 'threshold_reached').ids.first,
           (time - 1.week)
           )
         .feedback_needed
@@ -176,7 +180,7 @@ module EmailCampaigns
               versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           },
-          header_bg: { 
+          header_bg: {
             versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
