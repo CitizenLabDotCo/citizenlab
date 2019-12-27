@@ -8,6 +8,7 @@ resource "Campaigns" do
   before do
     header "Content-Type", "application/json"
     @user = create(:admin)
+    EmailCampaigns::UnsubscriptionToken.create!(user_id: @user.id)
     token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     header 'Authorization', "Bearer #{token}"
   end
@@ -65,7 +66,7 @@ resource "Campaigns" do
     example_request "Get a campaign HTML preview" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
-      expect(json_response[:html]).to be_present 
+      expect(json_response[:html]).to be_present
     end
   end
 
@@ -184,7 +185,7 @@ resource "Campaigns" do
   get "web_api/v1/campaigns/:id/stats" do
     let(:campaign) { create(:manual_campaign) }
     let!(:id) { campaign.id}
-    let!(:deliveries) { create_list(:delivery, 20, 
+    let!(:deliveries) { create_list(:delivery, 20,
       campaign: campaign,
       delivery_status: 'accepted'
     )}
