@@ -17,6 +17,7 @@ import GetCampaignConsentsWithToken, { GetCampaignConsentsWithTokenChildProps } 
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import { Multiloc } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -43,6 +44,7 @@ interface DataProps {
 
 interface State {
   initialUnsubscribeStatus: 'error' | 'success' | 'loading' | null;
+  unsubscribedCampaignMultiloc: Multiloc | null;
 }
 
 export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps, State> {
@@ -50,7 +52,8 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   constructor(props: DataProps & WithRouterProps) {
     super(props);
     this.state = {
-      initialUnsubscribeStatus: null
+      initialUnsubscribeStatus: null,
+      unsubscribedCampaignMultiloc: null
     };
   }
 
@@ -61,8 +64,8 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
       this.setState({ initialUnsubscribeStatus: 'error' });
     } else {
       this.setState({ initialUnsubscribeStatus: 'loading' });
-      updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(() => {
-        this.setState({ initialUnsubscribeStatus: 'success' });
+      updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(({ data }) => {
+        this.setState({ initialUnsubscribeStatus: 'success', unsubscribedCampaignMultiloc: data.attributes.campaign_type_description_multiloc });
         streams.fetchAllWith({
           apiEndpoint: [`${API_PATH}/consents?unsubscription_token=${query.unsubscription_token}`],
         });
@@ -73,7 +76,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   }
 
   render() {
-    const { initialUnsubscribeStatus } = this.state;
+    const { initialUnsubscribeStatus, unsubscribedCampaignMultiloc } = this.state;
     const { consents, location } = this.props;
     const token = typeof location.query.unsubscription_token === 'string'
       ? location.query.unsubscription_token
@@ -83,7 +86,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
       <Container id="e2e-user-edit-profile-page">
         <div>
           {initialUnsubscribeStatus && (
-            <StyledInitialFeedback status={initialUnsubscribeStatus} />
+            <StyledInitialFeedback status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
           )}
           {!isNilOrError(consents) && (
             <StyledConsentForm
