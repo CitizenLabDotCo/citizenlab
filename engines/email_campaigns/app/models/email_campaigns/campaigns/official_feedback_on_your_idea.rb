@@ -18,6 +18,10 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
+    def self.category
+      'voted'
+    end
+
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
       [{
@@ -26,7 +30,7 @@ module EmailCampaigns
           official_feedback_body_multiloc: notification.official_feedback.body_multiloc,
           official_feedback_url: Frontend::UrlService.new.model_to_url(notification.official_feedback, locale: recipient.locale),
           post_published_at: notification.post.published_at.iso8601,
-          post_title_multiloc: notification.post.title_multiloc,  
+          post_title_multiloc: notification.post.title_multiloc,
           post_author_name: notification.post.author_name
         }
       }]
