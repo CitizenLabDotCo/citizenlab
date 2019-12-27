@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import messages from './messages';
-import { IConsentData, updateConsent, IConsent, updateConsentWithToken } from 'services/campaignConsents';
+import { IConsentData, updateConsent, IConsent, updateConsentWithToken, getCategorizedConsents } from 'services/campaignConsents';
 import styled from 'styled-components';
 
 // utils
@@ -34,6 +34,7 @@ interface State {
   consentChanges: {};
   isSaving: boolean;
   saveButtonStatus: 'enabled' | 'disabled' | 'error' | 'success';
+  categorizedConsents: { [category: string]: IConsentData[] };
 }
 
 export default class ConsentForm extends PureComponent<Props, State> {
@@ -44,7 +45,19 @@ export default class ConsentForm extends PureComponent<Props, State> {
       consentChanges: {},
       isSaving: false,
       saveButtonStatus: 'disabled',
+      categorizedConsents: getCategorizedConsents(props.consents)
     };
+  }
+
+  calculateCategoryChecks = () => {
+
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    const { consents } = this.props;
+    if (prevProps.consents !== consents) {
+      this.setState({ categorizedConsents: getCategorizedConsents(consents) });
+    }
   }
 
   handleOnChange = (consent: IConsentData) => () => {
@@ -58,17 +71,50 @@ export default class ConsentForm extends PureComponent<Props, State> {
     }));
   }
 
+  consent = (consent: IConsentData) => {
+    this.setState(prevState => ({
+      consentChanges: {
+        ...prevState.consentChanges,
+        [consent.id]: true,
+      },
+      saveButtonStatus: 'enabled'
+    }));
+  }
+
+  unconsent = (consent: IConsentData) => {
+    this.setState(prevState => ({
+      consentChanges: {
+        ...prevState.consentChanges,
+        [consent.id]: false,
+      },
+      saveButtonStatus: 'enabled'
+    }));
+  }
+
+  handleOnChangeCategory = (category) => () => {
+    const { categorizedConsents } = this.state;
+
+    if (this.isConsentedCategory(category)) {
+      categorizedConsents[category].forEach(consent => this.unconsent(consent));
+    } else {
+      categorizedConsents[category].forEach(consent => this.consent(consent));
+    }
+  }
+
   isConsented = (consentId) => {
     const { consents } = this.props;
-    if (!isNilOrError(consents)) {
-      const consent = find(consents, { id: consentId }) as IConsentData;
-      if (typeof(this.state.consentChanges[consentId]) === 'undefined') {
-        return (consent && consent.attributes.consented);
-      } else {
-        return this.state.consentChanges[consentId];
-      }
+    const consent = find(consents, { id: consentId }) as IConsentData;
+    if (typeof (this.state.consentChanges[consentId]) === 'undefined') {
+      return (consent && consent.attributes.consented);
+    } else {
+      return this.state.consentChanges[consentId];
     }
     return false;
+  }
+
+  isConsentedCategory = (category) => {
+    const { categorizedConsents } = this.state;
+    return categorizedConsents[category].every(consent => this.isConsented(consent.id));
   }
 
   handleOnSubmit = () => {
@@ -98,23 +144,34 @@ export default class ConsentForm extends PureComponent<Props, State> {
   }
 
   render() {
-    const { consents } = this.props;
-    const { isSaving, saveButtonStatus } = this.state;
+    const { isSaving, saveButtonStatus, categorizedConsents } = this.state;
 
     return (
       <FormSection>
         <form action="">
           <FormSectionTitle message={messages.notificationsTitle} subtitleMessage={messages.notificationsSubTitle} />
           <ConsentList>
-            {!isNilOrError(consents) && consents.map((consent) => (
-              <CheckboxContainer key={consent.id}>
-                <Checkbox
-                  id={consent.id}
-                  checked={this.isConsented(consent.id)}
-                  onChange={this.handleOnChange(consent)}
-                  label={<T value={consent.attributes.campaign_type_description_multiloc}/>}
-                />
-              </CheckboxContainer>
+            {Object.entries(categorizedConsents).map(([category, consents]) => (
+              <>
+                <CheckboxContainer key={category}>
+                  <Checkbox
+                    id={category}
+                    checked={this.isConsentedCategory(category)}
+                    onChange={this.handleOnChangeCategory(category)}
+                    label={category}
+                  />
+                </CheckboxContainer>
+                {consents.map(consent => (
+                  <CheckboxContainer key={consent.id}>
+                    <Checkbox
+                      id={consent.id}
+                      checked={this.isConsented(consent.id)}
+                      onChange={this.handleOnChange(consent)}
+                      label={<T value={consent.attributes.campaign_type_description_multiloc} />}
+                    />
+                  </CheckboxContainer>
+                ))}
+              </>
             ))}
           </ConsentList>
           <SubmitWrapper
