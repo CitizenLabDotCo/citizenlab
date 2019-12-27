@@ -35,7 +35,10 @@ export interface IConsent {
 export function getCategorizedConsents(consents: IConsentData[]) {
   const res = {} as { [category: string]: IConsentData[]};
   CATEGORIES.forEach(category => {
-    res[category] = consents.filter(consent => consent.attributes.category === category);
+    const categoryConsents = consents.filter(consent => consent.attributes.category === category);
+    if (categoryConsents.length > 0) {
+      res[category] = categoryConsents;
+    }
   });
   return res;
 }
