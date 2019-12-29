@@ -48,7 +48,7 @@ const ModerationRow = memo<Props>(({ moderation, selected, onSelect, className }
   let bgColor = '#fff';
 
   if (moderation?.attributes?.moderation_status === 'read') {
-    bgColor = colors.background;
+    bgColor = '#f4f4f4';
   }
 
   if (selected) {

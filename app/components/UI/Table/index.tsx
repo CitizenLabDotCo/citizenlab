@@ -43,7 +43,7 @@ const StyledTable = styled.table`
   tbody {
     tr {
       border-radius: ${(props: any) => props.theme.borderRadius};
-      border-bottom: solid 1px #ddd;
+      border-bottom: solid 1px #ccc;
 
       td {
         color: ${colors.adminTextColor};
