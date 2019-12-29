@@ -48,7 +48,7 @@ const InputWrapper = styled.div<{ checked: boolean, size: string }>`
   }
 
   &:hover {
-    border-color: ${(props: any) => props.checked ? colors.clGreen : '#333'};
+    border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
   }
 `;
 
@@ -178,7 +178,7 @@ export default class Checkbox extends PureComponent<Props, State> {
       >
         <InputWrapper
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
-          checked={checked || indeterminate}
+          checked={!!(checked || indeterminate)}
           size={size as string}
         >
           <Input

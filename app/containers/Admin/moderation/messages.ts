@@ -63,26 +63,26 @@ export default defineMessages({
   },
   noReadItems: {
     id: 'app.containers.Admin.Moderation.noReadItems',
-    defaultMessage: 'There are no items marked as viewed',
+    defaultMessage: 'There are no items that are viewed',
   },
   noUnreadItems: {
     id: 'app.containers.Admin.Moderation.noUnreadItems',
-    defaultMessage: 'There are no items marked as not viewed',
-  },
-  noItems: {
-    id: 'app.containers.Admin.Moderation.noItems',
-    defaultMessage: 'There is no items',
+    defaultMessage: 'There are no items that are not viewed',
   },
   readMore: {
     id: 'app.containers.Admin.Moderation.readMore',
-    defaultMessage: 'Read more',
+    defaultMessage: '...see more',
   },
   collapse: {
     id: 'app.containers.Admin.Moderation.collapse',
-    defaultMessage: 'Collapse',
+    defaultMessage: 'see less',
   },
-  markAs: {
-    id: 'app.containers.Admin.Moderation.markAs',
-    defaultMessage: 'Mark as',
+  markAsViewed: {
+    id: 'app.containers.Admin.Moderation.markAsViewed',
+    defaultMessage: 'Mark {selectedItemsCount} items as viewed',
+  },
+  markAsNotViewed: {
+    id: 'app.containers.Admin.Moderation.markAsNotViewed',
+    defaultMessage: 'Mark  {selectedItemsCount} items as not viewed',
   },
 });

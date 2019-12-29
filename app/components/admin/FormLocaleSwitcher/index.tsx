@@ -6,7 +6,6 @@ import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenan
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -24,7 +23,7 @@ const StyledButton = styled.button`
   padding: 7px 8px;
   margin-right: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.lightGreyishBlue};
+  border: solid 1px #ccc;
   cursor: pointer;
   transition: all 80ms ease-out;
 
@@ -34,12 +33,13 @@ const StyledButton = styled.button`
 
   &:not(.isSelected):hover {
     color: ${colors.adminTextColor};
-    background: ${rgba(colors.adminTextColor, 0.2)};
+    border-color: ${colors.adminTextColor};
   }
 
   &.isSelected {
     color: #fff;
     background: ${colors.adminTextColor};
+    border-color: ${colors.adminTextColor};
   }
 `;
 

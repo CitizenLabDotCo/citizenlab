@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +14,7 @@ const ContainerInner = styled.div`
 `;
 
 const ChevronIcon = styled(Icon) `
-  height: 14px;
+  height: 12px;
   fill: ${colors.adminTextColor};
 `;
 
@@ -30,9 +29,13 @@ const NavigateButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  border: solid 1px #ccc;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   &.disabled {
     color: #bbb;
+    border-color: #e0e0e0;
+    cursor: not-allowed;
 
     ${ChevronIcon} {
       fill: #bbb;
@@ -44,11 +47,7 @@ const NavigateButton = styled.button`
 
     &:hover,
     &:focus {
-      color: ${colors.clIconAccent};
-
-      ${ChevronIcon} {
-        fill: ${colors.clIconAccent};
-      }
+      border-color: ${colors.adminTextColor};
     }
   }
 `;
@@ -62,8 +61,8 @@ const Back = styled(NavigateButton)`
 `;
 
 const Pages = styled.div`
-  margin-left: 12px;
-  margin-right: 12px;
+  margin-left: 14px;
+  margin-right: 14px;
   display: flex;
   align-items: center;
 `;
@@ -77,12 +76,12 @@ const Item = styled.button`
   margin-left: 5px;
   transition: all 80ms ease-out;
 
-  &>:first-child {
+  &:first-child {
     margin-left: 0px;
   }
 
   &:not(.disabled) {
-    background: ${colors.lightGreyishBlue};
+    border: solid 1px #ccc;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
 
@@ -95,7 +94,7 @@ const Item = styled.button`
     &:not(.active) {
       &:hover,
       &:focus {
-        background: ${rgba(colors.adminTextColor, .2)};
+        border-color: ${colors.adminTextColor};
       }
     }
   }

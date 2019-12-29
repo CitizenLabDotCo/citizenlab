@@ -370,7 +370,15 @@ class SignedInHeader extends PureComponent<Props, State> {
               <Left>
                 <Icons>
                   <AvatarAndShield aria-hidden >
-                    <StyledAvatar userId={!isNilOrError(authUser) ? authUser.id : null} size="48px" />
+                    <StyledAvatar
+                      userId={authUser?.id}
+                      size="48px"
+                      fillColor="#fff"
+                      bgColor="#fff"
+                      padding="2px"
+                      borderThickness="0px"
+                      borderColor="#fff"
+                    />
                     <ShieldIcon name="verify" />
                   </AvatarAndShield>
                 </Icons>

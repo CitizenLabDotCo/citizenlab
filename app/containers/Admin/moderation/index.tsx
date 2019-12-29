@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { includes, cloneDeep } from 'lodash-es';
+import { includes } from 'lodash-es';
 
 // components
 import Table from 'components/UI/Table';
@@ -9,10 +9,8 @@ import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
 import Select from 'components/UI/Select';
 import Icon from 'components/UI/Icon';
-// import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
-import Dropdown, { DropdownListItem } from 'components/UI/Dropdown';
 import { PageTitle } from 'components/admin/Section';
 
 // hooks
@@ -60,30 +58,10 @@ const BetaLabel = styled.span`
 `;
 
 const Filters = styled.div`
-  min-height: 44px;
+  min-height: 50px;
   display: flex;
   align-items: center;
-  margin-bottom: 50px;
-`;
-
-// const Filter = styled.div`
-//   width: 250px;
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const FilterLabel = styled(Label)`
-//   color: ${colors.adminTextColor};
-//   font-size: ${fontSizes.base}px;
-//   font-weight: 500;
-//   margin-bottom: 5px;
-// `;
-
-const MarkAsButtonWrapper = styled.div`
-  height: 100%;
-  display: flex;
-  position: relative;
-  margin-right: 20px;
+  margin-bottom: 55px;
 `;
 
 const MarkAsButton = styled(Button)``;
@@ -153,7 +131,7 @@ const PageSizeSelect = styled(Select)`
 `;
 
 const Empty = styled.div`
-  height: 30vh;
+  height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -161,14 +139,16 @@ const Empty = styled.div`
 `;
 
 const EmptyIcon = styled(Icon)`
-  height: 60px;
-  fill:${colors.clIconAccent};
-  margin-bottom: 20px;
+  height: 55px;
+  fill:${colors.mediumGrey};
+  fill: #BFE7EB;
+  margin-bottom: 15px;
 `;
 
 const EmptyMessage = styled.div`
+  max-width: 350px;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.medium}px;
   line-height: normal;
   font-weight: 500;
   text-align: center;
@@ -182,16 +162,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const moderationStatuses = [
     {
-      value: 'all',
-      label: intl.formatMessage(messages.all)
-    },
-    {
       value: 'unread',
-      label: intl.formatMessage(messages.unread)
+      label: intl.formatMessage(messages.unread),
+      // icon: 'eyeClosed'
     },
     {
       value: 'read',
-      label: intl.formatMessage(messages.read)
+      label: intl.formatMessage(messages.read),
+      // icon: 'eyeOpened'
     }
   ];
 
@@ -216,23 +194,20 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const { list, pageSize, moderationStatus, currentPage, lastPage, onModerationStatusChange, onPageNumberChange, onPageSizeChange } = useModerations({
     pageSize: pageSizes[0].value,
-    // moderationStatus: 'unread'
+    moderationStatus: 'unread'
   });
 
+  const [moderationItems, setModerationItems] = useState(list);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
-  const [markAsDropdownOpened, setMarkAsDropdownOpened] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   const handleOnSelectAll = useCallback((event: React.MouseEvent | React.KeyboardEvent) => {
-    if (!isNilOrError(list)) {
+    if (!isNilOrError(moderationItems) && !processing) {
       event.preventDefault();
-      const newSelectedRows = selectedRows.length < list.length ? list.map(item => item.id) : [];
+      const newSelectedRows = selectedRows.length < moderationItems.length ? moderationItems.map(item => item.id) : [];
       setSelectedRows(newSelectedRows);
     }
-  }, [list, selectedRows]);
-
-  // const handleOnModerationStatusChange = useCallback((option: IOption) => {
-  //   onModerationStatusChange(option.value);
-  // }, [onModerationStatusChange]);
+  }, [moderationItems, selectedRows, processing]);
 
   const handleOnModerationStatusChange = useCallback((value: TModerationStatuses) => {
     onModerationStatusChange(value);
@@ -247,33 +222,38 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, [onPageSizeChange]);
 
   const handleRowOnSelect = useCallback((selectedModerationId: string) => {
-    const newSelectedRows = includes(selectedRows, selectedModerationId) ? selectedRows.filter(id => id !== selectedModerationId) : [...selectedRows, selectedModerationId];
-    setSelectedRows(newSelectedRows);
-  }, [selectedRows]);
+    if (!processing) {
+      const newSelectedRows = includes(selectedRows, selectedModerationId) ? selectedRows.filter(id => id !== selectedModerationId) : [...selectedRows, selectedModerationId];
+      setSelectedRows(newSelectedRows);
+    }
+  }, [selectedRows, processing]);
 
-  const toggleMarkAsDropdown = useCallback((event: React.FormEvent) => {
-    event.preventDefault();
-    setMarkAsDropdownOpened(!markAsDropdownOpened);
-  }, [markAsDropdownOpened]);
-
-  const markAs = useCallback((moderationStatus: TModerationStatuses) => async (event: React.MouseEvent) => {
-    const copiedSelectedRows = cloneDeep(selectedRows);
-    event.preventDefault();
-    setMarkAsDropdownOpened(false);
-    setSelectedRows([]);
-    await Promise.all(
-      copiedSelectedRows.map((moderationId) => {
-        const moderation = (list as IModerationData[]).find(item => item.id === moderationId) as IModerationData;
-        return updateModerationStatus(moderation.id, moderation.attributes.moderatable_type, moderationStatus);
-      })
-    );
-  }, [selectedRows, list]);
+  const markAs = useCallback(async (event: React.FormEvent) => {
+    if (selectedRows.length > 0 && !isNilOrError(moderationItems) && moderationStatus && !processing) {
+      event.preventDefault();
+      setProcessing(true);
+      const moderations = selectedRows.map((moderationId) => moderationItems.find(item => item.id === moderationId)) as IModerationData[];
+      const updatedModerationStatus = (moderationStatus === 'read' ? 'unread' : 'read');
+      const promises = moderations.map((moderation) => updateModerationStatus(moderation.id, moderation.attributes.moderatable_type, updatedModerationStatus));
+      await Promise.all(promises);
+      setProcessing(false);
+      setSelectedRows([]);
+    }
+  }, [selectedRows, moderationItems, moderationStatus]);
 
   useEffect(() => {
-    setSelectedRows([]);
-  }, [currentPage, moderationStatus, pageSize]);
+    if (!processing) {
+      setSelectedRows([]);
+    }
+  }, [currentPage, moderationStatus, pageSize, processing]);
 
-  if (!isNilOrError(list)) {
+  useEffect(() => {
+    if (!processing) {
+      setModerationItems(list);
+    }
+  }, [list, processing]);
+
+  if (!isNilOrError(moderationItems)) {
     return (
       <Container className={className}>
         <PageTitleWrapper>
@@ -285,108 +265,98 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
         <Filters>
           {selectedRows.length > 0 &&
-            <MarkAsButtonWrapper>
-              <MarkAsButton
-                icon="label"
-                style="admin-dark"
-                onClick={toggleMarkAsDropdown}
-              >
-                <FormattedMessage {...messages.markAs} />
-              </MarkAsButton>
-
-              <Dropdown
-                top="46px"
-                right="0x"
-                opened={markAsDropdownOpened}
-                onClickOutside={toggleMarkAsDropdown}
-                content={
-                  <>
-                    <DropdownListItem onClick={markAs('read')}>
-                      <FormattedMessage {...messages.read} />
-                    </DropdownListItem>
-                    <DropdownListItem onClick={markAs('unread')}>
-                      <FormattedMessage {...messages.unread} />
-                    </DropdownListItem>
-                  </>
-                }
-              />
-            </MarkAsButtonWrapper>
+            <MarkAsButton
+              icon="label"
+              style="cl-blue"
+              processing={processing}
+              onClick={markAs}
+            >
+              {moderationStatus === 'unread' ?
+                <FormattedMessage {...messages.markAsViewed} values={{ selectedItemsCount: selectedRows.length }} />
+                : <FormattedMessage {...messages.markAsNotViewed} values={{ selectedItemsCount: selectedRows.length }} />}
+            </MarkAsButton>
           }
-          <Tabs
-            items={moderationStatuses}
-            selectedValue={moderationStatus || 'all'}
-            onClick={handleOnModerationStatusChange}
-          />
+
+          {selectedRows.length === 0 &&
+            <Tabs
+              items={moderationStatuses}
+              selectedValue={moderationStatus || 'unread'}
+              onClick={handleOnModerationStatusChange}
+            />
+          }
         </Filters>
 
-        {list.length > 0 ? (
-          <>
-            <StyledTable>
-              <thead>
-                <tr>
-                  <th className="checkbox">
-                    <StyledCheckbox
-                      checked={selectedRows.length === list.length}
-                      indeterminate={selectedRows.length > 0 && selectedRows.length !== list.length}
-                      onChange={handleOnSelectAll}
-                    />
-                  </th>
-                  <th className="date">
-                    <FormattedMessage {...messages.date} />
-                  </th>
-                  <th className="type">
-                    <FormattedMessage {...messages.type} />
-                  </th>
-                  <th className="belongsTo">
-                    <FormattedMessage {...messages.belongsTo} />
-                  </th>
-                  <th className="content">
-                    <FormattedMessage {...messages.content} />
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {list.map(listItem => (
-                  <ModerationRow
-                    key={listItem.id}
-                    moderation={listItem}
-                    selected={includes(selectedRows, listItem.id)}
-                    onSelect={handleRowOnSelect}
-                  />
-                ))}
-              </tbody>
-            </StyledTable>
-            <Footer>
-              <StyledPagination
-                currentPage={currentPage}
-                totalPages={lastPage}
-                loadPage={handePageNumberChange}
-              />
-
-              <Spacer />
-
-              <RowsPerPage>
-                <RowsPerPageLabel>
-                  <FormattedMessage {...messages.rowsPerPage} />:
-                </RowsPerPageLabel>
-                <PageSizeSelect
-                  options={pageSizes}
-                  onChange={handleOnPageSizeChange}
-                  value={pageSizes.find(item => item.value === pageSize)}
+        <StyledTable>
+          <thead>
+            <tr>
+              <th className="checkbox">
+                <StyledCheckbox
+                  checked={moderationItems.length > 0 && selectedRows.length === moderationItems.length}
+                  indeterminate={selectedRows.length > 0 && selectedRows.length !== moderationItems.length}
+                  disabled={moderationItems.length === 0}
+                  onChange={handleOnSelectAll}
                 />
-              </RowsPerPage>
-            </Footer>
-          </>
-        ) : (
+              </th>
+              <th className="date">
+                <FormattedMessage {...messages.date} />
+              </th>
+              <th className="type">
+                <FormattedMessage {...messages.type} />
+              </th>
+              <th className="belongsTo">
+                <FormattedMessage {...messages.belongsTo} />
+              </th>
+              <th className="content">
+                <FormattedMessage {...messages.content} />
+              </th>
+            </tr>
+          </thead>
+          {moderationItems.length > 0 &&
+            <tbody>
+              {moderationItems.map(moderationItem => (
+                <ModerationRow
+                  key={moderationItem.id}
+                  moderation={moderationItem}
+                  selected={includes(selectedRows, moderationItem.id)}
+                  onSelect={handleRowOnSelect}
+                />
+              ))}
+            </tbody>
+          }
+        </StyledTable>
+
+        {moderationItems.length > 0 &&
+          <Footer>
+            <StyledPagination
+              currentPage={currentPage}
+              totalPages={lastPage}
+              loadPage={handePageNumberChange}
+            />
+
+            <Spacer />
+
+            <RowsPerPage>
+              <RowsPerPageLabel>
+                <FormattedMessage {...messages.rowsPerPage} />:
+              </RowsPerPageLabel>
+              <PageSizeSelect
+                options={pageSizes}
+                onChange={handleOnPageSizeChange}
+                value={pageSizes.find(item => item.value === pageSize)}
+              />
+            </RowsPerPage>
+          </Footer>
+        }
+
+        {moderationItems.length === 0 &&
           <Empty>
-            <EmptyIcon name="empty" />
+            <EmptyIcon name="inbox" />
             <EmptyMessage>
-              {moderationStatus === undefined && <FormattedMessage {...messages.noItems} />}
               {moderationStatus === 'read' && <FormattedMessage {...messages.noReadItems} />}
               {moderationStatus === 'unread' && <FormattedMessage {...messages.noUnreadItems} />}
             </EmptyMessage>
           </Empty>
-        )}
+        }
       </Container>
     );
   }

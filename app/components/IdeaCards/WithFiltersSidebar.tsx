@@ -151,20 +151,14 @@ const Loading = styled.div`
 `;
 
 const EmptyContainer = styled.div`
+  flex: 1;
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    height: calc(100vh - 280px);
-    position: sticky;
-    top: 200px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-  `}
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
 `;
 
 const EmptyContainerInner = styled.div`
@@ -173,12 +167,14 @@ const EmptyContainerInner = styled.div`
   align-items: center;
   padding-left: 30px;
   padding-right: 30px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 `;
 
 const IdeaIcon = styled(Icon)`
-  flex: 0 0 46px;
-  width: 46px;
-  height: 46px;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
   fill: ${colors.label};
 `;
 
@@ -194,11 +190,11 @@ const EmptyMessage = styled.div`
 
 const EmptyMessageMainLine = styled.div`
   color: ${colors.text};
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
   line-height: normal;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 
 const EmptyMessageSubLine = styled.div`
