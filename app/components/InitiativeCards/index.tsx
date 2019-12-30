@@ -469,11 +469,12 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { list, hasMore, querying, loadingMore } = initiatives;
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
+    const biggerThanSmallTablet = (windowSize && windowSize >= viewportWidths.smallTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
     const filtersActive = selectedInitiativeFilters.search ||
-    selectedInitiativeFilters.initiative_status ||
-    selectedInitiativeFilters.areas ||
-    selectedInitiativeFilters.topics;
+                            selectedInitiativeFilters.initiative_status ||
+                            selectedInitiativeFilters.areas ||
+                            selectedInitiativeFilters.topics;
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
@@ -580,7 +581,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   selectedView={selectedView}
                 />
 
-                {!isNilOrError(initiativesFilterCounts) &&
+                {!isNilOrError(initiativesFilterCounts) && biggerThanSmallTablet &&
                   <InitiativesCount>
                     <FormattedMessage {...messages.xInitiatives} values={{ initiativesCount: initiativesFilterCounts.total }} />
                   </InitiativesCount>
