@@ -9,7 +9,7 @@ jest.mock('utils/cl-intl');
 describe('<InitialUnsubscribeFeedback/>', () => {
   describe('success', () => {
     it('has the right message', () => {
-      const Wrapper = shallow(<InitialUnsubscribeFeedback status="success" />);
+      const Wrapper = shallow(<InitialUnsubscribeFeedback status="success" unsubscribedCampaignMultiloc={{ en: 'That pesky email' }} />);
       expect(checkMessageId(Wrapper.find('InitialUnsubscribeFeedback__Message'), 'initialUnsubscribeSuccess')).toBe(true);
     });
   });
