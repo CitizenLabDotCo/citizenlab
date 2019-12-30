@@ -71,7 +71,7 @@ jobs:
             - /root/.npm
           key: v1-npm-cache-{{ checksum "package.json" }}
       - run:
-          command: npm run build
+          command: TEST_BUILD="true" npm run build
           no_output_timeout: '30m'
 
   extract_intl:
@@ -122,6 +122,8 @@ jobs:
       - run:
           command: SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
           no_output_timeout: '30m'
+      - run:
+          command: rm build/*.map
       - deploy:
           name: Deploy to S3 if tests pass and branch is Master
           command: |
@@ -149,6 +151,8 @@ jobs:
   #     - run:
   #         command: CROWDIN_PLUGIN_ENABLED=true SEGMENT_API_KEY=$SEGMENT_API_KEY_STAGING npm run build:staging
   #         no_output_timeout: '30m'
+        # - run:
+        #     command: rm build/*.map
   #     - deploy :
   #         name: Deploy translatable version to i18n.stg.citizenlab.co
   #         command: aws s3 sync build/ s3://cl2-front-translations/ --delete --acl public-read
