@@ -1757,7 +1757,7 @@
   "app.containers.app.navbar.allProjects": "{orgName, select, München {Alle Bezirke oder Projekte} other {Alle Projekte}}",
   "app.containers.app.navbar.editProfile": "Einstellungen",
   "app.containers.app.navbar.logIn": "Einloggen",
-  "app.containers.app.navbar.logoAltText": "{orgName} - Logo",
+  "app.containers.app.navbar.logoAltText": "",
   "app.containers.app.navbar.mobilePageHome": "Startseite",
   "app.containers.app.navbar.mobilePageIdeas": "Ideen",
   "app.containers.app.navbar.mobilePageInitiatives": "Initiativen",

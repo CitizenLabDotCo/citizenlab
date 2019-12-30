@@ -1757,7 +1757,7 @@
   "app.containers.app.navbar.allProjects": "Todos los proyectos",
   "app.containers.app.navbar.editProfile": "Mi configuración",
   "app.containers.app.navbar.logIn": "Inicia sesión",
-  "app.containers.app.navbar.logoAltText": "{orgName} - logo",
+  "app.containers.app.navbar.logoAltText": "",
   "app.containers.app.navbar.mobilePageHome": "Página de inicio",
   "app.containers.app.navbar.mobilePageIdeas": "Ideas",
   "app.containers.app.navbar.mobilePageInitiatives": "Iniciativas",

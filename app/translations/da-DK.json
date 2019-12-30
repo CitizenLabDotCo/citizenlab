@@ -1757,7 +1757,7 @@
   "app.containers.app.navbar.allProjects": "{tenantName, select, DeloitteDK {Alle verdensmål} other {Alle projekter}}",
   "app.containers.app.navbar.editProfile": "Indstillinger",
   "app.containers.app.navbar.logIn": "Log ind",
-  "app.containers.app.navbar.logoAltText": "{orgName} - logo",
+  "app.containers.app.navbar.logoAltText": "",
   "app.containers.app.navbar.mobilePageHome": "Hjem",
   "app.containers.app.navbar.mobilePageIdeas": "{tenantName, select, DeloitteDK {Indlæg} other {Idéer}}",
   "app.containers.app.navbar.mobilePageInitiatives": "Initiativer",
