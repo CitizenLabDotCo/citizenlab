@@ -6,10 +6,11 @@ import shallowCompare from 'utils/shallowCompare';
 
 import { IPollQuestion, pollQuestionsStream } from 'services/pollQuestions';
 import { isNilOrError } from 'utils/helperUtils';
+import { IParticipationContextType } from 'typings';
 
 interface InputProps {
   participationContextId: string;
-  participationContextType: 'projects' | 'phases';
+  participationContextType: IParticipationContextType;
 }
 
 type children = (renderProps: GetPollQuestionsChildProps) => JSX.Element | null;
@@ -45,8 +46,8 @@ export default class GetPollQuestions extends React.Component<Props, State> {
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => this.setState({ pollQuestions: undefined })),
         filter(({ participationContextType, participationContextId }) =>
-          isString(participationContextId) && ['projects', 'phases'].includes(participationContextType)),
-        switchMap(({ participationContextType, participationContextId }: { participationContextId: string, participationContextType: 'projects' | 'phases' }) =>
+          isString(participationContextId) && ['project', 'phase'].includes(participationContextType)),
+        switchMap(({ participationContextType, participationContextId }: { participationContextId: string, participationContextType: IParticipationContextType }) =>
           pollQuestionsStream(participationContextId, participationContextType).observable)
       )
         .subscribe(pollQuestions =>

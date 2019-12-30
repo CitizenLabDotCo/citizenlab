@@ -31,7 +31,15 @@ export default defineMessages({
   },
   postingMaybeNotPermitted: {
     id: 'app.components.IdeasMap.postingMaybeNotPermitted',
-    defaultMessage: 'Only certain users can post ideas here. Please sign in first.',
+    defaultMessage: 'Only certain users can post ideas here. Please {signUpLink} or {signInLink} first.',
+  },
+  signUpLinkText: {
+    id: 'app.components.IdeasMap.signUpLinkText',
+    defaultMessage: 'sign up',
+  },
+  signInLinkText: {
+    id: 'app.components.IdeasMap.signInLinkText',
+    defaultMessage: 'sign in',
   },
   postingProjectInactive: {
     id: 'app.components.IdeasMap.postingProjectInactive',

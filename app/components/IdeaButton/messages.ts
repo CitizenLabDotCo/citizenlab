@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.postingMaybeNotPermitted',
     defaultMessage: 'Only certain users can post ideas here. Please sign in first.',
   },
+  signInLinkText: {
+    id: 'app.containers.IdeaButton.signInLinkText',
+    defaultMessage: 'sign in',
+  },
+  signUpLinkText: {
+    id: 'app.containers.IdeaButton.signUpLinkText',
+    defaultMessage: 'sign up',
+  },
   postingProjectInactive: {
     id: 'app.containers.IdeaButton.postingProjectInactive',
     defaultMessage: 'This project is not yet or no longer accepting new ideas.',

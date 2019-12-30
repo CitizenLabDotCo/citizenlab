@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import bowser from 'bowser';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // components
 import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
@@ -53,7 +56,7 @@ const DropdownWrapper = styled.div`
 
 interface Props {
   participationContextId: string | null;
-  participationContextType: 'Project' | 'Phase';
+  participationContextType: IParticipationContextType;
   className?: string;
 }
 

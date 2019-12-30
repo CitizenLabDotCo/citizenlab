@@ -26,6 +26,7 @@ const Container = styled.div`
 
 interface InputProps {
   projectId: string | null;
+  phaseId: string | undefined;
   isLoggedIn: boolean | null;
   commentingEnabled: boolean | null;
   commentingDisabledReason: IIdeaData['attributes']['action_descriptor']['commenting']['disabled_reason'] | null;
@@ -65,7 +66,12 @@ class CommentingDisabled extends PureComponent<Props> {
   }
 
   onVerify = () => {
-    openVerificationModalWithContext('ActionComment');
+    const { projectId, phaseId } = this.props;
+    if (phaseId) {
+      openVerificationModalWithContext('ActionComment', phaseId, 'phase', 'commenting');
+    } else if (projectId) {
+      openVerificationModalWithContext('ActionComment', projectId, 'project', 'commenting');
+    }
   }
 
   render() {
@@ -80,6 +86,7 @@ class CommentingDisabled extends PureComponent<Props> {
             <FormattedMessage
               {...messageDescriptor}
               values={{
+                signUpLink: <Link to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></Link>,
                 signInLink: <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>,
                 verificationLink: <button onMouseDown={this.removeFocus} onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
                 projectName: projectTitle && <T value={projectTitle} />
@@ -95,7 +102,7 @@ class CommentingDisabled extends PureComponent<Props> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+  <GetProject projectId={inputProps.projectId}>
     {project => <CommentingDisabled {...inputProps} project={project} />}
   </GetProject>
 );

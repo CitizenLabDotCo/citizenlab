@@ -1,5 +1,12 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
+import { adopt } from 'react-adopt';
+import { get } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
+
+// resources
+import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // components
 import VoteControl from 'components/VoteControl';
@@ -100,13 +107,20 @@ const GoBackLabel = styled.div`
   `}
 `;
 
-interface Props {
+interface InputProps {
   ideaId: string;
   insideModal?: boolean;
   className?: string;
 }
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
+interface DataProps {
+  idea: GetIdeaChildProps;
+  project: GetProjectChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, project }) => {
 
   const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -124,7 +138,11 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
 
   const onDisabledVoteClick = useCallback((disabled_reason: string) => {
     if (disabled_reason === 'not_verified') {
-      openVerificationModalWithContext('ActionVote');
+      if (!isNilOrError(project)) {
+        const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+        const pcId = project.relationships?.current_phase?.data?.id || project.id;
+        pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
+      }
     }
   }, []);
 
@@ -152,4 +170,13 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className }) => {
   );
 });
 
-export default IdeaShowPageTopBar;
+const Data = adopt<DataProps, InputProps>({
+  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaShowPageTopBar {...inputProps} {...dataProps} />}
+  </Data>
+);

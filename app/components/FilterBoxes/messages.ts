@@ -17,4 +17,36 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.topicsTitle',
     defaultMessage: 'Topics',
   },
+  a11y_numberOfIdeas: {
+    id: 'app.components.FilterBoxes.a11y_numberOfIdeas',
+    defaultMessage: '{ideaCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+  },
+  a11y_numberOfInitiatives: {
+    id: 'app.components.FilterBoxes.a11y_numberOfInitiatives',
+    defaultMessage: '{initiativeCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
+  },
+  a11y_selectedStatus: {
+    id: 'app.components.FilterBoxes.a11y_selectedStatus',
+    defaultMessage: 'Selected status filter: {selectedStatus}',
+  },
+  a11y_allIdeas: {
+    id: 'app.components.FilterBoxes.a11y_allIdeas',
+    defaultMessage: 'All ideas: {allIdeasCount}',
+  },
+  a11y_removeFilter: {
+    id: 'app.components.FilterBoxes.a11y_removeFilter',
+    defaultMessage: 'Remove filter',
+  },
+  a11y_allFilterSelected: {
+    id: 'app.components.FilterBoxes.a11y_allFilterSelected',
+    defaultMessage: 'Selected status filter: all',
+  },
+  a11y_selectedFilter: {
+    id: 'app.components.FilterBoxes.a11y_selectedFilter',
+    defaultMessage: 'Selected status filter: {filter}',
+  },
+  a11y_selectedTopicFilters: {
+    id: 'app.components.FilterBoxes.a11y_selectedTopicFilters',
+    defaultMessage: 'Selected {numberOfSelectedTopics, plural, =0 {zero topic filters} one {one topic filter} other {# topic filters}}. {selectedTopicNames}',
+  },
 });

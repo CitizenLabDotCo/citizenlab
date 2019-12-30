@@ -73,7 +73,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
               {isPBProject &&
                 <StyledPBExpenses
                   participationContextId={projectId}
-                  participationContextType="Project"
+                  participationContextType="project"
                 />
               }
               <IdeaCards
@@ -81,7 +81,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 projectIds={projectIds}
                 participationMethod={project.attributes.participation_method}
                 participationContextId={projectId}
-                participationContextType="Project"
+                participationContextType="project"
                 showViewToggle={true}
                 defaultView={(project.attributes.presentation_mode || null)}
                 invisibleTitleMessage={messages.invisibleTitleIdeasList}
@@ -98,7 +98,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

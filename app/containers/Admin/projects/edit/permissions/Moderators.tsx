@@ -42,7 +42,7 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
               <FormattedMessage
                 {...messages.moderatorsSectionTooltip}
                 values={{
-                  linkToIdeasOverview: (
+                  moreInfoModeratorLink: (
                     <StyledA href={this.props.intl.formatMessage(messages.moreInfoModeratorLink)} target="_blank">
                       <FormattedMessage {...messages.moreInfoModeratorLinkText} />
                     </StyledA>

@@ -119,7 +119,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           </>
           :
           <>
-            <AvatarAndShield aria-hidden >
+            <AvatarAndShield aria-hidden>
               <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
               <ShieldIcon name="verify" />
             </AvatarAndShield>

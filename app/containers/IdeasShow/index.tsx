@@ -3,6 +3,9 @@ import { sortBy, last, get, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // analytics
 import { trackEvent } from 'utils/analytics';
 import tracks from './tracks';
@@ -318,7 +321,7 @@ interface InputProps {
 interface Props extends DataProps, InputProps { }
 
 interface IActionInfos {
-  participationContextType: 'Project' | 'Phase' | null;
+  participationContextType: IParticipationContextType | null;
   participationContextId: string | null;
   budgetingDescriptor: any | null;
   showBudgetControl: boolean | null;
@@ -391,13 +394,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
       const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
       const budgetingDescriptor = get(idea, 'attributes.action_descriptor.budgeting', null);
-      let participationContextType: 'Project' | 'Phase' | null = null;
+      let participationContextType: IParticipationContextType | null = null;
       let participationContextId: string | null = null;
 
       if (pbProject) {
-        participationContextType = 'Project';
+        participationContextType = 'project';
       } else if (pbPhase) {
-        participationContextType = 'Phase';
+        participationContextType = 'phase';
       }
 
       if (!isNilOrError(pbProject)) {
@@ -751,7 +754,7 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  project: ({ idea, render }) => <GetProject id={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
   postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>

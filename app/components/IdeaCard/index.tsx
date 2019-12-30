@@ -34,6 +34,7 @@ import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
+import { IParticipationContextType } from 'typings';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -105,7 +106,7 @@ export interface InputProps {
   ideaId: string;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+  participationContextType?: IParticipationContextType | null;
   className?: string;
 }
 
@@ -136,8 +137,8 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
     if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
-      idea.attributes.action_descriptor.voting.enabled !== prevIdea.attributes.action_descriptor.voting.enabled
-      || idea.attributes.action_descriptor.voting.disabled_reason !== prevIdea.attributes.action_descriptor.voting.disabled_reason
+      idea.attributes.action_descriptor.budgeting.enabled !== prevIdea.attributes.action_descriptor.budgeting.enabled
+      || idea.attributes.action_descriptor.budgeting.disabled_reason !== prevIdea.attributes.action_descriptor.budgeting.disabled_reason
     )) {
       this.setState({ showVotingDisabled: null });
     }
@@ -284,11 +285,13 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                 </BottomBounceUp>
               }
 
-              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId &&
+              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId && participationContextId && participationContextType &&
                 <BottomBounceUp icon="lock-outlined">
                   <DisabledWrapper>
                     <AssignBudgetDisabled
                       budgetingDescriptor={budgetingDescriptor}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
                     />
                   </DisabledWrapper>
                 </BottomBounceUp>

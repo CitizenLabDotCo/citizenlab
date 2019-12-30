@@ -73,7 +73,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
   authUser: <GetAuthUser />,
 });
 

@@ -674,7 +674,7 @@ export function apiRemoveProject(projectId: string) {
   });
 }
 
-export function apiAddPoll(type: 'Project' | 'Phase', id: string, questions: string[], options: string[][]) {
+export function apiAddPoll(type: 'Project' | 'Phase', id: string, questions: ({ title: string, type: 'single_option' | 'multiple_options' })[], options: string[][]) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -689,7 +689,9 @@ export function apiAddPoll(type: 'Project' | 'Phase', id: string, questions: str
         body: {
           participation_context_id: id,
           participation_context_type: type,
-          title_multiloc: { en: question }
+          title_multiloc: { en: question.title },
+          question_type: question.type,
+          max_options: question.type === 'single_option' ? null : '2'
         }
       }).then(question => {
         options[index].forEach(option => {
