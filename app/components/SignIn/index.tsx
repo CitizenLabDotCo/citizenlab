@@ -316,6 +316,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   onChange={this.handleEmailOnChange}
                   setRef={this.handleEmailInputSetRef}
                   autocomplete="email"
+                  onGreyBackground
                 />
               </FormElement>
 
@@ -338,6 +339,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   onChange={this.handlePasswordOnChange}
                   setRef={this.handlePasswordInputSetRef}
                   autocomplete="current-password"
+                  onGreyBackground
                 />
               </FormElement>
 
