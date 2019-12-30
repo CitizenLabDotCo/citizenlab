@@ -160,7 +160,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
       });
 
       requiredFieldNames.filter((requiredFieldName) => {
-        return (!disabledFieldNames.includes(requiredFieldName)
+        return (disabledFieldNames.includes(requiredFieldName)
           || isNil(formData[requiredFieldName])
           || (!isBoolean(formData[requiredFieldName]) && !Number.isInteger(formData[requiredFieldName]) && isEmpty(formData[requiredFieldName]))
           || (isBoolean(formData[requiredFieldName]) && formData[requiredFieldName] === false)
