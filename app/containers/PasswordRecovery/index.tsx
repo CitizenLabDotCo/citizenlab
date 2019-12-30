@@ -197,6 +197,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
               placeholder={emailPlaceholder}
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
+              onGreyBackground
             />
 
             {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
