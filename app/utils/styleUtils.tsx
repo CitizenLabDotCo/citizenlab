@@ -117,7 +117,11 @@ export const colors = {
   */
   separationDark: '#949494',
   /**
-  * this is the first grey to get 4.5 contrast ratio on the light greyish background we often use (#f9f9fa)
+  * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
+  */
+  separationDarkOnGreyBackground: '#8D8D8D',
+  /**
+  * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
   */
   clGreyOnGreyBackground: '#707070',
   /**
