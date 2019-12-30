@@ -1,9 +1,18 @@
 import React, { PureComponent, FormEvent } from 'react';
-import styled, { withTheme } from 'styled-components';
 import clHistory from 'utils/cl-router/history';
-import { darken } from 'polished';
-import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
+import { LiveMessage } from 'react-aria-live';
+
+// components
+import Button from 'components/UI/Button';
+
+// styles
+import styled, { withTheme } from 'styled-components';
+import { darken } from 'polished';
+
+// i18n
+import injectIntl from 'utils/cl-intl/injectIntl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 const Container = styled.div`
@@ -29,7 +38,7 @@ interface Props {
 
 interface State { }
 
-class Unauthenticated extends PureComponent<Props, State> {
+class Unauthenticated extends PureComponent<Props & InjectedIntlProps, State> {
   goToLogin = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
@@ -43,8 +52,11 @@ class Unauthenticated extends PureComponent<Props, State> {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
+
     return (
       <Container>
+        <LiveMessage message={formatMessage(messages.a11y_unauthenticatedPopup)} aria-live="polite" />
         <Button
           className="e2e-login-button"
           onClick={this.goToLogin}
@@ -65,4 +77,4 @@ class Unauthenticated extends PureComponent<Props, State> {
   }
 }
 
-export default withTheme(Unauthenticated);
+export default withTheme(injectIntl(Unauthenticated));
