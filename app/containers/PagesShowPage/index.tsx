@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
-const Container = styled.div`
+const Container = styled.main`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
