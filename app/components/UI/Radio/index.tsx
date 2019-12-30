@@ -194,7 +194,7 @@ export default class Radio extends PureComponent<Props, State> {
               circle`
             }
           >
-            {checked && <Checked aria-hidden color={buttonColor || '#49B47D'}/>}
+            {checked && <Checked aria-hidden color={buttonColor || colors.clGreen}/>}
           </CustomRadio>
           {label}
         </Label>
