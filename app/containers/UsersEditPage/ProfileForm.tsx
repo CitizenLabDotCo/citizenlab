@@ -248,7 +248,6 @@ class ProfileForm extends PureComponent<Props, State> {
               thin
               htmlFor="firstName"
               labelMessage={messages.firstNames}
-              lockedMessage={messages.blockedVerified}
             />
             <InputContainer>
               <Input
@@ -260,7 +259,7 @@ class ProfileForm extends PureComponent<Props, State> {
                 onBlur={createBlurHandler('first_name')}
                 disabled={lockedFieldsNames.includes('first_name')}
               />
-              {lockedFieldsNames.includes('email') &&
+              {lockedFieldsNames.includes('first_name') &&
                 <StyledIconTooltip
                   content={<FormattedMessage {...messages.blockedVerified} />}
                   icon="lock"
@@ -271,7 +270,11 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="lastName" labelMessage={messages.lastName} />
+            <FormLabel
+              thin
+              htmlFor="lastName"
+              labelMessage={messages.lastName}
+            />
             <InputContainer>
               <Input
                 type="text"
@@ -282,7 +285,7 @@ class ProfileForm extends PureComponent<Props, State> {
                 onBlur={createBlurHandler('last_name')}
                 disabled={lockedFieldsNames.includes('last_name')}
               />
-              {lockedFieldsNames.includes('email') &&
+              {lockedFieldsNames.includes('last_name') &&
                 <StyledIconTooltip
                   content={<FormattedMessage {...messages.blockedVerified} />}
                   icon="lock"

@@ -85,19 +85,6 @@ const OptionalText: any = styled.span`
   font-weight: ${(props) => (props as any).thin ? 300 : 400};
 `;
 
-const SmallLock = styled(Icon)`
-  height: 20px;
-  width: 20px;
-`;
-
-const StyledIconTooltip = styled(IconTooltip)`
-  display: inline;
-  margin-left: 5px;
-  svg {
-    fill: ${({ theme }) => theme.colorText};
-  }
-`;
-
 interface FormLabelGenericProps {
   id?: string;
   htmlFor?: string;
@@ -110,8 +97,6 @@ interface FormLabelGenericProps {
 }
 
 export interface FormLabelProps extends FormLabelGenericProps {
-  locked?: boolean;
-  lockedMessage?: Messages['key'];
   labelMessage: Messages['key'];
   labelMessageValues?: OriginalFormattedMessage.Props['values'];
   subtextMessage?: Messages['key'];
@@ -130,9 +115,7 @@ export const FormLabel = memo(({
   hidden,
   thin,
   noSpace,
-  optional,
-  locked,
-  lockedMessage
+  optional
 }: FormLabelProps) => (
     <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
       <FormattedMessage {...labelMessage} values={labelMessageValues} />
@@ -142,14 +125,6 @@ export const FormLabel = memo(({
           <FormattedMessage {...messages.optional} />
           {')'}
         </OptionalText>
-      }
-      {locked && (lockedMessage
-        ? (
-          <StyledIconTooltip
-            content={<FormattedMessage {...lockedMessage} />}
-            icon="lock"
-          />
-        ) : <SmallLock name="lock" />)
       }
       {subtextMessage &&
         <>
