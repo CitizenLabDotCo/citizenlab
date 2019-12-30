@@ -1757,7 +1757,7 @@
   "app.containers.app.navbar.allProjects": "{tenantName, select, frw {Toutes les communes} other {Tous les projets}}",
   "app.containers.app.navbar.editProfile": "Mes réglages",
   "app.containers.app.navbar.logIn": "Se connecter",
-  "app.containers.app.navbar.logoAltText": "{orgName} - logo",
+  "app.containers.app.navbar.logoAltText": "",
   "app.containers.app.navbar.mobilePageHome": "Accueil",
   "app.containers.app.navbar.mobilePageIdeas": "Idées",
   "app.containers.app.navbar.mobilePageInitiatives": "Initiatives",

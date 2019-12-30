@@ -1757,7 +1757,7 @@
   "app.containers.app.navbar.allProjects": "Alle prosjekter",
   "app.containers.app.navbar.editProfile": "Innstillinger",
   "app.containers.app.navbar.logIn": "Logg inn",
-  "app.containers.app.navbar.logoAltText": "{orgName} - logoen",
+  "app.containers.app.navbar.logoAltText": "en",
   "app.containers.app.navbar.mobilePageHome": "Hjem",
   "app.containers.app.navbar.mobilePageIdeas": "Idéer",
   "app.containers.app.navbar.mobilePageInitiatives": "Initiatives",
