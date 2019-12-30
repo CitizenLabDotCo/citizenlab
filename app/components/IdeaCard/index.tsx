@@ -41,7 +41,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const IdeaBudget = styled.div`
-  color: ${colors.clRed2};
+  color: ${colors.clRed};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: 500;
