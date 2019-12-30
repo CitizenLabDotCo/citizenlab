@@ -67,7 +67,7 @@ const Title = styled.h1`
   margin-bottom: 30px;
 `;
 
-const Nav = styled.nav`
+const TOC = styled.div`
   border: 1px solid #ccc;
   padding: 20px;
   margin-bottom: 30px;
@@ -150,7 +150,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 <FormattedMessage {...messages.siteMapTitle} />
               </Title>
 
-              <Nav aria-labelledby="nav-header">
+              <TOC aria-labelledby="nav-header">
                 <Header id="nav-header">
                   <FormattedMessage {...messages.pageContents} />
                 </Header>
@@ -225,7 +225,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     </li>
                   </FeatureFlag>
                 </Ul>
-              </Nav>
+              </TOC>
 
               <H2 ref={homeSection}>
                 <FormattedMessage {...messages.homeSection} />
