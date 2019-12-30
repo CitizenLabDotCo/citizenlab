@@ -1705,6 +1705,8 @@
   "app.containers.UsersEditPage.logoAltText": "Logo of {tenantName}",
   "app.containers.UsersEditPage.messageError": "We weren't able to save your profile. Try again later or contact support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Your profile has been saved.",
+  "app.containers.UsersEditPage.metaDescription": "",
+  "app.containers.UsersEditPage.metaTitle": "",
   "app.containers.UsersEditPage.noGoingBack": "Once you click this button, we will have no way to restore your account.",
   "app.containers.UsersEditPage.notificationsSubTitle": "When do you want to receive an email notification?",
   "app.containers.UsersEditPage.notificationsTitle": "Email notifications",

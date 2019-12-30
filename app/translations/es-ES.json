@@ -1705,6 +1705,8 @@
   "app.containers.UsersEditPage.logoAltText": "Logo de {tenantName}",
   "app.containers.UsersEditPage.messageError": "No pudimos guardar su perfil. Inténtelo más tarde o comuníquese con support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Su perfil se ha guardado.",
+  "app.containers.UsersEditPage.metaDescription": "",
+  "app.containers.UsersEditPage.metaTitle": "",
   "app.containers.UsersEditPage.noGoingBack": "Una vez que presiones este botón, no vamos a tener forma de recuperar tu cuenta.",
   "app.containers.UsersEditPage.notificationsSubTitle": "¿Cuándo quiere recibir una notificación por correo electrónico?",
   "app.containers.UsersEditPage.notificationsTitle": "Email notificaciones",
