@@ -1705,6 +1705,8 @@
   "app.containers.UsersEditPage.logoAltText": "Logo van {tenantName}",
   "app.containers.UsersEditPage.messageError": "We konden je profiel niet opslaan. Probeer het later opnieuw of contacteer support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Je profielgegevens zijn opgeslagen.",
+  "app.containers.UsersEditPage.metaDescription": "",
+  "app.containers.UsersEditPage.metaTitle": "",
   "app.containers.UsersEditPage.noGoingBack": "Wanneer je op deze knop klikt, wordt je profiel definitief verwijderd.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Wanneer wil je per e-mail op de hoogte worden gebracht?",
   "app.containers.UsersEditPage.notificationsTitle": "E-mail notificaties",

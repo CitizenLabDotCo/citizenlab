@@ -1705,6 +1705,8 @@
   "app.containers.UsersEditPage.logoAltText": "Logo fra {tenantName}",
   "app.containers.UsersEditPage.messageError": "Vi kunne ikke gemme din profil. Prøv igen senere eller kontakt support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Din profil er blevet gemt.",
+  "app.containers.UsersEditPage.metaDescription": "",
+  "app.containers.UsersEditPage.metaTitle": "",
   "app.containers.UsersEditPage.noGoingBack": "Når du klikker på denne knap, vil vi ikke kunne genskabe din konto. ",
   "app.containers.UsersEditPage.notificationsSubTitle": "Hvornår ønsker du at modtage en e-mail meddelelse?",
   "app.containers.UsersEditPage.notificationsTitle": "E-mail notifikationer",
