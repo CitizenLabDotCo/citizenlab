@@ -1,5 +1,5 @@
 export default {
-  clickChangeEmailNotificationSettings: {
-    name: 'Default email notification settings changed',
+  clickChangeEmailNotificationProfileSettings: {
+    name: 'Default email notification settings changed in profile settings',
   },
 };
