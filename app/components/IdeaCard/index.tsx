@@ -93,7 +93,7 @@ const CommentInfo = styled.div`
   align-items: center;
 
   &:not(.enabled) {
-    opacity: 0.6;
+    opacity: 0.71;
   }
 `;
 
