@@ -1705,6 +1705,8 @@
   "app.containers.UsersEditPage.logoAltText": "Logo de {tenantName}",
   "app.containers.UsersEditPage.messageError": "Nous n'avons pas pu enregistrer votre profil. Réessayez plus tard ou contactez support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Votre profil a été enregistré ",
+  "app.containers.UsersEditPage.metaDescription": "",
+  "app.containers.UsersEditPage.metaTitle": "",
   "app.containers.UsersEditPage.noGoingBack": "Une fois que vous aurez cliqué sur ce bouton, nous n'aurons aucuns moyens de restaurer votre compte.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Quand voulez-vous être averti par email?",
   "app.containers.UsersEditPage.notificationsTitle": "Notifications par email",

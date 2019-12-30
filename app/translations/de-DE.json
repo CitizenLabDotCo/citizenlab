@@ -1705,6 +1705,8 @@
   "app.containers.UsersEditPage.logoAltText": "Logo von {tenantName}",
   "app.containers.UsersEditPage.messageError": "Ihr Profil konnte nicht gespeichert werden. Versuchen Sie es später noch einmal oder kontaktieren Sie support@citizenlab.co.",
   "app.containers.UsersEditPage.messageSuccess": "Ihr Profil wurde gespeichert.",
+  "app.containers.UsersEditPage.metaDescription": "",
+  "app.containers.UsersEditPage.metaTitle": "",
   "app.containers.UsersEditPage.noGoingBack": "Sobald Sie diesen Button klicken, können wir Ihren Account nicht wiederherstellen.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Wann möchten Sie eine Benachrichtigung via E-Mail erhalten?",
   "app.containers.UsersEditPage.notificationsTitle": "E-Mail Benachrichtigungen",
