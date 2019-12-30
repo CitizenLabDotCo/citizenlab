@@ -329,6 +329,7 @@
   "app.components.SideModal.closeButtonAria": "Schließen",
   "app.components.TopBar.goBack": "Zurück",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewählt {AnzahlausgewählterThemen, Plural, =0 {null Themen} eins {ein Thema} weitere {# Themen}}. {ausgewählteThemennamen}",
+  "app.components.UI.Card.a11y_unauthenticatedPopup": "",
   "app.components.UI.Card.login": "Anmeldung",
   "app.components.UI.Card.register": "Registrieren",
   "app.components.UI.IconTooltip.a11y_informationTooltip": "Informationstooltip",
