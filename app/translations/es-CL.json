@@ -329,6 +329,7 @@
   "app.components.SideModal.closeButtonAria": "Cerrar",
   "app.components.TopBar.goBack": "Volver",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Seleccionado/s {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
+  "app.components.UI.Card.a11y_unauthenticatedPopup": "",
   "app.components.UI.Card.login": "Iniciar sesión",
   "app.components.UI.Card.register": "Inscríbete",
   "app.components.UI.IconTooltip.a11y_informationTooltip": "Casilla de sugerencia",

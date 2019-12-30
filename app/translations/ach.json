@@ -329,6 +329,7 @@
   "app.components.SideModal.closeButtonAria": "",
   "app.components.TopBar.goBack": "",
   "app.components.TopicsPicker.numberOfSelectedTopics": "",
+  "app.components.UI.Card.a11y_unauthenticatedPopup": "",
   "app.components.UI.Card.login": "",
   "app.components.UI.Card.register": "",
   "app.components.UI.IconTooltip.a11y_informationTooltip": "",

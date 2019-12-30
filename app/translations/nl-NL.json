@@ -329,6 +329,7 @@
   "app.components.SideModal.closeButtonAria": "Sluiten",
   "app.components.TopBar.goBack": "Ga terug",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural,=0 {Geen thema's} one {Eén thema} other {# thema's}} geselecteerd. {selectedTopicNames}",
+  "app.components.UI.Card.a11y_unauthenticatedPopup": "",
   "app.components.UI.Card.login": "Inloggen",
   "app.components.UI.Card.register": "Registreren",
   "app.components.UI.IconTooltip.a11y_informationTooltip": "Tooltip met informatie",
