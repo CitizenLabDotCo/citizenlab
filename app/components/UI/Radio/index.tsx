@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { fontSizes, customOutline } from 'utils/styleUtils';
+import { fontSizes, customOutline, colors } from 'utils/styleUtils';
 import { get } from 'lodash-es';
 
 export const CustomRadio = styled.div`
@@ -16,7 +16,7 @@ export const CustomRadio = styled.div`
   position: relative;
   background: #fff;
   border-radius: 50%;
-  border: 1px solid #a6a6a6;
+  border: 1px solid ${colors.separationDarkOnGreyBackground};
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
 
   &.focused {
