@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<ConsentManager /> renders correctly when there are destinations 1`] = `
-<PreferencesDialog__ContentContainer>
+<PreferencesDialog__ContentContainer
+  id="e2e-preference-dialog"
+>
   <CategoryCard
     category="analytics"
     checked={true}
@@ -63,4 +65,8 @@ exports[`<ConsentManager /> renders correctly when there are destinations 1`] = 
 </PreferencesDialog__ContentContainer>
 `;
 
-exports[`<ConsentManager /> renders correctly when there are no destinations 1`] = `<PreferencesDialog__ContentContainer />`;
+exports[`<ConsentManager /> renders correctly when there are no destinations 1`] = `
+<PreferencesDialog__ContentContainer
+  id="e2e-preference-dialog"
+/>
+`;

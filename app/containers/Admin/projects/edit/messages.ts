@@ -153,6 +153,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.allowLocationTooltip',
     defaultMessage: 'Enable or disable the ability to add a location to an idea.',
   },
+  anonymousPolling: {
+    id: 'app.containers.AdminPage.ProjectEdit.anonymousPolling',
+    defaultMessage: 'Anonymous polling',
+  },
+  anonymousPollingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip',
+    defaultMessage: 'When enabled it\'s impossible to see who voted on what. Users still need an account and can only vote once.',
+  },
   enabled: {
     id: 'app.containers.AdminPage.ProjectEdit.enabled',
     defaultMessage: 'Enabled',

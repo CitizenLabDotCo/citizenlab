@@ -12,7 +12,7 @@ import Icon from 'components/UI/Icon';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken } from 'polished';
 import { Header, Title } from './styles';
 
@@ -50,6 +50,8 @@ const CloseIcon = styled(Icon)`
   fill: #fff;
 `;
 
+const StatusesContainer = styled.div``;
+
 const Status = styled.button`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -69,6 +71,7 @@ const Status = styled.button`
   border-radius: 5px;
   user-select: none;
   transition: all 80ms ease-out;
+  width: 100%;
 
   &:not(.selected):hover {
     background: rgba(132, 147, 158, 0.15);
@@ -113,6 +116,9 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
   }, []);
 
   if (!isNilOrError(statuses) && statuses.length > 0) {
+    const allPostsCount = filterCounts && filterCounts.total ? filterCounts.total : 0;
+    const allFilterSelected = !selectedStatusId;
+
     return (
       <Container className={`e2e-statuses-filters ${className}`}>
         <Header>
@@ -121,40 +127,77 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
           </Title>
         </Header>
 
-        <AllStatus
-          data-id={null}
-          onMouseDown={removeFocus}
-          onClick={handleOnClick}
-          className={!selectedStatusId ? 'selected' : ''}
-        >
-          <FormattedMessage {...messages.all} />
-          <Count>
-            {filterCounts && filterCounts.total ? filterCounts.total : 0}
-          </Count>
-        </AllStatus>
+        <StatusesContainer>
+          <AllStatus
+            data-id={null}
+            onMouseDown={removeFocus}
+            onClick={handleOnClick}
+            className={allFilterSelected ? 'selected' : ''}
+          >
+            <FormattedMessage {...messages.all} />
+            <Count aria-hidden>
+              {allPostsCount}
+            </Count>
+            <ScreenReaderOnly>
+              {/* Pronounce number of ideas/initiatives of All status when focus/hover it */}
+              {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: allPostsCount }} />}
+              {type === 'initiative' && <FormattedMessage {...messages.a11y_numberOfInitiatives} values={{ initiativeCount: allPostsCount }} />}
+            </ScreenReaderOnly>
+            <ScreenReaderOnly aria-live="polite">
+            {/*
+              When we focus a selected status filter and hit enter again, this filter gets removed and
+              the 'all' status filter is selected again. Screen readers don't pick this up, so hence this helper text
+            */}
+            {allFilterSelected && <FormattedMessage {...messages.a11y_allFilterSelected} />}
+          </ScreenReaderOnly>
+          </AllStatus>
 
-        {statuses.map((status) => {
-          return (
-            <Status
-              key={status.id}
-              data-id={status.id}
-              onMouseDown={removeFocus}
-              onClick={handleOnClick}
-              className={`e2e-status ${selectedStatusId === status.id ? 'selected' : ''}`}
-            >
-              <T value={status.attributes.title_multiloc}>
-                {statusTitle => <>{capitalize(statusTitle)}</>}
-              </T>
-              {selectedStatusId !== status.id ? (
-                <Count>
-                  {get(filterCounts, `${type}_status_id.${status.id}`, 0)}
-                </Count>
-              ) : (
-                <CloseIcon name="close" />
-              )}
-            </Status>
-          );
-        })}
+          {statuses.map((status) => {
+            const filterPostCount = get(filterCounts, `${type}_status_id.${status.id}`, 0);
+            const isFilterSelected = status.id === selectedStatusId;
+
+            return (
+              <Status
+                key={status.id}
+                data-id={status.id}
+                onMouseDown={removeFocus}
+                onClick={handleOnClick}
+                className={`e2e-status ${isFilterSelected ? 'selected' : ''}`}
+              >
+                <T value={status.attributes.title_multiloc}>
+                  {statusTitle => <>{capitalize(statusTitle)}</>}
+                </T>
+                {!isFilterSelected ? (
+                  <Count aria-hidden>
+                    {filterPostCount}
+                  </Count>
+                ) : (
+                  <CloseIcon
+                    title={<FormattedMessage {...messages.a11y_removeFilter} />}
+                    name="close"
+                  />
+                )}
+                <ScreenReaderOnly>
+                  {/* Pronounce number of ideas per status when focus/hover it */}
+                  {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: filterPostCount }} />}
+                  {type === 'initiative' && <FormattedMessage {...messages.a11y_numberOfInitiatives} values={{ initiativeCount: filterPostCount }} />}
+                </ScreenReaderOnly>
+                <ScreenReaderOnly aria-live="polite">
+                  {/*
+                    Added this for consistency with the all filter, see comment above AllStatus component.
+                    Pronounces the selected filter.
+                  */}
+                  {isFilterSelected && <FormattedMessage
+                    {...messages.a11y_selectedFilter}
+                    values={{
+                      filter: <T value={status.attributes.title_multiloc} />
+                    }}
+                  />}
+                </ScreenReaderOnly>
+              </Status>
+            );
+          })}
+        </StatusesContainer>
       </Container>
     );
   }

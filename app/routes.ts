@@ -62,10 +62,28 @@ export default function createRoutes() {
           })
         },
         {
+          path: 'site-map',
+          name: 'siteMap',
+          component: Loadable({
+            loader: () => import('containers/SiteMap'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
           path: 'profile/edit',
           name: 'usersEditPage',
           component: Loadable({
             loader: () => import('containers/UsersEditPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
+          path: 'email-settings',
+          name: 'emailSettings',
+          component: Loadable({
+            loader: () => import('containers/EmailSettingsPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })

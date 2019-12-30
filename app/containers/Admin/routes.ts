@@ -87,6 +87,14 @@ export default () => ({
     invitationsRoutes(),
     emailsRoutes(),
     {
+      path: 'moderation',
+      component: Loadable({
+        loader: () => import('containers/Admin/moderation'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
+    },
+    {
       path: 'ideas',
       component: Loadable({
         loader: () => import('containers/Admin/ideas'),

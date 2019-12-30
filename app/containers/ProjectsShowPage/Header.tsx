@@ -182,6 +182,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
               {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
                 <ButtonWrapper>
                   <StyledIdeaButton
+                    participationContextType="project"
                     projectId={project.id}
                     bgColor="#fff"
                     textColor={theme.colorMain}
@@ -201,7 +202,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 

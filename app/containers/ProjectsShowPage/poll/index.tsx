@@ -24,7 +24,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 export default withRouter((props: WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
+  <GetProject projectSlug={props.params.slug}>
     {(project) => {
       if (
         !isNilOrError(project) &&
@@ -35,7 +35,7 @@ export default withRouter((props: WithRouterProps) => (
             <StyledContentContainer className="e2e-continuous-project-poll-container">
               <PollSection
                 projectId={project.id}
-                type="projects"
+                type="project"
                 phaseId={null}
               />
             </StyledContentContainer>

@@ -59,7 +59,12 @@ class VotingDisabled extends PureComponent<Props, State> {
   onVerify = (event) => {
     event.stopPropagation();
     event.preventDefault();
-    openVerificationModalWithContext('ActionVote');
+    const { project } = this.props;
+    if (!isNilOrError(project)) {
+      const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+      const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;
+      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
+    }
   }
 
   removeFocus = (event: React.MouseEvent) => {
@@ -134,7 +139,7 @@ class VotingDisabled extends PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+  <GetProject projectId={inputProps.projectId}>
     {project => <VotingDisabled {...inputProps} project={project} />}
   </GetProject>
 );

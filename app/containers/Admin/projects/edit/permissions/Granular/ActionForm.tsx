@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 import localize, { InjectedLocalized } from 'utils/localize';
@@ -9,6 +10,10 @@ import Radio from 'components/UI/Radio';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+
+const StyledFieldset = styled.fieldset`
+  border: none;
+`;
 
 interface InputProps {
   permissionId: string;
@@ -52,35 +57,40 @@ class ActionForm extends PureComponent<Props> {
     const groupsOptions = this.groupsOptions();
     return (
       <form>
-        <Radio
-          name={`permittedBy-${permissionId}`}
-          value="everyone"
-          currentValue={permittedBy}
-          label={<FormattedMessage {...messages.permissionsEveryoneLabel} />}
-          onChange={this.handlePermittedByUpdate('everyone')}
-        />
-        <Radio
-          name={`permittedBy-${permissionId}`}
-          value="admins_moderators"
-          currentValue={permittedBy}
-          label={<FormattedMessage {...messages.permissionsAdministrators} />}
-          onChange={this.handlePermittedByUpdate('admins_moderators')}
-        />
-        <Radio
-          name={`permittedBy-${permissionId}`}
-          value="groups"
-          currentValue={permittedBy}
-          label={<FormattedMessage {...messages.permissionsSelectionLabel} />}
-          onChange={this.handlePermittedByUpdate('groups')}
-        />
-        {permittedBy === 'groups' &&
-          <MultipleSelect
-            value={groupIds || []}
-            options={groupsOptions}
-            onChange={this.handleGroupIdsUpdate}
-            placeholder={<FormattedMessage {...messages.selectGroups} />}
+        <StyledFieldset>
+          <Radio
+            name={`permittedBy-${permissionId}`}
+            value="everyone"
+            currentValue={permittedBy}
+            label={<FormattedMessage {...messages.permissionsEveryoneLabel} />}
+            onChange={this.handlePermittedByUpdate('everyone')}
+            id={`participation-permission-everyone-${permissionId}`}
           />
-        }
+          <Radio
+            name={`permittedBy-${permissionId}`}
+            value="admins_moderators"
+            currentValue={permittedBy}
+            label={<FormattedMessage {...messages.permissionsAdministrators} />}
+            onChange={this.handlePermittedByUpdate('admins_moderators')}
+            id={`participation-permission-admins-${permissionId}`}
+          />
+          <Radio
+            name={`permittedBy-${permissionId}`}
+            value="groups"
+            currentValue={permittedBy}
+            label={<FormattedMessage {...messages.permissionsSelectionLabel} />}
+            onChange={this.handlePermittedByUpdate('groups')}
+            id={`participation-permission-certain-groups-${permissionId}`}
+          />
+          {permittedBy === 'groups' &&
+            <MultipleSelect
+              value={groupIds || []}
+              options={groupsOptions}
+              onChange={this.handleGroupIdsUpdate}
+              placeholder={<FormattedMessage {...messages.selectGroups} />}
+            />
+          }
+        </StyledFieldset>
       </form>
     );
   }

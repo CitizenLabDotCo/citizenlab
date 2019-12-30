@@ -61,7 +61,7 @@ const IdeasNewMetaWithHoc = injectIntl(injectLocalize(IdeasNewMeta));
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locales: <GetTenantLocales />,
   authUser: <GetAuthUser />,
-  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>
 });
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (

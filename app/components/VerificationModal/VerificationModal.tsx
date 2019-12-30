@@ -6,6 +6,7 @@ import VerificationMethods from './VerificationMethods';
 import VerificationFormCOW from './VerificationFormCOW';
 import VerificationFormBogus from './VerificationFormBogus';
 import VerificationSuccess from './VerificationSuccess';
+import VerificationFormLookup from './VerificationFormLookup';
 
 // events
 import { closeVerificationModal } from 'containers/App/events';
@@ -14,7 +15,8 @@ import { closeVerificationModal } from 'containers/App/events';
 import styled from 'styled-components';
 
 // typings
-import { VerificationMethodNames } from 'services/verificationMethods';
+import { IVerificationMethod, IDLookupMethod } from 'services/verificationMethods';
+import { IParticipationContextType, ICitizenAction } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -23,26 +25,34 @@ const Container = styled.div`
   align-items: center;
 `;
 
-export type VerificationModalSteps = 'method-selection' | 'cow' | 'bogus' | 'success' | null;
+export type ContextShape = { id: string, type: IParticipationContextType, action: ICitizenAction } | null;
+
+export type VerificationModalSteps = 'method-selection' | 'success' | null | IVerificationMethod['attributes']['name'];
 
 export interface Props {
   opened: boolean;
   initialActiveStep?: VerificationModalSteps;
   className?: string;
-  context?: boolean; // TODO change to pass in additionnal rules info
+  context: ContextShape; // TODO change to pass in additionnal rules info
 }
 
-const VerificationModal = memo<Props>((props) => {
+const VerificationModal = memo<Props>(({ opened, className, context, initialActiveStep }) => {
 
-  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(props.initialActiveStep || 'method-selection');
+  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(initialActiveStep || 'method-selection');
+  const [method, setMethod] = useState<IDLookupMethod | null>(null);
 
   useEffect(() => {
     // reset active step when modal opens or closes
-    setActiveStep(props.initialActiveStep || 'method-selection');
-  }, [props.opened, props.initialActiveStep]);
+    setActiveStep(initialActiveStep || 'method-selection');
+  }, [opened, initialActiveStep]);
 
-  const onMethodSelected = useCallback((selectedMethod: VerificationMethodNames) => {
-    setActiveStep(selectedMethod);
+  const onMethodSelected = useCallback((selectedMethod: IVerificationMethod) => {
+    const { name } = selectedMethod.attributes;
+    if (name === 'id_card_lookup') {
+      // if the method name is id_card_lookup, then the method type is IDLookupMethod
+      setMethod(selectedMethod as IDLookupMethod);
+    }
+    setActiveStep(name);
   }, []);
 
   const onClose = useCallback(() => {
@@ -65,16 +75,26 @@ const VerificationModal = memo<Props>((props) => {
     setActiveStep('success');
   }, []);
 
+  const onLookupCancel = useCallback(() => {
+    setActiveStep('method-selection');
+    setMethod(null);
+  }, []);
+
+  const onLookupVerified = useCallback(() => {
+    setActiveStep('success');
+    setMethod(null);
+  }, []);
+
   return (
     <Modal
       width={820}
-      opened={props.opened}
+      opened={opened}
       close={onClose}
       remaining
     >
-      <Container className={`e2e-verification-modal ${props.className || ''}`}>
+      <Container className={`e2e-verification-modal ${className || ''}`}>
         {activeStep === 'method-selection' &&
-          <VerificationMethods withContext={!!props.context} onMethodSelected={onMethodSelected} />
+          <VerificationMethods context={context} onMethodSelected={onMethodSelected} />
         }
 
         {activeStep === 'cow' &&
@@ -83,6 +103,10 @@ const VerificationModal = memo<Props>((props) => {
 
         {activeStep === 'bogus' &&
           <VerificationFormBogus onCancel={onBogusCancel} onVerified={onBogusVerified} />
+        }
+
+        {activeStep === 'id_card_lookup' && method &&
+          <VerificationFormLookup onCancel={onLookupCancel} onVerified={onLookupVerified} method={method} />
         }
 
         {activeStep === 'success' &&
