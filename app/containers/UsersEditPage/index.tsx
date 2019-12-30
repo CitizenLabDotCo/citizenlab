@@ -25,7 +25,7 @@ import VerificationStatus from './VerificationStatus';
 import styled from 'styled-components';
 import { colors, ScreenReaderOnly } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.main`
   width: 100%;
   background-color: ${colors.background};
   display: flex;
