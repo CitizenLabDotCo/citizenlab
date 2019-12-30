@@ -275,7 +275,7 @@ class ProfileForm extends PureComponent<Props, State> {
               htmlFor="lastName"
               labelMessage={messages.lastName}
             />
-            <InputContainer>
+            <InputContainer id="e2e-last-name-input">
               <Input
                 type="text"
                 name="last_name"
@@ -311,6 +311,7 @@ class ProfileForm extends PureComponent<Props, State> {
                 <StyledIconTooltip
                   content={<FormattedMessage {...messages.blockedVerified} />}
                   icon="lock"
+                  className="e2e-last-name-lock"
                 />
               }
             </InputContainer>
