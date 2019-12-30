@@ -83,7 +83,7 @@ const ProjectsSubsectionUl = styled.ul`
   margin-bottom: 0 !important;
 `;
 
-const Header = styled.header`
+const Header = styled.h2`
   font-weight: bold;
 `;
 
