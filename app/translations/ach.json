@@ -1239,6 +1239,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "",
   "app.containers.CampaignsConsentForm.notificationsTitle": "",
   "app.containers.CampaignsConsentForm.submit": "",
+  "app.containers.Comments.a11y_upvoteCount": "",
   "app.containers.Comments.addCommentError": "",
   "app.containers.Comments.adminCommentDeletionCancelButton": "",
   "app.containers.Comments.adminCommentDeletionConfirmButton": "",

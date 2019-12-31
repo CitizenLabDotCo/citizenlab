@@ -1239,6 +1239,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "¿Cuándo quiere recibir una notificación por correo electrónico?",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Notificaciones",
   "app.containers.CampaignsConsentForm.submit": "Guardar",
+  "app.containers.Comments.a11y_upvoteCount": "",
   "app.containers.Comments.addCommentError": "Algo salió mal. Por favor Inténtalo más tarde.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Mantener el comentario",
   "app.containers.Comments.adminCommentDeletionConfirmButton": "Borrar este comentario",
