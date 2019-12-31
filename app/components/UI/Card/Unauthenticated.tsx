@@ -1,6 +1,5 @@
 import React, { PureComponent, FormEvent } from 'react';
 import clHistory from 'utils/cl-router/history';
-import { FormattedMessage } from 'utils/cl-intl';
 import { LiveMessage } from 'react-aria-live';
 
 // components
@@ -14,6 +13,7 @@ import { darken } from 'polished';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-const StyledButton = styled(Button)`
+const StyledLinkButton = styled(Button)`
   margin-left: 5px;
 
   &:hover .buttonText {
@@ -39,16 +39,10 @@ interface Props {
 interface State { }
 
 class Unauthenticated extends PureComponent<Props & InjectedIntlProps, State> {
-  goToLogin = (event: FormEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    clHistory.push('/sign-in');
-  }
 
-  goToSingUp = (event: FormEvent) => {
+  stopPropagation = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    clHistory.push('/sign-up');
   }
 
   render() {
@@ -57,21 +51,24 @@ class Unauthenticated extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Container>
         <LiveMessage message={formatMessage(messages.a11y_unauthenticatedPopup)} aria-live="polite" />
-        <Button
+        <StyledLinkButton
           className="e2e-login-button"
-          onClick={this.goToLogin}
+          linkTo="/sign-in"
+          onClick={this.stopPropagation}
         >
           <FormattedMessage {...messages.login} />
-        </Button>
-        <StyledButton
+        </StyledLinkButton>
+
+        <StyledLinkButton
           className="e2e-register-button"
-          onClick={this.goToSingUp}
+          linkTo="/sign-up"
+          onClick={this.stopPropagation}
           style="text"
           textColor={this.props.theme.colorMain}
           textHoverColor={darken(0.15, this.props.theme.colorMain)}
         >
           <FormattedMessage {...messages.register} />
-        </StyledButton>
+        </StyledLinkButton>
       </Container>
     );
   }
