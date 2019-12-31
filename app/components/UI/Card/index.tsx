@@ -9,7 +9,7 @@ import LazyImage from 'components/LazyImage';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-const Container = styled(Link)`
+const Container = styled.div`
   width: 100%;
   height: 375px;
   margin-bottom: 24px;
@@ -87,6 +87,10 @@ const Body = styled.div`
   padding-right: 20px;
 `;
 
+const Upper = styled(Link)`
+
+`;
+
 const Footer = styled.div`
   position: absolute;
   bottom: 0;
@@ -107,11 +111,12 @@ interface Props {
 
 const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, className }) => (
   <Container
-    onClick={onClick}
-    to={to}
     className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
   >
-    <>
+    <Upper
+      onClick={onClick}
+      to={to}
+    >
       {imageUrl &&
         <ImageWrapper>
           <Image src={imageUrl} alt="" />
@@ -128,11 +133,10 @@ const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, 
       <Body>
         {body}
       </Body>
-
-      <Footer aria-live="polite">
-        {footer}
-      </Footer>
-    </>
+    </Upper>
+    <Footer aria-live="polite">
+      {footer}
+    </Footer>
   </Container>
 ));
 
