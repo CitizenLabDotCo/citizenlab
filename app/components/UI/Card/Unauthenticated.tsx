@@ -1,6 +1,4 @@
 import React, { PureComponent, FormEvent } from 'react';
-import clHistory from 'utils/cl-router/history';
-import { LiveMessage } from 'react-aria-live';
 
 // components
 import Button from 'components/UI/Button';
@@ -10,8 +8,6 @@ import styled, { withTheme } from 'styled-components';
 import { darken } from 'polished';
 
 // i18n
-import injectIntl from 'utils/cl-intl/injectIntl';
-import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -38,7 +34,7 @@ interface Props {
 
 interface State { }
 
-class Unauthenticated extends PureComponent<Props & InjectedIntlProps, State> {
+class Unauthenticated extends PureComponent<Props, State> {
 
   stopPropagation = (event: FormEvent) => {
     event.preventDefault();
@@ -46,11 +42,8 @@ class Unauthenticated extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
-
     return (
       <Container>
-        <LiveMessage message={formatMessage(messages.a11y_unauthenticatedPopup)} aria-live="polite" />
         <StyledLinkButton
           className="e2e-login-button"
           linkTo="/sign-in"
@@ -74,4 +67,4 @@ class Unauthenticated extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default withTheme(injectIntl(Unauthenticated));
+export default withTheme(Unauthenticated);
