@@ -26,7 +26,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
 
 const UpvoteButton = styled.button`
@@ -274,7 +274,23 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
           </UpvoteButtonWrapper>
 
           {upvoteCount > 0 &&
-            <UpvoteCount className={`${upvoteCount > 0 ? 'visible' : 'hidden'} ${votingEnabled ? 'enabled' : 'disabled'}`}>{upvoteCount}</UpvoteCount>
+            <UpvoteCount
+              className={`
+                ${upvoteCount > 0 ? 'visible' : 'hidden'}
+                ${votingEnabled ? 'enabled' : 'disabled'}`
+              }
+              aria-live="polite"
+            >
+              <span aria-hidden>{upvoteCount}</span>
+              <ScreenReaderOnly>
+                <FormattedMessage
+                  {...messages.a11y_upvoteCount}
+                  values={{
+                    upvoteCount
+                  }}
+                />
+              </ScreenReaderOnly>
+            </UpvoteCount>
           }
 
           {votingEnabled &&
