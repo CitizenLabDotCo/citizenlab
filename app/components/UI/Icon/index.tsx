@@ -741,15 +741,25 @@ const icons = {
     </Svg>
   ),
   verify: (props: IconProps) => (
-    <Svg {...props} viewBox="0 0 48 53">
-      <path d="M46.7576 7.10415L23.6525 0.0375414C23.4841 -0.0119249 23.3033 -0.0136916 23.1366 0.039308L0.617679 7.10592C0.249177 7.22251 0 7.56348 0 7.95038V30.9169C0 40.5292 15.2507 50.3765 23.4262 52.9594C23.5122 52.9859 23.6017 53 23.6894 53C23.7771 53 23.8666 52.9859 23.9526 52.9594C32.1281 50.3765 47.3788 40.5292 47.3788 30.9169V7.95038C47.3788 7.56171 47.1261 7.21721 46.7576 7.10415Z" fill="url(#paint0_linear)" fillOpacity="0.5" />
-      <circle cx="18" cy="26" r="2" fill="white" />
-      <circle cx="24" cy="26" r="2" fill="white" />
-      <circle cx="30" cy="26" r="2" fill="white" />
+    // <Svg {...props} viewBox="0 0 48 53">
+    //   <path d="M46.7576 7.10415L23.6525 0.0375414C23.4841 -0.0119249 23.3033 -0.0136916 23.1366 0.039308L0.617679 7.10592C0.249177 7.22251 0 7.56348 0 7.95038V30.9169C0 40.5292 15.2507 50.3765 23.4262 52.9594C23.5122 52.9859 23.6017 53 23.6894 53C23.7771 53 23.8666 52.9859 23.9526 52.9594C32.1281 50.3765 47.3788 40.5292 47.3788 30.9169V7.95038C47.3788 7.56171 47.1261 7.21721 46.7576 7.10415Z" fill="url(#paint0_linear)" fillOpacity="0.5" />
+    //   <circle cx="18" cy="26" r="2" fill="white" />
+    //   <circle cx="24" cy="26" r="2" fill="white" />
+    //   <circle cx="30" cy="26" r="2" fill="white" />
+    //   <defs>
+    //     <linearGradient id="paint0_linear" x1="47.3788" y1="-5.19608" x2="-0.506305" y2="52.5804" gradientUnits="userSpaceOnUse">
+    //       <stop stopColor="#84939E" />
+    //       <stop offset="1" stopColor="#84939E" stopOpacity="0.21" />
+    //     </linearGradient>
+    //   </defs>
+    // </Svg>
+    <Svg {...props} viewBox="0 0 51 56">
+      <path fill="url(#paint0_linear)" fill-opacity=".5" d="M49.404 7.506L24.991.04a.935.935 0 00-.545.002L.653 7.508A.934.934 0 000 8.4v24.267c0 10.156 16.114 20.561 24.752 23.29a.95.95 0 00.556 0c8.639-2.729 24.753-13.134 24.753-23.29V8.4a.935.935 0 00-.657-.894z"/>
+      <path fill="#fff" d="M20.771 31.83l-6.64-6.857L11.88 27.3l8.892 9.185L39.88 16.75l-2.253-2.327L20.77 31.831z"/>
       <defs>
-        <linearGradient id="paint0_linear" x1="47.3788" y1="-5.19608" x2="-0.506305" y2="52.5804" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#84939E" />
-          <stop offset="1" stopColor="#84939E" stopOpacity="0.21" />
+        <linearGradient id="paint0_linear" x1="50.061" x2="-.535" y1="-5.49" y2="55.557" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#84939E"/>
+          <stop offset="1" stopColor="#84939E" stopOpacity="0.35"/>
         </linearGradient>
       </defs>
     </Svg>

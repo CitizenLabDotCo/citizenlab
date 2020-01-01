@@ -4,7 +4,7 @@
 */
 
 import React, { PureComponent, FormEvent } from 'react';
-import { isFunction } from 'lodash-es';
+import { isFunction, isNumber } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -45,11 +45,10 @@ export const AvatarImage = styled.img<{
   flex: 0 0 ${({ size }) => size}px;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
+  padding: ${({ padding }) => isNumber(padding) ? padding : 3}px;
   border-radius: 50%;
-  padding: ${({ padding }) => padding || 3}px;
-  border-radius: 50%;
-  border-style: solid;
-  border-width:  ${({ borderThickness }) => borderThickness || 1}px;
+  border-style: ${({ borderThickness }) => borderThickness === 0 ? 'none' : 'solid'};
+  border-width: ${({ borderThickness }) => isNumber(borderThickness) ? borderThickness : 1}px;
   border-color: ${({ borderColor }) => borderColor || 'transparent'};
   background: ${({ bgColor }) => bgColor || 'transparent'};
 
@@ -77,12 +76,12 @@ const AvatarIcon = styled(Icon)<{
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   fill: ${({ fillColor }) => fillColor || ''};
+  padding: ${({ padding }) => isNumber(padding) ? padding : 3}px;
   border-radius: 50%;
-  padding: ${({ padding }) => padding || 3}px;
-  border-radius: 50%;
-  border-style: solid;
-  border-width: ${({ borderThickness }) => borderThickness || 1}px;
-  border-color: transparent;
+  border-style: ${({ borderThickness }) => borderThickness === 0 ? 'none' : 'solid'};
+  border-width: ${({ borderThickness }) => isNumber(borderThickness) ? borderThickness : 1}px;
+  border-color: ${({ borderColor }) => borderColor || 'transparent'};
+  background: ${({ bgColor }) => bgColor || 'transparent'};
 
   &.hasHoverEffect {
     cursor: pointer;
@@ -161,7 +160,7 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
       const imageSize = (size > 160 ? 'large' : 'medium');
       const avatarSrc = user.attributes.avatar && user.attributes.avatar[imageSize];
       const containerSize =  size + (padding * 2) + (borderThickness * 2);
-      const badgeSize = this.props.badgeSize ? parseInt(this.props.badgeSize, 10) : (size / 1.8);
+      const badgeSize = this.props.badgeSize ? parseInt(this.props.badgeSize, 10) : (size / (size < 40 ? 1.8 : 2.3));
 
       return (
         <Container
