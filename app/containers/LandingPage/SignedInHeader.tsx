@@ -192,15 +192,10 @@ const Icons = styled.div`
   `}
 `;
 
-const NoAvatarUserIcon: any = styled(Icon)`
-  fill: #fff;
-  width: 50px;
-  height: 50px;
-`;
-
 const CompleteProfileIcon = styled(Icon)`
   width: 50px;
   height: 50px;
+  margin-left: -3px;
 `;
 
 const Text = styled.div``;
@@ -240,7 +235,7 @@ const AvatarAndShield = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  margin-right: -5px;
+  margin-right: -3px;
   z-index: 2;
 `;
 
@@ -248,7 +243,7 @@ const ShieldIcon = styled(Icon)`
   fill: ${colors.label};
   width: 50px;
   height: 56px;
-  margin-left: -5px;
+  margin-left: -3px;
 `;
 
 export interface InputProps {
@@ -325,7 +320,13 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentCompleteProfile id="e2e-singed-in-header-complete-profile">
               <Left>
                 <Icons>
-                  <NoAvatarUserIcon name="noAvatar" ariaHidden />
+                  <StyledAvatar
+                    userId={authUser?.id}
+                    size="50px"
+                    fillColor="#fff"
+                    padding="0px"
+                    borderThickness="0px"
+                  />
                   <CompleteProfileIcon name="completeProfile" ariaHidden />
                 </Icons>
                 <Text>
@@ -372,12 +373,10 @@ class SignedInHeader extends PureComponent<Props, State> {
                   <AvatarAndShield aria-hidden >
                     <StyledAvatar
                       userId={authUser?.id}
-                      size="48px"
+                      size="50px"
                       fillColor="#fff"
-                      bgColor="#fff"
-                      padding="2px"
+                      padding="0px"
                       borderThickness="0px"
-                      borderColor="#fff"
                     />
                     <ShieldIcon name="verify" />
                   </AvatarAndShield>
