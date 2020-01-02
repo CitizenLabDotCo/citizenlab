@@ -20,7 +20,7 @@ interface Props {
   status: 'success' | 'error' | 'loading';
 }
 
-const InitialUnsubscribeFeedback = ({ status }: Props) => {
+const InitialUnsubscribeFeedback = memo<Props>(({ status }) => {
   return (
     <FormSection>
       <Message status={status} aria-live="polite">
@@ -34,6 +34,6 @@ const InitialUnsubscribeFeedback = ({ status }: Props) => {
       </Message>
     </FormSection>
   );
-};
+});
 
 export default InitialUnsubscribeFeedback;
