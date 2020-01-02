@@ -164,7 +164,7 @@ class Input extends React.PureComponent<Props, State> {
     const tooManyChars = (maxCharCount && currentCharCount && currentCharCount > maxCharCount);
 
     return (
-      <Container error={hasError} className={`${className || ''}`}>
+      <Container error={hasError} className={className || ''}>
 
         {label &&
           <LabelWrapper>
