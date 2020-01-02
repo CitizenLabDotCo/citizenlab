@@ -6,7 +6,7 @@ import WithoutFiltersSidebar from './WithoutFiltersSidebar';
 
 // styling
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly }from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

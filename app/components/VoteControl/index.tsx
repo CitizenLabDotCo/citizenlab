@@ -28,8 +28,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 interface IVoteComponent {
   active: boolean;

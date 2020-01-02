@@ -7,8 +7,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styling
-import { ScreenReaderOnly } from 'utils/accessibility';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 // components
 import T from 'components/T';

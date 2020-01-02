@@ -38,8 +38,7 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const IdeaCardContainer = styled.div`
   display: flex;

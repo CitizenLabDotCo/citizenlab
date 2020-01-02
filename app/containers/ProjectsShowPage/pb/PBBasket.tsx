@@ -15,8 +15,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
-import { ScreenReaderOnly } from 'utils/accessibility';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { darken } from 'polished';
 

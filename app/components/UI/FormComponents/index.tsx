@@ -1,8 +1,7 @@
 import React, { memo } from 'react';
 
 import styled, { withTheme } from 'styled-components';
-import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { fontSizes, colors, booleanClass, invisibleA11yText, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';

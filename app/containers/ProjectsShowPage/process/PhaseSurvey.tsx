@@ -14,7 +14,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   padding-bottom: 100px;
