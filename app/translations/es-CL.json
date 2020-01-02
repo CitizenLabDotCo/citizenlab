@@ -1236,6 +1236,7 @@
   "app.containers.App.metaDescription": "Bienvenido a la plataforma de participación ciudadana en línea de {orgName}.\nConoce los proyectos locales y vota tus ideas favoritas. ¡Ven y se parte de la conversación!",
   "app.containers.App.metaTitle": "Plataforma de participación ciudadana {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "",
+  "app.containers.CampaignsConsentForm.ally_categoryLabel": "",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "¡Perfecto",
   "app.containers.CampaignsConsentForm.commentedCategory": "",
   "app.containers.CampaignsConsentForm.hideDetails": "",
