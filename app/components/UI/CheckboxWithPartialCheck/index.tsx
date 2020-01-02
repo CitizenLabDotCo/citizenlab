@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { get } from 'lodash-es';
+// https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
 
 const Container = styled.div<{ size: string }>`
   display: flex;
@@ -52,16 +53,14 @@ const InputWrapper = styled.div<{ checked: boolean | 'mixed', size: string }>`
   }
 `;
 
-const Input = styled.input`
-  &[type='checkbox'] {
-    /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-    clip: rect(1px, 1px, 1px, 1px);
-  }
+const RoleInput = styled.div`
+  /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
 `;
 
 const CheckmarkIcon = styled(Icon)`
@@ -159,7 +158,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
   }
 
   render() {
-    const { label, size, checked, className, notFocusable, id, disabled } = this.props;
+    const { label, size, checked, className, notFocusable, id } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -168,21 +167,20 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
         onMouseDown={this.removeFocus}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
-        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'} ${disabled ? 'disabled' : ''}`}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
       >
         <InputWrapper
-          className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
-          checked={checked}
+          className={`e2e-checkbox ${inputFocused ? 'focused' : ''}`}
           size={size as string}
+          checked={checked}
         >
-          <Input
+          <RoleInput
             tabIndex={notFocusable ? -1 : 0}
             id={id}
             aria-checked={checked}
-            type="checkbox"
+            role="checkbox"
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
-            disabled={disabled}
           />
           {checked === 'mixed' ? <CheckmarkIcon ariaHidden name="more-options" /> : checked && <CheckmarkIcon ariaHidden name="checkmark" />}
         </InputWrapper>

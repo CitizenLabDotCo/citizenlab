@@ -33,7 +33,8 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { rgba } from 'polished';
 
 const gapWidth = 35;
