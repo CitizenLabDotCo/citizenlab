@@ -87,10 +87,10 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
       : undefined;
 
     return (
-      <Container id="e2e-user-edit-profile-page">
+      <Container id="e2e-email-settings-page">
         <div>
           {initialUnsubscribeStatus && (
-            <StyledInitialFeedback status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
+            <StyledInitialFeedback className="e2e-unsubscribe-status" status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
           )}
           {!isNilOrError(consents) && (
             <StyledConsentForm
