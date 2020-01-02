@@ -26,7 +26,6 @@ describe('<EmailSettingPage/>', () => {
     expect(Wrapper.find('EmailSettingsPage__StyledInitialFeedback').prop('status')).toBe('success');
   });
   it('shows error indicator when initial update fails', async () => {
-    jest.useRealTimers();
     updateConsentByCampaignIDWIthToken.mockImplementationOnce(() => Promise.reject());
     const Wrapper = shallow(<EmailSettingPage location={location} />);
     await updateConsentByCampaignIDWIthToken().catch(() => {
