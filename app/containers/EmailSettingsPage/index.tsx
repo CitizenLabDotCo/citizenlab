@@ -86,28 +86,25 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
 
     return (
       <Container id="e2e-email-settings-page">
-        {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' &&
-          <GetCampaignConsentsWithToken
-            token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
-          >
-            {consents => (
-              <div>
-                {initialUnsubscribeStatus && (
-                  <StyledInitialFeedback className="e2e-unsubscribe-status" status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
-                )}
-                {!isNilOrError(consents) && (
-                  <StyledConsentForm
-                    consents={consents}
-                    trackEventName="Unsubcribed from unsubscribe link flow"
-                    token={token}
-                    runOnSave={this.closeInitialUnsubscribe}
-                  />
-                )}
-              </div>
-            )}
-          </GetCampaignConsentsWithToken>
-        }
-
+        <div>
+          {initialUnsubscribeStatus && (
+            <StyledInitialFeedback className="e2e-unsubscribe-status" status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
+          )}
+          {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' &&
+            <GetCampaignConsentsWithToken
+              token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
+            >
+              {consents => !isNilOrError(consents) ? (
+                <StyledConsentForm
+                  consents={consents}
+                  trackEventName="Unsubcribed from unsubscribe link flow"
+                  token={token}
+                  runOnSave={this.closeInitialUnsubscribe}
+                />
+              ) : null}
+            </GetCampaignConsentsWithToken>
+          }
+        </div>
       </Container>
     );
   }
