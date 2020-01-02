@@ -127,7 +127,7 @@ const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, 
     <Body>
       {body}
     </Body>
-    <Footer aria-live="polite">
+    <Footer>
       {footer}
     </Footer>
   </Container>
