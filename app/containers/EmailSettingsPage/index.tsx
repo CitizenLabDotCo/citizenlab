@@ -8,7 +8,7 @@ import ConsentForm from 'components/ConsentForm';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.main`
   width: 100%;
   background-color: ${colors.background};
   display: flex;
