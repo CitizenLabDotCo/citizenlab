@@ -4,8 +4,7 @@ import { lighten } from 'polished';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 
 // components
 import Icon from 'components/UI/Icon';

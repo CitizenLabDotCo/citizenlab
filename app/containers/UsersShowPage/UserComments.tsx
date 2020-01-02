@@ -18,8 +18,7 @@ import styled, { withTheme } from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { darken, rgba } from 'polished';
-import { media, colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;

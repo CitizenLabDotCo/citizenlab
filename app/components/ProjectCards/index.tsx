@@ -31,8 +31,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { media, fontSizes, viewportWidths, colors, ScreenReaderOnly } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');

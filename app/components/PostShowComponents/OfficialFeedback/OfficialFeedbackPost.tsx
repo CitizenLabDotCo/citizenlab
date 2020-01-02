@@ -13,8 +13,7 @@ import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // styles
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // i18n

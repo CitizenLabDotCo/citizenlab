@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
 import styled, { keyframes, withTheme } from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 import { getDaysRemainingUntil } from 'utils/dateUtils';

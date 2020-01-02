@@ -65,8 +65,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;

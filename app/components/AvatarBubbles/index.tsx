@@ -16,8 +16,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { colors, ScreenReaderOnly } from 'utils/styleUtils';
 
 const getFontSize = (size: number, digits: number) => {
   if (size >= 34) {
