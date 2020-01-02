@@ -20,7 +20,7 @@ module EmailCampaigns
     end
 
     def self.category
-      'weekly'
+      'scheduled'
     end
 
     def generate_commands recipient:, time: nil
