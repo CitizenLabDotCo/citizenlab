@@ -1,6 +1,6 @@
 import { isNil, get, isString } from 'lodash-es';
 import { ITenant } from 'services/tenant';
-import styled, { css } from 'styled-components';
+import { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
 import { isNilOrError } from './helperUtils';
 
@@ -405,13 +405,6 @@ export function invisibleA11yText() {
     clip: rect(1px, 1px, 1px, 1px);
   `;
 }
-
-/**
- * Wrap in this component any element that should only be visible by screen readers
- */
-export const ScreenReaderOnly = styled.span`
-  ${invisibleA11yText()}
-`;
 
 // Calculus
 export function remCalc(desiredSize: number) {

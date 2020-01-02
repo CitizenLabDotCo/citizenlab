@@ -27,7 +27,8 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 // typings
 import { CommentsSort } from 'services/comments';

@@ -20,9 +20,10 @@ import { FormattedRelative } from 'react-intl';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 const Container = styled.div`
   display: flex;
