@@ -17,6 +17,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
+import { Fieldset, ScreenReaderOnly } from 'utils/accessibility';
 
 const CategoryCheckboxContainer = styled.div`
   margin-bottom: 16px;
@@ -66,7 +67,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     const isCategoryOpen = {} as { [category: string]: boolean };
     Object.keys(categorizedConsents).forEach(category =>
       isCategoryOpen[category] = !categorizedConsents[category].every(consent => consent.attributes.consented)
-        && !categorizedConsents[category].every(consent => !consent.attributes.consented)
+      && !categorizedConsents[category].every(consent => !consent.attributes.consented)
     );
 
     this.state = {
@@ -194,25 +195,33 @@ export default class ConsentForm extends PureComponent<Props, State> {
                   onChange={this.handleOnChangeCategory(category)}
                   label={<FormattedMessage {...messages[`${category}Category`]} />}
                 />
-                <Button onClick={this.handleToggleOpenCategory(category)} style="text">
+                <Button onClick={this.handleToggleOpenCategory(category)} style="text" ariaExpanded={isCategoryOpen[category]}>
                   {isCategoryOpen[category]
                     ? <FormattedMessage {...messages.hideDetails} />
                     : <FormattedMessage {...messages.seeDetails} />
                   }
                 </Button>
               </CategoryCheckboxContainer>
-              {isCategoryOpen[category] &&
-                consents.map(consent => (
-                  <CheckboxContainer key={consent.id}>
-                    <Checkbox
-                      id={consent.id}
-                      checked={this.isConsented(consent.id)}
-                      onChange={this.handleOnChange(consent)}
-                      label={<T value={consent.attributes.campaign_type_description_multiloc} />}
-                    />
-                  </CheckboxContainer>
-                ))
-              }
+              {isCategoryOpen[category] && (
+                <Fieldset>
+                  <ScreenReaderOnly>
+                    <legend>
+                      <FormattedMessage {...messages.ally_categoryLabel} />
+                    </legend>
+                  </ScreenReaderOnly>
+
+                  {consents.map(consent => (
+                    <CheckboxContainer key={consent.id}>
+                      <Checkbox
+                        id={consent.id}
+                        checked={this.isConsented(consent.id)}
+                        onChange={this.handleOnChange(consent)}
+                        label={<T value={consent.attributes.campaign_type_description_multiloc} />}
+                      />
+                    </CheckboxContainer>
+                  ))}
+                </Fieldset>
+              )}
             </ConsentList>
           ))}
           <StyledSubmitWrapper

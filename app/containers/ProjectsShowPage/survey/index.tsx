@@ -15,7 +15,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 const SurveyContainer = styled.div`
   padding-top: 50px;
