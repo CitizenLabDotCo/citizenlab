@@ -182,7 +182,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     const { isSaving, saveButtonStatus, categorizedConsents, isCategoryOpen } = this.state;
 
     return (
-      <FormSection>
+      <FormSection id="e2e-consent-form">
         <form action="">
           <FormSectionTitle message={messages.notificationsTitle} subtitleMessage={messages.notificationsSubTitle} />
           {Object.entries(categorizedConsents).map(([category, consents]) => (

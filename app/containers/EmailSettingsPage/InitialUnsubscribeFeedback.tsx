@@ -21,11 +21,12 @@ const Message = styled.div<{ status: 'error' | 'success' | 'loading' }>`
 interface Props {
   status: 'success' | 'error' | 'loading';
   unsubscribedCampaignMultiloc: Multiloc | null;
+  className?: string;
 }
 
-const InitialUnsubscribeFeedback = ({ status, unsubscribedCampaignMultiloc }: Props) => {
+const InitialUnsubscribeFeedback = ({ status, unsubscribedCampaignMultiloc, className }: Props) => {
   return (
-    <FormSection>
+    <FormSection className={className || ''}>
       <Message status={status} aria-live="polite">
         {status === 'success' && unsubscribedCampaignMultiloc ? (
           <FormattedMessage
