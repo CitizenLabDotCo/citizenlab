@@ -72,8 +72,4 @@ export default defineMessages({
      id: 'app.containers.CampaignsConsentForm.hideDetails',
      defaultMessage: 'Hide details'
    },
-   ally_categoryLabel: {
-     id: 'app.containers.CampaignsConsentForm.ally_categoryLabel',
-     defaultMessage: 'Emails in this category'
-   },
 });
