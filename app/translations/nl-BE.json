@@ -1236,6 +1236,7 @@
   "app.containers.App.metaDescription": "Welkom op het online participatieplatform van {orgName}.\nVerken lokale projecten en stem op je favoriete ideeën. Neem deel aan de discussies!",
   "app.containers.App.metaTitle": "Burgerparticipatieplatform van {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "",
+  "app.containers.CampaignsConsentForm.ally_categoryLabel": "",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Opgeslagen",
   "app.containers.CampaignsConsentForm.commentedCategory": "",
   "app.containers.CampaignsConsentForm.hideDetails": "",
