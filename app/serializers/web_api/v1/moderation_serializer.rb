@@ -1,7 +1,7 @@
 class WebApi::V1::ModerationSerializer < WebApi::V1::BaseSerializer
   set_type :moderation
 
-  attributes :moderatable_type, :context_slug, :context_type, :context_multiloc, :content_multiloc, :created_at, :belongs_to
+  attributes :moderatable_type, :content_multiloc, :created_at
 
   attribute :moderation_status do |object|
     # Doesn't work
@@ -9,7 +9,7 @@ class WebApi::V1::ModerationSerializer < WebApi::V1::BaseSerializer
     ModerationStatus.where(moderatable_id: object.id, moderatable_type: object.moderatable_type).first&.status || 'unread'
   end
 
-  attribute :context_url do |object|
-    Frontend::UrlService.new.slug_to_url object.context_slug, object.context_type
+  attribute :belongs_to do |object, params|
+    object.belongs_to preloaded: params[:preloaded]
   end
 end
