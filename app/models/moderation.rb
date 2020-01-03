@@ -14,4 +14,18 @@ class Moderation < ActiveRecord::Base
       moderatable_type.constantize.find(id)
     end
   end
+
+  def belongs_to
+    obj = source_record
+    case moderatable_type
+    when 'Idea'
+      {project: obj.project}
+    when 'Initiative'
+      {project: obj.project}
+    when 'Comment'
+      {project: obj.project, moderatable_type.underscore.to_sym => obj}
+    end.map do |key, object|
+      [key, {id: object.id, slug: object.slug, title_multiloc: object.title_multiloc}]
+    end.to_h
+  end
 end

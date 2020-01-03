@@ -1,7 +1,7 @@
 class WebApi::V1::ModerationSerializer < WebApi::V1::BaseSerializer
   set_type :moderation
 
-  attributes :moderatable_type, :context_slug, :context_type, :context_multiloc, :content_multiloc, :created_at
+  attributes :moderatable_type, :context_slug, :context_type, :context_multiloc, :content_multiloc, :created_at, :belongs_to
 
   attribute :moderation_status do |object|
     # Doesn't work
