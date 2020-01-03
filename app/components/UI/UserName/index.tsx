@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { get } from 'lodash-es';
