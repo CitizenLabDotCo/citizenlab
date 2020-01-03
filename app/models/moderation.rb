@@ -30,11 +30,5 @@ class Moderation < ActiveRecord::Base
       end
     end
   end
-
-
-  private
-
-  def fetch_unless_preloaded claz, id, preloaded
-    preloaded.dig(claz, id) || claz.constantize.find(id)
-  end
+  
 end
