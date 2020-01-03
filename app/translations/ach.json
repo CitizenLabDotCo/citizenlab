@@ -1776,6 +1776,7 @@
   "app.containers.footer.cookieSettings": "",
   "app.containers.footer.email": "",
   "app.containers.footer.feedback": "",
+  "app.containers.footer.feedbackEmptyError": "",
   "app.containers.footer.feedbackModalTitle": "",
   "app.containers.footer.feedbackQuestion": "",
   "app.containers.footer.feedbackSuccessfullySubmitted": "",

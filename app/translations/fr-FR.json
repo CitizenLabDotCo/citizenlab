@@ -1776,6 +1776,7 @@
   "app.containers.footer.cookieSettings": "Paramètres des cookies",
   "app.containers.footer.email": "Email (facultatif)",
   "app.containers.footer.feedback": "Faites-nous savoir ce que vous n'avez pas trouvé :",
+  "app.containers.footer.feedbackEmptyError": "",
   "app.containers.footer.feedbackModalTitle": "Que cherchiez-vous ?",
   "app.containers.footer.feedbackQuestion": "Avez-vous trouvé ce que vous cherchiez ?",
   "app.containers.footer.feedbackSuccessfullySubmitted": "Votre retour a bien été publié.",

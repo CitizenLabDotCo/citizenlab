@@ -1776,6 +1776,7 @@
   "app.containers.footer.cookieSettings": "Cookie-indstillinger",
   "app.containers.footer.email": "E-mail (valgfrit)",
   "app.containers.footer.feedback": "Fortæl os hvad du ikke kunne finde:",
+  "app.containers.footer.feedbackEmptyError": "",
   "app.containers.footer.feedbackModalTitle": "Hvad kiggede du efter?",
   "app.containers.footer.feedbackQuestion": "Fandt du hvad du leder efter?",
   "app.containers.footer.feedbackSuccessfullySubmitted": "Din feedback blev indsendt.",
