@@ -312,15 +312,16 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
               optional
-            />
-            <ImagesDropzone
-              images={banner ? [banner] : null}
-              imagePreviewRatio={360 / 1440}
-              maxNumberOfImages={1}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              onAdd={this.addBanner}
-              onRemove={this.removeBanner}
-            />
+            >
+              <ImagesDropzone
+                images={banner ? [banner] : null}
+                imagePreviewRatio={360 / 1440}
+                maxNumberOfImages={1}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                onAdd={this.addBanner}
+                onRemove={this.removeBanner}
+              />
+            </FormLabel>
             {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />}
           </SectionField>
           <SectionField id="e2e-iniatiative-img-dropzone">
@@ -328,15 +329,16 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
               optional
-            />
-            <ImagesDropzone
-              images={image ? [image] : null}
-              imagePreviewRatio={135 / 298}
-              maxNumberOfImages={1}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              onAdd={this.addImage}
-              onRemove={this.removeImage}
-            />
+            >
+              <ImagesDropzone
+                images={image ? [image] : null}
+                imagePreviewRatio={135 / 298}
+                maxNumberOfImages={1}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                onAdd={this.addImage}
+                onRemove={this.removeImage}
+              />
+            </FormLabel>
             {touched.image
               && errors.image
               && <Error message={errors.image.message} />}
