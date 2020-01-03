@@ -41,7 +41,7 @@ interface DataProps {
 }
 
 interface State {
-  initialUnsubscribeStatus: 'error' | 'success' | 'loading' | null;
+  initialUnsubscribeStatus: 'error' | 'success' | 'loading' | 'hidden' | null;
   unsubscribedCampaignMultiloc: Multiloc | null;
 }
 
@@ -56,7 +56,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   }
 
   closeInitialUnsubscribe = () => {
-    this.setState({ initialUnsubscribeStatus: null });
+    this.setState({ initialUnsubscribeStatus: 'hidden' });
   }
 
   componentDidMount() {
@@ -87,7 +87,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
     return (
       <Container id="e2e-email-settings-page">
         <div>
-          {initialUnsubscribeStatus && (
+          {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'hidden' && (
             <StyledInitialFeedback className="e2e-unsubscribe-status" status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
           )}
           {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' &&
