@@ -1406,6 +1406,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "All initiatives taking place in {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Explore and support initiatives conducted in {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "All Initiatives • {orgName}",
+  "app.containers.InitiativesIndexPage.readMore": "Read more about initiatives.",
   "app.containers.InitiativesIndexPage.startInitiative": "Start an initiative",
   "app.containers.InitiativesIndexPage.success": "success",
   "app.containers.InitiativesIndexPage.successStoryTitle": "Learn from these success stories",
