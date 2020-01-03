@@ -22,7 +22,11 @@ module EmailCampaigns
         .where.not(id: activity.item.comments.pluck(:author_id))
     end
 
-    def generate_commands recipient:, activity: 
+    def self.category
+      'voted'
+    end
+
+    def generate_commands recipient:, activity:
       idea = activity.item
       status = idea.idea_status
       [{

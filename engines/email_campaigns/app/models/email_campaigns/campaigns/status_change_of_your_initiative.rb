@@ -18,7 +18,11 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
-    def generate_commands recipient:, activity: 
+    def self.category
+      'own'
+    end
+
+    def generate_commands recipient:, activity:
       initiative = activity.item.post
       status = initiative.initiative_status
       [{
