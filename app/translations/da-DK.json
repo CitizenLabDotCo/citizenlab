@@ -1606,7 +1606,7 @@
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "Jeg har allerede accepteret {tacLink}",
   "app.containers.SignIn.createAnAccount": "Registrer dig",
   "app.containers.SignIn.emailLabel": "E-mail",
-  "app.containers.SignIn.forgotPassword": "Glemt?",
+  "app.containers.SignIn.forgotPassword": "Glemt dit password?",
   "app.containers.SignIn.noEmailError": "Dette kan ikke være tomt",
   "app.containers.SignIn.noPasswordError": "Dette kan ikke være tomt",
   "app.containers.SignIn.noValidEmailError": "Det ser ikke ud til, at dette er en gyldig e-mail.",
