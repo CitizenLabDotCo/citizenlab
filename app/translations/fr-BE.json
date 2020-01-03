@@ -1,4 +1,7 @@
 {
+  "EmailSettingsPage.initialUnsubscribeError": "",
+  "EmailSettingsPage.initialUnsubscribeLoading": "",
+  "EmailSettingsPage.initialUnsubscribeSuccess": "",
   "UI.FormComponents.buttonDisabled": "Bouton soumettre désactivé",
   "UI.FormComponents.buttonEnabled": "Bouton soumettre activé",
   "UI.FormComponents.optional": "optionnel",
