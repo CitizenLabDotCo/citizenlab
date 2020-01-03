@@ -1606,7 +1606,7 @@
   "app.containers.SignIn.alreadyAcceptTermsAndConditions": "I've already accepted the {tacLink}",
   "app.containers.SignIn.createAnAccount": "Sign up",
   "app.containers.SignIn.emailLabel": "Email",
-  "app.containers.SignIn.forgotPassword": "Forgot password? ",
+  "app.containers.SignIn.forgotPassword": "Password forgotten? ",
   "app.containers.SignIn.noEmailError": "This cannot be empty",
   "app.containers.SignIn.noPasswordError": "This cannot be empty",
   "app.containers.SignIn.noValidEmailError": "This doesn't look like a valid email",
