@@ -1,4 +1,7 @@
 {
+  "EmailSettingsPage.initialUnsubscribeError": "",
+  "EmailSettingsPage.initialUnsubscribeLoading": "",
+  "EmailSettingsPage.initialUnsubscribeSuccess": "",
   "UI.FormComponents.buttonDisabled": "Send-knappen deaktiveret",
   "UI.FormComponents.buttonEnabled": "Send-knappen aktiveret",
   "UI.FormComponents.optional": "valgfri",

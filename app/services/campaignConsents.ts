@@ -29,10 +29,21 @@ export interface IConsent {
   data: IConsentData;
 }
 
-export function consentsStream(userId: string) {
-  return streams.get<IConsents>({ apiEndpoint: `${API_PATH}/users/${userId}/consents` });
+export function consentsStream() {
+  return streams.get<IConsents>({ apiEndpoint: `${API_PATH}/consents` });
 }
 
-export function updateConsent(consentId: string, object) {
-  return streams.update<IConsent>(`${API_PATH}/consents/${consentId}`, consentId, { consent: object });
+export function updateConsent(consentId: string, consented: boolean) {
+  return streams.update<IConsent>(`${API_PATH}/consents/${consentId}`, consentId, { consent: { consented } });
+}
+export function updateConsentWithToken(consentId: string, consented: boolean, token: string) {
+  return streams.update<IConsent>(`${API_PATH}/consents/${consentId}?unsubscription_token=${token}`, consentId, { consent: { consented } });
+}
+
+export function updateConsentByCampaignIDWIthToken(campaignId: string, consented: boolean, token: string) {
+  return streams.update<IConsent>(`${API_PATH}/consents/by_campaign_id/${campaignId}`, campaignId, { consent: { consented }, unsubscription_token: token });
+}
+
+export function consentsWithTokenStream(token: string) {
+  return streams.get<IConsents>({ apiEndpoint: `${API_PATH}/consents?unsubscription_token=${token}` });
 }

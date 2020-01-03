@@ -1,4 +1,7 @@
 {
+  "EmailSettingsPage.initialUnsubscribeError": "There was an issue unsubscribing from this campaign, please try again.",
+  "EmailSettingsPage.initialUnsubscribeLoading": "Your request is being processed, please wait...",
+  "EmailSettingsPage.initialUnsubscribeSuccess": "You successfully unsubscribed from this campaign.",
   "UI.FormComponents.buttonDisabled": "Submit button disabled",
   "UI.FormComponents.buttonEnabled": "Submit button enabled",
   "UI.FormComponents.optional": "optional",
