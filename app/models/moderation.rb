@@ -23,7 +23,12 @@ class Moderation < ActiveRecord::Base
     when 'Initiative'
       {}
     when 'Comment'
-      {project: obj.post.project, obj.post_type.underscore.to_sym => obj.post}
+      case obj.post_type
+      when 'Idea'
+        {project: obj.post.project, obj.post_type.underscore.to_sym => obj.post}
+      when 'Initiative'
+        {obj.post_type.underscore.to_sym => obj.post}
+      end
     end.map do |key, object|
       [key, {id: object.id, slug: object.slug, title_multiloc: object.title_multiloc}]
     end.to_h
