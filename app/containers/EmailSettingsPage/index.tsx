@@ -12,8 +12,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import { updateConsentByCampaignIDWIthToken } from 'services/campaignConsents';
-import { adopt } from 'react-adopt';
-import GetCampaignConsentsWithToken, { GetCampaignConsentsWithTokenChildProps } from 'resources/GetCampaignConsentsWithToken';
+import GetCampaignConsentsWithToken from 'resources/GetCampaignConsentsWithToken';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
@@ -39,7 +38,6 @@ const StyledConsentForm = styled(ConsentForm)`
 `;
 
 interface DataProps {
-  consents: GetCampaignConsentsWithTokenChildProps;
 }
 
 interface State {
@@ -81,7 +79,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
 
   render() {
     const { initialUnsubscribeStatus, unsubscribedCampaignMultiloc } = this.state;
-    const { consents, location } = this.props;
+    const { location } = this.props;
     const token = typeof location.query.unsubscription_token === 'string'
       ? location.query.unsubscription_token
       : undefined;
@@ -92,34 +90,24 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
           {initialUnsubscribeStatus && (
             <StyledInitialFeedback className="e2e-unsubscribe-status" status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
           )}
-          {!isNilOrError(consents) && (
-            <StyledConsentForm
-              consents={consents}
-              trackEventName="Unsubcribed from unsubscribe link flow"
-              token={token}
-              runOnSave={this.closeInitialUnsubscribe}
-            />
-          )}
+          {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' &&
+            <GetCampaignConsentsWithToken
+              token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
+            >
+              {consents => !isNilOrError(consents) ? (
+                <StyledConsentForm
+                  consents={consents}
+                  trackEventName="Unsubcribed from unsubscribe link flow"
+                  token={token}
+                  runOnSave={this.closeInitialUnsubscribe}
+                />
+              ) : null}
+            </GetCampaignConsentsWithToken>
+          }
         </div>
       </Container>
     );
   }
 }
 
-const EmailSettingPageWithHoc = withRouter(EmailSettingPage);
-
-const Data = adopt<DataProps, WithRouterProps>({
-  consents: ({ location, render }) => (
-    <GetCampaignConsentsWithToken
-      token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
-    >
-      {render}
-    </GetCampaignConsentsWithToken>
-  )
-});
-
-export default (inputProps: WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataprops => <EmailSettingPageWithHoc {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default withRouter(EmailSettingPage);
