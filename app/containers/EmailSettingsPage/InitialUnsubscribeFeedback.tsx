@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -23,7 +23,7 @@ interface Props {
   unsubscribedCampaignMultiloc: Multiloc | null;
 }
 
-const InitialUnsubscribeFeedback = ({ status, unsubscribedCampaignMultiloc }: Props) => {
+const InitialUnsubscribeFeedback = memo<Props>(({ status, unsubscribedCampaignMultiloc }) => {
   return (
     <FormSection>
       <Message status={status} aria-live="polite">
@@ -40,6 +40,6 @@ const InitialUnsubscribeFeedback = ({ status, unsubscribedCampaignMultiloc }: Pr
       </Message>
     </FormSection>
   );
-};
+});
 
 export default InitialUnsubscribeFeedback;

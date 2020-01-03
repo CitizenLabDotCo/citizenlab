@@ -82,7 +82,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   render() {
     const { initialUnsubscribeStatus, unsubscribedCampaignMultiloc } = this.state;
     const { consents, location } = this.props;
-    const token = typeof location.query.unsubscription_token === 'string'
+    const token = typeof location?.query?.unsubscription_token === 'string'
       ? location.query.unsubscription_token
       : undefined;
 
@@ -111,7 +111,7 @@ const EmailSettingPageWithHoc = withRouter(EmailSettingPage);
 const Data = adopt<DataProps, WithRouterProps>({
   consents: ({ location, render }) => (
     <GetCampaignConsentsWithToken
-      token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
+      token={typeof location?.query?.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
     >
       {render}
     </GetCampaignConsentsWithToken>
