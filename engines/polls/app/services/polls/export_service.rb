@@ -16,7 +16,7 @@ module Polls
           ], style: XlsxService.new.header_style(s)
           responses.includes(:user, response_options: [:option]).each do |response|
             user_options = questions.map do |q|
-              ros = response.response_options.where(option_id: q.option_ids)
+              ros = response.response_options.select{|ro| ro.option.question_id == q.id}
               if ros.present?
                 ros.map{|ro| multiloc_service.t(ro.option.title_multiloc)}.join(', ')
               else
