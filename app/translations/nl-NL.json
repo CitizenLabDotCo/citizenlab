@@ -1776,6 +1776,7 @@
   "app.containers.footer.cookieSettings": "Cookie-instellingen",
   "app.containers.footer.email": "E-mail (optioneel)",
   "app.containers.footer.feedback": "Laat ons weten wat je niet vond:",
+  "app.containers.footer.feedbackEmptyError": "",
   "app.containers.footer.feedbackModalTitle": "Waar was je naar op zoek?",
   "app.containers.footer.feedbackQuestion": "Vond je wat je zocht?",
   "app.containers.footer.feedbackSuccessfullySubmitted": "Je feedback is succesvol verzonden.",
