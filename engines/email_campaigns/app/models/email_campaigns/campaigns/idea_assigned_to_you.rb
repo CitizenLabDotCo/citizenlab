@@ -17,6 +17,10 @@ module EmailCampaigns
       {'Notifications::IdeaAssignedToYou' => {'created' => true}}
     end
 
+    def self.category
+      'admin'
+    end
+
     def filter_notification_recipient users_scope, activity:, time: nil
       users_scope.where(id: activity.item.recipient.id)
     end
