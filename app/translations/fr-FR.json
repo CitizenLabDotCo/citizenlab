@@ -1505,7 +1505,7 @@
   "app.containers.PasswordRecovery.emailPlaceholder": "Adresse e-mail",
   "app.containers.PasswordRecovery.helmetDescription": "Réinitialiser votre mot de passe",
   "app.containers.PasswordRecovery.helmetTitle": "Réinitialiser votre mot de passe",
-  "app.containers.PasswordRecovery.resetPassword": "Envoyer un lien de réinitialisation de mot de passe",
+  "app.containers.PasswordRecovery.resetPassword": "Recevoir un lien de réinitialisation",
   "app.containers.PasswordRecovery.submitError": "Nous n'avons pas trouvé de compte lié à cette adresse électronique. Vous pouvez essayer de vous inscrire par contre.",
   "app.containers.PasswordRecovery.subtitle": "Où peut-on envoyer un lien pour changer votre mot de passe ?",
   "app.containers.PasswordRecovery.successMessage": "E-mail de réinitialisation de mot de passe envoyé à {email}",
