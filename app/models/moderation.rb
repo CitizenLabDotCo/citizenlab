@@ -15,22 +15,26 @@ class Moderation < ActiveRecord::Base
     end
   end
 
-  def belongs_to
-    obj = source_record
+  def belongs_to preloaded={}
     case moderatable_type
     when 'Idea'
-      {project: obj.project}
+      {project: {id: project_id, slug: project_slug, title_multiloc: project_title_multiloc}}
     when 'Initiative'
       {}
     when 'Comment'
-      case obj.post_type
+      case post_type
       when 'Idea'
-        {project: obj.post.project, obj.post_type.underscore.to_sym => obj.post}
+        {project: {id: project_id, slug: project_slug, title_multiloc: project_title_multiloc}, post_type.underscore.to_sym => {id: post_id, slug: post_slug, title_multiloc: post_title_multiloc}}
       when 'Initiative'
-        {obj.post_type.underscore.to_sym => obj.post}
+        {post_type.underscore.to_sym => {id: post_id, slug: post_slug, title_multiloc: post_title_multiloc}}
       end
-    end.map do |key, object|
-      [key, {id: object.id, slug: object.slug, title_multiloc: object.title_multiloc}]
-    end.to_h
+    end
+  end
+
+
+  private
+
+  def fetch_unless_preloaded claz, id, preloaded
+    preloaded.dig(claz, id) || claz.constantize.find(id)
   end
 end
