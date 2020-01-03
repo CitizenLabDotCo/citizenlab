@@ -165,7 +165,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     const { emailValue, feedbackValue, submitted, feedbackValueError } = this.state;
 
     return (
-      <Container>
+      <Container aria-live="polite">
         {submitted ? (
           <Submitted>
             <FormattedMessage {...messages.feedbackSuccessfullySubmitted} />
