@@ -92,7 +92,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
           )}
           {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' &&
             <GetCampaignConsentsWithToken
-              token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
+              token={typeof location?.query?.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
             >
               {consents => !isNilOrError(consents) ? (
                 <StyledConsentForm
