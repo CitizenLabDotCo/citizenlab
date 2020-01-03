@@ -75,6 +75,7 @@ interface State {
   feedbackValue: string;
   apiErrors?: { [fieldName: string]: CLError[] };
   submitted: boolean;
+  feedbackValueError: JSX.Element | null;
 }
 
 class ShortFeedbackForm extends PureComponent<Props, State>{
@@ -85,7 +86,8 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     this.state = {
       emailValue: '',
       feedbackValue: '',
-      submitted: false
+      submitted: false,
+      feedbackValueError: null
     };
   }
 
@@ -109,10 +111,31 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     this.setState(prev => ({ emailValue, apiErrors: omit(prev.apiErrors, 'email') }));
   }
 
+  validateFeedbackValue = (feedbackValue: string | null) => {
+    if (!feedbackValue) {
+      return <FormattedMessage {...messages.feedbackEmptyError} />;
+    }
+
+    return null;
+  }
+
+  validateForm = (feedbackValue: string | null) => {
+    const feedbackValueError = this.validateFeedbackValue(feedbackValue);
+
+    this.setState({ feedbackValueError });
+
+    if (!feedbackValueError) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   onSubmit = async () => {
     const { emailValue, feedbackValue } = this.state;
+    const isFormValid = this.validateForm(feedbackValue);
 
-    if (feedbackValue.length > 3) {
+    if (isFormValid) {
       try {
         this.props.submitting(true);
         await postProductFeedback({
@@ -139,7 +162,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
   }
 
   render() {
-    const { emailValue, feedbackValue, submitted } = this.state;
+    const { emailValue, feedbackValue, submitted, feedbackValueError } = this.state;
 
     return (
       <Container>
@@ -157,6 +180,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
                 value={feedbackValue}
                 onChange={this.onChangeFeedback}
               />
+              {feedbackValueError && <Error text={feedbackValueError} />}
               {this.state.apiErrors && <Error apiErrors={this.state.apiErrors.message} />}
             </SectionField>
 
