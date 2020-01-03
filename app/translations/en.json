@@ -1614,7 +1614,7 @@
   "app.containers.SignIn.orLogInWith": "Or log in with",
   "app.containers.SignIn.passwordLabel": "Password",
   "app.containers.SignIn.signInButtonAltText": "Sign in with {loginMechanismName}",
-  "app.containers.SignIn.signInError": "The provided information is not correct. Click 'Forgot your password' above to reset your password.",
+  "app.containers.SignIn.signInError": "The provided information is not correct. Click 'Password forgotten' above to reset your password.",
   "app.containers.SignIn.signUp": "Sign up",
   "app.containers.SignIn.submit": "Log in",
   "app.containers.SignIn.title": "Welcome back",
