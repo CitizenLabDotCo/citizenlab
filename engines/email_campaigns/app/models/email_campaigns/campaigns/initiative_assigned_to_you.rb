@@ -21,6 +21,10 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
+    def self.category
+      'admin'
+    end
+
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
       [{
