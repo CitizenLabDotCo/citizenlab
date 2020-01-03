@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,7 +20,7 @@ interface Props {
   status: 'success' | 'error' | 'loading';
 }
 
-const InitialUnsubscribeFeedback = ({ status }: Props) => {
+const InitialUnsubscribeFeedback = memo<Props>(({ status }) => {
   return (
     <FormSection>
       <Message status={status} aria-live="polite">
@@ -34,6 +34,6 @@ const InitialUnsubscribeFeedback = ({ status }: Props) => {
       </Message>
     </FormSection>
   );
-};
+});
 
 export default InitialUnsubscribeFeedback;
