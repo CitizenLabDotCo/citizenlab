@@ -61,13 +61,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.unread',
     defaultMessage: 'Not viewed',
   },
-  noReadItems: {
-    id: 'app.containers.Admin.Moderation.noReadItems',
-    defaultMessage: 'There are no items that are viewed',
-  },
-  noUnreadItems: {
-    id: 'app.containers.Admin.Moderation.noUnreadItems',
-    defaultMessage: 'There are no items that are not viewed',
+  empty: {
+    id: 'app.containers.Admin.Moderation.empty',
+    defaultMessage: 'There is no content here',
   },
   readMore: {
     id: 'app.containers.Admin.Moderation.readMore',
