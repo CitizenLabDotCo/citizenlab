@@ -82,11 +82,11 @@ const StyledTable = styled(Table)`
     }
 
     &.belongsTo {
-      width: 20%;
+      width: 30%;
     }
 
     &.content {
-      width: 60%;
+      width: 50%;
       padding-right: 8px;
     }
   }
@@ -352,8 +352,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <Empty>
             <EmptyIcon name="inbox" />
             <EmptyMessage>
-              {moderationStatus === 'read' && <FormattedMessage {...messages.noReadItems} />}
-              {moderationStatus === 'unread' && <FormattedMessage {...messages.noUnreadItems} />}
+              {moderationStatus === 'read' && <FormattedMessage {...messages.empty} />}
             </EmptyMessage>
           </Empty>
         }

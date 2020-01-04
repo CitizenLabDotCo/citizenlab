@@ -11,13 +11,17 @@ export interface IModerationData {
   type: 'moderation';
   attributes: {
     moderatable_type: TModeratableTypes;
-    context_slug: string;
-    context_type: 'Idea' | 'Initiative';
-    context_multiloc: Multiloc;
     content_multiloc: Multiloc;
     created_at: string;
     moderation_status?: TModerationStatuses,
     context_url: string;
+    belongs_to: {
+      [key: string]: {
+        id:string,
+        slug: string,
+        title_multiloc: Multiloc
+      }
+    }
   };
 }
 
