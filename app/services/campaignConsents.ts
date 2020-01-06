@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
+const CATEGORIES = ['own', 'official', 'weekly', 'mention', 'commented', 'voted', 'admin'];
+
 export interface IConsentData {
   id: string;
   type: string;
@@ -9,6 +11,7 @@ export interface IConsentData {
     campaign_type: string;
     campaign_type_description_multiloc: Multiloc,
     consented: boolean;
+    category: 'own' | 'official' | 'weekly' | 'mention' | 'commented' | 'voted' | 'admin'
   };
 }
 
@@ -27,6 +30,17 @@ export interface IConsents {
 
 export interface IConsent {
   data: IConsentData;
+}
+
+export function getCategorizedConsents(consents: IConsentData[]) {
+  const res = {} as { [category: string]: IConsentData[]};
+  CATEGORIES.forEach(category => {
+    const categoryConsents = consents.filter(consent => consent.attributes.category === category);
+    if (categoryConsents.length > 0) {
+      res[category] = categoryConsents;
+    }
+  });
+  return res;
 }
 
 export function consentsStream() {
