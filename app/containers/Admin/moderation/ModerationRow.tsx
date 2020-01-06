@@ -49,8 +49,6 @@ interface Props {
 }
 
 const ModerationRow = memo<Props>(({ moderation, selected, onSelect, className }) => {
-  // const context = omitBy(moderation.attributes.context_multiloc, (value) => isNil(value) || isEmpty(value)) as Multiloc;
-  // const contextType = moderation.attributes?.context_type;
   const content = omitBy(moderation.attributes.content_multiloc, (value) => isNil(value) || isEmpty(value)) as Multiloc;
   const contentType = moderation.attributes?.moderatable_type;
 
