@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import { get, cloneDeep, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { LiveMessage } from 'react-aria-live';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -255,7 +256,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { votingEnabled, className, comment, intl } = this.props;
+    const { votingEnabled, className, comment, intl: { formatMessage } } = this.props;
     const { voted, upvoteCount } = this.state;
 
     if (!isNilOrError(comment) && (votingEnabled || (!votingEnabled && upvoteCount > 0))) {
@@ -263,7 +264,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className={className}>
           <UpvoteButtonWrapper>
             <UpvoteButton
-              aria-label={intl.formatMessage(messages.upvoteComment)}
+              aria-label={formatMessage(messages.upvoteComment)}
               onMouseDown={this.removeFocus}
               onClick={this.onVote}
               disabled={!votingEnabled}
@@ -279,17 +280,9 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 ${upvoteCount > 0 ? 'visible' : 'hidden'}
                 ${votingEnabled ? 'enabled' : 'disabled'}`
               }
-              aria-live="polite"
             >
-              <span aria-hidden>{upvoteCount}</span>
-              <ScreenReaderOnly>
-                <FormattedMessage
-                  {...messages.a11y_upvoteCount}
-                  values={{
-                    upvoteCount
-                  }}
-                />
-              </ScreenReaderOnly>
+              <LiveMessage message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })} aria-live="polite" />
+              {upvoteCount}
             </UpvoteCount>
           }
 
