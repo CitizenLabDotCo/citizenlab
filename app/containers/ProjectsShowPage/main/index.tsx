@@ -10,7 +10,7 @@ import {  getProjectUrl } from 'services/projects';
 import GetProject from 'resources/GetProject';
 
 export default withRouter((props: WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
+  <GetProject projectSlug={props.params.slug}>
     {(project) => {
       if (!isNilOrError(project)) {
         const redirectUrl = getProjectUrl(project);
