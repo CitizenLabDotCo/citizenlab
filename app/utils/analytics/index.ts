@@ -113,10 +113,12 @@ export function tenantInfo(tenant: ITenantData) {
 export function integrations(user: IUser | null) {
   const output = {
     Intercom: false,
+    SatisMeter: false,
   };
   if (user) {
     const highestRole = user.data.attributes.highest_role;
     output['Intercom'] = highestRole === 'admin' || highestRole === 'project_moderator';
+    output['SatisMeter'] = highestRole === 'admin' || highestRole === 'project_moderator';
   }
   return output;
 }

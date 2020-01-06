@@ -68,7 +68,7 @@ class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, Sta
 
 const Data =  withRouter(adopt<Props>({
   phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject id={params.projectId}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectId={params.projectId}>{render}</GetProject>
 }));
 
 export default () => (

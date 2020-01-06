@@ -22,7 +22,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-const WrongOptionsIndicator = ({ options, maxAnswers }: Props) => typeof maxAnswers === 'number' && maxAnswers < 2 ? (
+export const WrongMaxChoiceIndicator = ({ options, maxAnswers }: Props) => typeof maxAnswers === 'number' && maxAnswers < 2 ? (
   <StyledIndicator>
     <StyledIconTooltip content={<FormattedMessage {...messages.maxUnderTheMinTooltip} />} />
     <FormattedMessage {...messages.wrongMax} />
@@ -40,6 +40,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <WrongOptionsIndicator {...inputProps} {...dataprops} />}
+    {dataprops => <WrongMaxChoiceIndicator {...inputProps} {...dataprops} />}
   </Data>
 );

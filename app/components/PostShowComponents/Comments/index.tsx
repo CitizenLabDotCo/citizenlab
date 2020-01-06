@@ -170,7 +170,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>,
   comments: ({ postId, postType, render }) => <GetComments postId={postId} postType={postType}>{render}</GetComments>,
-  project: ({ post, render }) => <GetProject id={get(post, 'relationships.project.data.id')}>{render}</GetProject>
+  project: ({ post, render }) => <GetProject projectId={get(post, 'relationships.project.data.id')}>{render}</GetProject>
 });
 
 export default memo<InputProps>((inputProps: InputProps) => (

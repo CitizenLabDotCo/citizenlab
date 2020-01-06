@@ -140,7 +140,7 @@ export function isUUID(value: string) {
   return uuidRegExp.test(value);
 }
 
-export function toggleElementArray(array, value) {
+export function toggleElementInArray(array, value) {
     const index = array.indexOf(value);
 
     if (index === -1) {

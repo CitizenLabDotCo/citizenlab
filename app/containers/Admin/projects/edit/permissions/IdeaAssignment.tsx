@@ -86,7 +86,7 @@ class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   adminsAndMods: ({ projectId, render }) => <GetUsers canModerateProject={projectId}>{render}</GetUsers>
 });
 

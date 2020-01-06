@@ -79,7 +79,7 @@ class ProjectCircle extends PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+  <GetProject projectId={inputProps.projectId}>
     {(project) => <ProjectCircle {...inputProps} project={project} />}
   </GetProject>
 );
