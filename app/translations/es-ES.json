@@ -1645,7 +1645,7 @@
   "app.containers.SignUp.alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
   "app.containers.SignUp.continue": "Continuar",
   "app.containers.SignUp.defaultSignUpHelper": "Cuéntanos quién eres y te diremos cómo puedes participar.",
-  "app.containers.SignUp.emailApproval": "Check here to confirm that you agree receiving emails from this platform. You can select which emails you wish to receive from your user settings.",
+  "app.containers.SignUp.emailApproval": "Marca aquí para confirmar que estas de acuerdo en recibir correos electrónicos de esta plataforma. Puede seleccionar los correos electrónicos que desea recibir desde tu configuración de usuario.",
   "app.containers.SignUp.emailConsentError": "Tienes que aceptar la recepción de correos electrónicos para la gestión de tu cuenta.",
   "app.containers.SignUp.emailInvitationTokenInvalid": "Tu invitación ha expirado. Aun puedes crear una cuenta en nuestra {signUpPageLink}.",
   "app.containers.SignUp.emailLabel": "Correo",
