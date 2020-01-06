@@ -1,7 +1,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { indexOf, isString, forEach, findIndex } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { tap, filter, switchMap, distinctUntilChanged } from 'rxjs/operators';
+import { tap, filter, switchMap, distinctUntilChanged, map } from 'rxjs/operators';
 import moment from 'moment';
 import bowser from 'bowser';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -390,9 +390,13 @@ const PhaseContainer: any = styled.div`
   }
 `;
 
-const SelectedPhaseEvent = 'selectedProjectPhaseChanged';
+const SelectedPhaseEventSource = 'Timeline';
+const SelectedPhaseEventName = 'SelectedPhaseChangeEvent';
 type ISelectedPhase = IPhaseData | null;
-export const selectedPhaseObserver = eventEmitter.observeEvent<ISelectedPhase>(SelectedPhaseEvent);
+export const selectedPhase$ = eventEmitter.observeEvent<ISelectedPhase>(SelectedPhaseEventName).pipe(
+  map(event => event.eventValue),
+  distinctUntilChanged((x, y) => x?.id === y?.id)
+);
 
 interface Props {
   projectId: string;
@@ -436,7 +440,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
-    eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, null);
+    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventSource, SelectedPhaseEventName, null);
 
     this.subscriptions = [
       projectId$
@@ -469,12 +473,12 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const newSelectedPhaseId = this.state.selectedPhase ? this.state.selectedPhase.id : null;
 
     if (newSelectedPhaseId !== oldSelectedPhaseId) {
-      eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, this.state.selectedPhase);
+      eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventSource, SelectedPhaseEventName, this.state.selectedPhase);
     }
   }
 
   componentWillUnmount() {
-    eventEmitter.emit<ISelectedPhase>('Timeline', SelectedPhaseEvent, null);
+    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventSource, SelectedPhaseEventName, null);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 

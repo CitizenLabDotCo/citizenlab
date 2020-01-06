@@ -5,58 +5,61 @@ import { isEmpty, get } from 'lodash-es';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
-import { darken } from 'polished';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
-
-  & > :not(:last-child) {
-    margin-right: 5px;
-  }
 `;
 
 const StyledButton = styled.button`
-  color: ${colors.label};
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.small}px;
   display: flex;
   align-items: center;
   text-transform: uppercase;
-  padding: 7px 9px;
+  font-weight: 500;
+  padding: 7px 8px;
+  margin-right: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px #ccc;
   cursor: pointer;
   transition: all 80ms ease-out;
 
-  svg {
-    fill: ${colors.clRed};
+  &.last {
+    margin-right: 0px;
   }
 
-  & >:first-child {
-    margin-right: 7px;
-  }
-
-  &.isComplete {
-    svg {
-      fill: ${colors.clGreen};
-    }
+  &:not(.isSelected):hover {
+    color: ${colors.adminTextColor};
+    border-color: ${colors.adminTextColor};
   }
 
   &.isSelected {
-    color: #000;
-    background: ${colors.lightGreyishBlue};
+    color: #fff;
+    background: ${colors.adminTextColor};
+    border-color: ${colors.adminTextColor};
   }
+`;
 
-  &:hover {
-    color: #000;
-    background: ${darken(0.05, colors.lightGreyishBlue)};
+const Dot = styled.div`
+  flex: 0 0 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: ${colors.clRed};
+  margin-right: 5px;
+
+  &.isComplete {
+    background: ${colors.clGreen};
   }
 `;
 
 interface InputProps {
   onLocaleChange: (loc: Locale) => void;
-  values: MultilocFormValues;
+  locales?: Locale[];
+  values?: MultilocFormValues;
   selectedLocale: Locale;
   className?: string;
 }
@@ -84,20 +87,21 @@ class FormLocaleSwitcher extends PureComponent<Props> {
   }
 
   render() {
-    const { tenantLocales, selectedLocale, className } = this.props;
+    const { tenantLocales, selectedLocale, values, className } = this.props;
+    const locales = (this.props.locales || tenantLocales);
 
-    if (!isNilOrError(tenantLocales) && tenantLocales.length > 1) {
+    if (!isNilOrError(locales) && locales.length > 1) {
       return (
         <Container className={className}>
-          {tenantLocales.map((locale) => (
+          {locales.map((locale, index) => (
             <StyledButton
               key={locale}
               onMouseDown={this.removeFocus}
               onClick={this.handleOnClick(locale)}
               type="button"
-              className={`e2e-locale-switch ${locale} ${locale === selectedLocale ? 'isSelected' : ''} ${this.validatePerLocale(locale) ? 'isComplete' : 'notComplete'}`}
+              className={`e2e-locale-switch ${locale} ${locale === selectedLocale ? 'isSelected' : ''} ${index + 1 === locales.length ? 'last' : ''}`}
             >
-              <Icon name="dot" />
+              {values && <Dot className={this.validatePerLocale(locale) ? 'isComplete' : 'notComplete'} />}
               {locale}
             </StyledButton>
           ))}

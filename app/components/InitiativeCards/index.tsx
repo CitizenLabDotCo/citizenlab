@@ -144,20 +144,14 @@ const Loading = styled.div`
 `;
 
 const EmptyContainer = styled.div`
+  flex: 1;
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    height: calc(100vh - 280px);
-    position: sticky;
-    top: 200px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-  `}
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
 `;
 
 const EmptyContainerInner = styled.div`
@@ -166,16 +160,19 @@ const EmptyContainerInner = styled.div`
   align-items: center;
   padding-left: 30px;
   padding-right: 30px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 `;
 
 const InitiativeIcon = styled(Icon)`
-  flex: 0 0 46px;
-  width: 46px;
-  height: 46px;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
   fill: ${colors.label};
 `;
 
 const EmptyMessage = styled.div`
+  max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -186,11 +183,11 @@ const EmptyMessage = styled.div`
 
 const EmptyMessageMainLine = styled.div`
   color: ${colors.text};
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
   line-height: normal;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 
 const EmptyMessageSubLine = styled.div`
@@ -472,11 +469,12 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     const { list, hasMore, querying, loadingMore } = initiatives;
     const hasInitiatives = (!isNilOrError(list) && list.length > 0);
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
+    const biggerThanSmallTablet = (windowSize && windowSize >= viewportWidths.smallTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
     const filtersActive = selectedInitiativeFilters.search ||
-    selectedInitiativeFilters.initiative_status ||
-    selectedInitiativeFilters.areas ||
-    selectedInitiativeFilters.topics;
+                            selectedInitiativeFilters.initiative_status ||
+                            selectedInitiativeFilters.areas ||
+                            selectedInitiativeFilters.topics;
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
@@ -583,7 +581,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   selectedView={selectedView}
                 />
 
-                {!isNilOrError(initiativesFilterCounts) &&
+                {!isNilOrError(initiativesFilterCounts) && biggerThanSmallTablet &&
                   <InitiativesCount>
                     <FormattedMessage {...messages.xInitiatives} values={{ initiativesCount: initiativesFilterCounts.total }} />
                   </InitiativesCount>
