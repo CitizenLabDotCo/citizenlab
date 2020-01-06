@@ -232,39 +232,40 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
             <FormattedMessage {...messages.verifyNow} />
           </Subtitle>
 
-          {!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0 && verificationMethods.data.map(method => (
-            <MethodButton
-              key={method.id}
-              icon="verify_manually"
-              onClick={onSelectMethodButtonClick(method)}
-              fullWidth={true}
-              size="1"
-              justify="left"
-              padding="14px 20px"
-              bgColor="#fff"
-              bgHoverColor="#fff"
-              iconColor={theme.colorMain}
-              iconHoverColor={darken(0.2, theme.colorMain)}
-              textColor={theme.colorText}
-              textHoverColor={darken(0.2, theme.colorText)}
-              borderColor="#e3e3e3"
-              borderHoverColor={darken(0.2, '#e3e3e3')}
-              boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-              boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
-              id={`e2e-${method.attributes.name}-button`}
-            >
-              {method.attributes.name === 'cow' ? (
-                <FormattedMessage {...messages.verifyCow} />
-              ) : method.attributes.name === 'bosa_fas' ? (
-                <FormattedMessage {...messages.verifyBOSA} />
-              ) : method.attributes.name === 'bogus' ?
-                    'Bogus verification (testing)'
-                    : method.attributes.name === 'id_card_lookup' ? (
-                      <T value={method.attributes.method_name_multiloc} />
-                    ) : null
-              }
-            </MethodButton>
-          ))}
+          {!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0 &&
+            verificationMethods.data.filter(method => ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(method.attributes.name)).map(method => (
+              <MethodButton
+                key={method.id}
+                icon="verify_manually"
+                onClick={onSelectMethodButtonClick(method)}
+                fullWidth={true}
+                size="1"
+                justify="left"
+                padding="14px 20px"
+                bgColor="#fff"
+                bgHoverColor="#fff"
+                iconColor={theme.colorMain}
+                iconHoverColor={darken(0.2, theme.colorMain)}
+                textColor={theme.colorText}
+                textHoverColor={darken(0.2, theme.colorText)}
+                borderColor="#e3e3e3"
+                borderHoverColor={darken(0.2, '#e3e3e3')}
+                boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+                boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
+                id={`e2e-${method.attributes.name}-button`}
+              >
+                {method.attributes.name === 'cow' ? (
+                  <FormattedMessage {...messages.verifyCow} />
+                ) : method.attributes.name === 'bosa_fas' ? (
+                  <FormattedMessage {...messages.verifyBOSA} />
+                ) : method.attributes.name === 'bogus' ?
+                      'Bogus verification (testing)'
+                      : method.attributes.name === 'id_card_lookup' ? (
+                        <T value={method.attributes.method_name_multiloc} />
+                      ) : null
+                }
+              </MethodButton>
+            ))}
         </ButtonsContainer>
       </Content>
     </Container>

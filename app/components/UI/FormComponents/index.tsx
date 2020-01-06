@@ -8,8 +8,6 @@ import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-in
 import Button from '../Button';
 import messages from './messages';
 import ContentContainer from 'components/ContentContainer';
-import Icon from 'components/UI/Icon';
-import IconTooltip from '../IconTooltip';
 
 export const FormSection = styled.div`
   max-width: 620px;
