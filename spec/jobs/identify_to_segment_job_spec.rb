@@ -1,14 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe IdentifyToSegmentJob, type: :job do
-  
+
   subject(:job) { IdentifyToSegmentJob.new }
 
   describe '#perform' do
 
     it "calls segment's identify() method with the correct payload" do
       user = create(:user)
-      
+
       expect(Analytics).to receive(:identify) do |identification|
         expect(identification).to match ({
           :user_id=>user.id,
@@ -35,7 +35,8 @@ RSpec.describe IdentifyToSegmentJob, type: :job do
           },
           integrations: {
             All: true,
-            Intercom: false
+            Intercom: false,
+            SatisMeter: false
           }
         })
       end
@@ -44,7 +45,7 @@ RSpec.describe IdentifyToSegmentJob, type: :job do
 
     it "calls segment's group() method with the correct payload" do
       user = create(:user)
-      
+
       expect(Analytics).to receive(:group) do |grouping|
         expect(grouping).to match({
           :user_id=>user.id,
@@ -63,7 +64,8 @@ RSpec.describe IdentifyToSegmentJob, type: :job do
           },
           integrations: {
             All: true,
-            Intercom: false
+            Intercom: false,
+            SatisMeter: false
           }
         })
       end
