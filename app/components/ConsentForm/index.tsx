@@ -17,6 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+import Icon from 'components/UI/Icon';
 
 const CategoryCheckboxContainer = styled.div`
   margin-bottom: 16px;
@@ -25,6 +26,19 @@ const CategoryCheckboxContainer = styled.div`
   }
   display: flex;
   justify-content: space-between;
+`;
+
+const ArrowIcon = styled(Icon)`
+  flex: 0 0 13px;
+  width: 13px;
+  height: 13px;
+  transform: rotate(90deg);
+  transition: all .2s linear;
+  margin-left: 5px;
+
+  &.open {
+    transform: rotate(0deg);
+  }
 `;
 
 const CheckboxContainer = styled.div`
@@ -66,7 +80,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
     const isCategoryOpen = {} as { [category: string]: boolean };
     Object.keys(categorizedConsents).forEach(category =>
       isCategoryOpen[category] = !categorizedConsents[category].every(consent => consent.attributes.consented)
-        && !categorizedConsents[category].every(consent => !consent.attributes.consented)
+      && !categorizedConsents[category].every(consent => !consent.attributes.consented)
     );
 
     this.state = {
@@ -196,9 +210,10 @@ export default class ConsentForm extends PureComponent<Props, State> {
                 />
                 <Button onClick={this.handleToggleOpenCategory(category)} style="text">
                   {isCategoryOpen[category]
-                    ? <FormattedMessage {...messages.hideDetails} />
-                    : <FormattedMessage {...messages.seeDetails} />
+                    ? <FormattedMessage {...messages.collapse} />
+                    : <FormattedMessage {...messages.expand} />
                   }
+                  <ArrowIcon name="dropdown" className={isCategoryOpen[category] ? 'open' : ''} ariaHidden/>
                 </Button>
               </CategoryCheckboxContainer>
               {isCategoryOpen[category] &&
