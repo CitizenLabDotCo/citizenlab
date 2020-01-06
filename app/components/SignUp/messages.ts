@@ -132,7 +132,7 @@ export default defineMessages({
   },
   privacyApproval: {
     id: 'app.containers.SignUp.privacyApproval',
-    defaultMessage: 'Check here to confirm that you have read and agree to our {cookieLink} and {ppLink}',
+    defaultMessage: 'Check here to confirm that you have read and agree to our {ppLink}',
   },
   emailApproval: {
     id: 'app.containers.SignUp.emailApproval',
@@ -153,10 +153,6 @@ export default defineMessages({
   privacyPolicy: {
     id: 'app.containers.SignUp.privacyPolicy',
     defaultMessage: 'privacy policy',
-  },
-  cookiePolicy: {
-    id: 'app.containers.SignUp.cookiePolicy',
-    defaultMessage: 'cookie policy',
   },
   tacError: {
     id: 'app.containers.SignUp.tacError',

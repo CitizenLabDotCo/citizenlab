@@ -456,7 +456,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage
                       {...messages.privacyApproval}
                       values={{
-                        cookieLink: <Link target="_blank" to="/pages/cookie-policy"><FormattedMessage {...messages.cookiePolicy} /></Link>,
                         ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
                       }}
                     />
