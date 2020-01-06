@@ -52,13 +52,12 @@ resource "Moderations" do
       expect(json_response[:data].size).to eq 4
       expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m1.id, @m2.id, @m3.id, @m4.id]
       expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type) }).to eq ['Initiative', 'Comment', 'Idea', 'Idea']
-      expect(json_response[:data].map { |d| d.dig(:attributes, :context_multiloc).stringify_keys['en'] }).to eq ['Burn more leaves', 'More bicycle repairmen', 'More bicycle repairmen', 'Fewer bicycle repairmen']
-      expect(json_response[:data].map { |d| d.dig(:attributes, :content_multiloc).stringify_keys['en'] }).to eq ['We must return that CO2 to our atmosphere at all cost', 'I\'m glad there\'s still heroes around', 'They are the true heroes of society', 'They are pretentious donkeys']
+      expect(json_response[:data].map { |d| d.dig(:attributes, :content_body_multiloc).stringify_keys['en'] }).to eq ['We must return that CO2 to our atmosphere at all cost', 'I\'m glad there\'s still heroes around', 'They are the true heroes of society', 'They are pretentious donkeys']
       expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status)}).to eq ['unread', 'unread', 'read', 'read']
       expect(json_response[:data].map { |d| Time.parse(d.dig(:attributes, :created_at)).to_i }).to eq [@time - 1.minute, @time - 1.hour, @time - 1.day, @time - 2.days].map(&:to_i)
       expect(JSON.parse(JSON.generate(json_response))['data'].map { |d| d.dig('attributes', 'belongs_to')}).to eq [
         {},
-        {'project' => {'id' => @m3.project.id, 'slug' => @m3.project.slug, 'title_multiloc' => @m3.project.title_multiloc}, 'idea' => {'id' => @m3.id, 'slug' => @m3.slug, 'title_multiloc' => @m3.title_multiloc}},
+        {'project' => {'id' => @m3.project.id, 'slug' => @m3.project.slug, 'title_multiloc' => @m3.project.title_multiloc}, 'idea' => {'id' => @m3.id, 'slug' => @m3.slug, 'title_multiloc' => {'en' => 'More bicycle repairmen'}}},
         {'project' => {'id' => @m3.project.id, 'slug' => @m3.project.slug, 'title_multiloc' => @m3.project.title_multiloc}},
         {'project' => {'id' => @m4.project.id, 'slug' => @m4.project.slug, 'title_multiloc' => @m4.project.title_multiloc}}
       ]
