@@ -77,6 +77,13 @@ const TwoColumns = styled.div`
   `}
 `;
 
+const StyledContentContainer = styled(ContentContainer)`
+  ${media.smallerThanMinTablet`
+    padding-left: 0;
+    padding-right: 0;
+  `}
+`;
+
 const TipsContainer = styled.div`
   position: relative;
   margin-left: 25px;
@@ -120,14 +127,14 @@ export default class PageLayout extends React.PureComponent<Props> {
             />
           </HeaderTitle>
         </Header>
-        <ContentContainer mode="page">
+        <StyledContentContainer mode="page">
           <TwoColumns>
             {children}
             <TipsContainer>
               <StyledTipsBox />
             </TipsContainer>
           </TwoColumns>
-        </ContentContainer>
+        </StyledContentContainer>
       </Container>
     );
   }
