@@ -12,11 +12,11 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import { updateConsentByCampaignIDWIthToken } from 'services/campaignConsents';
-import { adopt } from 'react-adopt';
-import GetCampaignConsentsWithToken, { GetCampaignConsentsWithTokenChildProps } from 'resources/GetCampaignConsentsWithToken';
+import GetCampaignConsentsWithToken from 'resources/GetCampaignConsentsWithToken';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import { Multiloc } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -38,11 +38,11 @@ const StyledConsentForm = styled(ConsentForm)`
 `;
 
 interface DataProps {
-  consents: GetCampaignConsentsWithTokenChildProps;
 }
 
 interface State {
-  initialUnsubscribeStatus: 'error' | 'success' | 'loading' | null;
+  initialUnsubscribeStatus: 'error' | 'success' | 'loading' | 'hidden' | null;
+  unsubscribedCampaignMultiloc: Multiloc | null;
 }
 
 export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps, State> {
@@ -50,8 +50,13 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   constructor(props: DataProps & WithRouterProps) {
     super(props);
     this.state = {
-      initialUnsubscribeStatus: null
+      initialUnsubscribeStatus: null,
+      unsubscribedCampaignMultiloc: null
     };
+  }
+
+  closeInitialUnsubscribe = () => {
+    this.setState({ initialUnsubscribeStatus: 'hidden' });
   }
 
   componentDidMount() {
@@ -61,8 +66,8 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
       this.setState({ initialUnsubscribeStatus: 'error' });
     } else {
       this.setState({ initialUnsubscribeStatus: 'loading' });
-      updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(() => {
-        this.setState({ initialUnsubscribeStatus: 'success' });
+      updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(({ data }) => {
+        this.setState({ initialUnsubscribeStatus: 'success', unsubscribedCampaignMultiloc: data.attributes.campaign_type_description_multiloc });
         streams.fetchAllWith({
           apiEndpoint: [`${API_PATH}/consents?unsubscription_token=${query.unsubscription_token}`],
         });
@@ -73,45 +78,36 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   }
 
   render() {
-    const { initialUnsubscribeStatus } = this.state;
-    const { consents, location } = this.props;
-    const token = typeof location?.query.unsubscription_token === 'string'
+    const { initialUnsubscribeStatus, unsubscribedCampaignMultiloc } = this.state;
+    const { location } = this.props;
+    const token = typeof location?.query?.unsubscription_token === 'string'
       ? location.query.unsubscription_token
       : undefined;
 
     return (
-      <Container id="e2e-user-edit-profile-page">
+      <Container id="e2e-email-settings-page">
         <div>
-          {initialUnsubscribeStatus && (
-            <StyledInitialFeedback status={initialUnsubscribeStatus} />
+          {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'hidden' && (
+            <StyledInitialFeedback className="e2e-unsubscribe-status" status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
           )}
-          {!isNilOrError(consents) && (
-            <StyledConsentForm
-              consents={consents}
-              trackEventName="Unsubcribed from unsubscribe link flow"
-              token={token}
-            />
-          )}
+          {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' &&
+            <GetCampaignConsentsWithToken
+              token={typeof location?.query?.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
+            >
+              {consents => !isNilOrError(consents) ? (
+                <StyledConsentForm
+                  consents={consents}
+                  trackEventName="Unsubcribed from unsubscribe link flow"
+                  token={token}
+                  runOnSave={this.closeInitialUnsubscribe}
+                />
+              ) : null}
+            </GetCampaignConsentsWithToken>
+          }
         </div>
       </Container>
     );
   }
 }
 
-const EmailSettingPageWithHoc = withRouter(EmailSettingPage);
-
-const Data = adopt<DataProps, WithRouterProps>({
-  consents: ({ location, render }) => (
-    <GetCampaignConsentsWithToken
-      token={typeof location?.query?.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
-    >
-      {render}
-    </GetCampaignConsentsWithToken>
-  )
-});
-
-export default (inputProps: WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataprops => <EmailSettingPageWithHoc {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default withRouter(EmailSettingPage);
