@@ -1626,7 +1626,6 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Acepta nuestra {tacLink} para registrarse con {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
   "app.containers.SignUp.continue": "Continuar",
-  "app.containers.SignUp.cookiePolicy": "",
   "app.containers.SignUp.defaultSignUpHelper": "Cuéntanos quién eres y te diremos cómo puedes participar.",
   "app.containers.SignUp.emailApproval": "",
   "app.containers.SignUp.emailConsentError": "",
