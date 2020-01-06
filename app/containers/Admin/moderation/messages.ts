@@ -33,9 +33,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.content',
     defaultMessage: 'Content',
   },
-  options: {
-    id: 'app.containers.Admin.Moderation.options',
-    defaultMessage: 'Options',
+  goTo: {
+    id: 'app.containers.Admin.Moderation.goTo',
+    defaultMessage: 'Go to',
   },
   date: {
     id: 'app.containers.Admin.Moderation.date',
@@ -89,8 +89,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.markAsNotViewed',
     defaultMessage: 'Mark {selectedItemsCount} items as not viewed',
   },
-  view: {
-    id: 'app.containers.Admin.Moderation.view',
-    defaultMessage: 'View this {contentType}',
+  goToThisContentType: {
+    id: 'app.containers.Admin.Moderation.goToThisContentType',
+    defaultMessage: 'Open this {contentType} in a new tab',
   },
 });

@@ -17,8 +17,8 @@ import T from 'components/T';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba, lighten } from 'polished';
+import { colors } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 // typings
 import { IModerationData } from 'services/moderations';
@@ -45,81 +45,27 @@ const BelongsToType = styled.span`
   margin-right: 6px;
 `;
 
-const MoreOptionsWrapper = styled.div`
-  width: 20px;
-  position: relative;
+const ViewIconLinkWrapper = styled.div`
+  width: 18px;
+  height: 18px;
 `;
 
-const MoreOptionsIcon = styled(Icon) `
-  width: 20px;
-  height: 20px;
-  fill: ${colors.adminSecondaryTextColor};
-`;
-
-const MoreOptionsButton = styled.button`
-  width: 25px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const ViewIconLink = styled(Link)`
+  width: 100%;
+  height: 100%;
   padding: 0;
   margin: 0;
   border: none;
-  background: transparent;
   cursor: pointer;
-
-  &:hover ${MoreOptionsIcon} {
-    fill: #000;
-  }
 `;
 
-const DropdownList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  margin-top: 5px;
-  margin-bottom: 5px;
-`;
+const ViewIcon = styled(Icon)`
+  width: 100%;
+  height: 100%;
+  fill: ${colors.label};
 
-const ViewLinkText = styled.span`
-  color: ${colors.adminLightText};
-  font-size: ${fontSizes.small}px;
-  text-decoration: none;
-  font-weight: 400;
-  white-space: nowrap;
-`;
-
-const ViewLinkIcon = styled(Icon)`
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
-  fill: ${colors.adminLightText};
-  margin-left: 10px;
-`;
-
-const ViewLink = styled(Link)`
-  flex: 1 1 auto;
-  text-decoration: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: transparent;
-
-  &:hover,
-  &:focus {
-    color: white;
-    text-decoration: none;
-    background: ${lighten(.1, colors.adminMenuBackground)};
-
-    ${ViewLinkText} {
-      color: #fff;
-    }
-
-    ${ViewLinkIcon} {
-      fill: #fff;
-    }
+  &:hover {
+    fill: ${colors.adminTextColor};
   }
 `;
 
@@ -138,7 +84,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
   let bgColor = '#fff';
 
   if (moderation?.attributes?.moderation_status === 'read') {
-    bgColor = '#f4f4f4';
+    bgColor = '#f6f6f6';
   }
 
   if (selected) {
@@ -149,10 +95,6 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
     event.preventDefault();
     onSelect(moderation.id);
   }, [onSelect]);
-
-  const removeFocus = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-  }, []);
 
   let viewLink = `/${moderation.attributes?.moderatable_type.toLowerCase()}s/${moderation.attributes.content_slug}`;
 
@@ -204,32 +146,16 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
         />
       </td>
       <td>
-        <MoreOptionsWrapper>
-          <Tippy
-            placement="bottom-end"
-            interactive={true}
-            arrow={true}
-            trigger="click"
-            duration={[200, 0]}
-            flip={true}
-            flipBehavior="flip"
-            flipOnUpdate={true}
-            content={
-              <DropdownList>
-                <ViewLink to={viewLink} target="_blank">
-                  <ViewLinkText>
-                    <FormattedMessage {...messages.view} values={{ contentType: contentType.toLowerCase() }} />
-                  </ViewLinkText>
-                  <ViewLinkIcon name="eye" />
-                </ViewLink>
-              </DropdownList>
-            }
-          >
-            <MoreOptionsButton onMouseDown={removeFocus}>
-              <MoreOptionsIcon name="more-options" />
-            </MoreOptionsButton>
-          </Tippy>
-        </MoreOptionsWrapper>
+        <Tippy
+          placement="bottom-end"
+          content={<FormattedMessage {...messages.goToThisContentType} values={{ contentType: contentType.toLowerCase() }} />}
+        >
+          <ViewIconLinkWrapper>
+            <ViewIconLink to={viewLink} target="_blank">
+              <ViewIcon name="goTo" />
+            </ViewIconLink>
+          </ViewIconLinkWrapper>
+        </Tippy>
       </td>
     </Container>
   );

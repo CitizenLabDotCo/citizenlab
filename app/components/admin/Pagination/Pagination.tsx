@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { rgba } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -29,12 +30,10 @@ const NavigateButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px #ccc;
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &.disabled {
     color: #bbb;
-    border-color: #e0e0e0;
     cursor: not-allowed;
 
     ${ChevronIcon} {
@@ -47,7 +46,9 @@ const NavigateButton = styled.button`
 
     &:hover,
     &:focus {
-      border-color: ${colors.adminTextColor};
+      ${ChevronIcon} {
+        fill: ${colors.clIconAccent};
+      }
     }
   }
 `;
@@ -81,20 +82,19 @@ const Item = styled.button`
   }
 
   &:not(.disabled) {
-    border: solid 1px #ccc;
     border-radius: ${(props: any) => props.theme.borderRadius};
+    background: ${colors.lightGreyishBlue};
     cursor: pointer;
 
     &.active {
       color: #fff;
       background: ${colors.adminTextColor};
-      border: solid 1px ${colors.adminTextColor};
     }
 
     &:not(.active) {
       &:hover,
       &:focus {
-        border-color: ${colors.adminTextColor};
+        background: ${rgba(colors.adminTextColor, .2)};
       }
     }
   }

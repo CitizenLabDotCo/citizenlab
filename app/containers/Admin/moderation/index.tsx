@@ -301,7 +301,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 <FormattedMessage {...messages.content} />
               </th>
               <th className="options">
-                <FormattedMessage {...messages.options} />
+                <FormattedMessage {...messages.goTo} />
               </th>
             </tr>
           </thead>
