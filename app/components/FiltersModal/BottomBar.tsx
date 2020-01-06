@@ -15,7 +15,6 @@ const Container = styled.div`
   padding: 40px;
   background: #fff;
   border-top: solid 1px ${colors.separation};
-  border: solid 1px red;
 `;
 
 interface Props {
