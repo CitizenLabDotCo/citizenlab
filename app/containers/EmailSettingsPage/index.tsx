@@ -41,7 +41,7 @@ interface DataProps {
 }
 
 interface State {
-  initialUnsubscribeStatus: 'error' | 'success' | 'loading' | null;
+  initialUnsubscribeStatus: 'error' | 'success' | 'loading' | 'hidden' | null;
   unsubscribedCampaignMultiloc: Multiloc | null;
 }
 
@@ -56,7 +56,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   }
 
   closeInitialUnsubscribe = () => {
-    this.setState({ initialUnsubscribeStatus: null });
+    this.setState({ initialUnsubscribeStatus: 'hidden' });
   }
 
   componentDidMount() {
@@ -80,19 +80,19 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
   render() {
     const { initialUnsubscribeStatus, unsubscribedCampaignMultiloc } = this.state;
     const { location } = this.props;
-    const token = typeof location.query.unsubscription_token === 'string'
+    const token = typeof location?.query?.unsubscription_token === 'string'
       ? location.query.unsubscription_token
       : undefined;
 
     return (
       <Container id="e2e-email-settings-page">
         <div>
-          {initialUnsubscribeStatus && (
+          {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'hidden' && (
             <StyledInitialFeedback className="e2e-unsubscribe-status" status={initialUnsubscribeStatus} unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc} />
           )}
           {initialUnsubscribeStatus && initialUnsubscribeStatus !== 'loading' &&
             <GetCampaignConsentsWithToken
-              token={typeof location.query.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
+              token={typeof location?.query?.unsubscription_token === 'string' ? location.query.unsubscription_token : null}
             >
               {consents => !isNilOrError(consents) ? (
                 <StyledConsentForm
