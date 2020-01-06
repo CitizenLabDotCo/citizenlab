@@ -44,6 +44,7 @@ import { IOption, UploadFile, Locale } from 'typings';
 import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
+import { media } from 'utils/styleUtils';
 
 const Form = styled.form`
   width: 100%;
@@ -54,6 +55,16 @@ const Form = styled.form`
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 25px;
+    padding-right: 25px;
+  `}
+
+  ${media.largePhone`
+    padding-left: 18px;
+    padding-right: 18px;
+  `}
 `;
 
 const FormElement = styled.div`
