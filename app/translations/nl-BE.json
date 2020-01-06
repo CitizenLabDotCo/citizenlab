@@ -1626,7 +1626,6 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Keur onze {tacLink} goed om te registreren met {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "Heb je al een account?",
   "app.containers.SignUp.continue": "Ga verder",
-  "app.containers.SignUp.cookiePolicy": "",
   "app.containers.SignUp.defaultSignUpHelper": " ",
   "app.containers.SignUp.emailApproval": "",
   "app.containers.SignUp.emailConsentError": "",

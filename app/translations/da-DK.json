@@ -1626,7 +1626,6 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Accepter vores {tacLink} for at tilmelde dig med {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "Har du allerede en konto?",
   "app.containers.SignUp.continue": "Fortsæt",
-  "app.containers.SignUp.cookiePolicy": "",
   "app.containers.SignUp.defaultSignUpHelper": " ",
   "app.containers.SignUp.emailApproval": "",
   "app.containers.SignUp.emailConsentError": "",

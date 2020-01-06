@@ -1626,7 +1626,6 @@
   "app.containers.SignUp.acceptTermsAndConditions": "Godta våre {tacLink} for å melde deg på med {loginMechanismName}",
   "app.containers.SignUp.alreadyHaveAnAccount": "Har du allerede en konto?",
   "app.containers.SignUp.continue": "Fortsett",
-  "app.containers.SignUp.cookiePolicy": "",
   "app.containers.SignUp.defaultSignUpHelper": " ",
   "app.containers.SignUp.emailApproval": "",
   "app.containers.SignUp.emailConsentError": "",
