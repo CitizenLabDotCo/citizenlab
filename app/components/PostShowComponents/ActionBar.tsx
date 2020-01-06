@@ -51,7 +51,9 @@ const StyledTranslateButton = styled(TranslateButton)`
   `}
 `;
 
-const StyledRight = styled.div``;
+const StyledRight = styled.div`
+  margin-left: 35px;
+`;
 
 interface Props {
   rightContent: JSX.Element | null;

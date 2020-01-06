@@ -18,9 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // styling
 import styled from 'styled-components';
 
-const StyledInitiativeMoreActions = styled(InitiativeMoreActions)`
-  margin-left: 35px;
-`;
+const StyledInitiativeMoreActions = styled(InitiativeMoreActions)``;
 
 interface InputProps {
   initiativeId: string;
