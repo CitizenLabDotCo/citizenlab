@@ -7,18 +7,7 @@ class WebApi::V1::ModerationsController < ApplicationController
       .or(@moderations.where(id: Comment.published))
       .order(created_at: :desc)
     
-    if params[:moderation_status].present?
-      @moderations = @moderations.joins("LEFT JOIN moderation_statuses \
-        ON moderation_statuses.moderatable_id = moderations.id AND \
-           moderation_statuses.moderatable_type = moderations.moderatable_type"
-      )
-      @moderations = case params[:moderation_status]
-      when 'read'
-        @moderations.where(moderation_statuses: {status: 'read'})
-      when 'unread'
-        @moderations.where(moderation_statuses: {status: ['unread', nil]})
-      end
-    end
+    @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?
 
     @moderations = @moderations
       .page(params.dig(:page, :number))
