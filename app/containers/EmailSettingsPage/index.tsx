@@ -11,7 +11,7 @@ import { colors } from 'utils/styleUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // services
-import { updateConsentByCampaignIDWIthToken } from 'services/campaignConsents';
+import { updateConsentByCampaignIDWithToken } from 'services/campaignConsents';
 import GetCampaignConsentsWithToken from 'resources/GetCampaignConsentsWithToken';
 import { isNilOrError } from 'utils/helperUtils';
 import streams from 'utils/streams';
@@ -66,7 +66,7 @@ export class EmailSettingPage extends PureComponent<DataProps & WithRouterProps,
       this.setState({ initialUnsubscribeStatus: 'error' });
     } else {
       this.setState({ initialUnsubscribeStatus: 'loading' });
-      updateConsentByCampaignIDWIthToken(query.campaign_id, false, query.unsubscription_token).then(({ data }) => {
+      updateConsentByCampaignIDWithToken(query.campaign_id, false, query.unsubscription_token).then(({ data }) => {
         this.setState({ initialUnsubscribeStatus: 'success', unsubscribedCampaignMultiloc: data.attributes.campaign_type_description_multiloc });
         streams.fetchAllWith({
           apiEndpoint: [`${API_PATH}/consents?unsubscription_token=${query.unsubscription_token}`],
