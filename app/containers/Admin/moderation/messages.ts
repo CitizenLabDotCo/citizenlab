@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.content',
     defaultMessage: 'Content',
   },
+  options: {
+    id: 'app.containers.Admin.Moderation.options',
+    defaultMessage: 'Options',
+  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
@@ -61,9 +65,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.unread',
     defaultMessage: 'Not viewed',
   },
-  empty: {
-    id: 'app.containers.Admin.Moderation.empty',
-    defaultMessage: 'There is no content here',
+  noViewedItems: {
+    id: 'app.containers.Admin.Moderation.noViewedItems',
+    defaultMessage: 'There are no viewed items',
+  },
+  noUnviewedItems: {
+    id: 'app.containers.Admin.Moderation.noUnviewedItems',
+    defaultMessage: 'There are no unviewed items',
   },
   readMore: {
     id: 'app.containers.Admin.Moderation.readMore',
@@ -79,6 +87,10 @@ export default defineMessages({
   },
   markAsNotViewed: {
     id: 'app.containers.Admin.Moderation.markAsNotViewed',
-    defaultMessage: 'Mark  {selectedItemsCount} items as not viewed',
+    defaultMessage: 'Mark {selectedItemsCount} items as not viewed',
+  },
+  view: {
+    id: 'app.containers.Admin.Moderation.view',
+    defaultMessage: 'View this {contentType}',
   },
 });

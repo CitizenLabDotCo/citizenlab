@@ -20,7 +20,7 @@ const TabText = styled.span`
 `;
 
 const TabIcon = styled(Icon)`
-  fill: ${colors.adminTextColor};
+  fill: ${colors.label};
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
@@ -31,7 +31,7 @@ const Tab = styled.button<{ index: number }>`
   display: flex;
   align-items: center;
   margin: 0;
-  margin-left: -1;
+  margin-left: -1px;
   padding: 11px 18px;
   background: #fff;
   border-radius: 0;

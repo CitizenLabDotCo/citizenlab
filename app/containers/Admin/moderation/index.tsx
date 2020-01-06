@@ -67,8 +67,6 @@ const Filters = styled.div`
 const MarkAsButton = styled(Button)``;
 
 const StyledTable = styled(Table)`
-  /* table-layout: fixed; */
-
   th,
   td {
     text-align: left;
@@ -81,21 +79,9 @@ const StyledTable = styled(Table)`
       padding-left: 8px;
     }
 
-    /* &.date {
-      white-space: nowrap;
-    }
-
-    &.type {
-      white-space: nowrap;
-    }
-
-    &.belongsTo {
-      white-space: nowrap;
-    } */
-
     &.content {
       width: 50%;
-      padding-right: 8px;
+      padding-right: 25px;
     }
   }
 `;
@@ -147,10 +133,9 @@ const Empty = styled.div`
 `;
 
 const EmptyIcon = styled(Icon)`
-  height: 55px;
-  fill:${colors.mediumGrey};
+  height: 60px;
   fill: #BFE7EB;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 `;
 
 const EmptyMessage = styled.div`
@@ -171,13 +156,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const moderationStatuses = [
     {
       value: 'unread',
-      label: intl.formatMessage(messages.unread),
-      // icon: 'eyeClosed'
+      label: intl.formatMessage(messages.unread)
     },
     {
       value: 'read',
-      label: intl.formatMessage(messages.read),
-      // icon: 'eyeOpened'
+      label: intl.formatMessage(messages.read)
     }
   ];
 
@@ -201,7 +184,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   ];
 
   const { list, pageSize, moderationStatus, currentPage, lastPage, onModerationStatusChange, onPageNumberChange, onPageSizeChange } = useModerations({
-    pageSize: pageSizes[0].value,
+    pageSize: pageSizes[1].value,
     moderationStatus: 'unread'
   });
 
@@ -317,6 +300,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="content">
                 <FormattedMessage {...messages.content} />
               </th>
+              <th className="options">
+                <FormattedMessage {...messages.options} />
+              </th>
             </tr>
           </thead>
           {moderationItems.length > 0 &&
@@ -360,7 +346,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <Empty>
             <EmptyIcon name="inbox" />
             <EmptyMessage>
-              {moderationStatus === 'read' && <FormattedMessage {...messages.empty} />}
+              {moderationStatus === 'read' ? <FormattedMessage {...messages.noViewedItems} /> : <FormattedMessage {...messages.noUnviewedItems} />}
             </EmptyMessage>
           </Empty>
         }

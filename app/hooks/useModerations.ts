@@ -69,7 +69,7 @@ export default function useModerations({ pageNumber = 1, pageSize = 12, moderati
       setList(list);
       setCurrentPage(currentPage);
       setLastPage(lastPage);
-      setInternalPageSize(pageSize)
+      setInternalPageSize(pageSize);
       setInternalModerationStatus(moderationStatus);
     });
 
