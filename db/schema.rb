@@ -1066,7 +1066,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
       projects.id AS project_id,
       projects.slug AS project_slug,
       projects.title_multiloc AS project_title_multiloc,
-      ideas.body_multiloc AS content_multiloc,
+      ideas.title_multiloc AS content_title_multiloc,
+      ideas.body_multiloc AS content_body_multiloc,
+      ideas.slug AS content_slug,
       ideas.published_at AS created_at,
       moderation_statuses.status AS moderation_status
      FROM ((ideas
@@ -1082,7 +1084,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
       NULL::uuid AS project_id,
       NULL::character varying AS project_slug,
       NULL::jsonb AS project_title_multiloc,
-      initiatives.body_multiloc AS content_multiloc,
+      initiatives.title_multiloc AS content_title_multiloc,
+      initiatives.body_multiloc AS content_body_multiloc,
+      initiatives.slug AS content_slug,
       initiatives.published_at AS created_at,
       moderation_statuses.status AS moderation_status
      FROM (initiatives
@@ -1097,7 +1101,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
       projects.id AS project_id,
       projects.slug AS project_slug,
       projects.title_multiloc AS project_title_multiloc,
-      comments.body_multiloc AS content_multiloc,
+      NULL::jsonb AS content_title_multiloc,
+      comments.body_multiloc AS content_body_multiloc,
+      NULL::character varying AS content_slug,
       comments.created_at,
       moderation_statuses.status AS moderation_status
      FROM (((comments
@@ -1115,7 +1121,9 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
       NULL::uuid AS project_id,
       NULL::character varying AS project_slug,
       NULL::jsonb AS project_title_multiloc,
-      comments.body_multiloc AS content_multiloc,
+      NULL::jsonb AS content_title_multiloc,
+      comments.body_multiloc AS content_body_multiloc,
+      NULL::character varying AS content_slug,
       comments.created_at,
       moderation_statuses.status AS moderation_status
      FROM ((comments

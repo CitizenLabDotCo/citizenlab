@@ -1,11 +1,9 @@
 class WebApi::V1::ModerationSerializer < WebApi::V1::BaseSerializer
   set_type :moderation
 
-  attributes :moderatable_type, :content_multiloc, :created_at
+  attributes :moderatable_type, :content_title_multiloc, :content_body_multiloc, :content_slug, :created_at
 
   attribute :moderation_status do |object|
-    # Doesn't work
-    # ModerationStatus.where(moderatable: object).first&.status || 'unread'
     ModerationStatus.where(moderatable_id: object.id, moderatable_type: object.moderatable_type).first&.status || 'unread'
   end
 
