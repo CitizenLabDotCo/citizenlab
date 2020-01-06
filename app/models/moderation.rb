@@ -1,7 +1,7 @@
 class Moderation < ActiveRecord::Base
   self.primary_key = 'id'
 
-  has_one :moderation_status, -> (m) { where(moderatable_type: m.moderatable_type) }, foreign_key: :moderatable_id
+  has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type
 
   scope :with_moderation_status, (Proc.new do |status|
     moderations = joins("LEFT JOIN moderation_statuses \
