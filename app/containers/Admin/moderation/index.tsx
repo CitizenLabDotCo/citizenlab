@@ -67,7 +67,7 @@ const Filters = styled.div`
 const MarkAsButton = styled(Button)``;
 
 const StyledTable = styled(Table)`
-  table-layout: fixed;
+  /* table-layout: fixed; */
 
   th,
   td {
@@ -81,9 +81,17 @@ const StyledTable = styled(Table)`
       padding-left: 8px;
     }
 
-    &.belongsTo {
-      width: 30%;
+    /* &.date {
+      white-space: nowrap;
     }
+
+    &.type {
+      white-space: nowrap;
+    }
+
+    &.belongsTo {
+      white-space: nowrap;
+    } */
 
     &.content {
       width: 50%;
