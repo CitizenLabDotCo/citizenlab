@@ -5,6 +5,7 @@ class WebApi::V1::ModerationsController < ApplicationController
     @moderations = @moderations.where(id: Idea.published)
       .or(@moderations.where(id: Initiative.published))
       .or(@moderations.where(id: Comment.published))
+      .includes(:moderation_status)
       .order(created_at: :desc)
     
     @moderations = @moderations.with_moderation_status(params[:moderation_status]) if params[:moderation_status].present?

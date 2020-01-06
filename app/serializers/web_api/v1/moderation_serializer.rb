@@ -14,12 +14,12 @@ class WebApi::V1::ModerationSerializer < WebApi::V1::BaseSerializer
       when 'Idea'
         {project: {id: object.project_id, slug: object.project_slug, title_multiloc: object.project_title_multiloc}, object.post_type.underscore.to_sym => {id: object.post_id, slug: object.post_slug, title_multiloc: object.post_title_multiloc}}
       when 'Initiative'
-        {object.post_type.underscore.to_sym => {id: object.post_id, slug: object.post_slug, title_multiloc: pobject.ost_title_multiloc}}
+        {object.post_type.underscore.to_sym => {id: object.post_id, slug: object.post_slug, title_multiloc: object.post_title_multiloc}}
       end
     end
   end
 
   attribute :moderation_status do |object|
-    ModerationStatus.where(moderatable_id: object.id, moderatable_type: object.moderatable_type).first&.status || 'unread'
+    object.moderation_status&.status || 'unread'
   end
 end
