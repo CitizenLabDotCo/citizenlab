@@ -69,12 +69,14 @@ const Pages = styled.div`
 `;
 
 const Item = styled.button`
-  width: 38px;
+  min-width: 38px;
   height: 38px;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin-left: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
   transition: all 80ms ease-out;
 
   &:first-child {
