@@ -26,6 +26,10 @@ const Container = styled.div`
 const TopLine = styled.div`
   width: 100%;
   padding: 30px 40px 0;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const Header = styled.div`
