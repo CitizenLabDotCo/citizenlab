@@ -10,7 +10,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // typings
@@ -19,6 +19,12 @@ import { Multiloc, Locale } from 'typings';
 const Container = styled.div``;
 
 const Content = styled.div``;
+
+const ContentTitle = styled.div`
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
+  margin-bottom: 12px;
+`;
 
 const ContentBody = styled.div``;
 
@@ -42,14 +48,15 @@ const ReadMoreButton = styled.button`
 `;
 
 interface Props {
-  content: Multiloc;
+  contentTitle: Multiloc | null;
+  contentBody: Multiloc;
   className?: string;
 }
 
-const ModerationContentCell = memo<Props>(({ content, className }) => {
-  const contentLocales = Object.keys(content) as Locale[];
+const ModerationContentCell = memo<Props>(({ contentTitle, contentBody, className }) => {
+  const contentBodyLocales = Object.keys(contentBody) as Locale[];
 
-  const [selectedLocale, setSelectedLocale] = useState(contentLocales[0]);
+  const [selectedLocale, setSelectedLocale] = useState(contentBodyLocales[0]);
   const [expanded, setExpanded] = useState(false);
 
   const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
@@ -67,17 +74,21 @@ const ModerationContentCell = memo<Props>(({ content, className }) => {
 
   return (
     <Container className={className}>
-      {contentLocales.length > 1 &&
+      {contentBodyLocales.length > 1 &&
         <StyledLocaleSwitcher
           onLocaleChange={handleOnSelectedLocaleChange}
-          locales={contentLocales}
+          locales={contentBodyLocales}
           selectedLocale={selectedLocale}
         />
       }
       <Content>
-        <ContentBody dangerouslySetInnerHTML={{ __html: expanded ? content[selectedLocale] as string : truncate(content[selectedLocale], { length: 300, separator: ' ' }) }} />
+        {contentTitle && contentTitle[selectedLocale] &&
+          <ContentTitle>{contentTitle[selectedLocale]}</ContentTitle>
+        }
 
-        {(content[selectedLocale] as string).length > 300 &&
+        <ContentBody dangerouslySetInnerHTML={{ __html: expanded ? contentBody[selectedLocale] as string : truncate(contentBody[selectedLocale], { length: 300, separator: ' ' }) }} />
+
+        {(contentBody[selectedLocale] as string).length > 300 &&
           <ReadMoreButton
             onMouseDown={removeFocus}
             onClick={handleOnReadMore}

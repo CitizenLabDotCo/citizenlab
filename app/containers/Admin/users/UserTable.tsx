@@ -61,6 +61,11 @@ const StyledTable = styled(Table)`
     padding-right: 5px;
     overflow-wrap: break-word;
   }
+
+  thead tr th,
+  tbody tr {
+    border: none;
+  }
 `;
 
 const StyledPagination = styled(Pagination)`

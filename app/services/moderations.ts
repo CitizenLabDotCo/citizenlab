@@ -11,10 +11,11 @@ export interface IModerationData {
   type: 'moderation';
   attributes: {
     moderatable_type: TModeratableTypes;
-    content_multiloc: Multiloc;
+    content_title_multiloc: Multiloc | null;
+    content_body_multiloc: Multiloc;
+    content_slug: string | null;
     created_at: string;
     moderation_status?: TModerationStatuses,
-    context_url: string;
     belongs_to: {
       [key: string]: {
         id:string,
@@ -35,7 +36,7 @@ export interface IModerations {
 }
 
 export function moderationsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IModerations>({ apiEndpoint: `${API_PATH}/moderations`, ...streamParams /*, cacheStream: false */ });
+  return streams.get<IModerations>({ apiEndpoint: `${API_PATH}/moderations`, ...streamParams, cacheStream: false });
 }
 
 export async function updateModerationStatus(moderationId: string, moderatableType: TModeratableTypes, moderationStatus: TModerationStatuses) {
