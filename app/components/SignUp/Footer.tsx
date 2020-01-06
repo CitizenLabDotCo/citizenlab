@@ -25,9 +25,9 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
-const googleLogoUrl = require('components/AuthProviderButton/svg/google.svg') as string;
-const facebookLogoUrl = require('components/AuthProviderButton/svg/facebook.svg') as string;
-const franceconnectLogoUrl = require('components/AuthProviderButton/svg/franceconnect.svg') as string;
+import googleLogo from 'components/AuthProviderButton/svg/google.svg';
+import facebookLogo from 'components/AuthProviderButton/svg/facebook.svg';
+import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
 
 const Container = styled.div`
   width: 100%;
@@ -160,7 +160,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 <FeatureFlag name="franceconnect_login">
                   <FranceConnectButton role="button" onClick={this.handleOnAccept('franceconnect')}>
                     <img
-                      src={franceconnectLogoUrl}
+                      src={franceconnectLogo}
                       alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
                     />
                   </FranceConnectButton>
@@ -173,7 +173,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </FeatureFlag>
                 <FeatureFlag name="google_login">
                   <AuthProviderButton
-                    logoUrl={googleLogoUrl}
+                    logoUrl={googleLogo}
                     logoHeight="29px"
                     provider="google"
                     providerName="Google"
@@ -184,7 +184,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </FeatureFlag>
                 <FeatureFlag name="facebook_login">
                   <AuthProviderButton
-                    logoUrl={facebookLogoUrl}
+                    logoUrl={facebookLogo}
                     logoHeight="21px"
                     provider="facebook"
                     providerName="Facebook"

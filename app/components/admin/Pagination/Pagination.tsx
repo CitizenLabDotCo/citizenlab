@@ -1,23 +1,16 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
-
-// Typing
-export interface Props {
-  currentPage: number;
-  totalPages: number;
-  loadPage: (page: number) => void;
-  className?: string;
-}
 
 const Container = styled.div`
   display: flex;
+  justify-content: flex-end;
+`;
+
+const ContainerInner = styled.div`
+  display: flex;
   align-items: center;
-  justify-content: center;
 `;
 
 const ChevronIcon = styled(Icon) `
@@ -26,7 +19,8 @@ const ChevronIcon = styled(Icon) `
 `;
 
 const NavigateButton = styled.button`
-  height: 34px;
+  width: 38px;
+  height: 38px;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
@@ -34,9 +28,14 @@ const NavigateButton = styled.button`
   padding: 0;
   display: flex;
   align-items: center;
+  justify-content: center;
+  border: solid 1px #ccc;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   &.disabled {
     color: #bbb;
+    border-color: #e0e0e0;
+    cursor: not-allowed;
 
     ${ChevronIcon} {
       fill: #bbb;
@@ -48,72 +47,65 @@ const NavigateButton = styled.button`
 
     &:hover,
     &:focus {
-      color: ${colors.clIconAccent};
-
-      ${ChevronIcon} {
-        fill: ${colors.clIconAccent};
-      }
+      border-color: ${colors.adminTextColor};
     }
   }
 `;
 
-const Next = styled(NavigateButton)`
-  margin-left: 30px;
-
-  ${ChevronIcon} {
-    margin-left: 6px;
-  }
-`;
+const Next = styled(NavigateButton)``;
 
 const Back = styled(NavigateButton)`
-  margin-right: 30px;
-
   ${ChevronIcon} {
-    margin-right: 6px;
     transform: rotate(180deg);
   }
 `;
 
+const Pages = styled.div`
+  margin-left: 14px;
+  margin-right: 14px;
+  display: flex;
+  align-items: center;
+`;
+
 const Item = styled.button`
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
   margin-left: 5px;
   transition: all 80ms ease-out;
 
-  &>:first-child {
+  &:first-child {
     margin-left: 0px;
   }
 
   &:not(.disabled) {
-    background: ${colors.lightGreyishBlue};
+    border: solid 1px #ccc;
     border-radius: ${(props: any) => props.theme.borderRadius};
     cursor: pointer;
 
     &.active {
-      background: ${colors.adminTextColor};
       color: #fff;
-
-      &:focus,
-      &:focus:hover {
-        background: ${colors.adminTextColor};
-        color: #fff;
-      }
-
-      &:hover {
-        background: ${colors.adminTextColor};
-        color: #fff;
-      }
+      background: ${colors.adminTextColor};
+      border: solid 1px ${colors.adminTextColor};
     }
 
-    &:hover,
-    &:focus {
-      background: ${rgba(colors.adminTextColor, .2)};
+    &:not(.active) {
+      &:hover,
+      &:focus {
+        border-color: ${colors.adminTextColor};
+      }
     }
   }
 `;
+
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  loadPage: (page: number) => void;
+  className?: string;
+}
 
 class Pagination extends PureComponent<Props> {
 
@@ -169,37 +161,39 @@ class Pagination extends PureComponent<Props> {
     if (totalPages > 1) {
       return (
         <Container className={className}>
-          <Back
-            onMouseDown={this.removeFocus}
-            onClick={this.goTo(currentPage - 1)}
-            disabled={currentPage === 1}
-            className={currentPage === 1 ? 'disabled' : ''}
-          >
-            <ChevronIcon name="chevron-right" />
-            <FormattedMessage {...messages.back} />
-          </Back>
-
-          {pageItems.map((item) => (
-            <Item
-              key={item}
-              className={`${item === currentPage ? 'active' : ''} ${item < 0 ? 'disabled' : ''}`}
+          <ContainerInner>
+            <Back
               onMouseDown={this.removeFocus}
-              onClick={this.handleItemClick(item)}
-              disabled={item < 0}
+              onClick={this.goTo(currentPage - 1)}
+              disabled={currentPage === 1}
+              className={currentPage === 1 ? 'disabled' : ''}
             >
-              <span>{item < 0 ? '...' : item.toString()}</span>
-            </Item>
-          ))}
+              <ChevronIcon name="chevron-right" />
+            </Back>
 
-          <Next
-            onMouseDown={this.removeFocus}
-            onClick={this.goTo(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className={currentPage === totalPages ? 'disabled' : ''}
-          >
-            <FormattedMessage {...messages.next} />
-            <ChevronIcon name="chevron-right" />
-          </Next>
+            <Pages>
+              {pageItems.map((item) => (
+                <Item
+                  key={item}
+                  className={`${item === currentPage ? 'active' : ''} ${item < 0 ? 'disabled' : ''}`}
+                  onMouseDown={this.removeFocus}
+                  onClick={this.handleItemClick(item)}
+                  disabled={item < 0}
+                >
+                  <span>{item < 0 ? '...' : item.toString()}</span>
+                </Item>
+              ))}
+            </Pages>
+
+            <Next
+              onMouseDown={this.removeFocus}
+              onClick={this.goTo(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className={currentPage === totalPages ? 'disabled' : ''}
+            >
+              <ChevronIcon name="chevron-right" />
+            </Next>
+          </ContainerInner>
         </Container>
       );
     }
