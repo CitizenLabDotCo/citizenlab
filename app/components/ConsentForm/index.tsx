@@ -4,7 +4,10 @@ import { IConsentData, updateConsent, IConsent, updateConsentWithToken, getCateg
 // components
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import T from 'components/T';
+import Button from 'components/UI/Button';
+import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Checkbox from 'components/UI/Checkbox';
+import { Fieldset, ScreenReaderOnly } from 'utils/accessibility';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -15,9 +18,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import Button from 'components/UI/Button';
-import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
-import { Fieldset, ScreenReaderOnly } from 'utils/accessibility';
 
 const CategoryCheckboxContainer = styled.div`
   margin-bottom: 16px;
@@ -54,7 +54,7 @@ interface State {
   isSaving: boolean;
   saveButtonStatus: 'enabled' | 'disabled' | 'error' | 'success';
   categorizedConsents: { [category: string]: IConsentData[] };
-  isCategoryOpen: { [category: string]: boolean };
+  isCategoryOpen: { [category: string]: boolean }; // whether the list of campaigns in this category is open or collapsed.
 }
 
 export default class ConsentForm extends PureComponent<Props, State> {
