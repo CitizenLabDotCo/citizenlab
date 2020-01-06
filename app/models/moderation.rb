@@ -1,7 +1,21 @@
 class Moderation < ActiveRecord::Base
   self.primary_key = 'id'
 
-  has_one :moderation_status, -> (m) { where(moderatable_type: m.moderatable_type) }, foreign_key: :moderatable_id
+  has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type
+
+  scope :with_moderation_status, (Proc.new do |status|
+    moderations = joins("LEFT JOIN moderation_statuses \
+        ON moderation_statuses.moderatable_id = moderations.id AND \
+           moderation_statuses.moderatable_type = moderations.moderatable_type"
+      )
+      case status
+      when 'read'
+        moderations.where(moderation_statuses: {status: 'read'})
+      when 'unread'
+        moderations.where(moderation_statuses: {status: ['unread', nil]})
+      end
+  end)
+
 
   # this isn't strictly necessary, but it will prevent
   # rails from calling save, which would fail anyway.
