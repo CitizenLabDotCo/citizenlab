@@ -8,7 +8,7 @@ export interface IConsentData {
   id: string;
   type: string;
   attributes: {
-    campaign_type: string;
+    campaign_name: string;
     campaign_type_description_multiloc: Multiloc,
     consented: boolean;
     category: 'own' | 'official' | 'weekly' | 'mention' | 'commented' | 'voted' | 'admin'
