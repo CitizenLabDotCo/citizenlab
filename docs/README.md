@@ -1,5 +1,31 @@
 # Changelog
 
+## 2020-7-1
+
+### Added
+
+- Go to idea manager when clicking 'idea assigned to you' notification
+- Multiple choice poll questions
+- New ID card verification method
+- Users can now unsubscribe from admin emails
+- 2th iteration of the new admin moderation feature:
+  - Not viewed/Viewed filtering
+  - The ability to select one or more items and mark them as viewed/not viewed
+  - 'Belongs to' table column, which shows the context that a piece of content belongs to (e.g. the idea and project that a comment belongs to)
+  - 'Read more' expand mechanism for longer pieces of content
+  - Language selector for multilingual content
+  - 'Go to' link that will open a new tab and navigate you to the idea/iniative/comment that was posted
+
+### Changed
+- Improve layout (and more specifically width) of idea/iniatiatve forms on mobile
+- Separate checkboxes for privacy policy and cookie policy
+- Make the emails opt-in at registration
+
+### Fixed
+- Fix for unreadable password reset error message on Firefox
+- Fix for project granular permission radio buttons not working
+
+
 ## 2019-12-12
 
 ### Added
