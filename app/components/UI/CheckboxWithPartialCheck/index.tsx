@@ -170,7 +170,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
         className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
       >
         <InputWrapper
-          className={`e2e-checkbox ${inputFocused ? 'focused' : ''}`}
+          className={`e2e-mixed-checkbox ${inputFocused ? 'focused' : ''}`}
           size={size as string}
           checked={checked}
         >
