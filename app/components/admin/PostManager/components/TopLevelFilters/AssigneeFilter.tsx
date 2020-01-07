@@ -35,11 +35,6 @@ interface Props extends InputProps, DataProps { }
 interface State { }
 
 export class AssigneeFilter extends PureComponent<Props & InjectedIntlProps, State> {
-  componentDidMount() {
-    const { authUser, handleAssigneeFilterChange } = this.props;
-    !isNilOrError(authUser) && handleAssigneeFilterChange(authUser.id);
-  }
-
   getAssigneeOptions = memoize(
     (prospectAssignees, authUser) => {
       const { intl: { formatMessage } } = this.props;
