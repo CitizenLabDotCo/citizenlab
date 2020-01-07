@@ -195,7 +195,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
                   onChange={this.handleOnChangeCategory(category)}
                   label={<FormattedMessage {...messages[`${category}Category`]} />}
                 />
-                <Button onClick={this.handleToggleOpenCategory(category)} style="text" ariaExpanded={isCategoryOpen[category]}>
+                <Button onClick={this.handleToggleOpenCategory(category)} style="text" type="button" ariaExpanded={isCategoryOpen[category]}>
                   {isCategoryOpen[category]
                     ? <FormattedMessage {...messages.hideDetails} />
                     : <FormattedMessage {...messages.seeDetails} />
