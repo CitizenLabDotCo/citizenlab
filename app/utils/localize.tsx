@@ -14,9 +14,7 @@ import { Multiloc, Locale } from 'typings';
 import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {
-  localize: {
-    (multiloc: Multiloc, maxChar?: number): string;
-  };
+  localize: (multiloc: Multiloc | null | undefined, maxChar?: number | undefined) => string;
   locale: Locale;
   tenantLocales: Locale[];
 }
@@ -61,10 +59,11 @@ export default function injectLocalize<P>(Component: React.ComponentType<P & Inj
       this.subscriptions.forEach(subscription => subscription.unsubscribe());
     }
 
-    localize = (multiloc: Multiloc, maxChar?: number) => {
-      if (this.state.locale) {
+    localize = (multiloc: Multiloc | undefined | null, maxChar?: number) => {
+      if (this.state.locale && multiloc) {
         return getLocalized(multiloc, this.state.locale, this.state.tenantLocales, maxChar);
       }
+
       return '';
     }
 

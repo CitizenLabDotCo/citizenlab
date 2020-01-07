@@ -26,7 +26,8 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/accessibility';
 import T from 'components/T';
 
-const illustrationSrc: string = require('./initiativesHeaderImage.png');
+// images
+import illustrationSrc from './initiativesHeaderImage.png';
 
 const Container = styled.div`
   width: 100%;
