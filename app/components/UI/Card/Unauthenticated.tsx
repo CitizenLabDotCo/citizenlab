@@ -10,7 +10,6 @@ import styled, { withTheme } from 'styled-components';
 import { darken } from 'polished';
 
 // i18n
-import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 const Container = styled.div`
