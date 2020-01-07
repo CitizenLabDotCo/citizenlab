@@ -1,6 +1,7 @@
 class Comment < ApplicationRecord
+  include MachineTranslations::CommentDecorator
   include Moderatable
-  
+
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :author, class_name: 'User', optional: true
