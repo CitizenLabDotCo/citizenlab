@@ -84,7 +84,7 @@ class ProjectDescription extends React.PureComponent<Props> {
 }
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <GetProject id={inputProps.params.projectId}>
+  <GetProject projectId={inputProps.params.projectId}>
     {project => !isNilOrError(project) ? <ProjectDescription {...inputProps} project={project} /> : null}
   </GetProject>
 ));

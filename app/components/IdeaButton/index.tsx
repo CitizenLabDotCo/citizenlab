@@ -189,7 +189,7 @@ const IdeaButtonWithHOCs = injectIntl<Props>(injectTracks<Props & InjectedIntlPr
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render, }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render, }) => <GetProject projectId={projectId}>{render}</GetProject>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 

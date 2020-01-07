@@ -162,7 +162,7 @@ const IdeaMeta = memo<Props & InjectedIntlProps & InjectedLocalized>(({
 const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
-  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject id={idea.relationships.project.data.id}>{render}</GetProject> : null,
+  project: ({ idea, render }) => !isNilOrError(idea) ? <GetProject projectId={idea.relationships.project.data.id}>{render}</GetProject> : null,
   author: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id', null)}>{render}</GetUser>,
   locale: <GetLocale />,
   tenant: <GetTenant />,

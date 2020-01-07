@@ -2,7 +2,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clickOutside from 'utils/containers/clickOutside';
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const timeout = 200;
 
@@ -46,8 +46,8 @@ const ContainerInner: any = styled.div`
   `}
 `;
 
-const Content: any = styled.div`
-  max-height: ${(props: any) => props.maxHeight};
+const Content = styled.div<{ width: string, mobileWidth: string, maxHeight: string, mobileMaxHeight: string }>`
+  max-height: ${(props) => props.maxHeight};
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -61,8 +61,28 @@ const Content: any = styled.div`
   -webkit-overflow-scrolling: touch;
 
   ${media.smallerThanMaxTablet`
-    max-height: ${(props: any) => props.mobileMaxHeight};
+    max-height: ${(props) => props.mobileMaxHeight};
   `}
+`;
+
+export const DropdownListItem = styled.button`
+  width: 100%;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 10px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  cursor: pointer;
+  transition: all 80ms ease-out;
+
+  &:hover,
+  &:focus,
+  &.selected {
+    background: ${colors.clDropdownHoverBackground};
+  }
 `;
 
 const Footer = styled.div`
@@ -119,7 +139,7 @@ export default class Dropdown extends PureComponent<Props, State> {
     }
   }
 
-  setRef = (element: HTMLElement) => {
+  setRef = (element: HTMLDivElement | null) => {
     if (element) {
       this.dropdownElement = element;
 
@@ -182,10 +202,10 @@ export default class Dropdown extends PureComponent<Props, State> {
             mobileMaxHeight={mobileMaxHeight}
           >
             <Content
-              width={width}
-              mobileWidth={mobileWidth}
-              maxHeight={maxHeight}
-              mobileMaxHeight={mobileMaxHeight}
+              width={width as string}
+              mobileWidth={mobileWidth as string}
+              maxHeight={maxHeight as string}
+              mobileMaxHeight={mobileMaxHeight as string}
               ref={this.setRef}
             >
               {content}

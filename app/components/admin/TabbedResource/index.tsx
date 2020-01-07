@@ -55,6 +55,10 @@ const Tab = styled.div`
   display: flex;
   margin-bottom: -1px;
 
+  &:first-letter {
+    text-transform: uppercase;
+  }
+
   &:not(:last-child) {
     margin-right: 40px;
   }
@@ -64,7 +68,6 @@ const Tab = styled.div`
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 1.5rem;
-    text-transform: capitalize;
     padding: 0;
     padding-top: 1em;
     padding-bottom: 1em;
