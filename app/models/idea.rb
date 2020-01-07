@@ -1,4 +1,5 @@
 class Idea < ApplicationRecord
+  include MachineTranslations::IdeaDecorator
   include Post
   include Moderatable
 
