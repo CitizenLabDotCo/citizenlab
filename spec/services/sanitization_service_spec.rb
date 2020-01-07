@@ -79,12 +79,30 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "allows video to pass through when video feature is enabled" do
+    it "disallows images to pass through when image feature is disabled" do
+      input = <<~HTML
+        <p>
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" style="display: block;margin:auto;" width="313" height="160.33516960470087" data-align="center">
+        </p>
+      HTML
+      features = []
+      expect(service.sanitize(input, features)).to eq "<p>\n  \n</p>\n"
+    end
+
+    it "allows youtube video to pass through when video feature is enabled" do
       input = <<~HTML
         "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Y1mtif1B8k0?showinfo=0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input
+    end
+
+    it "disallows random iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/embed/Y1mtif1B8k0?showinfo=0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq "\"\"\n"
     end
 
   end
