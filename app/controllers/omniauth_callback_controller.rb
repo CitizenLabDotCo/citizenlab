@@ -19,7 +19,7 @@ class OmniauthCallbackController < ApplicationController
   def verification_callback verification_method
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params'].except('token')
-    @user = current_user
+    @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(User)
 
     if @user&.active?
       update_user!(auth, @user, verification_method)
