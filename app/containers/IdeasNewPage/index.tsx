@@ -131,7 +131,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   redirectToSignUpPage = () => {
-    clHistory.push('/sign-up');
+    clHistory.replace('/sign-up');
   }
 
   handleOnIdeaSubmit = async () => {

@@ -36,9 +36,9 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // logos
-const googleLogo = require('components/AuthProviderButton/svg/google.svg') as string;
-const facebookLogo = require('components/AuthProviderButton/svg/facebook.svg') as string;
-const franceconnectLogo = require('components/AuthProviderButton/svg/franceconnect.svg') as string;
+import googleLogo from 'components/AuthProviderButton/svg/google.svg';
+import facebookLogo from 'components/AuthProviderButton/svg/facebook.svg';
+import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
 
 const Container = styled.div`
   flex: 1 1 auto;
