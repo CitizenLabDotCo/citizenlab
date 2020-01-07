@@ -34,4 +34,37 @@ namespace :setup_and_support do
 
     end
   end
+
+  desc "Delete tenants through list of hostnames"
+  task :delete_tenants_sidefx, [:url] => [:environment] do |t, args|
+    logs = []
+    data = open(args[:url]).readlines.map(&:strip)
+    data.each do |host|
+      tn = Tenant.find_by host: host
+      if tn.present?
+        SideFxTenantService.new.before_destroy(tn, nil)
+        tn = tn.destroy
+        if tn.destroyed?
+          SideFxTenantService.new.after_destroy(tn, nil)
+        else
+          logs += ["Tenant #{host} could not be deleted"]
+        end
+      else
+        logs += ["Tenant #{host} not found"]
+      end
+    end
+    logs.each{|l| puts l} && true
+  end
+
+  desc "Delete inactive non-participating users"
+  task :delete_inactive_nonparticipating_users, [:host] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      participant_ids = Activity.pluck(:user_id) + Idea.pluck(:author_id) + Initiative.pluck(:author_id) + Comment.pluck(:author_id) + Vote.pluck(:user_id) + SpamReport.pluck(:user_id) + Basket.pluck(:user_id)
+      participant_ids.uniq!
+      users = User.normal_user.where.not(id: participant_ids)
+      count = users.size
+      users.each(&:destroy!)
+      puts "Deleted #{count} users."
+    end
+  end
 end

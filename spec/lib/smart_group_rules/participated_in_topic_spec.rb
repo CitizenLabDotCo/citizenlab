@@ -91,4 +91,119 @@ describe SmartGroupRules::ParticipatedInTopic do
 
   end
 
+  describe "description_multiloc" do
+    let(:topic) { create(:topic, title_multiloc: {
+      'en'    => 'beer',
+      'fr-FR' => 'bière',
+      'nl-NL' => 'bier'
+    }) }
+
+    let(:participated_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'in',
+      'value'         => topic.id
+    })}
+    let(:participated_not_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'not_in',
+      'value'         => topic.id
+    })}
+    let(:participated_posted_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'posted_in',
+      'value'         => topic.id
+    })}
+    let(:participated_not_posted_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'not_posted_in',
+      'value'         => topic.id
+    })}
+    let(:participated_commented_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'commented_in',
+      'value'         => topic.id
+    })}
+    let(:participated_not_commented_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'not_commented_in',
+      'value'         => topic.id
+    })}
+    let(:participated_voted_idea_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'voted_idea_in',
+      'value'         => topic.id
+    })}
+    let(:participated_not_voted_idea_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'not_voted_idea_in',
+      'value'         => topic.id
+    })}
+    let(:participated_voted_comment_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'voted_comment_in',
+      'value'         => topic.id
+    })}
+    let(:participated_not_voted_comment_in_topic_in_rule) {SmartGroupRules::ParticipatedInTopic.from_json({
+      'ruleType'      => 'participated_in_topic',
+      'predicate'     => 'not_voted_comment_in',
+      'value'         => topic.id
+    })}
+
+    it "successfully translates different combinations of rules" do
+      # Stubbing the translations so the specs don't depend on those.
+      I18n.load_path += Dir[Rails.root.join('spec', 'fixtures', 'locales', '*.yml')]
+
+      expect(participated_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Participation in an idea with topic beer',
+        'fr-FR' => 'Participation dans une idée avec thème bière',
+        'nl-NL' => 'Participatie in een idee met thema bier'
+      })
+      expect(participated_not_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'No participation in an idea with topic beer',
+        'fr-FR' => 'Pas de participation dans une idée avec thème bière',
+        'nl-NL' => 'Geen participatie in een idee met thema bier'
+      })
+      expect(participated_posted_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Posted an idea with topic beer',
+        'fr-FR' => 'Posté une idée avec thème bière',
+        'nl-NL' => 'Plaatste een idee met thema bier'
+      })
+      expect(participated_not_posted_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Did not post an idea with topic beer',
+        'fr-FR' => 'N\'as pas posté une idée avec thème bière',
+        'nl-NL' => 'Plaatste geen idee met thema bier'
+      })
+      expect(participated_commented_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Commented on an idea with topic beer',
+        'fr-FR' => 'Commenté sur une idée avec thème bière',
+        'nl-NL' => 'Reageerde op een idee met thema bier'
+      })
+      expect(participated_not_commented_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Did not comment on an idea with topic beer',
+        'fr-FR' => 'N\'as pas commenté sur une idée avec thème bière',
+        'nl-NL' => 'Reageerde niet op een idee met thema bier'
+      })
+      expect(participated_voted_idea_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Voted on an idea with topic beer',
+        'fr-FR' => 'Voté pour une idée avec thème bière',
+        'nl-NL' => 'Stemde op een idee met thema bier'
+      })
+      expect(participated_not_voted_idea_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Did not vote on an idea with topic beer',
+        'fr-FR' => 'N\'as pas voté pour une idée avec thème bière',
+        'nl-NL' => 'Stemde niet op een idee met thema bier'
+      })
+      expect(participated_voted_comment_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Voted on a comment on an idea with topic beer',
+        'fr-FR' => 'Voté pour un commentaire sur une idée avec thème bière',
+        'nl-NL' => 'Stemde op een reactie op een idee met thema bier'
+      })
+      expect(participated_not_voted_comment_in_topic_in_rule.description_multiloc).to eq ({
+        'en'    => 'Did not vote on a comment on an idea with topic beer',
+        'fr-FR' => 'N\'as pas voté pour un commentaire sur une idée avec thème bière',
+        'nl-NL' => 'Stemde niet op een reactie op een idee met thema bier'
+      })
+    end
+  end
+
 end
