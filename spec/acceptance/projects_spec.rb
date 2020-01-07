@@ -231,6 +231,7 @@ resource "Projects" do
         parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
+        parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -294,6 +295,7 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
           expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed 
+
         end
 
         context 'when not admin' do
@@ -349,6 +351,7 @@ resource "Projects" do
         parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
+        parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 

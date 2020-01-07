@@ -3,8 +3,6 @@ module SmartGroupRules
 
     PREDICATE_VALUES = %w(is_checked not_is_checked)
 
-    RULE_TYPE = "custom_field_checkbox"
-
     include CustomFieldRule
 
     validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'checkbox').map(&:id) } }
@@ -18,7 +16,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "customFieldId" => {
               "$ref": "#/definitions/customFieldId"
@@ -30,6 +28,10 @@ module SmartGroupRules
           }
         }
       ]
+    end
+
+    def self.rule_type
+      'custom_field_checkbox'
     end
 
     def initialize custom_field_id, predicate, value=nil

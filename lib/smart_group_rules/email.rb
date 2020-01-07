@@ -1,9 +1,9 @@
 module SmartGroupRules
   class Email
     include ActiveModel::Validations
+    include DescribableRule
 
     PREDICATE_VALUES = %w(is not_is contains not_contains begins_with not_begins_with ends_on not_ends_on)
-    RULE_TYPE = 'email'
 
     attr_accessor :predicate, :value
 
@@ -21,7 +21,7 @@ module SmartGroupRules
           "properties" => {
             "ruleType" => {
               "type" => "string",
-              "enum" => [RULE_TYPE],
+              "enum" => [rule_type],
             },
             "predicate" => {
               "type": "string",
@@ -33,6 +33,10 @@ module SmartGroupRules
           },
         }
       ]
+    end
+
+    def self.rule_type
+      'email'
     end
 
     def self.from_json json
@@ -64,6 +68,16 @@ module SmartGroupRules
         users_scope.where("email NOT LIKE ?", "%#{value}")
       else
         raise "Unsupported predicate #{predicate}"
+      end
+    end
+
+    def description_rule_type
+      CustomFieldText.rule_type
+    end
+
+    def description_property locale
+      I18n.with_locale(locale) do
+        I18n.t!('smart_group_rules.email.property')
       end
     end
 

@@ -17,7 +17,7 @@ class SmartGroupsService
     SmartGroupRules::ParticipatedInIdeaStatus,
     SmartGroupRules::Verified,
   ].map do |smart_group_class|
-    [smart_group_class::RULE_TYPE, smart_group_class]
+    [smart_group_class.rule_type, smart_group_class]
   end.to_h
 
   def filter users_scope, json_rules
