@@ -64,12 +64,12 @@ export default defineMessages({
    /*
    * Categories Details
    */
-   seeDetails: {
-     id: 'app.containers.CampaignsConsentForm.seeDetails',
-     defaultMessage: 'See details'
+   collapse: {
+     id: 'app.containers.CampaignsConsentForm.collapse',
+     defaultMessage: 'Collapse'
    },
-   hideDetails: {
-     id: 'app.containers.CampaignsConsentForm.hideDetails',
-     defaultMessage: 'Hide details'
+   expand: {
+     id: 'app.containers.CampaignsConsentForm.expand',
+     defaultMessage: 'Expand'
    },
 });
