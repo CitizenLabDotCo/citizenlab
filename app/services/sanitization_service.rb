@@ -1,52 +1,73 @@
 class SanitizationService
+  #https://blog.arkency.com/2015/09/sanitizing-html-input-youtube-iframes/
 
   @@sanitizer = Rails::Html::WhiteListSanitizer.new
-  @@editor_features = {
-    default: {
-      tags: %w(p br),
-      attributes: %w(),
-    },
-    title: {
-      tags: %w(h2 h3),
-      attributes: %w(),
-    },
-    alignment: {
-      tags: %w(),
-      attributes: %w(class),
-    },
-    list: {
-      tags: %w(ol ul li),
-      attributes: %w(type),
-    },
-    decoration: {
-      tags: %w(b u i em strong),
-      attributes: %w(),
-    },
-    link: {
-      tags: %w(a),
-      attributes: %w(href target),
-    },
-    image: {
-      tags: %w(img),
-      attributes: %w(src style width height data-align),
-    },
-    video: {
-      tags: %w(iframe),
-      attributes: %w(class frameborder allowfullscreen src data-blot-formatter-unclickable-bound width height data-align style),
-    },
-    mention: {
-      tags: %w(span),
-      attributes: %w(class data-user-id data-user-slug)
-    }
-  }
 
+  class IframeScrubber < Rails::Html::PermitScrubber
+    @@editor_features = {
+      default: {
+        tags: %w(p br),
+        attributes: %w(),
+      },
+      title: {
+        tags: %w(h2 h3),
+        attributes: %w(),
+      },
+      alignment: {
+        tags: %w(),
+        attributes: %w(class),
+      },
+      list: {
+        tags: %w(ol ul li),
+        attributes: %w(type),
+      },
+      decoration: {
+        tags: %w(b u i em strong),
+        attributes: %w(),
+      },
+      link: {
+        tags: %w(a),
+        attributes: %w(href target),
+      },
+      image: {
+        tags: %w(img),
+        attributes: %w(src style width height data-align),
+      },
+      video: {
+        tags: %w(iframe),
+        attributes: %w(class frameborder allowfullscreen src data-blot-formatter-unclickable-bound width height data-align style),
+      },
+      mention: {
+        tags: %w(span),
+        attributes: %w(class data-user-id data-user-slug)
+      }
+    }
+
+    @@video_whitelist = [
+      /\A(https?:)?\/\/(?:www\.)?youtube(?:-nocookie)?\.com\//
+    ]
+
+    def initialize features
+      features_w_default = features.concat([:default])
+      self.tags = features_w_default.flat_map{|f| @@editor_features[f][:tags]}.uniq
+      self.attributes = features_w_default.flat_map{|f| @@editor_features[f][:attributes]}.uniq
+    end
+
+    def allowed_node?(node)
+      if node.name == 'iframe'
+        return (tags.include? 'iframe') && (@@video_whitelist.any? { |regex| (node['src'] =~ regex) == 0 })
+      end
+
+      tags.include? node.name
+    end
+  end
 
   def sanitize text, features
-    features_w_default = features.concat([:default])
+    scrubber = IframeScrubber.new(features)
+
     @@sanitizer.sanitize(
-      text, 
-      tags: features_w_default.flat_map{|f| @@editor_features[f][:tags]}.uniq,
-      attributes: features_w_default.flat_map{|f| @@editor_features[f][:attributes]}.uniq,
+      text,
+      scrubber: scrubber
     )
   end
 
@@ -92,5 +113,4 @@ class SanitizationService
     html = Nokogiri::HTML.fragment(text_or_html)
     html.text.present? || !!%w(img iframe).any?{|tag| html.at tag}
   end
-
 end
