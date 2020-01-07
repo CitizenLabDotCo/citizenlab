@@ -5,6 +5,11 @@ import Icon from 'components/UI/Icon';
 import { get } from 'lodash-es';
 // https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
 
+// // TODO
+// -Remove unused code
+// -Solve issue with hitting enter key on child checkbox and collapsing list
+// -Move fieldset and other components inside partial checkbox
+
 const Container = styled.div<{ size: string }>`
   display: flex;
   align-items: center;
