@@ -29,7 +29,7 @@ describe('email consent', () => {
     cy.get('.e2e-unsubscribe-status').contains('success').contains('Official');
 
     // gets official category, turn it back on and save
-    cy.get('input#official').parent().click();
+    cy.get('input#manual').parent().click();
     cy.get('.e2e-submit-wrapper-button').click();
     cy.contains('saved');
   });
