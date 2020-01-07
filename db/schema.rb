@@ -1052,10 +1052,7 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
        JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
        JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
   SQL
-<<<<<<< HEAD
-=======
-
-  create_view "moderations",  sql_definition: <<-SQL
+  create_view "moderations", sql_definition: <<-SQL
       SELECT ideas.id,
       'Idea'::text AS moderatable_type,
       NULL::text AS post_type,
@@ -1130,6 +1127,4 @@ ActiveRecord::Schema.define(version: 2019_12_13_130342) do
        LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
     WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
-
->>>>>>> master
 end
