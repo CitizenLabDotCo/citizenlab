@@ -22,9 +22,9 @@ class OmniauthCallbackController < ApplicationController
     @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(User)
 
     if @user&.active?
-      update_user!(auth, @user, verification_method)
       begin
         handle_verification(auth, @user)
+        update_user!(auth, @user, verification_method)
         redirect_to(add_uri_params(
           Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
           omniauth_params.merge('verification-success': true).except('pathname')

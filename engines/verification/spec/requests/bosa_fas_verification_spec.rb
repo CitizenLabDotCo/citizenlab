@@ -5,7 +5,7 @@ require 'rspec_api_documentation/dsl'
 describe "bosa_fas verification" do
 
   before do
-    @user = create(:user)
+    @user = create(:user, first_name: 'Rudolphi', last_name: 'Raindeari')
     @token = Knock::AuthToken.new(payload: @user.to_token_payload).token
     OmniAuth.config.test_mode = true
     OmniAuth.config.mock_auth[:bosa_fas] = OmniAuth::AuthHash.new({
@@ -69,7 +69,6 @@ describe "bosa_fas verification" do
   end
 
   it "fails when the RRN has already been used" do
-    other_user = create(:user)
     create(:verification,
       user: other_user,
       method_name: 'bosa_fas',
@@ -80,6 +79,11 @@ describe "bosa_fas verification" do
     follow_redirect!
 
     expect(response).to redirect_to('/some-page?verification-error=true&error=taken')
+    expect(@user.reload).to have_attributes({
+      verified: false,
+      first_name: 'Rudolphi',
+      last_name: 'Raindeari'
+    })
   end
 
   it "fails when the authentication token is not passed" do
