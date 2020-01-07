@@ -1,14 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { get } from 'lodash-es';
 // https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
-
-// // TODO
-// -Remove unused code
-// -Solve issue with hitting enter key on child checkbox and collapsing list
-// -Move fieldset and other components inside partial checkbox
 
 const Container = styled.div<{ size: string }>`
   display: flex;
@@ -89,22 +84,11 @@ type Props = DefaultProps & LabelProps & {
   disabled?: boolean;
 };
 
-interface State {
-  inputFocused: boolean;
-}
-
-export default class CheckboxWithPartialCheck extends PureComponent<Props, State> {
+export default class CheckboxWithPartialCheck extends PureComponent<Props> {
 
   static defaultProps: DefaultProps = {
     size: '22px'
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputFocused: false
-    };
-  }
 
   handleOnClick = (event: React.MouseEvent) => {
     const { disabled } = this.props;
@@ -137,21 +121,12 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
     }
   }
 
-  handleOnFocus = () => {
-    this.setState({ inputFocused: true });
-  }
-
-  handleOnBlur = () => {
-    this.setState({ inputFocused: false });
-  }
-
   removeFocus = (event: React.FormEvent) => {
     event.preventDefault();
   }
 
   render() {
     const { label, size, checked, className, notFocusable } = this.props;
-    const { inputFocused } = this.state;
 
     return (
       <Container
@@ -162,8 +137,6 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
         className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
         role="checkbox"
         aria-checked={checked}
-        onFocus={this.handleOnFocus}
-        onBlur={this.handleOnBlur}
         tabIndex={notFocusable ? -1 : 0}
       >
         <CustomInputWrapper
