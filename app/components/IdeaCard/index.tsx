@@ -136,11 +136,19 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
   componentDidUpdate(prevProps : Props) {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
-    if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
-      idea.attributes.action_descriptor.budgeting.enabled !== prevIdea.attributes.action_descriptor.budgeting.enabled
-      || idea.attributes.action_descriptor.budgeting.disabled_reason !== prevIdea.attributes.action_descriptor.budgeting.disabled_reason
-    )) {
-      this.setState({ showVotingDisabled: null });
+
+    if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
+      const ideaBudgetingEnabled =  idea.attributes?.action_descriptor?.budgeting?.enabled;
+      const prevIdeaBudgetingEnabled = prevIdea.attributes?.action_descriptor?.budgeting?.enabled;
+      const ideaBudgetingDisabledReason = idea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+      const prevIdeaBudgetingDisabledReason = prevIdea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+
+      if (
+        ideaBudgetingEnabled !== prevIdeaBudgetingEnabled ||
+        ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason
+      ) {
+        this.setState({ showVotingDisabled: null });
+      }
     }
   }
 

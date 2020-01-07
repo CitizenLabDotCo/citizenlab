@@ -134,7 +134,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>,
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
   phases: ({ project, render }) => <GetPhases projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetPhases>,
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });

@@ -9,7 +9,7 @@ import ProjectNavbar from './ProjectNavbar';
 import IdeaButton from 'components/IdeaButton';
 
 // events
-import { selectedPhaseObserver } from 'containers/ProjectsShowPage/process/Timeline';
+import { selectedPhase$ } from 'containers/ProjectsShowPage/process/Timeline';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -142,8 +142,8 @@ class ProjectsShowPage extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.subscription = selectedPhaseObserver.subscribe(({ eventValue: selectedPhase }) => {
-      this.setState({ selectedProjectPhaseId: selectedPhase ? selectedPhase.id : null });
+    this.subscription = selectedPhase$.subscribe((selectedPhase) => {
+      this.setState({ selectedProjectPhaseId: selectedPhase?.id || null });
     });
   }
 
@@ -156,16 +156,16 @@ class ProjectsShowPage extends PureComponent<Props, State> {
     const { selectedProjectPhaseId } = this.state;
 
     if (!isNilOrError(project)) {
-      const projectHeaderImageLarge = (project.attributes.header_bg.large || null);
-      const projectType = project.attributes.process_type;
-      const projectPublicationStatus = project.attributes.publication_status;
-      const projectMethod = project.attributes.participation_method;
+      const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
+      const projectType = project?.attributes?.process_type;
+      const projectPublicationStatus = project?.attributes?.publication_status;
+      const projectMethod = project?.attributes?.participation_method;
 
       return (
         <>
           <ProjectNavbar projectSlug={projectSlug} phaseId={selectedProjectPhaseId} />
           <Container className={`${projectType} e2e-project-header-content`}>
-            <HeaderImage src={projectHeaderImageLarge} />
+            <HeaderImage src={projectHeaderImageLarge || null} />
             <HeaderOverlay />
             <HeaderContent className={projectType}>
               <HeaderTitle>
@@ -202,7 +202,7 @@ class ProjectsShowPage extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 

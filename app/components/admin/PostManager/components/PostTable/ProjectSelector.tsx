@@ -18,7 +18,7 @@ const StyledLabel = styled(Label)`
 `;
 
 export default (props: { projectId: string }) => (
-  <GetProject id={props.projectId}>
+  <GetProject projectId={props.projectId}>
     {(project) => {
       if (!project || project instanceof Error) return null;
 

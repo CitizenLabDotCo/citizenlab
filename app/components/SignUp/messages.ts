@@ -126,9 +126,17 @@ export default defineMessages({
     id: 'app.containers.SignUp.logIn',
     defaultMessage: 'Log in',
   },
-  gdprApproval: {
-    id: 'app.containers.SignUp.gdprApproval',
-    defaultMessage: 'Check here to confirm that you have read and agree to our {tacLink} and {ppLink}',
+  tacApproval: {
+    id: 'app.containers.SignUp.tacApproval',
+    defaultMessage: 'Check here to confirm that you have read and agree to our {tacLink}',
+  },
+  privacyApproval: {
+    id: 'app.containers.SignUp.privacyApproval',
+    defaultMessage: 'Check here to confirm that you have read and agree to our {ppLink}',
+  },
+  emailApproval: {
+    id: 'app.containers.SignUp.emailApproval',
+    defaultMessage: 'Check here to confirm that you agree receiving emails from this platform. You can select which emails you wish to receive from your user settings.',
   },
   acceptTermsAndConditions: {
     id: 'app.containers.SignUp.acceptTermsAndConditions',
@@ -138,6 +146,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.termsAndConditions',
     defaultMessage: 'terms and conditions',
   },
+  emailConsentError: {
+    id: 'app.containers.SignUp.emailConsentError',
+    defaultMessage: 'You have to accept receiving emails for your account management.',
+  },
   privacyPolicy: {
     id: 'app.containers.SignUp.privacyPolicy',
     defaultMessage: 'privacy policy',
@@ -145,6 +157,10 @@ export default defineMessages({
   tacError: {
     id: 'app.containers.SignUp.tacError',
     defaultMessage: 'Please accept the terms and conditions',
+  },
+  privacyError: {
+    id: 'app.containers.SignUp.privacyError',
+    defaultMessage: 'Please accept the privacy policy',
   },
   signUpButtonAltText: {
     id: 'app.containers.SignUp.signUpButtonAltText',

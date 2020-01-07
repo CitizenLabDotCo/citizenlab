@@ -139,7 +139,7 @@ class VotingDisabled extends PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+  <GetProject projectId={inputProps.projectId}>
     {project => <VotingDisabled {...inputProps} project={project} />}
   </GetProject>
 );

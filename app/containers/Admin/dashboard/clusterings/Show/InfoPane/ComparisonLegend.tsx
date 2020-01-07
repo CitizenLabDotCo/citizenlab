@@ -63,7 +63,7 @@ class ComparisonLegend extends PureComponent<Props, State> {
         );
       case 'project':
         return (
-          <GetProject id={node.id}>
+          <GetProject projectId={node.id}>
             {(project) => isNilOrError(project) ? null : <T value={project && project.attributes.title_multiloc} />}
           </GetProject>
         );

@@ -26,14 +26,17 @@ const StatusBadge = styled.div<{color: string}>`
   line-height: 18px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 8px 12px;
-  text-transform: capitalize;
   font-weight: 400;
   background-color: ${(props) => props.color};
   display: flex;
   align-items: center;
 `;
 
-const BadgeLabel = styled.div``;
+const BadgeLabel = styled.div`
+  &:first-letter {
+    text-transform: uppercase;
+  }
+`;
 
 const AnsweredBadgeIcon = styled(Icon)`
   width: 1.6em;

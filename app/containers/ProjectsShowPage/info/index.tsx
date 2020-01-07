@@ -27,7 +27,7 @@ const StyledContentContainer = styled(ContentContainer)`
 export interface InputProps {}
 
 export default withRouter<InputProps>((props: WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
+  <GetProject projectSlug={props.params.slug}>
     {project => {
       if (isNilOrError(project)) return null;
 
