@@ -23,7 +23,8 @@ import VerificationStatus from './VerificationStatus';
 
 // Styles
 import styled from 'styled-components';
-import { colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 const Container = styled.div`
   width: 100%;

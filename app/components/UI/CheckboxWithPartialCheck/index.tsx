@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { get } from 'lodash-es';
+// https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
 
 const Container = styled.div<{ size: string }>`
   display: flex;
@@ -27,7 +28,7 @@ const Container = styled.div<{ size: string }>`
   }
 `;
 
-const InputWrapper = styled.div<{ checked: boolean | 'mixed', size: string }>`
+const CustomInputWrapper = styled.div<{ checked: boolean | 'mixed', size: string }>`
   position: relative;
   flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
   width: ${({ size }) => parseInt(size, 10)}px;
@@ -43,24 +44,8 @@ const InputWrapper = styled.div<{ checked: boolean | 'mixed', size: string }>`
   border-color: ${(props) => props.checked ? colors.clGreen : '#aaa'};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
-  &.focused {
-    outline: ${customOutline};
-  }
-
   &:hover {
     border-color: ${(props) => props.checked === 'mixed' ? colors.clBlueLightest : props.checked ? colors.clGreen : '#333'};
-  }
-`;
-
-const Input = styled.input`
-  &[type='checkbox'] {
-    /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-    clip: rect(1px, 1px, 1px, 1px);
   }
 `;
 
@@ -99,22 +84,11 @@ type Props = DefaultProps & LabelProps & {
   disabled?: boolean;
 };
 
-interface State {
-  inputFocused: boolean;
-}
-
-export default class CheckboxWithPartialCheck extends PureComponent<Props, State> {
+export default class CheckboxWithPartialCheck extends PureComponent<Props> {
 
   static defaultProps: DefaultProps = {
     size: '22px'
   };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputFocused: false
-    };
-  }
 
   handleOnClick = (event: React.MouseEvent) => {
     const { disabled } = this.props;
@@ -139,19 +113,12 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
       const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
       const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-      if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
-        event && event.preventDefault();
+      // if key = Space
+      if (!targetElementIsLink && !parentElementIsLink && event.keyCode === 32) {
+        event && event.preventDefault() ;
         this.props.onChange(event);
       }
     }
-  }
-
-  handleOnFocus = () => {
-    this.setState({ inputFocused: true });
-  }
-
-  handleOnBlur = () => {
-    this.setState({ inputFocused: false });
   }
 
   removeFocus = (event: React.FormEvent) => {
@@ -159,8 +126,7 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
   }
 
   render() {
-    const { label, size, checked, className, notFocusable, id, disabled } = this.props;
-    const { inputFocused } = this.state;
+    const { label, size, checked, className, notFocusable } = this.props;
 
     return (
       <Container
@@ -168,30 +134,19 @@ export default class CheckboxWithPartialCheck extends PureComponent<Props, State
         onMouseDown={this.removeFocus}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
-        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'} ${disabled ? 'disabled' : ''}`}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+        role="checkbox"
+        aria-checked={checked}
+        tabIndex={notFocusable ? -1 : 0}
       >
-        <InputWrapper
-          className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
-          checked={checked}
+        <CustomInputWrapper
           size={size as string}
+          checked={checked}
         >
-          <Input
-            tabIndex={notFocusable ? -1 : 0}
-            id={id}
-            aria-checked={checked}
-            type="checkbox"
-            onFocus={this.handleOnFocus}
-            onBlur={this.handleOnBlur}
-            disabled={disabled}
-          />
           {checked === 'mixed' ? <CheckmarkIcon ariaHidden name="more-options" /> : checked && <CheckmarkIcon ariaHidden name="checkmark" />}
-        </InputWrapper>
+        </CustomInputWrapper>
 
-        {label &&
-          <Label htmlFor={id}>
-            {label}
-          </Label>
-        }
+        <Label>{label}</Label>
       </Container>
     );
   }

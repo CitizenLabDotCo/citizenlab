@@ -7,6 +7,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Checkbox from 'components/UI/Checkbox';
+import { Fieldset, ScreenReaderOnly } from 'utils/accessibility';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -208,7 +209,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
                   onChange={this.handleOnChangeCategory(category)}
                   label={<FormattedMessage {...messages[`${category}Category`]} />}
                 />
-                <Button onClick={this.handleToggleOpenCategory(category)} style="text">
+                <Button onClick={this.handleToggleOpenCategory(category)} style="text" type="button" ariaExpanded={isCategoryOpen[category]}>
                   {isCategoryOpen[category]
                     ? <FormattedMessage {...messages.collapse} />
                     : <FormattedMessage {...messages.expand} />
@@ -216,18 +217,26 @@ export default class ConsentForm extends PureComponent<Props, State> {
                   <ArrowIcon name="dropdown" className={isCategoryOpen[category] ? 'open' : ''} ariaHidden/>
                 </Button>
               </CategoryCheckboxContainer>
-              {isCategoryOpen[category] &&
-                consents.map(consent => (
-                  <CheckboxContainer key={consent.id}>
-                    <Checkbox
-                      id={consent.id}
-                      checked={this.isConsented(consent.id)}
-                      onChange={this.handleOnChange(consent)}
-                      label={<T value={consent.attributes.campaign_type_description_multiloc} />}
-                    />
-                  </CheckboxContainer>
-                ))
-              }
+              {isCategoryOpen[category] && (
+                <Fieldset>
+                  <ScreenReaderOnly>
+                    <legend>
+                      <FormattedMessage {...messages.ally_categoryLabel} />
+                    </legend>
+                  </ScreenReaderOnly>
+
+                  {consents.map(consent => (
+                    <CheckboxContainer key={consent.id}>
+                      <Checkbox
+                        id={consent.id}
+                        checked={this.isConsented(consent.id)}
+                        onChange={this.handleOnChange(consent)}
+                        label={<T value={consent.attributes.campaign_type_description_multiloc} />}
+                      />
+                    </CheckboxContainer>
+                  ))}
+                </Fieldset>
+              )}
             </ConsentList>
           ))}
           <StyledSubmitWrapper

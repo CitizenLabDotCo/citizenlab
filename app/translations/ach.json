@@ -1236,6 +1236,7 @@
   "app.containers.App.metaDescription": "",
   "app.containers.App.metaTitle": "",
   "app.containers.CampaignsConsentForm.adminCategory": "",
+  "app.containers.CampaignsConsentForm.ally_categoryLabel": "",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "",
   "app.containers.CampaignsConsentForm.collapse": "",
   "app.containers.CampaignsConsentForm.commentedCategory": "",
