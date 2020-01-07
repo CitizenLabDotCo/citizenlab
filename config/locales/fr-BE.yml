@@ -138,88 +138,71 @@ fr-BE:
       </ul><p> </p><p>Si vous avez encore des questions ou des remarques au sujet des cookies après avoir lu cette Déclaration des cookies, vous pouvez toujours nous contacter à l'adresse <a href="mailto:support@citizenlab.co" target="_blank">support@citizenlab.co</a>.</p>
     privacy_policy_title: Politique de confidentialité
     privacy_policy_body: >
-      <p>Responsable du traitement des Données et Propriétaire</p>
-      <p>CitizenLab NV - Meusegemstraat 105 - 1861 Wolvertem</p>
+      <p>Responsable du traitement des Données:</p>
+      <p>CitizenLab NV - Meusegemstraat 105 - 1861 Wolvertem - Belgique</p>
       <p>Adresse e-mail de contact : <a href="mailto:support@citizenlab.co" target="_blank">support@citizenlab.co</a></p>
+      <p>Organisation:</p>
+      <p>// insérer les informations de contact du client<p>
       <h2>1. Déclaration de confidentialité</h2>
-      <p>Cette déclaration de confidentialité s'applique aux données personnelles recueillies par CitizenLab par le biais de ce site web.</p>
+      <p>Cette déclaration de confidentialité s'applique aux données personnelles recueillies par CitizenLab pour l’organisation par le biais de ce site web.</p>
       <h2>2. Que sont les données personnelles ?</h2>
       <p>Dans la présente déclaration de confidentialité, les données personnelles désignent des informations ou des parties d'informations qui permettent de vous identifier. Une personne identifiable est une personne qui peut être identifiée, directement ou indirectement, notamment en faisant référence à un numéro d'identification ou à un ou plusieurs facteurs liés à l'identité physique, physiologique, mentale, économique, culturelle ou sociale. Un exemple typique de données personnelles est votre nom et votre adresse e-mail.</p>
       <h2>3. Quelles données personnelles recueillons-nous ?</h2>
-      <p>Nous pouvons recueillir vos données personnelles auprès des deux sources suivantes :</p>
+      <p>Nous pouvons recueillir vos données personnelles auprès des trois sources suivantes :</p>
       <h3>3.1 Les données personnelles que vous nous fournissez lors du processus d'enregistrement sur la plateforme</h3>
       <p>Les données personnelles que nous pouvons recueillir auprès de vous sont:</p>
       <ul>
-       <li>Adresse e-mail (obligatoire) ;</li>
-       <li>Nom et prénom (obligatoire) ;</li>
-       <li>Âge (facultatif) ;</li>
-       <li>Niveau de formation (facultatif) ;</li>
-       <li>Région (quartier) où vous habitez (facultatif)</li>
+       <li>Adresse e-mail</li>
+       <li>Nom et prénom</li>
+       <li>Année de naissance</li>
+       <li>Genre</li>
+       <li>Région (quartier) où vous habitez</li>
+       <li>Langage de préférence</li>
       </ul>
-      <h3>3.2 Données personnelles que nous recueillons lorsque vous visitez notre site web</h3>
-      <p>Nous (et les fournisseurs de services agissant en notre nom) utilisons des cookies qui recueillent automatiquement des informations personnelles vous concernant lorsque vous visitez ce site web. Pour plus d'informations, veuillez consulter notre politique en matière de cookies.</p>
+      <p>Cette liste peut être agrandie sur demande de l’organisation. Si vous choisissez de vous inscrire via un fournisseur tiers comme Google Accounts, Facebook ou FranceConnect, nous allons récupérer ces informations auprès d’eux. Si vous choisissez de vérifier votre identité avec un fournisseur tiers tel que COW, FranceConnect ou CSAM, nous récupéreront ces informations auprès d’eux.</p>
+      <h3>3.2 Données personnelles que nous recueillons lorsque vous participez sur notre plateforme.</h3>
+      <p>Chaque action que vous réalisez sur la plateforme (voter, poster une idée, écrire un commentaire, répondre à un questionnaire…) est enregistrée. Ces action sont aussi mise en lien avec les données de votre profil utilisateur (cf. 3.1), ainsi l’organisation peut mettre en lien vos participations et votre identité.</p>
+      <h3>3.3 Données personnelles que nous recueillons lorsque vous visitez notre plateforme.</h3>
+      <p>Nous (et les fournisseurs de services agissant en notre nom) collectons des informations sur l’utilisation et le bon fonctionnement de nos plateformes. A cette fin, nous récoltons des données techniques pouvant vous identifier, telles que votre adresse IP et les références de votre navigateur. En utilisant nos services, vous acceptez que ces données soient collectées. 
+      Nous récoltons aussi des information d’utilisation pour permettre l’amélioration continue de nos services, vous pouvez refuser cette collection à tout moment depuis le gestionnaire de consentement.</p>
       <h2>4. Comment utilisons-nous les données personnelles ?</h2>
       <p>Nous pouvons utiliser vos données personnelles aux fins suivantes :</p>
       <ul>
+       <li>Tout d’abord et principalement afin de communiquer à l'organisation vos contributions et leur contexte, et de former des rapports à partir de toutes les données récoltées sur cette plateforme afin d’assister leurs prises de décisions ;</li>
        <li>Créer et maintenir votre profil d'utilisateur sur ce site ;</li>
-       <li>Fournir des informations sur votre communauté et/ou des rapports à partir de la plateforme susceptibles de vous intéresser ;</li>
-       <li>Vérifier votre profil d'utilisateur afin d'assurer la sécurité nécessaire ;</li>
-       <li>Gérer l'identification et l'authentification des utilisateurs.</li>
+      <li>Gérer l'identification et l'authentification des utilisateurs ;</li>
+       <li>Fournir des informations sur votre communauté et/ou vous alerter lorsque des activités sur la plateforme sont susceptibles de vous intéresser. Vous pouvez vous désabonner des emails de la plateforme à tout moment ;</li>
+       <li>Afin d’améliorer nos services et surveiller leur bon fonctionnement.</li>
       </ul>
       <p>Les données personnelles ne seront conservées et traitées que pendant la période nécessaire à la réalisation des finalités du traitement. Les données seront alors effacées ou rendues anonymes.</p>
       <h2>5. Avec qui partageons-nous vos données personnelles ?</h2>
-      <p>Nous partageons éventuellement vos données personnelles avec votre autorité locale, qui est le responsable du traitement des données personnelles. Ils disposent d'une fonction d'administrateur sur ce site. Toutefois, nous ne vendrons ni ne louerons jamais vos données personnelles à d'autres fournisseurs de services, et nous ne partagerons pas non plus vos données avec des tiers qui ne respectent pas le RGDP.</p>
+      <p>Nous partageons vos données personnelles avec l’organisation pour laquelle nous récoltons vos données personnelles. Nous partageons vos données ou une partie de vos données avec les sous-traitants que nous avons missionné. Nous ne vendrons ni ne louerons jamais vos données personnelles à d'autres fournisseurs de services, et nous ne partagerons pas non plus vos données avec des tiers qui ne respectent pas le RGDP.</p>
       <h2>6. Où transmettons-nous vos données personnelles ?</h2>
-      <p>Nous ne transmettons des données personnelles qu'à des prestataires de services situés en dehors de l'Espace Économique Européen que si elles sont conformes à l'art. 44 et suivants du RGDP. Tous les fournisseurs de services basés aux États-Unis se conforment au Privacy Shield.</p>
+      <p>Nous ne transmettons des données personnelles à des prestataires de services situés en dehors de l'Espace Économique Européen que si ils sont conformes à l'art. 44 du RGDP. Tous les fournisseurs de services basés aux États-Unis se conforment au Privacy Shield, ce qui signifie qu’ils doivent respecter les standards européens de sécurité et de protection de la vie privée.</p>
       <h2>7. Quels sont vos droits ?</h2>
-      <p>Vous avez le droit d'accéder à tout moment et gratuitement à vos données personnelles ainsi qu'à l'utilisation que CitizenLab fait de vos données personnelles.</p>
+      <p>Vous avez le droit d'accéder à tout moment à vos données personnelles ainsi qu'à l'utilisation que CitizenLab fait de vos données personnelles.</p>
       <h3>7.1 Droit de rectification, de suppression et de restriction</h3>
-      <p>Vous êtes libre de communiquer ou non vos données personnelles à CitizenLab. En outre, vous avez toujours le droit de demander à CitizenLab de corriger, compléter ou supprimer vos données personnelles. Vous reconnaissez qu'en cas de refus de communication ou de demande de suppression de données personnelles, certains services peuvent ne pas être disponibles.</p>
-      <p>Vous pouvez également demander à limiter le traitement de vos données personnelles.</p>
+      <p>Vous êtes libre de communiquer ou non vos données personnelles à CitizenLab. En outre, vous avez toujours le droit de demander à CitizenLab de corriger, compléter ou supprimer vos données personnelles. Vous reconnaissez qu'en cas de refus de communication ou de demande de suppression de données personnelles, certains de nos services peuvent ne pas être disponibles. Vous pouvez aussi demander à ce que nous limitions le traitement des données personnelles vous concernant. Si vous choisissez de supprimer votre compte utilisateur, les données personnelles vous concernant seront supprimées de nos serveurs. Certaines informations à caractère personnel peuvent rester dans les enregistrements que nous conservons pour des raisons légales et de sécurité pendant une durée maximale de 30 jours.</p>
       <h3>7.2 Droit d'opposition</h3>
-      <p>Vous avez le droit de vous opposer au traitement de vos données personnelles pour des motifs sérieux et légitimes.</p>
-      <p>En outre, vous avez toujours le droit de vous opposer à l'utilisation des données personnelles à des fins de marketing direct ; dans ce cas, vous n'avez même pas à motiver la raison.</p>
+      <p>Vous avez le droit de vous opposer au traitement de vos données personnelles pour des motifs sérieux et légitimes. En outre, vous avez toujours le droit de vous opposer à l'utilisation des données personnelles à des fins de marketing direct ; dans ce cas, vous n'avez même pas à motiver la raison.</p>
       <h3>7.3 Droit de libre transmission des données</h3>
       <p>Vous avez le droit d'obtenir les données personnelles que vous avez fournies à CitizenLab sous une forme structurée, courante et lisible par machine et/ou de les faire transférer à d'autres personnes responsables.</p>
       <h3>7.4 Droit de rétractation du consentement</h3>
       <p>Dans la mesure où le traitement est fondé sur votre consentement préalable, vous avez le droit de retirer ce consentement.</p>
       <h3>7.5 Exercice de vos droits</h3>
-      <p>Vous pouvez exercer vos droits en vous adressant à CitizenLab à cet effet, soit par courrier électronique à koen@citizenlab.co, par courrier postal au Cantersteen 12, 1000 Bruxelles, soit en utilisant le formulaire de contact « Contactez-nous » sur le site Internet, à condition de joindre une copie de votre carte d'identité.</p>
+      <p>Vous pouvez exercer vos droits en vous adressant à CitizenLab à cet effet, soit par courrier électronique à support@citizenlab.co, soit par courrier postal à Meusegemstraat 105, 1861 Wolvertem, Belgium, soit en utilisant le formulaire de contact « Contactez-nous » sur le site Internet, à condition de joindre une copie du recto de votre carte d'identité.</p>
       <h3>7.6 Décisions et profilage automatiques</h3>
-      <p>Le traitement de vos données personnelles ne comprend pas le profilage et ne fait pas non plus l'objet de décisions automatisées de la part de CitizenLab.</p>
+      <p>Le traitement de vos données personnelles ne comprend pas le profilage et ne fait pas non plus l'objet de décisions automatisées.</p>
       <h3>7.7 Droit de recours</h3>
-      <p>Vous avez le droit de déposer une plainte auprès de la Commission belge pour la protection de la vie privée : Commission pour la Protection de la Vie Privée, rue de la Presse 35, 1000 Bruxelles, Tél +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail <a href="mailto:commission@privacycommission.be" target="_blank">: commission@privacycommission.be</a>.</p>
-      <p>Ceci est sans préjudice de toute disposition devant un tribunal civil.</p>
+      <p>Vous avez le droit de déposer une plainte auprès de autorité de contrôle du traitement de données à caractère personnel de votre pays ou de la Commission belge pour la protection de la vie privée sous l'autorité de laquelle CitizenLab est placée : Drukpersstraat 35, 1000 Bruxelles, Belgique, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. Ceci est sans préjudice de toute disposition devant un tribunal civil.</p>
       <h2>8. Informations supplémentaires sur la collecte des données et leur traitement</h2>
       <h3>Procédures judiciaires</h3>
-      <p>Le Sous-traitant et le Responsable du traitement des Données peuvent utiliser les Données Personnelles de l'Utilisateur à des fins juridiques, devant les tribunaux ou pendant les phases préalables de procédures judiciaires en cas d'utilisation illicite de cette Application ou des services connexes.</p>
-      <p>L'Utilisateur est conscient que le Sous-traitant et le Responsable du traitement des Données peuvent être tenus de divulguer les données personnelles à la demande des organismes gouvernementaux compétents.</p>
+      <p>CitizenLab et l’Organisation peuvent utiliser les Données Personnelles de l'Utilisateur à des fins juridiques, devant les tribunaux ou pendant les phases préalables de procédures judiciaires en cas d'utilisation illicite de cette Application ou des services connexes. L'Utilisateur est conscient que CitizenLab et l’Organisation peuvent être tenus de divulguer les données personnelles à la demande des organismes gouvernementaux compétents. Le fondement légal du traitement de données personnelles à l’oeuvre ici est l’acceptation des termes et des conditions (la base contractuelle) et le consentement donné.</p>
       <h3>Mesures de sécurité</h3>
-      <p>CitizenLab a développé des mesures de sécurité techniquement et organisationnellement adaptées pour éviter la destruction, la perte, la falsification, l'altération, l'accès non autorisé ou la notification erronée à des tiers de données personnelles recueillies ainsi que tout autre traitement non autorisé de ces données.</p>
-      <p>CitizenLab ne peut en aucun cas être tenu responsable de tout dommage direct ou indirect résultant d'une utilisation incorrecte ou illicite de vos données personnelles par un tiers.</p>
-      <p>Vous devez respecter les règles de sécurité à tout moment, notamment en empêchant tout accès non autorisé à votre login et à votre code. Vous êtes seul responsable de l'utilisation faite à partir du site de votre ordinateur, de votre adresse IP et de vos données d'identification, ainsi que de leur confidentialité.</p>
+      <p>CitizenLab a développé des mesures de sécurité techniquement et organisationnellement adaptées pour éviter la destruction, la perte, la falsification, l'altération, l'accès non autorisé ou la notification erronée à des tiers de données personnelles recueillies ainsi que tout autre traitement non autorisé de ces données. CitizenLab ne peut en aucun cas être tenu responsable de tout dommage direct ou indirect résultant d'une utilisation incorrecte ou illicite de vos données personnelles par un tiers. Vous devez respecter les règles de sécurité à tout moment, notamment en empêchant tout accès non autorisé à votre login et à votre code. Vous êtes seul responsable de l'utilisation faite à partir du site de votre ordinateur, de votre adresse IP et de vos données d'identification, ainsi que de leur confidentialité.</p>
       <h3>Modifications de cette politique de confidentialité</h3>
-      <p>Le Responsable du traitement des Données se réserve le droit de modifier cette politique de confidentialité à tout moment en avisant les Utilisateurs sur cette page. Nous vous recommandons de consulter cette page fréquemment pour être au courant de tout changement. La date de la dernière modification est indiquée au bas de la page. Si un Utilisateur s'oppose à toute modification de la politique, il ne doit pas continuer à utiliser cette Application. Il peut demander au Responsable du traitement des Données de supprimer ses Données personnelles. Sauf indication contraire, la présente politique de confidentialité s'applique à toutes les Données personnelles stockées par le Responsable du traitement des Données des Utilisateurs.</p>
-      <p><em>Dernière mise à jour : 03/02/2018</em></p>
-      <h2>Définitions et cadre juridique</h2>
-      <h3>Données personnelles (ou Données)</h3>
-      <p>Toute information concernant une personne physique, une personne morale, une institution ou une association qui est directement ou même indirectement identifiée ou qui peut être identifiée par référence à d'autres informations, notamment un numéro d'identification personnel.</p>
-      <h3>Données d'utilisation</h3>
-      <p>Les renseignements qui sont recueillis automatiquement à partir de la présente Application (ou de services externes utilisés dans la présente Application), notamment les adresses IP ou les noms de domaine des ordinateurs utilisés par les Utilisateurs de cette Application, les adresses URI (Uniform Resource Identifier), l'heure de la demande, la méthode utilisée pour soumettre la demande au serveur, la taille du fichier reçu en réponse, le code numérique indiquant l'état de la réponse du serveur (réussi, erreur, etc.), le pays d'origine, les fonctions du navigateur et du système d'exploitation de l'Utilisateur, les différentes données de temps par visite (telles que le temps passé sur chaque page de l'application) et les données relatives au chemin suivi dans l'application, axées notamment sur l'ordre des pages visitées et les autres paramètres relatifs au système d'exploitation de l'appareil et/ou à l'environnement informatique de l'Utilisateur.</p>
-      <h3>Utilisateur</h3>
-      <p>La personne qui utilise cette Application et qui doit correspondre ou être autorisée par la Personne à laquelle se réfèrent les Données personnelles.</p>
-      <h3>Personne concernée</h3>
-      <p>La personne morale ou la personne physique à laquelle les Données personnelles se rapportent.</p>
-      <h3>Processeur de données (ou superviseur de données)</h3>
-      <p>La personne physique, la personne morale, l'administration gouvernementale ou toute autre institution, association ou organisation autorisée par le Responsable du traitement des Données à traiter les Données personnelles conformément à la présente politique de confidentialité.</p>
-      <h3>Responsable du traitement des Données (ou Propriétaire)</h3>
-      <p>La personne physique, la personne morale, l'entité juridique ou toute autre institution, association ou organisation ayant le droit, également conjointement avec le Responsable du traitement des Données, de prendre des décisions concernant les finalités et les modalités du traitement des Données personnelles et les moyens utilisés pour le traitement des Données, notamment les mesures de sécurité relatives à l'exploitation et à l'utilisation de cette Application. Le Responsable du traitement des Données est le Propriétaire de la présente Application, sauf indication contraire.</p>
-      <h3>Cette Application</h3>
-      <p>L'outil matériel ou logiciel qui recueille les Données personnelles de l'Utilisateur.</p>
-      <h3>Cookie</h3>
-      <p>Petite pièce avec des données stockées sur l'appareil de l'Utilisateur.</p>
-      <h2>Informations juridiques</h2>
-      <p>Notification aux Utilisateurs européens : la présente déclaration de confidentialité a été établie conformément au Règlement Général sur la Protection des Données du 27 avril 2016 (Règlement UE 2016/679).</p>
+      <p>CitizenLab se réserve le droit de modifier cette politique de confidentialité à tout moment en avisant les Utilisateurs sur cette page. Nous vous recommandons de consulter cette page fréquemment pour être au courant de tout changement. La date de la dernière modification est indiquée au bas de la page. Si un Utilisateur s'oppose à une modification de la politique, il ne doit pas continuer à utiliser cette Application. Sauf indication contraire, la présente politique de confidentialité s'applique à toutes les Données personnelles que nous avons récoltées.</p>
+      <p><em>Dernière mise à jour : 19/12/2019</em></p>
     infopage_title: Plus d'informations
     infopage_body: "<p>Ceci est une <strong>plateforme de participation</strong> à l'initiative de votre municipalité ou de votre organisation. Elle peut être utilisée pour différents processus de consultations publics : via une collecte d'idées, un vote, des discussions, un sondage, une enquête, un budget participatif, une cartographie interactive, un choix entre plusieurs scenarios, un soutien pour les conseils communaux, municipaux, ou les comités, etc.</p>\n<p>Sur la page d'accueil, vous verrez quels sont <strong>les processus actifs</strong> et dans quelle <strong>phase</strong> ils se trouvent actuellement.</p>\n<p><img src=\"https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png\" alt=\"Ligne de séparation horizontale\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>Comment puis-je me connecter sur la plateforme ?</h2>\n<p>Il est très simple de s'inscrire en entrant son nom, prénom et adresse e-mail. vous pouvez également utiliser votre compte Google ou Facebook. Seulement vos nom et prénom seront visibles pour les autres utilisateurs.</p>\n<h2>Puis-je utiliser la plateforme moi-même, pour organiser une consultation publique par exemple ?</h2>\n<p>Absolument. Demandez au responsable de votre commune ou de organisation de vous donner les droits nécessaires pour devenir un modérateur de projet. Une fois obtenus, vous pouvez créer votre propre projet et ligne de temps, et partager l'information que vous désirez (vidéos, documents, images, etc.) Cela vous donnera également la possibilité d'inviter d'autres utilisateurs sur la plateforme, de leur permettre de poster des idées au sein de votre projet, ou bien de voter et commenter.</p>\n<h2>Puis-je participer en tant qu'association, organisation, comité ?</h2>\n<p>Oui, c'est possible. Puisque seul le nom et le prénom de l'utilisateur sont visibles aux autres sur la plateforme, vous pouvez simplement utiliser le nom de votre organisation lors de la création de votre profil.</p>\n<h2>Pourquoi devrais-je utiliser cette plateforme au lieu de créer un site moi-même ?</h2>\n<p>Une équipe de développeurs et de spécialistes de la participation en ligne (<a href=\"https://www.citizenlab.co/fr\" target=\"_blank\">CitizenLab</a>, commissionné par votre commune ou votre organisation) améliore et met à jour cette plateforme au quotidien. Chaque bug notifié est résolu immédiatement et si vous avez des propositions créatives, ils peuvent vous aider en vous indiquant quelles fonctionnalités sont les plus adaptées ou lesquelles sont sur le point de sortir.</p>\n<p><img src=\"https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png\" alt=\"Ligne de séparation horizontale\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Besoin de plus d’informations ? </em></strong><em>Envie d’utiliser la plateforme ? Une question ou un commentaire ? Contactez le responsable de votre commune ou organisation. Ou contactez le support de CitizenLab via support@citizenlab.co.</em></p>"
     homepage_info_title: ""
@@ -229,13 +212,68 @@ fr-BE:
       <h2 class="ql-align-center"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png" height="374.3745928338762" width="819"></h2> <h2>Que sont les initiatives citoyennes ?</h2> <p>Les initiatives citoyennes sont des initiatives qui partent de la base, qui naissent d'un besoin, d'un désir, d'un rêve, .... envisagé par vous ou d'autres citoyens. Vous et les autres initiateurs voulez changer ou améliorer une situation actuelle ou recommencer à zéro.</p> <p>Ce qui distingue les initiatives citoyennes, c'est qu'elles suivent un système basé sur des règles et qu'elles incluent la participation de votre gouvernement (local). Ce système basé sur des règles, souvent formalisé dans la législation, indique les conditions qui doivent être remplies pour que le gouvernement (local) soit officiellement impliqué. Cette implication est nécessaire pour que les initiatives citoyennes puissent atteindre leur objectif, penser à l'autorisation d'une ville pour un usage temporaire d'un espace public, au soutien d'experts municipaux pour la mise en œuvre de vos projets, ....</p> <p>Les initiatives citoyennes ne servent jamais l'intérêt personnel, mais toujours l'intérêt collectif.</p> <h2>Pourquoi en commencer une ici ?</h2> <p>Il s'agit de la plateforme de participation officielle de $|orgName|, qui offre les avantages suivants :</p> <ul> <li>$|orgName| est déjà présente et écoute activement ce qui se passe sur la plateforme. Il n'est donc pas nécessaire de trouver et de joindre les personnes pertinentes au sein de$|orgName|.</li> <li>Cette plateforme est conçue spécifiquement pour les actions participatives telles que les initiatives citoyennes. Tous les éléments, le flux, ... sont construits pour optimiser cet objectif précis, ce qui est loin d'être le cas avec les médias sociaux classiques.</li> <li>D'autres citoyens sont déjà présents ici, ce qui augmente la portée potentielle de votre initiative pour obtenir du soutien.</li> </ul> <h2>Quelles sont les mesures à prendre ?</h2> <p><strong>1. Vérifiez si votre initiative correspond aux critères de $|orgName|</strong></p> <p>$|initiativesEligibilityCriteria|</p> <p><strong>2. Vérifiez si les offres de $|orgName| vous aideront à atteindre votre objectif.</strong></p> <p>$|initiativesThresholdReachedMessage|</p> <p><strong>3. Préparez votre initiative avec les autres citoyens concernés</strong></p> <p>Dès que vous publiez votre initiative sur cette plate-forme, le compte à rebours s’enclenche. Par conséquent, il est important d'être bien préparé lorsque vous rédigez votre initiative. Sur <a href="/initiatives/new" target="_blank">cette page</a>, vous pouvez découvrir quelles informations vous seront demandées avant de publier votre initiative.</p> <p><strong>4. Publier votre initiative</strong></p> <p>Publiez votre initiative <a href="/initiatives/new" target="_blank">ici</a>. Une fois que vous aurez cliqué sur le bouton 'Publier votre initiative', elle sera visible pour tous les autres citoyens et le chronomètre commencera à fonctionner.</p> <p><strong>5. Recueillir l'appui nécessaire pour atteindre le seuil à temps</strong></p> <p>Maintenant que votre initiative est publiée, il est temps d’obtenir du soutiens. Assurez-vous de recueillir $|initiativesVotingThreshold| votes en $|initiativesDaysLimit| jours pour obtenir la participation de $|orgName|. Pour cela, vous pouvez utiliser les options de partage sur la plateforme, ou tous les autres outils et canaux auxquels vous pensez.</p> <p><em>Vous avez encore des questions ? Contactez-nous</em><a href="mailto:support@citizenlab.co" target="_blank"><em>ici</em></a><em>.</em></p>
     initiatives_success_1_title: Navette fluviale
     initiatives_success_1_body: >
-      <p><em>Liège (BE)</em></p> <p><strong>Thème : Mobilité</strong></p> <p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg"></p> <h2>Comment tout a commencé</h2> <p>Liège, l'une des plus grandes villes de Belgique, a ouvert sa plate-forme de participation à l'élaboration de son " Plan de ville ", un plan stratégique pluriannuel contenant les priorités politiques de la ville.</p> <p>Après un appel aux idées, la ville a regroupé ces dernières en plusieurs groupes thématiques. L'initiative " River Shuttle " est née de l'un de ces pôles et a été ouverte au vote de tous les habitants.</p> <p>Plus de 15% des 200.000 Liégeois ont navigué sur la plate-forme et ont voté.</p> <h2>Le projet</h2> <p>Liège a déjà utilisé avec succès un service de navette fluviale à des fins touristiques pendant 2 saisons estivales, permettant aux touristes de découvrir la ville depuis la Meuse. Cela a inspiré au moins neuf citoyens à donner leur avis sur la façon dont ce service pourrait être amélioré et élargi. Ce qu'ils avaient en commun :</p> <ul> <li>le désir de commencer à concentrer ce service de navette sur les navetteurs également,</li> <li>faire passer le service de l'été seulement à l'année entière</li> <li>et ajouter plusieurs arrêts à la trajectoire de la navette.</li> </ul> <p>Leurs contributions combinées ont recueilli un total de 1 336 votes et a été regroupé en un seul groupe, qui a ensuite été façonné par les commentaires d'autres citoyens.</p> <p>La ville de Liège a écouté cette initiative et a décidé d'y donner suite. Aujourd'hui, une étude approfondie est en cours sur la manière dont le service de navette peut effectivement être étendu. Les résultats de cette étude seront utilisés pour la mise en œuvre future.</p> <h2>Facteurs du succès</h2> <ul> <li>Présence d'une infrastructure de base : La mise en œuvre de cette initiative ne doit pas nécessairement partir de zéro. L'infrastructure, en l'occurrence le coût le plus élevé, est déjà en place, tout comme l'expérience de l'exploitation et le cadre juridique.</li> <li>Fait partie d'un processus plus large : Parce que cette initiative trouve son origine dans le processus du " Plan de la ville " de Liège, les citoyens à l'origine de l'initiative ont bénéficié des actions de communication à l'échelle de la ville. De plus, étant donné l'adhésion des décideurs et l'implication de l'administration municipale, un suivi adéquat et structuré a été assuré.</li> <li>Lié à un problème largement partagé : Bien que le service de navette proposé dans cette initiative ne sera jamais utilisé par tous les Liégeois, il vise à résoudre un problème plus important qui affecte toutes les personnes vivant dans la ville, à savoir les embouteillages.</li> </ul> <p><em>Plus de contexte : </em><a href="https://www.citizenlab.co/case-studies-fr/liege" target="_blank"><em>Dossier CitizenLab Liège</em></a></p> <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Faites-nous savoir</a> !</p>
+      <p><em>Liège (BE)</em></p> <p><strong>Thème : Mobilité</strong></p> <p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg" alt=""></p> <h2>Comment tout a commencé</h2> <p>Liège, l'une des plus grandes villes de Belgique, a ouvert sa plate-forme de participation à l'élaboration de son " Plan de ville ", un plan stratégique pluriannuel contenant les priorités politiques de la ville.</p> <p>Après un appel aux idées, la ville a regroupé ces dernières en plusieurs groupes thématiques. L'initiative " River Shuttle " est née de l'un de ces pôles et a été ouverte au vote de tous les habitants.</p> <p>Plus de 15% des 200.000 Liégeois ont navigué sur la plate-forme et ont voté.</p> <h2>Le projet</h2> <p>Liège a déjà utilisé avec succès un service de navette fluviale à des fins touristiques pendant 2 saisons estivales, permettant aux touristes de découvrir la ville depuis la Meuse. Cela a inspiré au moins neuf citoyens à donner leur avis sur la façon dont ce service pourrait être amélioré et élargi. Ce qu'ils avaient en commun :</p> <ul> <li>le désir de commencer à concentrer ce service de navette sur les navetteurs également,</li> <li>faire passer le service de l'été seulement à l'année entière</li> <li>et ajouter plusieurs arrêts à la trajectoire de la navette.</li> </ul> <p>Leurs contributions combinées ont recueilli un total de 1 336 votes et a été regroupé en un seul groupe, qui a ensuite été façonné par les commentaires d'autres citoyens.</p> <p>La ville de Liège a écouté cette initiative et a décidé d'y donner suite. Aujourd'hui, une étude approfondie est en cours sur la manière dont le service de navette peut effectivement être étendu. Les résultats de cette étude seront utilisés pour la mise en œuvre future.</p> <h2>Facteurs du succès</h2> <ul> <li>Présence d'une infrastructure de base : La mise en œuvre de cette initiative ne doit pas nécessairement partir de zéro. L'infrastructure, en l'occurrence le coût le plus élevé, est déjà en place, tout comme l'expérience de l'exploitation et le cadre juridique.</li> <li>Fait partie d'un processus plus large : Parce que cette initiative trouve son origine dans le processus du " Plan de la ville " de Liège, les citoyens à l'origine de l'initiative ont bénéficié des actions de communication à l'échelle de la ville. De plus, étant donné l'adhésion des décideurs et l'implication de l'administration municipale, un suivi adéquat et structuré a été assuré.</li> <li>Lié à un problème largement partagé : Bien que le service de navette proposé dans cette initiative ne sera jamais utilisé par tous les Liégeois, il vise à résoudre un problème plus important qui affecte toutes les personnes vivant dans la ville, à savoir les embouteillages.</li> </ul> <p><em>Plus de contexte : </em><a href="https://www.citizenlab.co/case-studies-fr/liege" target="_blank"><em>Dossier CitizenLab Liège</em></a></p> <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Faites-nous savoir</a> !</p>
     initiatives_success_2_title: "1030/0"
     initiatives_success_2_body: >
-      <p><em>Schaerbeek (BE)</em></p> <p><strong>Thème: Mobilité</strong></p> <p class="ql-align-center"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg" height="450" width="675"></p> <h3 class="ql-align-center">Contact</h3> <p class="ql-align-center">courriel: <a href="mailto:collectif1030.0@gmail.com" target="_blank">collectif1030.0@gmail.com</a></p> <p class="ql-align-center">site internet: <a href="www.facebook.com/1030zero" target="_blank">www.facebook.com/1030zero</a></p> <h2>Comment tout a commencé</h2> <p>Plusieurs rues de Schaerbeek sont depuis longtemps dangereuses pour les usagers vulnérables. Après un accident mortel de la circulation en juillet 2017 dans la " zone 30 ", des citoyens ont décidé d'agir.</p> <h2>Le projet</h2> <p>1030/0 est un mouvement de citoyens qui défend la sécurité routière et une meilleure mobilité à Schaerbeek. Les quatre axes principaux de leur fonctionnement sont :</p> <ul> <li>Vision Zéro : zéro mort, zéro victime lourde dans la circulation.</li> <li>Qualité de vie : une "commune 30" où l'usager de la route actif peut se déplacer efficacement et en toute sécurité, mais aussi une commune avec un espace de rencontre et de socialisation.</li> <li>Une attention particulière aux plus vulnérables sur la route : les enfants, les personnes âgées, les personnes handicapées.</li> <li>Santé : l'amélioration de la sécurité routière permet de promouvoir les modes de transport actifs et de lutter contre la pollution atmosphérique.</li></ul> <p>Ce qu'ils ont obtenu jusqu'à présent :</p> <ul> <li>Zone 30 obtenue.</li> <li>La Vision Zéro a été reprise comme une ligne politique officielle.</li> <li>La municipalité a élaboré une note stratégique de sécurité routière.</li> <li>La brigade de cyclistes de la police a été (re)mise en place.</li> <li>Des ressources supplémentaires pour le contrôle de la vitesse ont été libérées.</li> <li>Depuis 2019, il existe un système de " rues vivantes ".</li></ul> <h2>Facteurs du succès</h2> <ul> <li>Grande mobilisation : plusieurs manifestations de 60-200 hommes chacune.</li> <li>Approche médiatique proactive : établir de bonnes relations et penser visuellement et narrativement. Surtout du côté flamand, l'initiative a déjà fait l'objet d'une grande attention de la part des médias.</li> <li>Le thème est très populaire parmi la population.</li> <li>Persévérance : en un an, ils ont organisé 20 actions différentes.</li></ul> <h2>Goulets d'étranglement</h2> <ul> <li>La diversité est un point de travail, non seulement en termes d'origine, mais aussi en termes d'âge. Il est en cours d'amélioration grâce à des collaborations avec des centres locaux pour les jeunes et des organismes sans but lucratif.</li> <li>Les médias francophones sont plus difficiles à atteindre.</li></ul> <p><em>Source: </em><em>Burgervuur - De Wakkere Burger</em></p> <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Faites-nous savoir</a> !</p>
+      <p><em>Schaerbeek (BE)</em></p>
+      <p><strong>Thème: Mobilité</strong></p>
+      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg" height="450" width="675" alt="">
+      <h2>Comment tout a commencé</h2>
+      <p>Plusieurs rues de Schaerbeek sont depuis longtemps dangereuses pour les usagers vulnérables. Après un accident mortel de la circulation en juillet 2017 dans la " zone 30 ", des citoyens ont décidé d'agir.</p>
+      <h2>Le projet</h2>
+      <p>1030/0 est un mouvement de citoyens qui défend la sécurité routière et une meilleure mobilité à Schaerbeek. Les quatre axes principaux de leur fonctionnement sont :</p>
+      <ul>
+        <li>Vision Zéro : zéro mort, zéro victime lourde dans la circulation.</li>
+        <li>Qualité de vie : une "commune 30" où l'usager de la route actif peut se déplacer efficacement et en toute sécurité, mais aussi une commune avec un espace de rencontre et de socialisation.</li>
+        <li>Une attention particulière aux plus vulnérables sur la route : les enfants, les personnes âgées, les personnes handicapées.</li>
+        <li>Santé : l'amélioration de la sécurité routière permet de promouvoir les modes de transport actifs et de lutter contre la pollution atmosphérique.</li>
+      </ul>
+      <p>Ce qu'ils ont obtenu jusqu'à présent :</p>
+      <ul>
+        <li>Zone 30 obtenue.</li>
+        <li>La Vision Zéro a été reprise comme une ligne politique officielle.</li>
+        <li>La municipalité a élaboré une note stratégique de sécurité routière.</li>
+        <li>La brigade de cyclistes de la police a été (re)mise en place.</li>
+        <li>Des ressources supplémentaires pour le contrôle de la vitesse ont été libérées.</li>
+        <li>Depuis 2019, il existe un système de " rues vivantes ".</li>
+      </ul>
+      <h2>Facteurs du succès</h2>
+      <ul>
+        <li>Grande mobilisation : plusieurs manifestations de 60-200 hommes chacune.</li>
+        <li>Approche médiatique proactive : établir de bonnes relations et penser visuellement et narrativement. Surtout du côté flamand, l'initiative a déjà fait l'objet d'une grande attention de la part des médias.</li>
+        <li>Le thème est très populaire parmi la population.</li>
+        <li>Persévérance : en un an, ils ont organisé 20 actions différentes.</li>
+      </ul>
+      <h2>Goulets d'étranglement</h2>
+      <ul>
+        <li>La diversité est un point de travail, non seulement en termes d'origine, mais aussi en termes d'âge. Il est en cours d'amélioration grâce à des collaborations avec des centres locaux pour les jeunes et des organismes sans but lucratif.</li>
+        <li>Les médias francophones sont plus difficiles à atteindre.</li>
+      </ul>
+      <h2>Contact</h2>
+      <p>Courriel: <a href="mailto:collectif1030.0@gmail.com" target="_blank">collectif1030.0@gmail.com</a></p>
+      <p>Site internet: <a href="www.facebook.com/1030zero" target="_blank">www.facebook.com/1030zero</a></p>
+      <p><em>Source: </em><em>Burgervuur - De Wakkere Burger</em></p>
+      <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Faites-nous savoir</a> !</p>
     initiatives_success_3_title: Tables de pique-nique dans les aires de jeux
     initiatives_success_3_body: >
-      <p><em>Wortegem-Petegem (BE)</em></p> <p><strong>Thème: Espace public</strong></p> <p class="ql-align-center"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg" height="552" width="736"></p> <h3 class="ql-align-center"><br></h3> <h2>Comment tout a commencé</h2> <p>Cette initiative est issue d'un projet de budget participatif de Wortegem-Petegem. Cette petite commune belge de 6.500 habitants, a consacré 100.000€ de son budget à des projets initiés par les citoyens.</p> <p>Les citoyens ont été invités à partager leurs initiatives sur la plateforme de participation numérique de Wortegem-Petegem pendant deux mois.</p> <p>Après une sélection qualitative par l'administration, 40 initiatives sur un total de 55 ont été retenues et ouvertes au vote de tous les habitants. Le vote s'est déroulé à la fois en ligne et lors d'un événement hors ligne où toutes les initiatives ont été présentées en direct par leurs initiateurs.</p> <h2>Le project</h2> <p>L'idée de l'initiative est simple : ajouter des tables de pique-nique dans chaque aire de jeux à Wortegem-Petegem. Cela permet non seulement aux (petits)parents de se reposer pendant que leurs (petits)enfants jouent, mais aussi de rencontrer d'autres personnes de votre municipalité entre-temps.</p> <p>Comme il s'agissait de l'une des initiatives les plus populaires du projet de budgétisation participative, Wortegem-Petegem a décidé de le mettre en œuvre. Des tables de pique-nique ont été installées à 6 endroits depuis.</p> <h2>Facteurs du succès</h2> <ul> <li>Processus clair et suivi : Wortegem-Petegem a élaboré un processus clair avant de commencer à collecter les initiatives citoyennes, y compris la collaboration entre les différents départements. Il y a également eu un suivi constant et personnel, afin de s'assurer que tous les citoyens impliqués étaient tenus au courant des mesures prises et des plans à venir. Et il y avait l'engagement de mettre en œuvre toutes les initiatives retenues avant la fin de la période estivale suivante.</li> <li>Haut niveau de participation : 14% des votants (14 ans et plus) de Wortegem-Petegem ont voté pour leurs initiatives préférées.</li> <li>Cette initiative citoyenne était bien conçue, avec une finalité claire et des coûts fixes et d'entretien limités.</li> </ul> <p><em>Contexte: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>Dossier CitizenLab (NL)</em></a></p> <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Faites-nous savoir</a>!</p>
+      <p><em>Wortegem-Petegem (BE)</em></p>
+      <p><strong>Thème: Espace public</strong></p>
+      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg" height="552" width="736" alt="">
+      <h2>Comment tout a commencé</h2>
+      <p>Cette initiative est issue d'un projet de budget participatif de Wortegem-Petegem. Cette petite commune belge de 6.500 habitants, a consacré 100.000€ de son budget à des projets initiés par les citoyens.</p>
+      <p>Les citoyens ont été invités à partager leurs initiatives sur la plateforme de participation numérique de Wortegem-Petegem pendant deux mois.</p>
+      <p>Après une sélection qualitative par l'administration, 40 initiatives sur un total de 55 ont été retenues et ouvertes au vote de tous les habitants. Le vote s'est déroulé à la fois en ligne et lors d'un événement hors ligne où toutes les initiatives ont été présentées en direct par leurs initiateurs.</p>
+      <h2>Le project</h2>
+      <p>L'idée de l'initiative est simple : ajouter des tables de pique-nique dans chaque aire de jeux à Wortegem-Petegem. Cela permet non seulement aux (petits)parents de se reposer pendant que leurs (petits)enfants jouent, mais aussi de rencontrer d'autres personnes de votre municipalité entre-temps.</p>
+      <p>Comme il s'agissait de l'une des initiatives les plus populaires du projet de budgétisation participative, Wortegem-Petegem a décidé de le mettre en œuvre. Des tables de pique-nique ont été installées à 6 endroits depuis.</p>
+      <h2>Facteurs du succès</h2>
+      <ul>
+          <li>Processus clair et suivi : Wortegem-Petegem a élaboré un processus clair avant de commencer à collecter les initiatives citoyennes, y compris la collaboration entre les différents départements. Il y a également eu un suivi constant et personnel, afin de s'assurer que tous les citoyens impliqués étaient tenus au courant des mesures prises et des plans à venir. Et il y avait l'engagement de mettre en œuvre toutes les initiatives retenues avant la fin de la période estivale suivante.</li>
+          <li>Haut niveau de participation : 14% des votants (14 ans et plus) de Wortegem-Petegem ont voté pour leurs initiatives préférées.</li>
+          <li>Cette initiative citoyenne était bien conçue, avec une finalité claire et des coûts fixes et d'entretien limités.</li>
+      </ul>
+      <p><em>Contexte: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>Dossier CitizenLab (NL)</em></a></p>
+      <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Faites-nous savoir</a>!</p>
   projects:
     open_idea_project_title: Une idée? Apportez-la à votre conseil communal!
     open_idea_project_description_preview: Vous avez une idée qui ne correspond pas à l'un des projets existants? Ensuite, affichez-la ici, obtenez du soutien et inscrivez-la à l'ordre du jour politique!
@@ -271,80 +309,80 @@ fr-BE:
     default_eligibility_criteria: >
       <p>L'initiative devra/p> <p>- rentrer dans les compétences de la ville</p>
   smart_group_rules:
-    is_empty: "%{property} has no value"
-    not_is_empty: "%{property} has any value"
+    is_empty: "%{property} n'a pas de valeur"
+    not_is_empty: "%{property} a une valeur"
     custom_field_checkbox:
-      is_checked: "%{property} checked"
-      not_is_checked: "%{property} not checked"
+      is_checked: "%{property} cochée"
+      not_is_checked: "%{property} non cochée"
     custom_field_date:
-      is_before: "%{property} is before %{value}"
-      is_exactly: "%{property} is %{value}"
-      is_after: "%{property} is after %{value}"
+      is_before: "%{property} vient avant %{value}"
+      is_exactly: "%{property} est %{value}"
+      is_after: "%{property} vient après %{value}"
     custom_field_number:
-      is_equal: "%{property} equals %{value}"
-      not_is_equal: "%{property} doesn't equal %{value}"
-      is_larger_than: "%{property} is larger than %{value}"
-      is_larger_than_or_equal: "%{property} is larger than or equals %{value}"
-      is_smaller_than: "%{property} is smaller than %{value}"
-      is_smaller_than_or_equal: "%{property} is smaller than or equals %{value}"
+      is_equal: "%{property} est égal à %{value}"
+      not_is_equal: "%{property} n'est pas égal à %{value}"
+      is_larger_than: "%{property} est supérieur à %{value}"
+      is_larger_than_or_equal: "%{property} est supérieur ou égal à %{value}"
+      is_smaller_than: "%{property} est inférieur à %{value}"
+      is_smaller_than_or_equal: "%{property} est inférieur ou égal à %{value}"
     custom_field_select:
-      has_value: "%{property} is %{value}"
-      not_has_value: "%{property} isn't %{value}"
+      has_value: "%{property} est %{value}"
+      not_has_value: "%{property} n'est pas %{value}"
     custom_field_text:
-      is: "%{property} is %{value}"
-      not_is: "%{property} is not %{value}"
-      contains: "%{property} contains %{value}"
-      not_contains: "%{property} doesn't contain %{value}"
-      begins_with: "%{property} begins with %{value}"
-      not_begins_with: "%{property} doesn't begin with %{value}"
-      ends_on: "%{property} ends on %{value}"
-      not_ends_on: "%{property} doesn't end on %{value}"
+      is: "%{property} est %{value}"
+      not_is: "%{property} n'est pas %{value}"
+      contains: "%{property} contient %{value}"
+      not_contains: "%{property} ne contient pas %{value}"
+      begins_with: "%{property} commence par %{value}"
+      not_begins_with: "%{property} ne commence pas par %{value}"
+      ends_on: "%{property} se termine par %{value}"
+      not_ends_on: "%{property} ne se termine pas par %{value}"
     email:
-      property: "e-mail"
+      property: "message électronique"
     lives_in:
-      has_value_outside: "%{property} is somewhere else"
-      not_has_value_outside: "%{property} is not somewhere else"
+      has_value_outside: "%{property} est ailleurs"
+      not_has_value_outside: "%{property} n'est pas ailleurs"
     participated_in_idea_status:
-      in: "Participation in an idea with status %{value}"
-      not_in: "No participation in an idea with status %{value}"
-      posted_in: "Posted an idea with status %{value}"
-      not_posted_in: "Did not post an idea with status %{value}"
-      commented_in: "Commented on an idea with status %{value}"
-      not_commented_in: "Did not comment on an idea with status %{value}"
-      voted_idea_in: "Voted on an idea with status %{value}"
-      not_voted_idea_in: "Did not vote on an idea with status %{value}"
-      voted_comment_in: "Voted on a comment on an idea with status %{value}"
-      not_voted_comment_in: "Did not vote on a comment on an idea with status %{value}"
+      in: "Participation à une idée de statut %{value}"
+      not_in: "Non-participation à une idée de statut %{value}"
+      posted_in: "A publié une idée de statut %{value}"
+      not_posted_in: "N'a pas publié d'idée de statut %{value}"
+      commented_in: "A commenté une idée de statut %{value}"
+      not_commented_in: "N'a pas commenté d'idée de statut %{value}"
+      voted_idea_in: "A voté sur une idée de statut %{value}"
+      not_voted_idea_in: "N'a voté sur aucune idée de statut %{value}"
+      voted_comment_in: "A voté sur un commentaire d'une idée de statut %{value}"
+      not_voted_comment_in: "N'a voté sur aucun commentaire d'une idée de statut %{value}"
     participated_in_project:
-      in: "Participation in an idea in the project %{value}"
-      not_in: "No participation in an idea in the project %{value}"
-      posted_in: "Posted an idea in the project %{value}"
-      not_posted_in: "Did not post an idea in the project %{value}"
-      commented_in: "Commented on an idea in the project %{value}"
-      not_commented_in: "Did not comment on an idea in the project %{value}"
-      voted_idea_in: "Voted on an idea in the project %{value}"
-      not_voted_idea_in: "Did not vote on an idea in the project %{value}"
-      voted_comment_in: "Voted on a comment on an idea in the project %{value}"
-      not_voted_comment_in: "Did not vote on a comment on an idea in the project %{value}"
-      budgeted_in: "Assigned a budget in the project %{value}"
-      not_budgeted_in: "Didn't assign a budget in the project %{value}"
+      in: "Participation à une idée dans le projet %{value}"
+      not_in: "Non-participation à une idée dans le projet %{value}"
+      posted_in: "A publié une idée dans le projet %{value}"
+      not_posted_in: "N'a pas publié d'idée dans le projet %{value}"
+      commented_in: "A commenté une idée dans le projet %{value}"
+      not_commented_in: "N'a pas commenté d'idée dans le projet %{value}"
+      voted_idea_in: "A voté sur une idée dans le projet %{value}"
+      not_voted_idea_in: "N'a voté sur aucune idée dans le projet %{value}"
+      voted_comment_in: "A voté sur un commentaire d'une idée du projet %{value}"
+      not_voted_comment_in: "N'a voté sur aucun commentaire d'idée du projet %{value}"
+      budgeted_in: "A affecté un budget au projet %{value}"
+      not_budgeted_in: "N'a pas affecté de budget au projet %{value}"
     participated_in_topic:
-      in: "Participation in an idea with topic %{value}"
-      not_in: "No participation in an idea with topic %{value}"
-      posted_in: "Posted an idea with topic %{value}"
-      not_posted_in: "Did not post an idea with topic %{value}"
-      commented_in: "Commented on an idea with topic %{value}"
-      not_commented_in: "Did not comment on an idea with topic %{value}"
-      voted_idea_in: "Voted on an idea with topic %{value}"
-      not_voted_idea_in: "Did not vote on an idea with topic %{value}"
-      voted_comment_in: "Voted on a comment on an idea with topic %{value}"
-      not_voted_comment_in: "Did not vote on a comment on an idea with topic %{value}"
+      in: "Participation à une idée sur le sujet %{value}"
+      not_in: "Non-participation à une idée sur le sujet %{value}"
+      posted_in: "A publié une idée sur le sujet %{value}"
+      not_posted_in: "N'a pas publié d'idée sur le sujet %{value}"
+      commented_in: "A commenté une idée sur le sujet %{value}"
+      not_commented_in: "N'a pas commenté d'idée sur le sujet %{value}"
+      voted_idea_in: "A voté sur une idée concernant le sujet %{value}"
+      not_voted_idea_in: "N'a voté sur aucune idée concernant le sujet %{value}"
+      voted_comment_in: "A voté sur un commentaire d'une idée concernant le sujet %{value}"
+      not_voted_comment_in: "N'a voté sur aucun commentaire d'idée concernant le sujet %{value}"
     registration_completed_at:
-      property: "registration"
+      property: "enregistrement"
     role:
-      is_admin: "Role is admin"
-      not_is_admin: "Role is not admin"
-      is_project_moderator: "Role is project moderator"
-      not_is_project_moderator: "Role is not project moderator"
-      is_normal_user: "Role is normal user"
-      not_is_normal_user: "Role is not normal user"
+      is_admin: "C'est un rôle d'administrateur"
+      not_is_admin: "Ce n'est pas un rôle d'administrateur"
+      is_project_moderator: "C'est un rôle de modérateur de projet"
+      not_is_project_moderator: "Ce n'est pas un rôle de modérateur de projet"
+      is_normal_user: "C'est un rôle d'utilisateur normal"
+      not_is_normal_user: "Ce n'est pas un rôle d'utilisateur normal"
