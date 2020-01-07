@@ -17,7 +17,8 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import T from 'components/T';
 import { isUndefined } from 'util';
 import QuillEditedContent from 'components/UI/QuillEditedContent';

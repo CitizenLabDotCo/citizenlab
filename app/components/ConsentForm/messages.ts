@@ -72,4 +72,8 @@ export default defineMessages({
      id: 'app.containers.CampaignsConsentForm.expand',
      defaultMessage: 'Expand'
    },
+   ally_categoryLabel: {
+     id: 'app.containers.CampaignsConsentForm.ally_categoryLabel',
+     defaultMessage: 'Emails in this category'
+   },
 });

@@ -1236,6 +1236,7 @@
   "app.containers.App.metaDescription": "Welcome to the online citizen engagement platform of {orgName}.\nExplore local projects and vote on your favourite ideas. Come participate in the discussions!",
   "app.containers.App.metaTitle": "Citizen engagement platform of {orgName} | CitizenLab",
   "app.containers.CampaignsConsentForm.adminCategory": "Admin",
+  "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails in this category",
   "app.containers.CampaignsConsentForm.buttonSuccessLabel": "Success",
   "app.containers.CampaignsConsentForm.collapse": "Collapse",
   "app.containers.CampaignsConsentForm.commentedCategory": "Linked to input you commented on",

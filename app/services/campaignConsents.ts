@@ -54,7 +54,7 @@ export function updateConsentWithToken(consentId: string, consented: boolean, to
   return streams.update<IConsent>(`${API_PATH}/consents/${consentId}?unsubscription_token=${token}`, consentId, { consent: { consented } });
 }
 
-export function updateConsentByCampaignIDWIthToken(campaignId: string, consented: boolean, token: string) {
+export function updateConsentByCampaignIDWithToken(campaignId: string, consented: boolean, token: string) {
   return streams.update<IConsent>(`${API_PATH}/consents/by_campaign_id/${campaignId}`, campaignId, { consent: { consented }, unsubscription_token: token });
 }
 
