@@ -1,5 +1,6 @@
 class Idea < ApplicationRecord
   include Post
+  include Moderatable
 
   belongs_to :project, touch: true
   counter_culture :project, 

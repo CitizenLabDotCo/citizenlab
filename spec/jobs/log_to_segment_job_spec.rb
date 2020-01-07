@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe LogToSegmentJob, type: :job do
-  
+
   subject(:job) { LogToSegmentJob.new }
 
   describe '#perform' do
@@ -10,7 +10,7 @@ RSpec.describe LogToSegmentJob, type: :job do
       user = create(:user)
       comment = create(:comment)
       activity = create(:activity, item: comment, action: 'created', user: user)
-      
+
       expect(Analytics).to receive(:track) do |event|
         expect(event[:event]).to eq("Comment created")
         expect(event[:user_id]).to eq(user.id)
@@ -22,6 +22,7 @@ RSpec.describe LogToSegmentJob, type: :job do
         expect(event.dig(:properties, :item_content, :comment, :id)).to eq(comment.id)
         expect(event.dig(:integrations, :All)).to be true
         expect(event.dig(:integrations, :Intercom)).to be false
+        expect(event.dig(:integrations, :SatisMeter)).to be false
       end
       job.perform activity
     end
@@ -30,7 +31,7 @@ RSpec.describe LogToSegmentJob, type: :job do
       user = create(:user)
       notification = create(:comment_on_your_comment, recipient: user)
       activity = create(:activity, item: notification, item_type: notification.type, action: 'created', user: user)
-      
+
       expect(Analytics).to receive(:track) do |event|
         expect(event[:event]).to eq("Notification for Comment on your comment created")
         expect(event[:user_id]).to eq(user.id)
