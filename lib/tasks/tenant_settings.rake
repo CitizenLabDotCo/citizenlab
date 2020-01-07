@@ -6,7 +6,8 @@ namespace :tenant_settings do
     failed = []
     Tenant.where.not(host: 'i18n.stg.citizenlab.co').each do |tn| 
       Apartment::Tenant.switch(tn.schema_name) do
-        tn.settings[args[:feature]] = {'allowed' => true, 'enabled' => true}
+        tn.settings[args[:feature]]['allowed'] = true
+        tn.settings[args[:feature]]['enabled'] = true
         failed += [tn.host] if !tn.save
       end
     end
@@ -22,7 +23,8 @@ namespace :tenant_settings do
     failed = []
     Tenant.where.not(host: 'i18n.stg.citizenlab.co').each do |tn| 
       Apartment::Tenant.switch(tn.schema_name) do
-        tn.settings[args[:feature]] = {'allowed' => false, 'enabled' => false}
+        tn.settings[args[:feature]]['allowed'] = false
+        tn.settings[args[:feature]]['enabled'] = false
         failed += [tn.host] if !tn.save
       end
     end
