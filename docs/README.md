@@ -5,8 +5,6 @@
 ### Added
 
 - Go to idea manager when clicking 'idea assigned to you' notification
-- Multiple choice poll questions
-- New ID card verification method
 - 2th iteration of the new admin moderation feature:
   - Not viewed/Viewed filtering
   - The ability to select one or more items and mark them as viewed/not viewed
