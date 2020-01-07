@@ -220,7 +220,9 @@ Rails.application.routes.draw do
       resources :clusterings
 
       resources :avatars, only: [:index, :show]      
-      resources :moderations, only: [:index] 
+      resources :moderations, only: [:index] do
+        patch ':moderatable_type/:moderatable_id' => 'moderations#update', on: :collection
+      end
     end
 
 
