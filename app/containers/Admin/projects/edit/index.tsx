@@ -165,7 +165,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
     const tabbedProps = {
       resource: {
-        title: !isNilOrError(project) ? localize(project.attributes.title_multiloc)  : formatMessage(messages.newProject),
+        title: !isNilOrError(project) ? localize(project.attributes.title_multiloc) : formatMessage(messages.newProject),
       },
       tabs: ((projectId && !isNilOrError(project)) ? this.getTabs(projectId, project) : [])
     };
