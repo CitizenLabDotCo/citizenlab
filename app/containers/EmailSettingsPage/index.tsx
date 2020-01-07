@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 
 // Components
-import ConsentForm from 'components/ConsentForm';
+// import ConsentForm from 'components/ConsentForm';
 
 // Styles
 import styled from 'styled-components';
