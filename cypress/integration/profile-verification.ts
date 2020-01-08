@@ -31,6 +31,24 @@ describe('profile verification', () => {
 
     cy.get('.e2e-verified');
   });
+  it('opens the verification modal success after redirection', () => {
+    cy.setLoginCookie(peasantEmail, peasantPassword);
+    cy.wait(500);
+
+    cy.visit('/profile/edit?verification_success');
+    cy.get('.e2e-verification-modal').find('.e2e-user-verified-success-modal-content');
+    cy.visit('?verification_success');
+    cy.get('.e2e-verification-modal').find('.e2e-user-verified-success-modal-content');
+  });
+  it('opens the verification modal error after redirection', () => {
+    cy.setLoginCookie(peasantEmail, peasantPassword);
+    cy.wait(500);
+
+    cy.visit('/profile/edit?verification_error=true');
+    cy.get('.e2e-verification-modal').find('.e2e-user-verified-errror-modal-content');
+    cy.visit('?verification_error');
+    cy.get('.e2e-verification-modal').find('.e2e-user-verified-errror-modal-content');
+  });
   after(() => {
     cy.apiRemoveUser(userId);
   });
