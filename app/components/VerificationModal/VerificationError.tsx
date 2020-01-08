@@ -1,5 +1,4 @@
 import React, { memo, useCallback } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -8,9 +7,6 @@ import messages from './messages';
 // components
 import Button from 'components/UI/Button';
 import { Title } from './styles';
-
-// hooks
-import useAuthUser from 'hooks/useAuthUser';
 
 // style
 import styled from 'styled-components';
