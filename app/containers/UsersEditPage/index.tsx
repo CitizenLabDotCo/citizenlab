@@ -44,36 +44,36 @@ const Wrapper = styled.div``;
 interface Props {}
 
 const ProfileEditor = React.memo<Props>(_props => {
-    const authUser = useAuthUser();
-    const currentTenant = useTenant();
-    const areas = useAreas();
+  const authUser = useAuthUser();
+  const currentTenant = useTenant();
+  const areas = useAreas();
 
-    // if (isNilOrError(authUser)) {
-    //   clHistory.push('/');
-    // }
+  if (authUser === null) {
+    clHistory.push('/sign-in');
+  }
 
-    if (!isNilOrError(currentTenant) && !isNilOrError(areas) && !isNilOrError(authUser)) {
-      return (
-        <Container id="e2e-user-edit-profile-page">
-          <UsersEditPageMeta user={authUser.data} />
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
-          </ScreenReaderOnly>
-          <Wrapper>
-            <VerificationStatus />
-            <ProfileForm
-              user={authUser.data}
-              areas={areas.data}
-              tenant={currentTenant.data}
-            />
-            <ProfileDeletion/>
-            <CampaignsConsentForm />
-          </Wrapper>
-        </Container>
-      );
-    }
+  if (!isNilOrError(currentTenant) && !isNilOrError(areas) && !isNilOrError(authUser)) {
+    return (
+      <Container id="e2e-user-edit-profile-page">
+        <UsersEditPageMeta user={authUser.data} />
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
+        </ScreenReaderOnly>
+        <Wrapper>
+          <VerificationStatus />
+          <ProfileForm
+            user={authUser.data}
+            areas={areas.data}
+            tenant={currentTenant.data}
+          />
+          <ProfileDeletion/>
+          <CampaignsConsentForm />
+        </Wrapper>
+      </Container>
+    );
+  }
 
-    return null;
+  return null;
 });
 
 export default ProfileEditor;
