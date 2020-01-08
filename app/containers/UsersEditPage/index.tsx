@@ -1,14 +1,9 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { adopt } from 'react-adopt';
+import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
-
-// Services
-import { areasStream, IAreas } from 'services/areas';
-import { currentTenantStream, ITenant } from 'services/tenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,8 +20,10 @@ import UsersEditPageMeta from './UsersEditPageMeta';
 import styled from 'styled-components';
 import { colors, ScreenReaderOnly } from 'utils/styleUtils';
 
-// Resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// Hooks
+import useAreas from 'hooks/useAreas';
+import useTenant from 'hooks/useTenant';
+import useAuthUser from 'hooks/useAuthUser';
 
 const Container = styled.main`
   width: 100%;
@@ -44,89 +41,39 @@ const Container = styled.main`
 // https://stackoverflow.com/questions/34993826/flexbox-column-direction-same-width
 const Wrapper = styled.div``;
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
+interface Props {}
 
-interface InputProps {}
+const ProfileEditor = React.memo<Props>(_props => {
+  const authUser = useAuthUser();
+  const currentTenant = useTenant();
+  const areas = useAreas();
 
-interface Props extends DataProps, InputProps {}
-
-interface State {
-  areas: IAreas | null;
-  currentTenant: ITenant | null;
-  loaded: boolean;
-}
-
-class ProfileEditor extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      areas: null,
-      currentTenant: null,
-      loaded: false
-    };
+  if (authUser === null) {
+    clHistory.push('/sign-in');
   }
 
-  componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
-    const areas$ = areasStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        currentTenant$,
-        areas$
-      ).subscribe(([currentTenant, areas]) => {
-        this.setState({ currentTenant, areas, loaded: true });
-      })
-    ];
+  if (!isNilOrError(currentTenant) && !isNilOrError(areas) && !isNilOrError(authUser)) {
+    return (
+      <Container id="e2e-user-edit-profile-page">
+        <UsersEditPageMeta user={authUser.data} />
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
+        </ScreenReaderOnly>
+        <Wrapper>
+          <VerificationStatus />
+          <ProfileForm
+            user={authUser.data}
+            areas={areas.data}
+            tenant={currentTenant.data}
+          />
+          <ProfileDeletion/>
+          <CampaignsConsentForm />
+        </Wrapper>
+      </Container>
+    );
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  render() {
-    const { currentTenant, areas, loaded } = this.state;
-    const { authUser } = this.props;
-
-    if (loaded && !authUser) {
-      clHistory.push('/');
-    }
-
-    if (loaded && currentTenant && areas && authUser) {
-      return (
-        <Container id="e2e-user-edit-profile-page">
-          <UsersEditPageMeta user={authUser} />
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
-          </ScreenReaderOnly>
-          <Wrapper>
-            <VerificationStatus />
-            <ProfileForm
-              user={authUser}
-              areas={areas.data}
-              tenant={currentTenant.data}
-            />
-            <ProfileDeletion/>
-            <CampaignsConsentForm />
-          </Wrapper>
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
+  return null;
 });
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataprops => <ProfileEditor {...inputProps} {...dataprops} />}
-  </Data>
-);
+export default ProfileEditor;
