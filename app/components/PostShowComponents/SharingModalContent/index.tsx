@@ -25,8 +25,7 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-
-const rocket = require('./rocket.png');
+import rocket from './rocket.png';
 
 const Loading = styled.div`
   width: 100%;

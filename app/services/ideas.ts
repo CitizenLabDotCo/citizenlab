@@ -42,7 +42,7 @@ export interface IIdeaData {
       comment_voting: {
         enabled: boolean
       },
-      budgeting: {
+      budgeting?: {
         enabled: boolean,
         future_enabled: string | null,
         disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null,

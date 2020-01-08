@@ -169,9 +169,7 @@ export default class Radio extends PureComponent<Props, State> {
     const checked = (value === currentValue);
 
     return (
-      <Container
-        className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
-      >
+      <Container className={`${className} ${disabled ? 'disabled' : 'enabled'}`}>
         <Input
           id={id}
           type="radio"

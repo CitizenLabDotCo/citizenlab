@@ -2,6 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash-es';
 import { stripHtmlTags } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // Components
 import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
@@ -23,7 +24,16 @@ import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 import { Multiloc, Locale, UploadFile } from 'typings';
 
 const Form = styled.form`
+  display: flex;
+  flex-direction: column;
   margin-bottom: 100px;
+`;
+
+const StyledFormSection = styled(FormSection)`
+  ${media.largePhone`
+    padding-left: 18px;
+    padding-right: 18px;
+  `}
 `;
 
 export interface SimpleFormValues {
@@ -221,7 +231,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
     return (
       <Form id="initiative-form">
-        <FormSection>
+        <StyledFormSection>
           <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
           <SectionField>
@@ -266,9 +276,9 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
               }
           </SectionField>
-        </FormSection>
+        </StyledFormSection>
 
-        <FormSection>
+        <StyledFormSection>
           <FormSectionTitle message={messages.formDetailsSectionTitle} />
 
           <SectionField aria-live="polite">
@@ -304,8 +314,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               />
             </FormLabel>
           </SectionField>
-        </FormSection>
-        <FormSection>
+        </StyledFormSection>
+        <StyledFormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
           <SectionField id="e2e-iniatiative-banner-dropzone">
             <FormLabel
@@ -356,7 +366,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               />
             </FormLabel>
           </SectionField>
-        </FormSection>
+        </StyledFormSection>
         <FormSubmitFooter
           className="e2e-initiative-publish-button"
           message={messages.publishButton}

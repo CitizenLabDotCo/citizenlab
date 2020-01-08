@@ -1,5 +1,5 @@
 import React from 'react';
-const Intl = require.requireActual('react-intl');
+const Intl = jest.requireActual('react-intl');
 
 // Initialise the real provider so that we don't
 // need to reimplement any internals

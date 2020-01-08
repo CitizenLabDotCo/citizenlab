@@ -32,6 +32,8 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding-bottom: 80px;
+    padding-right: 0;
+    padding-left: 0;
   `}
 `;
 
