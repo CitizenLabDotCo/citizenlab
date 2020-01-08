@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'RequiredSettingsAttribute' do
 
   let(:schema1) { {
-    "$schema" => "http://citizenlab.co/tenant_settings_spec.json",
+    "$schema" => TenantSchema::ExtendedSchema::SCHEMA_URL,
     "type": "object",
     "properties" => {
       "feature1" => {

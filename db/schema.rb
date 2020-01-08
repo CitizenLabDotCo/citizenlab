@@ -2,11 +2,11 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `rails
+# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
@@ -461,6 +461,15 @@ ActiveRecord::Schema.define(version: 2019_12_18_161144) do
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
+  create_table "moderation_statuses", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "moderatable_id"
+    t.string "moderatable_type"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["moderatable_type", "moderatable_id"], name: "moderation_statuses_moderatable", unique: true
+  end
+
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "type"
     t.datetime "read_at"
@@ -876,7 +885,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_161144) do
   add_foreign_key "spam_reports", "users"
   add_foreign_key "votes", "users"
 
-  create_view "idea_trending_infos",  sql_definition: <<-SQL
+  create_view "idea_trending_infos", sql_definition: <<-SQL
       SELECT ideas.id AS idea_id,
       GREATEST(comments_at.last_comment_at, upvotes_at.last_upvoted_at, ideas.published_at) AS last_activity_at,
       to_timestamp(round((((GREATEST(((comments_at.comments_count)::double precision * comments_at.mean_comment_at), (0)::double precision) + GREATEST(((upvotes_at.upvotes_count)::double precision * upvotes_at.mean_upvoted_at), (0)::double precision)) + date_part('epoch'::text, ideas.published_at)) / (((GREATEST((comments_at.comments_count)::numeric, 0.0) + GREATEST((upvotes_at.upvotes_count)::numeric, 0.0)) + 1.0))::double precision))) AS mean_activity_at
@@ -895,8 +904,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_161144) do
             WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
             GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
   SQL
-
-  create_view "project_sort_scores",  sql_definition: <<-SQL
+  create_view "project_sort_scores", sql_definition: <<-SQL
       SELECT sub.id AS project_id,
       concat(sub.status_score, sub.active_score, sub.hot_score, sub.recency_score, sub.action_score) AS score
      FROM ( SELECT projects.id,
@@ -1005,8 +1013,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_161144) do
                     WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date))) active_phases ON ((active_phases.id = joined_phases.id)))
             GROUP BY projects.id) sub;
   SQL
-
-  create_view "union_posts",  sql_definition: <<-SQL
+  create_view "union_posts", sql_definition: <<-SQL
       SELECT ideas.id,
       ideas.title_multiloc,
       ideas.body_multiloc,
@@ -1041,8 +1048,7 @@ ActiveRecord::Schema.define(version: 2019_12_18_161144) do
       initiatives.official_feedbacks_count
      FROM initiatives;
   SQL
-
-  create_view "initiative_initiative_statuses",  sql_definition: <<-SQL
+  create_view "initiative_initiative_statuses", sql_definition: <<-SQL
       SELECT initiative_status_changes.initiative_id,
       initiative_status_changes.initiative_status_id
      FROM (((initiatives
@@ -1053,35 +1059,79 @@ ActiveRecord::Schema.define(version: 2019_12_18_161144) do
        JOIN initiative_status_changes ON (((initiatives.id = initiative_status_changes.initiative_id) AND (initiatives_with_last_status_change.last_status_changed_at = initiative_status_changes.created_at))))
        JOIN initiative_statuses ON ((initiative_statuses.id = initiative_status_changes.initiative_status_id)));
   SQL
-
-  create_view "moderations",  sql_definition: <<-SQL
+  create_view "moderations", sql_definition: <<-SQL
       SELECT ideas.id,
       'Idea'::text AS moderatable_type,
-      ideas.slug AS context_slug,
-      'Idea'::text AS context_type,
-      ideas.title_multiloc AS context_multiloc,
-      ideas.body_multiloc AS content_multiloc,
-      ideas.published_at AS created_at
-     FROM ideas
+      NULL::text AS post_type,
+      NULL::uuid AS post_id,
+      NULL::text AS post_slug,
+      NULL::jsonb AS post_title_multiloc,
+      projects.id AS project_id,
+      projects.slug AS project_slug,
+      projects.title_multiloc AS project_title_multiloc,
+      ideas.title_multiloc AS content_title_multiloc,
+      ideas.body_multiloc AS content_body_multiloc,
+      ideas.slug AS content_slug,
+      ideas.published_at AS created_at,
+      moderation_statuses.status AS moderation_status
+     FROM ((ideas
+       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = ideas.id)))
+       LEFT JOIN projects ON ((projects.id = ideas.project_id)))
   UNION ALL
    SELECT initiatives.id,
       'Initiative'::text AS moderatable_type,
-      initiatives.slug AS context_slug,
-      'Initiative'::text AS context_type,
-      initiatives.title_multiloc AS context_multiloc,
-      initiatives.body_multiloc AS content_multiloc,
-      initiatives.published_at AS created_at
-     FROM initiatives
+      NULL::text AS post_type,
+      NULL::uuid AS post_id,
+      NULL::text AS post_slug,
+      NULL::jsonb AS post_title_multiloc,
+      NULL::uuid AS project_id,
+      NULL::character varying AS project_slug,
+      NULL::jsonb AS project_title_multiloc,
+      initiatives.title_multiloc AS content_title_multiloc,
+      initiatives.body_multiloc AS content_body_multiloc,
+      initiatives.slug AS content_slug,
+      initiatives.published_at AS created_at,
+      moderation_statuses.status AS moderation_status
+     FROM (initiatives
+       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = initiatives.id)))
   UNION ALL
    SELECT comments.id,
       'Comment'::text AS moderatable_type,
-      union_posts.slug AS context_slug,
-      'Idea'::text AS context_type,
-      union_posts.title_multiloc AS context_multiloc,
-      comments.body_multiloc AS content_multiloc,
-      comments.created_at
-     FROM (comments
-       LEFT JOIN union_posts ON ((union_posts.id = comments.post_id)));
+      'Idea'::text AS post_type,
+      ideas.id AS post_id,
+      ideas.slug AS post_slug,
+      ideas.title_multiloc AS post_title_multiloc,
+      projects.id AS project_id,
+      projects.slug AS project_slug,
+      projects.title_multiloc AS project_title_multiloc,
+      NULL::jsonb AS content_title_multiloc,
+      comments.body_multiloc AS content_body_multiloc,
+      NULL::character varying AS content_slug,
+      comments.created_at,
+      moderation_statuses.status AS moderation_status
+     FROM (((comments
+       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = comments.id)))
+       LEFT JOIN ideas ON ((ideas.id = comments.post_id)))
+       LEFT JOIN projects ON ((projects.id = ideas.project_id)))
+    WHERE ((comments.post_type)::text = 'Idea'::text)
+  UNION ALL
+   SELECT comments.id,
+      'Comment'::text AS moderatable_type,
+      'Initiative'::text AS post_type,
+      initiatives.id AS post_id,
+      initiatives.slug AS post_slug,
+      initiatives.title_multiloc AS post_title_multiloc,
+      NULL::uuid AS project_id,
+      NULL::character varying AS project_slug,
+      NULL::jsonb AS project_title_multiloc,
+      NULL::jsonb AS content_title_multiloc,
+      comments.body_multiloc AS content_body_multiloc,
+      NULL::character varying AS content_slug,
+      comments.created_at,
+      moderation_statuses.status AS moderation_status
+     FROM ((comments
+       LEFT JOIN moderation_statuses ON ((moderation_statuses.moderatable_id = comments.id)))
+       LEFT JOIN initiatives ON ((initiatives.id = comments.post_id)))
+    WHERE ((comments.post_type)::text = 'Initiative'::text);
   SQL
-
 end
