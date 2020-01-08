@@ -80,22 +80,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
   const contentTitle = omitBy(moderation.attributes.content_title_multiloc, (value) => isNil(value) || isEmpty(value)) as Multiloc;
   const contentBody = omitBy(moderation.attributes.content_body_multiloc, (value) => isNil(value) || isEmpty(value)) as Multiloc;
   const contentType = intl.formatMessage(messages[moderation.attributes?.moderatable_type.toLowerCase()]);
-
-  let bgColor = '#fff';
-
-  if (moderation?.attributes?.moderation_status === 'read') {
-    bgColor = '#f6f6f6';
-  }
-
-  if (selected) {
-    bgColor = rgba(colors.adminTextColor, 0.1);
-  }
-
-  const handleOnChecked = useCallback((event: React.MouseEvent | React.KeyboardEvent) => {
-    event.preventDefault();
-    onSelect(moderation.id);
-  }, [onSelect]);
-
+  const bgColor = (selected ? rgba(colors.adminTextColor, 0.1) : (moderation?.attributes?.moderation_status === 'read' ? '#f6f6f6' : '#fff'));
   let viewLink = `/${moderation.attributes?.moderatable_type.toLowerCase()}s/${moderation.attributes.content_slug}`;
 
   if (moderation.attributes?.moderatable_type === 'Comment') {
@@ -104,6 +89,11 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
     const parentSlug = moderation.attributes.belongs_to[parentType].slug;
     viewLink = `/${parentType.toLowerCase()}s/${parentSlug}`;
   }
+
+  const handleOnChecked = useCallback((event: React.MouseEvent | React.KeyboardEvent) => {
+    event.preventDefault();
+    onSelect(moderation.id);
+  }, [onSelect]);
 
   return (
     <Container
