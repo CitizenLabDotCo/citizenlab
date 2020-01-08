@@ -27,6 +27,7 @@ import { IVerificationMethod } from 'services/verificationMethods';
 import { ContextShape, isProjectContext } from './VerificationModal';
 import { AUTH_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
+import { removeUrlLocale } from 'services/locale';
 
 const Container = styled.div`
   width: 100%;
@@ -178,7 +179,8 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
 
   const onVerifyBOSAButtonClick = useCallback(() => {
     const jwt = getJwt();
-    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${window.location.pathname}`;
+    console.log(`${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`);
+    window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
   }, []);
 
   const onSelectMethodButtonClick = useCallback((method) => () => {
