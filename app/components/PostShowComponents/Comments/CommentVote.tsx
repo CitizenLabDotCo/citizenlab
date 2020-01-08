@@ -264,15 +264,30 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className={className}>
           <UpvoteButtonWrapper>
             <UpvoteButton
-              aria-label={formatMessage(messages.upvoteComment)}
+              aria-label={!voted ?
+                formatMessage(messages.upvoteComment) : formatMessage(messages.a11y_undoUpvote)
+              }
               onMouseDown={this.removeFocus}
               onClick={this.onVote}
               disabled={!votingEnabled}
-              className={`e2e-comment-vote ${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
+              className={`
+                e2e-comment-vote
+                ${voted ? 'voted' : 'notVoted'}
+                ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'}
+                ${votingEnabled ? 'enabled' : 'disabled'}
+              `}
             >
-              <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
+              <UpvoteIcon
+                name="upvote"
+                className={`
+                  ${voted ? 'voted' : ''}
+                  ${votingEnabled ? 'enabled' : 'disabled'}
+                `}
+              />
             </UpvoteButton>
           </UpvoteButtonWrapper>
+
+          <LiveMessage message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })} aria-live="polite" />
 
           {upvoteCount > 0 &&
             <UpvoteCount
@@ -281,13 +296,16 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                 ${votingEnabled ? 'enabled' : 'disabled'}`
               }
             >
-              <LiveMessage message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })} aria-live="polite" />
               {upvoteCount}
             </UpvoteCount>
           }
 
           {votingEnabled &&
-            <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote} disabled={!votingEnabled}>
+            <UpvoteLabel
+              onMouseDown={this.removeFocus}
+              onClick={this.onVote}
+              disabled={!votingEnabled}
+            >
               {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
             </UpvoteLabel>
           }
