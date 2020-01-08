@@ -201,4 +201,8 @@ export default defineMessages({
     id: 'app.containers.Comments.a11y_upvoteCount',
     defaultMessage: '{upvoteCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
   },
+  a11y_undoUpvote: {
+    id: 'app.containers.Comments.a11y_undoUpvote',
+    defaultMessage: 'Undo upvote',
+  },
 });
