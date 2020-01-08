@@ -54,13 +54,9 @@ interface Props {
 }
 
 export default memo<Props>(({ className, onBack, context }) => {
-  const authUser = useAuthUser();
-
   const onCancelButtonClicked = useCallback(() => {
     onBack();
   }, []);
-
-  if (isNilOrError(authUser)) return null;
 
   let message;
 
@@ -75,8 +71,8 @@ export default memo<Props>(({ className, onBack, context }) => {
   }
 
   return (
-    <Container id="e2e-verification-success" className={className}>
-      <Title className="e2e-user-verified-success-modal-content">
+    <Container id="e2e-verification-errror" className={className}>
+      <Title className="e2e-user-verified-errror-modal-content">
         <strong><FormattedMessage {...messages.errorTitle} /></strong>
       </Title>
       <Subtitle>
