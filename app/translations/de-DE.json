@@ -1239,6 +1239,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "Wann möchten Sie eine E-Mail-Benachrichtigung erhalten?",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Benachrichtigungen",
   "app.containers.CampaignsConsentForm.submit": "Speichern",
+  "app.containers.Comments.a11y_undoUpvote": "",
   "app.containers.Comments.a11y_upvoteCount": "",
   "app.containers.Comments.addCommentError": "Etwas ging schief. Bitte versuchen Sie es später nochmal.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Leave the comment",

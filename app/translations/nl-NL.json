@@ -1239,6 +1239,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "Wanneer wil je per e-mail op de hoogte worden gebracht?",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Meldingen",
   "app.containers.CampaignsConsentForm.submit": "Opslaan",
+  "app.containers.Comments.a11y_undoUpvote": "",
   "app.containers.Comments.a11y_upvoteCount": "",
   "app.containers.Comments.addCommentError": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Behoud de reactie",
