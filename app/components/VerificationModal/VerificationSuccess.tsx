@@ -16,7 +16,8 @@ import useAuthUser from 'hooks/useAuthUser';
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
-const illustration = require('./illustration.svg');
+// svg
+import illustration from './illustration.svg';
 
 const Container = styled.div`
   width: 100%;

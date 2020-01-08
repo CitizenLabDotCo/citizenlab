@@ -83,7 +83,7 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight + props.theme.footerHeight}px);
@@ -108,7 +108,7 @@ const Container = styled.div`
   }
 `;
 
-const IdeaContainer = styled.main`
+const IdeaContainer = styled.div`
   width: 100%;
   max-width: ${postPageContentMaxWidth};
   display: flex;

@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
-const Container = styled.main`
+const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
@@ -61,7 +61,7 @@ const AttachmentsContainer = styled.div`
   padding-right: 20px;
 `;
 
-const PageContent = styled.div`
+const PageContent = styled.main`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;

@@ -4,7 +4,7 @@
 */
 
 import React, { PureComponent, FormEvent } from 'react';
-import { isFunction } from 'lodash-es';
+import { isFunction, isNumber } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -20,107 +20,96 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
 
 // styles
-import { lighten } from 'polished';
 import styled from 'styled-components';
+import { lighten } from 'polished';
 import { colors } from 'utils/styleUtils';
 
-export const AvatarImage = styled.img<{ size: string }>`
-  width: ${({ size }) => size};
-  height: ${({ size }) => size};
-  border-radius: 50%;
-  background: #fff;
-  transition: all 100ms ease-out;
-`;
-
-const AvatarIcon = styled(Icon)<{ size: string, fillColor: string | undefined }>`
-  flex: 0 0 ${({ size }) => size};
-  width: ${({ size }) => size};
-  height: ${({ size }) => size};
-  ${({ fillColor }) => fillColor ? `fill: ${fillColor};` : ''};
-  transition: all 100ms ease-out;
-`;
-
- export const Container = styled.div<{
-   size: string,
-   bgColor: string | undefined,
-   borderColor: string | undefined,
-   borderThickness: string | undefined,
-   borderHoverColor: string | undefined,
-   fillHoverColor: string | undefined
-  }>`
-  flex: 0 0 ${({ size }) => size};
-  width: ${({ size }) => size};
-  height: ${({ size }) => size};
-  cursor: inherit;
-  color: #000;
+export const Container = styled.div<{ size: number }>`
+  flex: 0 0 ${({ size }) => size}px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 100ms ease-out;
-  background: transparent;
   position: relative;
-  ${({ bgColor }) => bgColor ? `background: ${bgColor};` : ''}
-  ${({ borderThickness, borderColor }) => borderColor ? `border: solid ${borderThickness || '1px'} ${borderColor};` : ''}
+`;
+
+export const AvatarImage = styled.img<{
+  size: number,
+  padding: number | undefined,
+  bgColor: string | undefined,
+  borderColor: string | undefined,
+  borderThickness: number | undefined,
+  borderHoverColor: string | undefined
+}>`
+  flex: 0 0 ${({ size }) => size}px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  padding: ${({ padding }) => isNumber(padding) ? padding : 3}px;
+  border-radius: 50%;
+  border-style: ${({ borderThickness }) => borderThickness === 0 ? 'none' : 'solid'};
+  border-width: ${({ borderThickness }) => isNumber(borderThickness) ? borderThickness : 1}px;
+  border-color: ${({ borderColor }) => borderColor || 'transparent'};
+  background: ${({ bgColor }) => bgColor || 'transparent'};
 
   &.hasHoverEffect {
     cursor: pointer;
+    transition: all 100ms ease-out;
 
     &:hover {
-      ${({ borderHoverColor }) => borderHoverColor ? `border-color: ${borderHoverColor};` : ''};
-
-      ${AvatarIcon} {
-        ${({ fillHoverColor }) => fillHoverColor ? `fill: ${fillHoverColor};` : ''};
-      }
+      border-color: ${({ borderHoverColor }) => borderHoverColor || 'transparent'};
     }
   }
 `;
 
-const ModeratorBadgeContainer = styled.div<{ size: number, bgColor: string | undefined }>`
-  flex: 0 0 ${({ size }) => size / 2}px;
-  width: ${({ size }) => size / 2}px;
-  height: ${({ size }) => size / 2}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  right: ${({ size }) => size / 20}px;
-  bottom: ${({ size }) => size / 20}px;
+const AvatarIcon = styled(Icon)<{
+  size: number,
+  fillColor: string | undefined,
+  fillHoverColor: string | undefined,
+  padding: number | undefined,
+  bgColor: string | undefined,
+  borderColor: string | undefined,
+  borderThickness: number | undefined,
+  borderHoverColor: string | undefined
+}>`
+  flex: 0 0 ${({ size }) => size}px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  fill: ${({ fillColor }) => fillColor || ''};
+  padding: ${({ padding }) => isNumber(padding) ? padding : 3}px;
   border-radius: 50%;
-  ${({ bgColor }) => bgColor ? `background: ${bgColor};` : ''};
-  padding-top: 2px;
+  border-style: ${({ borderThickness }) => borderThickness === 0 ? 'none' : 'solid'};
+  border-width: ${({ borderThickness }) => isNumber(borderThickness) ? borderThickness : 1}px;
+  border-color: ${({ borderColor }) => borderColor || 'transparent'};
+  background: ${({ bgColor }) => bgColor || 'transparent'};
+
+  &.hasHoverEffect {
+    cursor: pointer;
+    transition: all 100ms ease-out;
+
+    &:hover {
+      border-color: ${({ borderHoverColor }) => borderHoverColor || 'transparent'};
+      fill: ${({ fillHoverColor }) => fillHoverColor || ''};
+    }
+  }
 `;
 
-const ModeratorBadgeIcon = styled(Icon)<{ size: number}>`
-  color: ${colors.clRedError};
-  fill: ${colors.clRedError};
-  height: ${({ size }) => (size / 2) - 5}px;
-`;
-
-const VerifiedBadgeContainer = styled.div<{ size: number, bgColor: string | undefined }>`
-  flex: 0 0 ${({ size }) => size / 2.3}px;
-  width: ${({ size }) => size / 2.3}px;
-  height: ${({ size }) => size / 2.3}px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const BadgeIcon = styled(Icon)<{ size: number, fill: string }>`
+  fill: ${({ fill }) => fill};
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
   position: absolute;
-  right: 0;
-  bottom: 0;
+  right: 0px;
+  bottom: 0px;
   border-radius: 50%;
-  ${({ bgColor }) => bgColor ? `background: ${bgColor};` : ''};
-`;
-
-const VerifiedBadgeIcon = styled(Icon)<{ bgColor: string | undefined, size: number }>`
-  color: ${colors.clGreen};
-  fill: ${colors.clGreen};
-  ${({ bgColor }) => bgColor ? `stroke: ${bgColor};` : ''};
-  height: 100%;
+  background: #fff;
+  border: solid 2px #fff;
 `;
 
 interface InputProps {
   userId: string | null;
   size: string;
+  badgeSize?: string;
   onClick?: (event: FormEvent) => void;
   hasHoverEffect?: boolean;
   hideIfNoAvatar?: boolean | undefined;
@@ -153,65 +142,69 @@ class Avatar extends PureComponent<Props & InjectedIntlProps, State> {
     borderThickness: '1px',
     borderColor: 'transparent',
     borderHoverColor: colors.label,
-    bgColor: '#fff'
+    bgColor: 'transparent'
   };
 
   handleOnClick = (event: FormEvent) => {
-    if (this.props.onClick) {
-      this.props.onClick(event);
-    }
+    this.props.onClick && this.props.onClick(event);
   }
 
   render() {
-    let { hasHoverEffect } = this.props;
-    const { hideIfNoAvatar, user, size, onClick, padding, fillColor, fillHoverColor, borderThickness, borderColor, borderHoverColor, bgColor, moderator, className, verified } = this.props;
+    const { hideIfNoAvatar, user, onClick, fillColor, fillHoverColor, borderColor, borderHoverColor, bgColor, moderator, className, verified } = this.props;
 
     if (!isNilOrError(user) && hideIfNoAvatar !== true) {
-      hasHoverEffect = (isFunction(onClick) || hasHoverEffect);
-      const imageSize = (parseInt(size, 10) > 160 ? 'large' : 'medium');
+      const size = parseInt(this.props.size, 10);
+      const padding = parseInt(this.props.padding as string, 10);
+      const borderThickness = parseInt(this.props.borderThickness as string, 10);
+      const hasHoverEffect = !!(isFunction(onClick) || this.props.hasHoverEffect);
+      const imageSize = (size > 160 ? 'large' : 'medium');
       const avatarSrc = user.attributes.avatar && user.attributes.avatar[imageSize];
-      const containerSize =  `${parseInt(size, 10) + (parseInt(padding as string, 10) * 2) + (parseInt(borderThickness as string, 10) * 2)}px`;
-      const numberSize = parseInt(size, 10);
+      const containerSize =  size + (padding * 2) + (borderThickness * 2);
+      const badgeSize = this.props.badgeSize ? parseInt(this.props.badgeSize, 10) : (size / (size < 40 ? 1.8 : 2.3));
 
       return (
         <Container
           aria-hidden
-          className={`${className} ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
+          className={className}
           onClick={this.handleOnClick}
           size={containerSize}
-          borderThickness={borderThickness}
-          borderColor={borderColor}
-          borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
-          fillHoverColor={fillHoverColor}
-          bgColor={bgColor}
         >
           {avatarSrc ? (
             <AvatarImage
               className={`avatarImage ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               src={avatarSrc}
               alt=""
-              size={size}
+              size={containerSize}
+              padding={padding}
+              borderThickness={borderThickness}
+              borderColor={borderColor}
+              borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
+              bgColor={bgColor}
             />
           ) : (
             <AvatarIcon
               className={`avatarIcon ${hasHoverEffect ? 'hasHoverEffect' : ''}`}
               name="user"
-              size={size}
+              size={containerSize}
               fillColor={fillColor}
+              fillHoverColor={fillHoverColor}
+              padding={padding}
+              borderThickness={borderThickness}
+              borderColor={borderColor}
+              borderHoverColor={moderator ? colors.clRedError : borderHoverColor}
+              bgColor={bgColor}
             />
           )}
-          {moderator && (
-            <ModeratorBadgeContainer size={numberSize} bgColor={bgColor}>
-              <ModeratorBadgeIcon name="clLogo" size={numberSize} />
-            </ModeratorBadgeContainer>
-          )}
-          {user.attributes.verified && verified && (
+
+          {moderator &&
+            <BadgeIcon name="clShield" size={badgeSize} fill={colors.clRedError} />
+          }
+
+          {user.attributes.verified && verified &&
             <FeatureFlag name="verification">
-              <VerifiedBadgeContainer size={numberSize} bgColor={bgColor}>
-                <VerifiedBadgeIcon name="checkmark-full" size={numberSize} bgColor={bgColor} />
-              </VerifiedBadgeContainer>
+              <BadgeIcon name="checkmark-full" size={badgeSize} fill={colors.clGreen} />
             </FeatureFlag>
-          )}
+          }
         </Container>
       );
     }

@@ -171,36 +171,38 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
           ]}
         />
 
-        <StyledContentContainer>
-          <Title>{title}</Title>
+        <main>
+          <StyledContentContainer>
+            <Title>{title}</Title>
 
-          <Form onSubmit={this.handleOnSubmit}>
-            <FormLabel
-              htmlFor="password"
-              labelMessage={messages.passwordLabel}
-              thin
-            />
-            <StyledInput
-              type="password"
-              id="password"
-              value={password}
-              error={errorMessage}
-              placeholder={passwordPlaceholder}
-              onChange={this.handlePasswordOnChange}
-              setRef={this.handlePasswordInputSetRef}
-              onGreyBackground
-            />
+            <Form onSubmit={this.handleOnSubmit}>
+              <FormLabel
+                htmlFor="password"
+                labelMessage={messages.passwordLabel}
+                thin
+              />
+              <StyledInput
+                type="password"
+                id="password"
+                value={password}
+                error={errorMessage}
+                placeholder={passwordPlaceholder}
+                onChange={this.handlePasswordOnChange}
+                setRef={this.handlePasswordInputSetRef}
+                onGreyBackground
+              />
 
-            <StyledButton
-              size="2"
-              processing={processing}
-              text={updatePassword}
-              onClick={this.handleOnSubmit}
-            />
+              <StyledButton
+                size="2"
+                processing={processing}
+                text={updatePassword}
+                onClick={this.handleOnSubmit}
+              />
 
-            <Success text={successMessage} />
-          </Form>
-        </StyledContentContainer>
+              <Success text={successMessage} />
+            </Form>
+          </StyledContentContainer>
+        </main>
       </Container>
     );
   }

@@ -43,7 +43,7 @@ const Container = styled.div`
   background: ${colors.background};
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.main`
   width: 100%;
   max-width: 700px;
   display: flex;

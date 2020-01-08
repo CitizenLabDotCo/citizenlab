@@ -24,14 +24,6 @@ const Container = styled.div`
   &:hover {
     color: ${colors.clIconAccent};
   }
-
-  &.active {
-    color: ${colors.clIconAccent};
-
-    ${StyledIcon} {
-      fill: ${colors.clIconAccent};
-    }
-  }
 `;
 
 interface Props {
