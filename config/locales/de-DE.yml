@@ -167,84 +167,71 @@ de:
 
     privacy_policy_title: Datenschutzrichtlinie
     privacy_policy_body: >
-      <p>Verantwortlich für die Verarbeitung der Daten und Inhaber</p>
+      <p>Verantwortlich für die Datenverarbeitung:</p>
       <p>CitizenLab NV - Meusegemstraat 105 - 1861 Wolvertem - Belgien</p>
       <p>Kontakt-E-Mail-Adresse: support@citizenlab.co</p>
+      <p>Organisation:</p>
+      <p>// Kundenkontakte einfügen</p>
       <h2>1. DATENSCHUTZBESTIMMUNGEN</h2>
-      <p>Diese Datenschutzerklärung bezieht sich auf die persönlichen Daten, die CitizenLab über diese Website sammelt.</p>
+      <p>Diese Datenschutzerklärung bezieht sich auf die persönlichen Daten, die CitizenLab mittels dieser Website erfasst, im Auftrag der Organisation.</p>
       <h2>2. WAS SIND PERSÖNLICHE DATEN?</h2>
       <p>In dieser Datenschutzerklärung beziehen sich personenbezogene Daten auf Informationen oder Angaben, die es ermöglichen, Sie zu identifizieren. Eine identifizierbare Person ist jemand, der direkt oder indirekt identifiziert werden kann, insbesondere durch Bezugnahme auf eine Identifikationsnummer oder auf einen oder mehrere Faktoren, die mit der physischen, physiologischen, mentalen, wirtschaftlichen, kulturellen oder sozialen Identität in Verbindung stehen. Ein typisches Beispiel für persönliche Informationen sind Ihr Name und Ihre E-Mail-Adresse.</p>
       <h2>3. WELCHE PERSÖNLICHEN DATEN SAMMELN WIR?</h2>
-      <p>Wir können Ihre persönlichen Daten aus den folgenden zwei Quellen beziehen:</p>
+      <p>Wir können Ihre persönlichen Daten aus den folgenden drei Quellen erheben:</p>
+      <h3>3.1 Persönliche Daten, die Sie bei der Registrierung auf der Plattform angeben.</h3>
+      <p>Die persönlichen Daten, die wir von Ihnen sammeln können, sind:</p>
       <ul>
-       <li>
-       <p><strong>Persönliche Daten, die Sie uns bei Ihrer Registrierung auf der Plattform zur Verfügung stellen.</strong></p>
-       <ul>
-       <li>Die persönlichen Daten, die wir von Ihnen sammeln können, sind:</li>
-       <li>E-Mail-Adresse (obligatorisch);</li>
-       <li>Vorname (obligatorisch);</li>
-       <li>Nachname (obligatorisch);</li>
-       <li>Alter (optional);</li>
-       <li>Wohnsitz (optional);</li>
-       <li>Bildungsniveau (optional).</li>
+       <li>Name und Vorname</li>
+       <li>E-Mail-Adresse</li>
+       <li>Alter</li>
+       <li>Geschlecht</li>
+       <li>Region (Wohngebiet), in der Sie wohnen</li>
+       <li>Bevorzugte Sprache</li>
        </ul>
-       </li>
-       <li>
-       <p><strong>Persönliche Daten, die wir sammeln, wenn Sie unsere Website besuchen.</strong></p>
-       Wir (und Drittanbieter, die in unserem Auftrag handeln) verwenden Cookies, um automatisch personenbezogene Daten über Sie zu sammeln, wenn Sie diese Website nutzen. Für weitere Informationen lesen Sie bitte unsere Cookie-Richtlinien.
-       </li>
-      </ul>
-      <h2>4. WIE VERWENDEN WIR PERSÖNLICHE DATEN?</h2>
-      <p>Wir können Ihre persönlichen Daten für die folgenden Zwecke verwenden:
+      <p>Diese Liste kann auf Anfrage der Organisation erweitert werden. Falls Sie sich über einen Drittanbieter von Authentifizierungen wie Google-Konten, Facebook oder FranceConnect anmelden, erhalten wir die Daten von diesen Anbietern. Sollten Sie sich dafür entscheiden, Ihre Identität bei einem Drittanbieter wie COW, FranceConnect oder CSAM zu verifizieren, werden wir diese Informationen von dem jeweiligen Anbieter erhalten.</p>
+      <h3>3.2 Persönliche Daten, die Sie durch partizipatives Handeln auf unserer Plattform zur Verfügung stellen.</h3>
+      <p>Jede Handlung, die Sie auf der Plattform durchführen (abstimmen, eine Idee einstellen, einen Kommentar schreiben, eine Umfrage beantworten,...) wird registriert und gespeichert. Diese Daten sind ebenfalls mit Ihren Registrierungsdaten (3.1) verknüpft, was bedeutet, dass die Organisation wiederrum Ihr Plattformprofil mit diesen Beteiligungsdaten verknüpfen kann.</p>
+      <h3>3.3 Personenbezogene Daten, die wir beim Besuch unserer Plattform erheben.</h3>
+      <p>Wir (und in unserem Auftrag handelnde Drittverarbeiter) sammeln Informationen über die Nutzung unserer Plattform, um auf das einwandfreie Funktionieren und die Sicherheit der Plattform zugreifen zu können. Zu diesem Zweck sammeln wir technische Informationen, die Sie identifizieren können, wie z.B. Ihre IP-Adresse und Browser-Details. Mit der Nutzung unserer Dienste stimmen Sie der Erhebung dieser Daten zu.
+      Wir sammeln auch Nutzungsdaten, um unsere Dienstleistungen zu verbessern, Sie können dieser Sammlung jederzeit per Zustimmungsmanager wiedersprechen.</p>
+      <h2>4. WIE VERWENDEN WIR PERSONENBEZOGENE DATEN?</h2>
+      <p>Wir können Ihre persönlichen Daten für die folgenden Zwecke verwenden:</p>
        <ul>
-       <li>Um Ihr Benutzerprofil auf dieser Website zu erstellen und zu pflegen;</li>
-       <li>Um Informationen über Ihre Community und / oder Berichte von der Plattform, die Sie interessieren könnte, zur Verfügung zu stellen;</li>
-       <li>Um die Überprüfung Ihres Benutzerprofils im Rahmen der erforderlichen Sicherheitsmaßnahmen zu gewährleisten;</li>
-       <li>Zur Verwaltung der Identifizierung und Authentifizierung von Benutzern.</li>
+      <li>In erster Linie, um Ihren Input an die Organisation mit relevantem Kontext zu kommunizieren und um aggregierte Berichte über alle auf dieser Plattform gesammelten Daten zu erstellen und so deren Entscheidungsfindung zu unterstützen.</li> 
+      <li>Erstellung und Wartung Ihres Benutzerprofils auf dieser Website.</li>
+       <li>Zur Verwaltung der Benutzeridentifikation und -authentifizierung.</li>
+       <li>Um unsere Dienstleistungen zu verbessern und deren Funktionalität zu überwachen.</li>
+      <p>Die personenbezogenen Daten werden nur so lange gespeichert und verarbeitet, wie es zur Erreichung des Zwecks der Verarbeitung erforderlich ist. Die Daten werden danach gelöscht oder anonymisiert.</p>
        </ul>
-      </p>
       <h2>5. AN WEN GEBEN WIR IHRE PERSÖNLICHEN DATEN WEITER?</h2>
-      <p>Wir können Ihre persönlichen Daten an Ihre lokalen Behörden weitergeben, die eine Administratorfunktion auf dieser Website haben. Wir werden Ihre personenbezogenen Daten niemals an andere Dienstleister verkaufen oder vermieten, oder an Dienstleister weitergeben, die nicht der EU-Datenrichtlinie entsprechen.</p>
-      <h2>6.	WOHIN ÜBERMITTELN WIR IHRE PERSÖNLICHEN DATEN?</h2>
-      <p>Wir geben Ihre personenbezogenen Daten nicht an Dienstleister weiter, die außerhalb der Europäischen Union ansässig sind.</p>
-      <h2>7. WELCHE RECHTE HABEN SIE?</h2>
-      <p>Der Nutzer hat das Recht, jederzeit Auskunft darüber zu erhalten, ob seine persönlichen Daten gespeichert sind. Sie können den Inhaber der Datenverarbeitung auffordern, den Inhalt und seine Herkunft offen zu legen, seine Richtigkeit zu überprüfen oder die Ergänzung, Löschung, Aktualisierung oder Korrektur, Anonymisierung oder Sperrung von Daten, welche widerrechtlich aufbewahrt werden, zu verlangen. Der Verarbeitung der Daten kann mit triftigen Gründen auch widersprochen werden. Sie müssen Ihre Anfragen an die Stelle richten, welche für die Verarbeitung der Daten über die oben genannten Kontaktinformationen zuständig ist.</p>
-      <p>Zusammengefasst bedeutet dies, dass Sie als Nutzer das Recht dazu haben:
-      <ul>
-       <li>Zugang zu Ihren persönlichen Daten zu beantragen;</li>
-       <li>die Berichtigung, Aktualisierung oder Löschung Ihrer persönlichen Daten zu beantragen;</li>
-       <li>der Verarbeitung Ihrer persönlichen Daten für direkte Kommunikationszwecke zu widersprechen.</li>
-      </ul>
-      <p>Darüber hinaus können Sie sich jederzeit von der direkten Kommunikation abmelden, indem Sie die entsprechenden Anweisungen am Ende der direkten Kommunikation befolgen ("Verwalten Sie Ihre E-Mail-Benachrichtigungen").</p>
-      <p>Sie können jederzeit weitere Informationen über die Erhebung oder Verarbeitung persönlicher Daten bei der für die Verarbeitung der Daten verantwortlichen Stelle anfordern. Siehe die Kontaktinformationen am Anfang dieses Dokuments.</p>
+      <p>Möglicherweise geben wir Ihre persönlichen Daten an die Organisation, in deren Auftrag wir diese Daten sammeln, weiter. Wir geben Ihre Daten an die in unserem Auftrag tätigen Subunternehmer weiter. Wir werden Ihre personenbezogenen Daten niemals an andere Dienstleister verkaufen oder vermieten, noch werden wir Ihre Daten an Dritte weitergeben, die sich nicht an die GDPR halten.</p>
+      <h2>6. WOHIN ÜBERMITTELN WIR IHRE PERSÖNLICHEN DATEN?</h2>
+      <p>Wir geben personenbezogene Daten nur dann an Dienstleister außerhalb des Europäischen Wirtschaftsraums weiter, wenn diese die Anforderungen der Artikel 44 ff. der GDPR erfüllen. Alle in den USA ansässigen Dienstleister halten sich an Privacy Shield, was bedeutet, dass sie sich an die Datenschutz- und Sicherheitsstandards der GDPR halten müssen, auch wenn sie selbst in den USA ansässig sind.</p>
+      <h2>7. WAS SIND IHRE RECHTE?</h2>
+      <p>Sie haben jederzeit das Recht auf unentgeltlichen Zugriff auf Ihre personenbezogenen Daten sowie auf die Nutzung Ihrer personenbezogenen Daten durch Citizenlab.</p>
+      <h3>7.1 Recht auf Berichtigung, Beseitigung und Einschränkung</h3>
+      <p>Es steht Ihnen frei, Ihre persönlichen Daten an Citizenlab weiterzugeben oder nicht. Darüber hinaus haben Sie jederzeit das Recht, von Citizenlab die Berichtigung, Ergänzung oder Löschung Ihrer personenbezogenen Daten zu verlangen. Sie nehmen zur Kenntnis, dass im Falle der Verweigerung der Offenlegung oder des Antrags auf Löschung personenbezogener Daten bestimmte Dienste möglicherweise nicht zur Verfügung stehen. Sie können auch verlangen, die Verarbeitung Ihrer persönlichen Daten einzuschränken. Falls Sie sich dafür entscheiden, Ihr Konto von der Plattform zu löschen, werden die persönlichen Daten, die über Sie gesammelt wurden, von unseren Servern entfernt. Einige persönliche Informationen über Sie können in den Logging-Daten, die wir aus Sicherheits- und Rechtsgründen bis zu 30 Tage lang aufbewahren, verbleiben.
+      </p> 
+      <h3>7.2 Widerspruchsrecht</h3>
+      <p>Sie haben das Recht, der Verarbeitung Ihrer persönlichen Daten aus schwerwiegenden und berechtigten Gründen zu widersprechen. Darüber hinaus haben Sie jederzeit das Recht, der Verwendung personenbezogener Daten zum Zwecke des Direktmarketings zu widersprechen; in diesem Fall brauchen Sie nicht einmal eine Begründung abzugeben.</p> 
+      <h3>7.3 Recht auf unentgeltliche Datenübermittlun</h3>
+      <p>Sie haben das Recht, Ihre persönlichen Daten, die Sie Citizenlab zur Verfügung gestellt haben, in strukturierter, allgemeiner und maschinenlesbarer Form zu erhalten und/oder an andere Verantwortliche weiterzugeben.</p>
+      <h3>7.4 7.4 Recht auf Widerruf der Einwilligung</h3>
+      <p>Soweit die Verarbeitung auf Ihrer vorherigen Einwilligung beruht, haben Sie das Recht, diese Einwilligung zu widerrufen.</p>
+      <h3>7.5 Ausübung Ihrer Rechte</h3>
+      <p>Sie können Ihre Rechte ausüben, indem Sie sich an Citizenlab wenden, entweder per E-Mail an support@citizenlab.co, per Post an Meusegemstraat 105, 1861 Wolvertem, Belgien oder über das Kontaktformular „Kontaktieren Sie uns" auf der Website, sofern eine Kopie Ihres Personalausweises beigefügt ist.</p>
+      <h3>7.6 Automatische Entscheidungen und Profilerstellung</h3>
+      <p>Die Verarbeitung Ihrer persönlichen Daten beinhaltet keine Profilerstellung und unterliegt keinen automatisierten Entscheidungen von Citizenlab.</p>
+      <h3>7.7 Beschwerderecht</h3>
+      <p>Sie haben das Recht, eine Beschwerde bei der Datenschutzbehörde Ihres Landes oder der belgische Datenschutzbehörde, der CitizenLab untersteht, einzureichen: Drukpersstraat 35, 1000 Brüssel, Belgien, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, E-Mail: contact@adp-gba.be. Eine Regelung vor einem Zivilgericht bleibt hiervon unberührt.</p>
       <h2>8. ZUSÄTZLICHE INFORMATIONEN ZUR DATENERHEBUNG UND -VERARBEITUNG</h2>
       <h3>Rechtliche Verfahren</h3>
-      <p>Der Verantwortliche für die Verarbeitung der Daten kann die persönlichen Daten des Nutzers für legale Zwecke, für das Gericht oder für Gerichtsverfahren, die vorhergehenden Phasen im Falle einer unrechtmäßigen Nutzung dieser Anwendung oder der damit zusammenhängenden Dienstleistungen, verwenden.</p>
-      <p>Dem Nutzer ist bekannt, dass der Inhaber der Datenverarbeitung verpflichtet sein kann, die persönlichen Daten auf Verlangen der zuständigen staatlichen Stellen für deren Verarbeitung offenzulegen.</p>
-      <h3>Zusätzliche Informationen über die persönlichen Daten des Nutzers</h3>
-      <p>Auf Wunsch des Nutzers kann diese Anwendung zusätzlich zu den in dieser Datenschutzerklärung enthaltenen Informationen dem Nutzer zusätzliche und kontextbezogene Informationen über bestimmte Dienste oder die Erhebung und Verarbeitung personenbezogener Daten zur Verfügung stellen.</p>
-      <h3>Änderungen dieser Datenschutzerklärung</h3>
-      <p>Der Verantwortliche für die Verarbeitung der Daten behält sich das Recht vor, diese Datenschutzerklärung jederzeit zu ändern, indem er die Benutzer auf dieser Seite benachrichtigt. Wir empfehlen Ihnen, diese Seite auf mögliche Änderungen zu überprüfen. Das Datum der letzten Änderung wird unten auf der Seite angezeigt. Wenn ein Benutzer einer Änderung der Richtlinie widerspricht, darf der Benutzer diese Anwendung nicht weiterverwenden. Er kann den für die Verarbeitung der Daten Verantwortlichen auffordern, die personenbezogenen Daten zu löschen. Sofern nicht anders angegeben, gilt die jeweils gültige Datenschutzrichtlinie für alle persönlichen Daten, die der Verantwortliche für die Verarbeitung der Daten über die Nutzer gespeichert hat.</p>
-      <p><em>Letztes Update: 7. Dezember 2017</em></p>
-      <h2>DEFINITIONEN UND RECHTLICHER RAHMEN</h2>
-      <h3>Persönliche Daten</h3>
-      <p>Alle Informationen über eine natürliche Person, eine juristische Person, eine Institution oder eine Vereinigung, die direkt oder indirekt durch Bezugnahme auf andere Informationen, einschließlich einer persönlichen ID-Nummer, identifiziert wurden oder werden können.</p>
-      <h3>Nutzungsdaten</h3>
-      <p>Informationen, die automatisch von dieser Anwendung (oder von externen Diensten, die in dieser Anwendung verwendet werden) gesammelt werden, einschließlich: der IP-Adressen oder Domänennamen der Computer, die von den Benutzern dieser Anwendung verwendet werden, der URI (Uniform Resource Identifier)-Addressen, der Uhrzeit der Anfrage, der Methode, die verwendet wird, um die Anfrage an den Server zu senden, der Größe der Datei, die als Antwort darauf empfangen wird, der numerische Code, der den Status der Serverantwort angibt (erfolgreich, Fehler, usw.), das Herkunftsland, der Funktionen des Browsers und des Betriebssystems des Nutzers, der unterschiedlichen Zeitangaben pro Besuch (wie z.B. die Verweildauer auf jeder Seite der Anwendung) und der Daten der nur innerhalb der Anwendung Überwachten, insbesondere wird sich dabei auf die Reihenfolge der besuchten Seiten und andere Parameter über das Betriebssystem des Gerätes und / oder die IT-Umgebung des Benutzers konzentriert.</p>
-      <h3>Benutzer</h3>
-      <p>Die Person, die diese Anwendung verwendet und die mit dem Betroffenen, auf den sich die persönlichen Daten beziehen, einverstanden oder von ihm autorisiert sein muss.</p>
-      <h3>Die betroffene Person</h3>
-      <p>Die juristische oder natürliche Person, auf die sich die personenbezogenen Daten beziehen.</p>
-      <h3>Datenverarbeiter (oder Datenverantwortlicher)</h3>
-      <p>Die natürliche Person, juristische Person, staatliche Verwaltung oder jede andere Institution, Vereinigung oder Organisation, die vom Inhaber der Datenverarbeitung autorisiert wurde, die personenbezogenen Daten in Übereinstimmung mit dieser Datenschutzrichtlinie zu verarbeiten.</p>
-      <h3>Verantwortlich für die Verarbeitung der Daten (oder Eigentümer)</h3>
-      <p>Die natürliche Person, juristische Person, staatliche Verwaltung oder jede andere Institution, Vereinigung oder Organisation mit dem Recht, auch gemeinsam mit dem Verantwortlichen für die Verarbeitung der Daten, Entscheidungen über die Zwecke und Methoden der Verarbeitung persönlicher Daten und die verwendeten Mittel zu treffen, einschließlich der Sicherheitsmaßnahmen in Bezug auf die Nutzung dieser Anwendung. Der Verantwortliche für die Verarbeitung der Daten ist der Inhaber dieser Anwendung, sofern nicht anders angegeben.</p>
-      <h3>Diese Anwendung</h3>
-      <p>Die Hardware- oder Software-Tools, mit denen die persönlichen Daten des Benutzers gesammelt werden.</p>
-      <h3>Cookie</h3>
-      <p>Kleiner Datensatz, welcher auf dem Gerät des Benutzers gespeichert ist.</p>
-      <h2>RECHTLICHE INFORMATIONEN</h2>
-      <p>Hinweis für europäische Nutzer: Diese Datenschutzerklärung wurde unter Beachtung der Verpflichtungen aus Art. 10 der europäischen Richtlinie 95/46 / EG und den Bestimmungen der europäischen Richtlinie 2002/58 / EG, sowie der Überarbeitung der Richtlinie 2009/136 / EG über Cookies erstellt.</p>
+      <p>CitizenLab und die Organisation, für die wir diese Daten verarbeiten können die personenbezogenen Daten des Nutzers für rechtliche Zwecke, vor Gericht oder den Phasen, die vor der Gerichtssitzung erfolgen, im Falle einer unrechtmäßigen Nutzung dieser Applikation oder der damit verbundenen Dienstleistungen verwenden. Dem Nutzer ist bekannt, CitizenLab und die Organisation, mit der wir zusammenarbeiten verpflichtet sein können, die personenbezogenen Daten auf Verlangen der zuständigen Regierungsbehörden offen zu legen. Die rechtliche Grundlage für diese Verarbeitung ist die Annahme der Bedingungen (Vertragsgrundlage) und die erteilte Zustimmung.</p>
+      <h3>Sicherheitsmaßnahmen</h3>
+      <p>Citizenlab hat Sicherheitsmaßnahmen entwickelt, die technisch und organisatorisch angepasst sind, die Zerstörung, den Verlust, die Fälschung, die Veränderung, den unbefugten Zugriff oder die fehlerhafte Benachrichtigung Dritter über die gesammelten personenbezogenen Daten sowie jede andere unbefugte Verarbeitung dieser Daten zu verhindern. In keinem Fall kann Citizenlab für direkte oder indirekte Schäden haftbar gemacht werden, die sich aus einer falschen oder unrechtmäßigen Verwendung Ihrer persönlichen Daten durch Dritte ergeben. Sie müssen die Sicherheitsbestimmungen jederzeit einhalten, auch indem Sie jeglichen unbefugten Zugriff auf Ihr Log-in und Ihren Code verhindern. Sie sind allein verantwortlich für die Nutzung der Website Ihres Computers, der IP-Adresse und der Identifizierungsdaten sowie für deren Vertraulichkeit.</p>
+      <h3>Änderungen an dieser Datenschutzrichtlinie</h3>
+      <p>CitizenLab behält sich das Recht vor, diese Datenschutzerklärung jederzeit zu ändern, indem er die Benutzer auf dieser Seite darüber informiert. Wir empfehlen Ihnen, diese Seite regelmäßig auf Änderungen zu überprüfen. Das Datum der letzten Änderung wird unten auf der Seite angezeigt. Wenn ein Benutzer einer Änderung der Richtlinie widerspricht, sollte der Benutzer diese Applikation nicht weiter verwenden. Sofern nicht anders angegeben, gilt für alle von uns erhobenen personenbezogenen Daten die zu diesem Zeitpunkt gültige Datenschutzerklärung.</p>
+      <p><em>Letztes Update: 17/12/2019</em></p>
     infopage_title: Impressum
     infopage_body: "Angaben gemäß § 5 TMG:\nCitizenLab (Hauptgeschäftsstelle), Cantersteen 12, 1000 Brüssel, Belgien, Europäische Union\n\nVertreten durch: Wietse Van Ransbeeck\n\n‍\n\nUmsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:\n\nCitizenLab NV, Meusegemstraat 105, 1861 Meise, Belgien, Europäische Union\n\nUSt.-Id-Nr: BE0638901287\n\n‍\n\nRegistereintrag:\n\nEingetragen im Handelsregister unter Register-Nr: HRB 638901287\n\nGericht: Handelsgericht Brüssel, Waterloolaan 70, 1000 Brüssel, Belgien, Europäische Union\n\n‍\n\nVerantwortlich für den Inhalt gem. § 55 Abs. 2 RStV:\n\nWietse Van Ransbeeck, Cantersteen 12, 1000 Brüssel, Belgien, Europäische Union\n\n‍\n\nBerufshaftpflichtversicherung: \n\nAXA, Zakenkantoor Bogaerts, Boechtstraat 15, 1860 Meise, Belgien, Europäische Union\n\nGeltungsbereich: Europaweit\n\nWir nehmen nicht an einem Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teil.\n\n‍\n\nKontakt:\n\nTelefon: +49 698 991 4888\n\nE-Mail: thomas.balbach@citizenlab.de\n\n‍\n\nHaftungsausschluss (Disclaimer)\nHaftung für Inhalte\nAls Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.\n\nHaftung für Links\nUnser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.\n\nUrheberrecht\nDie durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen."
     homepage_info_title: ""
