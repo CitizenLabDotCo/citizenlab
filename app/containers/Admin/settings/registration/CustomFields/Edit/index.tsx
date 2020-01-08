@@ -10,6 +10,7 @@ import TabbedResource from 'components/admin/TabbedResource';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const StyledGoBackButton = styled(GoBackButton)`
   margin-bottom: 20px;
@@ -23,7 +24,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> {
+class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps & InjectedLocalized> {
 
   hasOptions = (inputType) => {
     return inputType === 'select' || inputType === 'multiselect';
@@ -56,7 +57,7 @@ class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> 
   }
 
   render() {
-    const { customField, children } = this.props;
+    const { customField, children, localize } = this.props;
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { customField });
 
     return !isNilOrError(customField) && (
@@ -65,7 +66,7 @@ class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> 
         <TabbedResource
           tabs={this.getTabs(customField)}
           resource={{
-            title: customField.attributes.title_multiloc,
+            title: localize(customField.attributes.title_multiloc),
             publicLink: '',
           }}
           messages={{
@@ -79,8 +80,10 @@ class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps> 
   }
 }
 
-export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+const EditWithHOCs = injectIntl(injectLocalize(Edit));
+
+export default withRouter((inputProps: InputProps & WithRouterProps & InjectedIntlProps & InjectedLocalized) => (
   <GetCustomField id={inputProps.params.customFieldId}>
-    {customField => <Edit {...inputProps} customField={customField} />}
+    {customField => <EditWithHOCs {...inputProps} customField={customField} />}
   </GetCustomField>
-)));
+));

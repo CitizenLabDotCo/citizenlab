@@ -1,18 +1,20 @@
 import React, { PureComponent } from 'react';
 import { isString, get } from 'lodash-es';
+import Icon from 'components/UI/Icon';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
-const Arrow = styled.div`
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: solid 5px #333;
-  cursor: pointer;
+const Arrow = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  fill: #999;
+  pointer-events: none;
+  transform: rotate(90deg);
+  margin: auto;
   position: absolute;
-  top: 20px;
+  top: 0;
+  bottom: 0;
   right: 11px;
 `;
 
@@ -50,7 +52,7 @@ const Container = styled.div`
       }
 
       ${Arrow} {
-        border-top-color: #000;
+        fill: #000;
       }
     }
   }
@@ -61,11 +63,6 @@ const Container = styled.div`
       color: #bbb;
       border-color: #ddd;
       background: #f9f9f9;
-    }
-
-    ${Arrow} {
-      cursor: not-allowed;
-      border-top-color: #bbb;
     }
   }
 `;
@@ -139,7 +136,10 @@ export default class Select extends PureComponent<Props, State> {
             </option>
           ))}
         </CustomSelect>
-        <Arrow className={disabled ? 'disabled' : 'enabled'} />
+        <Arrow
+          name="chevron-right"
+          className={`arrow ${disabled ? 'disabled' : 'enabled'}`}
+        />
       </Container>
     );
   }
