@@ -1,6 +1,6 @@
 module Carrierwave
   module FileBase64
-    class Base64StringIO < StringIO
+    class Base64StringIo < StringIO
 
       attr_reader :file_name
       attr_reader :file_extension

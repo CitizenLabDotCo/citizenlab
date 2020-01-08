@@ -1,5 +1,6 @@
 class Initiative < ApplicationRecord
   include Post
+  include Moderatable
 
   mount_base64_uploader :header_bg, InitiativeHeaderBgUploader
 

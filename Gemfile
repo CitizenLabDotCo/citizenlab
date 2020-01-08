@@ -8,7 +8,7 @@ end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 # gem 'rails', '~> 5.1.0.beta1'
-gem 'rails', '~> 5.2.1'
+gem 'rails', '~> 6.0.1'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
@@ -66,29 +66,33 @@ gem "active_model_serializers", "~> 0.10.8"
 #    in an error.
 gem "knock", github: 'CitizenLabDotCo/knock'
 gem "sidekiq" # , "~> 5.0.5"
-gem "apartment", "~> 2.2.0"
+
+# This branch must be used because the latest version (2.1.1) 
+# requires activerecord < 6.0, while activerecord = 6.0.1 is
+# required by Rails 6.0.1.
+gem "apartment", github: 'influitive/apartment', branch: 'development'
 gem "apartment-sidekiq", "~> 1.2.0"
-gem "carrierwave", "~> 1.2.2"
+gem "carrierwave", "~> 2.0.2"
 gem "carrierwave-base64", "~> 2.6"
 gem "kaminari", "~> 1.1.1"
 gem 'api-pagination', "~> 4.8.2"
-gem "activerecord_json_validator", "~> 1.2.0"
-gem 'rails-i18n', '~> 5.1'
+gem "activerecord_json_validator", "~> 1.3.0"
+gem 'rails-i18n', '~> 6.0.0'
 
 gem "rest-client"
 gem "fog-aws"
 gem "mini_magick", "~> 4.9"
-gem "awesome_nested_set" # , "~> 3.1.3"
+gem "awesome_nested_set", "~> 3.2.0"
 gem "pg_search", "~> 2.1.2"
 gem "counter_culture", "~> 2.1"
 gem "liquid", "~> 4.0"
-gem "premailer-rails" # , "~> 1.9.6"
+gem "premailer-rails" , "~> 1.10.3"
 gem 'groupdate' # , "~> 3.2.0"
 gem 'rubyzip', '~> 1.3.0'
 gem 'axlsx', '3.0.0.pre'
 gem 'rgeo-geojson'
 
-gem 'activerecord-postgis-adapter' # , '~> 5.2'
+gem 'activerecord-postgis-adapter', '~> 6.0.0'
 gem 'simple_segment', '~> 0.3'
 gem 'okcomputer'
 gem 'sentry-raven'

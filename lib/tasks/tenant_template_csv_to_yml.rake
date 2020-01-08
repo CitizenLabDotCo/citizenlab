@@ -127,7 +127,7 @@ namespace :tenant_template do
 
   def convert_events(csv_events, locales, projects_hash)
   	csv_events.map{|csv_event| 
-      start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
+      start_at = Faker::Date.between(from: 1.year.ago, to: 1.year.from_now)
   		{	'title_multiloc'       => make_multiloc(csv_event['Title'], locales),
         'description_multiloc' => make_multiloc(md_to_html(csv_event['Description']), locales),
         'location_multiloc'    => make_multiloc(csv_event['Location'], locales),
@@ -140,7 +140,7 @@ namespace :tenant_template do
   def convert_phases(csv_phases, locales, projects_hash)
     project_to_time = {}
   	csv_phases.map do |csv_phase| 
-      t = (project_to_time[csv_phase['Project ID']] || Faker::Date.between(4.months.ago, 1.month.from_now)) + 1.day
+      t = (project_to_time[csv_phase['Project ID']] || Faker::Date.between(from: 4.months.ago, to: 1.month.from_now)) + 1.day
       start_at = t
       end_at = t + (rand(30)+1).days
       project_to_time[csv_phase['Project ID']] = end_at
