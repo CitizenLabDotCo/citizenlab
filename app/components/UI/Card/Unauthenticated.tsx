@@ -1,5 +1,4 @@
 import React, { PureComponent, FormEvent } from 'react';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import Button from 'components/UI/Button';
