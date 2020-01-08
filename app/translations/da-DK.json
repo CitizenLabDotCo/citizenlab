@@ -1239,6 +1239,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "Hvornår ønsker du at modtage en e-mail meddelelse?",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Notifikationer",
   "app.containers.CampaignsConsentForm.submit": "Gem",
+  "app.containers.Comments.a11y_undoUpvote": "",
   "app.containers.Comments.a11y_upvoteCount": "",
   "app.containers.Comments.addCommentError": "Noget gik galt. Prøv venligst igen senere.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Leave the comment",

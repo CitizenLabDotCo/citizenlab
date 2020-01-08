@@ -1239,6 +1239,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "Quand voulez-vous être averti par email?",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Notifications",
   "app.containers.CampaignsConsentForm.submit": "Enregistrer",
+  "app.containers.Comments.a11y_undoUpvote": "",
   "app.containers.Comments.a11y_upvoteCount": "",
   "app.containers.Comments.addCommentError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Ne pas supprimer",

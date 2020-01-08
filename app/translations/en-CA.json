@@ -1239,6 +1239,7 @@
   "app.containers.CampaignsConsentForm.notificationsSubTitle": "When do you want to receive an email notification?",
   "app.containers.CampaignsConsentForm.notificationsTitle": "Notifications",
   "app.containers.CampaignsConsentForm.submit": "Save",
+  "app.containers.Comments.a11y_undoUpvote": "",
   "app.containers.Comments.a11y_upvoteCount": "",
   "app.containers.Comments.addCommentError": "Something went wrong. Please try again later.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Leave the comment",
