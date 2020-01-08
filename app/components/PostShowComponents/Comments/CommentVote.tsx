@@ -264,9 +264,6 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className={className}>
           <UpvoteButtonWrapper>
             <UpvoteButton
-              aria-label={!voted ?
-                formatMessage(messages.upvoteComment) : formatMessage(messages.a11y_undoUpvote)
-              }
               onMouseDown={this.removeFocus}
               onClick={this.onVote}
               disabled={!votingEnabled}
@@ -283,6 +280,11 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                   ${voted ? 'voted' : ''}
                   ${votingEnabled ? 'enabled' : 'disabled'}
                 `}
+                title={!voted ?
+                  formatMessage(messages.upvoteComment)
+                  :
+                  formatMessage(messages.a11y_undoUpvote)
+                }
               />
             </UpvoteButton>
           </UpvoteButtonWrapper>
@@ -306,7 +308,18 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
               onClick={this.onVote}
               disabled={!votingEnabled}
             >
-              {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
+              <span aria-hidden>
+                {!voted ?
+                  <FormattedMessage {...messages.commentUpvote} />
+                  :
+                  <FormattedMessage {...messages.commentCancelUpvote} />
+                }
+              </span>
+              <ScreenReaderOnly>
+                {!voted ?
+                  formatMessage(messages.upvoteComment) : formatMessage(messages.a11y_undoUpvote)
+                }
+              </ScreenReaderOnly>
             </UpvoteLabel>
           }
         </Container>
