@@ -111,28 +111,25 @@ const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, 
     to={to}
     className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
   >
-    <>
-      {imageUrl &&
-        <ImageWrapper>
-          <Image src={imageUrl} alt="" />
-        </ImageWrapper>
-      }
+    {imageUrl &&
+      <ImageWrapper>
+        <Image src={imageUrl} alt="" />
+      </ImageWrapper>
+    }
 
-      <Title className="e2e-card-title" hasHeader={!!header}>
-        {title}
-      </Title>
-      <HeaderContentWrapper>
-        {header}
-      </HeaderContentWrapper>
+    <Title className="e2e-card-title" hasHeader={!!header}>
+      {title}
+    </Title>
+    <HeaderContentWrapper>
+      {header}
+    </HeaderContentWrapper>
 
-      <Body>
-        {body}
-      </Body>
-
-      <Footer>
-        {footer}
-      </Footer>
-    </>
+    <Body>
+      {body}
+    </Body>
+    <Footer>
+      {footer}
+    </Footer>
   </Container>
 ));
 
