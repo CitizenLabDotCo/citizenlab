@@ -145,7 +145,8 @@ export default class Checkbox extends PureComponent<Props, State> {
       const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
       const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-      if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
+      // if key = Space
+      if (!targetElementIsLink && !parentElementIsLink && event.keyCode === 32) {
         event && event.preventDefault();
         this.props.onChange(event);
       }

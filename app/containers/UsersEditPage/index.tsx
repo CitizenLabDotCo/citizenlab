@@ -18,7 +18,8 @@ import UsersEditPageMeta from './UsersEditPageMeta';
 
 // Styles
 import styled from 'styled-components';
-import { colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 // Hooks
 import useAreas from 'hooks/useAreas';

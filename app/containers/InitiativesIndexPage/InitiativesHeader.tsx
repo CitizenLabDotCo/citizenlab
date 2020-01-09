@@ -22,7 +22,8 @@ import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import T from 'components/T';
 
 // images

@@ -14,7 +14,8 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import styled, { withTheme } from 'styled-components';
 
 // components
