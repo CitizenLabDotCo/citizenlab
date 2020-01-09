@@ -31,4 +31,19 @@ class TopicPolicy < ApplicationPolicy
   def destroy?
     update?
   end
+
+  def permitted_attributes_for_create
+    [
+      title_multiloc: CL2_SUPPORTED_LOCALES,
+      description_multiloc: CL2_SUPPORTED_LOCALES
+    ]
+  end
+
+  def permitted_attributes_for_update
+    permitted_attributes_for_create
+  end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
+  end
 end
