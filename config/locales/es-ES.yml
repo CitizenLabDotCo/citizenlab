@@ -284,7 +284,16 @@ es:
     default_threshold_reached_message: >
       <p>Se invita a los iniciadores a presentar su iniciativa en la próxima reunión del consejo. Proporcionaremos una actualización oficial.</p>
     default_eligibility_criteria: >
-      <p>La iniciativa debe</p> <p>- estar dentro de las competencias de la municipalidad u organización</p>
+      <p>La iniciativa debería</p>
+      <ul>
+      <li>Estar dentro de las competencias de nuestro gobierno local</li>
+      <li>Servir al interés común, no al personal</li>
+      <li>No discriminar por sexo, raza, edad,...</li>
+      <li>No dañar a otros</li>
+      <li>Ser viable en términos de presupuesto</li>
+      <li>Ser viable en términos de tiempo</li>
+      <li>Ser diferente de otras iniciativas que ya están en la plataforma</li>
+      </ul>
   smart_group_rules:
     is_empty: "%{property} no contiene ningún valor"
     not_is_empty: "%{property} contiene algún valor"
