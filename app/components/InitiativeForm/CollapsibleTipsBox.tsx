@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useState } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -16,9 +15,6 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
-
-// hooks
-import useTenant from 'hooks/useTenant';
 
 const Container = styled.div`
   background: #fff;
@@ -116,35 +112,31 @@ const CollapsibleTipsBox = memo<Props>((props) => {
     setShowTips(!showTips);
   }, [showTips]);
 
-  const tenant = useTenant();
   const { className } = props;
 
-  if (!isNilOrError(tenant)) {
-    return (
-      <Container className={className}>
-        <TipsButton aria-expanded={showTips} onClick={handleTipsToggle}>
-          <TipsLabel>
-            <FormattedMessage {...messages.tipsTitle} />
-          </TipsLabel>
-          <ArrowIcon name="dropdown" className={showTips ? 'open' : ''}/>
-        </TipsButton>
-        <CSSTransition
-          classNames="tips"
-          in={showTips}
-          timeout={300}
-          mountOnEnter={true}
-          unmountOnExit={true}
-          exit={true}
-        >
-          <Wrapper>
-            <TipsContent />
-          </Wrapper>
-        </CSSTransition>
-      </Container>
-    );
-  }
+  return (
+    <Container className={className}>
+      <TipsButton aria-expanded={showTips} onClick={handleTipsToggle}>
+        <TipsLabel>
+          <FormattedMessage {...messages.tipsTitle} />
+        </TipsLabel>
+        <ArrowIcon name="dropdown" className={showTips ? 'open' : ''}/>
+      </TipsButton>
+      <CSSTransition
+        classNames="tips"
+        in={showTips}
+        timeout={300}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        exit={true}
+      >
+        <Wrapper>
+          <TipsContent />
+        </Wrapper>
+      </CSSTransition>
+    </Container>
+  );
 
-  return null;
 });
 
 export default CollapsibleTipsBox;
