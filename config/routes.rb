@@ -96,7 +96,9 @@ Rails.application.routes.draw do
         get 'comments_count', on: :member
       end
 
-      resources :topics, only: [:index, :show]
+      resources :topics do
+        patch 'reorder', on: :member
+      end
       resources :areas
 
       resources :tenants, only: [:update] do

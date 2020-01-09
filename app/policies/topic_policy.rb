@@ -24,6 +24,10 @@ class TopicPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def reorder?
+    update?
+  end
+
   def destroy?
     update?
   end
