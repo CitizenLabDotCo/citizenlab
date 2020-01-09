@@ -9,7 +9,6 @@ resource "User", admin_api: true do
   end
 
   let!(:user) { create(:user, email: 'moderator@citizenlab.co') }
-  let(:user_id) { user.id }
 
   get "admin_api/users/by_email" do
     parameter :email, "The email of the user"
@@ -31,6 +30,7 @@ resource "User", admin_api: true do
       parameter :email, "The email", required: true
       parameter :password, "The password", required: true
       parameter :roles, "The roles of the user"
+      parameter :remote_avatar_url, "The user avatar"
     end
     ValidationErrorHelper.new.error_fields(self, User)
 
@@ -44,8 +44,33 @@ resource "User", admin_api: true do
       example_request "Create a user" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
-        byebug
         expect(json_response[:last_name]).to eq 'Brijl'
+      end
+    end
+  end
+
+  patch "web_api/v1/users/:id" do
+
+    with_options scope: :user do
+      parameter :first_name, "The first name"
+      parameter :last_name, "The last name"
+      parameter :email, "The email"
+      parameter :password, "The password"
+      parameter :roles, "The roles of the user"
+      parameter :remote_avatar_url, "The user avatar"
+    end
+    ValidationErrorHelper.new.error_fields(self, User)
+
+    let(:id) { user.id }
+    let(:first_name) { 'Jacqueline' }
+    let(:roles) { [{type: 'admin'}] }
+    let(:remote_avatar_url) { 'https://res.cloudinary.com/citizenlabco/image/upload/v1528120749/shield_logo_pzbx2x.png' }
+
+    describe do
+      example_request "Update a user" do
+        expect(status).to be 200
+        json_response = json_parse(response_body)
+        expect(json_response[:first_name]).to eq 'Jacqueline'
       end
     end
   end

@@ -22,10 +22,8 @@ module AdminApi
     end
 
     def update
-      @user.assign_attributes(user_params.except(:settings, :style))
-
+      @user.assign_attributes user_params
       SideFxUserService.new.before_update(@user, nil)
-
       if @user.save
         SideFxUserService.new.after_update(@user, nil)
         # This uses default model serialization
@@ -48,7 +46,7 @@ module AdminApi
     def user_params
       params
         .require(:user)
-        .permit(:first_name, :last_name, :email, :password, :roles)
+        .permit(:first_name, :last_name, :email, :password, :roles, :remote_avatar_url)
     end
 
   end
