@@ -262,7 +262,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                     />
                   }
 
-                  <Spacer />
+                  <Spacer aria-hidden />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
                     <CommentIcon name="comments" ariaHidden />
