@@ -34,12 +34,16 @@ const Container: any = styled.div`
     outline: none;
     -webkit-appearance: none;
 
+    &.onGreyBackground {
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDarkOnGreyBackground};
+    }
+
     &.hasMaxCharCount {
       padding-right: 62px;
     }
 
     &::placeholder {
-      color: ${colors.clIconSecondary} !important;
+      color: ${colors.label} !important;
       opacity: 1;
     }
 
@@ -97,6 +101,7 @@ export type InputProps = {
   required?: boolean;
   autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
   className?: string;
+  onGreyBackground?: boolean;
 };
 
 interface DataProps {
@@ -140,7 +145,7 @@ class Input extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { label, ariaLabel, className } = this.props;
+    const { label, ariaLabel, className, onGreyBackground } = this.props;
     let { value, placeholder, error } = this.props;
     const { formikContext } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
@@ -170,7 +175,11 @@ class Input extends React.PureComponent<Props, State> {
         <input
           aria-label={ariaLabel}
           id={id}
-          className={`CLInputComponent ${maxCharCount && 'hasMaxCharCount'}`}
+          className={`
+            CLInputComponent
+            ${maxCharCount && 'hasMaxCharCount'}
+            ${onGreyBackground ? 'onGreyBackground' : ''}
+          `}
           name={name}
           type={type}
           placeholder={placeholder}

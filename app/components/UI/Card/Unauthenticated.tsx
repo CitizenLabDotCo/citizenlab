@@ -1,9 +1,15 @@
 import React, { PureComponent, FormEvent } from 'react';
-import styled, { withTheme } from 'styled-components';
 import clHistory from 'utils/cl-router/history';
-import { darken } from 'polished';
-import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
+
+// components
+import Button from 'components/UI/Button';
+
+// styles
+import styled, { withTheme } from 'styled-components';
+import { darken } from 'polished';
+
+// i18n
 import messages from './messages';
 
 const Container = styled.div`
@@ -43,6 +49,7 @@ class Unauthenticated extends PureComponent<Props, State> {
   }
 
   render() {
+
     return (
       <Container>
         <Button
