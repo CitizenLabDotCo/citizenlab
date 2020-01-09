@@ -47,6 +47,11 @@ describe SideFxUserService do
       expect {service.after_create(user, current_user)}.to have_enqueued_job(UpdateMemberCountJob)
     end
 
+    it "creates an unsubscription_token" do
+      service.after_create(user, current_user)
+      expect(user.email_campaigns_unsubscription_token).to be_present
+    end
+
   end
 
   describe "after_update" do

@@ -27,6 +27,10 @@ module EmailCampaigns
       ['project_moderator']
     end
 
+    def self.category
+      'admin'
+    end
+
     def generate_commands recipient:, time: nil
       recipient.moderatable_project_ids.map do |project_id|
         project = Project.find project_id
@@ -130,7 +134,7 @@ module EmailCampaigns
       top_ideas = top_ideas.all.select do |idea|
         idea_activity_count(idea) > 0 || idea.published_at > Time.now - days_ago
       end
-      top_ideas = top_ideas.sort_by do |idea| 
+      top_ideas = top_ideas.sort_by do |idea|
         idea_activity_count idea
       end.reverse.take N_TOP_IDEAS
       # payload

@@ -18,6 +18,10 @@ module EmailCampaigns
       users_scope.where(id: activity.item.recipient.id)
     end
 
+    def self.category
+      'mention'
+    end
+
     def generate_commands recipient:, activity:, time: nil
       notification = activity.item
       [{
@@ -26,7 +30,7 @@ module EmailCampaigns
           initiating_user_last_name: notification.initiating_user&.last_name,
           post_published_at: notification.post.published_at.iso8601,
           post_title_multiloc: notification.post.title_multiloc,
-          post_body_multiloc: notification.post.body_multiloc,  
+          post_body_multiloc: notification.post.body_multiloc,
           post_author_name: notification.post.author_name,
           post_type: notification.post_type,
           comment_body_multiloc: notification.comment.body_multiloc,
