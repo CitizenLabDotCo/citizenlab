@@ -344,7 +344,16 @@ en:
     default_threshold_reached_message: >
       <p>The initiators are invited to present their initiative on the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
-      <p>The initiative should</p> <p>- be within the city's competences</p>
+      <p>The initiative should</p>
+      <ul>
+      <li>Be within the competences of our local government</li>
+      <li>Serve the common interest, not a personal one</li>
+      <li>Not discriminate on gender, race, age,…</li>
+      <li>Not harm others</li>
+      <li>Be viable in terms of budget</li>
+      <li>Be viable in terms of timing</li>
+      <li>Be different from other initiatives already on the platform</li>
+      </ul>
   smart_group_rules:
     is_empty: "%{property} has no value"
     not_is_empty: "%{property} has any value"
