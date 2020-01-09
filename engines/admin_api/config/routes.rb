@@ -11,6 +11,10 @@ AdminApi::Engine.routes.draw do
     resources :phases, only: [:index]
   end
 
+  resources :users, only: [:create, :update] do
+    get :by_email, on: :collection
+  end
+
   resources :areas, only: [:index]
 
   post "/graphql", to: "graphql#execute"
