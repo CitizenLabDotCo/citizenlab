@@ -1,28 +1,18 @@
 import React, { memo } from 'react';
-import { adopt } from 'react-adopt';
 
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+// components
+import TipsContent from './TipsContent';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import T from 'components/T';
 
 // style
-import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { colors, fontSizes } from 'utils/styleUtils';
-import styled, { withTheme } from 'styled-components';
-import { get } from 'lodash-es';
+import styled from 'styled-components';
 
-interface DataProps {
-  tenant: GetTenantChildProps;
-}
-export interface InputProps {
+interface Props {
   className?: string;
-}
-
-interface Props extends InputProps, DataProps {
-  theme: any;
 }
 
 const Container = styled.div`
@@ -41,66 +31,16 @@ const TipsTitle = styled.h2`
   font-weight: 600;
 `;
 
-const StyledQuillEditedContent = styled(QuillEditedContent)`
-  span:last-child ol, span:last-child ul {
-    margin-bottom: 0px;
-  }
-`;
-
-const TipsBox = memo(({ tenant, className, theme }: Props) => {
-  const eligibilityCriteriaMultiloc = get(tenant, 'attributes.settings.initiatives.eligibility_criteria');
+const TipsBox = memo(({ className }: Props) => {
 
   return (
     <Container className={`${className} e2e-tips`}>
       <TipsTitle>
         <FormattedMessage {...messages.tipsTitle} />
       </TipsTitle>
-      <p>
-        <FormattedMessage {...messages.tipsExplanation} />
-      </p>
-      <p>
-        <FormattedMessage {...messages.requirmentsListTitle} />
-      </p>
-      <ul>
-        <li>
-          <FormattedMessage
-            {...messages.requirmentVoteTreshold}
-            values={{
-              voteThreshold: get(tenant, 'attributes.settings.initiatives.voting_threshold'),
-            }}
-          />
-        </li>
-        <li>
-          <FormattedMessage
-            {...messages.requirmentDaysLimit}
-            values={{
-              daysLimit: get(tenant, 'attributes.settings.initiatives.days_limit'),
-            }}
-          />
-        </li>
-      </ul>
-      {eligibilityCriteriaMultiloc &&
-        <>
-          <p>
-            <FormattedMessage {...messages.eligibility} />
-          </p>
-          <StyledQuillEditedContent textColor={theme.colorText}>
-            <T value={eligibilityCriteriaMultiloc}  supportHtml={true}/>
-          </StyledQuillEditedContent>
-        </>
-      }
+      <TipsContent />
     </Container>
   );
 });
 
-const Data = adopt<DataProps,  InputProps>({
-  tenant: <GetTenant/>
-});
-
-const TipsBoxWithTheme = withTheme(TipsBox);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <TipsBoxWithTheme {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default TipsBox;
