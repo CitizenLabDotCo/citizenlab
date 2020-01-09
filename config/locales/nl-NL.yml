@@ -294,7 +294,16 @@ nl:
     default_threshold_reached_message: >
       <p>De initiatiefnemers worden uitgenodigd om hun initiatief te komen voorstellen op de volgende gemeenteraad, waarop een officiële reactie volgt.</p>
     default_eligibility_criteria: >
-      <p>Het initiatief</p> <p>- valt binnen de bevoegdheden van de gemeente</p>
+      <p>Het initiatief moet</p>
+      <ul>
+      <li>Moet binnen de competenties van onze lokale overheid vallen</li>
+      <li>Dient het algemeen belang, geen individueel belang</li>
+      <li>Discrimineert niet op basis van geslacht, ras, leeftijd,...</li>
+      <li>Brengt anderen geen schade toe</li>
+      <li>Moet budgettair haalbaar zijn</li>
+      <li>Moet haalbaar zijn op het vlak van timing</li>
+      <li>Moet verschillen van bestaande initiatieven op het platform</li>
+      </ul>
   smart_group_rules:
     is_empty: "%{property} heeft geen waarde"
     not_is_empty: "%{property} heeft een willekeurige waarde"
