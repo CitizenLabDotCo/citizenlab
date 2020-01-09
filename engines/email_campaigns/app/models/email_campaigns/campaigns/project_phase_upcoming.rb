@@ -18,6 +18,10 @@ module EmailCampaigns
       {'Notifications::ProjectPhaseUpcoming' => {'created' => true}}
     end
 
+    def self.category
+      'admin'
+    end
+
     def filter_notification_recipient users_scope, activity:, time: nil
       users_scope.where(id: activity.item.recipient.id)
     end
@@ -33,7 +37,7 @@ module EmailCampaigns
           phase_url: Frontend::UrlService.new.model_to_url(notification.phase, locale: recipient.locale),
           project_title_multiloc: notification.project.title_multiloc,
           project_description_multiloc: notification.project.description_multiloc
-          
+
         },
         delay: 8.hours.to_i
       }]
