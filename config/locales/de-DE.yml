@@ -337,7 +337,26 @@ de:
       <p>Die Initiatoren sind eingeladen, ihre Initiative bei der nächsten Stadtratssitzung zu präsentieren. Wir werden ein offizielles Update veröffentlichen.</p>
     default_eligibility_criteria: >
       <p>Die Initiative sollte</p>
-      <p>- sich im Rahmen der Zuständigkeiten der Stadt bewegen</p>
+      <ul>
+      <li>Im Rahmen der Kompetenzen unserer lokalen Regierung sein</li>
+      <li>Dem gemeinsamen Interesse dienen, nicht einem persönlichen</li>
+      <li>Keine Diskriminierung aufgrund von Geschlecht, Rasse, Alter...</li>
+      <li>Anderen nicht schaden</li>
+      <li>Sie müssen im Hinblick auf das Budget tragfähig sein</li>
+      <li>Zeitlich tragfähig sein</li>
+      <li>Sich von anderen Initiativen, die bereits auf der Plattform vertreten sind, unterscheiden</li>
+      </ul>
+
+      Die Initiative sollte...
+
+      Im Rahmen der Kompetenzen unserer lokalen Regierung sein
+      Dem gemeinsamen Interesse dienen, nicht einem persönlichen
+      Keine Diskriminierung aufgrund von Geschlecht, Rasse, Alter...
+      Anderen nicht schaden
+      Sie müssen im Hinblick auf das Budget tragfähig sein
+      Zeitlich tragfähig sein
+      Nicht bereits Teil eines bestehenden Plans sein
+      sich von anderen Initiativen, die bereits auf der Plattform vertreten sind, unterscheiden
   smart_group_rules:
     is_empty: "%{property} hat keinen Wert"
     not_is_empty: "%{property} hat einen beliebigen Wert"
