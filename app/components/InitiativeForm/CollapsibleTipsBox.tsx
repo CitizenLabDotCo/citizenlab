@@ -81,6 +81,28 @@ const Wrapper = styled.div`
   ${media.largePhone`
     padding: 30px 20px;
   `}
+
+  &.tips-enter {
+    height: 0;
+    opacity: 0;
+
+    &.tips-enter-active {
+      height: 265px;
+      opacity: 1;
+      transition: all 250ms ease-out;
+    }
+  }
+
+  &.tips-exit {
+    height: 265px;
+    opacity: 1;
+
+    &.tips-exit-active {
+      height: 0;
+      opacity: 0;
+      transition: all 250ms ease-out;
+    }
+  }
 `;
 
 export interface Props {
@@ -107,6 +129,7 @@ const CollapsibleTipsBox = memo<Props>((props) => {
           <ArrowIcon name="dropdown" className={showTips ? 'open' : ''}/>
         </TipsButton>
         <CSSTransition
+          classNames="tips"
           in={showTips}
           timeout={300}
           mountOnEnter={true}
