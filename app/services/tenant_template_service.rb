@@ -404,11 +404,11 @@ class TenantTemplateService
     ProjectFile.all.map do |p|
       {
         'project_ref'     => lookup_ref(p.project_id, :project),
-        'remote_file_url' => p.file_url,
+        'name'            => p.name,
         'ordering'        => p.ordering,
+        'remote_file_url' => p.file_url,
         'created_at'      => p.created_at.to_s,
-        'updated_at'      => p.updated_at.to_s,
-        'name'            => p.name
+        'updated_at'      => p.updated_at.to_s
       }
     end
   end
@@ -455,11 +455,11 @@ class TenantTemplateService
     PhaseFile.all.map do |p|
       {
         'phase_ref'       => lookup_ref(p.phase_id, :phase),
-        'remote_file_url' => p.file_url,
+        'name'            => p.name,
         'ordering'        => p.ordering,
+        'remote_file_url' => p.file_url,
         'created_at'      => p.created_at.to_s,
-        'updated_at'      => p.updated_at.to_s,
-        'name'            => p.name
+        'updated_at'      => p.updated_at.to_s
       }
     end
   end
@@ -544,11 +544,11 @@ class TenantTemplateService
     EventFile.all.map do |e|
       {
         'event_ref'       => lookup_ref(e.event_id, :event),
-        'remote_file_url' => e.file_url,
+        'name'            => e.name,
         'ordering'        => e.ordering,
+        'remote_file_url' => e.file_url,
         'created_at'      => e.created_at.to_s,
-        'updated_at'      => e.updated_at.to_s,
-        'name'            => e.name
+        'updated_at'      => e.updated_at.to_s
       }
     end
   end
@@ -647,9 +647,9 @@ class TenantTemplateService
     PageFile.all.map do |p|
       {
         'page_ref'        => lookup_ref(p.page_id, :page),
-        'remote_file_url' => p.file_url,
         'ordering'        => p.ordering,
         'name'            => p.name,
+        'remote_file_url' => p.file_url,
         'created_at'      => p.created_at.to_s,
         'updated_at'      => p.updated_at.to_s
       }
