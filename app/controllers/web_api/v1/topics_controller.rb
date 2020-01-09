@@ -1,5 +1,5 @@
 class WebApi::V1::TopicsController < ApplicationController
-   before_action :set_topic, only: [:show, :update, :destroy]
+   before_action :set_topic, only: [:show, :update, :reorder, :destroy]
 
    def index
      @topics = policy_scope(Topic)
@@ -15,7 +15,7 @@ class WebApi::V1::TopicsController < ApplicationController
    end
 
    def create
-    @topic = Topic.new(topic_params)
+    @topic = Topic.new(permitted_attributes(Topic))
     authorize @topic
 
     SideFxTopicService.new.before_create(@topic, current_user)
@@ -31,7 +31,7 @@ class WebApi::V1::TopicsController < ApplicationController
   end
 
   def update
-    @topic.assign_attributes topic_params
+    @topic.assign_attributes permitted_attributes(@topic)
     authorize @topic
     SideFxTopicService.new.before_update(@topic, current_user)
     if @topic.save
@@ -75,13 +75,6 @@ class WebApi::V1::TopicsController < ApplicationController
      @topic = Topic.find(params[:id])
      authorize @topic
    end
-
-   def area_params
-    params.require(:topic).permit(
-      title_multiloc: CL2_SUPPORTED_LOCALES,
-      description_multiloc: CL2_SUPPORTED_LOCALES
-    )
-  end
 
    def secure_controller?
      false
