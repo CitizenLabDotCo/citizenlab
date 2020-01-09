@@ -3,7 +3,7 @@ class WebApi::V1::TopicsController < ApplicationController
 
    def index
      @topics = policy_scope(Topic)
-       .order(created_at: :desc)
+       .order(:ordering)
        .page(params.dig(:page, :number))
        .per(params.dig(:page, :size))
 
