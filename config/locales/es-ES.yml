@@ -286,13 +286,13 @@ es:
     default_eligibility_criteria: >
       <p>La iniciativa debería</p>
       <ul>
-      <li>Estar dentro de las competencias de nuestro gobierno local</li>
-      <li>Servir al interés común, no al personal</li>
-      <li>No discriminar por sexo, raza, edad,...</li>
-      <li>No dañar a otros</li>
-      <li>Ser viable en términos de presupuesto</li>
-      <li>Ser viable en términos de tiempo</li>
-      <li>Ser diferente de otras iniciativas que ya están en la plataforma</li>
+      <li>Pertenecer a las competencias de nuestro gobierno local</li>
+      <li>Servir al interés común más que al bien personal</li>
+      <li>Ser inclusiva cuando se trata de sexo, raza, edad,...</li>
+      <li>Ser sin daño para otras personas</li>
+      <li>Ser viable en lo que respecta al presupuesto</li>
+      <li>Ser viable en lo que respecta a la duración</li>
+      <li>Ser diferente que las otras iniciativas que ya han sido compartidas en la plataforma</li>
       </ul>
   smart_group_rules:
     is_empty: "%{property} no contiene ningún valor"
