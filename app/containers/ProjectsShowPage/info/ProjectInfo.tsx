@@ -22,7 +22,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`

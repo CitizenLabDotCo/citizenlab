@@ -33,7 +33,8 @@ import T from 'components/T';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, ScreenReaderOnly, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
