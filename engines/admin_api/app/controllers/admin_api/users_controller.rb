@@ -10,6 +10,7 @@ module AdminApi
 
     def create
       @user = User.new user_params
+      @user.locale ||= Tenant.current.settings.dig('core', 'locales').first
       SideFxUserService.new.before_create @user, nil
       if @user.save
         SideFxUserService.new.after_create @user, nil
