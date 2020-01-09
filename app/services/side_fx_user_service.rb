@@ -3,9 +3,6 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create user, current_user
-    if User.admin.empty?
-      user.add_role 'admin'
-    end
     if (CustomField.where(enabled: true).count == 0) && (user.invite_status != 'pending')
       user.registration_completed_at ||= Time.now
     end
