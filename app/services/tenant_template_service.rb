@@ -48,11 +48,7 @@ class TenantTemplateService
           elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
             image_assignments[field_name] = field_value
           else
-            begin
-              model.send("#{field_name}=", field_value)
-            rescue Exception => e
-              raise e
-            end
+            model.send("#{field_name}=", field_value)
           end
         end
         begin
