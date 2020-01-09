@@ -76,6 +76,7 @@ export interface InputProps {
   max: number;
   id?: string;
   className?: string;
+  setRef?: (element: HTMLButtonElement) => void;
 }
 
 interface DataProps {
@@ -84,7 +85,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, className }: Props & InjectedLocalized) => {
+const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, className, setRef }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -118,7 +119,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
   return (
     <>
       <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
-        {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic) => {
+        {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic, index) => {
           const isActive = value && !!value.find(id => id === topic.id);
           const isDisabled = !isActive && value.length >= max;
           return (
@@ -128,6 +129,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
               className={isActive ? 'selected' : ''}
               disabled={isDisabled}
               onMouseDown={removeFocus}
+              ref={index === 0 ? setRef : undefined}
             >
               <T value={topic.attributes.title_multiloc} />
             </TopicSwitch>
