@@ -307,7 +307,16 @@ fr:
     default_threshold_reached_message: >
       <p>Les initiateurs sont invités à présenter leur initiative à la prochaine réunion du conseil. Nous fourniront une mise à jour officielle.</p>
     default_eligibility_criteria: >
-      <p>L'initiative devra/p> <p>- rentrer dans les compétences de la ville</p>
+      <p>L'initiative doit</p>
+      <ul>
+      <li>Faire partie des compétences du gouvernement local</li>
+      <li>Servir l'intérêt général et non des intérêts privés</li>
+      <li>Ne pas être discriminatoire en terme de genre, age, origine, ...</li>
+      <li>Ne pas nuire à autrui</li>
+      <li>Etre réalisable en terme de budget</li>
+      <li>Etre réalisable en terme de timing</li>
+      <li>Etre différente d'autres initiatives déjà proposées sur la plateforme</li>
+      </ul>
   smart_group_rules:
     is_empty: "%{property} n'a pas de valeur"
     not_is_empty: "%{property} a une valeur"
