@@ -46,6 +46,7 @@ class WebApi::V1::TopicsController < ApplicationController
   end
 
   def reorder
+    authorize @topic
     SideFxTopicService.new.before_update(@topic, current_user)
     if @topic.insert_at(permitted_attributes(@topic)[:ordering])
       SideFxTopicService.new.after_update(@topic, current_user)
