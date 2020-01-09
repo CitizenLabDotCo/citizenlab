@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
-const Container = styled.div`
+const Container = styled.main`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};

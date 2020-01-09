@@ -37,10 +37,10 @@ const InputWrapper = styled.div<{ checked: boolean, size: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px #aaa;
+  border: solid 1px ${colors.separationDark};
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => props.checked ? colors.clGreen : '#fff'};
-  border-color: ${(props) => props.checked ? colors.clGreen : '#aaa'};
+  border-color: ${(props) => props.checked ? colors.clGreen : colors.separationDark};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &.focused {

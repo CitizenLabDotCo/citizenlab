@@ -83,7 +83,7 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight + props.theme.footerHeight}px);

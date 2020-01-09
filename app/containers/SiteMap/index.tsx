@@ -44,7 +44,7 @@ const StyledContentContainer = styled(ContentContainer)`
   margin-bottom: 30px;
 `;
 
-const PageContent = styled.div`
+const PageContent = styled.main`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;
@@ -67,7 +67,7 @@ const Title = styled.h1`
   margin-bottom: 30px;
 `;
 
-const Nav = styled.nav`
+const TOC = styled.div`
   border: 1px solid #ccc;
   padding: 20px;
   margin-bottom: 30px;
@@ -83,7 +83,7 @@ const ProjectsSubsectionUl = styled.ul`
   margin-bottom: 0 !important;
 `;
 
-const Header = styled.header`
+const Header = styled.h2`
   font-weight: bold;
 `;
 
@@ -156,7 +156,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 <FormattedMessage {...messages.siteMapTitle} />
               </Title>
 
-              <Nav aria-labelledby="nav-header">
+              <TOC aria-labelledby="nav-header">
                 <Header id="nav-header">
                   <FormattedMessage {...messages.pageContents} />
                 </Header>
@@ -231,7 +231,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                     </li>
                   </FeatureFlag>
                 </Ul>
-              </Nav>
+              </TOC>
 
               <H2 ref={homeSection} tabIndex={-1}>
                 <FormattedMessage {...messages.homeSection} />

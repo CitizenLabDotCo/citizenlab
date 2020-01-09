@@ -61,7 +61,7 @@ const AttachmentsContainer = styled.div`
   padding-right: 20px;
 `;
 
-const PageContent = styled.div`
+const PageContent = styled.main`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;
