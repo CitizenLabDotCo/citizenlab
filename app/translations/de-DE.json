@@ -1270,6 +1270,7 @@
   "app.containers.CampaignsConsentForm.submit": "Speichern",
   "app.containers.CampaignsConsentForm.votedCategory": "",
   "app.containers.CampaignsConsentForm.weeklyCategory": "",
+  "app.containers.Comments.a11y_commentPosted": "",
   "app.containers.Comments.addCommentError": "Etwas ging schief. Bitte versuchen Sie es später nochmal.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Leave the comment",
   "app.containers.Comments.adminCommentDeletionConfirmButton": "Kommentar löschen",
