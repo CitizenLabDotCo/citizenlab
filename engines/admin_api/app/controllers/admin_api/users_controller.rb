@@ -46,7 +46,7 @@ module AdminApi
     def user_params
       params
         .require(:user)
-        .permit(:first_name, :last_name, :email, :password, :roles, :remote_avatar_url)
+        .permit(:first_name, :last_name, :email, :password, :remote_avatar_url, roles: [:type, :project_id])
     end
 
   end
