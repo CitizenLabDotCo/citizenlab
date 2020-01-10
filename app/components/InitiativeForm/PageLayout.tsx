@@ -7,6 +7,7 @@ import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
+import CollapsibleTipsBox from './CollapsibleTipsBox';
 
 // style
 import { media, colors, fontSizes } from 'utils/styleUtils';
@@ -74,10 +75,21 @@ const TwoColumns = styled.div`
   display: flex;
   flex-direction: row;
   margin: 30px 0 0;
+
   ${media.smallerThanMaxTablet`
     display: flex;
     flex-direction: column;
     align-items: center;
+  `}
+`;
+
+const StyledCollapsibleTipsBox = styled(CollapsibleTipsBox)`
+  max-width: 580px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
   `}
 `;
 
@@ -99,10 +111,11 @@ const StyledTipsBox = styled(TipsBox)`
   max-width: 550px;
   width: 100%;
   padding: 40px 50px;
+  margin-bottom: 110px;
+
   ${media.smallerThanMaxTablet`
     display: none;
   `}
-  margin-bottom: 110px;
 `;
 
 interface Props {
@@ -133,7 +146,10 @@ export default class PageLayout extends React.PureComponent<Props> {
         </Header>
         <StyledContentContainer mode="page">
           <TwoColumns>
-            {children}
+            <div>
+              <StyledCollapsibleTipsBox />
+              {children}
+            </div>
             <TipsContainer>
               <StyledTipsBox />
             </TipsContainer>
