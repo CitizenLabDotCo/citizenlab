@@ -147,31 +147,11 @@ class ParentComment extends PureComponent<Props, State> {
     ];
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const prevComment = prevProps.comment;
+  componentDidUpdate(_prevProps: Props) {
     const currentComment = this.props.comment;
 
     if (!isNilOrError(currentComment) && currentComment.attributes.children_count > 5 && !this.state.canLoadMore) {
       this.setState({ canLoadMore: true });
-    }
-
-    if (!isNilOrError(prevComment) && !isNilOrError(currentComment)) {
-
-      const prevCommentChildCommentCount = prevComment.attributes.children_count;
-      const currentCommentChildCommentCount = currentComment.attributes.children_count;
-      const childCommentAdded = prevCommentChildCommentCount < currentCommentChildCommentCount;
-      const childCommentDeleted = prevCommentChildCommentCount > currentCommentChildCommentCount;
-
-      console.log('prev', prevCommentChildCommentCount);
-      console.log('current', currentCommentChildCommentCount);
-
-      if (childCommentAdded) {
-        this.setState({ a11y_childCommentAddDeleteMessage: 'Comment added' });
-      }
-
-      if (childCommentDeleted) {
-        this.setState({ a11y_childCommentAddDeleteMessage: 'Comment deleted' });
-      }
     }
   }
 
@@ -194,8 +174,6 @@ class ParentComment extends PureComponent<Props, State> {
   render() {
     const { postId, postType, commentId, authUser, comment, post, className } = this.props;
     const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
-
-    console.log(this.state.a11y_childCommentAddDeleteMessage);
 
     if (!isNilOrError(comment) && !isNilOrError(post)) {
       const projectId: string | null = get(post, 'relationships.project.data.id', null);
