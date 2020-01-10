@@ -102,6 +102,7 @@ describe('Timeline project with poll phase', () => {
       question.find('.e2e-poll-option').first().find('label').click()
     );
     cy.get('.e2e-send-poll').click();
+    cy.wait(500);
     cy.get('.e2e-form-completed');
   });
 
