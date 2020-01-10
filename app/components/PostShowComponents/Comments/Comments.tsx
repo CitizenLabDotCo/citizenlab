@@ -93,9 +93,10 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, lo
 
         {sortedParentComments.map((parentComment, _index) => {
           const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
-            if (comment.relationships.parent.data &&
-                comment.relationships.parent.data.id === parentComment.id &&
-                comment.attributes.publication_status !== 'deleted'
+            if (
+              comment.relationships.parent.data &&
+              comment.relationships.parent.data.id === parentComment.id &&
+              comment.attributes.publication_status !== 'deleted'
             ) {
               return true;
             }
