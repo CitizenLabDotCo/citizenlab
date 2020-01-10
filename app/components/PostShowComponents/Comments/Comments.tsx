@@ -1,4 +1,7 @@
-import React, { memo, useMemo, useCallback } from 'react';
+import React, { memo, useMemo, useCallback, useEffect } from 'react';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -16,6 +19,14 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+
+// i18n
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// a11y
+import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div`
   position: relative;
@@ -61,7 +72,8 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, loading, onSortOrderChange, className }) => {
+const CommentsSection = memo<Props & InjectedIntlProps>(({ postId, postType, comments, sortOrder, loading, onSortOrderChange, className, intl: { formatMessage } }) => {
+  const [a11y_postedCommentMessage, setA11y_postedCommentMessage] = useState<string | null>(null);
 
   const sortedParentComments = useMemo(() => {
     if (!isNilOrError(comments) && comments.length > 0) {
@@ -77,6 +89,22 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, lo
     }, []
   );
 
+  useEffect(() => {
+    const subscription = eventEmitter.observeEvent('CommentAdded').subscribe(() => {
+      setA11y_postedCommentMessage(formatMessage(messages.a11y_commentPosted));
+      setTimeout(() => setA11y_postedCommentMessage(''), 1000);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const subscription = eventEmitter.observeEvent('CommentDeleted').subscribe(() => {
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   if (sortedParentComments && sortedParentComments.length > 0) {
     return (
       <Container className={`e2e-comments-container ${className}`}>
@@ -90,6 +118,8 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, lo
           onChange={handleSortOrderChange}
           selectedValue={[sortOrder]}
         />
+
+        <LiveMessage message={a11y_postedCommentMessage} aria-live="polite" />
 
         {sortedParentComments.map((parentComment, _index) => {
           const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
@@ -123,4 +153,4 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, lo
   return null;
 });
 
-export default CommentsSection;
+export default injectIntl(CommentsSection);
