@@ -49,7 +49,7 @@ resource "User", admin_api: true do
     end
   end
 
-  patch "web_api/v1/users/:id" do
+  patch "admin_api/users/:id" do
 
     with_options scope: :user do
       parameter :first_name, "The first name"
