@@ -197,4 +197,8 @@ export default defineMessages({
     id: 'app.containers.Comments.deleteReason_irrelevant',
     defaultMessage: 'This does not belong here',
   },
+  a11y_commentPosted: {
+    id: 'app.containers.Comments.a11y_commentPosted',
+    defaultMessage: 'Comment posted',
+  },
 });
