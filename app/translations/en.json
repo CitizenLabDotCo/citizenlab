@@ -1270,6 +1270,7 @@
   "app.containers.CampaignsConsentForm.submit": "Save",
   "app.containers.CampaignsConsentForm.votedCategory": "Linked to input you voted for",
   "app.containers.CampaignsConsentForm.weeklyCategory": "Weekly Overviews",
+  "app.containers.Comments.a11y_commentPosted": "Comment posted",
   "app.containers.Comments.addCommentError": "Something went wrong. Please try again later.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Leave the comment",
   "app.containers.Comments.adminCommentDeletionConfirmButton": "Delete this comment",
