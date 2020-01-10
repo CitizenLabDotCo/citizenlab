@@ -201,4 +201,8 @@ export default defineMessages({
     id: 'app.containers.Comments.a11y_commentPosted',
     defaultMessage: 'Comment posted',
   },
+  a11y_commentDeleted: {
+    id: 'app.containers.Comments.a11y_commentDeleted',
+    defaultMessage: 'Comment deleted',
+  },
 });
