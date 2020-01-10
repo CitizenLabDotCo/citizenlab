@@ -1270,6 +1270,7 @@
   "app.containers.CampaignsConsentForm.submit": "Save",
   "app.containers.CampaignsConsentForm.votedCategory": "",
   "app.containers.CampaignsConsentForm.weeklyCategory": "",
+  "app.containers.Comments.a11y_commentDeleted": "",
   "app.containers.Comments.a11y_commentPosted": "",
   "app.containers.Comments.addCommentError": "Something went wrong. Please try again later.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Leave the comment",
