@@ -1270,6 +1270,7 @@
   "app.containers.CampaignsConsentForm.submit": "Opslaan",
   "app.containers.CampaignsConsentForm.votedCategory": "",
   "app.containers.CampaignsConsentForm.weeklyCategory": "",
+  "app.containers.Comments.a11y_commentPosted": "",
   "app.containers.Comments.addCommentError": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.Comments.adminCommentDeletionCancelButton": "Behoud de reactie",
   "app.containers.Comments.adminCommentDeletionConfirmButton": "Verwijder deze reactie",
