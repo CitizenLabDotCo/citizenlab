@@ -1,6 +1,6 @@
 module Verification
   module Methods
-    module BosaFAS
+    module BosaFas
       include VerificationMethod
 
       def veritication_method_type

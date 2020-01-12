@@ -15,7 +15,7 @@ FRANCECONNECT_SETUP_PROC = lambda do |env|
 end
 
 BOSA_FAS_SETUP_PROC = lambda do |env|
-  OmniauthMethods::BosaFAS.new.omniauth_setup(Tenant.current, env)
+  OmniauthMethods::BosaFas.new.omniauth_setup(Tenant.current, env)
 end
  
 Rails.application.config.middleware.use OmniAuth::Builder do
