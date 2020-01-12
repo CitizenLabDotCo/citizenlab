@@ -53,7 +53,7 @@ describe "bosa_fas verification" do
     get "/auth/bosa_fas?token=#{@token}&random-passthrough-param=somevalue&pathname=/yipie"
     follow_redirect!
 
-    expect(response).to redirect_to("/en/yipie?random-passthrough-param=somevalue&verification-success=true")
+    expect(response).to redirect_to("/en/yipie?random-passthrough-param=somevalue&verification_success=true")
 
     expect(@user.reload).to have_attributes({
       verified: true,
@@ -68,9 +68,14 @@ describe "bosa_fas verification" do
     })
   end
 
+  it "redirect to a path without an ending slash when no pathname is passed" do
+    get "/auth/bosa_fas?token=#{@token}"
+    follow_redirect!
+    expect(response).to redirect_to("/en?verification_success=true")
+  end
+
   it "fails when the RRN has already been used" do
     create(:verification,
-      user: other_user,
       method_name: 'bosa_fas',
       hashed_uid: Verification::VerificationService.new.send(:hashed_uid, '93051822361', 'bosa_fas')
     )
@@ -78,7 +83,7 @@ describe "bosa_fas verification" do
     get "/auth/bosa_fas?token=#{@token}&pathname=/some-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/some-page?verification-error=true&error=taken')
+    expect(response).to redirect_to('/some-page?verification_error=true&error=taken')
     expect(@user.reload).to have_attributes({
       verified: false,
       first_name: 'Rudolphi',
@@ -90,6 +95,6 @@ describe "bosa_fas verification" do
     get "/auth/bosa_fas?pathname=/whatever-page"
     follow_redirect!
 
-    expect(response).to redirect_to('/whatever-page?verification-error=true&error=no_token_passed')
+    expect(response).to redirect_to('/whatever-page?verification_error=true&error=no_token_passed')
   end
 end
