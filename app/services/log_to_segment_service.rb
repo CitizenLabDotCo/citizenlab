@@ -46,6 +46,7 @@ class LogToSegmentService
     {
       All: true,
       Intercom: [:admin, :project_moderator].include?(user.highest_role),
+      SatisMeter: [:admin, :project_moderator].include?(user.highest_role),
     }
   end
 

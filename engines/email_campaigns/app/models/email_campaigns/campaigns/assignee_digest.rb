@@ -25,6 +25,10 @@ module EmailCampaigns
       ['admin', 'project_moderator']
     end
 
+    def self.category
+      'admin'
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       assigned = {
@@ -33,10 +37,10 @@ module EmailCampaigns
         succesful_assigned_initiatives: succesful_assigned_initiatives(recipient: recipient, time: time)
       }
       tracked_content = {
-        idea_ids: assigned[:assigned_ideas].map{ |i| 
+        idea_ids: assigned[:assigned_ideas].map{ |i|
           i[:id]
         }.compact,
-        initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map{ |i| 
+        initiative_ids: (assigned[:assigned_initiatives] + assigned[:succesful_assigned_initiatives]).map{ |i|
           i[:id]
         }.compact,
       }
@@ -48,7 +52,7 @@ module EmailCampaigns
           },
           tracked_content: tracked_content
         }]
-      else 
+      else
         []
       end
     end
@@ -101,7 +105,7 @@ module EmailCampaigns
                 versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
               }
             },
-            header_bg: { 
+            header_bg: {
               versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           }
@@ -113,8 +117,8 @@ module EmailCampaigns
       recipient.assigned_initiatives
         .joins(:initiative_status_changes)
         .where(
-          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
-          threshold_reached_id, 
+          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?',
+          threshold_reached_id,
           (time - 1.week)
           )
         .feedback_needed
@@ -137,7 +141,7 @@ module EmailCampaigns
                 versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
               }
             },
-            header_bg: { 
+            header_bg: {
               versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           }

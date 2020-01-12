@@ -22,6 +22,7 @@ class SideFxUserService
     if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
+    user.create_email_campaigns_unsubscription_token
   end
 
   def before_update user, current_user
