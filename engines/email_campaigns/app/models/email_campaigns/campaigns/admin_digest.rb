@@ -28,6 +28,10 @@ module EmailCampaigns
       ['admin']
     end
 
+    def self.category
+      'admin'
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       @statistics ||= statistics
@@ -148,7 +152,7 @@ module EmailCampaigns
       end
       # ordering of projects
       project_order = top_project_ideas.keys.sort_by do |project_id|
-        top_project_ideas[project_id].map do |idea| 
+        top_project_ideas[project_id].map do |idea|
           activity_counts.dig(idea.id, :total)
         end.inject(0){|x,y| x+y}
       end.reverse
@@ -161,7 +165,7 @@ module EmailCampaigns
             id: project_id,
             title_multiloc: project.title_multiloc,
             url: Frontend::UrlService.new.model_to_url(project)
-            
+
           },
           current_phase: phase && {
             id: phase.id,
@@ -206,7 +210,7 @@ module EmailCampaigns
               versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           },
-          header_bg: { 
+          header_bg: {
             versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
@@ -218,8 +222,8 @@ module EmailCampaigns
         .joins(:initiative_status_changes)
         .includes(:initiative_images)
         .where(
-          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?', 
-          InitiativeStatus.where(code: 'threshold_reached').ids.first, 
+          'initiative_status_changes.initiative_status_id = ? AND initiative_status_changes.created_at > ?',
+          InitiativeStatus.where(code: 'threshold_reached').ids.first,
           (time - 1.week)
           )
         .feedback_needed
@@ -239,7 +243,7 @@ module EmailCampaigns
               versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           },
-          header_bg: { 
+          header_bg: {
             versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           }
         }
@@ -249,7 +253,7 @@ module EmailCampaigns
     def ideas_activity_counts ideas
       idea_ids = ideas.pluck(:id)
       new_votes = Vote.where(votable_id: idea_ids)
-        .where('created_at > ?', Time.now - days_ago)                        
+        .where('created_at > ?', Time.now - days_ago)
       new_upvotes_counts = new_votes.where(mode: 'up')
         .group(:votable_id).count
       new_downvotes_counts = new_votes.where(mode: 'down')

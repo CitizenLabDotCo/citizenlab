@@ -96,8 +96,8 @@ module Frontend
       "#{tenant.base_frontend_uri}/?utm_source=manifest"
     end
 
-    def edit_profile_url tenant: Tenant.current
-      "#{tenant.base_frontend_uri}/profile/edit"
+    def unsubscribe_url_template tenant, campaign_id
+      "#{tenant.base_frontend_uri}/email-settings?unsubscription_token={{unsubscription_token}}&campaign_id=#{campaign_id}"
     end
 
     def terms_conditions_url tenant: Tenant.current

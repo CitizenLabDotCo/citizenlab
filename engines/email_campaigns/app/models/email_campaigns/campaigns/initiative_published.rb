@@ -18,7 +18,11 @@ module EmailCampaigns
       users_scope.where(id: activity.item.author_id)
     end
 
-    def generate_commands recipient:, activity: 
+    def self.category
+      'own'
+    end
+
+    def generate_commands recipient:, activity:
       initiative = activity.item
       [{
         event_payload: {
@@ -32,7 +36,7 @@ module EmailCampaigns
               versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
             }
           },
-          initiative_header_bg: { 
+          initiative_header_bg: {
             versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
           },
           initiative_votes_needed: initiative.votes_needed,

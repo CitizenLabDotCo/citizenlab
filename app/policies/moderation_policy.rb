@@ -15,4 +15,8 @@ class ModerationPolicy < ApplicationPolicy
       end
     end
   end
+
+  def update?
+    user&.active? && user.admin?
+  end
 end
