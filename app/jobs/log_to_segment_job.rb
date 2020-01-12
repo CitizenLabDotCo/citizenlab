@@ -28,7 +28,7 @@ class LogToSegmentJob < ApplicationJob
       # Tenant can't be found, so we don't add anything
     end
     service.add_activity_item_content event, event[:properties], activity
-
+    service.add_environment_properties event[:properties]
     Analytics.track event
   end
 
