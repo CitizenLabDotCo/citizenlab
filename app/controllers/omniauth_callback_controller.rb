@@ -19,22 +19,24 @@ class OmniauthCallbackController < ApplicationController
   def verification_callback verification_method
     auth = request.env['omniauth.auth']
     omniauth_params = request.env['omniauth.params'].except('token')
-    @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(User)
 
-    if @user&.active?
-      begin
-        handle_verification(auth, @user)
-        update_user!(auth, @user, verification_method)
-        redirect_to(add_uri_params(
-          Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
-          omniauth_params.merge('verification-success': true).except('pathname')
-        ))
-      rescue Verification::VerificationService::VerificationTakenError => e
-        fail_verification('taken')
-      rescue Verification::VerificationService::NotEntitledError => e
-        fail_verification('not_entitled')
+    begin
+      @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(User)
+      if @user&.active?
+        begin
+          handle_verification(auth, @user)
+          update_user!(auth, @user, verification_method)
+          redirect_to(add_uri_params(
+            Frontend::UrlService.new.verification_success_url(locale: @user.locale, pathname: omniauth_params['pathname']),
+            omniauth_params.merge('verification_success': true).except('pathname')
+          ))
+        rescue Verification::VerificationService::VerificationTakenError => e
+          fail_verification('taken')
+        rescue Verification::VerificationService::NotEntitledError => e
+          fail_verification('not_entitled')
+        end
       end
-    else
+    rescue ActiveRecord::RecordNotFound => e
       fail_verification('no_token_passed')
     end
   end
@@ -112,7 +114,7 @@ class OmniauthCallbackController < ApplicationController
     omniauth_params = request.env['omniauth.params'].except('token', 'pathname')
     redirect_to(add_uri_params(
       Frontend::UrlService.new.verification_failure_url(pathname: request.env['omniauth.params']['pathname']),
-      omniauth_params.merge('verification-error': true, error: error)
+      omniauth_params.merge('verification_error': true, error: error)
     ))
   end
 
