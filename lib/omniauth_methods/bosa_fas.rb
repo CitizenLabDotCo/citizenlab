@@ -1,7 +1,7 @@
 module OmniauthMethods
-  class BosaFAS
+  class BosaFas
 
-    include Verification::Methods::BosaFAS
+    include Verification::Methods::BosaFas
 
     def profile_to_user_attrs auth
       {}.tap do |info|
@@ -12,8 +12,6 @@ module OmniauthMethods
 
     def omniauth_setup tenant, env
       if Verification::VerificationService.new.is_active?(tenant, name)
-        host = OmniauthMethods::BosaFAS.new.host
-
         options = env['omniauth.strategy'].options
         options[:scope] = [:openid, :profile, :egovnrn]
         options[:response_type] = :code
