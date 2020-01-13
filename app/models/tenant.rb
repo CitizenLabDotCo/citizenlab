@@ -8,6 +8,7 @@ class Tenant < ApplicationRecord
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }
+  validates :name, uniqueness: true # Also wouldn't allow chars like "/"
 
   validates :settings, presence: true, json: { 
     schema: -> { Tenant.settings_json_schema_str }, 
