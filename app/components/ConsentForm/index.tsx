@@ -17,16 +17,27 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
+import { CSSTransition } from 'react-transition-group';
 
 const CategoryCheckboxContainer = styled.div`
-  margin-bottom: 16px;
+  margin-top: 20px;
+  margin-bottom: 5px;
+  &:last-child {
+    margin-bottom: 20px;
+  }
+
   label {
-    font-size: ${fontSizes.large}px;
+    color: ${({ theme }) => theme.colorMain};
+    font-weight: 700;
   }
   display: flex;
   justify-content: space-between;
+`;
+
+const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)`
+  padding: 10px 0px;
 `;
 
 const ArrowIcon = styled(Icon)`
@@ -39,6 +50,19 @@ const ArrowIcon = styled(Icon)`
 
   &.open {
     transform: rotate(0deg);
+  }
+`;
+
+const AnimatedFieldset = styled(Fieldset)`
+  &.dropdown-enter {
+    opacity: 0;
+    transform: translateY(-8px);
+
+    &.dropdown-enter-active {
+      opacity: 1;
+      transform: translateY(0px);
+      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
   }
 `;
 
@@ -203,29 +227,38 @@ export default class ConsentForm extends PureComponent<Props, State> {
           {Object.entries(categorizedConsents).map(([category, consents]) => (
             <ConsentList key={category}>
               <CategoryCheckboxContainer>
-                <CheckboxWithPartialCheck
+                <StyledCheckboxWithPartialCheck
                   id={category}
                   checked={this.isConsentedCategory(category)}
                   onChange={this.handleOnChangeCategory(category)}
                   label={<FormattedMessage {...messages[`${category}Category`]} />}
                 />
-                <Button onClick={this.handleToggleOpenCategory(category)} style="text" type="button" ariaExpanded={isCategoryOpen[category]}>
-                  {isCategoryOpen[category]
-                    ? <FormattedMessage {...messages.collapse} />
-                    : <FormattedMessage {...messages.expand} />
-                  }
-                  <ArrowIcon name="dropdown" className={isCategoryOpen[category] ? 'open' : ''} ariaHidden/>
-                </Button>
+                {consents.length > 1 &&
+                  <Button onClick={this.handleToggleOpenCategory(category)} style="text" type="button" ariaExpanded={isCategoryOpen[category]} padding="10px 0px 10px 5px">
+                    {isCategoryOpen[category]
+                      ? <FormattedMessage {...messages.collapse} />
+                      : <FormattedMessage {...messages.expand} />
+                    }
+                    <ArrowIcon name="dropdown" className={isCategoryOpen[category] ? 'open' : ''} ariaHidden />
+                  </Button>
+                }
               </CategoryCheckboxContainer>
-              {isCategoryOpen[category] && (
-                <Fieldset>
+              <CSSTransition
+                in={isCategoryOpen[category]}
+                timeout={30}
+                mountOnEnter={true}
+                unmountOnExit={true}
+                exit={false}
+                classNames="dropdown"
+              >
+                <AnimatedFieldset>
                   <ScreenReaderOnly>
                     <legend>
                       <FormattedMessage {...messages.ally_categoryLabel} />
                     </legend>
                   </ScreenReaderOnly>
 
-                  {consents.map(consent => (
+                  {consents.length > 1 && consents.map(consent => (
                     <CheckboxContainer key={consent.id}>
                       <Checkbox
                         id={consent.attributes.campaign_name}
@@ -235,8 +268,8 @@ export default class ConsentForm extends PureComponent<Props, State> {
                       />
                     </CheckboxContainer>
                   ))}
-                </Fieldset>
-              )}
+                </AnimatedFieldset>
+              </CSSTransition>
             </ConsentList>
           ))}
           <StyledSubmitWrapper
