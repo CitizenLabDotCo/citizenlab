@@ -5,10 +5,6 @@ import { isNilOrError } from 'utils/helperUtils';
 // router
 import clHistory from 'utils/cl-router/history';
 
-// Hooks
-import useTenant from 'hooks/useTenant';
-import useAuthUser from 'hooks/useAuthUser';
-
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -18,12 +14,19 @@ import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
 import VerificationStatus from './VerificationStatus';
+import UsersEditPageMeta from './UsersEditPageMeta';
 
 // Styles
 import styled from 'styled-components';
-import { colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
-const Container = styled.div`
+// Hooks
+import useAreas from 'hooks/useAreas';
+import useTenant from 'hooks/useTenant';
+import useAuthUser from 'hooks/useAuthUser';
+
+const Container = styled.main`
   width: 100%;
   background-color: ${colors.background};
   display: flex;
@@ -45,12 +48,13 @@ export default () => {
   const loaded = tenant !== undefined && authUser !== undefined;
 
   if (loaded && !authUser) {
-    clHistory.push('/');
+    clHistory.push('/sign-in');
   }
 
   if (loaded && !isNilOrError(tenant) && !isNilOrError(authUser)) {
     return (
       <Container id="e2e-user-edit-profile-page">
+        <UsersEditPageMeta user={authUser.data} />
         <ScreenReaderOnly>
           <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
         </ScreenReaderOnly>

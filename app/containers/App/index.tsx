@@ -1,4 +1,3 @@
-require('intersection-observer');
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
@@ -6,6 +5,7 @@ import { isString, isObject, uniq, has } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 import moment from 'moment';
 import 'moment-timezone';
+import 'intersection-observer';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
@@ -77,7 +77,7 @@ const InnerContainer = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
-    min-height: auto;
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -125,7 +125,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false,
-
       verificationModalOpened: false,
       verificationModalContext: null,
       verificationModalInitialStep: null,

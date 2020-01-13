@@ -44,9 +44,11 @@ describe('<OptionForm/>', () => {
           pollOptions={null}
         />
       );
+      expect(wrapper.find('OptionRow').exists()).toBe(false);
       expect(wrapper.find('.e2e-add-option').exists()).toBe(true);
     });
     it('renders correctly with when pollOptions is []', () => {
+
       const wrapper = shallow(
         <OptionForm
           question={question}
@@ -55,7 +57,24 @@ describe('<OptionForm/>', () => {
           pollOptions={[]}
         />
       );
+      expect(wrapper.find('OptionRow').exists()).toBe(false);
       expect(wrapper.find('.e2e-add-option').exists()).toBe(true);
+    });
+  });
+  describe('displays question settings form', () => {
+    it('displays', () => {
+      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
+        .map((item, index) => mockOption(index, item));
+      const wrapper = shallow(
+        <OptionForm
+          question={question}
+          collapse={jest.fn()}
+          locale="en"
+          pollOptions={pollOptions}
+        />
+      );
+      expect(wrapper.find('.e2e-add-option').exists()).toBe(true);
+      expect(wrapper.find('QuestionDetailsForm').exists()).toBe(true);
     });
   });
   describe('displays passed in options', () => {

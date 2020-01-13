@@ -80,7 +80,7 @@ export function getDisplayName(Component) {
   return Component.displayName || Component.name || 'Component';
 }
 
-type pageKeys = 'admin' | 'idea_form' | 'initiative_form' | 'idea_edit' | 'initiative_edit' | 'sign_in' | 'sign_up';
+type pageKeys = 'admin' | 'idea_form' | 'initiative_form' | 'idea_edit' | 'initiative_edit' | 'sign_in' | 'sign_up' | 'email-settings';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
    /**
@@ -95,6 +95,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
   const pathnameWithoutLocale = removeUrlLocale(pathName);
 
   switch (pageKey) {
+    case 'email-settings':
+      return pathnameWithoutLocale.startsWith('/email-settings');
     case 'admin':
       return pathnameWithoutLocale.startsWith('/admin/');
     case 'initiative_form':
@@ -140,7 +142,7 @@ export function isUUID(value: string) {
   return uuidRegExp.test(value);
 }
 
-export function toggleElementArray(array, value) {
+export function toggleElementInArray(array, value) {
     const index = array.indexOf(value);
 
     if (index === -1) {

@@ -15,13 +15,14 @@ const Container = styled.div``;
 
 const StatusTitle = styled.div<({ tagName: string })>`
   ${({ tagName }) => tagName} {
+    color: ${colors.label};
     font-size: ${fontSizes.base}px;
-    line-height: 20px;
+    line-height: normal;
     font-weight: 300;
-    margin-bottom: 6px;
   }
-  color: ${colors.label};
+
   margin: 0;
+  margin-bottom: 7px;
   padding: 0;
 `;
 

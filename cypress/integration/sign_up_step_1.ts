@@ -26,8 +26,10 @@ describe('Sign up step 1 page', () => {
     cy.get('#password').type('test').should('have.value', 'test');
   });
 
-  it('has a working terms and conditions checkbox', () => {
+  it('has working legal concerns checkboxes', () => {
     cy.get('.e2e-terms-and-conditions .e2e-checkbox').click().should('have.class', 'checked');
+    cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+    cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
   });
 
   it('signs up with valid credentials and navigates to the landing page', () => {

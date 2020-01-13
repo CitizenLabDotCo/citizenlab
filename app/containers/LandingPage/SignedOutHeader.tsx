@@ -16,12 +16,13 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
-import T from 'components/T';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -99,12 +100,10 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.div<{ hasHeader: boolean }>`
-  & h1 {
-    font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
-    font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-    line-height: normal;
-  }
+const HeaderTitle = styled.h1<{ hasHeader: boolean }>`
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
   width: 100%;
   max-width: 600px;
   color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
@@ -117,12 +116,10 @@ const HeaderTitle = styled.div<{ hasHeader: boolean }>`
   `}
 `;
 
-const HeaderSubtitle = styled.div<{ hasHeader: boolean }>`
-  & h2 {
-    font-size: ${fontSizes.xl}px;
-    line-height: 28px;
-    font-weight: 400;
-  }
+const HeaderSubtitle = styled.h2<{ hasHeader: boolean }>`
+  font-size: ${fontSizes.xl}px;
+  line-height: 28px;
+  font-weight: 400;
   width: 100%;
   max-width: 375px;
   color: ${({ hasHeader, theme }) => hasHeader ? '#fff' : theme.colorMain};
@@ -163,65 +160,40 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class SignedOutHeader extends PureComponent<Props, State> {
-  goToSignUpPage = () => {
+class SignedOutHeader extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+  goToSignUpPage = (event: React.FormEvent) => {
+    event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-out header' } });
     clHistory.push('/sign-up');
   }
 
   render() {
-    const { locale, tenant, className } = this.props;
+    const { locale, tenant, className, localize, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      // tranlate header title into a h1 wih a fallback
-      const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
-      const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} />;
-
-      const title = (headerTitleMultiLoc ? (
-        <T as="h1" value={headerTitleMultiLoc}>
-          {translatedTitle =>
-             translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
-          }
-        </T>
-      ) : genericTitle);
-
-      // tranlate header slogan into a h2 wih a fallback
-      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
-      const genericSlogan = <FormattedMessage tagName="h2" {...messages.subtitleCity} />;
-
-      const subtitle = (headerSloganMultiLoc ? (
-        <T value={headerSloganMultiLoc}>
-          {translatedSlogan =>
-             translatedSlogan ? <h2>{translatedSlogan}</h2> : genericSlogan
-          }
-        </T>
-      ) : genericSlogan);
-
-      // get tenant header image
-      const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const hasHeaderImage = (tenantHeaderImage !== null);
+      const headerTitle = localize(tenant?.attributes?.settings?.core?.header_title) || formatMessage(messages.titleCity);
+      const headerSubtitle = localize(tenant?.attributes?.settings?.core?.header_slogan) || formatMessage(messages.subtitleCity);
+      const headerImage = tenant?.attributes?.header_bg?.large;
 
       return (
         <Container className={`e2e-signed-out-header ${className}`}>
           <Header id="hook-header">
             <HeaderImage id="hook-header-image">
-              <HeaderImageBackground src={tenantHeaderImage} />
+              <HeaderImageBackground src={headerImage || null} />
               <HeaderImageOverlay />
             </HeaderImage>
 
             <HeaderContent id="hook-header-content" className="e2e-signed-out-header-title">
-              <HeaderTitle hasHeader={hasHeaderImage}>
-                {title}
+              <HeaderTitle hasHeader={!!headerImage}>
+                {headerTitle}
               </HeaderTitle>
 
-              <HeaderSubtitle hasHeader={hasHeaderImage} className="e2e-signed-out-header-subtitle">
-                {subtitle}
+              <HeaderSubtitle hasHeader={!!headerImage} className="e2e-signed-out-header-subtitle">
+                {headerSubtitle}
               </HeaderSubtitle>
 
               <StyledAvatarBubbles />
@@ -249,7 +221,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />
 });
 
-const SignedOutHeaderWithHoC = withTheme(SignedOutHeader);
+const SignedOutHeaderWithHoC = injectIntl(injectLocalize(SignedOutHeader));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
