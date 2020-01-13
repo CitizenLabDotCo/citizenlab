@@ -22,7 +22,6 @@ import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/accessibility';
 
 // Hooks
-import useAreas from 'hooks/useAreas';
 import useTenant from 'hooks/useTenant';
 import useAuthUser from 'hooks/useAuthUser';
 
