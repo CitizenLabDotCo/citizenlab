@@ -19,6 +19,7 @@ RSpec.describe LogToEventbusJob, type: :job do
         expect(event[:item_id]).to eq(comment.id)
         expect(event[:item_type]).to eq('Comment')
         expect(event.dig(:item_content, :comment, :id)).to eq(comment.id)
+        expect(event[:cl2_cluster]).to eq 'local'
       end
       job.perform activity
     end
