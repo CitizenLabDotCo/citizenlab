@@ -171,7 +171,16 @@ da:
     default_threshold_reached_message: >
       <p> Initiativtagerne er inviteret til at præsentere deres initiativer på næste rådsmøde. Vi bringer en officiel opdatering. </p>
     default_eligibility_criteria: >
-      <p> Initiativet bør </p><p>-ligge inden for byens kompetencer </p>
+      <p>Initiativet bør</p>
+      <ul>
+      <li>Bidrage til den altid gældende strategi herunder mål og indsatser</li>
+      <li>Komme flere til gavn - ikke kun få personer eller en lille afgrænset gruppe</li>
+      <li>Ikke diskriminere køn, race, religion eller alder,...</li>
+      <li>Ikke skade andre</li>
+      <li>Være økonomisk bæredygtigt</li>
+      <li>Være bæredygtig i forhold til timing</li>
+      <li>Være forskelligt fra andre initiativer, der allerede er på platformen</li>
+      </ul>
   smart_group_rules:
     is_empty: "%{property} has no value"
     not_is_empty: "%{property} has any value"
