@@ -24,8 +24,8 @@ import { verifyCOW } from 'services/verify';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// image
-const helpImage: string = require('./COWHelpImage.png');
+// images
+import helpImage from './COWHelpImage.png';
 
 // style
 import styled from 'styled-components';
@@ -201,13 +201,14 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
 
       <Form>
         <FormField>
-          <StyledLabel>
+          <StyledLabel htmlFor="run">
             <LabelTextContainer>
               <span>RUN</span>
               <IconTooltip maxTooltipWidth={200} content="Ingrese su número de RUT, con puntos y guión. Ej: 11.222.333-4" />
             </LabelTextContainer>
             <div>
               <Input
+                id="run"
                 type="text"
                 placeholder="xx.xxx.xxx-x"
                 onChange={onRunChange}
@@ -219,13 +220,14 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
         </FormField>
 
         <FormField>
-          <StyledLabel>
+          <StyledLabel htmlFor="id-serial">
             <LabelTextContainer>
               <span>Número de Documento</span>
               <IconTooltip maxTooltipWidth={200} content="Ingrese el número de documento que se encuentra al frente de las cédulas y atrás en las cédulas antiguas. Ej: 111.222.333 en las cédulas nuevas o A012345678 en las cédulas antiguas." />
             </LabelTextContainer>
             <div>
               <Input
+                id="id-serial"
                 type="text"
                 onChange={onIdSerialChange}
                 value={idSerial}

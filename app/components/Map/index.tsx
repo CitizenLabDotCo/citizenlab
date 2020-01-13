@@ -19,8 +19,7 @@ import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import { darken, lighten } from 'polished';
 import { colors, media } from 'utils/styleUtils';
-
-const markerIcon = require('./marker.svg');
+import markerIcon from './marker.svg';
 
 const Container = styled.div`
   width: 100%;

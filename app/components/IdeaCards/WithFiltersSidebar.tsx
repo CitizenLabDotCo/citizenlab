@@ -33,10 +33,12 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { rgba } from 'polished';
 
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
+import { IParticipationContextType } from 'typings';
 
 const gapWidth = 35;
 
@@ -150,20 +152,14 @@ const Loading = styled.div`
 `;
 
 const EmptyContainer = styled.div`
+  flex: 1;
   width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  ${media.biggerThanMinTablet`
-    height: calc(100vh - 280px);
-    position: sticky;
-    top: 200px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-  `}
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
 `;
 
 const EmptyContainerInner = styled.div`
@@ -172,12 +168,14 @@ const EmptyContainerInner = styled.div`
   align-items: center;
   padding-left: 30px;
   padding-right: 30px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 `;
 
 const IdeaIcon = styled(Icon)`
-  flex: 0 0 46px;
-  width: 46px;
-  height: 46px;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
   fill: ${colors.label};
 `;
 
@@ -193,11 +191,11 @@ const EmptyMessage = styled.div`
 
 const EmptyMessageMainLine = styled.div`
   color: ${colors.text};
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
   line-height: normal;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 15px;
 `;
 
 const EmptyMessageSubLine = styled.div`
@@ -317,7 +315,7 @@ interface InputProps extends GetIdeasInputProps  {
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+  participationContextType?: IParticipationContextType | null;
   className?: string;
 }
 
@@ -493,16 +491,29 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
+    const filtersActive = selectedIdeaFilters.search ||
+      selectedIdeaFilters.idea_status ||
+      selectedIdeaFilters.areas ||
+      selectedIdeaFilters.topics;
 
     const filtersSidebar = (
-      <FiltersSidebarContainer className={className} aria-live="polite">
-        {(selectedIdeaFilters.search || selectedIdeaFilters.idea_status || selectedIdeaFilters.areas || selectedIdeaFilters.topics) &&
+      <FiltersSidebarContainer className={className}>
+        {filtersActive &&
           <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
             <ClearFiltersText>
               <FormattedMessage {...messages.resetFilters} />
             </ClearFiltersText>
           </ClearFiltersButton>
         }
+
+        <ScreenReaderOnly aria-live="polite">
+          {ideasFilterCounts &&
+            <FormattedMessage
+              {...messages.a11y_totalIdeas}
+              values={{ ideasCount: ideasFilterCounts.total }}
+            />
+          }
+        </ScreenReaderOnly>
 
         <StyledSearchInput
           placeholder={this.searchPlaceholder}
@@ -572,6 +583,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   style="secondary-outlined"
                   onClick={this.openFiltersModal}
                   icon="filter"
+                  iconAriaHidden
                   text={this.filterMessage}
                   borderColor="#ccc"
                   borderHoverColor="#999"
@@ -651,7 +663,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 {!querying && !hasIdeas &&
                   <EmptyContainer id="ideas-empty">
                     <EmptyContainerInner>
-                      <IdeaIcon name="idea" />
+                      <IdeaIcon name="idea" ariaHidden />
                       <EmptyMessage>
                         <EmptyMessageMainLine><FormattedMessage {...messages.noIdeasForFilter} /></EmptyMessageMainLine>
                         <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>

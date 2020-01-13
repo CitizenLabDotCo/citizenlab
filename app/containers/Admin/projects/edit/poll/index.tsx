@@ -78,17 +78,17 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                 </SectionSubtitle>
               </Left>
               <ExportPollButton
-                participationContextType="projects"
+                participationContextType="project"
                 participationContextId={project.id}
               />
             </HeaderContainer>
             <GetPollQuestions
               participationContextId={project.id}
-              participationContextType="projects"
+              participationContextType="project"
             >
               {(pollQuestions: GetPollQuestionsChildProps) => (
                 <PollAdminForm
-                  participationContextType="projects"
+                  participationContextType="project"
                   participationContextId={project.id}
                   pollQuestions={isError(pollQuestions) ? null : pollQuestions}
                   locale={locale}
@@ -122,16 +122,16 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                   </Left>
                   <ExportPollButton
                     participationContextId={phase.id}
-                    participationContextType="phases"
+                    participationContextType="phase"
                   />
                 </HeaderContainer>
                 <GetPollQuestions
                   participationContextId={phase.id}
-                  participationContextType="phases"
+                  participationContextType="phase"
                 >
                   {(pollQuestions: GetPollQuestionsChildProps) => (
                     <PollAdminForm
-                      participationContextType="phases"
+                      participationContextType="phase"
                       participationContextId={phase.id}
                       pollQuestions={isError(pollQuestions) ? null : pollQuestions}
                       locale={locale}
@@ -150,7 +150,7 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject id={params.projectId} >{render}</GetProject>,
+  project: ({ params, render }) => <GetProject projectId={params.projectId} >{render}</GetProject>,
   locale: <GetLocale />
 });
 

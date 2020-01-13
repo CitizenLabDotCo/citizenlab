@@ -12,7 +12,8 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { isBoolean } from 'util';
 
 const Container: any = styled.div`
@@ -21,7 +22,6 @@ const Container: any = styled.div`
 
   input {
     width: 100%;
-    height: 100%;
     color: ${colors.text};
     font-size: ${fontSizes.base}px;
     line-height: 24px;
@@ -29,18 +29,22 @@ const Container: any = styled.div`
     padding: 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
     border: solid 1px;
-    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
+    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     background: #fff;
     outline: none;
     -webkit-appearance: none;
+
+    &.onGreyBackground {
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDarkOnGreyBackground};
+    }
 
     &.hasMaxCharCount {
       padding-right: 62px;
     }
 
     &::placeholder {
-      color: ${colors.clIconSecondary} !important;
+      color: ${colors.label} !important;
       opacity: 1;
     }
 
@@ -98,6 +102,7 @@ export type InputProps = {
   required?: boolean;
   autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
   className?: string;
+  onGreyBackground?: boolean;
 };
 
 interface DataProps {
@@ -141,7 +146,7 @@ export class Input extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { label, ariaLabel, className } = this.props;
+    const { label, ariaLabel, className, onGreyBackground } = this.props;
     let { value, placeholder, error } = this.props;
     const { formikContext } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
@@ -171,7 +176,11 @@ export class Input extends React.PureComponent<Props, State> {
         <input
           aria-label={ariaLabel}
           id={id}
-          className={`CLInputComponent ${maxCharCount && 'hasMaxCharCount'}`}
+          className={`
+            CLInputComponent
+            ${maxCharCount && 'hasMaxCharCount'}
+            ${onGreyBackground ? 'onGreyBackground' : ''}
+          `}
           name={name}
           type={type}
           placeholder={placeholder}

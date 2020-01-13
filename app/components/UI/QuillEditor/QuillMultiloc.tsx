@@ -63,16 +63,17 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
   }
 
   renderOnce = (locale, index) => {
-    const { tenantLocales, label, labelTooltip, renderPerLocale, id, valueMultiloc, ...otherProps } = this.props;
+    const { tenantLocales, label, labelTooltip, renderPerLocale, id, valueMultiloc, labelId, ...otherProps } = this.props;
     const value = get(valueMultiloc, [locale], undefined);
     const idLocale = id && `${id}-${locale}`;
+    const idLabelLocale = id && `label-${id}-${locale}`;
 
     if (isNilOrError(tenantLocales)) return null;
 
     return (
       <EditorWrapper key={locale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
         {label &&
-          <Label>
+          <Label id={idLabelLocale}>
             {label}
             {tenantLocales.length > 1 && <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>}
             {labelTooltip}
@@ -86,6 +87,7 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
           value={value || ''}
           onChange={this.handleOnChange(locale)}
           {...otherProps}
+          labelId={label ? idLabelLocale : labelId}
         />
       </EditorWrapper>
     );

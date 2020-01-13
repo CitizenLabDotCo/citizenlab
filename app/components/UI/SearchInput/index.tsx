@@ -1,5 +1,6 @@
 import React, { memo, useState, useCallback, useEffect, useMemo, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
 import { isEmpty } from 'lodash-es';
+import { LiveMessage } from 'react-aria-live';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -14,7 +15,8 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { transparentize } from 'polished';
 
 const Container = styled.div`
@@ -200,6 +202,14 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
           <CloseIcon title={intl.formatMessage(messages.removeSearchTerm)} name="close" />
         </SearchFieldButton>
       }
+      <LiveMessage
+        message={searchTerm ?
+          intl.formatMessage(messages.a11y_searchTerm, { searchTerm })
+          :
+          intl.formatMessage(messages.a11y_searchTermBlank)
+        }
+        aria-live="polite"
+      />
     </Container>
   );
 });

@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react';
 import bowser from 'bowser';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // components
 import Dropdown from 'components/UI/Dropdown';
 import Icon from 'components/UI/Icon';
@@ -28,7 +31,6 @@ const ManageBudgetButton = styled.button`
   align-items: center;
   white-space: nowrap;
   cursor: pointer;
-  outline: none;
 
   &:focus,
   &:hover {
@@ -53,7 +55,7 @@ const DropdownWrapper = styled.div`
 
 interface Props {
   participationContextId: string | null;
-  participationContextType: 'Project' | 'Phase';
+  participationContextType: IParticipationContextType;
   className?: string;
 }
 
@@ -79,7 +81,10 @@ export default class PBNavbarButton extends PureComponent<Props, State> {
 
     return (
       <Container className={className}>
-        <ManageBudgetButton onClick={this.toggleDropdown}>
+        <ManageBudgetButton
+          onClick={this.toggleDropdown}
+          aria-expanded={dropdownOpened}
+        >
           <StyledIcon name="moneybag" className="moneybag" ariaHidden />
           <FormattedMessage {...messages.manageBudget} />
         </ManageBudgetButton>

@@ -43,9 +43,9 @@ const Container = styled.div`
   background: ${colors.background};
 `;
 
-const FormContainer = styled.div`
+const FormContainer = styled.main`
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -81,6 +81,7 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
+  border: solid 2px red;
 `;
 
 interface Props {
@@ -284,6 +285,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
               onSubmit={this.handleIdeaFormOutput}
               remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
             />
+
             <ButtonBarContainer>
               <IdeasEditButtonBar id="e2e-idea-edit-save-button" form="idea-form" />
             </ButtonBarContainer>

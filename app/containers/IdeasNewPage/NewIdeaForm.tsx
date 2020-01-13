@@ -20,7 +20,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   display: 'flex';
   flex-direction: column;
   align-items: center;
@@ -32,6 +32,8 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding-bottom: 80px;
+    padding-right: 0;
+    padding-left: 0;
   `}
 `;
 

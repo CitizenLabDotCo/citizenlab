@@ -48,7 +48,7 @@ class ProjectArchivedIndicator extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>
 });
 
 export default (inputProps: InputProps) => (

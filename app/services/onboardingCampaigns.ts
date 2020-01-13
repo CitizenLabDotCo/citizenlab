@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export type IOnboardingCampaignNames = 'complete_profile' | 'custom_cta' | 'default';
+export type IOnboardingCampaignNames = 'complete_profile' | 'custom_cta' | 'default' | 'verification';
 export const currentOnboardingCampaignsApiEndpoint = `${API_PATH}/onboarding_campaigns/current`;
 
 export type IOnboardingCampaigns = {

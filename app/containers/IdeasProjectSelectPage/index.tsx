@@ -37,7 +37,7 @@ const Loading = styled.div`
   `}
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   background: ${colors.background};

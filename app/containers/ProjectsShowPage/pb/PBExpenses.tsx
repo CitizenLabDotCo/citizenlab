@@ -8,6 +8,9 @@ import bowser from 'bowser';
 // services
 import { updateBasket } from 'services/baskets';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -27,12 +30,17 @@ import tracks from './tracks';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
+import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
+
+// a11y
+import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div``;
 
@@ -231,7 +239,7 @@ const SubmitExpensesButton = styled(Button)`
 
 interface InputProps {
   participationContextId: string | null;
-  participationContextType: 'Project' | 'Phase';
+  participationContextType: IParticipationContextType;
   className?: string;
 }
 
@@ -257,7 +265,7 @@ interface State {
   processing: boolean;
 }
 
-class PBExpenses extends PureComponent<Props & Tracks, State> {
+class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -289,14 +297,24 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
   }
 
   render() {
-    const { locale, tenant, participationContextType, participationContextId, project, phase, basket, className } = this.props;
+    const {
+      locale,
+      tenant,
+      participationContextType,
+      participationContextId,
+      project,
+      phase,
+      basket,
+      className,
+      intl: { formatMessage }
+    } = this.props;
     const { processing, dropdownOpened } = this.state;
 
     if (!isNilOrError(locale) &&
         !isNilOrError(tenant) &&
         (
-          (participationContextType === 'Project' && !isNilOrError(project)) ||
-          (participationContextType === 'Phase' && !isNilOrError(phase))
+          (participationContextType === 'project' && !isNilOrError(project)) ||
+          (participationContextType === 'phase' && !isNilOrError(phase))
         )
     ) {
       const currency = tenant.attributes.settings.core.currency;
@@ -306,11 +324,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
       let totalBudget = 0;
       let progress = 0;
       let validationStatus: 'notValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
+      let validationStatusMessage: string = '';
       let progressBarColor: 'green' | 'red' | '' = '';
 
-      if (participationContextType === 'Project' && !isNilOrError(project)) {
+      if (participationContextType === 'project' && !isNilOrError(project)) {
         totalBudget = project.attributes.max_budget as number;
-      } else if (participationContextType === 'Phase' && !isNilOrError(phase)) {
+      } else if (participationContextType === 'phase' && !isNilOrError(phase)) {
         totalBudget = phase.attributes.max_budget as number;
       }
 
@@ -330,6 +349,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
         progressBarColor = 'red';
       }
 
+      if (validationStatus === 'validationError') {
+        validationStatusMessage = formatMessage(messages.budgetExceeded);
+      } else if (validationStatus === 'validationSuccess') {
+        validationStatusMessage = formatMessage(messages.budgetValidated);
+      }
+
       return (
         <Container className={className}>
           <InnerContainer>
@@ -340,16 +365,17 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                 }
                 {validationStatus === 'validationError' &&
                   <>
-                    <TitleIcon name="error" />
+                    <TitleIcon name="error" ariaHidden />
                     <FormattedMessage {...messages.budgetExceeded} />
                   </>
                 }
                 {validationStatus === 'validationSuccess' &&
                   <>
-                    <TitleIcon name="checkmark" />
+                    <TitleIcon name="checkmark" ariaHidden />
                     <FormattedMessage {...messages.budgetValidated} />
                   </>
                 }
+                <LiveMessage message={validationStatusMessage} aria-live="polite" />
               </Title>
               <Spacer />
               <TotalBudgetDesktop aria-hidden>
@@ -420,6 +446,7 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
                   <ManageBudgetButton
                     onClick={this.toggleExpensesDropdown}
                     icon="moneybag"
+                    iconAriaHidden
                     style="primary-inverse"
                     borderColor={colors.separation}
                     bgColor="transparent"
@@ -471,12 +498,12 @@ class PBExpenses extends PureComponent<Props & Tracks, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ participationContextType, project, phase, render }) => {
     let basketId: string | null = null;
 
-    if (participationContextType === 'Project') {
+    if (participationContextType === 'project') {
       basketId = (!isNilOrError(project) && project.relationships.user_basket ? get(project.relationships.user_basket.data, 'id', null) : null);
     } else {
       basketId = (!isNilOrError(phase) && phase.relationships.user_basket ? get(phase.relationships.user_basket.data, 'id', null) : null);
@@ -486,12 +513,12 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
-const PBExpensesWithHoCs = injectTracks<Props>({
+const PBExpensesWithHoCs = injectIntl(injectTracks<Props>({
   ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
   ideaAddedToBasket: tracks.ideaAddedToBasket,
   basketSubmitted: tracks.basketSubmitted,
   expensesDropdownOpened: tracks.expensesDropdownOpened
-})(PBExpenses);
+})(PBExpenses));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

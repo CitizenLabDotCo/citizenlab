@@ -39,7 +39,7 @@ const Container = styled.div`
   `}
 `;
 
-const PageContainer = styled.div`
+const PageContainer = styled.main`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
@@ -131,7 +131,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   redirectToSignUpPage = () => {
-    clHistory.push('/sign-up');
+    clHistory.replace('/sign-up');
   }
 
   handleOnIdeaSubmit = async () => {
@@ -167,7 +167,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
           await Promise.all([imageToAddPromise, ...filesToAddPromises] as Promise<any>[]);
         } catch (error) {
           const apiErrors = get(error, 'json.errors');
-          console.log(apiErrors);
+          if (process.env.NODE_ENV === 'development') console.log(error);
           if (apiErrors && !apiErrors.idea) {
             this.globalState.set({ submitError: false, fileOrImageError: true });
           }
@@ -217,7 +217,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  project: ({ params, render }) => <GetProject slug={params.slug}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

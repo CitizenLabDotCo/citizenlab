@@ -48,8 +48,8 @@ const TableOptions = styled.div`
   padding-bottom: 15px;
   padding-left: 5px;
   padding-right: 5px;
-  margin-bottom: 0px;
-  border-bottom: solid 1px ${colors.separation};
+  margin-bottom: 10px;
+  border-bottom: solid 1px ${colors.adminTextColor};
   user-select: none;
 `;
 

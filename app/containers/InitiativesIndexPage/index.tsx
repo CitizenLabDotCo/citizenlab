@@ -21,6 +21,8 @@ import Button from 'components/UI/Button';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
+const Container = styled.main``;
+
 const FooterBanner: any = styled.div`
   background: ${({ theme }) => theme.colorMain};
   width: 100%;
@@ -78,30 +80,32 @@ const trackInitiative = () => {
 export default withTheme(memo((_props) => (
   <>
     <InitiativesIndexMeta />
-    <InitiativesHeader />
-    <StyledContentContainer maxWidth="100%">
-      <SuccessStories />
-      <Padding />
-      <InitiativeCards
-        invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
-      />
-    </StyledContentContainer>
-    <FooterBanner>
-      <FooterMessage>
-        <FormattedMessage {...messages.footer} />
-      </FooterMessage>
+    <Container>
+      <InitiativesHeader />
+      <StyledContentContainer maxWidth="100%">
+        <SuccessStories />
+        <Padding />
+        <InitiativeCards
+          invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+        />
+      </StyledContentContainer>
+      <FooterBanner>
+        <FooterMessage>
+          <FormattedMessage {...messages.footer} />
+        </FooterMessage>
 
-      <Button
-        fontWeight="500"
-        padding="13px 22px"
-        style="primary-inverse"
-        linkTo="/initiatives/new"
-        onClick={trackInitiative}
-        icon="arrowLeft"
-        iconPos="right"
-        text={<FormattedMessage {...messages.startInitiative} />}
-      />
-    </FooterBanner>
-    <CityLogoSection />
+        <Button
+          fontWeight="500"
+          padding="13px 22px"
+          style="primary-inverse"
+          linkTo="/initiatives/new"
+          onClick={trackInitiative}
+          icon="arrowLeft"
+          iconPos="right"
+          text={<FormattedMessage {...messages.startInitiative} />}
+        />
+      </FooterBanner>
+      <CityLogoSection />
+    </Container>
   </>
 )));

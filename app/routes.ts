@@ -62,6 +62,15 @@ export default function createRoutes() {
           })
         },
         {
+          path: 'site-map',
+          name: 'siteMap',
+          component: Loadable({
+            loader: () => import('containers/SiteMap'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          })
+        },
+        {
           path: 'profile/edit',
           name: 'usersEditPage',
           component: Loadable({
@@ -303,6 +312,15 @@ export default function createRoutes() {
           name: 'subscriptionEnded',
           component: Loadable({
             loader: () => import('containers/SubscriptionEndedPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
+        },
+        {
+          path: 'email-settings',
+          name: 'EmailSettingPage',
+          component: Loadable({
+            loader: () => import('containers/EmailSettingsPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           }),

@@ -1,8 +1,11 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { includes, isUndefined, get } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, capitalizeParticipationContextType } from 'utils/helperUtils';
 import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
+
+// typings
+import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
@@ -35,7 +38,8 @@ import messages from './messages';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -98,7 +102,7 @@ interface InputProps {
   view: 'ideaCard' | 'ideaPage';
   ideaId: string;
   participationContextId: string;
-  participationContextType: 'Phase' | 'Project';
+  participationContextType: IParticipationContextType;
   openIdea?: (event: FormEvent<any>) => void;
   unauthenticatedAssignBudgetClick?: () => void;
   disabledAssignBudgetClick?: () => void;
@@ -138,25 +142,33 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     };
   }
 
-  componentDidMount() {
-    const disabledReason = !isNilOrError(this.props.idea) && get(this.props.idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
-    if (disabledReason === 'not_verified') {
-      verificationNeeded('ActionBudget');
+  disabledReasonNotVerified = () => {
+    const { idea } = this.props;
+    const disabledReason = !isNilOrError(idea) ? idea.attributes?.action_descriptor?.budgeting?.disabled_reason : null;
+
+    return disabledReason === 'not_verified';
+  }
+
+  isVerificationRequired = () => {
+    const { participationContextId, participationContextType } = this.props;
+    if (this.disabledReasonNotVerified()) {
+      verificationNeeded('ActionBudget', participationContextId, participationContextType, 'budgeting');
     }
   }
+
+  componentDidMount() {
+    this.isVerificationRequired();
+  }
   componentDidUpdate() {
-    const disabledReason = !isNilOrError(this.props.idea) && get(this.props.idea.attributes.action_descriptor.budgeting, 'disabled_reason', null);
-    if (disabledReason === 'not_verified') {
-      verificationNeeded('ActionBudget');
-    }
+    this.isVerificationRequired();
   }
 
   isDisabled = () => {
     const { participationContextType, project, phase } = this.props;
 
-    if (participationContextType === 'Phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
+    if (participationContextType === 'phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present') {
       return false;
-    } else if (participationContextType === 'Project' && !isNilOrError(project) && project.attributes.publication_status !== 'archived') {
+    } else if (participationContextType === 'project' && !isNilOrError(project) && project.attributes.publication_status !== 'archived') {
       return false;
     }
 
@@ -209,7 +221,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
             await updateBasket(basket.id, {
               user_id: authUser.id,
               participation_context_id: participationContextId,
-              participation_context_type: participationContextType,
+              participation_context_type: capitalizeParticipationContextType(participationContextType),
               idea_ids: newIdeas,
               submitted_at: null
             });
@@ -224,7 +236,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
             await addBasket({
               user_id: authUser.id,
               participation_context_id: participationContextId,
-              participation_context_type: participationContextType,
+              participation_context_type: capitalizeParticipationContextType(participationContextType),
               idea_ids: [idea.id]
             });
             done();
@@ -333,12 +345,12 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ project, phase, participationContextType, render }) => {
     let basketId: string | null = null;
 
-    if (participationContextType === 'Project') {
+    if (participationContextType === 'project') {
       basketId = (!isNilOrError(project) && project.relationships.user_basket ? get(project.relationships.user_basket.data, 'id', null) : null);
     } else {
       basketId = (!isNilOrError(phase) && phase.relationships.user_basket ? get(phase.relationships.user_basket.data, 'id', null) : null);

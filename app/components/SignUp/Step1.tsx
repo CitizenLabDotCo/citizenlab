@@ -114,6 +114,8 @@ type State = {
   email: string | null | undefined;
   password: string | null;
   tacAccepted: boolean;
+  emailAccepted: boolean;
+  privacyAccepted: boolean;
   processing: boolean;
   tokenError: string | null;
   firstNameError: string | null;
@@ -121,6 +123,8 @@ type State = {
   emailError: string | null;
   passwordError: string | null;
   tacError: string | null;
+  privacyError: string | null;
+  emailConsentError: string | null;
   localeError: string | null;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null | Error;
@@ -143,6 +147,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       email: null,
       password: null,
       tacAccepted: false,
+      emailAccepted: false,
+      privacyAccepted: false,
       processing: false,
       tokenError: null,
       firstNameError: null,
@@ -150,6 +156,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       emailError: null,
       passwordError: null,
       tacError: null,
+      privacyError: null,
+      emailConsentError: null,
       localeError: null,
       unknownError: null,
       apiErrors: null,
@@ -247,13 +255,19 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   handleTaCAcceptedOnChange = () => {
     this.setState(state => ({ tacAccepted: !state.tacAccepted, tacError: null }));
   }
+  handleEmailAcceptedOnChange = () => {
+    this.setState(state => ({ emailAccepted: !state.emailAccepted, emailError: null }));
+  }
+  handlePrivacyAcceptedOnChange = () => {
+    this.setState(state => ({ privacyAccepted: !state.privacyAccepted, privacyError: null }));
+  }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
 
     const { isInvitation } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, token, firstName, lastName, email, password, tacAccepted } = this.state;
+    const { locale, currentTenant, token, firstName, lastName, email, password, tacAccepted, privacyAccepted, emailAccepted } = this.state;
     const currentTenantLocales = currentTenant ? currentTenant.data.attributes.settings.core.locales : [];
     let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
     const hasEmailError = (!email || !isValidEmail(email));
@@ -262,6 +276,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
     const localeError = (!currentTenantLocales.some(currentTenantLocale => locale === currentTenantLocale) ? formatMessage(messages.noValidLocaleError) : null);
     const tacError = (!tacAccepted ? formatMessage(messages.tacError) : null);
+    const privacyError = (!privacyAccepted ? formatMessage(messages.privacyError) : null);
+    const emailConsentError = (!emailAccepted ? formatMessage(messages.emailConsentError) : null);
     let passwordError: string | null = null;
 
     if (!password) {
@@ -270,9 +286,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError].some(error => error !== null);
+    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError, privacyError, emailConsentError].some(error => error !== null);
 
-    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError });
+    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError, privacyError, emailConsentError });
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
@@ -335,140 +351,172 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     }
 
     return (
-    <>
-      {!emailInvitationTokenInvalid ?
-        <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
-          {isInvitation && !this.props.token &&
+      <>
+        {!emailInvitationTokenInvalid ?
+          <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
+            {isInvitation && !this.props.token &&
+              <FormElement>
+                <FormLabel labelMessage={messages.tokenLabel} htmlFor="token" thin />
+                <Input
+                  id="token"
+                  type="text"
+                  value={token}
+                  placeholder={formatMessage(messages.tokenPlaceholder)}
+                  error={tokenError}
+                  onChange={this.handleTokenOnChange}
+                  onGreyBackground
+                />
+              </FormElement>
+            }
+
             <FormElement>
-              <FormLabel labelMessage={messages.tokenLabel} htmlFor="token" thin />
+              <FormLabel labelMessage={messages.firstNamesLabel} htmlFor="firstName" thin />
               <Input
-                id="token"
+                id="firstName"
                 type="text"
-                value={token}
-                placeholder={formatMessage(messages.tokenPlaceholder)}
-                error={tokenError}
-                onChange={this.handleTokenOnChange}
+                value={firstName}
+                placeholder={formatMessage(messages.firstNamesPlaceholder)}
+                error={firstNameError}
+                onChange={this.handleFirstNameOnChange}
+                setRef={this.handleFirstNameInputSetRef}
+                autocomplete="given-name"
+                onGreyBackground
               />
+              <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
             </FormElement>
-          }
 
-          <FormElement>
-            <FormLabel labelMessage={messages.firstNamesLabel} htmlFor="firstName" thin />
-            <Input
-              id="firstName"
-              type="text"
-              value={firstName}
-              placeholder={formatMessage(messages.firstNamesPlaceholder)}
-              error={firstNameError}
-              onChange={this.handleFirstNameOnChange}
-              setRef={this.handleFirstNameInputSetRef}
-              autocomplete="given-name"
-            />
+            <FormElement>
+              <FormLabel labelMessage={messages.lastNameLabel} htmlFor="lastName" thin />
+              <Input
+                id="lastName"
+                type="text"
+                value={lastName}
+                placeholder={formatMessage(messages.lastNamePlaceholder)}
+                error={lastNameError}
+                onChange={this.handleLastNameOnChange}
+                autocomplete="family-name"
+                onGreyBackground
+              />
+              <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
+            </FormElement>
 
-            <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
-          </FormElement>
+            <FormElement>
+              <FormLabel labelMessage={messages.emailLabel} htmlFor="email" thin />
+              <Input
+                type="email"
+                id="email"
+                value={email}
+                placeholder={formatMessage(messages.emailPlaceholder)}
+                error={emailError}
+                onChange={this.handleEmailOnChange}
+                autocomplete="email"
+                onGreyBackground
+              />
+              <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
+            </FormElement>
 
-          <FormElement>
-            <FormLabel labelMessage={messages.lastNameLabel} htmlFor="lastName" thin />
-            <Input
-              id="lastName"
-              type="text"
-              value={lastName}
-              placeholder={formatMessage(messages.lastNamePlaceholder)}
-              error={lastNameError}
-              onChange={this.handleLastNameOnChange}
-              autocomplete="family-name"
-            />
+            <FormElement>
+              <FormLabel labelMessage={messages.passwordLabel} htmlFor="password" thin />
+              <Input
+                type="password"
+                id="password"
+                value={password}
+                placeholder={formatMessage(messages.passwordPlaceholder)}
+                error={passwordError}
+                onChange={this.handlePasswordOnChange}
+                autocomplete="new-password"
+                onGreyBackground
+              />
+              <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
+            </FormElement>
 
-            <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
-          </FormElement>
+            <FormElement>
+              <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
+                <Checkbox
+                  id="terms-and-conditions-checkbox"
+                  className="e2e-terms-and-conditions"
+                  checked={this.state.tacAccepted}
+                  onChange={this.handleTaCAcceptedOnChange}
+                  label={
+                    <FormattedMessage
+                      {...messages.tacApproval}
+                      values={{
+                        tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
+                      }}
+                    />
+                  }
+                />
+              </TermsAndConditionsWrapper>
+              <TermsAndConditionsWrapper className={`${this.state.privacyError && 'error'}`}>
+                <Checkbox
+                  id="privacy-checkbox"
+                  className="e2e-privacy-checkbox"
+                  checked={this.state.privacyAccepted}
+                  onChange={this.handlePrivacyAcceptedOnChange}
+                  label={
+                    <FormattedMessage
+                      {...messages.privacyApproval}
+                      values={{
+                        ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
+                      }}
+                    />
+                  }
+                />
+              </TermsAndConditionsWrapper>
+              <TermsAndConditionsWrapper className={`${this.state.emailConsentError && 'error'}`}>
+                <Checkbox
+                  id="privacy-checkbox"
+                  className="e2e-email-checkbox"
+                  checked={this.state.emailAccepted}
+                  onChange={this.handleEmailAcceptedOnChange}
+                  label={
+                    <FormattedMessage
+                      {...messages.emailApproval}
+                    />
+                  }
+                />
+              </TermsAndConditionsWrapper>
+              <Error text={this.state.tacError} />
+              <Error text={this.state.privacyError} />
+              <Error text={this.state.emailConsentError} />
+            </FormElement>
 
-          <FormElement>
-            <FormLabel labelMessage={messages.emailLabel} htmlFor="email" thin />
-            <Input
-              type="email"
-              id="email"
-              value={email}
-              placeholder={formatMessage(messages.emailPlaceholder)}
-              error={emailError}
-              onChange={this.handleEmailOnChange}
-              autocomplete="email"
-            />
-
-            <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
-          </FormElement>
-
-          <FormElement>
-            <FormLabel labelMessage={messages.passwordLabel} htmlFor="password" thin />
-            <Input
-              type="password"
-              id="password"
-              value={password}
-              placeholder={formatMessage(messages.passwordPlaceholder)}
-              error={passwordError}
-              onChange={this.handlePasswordOnChange}
-              autocomplete="new-password"
-            />
-
-            <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
-          </FormElement>
-
-          <FormElement>
-            <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-              <Checkbox
-                className="e2e-terms-and-conditions"
-                checked={this.state.tacAccepted}
-                onChange={this.handleTaCAcceptedOnChange}
-                label={
-                  <FormattedMessage
-                    {...messages.gdprApproval}
-                    values={{
-                      tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
-                      ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
-                    }}
-                  />
+            <FormElement>
+              <ButtonWrapper>
+                <Button
+                  id="e2e-signup-step1-button"
+                  size="1"
+                  processing={processing}
+                  text={buttonText}
+                  onClick={this.handleOnSubmit}
+                />
+                {!isInvitation &&
+                  <AlreadyHaveAnAccount to="/sign-in">
+                    <FormattedMessage {...messages.alreadyHaveAnAccount} />
+                  </AlreadyHaveAnAccount>
                 }
-              />
-            </TermsAndConditionsWrapper>
-            <Error text={this.state.tacError} />
-          </FormElement>
+              </ButtonWrapper>
+            </FormElement>
 
-          <FormElement>
-            <ButtonWrapper>
-              <Button
-                id="e2e-signup-step1-button"
-                size="1"
-                processing={processing}
-                text={buttonText}
-                onClick={this.handleOnSubmit}
-              />
-              {!isInvitation &&
-                <AlreadyHaveAnAccount to="/sign-in">
-                  <FormattedMessage {...messages.alreadyHaveAnAccount} />
-                </AlreadyHaveAnAccount>
-              }
-            </ButtonWrapper>
-          </FormElement>
-
-          <Error text={unknownApiError} />
-          <Error text={((isInvitation && this.props.token && tokenError) ? tokenError : null)} />
-        </Form>
-        :
-        <Error
-          text={<FormattedMessage
-            {...messages.emailInvitationTokenInvalid}
-            values={{
-              signUpPageLink: (
-                <Link
-                  to={'/sign-up'}
-                >
-                  {formatMessage(messages.signUpPage)}
-                </Link>)
-            }}
-          />}
-        />
-      }
-    </>
+            <Error text={unknownApiError} />
+            <Error text={((isInvitation && this.props.token && tokenError) ? tokenError : null)} />
+          </Form>
+          :
+          <Error
+            text={<FormattedMessage
+              {...messages.emailInvitationTokenInvalid}
+              values={{
+                signUpPageLink: (
+                  <Link
+                    to={'/sign-up'}
+                  >
+                    {formatMessage(messages.signUpPage)}
+                  </Link>)
+              }}
+            />}
+          />
+        }
+      </>
     );
   }
 }

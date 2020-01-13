@@ -53,7 +53,7 @@ const ButtonWrapper = styled.div`
   `}
 `;
 
-const SkipButton = styled.div`
+const SkipButton = styled.button`
   color: ${colors.clGreyOnGreyBackground};
   font-size: ${fontSizes.base}px;
   font-weight: 400;

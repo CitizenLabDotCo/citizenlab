@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 
 import styled, { keyframes, withTheme } from 'styled-components';
-import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { darken } from 'polished';
 
 import { getDaysRemainingUntil } from 'utils/dateUtils';
@@ -61,7 +62,7 @@ const VotedText = styled.p`
   width: 100%;
 `;
 
-const UnvoteLink = styled.a`
+const UnvoteButton = styled.button`
   color: ${props => props.theme.colorText};
   font-size: ${fontSizes.base}px;
   text-decoration: underline;
@@ -148,12 +149,12 @@ class ProposedVoted extends PureComponent<Props & { theme: any }> {
             }}
           />
         </VotedText>
-        <UnvoteLink
+        <UnvoteButton
           id="e2e-initiative-cancel-upvote-button"
           onClick={this.handleOnCancelVote}
         >
           <FormattedMessage {...messages.unvoteLink} />
-        </UnvoteLink>
+        </UnvoteButton>
         <VoteCounter>
           <VoteText aria-hidden={true}>
             <VoteTextLeft id="e2e-initiative-voted-vote-count">

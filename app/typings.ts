@@ -15,6 +15,10 @@ export interface IHttpMethod {
   method: 'PUT' | 'POST' | 'GET' | 'PATCH' | 'DELETE';
 }
 
+export type IParticipationContextType = 'project' | 'phase';
+
+export type ICitizenAction = 'commenting' | 'voting' | 'posting' | 'taking_poll' | 'taking_survey' | 'budgeting';
+
 export interface ITheme {
   theme: {
     color: {

@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
-import Radio from 'components/UI/Radio';
+import { IParticipationContextType } from 'typings';
+
 import Button from 'components/UI/Button';
-
-import T from 'components/T';
 
 import { IPollQuestion } from 'services/pollQuestions';
 import { addPollResponse } from 'services/pollResponses';
-import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
 
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -16,6 +14,8 @@ import { fontSizes, colors } from 'utils/styleUtils';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import PollSingleChoice from './PollSingleChoice';
+import PollMultipleChoice from './PollMultipleChoice';
 
 const PollContainer = styled.div`
   color: ${({ theme }) => theme.colorText};
@@ -25,7 +25,7 @@ const PollContainer = styled.div`
   justify-content: center;
 `;
 
-const QuestionContainer = styled.div`
+export const QuestionContainer = styled.div`
   background-color: white;
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
@@ -34,47 +34,43 @@ const QuestionContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const QuestionNumber = styled.span`
+export const QuestionNumber = styled.span`
   font-size: ${fontSizes.medium}px;
   line-height: ${fontSizes.medium}px;
-  font-weight: 700;
+  font-weight: 600;
   background-color: ${colors.background};
   padding: 2px 7px;
   border-radius: 2px;
   margin-right: 15px;
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
   display: flex;
   align-items: center;
   flex-direction: row;
   margin-bottom: 25px;
 `;
 
-const QuestionText = styled.span`
+export const QuestionText = styled.span`
   font-size: ${fontSizes.large}px;
-  font-weight: 700;
-`;
-
-const StyledRadio = styled(Radio)`
-  margin-left: 35px;
+  font-weight: 600;
 `;
 
 interface Props {
   questions: IPollQuestion[];
   projectId: string;
   id: string;
-  type: 'projects' | 'phases';
+  type: IParticipationContextType;
   disabled: boolean;
 }
 
 interface State {
   answers: {
-    [questionId: string]: string;
+    [questionId: string]: string[];
   };
 }
 
-class PollForm extends PureComponent<Props, State> {
+export class PollForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -82,64 +78,73 @@ class PollForm extends PureComponent<Props, State> {
     };
   }
 
-  changeAnswer = (questionId: string, optionId: string) => () => {
-    this.setState(state => ({ answers: { ...state.answers, [questionId]: optionId } }));
+  changeAnswerSingle = (questionId: string, optionId: string) => () => {
+    this.setState(state => ({ answers: { ...state.answers, [questionId]: [optionId] } }));
+  }
+
+  changeAnswerMultiple = (questionId: string, optionId: string) => () => {
+    this.setState(state => {
+      const oldAnswer = state.answers[questionId] || [];
+
+      toggleElementInArray(oldAnswer, optionId);
+
+      return ({ answers: { ...state.answers, [questionId]: oldAnswer } });
+    });
   }
 
   sendAnswer = () => {
     const { id, type, projectId } = this.props;
     const { answers } = this.state;
     if (this.validate()) {
-      addPollResponse(id, type, Object.values(answers), projectId);
+      addPollResponse(id, type, Object.values(answers).flat(), projectId);
     }
   }
 
   validate = () => {
     const { answers } = this.state;
     const { questions, disabled } = this.props;
-    return !disabled && questions.every(question => !!answers[question.id]);
+    // you can submit the form...
+    return !disabled // when it's not disabled and...
+    // each question has at least one answer, and this answer is a string (representing the option) and...
+    && questions.every(question => typeof (answers[question.id] || [])[0] === 'string')
+    // for multiple options questions...
+    && questions.filter(question => question.attributes.question_type === 'multiple_options')
+    // the number of answers must not be greater than the maximum of answer allowed.
+      .every(question =>  question.attributes.max_options && answers[question.id].length <= question.attributes.max_options);
   }
+
+  //
 
   render() {
     const { answers } = this.state;
     const { questions } = this.props;
     if (isNilOrError(questions) || questions.length === 0) return null;
+    const isValid = this.validate();
+
     return (
       <>
         <PollContainer className="e2e-poll-form">
-          {questions.map((question, questionIndex) => (
-            <GetPollOptions questionId={question.id} key={question.id}>
-              {(options: GetPollOptionsChildProps) => (
-                isNilOrError(options) || options.length === 0 ? null : (
-                  <QuestionContainer className="e2e-poll-question">
-                    <Label>
-                      <QuestionNumber>
-                        {questionIndex + 1}
-                      </QuestionNumber>
-                      <QuestionText>
-                        <T value={question.attributes.title_multiloc} />
-                      </QuestionText>
-                    </Label>
-                    {options.map((option) => (
-                      <StyledRadio
-                        className="e2e-poll-option"
-                        key={option.id}
-                        onChange={this.changeAnswer(question.id, option.id)}
-                        currentValue={answers[question.id]}
-                        value={option.id}
-                        name={option.id}
-                        id={option.id}
-                        label={<T value={option.attributes.title_multiloc} />}
-                      />
-                    ))}
-                  </QuestionContainer>
-                ))}
-            </GetPollOptions>
-          ))}
+          {questions.map((question, questionIndex) => question.attributes.question_type === 'single_option' ? (
+            <PollSingleChoice
+              key={questionIndex}
+              question={question}
+              index={questionIndex}
+              value={(answers[question.id] || [])[0]}
+              onChange={this.changeAnswerSingle}
+            />
+          ) : (
+              <PollMultipleChoice
+                key={questionIndex}
+                question={question}
+                index={questionIndex}
+                value={answers[question.id]}
+                onChange={this.changeAnswerMultiple}
+              />
+            ))}
         </PollContainer>
         <Button
           onClick={this.sendAnswer}
-          disabled={!this.validate()}
+          disabled={!isValid}
           className="e2e-send-poll"
         >
           <FormattedMessage {...messages.sendAnswer} />

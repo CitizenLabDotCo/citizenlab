@@ -37,7 +37,8 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
@@ -263,7 +264,7 @@ const ProgressBarOverlay: any = styled.div`
   width: 0px;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fc3428;
+  background: ${colors.clRed};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
@@ -273,7 +274,8 @@ const ProgressBarOverlay: any = styled.div`
 `;
 
 const ProjectLabel = styled.div`
-  color: ${({ theme }) => theme.colorSecondary};
+  // darkened to have higher chances of solid color contrast
+  color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   text-align: center;
@@ -522,7 +524,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
             </TimeRemaining>
             <Observer onChange={this.handleIntersection}>
-              <ProgressBar>
+              <ProgressBar aria-hidden>
                 <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
               </ProgressBar>
             </Observer>
@@ -674,7 +676,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
   phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
 });

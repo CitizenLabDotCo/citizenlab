@@ -31,10 +31,12 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { rgba } from 'polished';
 
-const EmptyProjectsImageSrc: string = require('assets/img/landingpage/no_projects_image.svg');
+// svg
+import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
 
 const Container = styled.div`
   display: flex;
@@ -44,11 +46,11 @@ const Container = styled.div`
 const Loading = styled.div`
   width: 100%;
   height: 300px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
@@ -67,23 +69,20 @@ const Header = styled.div`
   `};
 `;
 
-const Title = styled.div`
-  & h2 {
-    font-weight: 500;
-    font-size: ${fontSizes.xl}px;
-  }
+const Title = styled.h2`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xl}px;
+  font-weight: 500;
+  line-height: normal;
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colorText};
+  padding: 0;
   margin: 0;
   margin-right: 45px;
 
   ${media.smallerThanMinTablet`
-    margin: 0;
-    & h2 {
-      font-size: ${fontSizes.large}px;
-    }
     text-align: center;
+    margin: 0;
   `};
 `;
 
@@ -372,29 +371,18 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
             {showTitle ? (
               <Title>
                 {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
-                  ?
-                  <T as="h2" value={customCurrentlyWorkingOn} />
-                  :
-                  <FormattedMessage
-                    tagName="h2"
-                    {...messages.currentlyWorkingOn}
-                  />
+                  ? <T value={customCurrentlyWorkingOn} />
+                  : <FormattedMessage {...messages.currentlyWorkingOn} />
                 }
               </Title>
             ) : (
-                <ScreenReaderOnly>
-                  {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
-                    ?
-                    <T  as="h2" value={customCurrentlyWorkingOn} />
-                    :
-                    <FormattedMessage
-                      tagName="h2"
-                      {...messages.currentlyWorkingOn}
-                    />
-                  }
-                </ScreenReaderOnly>
-              )
-            }
+              <ScreenReaderOnly>
+                {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                  ? <T value={customCurrentlyWorkingOn} />
+                  : <FormattedMessage {...messages.currentlyWorkingOn} />
+                }
+              </ScreenReaderOnly>
+            )}
 
             <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
               {showPublicationStatusFilter &&

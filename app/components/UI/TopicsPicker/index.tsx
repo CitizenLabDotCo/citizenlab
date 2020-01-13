@@ -4,7 +4,8 @@ import { orderBy } from 'lodash-es';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { darken, lighten } from 'polished';
 
 // resources
@@ -29,6 +30,7 @@ const TopicSwitch = styled.button`
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: normal;
+  text-align: left;
   display: inline-block;
   padding-left: 18px;
   padding-right: 18px;
@@ -39,7 +41,7 @@ const TopicSwitch = styled.button`
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
-  border: solid 1px ${colors.separation};
+  border: solid 1px ${colors.separationDark};
   border-radius: 5px;
   transition: all 80ms ease-out;
 

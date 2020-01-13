@@ -69,7 +69,11 @@ const ProjectType = styled.div`
   font-size: ${fontSizes.base}px;
   line-height: 20px;
   font-weight: 400;
-  text-transform: capitalize;
+
+  &:first-letter {
+    text-transform: uppercase;
+  }
+
 `;
 
 const StyledSectionField = styled(SectionField)`
@@ -509,7 +513,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
   }
 
   save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
-    if (this.validate()) {
+    if (this.validate() && !this.state.processing) {
       const { formatMessage } = this.props.intl;
       const { project, projectImages, projectImagesToRemove, projectFiles, projectFilesToRemove } = this.state;
       const projectAttributesDiff: IUpdatedProjectProperties = {
