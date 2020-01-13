@@ -72,7 +72,7 @@ namespace :setup_and_support do
   task :copy_manual_campaigns, [:from_host, :to_host] => [:environment] do |t, args|
     campaigns = Apartment::Tenant.switch(args[:from_host].gsub '.', '_') do
       EmailCampaigns::Campaign.where(type: "EmailCampaigns::Campaigns::Manual").map do |c|
-        { 'type' => c.type, 'author_ref' => nil, 'enabled' => c.enabled, 'sender' => c.sender, 'subject_multiloc' => c.subject_multiloc, 'body_multiloc' => c.body_multiloc, 'created_at' => c.created_at.to_s, 'updated_at' => c.updated_at.to_s, }
+        { 'type' => c.type, 'author_ref' => nil, 'enabled' => c.enabled, 'sender' => 'organization', 'subject_multiloc' => c.subject_multiloc, 'body_multiloc' => c.body_multiloc, 'created_at' => c.created_at.to_s, 'updated_at' => c.updated_at.to_s, }
       end
     end
     template = {'models' => {
