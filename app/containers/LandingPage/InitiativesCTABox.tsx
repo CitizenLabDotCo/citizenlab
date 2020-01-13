@@ -15,15 +15,6 @@ import Icon from 'components/UI/Icon';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-interface InputProps {
-  className?: string;
-}
-interface DataProps {}
-
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
-
 const Container = styled.div``;
 
 const BoxContainer = styled.div`
@@ -145,8 +136,15 @@ const StartInitiativeButton = styled(Button)`
   `}
 `;
 
-const InitiativesCTABox = withTheme(memo((props: Props) => {
-  const { theme, className } = props;
+interface InputProps {
+  className?: string;
+}
+
+interface Props extends InputProps {
+  theme: any;
+}
+
+const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const windowSize = useWindowSize();
   const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
@@ -191,6 +189,6 @@ const InitiativesCTABox = withTheme(memo((props: Props) => {
       </BoxContainer>
     </Container>
   );
-}));
+});
 
-export default InitiativesCTABox;
+export default withTheme(InitiativesCTABox);

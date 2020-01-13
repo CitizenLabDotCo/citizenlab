@@ -9,7 +9,8 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import FormattedAnchor from 'components/FormattedAnchor';
 
-const illustration = require('./illustration.png');
+// images
+import illustration from './illustration.png';
 
 const Container = styled.div`
   width: 100%;

@@ -14,7 +14,8 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import styled, { withTheme } from 'styled-components';
 
 // components
@@ -95,8 +96,8 @@ const ProjectNavbarLink = styled(Link)`
   color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   opacity: 0.6;
   margin-right: 60px;
-  border-top: solid 3px transparent;
-  border-bottom: solid 3px transparent;
+  border-top: solid 2px transparent;
+  border-bottom: solid 2px transparent;
 
   &.active,
   &:focus,
@@ -106,7 +107,7 @@ const ProjectNavbarLink = styled(Link)`
   }
 
   &.active {
-    border-bottom: 3px solid ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
+    border-bottom: 2px solid ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   }
 
   &:first-of-type {

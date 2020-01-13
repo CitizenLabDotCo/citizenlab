@@ -317,6 +317,15 @@ export default function createRoutes() {
           }),
         },
         {
+          path: 'email-settings',
+          name: 'EmailSettingPage',
+          component: Loadable({
+            loader: () => import('containers/EmailSettingsPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
+        },
+        {
           path: '*',
           name: 'notfound',
           component: Loadable({

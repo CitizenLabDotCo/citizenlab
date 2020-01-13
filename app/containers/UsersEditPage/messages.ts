@@ -204,5 +204,16 @@ export default defineMessages({
   verifyAgain: {
     id: 'app.containers.UsersEditPage.verifyAgain',
     defaultMessage: 'Information about you are outdated ? Click here to verify again.',
-  }
+  },
+  /*
+  * Meta
+  */
+  metaTitle: {
+    id: 'app.containers.UsersEditPage.metaTitle',
+    defaultMessage: 'Profile settings page of {firstName} {lastName} | CitizenLab',
+  },
+  metaDescription: {
+    id: 'app.containers.UsersEditPage.metaDescription',
+    defaultMessage: 'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.'
+  },
 });

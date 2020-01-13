@@ -21,7 +21,8 @@ import { markAllAsRead } from 'services/notifications';
 import GetNotifications, { GetNotificationsChildProps } from 'resources/GetNotifications';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
-const EmptyStateImg = require('./assets/no_notification_image.svg');
+// illustrations
+import EmptyStateImg from './assets/no_notification_image.svg';
 
 const Container = styled.div`
   position: relative;

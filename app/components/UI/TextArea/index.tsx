@@ -26,7 +26,7 @@ const Container: any = styled.div`
     outline: none;
     position: relative;
     border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px #ccc;
+    border: solid 1px ${colors.separationDark};
     background: #fff;
     overflow: hidden;
     -webkit-appearance: none;

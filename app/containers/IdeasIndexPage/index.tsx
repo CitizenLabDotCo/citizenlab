@@ -14,7 +14,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.main`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
@@ -37,17 +37,15 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const PageTitle = styled.div`
-  h1 {
-    font-size: ${fontSizes.xxxxl}px;
-    line-height: normal;
-    font-weight: 500;
-    margin-bottom: 35px;
-  }
+const PageTitle = styled.h1`
   color: ${colors.text};
+  font-size: ${fontSizes.xxxxl}px;
+  line-height: normal;
+  font-weight: 500;
   text-align: center;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  margin-bottom: 35px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
@@ -65,7 +63,7 @@ export default memo(() => (
     <Container>
       <StyledContentContainer maxWidth="100%">
         <PageTitle>
-          <FormattedMessage tagName="h1" {...messages.pageTitle} />
+          <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
         <IdeaCards
           type="load-more"
