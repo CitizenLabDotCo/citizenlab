@@ -41,6 +41,10 @@ class SideFxTenantService
       LogActivityJob.perform_later(tenant, 'changed_host', current_user, tenant.updated_at.to_i, payload: {changes: tenant.host_previous_change})
     end
 
+    if tenant.name_previously_changed?
+      LogActivityJob.perform_later(tenant, 'changed_name', current_user, tenant.updated_at.to_i, payload: {changes: tenant.name_previous_change})
+    end
+
     if tenant.settings_previously_changed?
       old_settings = tenant.settings_previous_change[0]
       new_settings = tenant.settings
