@@ -18,7 +18,11 @@ module EmailCampaigns
       users_scope.where(id: activity.item.author_id)
     end
 
-    def generate_commands recipient:, activity: 
+    def self.category
+      'own'
+    end
+
+    def generate_commands recipient:, activity:
       idea = activity.item
       [{
         event_payload: {

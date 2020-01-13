@@ -13,9 +13,11 @@ module EmailCampaigns
       @body_html = template.render(liquid_params(recipient))
       @body_text = ActionView::Base.full_sanitizer.sanitize(@body_html)
 
+      url = frontend_service.unsubscribe_url_template(tenant, campaign.id)
+      url_template = Liquid::Template.parse(url)
+      @unsubscribe_url = url_template.render(liquid_params(recipient))
 
       @tenant_logo_url = tenant.logo.versions[:medium].url
-      @profile_settings_url = frontend_service.edit_profile_url(tenant: tenant)
       @terms_conditions_url = frontend_service.terms_conditions_url(tenant: tenant)
       @privacy_policy_url = frontend_service.privacy_policy_url(tenant: tenant)
       @host_url = frontend_service.home_url(tenant: tenant)
@@ -40,7 +42,7 @@ module EmailCampaigns
       end
 
     end
-    
+
     private
 
     def from_name sender_type, author, recipient
@@ -57,6 +59,7 @@ module EmailCampaigns
         'last_name' => user.last_name,
         'locale' => user.locale,
         'email' => user.email,
+        'unsubscription_token' => EmailCampaigns::UnsubscriptionToken.find_by(user_id: user.id).token
       }
     end
 

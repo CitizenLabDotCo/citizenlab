@@ -592,6 +592,49 @@ models:
     roles: []
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
+  email_campaigns/unsubscription_token:  
+    - token: ABzaQSlYBNRWlF8kHDl5NoK7oJwVduoDgy4B4Tm2zeqCYdqx5blnB8OliZ6JtBoX
+      user_ref: *admin
+    - token: Zplh8js6UGm5ZdUlKGn7kEnmTWGDsALQ5ouR0WPUY8M3W1egODgscUb47RGGnNzj
+      user_ref: *moderator
+    - token: AyTCiqKS38l4osMgArYKHXR56ZdAGoiUVQfK4c7tVxc1mho8hPHfLi0PlioOkbof
+      user_ref: *mortal1
+    - token: CMRS2UL0T1kzDtFzklMcu9bXnIZTAjsYllE5rWeH0rj7vN0EPcG0EJQQ58oSmpAi
+      user_ref: *charlie
+    - token: KGZURjojB2vDoZnA50znj8ZVrvLrxMLNLFGyo5VotKQV4KIdNMCfPjtzwWFH7y0w
+      user_ref: *mortal3
+    - token: KBTmD7Ni4Oaqw5q9ezUYz8R4Bz0a980mnhPOofnV2RQ4jsfipbVqNNBNgCcfwOyC
+      user_ref: *94
+    - token: lnkpPcnu3EI2YNp9dKNkvt3NH5un8RKwe1mcpWimddMF0gfq85TZnfTBSeQZYs2O
+      user_ref: *194
+    - token: snmaCw4Ewa97DuEkTRZcos3GKVL7oOzOYUtqD1erOjFCo5kvHEtbCc4fw7XHmwv9
+      user_ref: *143
+    - token: wL4gd5eBV8ZXiPGbBf5UDfkMcbfDYBNiPN4ATcCxzjHzIZp8bCqCM2lozhMYcSZr
+      user_ref: *102
+    - token: SbynA8y00IQ1iZK8TLrtzLlvuw4Br7Cvj1TrRpbrVhu1qeoeAP1DJ3SXvHGdtMiW
+      user_ref: *174
+    - token: dZzBO4Ykm3MBElamc5CZwOjurI4qSlhmUMsrEYoXBsbncLFQkjpbNiS5HPrw6Cqw
+      user_ref: *139
+    - token: wwIdmMpAd5dzis0MLJwPLkPfyUFjumkdZs8rLoTK20WVol78WoY0IT0E6CfwRZgw
+      user_ref: *86
+    - token: BgbnMDcbG9uRqkII3N1LOy5TY7dFLv1kYnq51JhGxMblhsyrRkVlBDfRWBpeiIBU
+      user_ref: *98
+    - token: xPTgxceHH2tK8v4LbvcZ1h0kTqkBhtlPxEf8GalzMaysBJNsS83VZXAzS3EHX9ls
+      user_ref: *110
+    - token: iykVoSAPXKYBQtpouQ5Ke2D9urrSxjIpCkXgQUbohGf9XJyLs71uWnHlQIMObeC5
+      user_ref: *128
+    - token: 7IDlS9vJ1lDg0oHqIUBXp3VRe3Gm8jvGpDcZXfS9wJSZCCspiPFcNuGLKY7djGuS
+      user_ref: *159
+    - token: O73yovc6T8N3z4xZEPFSfQDNWXPk59Sny2NyTw8l1uc9uOefmjX6sNe7Gmqhx5qd
+      user_ref: *114
+    - token: ymsW0w51AWwxTa5dkEVGiuTHqK1vKlTN36D6hYvKtt9DW24saL3aAqAq9wbImCed
+      user_ref: *163
+    - token: cBWeOlHs8UWwyZhGvGVE6mdYFUhMjBwth34lpIq02nbKHaRie555qiV2s5C3PgJh
+      user_ref: *181
+    - token: K6mG0RIJgTBrIWxgXUt4GzT7CDBucDp1IBUYs3aNsaOdzuMPoeJjDLia6HBZ6uP0
+      user_ref: *77
+    - token: eWx6b1kAKBJsBY8F0FYGgKCXpLaGbVjTTvuJiGoRqxiLUyRSlQwz1F06agHXJd1D
+      user_ref: *67
   project:
   - &project1
     title_multiloc:
@@ -1033,11 +1076,10 @@ models:
     voting_limited_max: 10
   project_file:
   - project_ref: *project1
-    remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/5641ddcd-0590-49f6-aa93-7c29f917ec9b/project_file/file/600a9dd5-52d9-49fa-9791-e63e63341cbd/20190110_rueil_intermediaire.pdf
-    ordering:
     created_at: 2019-01-14 13:46:54 UTC
     updated_at: 2019-01-14 13:46:54 UTC
     name: 20190110_rueil_intermediaire.pdf
+    remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/5641ddcd-0590-49f6-aa93-7c29f917ec9b/project_file/file/600a9dd5-52d9-49fa-9791-e63e63341cbd/20190110_rueil_intermediaire.pdf
   idea:
   - &controversial_idea
     title_multiloc:
