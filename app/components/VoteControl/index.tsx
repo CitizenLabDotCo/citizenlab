@@ -547,14 +547,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
-        <ScreenReaderOnly id="upvote-button">
-          <FormattedMessage {...messages.a11y_xUpvotes} values={{ count: upvotesCount }} />
-        </ScreenReaderOnly>
-
-        <ScreenReaderOnly id="downvote-button">
-          <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
-        </ScreenReaderOnly>
-
         <LiveMessage message={a11yVoteMessage} aria-live="polite" />
 
         <Upvote
@@ -570,6 +562,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+          <ScreenReaderOnly id="upvote-button">
+            <FormattedMessage {...messages.a11y_xUpvotes} values={{ count: upvotesCount }} />
+          </ScreenReaderOnly>
         </Upvote>
 
         <Downvote
@@ -585,6 +580,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+          <ScreenReaderOnly id="downvote-button">
+            <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
+          </ScreenReaderOnly>
         </Downvote>
       </Container>
     );
