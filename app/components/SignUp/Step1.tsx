@@ -148,6 +148,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       firstNameError: null,
       lastNameError: null,
       emailError: null,
+      emailConsentError: null,
       passwordError: null,
       tacError: null,
       privacyError: null,
