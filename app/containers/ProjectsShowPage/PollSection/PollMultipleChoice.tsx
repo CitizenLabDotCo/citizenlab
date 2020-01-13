@@ -13,6 +13,9 @@ import messages from './messages';
 const StyledFieldSet = styled.fieldset`
   width: 100%;
   border: none;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 18px;
 `;
 
 const StyledCheckbox = styled(Checkbox)`
@@ -28,6 +31,7 @@ interface InputProps {
   question: IPollQuestion;
   index: number;
   value: string[] | undefined;
+  disabled: boolean;
   onChange: (questionId: string, optionId: string) => () => void;
 }
 
@@ -37,7 +41,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-const PollMultipleChoice = ({ question, index, options, value, onChange }: Props) => {
+const PollMultipleChoice = ({ question, index, options, value, disabled, onChange }: Props) => {
   return (
     <StyledFieldSet key={question.id}>
       {isNilOrError(options) || options.length === 0 ? null : (
@@ -61,7 +65,7 @@ const PollMultipleChoice = ({ question, index, options, value, onChange }: Props
               key={option.id}
               onChange={onChange(question.id, option.id)}
               checked={!!value?.includes(option.id)}
-              disabled={!value?.includes(option.id) && value?.length === question.attributes.max_options}
+              disabled={(disabled === true) || (!value?.includes(option.id) && value?.length === question.attributes.max_options)}
               id={option.id}
               label={<T value={option.attributes.title_multiloc} />}
             />

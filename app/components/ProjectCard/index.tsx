@@ -222,6 +222,11 @@ const ContentHeader = styled.div`
     padding-left: 30px;
     padding-right: 30px;
 
+    ${media.smallerThanMinTablet`
+      padding-left: 20px;
+      padding-right: 20px;
+    `}
+
     ${media.smallPhone`
       padding-left: 10px;
       padding-right: 10px;
