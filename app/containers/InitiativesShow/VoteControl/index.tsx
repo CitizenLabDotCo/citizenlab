@@ -2,8 +2,10 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { media, ScreenReaderOnly } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { FormattedMessage } from 'utils/cl-intl';
+import moment from 'moment';
 import messages from './messages';
 
 import { InitiativeStatusCode, IInitiativeStatusData } from 'services/initiativeStatuses';
@@ -137,14 +139,16 @@ class VoteControl extends PureComponent<Props, State> {
       !tenant.attributes.settings.initiatives
     ) return null;
 
-    const statusCode = initiativeStatus.attributes.code;
+    const expiresAt = moment(initiative.attributes.expires_at, 'YYYY-MM-DDThh:mm:ss.SSSZ');
+    const durationAsSeconds = moment.duration(expiresAt.diff(moment())).asSeconds();
+    const isExpired = (durationAsSeconds < 0);
+    const statusCode = initiativeStatus.attributes.code === 'proposed' && isExpired ? 'expired' : initiativeStatus.attributes.code;
     const userVoted = !!(initiative.relationships.user_vote && initiative.relationships.user_vote.data);
     const StatusComponent = componentMap[statusCode][userVoted ? 'voted' : 'notVoted'];
     const initiativeSettings = tenant.attributes.settings.initiatives;
 
     return (
       <Container id={id || ''} className={className || ''} aria-live="polite">
-
         {showUnauthenticated
           ? <PopContainer icon="lock-outlined">
               <Unauthenticated />
@@ -177,9 +181,9 @@ const Data = adopt<DataProps, InputProps>({
   initiativeStatus: ({ initiative, render }) => {
     if (!isNilOrError(initiative) && initiative.relationships.initiative_status && initiative.relationships.initiative_status.data) {
       return <GetInitiativeStatus id={initiative.relationships.initiative_status.data.id}>{render}</GetInitiativeStatus>;
-    } else {
-      return null;
     }
+
+    return null;
   },
 });
 

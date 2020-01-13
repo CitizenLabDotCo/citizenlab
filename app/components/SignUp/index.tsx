@@ -191,15 +191,15 @@ class SignUp extends PureComponent<Props, State> {
                     {step1Title || <FormattedMessage {...messages.step1Title} />}
                   </Title>
 
-                  {signupHelperText && !isEmpty(signupHelperText) ?
-                    (<SignupHelperText>
+                  {signupHelperText && !isEmpty(signupHelperText) ? (
+                    <SignupHelperText>
                       <T value={signupHelperText} supportHtml />
-                    </SignupHelperText>)
-
-                    : (<SignupHelperText>
+                    </SignupHelperText>
+                  ) : (
+                    <SignupHelperText>
                       <FormattedMessage {...messages.defaultSignUpHelper} />
-                    </SignupHelperText>)
-                  }
+                    </SignupHelperText>
+                  )}
                   <FeatureFlag name="password_login">
                     <Step1
                       isInvitation={isInvitation}

@@ -16,10 +16,10 @@ import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
-const DateInputWrapper: any = styled.div`
+const DateInputWrapper = styled.div<{ openOnLeft: boolean | undefined }>`
   display: inline-flex;
   position: relative;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${(props) => props.theme.borderRadius};
   background: #fff;
   border: solid 1px #ccc;
   width: 100%;
@@ -57,7 +57,7 @@ const DateInputWrapper: any = styled.div`
   }
 
   .SingleDatePicker_picker {
-    left: ${(props: any) => props.openOnLeft ? '-150px' : '-1px'} !important;
+    left: ${(props) => props.openOnLeft ? '-150px' : '-1px'} !important;
   }
 `;
 

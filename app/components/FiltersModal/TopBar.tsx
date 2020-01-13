@@ -9,7 +9,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
@@ -41,9 +41,13 @@ const Left = styled.div`
 
 const Center = styled.h1`
   flex: 1;
+  font-size: ${fontSizes.medium}px;
+  font-weight: 500;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 0;
 `;
 
 const Right = styled.div``;

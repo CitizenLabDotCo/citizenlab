@@ -80,21 +80,27 @@ const VotingLimitInput = styled(Input)`
 const BudgetingAmountInput = styled(Input)`
   max-width: 288px;
 `;
+
 const StyledA = styled.a`
   &:hover {
     text-decoration: underline;
   }
 `;
-const LabelText = styled.div`
-  margin-top: 15px;
 
+const StyledRadio = styled(Radio)`
+  margin-bottom: 25px;
+`;
+
+const LabelText = styled.div`
   &.disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
 
   h3 {
-    margin-bottom: 0;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 3px;
     font-weight: 600;
   }
 
@@ -418,7 +424,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 <FormattedMessage {...messages.participationMethod} />
                 <IconTooltip content={<FormattedMessage {...messages.participationMethodTooltip} />} />
               </Label>
-              <Radio
+              <StyledRadio
                 onChange={this.handleParticipationMethodOnChange}
                 currentValue={participation_method}
                 value="ideation"
@@ -435,7 +441,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   </LabelText>)}
               />
               <FeatureFlag name="participatory_budgeting">
-                <Radio
+                <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
                   value="budgeting"
@@ -453,7 +459,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 />
               </FeatureFlag>
               <FeatureFlag name="polls">
-                <Radio
+                <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
                   value="poll"
@@ -472,7 +478,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
               </FeatureFlag>
               {surveys_enabled &&
                (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
-                <Radio
+                <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
                   value="survey"

@@ -15,6 +15,11 @@ import messages from '../messages';
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
+// styling
+import styled from 'styled-components';
+
+const StyledInitiativeMoreActions = styled(InitiativeMoreActions)``;
+
 interface InputProps {
   initiativeId: string;
   onTranslateInitiative: () => void;
@@ -51,7 +56,7 @@ const ActionBar = memo<Props>(({ onTranslateInitiative, translateButtonClicked, 
       }
       rightContent={isNilOrError(initiative)
         ? null
-        : <InitiativeMoreActions id="e2e-initiative-more-actions-desktop" initiative={initiative} />}
+        : <StyledInitiativeMoreActions id="e2e-initiative-more-actions-desktop" initiative={initiative} />}
       showTranslateButton={showTranslateButton}
       onTranslate={onTranslateInitiative}
       translateButtonClicked={translateButtonClicked}

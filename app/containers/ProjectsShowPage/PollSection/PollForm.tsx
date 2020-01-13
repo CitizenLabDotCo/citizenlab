@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isNilOrError, toggleElementArray } from 'utils/helperUtils';
+import { isNilOrError, toggleElementInArray } from 'utils/helperUtils';
 
 import { IParticipationContextType } from 'typings';
 
@@ -26,12 +26,11 @@ const PollContainer = styled.div`
 `;
 
 export const QuestionContainer = styled.div`
-  background-color: white;
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
-  border-radius: 3px;
-  padding: 20px;
   width: 100%;
-  margin-bottom: 10px;
+  padding: 20px;
+  background: #fff;
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 export const QuestionNumber = styled.span`
@@ -39,8 +38,8 @@ export const QuestionNumber = styled.span`
   line-height: ${fontSizes.medium}px;
   font-weight: 600;
   background-color: ${colors.background};
-  padding: 2px 7px;
-  border-radius: 2px;
+  padding: 4px 7px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   margin-right: 15px;
 `;
 
@@ -70,7 +69,7 @@ interface State {
   };
 }
 
-class PollForm extends PureComponent<Props, State> {
+export class PollForm extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,7 +85,7 @@ class PollForm extends PureComponent<Props, State> {
     this.setState(state => {
       const oldAnswer = state.answers[questionId] || [];
 
-      toggleElementArray(oldAnswer, optionId);
+      toggleElementInArray(oldAnswer, optionId);
 
       return ({ answers: { ...state.answers, [questionId]: oldAnswer } });
     });
@@ -117,42 +116,48 @@ class PollForm extends PureComponent<Props, State> {
 
   render() {
     const { answers } = this.state;
-    const { questions } = this.props;
-    if (isNilOrError(questions) || questions.length === 0) return null;
-    const isValid = this.validate();
+    const { questions, disabled } = this.props;
 
-    return (
-      <>
-        <PollContainer className="e2e-poll-form">
-          {questions.map((question, questionIndex) => question.attributes.question_type === 'single_option' ? (
-            <PollSingleChoice
-              key={questionIndex}
-              question={question}
-              index={questionIndex}
-              value={(answers[question.id] || [])[0]}
-              onChange={this.changeAnswerSingle}
-            />
-          ) : (
+    if (!isNilOrError(questions) && questions.length > 0) {
+      const isValid = this.validate();
+
+      return (
+        <>
+          <PollContainer className="e2e-poll-form">
+            {questions.map((question, questionIndex) => question.attributes.question_type === 'single_option' ? (
+              <PollSingleChoice
+                key={questionIndex}
+                question={question}
+                index={questionIndex}
+                value={(answers[question.id] || [])[0]}
+                disabled={disabled}
+                onChange={this.changeAnswerSingle}
+              />
+            ) : (
               <PollMultipleChoice
                 key={questionIndex}
                 question={question}
                 index={questionIndex}
                 value={answers[question.id]}
+                disabled={disabled}
                 onChange={this.changeAnswerMultiple}
               />
             ))}
-        </PollContainer>
-        <Button
-          onClick={this.sendAnswer}
-          disabled={!isValid}
-          className="e2e-send-poll"
-        >
-          <FormattedMessage {...messages.sendAnswer} />
-        </Button>
-      </>
-    );
-  }
+          </PollContainer>
+          <Button
+            onClick={this.sendAnswer}
+            size="2"
+            disabled={!isValid}
+            className="e2e-send-poll"
+          >
+            <FormattedMessage {...messages.sendAnswer} />
+          </Button>
+        </>
+      );
+    }
 
+    return null;
+  }
 }
 
 export default PollForm;

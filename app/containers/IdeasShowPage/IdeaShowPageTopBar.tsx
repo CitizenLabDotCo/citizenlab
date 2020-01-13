@@ -25,7 +25,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
-const Container = styled.div`
+const Container = styled.main`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};
@@ -130,7 +130,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
     } else {
       clHistory.push('/');
     }
-  }, []);
+  }, [insideModal]);
 
   const onUnauthenticatedVoteClick = useCallback(() => {
     clHistory.push('/sign-in');
@@ -144,7 +144,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
         pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
       }
     }
-  }, []);
+  }, [project]);
 
   return (
     <Container className={className}>

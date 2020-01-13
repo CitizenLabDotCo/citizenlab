@@ -113,11 +113,15 @@ type State = {
   email: string | null | undefined;
   password: string | null;
   tacAccepted: boolean;
+  emailAccepted: boolean;
+  privacyAccepted: boolean;
   processing: boolean;
   tokenError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
   emailError: string | null;
+  emailConsentError: string | null;
+  privacyError: string | null;
   passwordError: string | null;
   tacError: string | null;
   unknownError: string | null;
@@ -137,6 +141,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       email: props.invitedUser.user?.attributes.email || null,
       password: null,
       tacAccepted: false,
+      emailAccepted: false,
+      privacyAccepted: false,
       processing: false,
       tokenError: null,
       firstNameError: null,
@@ -144,6 +150,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       emailError: null,
       passwordError: null,
       tacError: null,
+      privacyError: null,
       unknownError: null,
       apiErrors: null,
       emailInvitationTokenInvalid: props.invitedUser?.isInvalidToken
@@ -205,6 +212,12 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   handleTaCAcceptedOnChange = () => {
     this.setState(state => ({ tacAccepted: !state.tacAccepted, tacError: null }));
   }
+  handleEmailAcceptedOnChange = () => {
+    this.setState(state => ({ emailAccepted: !state.emailAccepted, emailError: null }));
+  }
+  handlePrivacyAcceptedOnChange = () => {
+    this.setState(state => ({ privacyAccepted: !state.privacyAccepted, privacyError: null }));
+  }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
@@ -212,13 +225,15 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
     const { isInvitation } = this.props;
     const { formatMessage } = this.props.intl;
     const { locale } = this.props;
-    const { token, firstName, lastName, email, password, tacAccepted } = this.state;
+    const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted, emailAccepted } = this.state;
     let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
     const hasEmailError = (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
     const tacError = (!tacAccepted ? formatMessage(messages.tacError) : null);
+    const privacyError = (!privacyAccepted ? formatMessage(messages.privacyError) : null);
+    const emailConsentError = (!emailAccepted ? formatMessage(messages.emailConsentError) : null);
     let passwordError: string | null = null;
 
     if (!password) {
@@ -227,9 +242,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError].some(error => error !== null);
+    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError, emailConsentError].some(error => error !== null);
 
-    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, tacError });
+    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError, emailConsentError });
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
@@ -320,8 +335,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 onChange={this.handleFirstNameOnChange}
                 setRef={this.handleFirstNameInputSetRef}
                 autocomplete="given-name"
+                onGreyBackground
               />
-
               <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
             </FormElement>
 
@@ -335,8 +350,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 error={lastNameError}
                 onChange={this.handleLastNameOnChange}
                 autocomplete="family-name"
+                onGreyBackground
               />
-
               <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
             </FormElement>
 
@@ -350,8 +365,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 error={emailError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
+                onGreyBackground
               />
-
               <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
             </FormElement>
 
@@ -365,8 +380,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 error={passwordError}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
+                onGreyBackground
               />
-
               <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
             </FormElement>
 
@@ -379,16 +394,46 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                   onChange={this.handleTaCAcceptedOnChange}
                   label={
                     <FormattedMessage
-                      {...messages.gdprApproval}
+                      {...messages.tacApproval}
                       values={{
                         tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
+                      }}
+                    />
+                  }
+                />
+              </TermsAndConditionsWrapper>
+              <TermsAndConditionsWrapper className={`${this.state.privacyError && 'error'}`}>
+                <Checkbox
+                  id="privacy-checkbox"
+                  className="e2e-privacy-checkbox"
+                  checked={this.state.privacyAccepted}
+                  onChange={this.handlePrivacyAcceptedOnChange}
+                  label={
+                    <FormattedMessage
+                      {...messages.privacyApproval}
+                      values={{
                         ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
                       }}
                     />
                   }
                 />
               </TermsAndConditionsWrapper>
+              <TermsAndConditionsWrapper className={`${this.state.emailConsentError && 'error'}`}>
+                <Checkbox
+                  id="privacy-checkbox"
+                  className="e2e-email-checkbox"
+                  checked={this.state.emailAccepted}
+                  onChange={this.handleEmailAcceptedOnChange}
+                  label={
+                    <FormattedMessage
+                      {...messages.emailApproval}
+                    />
+                  }
+                />
+              </TermsAndConditionsWrapper>
               <Error text={this.state.tacError} />
+              <Error text={this.state.privacyError} />
+              <Error text={this.state.emailConsentError} />
             </FormElement>
 
             <FormElement>
