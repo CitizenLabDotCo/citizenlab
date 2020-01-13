@@ -138,6 +138,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     this.setState({ loading_deleteComment: true });
     markForDeletion(commentId, authorId, projectId, reasonObj);
     eventEmitter.emit('modal', 'modalClosed', null);
+    eventEmitter.emit('CommentsMoreActions', 'CommentDeleted', null);
   }
 
   openSpamModal = () => {
