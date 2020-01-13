@@ -112,8 +112,8 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
   transition: all 200ms ease;
 

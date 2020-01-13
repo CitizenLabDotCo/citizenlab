@@ -56,11 +56,11 @@ const Container = styled.div`
 const InitialLoading = styled.div`
   width: 100%;
   height: 300px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   ${media.smallerThanMinTablet`
@@ -150,9 +150,8 @@ const EmptyContainer = styled.div`
   display: flex;
   justify-content: center;
   background: #fff;
-  border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const EmptyContainerInner = styled.div`

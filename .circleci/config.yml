@@ -185,6 +185,32 @@ jobs:
           name: Invalidate the static assets on the CDN
           command: aws cloudfront create-invalidation --distribution-id E2MY732QC516J3 --paths '/*'
 
+  build_deploy_storybook:
+    docker:
+      - image: citizenlabdotco/cl2-devops-front-buildenv
+    resource_class: medium+
+    working_directory: ~/cl2-front
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-npm-cache-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-npm-cache-
+      - run: npm ci
+      - save_cache:
+          paths:
+            - /root/.npm
+          key: v1-npm-cache-{{ checksum "package.json" }}
+      - run:
+          command: npm run build-storybook
+          no_output_timeout: '30m'
+      - deploy:
+          name: Deploy to S3
+          command: |
+            aws s3 sync .out/ s3://developers.citizenlab.co/components --delete --acl public-read
+
   reset_ci_tenants:
     docker:
       - image: citizenlabdotco/cl2-devops-front-buildenv
@@ -307,3 +333,9 @@ workflows:
           filters:
             branches:
               only: production
+      - build_deploy_storybook:
+          filters:
+            branches:
+              only:
+                - production
+                - 'CL2-4111-research-UI-component-library'

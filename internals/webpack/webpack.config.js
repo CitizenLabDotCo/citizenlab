@@ -24,7 +24,7 @@ const config = {
   entry: path.join(process.cwd(), 'app/root'),
 
   output: {
-    path: path.resolve(process.cwd(), 'build'),
+    path: path.join(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
     filename: isDev ? '[name].js' : '[name].[contenthash].js',
@@ -102,7 +102,7 @@ const config = {
       },
       {
         test: /\.htaccess/,
-        include: path.resolve(process.cwd(), 'app'),
+        include: path.join(process.cwd(), 'app'),
         use: {
           loader: 'file-loader',
           options: {
@@ -166,13 +166,13 @@ const config = {
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
     isProd && new SentryCliPlugin({
-      include: path.resolve(process.cwd(), 'build'),
+      include: path.join(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
     })
   ].filter(Boolean),
 
   resolve: {
-    modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
+    modules: [path.join(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
   },
 };
