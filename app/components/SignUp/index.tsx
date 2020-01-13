@@ -9,7 +9,7 @@ import clHistory from 'utils/cl-router/history';
 // components
 import Step1 from './Step1';
 import Step2 from './Step2';
-import Footer from './Footer';
+import SocialSignUp from './SocialSignUp';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources
@@ -213,7 +213,7 @@ class SignUp extends PureComponent<Props, State> {
                   </FeatureFlag>
 
                   {!isInvitation &&
-                    <Footer tenant={tenant} goToSignIn={this.goToSignIn} />
+                    <SocialSignUp tenant={tenant} goToSignIn={this.goToSignIn} />
                   }
                 </StepContainer>
               </CSSTransition>

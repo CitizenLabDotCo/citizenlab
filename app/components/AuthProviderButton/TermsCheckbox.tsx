@@ -16,7 +16,6 @@ interface Props {
   providerName: string;
   accepted: boolean;
   onCheck: () => void;
-  acceptText: ReactIntl.FormattedMessage.MessageDescriptor;
 }
 
 class TermsCheckbox extends PureComponent<Props & InjectedIntlProps> {
@@ -31,35 +30,40 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps> {
       accepted,
       providerName,
       onCheck,
-      acceptText,
     } = this.props;
 
-  return (
-    <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-      <AuthProviderButtonInner>
-        <Checkbox
-          id="auth-button-terms-condition-checkbox"
-          checked={accepted}
-          onChange={onCheck}
-          label={
-            <FormattedMessage
-              {...acceptText}
-              values={{
-                loginMechanismName: providerName,
-                tacLink: <Link
-                  target="_blank"
-                  to="/pages/terms-and-conditions"
-                  onClick={this.handleLinkClick}
-                >
-                  <FormattedMessage {...messages.termsAndConditions} />
-                </Link>
-              }}
-            />
-          }
-        />
-      </AuthProviderButtonInner>
-    </CSSTransition>
-  );
+    return (
+      <CSSTransition classNames="tac" timeout={timeout} exit={true}>
+        <AuthProviderButtonInner>
+          <Checkbox
+            id="auth-button-terms-condition-checkbox"
+            checked={accepted}
+            onChange={onCheck}
+            label={
+              <FormattedMessage
+                {...messages.alreadyAcceptTermsAndConditions}
+                values={{
+                  loginMechanismName: providerName,
+                  tacLink: <Link
+                    target="_blank"
+                    to="/pages/terms-and-conditions"
+                    onClick={this.handleLinkClick}
+                  >
+                    <FormattedMessage {...messages.termsAndConditions} />
+                  </Link>,
+                  ppLink: <Link
+                    target="_blank"
+                    to="/pages/privacy-policy"
+                    onClick={this.handleLinkClick}
+                  >
+                    <FormattedMessage {...messages.privacyPolicy} />
+                  </Link>,
+                }}
+              />}
+          />
+        </AuthProviderButtonInner>
+      </CSSTransition>
+    );
 
   }
 }
