@@ -130,13 +130,13 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     eventEmitter.emit('modal', 'modalClosed', null);
   }
 
-  deleteComment = (reason) => {
+  deleteComment = async (reason) => {
     const { projectId, comment } = this.props;
     const commentId = comment.id;
     const authorId = get(comment, 'relationships.author.data.id', undefined);
     const reasonObj = get(reason, 'reason_code') ? reason : undefined;
     this.setState({ loading_deleteComment: true });
-    markForDeletion(commentId, authorId, projectId, reasonObj);
+    await markForDeletion(commentId, authorId, projectId, reasonObj);
     eventEmitter.emit('modal', 'modalClosed', null);
     eventEmitter.emit('CommentsMoreActions', 'CommentDeleted', null);
   }
