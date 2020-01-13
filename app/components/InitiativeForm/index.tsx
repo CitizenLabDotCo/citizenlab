@@ -23,6 +23,7 @@ import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
+import bowser from 'bowser';
 
 const Form = styled.form`
   display: flex;
@@ -106,6 +107,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       errors[fieldName] = this.validations[fieldName]();
     });
     this.setState({ errors });
+
+    if (!bowser.mobile && this.titleInputElement !== null) {
+      setTimeout(() => (this.titleInputElement as HTMLInputElement).focus(), 50);
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -275,8 +280,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
     const { touched, errors } = this.state;
 
-    console.log(this.topicElement, this.titleInputElement);
-
     return (
       <Form id="initiative-form">
         <StyledFormSection>
@@ -295,7 +298,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
                 onBlur={this.onBlur('title_multiloc')}
                 selectedLocale={locale}
                 autocomplete="off"
-                autoFocus
                 setRef={this.handleTitleInputSetRef}
               />
               {touched.title_multiloc && errors.title_multiloc
