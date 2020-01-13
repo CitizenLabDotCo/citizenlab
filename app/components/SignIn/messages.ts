@@ -51,15 +51,11 @@ export default defineMessages({
   },
   orLogInWith: {
     id: 'app.containers.SignIn.orLogInWith',
-    defaultMessage: 'Or log in with',
+    defaultMessage: 'Or log in with a provider',
   },
   signInButtonAltText: {
     id: 'app.containers.SignIn.signInButtonAltText',
     defaultMessage: 'Sign in with {loginMechanismName}',
-  },
-  alreadyAcceptTermsAndConditions: {
-    id: 'app.containers.SignIn.alreadyAcceptTermsAndConditions',
-    defaultMessage: 'I\'ve already accepted the {tacLink}',
   },
   whatIsFranceConnect: {
     id: 'app.containers.SignIn.whatIsFranceConnect',

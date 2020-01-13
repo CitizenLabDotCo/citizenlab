@@ -11,7 +11,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FeatureFlag from 'components/FeatureFlag';
-import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
+import AuthProviderButton, { Provider } from 'components/AuthProviderButton';
 import { FormLabel } from 'components/UI/FormComponents';
 
 // resources
@@ -282,7 +282,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
     this.passwordInputElement = element;
   }
 
-  handleOnSSOClick = (provider: Providers) => () => {
+  handleOnSSOClick = (provider: Provider) => () => {
     window.location.href = `${AUTH_PATH}/${provider}`;
   }
 
@@ -380,8 +380,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                       provider="azureactivedirectory"
                       providerName={tenantLoginMechanismName}
                       onAccept={this.handleOnSSOClick('azureactivedirectory')}
-                      acceptText={messages.alreadyAcceptTermsAndConditions}
-                      altText={messages.signInButtonAltText}
+                      mode="signIn"
                     />
                   }
                 </FeatureFlag>
@@ -408,8 +407,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     provider="google"
                     providerName="Google"
                     onAccept={this.handleOnSSOClick('google')}
-                    acceptText={messages.alreadyAcceptTermsAndConditions}
-                    altText={messages.signInButtonAltText}
+                    mode="signIn"
                   />
                 </FeatureFlag>
                 <FeatureFlag name="facebook_login">
@@ -419,8 +417,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     provider="facebook"
                     providerName="Facebook"
                     onAccept={this.handleOnSSOClick('facebook')}
-                    acceptText={messages.alreadyAcceptTermsAndConditions}
-                    altText={messages.signInButtonAltText}
+                    mode="signIn"
                   />
                 </FeatureFlag>
               </AuthProviderButtons>

@@ -18,14 +18,14 @@ interface Props {
   altText: ReactIntl.FormattedMessage.MessageDescriptor;
 }
 
-const AuthProviderImage = (props: Props & InjectedIntlProps) => {
-  const {
-    logoUrl,
-    logoHeight,
-    timeout,
-    providerName,
-    altText,
-  } = props;
+const AuthProviderImage = ({
+  logoUrl,
+  logoHeight,
+  timeout,
+  providerName,
+  altText,
+  intl: { formatMessage }
+}: Props & InjectedIntlProps) => {
 
   return (
     <CSSTransition classNames="tac" timeout={timeout} exit={true}>
@@ -33,7 +33,7 @@ const AuthProviderImage = (props: Props & InjectedIntlProps) => {
         <img
           src={logoUrl}
           height={logoHeight}
-          alt={props.intl.formatMessage(altText, { loginMechanismName: providerName })}
+          alt={formatMessage(altText, { loginMechanismName: providerName })}
         />
       </AuthProviderButtonInner>
     </CSSTransition>

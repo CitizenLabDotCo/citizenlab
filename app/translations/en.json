@@ -1643,7 +1643,7 @@
   "app.containers.SignIn.noPasswordError": "This cannot be empty",
   "app.containers.SignIn.noValidEmailError": "This doesn't look like a valid email",
   "app.containers.SignIn.or": "Or",
-  "app.containers.SignIn.orLogInWith": "Or log in with",
+  "app.containers.SignIn.orLogInWith": "Or log in with a provider",
   "app.containers.SignIn.passwordLabel": "Password",
   "app.containers.SignIn.signInButtonAltText": "Sign in with {loginMechanismName}",
   "app.containers.SignIn.signInError": "The provided information is not correct. Click 'Password forgotten' above to reset your password.",

@@ -9,6 +9,9 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 import TermsCheckbox from './TermsCheckbox';
 import AuthProviderImage from './AuthProviderImage';
 
+// intl
+import messages from './messages';
+
 const timeout = 250;
 
 const AuthProviderButtonWrapper = styled.button`
@@ -30,23 +33,36 @@ const AuthProviderButtonWrapper = styled.button`
     height: 90px;
   `}
 
-  &:hover {
-    border-color: #000;
+  &:disabled {
+    background: ${colors.lightGreyishBlue};
+    cursor: not-allowed;
   }
 
-  &.franceconnect:hover,
-  &.franceconnect:active {
-    border-color: #0e4fa1;
-  }
 
-  &.google:hover,
-  &.google.active {
-    border-color: #2a81f4;
-  }
+  &:not(:disabled) {
+    &:hover {
+      border-color: #000;
+    }
 
-  &.facebook:hover,
-  &.facebook.active {
-    border-color: #345697;
+    &.franceconnect:hover,
+    &.franceconnect:active {
+      border-color: #0e4fa1;
+    }
+
+    &.google:hover,
+    &.google.active {
+      border-color: #2a81f4;
+    }
+
+    &.facebook:hover,
+    &.facebook.active {
+      border-color: #345697;
+    }
+
+    a:hover > span {
+      color: #000 !important;
+      text-decoration: underline;
+    }
   }
 
   span {
@@ -58,11 +74,6 @@ const AuthProviderButtonWrapper = styled.button`
 
   a > span {
     color: #707075 !important;
-    text-decoration: underline;
-  }
-
-  a:hover > span {
-    color: #000 !important;
     text-decoration: underline;
   }
 `;
@@ -103,16 +114,16 @@ export const AuthProviderButtonInner = styled.div`
   }
 `;
 
-export type Providers = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
+export type Provider = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
 
 interface Props {
   logoUrl: string;
   logoHeight: string;
   providerName: string;
-  provider: Providers;
+  provider: Provider;
   onAccept: () => void;
-  acceptText: ReactIntl.FormattedMessage.MessageDescriptor;
-  altText: ReactIntl.FormattedMessage.MessageDescriptor;
+  mode: 'signUp' | 'signIn';
+  disabled?: boolean;
 }
 
 interface State {
@@ -137,22 +148,29 @@ class AuthProviderButton extends PureComponent<Props, State> {
 
   handleOnClick = (event) => {
     event.preventDefault();
+    const { mode } = this.props;
     const { status } = this.state;
-    if (status === 'image') {
-      this.setState({ status: 'unchecked' });
-    } else if (status === 'unchecked') {
-      this.setState({ status: 'image' });
+    if (mode === 'signUp') {
+      this.props.onAccept();
+    } else {
+      if (status === 'image') {
+        this.setState({ status: 'unchecked' });
+      } else if (status === 'unchecked') {
+        this.setState({ status: 'image' });
+      }
     }
   }
 
   render() {
-    const { logoHeight, logoUrl, provider, providerName, acceptText, altText } = this.props;
+    const { logoHeight, logoUrl, provider, providerName, mode, disabled } = this.props;
     const { status } = this.state;
 
     return (
       <AuthProviderButtonWrapper
         className={`${provider} ${status !== 'image' && 'active'}`}
         onClick={this.handleOnClick}
+        type="button"
+        disabled={disabled}
       >
         <TransitionGroup>
           {(status !== 'image') ?
@@ -161,7 +179,6 @@ class AuthProviderButton extends PureComponent<Props, State> {
               providerName={providerName}
               accepted={status === 'checked'}
               onCheck={this.handleOnCheck}
-              acceptText={acceptText}
             />
             :
             <AuthProviderImage
@@ -169,7 +186,7 @@ class AuthProviderButton extends PureComponent<Props, State> {
               logoHeight={logoHeight}
               timeout={timeout}
               providerName={providerName}
-              altText={altText}
+              altText={mode === 'signUp' ? messages.signUpButtonAltText : messages.signInButtonAltText}
             />
           }
         </TransitionGroup>
