@@ -1,6 +1,8 @@
 const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
+const isTestBuild = process.env.TEST_BUILD === 'true';
+const buildSourceMap = !isDev && !isTestBuild;
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -33,7 +35,7 @@ const config = {
 
   mode: isDev ? 'development' : 'production',
 
-  devtool: isDev ? 'cheap-module-eval-source-map' : (isProd ? 'source-map' : false),
+  devtool: isDev ? 'cheap-module-eval-source-map' : (!isTestBuild ? 'source-map' : false),
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
@@ -165,7 +167,7 @@ const config = {
 
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
-    isProd && new SentryCliPlugin({
+    buildSourceMap && new SentryCliPlugin({
       include: path.join(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
     })
