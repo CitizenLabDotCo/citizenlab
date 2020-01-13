@@ -18,6 +18,10 @@ module EmailCampaigns
     # every schedule trigger
     before_send :only_manual_send
 
+    def self.category
+      'official'
+    end
+
     def generate_commands recipient:, time: nil, activity: nil
       [{
         author: author,

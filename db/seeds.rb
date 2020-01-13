@@ -730,4 +730,8 @@ if Apartment::Tenant.current == 'localhost'
     end
   end
 
+  User.all.each do |user|
+    EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
+  end
+
 end
