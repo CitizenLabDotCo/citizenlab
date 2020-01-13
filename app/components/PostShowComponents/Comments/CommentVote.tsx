@@ -308,6 +308,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
               onClick={this.onVote}
               disabled={!votingEnabled}
             >
+              {/* To be displayed */}
               <span aria-hidden>
                 {!voted ?
                   <FormattedMessage {...messages.commentUpvote} />
@@ -315,6 +316,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
                   <FormattedMessage {...messages.commentCancelUpvote} />
                 }
               </span>
+              {/* For screen readers */}
               <ScreenReaderOnly>
                 {!voted ?
                   formatMessage(messages.upvoteComment) : formatMessage(messages.a11y_undoUpvote)
