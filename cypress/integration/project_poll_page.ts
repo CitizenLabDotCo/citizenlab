@@ -86,9 +86,9 @@ describe('Timeline project with poll phase', () => {
 
   beforeEach(() => {
     cy.setAdminLoginCookie();
-
     cy.visit(`/projects/${projectSlug}/process`);
-    cy.wait(1000);
+    cy.acceptCookies();
+    cy.wait(2000);
   });
 
   it('shows the poll', () => {
@@ -101,8 +101,8 @@ describe('Timeline project with poll phase', () => {
     cy.get('.e2e-timeline-project-poll-container').get('.e2e-poll-question').each(question =>
       question.find('.e2e-poll-option').first().find('label').click()
     );
-    cy.get('.e2e-send-poll').click();
     cy.wait(500);
+    cy.get('.e2e-send-poll').click();
     cy.get('.e2e-form-completed');
   });
 
