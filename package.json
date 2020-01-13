@@ -56,11 +56,7 @@
     "bowser": "1.9.4",
     "clipboard-polyfill": "2.8.6",
     "compression": "1.7.4",
-<<<<<<< HEAD
-    "core-js": "3.4.5",
-=======
     "core-js": "3.6.3",
->>>>>>> b25827b93e2636e3d50d442ca0f2e06faa649eca
     "cross-env": "6.0.3",
     "d3-hierarchy": "1.1.9",
     "file-saver": "2.0.2",
