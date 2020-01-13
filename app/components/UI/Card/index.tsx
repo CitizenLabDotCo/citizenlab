@@ -127,7 +127,7 @@ export const Card = ({ to, onClick, imageUrl, header, title, body, footer, class
     <Body>
       {body}
     </Body>
-    <Footer>
+    <Footer aria-live="polite">
       {footer}
     </Footer>
   </Container>
