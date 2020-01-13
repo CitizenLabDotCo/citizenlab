@@ -7,19 +7,19 @@ import { isEmpty } from 'lodash-es';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import T from 'components/T';
-import { isUndefined } from 'util';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
@@ -49,7 +49,6 @@ interface InputProps {
 }
 
 interface DataProps {
-  locale: GetLocaleChildProps;
   phase: GetPhaseChildProps;
   phaseFiles: GetResourceFilesChildProps;
 }
@@ -58,46 +57,44 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class PhaseAbout extends PureComponent<Props, State> {
+class PhaseAbout extends PureComponent<Props & InjectedLocalized, State> {
   render() {
-    const { locale, phase, phaseFiles, className } = this.props;
+    const { phase, phaseFiles, className, localize } = this.props;
+    const content = localize(phase?.attributes?.description_multiloc);
+    const contentIsEmpty = (content === '' || content === '<p></p>' || content === '<p><br></p>');
 
-    if (!isNilOrError(locale) && !isNilOrError(phase) && !isUndefined(phaseFiles)) {
-      const content = phase.attributes.description_multiloc[locale];
-      const contentIsEmpty = (!content || isEmpty(content) || content === '<p></p>' || content === '<p><br></p>');
+    if (!contentIsEmpty || !isEmpty(phaseFiles)) {
+      return (
+        <Container className={className}>
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h3" {...messages.invisibleTitlePhaseAbout} />
+          </ScreenReaderOnly>
+          <InformationBody>
+            <QuillEditedContent textColor="#5E6B75">
+              <T value={phase?.attributes?.description_multiloc} supportHtml={true} />
+            </QuillEditedContent>
+          </InformationBody>
 
-      if (!contentIsEmpty || !isEmpty(phaseFiles)) {
-        return (
-          <Container className={className}>
-            <ScreenReaderOnly>
-              <FormattedMessage tagName="h3" {...messages.invisibleTitlePhaseAbout} />
-            </ScreenReaderOnly>
-            <InformationBody>
-              <QuillEditedContent textColor="#5E6B75">
-                <T value={phase.attributes.description_multiloc} supportHtml={true} />
-              </QuillEditedContent>
-            </InformationBody>
-
-            {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
-              <StyledFileAttachments files={phaseFiles} />
-            }
-          </Container>
-        );
-      }
+          {!isNilOrError(phaseFiles) && !isEmpty(phaseFiles) &&
+            <StyledFileAttachments files={phaseFiles} />
+          }
+        </Container>
+      );
     }
 
     return null;
   }
 }
 
+const PhaseAboutWithHOCs = injectLocalize(PhaseAbout);
+
 const Data = adopt<DataProps, InputProps>({
-  locale: <GetLocale />,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
   phaseFiles: ({ phaseId, render }) => <GetResourceFiles resourceType="phase" resourceId={phaseId}>{render}</GetResourceFiles>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PhaseAbout {...inputProps} {...dataProps} />}
+    {dataProps => <PhaseAboutWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

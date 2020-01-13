@@ -364,6 +364,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                   placeholder={formatMessage(messages.tokenPlaceholder)}
                   error={tokenError}
                   onChange={this.handleTokenOnChange}
+                  onGreyBackground
                 />
               </FormElement>
             }
@@ -379,8 +380,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 onChange={this.handleFirstNameOnChange}
                 setRef={this.handleFirstNameInputSetRef}
                 autocomplete="given-name"
+                onGreyBackground
               />
-
               <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
             </FormElement>
 
@@ -394,8 +395,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 error={lastNameError}
                 onChange={this.handleLastNameOnChange}
                 autocomplete="family-name"
+                onGreyBackground
               />
-
               <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
             </FormElement>
 
@@ -409,8 +410,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 error={emailError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
+                onGreyBackground
               />
-
               <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
             </FormElement>
 
@@ -424,8 +425,8 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                 error={passwordError}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
+                onGreyBackground
               />
-
               <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
             </FormElement>
 
@@ -456,7 +457,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                     <FormattedMessage
                       {...messages.privacyApproval}
                       values={{
-                        cookieLink: <Link target="_blank" to="/pages/cookie-policy"><FormattedMessage {...messages.cookiePolicy} /></Link>,
                         ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
                       }}
                     />

@@ -7,6 +7,7 @@ import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
+import CollapsibleTipsBox from './CollapsibleTipsBox';
 
 // style
 import { media, colors, fontSizes } from 'utils/styleUtils';
@@ -16,7 +17,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const Container = styled.div`
+const Container = styled.main`
   background: ${colors.background};
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   width: 100%;
@@ -26,6 +27,10 @@ const Container = styled.div`
 const TopLine = styled.div`
   width: 100%;
   padding: 30px 40px 0;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const Header = styled.div`
@@ -70,10 +75,28 @@ const TwoColumns = styled.div`
   display: flex;
   flex-direction: row;
   margin: 30px 0 0;
+
   ${media.smallerThanMaxTablet`
     display: flex;
     flex-direction: column;
     align-items: center;
+  `}
+`;
+
+const StyledCollapsibleTipsBox = styled(CollapsibleTipsBox)`
+  max-width: 580px;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+
+  ${media.biggerThanMaxTablet`
+    display: none;
+  `}
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  ${media.smallerThanMinTablet`
+    padding-left: 0;
+    padding-right: 0;
   `}
 `;
 
@@ -88,10 +111,11 @@ const StyledTipsBox = styled(TipsBox)`
   max-width: 550px;
   width: 100%;
   padding: 40px 50px;
+  margin-bottom: 110px;
+
   ${media.smallerThanMaxTablet`
     display: none;
   `}
-  margin-bottom: 110px;
 `;
 
 interface Props {
@@ -120,14 +144,17 @@ export default class PageLayout extends React.PureComponent<Props> {
             />
           </HeaderTitle>
         </Header>
-        <ContentContainer mode="page">
+        <StyledContentContainer mode="page">
           <TwoColumns>
-            {children}
+            <div>
+              <StyledCollapsibleTipsBox />
+              {children}
+            </div>
             <TipsContainer>
               <StyledTipsBox />
             </TipsContainer>
           </TwoColumns>
-        </ContentContainer>
+        </StyledContentContainer>
       </Container>
     );
   }

@@ -24,8 +24,8 @@ import { verifyCOW } from 'services/verify';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// image
-const helpImage: string = require('./COWHelpImage.png');
+// images
+import helpImage from './COWHelpImage.png';
 
 // style
 import styled from 'styled-components';

@@ -28,7 +28,8 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 interface IVoteComponent {
   active: boolean;
@@ -145,12 +146,12 @@ const Vote = styled.button<IVoteComponent>`
     }
 
     ${VoteIcon} {
-      opacity: 0.6;
+      opacity: 0.71;
       margin-right: 4px;
     }
 
     ${VoteCount} {
-      opacity: 0.6;
+      opacity: 0.71;
     }
   }
 `;
