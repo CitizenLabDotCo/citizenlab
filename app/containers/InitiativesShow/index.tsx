@@ -303,7 +303,7 @@ interface DataProps {
 
 interface InputProps {
   initiativeId: string | null;
-  inModal?: boolean | undefined;
+  insideModal?: boolean;
   className?: string;
 }
 
