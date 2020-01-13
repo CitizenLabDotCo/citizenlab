@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Button from 'components/UI/Button';
+import Avatar from 'components/Avatar';
 import Icon from 'components/UI/Icon';
 
 // services
@@ -19,6 +20,7 @@ import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resour
 
 // utils
 import CSSTransition from 'react-transition-group/CSSTransition';
+import { openVerificationModalWithoutContext } from 'containers/App/events';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -31,7 +33,8 @@ import T from 'components/T';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const contentTimeout = 350;
 const contentEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -190,15 +193,10 @@ const Icons = styled.div`
   `}
 `;
 
-const NoAvatarUserIcon: any = styled(Icon)`
-  fill: #fff;
-  width: 50px;
-  height: 50px;
-`;
-
 const CompleteProfileIcon = styled(Icon)`
   width: 50px;
   height: 50px;
+  margin-left: -3px;
 `;
 
 const Text = styled.div``;
@@ -231,6 +229,24 @@ const AcceptButton = styled(Button)`
   `}
 `;
 
+const AvatarAndShield = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledAvatar = styled(Avatar)`
+  margin-right: -3px;
+  z-index: 2;
+`;
+
+const ShieldIcon = styled(Icon)`
+  fill: ${colors.label};
+  width: 50px;
+  height: 56px;
+  margin-left: -3px;
+`;
+
 export interface InputProps {
   className?: string;
 }
@@ -259,9 +275,12 @@ class SignedInHeader extends PureComponent<Props, State> {
     dismissOnboardingCampaign(name);
   }
 
-  render() {
-    const { locale, tenant, authUser, className, onboardingCampaigns, theme } = this.props;
+  handleVerify = () => {
+    openVerificationModalWithoutContext('OnboardingCampaign');
+  }
 
+  render() {
+    const { locale, tenant, authUser, className, theme, onboardingCampaigns } = this.props;
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingCampaigns)) {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
       const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
@@ -277,7 +296,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             {headerTitleMultiLoc ? (
               <T as="h1" value={headerTitleMultiLoc}>
                 {translatedTitle =>
-                   translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
+                  translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
                 }
               </T>
             ) : genericTitle}
@@ -302,7 +321,13 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentCompleteProfile id="e2e-singed-in-header-complete-profile">
               <Left>
                 <Icons>
-                  <NoAvatarUserIcon name="noAvatar" ariaHidden />
+                  <StyledAvatar
+                    userId={authUser?.id}
+                    size="50px"
+                    fillColor="#fff"
+                    padding="0px"
+                    borderThickness="0px"
+                  />
                   <CompleteProfileIcon name="completeProfile" ariaHidden />
                 </Icons>
                 <Text>
@@ -318,12 +343,64 @@ class SignedInHeader extends PureComponent<Props, State> {
                   borderColor="#fff"
                   textColor="#fff"
                   fontWeight="500"
-                  className="e2e-singed-in-header-skip-btn"
+                  className="e2e-singed-in-header-complete-skip-btn"
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
-                  linkTo="/profile/edit"
                   style="primary-inverse"
+                  linkTo="/profile/edit"
+                  textColor={theme.colorMain}
+                  textHoverColor={theme.colorMain}
+                  fontWeight="500"
+                  className="e2e-singed-in-header-accept-btn"
+                />
+              </Right>
+            </HeaderContentCompleteProfile>
+          </CSSTransition>
+
+          {/* With verification */}
+          <CSSTransition
+            classNames="content"
+            in={onboardingCampaigns.name === 'verification'}
+            timeout={onboardingCampaigns.name === 'verification' ? contentTimeout + contentDelay : contentTimeout}
+            mountOnEnter={true}
+            unmountOnExit={true}
+            enter={true}
+            exit={true}
+          >
+            <HeaderContentCompleteProfile id="e2e-singed-in-header-verifiaction">
+              <Left>
+                <Icons>
+                  <AvatarAndShield aria-hidden >
+                    <StyledAvatar
+                      userId={authUser?.id}
+                      size="50px"
+                      fillColor="#fff"
+                      padding="0px"
+                      borderThickness="0px"
+                    />
+                    <ShieldIcon name="verify" />
+                  </AvatarAndShield>
+                </Icons>
+                <Text>
+                  <FormattedMessage {...messages.verifyYourIdentity} tagName="h2" />
+                </Text>
+              </Left>
+
+              <Right>
+                <SkipButton
+                  style="primary-outlined"
+                  text={<FormattedMessage {...messages.doItLater} />}
+                  onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
+                  borderColor="#fff"
+                  textColor="#fff"
+                  fontWeight="500"
+                  className="e2e-singed-in-header-verification-skip-btn"
+                />
+                <AcceptButton
+                  text={<FormattedMessage {...messages.verifyNow} />}
+                  style="primary-inverse"
+                  onClick={this.handleVerify}
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
                   fontWeight="500"
@@ -384,7 +461,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentDefault id="e2e-singed-in-header-default-cta">
               {defaultMessage && !isEmpty(defaultMessage)
                 ? <T as="h2" value={defaultMessage} supportHtml />
-                : <FormattedMessage {...messages.defaultSignedInMessage} tagName="h2" values={{ firstName: authUser.attributes.first_name }}/>
+                : <FormattedMessage {...messages.defaultSignedInMessage} tagName="h2" values={{ firstName: authUser.attributes.first_name }} />
               }
             </HeaderContentDefault>
           </CSSTransition>

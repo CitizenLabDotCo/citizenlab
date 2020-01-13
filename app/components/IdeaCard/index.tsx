@@ -29,18 +29,20 @@ import { FormattedNumber } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
+import { IParticipationContextType } from 'typings';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const IdeaBudget = styled.div`
-  color: ${colors.clRed2};
+  color: ${colors.clRed};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: 500;
@@ -92,7 +94,7 @@ const CommentInfo = styled.div`
   align-items: center;
 
   &:not(.enabled) {
-    opacity: 0.6;
+    opacity: 0.71;
   }
 `;
 
@@ -105,7 +107,7 @@ export interface InputProps {
   ideaId: string;
   participationMethod?: ParticipationMethod | null;
   participationContextId?: string | null;
-  participationContextType?: 'Phase' | 'Project' | null;
+  participationContextType?: IParticipationContextType | null;
   className?: string;
 }
 
@@ -135,11 +137,19 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
   componentDidUpdate(prevProps : Props) {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
-    if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
-      idea.attributes.action_descriptor.voting.enabled !== prevIdea.attributes.action_descriptor.voting.enabled
-      || idea.attributes.action_descriptor.voting.disabled_reason !== prevIdea.attributes.action_descriptor.voting.disabled_reason
-    )) {
-      this.setState({ showVotingDisabled: null });
+
+    if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
+      const ideaBudgetingEnabled =  idea.attributes?.action_descriptor?.budgeting?.enabled;
+      const prevIdeaBudgetingEnabled = prevIdea.attributes?.action_descriptor?.budgeting?.enabled;
+      const ideaBudgetingDisabledReason = idea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+      const prevIdeaBudgetingDisabledReason = prevIdea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+
+      if (
+        ideaBudgetingEnabled !== prevIdeaBudgetingEnabled ||
+        ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason
+      ) {
+        this.setState({ showVotingDisabled: null });
+      }
     }
   }
 
@@ -253,7 +263,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                     />
                   }
 
-                  <Spacer />
+                  <Spacer aria-hidden />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
                     <CommentIcon name="comments" ariaHidden />
@@ -284,11 +294,13 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                 </BottomBounceUp>
               }
 
-              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId &&
+              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId && participationContextId && participationContextType &&
                 <BottomBounceUp icon="lock-outlined">
                   <DisabledWrapper>
                     <AssignBudgetDisabled
                       budgetingDescriptor={budgetingDescriptor}
+                      participationContextId={participationContextId}
+                      participationContextType={participationContextType}
                     />
                   </DisabledWrapper>
                 </BottomBounceUp>

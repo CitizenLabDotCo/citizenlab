@@ -16,7 +16,7 @@ import { LiveMessage } from 'react-aria-live';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, IIdea } from 'services/ideas';
+import { ideaByIdStream } from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 import { projectByIdStream, IProject } from 'services/projects';
@@ -28,7 +28,8 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 interface IVoteComponent {
   active: boolean;
@@ -145,12 +146,12 @@ const Vote = styled.button<IVoteComponent>`
     }
 
     ${VoteIcon} {
-      opacity: 0.6;
+      opacity: 0.71;
       margin-right: 4px;
     }
 
     ${VoteCount} {
-      opacity: 0.6;
+      opacity: 0.71;
     }
   }
 `;
@@ -233,9 +234,7 @@ interface Props {
 }
 
 interface State {
-  idea: IIdea | null;
-  project: IProject | null;
-  phases: IPhase[] | null;
+  showVoteControl: boolean;
   authUser: IUser | null;
   upvotesCount: number;
   downvotesCount: number;
@@ -248,6 +247,8 @@ interface State {
   votingFutureEnabled: string | null;
   votingDisabledReason: string | null;
   a11yVoteMessage: string;
+  project: IProject | null;
+  phases: IPhase[] | null;
 }
 
 class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
@@ -260,9 +261,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      idea: null,
-      project: null,
-      phases: null,
+      showVoteControl: false,
       authUser: null,
       upvotesCount: 0,
       downvotesCount: 0,
@@ -274,7 +273,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
       cancellingEnabled: null,
       votingFutureEnabled: null,
       votingDisabledReason: null,
-      a11yVoteMessage: ''
+      a11yVoteMessage: '',
+      project: null,
+      phases: null
     };
     this.voting$ = new BehaviorSubject(null);
     this.id$ = new BehaviorSubject(null);
@@ -383,20 +384,36 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
         const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
 
-        if (votingDisabledReason === 'not_verified' && !this.props.noVerificationShortFlow) {
-          verificationNeeded('ActionVote');
+        const projectProcessType = get(project, 'data.attributes.process_type');
+        const projectParticipationMethod = get(project, 'data.attributes.participation_method');
+        const pbProject = (project && projectProcessType === 'continuous' && projectParticipationMethod === 'budgeting' ? project : null);
+        const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
+        const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
+        const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.data.attributes.end_at])) : null);
+        const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.data.attributes.start_at, lastPhase.data.attributes.end_at]) === 'past' : false);
+        const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
+        const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
+        const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
+        const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
+        const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
+
+        const currentOrLatestPhaseId = lastPhaseHasPassed ? lastPhase?.data.id : project?.data.relationships.current_phase?.data?.id;
+
+        if (shouldVerify && !this.props.noVerificationShortFlow) {
+          const pcType = phases ? 'phase' : 'project';
+          const pcId = pcType === 'phase' ? currentOrLatestPhaseId : project?.data.id;
+          verificationNeeded('ActionVote', pcId || '', pcType, 'voting');
         }
 
         this.setState({
-          idea,
           project,
           phases,
+          showVoteControl,
           upvotesCount,
           downvotesCount,
           votingEnabled,
           cancellingEnabled,
           votingDisabledReason,
-          votingFutureEnabled
         });
       }),
 
@@ -523,21 +540,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { size, className, intl: { formatMessage } } = this.props;
-    const { project, phases, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, votingFutureEnabled, upvotesCount, downvotesCount, votingDisabledReason, a11yVoteMessage } = this.state;
+    const { showVoteControl, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, upvotesCount, downvotesCount, a11yVoteMessage } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
-    const projectProcessType = get(project, 'data.attributes.process_type');
-    const projectParticipationMethod = get(project, 'data.attributes.participation_method');
-    const pbProject = (project && projectProcessType === 'continuous' && projectParticipationMethod === 'budgeting' ? project : null);
-    const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
-    const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
-    const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.data.attributes.end_at])) : null);
-    const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.data.attributes.start_at, lastPhase.data.attributes.end_at]) === 'past' : false);
-    const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
-    const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
-    const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
-    const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
-    const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
 
     if (!showVoteControl) return null;
 

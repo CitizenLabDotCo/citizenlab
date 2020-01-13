@@ -42,7 +42,7 @@ const AvatarAndShield = styled.div`
 `;
 
 const StyledAvatar = styled(Avatar)`
-  margin-right: -5px;
+  margin-right: -4px;
   z-index: 2;
 `;
 
@@ -50,7 +50,7 @@ const ShieldIcon = styled(Icon)`
   fill: ${colors.label};
   width: 48px;
   height: 53px;
-  margin-left: -5px;
+  margin-left: -4px;
 `;
 
 const Content = styled.div`
@@ -75,11 +75,11 @@ const Title = styled.h2`
   line-height: normal;
   padding: 0;
   margin: 0;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 `;
 
 const Text = styled.p`
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
 `;
@@ -104,7 +104,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           <>
             <StyledAvatar
               userId={authUser.data.id}
-              size="55px"
+              size="52px"
               verified
               aria-hidden
             />
@@ -119,8 +119,15 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
           </>
           :
           <>
-            <AvatarAndShield aria-hidden >
-              <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
+            <AvatarAndShield aria-hidden>
+              <StyledAvatar
+                userId={authUser?.data?.id}
+                size="52px"
+                bgColor="transparent"
+                padding="0px"
+                borderThickness="2px"
+                borderColor="#fff"
+              />
               <ShieldIcon name="verify" />
             </AvatarAndShield>
             <Content>

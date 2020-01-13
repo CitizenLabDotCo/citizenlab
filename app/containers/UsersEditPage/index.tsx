@@ -1,15 +1,9 @@
 // Libraries
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import React from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // router
 import clHistory from 'utils/cl-router/history';
-
-// Services
-import { authUserStream } from 'services/auth';
-import { areasStream, IAreas } from 'services/areas';
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { IUser } from 'services/users';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,12 +14,19 @@ import ProfileForm from './ProfileForm';
 import CampaignsConsentForm from './CampaignsConsentForm';
 import ProfileDeletion from './ProfileDeletion';
 import VerificationStatus from './VerificationStatus';
+import UsersEditPageMeta from './UsersEditPageMeta';
 
 // Styles
 import styled from 'styled-components';
-import { colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
-const Container = styled.div`
+// Hooks
+import useAreas from 'hooks/useAreas';
+import useTenant from 'hooks/useTenant';
+import useAuthUser from 'hooks/useAuthUser';
+
+const Container = styled.main`
   width: 100%;
   background-color: ${colors.background};
   display: flex;
@@ -43,73 +44,37 @@ const Wrapper = styled.div``;
 
 interface Props {}
 
-interface State {
-  authUser: IUser | null;
-  areas: IAreas | null;
-  currentTenant: ITenant | null;
-  loaded: boolean;
-}
+const ProfileEditor = React.memo<Props>(_props => {
+  const authUser = useAuthUser();
+  const currentTenant = useTenant();
+  const areas = useAreas();
 
-export default class ProfileEditor extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      authUser: null,
-      areas: null,
-      currentTenant: null,
-      loaded: false
-    };
+  if (authUser === null) {
+    clHistory.push('/sign-in');
   }
 
-  componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
-    const authUser$ = authUserStream().observable;
-    const areas$ = areasStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        currentTenant$,
-        authUser$,
-        areas$
-      ).subscribe(([currentTenant, authUser, areas]) => {
-        this.setState({ currentTenant, authUser, areas, loaded: true });
-      })
-    ];
+  if (!isNilOrError(currentTenant) && !isNilOrError(areas) && !isNilOrError(authUser)) {
+    return (
+      <Container id="e2e-user-edit-profile-page">
+        <UsersEditPageMeta user={authUser.data} />
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
+        </ScreenReaderOnly>
+        <Wrapper>
+          <VerificationStatus />
+          <ProfileForm
+            user={authUser.data}
+            areas={areas.data}
+            tenant={currentTenant.data}
+          />
+          <ProfileDeletion/>
+          <CampaignsConsentForm />
+        </Wrapper>
+      </Container>
+    );
   }
 
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+  return null;
+});
 
-  render() {
-    const { currentTenant, authUser, areas, loaded } = this.state;
-
-    if (loaded && !authUser) {
-      clHistory.push('/');
-    }
-
-    if (loaded && currentTenant && authUser && areas) {
-      return (
-        <Container id="e2e-user-edit-profile-page">
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h1" {...messages.invisibleTitleUserSettings} />
-          </ScreenReaderOnly>
-          <Wrapper>
-            <VerificationStatus />
-            <ProfileForm
-              user={authUser.data}
-              areas={areas.data}
-              tenant={currentTenant.data}
-            />
-            <ProfileDeletion/>
-            <CampaignsConsentForm />
-          </Wrapper>
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
+export default ProfileEditor;

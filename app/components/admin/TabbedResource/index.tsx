@@ -1,5 +1,5 @@
 import React from 'react';
-import { isString } from 'lodash-es';
+
 import { withRouter, WithRouterProps } from 'react-router';
 import Link from 'utils/cl-router/Link';
 
@@ -9,10 +9,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 
 // typings
-import { Message, Multiloc } from 'typings';
+import { Message } from 'typings';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
@@ -55,6 +54,10 @@ const Tab = styled.div`
   display: flex;
   margin-bottom: -1px;
 
+  &:first-letter {
+    text-transform: uppercase;
+  }
+
   &:not(:last-child) {
     margin-right: 40px;
   }
@@ -64,7 +67,6 @@ const Tab = styled.div`
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     line-height: 1.5rem;
-    text-transform: capitalize;
     padding: 0;
     padding-top: 1em;
     padding-bottom: 1em;
@@ -99,7 +101,7 @@ const ChildWrapper = styled.div`
 `;
 
 export type TabProps = {
-  label: string | Message,
+  label: string
   url: string,
   active?: boolean,
   feature?: string,
@@ -108,7 +110,7 @@ export type TabProps = {
 
 type Props = {
   resource: {
-    title: string | Multiloc,
+    title: string,
     publicLink?: string,
     subtitle?: string;
   },
@@ -120,26 +122,6 @@ type Props = {
 
 type State = {};
 
-function isMessage(entry: any): entry is Message {
-  return entry.id && entry.defaultMessage;
-}
-
-function isMultiloc(entry: any): entry is Multiloc {
-  return entry.en || entry.nl || entry.fr;
-}
-
-function showLabel(label: string | Multiloc | Message) {
-  if (isString(label)) {
-    return label;
-  } else if (isMessage(label)) {
-    return <FormattedMessage {...label} />;
-  } else if (isMultiloc(label)) {
-    return <T value={label} />;
-  } else {
-    return '';
-  }
-}
-
 function urlMatch(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
@@ -147,25 +129,25 @@ function urlMatch(tabUrl: string) {
 class TabbedResource extends React.PureComponent<Props & WithRouterProps, State> {
 
   render() {
-    const { children, resource, messages, tabs, location } = this.props;
+    const { children, resource: { title, subtitle, publicLink }, messages, tabs, location } = this.props;
 
     return (
       <>
         <ResourceHeader className="e2e-resource-header">
           <div>
-            <Title>{showLabel(resource.title)}</Title>
-            {resource.subtitle &&
+            <Title>{title}</Title>
+            {subtitle &&
               <SectionSubtitle>
-                {resource.subtitle}
+                {subtitle}
               </SectionSubtitle>
             }
           </div>
 
-          {resource.publicLink && messages &&
+          {publicLink && messages &&
             <Button
               style="cl-blue"
               icon="eye"
-              linkTo={resource.publicLink}
+              linkTo={publicLink}
             >
               <FormattedMessage {...messages.viewPublicResource} />
             </Button>
@@ -180,14 +162,14 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
                 return (
                   <FeatureFlag key={tab.url} name={tab.feature}>
                     <Tab key={tab.url} className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
-                      <Link to={tab.url}>{showLabel(tab.label)}</Link>
+                      <Link to={tab.url}>{tab.label}</Link>
                     </Tab>
                   </FeatureFlag>
                 );
               } else {
                 return (
                   <Tab key={tab.url} className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
-                    <Link to={tab.url}>{showLabel(tab.label)}</Link>
+                    <Link to={tab.url}>{tab.label}</Link>
                   </Tab>
                 );
               }

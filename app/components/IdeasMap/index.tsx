@@ -24,7 +24,8 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media, ScreenReaderOnly } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';
@@ -183,6 +184,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
               projectId={projectIds[0]}
               phaseId={phaseId || undefined}
               onClick={this.redirectToIdeaCreation}
+              participationContextType={phaseId ? 'phase' : 'project'}
             />
           </div>
         }

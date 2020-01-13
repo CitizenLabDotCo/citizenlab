@@ -1,6 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, capitalizeParticipationContextType } from 'utils/helperUtils';
 import { get, isEmpty, isUndefined } from 'lodash-es';
 
 // services
@@ -15,7 +15,8 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetIdeaList, { GetIdeaListChildProps } from 'resources/GetIdeaList';
 
 // styles
-import { colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
+import { colors, fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
@@ -37,6 +38,7 @@ import messages from '../messages';
 
 // typings
 import { IIdeaData } from 'services/ideas';
+import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   padding: 10px;
@@ -127,7 +129,7 @@ const RemoveIcon = styled(Icon)`
 
 interface InputProps {
   participationContextId: string | null;
-  participationContextType: 'Project' | 'Phase';
+  participationContextType: IParticipationContextType;
   className?: string;
 }
 
@@ -161,7 +163,7 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
       await updateBasket(basket.id, {
         user_id: authUser.id,
         participation_context_id: participationContextId,
-        participation_context_type: participationContextType,
+        participation_context_type: capitalizeParticipationContextType(participationContextType),
         idea_ids: newIdeas,
         submitted_at: null
       });
@@ -177,7 +179,7 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
       const ideas = (!isNilOrError(ideaList) ? ideaList.filter(idea => !isNilOrError(idea)) as IIdeaData[] : null);
       let budgetingDisabled = false;
 
-      if (participationContextType === 'Phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) !== 'present') {
+      if (participationContextType === 'phase' && !isNilOrError(phase) && pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) !== 'present') {
         budgetingDisabled = true;
       }
 
@@ -241,12 +243,12 @@ class PBBasket extends PureComponent<Props & Tracks, State> {
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject id={participationContextType === 'Project' ? participationContextId : null}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'Phase' ? participationContextId : null}>{render}</GetPhase>,
+  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ participationContextType, project, phase, render }) => {
     let basketId: string | null = null;
 
-    if (participationContextType === 'Project') {
+    if (participationContextType === 'project') {
       basketId = (!isNilOrError(project) && project.relationships.user_basket ? get(project.relationships.user_basket.data, 'id', null) : null);
     } else {
       basketId = (!isNilOrError(phase) && phase.relationships.user_basket ? get(phase.relationships.user_basket.data, 'id', null) : null);

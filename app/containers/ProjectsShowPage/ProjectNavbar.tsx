@@ -2,6 +2,9 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // router
 import Link from 'utils/cl-router/Link';
 
@@ -11,7 +14,8 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import styled, { withTheme } from 'styled-components';
 
 // components
@@ -92,8 +96,8 @@ const ProjectNavbarLink = styled(Link)`
   color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   opacity: 0.6;
   margin-right: 60px;
-  border-top: solid 3px transparent;
-  border-bottom: solid 3px transparent;
+  border-top: solid 2px transparent;
+  border-bottom: solid 2px transparent;
 
   &.active,
   &:focus,
@@ -103,7 +107,7 @@ const ProjectNavbarLink = styled(Link)`
   }
 
   &.active {
-    border-bottom: 3px solid ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
+    border-bottom: 2px solid ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   }
 
   &:first-of-type {
@@ -210,13 +214,13 @@ class ProjectNavbar extends PureComponent<Props, State> {
         const projectPublicationStatus = project.attributes.publication_status;
         const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
         const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
-        let participationContextType: 'Project' | 'Phase' | null = null;
+        let participationContextType: IParticipationContextType | null = null;
         let participationContextId: string | null = null;
 
         if (isPBProject) {
-          participationContextType = 'Project';
+          participationContextType = 'project';
         } else if (isPBPhase) {
-          participationContextType = 'Phase';
+          participationContextType = 'phase';
         }
 
         if (isPBProject) {
@@ -323,6 +327,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
                     textColor={theme.projectNavbarIdeaButtonTextColor}
                     borderRadius="0px"
+                    participationContextType="project"
                   />
                 }
               </ProjectNavbarItems>
@@ -338,7 +343,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject slug={projectSlug}>{render}</GetProject>,
+  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
   events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>,
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });

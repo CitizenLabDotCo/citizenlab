@@ -15,7 +15,7 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 const SurveyContainer = styled.div`
   padding-top: 50px;
@@ -23,7 +23,7 @@ const SurveyContainer = styled.div`
 `;
 
 export default withRouter((props: WithRouterProps) => (
-  <GetProject slug={props.params.slug}>
+  <GetProject projectSlug={props.params.slug}>
     {(project) => {
       if (
         !isNilOrError(project) &&

@@ -3,7 +3,7 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   votingDisabledProjectInactive: {
     id: 'app.components.VoteControl.votingDisabledProjectInactive',
-    defaultMessage: 'You can no longer or not yet vote on ideas in {projectName}',
+    defaultMessage: 'You can no longer vote on ideas in {projectName}',
   },
   votingDisabledPhaseCompleted: {
     id: 'app.components.VoteControl.votingDisabledPhaseCompleted',

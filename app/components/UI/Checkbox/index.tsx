@@ -17,6 +17,13 @@ const Container = styled.div<{ size: string }>`
   label {
     cursor: pointer;
   }
+
+  &.disabled {
+    cursor: not-allowed;
+    label {
+      cursor: not-allowed;
+    }
+  }
 `;
 
 const InputWrapper = styled.div<{ checked: boolean, size: string }>`
@@ -29,10 +36,10 @@ const InputWrapper = styled.div<{ checked: boolean, size: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px #aaa;
+  border: solid 1px ${colors.separationDark};
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => props.checked ? colors.clGreen : '#fff'};
-  border-color: ${(props) => props.checked ? colors.clGreen : '#aaa'};
+  border-color: ${(props) => props.checked ? colors.clGreen : colors.separationDark};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &.focused {
@@ -40,7 +47,7 @@ const InputWrapper = styled.div<{ checked: boolean, size: string }>`
   }
 
   &:hover {
-    border-color: ${(props: any) => props.checked ? colors.clGreen : '#333'};
+    border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
   }
 `;
 
@@ -61,6 +68,11 @@ const CheckmarkIcon = styled(Icon)`
   width: 15px;
 `;
 
+const IndeterminateIcon = styled(Icon)`
+  fill: #fff;
+  width: 12px;
+`;
+
 const Label = styled.label`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
@@ -68,18 +80,29 @@ const Label = styled.label`
   margin-left: 10px;
 `;
 
-interface DefaultProps {
+type DefaultProps = {
   size?: string;
-}
+};
 
-interface Props extends DefaultProps {
-  id?: string | undefined;
-  label?: string | JSX.Element | null | undefined;
+/**
+ * If we have a label, an id is required. Otherwise id is optional.
+ */
+type LabelProps = {
+  label: string | JSX.Element | null,
+  id: string
+} | {
+  label?: undefined,
+  id?: string | undefined
+};
+
+type Props = DefaultProps & LabelProps & {
   checked: boolean;
+  indeterminate?: boolean;
   onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
   className?: string;
   notFocusable?: boolean;
-}
+  disabled?: boolean;
+};
 
 interface State {
   inputFocused: boolean;
@@ -99,26 +122,33 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   handleOnClick = (event: React.MouseEvent) => {
-    const targetElement = event?.target as Element | undefined;
-    const parentElement = targetElement?.parentElement;
-    const targetElementIsLink = targetElement?.hasAttribute('href');
-    const parentElementIsLink = parentElement?.hasAttribute('href');
+    const { disabled } = this.props;
+    if (!disabled) {
+      const targetElement = event?.target as HTMLElement;
+      const parentElement = targetElement?.parentElement;
+      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-    if (event && !targetElementIsLink && !parentElementIsLink) {
-      event.preventDefault();
-      this.props.onChange(event);
+      if (!targetElementIsLink && !parentElementIsLink) {
+        event && event.preventDefault();
+        this.props.onChange(event);
+      }
     }
   }
 
   handleOnKeyDown = (event: React.KeyboardEvent) => {
-    const targetElement = event?.target as Element | undefined;
-    const parentElement = targetElement?.parentElement;
-    const targetElementIsLink = targetElement?.hasAttribute('href');
-    const parentElementIsLink = parentElement?.hasAttribute('href');
+    const { disabled } = this.props;
+    if (!disabled) {
+      const targetElement = event?.target as HTMLElement;
+      const parentElement = targetElement?.parentElement;
+      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
+      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-    if (event && !targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
-      event.preventDefault();
-      this.props.onChange(event);
+      // if key = Space
+      if (!targetElementIsLink && !parentElementIsLink && event.keyCode === 32) {
+        event && event.preventDefault();
+        this.props.onChange(event);
+      }
     }
   }
 
@@ -135,7 +165,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, className, notFocusable, id } = this.props;
+    const { label, size, checked, indeterminate, className, notFocusable, id, disabled } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -144,11 +174,11 @@ export default class Checkbox extends PureComponent<Props, State> {
         onMouseDown={this.removeFocus}
         onClick={this.handleOnClick}
         onKeyDown={this.handleOnKeyDown}
-        className={`${className || ''} ${label ? 'hasLabel' : 'hasNoLabel'}`}
+        className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'} ${disabled ? 'disabled' : ''}`}
       >
         <InputWrapper
           className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
-          checked={checked}
+          checked={!!(checked || indeterminate)}
           size={size as string}
         >
           <Input
@@ -159,12 +189,14 @@ export default class Checkbox extends PureComponent<Props, State> {
             defaultChecked={checked}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
+            disabled={disabled}
           />
           {checked && <CheckmarkIcon ariaHidden name="checkmark" />}
+          {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}
         </InputWrapper>
 
         {label &&
-          <Label htmlFor={id} onClick={this.handleOnClick}>
+          <Label htmlFor={id}>
             {label}
           </Label>
         }

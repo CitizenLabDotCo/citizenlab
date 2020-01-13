@@ -48,7 +48,6 @@ const Tab = styled.li`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  text-transform: capitalize;
   list-style: none;
   cursor: pointer;
   display: flex;
@@ -66,6 +65,10 @@ const Tab = styled.li`
 
   &:not(.active):hover {
     border-color: transparent;
+  }
+
+  &:first-letter {
+    text-transform: uppercase;
   }
 `;
 
@@ -211,6 +214,7 @@ class InfoPane extends PureComponent<Props, State> {
                   currentValue={this.state.normalization}
                   value="absolute"
                   label={<FormattedMessage {...messages.absolute} />}
+                  name="normalization"
                 />
                 <StyledRadio
                   key="relative"
@@ -223,6 +227,7 @@ class InfoPane extends PureComponent<Props, State> {
                       <IconTooltip content={<FormattedMessage {...messages.relativeTooltip} />} />
                     </>
                   )}
+                  name="normalization"
                 />
               </RadioButtons>
               <ChartTitle><FormattedMessage {...messages.gender} /></ChartTitle>

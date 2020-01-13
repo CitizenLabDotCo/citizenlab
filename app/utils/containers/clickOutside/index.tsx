@@ -12,6 +12,8 @@ type Props = {
   setRef?: (arg: HTMLElement) => void;
   role?: string;
   closeOnClickOutsideEnabled?: boolean;
+  isModal?: boolean;
+  ariaLabelledBy?: string;
 };
 
 type State = {};
@@ -93,7 +95,15 @@ export default class ClickOutside extends PureComponent<Props, State> {
   }
 
   render() {
-    const { id, role, children, className, onClick } = this.props;
+    const {
+      id,
+      role,
+      children,
+      className,
+      onClick,
+      isModal,
+      ariaLabelledBy
+    } = this.props;
 
     return (
       <div
@@ -105,6 +115,8 @@ export default class ClickOutside extends PureComponent<Props, State> {
         onMouseLeave={this.handleOnMouseLeave}
         onMouseDown={this.handleOnMouseDown}
         role={role}
+        aria-modal={isModal}
+        aria-labelledby={ariaLabelledBy}
       >
         {children}
       </div>

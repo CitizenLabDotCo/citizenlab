@@ -43,6 +43,8 @@ describe('Idea voting permissions', () => {
       cy.get('#email').type(email);
       cy.get('#password').type(password);
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('#e2e-signup-step1-button').click();
       cy.wait(300);
       cy.get('.e2e-verification-modal');
@@ -80,6 +82,8 @@ describe('Idea voting permissions', () => {
       cy.get('#email').type(email);
       cy.get('#password').type(password);
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('#e2e-signup-step1-button').click();
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button');

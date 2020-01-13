@@ -1,18 +1,20 @@
 import React, { PureComponent } from 'react';
 import { isString, get } from 'lodash-es';
+import Icon from 'components/UI/Icon';
 import { IOption } from 'typings';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
-const Arrow = styled.div`
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: solid 5px #333;
-  cursor: pointer;
+const Arrow = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  fill: #999;
+  pointer-events: none;
+  transform: rotate(90deg);
+  margin: auto;
   position: absolute;
-  top: 20px;
+  top: 0;
+  bottom: 0;
   right: 11px;
 `;
 
@@ -27,7 +29,7 @@ const CustomSelect = styled.select`
   padding-right: 27px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.separationDark};
   cursor: pointer;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -50,7 +52,7 @@ const Container = styled.div`
       }
 
       ${Arrow} {
-        border-top-color: #000;
+        fill: #000;
       }
     }
   }
@@ -62,15 +64,14 @@ const Container = styled.div`
       border-color: #ddd;
       background: #f9f9f9;
     }
-
-    ${Arrow} {
-      cursor: not-allowed;
-      border-top-color: #bbb;
-    }
   }
 `;
 
-export type Props = {
+export interface DefaultProps {
+  canBeEmpty?: boolean;
+}
+
+export interface Props extends DefaultProps {
   id?: string;
   value?: IOption | string | null;
   placeholder?: string | JSX.Element | null;
@@ -79,11 +80,15 @@ export type Props = {
   onBlur?: (event: React.FocusEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   className?: string;
-};
+}
 
-type State = {};
+interface State {}
 
 export default class Select extends PureComponent<Props, State> {
+
+  static defaultProps: DefaultProps = {
+    canBeEmpty: false
+  };
 
   handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (this.props.options) {
@@ -99,7 +104,7 @@ export default class Select extends PureComponent<Props, State> {
   }
 
   render() {
-    const { id, disabled, className, options } = this.props;
+    const { id, disabled, className, options, canBeEmpty } = this.props;
     const defaultValue = 'DEFAULT_SELECT_VALUE';
     const value = isString(this.props.value) ? this.props.value : get(this.props.value, 'value', null) as string | null;
     const selectedValue = !!(options && options.find(option => option.value === value)) ? options.find(option => option.value === value)?.value as string : defaultValue;
@@ -117,8 +122,8 @@ export default class Select extends PureComponent<Props, State> {
           <option
             value={defaultValue}
             aria-selected={selectedValue === defaultValue}
-            hidden={true}
-            disabled={true}
+            hidden={!canBeEmpty}
+            disabled={!canBeEmpty}
           />
 
           {options && options.length > 0 && options.map((option, index) => (
@@ -131,7 +136,10 @@ export default class Select extends PureComponent<Props, State> {
             </option>
           ))}
         </CustomSelect>
-        <Arrow className={disabled ? 'disabled' : 'enabled'} />
+        <Arrow
+          name="chevron-right"
+          className={`arrow ${disabled ? 'disabled' : 'enabled'}`}
+        />
       </Container>
     );
   }

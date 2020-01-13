@@ -11,10 +11,8 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
-const cssnano = require('cssnano');
 const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -60,36 +58,12 @@ const config = {
       },
       minimize: true,
       minimizer: [
-        new TerserPlugin({ parallel: false, sourceMap: true }),
+        new TerserPlugin({
+          parallel: false,
+          sourceMap: true
+        }),
         new OptimizeCSSAssetsPlugin()
       ]
-      // minimizer: [
-      //   new TerserPlugin({
-      //       cache: true,
-      //       parallel: true,
-      //       sourceMap: true,
-      //       terserOptions: {
-      //         warnings: false,
-      //         compress: {
-      //           comparisons: false,
-      //         },
-      //         parse: {},
-      //         mangle: true,
-      //         output: {
-      //           comments: false,
-      //           ascii_only: true,
-      //         },
-      //       },
-      //   }),
-      //   new OptimizeCSSAssetsPlugin({
-      //     assetNameRegExp: /\.css$/g,
-      //     cssProcessor: cssnano,
-      //     cssProcessorPluginOptions: {
-      //       preset: ['default', { discardComments: { removeAll: true } }],
-      //     },
-      //     canPrint: true
-      //   })
-      // ]
     }
   },
 
@@ -167,21 +141,7 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: path.join(process.cwd(), 'app/index.html'),
-      inject: true,
-      minify: !isDev ? {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        removeScriptTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true,
-      } : false
+      template: 'app/index.html'
     }),
 
     // new BundleAnalyzerPlugin(),
@@ -194,40 +154,14 @@ const config = {
     }),
 
     !isDev && new MomentTimezoneDataPlugin({
-      startYear: 2012,
-      endYear: currentYear + 10,
+      startYear: 2014,
+      endYear: currentYear + 8,
     }),
 
     !isDev && new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css',
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
-
-    // !isDev && new OfflinePlugin({
-    //   relativePaths: false,
-    //   publicPath: '/',
-    //   appShell: '/',
-    //   responseStrategy: 'cache-first',
-    //   excludes: [
-    //     '**/.*',
-    //     '**/*.map',
-    //     '**/*.gz',
-    //     '/__/**',
-    //     '/fragments/**',
-    //     '/widgets/**'
-    //   ],
-    //   caches: {
-    //     main: [':rest:'],
-    //     additional: ['*.chunk.js'],
-    //   },
-    //   ServiceWorker: {
-    //     prefetchRequest: {
-    //       mode: 'same-origin',
-    //       credentials: 'same-origin',
-    //     },
-    //   },
-    //   safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
-    // }),
 
     !isDev && new webpack.HashedModuleIdsPlugin(),
 

@@ -22,7 +22,8 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 const Container = styled.div`
@@ -172,7 +173,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 const ProjectInfoWhithHoc = withTheme(injectIntl<Props>(ProjectInfo));
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject id={projectId}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
   projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,

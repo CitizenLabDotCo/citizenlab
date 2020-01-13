@@ -5,6 +5,9 @@ import React from 'react';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
+// typings
+import { IParticipationContextType } from 'typings';
+
 // components
 import Button from 'components/UI/Button';
 import { exportPollResponses } from 'services/pollResponses';
@@ -14,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  participationContextType: 'projects' | 'phases';
+  participationContextType: IParticipationContextType;
   participationContextId: string;
   className?: string;
 }

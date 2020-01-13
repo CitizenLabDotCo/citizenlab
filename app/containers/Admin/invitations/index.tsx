@@ -504,6 +504,8 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                   currentValue={selectedLocale}
                   value={currentTenantLocale}
                   label={appLocalePairs[currentTenantLocale]}
+                  name="locales"
+                  id={`locale-${currentTenantLocale}`}
                 />
               ))}
             </SectionField>

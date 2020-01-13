@@ -80,21 +80,27 @@ const VotingLimitInput = styled(Input)`
 const BudgetingAmountInput = styled(Input)`
   max-width: 288px;
 `;
+
 const StyledA = styled.a`
   &:hover {
     text-decoration: underline;
   }
 `;
-const LabelText = styled.div`
-  margin-top: 15px;
 
+const StyledRadio = styled(Radio)`
+  margin-bottom: 25px;
+`;
+
+const LabelText = styled.div`
   &.disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
 
   h3 {
-    margin-bottom: 0;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 3px;
     font-weight: 600;
   }
 
@@ -115,6 +121,7 @@ export interface IParticipationContextConfig {
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
   survey_embed_url?: string | null;
+  poll_anonymous?: boolean;
 }
 
 interface DataProps {
@@ -160,7 +167,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       survey_embed_url: null,
       loaded: false,
       noVotingLimit: null,
-      noBudgetingAmount: null
+      noBudgetingAmount: null,
+      poll_anonymous: false,
     };
     this.subscriptions = [];
   }
@@ -190,6 +198,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             max_budget,
             survey_embed_url,
             survey_service,
+            poll_anonymous,
           } = data.data.attributes;
 
           this.setState({
@@ -204,6 +213,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             max_budget,
             survey_embed_url,
             survey_service,
+            poll_anonymous,
             loaded: true
           });
         } else {
@@ -233,7 +243,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       presentation_mode,
       max_budget,
       survey_embed_url,
-      survey_service
+      survey_service,
+      poll_anonymous,
     } = this.state;
     let output: IParticipationContextConfig = {} as any;
 
@@ -260,7 +271,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       };
     } else if (participation_method === 'poll') {
       output = {
-        participation_method
+        participation_method,
+        poll_anonymous
       };
     } else if (participation_method === 'budgeting') {
       output = omitBy({
@@ -351,6 +363,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
     this.setState({ max_budget: parseInt(max_budget, 10), noBudgetingAmount: null });
   }
 
+  togglePollAnonymous = () => {
+    this.setState(state => ({ poll_anonymous: !state.poll_anonymous }));
+  }
+
   validate() {
     let isValidated = true;
     let noVotingLimit: JSX.Element | null = null;
@@ -395,6 +411,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       loaded,
       noVotingLimit,
       noBudgetingAmount,
+      poll_anonymous,
     } = this.state;
     const tenantCurrency = (!isNilOrError(tenant) ? tenant.attributes.settings.core.currency : '');
 
@@ -407,7 +424,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 <FormattedMessage {...messages.participationMethod} />
                 <IconTooltip content={<FormattedMessage {...messages.participationMethodTooltip} />} />
               </Label>
-              <Radio
+              <StyledRadio
                 onChange={this.handleParticipationMethodOnChange}
                 currentValue={participation_method}
                 value="ideation"
@@ -424,7 +441,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   </LabelText>)}
               />
               <FeatureFlag name="participatory_budgeting">
-                <Radio
+                <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
                   value="budgeting"
@@ -442,7 +459,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 />
               </FeatureFlag>
               <FeatureFlag name="polls">
-                <Radio
+                <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
                   value="poll"
@@ -461,7 +478,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
               </FeatureFlag>
               {surveys_enabled &&
                (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
-                <Radio
+                <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
                   value="survey"
@@ -648,6 +665,21 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
                   </SectionField>
                 }
+              </>
+            }
+
+            {participation_method === 'poll' &&
+              <>
+                <SectionField>
+                  <Label>
+                    <FormattedMessage {...messages.anonymousPolling} />
+                    <IconTooltip content={<FormattedMessage {...messages.anonymousPollingTooltip} />} />
+                  </Label>
+
+                  <Toggle value={poll_anonymous as boolean} onChange={this.togglePollAnonymous} />
+
+                  <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />
+                </SectionField>
               </>
             }
 

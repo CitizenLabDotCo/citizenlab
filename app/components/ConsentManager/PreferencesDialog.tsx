@@ -43,9 +43,8 @@ interface Props {
 export default class PreferencesDialog extends PureComponent<Props> {
   static displayName = 'PreferencesDialog';
 
-  handleChange = (event) => {
-    event.preventDefault();
-    this.props.onChange(event.target.name, event.target.value === 'true');
+  handleChange = (category: string, value: boolean) => (_event) => {
+    this.props.onChange(category, value);
   }
 
   render() {
@@ -57,7 +56,7 @@ export default class PreferencesDialog extends PureComponent<Props> {
     } = this.props;
     const checkCategories = { analytics, advertising, functional };
     return (
-      <ContentContainer>
+      <ContentContainer id="e2e-preference-dialog">
         {Object.keys(categoryDestinations).map((category) => {
           if (categoryDestinations[category].length > 0) {
             return (

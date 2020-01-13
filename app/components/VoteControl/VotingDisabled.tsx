@@ -1,4 +1,5 @@
 import React, { MouseEvent, PureComponent } from 'react';
+import Link from 'utils/cl-router/Link';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { darken } from 'polished';
@@ -25,6 +26,10 @@ const Container = styled.div`
     word-break: break-word;
     hyphens: auto;
   }
+`;
+
+const StyledLink = styled(Link)`
+  color: ${colors.clBlue};
 `;
 
 const StyledButton = styled.button`
@@ -59,7 +64,12 @@ class VotingDisabled extends PureComponent<Props, State> {
   onVerify = (event) => {
     event.stopPropagation();
     event.preventDefault();
-    openVerificationModalWithContext('ActionVote');
+    const { project } = this.props;
+    if (!isNilOrError(project)) {
+      const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+      const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;
+      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
+    }
   }
 
   removeFocus = (event: React.MouseEvent) => {
@@ -95,9 +105,31 @@ class VotingDisabled extends PureComponent<Props, State> {
     }
   }
 
+  getProjectLink = () => {
+    const { project } = this.props;
+
+    if (!isNilOrError(project)) {
+      const projectTitle = project.attributes.title_multiloc;
+
+      return (
+        <StyledLink
+          to={`/projects/${project.attributes.slug}`}
+          onClick={this.stopPropagation}
+        >
+          <T value={projectTitle} />
+        </StyledLink>
+      );
+    }
+
+    return null;
+  }
+
+  stopPropagation = (event: MouseEvent | KeyboardEvent) => {
+    event.stopPropagation();
+  }
+
   render() {
-    const { votingDescriptor, project } = this.props;
-    const projectTitle = (!isNilOrError(project) ? project.attributes.title_multiloc : {});
+    const { votingDescriptor } = this.props;
     const message = this.reasonToMessage();
     const enabledFromDate = (votingDescriptor.future_enabled ? (
       <FormattedDate
@@ -107,11 +139,7 @@ class VotingDisabled extends PureComponent<Props, State> {
         day="numeric"
       />
     ) : null);
-    const projectName = (
-      <StyledButton onClick={this.handleProjectLinkClick} onMouseDown={this.removeFocus} role="navigation">
-        <T value={projectTitle} />
-      </StyledButton>
-    );
+    const projectName = this.getProjectLink();
     const verificationLink = (
       <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
         <FormattedMessage {...messages.verificationLinkText} />
@@ -134,7 +162,7 @@ class VotingDisabled extends PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetProject id={inputProps.projectId}>
+  <GetProject projectId={inputProps.projectId}>
     {project => <VotingDisabled {...inputProps} project={project} />}
   </GetProject>
 );

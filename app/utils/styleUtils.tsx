@@ -1,6 +1,6 @@
 import { isNil, get, isString } from 'lodash-es';
 import { ITenant } from 'services/tenant';
-import styled, { css } from 'styled-components';
+import { css } from 'styled-components';
 import { darken, transparentize } from 'polished';
 import { isNilOrError } from './helperUtils';
 
@@ -113,7 +113,15 @@ export const colors = {
   placeholder: '#aaa',
   separation: '#e0e0e0',
   /**
-  * this is the first grey to get 4.5 contrast ratio on the light greyish background we often use (#f9f9fa)
+  * this is the first grey to get 3.0 contrast ratio on a white background, needed for non-text contrast such as button/label borders
+  */
+  separationDark: '#949494',
+  /**
+  * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
+  */
+  separationDarkOnGreyBackground: '#8D8D8D',
+  /**
+  * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
   */
   clGreyOnGreyBackground: '#707070',
   /**
@@ -140,6 +148,7 @@ export const colors = {
   clRedError: '#D61607',
   clRedErrorBackground: '#fde9e8',
   draftYellow: '#8C680D',
+  grey: '#767676',
   mediumGrey: '#BDBDBD',
   lightGreyishBlue: '#EBEDEF',
   clBlue: '#008292',
@@ -183,7 +192,8 @@ export const colors = {
   emailBg: '#e6ebec',
 
   // buttons
-  disabledPrimaryButtonBg: '#d0d0d0'
+  disabledPrimaryButtonBg: '#d0d0d0',
+  clBlueButtonText: '#1391A1'
 };
 
 export const fontSizes = {
@@ -399,13 +409,6 @@ export function invisibleA11yText() {
     clip: rect(1px, 1px, 1px, 1px);
   `;
 }
-
-/**
- * Wrap in this component any element that should only be visible by screen readers
- */
-export const ScreenReaderOnly = styled.span`
-  ${invisibleA11yText()}
-`;
 
 // Calculus
 export function remCalc(desiredSize: number) {

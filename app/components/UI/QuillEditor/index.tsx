@@ -115,6 +115,7 @@ const Container: any = styled.div`
     background: #f8f8f8;
     border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
     box-shadow: none !important;
+    border: 1px solid ${colors.separationDark} !important;
     border-bottom: 0 !important;
   }
 
@@ -164,7 +165,7 @@ const Container: any = styled.div`
     line-height: 24px;
     font-weight: 400;
     border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
-    border-color: #ccc;
+    border: 1px solid ${colors.separationDark } !important;
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     -webkit-appearance: none;
     overflow-y: auto;
@@ -201,6 +202,7 @@ export interface InputProps {
   id: string;
   inAdmin?: boolean;
   hasError?: boolean;
+  labelId?: string;
 }
 export interface QuillProps {
   onChange?: (string) => void;
@@ -264,6 +266,14 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
   modules: ModulesConfig;
   formats: string[];
   toolbar: JSX.Element | null;
+  quillRef: any;
+
+  componentDidMount() {
+    const { labelId } = this.props;
+    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', labelId);
+    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-multiline', 'true');
+    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('role', 'textbox');
+  }
 
   constructor(props) {
     super(props);
@@ -275,6 +285,7 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
     this.modules = this.getModuleConfig(props);
     this.formats = this.getFormats(props);
     this.toolbar = this.computeToolbar(props);
+    this.quillRef = React.createRef();
   }
 
   componentDidUpdate(prevProps) {
@@ -535,6 +546,7 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
         remove={formatMessage(messages.remove)}
         onFocus={this.handleOnFocus}
         onBlur={this.handleOnBlur}
+        ref={this.quillRef}
       >
         {this.toolbar}
         <ReactQuill

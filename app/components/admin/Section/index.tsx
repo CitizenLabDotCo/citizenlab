@@ -41,7 +41,7 @@ export const SectionSubtitle = styled.p`
   }
 `;
 
-export const PageTitle =  styled.h1`
+export const PageTitle = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   line-height: 40px;
   font-weight: 600;
@@ -70,7 +70,7 @@ export const SectionField = styled.div`
     -webkit-appearance: none;
     background: #fff;
     border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : '#ccc'};
+    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     font-size: ${fontSizes.base}px;
     font-weight: 400;

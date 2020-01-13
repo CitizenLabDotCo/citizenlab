@@ -157,15 +157,18 @@ interface Props {
 
 const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
-  const fromATemplateText = intl.formatMessage(messages.fromATemplate);
-  const fromScratchText = intl.formatMessage(messages.fromScratch);
-  const items: ITabItem[] = [{
-    name: fromATemplateText,
-    icon: 'template'
-  }, {
-    name: fromScratchText,
-    icon: 'scratch'
-  }];
+  const tabs: ITabItem[] = [
+    {
+      value: 'template',
+      label: intl.formatMessage(messages.fromATemplate),
+      icon: 'template'
+    },
+    {
+      value: 'scratch',
+      label: intl.formatMessage(messages.fromScratch),
+      icon: 'scratch'
+    }
+  ];
 
   const graphqlTenantLocales = useGraphqlTenantLocales();
   const tenant = useTenant();
@@ -174,7 +177,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const [expanded, setExpanded] = useState(false);
   const [hasCollapseAnimation, setHasCollapseAnimation] = useState(true);
-  const [selectedTab, setSelectedTab] = useState(fromATemplateText);
+  const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
 
   const isFirstRun = useRef(true);
 
@@ -257,9 +260,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     setExpanded(!expanded);
   }, [expanded]);
 
-  const handleTabOnClick = useCallback((item: string) => {
-    setSelectedTab(item);
-  }, [selectedTab]);
+  const handleTabOnClick = useCallback((newSelectedTabValue: string) => {
+    setSelectedTabValue(newSelectedTabValue);
+  }, [selectedTabValue]);
 
   useEffect(() => {
     if (isFirstRun.current) {
@@ -267,12 +270,12 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       return;
     }
 
-    if (selectedTab === fromATemplateText) {
+    if (selectedTabValue === 'template') {
       trackEventByName(tracks.createProjectFromTemplateTabSelected);
-    } else if (selectedTab === fromScratchText) {
+    } else if (selectedTabValue === 'scratch') {
       trackEventByName(tracks.createProjectFromScratchTabSelected);
     }
-  }, [selectedTab]);
+  }, [selectedTabValue]);
 
   return (
     <Container className={className}>
@@ -306,11 +309,11 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <>
                 <StyledTabs
                   className="e2e-create-project-tabs"
-                  items={items}
-                  selectedItemName={selectedTab}
+                  items={tabs}
+                  selectedValue={selectedTabValue}
                   onClick={handleTabOnClick}
                 />
-                {selectedTab === fromATemplateText ? <ProjectTemplateCards /> : <AdminProjectEditGeneral />}
+                {selectedTabValue === 'template' ? <ProjectTemplateCards /> : <AdminProjectEditGeneral />}
               </>
             ) : (
               <AdminProjectEditGeneral />

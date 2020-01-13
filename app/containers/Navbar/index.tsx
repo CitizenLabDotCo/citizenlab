@@ -366,7 +366,7 @@ interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   projectsDropdownOpened: boolean;
@@ -437,16 +437,17 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const ideaFormPage = isPage('idea_form', location.pathname);
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
+    const emailSettingsPage = isPage('email-settings', location.pathname);
     const showMobileNav = !adminPage &&
-                       !ideaFormPage &&
-                       !initiativeFormPage &&
-                       !ideaEditPage &&
-                       !initiativeEditPage;
+      !ideaFormPage &&
+      !initiativeFormPage &&
+      !ideaEditPage &&
+      !initiativeEditPage;
 
     return (
       <>
         {showMobileNav &&
-          <MobileNavigation setRef={this.handleMobileNavigationRef}/>
+          <MobileNavigation setRef={this.handleMobileNavigationRef} />
         }
 
         <Container
@@ -547,43 +548,47 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
             </Left>
             <StyledRightFragment name="navbar-right">
               <Right>
-                {isNilOrError(authUser) &&
+                {!emailSettingsPage && (
+                  <>
+                    {isNilOrError(authUser) &&
 
-                  <RightItem className="login noLeftMargin">
-                    <LogInLink
-                      id="e2e-login-link"
-                      to="/sign-in"
-                    >
-                      <NavigationItemText>
-                        <FormattedMessage {...messages.logIn} />
-                      </NavigationItemText>
-                    </LogInLink>
-                  </RightItem>
-                }
+                      <RightItem className="login noLeftMargin">
+                        <LogInLink
+                          id="e2e-login-link"
+                          to="/sign-in"
+                        >
+                          <NavigationItemText>
+                            <FormattedMessage {...messages.logIn} />
+                          </NavigationItemText>
+                        </LogInLink>
+                      </RightItem>
+                    }
 
-                {isNilOrError(authUser) &&
-                  <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
-                    <SignUpLink
-                      to="/sign-up"
-                    >
-                      <NavigationItemText className="sign-up-span">
-                        <FormattedMessage {...messages.signUp} />
-                      </NavigationItemText>
-                    </SignUpLink>
-                  </RightItem>
-                }
+                    {isNilOrError(authUser) &&
+                      <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
+                        <SignUpLink
+                          to="/sign-up"
+                        >
+                          <NavigationItemText className="sign-up-span">
+                            <FormattedMessage {...messages.signUp} />
+                          </NavigationItemText>
+                        </SignUpLink>
+                      </RightItem>
+                    }
 
-                {!isNilOrError(authUser) &&
-                  <RightItem className="notification">
-                    <NotificationMenu />
-                  </RightItem>
-                }
+                    {!isNilOrError(authUser) &&
+                      <RightItem className="notification">
+                        <NotificationMenu />
+                      </RightItem>
+                    }
 
-                {!isNilOrError(authUser) &&
-                  <RightItem className="usermenu">
-                    <UserMenu />
-                  </RightItem>
-                }
+                    {!isNilOrError(authUser) &&
+                      <RightItem className="usermenu">
+                        <UserMenu />
+                      </RightItem>
+                    }
+                  </>
+                )}
 
                 {tenantLocales.length > 1 && locale &&
                   <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
