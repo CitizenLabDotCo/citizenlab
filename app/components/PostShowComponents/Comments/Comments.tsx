@@ -1,5 +1,4 @@
 import React, { memo, useMemo, useCallback, useEffect, useState } from 'react';
-import { isEmpty } from 'lodash-es';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
