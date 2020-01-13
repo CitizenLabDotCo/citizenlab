@@ -1,5 +1,5 @@
 import React, { memo, useMemo, useCallback, useEffect, useState } from 'react';
-import { isString } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -74,8 +74,8 @@ interface Props {
 }
 
 const CommentsSection = memo<Props & InjectedIntlProps>(({ postId, postType, comments, sortOrder, loading, onSortOrderChange, className, intl: { formatMessage } }) => {
-  const [a11y_postedCommentMessage, setA11y_postedCommentMessage] = useState<string>('');
-  const [a11y_deletedCommentMessage, setA11y_deletedCommentMessage] = useState<string>('');
+  const [commentPostedMessage, setCommentPostedMessage] = useState('');
+  const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
 
   const sortedParentComments = useMemo(() => {
     if (!isNilOrError(comments) && comments.length > 0) {
@@ -92,73 +92,63 @@ const CommentsSection = memo<Props & InjectedIntlProps>(({ postId, postType, com
   );
 
   useEffect(() => {
-    const subscription = eventEmitter.observeEvent('CommentAdded').subscribe(() => {
-      setA11y_postedCommentMessage(formatMessage(messages.a11y_commentPosted));
-      setTimeout(() => setA11y_postedCommentMessage(''), 1000);
-    });
+    const subscriptions = [
+      eventEmitter.observeEvent('CommentAdded').subscribe(() => {
+        setCommentPostedMessage(formatMessage(messages.a11y_commentPosted));
+        setTimeout(() => setCommentPostedMessage(''), 1000);
+      }),
+      eventEmitter.observeEvent('CommentDeleted').subscribe(() => {
+        setCommentDeletedMessage(formatMessage(messages.a11y_commentDeleted));
+        setTimeout(() => setCommentDeletedMessage(''), 1000);
+      })
+    ];
 
-    return () => subscription.unsubscribe();
+    return () => subscriptions.forEach(subscription => subscription.unsubscribe());
   }, []);
 
-  useEffect(() => {
-    const subscription = eventEmitter.observeEvent('CommentDeleted').subscribe(() => {
-      // setA11y_deletedCommentMessage(formatMessage(messages.a11y_commentDeleted));
-      setTimeout(() => setA11y_deletedCommentMessage(formatMessage(messages.a11y_commentDeleted)), 100);
+  return (
+    <Container className={`e2e-comments-container ${className}`}>
+      <LiveMessage message={commentPostedMessage || commentDeletedMessage} aria-live="polite" />
 
-      // setTimeout(() => setA11y_deletedCommentMessage(''), 1000);
-    });
+      {loading &&
+        <SpinnerWrapper>
+          <Spinner />
+        </SpinnerWrapper>
+      }
 
-    return () => subscription.unsubscribe();
-  }, []);
-
-  if (sortedParentComments && sortedParentComments.length > 0) {
-    console.log(a11y_deletedCommentMessage);
-    return (
-      <Container className={`e2e-comments-container ${className}`}>
-        {loading &&
-          <SpinnerWrapper>
-            <Spinner />
-          </SpinnerWrapper>
-        }
-
+      {sortedParentComments && sortedParentComments.length > 0 &&
         <StyledCommentSorting
           onChange={handleSortOrderChange}
           selectedValue={[sortOrder]}
         />
+      }
 
-        {/* <LiveMessage message={a11y_postedCommentMessage} aria-live="polite" /> */}
-        <LiveMessage message={a11y_deletedCommentMessage} aria-live="polite" />
+      {sortedParentComments && sortedParentComments.map((parentComment, _index) => {
+        const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
+          if (
+            comment.relationships.parent.data &&
+            comment.relationships.parent.data.id === parentComment.id &&
+            comment.attributes.publication_status !== 'deleted'
+          ) {
+            return true;
+          }
 
-        {sortedParentComments.map((parentComment, _index) => {
-          const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
-            if (
-              comment.relationships.parent.data &&
-              comment.relationships.parent.data.id === parentComment.id &&
-              comment.attributes.publication_status !== 'deleted'
-            ) {
-              return true;
-            }
+          return false;
+        }).map(comment => comment.id));
 
-            return false;
-          }).map(comment => comment.id));
-
-          return (
-            <StyledParentComment
-              key={parentComment.id}
-              postId={postId}
-              postType={postType}
-              commentId={parentComment.id}
-              childCommentIds={childCommentIds}
-              className={loading ? 'loading' : ''}
-            />
-          );
-        })}
-
-      </Container>
-    );
-  }
-
-  return null;
+        return (
+          <StyledParentComment
+            key={parentComment.id}
+            postId={postId}
+            postType={postType}
+            commentId={parentComment.id}
+            childCommentIds={childCommentIds}
+            className={loading ? 'loading' : ''}
+          />
+        );
+      })}
+    </Container>
+  );
 });
 
 export default injectIntl(CommentsSection);
