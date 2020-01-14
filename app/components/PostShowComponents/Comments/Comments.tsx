@@ -1,4 +1,7 @@
-import React, { memo, useMemo, useCallback } from 'react';
+import React, { memo, useMemo, useCallback, useEffect, useState } from 'react';
+
+// utils
+import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -16,6 +19,14 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+
+// i18n
+import { InjectedIntlProps } from 'react-intl';
+import { injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+
+// a11y
+import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div`
   position: relative;
@@ -61,7 +72,18 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, loading, onSortOrderChange, className }) => {
+const CommentsSection = memo<Props & InjectedIntlProps>(({
+  postId,
+  postType,
+  comments,
+  sortOrder,
+  loading,
+  onSortOrderChange,
+  className,
+  intl: { formatMessage }
+}) => {
+  const [commentPostedMessage, setCommentPostedMessage] = useState('');
+  const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
 
   const sortedParentComments = useMemo(() => {
     if (!isNilOrError(comments) && comments.length > 0) {
@@ -77,49 +99,64 @@ const CommentsSection = memo<Props>(({ postId, postType, comments, sortOrder, lo
     }, []
   );
 
-  if (sortedParentComments && sortedParentComments.length > 0) {
-    return (
-      <Container className={`e2e-comments-container ${className}`}>
-        {loading &&
-          <SpinnerWrapper>
-            <Spinner />
-          </SpinnerWrapper>
-        }
+  useEffect(() => {
+    const subscriptions = [
+      eventEmitter.observeEvent('CommentAdded').subscribe(() => {
+        setCommentPostedMessage(formatMessage(messages.a11y_commentPosted));
+        setTimeout(() => setCommentPostedMessage(''), 1000);
+      }),
+      eventEmitter.observeEvent('CommentDeleted').subscribe(() => {
+        setCommentDeletedMessage(formatMessage(messages.a11y_commentDeleted));
+        setTimeout(() => setCommentDeletedMessage(''), 1000);
+      })
+    ];
 
+    return () => subscriptions.forEach(subscription => subscription.unsubscribe());
+  }, []);
+
+  return (
+    <Container className={`e2e-comments-container ${className}`}>
+      <LiveMessage message={commentPostedMessage || commentDeletedMessage} aria-live="polite" />
+
+      {loading &&
+        <SpinnerWrapper>
+          <Spinner />
+        </SpinnerWrapper>
+      }
+
+      {sortedParentComments && sortedParentComments.length > 0 &&
         <StyledCommentSorting
           onChange={handleSortOrderChange}
           selectedValue={[sortOrder]}
         />
+      }
 
-        {sortedParentComments.map((parentComment, _index) => {
-          const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
-            if (comment.relationships.parent.data &&
-                comment.relationships.parent.data.id === parentComment.id &&
-                comment.attributes.publication_status !== 'deleted'
-            ) {
-              return true;
-            }
+      {sortedParentComments && sortedParentComments.map((parentComment, _index) => {
+        const childCommentIds = (!isNilOrError(comments) && comments.filter((comment) => {
+          if (
+            comment.relationships.parent.data &&
+            comment.relationships.parent.data.id === parentComment.id &&
+            comment.attributes.publication_status !== 'deleted'
+          ) {
+            return true;
+          }
 
-            return false;
-          }).map(comment => comment.id));
+          return false;
+        }).map(comment => comment.id));
 
-          return (
-            <StyledParentComment
-              key={parentComment.id}
-              postId={postId}
-              postType={postType}
-              commentId={parentComment.id}
-              childCommentIds={childCommentIds}
-              className={loading ? 'loading' : ''}
-            />
-          );
-        })}
-
-      </Container>
-    );
-  }
-
-  return null;
+        return (
+          <StyledParentComment
+            key={parentComment.id}
+            postId={postId}
+            postType={postType}
+            commentId={parentComment.id}
+            childCommentIds={childCommentIds}
+            className={loading ? 'loading' : ''}
+          />
+        );
+      })}
+    </Container>
+  );
 });
 
-export default CommentsSection;
+export default injectIntl(CommentsSection);
