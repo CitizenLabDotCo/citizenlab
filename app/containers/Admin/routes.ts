@@ -126,5 +126,13 @@ export default () => ({
         delay: 500
       }),
     },
+    {
+      path: 'topics',
+      component: Loadable({
+        loader: () => import('containers/Admin/topics'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
+    },
   ],
 });

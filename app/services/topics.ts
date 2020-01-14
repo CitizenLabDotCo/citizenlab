@@ -29,3 +29,7 @@ export function topicByIdStream(topicId: string) {
 export function topicsStream(streamParams: IStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
 }
+
+export function deleteTopic(topicId: string) {
+  return streams.delete(`${apiEndpoint}/${topicId}`, topicId);
+}
