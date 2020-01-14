@@ -97,12 +97,60 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
-    it "disallows random iframe to pass through when video feature is enabled" do
+    it "disallows unknown url iframe to pass through when video feature is enabled" do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/embed/Y1mtif1B8k0?showinfo=0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq "\"\"\n"
+    end
+
+    it "disallows malicious urls iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.badTube.com/https://www.youtube.com/embed/Y1mtif1B8k0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq "\"\"\n"
+    end
+
+    it "disallows malicious urls iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//wwwXyoutube.com/embed/IqajIYxbPOI" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq "\"\"\n"
+    end
+
+    it "allows vimeo iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://player.vimeo.com/video/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq input
+    end
+
+    it "allows vimeo iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://vimeo.com/76979871" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq input
+    end
+
+    it "allows wistia iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="//fast.wistia.net/embed/iframe/avk9twrrbn" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq input
+    end
+
+    it "allows dailymotion iframe to pass through when video feature is enabled" do
+      input = <<~HTML
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.dailymotion.com/embed/video/x7724ry" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display: block;margin:auto;cursor: nwse-resize;" data-align="center"></iframe>"
+      HTML
+      features = [:video]
+      expect(service.sanitize(input, features)).to eq input
     end
 
   end
