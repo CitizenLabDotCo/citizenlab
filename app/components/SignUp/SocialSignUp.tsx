@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Provider } from 'react';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import AuthProviderButton, { Provider } from 'components/AuthProviderButton';
+import AuthProviderButton from 'components/AuthProviderButton';
 
 // resources
 import { GetTenantChildProps } from 'resources/GetTenant';
@@ -17,7 +17,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { AUTH_PATH } from 'containers/App/constants';
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -25,10 +25,8 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
-import googleLogo from 'components/AuthProviderButton/svg/google.svg';
-import facebookLogo from 'components/AuthProviderButton/svg/facebook.svg';
 import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
-import Checkbox from 'components/UI/Checkbox';
+import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
 
 const Container = styled.div`
   width: 100%;
@@ -48,35 +46,6 @@ const FooterContent = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const TermsAndConditionsWrapper = styled.div`
-  padding: 15px 20px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${darken(0.04, colors.background)};
-
-  span {
-    color: ${colors.text} !important;
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 21px;
-  }
-
-  a > span {
-    color: ${colors.text} !important;
-    text-decoration: underline;
-  }
-
-  a:hover > span {
-    color: #000 !important;
-    text-decoration: underline;
-  }
 `;
 
 const AuthProviderButtons = styled.div`
@@ -147,52 +116,18 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-interface State {
-  tacAccepted: boolean;
-  privacyAccepted: boolean;
-  emailAccepted: boolean;
-}
-
-class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tacAccepted: false,
-      privacyAccepted: false,
-      emailAccepted: false
-    };
-  }
+class Footer extends React.PureComponent<Props & InjectedIntlProps> {
 
   handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.stopPropagation();
-  }
-
-  handleTaCAcceptedOnChange = (event) => {
-    event.stopPropagation();
-
-    this.setState(({ tacAccepted }) => ({ tacAccepted: !tacAccepted }));
-  }
-
-  handlePrivacyAcceptedOnChange = (event) => {
-    event.stopPropagation();
-
-    this.setState(({ privacyAccepted }) => ({ privacyAccepted: !privacyAccepted }));
-  }
-
-  handleEmailAcceptedOnChange = (event) => {
-    event.stopPropagation();
-
-    this.setState(({ emailAccepted }) => ({ emailAccepted: !emailAccepted }));
   }
 
   handleOnClick = () => {
     this.props.goToSignIn();
   }
 
-  handleOnAccept = (provider: Provider) => () => {
-    setTimeout(() => {
-      window.location.href = `${AUTH_PATH}/${provider}`;
-    }, 200);
+  handleOnAccept = (provider: SSOProvider) => () => {
+    setTimeout(() => handleOnSSOClick(provider)(), 200);
   }
 
   externalLoginsCount = () => {
@@ -202,13 +137,13 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { tenant, passwordLoginEnabled } = this.props;
+    const { passwordLoginEnabled, tenant } = this.props;
     const { formatMessage } = this.props.intl;
-    const { tacAccepted, privacyAccepted, emailAccepted } = this.state;
-    const privacyChecksAccepted = tacAccepted && privacyAccepted && emailAccepted;
     const externalLoginsCount = this.externalLoginsCount();
-    const azureAdLogoUrl: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
-    const AzureProviderName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
+
+    if (isNilOrError(tenant)) return null;
+
+    const azureProviderName = tenant ?.attributes ?.settings ?.azure_ad_login ?.login_mechanism_name;
 
     if (externalLoginsCount > 0) {
       return (
@@ -223,82 +158,21 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                   {formatMessage(messages.orSignUpWith)}
                 </SocialSignUpText>
               }
-              <CheckboxContainer>
-                <TermsAndConditionsWrapper>
-                  <Checkbox
-                    id="terms-and-conditions-checkbox"
-                    className="e2e-terms-and-conditions"
-                    checked={this.state.tacAccepted}
-                    onChange={this.handleTaCAcceptedOnChange}
-                    label={
-                      <FormattedMessage
-                        {...messages.tacApproval}
-                        values={{
-                          tacLink: <Link
-                            target="_blank"
-                            to="/pages/terms-and-conditions"
-                            onClick={this.handleLinkClick}
-                          >
-                            <FormattedMessage {...messages.termsAndConditions} />
-                          </Link>,
-                        }}
-                      />
-                    }
-                  />
-                </TermsAndConditionsWrapper>
-                <TermsAndConditionsWrapper>
-                  <Checkbox
-                    id="privacy-checkbox"
-                    className="e2e-privacy-checkbox"
-                    checked={this.state.privacyAccepted}
-                    onChange={this.handlePrivacyAcceptedOnChange}
-                    label={
-                      <FormattedMessage
-                        {...messages.privacyApproval}
-                        values={{
-                          ppLink: <Link
-                            target="_blank"
-                            to="/pages/privacy-policy"
-                            onClick={this.handleLinkClick}
-                          >
-                            <FormattedMessage {...messages.privacyPolicy} />
-                          </Link>,
-                        }}
-                      />
-                    }
-                  />
-                </TermsAndConditionsWrapper>
-                <TermsAndConditionsWrapper>
-                  <Checkbox
-                    id="privacy-checkbox"
-                    className="e2e-email-checkbox"
-                    checked={this.state.emailAccepted}
-                    onChange={this.handleEmailAcceptedOnChange}
-                    label={
-                      <FormattedMessage
-                        {...messages.emailApproval}
-                      />
-                    }
-                  />
-                </TermsAndConditionsWrapper>
-              </CheckboxContainer>
               <AuthProviderButtons>
-                <FeatureFlag name="azure_ad_login">
-                  <AuthProviderButton
-                    logoUrl={azureAdLogoUrl}
-                    logoHeight="45px"
-                    provider="azureactivedirectory"
-                    providerName={AzureProviderName}
-                    mode="signUp"
-                    onAccept={this.handleOnAccept('azureactivedirectory')}
-                    disabled={!privacyChecksAccepted}
-                  />
-                </FeatureFlag>
+                {azureProviderName &&
+                  <FeatureFlag name="azure_ad_login">
+                    <AuthProviderButton
+                      provider="azureactivedirectory"
+                      providerName={azureProviderName}
+                      mode="signUp"
+                      onAccept={this.handleOnAccept('azureactivedirectory')}
+                    />
+                  </FeatureFlag>
+                }
                 <FeatureFlag name="franceconnect_login">
                   <FranceConnectButton
                     role="button"
                     onClick={this.handleOnAccept('franceconnect')}
-                    disabled={!privacyChecksAccepted}
                   >
                     <img
                       src={franceconnectLogo}
@@ -314,25 +188,18 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </FeatureFlag>
                 <FeatureFlag name="google_login">
                   <AuthProviderButton
-                    logoUrl={googleLogo}
-                    logoHeight="29px"
                     provider="google"
                     providerName="Google"
                     mode="signUp"
                     onAccept={this.handleOnAccept('google')}
-                    disabled={!privacyChecksAccepted}
                   />
                 </FeatureFlag>
                 <FeatureFlag name="facebook_login">
                   <AuthProviderButton
-                    logoUrl={facebookLogo}
-                    logoHeight="21px"
                     provider="facebook"
                     providerName="Facebook"
                     mode="signUp"
                     onAccept={this.handleOnAccept('facebook')}
-                    disabled={!privacyChecksAccepted}
-
                   />
                 </FeatureFlag>
               </AuthProviderButtons>

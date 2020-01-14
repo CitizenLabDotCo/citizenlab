@@ -26,4 +26,20 @@ export default defineMessages({
     id: 'app.components.AuthProviderButton.privacyPolicy',
     defaultMessage: 'privacy policy',
   },
+  privacyChecks: {
+    id: 'app.components.AuthProviderButton.privacyChecks',
+    defaultMessage: 'Before you sign up with {loginMechanismName}, review and consent to our policies :',
+  },
+  tacApproval: {
+    id: 'app.components.AuthProviderButton.tacApproval',
+    defaultMessage: 'Check here to confirm that you have read and agree to our {tacLink}',
+  },
+  privacyApproval: {
+    id: 'app.components.AuthProviderButton.privacyApproval',
+    defaultMessage: 'Check here to confirm that you have read and agree to our {ppLink}',
+  },
+  emailApproval: {
+    id: 'app.components.AuthProviderButton.emailApproval',
+    defaultMessage: 'Check here to confirm that you agree receiving emails from this platform. You can select which emails you wish to receive from your user settings.',
+  },
 });

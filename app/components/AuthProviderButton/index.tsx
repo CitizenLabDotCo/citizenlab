@@ -7,16 +7,14 @@ import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // components
 import TermsCheckbox from './TermsCheckbox';
-import AuthProviderImage from './AuthProviderImage';
-
-// intl
-import messages from './messages';
+import FacebookImage from './FacebookImage';
+import GoogleImage from './GoogleImage';
+import AzureAdImage from './AzureADImage';
 
 const timeout = 250;
 
-const AuthProviderButtonWrapper = styled.button`
+const AuthProviderButtonWrapper = styled.div`
   width: 100%;
-  height: 58px;
   margin-top: 15px;
   display: flex;
   align-items: center;
@@ -25,13 +23,9 @@ const AuthProviderButtonWrapper = styled.button`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.separation};
   user-select: none;
-  cursor: pointer;
-  position: relative;
   text-align: left;
-
-  ${media.largePhone`
-    height: 90px;
-  `}
+  padding: 0;
+  min-height: 58px;
 
   &:disabled {
     background: ${colors.lightGreyishBlue};
@@ -76,20 +70,6 @@ const AuthProviderButtonWrapper = styled.button`
     color: #707075 !important;
     text-decoration: underline;
   }
-`;
-
-export const AuthProviderButtonInner = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all ${timeout}ms ease-out;
   will-change: opacity;
 
   &.tac-enter {
@@ -97,8 +77,6 @@ export const AuthProviderButtonInner = styled.div`
     position: absolute;
     margin-left: auto;
     margin-right: auto;
-    left: 0;
-    right: 0;
 
     &.tac-enter-active {
       opacity: 1;
@@ -114,16 +92,27 @@ export const AuthProviderButtonInner = styled.div`
   }
 `;
 
-export type Provider = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
+const ActualButton = styled.button<({ timeout: number }) >`
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all ${timeout}ms ease-out;
+  min-height: 58px;
+`;
+
+type Provider = 'google' | 'facebook' | 'azureactivedirectory';
+// | 'franceconnect' => special case, not handled by this component
 
 interface Props {
-  logoUrl: string;
-  logoHeight: string;
   providerName: string;
   provider: Provider;
   onAccept: () => void;
   mode: 'signUp' | 'signIn';
-  disabled?: boolean;
 }
 
 interface State {
@@ -148,48 +137,57 @@ class AuthProviderButton extends PureComponent<Props, State> {
 
   handleOnClick = (event) => {
     event.preventDefault();
-    const { mode } = this.props;
+
     const { status } = this.state;
-    if (mode === 'signUp') {
-      this.props.onAccept();
-    } else {
-      if (status === 'image') {
-        this.setState({ status: 'unchecked' });
-      } else if (status === 'unchecked') {
-        this.setState({ status: 'image' });
-      }
+    if (status === 'image') {
+      this.setState({ status: 'unchecked' });
+    } else if (status === 'unchecked') {
+      this.setState({ status: 'image' });
     }
   }
 
   render() {
-    const { logoHeight, logoUrl, provider, providerName, mode, disabled } = this.props;
+    const { provider, providerName, mode } = this.props;
     const { status } = this.state;
 
     return (
       <AuthProviderButtonWrapper
         className={`${provider} ${status !== 'image' && 'active'}`}
-        onClick={this.handleOnClick}
-        type="button"
-        disabled={disabled}
       >
-        <TransitionGroup>
-          {(status !== 'image') ?
-            <TermsCheckbox
-              timeout={timeout}
-              providerName={providerName}
-              accepted={status === 'checked'}
-              onCheck={this.handleOnCheck}
-            />
-            :
-            <AuthProviderImage
-              logoUrl={logoUrl}
-              logoHeight={logoHeight}
-              timeout={timeout}
-              providerName={providerName}
-              altText={mode === 'signUp' ? messages.signUpButtonAltText : messages.signInButtonAltText}
-            />
-          }
-        </TransitionGroup>
+        {status !== 'image' ?
+          <TermsCheckbox
+            timeout={timeout}
+            providerName={providerName}
+            accepted={status === 'checked'}
+            onCheck={this.handleOnCheck}
+            mode={mode}
+          />
+          :
+          <ActualButton
+            onClick={this.handleOnClick}
+            type="button"
+            timeout={250}
+          >
+            {provider === 'facebook' &&
+              <FacebookImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+            {provider === 'google' &&
+              <GoogleImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+            {provider === 'azureactivedirectory' &&
+              <AzureAdImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+          </ActualButton>
+        }
       </AuthProviderButtonWrapper>
     );
   }
