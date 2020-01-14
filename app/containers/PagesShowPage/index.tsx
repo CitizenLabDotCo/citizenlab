@@ -35,7 +35,7 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
-const Container = styled.main`
+const Container = styled.div`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
@@ -61,7 +61,7 @@ const AttachmentsContainer = styled.div`
   padding-right: 20px;
 `;
 
-const PageContent = styled.div`
+const PageContent = styled.main`
   flex-shrink: 0;
   flex-grow: 1;
   background: #fff;
@@ -112,8 +112,8 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
   transition: all 200ms ease;
 

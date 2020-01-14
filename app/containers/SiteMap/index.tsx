@@ -117,7 +117,13 @@ interface Props extends DataProps { }
 const SiteMap = ({ projects, tenant, authUser }: Props) => {
   const loaded = projects !== undefined;
   const successStories = !isNilOrError(tenant) ? tenant.attributes.settings ?.initiatives ?.success_stories : [];
-  const scrollTo = component => () => {
+
+  const scrollTo = component => (event: any) => {
+    // if the event is synthetic, it's a key event and we move focus
+    // https://github.com/facebook/react/issues/3907
+    if (event.detail === 0) {
+      component.current.focus();
+    }
     scrollToComponent(component.current, { align: 'top', offset: -90, duration: 300 });
   };
 
@@ -227,7 +233,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 </Ul>
               </TOC>
 
-              <H2 ref={homeSection}>
+              <H2 ref={homeSection} tabIndex={-1}>
                 <FormattedMessage {...messages.homeSection} />
               </H2>
               <ul>
@@ -258,7 +264,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 </li>
               </ul>
 
-              <H2 ref={userSpaceSection}>
+              <H2 ref={userSpaceSection} tabIndex={-1}>
                 <FormattedMessage {...messages.userSpaceSection} />
               </H2>
               <ul>
@@ -298,7 +304,7 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
                 draftSectionRef={draftSection}
               />
               <FeatureFlag name="initiatives">
-                <H2 ref={initiativesSection}>
+                <H2 ref={initiativesSection} tabIndex={-1}>
                   <FormattedMessage {...messages.initiativesSection} />
                 </H2>
                 <Ul>

@@ -24,7 +24,8 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media, ScreenReaderOnly } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // Typing
 import { IGeotaggedIdeaData } from 'services/ideas';

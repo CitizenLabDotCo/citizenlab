@@ -52,14 +52,17 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   }
 
   reasonToMessage = () => {
-    const { disabled_reason, future_enabled } = this.props.budgetingDescriptor;
+    if (this.props.budgetingDescriptor) {
+      const { disabled_reason, future_enabled } = this.props.budgetingDescriptor;
 
-    if (disabled_reason && future_enabled) {
-      return messages.budgetingDisabledFutureEnabled;
-    } else if (disabled_reason === 'not_verified') {
-      return messages.budgetingDisabledNotVerified;
-    } else if (disabled_reason === 'not_permitted') {
-      return messages.budgetingDisabledNotPermitted;
+      if (disabled_reason && future_enabled) {
+        return messages.budgetingDisabledFutureEnabled;
+      } else if (disabled_reason === 'not_verified') {
+        return messages.budgetingDisabledNotVerified;
+      } else if (disabled_reason === 'not_permitted') {
+        return messages.budgetingDisabledNotPermitted;
+      }
+
     }
 
     return messages.budgetingDisabled;
@@ -68,7 +71,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   render() {
     const { budgetingDescriptor } = this.props;
     const message = this.reasonToMessage();
-    const enabledFromDate = (budgetingDescriptor.future_enabled ? moment(budgetingDescriptor.future_enabled).format('LL') : null);
+    const enabledFromDate = (budgetingDescriptor?.future_enabled ? moment(budgetingDescriptor.future_enabled).format('LL') : null);
     const verificationLink = (
       <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
         <FormattedMessage {...messages.verificationLinkText} />

@@ -18,7 +18,8 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, ScreenReaderOnly, media } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
   width: 100%;

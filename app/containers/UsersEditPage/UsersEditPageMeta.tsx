@@ -1,18 +1,17 @@
 // libraries
 import React from 'react';
 import Helmet from 'react-helmet';
-import { adopt } from 'react-adopt';
 
 // i18n
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
-// resources
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+// hooks
+import useLocale from 'hooks/useLocale';
+import useTenantLocales from 'hooks/useTenantLocales';
+import useTenant from 'hooks/useTenant';
+import useAuthUser from 'hooks/useAuthUser';
 
 // services
 import { IUserData } from 'services/users';
@@ -23,26 +22,22 @@ import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
-interface InputProps {
+interface Props {
   user: IUserData;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-  tenantLocales: GetTenantLocalesChildProps;
-  tenant: GetTenantChildProps;
-  locale: GetLocaleChildProps;
-}
+ const UsersEditPageMeta = React.memo<Props & InjectedIntlProps>(({ intl, user }) => {
+  const locale = useLocale();
+  const tenantLocales = useTenantLocales();
+  const authUser = useAuthUser();
+  const tenant = useTenant();
 
-interface Props extends InputProps, DataProps { }
-
-const UsersEditPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, tenantLocales, tenant, locale, user }) => {
-  if (!isNilOrError(tenantLocales) && !isNilOrError(locale) && !isNilOrError(tenant)) {
+  if (!isNilOrError(tenantLocales) && !isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser)) {
     const { formatMessage } = intl;
     const { location } = window;
     const firstName = user.attributes.first_name;
     const lastName = user.attributes.last_name;
-    const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
+    const organizationNameMultiLoc = tenant.data.attributes.settings.core.organization_name;
     const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
 
     const usersEditPageIndexTitle = formatMessage(messages.metaTitle, {
@@ -59,7 +54,7 @@ const UsersEditPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUse
       <Helmet>
         <title>
           {`
-            ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
+            ${(authUser && authUser.data.attributes.unread_notifications) ? `(${authUser.data.attributes.unread_notifications}) ` : ''}
             ${usersEditPageIndexTitle}`
           }
         </title>
@@ -75,21 +70,8 @@ const UsersEditPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUse
   }
 
   return null;
-};
+});
 
 const UsersEditPageMetaWithHoc = injectIntl<Props>(UsersEditPageMeta);
 
-const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
-  tenant: <GetTenant />,
-  authUser: <GetAuthUser />,
-  locale: <GetLocale />,
-});
-
-const WrappedUsersEditPageMeta = (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataprops => <UsersEditPageMetaWithHoc {...inputProps} {...dataprops} />}
-  </Data>
-);
-
-export default WrappedUsersEditPageMeta;
+export default UsersEditPageMetaWithHoc;

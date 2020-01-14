@@ -37,7 +37,8 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
@@ -220,6 +221,11 @@ const ContentHeader = styled.div`
   &.small {
     padding-left: 30px;
     padding-right: 30px;
+
+    ${media.smallerThanMinTablet`
+      padding-left: 20px;
+      padding-right: 20px;
+    `}
 
     ${media.smallPhone`
       padding-left: 10px;

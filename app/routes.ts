@@ -80,15 +80,6 @@ export default function createRoutes() {
           })
         },
         {
-          path: 'email-settings',
-          name: 'emailSettings',
-          component: Loadable({
-            loader: () => import('containers/EmailSettingsPage'),
-            loading: LoadableLoadingCitizen,
-            delay: 500
-          })
-        },
-        {
           path: 'profile/:slug',
           name: 'usersShowPage',
           component: Loadable({
@@ -321,6 +312,15 @@ export default function createRoutes() {
           name: 'subscriptionEnded',
           component: Loadable({
             loader: () => import('containers/SubscriptionEndedPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
+        },
+        {
+          path: 'email-settings',
+          name: 'EmailSettingPage',
+          component: Loadable({
+            loader: () => import('containers/EmailSettingsPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           }),

@@ -16,9 +16,9 @@ const Container = styled(Link)`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fff;
   position: relative;
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   &.desktop {
@@ -99,41 +99,38 @@ interface Props {
   imageUrl?: string | null;
   header?: JSX.Element;
   title: string;
-  body?: JSX.Element;
-  footer?: JSX.Element;
+  body?: JSX.Element | string;
+  footer?: JSX.Element | string;
   onClick: (event: MouseEvent<HTMLDivElement>) => void;
   className?: string;
 }
 
-const Card = memo<Props>(({ to, onClick, imageUrl, header, title, body, footer, className }) => (
+export const Card = ({ to, onClick, imageUrl, header, title, body, footer, className }: Props) => (
   <Container
     onClick={onClick}
     to={to}
     className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
   >
-    <>
-      {imageUrl &&
-        <ImageWrapper>
-          <Image src={imageUrl} alt="" />
-        </ImageWrapper>
-      }
+    {imageUrl &&
+      <ImageWrapper>
+        <Image src={imageUrl} alt="" />
+      </ImageWrapper>
+    }
 
-      <Title className="e2e-card-title" hasHeader={!!header}>
-        {title}
-      </Title>
-      <HeaderContentWrapper>
-        {header}
-      </HeaderContentWrapper>
+    <Title className="e2e-card-title" hasHeader={!!header}>
+      {title}
+    </Title>
+    <HeaderContentWrapper>
+      {header}
+    </HeaderContentWrapper>
 
-      <Body>
-        {body}
-      </Body>
-
-      <Footer>
-        {footer}
-      </Footer>
-    </>
+    <Body>
+      {body}
+    </Body>
+    <Footer aria-live="polite">
+      {footer}
+    </Footer>
   </Container>
-));
+);
 
-export default Card;
+export default memo<Props>(Card);
