@@ -34,7 +34,7 @@ const Container = styled.div`
   border: 1px solid #E7E7E7;
 `;
 
-const TipsTitle = styled.div`
+const TipsTitle = styled.h2`
   margin-bottom: 12px;
   font-size: ${fontSizes.large}px;
   line-height: 24px;
