@@ -72,7 +72,16 @@ interface Props {
   className?: string;
 }
 
-const CommentsSection = memo<Props & InjectedIntlProps>(({ postId, postType, comments, sortOrder, loading, onSortOrderChange, className, intl: { formatMessage } }) => {
+const CommentsSection = memo<Props & InjectedIntlProps>(({
+  postId,
+  postType,
+  comments,
+  sortOrder,
+  loading,
+  onSortOrderChange,
+  className,
+  intl: { formatMessage }
+}) => {
   const [commentPostedMessage, setCommentPostedMessage] = useState('');
   const [commentDeletedMessage, setCommentDeletedMessage] = useState('');
 
