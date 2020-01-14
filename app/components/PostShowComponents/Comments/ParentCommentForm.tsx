@@ -2,6 +2,7 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Button from 'components/UI/Button';
@@ -181,6 +182,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
           await addCommentToInitiative(postId, authUser.id, commentBodyMultiloc);
         }
 
+        eventEmitter.emit('ParentCommentForm', 'CommentAdded', null);
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
