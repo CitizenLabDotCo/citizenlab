@@ -1,8 +1,8 @@
 import React from 'react';
-import GetCampaignConsents from 'resources/GetCampaignConsents';
-import ConsentForm from 'components/ConsentForm';
-import { isNilOrError } from 'utils/helperUtils';
 import tracks from './tracks';
+import { isNilOrError } from 'utils/helperUtils';
+import ConsentForm from 'components/ConsentForm';
+import GetCampaignConsents from 'resources/GetCampaignConsents';
 
 export default () => (
   <GetCampaignConsents>
@@ -11,8 +11,7 @@ export default () => (
         trackEventName={tracks.clickChangeEmailNotificationProfileSettings.name}
         consents={consents}
       />
-    :
-      null
+      : null
     }
   </GetCampaignConsents>
 );

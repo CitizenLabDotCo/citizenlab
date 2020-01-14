@@ -44,6 +44,7 @@ import { IOption, UploadFile, Locale } from 'typings';
 import styled from 'styled-components';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import { FormLabelWithIcon } from 'components/UI/FormComponents/WithIcons';
+import { media } from 'utils/styleUtils';
 
 const Form = styled.form`
   width: 100%;
@@ -54,6 +55,16 @@ const Form = styled.form`
 
 const StyledFormSection = styled(FormSection)`
   max-width: 100%;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 25px;
+    padding-right: 25px;
+  `}
+
+  ${media.largePhone`
+    padding-left: 18px;
+    padding-right: 18px;
+  `}
 `;
 
 const FormElement = styled.div`
@@ -507,16 +518,17 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         <StyledFormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
           <FormElement id="e2e-idea-image-upload">
-            <FormLabel labelMessage={messages.imageUploadLabel} />
-            <ImagesDropzone
-              images={imageFile}
-              imagePreviewRatio={135 / 298}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={1}
-              onAdd={this.handleUploadOnAdd}
-              onRemove={this.handleUploadOnRemove}
-            />
+            <FormLabel labelMessage={messages.imageUploadLabel}>
+              <ImagesDropzone
+                images={imageFile}
+                imagePreviewRatio={135 / 298}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={1}
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+              />
+            </FormLabel>
           </FormElement>
 
           <FormElement id="e2e-idea-file-upload">

@@ -29,7 +29,8 @@ import { FormattedNumber } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
@@ -136,11 +137,19 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
   componentDidUpdate(prevProps : Props) {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
-    if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
-      idea.attributes.action_descriptor.budgeting.enabled !== prevIdea.attributes.action_descriptor.budgeting.enabled
-      || idea.attributes.action_descriptor.budgeting.disabled_reason !== prevIdea.attributes.action_descriptor.budgeting.disabled_reason
-    )) {
-      this.setState({ showVotingDisabled: null });
+
+    if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
+      const ideaBudgetingEnabled =  idea.attributes?.action_descriptor?.budgeting?.enabled;
+      const prevIdeaBudgetingEnabled = prevIdea.attributes?.action_descriptor?.budgeting?.enabled;
+      const ideaBudgetingDisabledReason = idea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+      const prevIdeaBudgetingDisabledReason = prevIdea.attributes?.action_descriptor?.budgeting?.disabled_reason;
+
+      if (
+        ideaBudgetingEnabled !== prevIdeaBudgetingEnabled ||
+        ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason
+      ) {
+        this.setState({ showVotingDisabled: null });
+      }
     }
   }
 
@@ -254,7 +263,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                     />
                   }
 
-                  <Spacer />
+                  <Spacer aria-hidden />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
                     <CommentIcon name="comments" ariaHidden />

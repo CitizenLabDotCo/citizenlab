@@ -39,7 +39,7 @@ const Container = styled.div`
   `}
 `;
 
-const PageContainer = styled.div`
+const PageContainer = styled.main`
   width: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   position: relative;
@@ -131,7 +131,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   redirectToSignUpPage = () => {
-    clHistory.push('/sign-up');
+    clHistory.replace('/sign-up');
   }
 
   handleOnIdeaSubmit = async () => {

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { get, isArray, isEmpty } from 'lodash-es';
+import { get, isArray, isEmpty, uniqBy } from 'lodash-es';
 import styled from 'styled-components';
 import { FormattedMessage, IMessageInfo  } from 'utils/cl-intl';
 import { darken } from 'polished';
@@ -143,20 +143,17 @@ const ErrorList = styled.ul`
 `;
 
 const ErrorListItem = styled.li`
-  &.isList {
-    display: flex;
-    align-items: flex-start;
-    margin-left: 5px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: flex-start;
+  margin-left: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+`;
 
-    :before {
-      content: '•';
-      font-size: ${fontSizes.xxl}px;
-      font-weight: 500;
-      margin-right: 10px;
-    }
-  }
+const Bullet = styled.span`
+  font-size: ${fontSizes.xxl}px;
+  font-weight: 500;
+  margin-right: 10px;
 `;
 
 interface DefaultProps {
@@ -204,6 +201,9 @@ export default class Error extends PureComponent<Props, State> {
 
   render() {
     const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
+
+    const dedupApiErrors = apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) ?
+      uniqBy(apiErrors, 'error') : undefined;
 
     return (
       <CSSTransition
@@ -259,9 +259,9 @@ export default class Error extends PureComponent<Props, State> {
                 </p>
               )}
 
-              {apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) &&
+              {dedupApiErrors && isArray(dedupApiErrors) && !isEmpty(dedupApiErrors) &&
                 <ErrorList>
-                  {apiErrors.map((error, index) => {
+                  {dedupApiErrors.map((error, index) => {
                     // If we have multiple possible errors for a certain input field,
                     // we can 'group' them in the messages.js file using the fieldName as a prefix
                     // Check the implementation of findMessage for details
@@ -275,7 +275,10 @@ export default class Error extends PureComponent<Props, State> {
 
                       if (value || row || rows) {
                         return (
-                          <ErrorListItem key={index} className={`${apiErrors.length > 1 && 'isList'}`}>
+                          <ErrorListItem key={index}>
+                            {dedupApiErrors.length > 1 && (
+                              <Bullet aria-hidden>•</Bullet>
+                            )}
                             <FormattedMessage
                               {...errorMessage}
                               values={{
@@ -290,7 +293,10 @@ export default class Error extends PureComponent<Props, State> {
                       }
 
                       return (
-                        <ErrorListItem key={index} className={`${apiErrors.length > 1 && 'isList'}`}>
+                        <ErrorListItem key={index}>
+                          {dedupApiErrors.length > 1 && (
+                            <Bullet aria-hidden>•</Bullet>
+                          )}
                           <FormattedMessage
                             {...errorMessage}
                             values={{

@@ -1,6 +1,8 @@
 const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
+const isTestBuild = process.env.TEST_BUILD === 'true';
+const buildSourceMap = !isDev && !isTestBuild;
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -11,10 +13,8 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const MomentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const SentryCliPlugin = require('@sentry/webpack-plugin');
-const OfflinePlugin = require('offline-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const argv = require('yargs').argv;
-const cssnano = require('cssnano');
 const appLocalesMomentPairs = require(path.join(process.cwd(), 'app/containers/App/constants')).appLocalesMomentPairs;
 const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
@@ -26,7 +26,7 @@ const config = {
   entry: path.join(process.cwd(), 'app/root'),
 
   output: {
-    path: path.resolve(process.cwd(), 'build'),
+    path: path.join(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
     filename: isDev ? '[name].js' : '[name].[contenthash].js',
@@ -35,7 +35,7 @@ const config = {
 
   mode: isDev ? 'development' : 'production',
 
-  devtool: isDev ? 'cheap-module-eval-source-map' : (isProd ? 'source-map' : false),
+  devtool: isDev ? 'cheap-module-eval-source-map' : (!isTestBuild ? 'source-map' : false),
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
@@ -60,36 +60,12 @@ const config = {
       },
       minimize: true,
       minimizer: [
-        new TerserPlugin({ parallel: false, sourceMap: true }),
+        new TerserPlugin({
+          parallel: false,
+          sourceMap: true
+        }),
         new OptimizeCSSAssetsPlugin()
       ]
-      // minimizer: [
-      //   new TerserPlugin({
-      //       cache: true,
-      //       parallel: true,
-      //       sourceMap: true,
-      //       terserOptions: {
-      //         warnings: false,
-      //         compress: {
-      //           comparisons: false,
-      //         },
-      //         parse: {},
-      //         mangle: true,
-      //         output: {
-      //           comments: false,
-      //           ascii_only: true,
-      //         },
-      //       },
-      //   }),
-      //   new OptimizeCSSAssetsPlugin({
-      //     assetNameRegExp: /\.css$/g,
-      //     cssProcessor: cssnano,
-      //     cssProcessorPluginOptions: {
-      //       preset: ['default', { discardComments: { removeAll: true } }],
-      //     },
-      //     canPrint: true
-      //   })
-      // ]
     }
   },
 
@@ -128,7 +104,7 @@ const config = {
       },
       {
         test: /\.htaccess/,
-        include: path.resolve(process.cwd(), 'app'),
+        include: path.join(process.cwd(), 'app'),
         use: {
           loader: 'file-loader',
           options: {
@@ -167,21 +143,7 @@ const config = {
     new CleanWebpackPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'app/index.html',
-      inject: true,
-      minify: !isDev ? {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        removeScriptTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true,
-      } : false
+      template: 'app/index.html'
     }),
 
     // new BundleAnalyzerPlugin(),
@@ -194,8 +156,8 @@ const config = {
     }),
 
     !isDev && new MomentTimezoneDataPlugin({
-      startYear: 2012,
-      endYear: currentYear + 10,
+      startYear: 2014,
+      endYear: currentYear + 8,
     }),
 
     !isDev && new MiniCssExtractPlugin({
@@ -203,42 +165,16 @@ const config = {
       chunkFilename: '[name].[contenthash].chunk.css'
     }),
 
-    // !isDev && new OfflinePlugin({
-    //   relativePaths: false,
-    //   publicPath: '/',
-    //   appShell: '/',
-    //   responseStrategy: 'cache-first',
-    //   excludes: [
-    //     '**/.*',
-    //     '**/*.map',
-    //     '**/*.gz',
-    //     '/__/**',
-    //     '/fragments/**',
-    //     '/widgets/**'
-    //   ],
-    //   caches: {
-    //     main: [':rest:'],
-    //     additional: ['*.chunk.js'],
-    //   },
-    //   ServiceWorker: {
-    //     prefetchRequest: {
-    //       mode: 'same-origin',
-    //       credentials: 'same-origin',
-    //     },
-    //   },
-    //   safeToUseOptionalCaches: true, // removes warning for about `additional` section usage
-    // }),
-
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
-    isProd && new SentryCliPlugin({
-      include: path.resolve(process.cwd(), 'build'),
+    buildSourceMap && new SentryCliPlugin({
+      include: path.join(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
     })
   ].filter(Boolean),
 
   resolve: {
-    modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
+    modules: [path.join(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
   },
 };
