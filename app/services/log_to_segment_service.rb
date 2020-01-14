@@ -42,6 +42,10 @@ class LogToSegmentService
     end
   end
 
+  def add_environment_properties hash
+    hash[:cl2_cluster] = CL2_CLUSTER
+  end
+
   def integrations user, tenant=nil
     {
       All: true,

@@ -8,6 +8,7 @@ class PublishRawEventToSegmentJob < ApplicationJob
       tenant = Tenant.current
       event[:properties] ||= {}
       service.add_tenant_properties(event[:properties] || {}, tenant)
+      service.add_environment_properties(event[:properties])
     rescue  ActiveRecord::RecordNotFound => e
       # Tenant can't be found, so we don't add anything
     end
