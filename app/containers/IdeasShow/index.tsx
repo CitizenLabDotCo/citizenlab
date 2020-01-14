@@ -108,7 +108,7 @@ const Container = styled.div`
   }
 `;
 
-const IdeaContainer = styled.div`
+const IdeaContainer = styled.main`
   width: 100%;
   max-width: ${postPageContentMaxWidth};
   display: flex;

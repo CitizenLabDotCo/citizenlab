@@ -226,29 +226,31 @@ class CommentBody extends PureComponent<Props, State> {
         content = (
           <CommentWrapper className={`e2e-comment-body ${commentType}`}>
             <QuillEditedContent fontWeight={300}>
-              {translateButtonClicked ? (
-                <GetMachineTranslation
-                  attributeName="body_multiloc"
-                  localeTo={locale}
-                  id={commentId}
-                  context="comment"
-                >
-                  {translation => {
-                    let text: string = commentContent;
+              <div aria-live="polite">
+                {translateButtonClicked ? (
+                  <GetMachineTranslation
+                    attributeName="body_multiloc"
+                    localeTo={locale}
+                    id={commentId}
+                    context="comment"
+                  >
+                    {translation => {
+                      let text: string = commentContent;
 
-                    if (!isNilOrError(translation)) {
-                      text = translation.attributes.translation.replace(
-                        /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
-                        '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
-                      );
-                    }
+                      if (!isNilOrError(translation)) {
+                        text = translation.attributes.translation.replace(
+                          /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
+                          '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
+                        );
+                      }
 
-                    return <CommentBodyContent text={text} />;
-                  }}
-                </GetMachineTranslation>
-              ) : (
-                <CommentBodyContent text={commentContent} />
-              )}
+                      return <CommentBodyContent text={text} />;
+                    }}
+                  </GetMachineTranslation>
+                ) : (
+                  <CommentBodyContent text={commentContent} />
+                )}
+              </div>
             </QuillEditedContent>
           </CommentWrapper>
         );

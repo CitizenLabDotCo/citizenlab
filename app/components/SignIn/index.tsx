@@ -90,7 +90,6 @@ const PasswordInput = styled(StyledInput)``;
 
 const ForgotPassword = styled(Link)`
   color: ${colors.label};
-  color: #999;
   font-size: ${fontSizes.small}px;
   line-height: 18px;
   font-weight: 300;
@@ -275,7 +274,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
     if (element) {
       this.emailInputElement = element;
-      this.emailInputElement.focus();
     }
   }
 
@@ -316,6 +314,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   onChange={this.handleEmailOnChange}
                   setRef={this.handleEmailInputSetRef}
                   autocomplete="email"
+                  onGreyBackground
                 />
               </FormElement>
 
@@ -326,7 +325,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     labelMessage={messages.passwordLabel}
                     thin
                   />
-                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link" tabIndex={1 as any}>
+                  <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
                     <FormattedMessage {...messages.forgotPassword} />
                   </ForgotPassword>
                 </PasswordLabelContainer>
@@ -338,6 +337,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   onChange={this.handlePasswordOnChange}
                   setRef={this.handlePasswordInputSetRef}
                   autocomplete="current-password"
+                  onGreyBackground
                 />
               </FormElement>
 
