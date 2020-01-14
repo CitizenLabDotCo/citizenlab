@@ -111,7 +111,8 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     this.setState(prev => ({ emailValue, apiErrors: omit(prev.apiErrors, 'email') }));
   }
 
-  validateFeedbackValue = (feedbackValue: string | null) => {
+  validateFeedbackValue = () => {
+    const { feedbackValue } = this.state;
     if (!feedbackValue) {
       return <FormattedMessage {...messages.feedbackEmptyError} />;
     }
@@ -119,8 +120,8 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
     return null;
   }
 
-  validateForm = (feedbackValue: string | null) => {
-    const feedbackValueError = this.validateFeedbackValue(feedbackValue);
+  validateForm = () => {
+    const feedbackValueError = this.validateFeedbackValue();
 
     this.setState({ feedbackValueError });
 
@@ -133,7 +134,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
 
   onSubmit = async () => {
     const { emailValue, feedbackValue } = this.state;
-    const isFormValid = this.validateForm(feedbackValue);
+    const isFormValid = this.validateForm();
 
     if (isFormValid) {
       try {
