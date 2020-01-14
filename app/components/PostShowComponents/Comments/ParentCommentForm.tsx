@@ -100,7 +100,6 @@ interface State {
   focused: boolean;
   processing: boolean;
   errorMessage: string | null;
-  a11yCommentPostedMessage: string | null;
 }
 
 class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
@@ -111,7 +110,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       focused: false,
       processing: false,
       errorMessage: null,
-      a11yCommentPostedMessage: null
     };
   }
 
@@ -165,8 +163,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
         [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
       };
 
-      const a11yCommentPostedMessage = this.props.intl.formatMessage(messages.a11y_commentPosted);
-
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
           postId,
@@ -176,7 +172,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       });
 
       try {
-        this.setState({ processing: true, a11yCommentPostedMessage: null });
+        this.setState({ processing: true });
 
         if (postType === 'idea' && projectId) {
           await addCommentToIdea(postId, projectId, authUser.id, commentBodyMultiloc);
@@ -186,7 +182,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
           await addCommentToInitiative(postId, authUser.id, commentBodyMultiloc);
         }
 
-        this.setState({ a11yCommentPostedMessage, inputValue: '', processing: false });
+        this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
         this.setState({ errorMessage, processing: false });
@@ -200,7 +196,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
   render() {
     const { authUser, post, postId, postType, className, intl: { formatMessage } } = this.props;
-    const { inputValue, focused, processing, errorMessage, a11yCommentPostedMessage } = this.state;
+    const { inputValue, focused, processing, errorMessage } = this.state;
     const commentingEnabled =  get(post, 'attributes.action_descriptor.commenting.enabled', true);
     const projectId: string | null = get(post, 'relationships.project.data.id', null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
@@ -210,9 +206,6 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 
     return (
       <Container className={className}>
-        {isString(a11yCommentPostedMessage) &&
-          <LiveMessage message={a11yCommentPostedMessage} aria-live="polite" />
-        }
         {(authUser && canComment) &&
           <CommentContainer className={`ideaCommentForm ${focused ? 'focused' : ''}`}>
             <AuthorWrapper>
