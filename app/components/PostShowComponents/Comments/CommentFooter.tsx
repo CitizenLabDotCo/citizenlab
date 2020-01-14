@@ -250,7 +250,10 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
             {showTranslateButton &&
               <FeatureFlag name="machine_translations">
-                <TranslateButton onMouseDown={this.removeFocus} onClick={this.translateComment}>
+                <TranslateButton
+                  onMouseDown={this.removeFocus}
+                  onClick={this.translateComment}
+                >
                   {!translateButtonClicked
                     ? <FormattedMessage {...messages.seeTranslation} />
                     : <FormattedMessage {...messages.seeOriginal} />

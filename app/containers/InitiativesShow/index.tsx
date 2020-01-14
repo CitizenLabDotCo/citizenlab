@@ -59,7 +59,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 // style
 import styled from 'styled-components';
 import { media, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -303,7 +303,7 @@ interface DataProps {
 
 interface InputProps {
   initiativeId: string | null;
-  inModal?: boolean | undefined;
+  insideModal?: boolean;
   className?: string;
 }
 

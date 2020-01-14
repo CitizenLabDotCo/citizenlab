@@ -13,7 +13,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { isBoolean } from 'util';
 
 const Container: any = styled.div`
@@ -72,7 +72,7 @@ const CharCount = styled.div`
   font-weight: 400;
   text-align: right;
   position: absolute;
-  top: 16px;
+  bottom: 14px;
   right: 10px;
 
   &.error {
@@ -113,7 +113,7 @@ interface Props extends InputProps, DataProps {}
 
 type State = {};
 
-class Input extends React.PureComponent<Props, State> {
+export class Input extends React.PureComponent<Props, State> {
 
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { maxCharCount, onChange, name, formikContext } = this.props;

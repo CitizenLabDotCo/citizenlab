@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import { get, cloneDeep, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { LiveMessage } from 'react-aria-live';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -28,6 +29,9 @@ import messages from './messages';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
+
+// a11y
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const UpvoteButton = styled.button`
   width: 18px;
@@ -255,7 +259,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { votingEnabled, className, comment, intl } = this.props;
+    const { votingEnabled, className, comment, intl: { formatMessage } } = this.props;
     const { voted, upvoteCount } = this.state;
 
     if (!isNilOrError(comment) && (votingEnabled || (!votingEnabled && upvoteCount > 0))) {
@@ -263,23 +267,62 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
         <Container className={className}>
           <UpvoteButtonWrapper>
             <UpvoteButton
-              aria-label={intl.formatMessage(messages.upvoteComment)}
               onMouseDown={this.removeFocus}
               onClick={this.onVote}
               disabled={!votingEnabled}
-              className={`e2e-comment-vote ${voted ? 'voted' : 'notVoted'} ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'} ${votingEnabled ? 'enabled' : 'disabled'}`}
+              className={`
+                e2e-comment-vote
+                ${voted ? 'voted' : 'notVoted'}
+                ${upvoteCount > 0 ? 'hasVotes' : 'hasNoVotes'}
+                ${votingEnabled ? 'enabled' : 'disabled'}
+              `}
             >
-              <UpvoteIcon name="upvote" className={`${voted ? 'voted' : ''} ${votingEnabled ? 'enabled' : 'disabled'}`} />
+              <UpvoteIcon
+                name="upvote"
+                className={`
+                  ${voted ? 'voted' : ''}
+                  ${votingEnabled ? 'enabled' : 'disabled'}
+                `}
+                title={!voted ?
+                  formatMessage(messages.upvoteComment)
+                  :
+                  formatMessage(messages.a11y_undoUpvote)
+                }
+              />
             </UpvoteButton>
           </UpvoteButtonWrapper>
 
+          <LiveMessage message={formatMessage(messages.a11y_upvoteCount, { upvoteCount })} aria-live="polite" />
+
           {upvoteCount > 0 &&
-            <UpvoteCount className={`${upvoteCount > 0 ? 'visible' : 'hidden'} ${votingEnabled ? 'enabled' : 'disabled'}`}>{upvoteCount}</UpvoteCount>
+            <UpvoteCount
+              className={`
+                ${upvoteCount > 0 ? 'visible' : 'hidden'}
+                ${votingEnabled ? 'enabled' : 'disabled'}`
+              }
+            >
+              {upvoteCount}
+            </UpvoteCount>
           }
 
           {votingEnabled &&
-            <UpvoteLabel onMouseDown={this.removeFocus} onClick={this.onVote} disabled={!votingEnabled}>
-              {!voted ? <FormattedMessage {...messages.commentUpvote} /> : <FormattedMessage {...messages.commentCancelUpvote} />}
+            <UpvoteLabel
+              onMouseDown={this.removeFocus}
+              onClick={this.onVote}
+              disabled={!votingEnabled}
+            >
+              <span aria-hidden>
+                {!voted ?
+                  <FormattedMessage {...messages.commentUpvote} />
+                  :
+                  <FormattedMessage {...messages.commentCancelUpvote} />
+                }
+              </span>
+              <ScreenReaderOnly>
+                {!voted ?
+                  formatMessage(messages.upvoteComment) : formatMessage(messages.a11y_undoUpvote)
+                }
+              </ScreenReaderOnly>
             </UpvoteLabel>
           }
         </Container>

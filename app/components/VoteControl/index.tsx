@@ -29,7 +29,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 interface IVoteComponent {
   active: boolean;
@@ -548,14 +548,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
-        <ScreenReaderOnly id="upvote-button">
-          <FormattedMessage {...messages.a11y_xUpvotes} values={{ count: upvotesCount }} />
-        </ScreenReaderOnly>
-
-        <ScreenReaderOnly id="downvote-button">
-          <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
-        </ScreenReaderOnly>
-
         <LiveMessage message={a11yVoteMessage} aria-live="polite" />
 
         <Upvote
@@ -571,6 +563,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+          <ScreenReaderOnly id="upvote-button">
+            <FormattedMessage {...messages.a11y_xUpvotes} values={{ count: upvotesCount }} />
+          </ScreenReaderOnly>
         </Upvote>
 
         <Downvote
@@ -586,6 +581,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
           </VoteIconContainer>
           <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+          <ScreenReaderOnly id="downvote-button">
+            <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
+          </ScreenReaderOnly>
         </Downvote>
       </Container>
     );
