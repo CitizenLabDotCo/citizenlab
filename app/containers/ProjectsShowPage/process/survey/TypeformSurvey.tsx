@@ -31,7 +31,7 @@ export default class TypeformSurvey extends PureComponent<Props, State> {
           url={surveyUrl}
           width="100%"
           height="500px"
-          display="initial"
+          display="block"
           position="relative"
           allowFullScreen
         />

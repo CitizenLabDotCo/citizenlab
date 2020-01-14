@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 
 import styled, { withTheme } from 'styled-components';
 import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
 import { Messages, FormattedMessage as OriginalFormattedMessage } from 'react-intl';
@@ -13,12 +13,12 @@ import ContentContainer from 'components/ContentContainer';
 export const FormSection = styled.div`
   max-width: 620px;
   min-width: 560px;
-  background: white;
-  border-radius: ${({ theme }) => theme.borderRadius};
   padding: 40px 40px 30px;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 10px;
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   ${media.smallerThanMaxTablet`
     min-width: auto;

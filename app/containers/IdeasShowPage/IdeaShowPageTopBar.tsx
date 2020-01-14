@@ -130,7 +130,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
     } else {
       clHistory.push('/');
     }
-  }, []);
+  }, [insideModal]);
 
   const onUnauthenticatedVoteClick = useCallback(() => {
     clHistory.push('/sign-in');
@@ -144,7 +144,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
         pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
       }
     }
-  }, []);
+  }, [project]);
 
   return (
     <Container className={className}>

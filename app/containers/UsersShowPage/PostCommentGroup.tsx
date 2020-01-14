@@ -20,7 +20,7 @@ import eventEmitter from 'utils/eventEmitter';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 
 // Components
