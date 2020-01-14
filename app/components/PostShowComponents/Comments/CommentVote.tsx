@@ -27,8 +27,11 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
 import { darken, lighten } from 'polished';
+
+// a11y
+import { ScreenReaderOnly } from 'utils/a11y';
 
 const UpvoteButton = styled.button`
   width: 18px;

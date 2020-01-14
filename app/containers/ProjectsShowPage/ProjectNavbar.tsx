@@ -15,7 +15,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
 import { fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import styled, { withTheme } from 'styled-components';
 
 // components

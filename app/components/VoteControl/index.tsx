@@ -29,7 +29,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 interface IVoteComponent {
   active: boolean;
