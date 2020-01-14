@@ -30,7 +30,6 @@ import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import styled from 'styled-components';
 import { hideVisually, darken } from 'polished';
 import { media } from 'utils/styleUtils';
-import { LiveMessage } from 'react-aria-live';
 
 const Container = styled.div`
   margin-bottom: 20px;
