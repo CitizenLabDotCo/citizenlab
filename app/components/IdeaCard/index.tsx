@@ -30,7 +30,7 @@ import { FormattedNumber } from 'react-intl';
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
