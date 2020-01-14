@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { deleteTopic } from 'services/topics';
 
-import messages from './messages';
+import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
@@ -73,25 +73,27 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
         </ButtonWrapper>
         <List>
           {topics.map((topic, index) => (
-            <Row key={topic.id} lastItem={(index === topics.length - 1)}>
-              <TextCell className="expand">
-                <T value={topic.attributes.title_multiloc} />
-              </TextCell>
-              <Button
-                onClick={this.handleDeleteClick(topic.id)}
-                style="text"
-                icon="delete"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </Button>
-              <Button
-                linkTo={`/admin/topics/${topic.id}`}
-                style="secondary"
-                icon="edit"
-              >
-                <FormattedMessage {...messages.editButtonLabel} />
-              </Button>
+            !isNilOrError(topic) && (
+              <Row key={topic.id} lastItem={(index === topics.length - 1)}>
+                <TextCell className="expand">
+                  <T value={topic.attributes.title_multiloc} />
+                </TextCell>
+                <Button
+                  onClick={this.handleDeleteClick(topic.id)}
+                  style="text"
+                  icon="delete"
+                >
+                  <FormattedMessage {...messages.deleteButtonLabel} />
+                </Button>
+                <Button
+                  linkTo={`/admin/topics/${topic.id}`}
+                  style="secondary"
+                  icon="edit"
+                >
+                  <FormattedMessage {...messages.editButtonLabel} />
+                </Button>
             </Row>
+            )
           ))}
         </List>
       </Section>
