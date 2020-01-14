@@ -1270,6 +1270,8 @@
   "app.containers.CampaignsConsentForm.submit": "Save",
   "app.containers.CampaignsConsentForm.votedCategory": "Linked to input you voted for",
   "app.containers.CampaignsConsentForm.weeklyCategory": "Weekly Overviews",
+  "app.containers.Comments.a11y_commentDeleted": "Comment deleted",
+  "app.containers.Comments.a11y_commentPosted": "Comment posted",
   "app.containers.Comments.a11y_undoUpvote": "Undo upvote",
   "app.containers.Comments.a11y_upvoteCount": "{upvoteCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}",
   "app.containers.Comments.addCommentError": "Something went wrong. Please try again later.",
