@@ -9,6 +9,7 @@ import invitationsRoutes from './invitations/routes';
 import projectsRoutes from './projects/routes';
 import settingsRoutes from './settings/routes';
 import settingsAreasRoutes from './settings/areas/routes';
+import topicsRoutes from './topics/routes';
 import customFieldRoutes from './settings/registration/CustomFields/routes';
 import pagesRoutes from './pages/routes';
 import emailsRoutes from './emails/routes';
@@ -83,6 +84,7 @@ export default () => ({
     },
     settingsRoutes(),
     settingsAreasRoutes(),
+    topicsRoutes(),
     pagesRoutes(),
     invitationsRoutes(),
     emailsRoutes(),
@@ -122,14 +124,6 @@ export default () => ({
       path: 'guide',
       component: Loadable({
         loader: () => import('containers/Admin/guide'),
-        loading: LoadableLoadingAdmin,
-        delay: 500
-      }),
-    },
-    {
-      path: 'topics',
-      component: Loadable({
-        loader: () => import('containers/Admin/topics'),
         loading: LoadableLoadingAdmin,
         delay: 500
       }),
