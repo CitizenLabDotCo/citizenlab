@@ -44,7 +44,10 @@ class SanitizationService
     }
 
     @@video_whitelist = [
-      /\A(https?:)?\/\/(?:www\.)?youtube(?:-nocookie)?\.com\//
+      /\A(?:http(?:s?):)?\/\/(?:www\.)?youtu(?:be\.com\/(?:watch\?v=|embed\/)|\.be\/)([\w\-\_]*)/,
+      /\A(?:http(?:s?):)?\/\/(?:www\.)?(?:player\.vimeo\.com\/video|vimeo\.com)\/(\d+)(?:|\/\?)/,
+      /\A(?:http(?:s?):)?\/\/fast.wistia.net\/embed\/iframe\/([\w\-\_]*)(?:|\/\?)/,
+      /\A(?:http(?:s?):)?\/\/(?:www\.)?dailymotion\.com\/embed\/video\/?(.+)/
     ]
 
     def initialize features
