@@ -21,37 +21,33 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, navbarRef, mobile
 
   const onClose = useCallback(() => {
     close();
-  }, []);
+  }, [close]);
 
   const topBar = useMemo(() => {
-    return (id
-      ? type === 'idea'
-        ? <IdeaShowPageTopBar ideaId={id} insideModal={true} />
-        : type === 'initiative'
-          ? <InitiativeShowPageTopBar initiativeId={id} insideModal={true} />
-          : null
-      : null);
-  }, [id]);
+    if (id && type === 'idea') {
+      return <IdeaShowPageTopBar ideaId={id} insideModal={true} />;
+    }
+
+    if (id && type === 'initiative') {
+      return <InitiativeShowPageTopBar initiativeId={id} insideModal={true} />;
+    }
+
+    return null;
+  }, [id, type]);
 
   const content = useMemo(() => {
-    return (id
-      ? type === 'idea'
-        ? (
+    if (id && type) {
+      return (
         <>
-          <IdeasShow ideaId={id}/>
+          {type === 'idea' && <IdeasShow ideaId={id} insideModal={true} />}
+          {type === 'initiative' && <InitiativesShow initiativeId={id} insideModal={true} />}
           <Footer />
         </>
-        )
-        : type === 'initiative'
-          ? (
-          <>
-            <InitiativesShow initiativeId={id}/>
-            <Footer />
-          </>
-          )
-          : null
-      : null);
-  }, [id]);
+      );
+    }
+
+    return null;
+  }, [id, type]);
 
   return (
     <FullscreenModal

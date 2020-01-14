@@ -23,11 +23,11 @@ export default defineMessages({
   },
   readMore: {
     id: 'app.containers.InitiativesIndexPage.readMore',
-    defaultMessage: 'Read more here.'
+    defaultMessage: 'Read more about initiatives.'
   },
   explanationTitle: {
     id: 'app.containers.InitiativesIndexPage.explanationTitle',
-    defaultMessage: 'How does it work ?'
+    defaultMessage: 'How does it work?'
   },
   constraints: {
     id: 'app.containers.InitiativesIndexPage.constraints',

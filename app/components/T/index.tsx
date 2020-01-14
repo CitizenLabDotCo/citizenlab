@@ -9,7 +9,7 @@ import { currentTenantStream } from 'services/tenant';
 type children = (localizedText: string) => JSX.Element | null;
 
 type Props = {
-  value: Multiloc;
+  value: Multiloc | null | undefined;
   as?: string;
   className?: string;
   children?: children;

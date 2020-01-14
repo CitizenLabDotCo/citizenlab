@@ -95,7 +95,7 @@ interface State {
   presentationMode: 'map' | 'card';
   attributeDiff: IUpdatedPhaseProperties;
   errors: { [fieldName: string]: CLError[] } | null;
-  saving: boolean;
+  processing: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
@@ -116,7 +116,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
       presentationMode: 'card',
       attributeDiff: {},
       errors: null,
-      saving: false,
+      processing: false,
       focusedInput: null,
       saved: false,
       loaded: false,
@@ -292,11 +292,13 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
   }
 
   save = async (projectId: string | null, phase: IPhase | null, attributeDiff: IUpdatedPhaseProperties) => {
-    if (!isEmpty(attributeDiff)) {
+    if (!isEmpty(attributeDiff) && !this.state.processing) {
       try {
         const { phaseFiles, phaseFilesToRemove } = this.state;
         let phaseResponse = phase;
         let redirect = false;
+
+        this.setState({ processing: true });
 
         if (phase && !isEmpty(attributeDiff)) {
           phaseResponse = await updatePhase(phase.data.id, attributeDiff);
@@ -319,7 +321,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
 
         this.setState({
           phaseFilesToRemove: [],
-          saving: false,
+          processing: false,
           saved: true,
           errors: null,
           submitState: 'success'
@@ -331,7 +333,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
       } catch (errors) {
         this.setState({
           errors: get(errors, 'json.errors', null),
-          saving: false,
+          processing: false,
           saved: false,
           submitState: 'error'
         });
@@ -379,7 +381,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
 
     if (loaded) {
       const { formatMessage } = this.props.intl;
-      const { errors, phase, attributeDiff, saving, phaseFiles, submitState } = this.state;
+      const { errors, phase, attributeDiff, processing, phaseFiles, submitState } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const startDate = this.getStartDate();
       const endDate = (phaseAttrs.end_at ? moment(phaseAttrs.end_at) : null);
@@ -466,7 +468,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
             </Section>
 
             <SubmitWrapper
-              loading={saving}
+              loading={processing}
               status={submitState}
               messages={{
                 buttonSave: messages.saveLabel,

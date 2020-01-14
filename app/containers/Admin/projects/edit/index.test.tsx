@@ -15,6 +15,7 @@ import {
 } from 'services/__mocks__/phases.ts';
 import { getMockProject } from 'services/__mocks__/projects.ts';
 import { shallowWithIntl } from 'utils/testUtils/withIntl';
+import { localizeProps } from 'utils/testUtils/localizeProps';
 import { WithRouterProps } from 'react-router';
 
 // what needs to be mocked by jest to render the component
@@ -50,6 +51,7 @@ describe('<AdminProjectEdition />', () => {
         project={project}
         children={children}
         {...routerProps}
+        {...localizeProps}
       />));
       const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -73,6 +75,7 @@ describe('<AdminProjectEdition />', () => {
         project={project}
         children={children}
         {...routerProps}
+        {...localizeProps}
       />));
       const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -96,6 +99,7 @@ describe('<AdminProjectEdition />', () => {
         project={project}
         children={children}
         {...routerProps}
+        {...localizeProps}
       />));
       const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -119,6 +123,7 @@ describe('<AdminProjectEdition />', () => {
         project={project}
         children={children}
         {...routerProps}
+        {...localizeProps}
       />));
       const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -142,6 +147,7 @@ describe('<AdminProjectEdition />', () => {
         project={project}
         children={children}
         {...routerProps}
+        {...localizeProps}
       />));
       const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -166,6 +172,7 @@ describe('<AdminProjectEdition />', () => {
           project={project}
           children={children}
           {...routerProps}
+          {...localizeProps}
         />));
         const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -189,6 +196,7 @@ describe('<AdminProjectEdition />', () => {
           project={project}
           children={children}
           {...routerProps}
+          {...localizeProps}
         />));
         const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -212,6 +220,7 @@ describe('<AdminProjectEdition />', () => {
           project={project}
           children={children}
           {...routerProps}
+          {...localizeProps}
         />));
         const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -235,6 +244,7 @@ describe('<AdminProjectEdition />', () => {
           project={project}
           children={children}
           {...routerProps}
+          {...localizeProps}
         />));
         const tabs = wrapper.find('withRouter(TabbedResource)').props().tabs;
 
@@ -258,6 +268,7 @@ describe('<AdminProjectEdition />', () => {
           project={project}
           children={children}
           {...routerProps}
+          {...localizeProps}
         />));
         const linkPath = wrapper.find('#to-project').props().linkTo;
 
@@ -281,6 +292,7 @@ describe('<AdminProjectEdition />', () => {
           project={project}
           children={children}
           {...routerProps}
+          {...localizeProps}
         />));
         const linkPath = wrapper.find('#new-idea').props().linkTo;
 
@@ -304,6 +316,7 @@ describe('<AdminProjectEdition />', () => {
           project={project}
           children={children}
           {...routerProps}
+          {...localizeProps}
         />));
         const linkPath = wrapper.find('#new-idea');
 
