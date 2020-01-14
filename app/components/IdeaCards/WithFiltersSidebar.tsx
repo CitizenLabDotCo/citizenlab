@@ -33,7 +33,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
 // typings

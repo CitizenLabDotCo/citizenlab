@@ -274,7 +274,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
     if (element) {
       this.emailInputElement = element;
-      this.emailInputElement.focus();
     }
   }
 

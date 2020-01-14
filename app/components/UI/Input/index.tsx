@@ -13,7 +13,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { isBoolean } from 'util';
 
 const Container: any = styled.div`

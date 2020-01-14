@@ -33,7 +33,7 @@ import T from 'components/T';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const contentTimeout = 350;

@@ -5,7 +5,7 @@ import { orderBy } from 'lodash-es';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 
 // resources

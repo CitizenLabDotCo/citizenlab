@@ -2,12 +2,12 @@
 
 exports[`IdeasMap renders correctly 1`] = `
 <IdeasMap__Container>
-  <accessibility__ScreenReaderOnly>
+  <a11y__ScreenReaderOnly>
     <FormattedMessage
       defaultMessage="Map with overview of ideas based on location"
       id="app.components.IdeasMap.mapTitle"
     />
-  </accessibility__ScreenReaderOnly>
+  </a11y__ScreenReaderOnly>
   <IdeasMap__StyledMap
     boxContent={null}
     fitBounds={true}

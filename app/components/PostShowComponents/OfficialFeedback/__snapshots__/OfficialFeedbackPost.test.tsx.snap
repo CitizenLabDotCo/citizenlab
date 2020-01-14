@@ -28,7 +28,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for admin 1`] = `
     }
     ariaLabel="Show more actions"
   />
-  <accessibility__ScreenReaderOnly
+  <a11y__ScreenReaderOnly
     aria-live="polite"
   />
   <QuillEditedContent>
@@ -89,7 +89,7 @@ exports[`<OfficialFeedbackPost /> renders correctly for non-admin 1`] = `
   className="e2e-official-feedback-post "
   key="feedbackId1"
 >
-  <accessibility__ScreenReaderOnly
+  <a11y__ScreenReaderOnly
     aria-live="polite"
   />
   <QuillEditedContent>

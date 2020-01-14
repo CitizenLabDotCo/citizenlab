@@ -19,7 +19,7 @@ import UsersEditPageMeta from './UsersEditPageMeta';
 // Styles
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
 import useAreas from 'hooks/useAreas';

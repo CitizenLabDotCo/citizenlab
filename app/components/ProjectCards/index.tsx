@@ -32,7 +32,7 @@ import tracks from './tracks';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
 // svg
