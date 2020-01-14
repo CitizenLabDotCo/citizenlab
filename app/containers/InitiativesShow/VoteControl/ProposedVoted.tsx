@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import styled, { keyframes, withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 
 import { getDaysRemainingUntil } from 'utils/dateUtils';

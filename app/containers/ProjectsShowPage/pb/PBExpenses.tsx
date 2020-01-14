@@ -37,7 +37,7 @@ import messages from '../messages';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/accessibility';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // a11y
 import { LiveMessage } from 'react-aria-live';

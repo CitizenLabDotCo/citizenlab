@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // components
 import Select from 'components/UI/Select';
-import { HiddenLabel } from 'utils/accessibility';
+import { HiddenLabel } from 'utils/a11y';
 
 // typings
 import { IOption } from 'typings';

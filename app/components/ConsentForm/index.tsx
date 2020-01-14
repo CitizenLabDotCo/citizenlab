@@ -7,7 +7,7 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Checkbox from 'components/UI/Checkbox';
-import { Fieldset, ScreenReaderOnly } from 'utils/accessibility';
+import { Fieldset, ScreenReaderOnly } from 'utils/a11y';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
