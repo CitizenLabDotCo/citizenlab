@@ -6,17 +6,11 @@ describe SideFxUserService do
   let(:user) { create(:user) }
 
   describe "before_create" do
-    it "makes the first user that registers automatically admin" do
+    it "doesn't make the first user that registers automatically admin" do
       User.destroy_all
       u = build(:user)
       service.before_create(u, nil)
-      expect(u.admin?).to be true
-    end
-
-    it "makes second and later users admin when the first user is not an admin" do
-      u = build(:user)
-      service.before_create(u, current_user)
-      expect(u.admin?).to be true
+      expect(u.admin?).to be false
     end
 
     it "doesn't make second and later users admin when the first user is an admin" do
