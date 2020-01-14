@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Timeline, { selectedPhaseObserver } from './Timeline';
+import Timeline, { selectedPhase$ } from './Timeline';
 import PhaseAbout from './PhaseAbout';
 import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
@@ -81,8 +81,13 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 `;
 
 const StyledPhasePolling = styled(PhasePolling)`
-  margin-bottom: 50px;
   margin-top: 70px;
+  margin-bottom: 50px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 0px;
+    margin-bottom: 25px;
+  `}
 `;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`
@@ -119,7 +124,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
   }
 
   componentDidMount() {
-    this.subscription = selectedPhaseObserver.subscribe(({ eventValue: selectedPhase }) => {
+    this.subscription = selectedPhase$.subscribe((selectedPhase) => {
       this.setState({ selectedPhase });
     });
   }
@@ -135,11 +140,10 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
   }
 
   render() {
-    const { project, className } = this.props;
-    const { slug } = this.props.params;
+    const { project, className, params: { slug } } = this.props;
     const { selectedPhase } = this.state;
     const selectedPhaseId = (selectedPhase ? selectedPhase.id : null);
-    const isPBPhase = (selectedPhase && selectedPhase.attributes.participation_method === 'budgeting');
+    const isPBPhase = selectedPhase?.attributes?.participation_method === 'budgeting';
     const participationMethod = (!isNilOrError(selectedPhase) ? selectedPhase.attributes.participation_method : null);
 
     if (!isNilOrError(project) && selectedPhase !== undefined) {

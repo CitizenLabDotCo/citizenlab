@@ -4,7 +4,8 @@ import { lighten } from 'polished';
 
 // styles
 import styled from 'styled-components';
-import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -18,71 +19,76 @@ import messages from '../messages';
 const Container = styled.div<{error: boolean}>`
   display: flex;
   align-items: center;
-  color: ${({ error }) => error ? colors.clRed : colors.label};
-  border: 1px solid ${({ error }) => error ? lighten(.4, colors.clRed) : lighten(.4, colors.label)};
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  font-size: ${fontSizes.base}px;
-  line-height: 24px;
   padding: 10px 20px;
   margin-bottom: 10px;
   margin-top: 10px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: 1px solid ${({ error }) => error ? lighten(.4, colors.clRed) : lighten(.4, colors.label)};
 `;
 
 const Paperclip = styled(Icon)`
-  min-width: 10px;
-  min-height: 20px;
+  flex: 0 0 10px;
   width: 10px;
   height: 20px;
   fill: ${colors.label};
   margin-right: 15px;
 `;
 
+const FileInfo = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+`;
+
 const FileDownloadLink = styled.a<{error: boolean}>`
   color: ${({ error }) => error ? colors.clRed : colors.label};
-  display: inline-block;
-  margin-right: 10px;
-  hyphens: auto;
-  max-width: 70%;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
-
+  line-height: normal;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 
   &:hover {
     color: inherit;
     text-decoration: underline;
   }
-
-  ${media.smallerThanMinTablet`
-    margin-right: auto;
-    max-width: 100%;
-  `}
 `;
 
-const FileSize = styled.span`
-  margin-right: auto;
+const FileSize = styled.span<{error: boolean}>`
+  color: ${({ error }) => error ? colors.clRed : colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
   white-space: nowrap;
+  margin-left: 10px;
 
   ${media.smallerThanMinTablet`
     display: none;
   `}
 `;
 
+const TrashIcon = styled(Icon)`
+  flex: 0 0 12px;
+  width: 12px;
+  height: 14px;
+  fill: ${colors.label};
+`;
+
 const DeleteButton = styled.button`
   display: flex;
-  height: 20px;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
   margin-left: 10px;
 
   &:hover {
-    .cl-icon {
+    ${TrashIcon} {
       fill: ${colors.clRed};
     }
   }
-`;
-
-const StyledIcon = styled(Icon)`
-  width: 12px;
-  fill: ${colors.label};
 `;
 
 interface Props {
@@ -95,21 +101,23 @@ const FileDisplay = ({ file, onDeleteClick }: Props) => {
     return (
       <Container error={!!file.error}>
         <Paperclip name="paperclip" ariaHidden />
-        <FileDownloadLink error={!!file.error} href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
-          {!!file.error
-            ? <FormattedMessage {...messages[file.error[0]]} values={{ fileName: file.filename }} />
-            : <>
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_file} />
-                </ScreenReaderOnly>
-                {file.filename}
-              </>
-          }
-        </FileDownloadLink>
-        <FileSize>({returnFileSize(file.size)})</FileSize>
+        <FileInfo>
+          <FileDownloadLink error={!!file.error} href={file.url} download={file.filename} target="_blank" rel="noopener noreferrer">
+            {!!file.error
+              ? <FormattedMessage {...messages[file.error[0]]} values={{ fileName: file.filename }} />
+              : <>
+                  <ScreenReaderOnly>
+                    <FormattedMessage {...messages.a11y_file} />
+                  </ScreenReaderOnly>
+                  {file.filename}
+                </>
+            }
+          </FileDownloadLink>
+          <FileSize error={!!file.error}>({returnFileSize(file.size)})</FileSize>
+        </FileInfo>
         {onDeleteClick &&
           <DeleteButton type="button" onClick={onDeleteClick}>
-            <StyledIcon name="delete" title={<FormattedMessage {...messages.a11y_removeFile} />} />
+            <TrashIcon name="delete" title={<FormattedMessage {...messages.a11y_removeFile} />} />
           </DeleteButton>
         }
       </Container>

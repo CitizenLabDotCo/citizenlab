@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { sortBy, last, get, isUndefined, isString } from 'lodash-es';
+import { sortBy, last, isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -65,7 +65,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/accessibility';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -83,7 +84,7 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight + props.theme.footerHeight}px);
@@ -108,7 +109,7 @@ const Container = styled.div`
   }
 `;
 
-const IdeaContainer = styled.main`
+const IdeaContainer = styled.div`
   width: 100%;
   max-width: ${postPageContentMaxWidth};
   display: flex;
@@ -314,7 +315,7 @@ interface DataProps {
 
 interface InputProps {
   ideaId: string | null;
-  inModal?: boolean | undefined;
+  insideModal?: boolean;
   className?: string;
 }
 
@@ -354,7 +355,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   componentDidMount() {
-    const newIdeaId = get(this.props.location.query, 'new_idea_id');
+    const newIdeaId = this.props.location.query?.['new_idea_id'];
 
     this.setLoaded();
 
@@ -393,7 +394,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
       const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
       const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
-      const budgetingDescriptor = get(idea, 'attributes.action_descriptor.budgeting', null);
+      const budgetingDescriptor = idea?.attributes?.action_descriptor?.budgeting || null;
       let participationContextType: IParticipationContextType | null = null;
       let participationContextId: string | null = null;
 
@@ -470,25 +471,25 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
     if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       // If the user deletes their profile, authorId can be null
-      const authorId: string | null = get(idea, 'relationships.author.data.id', null);
+      const authorId = idea?.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
       const titleMultiloc = idea.attributes.title_multiloc;
       const ideaTitle = localize(titleMultiloc);
       // If you're not an admin/mod, statusId can be null
-      const statusId: string | null = get(idea, 'relationships.idea_status.data.id', null);
-      const ideaImageLarge: string | null = get(ideaImages, '[0].attributes.versions.large', null);
-      const ideaGeoPosition = (idea.attributes.location_point_geojson || null);
-      const ideaAddress = (idea.attributes.location_description || null);
-      const projectId = idea.relationships.project.data.id;
-      const topicIds = (idea.relationships.topics.data ? idea.relationships.topics.data.map(item => item.id) : []);
+      const statusId = idea?.relationships?.idea_status?.data?.id || null;
+      const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
+      const ideaGeoPosition = idea?.attributes?.location_point_geojson || null;
+      const ideaAddress = idea?.attributes?.location_description || null;
+      const projectId = idea?.relationships?.project.data?.id;
+      const topicIds = idea?.relationships?.topics?.data?.map(item => item.id) || [];
       const ideaUrl = location.href;
       const ideaId = idea.id;
-      const ideaBody = localize(idea.attributes.body_multiloc);
-      const participationContextType = get(actionInfos, 'participationContextType', null);
-      const participationContextId = get(actionInfos, 'participationContextId', null);
-      const budgetingDescriptor = get(actionInfos, 'budgetingDescriptor', null);
-      const showBudgetControl = get(actionInfos, 'showBudgetControl', null);
-      const showVoteControl = get(actionInfos, 'showVoteControl', null);
+      const ideaBody = localize(idea?.attributes?.body_multiloc);
+      const participationContextType = actionInfos?.participationContextType || null;
+      const participationContextId = actionInfos?.participationContextId || null;
+      const budgetingDescriptor = actionInfos?.budgetingDescriptor || null;
+      const showBudgetControl = actionInfos?.showBudgetControl || null;
+      const showVoteControl = actionInfos?.showVoteControl || null;
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
@@ -754,8 +755,8 @@ const Data = adopt<DataProps, InputProps>({
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
-  phases: ({ idea, render }) => <GetPhases projectId={get(idea, 'relationships.project.data.id')}>{render}</GetPhases>,
+  project: ({ idea, render }) => <GetProject projectId={!isNilOrError(idea) ? idea?.relationships?.project?.data?.id : null}>{render}</GetProject>,
+  phases: ({ idea, render }) => <GetPhases projectId={!isNilOrError(idea) ? idea?.relationships?.project?.data?.id : null}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
   postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>
 });

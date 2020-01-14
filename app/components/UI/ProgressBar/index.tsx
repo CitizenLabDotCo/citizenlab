@@ -1,19 +1,16 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { clamp } from 'lodash-es';
-
 import Observer from '@researchgate/react-intersection-observer';
-const warningPattern = require('./warning_pattern.svg');
+import warningPattern from './warning_pattern.svg';
 
 const Container = styled.div``;
 
-const ProgressBarOuter = styled.div<{ bgColor: string, bgShaded: boolean }>`
+const ProgressBarOuter = styled.div<{ background: string }>`
   width: 100%;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background:
-    ${props => props.bgShaded ? `url("${warningPattern}"),` : ''}
-    ${props => props.bgColor};
+  background: ${props => props.background};
 `;
 
 const ProgressBarInner: any = styled.div<{ progress: number, color: string }>`
@@ -66,7 +63,7 @@ class ProgressBar extends PureComponent<Props, State> {
     return (
       <Container className={className} aria-hidden>
         <Observer onChange={this.handleIntersection}>
-          <ProgressBarOuter bgColor={bgColor} bgShaded={!!bgShaded}>
+          <ProgressBarOuter background={bgShaded === true ? `url("${warningPattern}")` : bgColor}>
             <ProgressBarInner progress={clamp(progress, 0, 1)} className={visible ? 'visible' : ''} color={color} />
           </ProgressBarOuter>
         </Observer>
