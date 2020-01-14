@@ -311,7 +311,7 @@ class CommentVote extends PureComponent<Props & InjectedIntlProps, State> {
               onClick={this.onVote}
               disabled={!votingEnabled}
             >
-              {/* To be displayed */}
+              {/* To be displayed, not picked up by screen readers */}
               <span aria-hidden>
                 {!voted ?
                   <FormattedMessage {...messages.commentUpvote} />
