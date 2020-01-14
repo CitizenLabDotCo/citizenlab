@@ -106,7 +106,6 @@ interface State {
   isLoadingMore: boolean;
   hasLoadedMore: boolean;
   childComments: IComments | null;
-  a11y_childCommentAddDeleteMessage: string | null;
 }
 
 class ParentComment extends PureComponent<Props, State> {
@@ -120,7 +119,6 @@ class ParentComment extends PureComponent<Props, State> {
       isLoadingMore: false,
       hasLoadedMore: false,
       childComments: null,
-      a11y_childCommentAddDeleteMessage: null,
     };
   }
 
