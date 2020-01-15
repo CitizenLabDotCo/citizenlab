@@ -10,7 +10,7 @@ import { CLError, UploadFile } from 'typings';
 
 // style
 import styled from 'styled-components';
-import { ScreenReaderOnly } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // i18n
 import messages from './messages';

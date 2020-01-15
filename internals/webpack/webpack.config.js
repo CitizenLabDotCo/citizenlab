@@ -1,6 +1,8 @@
 const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 const isProd = process.env.NODE_ENV === 'production';
+const isTestBuild = process.env.TEST_BUILD === 'true';
+const buildSourceMap = !isDev && !isTestBuild;
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -24,7 +26,7 @@ const config = {
   entry: path.join(process.cwd(), 'app/root'),
 
   output: {
-    path: path.resolve(process.cwd(), 'build'),
+    path: path.join(process.cwd(), 'build'),
     pathinfo: false,
     publicPath: '/',
     filename: isDev ? '[name].js' : '[name].[contenthash].js',
@@ -33,7 +35,7 @@ const config = {
 
   mode: isDev ? 'development' : 'production',
 
-  devtool: isDev ? 'cheap-module-eval-source-map' : (isProd ? 'source-map' : false),
+  devtool: isDev ? 'cheap-module-eval-source-map' : (!isTestBuild ? 'source-map' : false),
 
   devServer: {
     contentBase: path.join(process.cwd(), 'build'),
@@ -102,7 +104,7 @@ const config = {
       },
       {
         test: /\.htaccess/,
-        include: path.resolve(process.cwd(), 'app'),
+        include: path.join(process.cwd(), 'app'),
         use: {
           loader: 'file-loader',
           options: {
@@ -165,14 +167,14 @@ const config = {
 
     !isDev && new webpack.HashedModuleIdsPlugin(),
 
-    isProd && new SentryCliPlugin({
-      include: path.resolve(process.cwd(), 'build'),
+    buildSourceMap && new SentryCliPlugin({
+      include: path.join(process.cwd(), 'build'),
       release: process.env.CIRCLE_BUILD_NUM,
     })
   ].filter(Boolean),
 
   resolve: {
-    modules: [path.resolve(process.cwd(), 'app'), 'node_modules'],
+    modules: [path.join(process.cwd(), 'app'), 'node_modules'],
     extensions: ['.wasm', '.mjs', '.js', '.jsx', '.ts', '.tsx', '.json']
   },
 };

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-import { get } from 'lodash-es';
 
 const Container = styled.div<{ size: string }>`
   display: flex;
@@ -37,10 +36,10 @@ const InputWrapper = styled.div<{ checked: boolean, size: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 1px #aaa;
+  border: solid 1px ${colors.separationDark};
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${(props) => props.checked ? colors.clGreen : '#fff'};
-  border-color: ${(props) => props.checked ? colors.clGreen : '#aaa'};
+  border-color: ${(props) => props.checked ? colors.clGreen : colors.separationDark};
   box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
 
   &.focused {
@@ -123,30 +122,29 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   handleOnClick = (event: React.MouseEvent) => {
-    const { disabled } = this.props;
-    if (!disabled) {
-      const targetElement = get(event, 'target') as any;
-      const parentElement = get(event, 'target.parentElement');
-      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    if (!this.props.disabled) {
+      const targetElement = event?.target as HTMLElement | undefined;
+      const parentElement = targetElement?.parentElement;
+      const targetElementIsLink = targetElement?.hasAttribute('href');
+      const parentElementIsLink = parentElement?.hasAttribute('href');
 
       if (!targetElementIsLink && !parentElementIsLink) {
-        event && event.preventDefault();
+        event.preventDefault();
         this.props.onChange(event);
       }
     }
   }
 
   handleOnKeyDown = (event: React.KeyboardEvent) => {
-    const { disabled } = this.props;
-    if (!disabled) {
-      const targetElement = get(event, 'target') as any;
-      const parentElement = get(event, 'target.parentElement');
-      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+    if (!this.props.disabled) {
+      const targetElement = event?.target as HTMLElement | undefined;
+      const parentElement = targetElement?.parentElement;
+      const targetElementIsLink = targetElement?.hasAttribute('href');
+      const parentElementIsLink = parentElement?.hasAttribute('href');
 
-      if (!targetElementIsLink && !parentElementIsLink && event.key === 'Enter') {
-        event && event.preventDefault();
+      // if key = Space
+      if (!targetElementIsLink && !parentElementIsLink && event.keyCode === 32) {
+        event.preventDefault();
         this.props.onChange(event);
       }
     }

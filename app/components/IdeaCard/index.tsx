@@ -29,7 +29,8 @@ import { FormattedNumber } from 'react-intl';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import { IOpenPostPageModalEvent } from 'containers/App';
@@ -41,7 +42,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 const IdeaBudget = styled.div`
-  color: ${colors.clRed2};
+  color: ${colors.clRed};
   font-size: ${fontSizes.base}px;
   line-height: ${fontSizes.base}px;
   font-weight: 500;
@@ -93,7 +94,7 @@ const CommentInfo = styled.div`
   align-items: center;
 
   &:not(.enabled) {
-    opacity: 0.6;
+    opacity: 0.71;
   }
 `;
 
@@ -262,7 +263,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                     />
                   }
 
-                  <Spacer />
+                  <Spacer aria-hidden />
 
                   <CommentInfo className={`${commentingDescriptor && commentingDescriptor.enabled ? 'enabled' : ''}`}>
                     <CommentIcon name="comments" ariaHidden />

@@ -58,7 +58,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, postPageContentMaxWidth, viewportWidths, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const contentFadeInDuration = 250;
@@ -76,7 +77,7 @@ const Loading = styled.div`
   justify-content: center;
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   display: flex;
   flex-direction: column;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
@@ -302,7 +303,7 @@ interface DataProps {
 
 interface InputProps {
   initiativeId: string | null;
-  inModal?: boolean | undefined;
+  insideModal?: boolean;
   className?: string;
 }
 

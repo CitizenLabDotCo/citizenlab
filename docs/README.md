@@ -1,5 +1,52 @@
 # Changelog
 
+## 2020-01-15
+
+### Fixed
+
+- In the admin, the project title is now always displayed when editing a project
+- Further accesibility improvements:
+  - Site map improvements (navigation, clearer for screen readers)
+  - Improved colors in several places for users with sight disability
+  - Improved HTML to better inform screen reader users
+  - Added keyboard functionality of password recovery
+  - Improved forms (easier to use for users with motoric disabilities, better and more consistent validation, tips and tricks on mobile initiative form)
+  - Improvements for screen reader in different languages (language picker, comment translations)
+  - Added title (visible in your tab) for user settings page
+  - Improved screen reader experience for comment posting, deleting, upvoting and idea voting
+
+### Added
+
+- The email notification settings on the user profile are now grouped in categories
+- Unsubscribing through an email link now works without having to sign in first
+
+### Changed
+
+- The idea manager now shows all ideas by default, instead of filtered by the current user as assignee
+
+## 2020-01-07
+
+### Added
+
+- Go to idea manager when clicking 'idea assigned to you' notification
+- 2th iteration of the new admin moderation feature:
+  - Not viewed/Viewed filtering
+  - The ability to select one or more items and mark them as viewed/not viewed
+  - 'Belongs to' table column, which shows the context that a piece of content belongs to (e.g. the idea and project that a comment belongs to)
+  - 'Read more' expand mechanism for longer pieces of content
+  - Language selector for multilingual content
+  - 'Go to' link that will open a new tab and navigate you to the idea/iniative/comment that was posted
+
+### Changed
+- Improve layout (and more specifically width) of idea/iniatiatve forms on mobile
+- Separate checkboxes for privacy policy and cookie policy
+- Make the emails opt-in at registration
+
+### Fixed
+- Fix for unreadable password reset error message on Firefox
+- Fix for project granular permission radio buttons not working
+
+
 ## 2019-12-12
 
 ### Added

@@ -1,16 +1,17 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { reject } from 'lodash-es';
+import clHistory from 'utils/cl-router/history';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
 import Button from 'components/UI/Button';
 import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
-import clHistory from 'utils/cl-router/history';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // tracks
@@ -62,7 +63,7 @@ interface State {}
 
 interface Props extends InputProps, DataProps { }
 
-export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps & WithRouterProps & ITracks, State> {
+export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps & ITracks, State> {
 
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
@@ -159,12 +160,12 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
   render() {
     const { projectId } = this.props.params;
-    const { project, intl: { formatMessage } } = this.props;
+    const { project, intl: { formatMessage }, localize } = this.props;
     const { children, location: { pathname } } = this.props;
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
     const tabbedProps = {
       resource: {
-        title: !isNilOrError(project) ? project.attributes.title_multiloc : formatMessage(messages.newProject),
+        title: !isNilOrError(project) ? localize(project.attributes.title_multiloc) : formatMessage(messages.newProject),
       },
       tabs: ((projectId && !isNilOrError(project)) ? this.getTabs(projectId, project) : [])
     };
@@ -202,7 +203,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
   }
 }
 
-const AdminProjectEditionWithHoCs = withRouter(injectIntl<Props & WithRouterProps>(AdminProjectEdition));
+const AdminProjectEditionWithHoCs = withRouter(injectIntl<Props & WithRouterProps>(injectLocalize(AdminProjectEdition)));
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,

@@ -177,42 +177,44 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
             { name: 'description', content: helmetDescription },
           ]}
         />
+        <main>
+          <StyledContentContainer>
+            <Title>{title}</Title>
 
-        <StyledContentContainer>
-          <Title>{title}</Title>
+            <Subtitle>{subtitle}</Subtitle>
 
-          <Subtitle>{subtitle}</Subtitle>
+            <Form onSubmit={this.handleOnSubmit}>
+              <FormLabel
+                htmlFor="email"
+                labelMessage={messages.emailLabel}
+                thin
+              />
+              <StyledInput
+                id="email"
+                type="text"
+                value={email}
+                error={errorMessage}
+                placeholder={emailPlaceholder}
+                onChange={this.handleEmailOnChange}
+                setRef={this.handleEmailInputSetRef}
+                onGreyBackground
+              />
 
-          <Form onSubmit={this.handleOnSubmit}>
-            <FormLabel
-              htmlFor="email"
-              labelMessage={messages.emailLabel}
-              thin
-            />
-            <StyledInput
-              id="email"
-              type="text"
-              value={email}
-              error={errorMessage}
-              placeholder={emailPlaceholder}
-              onChange={this.handleEmailOnChange}
-              setRef={this.handleEmailInputSetRef}
-            />
+              {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
 
-            {/* <Error fieldName="title_multiloc" apiErrors={this.state.errors.title_multiloc} /> */}
+              <StyledButton
+                size="2"
+                width="100%"
+                processing={processing}
+                text={resetPassword}
+                onClick={this.handleOnSubmit}
+                className="e2e-submit-reset"
+              />
 
-            <StyledButton
-              size="2"
-              width="100%"
-              processing={processing}
-              text={resetPassword}
-              onClick={this.handleOnSubmit}
-              className="e2e-submit-reset"
-            />
-
-            {successMessage && <Success text={successMessage} className="e2e-success-reset"/>}
-          </Form>
-        </StyledContentContainer>
+              {successMessage && <Success text={successMessage} className="e2e-success-reset"/>}
+            </Form>
+          </StyledContentContainer>
+        </main>
       </Container>
     );
   }

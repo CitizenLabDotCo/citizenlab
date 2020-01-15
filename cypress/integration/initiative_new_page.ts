@@ -22,7 +22,6 @@ describe('Initiative new page', () => {
 
   it('shows an error when no title is provided', () => {
     cy.get('#e2e-initiative-title-input-en-GB').click();
-    cy.get('.e2e-submit-form').should('have.class', 'disabled');
     cy.get('.e2e-tips').click();
 
     cy.get('.e2e-error-message').should('contain', 'Please provide a title');
@@ -30,7 +29,6 @@ describe('Initiative new page', () => {
 
   it('shows an error when no description is provided', () => {
     cy.get('#body .ql-editor').click();
-    cy.get('.e2e-submit-form').should('have.class', 'disabled');
     cy.get('.e2e-tips').click();
 
     cy.get('.e2e-error-message').should('contain', 'Please provide a description');
@@ -38,14 +36,12 @@ describe('Initiative new page', () => {
 
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#e2e-initiative-title-input-en-GB').type(randomString(9));
-    cy.get('.e2e-submit-form').should('have.class', 'disabled');
     cy.get('.e2e-tips').click().wait(200);
     cy.get('.e2e-error-message').should('contain', 'The initiative title must be at least 10 characters long');
   });
 
   it('shows an error when the description is less than 300 characters long ()', () => {
     cy.get('#body .ql-editor').type(randomString(9));
-    cy.get('.e2e-submit-form').should('have.class', 'disabled');
     cy.get('.e2e-tips').click().wait(200);
     cy.get('.e2e-error-message').should('contain', 'The initiative description must be at least 500 characters long');
   });

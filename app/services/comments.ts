@@ -222,7 +222,7 @@ export async function markForDeletion(commentId: string,  authorId?: string, pro
   const dataIdsToRefetch = projectId ? [commentId, projectId] : [commentId];
   const apiEndpointsToRefetch = authorId ? [`${API_PATH}/users/${authorId}/comments`, `${API_PATH}/users/${authorId}/comments_count`] : [];
 
-  streams.fetchAllWith({
+  await streams.fetchAllWith({
     dataId: dataIdsToRefetch,
     apiEndpoint: apiEndpointsToRefetch
   });

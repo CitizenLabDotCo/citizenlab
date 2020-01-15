@@ -3,7 +3,7 @@ import { isString, get } from 'lodash-es';
 import Icon from 'components/UI/Icon';
 import { IOption } from 'typings';
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const Arrow = styled(Icon)`
   width: 12px;
@@ -29,7 +29,7 @@ const CustomSelect = styled.select`
   padding-right: 27px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: #fff;
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.separationDark};
   cursor: pointer;
   -moz-appearance: none;
   -webkit-appearance: none;

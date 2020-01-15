@@ -81,8 +81,13 @@ const StyledPhaseSurvey = styled(PhaseSurvey)`
 `;
 
 const StyledPhasePolling = styled(PhasePolling)`
-  margin-bottom: 50px;
   margin-top: 70px;
+  margin-bottom: 50px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 0px;
+    margin-bottom: 25px;
+  `}
 `;
 
 const StyledPhaseIdeas = styled(PhaseIdeas)`

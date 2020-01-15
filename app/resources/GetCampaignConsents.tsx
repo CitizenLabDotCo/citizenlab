@@ -34,7 +34,7 @@ export default class GetConsents extends React.Component<Props, State> {
       authUserStream().observable
         .pipe(switchMap((user) => {
           if (!isNilOrError(user)) {
-            return consentsStream(user.data.id).observable;
+            return consentsStream().observable;
           } else {
             return of(null);
           }
