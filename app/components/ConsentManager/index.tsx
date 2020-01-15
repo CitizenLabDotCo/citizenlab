@@ -67,7 +67,11 @@ interface DataProps {
 }
 interface Props extends InputProps, DataProps { }
 
-const getCustomPreferences = (preferences: CustomPreferences, remainingDestinations: IDestination[]) => {
+const getCustomPreferences = (
+  preferences: CustomPreferences,
+  remainingDestinations: IDestination[],
+  blacklistedDestinationsList: string[] | null
+) => {
   const customPreferences = {} as CustomPreferences;
 
   // get user preferences, default unset preferences to true
@@ -86,6 +90,12 @@ const getCustomPreferences = (preferences: CustomPreferences, remainingDestinati
       customPreferences[preferenceName] = null;
     }
   }
+
+  // set the tenantBlacklisted value on the customPreferences object so we can use
+  // it to later calculate whether a tenant has removed an item from blacklist
+  // or the user has gained access to some preferences
+  // and ask consent again when this happens
+  customPreferences.tenantBlacklisted = blacklistedDestinationsList || undefined;
 
   return customPreferences;
 };
@@ -147,17 +157,11 @@ const mapCustomPreferences = (
   blacklistedDestinationsList: string[] | null
 ) => {
   const remainingDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationsList);
-  const customPreferences = getCustomPreferences(preferences, remainingDestinations);
+  const customPreferences = getCustomPreferences(preferences, remainingDestinations, blacklistedDestinationsList);
   const destinationPreferences = {
     ...getDestinationPreferences(customPreferences, remainingDestinations),
     ...formatBlacklistDestinations(blacklistedDestinationsList)
   };
-
-  // set the tenantBlacklisted value on the customPreferences object so we can use
-  // it to later calculate whether a tenant has removed an item from blacklist
-  // or the user has gained access to some preferences
-  // and ask consent again when this happens
-  customPreferences.tenantBlacklisted = blacklistedDestinationsList || undefined;
 
   return {
     customPreferences,
