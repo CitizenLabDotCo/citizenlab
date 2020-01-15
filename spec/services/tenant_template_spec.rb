@@ -149,6 +149,7 @@ describe TenantTemplateService do
         expect(IdeaStatus.count).to be > 0
         expect(User.admin.count).to be > 0
         expect(Vote.count).to be > 0
+        expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       end
     end
   end

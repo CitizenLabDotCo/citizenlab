@@ -76,7 +76,7 @@ FactoryBot.define do
         phases_count { 5 }
       end
       after(:create) do |project, evaluator|
-        start_at = Faker::Date.between(1.year.ago, 1.year.from_now)
+        start_at = Faker::Date.between(from: 1.year.ago, to: 1.year.from_now)
         evaluator.phases_count.times do |i|
           project.phases << create(:phase, 
             start_at: start_at + 1,
@@ -102,7 +102,7 @@ FactoryBot.define do
     factory :project_with_past_phases do
       transient do
         phases_count { 5 }
-        last_end_at { Faker::Date.between(1.year.ago, Time.now) }
+        last_end_at { Faker::Date.between(from: 1.year.ago, to: Time.now) }
       end
       after(:create) do |project, evaluator|
         end_at = evaluator.last_end_at
@@ -126,8 +126,8 @@ FactoryBot.define do
         phase_config = evaluator.current_phase_attrs.merge((evaluator.phases_config[:c].clone || {}))
         permissions_config = FactoryHelpers.extract_permissions_config phase_config
         active_phase = create(:phase, 
-          start_at: Faker::Date.between(6.months.ago, Time.now),
-          end_at: Faker::Date.between(Time.now+1.day, 6.months.from_now),
+          start_at: Faker::Date.between(from: 6.months.ago, to: Time.now),
+          end_at: Faker::Date.between(from: Time.now+1.day, to: 6.months.from_now),
           project: project,
           with_permissions: evaluator.with_permissions,
           **phase_config
@@ -170,7 +170,7 @@ FactoryBot.define do
     factory :project_with_future_phases do
       transient do
         phases_count { 5 }
-        first_start_at { Faker::Date.between(Time.now, 1.year.from_now) }
+        first_start_at { Faker::Date.between(from: Time.now, to: 1.year.from_now) }
       end
       after(:create) do |project, evaluator|
         start_at = evaluator.first_start_at

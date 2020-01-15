@@ -2,12 +2,13 @@ module EmailCampaigns
   class WebApi::V1::ConsentsController < EmailCampaignsController
 
     before_action :set_consent, only: [:update]
+    before_action :ensure_consents, only: [:index, :update, :update_by_campaign_id]
 
     def index
-      Consent.create_all_for_user!(User.find(params[:user_id]))
+      authorize Consent
       
       @consents = policy_scope(Consent)
-        .where(user_id: params[:user_id])
+        .where(user: current_user_by_unsubscription_token)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
 
@@ -24,7 +25,40 @@ module EmailCampaigns
       end
     end
 
+    def update_by_campaign_id
+      @campaign = Campaign.find(params[:campaign_id])
+      @consent = Consent.find_by!(
+        campaign_type: @campaign.type,
+        user: current_user_by_unsubscription_token
+      )
+      update
+    end
+
+
+    def current_user_by_unsubscription_token
+      token = UnsubscriptionToken.find_by(token: params[:unsubscription_token])
+      if token
+        token.user
+      else
+        current_user
+      end
+    end
+
+    def pundit_user
+      current_user_by_unsubscription_token
+    end
+
+    def secure_controller?
+      false
+    end
+
     private
+
+    def ensure_consents
+      if current_user_by_unsubscription_token
+        Consent.create_all_for_user!(current_user_by_unsubscription_token)
+      end
+    end
 
     def set_consent
       @consent = Consent.find(params[:id])

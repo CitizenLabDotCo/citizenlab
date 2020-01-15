@@ -43,4 +43,17 @@ namespace :email_campaigns do
     end
   end
 
+  desc "Ensure that all existing users have unsubscription tokens"
+  task :ensure_unsubscription_tokens => :environment do
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.schema_name) do
+        ids = User
+          .left_joins(:email_campaigns_unsubscription_token)
+          .where(email_campaigns_unsubscription_tokens: {token: nil}).ids.each do |user_id|
+          EmailCampaigns::UnsubscriptionToken.create!(user_id: user_id)
+        end
+      end
+    end
+  end
+
 end

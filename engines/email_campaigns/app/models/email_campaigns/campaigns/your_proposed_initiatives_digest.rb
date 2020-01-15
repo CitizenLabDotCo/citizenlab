@@ -19,6 +19,10 @@ module EmailCampaigns
       end
     end
 
+    def self.category
+      'scheduled'
+    end
+
     def generate_commands recipient:, time: nil
       time ||= Time.now
       initiatives = recipient.initiatives.published.proposed.order(:published_at)
@@ -42,7 +46,7 @@ module EmailCampaigns
                     versions: image.image.versions.map{|k, v| [k.to_s, v.url]}.to_h
                   }
                 },
-                header_bg: { 
+                header_bg: {
                   versions: initiative.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
                 }
               }
@@ -52,7 +56,7 @@ module EmailCampaigns
             initiative_ids: initiatives.ids
           }
         }]
-      else 
+      else
         []
       end
     end

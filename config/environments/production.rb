@@ -79,6 +79,7 @@ Rails.application.configure do
   config.action_mailer.mailgun_settings = {
     api_key: ENV.fetch("MAILGUN_API_KEY"),
     domain: ENV.fetch("MAILGUN_DOMAIN"),
+    api_host: ENV.fetch("MAILGUN_API_HOST", "api.mailgun.net"),
   }
 
   Raven.configure do |config|
