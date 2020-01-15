@@ -101,7 +101,15 @@ export const media = {
       ${css(style, ...args)}
     }
   `,
+  // styles will only be picked up by IE 10 and 11
+  ie10and11: (style: any, ...args) => css`
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      ${css(style, ...args)}
+    }
+`,
 };
+
+
 
 export const customOutline = 'rgb(59,153,252) solid 2px';
 
