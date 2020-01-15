@@ -7,6 +7,7 @@ resource "Topics" do
   explanation "E.g. mobility, health, culture..."
 
   before do
+    header "Content-Type", "application/json"
     @topics = create_list(:topic, 5)
   end
 
