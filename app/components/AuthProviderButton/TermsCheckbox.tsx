@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import Link from 'utils/cl-router/Link';
-import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
@@ -11,12 +10,6 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
 
 const TermsAndConditionsWrapper = styled.div`
   padding: 15px 20px;
@@ -41,7 +34,6 @@ const TermsAndConditionsWrapper = styled.div`
 `;
 
 interface Props {
-  timeout: number;
   providerName: string;
   accepted: boolean;
   onCheck: () => void;
@@ -109,7 +101,6 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const {
-      timeout,
       accepted,
       providerName,
       onCheck,
@@ -118,36 +109,39 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (mode === 'signIn') {
       return (
-        <Checkbox
-          id="auth-button-terms-condition-checkbox"
-          checked={accepted}
-          onChange={onCheck}
-          label={
-            <FormattedMessage
-              {...messages.alreadyAcceptTermsAndConditions}
-              values={{
-                loginMechanismName: providerName,
-                tacLink: <Link
-                  target="_blank"
-                  to="/pages/terms-and-conditions"
-                  onClick={this.handleLinkClick}
-                >
-                  <FormattedMessage {...messages.termsAndConditions} />
-                </Link>,
-                ppLink: <Link
-                  target="_blank"
-                  to="/pages/privacy-policy"
-                  onClick={this.handleLinkClick}
-                >
-                  <FormattedMessage {...messages.privacyPolicy} />
-                </Link>,
-              }}
-            />}
-        />
+        <TermsAndConditionsWrapper>
+          <Checkbox
+            autoFocus
+            id="auth-button-terms-condition-checkbox"
+            checked={accepted}
+            onChange={onCheck}
+            label={
+              <FormattedMessage
+                {...messages.alreadyAcceptTermsAndConditions}
+                values={{
+                  loginMechanismName: providerName,
+                  tacLink: <Link
+                    target="_blank"
+                    to="/pages/terms-and-conditions"
+                    onClick={this.handleLinkClick}
+                  >
+                    <FormattedMessage {...messages.termsAndConditions} />
+                  </Link>,
+                  ppLink: <Link
+                    target="_blank"
+                    to="/pages/privacy-policy"
+                    onClick={this.handleLinkClick}
+                  >
+                    <FormattedMessage {...messages.privacyPolicy} />
+                  </Link>,
+                }}
+              />}
+          />
+        </TermsAndConditionsWrapper>
       );
     } else {
       return (
-        <CheckboxContainer>
+        <>
           <TermsAndConditionsWrapper>
             <FormattedMessage
               {...messages.privacyChecks}
@@ -156,6 +150,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
           </TermsAndConditionsWrapper>
           <TermsAndConditionsWrapper>
             <Checkbox
+              autoFocus
               id="terms-and-conditions-checkbox"
               className="e2e-terms-and-conditions"
               checked={this.state.tacAccepted}
@@ -211,7 +206,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
               }
             />
           </TermsAndConditionsWrapper>
-        </CheckboxContainer>
+        </>
       );
     }
   }
