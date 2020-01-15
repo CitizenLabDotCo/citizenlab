@@ -1,5 +1,7 @@
 module AdminApi
   class Types::UserType < GraphQL::Schema::Object
+    include ::EmailCampaigns::AdminApi::Types::UserType
+
     description "A registered or invited person on the platform"
 
     class UserAvatar < GraphQL::Schema::Object

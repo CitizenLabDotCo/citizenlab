@@ -1,4 +1,4 @@
-# cl2-back
+# cl2_back
 
 # Getting started
 
@@ -197,3 +197,8 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 4. Generate the desired events
 
 5. Click on the trace log file you created on `http://localhost:8088` to see the events
+
+
+## Disabling Bootsnap
+
+Uncomment `require 'bootsnap/setup'` in `config/boot.rb`

@@ -17,6 +17,7 @@ class LogToEventbusJob < ApplicationJob
       # Tenant can't be found, so we don't add anything
     end
     service.add_activity_item_content event, event, activity
+    service.add_environment_properties event
 
     publish_to_rabbit event, activity
   end

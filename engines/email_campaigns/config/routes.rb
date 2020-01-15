@@ -10,8 +10,9 @@ EmailCampaigns::Engine.routes.draw do
         get :stats, on: :member
       end
 
-      resources :users, only: [] do
-        resources :consents, only: [:index, :update], shallow: true
+
+      resources :consents, only: [:index, :update] do
+        patch 'by_campaign_id/:campaign_id', action: 'update_by_campaign_id', on: :collection
       end
     end
   end

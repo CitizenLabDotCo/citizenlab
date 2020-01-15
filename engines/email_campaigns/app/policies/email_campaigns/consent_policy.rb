@@ -17,10 +17,18 @@ module EmailCampaigns
       end
     end
 
+    def index?
+      user&.active?
+    end
+
     def update?
       user&.active? &&
         user.id == record.user_id &&
         DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
+    end
+
+    def update_by_campaign_id?
+      update?
     end
 
   end

@@ -9,7 +9,6 @@ namespace :setup_and_support do
       data.each do |d|
         idea = Idea.find d['ID']
         first_name = idea.author&.first_name || idea.author_name.split(' ').first || ''
-        byebug if !d['Feedback']
         d['Feedback'] = d['Feedback'].gsub '{{first_name}}', first_name
       end
 
@@ -66,6 +65,46 @@ namespace :setup_and_support do
       count = users.size
       users.each(&:destroy!)
       puts "Deleted #{count} users."
+    end
+  end
+
+  desc "Copy manual email campaigns from one platform to another"
+  task :copy_manual_campaigns, [:from_host, :to_host] => [:environment] do |t, args|
+    campaigns = Apartment::Tenant.switch(args[:from_host].gsub '.', '_') do
+      EmailCampaigns::Campaign.where(type: "EmailCampaigns::Campaigns::Manual").map do |c|
+        { 'type' => c.type, 'author_ref' => nil, 'enabled' => c.enabled, 'sender' => 'organization', 'subject_multiloc' => c.subject_multiloc, 'body_multiloc' => c.body_multiloc, 'created_at' => c.created_at.to_s, 'updated_at' => c.updated_at.to_s, }
+      end
+    end
+    template = {'models' => {
+    'email_campaigns/campaigns' => campaigns
+    }}
+    Apartment::Tenant.switch(args[:to_host].gsub '.', '_') do
+      TenantTemplateService.new.apply_template template
+    end
+  end
+
+  desc "Change the slugs of the project through a provided mapping"
+  task :map_project_slugs, [:url, :host] => [:environment] do |t, args|
+    issues = []
+    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      data.each do |d|
+        pj = Project.find_by slug: d['old_slug'].strip
+        if pj
+          pj.slug = d['new_slug'].strip
+          if !pj.save
+            issues += [pj.errors.details]
+          end
+        else
+          issues += ["No project found for slug #{d['old_slug']}"]
+        end
+      end
+      if issues.present?
+        puts 'Some mappings failed.'
+        issues.each{|issue| puts issue}
+      else
+        puts 'Success!'
+      end
     end
   end
 end

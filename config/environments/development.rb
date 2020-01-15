@@ -65,6 +65,7 @@ Rails.application.configure do
     config.action_mailer.mailgun_settings = {
       api_key: ENV.fetch("MAILGUN_API_KEY"),
       domain: ENV.fetch("MAILGUN_DOMAIN"),
+      api_host: ENV.fetch("MAILGUN_API_HOST", "api.mailgun.net"),
     }
   else
     config.action_mailer.delivery_method = :smtp
@@ -90,5 +91,8 @@ Rails.application.configure do
   config.rails_semantic_logger.started    = true
   config.rails_semantic_logger.processing = true
   config.rails_semantic_logger.rendered   = true
+
+  # No whitelist for host header
+  config.hosts = nil
 
 end

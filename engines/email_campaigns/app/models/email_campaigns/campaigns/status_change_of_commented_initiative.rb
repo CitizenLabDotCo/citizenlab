@@ -21,7 +21,11 @@ module EmailCampaigns
         .where.not(id: activity.item.author_id)
     end
 
-    def generate_commands recipient:, activity: 
+    def self.category
+      'commented'
+    end
+
+    def generate_commands recipient:, activity:
       initiative = activity.item
       status = initiative.initiative_status
       [{
@@ -43,6 +47,6 @@ module EmailCampaigns
         }
       }]
     end
-    
+
   end
 end

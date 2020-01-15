@@ -3,9 +3,6 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create user, current_user
-    if User.admin.empty?
-      user.add_role 'admin'
-    end
     if (CustomField.where(enabled: true).count == 0) && (user.invite_status != 'pending')
       user.registration_completed_at ||= Time.now
     end
@@ -22,6 +19,7 @@ class SideFxUserService
     if user.admin?
       LogActivityJob.set(wait: 5.seconds).perform_later(user, 'admin_rights_given', current_user, user.created_at.to_i)
     end
+    user.create_email_campaigns_unsubscription_token
   end
 
   def before_update user, current_user

@@ -86,11 +86,11 @@ module AdminApi
       @project.project_files.map do |p|
         {
           'project_ref'     => lookup_ref(p.project_id, :project),
-          'remote_file_url' => p.file_url,
           'ordering'        => p.ordering,
           'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
           'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
-          'name'            => p.name
+          'name'            => p.name,
+          'remote_file_url' => p.file_url
         }
       end
     end
@@ -132,11 +132,11 @@ module AdminApi
       @project.phases.flat_map(&:phase_files).map do |p|
         {
           'phase_ref'       => lookup_ref(p.phase_id, :phase),
-          'remote_file_url' => p.file_url,
           'ordering'        => p.ordering,
+          'name'            => p.name,
+          'remote_file_url' => p.file_url,
           'created_at'      => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
-          'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601,
-          'name'            => p.name
+          'updated_at'      => shift_timestamp(p.updated_at, shift_timestamps)&.iso8601
         }
       end
     end
@@ -272,11 +272,11 @@ module AdminApi
       @project.events.flat_map(&:event_files).map do |e|
         {
           'event_ref'       => lookup_ref(e.event_id, :event),
-          'remote_file_url' => e.file_url,
+          'name'            => e.name,
           'ordering'        => e.ordering,
+          'remote_file_url' => e.file_url,
           'created_at'      => shift_timestamp(e.created_at, shift_timestamps)&.iso8601,
-          'updated_at'      => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601,
-          'name'            => e.name
+          'updated_at'      => shift_timestamp(e.updated_at, shift_timestamps)&.iso8601
         }
       end
     end
@@ -331,11 +331,11 @@ module AdminApi
       IdeaFile.where(idea_id: @project.ideas.published.ids).map do |i|
         {
           'idea_ref'        => lookup_ref(i.idea_id, :idea),
-          'remote_file_url' => i.file_url,
+          'name'            => i.name,
           'ordering'        => i.ordering,
+          'remote_file_url' => i.file_url,
           'created_at'      => shift_timestamp(i.created_at, shift_timestamps)&.iso8601,
-          'updated_at'      => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601,
-          'name'            => i.name
+          'updated_at'      => shift_timestamp(i.updated_at, shift_timestamps)&.iso8601
         }
       end
     end

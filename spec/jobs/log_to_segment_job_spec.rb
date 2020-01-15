@@ -20,6 +20,7 @@ RSpec.describe LogToSegmentJob, type: :job do
         expect(event.dig(:properties, :item_id)).to eq(comment.id)
         expect(event.dig(:properties, :item_type)).to eq('Comment')
         expect(event.dig(:properties, :item_content, :comment, :id)).to eq(comment.id)
+        expect(event.dig(:properties, :cl2_cluster)).to eq 'local'
         expect(event.dig(:integrations, :All)).to be true
         expect(event.dig(:integrations, :Intercom)).to be false
         expect(event.dig(:integrations, :SatisMeter)).to be false
@@ -40,6 +41,7 @@ RSpec.describe LogToSegmentJob, type: :job do
         expect(event.dig(:properties, :action)).to eq("created")
         expect(event.dig(:properties, :item_id)).to eq(notification.id)
         expect(event.dig(:properties, :item_type)).to eq('Notifications::CommentOnYourComment')
+        expect(event.dig(:properties, :cl2_cluster)).to eq 'local'
       end
       job.perform activity
     end
