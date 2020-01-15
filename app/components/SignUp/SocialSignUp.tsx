@@ -1,6 +1,5 @@
-import React, { Provider } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
 
 // components
