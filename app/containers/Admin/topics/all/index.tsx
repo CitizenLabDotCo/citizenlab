@@ -30,13 +30,6 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
   constructor(props) {
     super(props);
-    this.state = {
-      terminologyOpened: false,
-    };
-  }
-
-  handleToggleTerminology = () => {
-    this.setState(({ terminologyOpened }) => ({ terminologyOpened: !terminologyOpened }));
   }
 
   handleDeleteClick = (topicId: string) => (event: React.FormEvent<any>) => {
