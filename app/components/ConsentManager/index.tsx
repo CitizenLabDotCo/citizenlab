@@ -34,7 +34,7 @@ export interface CustomPreferences {
   tenantBlacklisted?: string[] | undefined;
 }
 
-// the format in which we'll present the desinations to the user
+// the format in which we'll present the destinations to the user
 export interface CategorizedDestinations {
   analytics: IDestination[];
   advertising: IDestination[];
@@ -163,30 +163,34 @@ export class ConsentManager extends PureComponent<Props> {
   getBlacklistedDestinations = () => {
     const { tenant, authUser } = this.props;
 
-    const isPriviledgedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
-    const tenantBlacklisted = !isNilOrError(tenant) ? tenant.attributes.settings.core.segment_destinations_blacklist : [];
+    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
+    const tenantBlacklistedDestinations = !isNilOrError(tenant) ? tenant.attributes.settings.core.segment_destinations_blacklist : [];
 
-    return [...(tenantBlacklisted || []), ...(!isPriviledgedUser ? adminIntegrations : [])];
+    return [...(tenantBlacklistedDestinations || []), ...(!isPrivilegedUser ? adminIntegrations : [])];
   }
 
   render() {
     const { tenant } = this.props;
-    if (isNilOrError(tenant)) return null;
-    return (
-      <ConsentManagerBuilder
-        writeKey={CL_SEGMENT_API_KEY}
-        mapCustomPreferences={this.handleMapCustomPreferences}
-        initialPreferences={initialPreferences}
-        onError={reportToSegment}
-      >
-        {(consentManagerProps) => (
-          <ConsentManagerBuilderHandler
-            {...consentManagerProps}
-            blacklistedDestinations={this.getBlacklistedDestinations()}
-          />
-        )}
-      </ConsentManagerBuilder>
-    );
+
+    if (!isNilOrError(tenant)) {
+      return (
+        <ConsentManagerBuilder
+          writeKey={CL_SEGMENT_API_KEY}
+          mapCustomPreferences={this.handleMapCustomPreferences}
+          initialPreferences={initialPreferences}
+          onError={reportToSegment}
+        >
+          {(consentManagerProps) => (
+            <ConsentManagerBuilderHandler
+              {...consentManagerProps}
+              blacklistedDestinations={this.getBlacklistedDestinations()}
+            />
+          )}
+        </ConsentManagerBuilder>
+      );
+    }
+
+    return null;
   }
 }
 
