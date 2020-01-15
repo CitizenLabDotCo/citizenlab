@@ -5,22 +5,6 @@ describe SideFxUserService do
   let(:current_user) { create(:user) }
   let(:user) { create(:user) }
 
-  describe "before_create" do
-    it "doesn't make the first user that registers automatically admin" do
-      User.destroy_all
-      u = build(:user)
-      service.before_create(u, nil)
-      expect(u.admin?).to be false
-    end
-
-    it "doesn't make second and later users admin when the first user is an admin" do
-      create(:user, roles: [{"type" => 'admin'}, {"type" => 'project_moderator', "project_id" => '42'}])
-      u = build(:user)
-      service.before_create(u, current_user)
-      expect(u.admin?).to be false
-    end
-  end
-
   describe "after_create" do
     it "logs a 'created' action when a user is created" do
       expect {service.after_create(user, current_user)}.
