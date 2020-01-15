@@ -3,7 +3,6 @@ import React, { PureComponent } from 'react';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // components
 import TermsCheckbox from './TermsCheckbox';
@@ -12,10 +11,11 @@ import GoogleImage from './GoogleImage';
 import AzureAdImage from './AzureADImage';
 import { CSSTransition } from 'react-transition-group';
 
-const timeout = 250;
+const timeout = 400;
 
 const AuthProviderButtonWrapper = styled.div`
   width: 100%;
+  min-height: 58px;
   margin-top: 15px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -24,16 +24,13 @@ const AuthProviderButtonWrapper = styled.div`
   text-align: left;
   padding: 0;
   cursor: pointer;
-  min-height: 58px;
-  will-change: max-height;
   overflow: hidden;
-  transition: all ${timeout}ms ease-out;
+  position: relative;
 
   &:disabled {
     background: ${colors.lightGreyishBlue};
     cursor: not-allowed;
   }
-
 
   &:not(:disabled) {
     &:hover {
@@ -82,35 +79,59 @@ const AuthProviderButtonWrapper = styled.div`
 `;
 
 const AuthProviderButtonInner = styled.div`
-  min-height: 58px;
-  flex: 1;
-  width: 100%;
+  height: 58px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all ${timeout}ms ease-out;
-  will-change: opacity;
-  overflow: hidden;
+`;
+
+const StyledTermsCheckbox = styled(TermsCheckbox)`
+  opacity: 0;
+  display: none;
+  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: opacity, height;
 
   &.tac-enter {
     opacity: 0;
-    max-height: 58px;
+    max-height: 0px;
+    overflow: hidden;
+    display: block;
 
     &.tac-enter-active {
       opacity: 1;
-      max-height: 500px;
+      max-height: 1000px;
+      overflow: hidden;
+      display: block;
     }
+  }
+
+  &.tac-enter-done {
+    opacity: 1;
+    overflow: visible;
+    display: block;
   }
 
   &.tac-exit {
     opacity: 1;
-    max-height: 58px;
+    max-height: 1000px;
+    overflow: hidden;
+    display: block;
 
     &.tac-exit-active {
       opacity: 0;
-      max-height: 500px;
+      max-height: 0px;
+      overflow: hidden;
+      display: block;
     }
+  }
+
+  &.tac-exit-done {
+    display: none;
   }
 `;
 
@@ -168,11 +189,6 @@ class AuthProviderButton extends PureComponent<Props, State> {
     const { status } = this.state;
 
     return (
-      <CSSTransition
-        classNames="grow"
-        in={status !== 'image'}
-        timeout={timeout}
-      >
       <AuthProviderButtonWrapper
         className={`${provider} ${status !== 'image' && 'active'}`}
         tabIndex={status === 'image' ? 0 : -1}
@@ -180,48 +196,48 @@ class AuthProviderButton extends PureComponent<Props, State> {
         onKeyDown={status === 'image' ? this.handleOnKeyDown : undefined}
         role={status === 'image' ? 'button' : ''}
       >
-        <TransitionGroup>
-          {status !== 'image' ?
-            <CSSTransition classNames="tac" timeout={timeout} exit={false} enter={true}>
-              <AuthProviderButtonInner>
-                <TermsCheckbox
-                  providerName={providerName}
-                  accepted={status === 'checked'}
-                  onCheck={this.handleOnCheck}
-                  mode={mode}
-                />
-              </AuthProviderButtonInner>
-            </CSSTransition>
-            :
-            <CSSTransition classNames="tac" timeout={timeout} exit={true} enter={false}>
-              <AuthProviderButtonInner>
-                {provider === 'facebook' &&
-                  <FacebookImage
-                    mode={mode}
-                    providerName={providerName}
-                  />
-                }
-                {provider === 'google' &&
-                  <GoogleImage
-                    mode={mode}
-                    providerName={providerName}
-                  />
-                }
-                {provider === 'azureactivedirectory' &&
-                  <AzureAdImage
-                    mode={mode}
-                    providerName={providerName}
-                  />
-                }
-              </AuthProviderButtonInner>
-            </CSSTransition>
-          }
-        </TransitionGroup>
+        {status === 'image' &&
+          <AuthProviderButtonInner>
+            {provider === 'facebook' &&
+              <FacebookImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+            {provider === 'google' &&
+              <GoogleImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+            {provider === 'azureactivedirectory' &&
+              <AzureAdImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+          </AuthProviderButtonInner>
+        }
+
+        <CSSTransition
+          classNames="tac"
+          in={status !== 'image'}
+          timeout={timeout}
+          mounOnEnter={false}
+          unmountOnExit={false}
+          enter={true}
+          exit={true}
+        >
+          <StyledTermsCheckbox
+            providerName={providerName}
+            accepted={status === 'checked'}
+            onCheck={this.handleOnCheck}
+            mode={mode}
+          />
+        </CSSTransition>
       </AuthProviderButtonWrapper>
-      </CSSTransition>
     );
   }
-
 }
 
 export default AuthProviderButton;
