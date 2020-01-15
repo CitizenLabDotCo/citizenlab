@@ -100,7 +100,7 @@ const getCustomPreferences = (
   return customPreferences;
 };
 
-const getDestinationPreferences = (customPreferences, remainingDestinations: IDestination[]) => {
+const getDestinationPreferences = (customPreferences: CustomPreferences, remainingDestinations: IDestination[]) => {
   const destinationPreferences = {};
 
   // for each non-blacklisted destination, set the preference for this destination to be
@@ -153,7 +153,8 @@ const removeBlacklistedDestinations = (destinations: IDestination[], blacklisted
 * of the user in the format { [preferenceId]: booleanConsent }
 **/
 const mapCustomPreferences = (
-  { destinations, preferences }: { destinations: IDestination[], preferences: CustomPreferences },
+  destinations: IDestination[],
+  preferences: CustomPreferences,
   blacklistedDestinationsList: string[] | null
 ) => {
   const remainingDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationsList);
@@ -182,7 +183,8 @@ export class ConsentManager extends PureComponent<Props> {
 
     if (!isNilOrError(tenant)) {
       return mapCustomPreferences(
-        { destinations, preferences },
+        destinations,
+        preferences,
         this.getBlacklistedDestinations()
       );
     }
