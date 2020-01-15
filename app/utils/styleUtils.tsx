@@ -102,6 +102,7 @@ export const media = {
     }
   `,
   // styles will only be picked up by IE 10 and 11
+  // http://browserhacks.com/#hack-28f493d247a12ab654f6c3637f6978d5
   ie10and11: (style: any, ...args) => css`
     @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
       ${css(style, ...args)}
