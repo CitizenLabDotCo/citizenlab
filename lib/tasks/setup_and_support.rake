@@ -82,4 +82,29 @@ namespace :setup_and_support do
       TenantTemplateService.new.apply_template template
     end
   end
+
+  desc "Change the slugs of the project through a provided mapping"
+  task :map_project_slugs, [:url, :host] => [:environment] do |t, args|
+    issues = []
+    data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      data.each do |d|
+        pj = Project.find_by slug: d['old_slug'].strip
+        if pj
+          pj.slug = d['new_slug'].strip
+          if !pj.save
+            issues += [pj.errors.details]
+          end
+        else
+          issues += ["No project found for slug #{d['old_slug']}"]
+        end
+      end
+      if issues.present?
+        puts 'Some mappings failed.'
+        issues.each{|issue| puts issue}
+      else
+        puts 'Success!'
+      end
+    end
+  end
 end
