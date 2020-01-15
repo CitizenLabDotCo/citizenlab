@@ -148,8 +148,10 @@ const mapCustomPreferences = (
 ) => {
   const remainingDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationsList);
   const customPreferences = getCustomPreferences(preferences, remainingDestinations);
-  const destinationPreferences = getDestinationPreferences(customPreferences, remainingDestinations);
-  const blacklistedDestinations = formatBlacklistDestinations(blacklistedDestinationsList);
+  const destinationPreferences = {
+    ...getDestinationPreferences(customPreferences, remainingDestinations),
+    ...formatBlacklistDestinations(blacklistedDestinationsList)
+  };
 
   // set the tenantBlacklisted value on the customPreferences object so we can use
   // it to later calculate whether a tenant has removed an item from blacklist
@@ -159,7 +161,7 @@ const mapCustomPreferences = (
 
   return {
     customPreferences,
-    destinationPreferences: { ...destinationPreferences, ...blacklistedDestinations },
+    destinationPreferences
   } as { customPreferences: CustomPreferences, destinationPreferences: { [destinationId: string]: boolean } };
 };
 
