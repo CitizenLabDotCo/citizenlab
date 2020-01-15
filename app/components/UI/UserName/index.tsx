@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import styled from 'styled-components';
 import { get } from 'lodash-es';
@@ -83,7 +83,7 @@ interface InputProps {
 
 interface Props extends InputProps, DataProps { }
 
-const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color, verificationBadge }) => {
+const UserName = ({ user, className, hideLastName, linkToProfile, emphasize, canModerate, color, verificationBadge }: Props) => {
   if (!isNilOrError(user)) {
     const firstName = get(user, 'attributes.first_name', '');
     const lastName = get(user, 'attributes.last_name', '');
@@ -135,7 +135,7 @@ const UserName = memo<Props>(({ user, className, hideLastName, linkToProfile, em
       <FormattedMessage {...messages.deletedUser} />
     </Name>
   );
-});
+};
 
 const Data = adopt<DataProps, InputProps>({
   user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>

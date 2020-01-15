@@ -77,7 +77,7 @@ const InnerContainer = styled.div`
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
-    min-height: auto;
+    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
   `}
 `;
 

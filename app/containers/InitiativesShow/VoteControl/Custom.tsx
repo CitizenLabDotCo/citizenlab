@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media, ScreenReaderOnly } from 'utils/styleUtils';
+import { colors, fontSizes, media } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { StatusExplanation } from './SharedStyles';
 
 import { IInitiativeData } from 'services/initiatives';

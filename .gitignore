@@ -28,3 +28,6 @@ browserstack.err
 
 cypress/videos/
 cypress/screenshots/
+
+# Storybook generated output
+.out/

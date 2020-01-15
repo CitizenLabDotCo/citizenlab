@@ -49,7 +49,7 @@ const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, cur
 
     return (
       <>
-        <H2 ref={projectsSectionRef}>
+        <H2 ref={projectsSectionRef} tabIndex={-1}>
           <FormattedMessage {...messages.projectsSection} />
         </H2>
         <AllProjectsLink to="/projects" id="projects-section">
@@ -58,7 +58,7 @@ const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, cur
         {publishedProjects.length > 0 && (
           <>
             {severalProjectTypes && (
-              <H3 ref={currentSectionRef}>
+              <H3 ref={currentSectionRef} tabIndex={-1}>
                 <FormattedMessage {...messages.projectsCurrent} />
               </H3>
             )}
@@ -74,7 +74,7 @@ const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, cur
         {archivedProjects.length > 0 && (
           <>
             {severalProjectTypes && (
-              <H3 ref={archivedSectionRef}>
+              <H3 ref={archivedSectionRef} tabIndex={-1}>
                 <FormattedMessage {...messages.projectsArchived} />
               </H3>
             )}
@@ -90,7 +90,7 @@ const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, cur
         {draftProjects.length > 0 && (
           <>
             {severalProjectTypes && (
-              <H3 ref={draftSectionRef}>
+              <H3 ref={draftSectionRef} tabIndex={-1}>
                 <FormattedMessage {...messages.projectsDraft} />
               </H3>
             )}

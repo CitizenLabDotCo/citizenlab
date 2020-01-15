@@ -11,7 +11,8 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { fontSizes, colors, ScreenReaderOnly } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';

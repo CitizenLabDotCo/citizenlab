@@ -29,7 +29,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.main`
   width: 100%;
   margin: 0;
   padding: 0;

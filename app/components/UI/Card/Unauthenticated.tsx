@@ -1,10 +1,15 @@
 import React, { PureComponent, FormEvent } from 'react';
-import styled, { withTheme } from 'styled-components';
-import clHistory from 'utils/cl-router/history';
-import { darken } from 'polished';
+
+// components
 import Button from 'components/UI/Button';
-import { FormattedMessage } from 'utils/cl-intl';
+
+// styles
+import styled, { withTheme } from 'styled-components';
+import { darken } from 'polished';
+
+// i18n
 import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +20,7 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-const StyledButton = styled(Button)`
+const StyledLinkButton = styled(Button)`
   margin-left: 5px;
 
   &:hover .buttonText {
@@ -30,36 +35,33 @@ interface Props {
 interface State { }
 
 class Unauthenticated extends PureComponent<Props, State> {
-  goToLogin = (event: FormEvent) => {
-    event.preventDefault();
-    event.stopPropagation();
-    clHistory.push('/sign-in');
-  }
 
-  goToSingUp = (event: FormEvent) => {
+  stopPropagation = (event: FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
-    clHistory.push('/sign-up');
   }
 
   render() {
     return (
       <Container>
-        <Button
+        <StyledLinkButton
           className="e2e-login-button"
-          onClick={this.goToLogin}
+          linkTo="/sign-in"
+          onClick={this.stopPropagation}
         >
           <FormattedMessage {...messages.login} />
-        </Button>
-        <StyledButton
+        </StyledLinkButton>
+
+        <StyledLinkButton
           className="e2e-register-button"
-          onClick={this.goToSingUp}
+          linkTo="/sign-up"
+          onClick={this.stopPropagation}
           style="text"
           textColor={this.props.theme.colorMain}
           textHoverColor={darken(0.15, this.props.theme.colorMain)}
         >
           <FormattedMessage {...messages.register} />
-        </StyledButton>
+        </StyledLinkButton>
       </Container>
     );
   }

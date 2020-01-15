@@ -173,6 +173,7 @@ class LanguageSelector extends PureComponent<Props, State> {
                       key={tenantLocale}
                       onClick={this.handleLanguageSelect(tenantLocale)}
                       className={`e2e-langage-${tenantLocale} ${tenantLocale === currentlySelectedLocale ? 'active' : ''} ${last ? 'last' : ''}`}
+                      lang={tenantLocale}
                     >
                       <ListItemText>{shortenedAppLocalePairs[tenantLocale]}</ListItemText>
                     </ListItem>

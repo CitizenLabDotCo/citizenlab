@@ -14,7 +14,7 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.main`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;

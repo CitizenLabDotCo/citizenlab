@@ -118,7 +118,7 @@ class ParentComment extends PureComponent<Props, State> {
       canLoadMore: false,
       isLoadingMore: false,
       hasLoadedMore: false,
-      childComments: null
+      childComments: null,
     };
   }
 
@@ -146,7 +146,9 @@ class ParentComment extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(_prevProps: Props) {
-    if (!isNilOrError(this.props.comment) && this.props.comment.attributes.children_count > 5 && !this.state.canLoadMore) {
+    const currentComment = this.props.comment;
+
+    if (!isNilOrError(currentComment) && currentComment.attributes.children_count > 5 && !this.state.canLoadMore) {
       this.setState({ canLoadMore: true });
     }
   }

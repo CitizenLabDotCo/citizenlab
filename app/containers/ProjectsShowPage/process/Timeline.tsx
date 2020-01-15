@@ -30,7 +30,8 @@ import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
-import { media, colors, fontSizes, ScreenReaderOnly } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, rgba } from 'polished';
 
 // typings

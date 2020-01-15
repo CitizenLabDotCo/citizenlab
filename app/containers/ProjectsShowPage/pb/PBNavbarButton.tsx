@@ -31,7 +31,6 @@ const ManageBudgetButton = styled.button`
   align-items: center;
   white-space: nowrap;
   cursor: pointer;
-  outline: none;
 
   &:focus,
   &:hover {

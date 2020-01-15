@@ -25,7 +25,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
-const Container = styled.div`
+const Container = styled.main`
   flex: 1 0 auto;
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);

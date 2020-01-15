@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
 
 // components
 import Button from 'components/UI/Button';
@@ -23,7 +22,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -161,42 +160,39 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
 class SignedOutHeader extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
-  goToSignUpPage = () => {
+  goToSignUpPage = (event: React.FormEvent) => {
+    event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-out header' } });
     clHistory.push('/sign-up');
   }
 
   render() {
-    const { locale, tenant, className, localize } = this.props;
-    const { formatMessage } = this.props.intl;
+    const { locale, tenant, className, localize, intl: { formatMessage } } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant)) {
-      const headerTitle = !isEmpty(localize(tenant?.attributes?.settings?.core?.header_title)) ? localize(tenant.attributes.settings.core.header_title) : formatMessage(messages.titleCity);
-      const headerSubtitle = !isEmpty(localize(tenant?.attributes?.settings?.core?.header_slogan)) ? localize(tenant.attributes.settings.core.header_slogan) : formatMessage(messages.subtitleCity);
-      const tenantHeaderImage = tenant?.attributes?.header_bg?.large;
-      const hasHeaderImage = !isEmpty(tenantHeaderImage);
+      const headerTitle = localize(tenant?.attributes?.settings?.core?.header_title) || formatMessage(messages.titleCity);
+      const headerSubtitle = localize(tenant?.attributes?.settings?.core?.header_slogan) || formatMessage(messages.subtitleCity);
+      const headerImage = tenant?.attributes?.header_bg?.large;
 
       return (
         <Container className={`e2e-signed-out-header ${className}`}>
           <Header id="hook-header">
             <HeaderImage id="hook-header-image">
-              <HeaderImageBackground src={tenantHeaderImage || null} />
+              <HeaderImageBackground src={headerImage || null} />
               <HeaderImageOverlay />
             </HeaderImage>
 
             <HeaderContent id="hook-header-content" className="e2e-signed-out-header-title">
-              <HeaderTitle hasHeader={hasHeaderImage}>
+              <HeaderTitle hasHeader={!!headerImage}>
                 {headerTitle}
               </HeaderTitle>
 
-              <HeaderSubtitle hasHeader={hasHeaderImage} className="e2e-signed-out-header-subtitle">
+              <HeaderSubtitle hasHeader={!!headerImage} className="e2e-signed-out-header-subtitle">
                 {headerSubtitle}
               </HeaderSubtitle>
 
@@ -225,7 +221,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />
 });
 
-const SignedOutHeaderWithHoC = withTheme(injectIntl(injectLocalize(SignedOutHeader)));
+const SignedOutHeaderWithHoC = injectIntl(injectLocalize(SignedOutHeader));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

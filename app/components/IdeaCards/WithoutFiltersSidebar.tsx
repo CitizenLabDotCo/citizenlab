@@ -41,12 +41,11 @@ const Container = styled.div`
 const Loading = styled.div`
   width: 100%;
   height: 300px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   display: flex;
   align-items: center;
   justify-content: center;
   background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
@@ -169,8 +168,8 @@ const EmptyContainer = styled.div`
   padding-top: 100px;
   padding-bottom: 100px;
   background: #fff;
-  border: solid 1px ${colors.separation};
   border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const IdeaIcon = styled(Icon)`
@@ -188,8 +187,8 @@ const EmptyMessage = styled.div`
 
 const EmptyMessageLine = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
+  font-size: ${fontSizes.medium}px;
+  font-weight: 500;
   line-height: normal;
   text-align: center;
 `;
@@ -356,7 +355,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
             <IdeaIcon ariaHidden name="idea" />
             <EmptyMessage>
               <EmptyMessageLine>
-                <FormattedMessage {...messages.empty} />
+                <FormattedMessage {...messages.noIdeasForFilter} />
               </EmptyMessageLine>
             </EmptyMessage>
           </EmptyContainer>

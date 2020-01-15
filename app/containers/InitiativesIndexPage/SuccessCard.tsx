@@ -20,14 +20,15 @@ import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 const Container: any = styled(Link)`
-  background: white;
-  border-radius: ${({ theme }) => theme.borderRadius};
   flex: 1;
   padding: 18px 20px;
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+
   &:not(:last-child) {
     margin-right: 20px;
   }
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.05);
 
   ${media.biggerThanMinTablet`
     transition: all 200ms ease;
