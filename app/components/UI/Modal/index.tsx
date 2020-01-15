@@ -32,6 +32,10 @@ const ModalContent = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+
+  ${media.ie10and11`
+    height: 400px;
+  `}
 `;
 
 const CloseIcon = styled(Icon)`
