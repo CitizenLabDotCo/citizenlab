@@ -17,9 +17,17 @@ namespace :verification do
               updated_at: identity.updated_at
             )
 
-            ActiveRecord::Base.transaction do
-              verification.save!
-              identity.user.update!(verified: true)
+            unless ::Verification::Verification.where(
+              method_name: verification.method_name,
+              hashed_uid: verification.hashed_uid,
+              active: verification.active,
+              user: verification.user,
+              created_at: verification.created_at
+            ).exists?
+              ActiveRecord::Base.transaction do
+                verification.save!
+                identity.user.update!(verified: true)
+              end
             end
 
           end
