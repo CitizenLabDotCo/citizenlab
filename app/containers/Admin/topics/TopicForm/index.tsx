@@ -6,7 +6,6 @@ import messages from '../messages';
 
 import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 
 import { Section, SectionField } from 'components/admin/Section';
