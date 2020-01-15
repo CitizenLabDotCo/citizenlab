@@ -11,6 +11,8 @@ import messages from './messages';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+const Container = styled.div``;
+
 const TermsAndConditionsWrapper = styled.div`
   padding: 15px 20px;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -38,6 +40,7 @@ interface Props {
   accepted: boolean;
   onCheck: () => void;
   mode: 'signUp' | 'signIn';
+  className?: string;
 }
 
 interface State {
@@ -104,44 +107,47 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
       accepted,
       providerName,
       onCheck,
-      mode
+      mode,
+      className
     } = this.props;
 
     if (mode === 'signIn') {
       return (
-        <TermsAndConditionsWrapper>
-          <Checkbox
-            autoFocus
-            id="auth-button-terms-condition-checkbox"
-            checked={accepted}
-            onChange={onCheck}
-            label={
-              <FormattedMessage
-                {...messages.alreadyAcceptTermsAndConditions}
-                values={{
-                  loginMechanismName: providerName,
-                  tacLink: <Link
-                    target="_blank"
-                    to="/pages/terms-and-conditions"
-                    onClick={this.handleLinkClick}
-                  >
-                    <FormattedMessage {...messages.termsAndConditions} />
-                  </Link>,
-                  ppLink: <Link
-                    target="_blank"
-                    to="/pages/privacy-policy"
-                    onClick={this.handleLinkClick}
-                  >
-                    <FormattedMessage {...messages.privacyPolicy} />
-                  </Link>,
-                }}
-              />}
-          />
-        </TermsAndConditionsWrapper>
+        <Container className={className}>
+          <TermsAndConditionsWrapper>
+            <Checkbox
+              autoFocus
+              id="auth-button-terms-condition-checkbox"
+              checked={accepted}
+              onChange={onCheck}
+              label={
+                <FormattedMessage
+                  {...messages.alreadyAcceptTermsAndConditions}
+                  values={{
+                    loginMechanismName: providerName,
+                    tacLink: <Link
+                      target="_blank"
+                      to="/pages/terms-and-conditions"
+                      onClick={this.handleLinkClick}
+                    >
+                      <FormattedMessage {...messages.termsAndConditions} />
+                    </Link>,
+                    ppLink: <Link
+                      target="_blank"
+                      to="/pages/privacy-policy"
+                      onClick={this.handleLinkClick}
+                    >
+                      <FormattedMessage {...messages.privacyPolicy} />
+                    </Link>,
+                  }}
+                />}
+            />
+          </TermsAndConditionsWrapper>
+        </Container>
       );
     } else {
       return (
-        <>
+        <Container className={className}>
           <TermsAndConditionsWrapper>
             <FormattedMessage
               {...messages.privacyChecks}
@@ -206,7 +212,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
               }
             />
           </TermsAndConditionsWrapper>
-        </>
+        </Container>
       );
     }
   }
