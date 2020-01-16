@@ -239,11 +239,7 @@ const PhaseNavigation = styled.div`
   margin-left: 20px;
 `;
 
-const PhaseButton = styled(Button)`
-  &.disabled {
-    opacity: 0.2;
-  }
-`;
+const PhaseButton = styled(Button)``;
 
 const PreviousPhaseButton = styled(PhaseButton)`
   margin-right: 8px;
