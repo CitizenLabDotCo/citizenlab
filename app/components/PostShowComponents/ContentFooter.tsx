@@ -78,7 +78,7 @@ const CommentsIcon = styled(Icon)`
 `;
 
 const CommentsCount = styled.div`
-  color: ${colors.secondaryText};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;

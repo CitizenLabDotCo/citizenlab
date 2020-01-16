@@ -14,7 +14,7 @@ import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 const SendFeedbackText = styled.span`
-  color: ${colors.secondaryText};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 100ms ease-out;
@@ -60,7 +60,7 @@ const SendFeedbackComponent = React.memo<Props>((props: Props & InjectedIntlProp
     <Container className={className} target="_blank" href={formatMessage(messages.sendFeedbackLink,  { url: location.href })}>
       <SendFeedbackIcon name="questionMark" ariaHidden title={formatMessage(messages.sendFeedback)} className="send-feedback-icon" />
       <SendFeedbackText>
-        {showFeedbackText ?
+        {showFeedbackText  ?
           <FormattedMessage {...messages.sendFeedback} />
           :
           <ScreenReaderOnly>{formatMessage(messages.sendFeedback)}</ScreenReaderOnly>
