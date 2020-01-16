@@ -144,11 +144,11 @@ export class ConsentManager extends PureComponent<Props> {
       if (typeof value === 'boolean') {
         customPreferences[preferenceName] = value;
       } else if (preferenceName === 'advertising' && remainingDestinations.find(destination => ADVERTISING_CATEGORIES.includes(destination.category))) {
-        customPreferences[preferenceName] = true;
+        customPreferences['advertising'] = true;
       } else if (preferenceName === 'functional' && remainingDestinations.find(destination => FUNCTIONAL_CATEGORIES.includes(destination.category))) {
-        customPreferences[preferenceName] = true;
+        customPreferences['functional'] = true;
       } else if (preferenceName === 'analytics' && remainingDestinations.find(destination => MARKETING_AND_ANALYTICS_CATEGORIES.includes(destination.category))) {
-        customPreferences[preferenceName] = true;
+        customPreferences['analytics'] = true;
       } else {
         customPreferences[preferenceName] = null;
       }
