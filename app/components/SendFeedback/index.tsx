@@ -60,7 +60,7 @@ const SendFeedbackComponent = React.memo<Props>((props: Props & InjectedIntlProp
     <Container className={className} target="_blank" href={formatMessage(messages.sendFeedbackLink,  { url: location.href })}>
       <SendFeedbackIcon name="questionMark" ariaHidden title={formatMessage(messages.sendFeedback)} className="send-feedback-icon" />
       <SendFeedbackText>
-        {true ?
+        {showFeedbackText  ?
           <FormattedMessage {...messages.sendFeedback} />
           :
           <ScreenReaderOnly>{formatMessage(messages.sendFeedback)}</ScreenReaderOnly>
