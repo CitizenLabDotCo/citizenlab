@@ -11,6 +11,7 @@ export interface ITopicData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     icon: string;
+    ordering: number;
   };
 }
 
