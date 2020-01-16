@@ -52,7 +52,7 @@ export const initialPreferences = {
   functional: null
 };
 
-// the interface of the object segment's consent manager will pass down to its child
+// the interface of the object that Segment's consent manager will pass down to its child
 export interface ConsentManagerProps {
   setPreferences: Function;
   resetPreferences: () => void;
