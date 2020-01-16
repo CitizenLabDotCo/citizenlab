@@ -9,6 +9,8 @@ interface Props extends ConsentManagerProps {
 import Container from './Container';
 
 const getCategorizedDestinations = (destinationArray: IDestination[]) => {
+  // agregate the remaining destinations into categories
+
   const categorizedDestinations = {
     advertising: [] as IDestination[],
     functional: [] as IDestination[],
@@ -29,6 +31,14 @@ const getCategorizedDestinations = (destinationArray: IDestination[]) => {
   return categorizedDestinations;
 };
 
+const removeBlacklistedDestinations = (destinations: IDestination[], blacklistedDestinations: string []) => {
+  // removes the blacklistedDestinations from the destination and newDestinations
+  // arrays, they will be programmatically set to false when saving preferences.
+  const isNotBlackListedDestination = (destination: IDestination) => !blacklistedDestinations.includes(destination.id);
+
+  return destinations.filter(isNotBlackListedDestination);
+};
+
 const ConsentManagerBuilderHandler = ({
   setPreferences,
   resetPreferences,
@@ -38,33 +48,29 @@ const ConsentManagerBuilderHandler = ({
   preferences,
   blacklistedDestinations
 }: Props) => {
-  const isNotBlackListedDestination = (destination: IDestination) => !blacklistedDestinations.includes(destination.id);
-
-  // removes the blacklistedDestinations from the destination and newDestinations
-  // arrays, they will be programmatically set to false when saving preferences.
-  const filteredNewDestinations = newDestinations.filter(isNotBlackListedDestination);
-  const filteredDestinations = destinations.filter(isNotBlackListedDestination);
-  // agregate the remaining destinations into categories.
+  const filteredNewDestinations = removeBlacklistedDestinations(newDestinations, blacklistedDestinations);
+  const filteredDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinations);
   const categorizedDestinations = getCategorizedDestinations(filteredDestinations);
 
   // if there was a previous consent and the blacklist on the tenant has changes since then
   if (blacklistedDestinations !== preferences.tenantBlacklisted) {
     // anything that was removed from the blacklist is a new destination to our user
-    const noLongerBlacklisted = (preferences.tenantBlacklisted || []).filter(destinationId => !blacklistedDestinations.includes(destinationId));
+    const noLongerBlacklistedDestinations = (preferences.tenantBlacklisted || []).filter(destinationId => !blacklistedDestinations.includes(destinationId));
 
-    noLongerBlacklisted.forEach(id => {
-      const destination = destinations.find(destination => destination.id === id);
+    noLongerBlacklistedDestinations.forEach(destinationId => {
+      const destination = destinations.find(destination => destination.id === destinationId);
       if (destination) {
         filteredNewDestinations.push(destination);
       }
     });
 
     // anything that was added to the blacklist will be programmatically set to false later...
-    const newBlacklistEntries = blacklistedDestinations.filter(destinationId =>
+    const newBlacklistedDestinations = blacklistedDestinations.filter(destinationId =>
       !(preferences.tenantBlacklisted || []).includes(destinationId));
-    // if there is no new destinations, the banner won't show so we save programmatically to apply
+
+    // if there are no new destinations, the banner won't show so we save programmatically to apply
     // the blacklist on the previous user choice and overwrite blacklisted destinations to false
-    if (newBlacklistEntries.length > 0 && filteredNewDestinations.length === 0) {
+    if (newBlacklistedDestinations.length > 0 && filteredNewDestinations.length === 0) {
       saveConsent();
     }
   }
