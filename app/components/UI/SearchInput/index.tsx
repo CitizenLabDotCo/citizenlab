@@ -60,7 +60,7 @@ const Input = styled.input`
   }
 
   &::placeholder {
-    color: ${colors.secondaryText};
+    color: ${colors.label};
     font-size: ${fontSizes.base}px;
     font-weight: 400;
     opacity: 1;

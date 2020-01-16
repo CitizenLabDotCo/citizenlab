@@ -327,7 +327,7 @@ const ProjectTitle = styled.h3`
 `;
 
 const ProjectDescription = styled.div`
-  color: ${darken(0.11, colors.secondaryText)};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 300;
