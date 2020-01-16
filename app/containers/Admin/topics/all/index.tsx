@@ -48,10 +48,10 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
   componentDidUpdate(prevProps: Props) {
     const { itemsWhileDragging } = this.state;
-    const prevCustomFieldsIds = (prevProps.topics && prevProps.topics.map(customField => customField.id));
-    const nextCustomFieldsIds = (this.props.topics && this.props.topics.map(customField => customField.id));
+    const prevTopicsIds = (!isNilOrError(prevProps.topics) && prevProps.topics.map(topic => !isNilOrError(topic) && topic.id));
+    const nextTopicsIds = (!isNilOrError(this.props.topics) && this.props.topics.map(topic => !isNilOrError(topic) && topic.id));
 
-    if (itemsWhileDragging && !isEqual(prevCustomFieldsIds, nextCustomFieldsIds)) {
+    if (itemsWhileDragging && !isEqual(prevTopicsIds, nextTopicsIds)) {
       this.setState({ itemsWhileDragging: null });
     }
   }
@@ -76,7 +76,10 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
       const itemsWhileDragging = clone(listItems);
       itemsWhileDragging.splice(fromIndex, 1);
       itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
-      this.setState({ itemsWhileDragging });
+      const cleanItemsWhileDragging = itemsWhileDragging.filter(i => !isNilOrError(i)) as ITopicData[];
+      this.setState({
+        itemsWhileDragging: cleanItemsWhileDragging
+      });
     }
   }
 
@@ -85,9 +88,9 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
     if (isNilOrError(listItems)) return;
 
-    const field = listItems.find(listItem => listItem.id === fieldId);
+    const field = listItems.find(listItem => !isNilOrError(listItem) && listItem.id === fieldId);
 
-    if (field && field.attributes.ordering !== toIndex) {
+    if (!isNilOrError(field) && field.attributes.ordering !== toIndex) {
       this.setState({ isProcessing: true });
       reorderTopic(fieldId, { ordering: toIndex }).then(() => this.setState({ isProcessing: false }));
     } else {
@@ -130,6 +133,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
               if (index === listItemsLength - 1) {
                 lastItem = true;
               }
+              if (isNilOrError(field)) return null;
               return (
                 <SortableRow
                   key={field.id}
@@ -168,58 +172,6 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
       </Section>
     );
   }
-
-  // render() {
-  //   const { topics } = this.props;
-
-  //   if (isNilOrError(topics)) return null;
-
-  //   return (
-  //     <Section>
-  //       <SectionTitle>
-  //         <FormattedMessage {...messages.titleTopics} />
-  //       </SectionTitle>
-  //       <SectionSubtitle>
-  //         <FormattedMessage {...messages.subtitleTopics} />
-  //       </SectionSubtitle>
-
-  //       <ButtonWrapper>
-  //         <Button
-  //           style="cl-blue"
-  //           icon="plus-circle"
-  //           linkTo="/admin/topics/new"
-  //         >
-  //           <FormattedMessage {...messages.addTopicButton} />
-  //         </Button>
-  //       </ButtonWrapper>
-  //       <List>
-  //         {topics.map((topic, index) => (
-  //           !isNilOrError(topic) && (
-  //             <Row key={topic.id} lastItem={(index === topics.length - 1)}>
-  //               <TextCell className="expand">
-  //                 <T value={topic.attributes.title_multiloc} />
-  //               </TextCell>
-  //               <Button
-  //                 onClick={this.handleDeleteClick(topic.id)}
-  //                 style="text"
-  //                 icon="delete"
-  //               >
-  //                 <FormattedMessage {...messages.deleteButtonLabel} />
-  //               </Button>
-  //               <Button
-  //                 linkTo={`/admin/topics/${topic.id}`}
-  //                 style="secondary"
-  //                 icon="edit"
-  //               >
-  //                 <FormattedMessage {...messages.editButtonLabel} />
-  //               </Button>
-  //           </Row>
-  //           )
-  //         ))}
-  //       </List>
-  //     </Section>
-  //   );
-  // }
 }
 
 const TopicListWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(TopicList));
