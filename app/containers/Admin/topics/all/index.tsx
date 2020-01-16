@@ -1,4 +1,6 @@
 import React from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -94,7 +96,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
   }
 }
 
-const TopicListWithHoCs = injectIntl<Props>(TopicList);
+const TopicListWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(TopicList));
 
 export default () => (
   <GetTopics>
