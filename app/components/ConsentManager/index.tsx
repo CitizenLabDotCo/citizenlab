@@ -84,7 +84,7 @@ export class ConsentManager extends PureComponent<Props> {
     const blacklistedDestinationsList = this.getBlacklistedDestinations();
 
     if (!isNilOrError(tenant)) {
-      this.mapCustomPreferences(destinations, preferences, blacklistedDestinationsList);
+      return this.mapCustomPreferences(destinations, preferences, blacklistedDestinationsList);
     }
 
     return ({ customPreferences: {}, destinationPreferences: {} });
