@@ -38,6 +38,10 @@ export function updateTopic(topicId: string, object) {
   return streams.update<ITopic>(`${apiEndpoint}/${topicId}`, topicId, { topic: object });
 }
 
+export function reorderTopic(topicId: string, object) {
+  return streams.update<ITopic>(`${API_PATH}/topics/${topicId}/reorder`, topicId, { topic: object });
+}
+
 export function deleteTopic(topicId: string) {
   return streams.delete(`${apiEndpoint}/${topicId}`, topicId);
 }
