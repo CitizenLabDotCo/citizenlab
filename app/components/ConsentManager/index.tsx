@@ -19,7 +19,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 export const adminIntegrations = ['Intercom', 'SatisMeter'];
 
-// the format in which sentry sends out destinations
+// 3rd parties will receive events (Facebook, Google, ...). A destination is an object that represents such a 3rd party.
+// Also called integrations. Below is the format in which Sentry sends out destinations.
 export interface IDestination {
   id: string;
   name: string;
