@@ -181,7 +181,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     }
 
     &.disabled {
-      background: ${colors.disabledPrimaryButtonBg};
+      background: ${colors.separationDark};
 
       ${ButtonText} {
         color: #fff;
