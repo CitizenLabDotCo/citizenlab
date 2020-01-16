@@ -10,11 +10,11 @@ export default defineMessages({
     defaultMessage: 'Topics configuration',
   },
   deleteButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.deleteButtonLabel',
+    id: 'app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.editButtonLabel',
+    id: 'app.containers.AdminPage.SettingsPage.editTopicButtonLabel',
     defaultMessage: 'Edit',
   },
   addTopicButton: {
@@ -26,23 +26,15 @@ export default defineMessages({
     defaultMessage: 'Are you sure you want to delete this topic?',
   },
   fieldTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.fieldTitle',
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitle',
     defaultMessage: 'Topic name',
   },
   fieldTitleTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.fieldTitleTooltip',
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip',
     defaultMessage: 'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
   },
   editFormTitle: {
-    id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
+    id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
     defaultMessage: 'Edit topic',
   },
-  terminologyTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.terminologyTooltip',
-    defaultMessage: 'How should topics be called towards users? e.g. neighbourhoods, quarters, counties, ...',
-  },
-  topicsTerm: {
-    id: 'app.containers.AdminPage.SettingsPage.topicsTerm',
-    defaultMessage: 'Term for multiple topics (plural)',
-  }
 });
