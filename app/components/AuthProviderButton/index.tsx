@@ -2,51 +2,60 @@ import React, { PureComponent } from 'react';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
+import { colors, fontSizes } from 'utils/styleUtils';
 
 // components
 import TermsCheckbox from './TermsCheckbox';
-import AuthProviderImage from './AuthProviderImage';
+import FacebookImage from './FacebookImage';
+import GoogleImage from './GoogleImage';
+import AzureAdImage from './AzureADImage';
+import { CSSTransition } from 'react-transition-group';
 
-const timeout = 250;
+const timeout = 400;
 
-const AuthProviderButtonWrapper = styled.button`
+const AuthProviderButtonWrapper = styled.div`
   width: 100%;
-  height: 58px;
+  min-height: 58px;
   margin-top: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.separation};
   user-select: none;
-  cursor: pointer;
-  position: relative;
   text-align: left;
+  padding: 0;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
 
-  ${media.largePhone`
-    height: 90px;
-  `}
-
-  &:hover {
-    border-color: #000;
+  &:disabled {
+    background: ${colors.lightGreyishBlue};
+    cursor: not-allowed;
   }
 
-  &.franceconnect:hover,
-  &.franceconnect:active {
-    border-color: #0e4fa1;
-  }
+  &:not(:disabled) {
+    &:hover {
+      border-color: #000;
+    }
 
-  &.google:hover,
-  &.google.active {
-    border-color: #2a81f4;
-  }
+    &.franceconnect:hover,
+    &.franceconnect:active {
+      border-color: #0e4fa1;
+    }
 
-  &.facebook:hover,
-  &.facebook.active {
-    border-color: #345697;
+    &.google:hover,
+    &.google.active {
+      border-color: #2a81f4;
+    }
+
+    &.facebook:hover,
+    &.facebook.active {
+      border-color: #345697;
+    }
+
+    a:hover > span {
+      color: #000 !important;
+      text-decoration: underline;
+    }
   }
 
   span {
@@ -61,58 +70,79 @@ const AuthProviderButtonWrapper = styled.button`
     text-decoration: underline;
   }
 
-  a:hover > span {
-    color: #000 !important;
-    text-decoration: underline;
+  &.grow-enter {
+    max-height: 58px;
+      &.grow-enter-done {
+        max-height: 500px;
+      }
   }
 `;
 
-export const AuthProviderButtonInner = styled.div`
-  padding-left: 20px;
-  padding-right: 20px;
+const AuthProviderButtonInner = styled.div`
+  height: 58px;
   position: absolute;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: all ${timeout}ms ease-out;
-  will-change: opacity;
+`;
+
+const StyledTermsCheckbox = styled(TermsCheckbox)`
+  opacity: 0;
+  display: none;
+  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: opacity, height;
 
   &.tac-enter {
     opacity: 0;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    left: 0;
-    right: 0;
+    max-height: 0px;
+    overflow: hidden;
+    display: block;
 
     &.tac-enter-active {
       opacity: 1;
+      max-height: 1000px;
+      overflow: hidden;
+      display: block;
     }
+  }
+
+  &.tac-enter-done {
+    opacity: 1;
+    overflow: visible;
+    display: block;
   }
 
   &.tac-exit {
     opacity: 1;
+    max-height: 1000px;
+    overflow: hidden;
+    display: block;
 
     &.tac-exit-active {
       opacity: 0;
+      max-height: 0px;
+      overflow: hidden;
+      display: block;
     }
+  }
+
+  &.tac-exit-done {
+    display: none;
   }
 `;
 
-export type Providers = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
+type Provider = 'google' | 'facebook' | 'azureactivedirectory';
+// | 'franceconnect' => special case, not handled by this component
 
 interface Props {
-  logoUrl: string;
-  logoHeight: string;
   providerName: string;
-  provider: Providers;
+  provider: Provider;
   onAccept: () => void;
-  acceptText: ReactIntl.FormattedMessage.MessageDescriptor;
-  altText: ReactIntl.FormattedMessage.MessageDescriptor;
+  mode: 'signUp' | 'signIn';
 }
 
 interface State {
@@ -135,8 +165,7 @@ class AuthProviderButton extends PureComponent<Props, State> {
     );
   }
 
-  handleOnClick = (event) => {
-    event.preventDefault();
+  toggleStatus = () => {
     const { status } = this.state;
     if (status === 'image') {
       this.setState({ status: 'unchecked' });
@@ -145,38 +174,70 @@ class AuthProviderButton extends PureComponent<Props, State> {
     }
   }
 
+  handleOnClick = (event) => {
+    event.preventDefault();
+    this.toggleStatus();
+  }
+  handleOnKeyDown = (event) => {
+    if (event['key'] === 'Enter') {
+      this.toggleStatus();
+    }
+  }
+
   render() {
-    const { logoHeight, logoUrl, provider, providerName, acceptText, altText } = this.props;
+    const { provider, providerName, mode } = this.props;
     const { status } = this.state;
 
     return (
       <AuthProviderButtonWrapper
         className={`${provider} ${status !== 'image' && 'active'}`}
-        onClick={this.handleOnClick}
+        tabIndex={status === 'image' ? 0 : -1}
+        onClick={status === 'image' ? this.handleOnClick : undefined}
+        onKeyDown={status === 'image' ? this.handleOnKeyDown : undefined}
+        role={status === 'image' ? 'button' : ''}
       >
-        <TransitionGroup>
-          {(status !== 'image') ?
-            <TermsCheckbox
-              timeout={timeout}
-              providerName={providerName}
-              accepted={status === 'checked'}
-              onCheck={this.handleOnCheck}
-              acceptText={acceptText}
-            />
-            :
-            <AuthProviderImage
-              logoUrl={logoUrl}
-              logoHeight={logoHeight}
-              timeout={timeout}
-              providerName={providerName}
-              altText={altText}
-            />
-          }
-        </TransitionGroup>
+        {status === 'image' &&
+          <AuthProviderButtonInner>
+            {provider === 'facebook' &&
+              <FacebookImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+            {provider === 'google' &&
+              <GoogleImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+            {provider === 'azureactivedirectory' &&
+              <AzureAdImage
+                mode={mode}
+                providerName={providerName}
+              />
+            }
+          </AuthProviderButtonInner>
+        }
+
+        <CSSTransition
+          classNames="tac"
+          in={status !== 'image'}
+          timeout={timeout}
+          mounOnEnter={false}
+          unmountOnExit={false}
+          enter={true}
+          exit={true}
+        >
+          <StyledTermsCheckbox
+            providerName={providerName}
+            accepted={status === 'checked'}
+            onCheck={this.handleOnCheck}
+            mode={mode}
+          />
+        </CSSTransition>
       </AuthProviderButtonWrapper>
     );
   }
-
 }
 
 export default AuthProviderButton;
