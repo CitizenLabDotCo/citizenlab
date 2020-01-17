@@ -1,11 +1,10 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
 
 // components
 import FeatureFlag from 'components/FeatureFlag';
-import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
+import AuthProviderButton from 'components/AuthProviderButton';
 
 // resources
 import { GetTenantChildProps } from 'resources/GetTenant';
@@ -17,7 +16,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { AUTH_PATH } from 'containers/App/constants';
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -25,12 +24,12 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // logos
-import googleLogo from 'components/AuthProviderButton/svg/google.svg';
-import facebookLogo from 'components/AuthProviderButton/svg/facebook.svg';
 import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
+import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
 
 const Container = styled.div`
   width: 100%;
+  margin-bottom: 50px;
 `;
 
 const Separator = styled.div`
@@ -54,9 +53,20 @@ const AuthProviderButtons = styled.div`
   flex-direction: column;
 `;
 
-const FranceConnectButton = styled.div`
+const FranceConnectButton = styled.button`
   cursor: pointer;
   margin-top: 10px;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+
+  &:not(:disabled) {
+    &:hover {
+      border-color: #0e4fa1;
+    }
+  }
 `;
 
 const SocialSignUpText = styled.div`
@@ -65,7 +75,7 @@ const SocialSignUpText = styled.div`
   font-weight: 300;
   line-height: 20px;
   margin-left: 4px;
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 `;
 
 const SubSocialButtonLink = styled.a`
@@ -105,18 +115,18 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-interface State {}
+class Footer extends React.PureComponent<Props & InjectedIntlProps> {
 
-class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
+  handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.stopPropagation();
+  }
 
   handleOnClick = () => {
     this.props.goToSignIn();
   }
 
-  handleOnAccept = (provider: Providers) => () => {
-    setTimeout(() => {
-      window.location.href = `${AUTH_PATH}/${provider}`;
-    }, 200);
+  handleOnAccept = (provider: SSOProvider) => () => {
+    setTimeout(() => handleOnSSOClick(provider)(), 200);
   }
 
   externalLoginsCount = () => {
@@ -126,11 +136,13 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { tenant, passwordLoginEnabled } = this.props;
+    const { passwordLoginEnabled, tenant } = this.props;
     const { formatMessage } = this.props.intl;
     const externalLoginsCount = this.externalLoginsCount();
-    const azureAdLogoUrl: string = get(tenant, 'attributes.settings.azure_ad_login.logo_url');
-    const AzureProviderName: string = get(tenant, 'attributes.settings.azure_ad_login.login_mechanism_name');
+
+    if (isNilOrError(tenant)) return null;
+
+    const azureProviderName = tenant ?.attributes ?.settings ?.azure_ad_login ?.login_mechanism_name;
 
     if (externalLoginsCount > 0) {
       return (
@@ -146,22 +158,24 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </SocialSignUpText>
               }
               <AuthProviderButtons>
-                <FeatureFlag name="azure_ad_login">
-                  <AuthProviderButton
-                    logoUrl={azureAdLogoUrl}
-                    logoHeight="45px"
-                    provider="azureactivedirectory"
-                    providerName={AzureProviderName}
-                    onAccept={this.handleOnAccept('azureactivedirectory')}
-                    acceptText={messages.acceptTermsAndConditions}
-                    altText={messages.signUpButtonAltText}
-                  />
-                </FeatureFlag>
+                {azureProviderName &&
+                  <FeatureFlag name="azure_ad_login">
+                    <AuthProviderButton
+                      provider="azureactivedirectory"
+                      providerName={azureProviderName}
+                      mode="signUp"
+                      onAccept={this.handleOnAccept('azureactivedirectory')}
+                    />
+                  </FeatureFlag>
+                }
                 <FeatureFlag name="franceconnect_login">
-                  <FranceConnectButton role="button" onClick={this.handleOnAccept('franceconnect')}>
+                  <FranceConnectButton
+                    role="button"
+                    onClick={this.handleOnAccept('franceconnect')}
+                  >
                     <img
                       src={franceconnectLogo}
-                      alt={this.props.intl.formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
+                      alt={formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
                     />
                   </FranceConnectButton>
                   <SubSocialButtonLink
@@ -173,24 +187,18 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps, State> {
                 </FeatureFlag>
                 <FeatureFlag name="google_login">
                   <AuthProviderButton
-                    logoUrl={googleLogo}
-                    logoHeight="29px"
                     provider="google"
                     providerName="Google"
+                    mode="signUp"
                     onAccept={this.handleOnAccept('google')}
-                    acceptText={messages.acceptTermsAndConditions}
-                    altText={messages.signUpButtonAltText}
                   />
                 </FeatureFlag>
                 <FeatureFlag name="facebook_login">
                   <AuthProviderButton
-                    logoUrl={facebookLogo}
-                    logoHeight="21px"
                     provider="facebook"
                     providerName="Facebook"
+                    mode="signUp"
                     onAccept={this.handleOnAccept('facebook')}
-                    acceptText={messages.acceptTermsAndConditions}
-                    altText={messages.signUpButtonAltText}
                   />
                 </FeatureFlag>
               </AuthProviderButtons>

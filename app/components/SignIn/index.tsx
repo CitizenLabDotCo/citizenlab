@@ -11,7 +11,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import FeatureFlag from 'components/FeatureFlag';
-import AuthProviderButton, { Providers } from 'components/AuthProviderButton';
+import AuthProviderButton from 'components/AuthProviderButton';
 import { FormLabel } from 'components/UI/FormComponents';
 
 // resources
@@ -28,7 +28,6 @@ import messages from './messages';
 
 // utils
 import { isValidEmail } from 'utils/validate';
-import { AUTH_PATH } from 'containers/App/constants';
 
 // style
 import { darken } from 'polished';
@@ -36,9 +35,8 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
 // logos
-import googleLogo from 'components/AuthProviderButton/svg/google.svg';
-import facebookLogo from 'components/AuthProviderButton/svg/facebook.svg';
 import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
+import { handleOnSSOClick } from 'services/singleSignOn';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -281,10 +279,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
     this.passwordInputElement = element;
   }
 
-  handleOnSSOClick = (provider: Providers) => () => {
-    window.location.href = `${AUTH_PATH}/${provider}`;
-  }
-
   render() {
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
     const { className, title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
@@ -374,19 +368,16 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                 <FeatureFlag name="azure_ad_login">
                   {azureAdLogo && tenantLoginMechanismName &&
                     <AuthProviderButton
-                      logoUrl={azureAdLogo}
-                      logoHeight="45px"
                       provider="azureactivedirectory"
                       providerName={tenantLoginMechanismName}
-                      onAccept={this.handleOnSSOClick('azureactivedirectory')}
-                      acceptText={messages.alreadyAcceptTermsAndConditions}
-                      altText={messages.signInButtonAltText}
+                      onAccept={handleOnSSOClick('azureactivedirectory')}
+                      mode="signIn"
                     />
                   }
                 </FeatureFlag>
 
                 <FeatureFlag name="franceconnect_login">
-                  <FranceConnectButton role="button" onClick={this.handleOnSSOClick('franceconnect')}>
+                  <FranceConnectButton role="button" onClick={handleOnSSOClick('franceconnect')}>
                     <img
                       src={franceconnectLogo}
                       alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
@@ -402,24 +393,18 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
                 <FeatureFlag name="google_login">
                   <AuthProviderButton
-                    logoUrl={googleLogo}
-                    logoHeight="29px"
                     provider="google"
                     providerName="Google"
-                    onAccept={this.handleOnSSOClick('google')}
-                    acceptText={messages.alreadyAcceptTermsAndConditions}
-                    altText={messages.signInButtonAltText}
+                    onAccept={handleOnSSOClick('google')}
+                    mode="signIn"
                   />
                 </FeatureFlag>
                 <FeatureFlag name="facebook_login">
                   <AuthProviderButton
-                    logoUrl={facebookLogo}
-                    logoHeight="21px"
                     provider="facebook"
                     providerName="Facebook"
-                    onAccept={this.handleOnSSOClick('facebook')}
-                    acceptText={messages.alreadyAcceptTermsAndConditions}
-                    altText={messages.signInButtonAltText}
+                    onAccept={handleOnSSOClick('facebook')}
+                    mode="signIn"
                   />
                 </FeatureFlag>
               </AuthProviderButtons>
