@@ -81,10 +81,10 @@ function reportToSegment(err) {
 export class ConsentManager extends PureComponent<Props> {
   handleMapCustomPreferences = (destinations: IDestination[], preferences: CustomPreferences) => {
     const { tenant } = this.props;
-    const blacklistedDestinationsList = this.getBlacklistedDestinations();
+    const blacklistedDestinationIds = this.getBlacklistedDestinations();
 
     if (!isNilOrError(tenant)) {
-      return this.mapCustomPreferences(destinations, preferences, blacklistedDestinationsList);
+      return this.mapCustomPreferences(destinations, preferences, blacklistedDestinationIds);
     }
 
     return ({ customPreferences: {}, destinationPreferences: {} });
@@ -102,18 +102,18 @@ export class ConsentManager extends PureComponent<Props> {
   mapCustomPreferences = (
     destinations: IDestination[],
     preferences: CustomPreferences,
-    blacklistedDestinationsList: string[] | null
+    blacklistedDestinationIds: string[] | null
   ) => {
     /** takes in the full list of destinations (coming from Segment),
     * the preferences set by the user and the destinations that the user doesn't have access to
     * gives out both the custom preferences picked by the user to save and the preferences
     * of the user in the format { [preferenceId]: booleanConsent }
     **/
-    const remainingDestinations = this.removeBlacklistedDestinations(destinations, blacklistedDestinationsList);
-    const customPreferences = this.getCustomPreferences(preferences, remainingDestinations, blacklistedDestinationsList);
+    const remainingDestinations = this.removeBlacklistedDestinations(destinations, blacklistedDestinationIds);
+    const customPreferences = this.getCustomPreferences(preferences, remainingDestinations, blacklistedDestinationIds);
     const destinationPreferences = {
       ...this.getDestinationPreferences(customPreferences, remainingDestinations),
-      ...this.formatBlacklistDestinations(blacklistedDestinationsList)
+      ...this.formatBlacklistDestinations(blacklistedDestinationIds)
     };
 
     return {
@@ -122,9 +122,9 @@ export class ConsentManager extends PureComponent<Props> {
     } as { customPreferences: CustomPreferences, destinationPreferences: { [destinationId: string]: boolean } };
   }
 
-  removeBlacklistedDestinations = (destinations: IDestination[], blacklistedDestinationsList: string[] | null) => {
-    if (destinations && blacklistedDestinationsList) {
-      return destinations.filter(destination => !(blacklistedDestinationsList).includes(destination.id));
+  removeBlacklistedDestinations = (destinations: IDestination[], blacklistedDestinationIds: string[] | null) => {
+    if (destinations && blacklistedDestinationIds) {
+      return destinations.filter(destination => !(blacklistedDestinationIds).includes(destination.id));
     }
 
     return [];
@@ -133,7 +133,7 @@ export class ConsentManager extends PureComponent<Props> {
   getCustomPreferences = (
     preferences: CustomPreferences,
     remainingDestinations: IDestination[],
-    blacklistedDestinationsList: string[] | null
+    blacklistedDestinationIds: string[] | null
   ) => {
     const customPreferences = {} as CustomPreferences;
 
@@ -158,7 +158,7 @@ export class ConsentManager extends PureComponent<Props> {
     // it to later calculate whether a tenant has removed an item from blacklist
     // or the user has gained access to some preferences
     // and ask consent again when this happens
-    customPreferences.tenantBlacklisted = blacklistedDestinationsList || undefined;
+    customPreferences.tenantBlacklisted = blacklistedDestinationIds || undefined;
 
     return customPreferences;
   }
@@ -190,7 +190,7 @@ export class ConsentManager extends PureComponent<Props> {
     return destinationPreferences;
   }
 
-  formatBlacklistDestinations = (blacklistedDestinationsList: string[] | null) => {
+  formatBlacklistDestinations = (blacklistedDestinationIds: string[] | null) => {
     // put the blacklist in the format { destinationId: false }
 
     /** helper function
@@ -199,7 +199,7 @@ export class ConsentManager extends PureComponent<Props> {
     **/
     const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
 
-    return blacklistedDestinationsList ? blacklistedDestinationsList.reduce(reducerArrayToObject, {}) : {};
+    return blacklistedDestinationIds ? blacklistedDestinationIds.reduce(reducerArrayToObject, {}) : {};
   }
 
   render() {
@@ -216,7 +216,7 @@ export class ConsentManager extends PureComponent<Props> {
           {(consentManagerProps: ConsentManagerProps) => (
             <ConsentManagerBuilderHandler
               {...consentManagerProps}
-              blacklistedDestinations={this.getBlacklistedDestinations()}
+              blacklistedDestinationIds={this.getBlacklistedDestinations()}
             />
           )}
         </ConsentManagerBuilder>
