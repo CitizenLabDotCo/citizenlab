@@ -45,19 +45,21 @@ const Body = memo<Props>(({ postId, body, locale, translateButtonClicked, theme,
         fontSize={smallerThanSmallTablet ? 'base' : 'large'}
         fontWeight={300}
       >
-        {(translateButtonClicked && locale) ?
-          <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} id={postId} context={postType}>
-            {translation => {
-              if (!isNilOrError(translation)) {
-                return <span dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
-              }
+        <div aria-live="polite">
+          {(translateButtonClicked && locale) ?
+            <GetMachineTranslation attributeName="body_multiloc" localeTo={locale} id={postId} context={postType}>
+              {translation => {
+                if (!isNilOrError(translation)) {
+                  return <span dangerouslySetInnerHTML={{ __html: translation.attributes.translation }} />;
+                }
 
-              return <span dangerouslySetInnerHTML={{ __html: body }} />;
-            }}
-          </GetMachineTranslation>
-          :
-          <span dangerouslySetInnerHTML={{ __html: body }} />
-        }
+                return <span dangerouslySetInnerHTML={{ __html: body }} />;
+              }}
+            </GetMachineTranslation>
+            :
+            <span dangerouslySetInnerHTML={{ __html: body }} />
+          }
+        </div>
       </QuillEditedContent>
     </Container>
   );
