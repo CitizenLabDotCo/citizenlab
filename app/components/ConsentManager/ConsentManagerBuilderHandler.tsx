@@ -56,33 +56,35 @@ const ConsentManagerBuilderHandler = ({
   preferences,
   blacklistedDestinationIds
 }: Props) => {
-  const filteredNewDestinations = removeBlacklistedDestinations(newDestinations, blacklistedDestinationIds);
-  const filteredDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationIds);
-  const categorizedDestinations = getCategorizedDestinations(filteredDestinations);
+  const { tenantBlacklisted: tenantBlacklistedDestinationIds } = preferences;
+  const whitelistedNewDestinations = removeBlacklistedDestinations(newDestinations, blacklistedDestinationIds);
+  const whitelistedDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationIds);
+  const categorizedDestinations = getCategorizedDestinations(whitelistedDestinations);
 
-  if (blacklistedDestinationIds !== preferences.tenantBlacklisted) {
+  if (blacklistedDestinationIds !== tenantBlacklistedDestinationIds) {
     // anything that was removed from the blacklist is a new destination to our user
-    const noLongerBlacklistedDestinationIds = (preferences.tenantBlacklisted || []).filter(destinationId => !blacklistedDestinationIds.includes(destinationId));
+    const noLongerBlacklistedDestinationIds = (tenantBlacklistedDestinationIds || []).filter(destinationId => !blacklistedDestinationIds.includes(destinationId));
 
     noLongerBlacklistedDestinationIds.forEach(destinationId => {
       const destination = destinations.find(destination => destination.id === destinationId);
       if (destination) {
-        filteredNewDestinations.push(destination);
+        whitelistedNewDestinations.push(destination);
       }
     });
 
     // anything that was added to the blacklist will be programmatically set to false later...
     const newBlacklistedDestinationIds = blacklistedDestinationIds.filter(destinationId =>
-      !(preferences.tenantBlacklisted || []).includes(destinationId));
+      !(tenantBlacklistedDestinationIds || []).includes(destinationId));
 
     // if there are no new destinations, the banner won't show so we save programmatically to apply
     // the blacklist on the previous user choice and overwrite blacklisted destinations to false
-    if (newBlacklistedDestinationIds.length > 0 && filteredNewDestinations.length === 0) {
+    if (newBlacklistedDestinationIds.length > 0 && whitelistedNewDestinations.length === 0) {
       saveConsent();
     }
   }
+
   // if there is a new destination the user has not consented to, consent is required
-  const isConsentRequired = filteredNewDestinations.length > 0;
+  const isConsentRequired = whitelistedNewDestinations.length > 0;
 
   return (
     <Container
