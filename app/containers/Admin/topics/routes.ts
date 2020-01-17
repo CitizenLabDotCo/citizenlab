@@ -3,10 +3,6 @@ import Loadable from 'react-loadable';
 export default () => ({
   path: 'topics',
   name: 'admin topics',
-  // component: Loadable({
-  //   loader: () => import('../'),
-  //   loading: () => null
-  // }),
   indexRoute: {
     name: 'admin topics index',
     component: Loadable({
