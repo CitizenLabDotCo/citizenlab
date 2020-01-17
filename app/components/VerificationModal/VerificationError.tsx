@@ -52,17 +52,15 @@ interface Props {
 export default memo<Props>(({ className, onBack, context }) => {
   const onCancelButtonClicked = useCallback(() => {
     onBack();
-  }, []);
+  }, [onBack]);
 
-  let message;
+  let message = messages.errorGenericSubtitle;
 
   if (context) {
     if (context.error === 'taken') {
       message = messages.errorTakenSubtitle;
     } else if (context.error === 'not_entitled') {
       message = messages.errorNotEntitledSubtitle;
-    } else {
-      message = messages.errorGenericSubtitle;
     }
   }
 
