@@ -1100,6 +1100,7 @@
   "app.containers.AdminPage.SettingsPage.editButtonLabel": "Rediger",
   "app.containers.AdminPage.SettingsPage.editFormTitle": "Rediger område",
   "app.containers.AdminPage.SettingsPage.editTopicButtonLabel": "",
+  "app.containers.AdminPage.SettingsPage.editTopicFormSubtitle": "",
   "app.containers.AdminPage.SettingsPage.editTopicFormTitle": "",
   "app.containers.AdminPage.SettingsPage.fieldDescription": "Area description",
   "app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip": "This description is only for internal collaboration and is not shown to users.",
