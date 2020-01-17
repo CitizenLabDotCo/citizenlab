@@ -4,6 +4,7 @@ import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
+import bowser from 'bowser';
 
 // i18n
 import messages from './messages';
@@ -32,10 +33,6 @@ const ModalContent = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-
-  ${media.ie10and11`
-    height: 400px;
-  `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -76,17 +73,17 @@ const CloseButton = styled.button`
   `}
 `;
 
-const ModalContainer: any = styled(clickOutside)`
+const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModal: boolean }>`
   width: 100%;
   max-height: 80vh;
   margin-top: 60px;
   background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;
   flex-direction: column;
   outline: none;
   overflow: hidden;
-  padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '40px'};
+  padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '40px'};
   position: relative;
 
   &.fixedHeight {
@@ -100,7 +97,7 @@ const ModalContainer: any = styled(clickOutside)`
 
   ${media.smallerThanMinTablet`
     margin-top: 40px;
-    padding: ${(props: any) => props.hasHeaderOrFooter ? 0 : '20px'};
+    padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '20px'};
 
     &.fixedHeight {
       height: auto;
@@ -382,7 +379,8 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { fixedHeight, width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
+    const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
+    const hasFixedHeight = this.props.fixedHeight || bowser.msie;
 
     return ReactDOM.createPortal((
       <CSSTransition
@@ -400,7 +398,7 @@ export default class Modal extends PureComponent<Props, State> {
         >
           <StyledFocusOn width={width as number}>
             <ModalContainer
-              className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
+              className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
               onClickOutside={this.clickOutsideModal}
               hasHeaderOrFooter={header !== undefined || footer !== undefined}
               ariaLabelledBy="modal-header"
