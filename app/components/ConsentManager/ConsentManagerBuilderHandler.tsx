@@ -39,14 +39,6 @@ const removeBlacklistedDestinations = (destinations: IDestination[], blacklisted
   return destinations.filter(isNotBlackListedDestination);
 };
 
-// const getNoLongerBlacklistedDestinations = () => {
-//   const tenantBlacklisted
-//   if (preferences.tenantBlacklisted.length > 0) {
-//     return
-//   }
-//   const noLongerBlacklistedDestinations = (preferences.tenantBlacklisted || []).filter(destinationId => !blacklistedDestinations.includes(destinationId));
-// };
-
 const ConsentManagerBuilderHandler = ({
   setPreferences,
   resetPreferences,
