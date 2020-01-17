@@ -2,7 +2,7 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   subtitleTopics: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleTopic',
+    id: 'app.containers.AdminPage.SettingsPage.subtitleTopics',
     defaultMessage: 'You can add, delete, rename and reorder your favorite topics here. Keep in mind that the current topics might be linked to existing content before renaming/removing topics to avoid loss of information.',
   },
   titleTopics: {
