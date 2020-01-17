@@ -32,7 +32,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 interface State {
-  itemsWhileDragging: ITopicData[] | null;
+  itemsWhileDragging: (ITopicData | Error)[] | null;
   isProcessing: boolean;
 }
 
@@ -76,9 +76,9 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
       const itemsWhileDragging = clone(listItems);
       itemsWhileDragging.splice(fromIndex, 1);
       itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
-      const cleanItemsWhileDragging = itemsWhileDragging.filter(i => !isNilOrError(i)) as ITopicData[];
+      // const cleanItemsWhileDragging = itemsWhileDragging.filter(i => !isNilOrError(i)) as ITopicData[];
       this.setState({
-        itemsWhileDragging: cleanItemsWhileDragging
+        itemsWhileDragging // cleanItemsWhileDragging
       });
     }
   }
@@ -92,7 +92,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
     if (!isNilOrError(field) && field.attributes.ordering !== toIndex) {
       this.setState({ isProcessing: true });
-      reorderTopic(fieldId, { ordering: toIndex }).then(() => this.setState({ isProcessing: false }));
+      reorderTopic(fieldId, toIndex).then(() => this.setState({ isProcessing: false }));
     } else {
       this.setState({ itemsWhileDragging: null });
     }
