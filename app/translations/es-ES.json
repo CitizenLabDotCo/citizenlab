@@ -1107,7 +1107,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Nombre del área",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "El nombre que elija para cada área será visible para los ciudadanos durante el registro y cuando filtren los proyectos.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Topic name",
-  "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible for citizens during signup and when filtering projects.",
+  "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible for citizens.",
   "app.containers.AdminPage.SettingsPage.header": "Banner de la página de inicio",
   "app.containers.AdminPage.SettingsPage.headerOverlayColor": "Color de cabecera",
   "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "Opacidad de la cabecera para personas que no han iniciado sesión",
