@@ -179,7 +179,6 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
 
   const onVerifyBOSAButtonClick = useCallback(() => {
     const jwt = getJwt();
-    console.log(`${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`);
     window.location.href = `${AUTH_PATH}/bosa_fas?token=${jwt}&pathname=${removeUrlLocale(window.location.pathname)}`;
   }, []);
 
