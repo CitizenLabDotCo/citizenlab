@@ -1,42 +1,31 @@
 import React from 'react';
 
-// components
-import { AuthProviderButtonInner } from './index';
-
-// styling
-import CSSTransition from 'react-transition-group/CSSTransition';
-
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
 
 interface Props {
   logoUrl: string;
   logoHeight: string;
-  timeout: number;
   providerName: string;
-  altText: ReactIntl.FormattedMessage.MessageDescriptor;
+  mode: 'signUp' | 'signIn';
 }
 
-const AuthProviderImage = (props: Props & InjectedIntlProps) => {
-  const {
-    logoUrl,
-    logoHeight,
-    timeout,
-    providerName,
-    altText,
-  } = props;
+const AuthProviderImage = ({
+  logoUrl,
+  logoHeight,
+  providerName,
+  mode,
+  intl: { formatMessage }
+}: Props & InjectedIntlProps) => {
 
   return (
-    <CSSTransition classNames="tac" timeout={timeout} exit={true}>
-      <AuthProviderButtonInner>
-        <img
-          src={logoUrl}
-          height={logoHeight}
-          alt={props.intl.formatMessage(altText, { loginMechanismName: providerName })}
-        />
-      </AuthProviderButtonInner>
-    </CSSTransition>
+    <img
+      src={logoUrl}
+      height={logoHeight}
+      alt={formatMessage(mode === 'signUp' ? messages.signUpButtonAltText : messages.signInButtonAltText, { loginMechanismName: providerName })}
+    />
   );
 
 };
