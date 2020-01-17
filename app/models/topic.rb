@@ -1,4 +1,6 @@
 class Topic < ApplicationRecord
+  acts_as_list column: :ordering, top_of_list: 0
+  
   has_many :projects_topics, dependent: :destroy
   has_many :projects, through: :projects_topics
   has_many :ideas_topics, dependent: :destroy
