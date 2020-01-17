@@ -1107,7 +1107,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Naam",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "De naam die je voor elk gebied kiest is zichtbaar voor gebruikers tijdens hun registratie en bij het filteren van de projecten.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Topic name",
-  "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible for citizens during signup and when filtering projects.",
+  "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible for citizens.",
   "app.containers.AdminPage.SettingsPage.header": "Banner startpagina",
   "app.containers.AdminPage.SettingsPage.headerOverlayColor": "Kleur banner",
   "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "Opaciteit van de banner voor mensen die niet ingelogd zijn",
