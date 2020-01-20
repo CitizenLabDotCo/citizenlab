@@ -84,23 +84,6 @@ FactoryBot.define do
     association :post, factory: :idea
   end
 
-  factory :new_comment_for_admin, parent: :notification, class: 'Notifications::NewCommentForAdmin' do
-    initiating_user
-    comment
-    association :post, factory: :idea
-  end
-
-  factory :new_idea_for_admin, parent: :notification, class: 'Notifications::NewIdeaForAdmin' do
-    initiating_user
-    association :post, factory: :idea
-    project
-  end
-
-  factory :new_initiative_for_admin, parent: :notification, class: 'Notifications::NewInitiativeForAdmin' do
-    initiating_user
-    association :post, factory: :initiative
-  end
-
   factory :official_feedback_on_commented_idea, parent: :notification, class: 'Notifications::OfficialFeedbackOnCommentedIdea' do
     initiating_user
     official_feedback
