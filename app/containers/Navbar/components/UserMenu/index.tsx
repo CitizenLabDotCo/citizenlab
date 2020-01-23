@@ -71,18 +71,7 @@ const DropdownButton = styled.button`
   }
 `;
 
-const DropdownListItem = styled(Button)`
-  &.Button.button {
-    font-size: ${fontSizes.medium}px;
-  }
-
-  a:not(.processing):focus,
-  button:not(.processing):focus,
-  a:not(.processing):hover,
-  button:not(.processing):hover {
-    background: ${colors.clDropdownHoverBackground};
-  }
-`;
+const DropdownListItem = styled(Button)``;
 
 interface InputProps {
   theme?: any;

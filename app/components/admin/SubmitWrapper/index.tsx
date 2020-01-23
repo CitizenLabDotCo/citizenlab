@@ -96,14 +96,9 @@ export default class SubmitWrapper extends PureComponent<Props> {
   }
 
   render () {
-    let style = this.props.style || 'cl-blue';
+    const style = this.props.style || 'cl-blue';
 
-    if (this.props.status === 'success') {
-      style = 'success';
-      this.removeFocus(this.submitButton);
-    }
-
-    if (this.props.status === 'error') {
+    if (this.props.status === 'success' || this.props.status === 'error') {
       this.removeFocus(this.submitButton);
     }
 
