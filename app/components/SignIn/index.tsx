@@ -157,8 +157,11 @@ const AuthProviderButtons = styled.div`
   flex-direction: column;
 `;
 
-const FranceConnectButton = styled.div`
+const FranceConnectButton = styled.button`
+  text-align: left;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
   margin-top: 10px;
 `;
 
@@ -377,7 +380,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                 </FeatureFlag>
 
                 <FeatureFlag name="franceconnect_login">
-                  <FranceConnectButton role="button" onClick={handleOnSSOClick('franceconnect')}>
+                  <FranceConnectButton onClick={handleOnSSOClick('franceconnect')}>
                     <img
                       src={franceconnectLogo}
                       alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}

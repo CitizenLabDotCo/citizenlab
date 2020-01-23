@@ -54,13 +54,15 @@ const AuthProviderButtons = styled.div`
 `;
 
 const FranceConnectButton = styled.button`
+  text-align: left;
   cursor: pointer;
+  padding: 0;
+  margin: 0;
   margin-top: 10px;
 
   &:disabled {
     cursor: not-allowed;
   }
-
 
   &:not(:disabled) {
     &:hover {
@@ -169,10 +171,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps> {
                   </FeatureFlag>
                 }
                 <FeatureFlag name="franceconnect_login">
-                  <FranceConnectButton
-                    role="button"
-                    onClick={this.handleOnAccept('franceconnect')}
-                  >
+                  <FranceConnectButton onClick={this.handleOnAccept('franceconnect')}>
                     <img
                       src={franceconnectLogo}
                       alt={formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
