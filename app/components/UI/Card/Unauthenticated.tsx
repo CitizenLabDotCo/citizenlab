@@ -5,7 +5,6 @@ import Button from 'components/UI/Button';
 
 // styles
 import styled, { withTheme } from 'styled-components';
-import { darken } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -22,10 +21,6 @@ const Container = styled.div`
 
 const StyledLinkButton = styled(Button)`
   margin-left: 5px;
-
-  &:hover .buttonText {
-    text-decoration: underline;
-  }
 `;
 
 interface Props {
@@ -57,8 +52,8 @@ class Unauthenticated extends PureComponent<Props, State> {
           linkTo="/sign-up"
           onClick={this.stopPropagation}
           style="text"
+          textDecorationHover="underline"
           textColor={this.props.theme.colorMain}
-          textHoverColor={darken(0.15, this.props.theme.colorMain)}
         >
           <FormattedMessage {...messages.register} />
         </StyledLinkButton>

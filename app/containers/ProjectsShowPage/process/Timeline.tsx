@@ -219,7 +219,7 @@ const HeaderDate = styled.div`
   `}
 `;
 
-const IdeaButtonDesktop: any = styled(IdeaButton)`
+const IdeaButtonDesktop = styled(IdeaButton)`
   margin-left: 20px;
 
   ${media.smallerThanMinTablet`

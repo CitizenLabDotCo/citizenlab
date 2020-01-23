@@ -30,58 +30,73 @@ type DefaultStyleValues = {
   };
 };
 
-function getFontSize(size) {
-  switch (size) {
-    case '2':
-      return `${fontSizes.large}px`;
-    case '3':
-      return `${fontSizes.xl}px`;
-    default:
-      return `${fontSizes.base}px`;
+function getFontSize(props: ButtonContainerProps & { theme: any }) {
+  if (props.fontSize) {
+    return props.fontSize;
+  } else {
+    switch (props.size) {
+      case '2':
+        return `${fontSizes.large}px`;
+      case '3':
+        return `${fontSizes.xl}px`;
+      default:
+        return `${fontSizes.base}px`;
+    }
   }
 }
 
-function getPadding(size) {
-  switch (size) {
-    case '2':
-      return '11px 22px';
-    case '3':
-      return '13px 24px';
-    case '4':
-      return '15px 26px';
-    default:
-      return '.65em 1.45em';
+function getPadding(props: ButtonContainerProps & { theme: any }) {
+  if (props.padding) {
+    return props.padding;
+  } else {
+    switch (props.size) {
+      case '2':
+        return '11px 22px';
+      case '3':
+        return '13px 24px';
+      case '4':
+        return '15px 26px';
+      default:
+        return '.65em 1.45em';
+    }
   }
 }
 
-function getIconHeight(size) {
-  switch (size) {
-    case '2':
-      return '18px';
-    case '3':
-      return '19px';
-    case '4':
-      return '20px';
-    default:
-      return '17px';
+function getIconHeight(props: ButtonContainerProps & { theme: any }) {
+  if (props.iconSize) {
+    return props.iconSize;
+  } else {
+    switch (props.size) {
+      case '2':
+        return '18px';
+      case '3':
+        return '19px';
+      case '4':
+        return '20px';
+      default:
+        return '17px';
+    }
   }
 }
 
-function getLineHeight(size) {
-  switch (size) {
-    case '2':
-      return '24px';
-    case '3':
-      return '26px';
-    case '4':
-      return '28px';
-    default:
-      return '22px';
+function getLineHeight(props: ButtonContainerProps & { theme: any }) {
+  if (props.lineHeight) {
+    return props.lineHeight;
+  } else {
+    switch (props.size) {
+      case '2':
+        return '24px';
+      case '3':
+        return '26px';
+      case '4':
+        return '28px';
+      default:
+        return '22px';
+    }
   }
 }
 
 function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
-
   const defaultStyleValues: DefaultStyleValues = {
     primary: {
       bgColor: get(props.theme, 'colorMain'),
@@ -136,59 +151,114 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     }
   };
 
-  const finalBgColor = props.bgColor || get(defaultStyleValues, `${props.buttonStyle}.bgColor`);
-  const finalBgHoverColor = props.bgHoverColor || get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) || darken(0.12, finalBgColor);
-  const finalTextColor = props.textColor || get(defaultStyleValues, `${props.buttonStyle}.textColor`);
-  const finalTextHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, finalTextColor);
-  const finalIconColor = props.iconColor || get(defaultStyleValues, `${props.buttonStyle}.iconColor`) || finalTextColor;
-  const finalIconHoverColor = props.iconHoverColor || get(defaultStyleValues, `${props.buttonStyle}.iconHoverColor`) || finalTextHoverColor;
-  const finalBorderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
-  const finalBorderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, finalBorderColor);
-  const finalBoxShadow = props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
-  const finalBoxShadowHover = props.boxShadowHover || get(defaultStyleValues, `${props.buttonStyle}.boxShadowHover`) || 'none';
-  const finalBorderRadius = props.borderRadius || get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) || props.theme.borderRadius;
+  const backgroundColor = props.bgColor || get(defaultStyleValues, `${props.buttonStyle}.bgColor`);
+  const backgroundHoverColor = props.bgHoverColor || get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) || darken(0.12, backgroundColor);
+  const backgroundDisabledColor = props.bgDisabledColor || get(defaultStyleValues, `${props.buttonStyle}.bgDisabledColor`) || backgroundColor;
+  const textColor = props.textColor || get(defaultStyleValues, `${props.buttonStyle}.textColor`);
+  const textHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, textColor);
+  const iconColor = props.iconColor || get(defaultStyleValues, `${props.buttonStyle}.iconColor`) || textColor;
+  const iconHoverColor = props.iconHoverColor || get(defaultStyleValues, `${props.buttonStyle}.iconHoverColor`) || textHoverColor;
+  const textDisabledColor = props.textDisabledColor || get(defaultStyleValues, `${props.buttonStyle}.textDisabledColor`) || textColor;
+  const borderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
+  const borderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, borderColor);
+  const borderDisabledColor = props.borderDisabledColor || get(defaultStyleValues, `${props.buttonStyle}.borderDisabledColor`) || borderColor;
+  const boxShadow = props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
+  const boxShadowHover = props.boxShadowHover || get(defaultStyleValues, `${props.buttonStyle}.boxShadowHover`) || 'none';
+  const borderRadius = props.borderRadius || get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) || props.theme.borderRadius;
+  const textDecoration = props.textDecoration || get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) || 'none';
+  const textDecorationHover = props.textDecorationHover || get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) || 'none';
+  const padding = getPadding(props);
+  const fontSize = getFontSize(props);
+  const lineHeight = getLineHeight(props);
+  const iconSize = getIconHeight(props);
+  const fontWeight = props.fontWeight || 'normal';
+  const borderWidth = props.borderThickness || '1px';
+  const display = !props.width ? 'inline-flex' : 'flex';
+  const height = props.height || 'auto';
+  const justifyContent = props.justify || 'center';
+  const minWidth = props.minWidth || 'auto';
+  const width = props.width || '100%';
+  const buttonTextOpacity = props.processing ? 0 : 1;
+  const iconOpacity = props.processing ? 0 : 1;
+  const whiteSpace = props.whiteSpace || 'nowrap';
+  const opacityDisabled = props.opacityDisabled || '0.37';
 
   return `
-    border-radius: ${finalBorderRadius};
+    width: ${width};
+    min-width: ${minWidth};
+    height: ${height};
+    display: ${display};
+    align-items: center;
+    justify-content: ${justifyContent};
+    margin: 0;
+    padding: ${padding};
+    position: relative;
+    border-radius: ${borderRadius};
+    background: ${backgroundColor};
+    border-width: ${borderWidth};
+    border-style: solid;
+    border-color: ${borderColor};
+    box-shadow: ${boxShadow};
+    cursor: pointer;
+    transition: background 80ms ease-out, border-color 80ms ease-out, box-shadow 80ms ease-out;
 
-    &:not(.disabled) {
-      background: ${finalBgColor};
-      border-color: ${finalBorderColor};
-      box-shadow: ${finalBoxShadow};
+    ${ButtonText} {
+      color: ${textColor};
+      opacity: ${buttonTextOpacity};
+      font-size: ${fontSize};
+      line-height: ${lineHeight};
+      font-weight: ${fontWeight};
+      text-decoration: ${textDecoration};
+      white-space: ${whiteSpace};
+      text-align: left;
+      margin: 0;
+      margin-top: -1px;
+      padding: 0;
+      transition: color 80ms ease-out;
+    }
+
+    ${StyledIcon} {
+      fill: ${iconColor};
+      flex: 0 0 ${iconSize};
+      height: ${iconSize};
+      width: ${iconSize};
+      opacity: ${iconOpacity};
+      transition: fill 80ms ease-out;
+    }
+
+    &:not(.disabled):not(.processing):hover,
+    &:not(.disabled):not(.processing):focus {
+      background: ${backgroundHoverColor};
+      border-color: ${borderHoverColor};
+      box-shadow: ${boxShadowHover};
 
       ${ButtonText} {
-        color: ${finalTextColor};
+        color: ${textHoverColor};
+        text-decoration: ${textDecorationHover};
       }
 
       ${StyledIcon} {
-        fill: ${finalIconColor};
-      }
-
-      &:not(.processing):hover,
-      &:not(.processing):focus {
-        background: ${finalBgHoverColor};
-        border-color: ${finalBorderHoverColor};
-        box-shadow: ${finalBoxShadowHover};
-
-        ${ButtonText} {
-          color: ${finalTextHoverColor};
-        }
-
-        ${StyledIcon} {
-          fill: ${finalIconHoverColor};
-        }
+        fill: ${iconHoverColor};
       }
     }
 
+    &.fullWidth {
+      flex: 1;
+      width: 100%;
+    }
+
     &.disabled {
-      background: ${colors.separationDark};
+      background: ${backgroundDisabledColor};
+      border-color: ${borderDisabledColor};
+      opacity: ${opacityDisabled};
+      cursor: not-allowed;
 
       ${ButtonText} {
-        color: #fff;
+        color: ${textDisabledColor};
       }
 
       ${StyledIcon} {
-        fill: #fff;
+        fill: ${textDisabledColor};
       }
     }
   `;
@@ -197,106 +267,47 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
 const StyledButton = styled.button``;
 const StyledLink = styled(Link)``;
 const StyledA = styled.a``;
+const ButtonText = styled.div``;
 const StyledIcon = styled(Icon)`
-  transition: all 100ms ease-out;
+  &.hasText {
+    &.left {
+      margin-right: 10px;
+    }
 
-  &.hasText.left {
-    margin-right: 10px;
+    &.right {
+      margin-left: 10px;
+    }
   }
-
-  &.hasText.right {
-    margin-left: 10px;
-  }
-`;
-
-const ButtonText = styled.div<{ whiteSpace?: string, overflowEllipsis?: boolean }>`
-  margin: 0;
-  margin-top: -1px;
-  padding: 0;
-  text-align: left;
-  white-space: ${({ whiteSpace }) => whiteSpace || 'nowrap'};
-  transition: all 100ms ease-out;
-  ${({ overflowEllipsis }) => overflowEllipsis ? `
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  ` : ''}
 `;
 
 const Container = styled.div<ButtonContainerProps>`
-  align-items: center;
   display: flex;
-  font-weight: 400;
+  align-items: center;
   justify-content: ${(props) => props.justifyWrapper || 'center'};
   margin: 0;
   padding: 0;
   user-select: none;
 
-  * {
-    user-select: none;
-  }
-
   &.fullWidth {
     width: 100%;
-
-    button,
-    a {
-      flex: 1;
-      width: 100%;
-    }
   }
 
-  button,
-  a {
-    align-items: center;
-    border: ${(props) => props.borderThickness || '1px'} solid transparent;
-    display: ${(props) => !props.width ? 'inline-flex' : 'flex'};
-    height: ${(props) => props.height || 'auto'};
-    justify-content: ${(props) => props.justify || 'center'};
-    margin: 0;
-    padding: ${(props) => props.padding || getPadding(props.size)};
-    position: relative;
-    min-width: ${(props) => props.minWidth || 'auto'};
-    width: ${(props) => props.width || '100%'};
-    transition: background 100ms ease-out,
-                border-color 100ms ease-out,
-                box-shadow 100ms ease-out;
-
-    &:not(.disabled) {
-      cursor: pointer;
-    }
-
-    ${ButtonText} {
-      opacity: ${(props) => props.processing ? 0 : 1};
-      font-size: ${(props) => props.fontSize ? props.fontSize : getFontSize(props.size)};
-      line-height: ${(props) => getLineHeight(props.size)};
-      font-weight: ${(props) => props.fontWeight || 'normal'}
-    }
-
-    ${StyledIcon} {
-      flex: 0 0 ${(props) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
-      height: ${(props) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
-      width: ${(props) => props.iconSize ? props.iconSize : getIconHeight(props.size)};
-      opacity: ${(props) => props.processing ? 0 : 1};
-    }
-
+  ${StyledButton},
+  ${StyledLink},
+  ${StyledA} {
     ${(props) => getButtonStyle(props)}
-  }
-
-  button.disabled {
-    cursor: not-allowed;
   }
 `;
 
 const SpinnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const HiddenText = styled.span`
@@ -321,18 +332,25 @@ export interface ButtonContainerProps {
   iconHoverColor?: string;
   textColor?: string;
   textHoverColor?: string;
+  textDisabledColor?: string;
   bgColor?: string;
   bgHoverColor?: string;
+  bgDisabledColor?: string;
   borderColor?: string;
   borderHoverColor?: string;
+  borderDisabledColor?: string;
   borderThickness?: string;
   boxShadow?: string;
   boxShadowHover?: string;
   borderRadius?: string;
   fontWeight?: string;
+  lineHeight?: string;
+  textDecoration?: string;
+  textDecorationHover?: string;
   whiteSpace?: string;
   minWidth?: string;
   fontSize?: string;
+  opacityDisabled?: string;
   onClick?: (arg: FormEvent<HTMLButtonElement>) => void;
 }
 
@@ -359,10 +377,9 @@ export interface Props extends ButtonContainerProps {
   ariaDescribedby?: string;
   iconAriaHidden?: boolean;
   ariaDisabled?: boolean;
-  overflowEllipsis?: boolean;
 }
 
-type State = {};
+interface State {}
 
 export class Button extends PureComponent<Props, State> {
 
@@ -411,6 +428,7 @@ export class Button extends PureComponent<Props, State> {
   }
 
   render() {
+    let { id, size, style, processing, disabled, iconPos } = this.props;
     const {
       type,
       text,
@@ -419,10 +437,13 @@ export class Button extends PureComponent<Props, State> {
       iconHoverColor,
       textColor,
       textHoverColor,
+      textDisabledColor,
       bgColor,
       bgHoverColor,
+      bgDisabledColor,
       borderColor,
       borderHoverColor,
+      borderDisabledColor,
       borderThickness,
       boxShadow,
       boxShadowHover,
@@ -442,6 +463,9 @@ export class Button extends PureComponent<Props, State> {
       linkTo,
       openInNewTab,
       fontWeight,
+      lineHeight,
+      textDecoration,
+      textDecorationHover,
       whiteSpace,
       fullWidth,
       ariaLabel,
@@ -451,9 +475,9 @@ export class Button extends PureComponent<Props, State> {
       iconAriaHidden,
       ariaDescribedby,
       ariaDisabled,
-      overflowEllipsis
+      opacityDisabled,
+      className
     } = this.props;
-    let { id, size, style, processing, disabled, iconPos, className } = this.props;
 
     id = (id || '');
     size = (size || '1');
@@ -461,11 +485,18 @@ export class Button extends PureComponent<Props, State> {
     processing = (isBoolean(processing) ? processing : false);
     disabled = (isBoolean(disabled) ? disabled : false);
     iconPos = (iconPos || 'left');
-    className = `${className ? className : ''}`;
 
+    const buttonClassNames = [
+      'button',
+      'Button',
+      style,
+      className,
+      disabled ? 'disabled' : 'enabled',
+      processing ? 'processing' : null,
+      fullWidth ? 'fullWidth' : null
+    ].filter(item => !isNil(item)).join(' ');
     const spinnerSize = this.getSpinnerSize(size);
     const spinnerColor = this.props.spinnerColor || textColor || this.getSpinnerColor(style);
-    const buttonClassnames = `Button button ${disabled ? 'disabled' : ''} ${processing ? 'processing' : ''} ${fullWidth ? 'fullWidth' : ''} ${style}`;
     const hasText = (!isNil(text) || !isNil(children));
     const childContent = (
       <>
@@ -476,8 +507,9 @@ export class Button extends PureComponent<Props, State> {
             title={iconTitle}
             colorTheme={iconTheme}
             ariaHidden={iconAriaHidden}
-          />}
-        {hasText && <ButtonText className="buttonText" whiteSpace={whiteSpace} overflowEllipsis={overflowEllipsis}>{text || children}</ButtonText>}
+          />
+        }
+        {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
         {icon && iconPos === 'right' &&
           <StyledIcon
@@ -498,7 +530,7 @@ export class Button extends PureComponent<Props, State> {
 
     return (
       <Container
-        className={`${className} ${buttonClassnames}`}
+        className={`${className || ''} ${this.props.fullWidth ? 'fullWidth' : ''}`}
         onClick={this.handleOnClick}
         onMouseDown={this.removeFocus}
         buttonStyle={style}
@@ -516,18 +548,25 @@ export class Button extends PureComponent<Props, State> {
         iconHoverColor={iconHoverColor}
         textColor={textColor}
         textHoverColor={textHoverColor}
+        textDisabledColor={textDisabledColor}
         bgColor={bgColor}
         bgHoverColor={bgHoverColor}
+        bgDisabledColor={bgDisabledColor}
         borderColor={borderColor}
         borderHoverColor={borderHoverColor}
+        borderDisabledColor={borderDisabledColor}
         borderThickness={borderThickness}
         boxShadow={boxShadow}
         boxShadowHover={boxShadowHover}
         borderRadius={borderRadius}
         fontWeight={fontWeight}
+        lineHeight={lineHeight}
+        textDecoration={textDecoration}
+        textDecorationHover={textDecorationHover}
         whiteSpace={whiteSpace}
         minWidth={minWidth}
         fontSize={fontSize}
+        opacityDisabled={opacityDisabled}
       >
         {linkTo && !disabled ? (
           (isString(linkTo) && linkTo.startsWith('http')) ? (
@@ -535,7 +574,7 @@ export class Button extends PureComponent<Props, State> {
               ref={this.props.setSubmitButtonRef}
               href={linkTo}
               target={openInNewTab ? '_blank' : '_self'}
-              className={buttonClassnames}
+              className={buttonClassNames}
               aria-label={ariaLabel}
             >
               {childContent}
@@ -544,7 +583,7 @@ export class Button extends PureComponent<Props, State> {
             <StyledLink
               ref={this.props.setSubmitButtonRef}
               to={linkTo}
-              className={buttonClassnames}
+              className={buttonClassNames}
               aria-label={ariaLabel}
             >
               {childContent}
@@ -558,7 +597,7 @@ export class Button extends PureComponent<Props, State> {
             aria-disabled={ariaDisabled}
             disabled={disabled}
             ref={this.props.setSubmitButtonRef}
-            className={buttonClassnames}
+            className={buttonClassNames}
             form={form}
             type={type ? type : 'submit'}
             autoFocus={autoFocus}
