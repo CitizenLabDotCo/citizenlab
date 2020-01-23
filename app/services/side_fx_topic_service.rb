@@ -18,7 +18,7 @@ class SideFxTopicService
   end
 
   def before_destroy topic, user
-    
+    SmartGroupsService.new.filter_by_rule_value(Group.all, topic.id).destroy_all
   end
 
   def after_destroy frozen_topic, user
