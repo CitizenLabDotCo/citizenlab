@@ -77,6 +77,15 @@ class SmartGroupsService
     rule_class.from_json(json_rule)
   end
 
+  def filter_by_rule_type groups_scope, rule_type
+    groups_scope.rules
+      .where("rules @> '[{\"ruleType\": \"#{rule_type}\"}]'")
+  end
+
+  def filter_by_rule_value groups_scope, rule_value
+    groups_scope.rules
+      .where("rules @> '[{\"value\": \"#{rule_value}\"}]'")
+  end
 
   private
 
