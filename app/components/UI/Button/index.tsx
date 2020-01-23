@@ -490,7 +490,6 @@ export class Button extends PureComponent<Props, State> {
       'button',
       'Button',
       style,
-      className,
       disabled ? 'disabled' : 'enabled',
       processing ? 'processing' : null,
       fullWidth ? 'fullWidth' : null
