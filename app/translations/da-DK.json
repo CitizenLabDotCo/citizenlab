@@ -1550,8 +1550,6 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} kommenterede på din idé",
   "app.containers.NotificationMenu.userCommentedOnYourInitiative": "{name} kommenterede på dit initiativ",
   "app.containers.NotificationMenu.userMarkedPostAsSpam": "{name} rapporterede '{postTitle}' som spam",
-  "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} kommenterede på {post}",
-  "app.containers.NotificationMenu.userPostedPost": "{name} opslog {post}",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reagerede på din kommentar",
   "app.containers.NotificationMenu.userReportedCommentAsSpam": "{name} rapporterede en kommentar på '{postTitle}' som spam",
   "app.containers.NotificationMenu.xAssignedPostToYou": "{name} tildelt {postTitle} dig",

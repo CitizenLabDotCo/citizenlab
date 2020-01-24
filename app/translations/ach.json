@@ -1550,8 +1550,6 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "",
   "app.containers.NotificationMenu.userCommentedOnYourInitiative": "",
   "app.containers.NotificationMenu.userMarkedPostAsSpam": "",
-  "app.containers.NotificationMenu.userPostedComment": "",
-  "app.containers.NotificationMenu.userPostedPost": "",
   "app.containers.NotificationMenu.userReactedToYourComment": "",
   "app.containers.NotificationMenu.userReportedCommentAsSpam": "",
   "app.containers.NotificationMenu.xAssignedPostToYou": "",
