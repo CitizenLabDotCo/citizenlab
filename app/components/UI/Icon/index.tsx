@@ -740,7 +740,19 @@ const icons = {
       <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zM8 15l-5-5 1.41-1.41L8 12.17l7.59-7.59L17 6z"/>
     </Svg>
   ),
-  verify: (props: IconProps) => (
+  verify_light: (props: IconProps) => (
+    <Svg {...props} viewBox="0 0 51 56">
+      <path fill="url(#paint0_linear)" fillOpacity=".5" d="M49.404 7.506L24.991.04a.935.935 0 00-.545.002L.653 7.508A.934.934 0 000 8.4v24.267c0 10.156 16.114 20.561 24.752 23.29a.95.95 0 00.556 0c8.639-2.729 24.753-13.134 24.753-23.29V8.4a.935.935 0 00-.657-.894z"/>
+      <path fill="#fff" d="M20.771 31.83l-6.64-6.857L11.88 27.3l8.892 9.185L39.88 16.75l-2.253-2.327L20.77 31.831z"/>
+      <defs>
+        <linearGradient id="paint0_linear" x1="50.061" x2="-.535" y1="-5.49" y2="55.557" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#fff"/>
+          <stop offset="1" stopColor="#fff" stopOpacity="0.35"/>
+        </linearGradient>
+      </defs>
+    </Svg>
+  ),
+  verify_dark: (props: IconProps) => (
     <Svg {...props} viewBox="0 0 51 56">
       <path fill="url(#paint0_linear)" fillOpacity=".5" d="M49.404 7.506L24.991.04a.935.935 0 00-.545.002L.653 7.508A.934.934 0 000 8.4v24.267c0 10.156 16.114 20.561 24.752 23.29a.95.95 0 00.556 0c8.639-2.729 24.753-13.134 24.753-23.29V8.4a.935.935 0 00-.657-.894z"/>
       <path fill="#fff" d="M20.771 31.83l-6.64-6.857L11.88 27.3l8.892 9.185L39.88 16.75l-2.253-2.327L20.77 31.831z"/>

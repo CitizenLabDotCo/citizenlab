@@ -182,7 +182,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
     <Container id="e2e-verification-methods" className={className}>
       <AboveTitle aria-hidden>
         <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
-        <ShieldIcon name="verify" />
+        <ShieldIcon name="verify_dark" />
       </AboveTitle>
       <Title id="modal-header">
         <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
