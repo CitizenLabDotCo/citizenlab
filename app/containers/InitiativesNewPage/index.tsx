@@ -45,7 +45,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
   }
 
   redirectToSignUpPage = () => {
-    clHistory.push('/sign-up');
+    clHistory.replace('/sign-up');
   }
 
   componentDidMount() {
