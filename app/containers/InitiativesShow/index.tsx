@@ -318,7 +318,6 @@ interface State {
 }
 
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
-  initialState: State;
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: number;
 
