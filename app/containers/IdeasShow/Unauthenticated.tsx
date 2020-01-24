@@ -42,7 +42,7 @@ class Unauthenticated extends React.PureComponent<Props, State> {
         <Button
           className="e2e-register-button"
           linkTo="/sign-up"
-          style="text"
+          buttonStyle="text"
           padding="0px"
           textDecorationHover="underline"
           textColor={this.props.theme.colorMain}

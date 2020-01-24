@@ -128,7 +128,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
           <Button
             processing={submitState === 'saving'}
             onClick={this.save}
-            style="cl-blue"
+            buttonStyle="cl-blue"
             type="submit"
           >
             <FormattedMessage {...messages.areasTermsSave} />

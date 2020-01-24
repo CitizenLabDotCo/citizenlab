@@ -71,14 +71,14 @@ class FormQuestionRow extends PureComponent<Props, State> {
 
         <Button
           className="e2e-form-question-save"
-          style="secondary"
+          buttonStyle="secondary"
           onClick={onSave}
         >
           <FormattedMessage {...messages.saveQuestion} />
         </Button>
         <Button
           className="e2e-form-question-cancel"
-          style="secondary"
+          buttonStyle="secondary"
           onClick={onCancel}
         >
           <FormattedMessage {...messages.cancelFormQuestion} />

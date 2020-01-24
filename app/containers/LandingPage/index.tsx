@@ -235,7 +235,7 @@ class LandingPage extends PureComponent<Props, State> {
                   <Button
                     fontWeight="500"
                     padding="13px 22px"
-                    style="primary-inverse"
+                    buttonStyle="primary-inverse"
                     linkTo="/sign-up"
                     text={<FormattedMessage {...messages.createAccount} />}
                     onClick={this.clickCreateAccountCTAFooter}

@@ -58,7 +58,7 @@ export default class ExportCommentsButton extends React.PureComponent<Props, Sta
     const { exporting } = this.state;
     return (
       <Button
-        style="text"
+        buttonStyle="text"
         onClick={this.handleExportComments}
         processing={exporting}
         padding="0"

@@ -234,7 +234,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
                   label={<FormattedMessage {...messages[`${category}Category`]} />}
                 />
                 {consents.length > 1 &&
-                  <Button onClick={this.handleToggleOpenCategory(category)} style="text" type="button" ariaExpanded={isCategoryOpen[category]} padding="10px 0px 10px 5px">
+                  <Button onClick={this.handleToggleOpenCategory(category)} buttonStyle="text" type="button" ariaExpanded={isCategoryOpen[category]} padding="10px 0px 10px 5px">
                     {isCategoryOpen[category]
                       ? <FormattedMessage {...messages.collapse} />
                       : <FormattedMessage {...messages.expand} />
@@ -274,7 +274,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
           ))}
           <StyledSubmitWrapper
             status={saveButtonStatus}
-            style="primary"
+            buttonStyle="primary"
             loading={isSaving}
             onClick={this.handleOnSubmit}
             messages={{

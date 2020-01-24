@@ -448,7 +448,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
               <ShowMoreButton
                 onClick={this.showMore}
                 size="1"
-                style="secondary"
+                buttonStyle="secondary"
                 text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
                 height="50px"

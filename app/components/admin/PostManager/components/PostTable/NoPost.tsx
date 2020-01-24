@@ -91,7 +91,7 @@ export default (props: Props) => (
       <FormattedMessage {...messages.resetFiltersDescription} />
     </NoPostDescription>
     <Button
-      style="cl-blue"
+      buttonStyle="cl-blue"
       onClick={props.handleSeeAll}
     >
       <FormattedMessage {...messages.resetFiltersButton} />

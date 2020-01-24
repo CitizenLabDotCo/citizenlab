@@ -100,7 +100,7 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
         <SectionSubtitle>
           <FormattedMessage {...messages.subtitleTimeline} />
         </SectionSubtitle>
-        <AddButton className="e2e-add-phase-button" icon="plus-circle" style="cl-blue" linkTo={`/admin/projects/${projectId}/timeline/new`}>
+        <AddButton className="e2e-add-phase-button" icon="plus-circle" buttonStyle="cl-blue" linkTo={`/admin/projects/${projectId}/timeline/new`}>
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
@@ -125,10 +125,10 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
                       <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
                       <p>{startAt}  →  {endAt}</p>
                     </div>
-                    <Button className="e2e-delete-phase" icon="delete" style="text" onClick={this.createDeleteClickHandler(projectId, phase.id)}>
+                    <Button className="e2e-delete-phase" icon="delete" buttonStyle="text" onClick={this.createDeleteClickHandler(projectId, phase.id)}>
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
-                    <Button className="e2e-edit-phase" icon="edit" style="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
+                    <Button className="e2e-edit-phase" icon="edit" buttonStyle="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
                       <FormattedMessage {...messages.editPhaseButton} />
                     </Button>
                   </Row>

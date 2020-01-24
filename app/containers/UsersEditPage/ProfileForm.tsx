@@ -353,7 +353,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
         <SubmitWrapper
           status={getStatus()}
-          style="primary"
+          buttonStyle="primary"
           loading={isSubmitting}
           onClick={handleOnSubmit}
           messages={{

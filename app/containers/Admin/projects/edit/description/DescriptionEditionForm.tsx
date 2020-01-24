@@ -65,7 +65,7 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
 
         <FormikSubmitWrapper
           {...{ isValid, isSubmitting, status, touched }}
-          style="cl-blue"
+          buttonStyle="cl-blue"
           messages={{
             buttonSave: messages.saveButtonLabel,
             buttonError: messages.saveErrorLabel,

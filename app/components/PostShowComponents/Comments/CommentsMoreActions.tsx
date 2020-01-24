@@ -179,13 +179,13 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
             <HasPermission.No>
               <ButtonsWrapper>
                 <CancelButton
-                  style="secondary"
+                  buttonStyle="secondary"
                   onClick={this.closeDeleteModal}
                 >
                   <FormattedMessage {...messages.commentDeletionCancelButton} />
                 </CancelButton>
                 <AcceptButton
-                  style="primary"
+                  buttonStyle="primary"
                   processing={loading_deleteComment}
                   className="e2e-confirm-deletion"
                   onClick={this.deleteComment}

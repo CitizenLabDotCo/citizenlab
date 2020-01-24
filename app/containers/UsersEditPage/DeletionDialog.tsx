@@ -125,7 +125,7 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
         </ul>
         <ButtonsContainer>
           <Button
-            style="delete"
+            buttonStyle="delete"
             id="deletion"
             onClick={this.deleteProfile}
             width="auto"
@@ -136,7 +136,7 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
             <FormattedMessage {...messages.deleteMyAccount} />
           </Button>
           <Button
-            style="text"
+            buttonStyle="text"
             onClick={this.props.closeDialog}
             width="auto"
             justifyWrapper="left"

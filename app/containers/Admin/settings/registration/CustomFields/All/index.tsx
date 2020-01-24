@@ -139,7 +139,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
           <ButtonWrapper>
             <Button
               className="e2e-add-custom-field-btn"
-              style="cl-blue"
+              buttonStyle="cl-blue"
               icon="plus-circle"
               linkTo="/admin/settings/registration/custom_fields/new"
             >
@@ -183,7 +183,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                       <Button
                         className={`e2e-delete-custom-field-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
                         onClick={this.handleOnDeleteClick(field.id)}
-                        style="text"
+                        buttonStyle="text"
                         icon="delete"
                       >
                         <FormattedMessage {...messages.deleteButtonLabel} />
@@ -193,7 +193,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                     <Button
                       className={`e2e-custom-field-edit-btn e2e-${field.attributes.title_multiloc['en-GB']}`}
                       linkTo={`/admin/settings/registration/custom_fields/${field.id}/general`}
-                      style="secondary"
+                      buttonStyle="secondary"
                       icon="edit"
                     >
                       <FormattedMessage {...messages.editButtonLabel} />

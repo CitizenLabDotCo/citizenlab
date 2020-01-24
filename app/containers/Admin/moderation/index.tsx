@@ -258,7 +258,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           {selectedRows.length > 0 &&
             <MarkAsButton
               icon="label"
-              style="cl-blue"
+              buttonStyle="cl-blue"
               processing={processing}
               onClick={markAs}
             >

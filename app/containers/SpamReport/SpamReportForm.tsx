@@ -127,7 +127,7 @@ class SpamReportForm extends React.PureComponent<Props & InjectedIntlProps, Stat
         </TransitionGroup>
 
         <SubmitWrapper
-          style="primary"
+          buttonStyle="primary"
           status={submitStatus}
           loading={this.props.loading}
           messages={messages}

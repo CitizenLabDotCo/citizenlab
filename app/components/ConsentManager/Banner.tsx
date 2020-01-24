@@ -169,7 +169,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
             </PreferencesButton>
             <AcceptButton
               className="e2e-accept-cookies-btn"
-              style="primary-inverse"
+              buttonStyle="primary-inverse"
               textColor={colors.adminTextColor}
               textHoverColor={colors.adminTextColor}
               onClick={onAccept}

@@ -156,7 +156,7 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
           />
           <Button
             onClick={this.handleShowCodeClick}
-            style="cl-blue"
+            buttonStyle="cl-blue"
             icon="code"
           >
             <FormattedMessage {...messages.exportHtmlCodeButton} />

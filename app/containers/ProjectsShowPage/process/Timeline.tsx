@@ -651,7 +651,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                         onClick={this.goToPreviousPhase}
                         icon="chevron-left"
                         iconSize="15px"
-                        style="secondary"
+                        buttonStyle="secondary"
                         padding="8px 8px"
                         disabled={selectedPhaseId === phases.data[0].id}
                         ariaLabel={this.props.intl.formatMessage(messages.goToPreviousPhase)}
@@ -661,7 +661,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                         onClick={this.goToNextPhase}
                         icon="chevron-right"
                         iconSize="15px"
-                        style="secondary"
+                        buttonStyle="secondary"
                         padding="8px 8px"
                         disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
                         ariaLabel={this.props.intl.formatMessage(messages.goToNextPhase)}
