@@ -381,7 +381,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
               id="e2e-idea-cards-show-more-button"
               onClick={this.loadMore}
               size="1"
-              style="secondary"
+              buttonStyle="secondary"
               text={<FormattedMessage {...messages.showMore} />}
               processing={loadingMore}
               height="50px"

@@ -163,7 +163,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
           <BrowseInitiativesButton
             fontWeight="500"
             padding="13px 22px"
-            style="text"
+            buttonStyle="text"
             textColor={theme.colorMain}
             textDecorationHover="underline"
             fullWidth={smallerThanSmallTablet}

@@ -203,7 +203,7 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         <StyledButton
           icon="upvote"
           iconAriaHidden
-          style="primary"
+          buttonStyle="primary"
           onClick={this.handleOnVote}
           id="e2e-initiative-upvote-button"
         >

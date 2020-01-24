@@ -112,7 +112,7 @@ class InvitesTable extends React.PureComponent<Props, State> {
             <Input icon="search" onChange={this.handleChangeSearchTerm} size="large" />
 
             <Button
-              style="cl-blue"
+              buttonStyle="cl-blue"
               icon="download"
               onClick={this.handleInvitesExport}
               processing={exporting}

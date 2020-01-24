@@ -51,7 +51,7 @@ class Unauthenticated extends PureComponent<Props, State> {
           className="e2e-register-button"
           linkTo="/sign-up"
           onClick={this.stopPropagation}
-          style="text"
+          buttonStyle="text"
           textDecorationHover="underline"
           textColor={this.props.theme.colorMain}
         >

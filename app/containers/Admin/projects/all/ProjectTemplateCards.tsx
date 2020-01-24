@@ -278,7 +278,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
               <LoadMoreButton
                 processing={loadingMore}
                 onClick={handleLoadMoreTemplatesOnClick}
-                style="secondary"
+                buttonStyle="secondary"
               >
                 <FormattedMessage {...messages.loadMoreTemplates} />
               </LoadMoreButton>

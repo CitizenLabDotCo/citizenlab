@@ -60,7 +60,7 @@ export default class ExportInitiativesButton extends React.PureComponent<Props, 
     const { exporting } = this.state;
     return (
       <Button
-        style="text"
+        buttonStyle="text"
         onClick={this.handleExportInitiatives}
         processing={exporting}
         padding="0"

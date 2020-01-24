@@ -125,7 +125,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               <LoadMoreButton
                 onClick={onLoadMore}
                 size="1"
-                style="secondary-outlined"
+                buttonStyle="secondary-outlined"
                 text={<FormattedMessage {...messages.showPreviousUpdates} />}
                 processing={loadingMore}
                 height="50px"

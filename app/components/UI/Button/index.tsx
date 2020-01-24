@@ -315,9 +315,8 @@ const HiddenText = styled.span`
 `;
 
 export interface ButtonContainerProps {
-  buttonStyle?: ButtonStyles;
-  style?: ButtonStyles;
   id?: string;
+  buttonStyle?: ButtonStyles;
   size?: '1' | '2' | '3' | '4';
   width?: string;
   height?: string;
@@ -413,13 +412,13 @@ export class Button extends PureComponent<Props, State> {
     }
   }
 
-  getSpinnerColor = (style: ButtonStyles) => {
-    if (style === 'primary-outlined' || style === 'secondary-outlined') {
+  getSpinnerColor = (buttonStyle: ButtonStyles) => {
+    if (buttonStyle === 'primary-outlined' || buttonStyle === 'secondary-outlined') {
       const theme = this.props.theme as object;
       return theme['colorMain'];
     }
 
-    if (style === 'secondary') {
+    if (buttonStyle === 'secondary') {
       const theme = this.props.theme as object;
       return theme['colors']['label'];
     }
@@ -428,7 +427,6 @@ export class Button extends PureComponent<Props, State> {
   }
 
   render() {
-    let { id, size, style, processing, disabled, iconPos } = this.props;
     const {
       type,
       text,
@@ -479,24 +477,24 @@ export class Button extends PureComponent<Props, State> {
       className
     } = this.props;
 
-    id = (id || '');
-    size = (size || '1');
-    style = (style || 'primary');
-    processing = (isBoolean(processing) ? processing : false);
-    disabled = (isBoolean(disabled) ? disabled : false);
-    iconPos = (iconPos || 'left');
-
+    const id = this.props.id || '';
+    const size = this.props.size || '1';
+    const processing = isBoolean(this.props.processing) ? this.props.processing : false;
+    const buttonStyle = this.props.buttonStyle || 'primary';
+    const disabled = isBoolean(this.props.disabled) ? this.props.disabled : false;
+    const iconPos = this.props.iconPos || 'left';
+    const spinnerSize = this.getSpinnerSize(size);
+    const spinnerColor = this.props.spinnerColor || textColor || this.getSpinnerColor(buttonStyle);
+    const hasText = (!isNil(text) || !isNil(children));
     const buttonClassNames = [
       'button',
       'Button',
-      style,
-      disabled ? 'disabled' : 'enabled',
+      buttonStyle,
+      disabled ? 'disabled' : null,
       processing ? 'processing' : null,
       fullWidth ? 'fullWidth' : null
     ].filter(item => !isNil(item)).join(' ');
-    const spinnerSize = this.getSpinnerSize(size);
-    const spinnerColor = this.props.spinnerColor || textColor || this.getSpinnerColor(style);
-    const hasText = (!isNil(text) || !isNil(children));
+
     const childContent = (
       <>
         {icon && iconPos === 'left' &&
@@ -532,7 +530,7 @@ export class Button extends PureComponent<Props, State> {
         className={`${className || ''} ${this.props.fullWidth ? 'fullWidth' : ''}`}
         onClick={this.handleOnClick}
         onMouseDown={this.removeFocus}
-        buttonStyle={style}
+        buttonStyle={buttonStyle}
         id={id}
         size={size}
         width={width}
