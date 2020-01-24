@@ -486,6 +486,12 @@ export class Button extends PureComponent<Props, State> {
     const spinnerSize = this.getSpinnerSize(size);
     const spinnerColor = this.props.spinnerColor || textColor || this.getSpinnerColor(buttonStyle);
     const hasText = (!isNil(text) || !isNil(children));
+    const containerClassNames = [
+      className,
+      disabled ? 'disabled' : null,
+      processing ? 'processing' : null,
+      fullWidth ? 'fullWidth' : null
+    ].filter(item => !isNil(item)).join(' ');
     const buttonClassNames = [
       'button',
       'Button',
@@ -527,7 +533,7 @@ export class Button extends PureComponent<Props, State> {
 
     return (
       <Container
-        className={`${className || ''} ${this.props.fullWidth ? 'fullWidth' : ''}`}
+        className={containerClassNames}
         onClick={this.handleOnClick}
         onMouseDown={this.removeFocus}
         buttonStyle={buttonStyle}
