@@ -408,17 +408,16 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     if (initiativeSettings && !isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
       const initiativeHeaderImageLarge = initiative?.attributes?.header_bg?.large;
       const authorId = initiative?.relationships?.author?.data?.id;
-      const initiativePublishedAt = initiative.attributes.published_at;
-      const titleMultiloc = initiative.attributes.title_multiloc;
-      const initiativeTitle = localize(titleMultiloc);
+      const initiativePublishedAt = initiative?.attributes?.published_at;
+      const initiativeTitle = localize(initiative?.attributes?.title_multiloc);
       const initiativeImageLarge = initiativeImages?.[0]?.attributes?.versions?.large;
-      const initiativeGeoPosition = (initiative.attributes.location_point_geojson || null);
-      const initiativeAddress = (initiative.attributes.location_description || null);
+      const initiativeGeoPosition = initiative?.attributes?.location_point_geojson;
+      const initiativeAddress = initiative?.attributes?.location_description;
       const topicIds = initiative?.relationships?.topics?.data?.map(item => item.id) || [];
       const initiativeUrl = location.href;
-      const initiativeId = initiative.id;
-      const initiativeBody = localize(initiative.attributes.body_multiloc);
-      const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : false;
+      const initiativeId = initiative?.id;
+      const initiativeBody = localize(initiative?.attributes?.body_multiloc);
+      const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
       const isTabletOrPhone = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const isPhone = windowSize ? windowSize <= viewportWidths.smallTablet : false;
       const utmParams = !isNilOrError(authUser) ? {
@@ -434,8 +433,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         !isNilOrError(locale) &&
         !initiative.attributes.title_multiloc[locale]
       );
-
-      console.log(initiativeHeaderImageLarge);
 
       content = (
         <>
