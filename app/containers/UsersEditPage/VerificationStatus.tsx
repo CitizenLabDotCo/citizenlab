@@ -128,7 +128,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 borderThickness="2px"
                 borderColor="#fff"
               />
-              <ShieldIcon name="verify" />
+              <ShieldIcon name="verify_dark" />
             </AvatarAndShield>
             <Content>
               <Title>

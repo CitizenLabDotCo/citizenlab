@@ -379,7 +379,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                       padding="0px"
                       borderThickness="0px"
                     />
-                    <ShieldIcon name="verify" />
+                    <ShieldIcon name="verify_light" />
                   </AvatarAndShield>
                 </Icons>
                 <Text>
