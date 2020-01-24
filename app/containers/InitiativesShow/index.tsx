@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef } from 'react';
-import { get, isUndefined, isString } from 'lodash-es';
+import { isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -150,13 +150,8 @@ const LeftColumn = styled.div`
 `;
 
 const StyledTranslateButtonMobile = styled(TranslateButton)`
-  display: none;
   width: fit-content;
-  margin-bottom: 40px;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-  `}
+  margin-bottom: 20px;
 `;
 
 const InitiativeHeader = styled.div`
@@ -323,7 +318,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
   }
 
   componentDidMount() {
-    const newInitiativeId = get(this.props.location.query, 'new_initiative_id');
+    const newInitiativeId = this.props.location.query?.['new_initiative_id'];
 
     this.setLoaded();
 
@@ -418,8 +413,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       const initiativeId = initiative?.id;
       const initiativeBody = localize(initiative?.attributes?.body_multiloc);
       const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
-      const isTabletOrPhone = windowSize ? windowSize <= viewportWidths.largeTablet : false;
-      const isPhone = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+      const isNotDesktop = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_initiative',
         campaign: 'share_content',
@@ -444,7 +438,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             </InitiativeBannerContainer>
           }
 
-          {isTabletOrPhone &&
+          {isNotDesktop &&
             <InitiativeBannerContainer>
               {initiativeHeaderImageLarge &&
                 <>
@@ -484,7 +478,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             />
           }
 
-          {isTabletOrPhone &&
+          {isNotDesktop &&
             <StyledVoteControl
               initiativeId={initiativeId}
               onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
@@ -492,15 +486,6 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           }
 
           <InitiativeContainer>
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton && isPhone &&
-                <StyledTranslateButtonMobile
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateInitiative}
-                />
-              }
-            </FeatureFlag>
-
             <Content>
               <LeftColumn>
                 <Topics postType="initiative" topicIds={topicIds} />
@@ -530,6 +515,15 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                     alt=""
                     id="e2e-initiative-image"
                   />
+                }
+
+                {isNotDesktop && showTranslateButton &&
+                  <FeatureFlag name="machine_translations">
+                    <StyledTranslateButtonMobile
+                      translateButtonClicked={translateButtonClicked}
+                      onClick={this.onTranslateInitiative}
+                    />
+                  </FeatureFlag>
                 }
 
                 {initiativeGeoPosition && initiativeAddress &&
@@ -571,7 +565,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   commentsCount={initiative.attributes.comments_count}
                 />
 
-                {isTabletOrPhone &&
+                {isNotDesktop &&
                   <SharingMobile
                     context="initiative"
                     url={initiativeUrl}
