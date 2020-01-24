@@ -24,7 +24,7 @@ const PostedByText = styled.span`
 `;
 
 interface Props {
-  authorId: string | null;
+  authorId: string | null | undefined;
   className?: string;
 }
 
