@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // typings
@@ -15,7 +14,8 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 // styles
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { lighten } from 'polished';
+import styled from 'styled-components';
+import { lighten, transparentize } from 'polished';
 
 // i18n
 import messages from './messages';
@@ -47,8 +47,7 @@ const Container = styled.div`
 
 const PostContainer = styled(Container)`
   white-space: pre-line;
-  background: ${lighten(0.545, colors.clRedError)};
-  background: rgba(236, 90, 36, 0.06);
+  background: ${transparentize(0.93, colors.clRedError)};
   position: relative;
 `;
 
@@ -66,13 +65,13 @@ const Footer = styled.div`
 `;
 
 const Author = styled.span`
-  color: ${colors.label};
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 500;
 `;
 
 const DatePosted = styled.span`
-  color: ${colors.label};
+  color: ${colors.text};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
   margin-top: -2px;
