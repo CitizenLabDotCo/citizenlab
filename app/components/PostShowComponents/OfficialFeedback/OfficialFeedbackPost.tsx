@@ -15,7 +15,7 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled from 'styled-components';
-import { lighten, transparentize } from 'polished';
+import { transparentize } from 'polished';
 
 // i18n
 import messages from './messages';
