@@ -178,8 +178,6 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
                 linkTo={linkTo}
                 disabled={isPostingDisabled}
                 ariaDisabled={false}
-                // opacityDisabled="1"
-                // bgDisabledColor="#bbb"
               >
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
