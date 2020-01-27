@@ -192,7 +192,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
       $organizationTypes: [String!]
     ) {
       publishedProjectTemplates(
-        first: 6,
+        first: 24,
         after: $cursor,
         departments: $departments,
         purposes: $purposes,
