@@ -4,9 +4,9 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
 <PostPreview__Container>
   <PostPreview__Top>
     <Button
+      buttonStyle="text"
       icon="edit"
       onClick={[MockFunction]}
-      style="text"
     >
       <FormattedMessage
         defaultMessage="Edit"
@@ -14,9 +14,9 @@ exports[`<IdeaContent /> renders correctly when an idea is provided 1`] = `
       />
     </Button>
     <Button
+      buttonStyle="text"
       icon="delete"
       onClick={[Function]}
-      style="text"
     >
       <FormattedMessage
         defaultMessage="Delete"
