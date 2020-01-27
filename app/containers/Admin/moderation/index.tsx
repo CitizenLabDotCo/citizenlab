@@ -12,6 +12,7 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // hooks
 import useModerations from 'hooks/useModerations';
@@ -49,12 +50,9 @@ const StyledPageTitle = styled(PageTitle)`
   margin-bottom: 0px;
 `;
 
-const BetaLabel = styled.span`
-  color: ${colors.clIconAccent};
-  font-size: ${fontSizes.medium}px;
-  line-height: ${fontSizes.medium + 4}px;
-  font-weight: 600;
+const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 8px;
+  margin-bottom: 3px;
 `;
 
 const Filters = styled.div`
@@ -251,7 +249,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <StyledPageTitle>
             <FormattedMessage {...messages.pageTitle} />
           </StyledPageTitle>
-          <BetaLabel>(Beta)</BetaLabel>
+          <StyledIconTooltip
+            content={'Tooltip'}
+            iconSize="20px"
+          />
         </PageTitleWrapper>
 
         <Filters>
