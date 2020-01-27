@@ -24,6 +24,10 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
@@ -201,10 +205,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, [moderationItems, selectedRows, processing]);
 
   const handleOnModerationStatusChange = useCallback((value: TModerationStatuses) => {
+    trackEventByName(value === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked);
     onModerationStatusChange(value);
   }, [onModerationStatusChange]);
 
   const handePageNumberChange = useCallback((pageNumber: number) => {
+    trackEventByName(tracks.pageNumberClicked);
     onPageNumberChange(pageNumber);
   }, [onPageNumberChange]);
 
@@ -222,6 +228,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const markAs = useCallback(async (event: React.FormEvent) => {
     if (selectedRows.length > 0 && !isNilOrError(moderationItems) && moderationStatus && !processing) {
       event.preventDefault();
+      trackEventByName(moderationStatus === 'read' ? tracks.markedAsNotViewedButtonClicked : tracks.markedAsNotViewedButtonClicked, { selectedItemsCount: selectedRows.length });
       setProcessing(true);
       const moderations = selectedRows.map((moderationId) => moderationItems.find(item => item.id === moderationId)) as IModerationData[];
       const updatedModerationStatus = (moderationStatus === 'read' ? 'unread' : 'read');
