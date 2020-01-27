@@ -4,6 +4,8 @@ module Verification
     ALL_METHODS = [
       Methods::Cow.new,
       Methods::Bogus.new,
+      OmniauthMethods::BosaFas.new,
+      OmniauthMethods::FranceConnect.new,
       Methods::IdCardLookup.new,
     ]
 
@@ -40,6 +42,10 @@ module Verification
       end
     end
 
+    def is_active? tenant, method_name
+      active_methods_for_tenant(tenant).include? method_by_name(method_name)
+    end
+
     class NoMatchError < StandardError; end
     class NotEntitledError < StandardError; end
     class VerificationTakenError < StandardError; end
@@ -47,8 +53,59 @@ module Verification
 
     def verify_sync user:, method_name:, verification_parameters:
       method = method_by_name(method_name)
-      uid = method.verify_sync verification_parameters
+      response = method.verify_sync verification_parameters
+      uid = response[:uid]
+      user_attributes = response[:attributes] || {}
+      custom_field_values = response[:custom_field_values]&.stringify_keys || {}
+      user.update!(
+        **user_attributes,
+        custom_field_values: user.custom_field_values.merge(custom_field_values)
+      )
+      make_verification(user: user, method_name: method_name, uid: uid)
+    end
 
+    def verify_omniauth user:, auth:
+      method = method_by_name(auth.provider)
+      if method.respond_to?(:entitled?) && !method.entitled?(auth)
+        raise NotEntitledError.new
+      end
+      uid = if method.respond_to?(:profile_to_uid)
+        method.profile_to_uid(auth)
+      else
+        auth['uid']
+      end
+      make_verification(user: user, method_name: method.name, uid: uid)
+    end
+
+    def locked_attributes user
+      method_names = user.verifications.active.pluck(:method_name).uniq || []
+      attributes = method_names.flat_map do |method_name|
+        ver_method = method_by_name(method_name)
+        if ver_method.respond_to? :locked_attributes
+          ver_method.locked_attributes
+        else
+          []
+        end
+      end
+      attributes.uniq
+    end
+
+    def locked_custom_fields user
+      method_names = user.verifications.active.pluck(:method_name).uniq || []
+      custom_fields = method_names.flat_map do |method_name|
+        ver_method = method_by_name(method_name)
+        if ver_method.respond_to? :locked_custom_fields
+          ver_method.locked_custom_fields
+        else
+          []
+        end
+      end
+      custom_fields.uniq
+    end
+
+    private
+
+    def make_verification user:, method_name:, uid:
       if taken?(user, uid, method_name)
         raise VerificationTakenError.new
       end
@@ -68,8 +125,6 @@ module Verification
 
       verification
     end
-
-    private
 
     def taken?(user, uid, method_name)
       ::Verification::Verification.where(
