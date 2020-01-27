@@ -282,6 +282,12 @@ if ['public','example_org'].include? Apartment::Tenant.current
             rut_empresa: 'fake_rut_empresa'
           },
           {
+            name: 'bosa_fas',
+            environment: 'integration',
+            identifier: 'fake_identifier',
+            secret: 'fake_secret'
+          },
+          {
             name: 'bogus'
           },
           {
@@ -293,6 +299,9 @@ if ['public','example_org'].include? Apartment::Tenant.current
               en: 'You can find this number on you ID card. We check your number without storing it.'
             },
             explainer_image_url: "http://localhost:4000/id_card_explainer.jpg"
+          },
+          {
+            name: 'franceconnect'
           },
         ],
       },

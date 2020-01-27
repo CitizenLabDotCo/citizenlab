@@ -1,6 +1,5 @@
 module Verification
   module VerificationMethod
-    extend ActiveSupport::Concern
 
     def config
       current_config_parameters = Tenant

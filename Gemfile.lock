@@ -16,6 +16,21 @@ GIT
       omniauth (~> 1.1)
 
 GIT
+  remote: https://github.com/CitizenLabDotCo/openid_connect.git
+  revision: 7e5136cb3712ff3a0bd0c476e4f527b25c08ee89
+  specs:
+    openid_connect (1.1.8)
+      activemodel
+      attr_required (>= 1.0.0)
+      json-jwt (>= 1.5.0)
+      rack-oauth2 (>= 1.6.1)
+      swd (>= 1.0.0)
+      tzinfo
+      validate_email
+      validate_url
+      webfinger (>= 1.0.1)
+
+GIT
   remote: https://github.com/dvandersluis/fast_jsonapi.git
   revision: a7b3fc132eb1c8f6d5d135168f520a5f372501a9
   branch: heterogeneous-collection
@@ -431,16 +446,6 @@ GEM
       addressable (~> 2.5)
       omniauth (~> 1.9)
       openid_connect (~> 1.1)
-    openid_connect (1.1.8)
-      activemodel
-      attr_required (>= 1.0.0)
-      json-jwt (>= 1.5.0)
-      rack-oauth2 (>= 1.6.1)
-      swd (>= 1.0.0)
-      tzinfo
-      validate_email
-      validate_url
-      webfinger (>= 1.0.1)
     parallel (1.19.0)
     pg (1.1.3)
     pg_search (2.1.7)
@@ -684,8 +689,9 @@ DEPENDENCIES
   omniauth-facebook
   omniauth-google-oauth2
   omniauth-twitter
-  omniauth_openid_connect
+  omniauth_openid_connect (~> 0.3.3)
   onboarding!
+  openid_connect!
   pg
   pg_search (~> 2.1.2)
   polls!

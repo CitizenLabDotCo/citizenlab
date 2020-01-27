@@ -85,7 +85,8 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def create
-    @user = User.new(permitted_attributes(User))
+    @user = User.new
+    @user.assign_attributes(permitted_attributes(@user))
     authorize @user
 
     SideFxUserService.new.before_create(@user, current_user)
