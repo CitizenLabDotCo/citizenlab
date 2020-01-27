@@ -342,7 +342,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
               >
                 {({ getRootProps, getInputProps }) => {
                   return (
-                    <DropzoneContent {...getRootProps({ onClick: evt => evt.stopPropagation() })} borderRadius={borderRadius} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
+                    <DropzoneContent {...getRootProps()} borderRadius={borderRadius} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
                       <DropzoneInput {...getInputProps()} />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload" ariaHidden />

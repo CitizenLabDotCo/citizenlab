@@ -518,17 +518,16 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         <StyledFormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
           <FormElement id="e2e-idea-image-upload">
-            <FormLabel labelMessage={messages.imageUploadLabel}>
-              <ImagesDropzone
-                images={imageFile}
-                imagePreviewRatio={135 / 298}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxImageFileSize={5000000}
-                maxNumberOfImages={1}
-                onAdd={this.handleUploadOnAdd}
-                onRemove={this.handleUploadOnRemove}
-              />
-            </FormLabel>
+            <FormLabel labelMessage={messages.imageUploadLabel} />
+            <ImagesDropzone
+              images={imageFile}
+              imagePreviewRatio={135 / 298}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              maxImageFileSize={5000000}
+              maxNumberOfImages={1}
+              onAdd={this.handleUploadOnAdd}
+              onRemove={this.handleUploadOnRemove}
+            />
           </FormElement>
 
           <FormElement id="e2e-idea-file-upload">
