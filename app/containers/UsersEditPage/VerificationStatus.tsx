@@ -116,7 +116,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 <FormattedMessage {...messages.verifiedText} />
               </Text>
               <Button
-                style="text"
+                buttonStyle="text"
                 padding="0px"
                 text={<FormattedMessage {...messages.verifyAgain} />}
                 whiteSpace="wrap"
