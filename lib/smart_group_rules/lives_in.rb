@@ -11,7 +11,7 @@ module SmartGroupRules
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
     validates :value, absence: true, unless: :needs_value?
-    validates :value, presence: true, inclusion: { in: -> (record) { ['outside'] + Area.all.map(&:id) } }, if: :needs_value?
+    validates :value, presence: true, inclusion: { in: -> (record) { ['outside'] + Area.ids } }, if: :needs_value?
 
     def self.to_json_schema
       [   

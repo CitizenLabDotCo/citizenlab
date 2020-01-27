@@ -10,7 +10,7 @@ module SmartGroupRules
 
     validates :predicate, presence: true
     validates :predicate, inclusion: { in: PREDICATE_VALUES }
-    validates :value, presence: true, inclusion: { in: -> (record) { Topic.pluck(:id) } }
+    validates :value, presence: true, inclusion: { in: -> (record) { Topic.ids } }
 
     def self.to_json_schema
       [   
