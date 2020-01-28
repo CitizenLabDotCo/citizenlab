@@ -14,7 +14,7 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media, colors } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled, { withTheme } from 'styled-components';
 
@@ -326,9 +326,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     height="58px"
                     bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
                     textColor={theme.projectNavbarIdeaButtonTextColor}
-                    opacityDisabled="1"
-                    bgDisabledColor={colors.disabledPrimaryButtonBg}
-                    textDisabledColor="#fff"
+                    opacityDisabled="0.5"
                     borderRadius="0px"
                     participationContextType="project"
                   />
