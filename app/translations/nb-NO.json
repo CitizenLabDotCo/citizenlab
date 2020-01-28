@@ -631,6 +631,7 @@
   "app.containers.Admin.Moderation.date": "Date",
   "app.containers.Admin.Moderation.goTo": "Go to",
   "app.containers.Admin.Moderation.goToThisContentType": "Open this {contentType} in a new tab",
+  "app.containers.Admin.Moderation.helpTooltipText": "",
   "app.containers.Admin.Moderation.idea": "Idea",
   "app.containers.Admin.Moderation.initiative": "Initiative",
   "app.containers.Admin.Moderation.markAsNotViewed": "Mark  {selectedItemsCount} items as not seen",
