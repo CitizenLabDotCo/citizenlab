@@ -30,6 +30,7 @@ import tracks from 'containers/ProjectsShowPage/pb/tracks';
 // utils
 import streams from 'utils/streams';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -121,6 +122,7 @@ interface InputProps {
   unauthenticatedAssignBudgetClick?: () => void;
   disabledAssignBudgetClick?: () => void;
   className?: string;
+  projectId: string;
 }
 
 interface DataProps {
@@ -267,6 +269,13 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
     this.props.openIdea && this.props.openIdea(event);
   }
 
+  goBack = () => {
+    const { project, participationContextType } = this.props;
+    if (!isNilOrError(project)) {
+      clHistory.push(`/projects/${project.attributes.slug}/${participationContextType === 'project' ? 'ideas' : 'process'}`);
+    }
+  }
+
   render() {
     const { processing } = this.state;
     const { view, ideaId, authUser, locale, tenant, idea, basket, className, participationContextId, participationContextType, intl: { formatMessage } } = this.props;
@@ -319,6 +328,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
                 bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
                 fullWidth={true}
                 iconAriaHidden
+                onClick={this.goBack}
               >
                 <FormattedMessage {...messages.backToOverview} />
               </BackButton>
@@ -373,7 +383,7 @@ const Data = adopt<DataProps,  InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ project, phase, participationContextType, render }) => {
     let basketId: string | null = null;
