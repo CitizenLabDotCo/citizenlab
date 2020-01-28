@@ -1557,8 +1557,6 @@
   "app.containers.NotificationMenu.userCommentedOnYourIdea": "{name} comentó tu idea",
   "app.containers.NotificationMenu.userCommentedOnYourInitiative": "{name} comentó tu iniciativa",
   "app.containers.NotificationMenu.userMarkedPostAsSpam": "{name} reportó '{postTitle}' como spam",
-  "app.containers.NotificationMenu.userPostedComment": "{commentAuthorFirstName} comentó en {post}",
-  "app.containers.NotificationMenu.userPostedPost": "{name} escribió {post}",
   "app.containers.NotificationMenu.userReactedToYourComment": "{name} reaccionó ante tu comentario",
   "app.containers.NotificationMenu.userReportedCommentAsSpam": "{name} reportó un comentario en '{postTitle}' como spam",
   "app.containers.NotificationMenu.xAssignedPostToYou": "{name} fue asignada/o {postTitle} a ti",
