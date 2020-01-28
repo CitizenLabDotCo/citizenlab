@@ -46,8 +46,6 @@ describe('profile verification', () => {
 
     cy.visit('/profile/edit?verification_error=true');
     cy.get('.e2e-verification-modal').find('.e2e-user-verified-errror-modal-content');
-    cy.visit('?verification_error');
-    cy.get('.e2e-verification-modal').find('.e2e-user-verified-errror-modal-content');
   });
   after(() => {
     cy.apiRemoveUser(userId);
