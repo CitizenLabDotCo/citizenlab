@@ -15,12 +15,12 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Idea' => {'created' => true}}
+      {'Idea' => {'published' => true}}
     end
 
     def filter_recipient users_scope, activity:, time: nil
       idea = activity.item
-      initiator = initiative.author
+      initiator = idea.author
 
       recipient_ids = if !(initiator&.admin? || initiator&.project_moderator?(idea.project_id))
         User.admin.or(User.project_moderator(idea.project_id)).ids.select do |recipient_id|
