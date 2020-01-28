@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
 
 // quill
-import Quill, { Sources, QuillOptionsStatic, RangeStatic, DeltaOperation } from 'quill';
+import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 import 'react-quill/dist/quill.snow.css';
 
@@ -70,21 +70,31 @@ const Container = styled.div<{
     content: '${props => props.remove}' !important;
   }
 
-  .ql-toolbar {
+  .ql-toolbar.ql-snow {
     background: #f8f8f8;
     border-radius: ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius} 0 0;
-    box-shadow: none !important;
-    border: 1px solid ${colors.separationDark} !important;
-    border-bottom: 0 !important;
+    box-shadow: none;
+    border: 1px solid ${colors.separationDark};
+    border-bottom: 0;
   }
 
-  .ql-container {
+  &.focussed {
+    &:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
+      border-color: #000;
+    }
+
+    &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
+      border-color: ${colors.clRedError};
+    }
+  }
+
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
     max-height: ${({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
     cursor: text;
     border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius};
-    border: 1px solid ${colors.separationDark } !important;
+    border: 1px solid ${colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     ${quillEditedContent()};
 
@@ -98,21 +108,18 @@ const Container = styled.div<{
   }
 `;
 
-interface QuillDelta {
-  ops: DeltaOperation;
-}
-
 interface Props {
-  options?: QuillOptionsStatic;
-  contents?: string | QuillDelta;
-  tabIndex?: number;
-  onChange?: (html: string, contents: QuillDelta, delta: QuillDelta, source: Sources) => void;
-  onChangeSelection?: (selection: RangeStatic | undefined, source: Sources) => void;
-  onFocus?: (selection: RangeStatic | undefined, source: Sources) => void;
-  onBlur?: (selection: RangeStatic | undefined, source: Sources) => void;
-  onKeyPress?: () => void;
-  onKeyDown?: () => void;
-  onKeyUp?: () => void;
+  id: string;
+  noImages?: boolean;
+  noVideos?: boolean;
+  noAlign?: boolean;
+  limitedTextFormatting?: boolean;
+  noToolbar?: boolean;
+  inAdmin?: boolean;
+  hasError?: boolean;
+  labelId?: string;
+  className?: string;
+  onChange?: (html: string) => void;
 }
 
 Quill.register('modules/blotFormatter', BlotFormatter);
@@ -131,8 +138,10 @@ const defaultOptions: QuillOptionsStatic = {
   },
 };
 
-const useQuill = ({ options }: Props) => {
+const useQuill = (options: QuillOptionsStatic) => {
   const [editor, setEditor] = useState<Quill | null>(null);
+  const [content, setContent] = useState('');
+  const [focussed, setFocussed] = useState(false);
   const editorRef: React.RefObject<any> = useRef();
 
   useEffect(() => {
@@ -148,25 +157,32 @@ const useQuill = ({ options }: Props) => {
   useEffect(() => {
     const textChangeHandler = () => {
       if (editor) {
-        const delta = editor.getContents();
-        const text = editor.getText();
+        // const delta = editor.getContents();
+        // const text = editor.getText();
         const html = editor.root.innerHTML;
-        console.log('delta:');
-        console.log(delta);
-        console.log('text:');
-        console.log(text);
-        console.log('html:');
-        console.log(html);
+        setContent(html);
+      }
+    };
+
+    const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
+      if (editor) {
+        if (range === null && oldRange !== null) {
+          setFocussed(false);
+        } else if (range !== null && oldRange === null) {
+          setFocussed(true);
+        }
       }
     };
 
     if (editor) {
       editor.on('text-change', textChangeHandler);
+      editor.on('selection-change', selectionChangeHandler);
     }
 
     return () => {
       if (editor) {
         editor.off('text-change', textChangeHandler);
+        editor.off('selection-change', selectionChangeHandler);
         setEditor(null);
       }
     };
@@ -182,16 +198,34 @@ const useQuill = ({ options }: Props) => {
   return {
     editorRef,
     editor,
+    content,
+    focussed
   };
 };
 
-const QuillEditor2 = memo<Props & InjectedIntlProps>((props) => {
-  const { intl, ...quillProps } = props;
-  const { formatMessage } = intl;
-  const { editorRef } = useQuill(quillProps);
+const QuillEditor2 = memo<Props & InjectedIntlProps>(({
+  id,
+  hasError,
+  onChange,
+  intl: { formatMessage },
+  className,
+  children
+}) => {
+  const { editorRef, content, focussed } = useQuill({});
+
+  useEffect(() => {
+    onChange && onChange(content);
+  }, [content, onChange]);
+
+  const classNames = [
+    className,
+    focussed ? 'focussed' : null,
+    hasError ? 'error' : null
+  ].filter(className => className).join(' ');
 
   return (
     <Container
+      className={classNames}
       heading1={formatMessage(messages.title)}
       heading2={formatMessage(messages.subtitle)}
       normal={formatMessage(messages.normalText)}
@@ -202,7 +236,9 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>((props) => {
       edit={formatMessage(messages.edit)}
       remove={formatMessage(messages.remove)}
     >
-      <div ref={editorRef}>{props.children}</div>
+      <div id={id} ref={editorRef}>
+        {children}
+      </div>
     </Container>
   );
 });
