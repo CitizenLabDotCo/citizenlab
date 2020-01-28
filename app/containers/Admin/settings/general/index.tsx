@@ -197,7 +197,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             </SectionSubtitle>
 
             <div>
-              <QuillEditor2 />
+              <QuillEditor2 id="zolg" onChange={(content) => console.log(content)}/>
             </div>
 
             <SectionField>
