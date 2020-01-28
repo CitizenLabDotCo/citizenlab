@@ -533,6 +533,9 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
     } = this.props;
     const { isFocused } = this.state;
 
+    console.log(this.modules);
+    console.log(this.formats);
+
     return (
       <Container
         id="boundaries"

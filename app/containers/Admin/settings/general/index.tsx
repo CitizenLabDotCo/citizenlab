@@ -18,6 +18,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
+import QuillEditor2 from 'components/UI/Quill';
 
 // services
 import {
@@ -194,6 +195,10 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionSubtitle>
               <FormattedMessage {...messages.subtitleBasic} />
             </SectionSubtitle>
+
+            <div>
+              <QuillEditor2 />
+            </div>
 
             <SectionField>
               <InputMultiloc
