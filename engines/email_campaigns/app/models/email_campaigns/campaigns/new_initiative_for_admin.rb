@@ -15,7 +15,7 @@ module EmailCampaigns
     end
 
     def activity_triggers
-      {'Initiative' => {'created' => true}}
+      {'Initiative' => {'published' => true}}
     end
 
     def filter_recipient users_scope, activity:, time: nil

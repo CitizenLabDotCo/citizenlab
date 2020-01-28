@@ -5,7 +5,11 @@ namespace :fix_existing_tenants do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         types = ["Notifications::NewIdeaForAdmin", "Notifications::NewCommentForAdmin", "Notifications::NewInitiativeForAdmin"]
-        Notification.where(type: type).destroy_all
+        # We first have to clear the types of the removed notifications,
+        # otherwise Rails will try to load the model subtype, try to
+        # find the corresponding model and fail.
+        Notification.where(type: types).update_all(type: nil)
+        Notification.where('type IS NULL').destroy_all
       end
     end
   end
