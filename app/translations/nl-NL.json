@@ -631,6 +631,7 @@
   "app.containers.Admin.Moderation.date": "Datum",
   "app.containers.Admin.Moderation.goTo": "Ga naar",
   "app.containers.Admin.Moderation.goToThisContentType": "Open dit {contentType} in een nieuw tabblad",
+  "app.containers.Admin.Moderation.helpTooltipText": "",
   "app.containers.Admin.Moderation.idea": "Idee",
   "app.containers.Admin.Moderation.initiative": "Initiatief",
   "app.containers.Admin.Moderation.markAsNotViewed": "Duid {selectedItemsCount} items aan als niet gezien",
