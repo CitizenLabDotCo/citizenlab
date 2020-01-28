@@ -26,10 +26,10 @@ exports[`<QuestionDetailsForm/> display displays correctly for a single choice q
       questionId="questionId"
     />
     <Button
+      buttonStyle="secondary"
       className="e2e-form-question-settings-save"
       disabled={true}
       onClick={[Function]}
-      style="secondary"
     >
       <FormattedMessage
         defaultMessage="Save number of choices"
