@@ -72,7 +72,7 @@ export default memo<Props>(({ className, onBack, context }) => {
       <Subtitle>
         <FormattedMessage {...message} />
       </Subtitle>
-      <CancelButton onClick={onCancelButtonClicked} style="secondary">
+      <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
         <FormattedMessage {...messages.back} />
       </CancelButton>
     </Container>
