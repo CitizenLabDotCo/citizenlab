@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
 // components
-import Icon from 'components/UI/Icon';
+import Icon, { IconNames } from 'components/UI/Icon';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -17,13 +17,35 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const TipsLabel = styled.div`
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const TitleIcon = styled(Icon)`
+  flex: 0 0 16px;
+  width: 16px;
+  height: 23px;
+  fill: ${colors.label};
+  margin-right: 13px;
+
+  ${media.smallerThanMinTablet`
+    flex: 0 0 14px;
+    width: 14px;
+    height: 20px;
+  `}
+`;
+
+const ContentLabel = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
   margin-right: 6px;
   text-align: left;
   transition: all 100ms ease-out;
 `;
 
-const TipsButton = styled.button`
+const ContentToggleButton = styled.button`
   background-color: #fff;
   display: flex;
   align-items: center;
@@ -42,7 +64,7 @@ const TipsButton = styled.button`
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:hover {
-    ${TipsLabel} {
+    ${ContentLabel} {
       color: ${darken(0.2, colors.label)};
     }
   }
@@ -61,34 +83,34 @@ const ArrowIcon = styled(Icon)`
   }
 `;
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ contentBackgroundColor?: string }>`
   position: relative;
   overflow: hidden;
   z-index: 2;
-  padding: 40px 50px;
-  background: ${colors.lightGreyishBlue};
+  padding: 20px;
+  background-color: ${props => props.contentBackgroundColor || '#fff'};
   margin-top: 1px;
 
   ${media.largePhone`
     padding: 30px 20px;
   `}
 
-  &.tips-enter {
+  &.content-enter {
     height: 0;
     opacity: 0;
 
-    &.tips-enter-active {
+    &.content-enter-active {
       height: 265px;
       opacity: 1;
       transition: all 250ms ease-out;
     }
   }
 
-  &.tips-exit {
+  &.content-exit {
     height: 265px;
     opacity: 1;
 
-    &.tips-exit-active {
+    &.content-exit-active {
       height: 0;
       opacity: 0;
       transition: all 250ms ease-out;
@@ -98,38 +120,47 @@ const Wrapper = styled.div`
 
 export interface Props {
   className?: string;
-  titleIcon?: JSX.Element;
+  titleIconName?: IconNames;
   title: string | JSX.Element;
   content: JSX.Element;
+  contentBackgroundColor?: string;
 }
 
 const CollapsibleBox = memo<Props>((props) => {
-  const [showTips, setShowTips] = useState<boolean>(false);
+  const [showContent, setShowContent] = useState<boolean>(false);
 
-  const handleTipsToggle = useCallback(() => {
-    setShowTips(!showTips);
-  }, [showTips]);
+  const handleContentToggle = useCallback(() => {
+    setShowContent(!showContent);
+  }, [showContent]);
 
-  const { className, titleIcon, title, content } = props;
+  const {
+    className,
+    titleIconName,
+    title,
+    content,
+    contentBackgroundColor
+  } = props;
 
   return (
     <Container className={className}>
-      <TipsButton aria-expanded={showTips} onClick={handleTipsToggle}>
-        {titleIcon && titleIcon}
-        <TipsLabel>
-          {title}
-        </TipsLabel>
-        <ArrowIcon name="dropdown" className={showTips ? 'open' : ''}/>
-      </TipsButton>
+      <ContentToggleButton aria-expanded={showContent} onClick={handleContentToggle}>
+        <Title>
+          {titleIconName && <TitleIcon name={titleIconName} />}
+          <ContentLabel>
+            {title}
+          </ContentLabel>
+        </Title>
+        <ArrowIcon name="dropdown" className={showContent ? 'open' : ''}/>
+      </ContentToggleButton>
       <CSSTransition
-        classNames="tips"
-        in={showTips}
+        classNames="content"
+        in={showContent}
         timeout={300}
         mountOnEnter={true}
         unmountOnExit={true}
         exit={true}
       >
-        <Wrapper>
+        <Wrapper contentBackgroundColor={contentBackgroundColor}>
           {content}
         </Wrapper>
       </CSSTransition>
