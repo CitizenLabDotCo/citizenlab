@@ -17,7 +17,7 @@ resource "Manifest" do
       expect(json_response).to match({
         :short_name=>"Liege",
         :icons=>[{:src=>nil, :type=>"image/png", :sizes=>"152x152"}],
-        :start_url=>"http://localhost:3000/?utm_source=manifest",
+        :start_url=>"http://example.org/?utm_source=manifest",
         :background_color=>"#FFFFFF",
         :display=>"standalone",
         :theme_color=>"#335533"

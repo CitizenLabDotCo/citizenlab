@@ -8,18 +8,29 @@ module EmailCampaigns
     include Trackable
     allow_lifecycle_stages only: ['active']
 
-    recipient_filter :filter_notification_recipient
+    recipient_filter :filter_recipient
 
     def self.consentable_roles
       ['admin', 'project_moderator']
     end
 
     def activity_triggers
-      {'Notifications::NewIdeaForAdmin' => {'created' => true}}
+      {'Idea' => {'published' => true}}
     end
 
-    def filter_notification_recipient users_scope, activity:, time: nil
-      users_scope.where(id: activity.item.recipient.id)
+    def filter_recipient users_scope, activity:, time: nil
+      idea = activity.item
+      initiator = idea.author
+
+      recipient_ids = if !(initiator&.admin? || initiator&.project_moderator?(idea.project_id))
+        User.admin.or(User.project_moderator(idea.project_id)).ids.select do |recipient_id|
+          recipient_id != idea&.assignee_id
+        end
+      else
+        []
+      end
+
+      users_scope.where(id: recipient_ids)
     end
 
     def self.category
@@ -27,13 +38,13 @@ module EmailCampaigns
     end
 
     def generate_commands recipient:, activity:, time: nil
-      notification = activity.item
+      idea = activity.item
       [{
         event_payload: {
-          post_published_at: notification.post.published_at.iso8601,
-          post_title_multiloc: notification.post.title_multiloc,
-          post_author_name: notification.post.author_name,
-          post_url: Frontend::UrlService.new.model_to_url(notification.post, locale: recipient.locale)
+          post_published_at: idea.published_at.iso8601,
+          post_title_multiloc: idea.title_multiloc,
+          post_author_name: idea.author_name,
+          post_url: Frontend::UrlService.new.model_to_url(idea, locale: recipient.locale)
         }
       }]
     end

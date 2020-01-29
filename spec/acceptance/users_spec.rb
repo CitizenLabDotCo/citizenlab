@@ -51,6 +51,77 @@ resource "Users" do
         expect(status).to eq(404)
       end
     end
+
+    post "web_api/v1/users" do
+      with_options scope: 'user' do
+        parameter :first_name, "User full name", required: true
+        parameter :last_name, "User full name", required: true
+        parameter :email, "E-mail address", required: true
+        parameter :password, "Password", required: true
+        parameter :locale, "Locale. Should be one of the tenants locales", required: true
+        parameter :avatar, "Base64 encoded avatar image"
+        parameter :roles, "Roles array, only allowed when admin"
+        parameter :custom_field_values, "An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well"
+      end
+      ValidationErrorHelper.new.error_fields(self, User)
+
+      let(:first_name) { Faker::Name.first_name }
+      let(:last_name) { Faker::Name.last_name }
+      let(:email) { Faker::Internet.email }
+      let(:password) { Faker::Internet.password }
+      let(:locale) { "en" }
+      let(:avatar) { base64_encoded_image }
+
+      example_request "Create a user" do
+        expect(response_status).to eq 201
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present # when no custom fields
+      end
+
+      describe "Creating an admin user" do
+        let(:roles) { [{type: 'admin'}] }
+
+        example "creates a user, but not an admin", document: false do
+          create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
+          do_request
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :roles)).to be_empty
+        end
+      end
+
+      describe do
+        let(:password) { "ab" }
+
+        example_request "[error] Create an invalid user", document: false do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :password)).to eq [{:error=>"too_short", :count=>5}]
+        end
+      end
+
+      describe do
+        let!(:invitee) { create(:invited_user) }
+        let(:email) { invitee.email }
+
+        example_request "[error] Registering an invited user" do
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:errors, :email)).to include({error: "taken_by_invite", value: email, inviter_email: invitee.invitee_invite.inviter.email})
+        end
+      end
+
+      describe do
+        before do
+          create(:user, email: 'JeZuS@citizenlab.co')
+        end
+        let(:email) { 'jEzUs@citizenlab.co' }
+
+        example_request "[error] Registering a user with case insensitive email duplicate", document: false do
+          expect(response_status).to eq 422
+        end
+      end
+    end
   end
 
   context "when authenticated" do
@@ -334,77 +405,6 @@ resource "Users" do
       end
     end
 
-    post "web_api/v1/users" do
-      with_options scope: 'user' do
-        parameter :first_name, "User full name", required: true
-        parameter :last_name, "User full name", required: true
-        parameter :email, "E-mail address", required: true
-        parameter :password, "Password", required: true
-        parameter :locale, "Locale. Should be one of the tenants locales", required: true
-        parameter :avatar, "Base64 encoded avatar image"
-        parameter :roles, "Roles array, only allowed when admin"
-        parameter :custom_field_values, "An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well"
-      end
-      ValidationErrorHelper.new.error_fields(self, User)
-
-      let(:first_name) { Faker::Name.first_name }
-      let(:last_name) { Faker::Name.last_name }
-      let(:email) { Faker::Internet.email }
-      let(:password) { Faker::Internet.password }
-      let(:locale) { "en" }
-      let(:avatar) { base64_encoded_image }
-
-      example_request "Create a user" do
-        expect(response_status).to eq 201
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_present # when no custom fields
-      end
-
-      describe "Creating an admin user" do
-        let(:roles) { [{type: 'admin'}] }
-
-        example "creates a user, but not an admin", document: false do
-          create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
-          do_request
-          expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :roles)).to be_empty
-        end
-      end
-
-      describe do
-        let(:password) { "ab" }
-
-        example_request "[error] Create an invalid user", document: false do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :password)).to eq [{:error=>"too_short", :count=>5}]
-        end
-      end
-
-      describe do
-        let!(:invitee) { create(:invited_user) }
-        let(:email) { invitee.email }
-        
-        example_request "[error] Registering an invited user" do
-          expect(response_status).to eq 422
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:errors, :email)).to include({error: "taken_by_invite", value: email, inviter_email: invitee.invitee_invite.inviter.email})
-        end
-      end
-
-      describe do
-        before do
-          create(:user, email: 'JeZuS@citizenlab.co')
-        end
-        let(:email) { 'jEzUs@citizenlab.co' }
-      
-        example_request "[error] Registering a user with case insensitive email duplicate", document: false do
-          expect(response_status).to eq 422
-        end
-      end
-    end
-
     put "web_api/v1/users/:id" do
       with_options scope: 'user' do
         parameter :first_name, "User full name"
@@ -504,8 +504,8 @@ resource "Users" do
         let(:email) { 'ray.mond@rocks.com' }
         let(:locale) { 'fr-FR' }
 
-        example "Can't change some attributes of a user identified with FranceConnect", document: false do
-          create(:franceconnect_identity, user: @user)
+        example "Can't change some attributes of a user verified with FranceConnect", document: false do
+          create(:verification, method_name: 'franceconnect', user: @user)
           @user.update(custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950})
           do_request
           expect(response_status).to eq 200
@@ -559,12 +559,12 @@ resource "Users" do
           cf.key => "new value",
           birthyear_cf.key => 1969,
         }}
-        example "Can't change some custom_field_values of a user identified with FranceConnect", document: false do
+        example "Can't change some custom_field_values of a user verified with FranceConnect", document: false do
           @user.update(
             registration_completed_at: nil,
             custom_field_values: {cf.key => "original value", birthyear_cf.key => 1950}
           )
-          create(:franceconnect_identity, user: @user)
+          create(:verification, method_name: 'franceconnect', user: @user)
           do_request
           expect(response_status).to eq 200
           @user.reload
