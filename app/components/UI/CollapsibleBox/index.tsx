@@ -124,6 +124,7 @@ export interface Props {
   title: string | JSX.Element;
   content: JSX.Element;
   contentBackgroundColor?: string;
+  e2eId?: string;
 }
 
 const CollapsibleBox = memo<Props>((props) => {
@@ -138,12 +139,13 @@ const CollapsibleBox = memo<Props>((props) => {
     titleIconName,
     title,
     content,
-    contentBackgroundColor
+    contentBackgroundColor,
+    e2eId
   } = props;
 
   return (
     <Container className={className}>
-      <ContentToggleButton aria-expanded={showContent} onClick={handleContentToggle}>
+      <ContentToggleButton id={e2eId} aria-expanded={showContent} onClick={handleContentToggle}>
         <Title>
           {titleIconName && <TitleIcon name={titleIconName} />}
           <ContentLabel>
