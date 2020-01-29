@@ -7,7 +7,7 @@ import { getDaysRemainingUntil } from 'utils/dateUtils';
 // components
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
-import DropdownMap from 'components/PostShowComponents/DropdownMap/DropdownMap';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
 import Comments from 'components/PostShowComponents/Comments';
@@ -189,7 +189,6 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                   <StyledMap
                     address={initiativeAddress}
                     position={initiativeGeoPosition}
-                    id={initiativeId}
                   />
                 }
 

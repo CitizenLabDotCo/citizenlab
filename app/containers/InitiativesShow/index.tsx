@@ -20,7 +20,7 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
-import DropdownMap from 'components/PostShowComponents/DropdownMap/DropdownMap';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
