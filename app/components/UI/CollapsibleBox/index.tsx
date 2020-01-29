@@ -99,8 +99,8 @@ const Wrapper = styled.div`
 export interface Props {
   className?: string;
   titleIcon?: JSX.Element;
-  title: string;
-  children: JSX.Element;
+  title: string | JSX.Element;
+  content: JSX.Element;
 }
 
 const CollapsibleBox = memo<Props>((props) => {
@@ -110,7 +110,7 @@ const CollapsibleBox = memo<Props>((props) => {
     setShowTips(!showTips);
   }, [showTips]);
 
-  const { className, titleIcon, title, children } = props;
+  const { className, titleIcon, title, content } = props;
 
   return (
     <Container className={className}>
@@ -130,7 +130,7 @@ const CollapsibleBox = memo<Props>((props) => {
         exit={true}
       >
         <Wrapper>
-          {children}
+          {content}
         </Wrapper>
       </CSSTransition>
     </Container>
