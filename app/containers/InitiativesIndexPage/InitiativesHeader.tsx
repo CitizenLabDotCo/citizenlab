@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // components
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
-import Link from 'utils/cl-router/Link';
+import InitiativeInfoContent from './InitiativeInfoContent';
+import InitiativeInfoMobile from './InitiativeInfoContent/Mobile;
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -87,9 +87,6 @@ const HeaderTitle = styled.div`
   `}
 `;
 
-const Bold = styled.span`
-  font-weight: 600;
-`;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-top: 18px;
@@ -106,7 +103,7 @@ const StartInitiative = styled(Button)`
   `}
 `;
 
-const Manual = styled.div`
+const InitiativeInfo = styled.div`
   width: 100%;
   min-height: 145px;
   height: auto;
@@ -126,7 +123,7 @@ const Manual = styled.div`
   `}
 `;
 
-const ManualContent = styled.div`
+const Wrapper = styled.div`
   width: auto;
   max-width: 1150px;
   height: 100%;
@@ -146,29 +143,6 @@ const Illustration = styled.img`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
-`;
-
-const ManualTitle = styled.div`
-  & h2 {
-    font-size: ${fontSizes.base}px;
-    font-weight: 600;
-  }
-  color: ${({ theme }) => theme.colorText};
-  margin-bottom: 7px;
-`;
-
-const ManualText = styled.div`
-  margin: 30px 0;
-  color: ${colors.label};
-
-  a {
-    text-decoration: underline;
-    color: inherit;
-
-    &:hover {
-      color: #000;
-    }
-  }
 `;
 
 export interface InputProps {
@@ -199,9 +173,10 @@ class SignedOutHeader extends PureComponent<Props, State> {
     return (
       <Container className={`e2e-initiatives-header ${className}`}>
         <Header>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
-        </ScreenReaderOnly>
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
+          </ScreenReaderOnly>
+          <InitiativeInfoMobile />
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage
@@ -224,33 +199,12 @@ class SignedOutHeader extends PureComponent<Props, State> {
             className="e2e-initiatives-header-cta-button"
           />
         </Header>
-        <Manual>
-          <ManualContent>
+        <InitiativeInfo>
+          <Wrapper>
             <Illustration src={illustrationSrc} alt="" />
-            <ManualText>
-              <ManualTitle>
-                <FormattedMessage tagName="h2" {...messages.explanationTitle} />
-              </ManualTitle>
-              <FormattedMessage
-                {...messages.explanationContent}
-                values={{
-                  constraints: (
-                    <Bold>
-                      <FormattedMessage
-                        {...messages.constraints}
-                        values={{
-                          voteThreshold: get(tenant, 'attributes.settings.initiatives.voting_threshold'),
-                          daysLimit: get(tenant, 'attributes.settings.initiatives.days_limit')
-                        }}
-                      />
-                    </Bold>
-                  ),
-                  link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore} /></Link>
-                }}
-              />
-            </ManualText>
-          </ManualContent>
-        </Manual>
+            <InitiativeInfoContent />
+          </Wrapper>
+        </InitiativeInfo>
       </Container>
     );
   }
