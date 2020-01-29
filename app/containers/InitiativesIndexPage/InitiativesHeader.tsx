@@ -210,9 +210,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
                 values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
               />
             </HeaderTitle>
-
             <StyledAvatarBubbles />
-
           </HeaderContent>
           <StartInitiative
             fontWeight="500"

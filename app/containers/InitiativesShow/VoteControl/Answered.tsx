@@ -104,7 +104,7 @@ class Answered extends PureComponent<Props, State> {
           </Button>
           {!userVoted &&
             <Button
-              style="primary-outlined"
+              buttonStyle="primary-outlined"
               onClick={this.handleOnVote}
             >
               <FormattedMessage {...messages.vote} />

@@ -214,7 +214,7 @@ export class PollAdminForm extends PureComponent<Props, State> {
         {!newQuestionTitle && !editingOptionsId &&
           <Button
             className="e2e-add-question-btn"
-            style="cl-blue"
+            buttonStyle="cl-blue"
             icon="plus-circle"
             onClick={this.startNewQuestion}
           >

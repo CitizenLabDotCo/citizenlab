@@ -238,7 +238,7 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
               iconSize="26px"
               onClick={this.handleCreateGroup}
               padding="0"
-              style="text"
+              buttonStyle="text"
             />
           </ButtonWrapper>
         </MenuTitle>

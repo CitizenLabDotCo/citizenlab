@@ -192,7 +192,7 @@ export const colors = {
   emailBg: '#e6ebec',
 
   // buttons
-  disabledPrimaryButtonBg: '#d0d0d0',
+  disabledPrimaryButtonBg: '#cfcfcf',
   clBlueButtonText: '#1391A1'
 };
 

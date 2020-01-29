@@ -66,7 +66,7 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
           <FormattedMessage {...messages.subtitleEvents} />
         </SectionSubtitle>
         <ListWrapper className="e2e-projects-events">
-          <AddButton style="cl-blue" icon="plus-circle" linkTo={`/admin/projects/${projectId}/events/new`}>
+          <AddButton buttonStyle="cl-blue" icon="plus-circle" linkTo={`/admin/projects/${projectId}/events/new`}>
             <FormattedMessage {...messages.addEventButton} />
           </AddButton>
 
@@ -92,10 +92,10 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
                         {startAt}  →  {endAt}
                       </p>
                     </div>
-                    <Button style="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
+                    <Button buttonStyle="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
                       <FormattedMessage {...messages.deleteButtonLabel} />
                     </Button>
-                    <Button style="secondary" icon="edit" linkTo={`/admin/projects/${projectId}/events/${event.id}`}>
+                    <Button buttonStyle="secondary" icon="edit" linkTo={`/admin/projects/${projectId}/events/${event.id}`}>
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
                   </Row>

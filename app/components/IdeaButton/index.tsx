@@ -92,8 +92,8 @@ interface ITracks {
 }
 
 interface InputProps extends ButtonContainerProps {
-  projectId?: string | undefined;
-  phaseId?: string | undefined;
+  projectId?: string | undefined | null;
+  phaseId?: string | undefined | null;
   className?: string;
   participationContextType: IParticipationContextType | null;
 }
@@ -172,7 +172,13 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             hideOnClick={false}
           >
             <ButtonWrapper tabIndex={isPostingDisabled ? 0 : -1} className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
-              <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled} ariaDisabled={false}>
+              <Button
+                {...this.props}
+                aria-describedby="tooltip-content"
+                linkTo={linkTo}
+                disabled={isPostingDisabled}
+                ariaDisabled={false}
+              >
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
             </ButtonWrapper>

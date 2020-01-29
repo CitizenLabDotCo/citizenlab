@@ -65,8 +65,10 @@ const Label = styled.label`
 `;
 
 // accepted file extensions:
-const fileAccept = ['.pdf',
+const fileAccept = [
+  '.pdf',
   'application/pdf',
+
   '.doc',
   'application/doc',
   'application/ms-doc',
@@ -92,7 +94,7 @@ const fileAccept = ['.pdf',
 
   '.ppt',
   'application/mspowerpoint',
-  'application / powerpoint',
+  'application/powerpoint',
   'application/vnd.ms-powerpoint',
   'application/x-mspowerpoint',
 
@@ -122,7 +124,8 @@ const fileAccept = ['.pdf',
   'video/x-msvideo',
 
   '.mkv',
-  'video/x-matroska'];
+  'video/x-matroska'
+];
 
 interface Props {
   onAdd: (file: UploadFile) => void;

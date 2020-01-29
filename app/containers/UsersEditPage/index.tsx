@@ -22,7 +22,6 @@ import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // Hooks
-import useAreas from 'hooks/useAreas';
 import useTenant from 'hooks/useTenant';
 import useAuthUser from 'hooks/useAuthUser';
 
@@ -42,18 +41,16 @@ const Container = styled.main`
 // https://stackoverflow.com/questions/34993826/flexbox-column-direction-same-width
 const Wrapper = styled.div``;
 
-interface Props {}
-
-const ProfileEditor = React.memo<Props>(_props => {
+export default () => {
+  const tenant = useTenant();
   const authUser = useAuthUser();
-  const currentTenant = useTenant();
-  const areas = useAreas();
+  const loaded = tenant !== undefined && authUser !== undefined;
 
-  if (authUser === null) {
+  if (loaded && !authUser) {
     clHistory.push('/sign-in');
   }
 
-  if (!isNilOrError(currentTenant) && !isNilOrError(areas) && !isNilOrError(authUser)) {
+  if (loaded && !isNilOrError(tenant) && !isNilOrError(authUser)) {
     return (
       <Container id="e2e-user-edit-profile-page">
         <UsersEditPageMeta user={authUser.data} />
@@ -62,11 +59,7 @@ const ProfileEditor = React.memo<Props>(_props => {
         </ScreenReaderOnly>
         <Wrapper>
           <VerificationStatus />
-          <ProfileForm
-            user={authUser.data}
-            areas={areas.data}
-            tenant={currentTenant.data}
-          />
+          <ProfileForm />
           <ProfileDeletion/>
           <CampaignsConsentForm />
         </Wrapper>
@@ -75,6 +68,4 @@ const ProfileEditor = React.memo<Props>(_props => {
   }
 
   return null;
-});
-
-export default ProfileEditor;
+};

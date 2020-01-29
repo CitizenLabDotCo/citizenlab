@@ -26,8 +26,8 @@ describe('InitiativesNewPage', () => {
       />
      );
 
-     expect(clHistory.push).toHaveBeenCalledTimes(1);
-     expect(clHistory.push).toHaveBeenNthCalledWith(1, '/sign-up');
+     expect(clHistory.replace).toHaveBeenCalledTimes(1);
+     expect(clHistory.replace).toHaveBeenNthCalledWith(1, '/sign-up');
   });
 
   it('renders the initiatives formwrapper', () => {
