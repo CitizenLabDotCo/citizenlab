@@ -447,7 +447,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                     onClick={this.toggleExpensesDropdown}
                     icon="moneybag"
                     iconAriaHidden
-                    style="primary-inverse"
+                    buttonStyle="primary-inverse"
                     borderColor={colors.separation}
                     bgColor="transparent"
                     borderThickness="2px"

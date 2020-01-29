@@ -115,7 +115,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
         {!userVoted &&
           <StyledButton
             icon="upvote"
-            style="primary"
+            buttonStyle="primary"
             onClick={this.handleOnVote}
           >
             <FormattedMessage {...messages.vote} />

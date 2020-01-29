@@ -22,6 +22,7 @@ const DateInputWrapper = styled.div<{ openOnLeft: boolean | undefined }>`
   border-radius: ${(props) => props.theme.borderRadius};
   background: #fff;
   border: solid 1px #ccc;
+  width: 100%;
 
   .SingleDatePickerInput {
     outline: none;
@@ -71,6 +72,7 @@ interface Props {
   onChange: (arg: moment.Moment | null) => void;
   openOnLeft?: boolean;
   className?: string;
+  disabled?: boolean;
 }
 
 interface State {
@@ -112,7 +114,7 @@ export default class DateInput extends PureComponent<Props, State> {
   isOutsideRange = () => false;
 
   render () {
-    const { id, label, openOnLeft, className } = this.props;
+    const { id, label, openOnLeft, className, disabled } = this.props;
     const { selectedDate, focused } = this.state;
 
     return (
@@ -134,6 +136,7 @@ export default class DateInput extends PureComponent<Props, State> {
             firstDayOfWeek={1}
             isOutsideRange={this.isOutsideRange}
             displayFormat="DD/MM/YYYY"
+            disabled={disabled}
           />
         </DateInputWrapper>
       </Container>

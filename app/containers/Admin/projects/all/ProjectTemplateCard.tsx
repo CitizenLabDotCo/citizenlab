@@ -148,7 +148,7 @@ const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, b
       <Buttons>
         <UseTemplateButton
           onClick={onOpenModal}
-          style="secondary"
+          buttonStyle="secondary"
           fullWidth={true}
           bgColor={darken(0.05, colors.lightGreyishBlue)}
           bgHoverColor={darken(0.1, colors.lightGreyishBlue)}
@@ -158,7 +158,7 @@ const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, b
 
         <MoreDetailsButton
           onClick={onMoreDetailsBtnClick}
-          style="admin-dark"
+          buttonStyle="admin-dark"
           fullWidth={true}
         >
           <FormattedMessage {...messages.moreDetails} />

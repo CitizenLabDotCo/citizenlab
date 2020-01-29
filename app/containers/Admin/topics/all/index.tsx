@@ -120,7 +120,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
         <ButtonWrapper>
           <Button
-            style="cl-blue"
+            buttonStyle="cl-blue"
             icon="plus-circle"
             linkTo="/admin/topics/new"
           >
@@ -150,7 +150,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
                   <Buttons>
                     <Button
                       onClick={this.handleDeleteClick(field.id)}
-                      style="text"
+                      buttonStyle="text"
                       icon="delete"
                     >
                       <FormattedMessage {...messages.deleteButtonLabel} />
@@ -158,7 +158,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
                     <Button
                       linkTo={`/admin/topics/${field.id}`}
-                      style="secondary"
+                      buttonStyle="secondary"
                       icon="edit"
                     >
                       <FormattedMessage {...messages.editButtonLabel} />

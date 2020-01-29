@@ -1,8 +1,6 @@
 import React from 'react';
 import { set, keys, difference, get } from 'lodash-es';
-import { Subscription, combineLatest, of } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
 
 // libraries
 import Link from 'utils/cl-router/Link';
@@ -16,14 +14,11 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
 import { isValidEmail } from 'utils/validate';
-import { hasCustomFields } from 'utils/customFields';
 
 // services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
 import { signUp } from 'services/auth';
-import { userByInviteStream } from 'services/users';
-import { customFieldsSchemaForUsersStream } from 'services/userCustomFields';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetInvitedUser, { GetInvitedUserChildProps } from 'resources/GetInvitedUser';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -36,7 +31,7 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { CLErrorsJSON, Locale } from 'typings';
+import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const Form = styled.form`
@@ -98,16 +93,20 @@ const AlreadyHaveAnAccount = styled(Link)`
   }
 `;
 
-type Props = {
+type InputProps = {
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   onCompleted: (userId: string) => void;
 };
 
+interface DataProps {
+  locale: GetLocaleChildProps;
+  invitedUser: GetInvitedUserChildProps;
+}
+
+interface Props extends InputProps, DataProps { }
+
 type State = {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-  hasCustomFields: boolean;
   token: string | null | undefined;
   firstName: string | null;
   lastName: string | null;
@@ -121,30 +120,25 @@ type State = {
   firstNameError: string | null;
   lastNameError: string | null;
   emailError: string | null;
+  emailConsentError: string | null;
+  privacyError: string | null;
   passwordError: string | null;
   tacError: string | null;
-  privacyError: string | null;
-  emailConsentError: string | null;
-  localeError: string | null;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null | Error;
   emailInvitationTokenInvalid: boolean;
 };
 
 class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
-  subscriptions: Subscription[];
   firstNameInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
-      locale: null,
-      currentTenant: null,
-      hasCustomFields: false,
-      token: null,
-      firstName: null,
-      lastName: null,
-      email: null,
+      token: props.token,
+      firstName: props.invitedUser.user?.attributes.first_name || null,
+      lastName: props.invitedUser.user?.attributes.last_name || null,
+      email: props.invitedUser.user?.attributes.email || null,
       password: null,
       tacAccepted: false,
       emailAccepted: false,
@@ -154,51 +148,15 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       firstNameError: null,
       lastNameError: null,
       emailError: null,
+      emailConsentError: null,
       passwordError: null,
       tacError: null,
       privacyError: null,
-      emailConsentError: null,
-      localeError: null,
       unknownError: null,
       apiErrors: null,
-      emailInvitationTokenInvalid: false
+      emailInvitationTokenInvalid: props.invitedUser?.isInvalidToken
     };
-    this.subscriptions = [];
     this.firstNameInputElement = null;
-  }
-
-  componentDidMount() {
-    const { token } = this.props;
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-    const customFieldsSchemaForUsersStream$ = customFieldsSchemaForUsersStream().observable;
-    const invitedUser$ = (token ? userByInviteStream(token, { cacheStream: false }).observable.pipe(first()) : of(null));
-
-    this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$,
-        customFieldsSchemaForUsersStream$,
-        invitedUser$
-      ).subscribe(([locale, currentTenant, customFieldsSchema, invitedUser]) => {
-        this.setState((state) => ({
-          locale,
-          currentTenant,
-          token,
-          firstName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.first_name : state.firstName),
-          lastName: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.last_name : state.lastName),
-          email: (!isNilOrError(invitedUser) && invitedUser.data ? invitedUser.data.attributes.email : state.email),
-          hasCustomFields: hasCustomFields(customFieldsSchema, locale),
-          // if token comes from props like it does here, it's an email invitation (got it from the url)
-          // if the invitedUser doesn't exist, it means that the invitation was withdrawn
-          emailInvitationTokenInvalid: token && isNilOrError(invitedUser) ? true : false
-        }));
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   handleFirstNameInputSetRef = (element: HTMLInputElement) => {
@@ -267,14 +225,13 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
     const { isInvitation } = this.props;
     const { formatMessage } = this.props.intl;
-    const { locale, currentTenant, token, firstName, lastName, email, password, tacAccepted, privacyAccepted, emailAccepted } = this.state;
-    const currentTenantLocales = currentTenant ? currentTenant.data.attributes.settings.core.locales : [];
+    const { locale } = this.props;
+    const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted, emailAccepted } = this.state;
     let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
     const hasEmailError = (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
-    const localeError = (!currentTenantLocales.some(currentTenantLocale => locale === currentTenantLocale) ? formatMessage(messages.noValidLocaleError) : null);
     const tacError = (!tacAccepted ? formatMessage(messages.tacError) : null);
     const privacyError = (!privacyAccepted ? formatMessage(messages.privacyError) : null);
     const emailConsentError = (!emailAccepted ? formatMessage(messages.emailConsentError) : null);
@@ -286,9 +243,9 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError, privacyError, emailConsentError].some(error => error !== null);
+    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError, emailConsentError].some(error => error !== null);
 
-    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, localeError, tacError, privacyError, emailConsentError });
+    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError, emailConsentError });
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
@@ -342,7 +299,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
         // weirdly TS doesn't understand my typeguard.
         const fieldKeys = keys((apiErrors as any).json.errors);
 
-        if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'locale', 'base']).length > 0) {
+        if (difference(fieldKeys, ['first_name', 'last_name', 'email', 'password', 'base']).length > 0) {
           unknownApiError = formatMessage(messages.unknownError);
         }
       } else {
@@ -364,7 +321,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
                   placeholder={formatMessage(messages.tokenPlaceholder)}
                   error={tokenError}
                   onChange={this.handleTokenOnChange}
-                  onGreyBackground
                 />
               </FormElement>
             }
@@ -521,4 +477,15 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl<Props>(Step1);
+const Data = adopt<DataProps, InputProps>({
+  locale: <GetLocale />,
+  invitedUser: ({ token, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>,
+});
+
+const Step1WithHocs = injectIntl<Props>(Step1);
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataprops => <Step1WithHocs {...inputProps} {...dataprops} />}
+  </Data>
+);

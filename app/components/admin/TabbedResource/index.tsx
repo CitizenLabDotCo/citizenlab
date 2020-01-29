@@ -145,7 +145,7 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
 
           {publicLink && messages &&
             <Button
-              style="cl-blue"
+              buttonStyle="cl-blue"
               icon="eye"
               linkTo={publicLink}
             >

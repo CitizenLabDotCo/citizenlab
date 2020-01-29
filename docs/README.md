@@ -1,5 +1,17 @@
 # Changelog
 
+## 2020-01-17
+
+### Fixed
+
+- Further accesibility improvements: 
+  - Screen reader improvement for translations 
+  - Some color contrast improvements
+
+### Added
+
+- A hidden topics manager available at https://myfavouriteplatform.citizenlab.co/admin/topics
+
 ## 2020-01-15
 
 ### Fixed

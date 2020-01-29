@@ -54,7 +54,7 @@ class DraftCampaignDetails extends React.Component<Props> {
         <ButtonWrapper>
           <Button
             iconTheme={iconColors}
-            style="delete"
+            buttonStyle="delete"
             icon="trash"
             onClick={this.handleDelete}
           >

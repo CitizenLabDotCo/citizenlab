@@ -20,7 +20,7 @@ const Title = styled.h1<{ color: string | undefined, align: 'left' | 'center' }>
   color: ${({ color, theme }) => color || theme.colorText};
   font-size: ${fontSizes.xxxl}px;
   font-weight: 500;
-  line-height: 40px;
+  line-height: normal;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -30,7 +30,6 @@ const Title = styled.h1<{ color: string | undefined, align: 'left' | 'center' }>
 
   ${media.smallerThanMaxTablet`
     font-size: ${fontSizes.xxl}px;
-    line-height: 35px;
   `}
 `;
 

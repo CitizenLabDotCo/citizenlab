@@ -53,7 +53,7 @@ const AboutInitiativesLink = styled(Link)`
 `;
 
 interface Props {
-  authorId: string | null;
+  authorId: string | null | undefined;
   className?: string;
   showAboutInitiatives: boolean;
 }
