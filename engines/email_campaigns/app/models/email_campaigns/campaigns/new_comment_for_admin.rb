@@ -22,16 +22,14 @@ module EmailCampaigns
       comment = activity.item
       initiator = comment.author
 
-      recipient_ids = if initiator && !initiator&.admin?
+      recipient_ids = [] 
+      if initiator && !initiator&.admin?
         recipients = User.admin
-        if comment.post_type == 'Idea'
-          return nil if initiator.project_moderator?(comment.post.project.id)
-          attributes[:project_id] = comment.post.project_id
-          recipients = recipients.or(User.project_moderator(comment.post.project.id))
+        if comment.post_type == 'Idea' && !initiator.project_moderator?(comment.post.project.id)
+          recipient_ids = recipients.or(User.project_moderator(comment.post.project.id)).ids
+        elsif comment.post_type == 'Initiative'
+          recipient_ids = recipients.ids
         end
-        recipients.ids
-      else
-        []
       end
 
       users_scope.where(id: recipient_ids)
