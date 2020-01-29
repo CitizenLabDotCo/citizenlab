@@ -7,7 +7,7 @@ import { get } from 'lodash-es';
 import IdeaAuthor from 'containers/IdeasShow/IdeaAuthor';
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
-import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import Comments from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -93,7 +93,7 @@ const StyledBody = styled(Body)`
   margin-bottom: 20px;
 `;
 
-const StyledMap = styled(LoadableDropdownMap)`
+const StyledMap = styled(DropdownMap)`
   margin-bottom: 40px;
 `;
 

@@ -7,7 +7,7 @@ import { getDaysRemainingUntil } from 'utils/dateUtils';
 // components
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
-import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap/LoadableDropdownMap';
+import DropdownMap from 'components/PostShowComponents/DropdownMap/DropdownMap';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import PostedBy from 'containers/InitiativesShow/PostedBy';
 import Comments from 'components/PostShowComponents/Comments';
@@ -62,7 +62,7 @@ const StyledBody = styled(Body)`
   margin-bottom: 20px;
 `;
 
-const StyledMap = styled(LoadableDropdownMap)`
+const StyledMap = styled(DropdownMap)`
   margin-bottom: 40px;
 `;
 
