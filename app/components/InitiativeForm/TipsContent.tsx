@@ -12,7 +12,7 @@ import messages from './messages';
 
 // styles
 import styled, { withTheme } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // hooks
 import useTenant from 'hooks/useTenant';
@@ -21,6 +21,7 @@ const Container = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
+  padding: 20px;
 `;
 
 const StyledQuillEditedContent = styled(QuillEditedContent)`
