@@ -62,8 +62,9 @@ module Verification
         )
 
         valid_response!(response.body[:get_data_document_response].slice(:ind_vigencia, :ind_bloqueo, :estado_respuesta))
-
-        response.body[:get_data_document_response][:num_serie]
+        {
+          uid: response.body[:get_data_document_response][:num_serie]
+        }
       end
 
       # A transaction is successful if it meets one of the following rules:

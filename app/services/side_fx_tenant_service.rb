@@ -28,6 +28,7 @@ class SideFxTenantService
       end
       update_group_by_identify
     end
+  ensure
     LogActivityJob.perform_later(tenant, 'template_loaded', current_user, tenant.created_at.to_i)
   end
 

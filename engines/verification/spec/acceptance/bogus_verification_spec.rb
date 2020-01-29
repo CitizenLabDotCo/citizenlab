@@ -15,6 +15,7 @@ resource "Verifications" do
       enabled: true,
       verification_methods: [{name: 'bogus'}],
     }
+    create(:custom_field, key: 'gender')
     @tenant.save!
   end
 
@@ -29,6 +30,8 @@ resource "Verifications" do
       example_request "Fake verify with bogus" do
         expect(status).to eq(201)
         expect(@user.reload.verified).to be true
+        expect(@user.last_name).to eq "BOGUS"
+        expect(@user.custom_field_values["gender"]).to eq "female"
       end
     end
 
