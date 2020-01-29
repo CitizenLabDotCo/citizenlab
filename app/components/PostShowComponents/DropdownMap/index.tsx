@@ -23,6 +23,7 @@ const DropdownMap = memo(({ address, position, className }: Props) => {
 
   return (
     <CollapsibleBox
+      e2eId="e2e-map-toggle"
       className={className}
       titleIconName="position"
       title={address}
