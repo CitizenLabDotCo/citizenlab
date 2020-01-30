@@ -42,6 +42,8 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import PBExpenses from 'containers/ProjectsShowPage/pb/PBExpenses';
+import Link from 'utils/cl-router/Link';
+import { darken } from 'polished';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -78,10 +80,6 @@ const IdeaCardButton = styled(Button)`
   margin-right: 12px;
 `;
 
-const BudgetBoxAssigned = styled.div`
-  margin-top: 12px;
-`;
-
 const AssignedLabel = styled.div`
   display: flex;
   flex-direction: column;
@@ -109,8 +107,31 @@ const AssignedText = styled.div`
   hyphens: auto;
 `;
 
-const BackButton = styled(Button)`
-  margin-top: 12px;
+const ActionsWrapper = styled.div`
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  color: ${colors.label};
+`;
+
+const Separator = styled.div`
+  font-size: ${fontSizes.xs}px;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const ActionButton = styled.button`
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
+  text-decoration: underline;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    color: ${darken(.5, colors.label)};
+  }
 `;
 
 interface InputProps {
@@ -309,68 +330,65 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {
-        if (isInBasket && !processing) {
-          return (
-            <BudgetBoxAssigned>
+        return (
+          <IdeaPageContainer className={fullClassName} aria-live="polite">
+            {(isInBasket && !processing) ?
               <AssignedLabel>
                 <AssignedIcon name="basket-checkmark" />
                 <AssignedText>
                   <FormattedMessage {...messages.assigned} />
                 </AssignedText>
+                <ActionsWrapper>
+                  <ActionButton
+                    onClick={this.assignBudget}
+                  >
+                    <FormattedMessage {...messages.undo} />
+                  </ActionButton>
+                  <Separator aria-hidden>•</Separator>
+                  <ActionButton
+                    onClick={this.goBack}
+                  >
+                    <FormattedMessage {...messages.backToOverview} />
+                  </ActionButton>
+                </ActionsWrapper>
               </AssignedLabel>
-              <ControlWrapperHorizontalRule aria-hidden />
-              <PBExpenses
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-                viewMode="column"
-              />
-              <BackButton
-                bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
-                fullWidth={true}
-                iconAriaHidden
-                onClick={this.goBack}
-              >
-                <FormattedMessage {...messages.backToOverview} />
-              </BackButton>
-            </BudgetBoxAssigned>
-          );
-        } else {
-          return (
-            <IdeaPageContainer className={fullClassName} aria-live="polite">
-              <Budget>
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_price} />
-                </ScreenReaderOnly>
-                <BudgetBox>
-                  <FormattedNumber
-                    value={idea.attributes.budget}
-                    style="currency"
-                    currency={tenant.attributes.settings.core.currency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
-                </BudgetBox>
-              </Budget>
-              <Button
-                onClick={this.assignBudget}
-                processing={processing}
-                bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
-                bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
-                icon="basket-plus"
-                fullWidth={true}
-                iconAriaHidden
-              >
-                <FormattedMessage {...messages.assign} />
-              </Button>
-              <ControlWrapperHorizontalRule aria-hidden />
-              <PBExpenses
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-                viewMode="column"
-              />
-            </IdeaPageContainer>
-          );
-        }
+              :
+              <>
+                <Budget>
+                  <ScreenReaderOnly>
+                    <FormattedMessage {...messages.a11y_price} />
+                  </ScreenReaderOnly>
+                  <BudgetBox>
+                    <FormattedNumber
+                      value={idea.attributes.budget}
+                      style="currency"
+                      currency={tenant.attributes.settings.core.currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </BudgetBox>
+                </Budget>
+                <Button
+                  onClick={this.assignBudget}
+                  processing={processing}
+                  bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
+                  bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
+                  icon="basket-plus"
+                  fullWidth={true}
+                  iconAriaHidden
+                >
+                  <FormattedMessage {...messages.assign} />
+                </Button>
+              </>
+            }
+            <ControlWrapperHorizontalRule aria-hidden />
+            <PBExpenses
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
+              viewMode="column"
+            />
+          </IdeaPageContainer>
+        );
       }
     }
 
@@ -378,7 +396,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
   }
 }
 
-const Data = adopt<DataProps,  InputProps>({
+const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
