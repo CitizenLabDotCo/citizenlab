@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
@@ -213,6 +213,11 @@ const useQuill = (toolbarId: string, options: QuillOptionsStatic) => {
 
 const QuillEditor2 = memo<Props & InjectedIntlProps>(({
   id,
+  noToolbar,
+  noAlign,
+  noImages,
+  noVideos,
+  limitedTextFormatting,
   hasError,
   onChange,
   intl: { formatMessage },
@@ -220,10 +225,6 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>(({
   children
 }) => {
   const toolbarId = `ql-editor-toolbar-${id}`;
-  const noAlign = false;
-  const noImages = false;
-  const noVideos = false;
-  const limitedTextFormatting = false;
 
   const { editorRef, content, focussed } = useQuill(toolbarId, {});
 
@@ -231,22 +232,58 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>(({
     onChange && onChange(content);
   }, [content, onChange]);
 
-  // const trackAdvanced = useCallback((type, option) => {
-  //   trackEventByName(tracks.advancedEditing.name, {
-  //     extra: {
-  //       type,
-  //       option,
-  //     },
-  //   });
-  // }, []);
+  const trackAdvanced = (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.advancedEditing.name, {
+      extra: {
+        type,
+        option,
+      },
+    });
+  };
+
+  const trackClickDropdown = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.currentTarget && event.currentTarget.classList.contains('ql-picker-item')) {
+      const value = event.currentTarget.getAttribute('data-value');
+      let option;
+
+      if (value === '1') {
+        option = 'title';
+      } else if (value === '2') {
+        option = 'subtitle';
+      } else {
+        option = 'normal';
+      }
+
+      trackEventByName(tracks.advancedEditing.name, {
+        extra: {
+          option,
+          type: 'heading',
+        },
+      });
+    }
+  };
+
+  const trackBasic = (type) => (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.basicEditing.name, {
+      extra: {
+        type,
+      },
+    });
+  };
+
+  const trackImage = (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.imageEditing.name);
+  };
+
+  const trackVideo = (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.videoEditing.name);
+  };
 
   const classNames = [
     className,
     focussed ? 'focussed' : null,
     hasError ? 'error' : null
   ].filter(className => className).join(' ');
-
-  console.log('zolg');
 
   return (
     <Container
@@ -261,83 +298,85 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>(({
       edit={formatMessage(messages.edit)}
       remove={formatMessage(messages.remove)}
     >
-      <div id={toolbarId} >
-        {!limitedTextFormatting &&
-          <span
-            className="ql-formats"
-            role="button"
-            // onClick={trackClickDropdown()}
-          >
-            <select className="ql-header" defaultValue={''}>
-              <option
-                value="2"
-                aria-selected={false}
-              >{formatMessage(messages.title)}
-              </option>
-              <option
-                value="3"
-                aria-selected={false}
-              >{formatMessage(messages.subtitle)}
-              </option>
-              <option
+      {!noToolbar &&
+        <div id={toolbarId} >
+          {!limitedTextFormatting &&
+            <span
+              className="ql-formats"
+              role="button"
+              onClick={trackClickDropdown}
+            >
+              <select className="ql-header" defaultValue={''}>
+                <option
+                  value="2"
+                  aria-selected={false}
+                >{formatMessage(messages.title)}
+                </option>
+                <option
+                  value="3"
+                  aria-selected={false}
+                >{formatMessage(messages.subtitle)}
+                </option>
+                <option
+                  value=""
+                  aria-selected
+                >{formatMessage(messages.normalText)}
+                </option>
+              </select>
+            </span>
+          }
+          {!limitedTextFormatting && !noAlign &&
+            <span className="ql-formats">
+              <button
+                className="ql-align"
                 value=""
-                aria-selected
-              >{formatMessage(messages.normalText)}
-              </option>
-            </select>
-          </span>
-        }
-        {!limitedTextFormatting && !noAlign &&
+                onClick={trackAdvanced('align', 'left')}
+                aria-label={formatMessage(messages.alignLeft)}
+              />
+              <button
+                className="ql-align"
+                value="center"
+                onClick={trackAdvanced('align', 'center')}
+                aria-label={formatMessage(messages.alignCenter)}
+              />
+              <button
+                className="ql-align"
+                value="right"
+                onClick={trackAdvanced('align', 'right')}
+                aria-label={formatMessage(messages.alignRight)}
+              />
+            </span>
+          }
+          {!limitedTextFormatting &&
+            <span className="ql-formats">
+              <button
+                className="ql-list"
+                value="ordered"
+                onClick={trackAdvanced('list', 'ordered')}
+                aria-label={formatMessage(messages.orderedList)}
+              />
+              <button
+                className="ql-list"
+                value="bullet"
+                onClick={trackAdvanced('list', 'bullet')}
+                aria-label={formatMessage(messages.unorderedList)}
+              />
+            </span>
+          }
           <span className="ql-formats">
-            <button
-              className="ql-align"
-              value=""
-              // onClick={trackAdvanced('align', 'left')}
-              aria-label={formatMessage(messages.alignLeft)}
-            />
-            <button
-              className="ql-align"
-              value="center"
-              // onClick={trackAdvanced('align', 'center')}
-              aria-label={formatMessage(messages.alignCenter)}
-            />
-            <button
-              className="ql-align"
-              value="right"
-              // onClick={trackAdvanced('align', 'right')}
-              aria-label={formatMessage(messages.alignRight)}
-            />
+            <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
+            <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
+            <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
           </span>
-        }
-        {!limitedTextFormatting &&
-          <span className="ql-formats">
-            <button
-              className="ql-list"
-              value="ordered"
-              // onClick={trackAdvanced('list', 'ordered')}
-              aria-label={formatMessage(messages.orderedList)}
-            />
-            <button
-              className="ql-list"
-              value="bullet"
-              // onClick={trackAdvanced('list', 'bullet')}
-              aria-label={formatMessage(messages.unorderedList)}
-            />
-          </span>
-        }
-        <span className="ql-formats">
-          <button className="ql-bold" /* onClick={this.trackBasic('bold')} */ aria-label={formatMessage(messages.bold)} />
-          <button className="ql-italic" /* onClick={this.trackBasic('italic')} */ aria-label={formatMessage(messages.italic)} />
-          <button className="ql-link" /* onClick={this.trackBasic('link')} */ aria-label={formatMessage(messages.link)} />
-        </span>
 
-        {!(noImages && noVideos) &&
-          <span className="ql-formats">
-            {!noImages && <button className="ql-image" /* onClick={this.trackImage} */ aria-label={formatMessage(messages.image)} />}
-            {!noVideos && <button className="ql-video" /* onClick={this.trackVideo} */ aria-label={formatMessage(messages.video)} />}
-          </span>
-        }
-      </div>
+          {!(noImages && noVideos) &&
+            <span className="ql-formats">
+              {!noImages && <button className="ql-image" onClick={trackImage} aria-label={formatMessage(messages.image)} />}
+              {!noVideos && <button className="ql-video" onClick={trackVideo} aria-label={formatMessage(messages.video)} />}
+            </span>
+          }
+        </div>
+      }
       <div id={id} ref={editorRef}>
         {children}
       </div>
