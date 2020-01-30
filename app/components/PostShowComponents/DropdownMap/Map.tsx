@@ -4,7 +4,7 @@ import Map from 'components/Map';
 // styling
 import styled from 'styled-components';
 
-const MapWrapperInner = styled.div`
+const MapWrapper = styled.div`
   height: 265px;
 `;
 
@@ -17,12 +17,12 @@ const MapComponent = memo(({ position }: Props) => {
   const center = position.coordinates;
 
   return (
-    <MapWrapperInner>
+    <MapWrapper>
       <Map
         points={points}
         center={center}
       />
-    </MapWrapperInner>
+    </MapWrapper>
   );
 });
 
