@@ -1,7 +1,7 @@
 module OmniauthMethods
   class Facebook
 
-    def omniauth_setup
+    def omniauth_setup tenant, env
       if tenant.has_feature?('facebook_login')
         env['omniauth.strategy'].options[:client_id] = Tenant.settings("facebook_login", "app_id")
         env['omniauth.strategy'].options[:client_secret] = Tenant.settings("facebook_login", "app_secret")
