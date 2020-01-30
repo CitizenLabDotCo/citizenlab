@@ -12,7 +12,7 @@ import messages from './messages';
 
 // styles
 import styled, { withTheme } from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // hooks
 import useTenant from 'hooks/useTenant';
