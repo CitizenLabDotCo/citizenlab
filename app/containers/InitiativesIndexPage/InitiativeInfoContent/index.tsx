@@ -21,7 +21,6 @@ const Title = styled.div`
 `;
 
 const Content = styled.div`
-  padding: 30px 0;
   color: ${colors.label};
 
   a {
