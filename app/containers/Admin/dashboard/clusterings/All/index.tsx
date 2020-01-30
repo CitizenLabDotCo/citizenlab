@@ -50,14 +50,14 @@ class AreaList extends PureComponent<Props & InjectedIntlProps>{
               </TextCell>
               <Button
                 onClick={this.handleDeleteClick(area.id)}
-                style="text"
+                buttonStyle="text"
                 icon="delete"
               >
                 <FormattedMessage {...messages.deleteButtonLabel} />
               </Button>
               <Button
                 linkTo={`/admin/dashboard/insights/${area.id}`}
-                style="secondary"
+                buttonStyle="secondary"
                 icon="eye"
               >
                 <FormattedMessage {...messages.viewButtonLabel} />
@@ -67,7 +67,7 @@ class AreaList extends PureComponent<Props & InjectedIntlProps>{
         </List>
         <ButtonWrapper>
           <Button
-            style="cl-blue"
+            buttonStyle="cl-blue"
             icon="plus-circle"
             linkTo="/admin/dashboard/insights/new"
           >

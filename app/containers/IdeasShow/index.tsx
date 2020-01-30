@@ -338,20 +338,15 @@ interface State {
 }
 
 export class IdeasShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
-  initialState: State;
-
   constructor(props) {
     super(props);
-    const initialState = {
+    this.state = {
       loaded: false,
       spamModalVisible: false,
       ideaIdForSocialSharing: null,
       translateButtonClicked: false,
-      ideaBody: null,
       actionInfos: null
     };
-    this.initialState = initialState;
-    this.state = initialState;
   }
 
   componentDidMount() {

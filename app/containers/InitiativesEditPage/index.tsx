@@ -47,8 +47,9 @@ interface Props extends DataProps { }
 
 export class InitiativesEditPage extends React.PureComponent<Props> {
   redirectToSignUpPage = () => {
-    clHistory.push('/sign-up');
+    clHistory.replace('/sign-up');
   }
+
   componentDidMount() {
     const { authUser } = this.props;
 
@@ -56,6 +57,7 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
       this.redirectToSignUpPage();
     }
   }
+
   componentDidUpdate(prevProps: Props) {
     if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
       this.redirectToSignUpPage();

@@ -259,7 +259,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
           {!success ? (
             <>
               <CreateProjectButton
-                style="secondary"
+                buttonStyle="secondary"
                 onClick={onCreateProject}
                 processing={processing}
               >
@@ -276,7 +276,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
             </>
           ) : (
             <CloseButton
-              style="secondary"
+              buttonStyle="secondary"
               onClick={onClose}
             >
               <FormattedMessage {...messages.close} />

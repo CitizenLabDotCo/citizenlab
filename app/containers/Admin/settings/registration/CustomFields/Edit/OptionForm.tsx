@@ -84,7 +84,7 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
             <ButtonContainer>
               <Button
                 onClick={onClickDelete}
-                style="secondary"
+                buttonStyle="secondary"
                 icon="delete"
               >
                 <FormattedMessage {...messages.optionDeleteButton} />
@@ -95,7 +95,7 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
             <ButtonContainer>
               <Button
                 onClick={onClickCancel}
-                style="secondary"
+                buttonStyle="secondary"
                 icon="close"
               >
                 <FormattedMessage {...messages.optionCancelButton} />

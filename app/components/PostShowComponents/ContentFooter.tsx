@@ -27,8 +27,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 40px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   border-bottom: solid 1px ${colors.separation};
 `;
 

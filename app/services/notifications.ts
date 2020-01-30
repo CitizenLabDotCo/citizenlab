@@ -178,46 +178,6 @@ export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotific
   };
 }
 
-export interface INewCommentForAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'new_comment_for_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_type: 'Initiative' | 'Idea';
-    post_slug: string | null;
-    post_title_multiloc: Multiloc;
-  };
-}
-
-export interface INewIdeaForAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'new_idea_for_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_slug: string | null;
-    post_title_multiloc: Multiloc;
-  };
-}
-
-export interface INewInitiativeForAdminNotificationData extends IBaseNotificationData {
-  attributes: {
-    type: 'new_initiative_for_admin';
-    read_at: string | null;
-    created_at: string;
-    initiating_user_first_name: string | null;
-    initiating_user_last_name: string | null;
-    initiating_user_slug: string | null;
-    post_slug: string | null;
-    post_title_multiloc: Multiloc;
-  };
-}
-
 export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_commented_idea';
@@ -408,9 +368,6 @@ export type TNotificationData =
   IInviteAcceptedNotificationData |
   IMentionInCommentNotificationData |
   IMentionInOfficialFeedbackNotificationData |
-  INewCommentForAdminNotificationData |
-  INewIdeaForAdminNotificationData |
-  INewInitiativeForAdminNotificationData |
   IOfficialFeedbackOnCommentedIdeaNotificationData |
   IOfficialFeedbackOnCommentedInitiativeNotificationData |
   IOfficialFeedbackOnVotedIdeaNotificationData |

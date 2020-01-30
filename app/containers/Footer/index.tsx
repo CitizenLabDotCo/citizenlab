@@ -427,7 +427,7 @@ class Footer extends PureComponent<Props, State> {
                       <FormattedMessage {...messages.submit} />
                     </Button>
                   ) : (
-                    <Button style="secondary" onClick={this.closeFeedbackModal}>
+                    <Button buttonStyle="secondary" onClick={this.closeFeedbackModal}>
                       <FormattedMessage {...messages.close} />
                     </Button>
                   )}

@@ -104,7 +104,7 @@ class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
           className="e2e-add-condition-button"
           onClick={this.handleOnAddRule}
           icon="plus-circle"
-          style="text"
+          buttonStyle="text"
           justify="left"
         >
           <FormattedMessage {...messages.addCondition} />

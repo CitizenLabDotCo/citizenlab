@@ -311,7 +311,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <StyledButton
               className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
               linkTo={`/admin/projects/${project.id}/edit`}
-              style="secondary"
+              buttonStyle="secondary"
               icon="edit"
             >
               <FormattedMessage {...messages.editButtonLabel} />
