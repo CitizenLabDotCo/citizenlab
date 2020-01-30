@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
 // components
-import InitiatiativeInfoContent from '.';
 import CollapsibleBox from 'components/UI/CollapsibleBox';
 
 // i18n
@@ -13,12 +12,14 @@ export interface Props {
 }
 
 const Mobile = memo<Props>(({ className }: Props) => {
+  const InitiatiativeInfoContent = React.lazy(() => import('.'));
+
   return (
     <CollapsibleBox
       className={className}
       titleIconName="info"
       title={<FormattedMessage {...messages.explanationTitle} />}
-      content={<InitiatiativeInfoContent />}
+      lazyLoadedContent={<InitiatiativeInfoContent />}
     />
   );
 

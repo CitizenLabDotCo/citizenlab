@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, Suspense } from 'react';
 
 // components
 import Icon, { IconNames } from 'components/UI/Icon';
@@ -122,7 +122,7 @@ export interface Props {
   className?: string;
   titleIconName?: IconNames;
   title: string | JSX.Element;
-  content: JSX.Element;
+  lazyLoadedContent: any; // TO DO
   contentBackgroundColor?: string;
   e2eId?: string;
 }
@@ -138,7 +138,7 @@ const CollapsibleBox = memo<Props>((props) => {
     className,
     titleIconName,
     title,
-    content,
+    lazyLoadedContent,
     contentBackgroundColor,
     e2eId
   } = props;
@@ -163,7 +163,9 @@ const CollapsibleBox = memo<Props>((props) => {
         exit={true}
       >
         <Wrapper contentBackgroundColor={contentBackgroundColor}>
-          {content}
+          <Suspense fallback={null}>
+            {lazyLoadedContent}
+          </Suspense>
         </Wrapper>
       </CSSTransition>
     </Container>

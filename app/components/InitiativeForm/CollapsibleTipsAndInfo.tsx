@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
 // components
-import TipsContent from './TipsContent';
 import CollapsibleBox from 'components/UI/CollapsibleBox';
 
 // styling
@@ -16,12 +15,14 @@ export interface Props {
 }
 
 const CollapsibleTipsAndInfo = memo<Props>(({ className }: Props) => {
+  const TipsContent = React.lazy(() => import('./TipsContent'));
+
   return (
     <CollapsibleBox
       className={className}
       titleIconName="info"
       title={<FormattedMessage {...messages.tipsTitle} />}
-      content={<TipsContent />}
+      lazyLoadedContent={<TipsContent />}
       contentBackgroundColor={colors.lightGreyishBlue}
     />
   );
