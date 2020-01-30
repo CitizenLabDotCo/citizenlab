@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import useTenant from 'hooks/useTenant';
-import { get } from 'lodash-es';
 import Link from 'utils/cl-router/Link';
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -40,30 +40,37 @@ const Bold = styled.span`
 const InitiativeInfoContent = memo(() => {
   const tenant = useTenant();
 
-  return (
-    <Content>
-      <Title>
-        <FormattedMessage tagName="h2" {...messages.explanationTitle} />
-      </Title>
-      <FormattedMessage
-        {...messages.explanationContent}
-        values={{
-          constraints: (
-            <Bold>
-              <FormattedMessage
-                {...messages.constraints}
-                values={{
-                  voteThreshold: get(tenant, 'attributes.settings.initiatives.voting_threshold'),
-                  daysLimit: get(tenant, 'attributes.settings.initiatives.days_limit')
-                }}
-              />
-            </Bold>
-          ),
-          link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore} /></Link>
-        }}
-      />
-    </Content>
-  );
+  if (!isNilOrError(tenant)) {
+    const voteThreshold = tenant.data.attributes.settings.initiatives?.voting_threshold;
+    const daysLimit = tenant.data.attributes.settings.initiatives?.days_limit;
+
+    return (
+      <Content>
+        <Title>
+          <FormattedMessage tagName="h2" {...messages.explanationTitle} />
+        </Title>
+        <FormattedMessage
+          {...messages.explanationContent}
+          values={{
+            constraints: (
+              <Bold>
+                <FormattedMessage
+                  {...messages.constraints}
+                  values={{
+                    voteThreshold,
+                    daysLimit
+                  }}
+                />
+              </Bold>
+            ),
+            link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore} /></Link>
+          }}
+        />
+      </Content>
+    );
+  }
+
+  return null;
 });
 
 export default InitiativeInfoContent;
