@@ -105,7 +105,7 @@ export class OptionForm extends PureComponent<Props, State> {
           <Button
             className="e2e-collapse-option-form"
             onClick={collapse}
-            style="secondary"
+            buttonStyle="secondary"
           >
             <FormattedMessage  {...messages.editOptionDone} />
           </Button>
@@ -149,7 +149,7 @@ export class OptionForm extends PureComponent<Props, State> {
             ) : (
                 <StyledButton
                   className="e2e-add-option"
-                  style="secondary"
+                  buttonStyle="secondary"
                   icon="create"
                   onClick={this.addOption}
                   autoFocus

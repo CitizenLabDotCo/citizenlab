@@ -143,7 +143,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
       </Helmet>
 
       <PageContent>
-        <StyledContentContainer className="bleh">
+        <StyledContentContainer>
           <Fragment name="pages/cookie-policy/content">
             <PageTitle>
               <FormattedMessage {...messages.cookiePolicyTitle} />

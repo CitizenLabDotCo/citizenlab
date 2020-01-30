@@ -97,7 +97,7 @@ export default withTheme(memo((_props) => (
         <Button
           fontWeight="500"
           padding="13px 22px"
-          style="primary-inverse"
+          buttonStyle="primary-inverse"
           linkTo="/initiatives/new"
           onClick={trackInitiative}
           icon="arrowLeft"

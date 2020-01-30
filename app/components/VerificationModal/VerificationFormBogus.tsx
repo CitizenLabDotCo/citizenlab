@@ -161,7 +161,7 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
             <SubmitButton id="e2e-verification-bogus-submit-button" onClick={onSubmit}>
               <FormattedMessage {...messages.submit} />
             </SubmitButton>
-            <CancelButton onClick={onCancelButtonClicked} style="secondary">
+            <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
               <FormattedMessage {...messages.cancel} />
             </CancelButton>
           </FooterInner>

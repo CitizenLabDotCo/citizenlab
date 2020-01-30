@@ -125,6 +125,15 @@ const NavigationItems = styled.nav`
   `}
 `;
 
+const NavigationItemBorder = styled.div`
+  height: 6px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: 'transparent';
+`;
+
 const NavigationItem = styled(Link)`
   color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   font-size: ${fontSizes.base}px;
@@ -135,21 +144,19 @@ const NavigationItem = styled(Link)`
   align-items: center;
   justify-content: center;
   transition: all 100ms ease;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
   height: 100%;
   position: relative;
 
   &:focus,
   &:hover {
     color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
+
+    ${NavigationItemBorder} {
+      background: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
+    }
   }
 
   &.active {
-    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
-    border-bottom-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
-
     &:before {
       content: "";
       display: block;
@@ -162,15 +169,19 @@ const NavigationItem = styled(Link)`
       background-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
       pointer-events: none;
     }
+
+    ${NavigationItemBorder} {
+      background: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
+    }
   }
 `;
 
 const NavigationItemText = styled.span`
   white-space: nowrap;
 
-  &:hover {
+  /* &:hover {
     text-decoration: underline;
-  }
+  } */
 `;
 
 const NavigationDropdown = styled.div`
@@ -192,18 +203,18 @@ const NavigationDropdownItem = styled.button`
   padding: 0 30px;
   transition: all 100ms ease;
   cursor: pointer;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
+  position: relative;
 
   &:hover,
   &:focus {
     color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
-    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
+
+    ${NavigationItemBorder} {
+      background: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
+    }
   }
 
   &.active {
-    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
-
     &:after {
       content: "";
       display: block;
@@ -215,6 +226,10 @@ const NavigationDropdownItem = styled.button`
       z-index: -1;
       background-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
       pointer-events: none;
+    }
+
+    ${NavigationItemBorder} {
+      background: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
     }
   }
 `;
@@ -307,11 +322,6 @@ const StyledRightFragment = styled(Fragment)`
 `;
 
 const LogInLink = styled(NavigationItem)`
-  &:focus,
-  &:hover {
-    border-top-color: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
-  }
-
   ${media.smallerThanMinTablet`
     padding: 0 15px;
   `}
@@ -465,6 +475,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
               <NavigationItems>
                 <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
+                  <NavigationItemBorder />
                   <NavigationItemText>
                     <FormattedMessage {...messages.pageOverview} />
                   </NavigationItemText>
@@ -479,6 +490,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}
                     >
+                      <NavigationItemBorder />
                       <NavigationItemText>
                         <FormattedMessage {...messages.pageProjects} />
                       </NavigationItemText>
@@ -521,6 +533,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                     activeClassName="active"
                     className={secondUrlSegment === 'ideas' ? 'active' : ''}
                   >
+                    <NavigationItemBorder />
                     <NavigationItemText>
                       <FormattedMessage {...messages.pageIdeas} />
                     </NavigationItemText>
@@ -533,6 +546,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                     activeClassName="active"
                     className={secondUrlSegment === 'initiatives' ? 'active' : ''}
                   >
+                    <NavigationItemBorder />
                     <NavigationItemText>
                       <FormattedMessage {...messages.pageInitiatives} />
                     </NavigationItemText>
@@ -540,6 +554,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                 </FeatureFlag>
 
                 <NavigationItem to="/pages/information" activeClassName="active">
+                  <NavigationItemBorder />
                   <NavigationItemText>
                     <FormattedMessage {...messages.pageInformation} />
                   </NavigationItemText>
@@ -556,7 +571,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                         <LogInLink
                           id="e2e-login-link"
                           to="/sign-in"
+                          activeClassName="active"
                         >
+                          <NavigationItemBorder />
                           <NavigationItemText>
                             <FormattedMessage {...messages.logIn} />
                           </NavigationItemText>

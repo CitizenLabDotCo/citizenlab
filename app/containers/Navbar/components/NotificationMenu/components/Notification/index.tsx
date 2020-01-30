@@ -12,9 +12,6 @@ import InitiativeMarkedAsSpamNotification from '../InitiativeMarkedAsSpamNotific
 import InviteAcceptedNotification from '../InviteAcceptedNotification';
 import MentionInCommentNotification from '../MentionInCommentNotification';
 import MentionInOfficialFeedbackNotification from '../MentionInOfficialFeedbackNotification';
-import NewCommentForAdminNotification from '../NewCommentForAdminNotification';
-import NewIdeaForAdminNotification from '../NewIdeaForAdminNotification';
-import NewInitiativeForAdminNotification from '../NewInitiativeForAdminNotification';
 import OfficialFeedbackOnCommentedIdeaNotification from '../OfficialFeedbackOnCommentedIdeaNotification';
 import OfficialFeedbackOnCommentedInitiativeNotification from '../OfficialFeedbackOnCommentedInitiativeNotification';
 import OfficialFeedbackOnVotedIdeaNotification from '../OfficialFeedbackOnVotedIdeaNotification';
@@ -47,9 +44,6 @@ import {
   IInviteAcceptedNotificationData,
   IMentionInCommentNotificationData,
   IMentionInOfficialFeedbackNotificationData,
-  INewCommentForAdminNotificationData,
-  INewIdeaForAdminNotificationData,
-  INewInitiativeForAdminNotificationData,
   IOfficialFeedbackOnCommentedIdeaNotificationData,
   IOfficialFeedbackOnCommentedInitiativeNotificationData,
   IOfficialFeedbackOnVotedIdeaNotificationData,
@@ -108,12 +102,6 @@ export default class Notification extends PureComponent<Props> {
         return <MentionInCommentNotification notification={notification as IMentionInCommentNotificationData} />;
       case 'mention_in_official_feedback':
         return <MentionInOfficialFeedbackNotification notification={notification as IMentionInOfficialFeedbackNotificationData} />;
-      case 'new_comment_for_admin':
-        return <NewCommentForAdminNotification notification={notification as INewCommentForAdminNotificationData} />;
-      case 'new_idea_for_admin':
-        return <NewIdeaForAdminNotification notification={notification as INewIdeaForAdminNotificationData} />;
-      case 'new_initiative_for_admin':
-        return <NewInitiativeForAdminNotification notification={notification as INewInitiativeForAdminNotificationData} />;
       case 'official_feedback_on_commented_idea':
         return <OfficialFeedbackOnCommentedIdeaNotification notification={notification as IOfficialFeedbackOnCommentedIdeaNotificationData} />;
       case 'official_feedback_on_commented_initiative':

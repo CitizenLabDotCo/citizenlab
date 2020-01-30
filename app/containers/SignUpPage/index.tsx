@@ -70,6 +70,10 @@ const RightInner = styled.div`
   padding-bottom: 60px;
   padding-left: 20px;
   padding-right: 20px;
+
+  ${media.smallerThanMaxTablet`
+    padding-top: 35px;
+  `}
 `;
 
 interface InputProps {}

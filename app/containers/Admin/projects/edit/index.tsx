@@ -185,7 +185,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
             }
             {!isNilOrError(project) &&
               <Button
-                style="cl-blue"
+                buttonStyle="cl-blue"
                 icon="eye"
                 id="to-project"
                 linkTo={`/projects/${project.attributes.slug}`}

@@ -13,4 +13,8 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.mustBeANumber',
     defaultMessage: 'This field expects a number',
   },
+  blockedVerified: {
+    id: 'app.components.CustomFieldsForm.blockedVerified',
+    defaultMessage: 'You can\'t edit this field because it contains verified informtion',
+  },
 });

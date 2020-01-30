@@ -6,7 +6,7 @@ export default {
   departmentFilterChanged: 'Project templates department filter changed',
   purposeFilterChanged: 'Project templates purpose filter changed',
   participationLevelFilterChanged: 'Project templates participation level filter changed',
-  searchValueChanged: 'Project templates search value changed',
+  projectTemplatesSearchValueChanged: 'Project templates search value changed',
   templatesLoadMoreButtonClicked: "Project template cards 'Load more' button clicked",
   useTemplateButtonClicked: "Project template card 'Use template' button clicked",
   moreDetailsButtonClicked: "Project template card 'More details' button clicked",

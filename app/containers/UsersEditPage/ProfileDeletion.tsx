@@ -58,7 +58,7 @@ class ProfileDeletion extends PureComponent<Props & InjectedIntlProps, State> {
         <FormSectionTitle message={messages.deletionSection} subtitleMessage={messages.deletionSubtitle}/>
         <Row>
           <Button
-            style="delete"
+            buttonStyle="delete"
             id="deletion"
             onClick={this.openDialog}
             width="auto"

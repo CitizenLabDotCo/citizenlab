@@ -109,7 +109,7 @@ class FormOptionRow extends PureComponent<Props, State> {
 
         <Button
           className="e2e-form-option-save"
-          style="secondary"
+          buttonStyle="secondary"
           onClick={this.onSave}
         >
           <FormattedMessage {...messages.saveOption} />
@@ -117,7 +117,7 @@ class FormOptionRow extends PureComponent<Props, State> {
 
         <Button
           className="e2e-form-option-cancel"
-          style="secondary"
+          buttonStyle="secondary"
           onClick={closeRow}
         >
           <FormattedMessage {...messages.cancelOption} />

@@ -118,8 +118,8 @@ class CommentsAdminDeletionForm extends PureComponent<Props, State> {
               </TransitionGroup>
 
               <ButtonsWrapper>
-                <Button style="secondary" onClick={this.props.onCloseDeleteModal}><FormattedMessage {...messages.adminCommentDeletionCancelButton} /></Button>
-                <Button disabled={!isValid} style="primary" processing={isSubmitting}><FormattedMessage {...messages.adminCommentDeletionConfirmButton} /></Button>
+                <Button buttonStyle="secondary" onClick={this.props.onCloseDeleteModal}><FormattedMessage {...messages.adminCommentDeletionCancelButton} /></Button>
+                <Button disabled={!isValid} buttonStyle="primary" processing={isSubmitting}><FormattedMessage {...messages.adminCommentDeletionConfirmButton} /></Button>
               </ButtonsWrapper>
             </Form>
           )}

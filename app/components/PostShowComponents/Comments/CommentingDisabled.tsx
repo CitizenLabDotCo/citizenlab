@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { openVerificationModalWithContext } from 'containers/App/events';
 
 const Container = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 `;
 
 interface InputProps {

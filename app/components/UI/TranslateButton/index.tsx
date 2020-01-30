@@ -25,7 +25,7 @@ const TranslateButton = (props: Props) => {
 
   return (
     <Button
-      style="secondary-outlined"
+      buttonStyle="secondary-outlined"
       onClick={onClick}
       spinnerColor={colors.label}
       className={className}

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { withTheme } from 'styled-components';
-import { darken } from 'polished';
 import Button from 'components/UI/Button';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -17,14 +16,8 @@ const Separator = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
-  margin-top: 8px;
-  margin-bottom: 4px;
-`;
-
-const StyledButton = styled(Button)`
-  &:hover .buttonText {
-    text-decoration: underline;
-  }
+  margin-top: 12px;
+  margin-bottom: 8px;
 `;
 
 interface Props {
@@ -46,15 +39,16 @@ class Unauthenticated extends React.PureComponent<Props, State> {
         <Separator>
           <FormattedMessage {...messages.or} />
         </Separator>
-        <StyledButton
+        <Button
           className="e2e-register-button"
           linkTo="/sign-up"
-          style="text"
+          buttonStyle="text"
+          padding="0px"
+          textDecorationHover="underline"
           textColor={this.props.theme.colorMain}
-          textHoverColor={darken(0.15, this.props.theme.colorMain)}
         >
           <FormattedMessage {...messages.register} />
-        </StyledButton>
+        </Button>
       </VerticalContainer>
     );
   }

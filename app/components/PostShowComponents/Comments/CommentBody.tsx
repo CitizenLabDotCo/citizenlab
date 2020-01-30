@@ -272,13 +272,13 @@ class CommentBody extends PureComponent<Props, State> {
                 <Error apiErrors={apiErrors.body_multiloc[locale]} />
               }
               <Button
-                style="secondary"
+                buttonStyle="secondary"
                 onClick={this.cancelEditing}
               >
                 <FormattedMessage {...messages.cancelCommentEdit} />
               </Button>
               <Button
-                style="primary"
+                buttonStyle="primary"
                 processing={processing}
                 onClick={this.onSubmit}
               >

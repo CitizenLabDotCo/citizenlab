@@ -337,7 +337,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
               <Right>
                 <SkipButton
-                  style="primary-outlined"
+                  buttonStyle="primary-outlined"
                   text={<FormattedMessage {...messages.doItLater} />}
                   onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                   borderColor="#fff"
@@ -347,7 +347,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.completeProfile} />}
-                  style="primary-inverse"
+                  buttonStyle="primary-inverse"
                   linkTo="/profile/edit"
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
@@ -379,7 +379,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                       padding="0px"
                       borderThickness="0px"
                     />
-                    <ShieldIcon name="verify" />
+                    <ShieldIcon name="verify_light" />
                   </AvatarAndShield>
                 </Icons>
                 <Text>
@@ -389,7 +389,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
               <Right>
                 <SkipButton
-                  style="primary-outlined"
+                  buttonStyle="primary-outlined"
                   text={<FormattedMessage {...messages.doItLater} />}
                   onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                   borderColor="#fff"
@@ -399,7 +399,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                 />
                 <AcceptButton
                   text={<FormattedMessage {...messages.verifyNow} />}
-                  style="primary-inverse"
+                  buttonStyle="primary-inverse"
                   onClick={this.handleVerify}
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
@@ -429,7 +429,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
               <Right>
                 <SkipButton
-                  style="primary-outlined"
+                  buttonStyle="primary-outlined"
                   text={<FormattedMessage {...messages.doItLater} />}
                   onClick={this.handleSkipButtonClick(onboardingCampaigns.name)}
                   borderColor="#fff"
@@ -439,7 +439,7 @@ class SignedInHeader extends PureComponent<Props, State> {
                 <AcceptButton
                   text={<T value={onboardingCampaigns.cta_button_multiloc} />}
                   linkTo={onboardingCampaigns.cta_button_link}
-                  style="primary-inverse"
+                  buttonStyle="primary-inverse"
                   textColor={theme.colorMain}
                   textHoverColor={theme.colorMain}
                   fontWeight="500"

@@ -26,6 +26,13 @@ export interface ICustomFieldData {
   };
 }
 
+export interface CustomFieldsInfos {
+  schema: any;
+  uiSchema: any;
+  hasRequiredFields: boolean;
+  hasCustomFields: boolean;
+}
+
 export function isBuiltInField(field: ICustomFieldData) {
   return !!field.attributes.code;
 }
