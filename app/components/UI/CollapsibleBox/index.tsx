@@ -100,14 +100,14 @@ const Wrapper = styled.div<{ contentBackgroundColor?: string }>`
     opacity: 0;
 
     &.content-enter-active {
-      height: 265px;
+      height: 100%;
       opacity: 1;
       transition: all 250ms ease-out;
     }
   }
 
   &.content-exit {
-    height: 265px;
+    height: 100%;
     opacity: 1;
 
     &.content-exit-active {
