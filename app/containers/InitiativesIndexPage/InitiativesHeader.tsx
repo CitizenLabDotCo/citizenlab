@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeInfoContent from './InitiativeInfoContent';
-import InitiativeInfoMobile from './InitiativeInfoContent/Mobile;
+import InitiativeInfoMobile from './InitiativeInfoContent/Mobile';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -43,7 +43,7 @@ const Header = styled.div`
   width: 100%;
   min-height: 350px;
   margin: 0;
-  padding: 0;
+  padding: 20px 15px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -87,6 +87,13 @@ const HeaderTitle = styled.div`
   `}
 `;
 
+const StyledInitiativeInfoMobile = styled(InitiativeInfoMobile)`
+  width: 100%;
+
+  ${media.biggerThanMinTablet`
+    display: none;
+  `}
+`;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   margin-top: 18px;
@@ -176,7 +183,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
           <ScreenReaderOnly>
             <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
           </ScreenReaderOnly>
-          <InitiativeInfoMobile />
+          <StyledInitiativeInfoMobile />
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage
