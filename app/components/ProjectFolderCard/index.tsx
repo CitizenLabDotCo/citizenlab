@@ -589,31 +589,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               </ContentFooterLeft>
 
               <ContentFooterRight>
-                  <ProjectMetaItems>
-                    {showIdeasCount &&
-                      <MetaItem className="first">
-                        <MetaItemIcon ariaHidden name="idea2" />
-                        <MetaItemText aria-hidden>
-                          {ideasCount}
-                        </MetaItemText>
-                        <ScreenReaderOnly>
-                          {formatMessage(messages.xIdeas, { ideasCount })}
-                        </ScreenReaderOnly>
-                      </MetaItem>
-                    }
-
-                    {showCommentsCount &&
-                      <MetaItem>
-                        <CommentIcon ariaHidden name="comments" />
-                        <MetaItemText aria-hidden>
-                          {commentsCount}
-                        </MetaItemText>
-                        <ScreenReaderOnly>
-                          {formatMessage(messages.xComments, { commentsCount })}
-                        </ScreenReaderOnly>
-                      </MetaItem>
-                    }
-                  </ProjectMetaItems>
+                3 projects
               </ContentFooterRight>
             </ContentFooter>
           </ProjectContent>
