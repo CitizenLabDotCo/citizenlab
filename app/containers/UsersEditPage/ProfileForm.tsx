@@ -386,15 +386,19 @@ class ProfileForm extends PureComponent<Props, State> {
   }
 
   render() {
-    const { authUser, customFieldsSchema, lockedFields } = this.props;
-    if (isNilOrError(customFieldsSchema) || isNilOrError(authUser) || isNilOrError(lockedFields)) return null;
-    return (
-      <Formik
-        initialValues={mapUserToDiff(authUser)}
-        onSubmit={this.handleFormikSubmit}
-        render={this.formikRender as any}
-      />
-    );
+    const { authUser } = this.props;
+
+    if (!isNilOrError(authUser)) {
+      return (
+        <Formik
+          initialValues={mapUserToDiff(authUser)}
+          onSubmit={this.handleFormikSubmit}
+          render={this.formikRender as any}
+        />
+      );
+    }
+
+    return null;
   }
 }
 
