@@ -376,8 +376,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
               optional
+              htmlFor="initiative-banner-dropzone"
             />
             <ImagesDropzone
+              id="initiative-banner-dropzone"
               images={banner ? [banner] : null}
               imagePreviewRatio={360 / 1440}
               maxNumberOfImages={1}
@@ -392,8 +394,10 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
               optional
+              htmlFor="initiative-image-dropzone"
             />
             <ImagesDropzone
+              id="initiative-image-dropzone"
               images={image ? [image] : null}
               imagePreviewRatio={135 / 298}
               maxNumberOfImages={1}
