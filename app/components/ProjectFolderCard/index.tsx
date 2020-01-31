@@ -12,7 +12,6 @@ import Link from 'utils/cl-router/Link';
 // components
 import Icon from 'components/UI/Icon';
 import LazyImage from 'components/LazyImage';
-import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
@@ -362,49 +361,6 @@ const ContentHeaderLabel = styled.span`
   align-items: center;
 `;
 
-const ProjectMetaItems = styled.div`
-  height: 100%;
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  display: flex;
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  margin-left: 24px;
-
-  &.first {
-    margin-left: 0px;
-  }
-
-  ${media.smallerThanMinTablet`
-    margin-left: 20px;
-  `};
-`;
-
-const MetaItemIcon = styled(Icon)`
-  width: 20px;
-  height: 20px;
-  fill: ${({ theme }) => theme.colorMain};
-`;
-
-const CommentIcon = styled(MetaItemIcon)`
-  width: 23px;
-  height: 23px;
-`;
-
-const MetaItemText = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
-  margin-left: 3px;
-`;
-
 export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
@@ -455,7 +411,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { visible } = this.state;
-    const { project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
+    const { project, phase, size, projectImages, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
@@ -468,7 +424,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
       const showCommentsCount = (commentsCount > 0);
       const showFooter = (hasAvatars || showIdeasCount || showCommentsCount);
-      const avatarIds = (project.relationships.avatars && project.relationships.avatars.data ? project.relationships.avatars.data.map(avatar => avatar.id) : []);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize() : null);
@@ -577,15 +532,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
             <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
               <ContentFooterLeft>
-                {hasAvatars &&
-                  <AvatarBubbles
-                    size={32}
-                    limit={3}
-                    userCountBgColor={this.props.theme.colorMain}
-                    avatarIds={avatarIds}
-                    userCount={project.attributes.avatars_count}
-                  />
-                }
+                Placeholder
               </ContentFooterLeft>
 
               <ContentFooterRight>
@@ -607,6 +554,7 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
 });
 
+// TODO: remove intl if not used
 const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
 
 export default (inputProps: InputProps) => (
