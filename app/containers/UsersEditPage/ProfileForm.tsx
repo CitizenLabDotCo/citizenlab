@@ -228,6 +228,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <ImagesDropzone
+              id="profile-form-avatar-dropzone"
               images={this.state.avatar}
               imagePreviewRatio={1}
               maxImagePreviewWidth="170px"
