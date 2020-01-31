@@ -16,12 +16,10 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import { getPostingPermission } from 'services/ideaPostingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
@@ -39,7 +37,6 @@ import tracks from './tracks';
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { rgba, darken } from 'polished';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -278,28 +275,6 @@ const ProgressBarOverlay: any = styled.div`
   }
 `;
 
-const ProjectLabel = styled.div`
-  // darkened to have higher chances of solid color contrast
-  color: ${({ theme }) => darken(0.05, theme.colorSecondary)};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${({ theme }) => rgba(theme.colorSecondary, 0.1)};
-  transition: all 200ms ease;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => darken(0.2, theme.colorSecondary)};
-    background: ${({ theme }) => rgba(theme.colorSecondary, 0.15)};
-  }
-`;
-
 const ContentBody = styled.div`
   width: 100%;
   flex-grow: 1;
@@ -440,7 +415,6 @@ export interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
-  authUser: GetAuthUserChildProps;
   phase: GetPhaseChildProps;
 }
 
@@ -481,14 +455,9 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { visible } = this.state;
-    const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
+    const { project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
-      const postingPermission = getPostingPermission({ project, phase, authUser });
-      const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
-      const canPost = !!((!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled) && postingPermission.enabled);
-      const canVote = !!((!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled) && get(project, 'attributes.action_descriptor.voting.enabled'));
-      const canComment = !!((!isNilOrError(phase) ? phase.attributes.commenting_enabled : project.attributes.commenting_enabled) && get(project, 'attributes.action_descriptor.commenting.enabled'));
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = getProjectUrl(project);
       const isFinished = (project.attributes.timeline_active === 'past');
@@ -504,7 +473,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize() : null);
       let countdown: JSX.Element | null = null;
-      let ctaMessage: JSX.Element | null = null;
 
       if (isArchived) {
         countdown = (
@@ -537,39 +505,17 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         );
       }
 
-      if (participationMethod === 'budgeting') {
-        ctaMessage = <FormattedMessage {...messages.allocateYourBudget} />;
-      } else if (participationMethod === 'information') {
-        ctaMessage = <FormattedMessage {...messages.learnMore} />;
-      } else if (participationMethod === 'survey') {
-        ctaMessage = <FormattedMessage {...messages.takeTheSurvey} />;
-      } else if (participationMethod === 'poll') {
-        ctaMessage = <FormattedMessage {...messages.takeThePoll} />;
-      } else if (participationMethod === 'ideation' && canPost) {
-        ctaMessage = <FormattedMessage {...messages.postYourIdea} />;
-      } else if (participationMethod === 'ideation' && canVote) {
-        ctaMessage = <FormattedMessage {...messages.vote} />;
-      } else if (participationMethod === 'ideation' && canComment) {
-        ctaMessage = <FormattedMessage {...messages.comment} />;
-      } else if (participationMethod === 'ideation') {
-        ctaMessage = <FormattedMessage {...messages.viewTheIdeas} />;
-      }
-
       const contentHeader = (
-        <ContentHeader className={`${size} ${!ctaMessage ? 'noRightContent' : 'hasContent hasRightContent'} ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${!ctaMessage && !countdown ? 'noContent' : ''}`}>
+        <ContentHeader className={`${size} hasContent hasRightContent' ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${!countdown ? 'noContent' : ''}`}>
           {countdown !== null &&
             <ContentHeaderLeft className={size}>
               {countdown}
             </ContentHeaderLeft>
           }
 
-          {ctaMessage !== null && !isFinished && !isArchived &&
-            <ContentHeaderRight className={`${size} ${countdown ? 'hasProgressBar' : ''}`}>
-              <ProjectLabel onClick={this.handleCTAOnClick(project.id)} className="e2e-project-card-cta">
-                {ctaMessage}
-              </ProjectLabel>
-            </ContentHeaderRight>
-          }
+          <ContentHeaderRight className={`${size}`}>
+            <div>TO DO</div>
+          </ContentHeaderRight>
         </ContentHeader>
       );
 
@@ -680,7 +626,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />,
   project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
   phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
