@@ -9,6 +9,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectCard from 'components/ProjectCard';
+import ProjectFolderCard from 'components/ProjectFolderCard';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
@@ -416,6 +417,32 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
               </EmptyMessage>
             </EmptyContainer>
           }
+
+          {!querying && hasProjects && projectsList && (
+            <ProjectsList id="e2e-projects-list">
+              {projectsList.map((project, index) => {
+                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+                return <ProjectFolderCard key={project.id} projectId={project.id} size={size} layout={layout} />;
+              })}
+
+              {/*
+              // A bit of a hack (but the most elegant one I could think of) to
+              // make the 3-column layout work for the last row of project cards when
+              // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
+              // Ideally would have been solved with CSS grid, but... IE11
+              */}
+              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length + 1) % 3 === 0 &&
+                <MockProjectCard className={layout} />
+              }
+
+              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length - 1) % 3 === 0 &&
+                <>
+                  <MockProjectCard className={layout} />
+                  <MockProjectCard className={layout} />
+                </>
+              }
+            </ProjectsList>
+          )}
 
           {!querying && hasProjects && projectsList && (
             <ProjectsList id="e2e-projects-list">
