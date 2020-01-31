@@ -189,6 +189,7 @@ const RemoveButton = styled.button`
 `;
 
 interface Props {
+  id?: string;
   images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio: number;
@@ -315,7 +316,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, borderRadius, className } = this.props;
+    const { id, images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, borderRadius, className } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
@@ -343,7 +344,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                 {({ getRootProps, getInputProps }) => {
                   return (
                     <DropzoneContent {...getRootProps()} borderRadius={borderRadius} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
-                      <DropzoneInput {...getInputProps()} />
+                      <DropzoneInput {...getInputProps()} id={id || ''}/>
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload" ariaHidden />
                         <DropzoneLabelText>{label}</DropzoneLabelText>
