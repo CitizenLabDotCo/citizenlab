@@ -57,6 +57,14 @@ const EditFormContainer = styled(Container)`
 
 const Body = styled.div`
   margin-bottom: 30px;
+
+  a {
+    color: inherit;
+
+    &:hover {
+      color: #000;
+    }
+  }
 `;
 
 const Footer = styled.div`
