@@ -31,39 +31,41 @@ exports[`<NotificationMenu /> renders correctly when everything is there 1`] = `
         useCapture={false}
         useWindow={false}
       >
-        <Notification
-          notification={
-            Object {
-              "attributes": Object {
-                "created_at": "2019-04-16T14:32:17.095Z",
-                "idea_title": Object {
-                  "nl-BE": "Qui nihil veniam consequatur.",
-                },
-                "initiating_user_first_name": undefined,
-                "initiating_user_last_name": undefined,
-                "initiating_user_slug": undefined,
-                "read_at": null,
-                "reason_code": undefined,
-                "type": "admin_rights_received",
-              },
-              "id": "aminRights",
-              "relationships": Object {
-                "comment": undefined,
-                "idea_status": undefined,
-                "initiating_user": Object {
-                  "data": Object {
-                    "id": "fe947bd3-9c67-40ed-96a3-9a12c4c73b46",
-                    "type": "user",
+        <NotificationMenu__NotificationsWrapper>
+          <Notification
+            notification={
+              Object {
+                "attributes": Object {
+                  "created_at": "2019-04-16T14:32:17.095Z",
+                  "idea_title": Object {
+                    "nl-BE": "Qui nihil veniam consequatur.",
                   },
+                  "initiating_user_first_name": undefined,
+                  "initiating_user_last_name": undefined,
+                  "initiating_user_slug": undefined,
+                  "read_at": null,
+                  "reason_code": undefined,
+                  "type": "admin_rights_received",
                 },
-                "invite": undefined,
-                "post": undefined,
-                "project": undefined,
-              },
-              "type": "notification",
+                "id": "aminRights",
+                "relationships": Object {
+                  "comment": undefined,
+                  "idea_status": undefined,
+                  "initiating_user": Object {
+                    "data": Object {
+                      "id": "fe947bd3-9c67-40ed-96a3-9a12c4c73b46",
+                      "type": "user",
+                    },
+                  },
+                  "invite": undefined,
+                  "post": undefined,
+                  "project": undefined,
+                },
+                "type": "notification",
+              }
             }
-          }
-        />
+          />
+        </NotificationMenu__NotificationsWrapper>
       </InfiniteScroll>
     }
     left="auto"
