@@ -18,6 +18,7 @@ export interface IProjectData {
   id: string;
   type: 'project';
   attributes: {
+    folder_id?: string;
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
@@ -93,7 +94,7 @@ export interface IProjectData {
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string, medium: string, large: string} | null;
+  header_bg?: string | { small: string, medium: string, large: string } | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
@@ -202,4 +203,19 @@ export function getProjectIdeasUrl(project: IProjectData) {
   }
 
   return projectUrl;
+}
+
+export async function updateProjectFolderMembership(projectId: string, newProjectFolderId: string | null) {
+  const response = await streams.update<IProject>(
+    `${apiEndpoint}/${projectId}`,
+    projectId,
+    { project: { folder_id: newProjectFolderId } }
+  );
+  streams.fetchAllWith({
+    dataId: [projectId],
+    apiEndpoint: [`${API_PATH}/projects`],
+  });
+  // TODO refetch project or folder orderings
+
+  return response;
 }
