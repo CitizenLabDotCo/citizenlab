@@ -56,7 +56,7 @@ export default () => ({
           path: '/:locale/admin/projects/folders/:projectFolderId/projects',
           name: 'admin projects edit folder projects',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/folders/settings'),
+            loader: () => import('containers/Admin/projects/folders/projects'),
             loading: LoadableLoadingAdmin,
             delay: 500
           }),

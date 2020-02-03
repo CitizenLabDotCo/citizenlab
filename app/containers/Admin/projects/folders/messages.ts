@@ -70,4 +70,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.subtitleNewFolder',
     defaultMessage: 'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
+  inFolder: {
+    id: 'app.containers.AdminPage.SettingsPage.inFolder',
+    defaultMessage: 'In this folder',
+  },
+  otherProjects: {
+    id: 'app.containers.AdminPage.SettingsPage.otherProjects',
+    defaultMessage: 'Outside this folder',
+  },
+  otherProjectsTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.otherProjectsTooltip',
+    defaultMessage: 'These are the all the projects of the platform that are not in a folder.',
+  },
+  emptyFolder: {
+    id: 'app.containers.AdminPage.SettingsPage.emptyFolder',
+    defaultMessage: 'This folder is empty, you\'re in the right place to add projects to it, though !',
+  },
+  addToFolder: {
+    id: 'app.containers.AdminPage.SettingsPage.addToFolder',
+    defaultMessage: 'Add to folder',
+  },
 });

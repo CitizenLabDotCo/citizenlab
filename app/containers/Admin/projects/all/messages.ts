@@ -55,14 +55,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.loadMoreTemplates',
     defaultMessage: 'Load more templates',
   },
-  xGroupsHaveAccess: {
-    id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
-    defaultMessage: '{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}',
-  },
-  onlyAdminsCanView: {
-    id: 'app.containers.AdminPage.ProjectEdit.onlyAdminsCanView',
-    defaultMessage: 'Only admins can view',
-  },
   editButtonLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
     defaultMessage: 'Edit',
@@ -84,7 +76,7 @@ export default defineMessages({
     defaultMessage: 'Draft projects are not shown on the platform. You can work on them with other admin and project moderators, until they are ready to be published.',
   },
   archived: {
-  id: 'app.containers.AdminPage.ProjectEdit.archived',
+    id: 'app.containers.AdminPage.ProjectEdit.archived',
     defaultMessage: 'Archived',
   },
   archivedTooltip: {
