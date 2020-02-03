@@ -40,8 +40,6 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
-import Toggle from 'components/UI/Toggle';
-import FeatureFlag from 'components/FeatureFlag';
 import IconTooltip from 'components/UI/IconTooltip';
 
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
@@ -49,7 +47,7 @@ import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/P
 // style
 import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { IFolderData } from 'services/folder';
+import { IProjectFolderData } from 'services/projectFolder';
 
 const Container = styled.div``;
 
@@ -84,16 +82,6 @@ const ListHeader = styled.div`
 
 const Spacer = styled.div`
   flex: 1;
-`;
-
-const ToggleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ToggleLabel = styled.label`
-  font-size: ${fontSizes.base}px;
-  margin-right: 15px;
 `;
 
 const RowContent = styled.div`
@@ -320,7 +308,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
           </RowContent>
         );
       };
-      const FolderRow = (folder: IFolderData) => {
+      const FolderRow = (folder: IProjectFolderData) => {
         return (
           <RowContent className="e2e-admin-projects-list-item">
             <RowContentInner className="expand primary">

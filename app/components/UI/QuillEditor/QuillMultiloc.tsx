@@ -58,7 +58,6 @@ class EditorMultiloc extends PureComponent<Props & VanillaProps, State> {
     if (this.props.onChangeMultiloc) {
       const multiloc = Object.assign({}, this.props.valueMultiloc || {});
       multiloc[locale] = html;
-      console.log(multiloc);
       this.props.onChangeMultiloc(multiloc);
     }
   }

@@ -1,28 +1,19 @@
 // Libraries
 import React, { PureComponent } from 'react';
-import { reject } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // Components
 import GoBackButton from 'components/UI/GoBackButton';
-import Button from 'components/UI/Button';
-import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
+import TabbedResource from 'components/admin/TabbedResource';
 
 // Localisation
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
-// tracks
-import { trackEventByName } from 'utils/analytics';
-
 // style
 import styled from 'styled-components';
-import { adopt } from 'react-adopt';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
-// import GetFolder, { GetFolderChildProps } from 'resources/GetFolder';
-import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 const TopContainer = styled.div`
@@ -33,14 +24,6 @@ const TopContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   position: relative;
-`;
-
-const ActionsContainer = styled.div`
-  display: flex;
-
-  & > *:not(:last-child) {
-    margin-right: 15px;
-  }
 `;
 
 export interface InputProps { }
@@ -71,7 +54,7 @@ export class AdminFolderEdition extends PureComponent<Props & InjectedIntlProps 
 
   render() {
     const { folderId } = this.props.params;
-    const {  intl: { formatMessage }, localize } = this.props;
+    const {  intl: { formatMessage } } = this.props;
     const { children } = this.props;
     const tabbedProps = {
       resource: {
