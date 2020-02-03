@@ -129,15 +129,15 @@ const Buttons = styled.div`
     }
 
     &.email {
-      background: ${colors.emailBg};
-      color: ${colors.emailText};
+      color: #fff;
+      background: ${(props: any) => props.theme.colorMain};
 
       ${StyledIcon} {
-        fill: ${colors.emailText};
+        fill: #fff;
       }
 
       &:hover {
-        background: ${(darken(0.1, colors.emailBg))};
+        background:  ${(props: any) => darken(0.1, props.theme.colorMain)};
       }
     }
   }

@@ -69,14 +69,12 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.div`
-  & h2 {
-    color: ${({ theme }) => theme.colorText};
-    font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
-    font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-    line-height: normal;
-    text-align: center;
-  }
+const HeaderTitle = styled.h2`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
+  text-align: center;
   width: 100%;
   max-width: 600px;
   margin: 0;
@@ -148,12 +146,12 @@ const Illustration = styled.img`
   `}
 `;
 
-const ManualTitle = styled.div`
-  & h2 {
-    font-size: ${fontSizes.base}px;
-    font-weight: 600;
-  }
+const ManualTitle = styled.h2`
   color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.base}px;
+  font-weight: 600;
+  padding: 0;
+  margin: 0;
   margin-bottom: 7px;
 `;
 
@@ -162,11 +160,12 @@ const ManualText = styled.div`
   color: ${colors.label};
 
   a {
-    text-decoration: underline;
     color: inherit;
+    text-decoration: underline;
 
     &:hover {
       color: #000;
+      text-decoration: underline;
     }
   }
 `;
@@ -205,7 +204,6 @@ class SignedOutHeader extends PureComponent<Props, State> {
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage
-                tagName="h2"
                 {...messages.header}
                 values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
               />
@@ -229,7 +227,7 @@ class SignedOutHeader extends PureComponent<Props, State> {
             <Illustration src={illustrationSrc} alt="" />
             <ManualText>
               <ManualTitle>
-                <FormattedMessage tagName="h2" {...messages.explanationTitle} />
+                <FormattedMessage {...messages.explanationTitle} />
               </ManualTitle>
               <FormattedMessage
                 {...messages.explanationContent}
