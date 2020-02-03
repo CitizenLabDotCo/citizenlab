@@ -10,10 +10,9 @@ export interface IProjectFolderDiff {
   title_multiloc: Multiloc; // Text, > 10
   description_multiloc: Multiloc; // HTML
   description_preview_multiloc: Multiloc; // Text
-  header_bg: string;
+  header_bg?: string;
 }
 
-// to extend
 export interface IProjectFolderData {
   id: string;
   type: 'folder';
@@ -22,7 +21,7 @@ export interface IProjectFolderData {
     description_multiloc: Multiloc; // HTML
     description_preview_multiloc: Multiloc; // Text
     slug: string;
-    header_bg: ImageSizes;
+    header_bg?: ImageSizes;
   };
   relationships: {
     projects: {

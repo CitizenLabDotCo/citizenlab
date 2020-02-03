@@ -47,7 +47,7 @@ import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/P
 // style
 import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
-import { IProjectFolderData } from 'services/projectFolder';
+import { IProjectFolderData } from 'services/projectFolders';
 
 const Container = styled.div``;
 
@@ -316,7 +316,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </RowContentInner>
             <StyledButton
               className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] ? folder.attributes.title_multiloc['en-GB'] : ''}`}
-              linkTo={`/admin/folders/${folder.id}/edit`}
+              linkTo={`/admin/folders/${folder.id}`}
               buttonStyle="secondary"
               icon="edit"
             >
