@@ -55,11 +55,12 @@ const StyledA = styled.a`
 `;
 
 const TooltipWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
+  display: flex;
+  align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;

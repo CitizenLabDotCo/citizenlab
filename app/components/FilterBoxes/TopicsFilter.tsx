@@ -45,17 +45,17 @@ const Topic = styled.button`
   font-weight: 400;
   line-height: normal;
   display: inline-block;
-  padding-left: 18px;
-  padding-right: 18px;
-  padding-top: 11px;
-  padding-bottom: 11px;
+  padding-left: 14px;
+  padding-right: 14px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   margin: 0px;
   margin-right: 6px;
   margin-bottom: 8px;
   cursor: pointer;
   user-select: none;
   border: solid 1px ${colors.separationDark};
-  border-radius: 5px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
   transition: all 80ms ease-out;
 
   &:not(.selected) {
