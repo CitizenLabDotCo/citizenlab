@@ -16,7 +16,10 @@ export type ButtonStyles =
   | 'success'
   | 'text'
   | 'cl-blue'
+  | 'cl-blue-outlined'
   | 'admin-dark'
+  | 'admin-dark-outlined'
+  | 'admin-text'
   | 'delete';
 
 type DefaultStyleValues = {
@@ -139,10 +142,26 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       textColor: '#fff',
       textHoverColor: '#fff'
     },
+    'cl-blue-outlined': {
+      bgColor: 'transparent',
+      bgHoverColor: 'transparent',
+      textColor: colors.clBlueDark,
+      borderColor: colors.clBlueDark,
+    },
     'admin-dark': {
       bgColor: colors.adminTextColor,
       textColor: '#fff',
       textHoverColor: '#fff'
+    },
+    'admin-dark-outlined': {
+      bgColor: 'transparent',
+      bgHoverColor: 'transparent',
+      textColor: colors.adminTextColor,
+      borderColor: colors.adminTextColor,
+    },
+    'admin-text': {
+      bgColor: 'transparent',
+      textColor: colors.adminTextColor
     },
     delete: {
       bgColor: colors.clRedError,
