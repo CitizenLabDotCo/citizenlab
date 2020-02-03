@@ -134,7 +134,7 @@ export default class PageLayout extends React.PureComponent<Props> {
     return (
       <Container className={className}>
         <TopLine>
-          <GoBackButton onClick={this.goBack} inCitizen />
+          <GoBackButton onClick={this.goBack} />
         </TopLine>
         <Header>
           <HeaderTitle>

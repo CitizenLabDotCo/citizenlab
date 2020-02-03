@@ -5,7 +5,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../../tracks';
-import { darken } from 'polished';
 import clHistory from 'utils/cl-router/history';
 
 const Container = styled.button`
@@ -33,10 +32,10 @@ const IconContainer = styled.div`
   justify-content: center;
 `;
 
-const StyledIcon = styled(Icon)`
+const StyledIcon: any = styled(Icon)`
   height: 17px;
-  opacity: ${(props) => (props as any).isRead ? '0.35' : '1'};
-` as any;
+  opacity: ${(props: any) => props.isRead ? '0.35' : '1'};
+`;
 
 const Body = styled.div`
   flex: 1;
@@ -44,16 +43,17 @@ const Body = styled.div`
   flex-direction: column;
 `;
 
-const Message = styled.div`
+const Message = styled.div<{ isRead: boolean }>`
+  color: red;
   font-size: ${fontSizes.base}px;
+  font-weight: ${props => props.isRead ? 'normal' : '500'};
   flex-grow: 1;
-  font-weight: ${(props) => (props as any).isRead ? 'normal' : '500'};
   padding-bottom: 3px;
   white-space: normal;
 
   a {
-    color: ${colors.clBlueDark};
-    text-decoration: none;
+    color: #000;
+    text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-all;
@@ -61,12 +61,12 @@ const Message = styled.div`
     hyphens: auto;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: #000;
       text-decoration: underline;
     }
   }
 
-` as any;
+`;
 
 const Timing = styled.span`
   font-size: ${fontSizes.small}px;
