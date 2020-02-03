@@ -19,7 +19,7 @@ export type ButtonStyles =
   | 'cl-blue-outlined'
   | 'admin-dark'
   | 'admin-dark-outlined'
-  | 'admin-text'
+  | 'admin-dark-text'
   | 'delete';
 
 type DefaultStyleValues = {
@@ -159,7 +159,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       textColor: colors.adminTextColor,
       borderColor: colors.adminTextColor,
     },
-    'admin-text': {
+    'admin-dark-text': {
       bgColor: 'transparent',
       textColor: colors.adminTextColor
     },
