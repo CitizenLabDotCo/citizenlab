@@ -26,6 +26,43 @@ export default () => ({
         loading: () => null
       }),
     },
+    // {
+    //   path: '/:locale/admin/projects/folders/new',
+    //   name: 'admin projects single project',
+    //   component: Loadable({
+    //     loader: () => import('containers/Admin/projects/folders/settings'),
+    //     loading: LoadableLoadingAdmin,
+    //     delay: 500
+    //   }),
+    // },
+    {
+      path: '/:locale/admin/projects/folders',
+      name: 'admin projects single project',
+      component: Loadable({
+        loader: () => import('containers/Admin/projects/folders'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
+      indexRoute: {
+        name: 'admin projects single edit',
+        component: Loadable({
+          loader: () => import('containers/Admin/projects/folders/settings'),
+          // TODO loader: () => import('containers/Admin/projects/folders/projects'),
+          loading: () => null
+        }),
+      },
+      childRoutes: [
+        {
+          path: '/:locale/admin/projects/folders/:folderId',
+          name: 'admin projects create new',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/folders/settings'),
+            loading: LoadableLoadingAdmin,
+            delay: 500
+          }),
+        },
+      ],
+    },
     {
       path: ':projectId/edit',
       name: 'admin projects single project',
