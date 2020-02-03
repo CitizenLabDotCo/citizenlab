@@ -22,6 +22,7 @@ import styled from 'styled-components';
 import ProjectRow from '../../components/ProjectRow';
 import { HeaderTitle } from '../../all/styles';
 import { withRouter, WithRouterProps } from 'react-router';
+import GetProject from 'resources/GetProject';
 
 const Container = styled.div``;
 
@@ -103,24 +104,28 @@ class AdminFoldersProjectsList extends PureComponent<Props, State> {
               id="e2e-admin-published-projects-list"
             >
               {({ itemsList, handleDragRow, handleDropRow }) => (
-                itemsList.map((project: IProjectData, index: number) => (
-                  <SortableRow
-                    key={project.id}
-                    id={project.id}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                    lastItem={(index === inFolderProjects.length - 1)}
-                  >
-                  <ProjectRow
-                    project={project}
-                    actions={[{
-                      buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
-                      handler: this.removeProjectFromFolder,
-                      icon: 'remove'
-                    }, 'manage']}
-                  />
-                  </SortableRow>
+                itemsList.map((projectId: string, index: number) => (
+                  <GetProject projectId={projectId} key={projectId}>
+                    {project => isNilOrError(project) ? null : (
+                      <SortableRow
+                        key={project.id}
+                        id={project.id}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={(index === inFolderProjects.length - 1)}
+                      >
+                        <ProjectRow
+                          project={project}
+                          actions={[{
+                            buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
+                            handler: this.removeProjectFromFolder,
+                            icon: 'remove'
+                          }, 'manage']}
+                        />
+                      </SortableRow>
+                    )}
+                  </GetProject>
                 ))
               )}
             </SortableList>

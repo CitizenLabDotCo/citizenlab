@@ -15,7 +15,6 @@ import { IProjectData, reorderProject } from 'services/projects';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // localisation
@@ -42,6 +41,10 @@ import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/P
 import styled from 'styled-components';
 import { IProjectFolderData } from 'services/projectFolders';
 import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton } from '../components/ProjectRow';
+import GetFolderOrProjectOrderings, { GetFolderOrProjectOrderingsChildProps } from 'resources/GetFolderOrProjectOrderings';
+import { IFolderOrProjectOrderingData } from 'services/folderOrProjectOrderings';
+import GetProject from 'resources/GetProject';
+import GetProjectFolder from 'resources/GetProjectFolder';
 
 const Container = styled.div``;
 
@@ -84,9 +87,9 @@ export interface InputProps {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   projects: GetProjectsChildProps;
+  folderOrProjectsOrderings: GetFolderOrProjectOrderingsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -188,15 +191,12 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { tenant, authUser, projects, className } = this.props;
+    const { authUser, projects, className, folderOrProjectsOrderings } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
 
-    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
+    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(folderOrProjectsOrderings)) {
       const { projectsList } = projects;
-      const publishedProjects = projectsList.filter((project) => {
-        return project.attributes.publication_status === 'published';
-      });
       const draftProjects = projectsList.filter((project) => {
         return project.attributes.publication_status === 'draft';
       });
@@ -224,7 +224,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
       lists = (
         <ListsContainer>
-          {publishedProjects && publishedProjects.length > 0 &&
+          {folderOrProjectsOrderings && folderOrProjectsOrderings.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -242,46 +242,62 @@ class AdminProjectsList extends PureComponent<Props, State> {
               </ListHeader>
 
               <HasPermission item="project" action="reorder">
-                {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
-                  <SortableList
-                    items={publishedProjects}
-                    onReorder={this.handleReorder}
-                    className="projects-list e2e-admin-projects-list"
-                    id="e2e-admin-published-projects-list"
-                  >
-                    {({ itemsList, handleDragRow, handleDropRow }) => (
-                      itemsList.map((project: IProjectData, index: number) => (
-                        <SortableRow
-                          key={project.id}
-                          id={project.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={(index === publishedProjects.length - 1)}
-                        >
-                          <ProjectRow project={project} />
-                        </SortableRow>
-                      ))
-                    )}
-                  </SortableList>
-                  :
-                  <List>
-                    {publishedProjects.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
-                        <ProjectRow project={project} />
-                      </Row>
+                <SortableList
+                  items={folderOrProjectsOrderings}
+                  onReorder={this.handleReorder}
+                  className="projects-list e2e-admin-projects-list"
+                  id="e2e-admin-published-projects-list"
+                >
+                  {({ itemsList, handleDragRow, handleDropRow }) => (
+                    itemsList.map((item: IFolderOrProjectOrderingData, index: number) => {
+                      if (item.relationships.containable.data.type === 'project') {
+                        return (
+                          <GetProject projectId={item.relationships.containable.data.id}>
+                            {project => isNilOrError(project) ? null : (
+                              <SortableRow
+                                key={project.id}
+                                id={project.id}
+                                index={index}
+                                moveRow={handleDragRow}
+                                dropRow={handleDropRow}
+                                lastItem={(index === folderOrProjectsOrderings.length - 1)}
+                              >
+                                <ProjectRow project={project} />
+                              </SortableRow>
+                            )}
+                          </GetProject>
+                        );
+                      } else {
+                        return (
+                          <GetProjectFolder projectFolderId={item.relationships.containable.data.id}>
+                            {projectFolder => isNilOrError(projectFolder) ? null : (
+                              <SortableRow
+                                key={projectFolder.id}
+                                id={projectFolder.id}
+                                index={index}
+                                moveRow={handleDragRow}
+                                dropRow={handleDropRow}
+                                lastItem={(index === folderOrProjectsOrderings.length - 1)}
+                              >
+                                {FolderRow(projectFolder)}
+                              </SortableRow>
+                            )}
+                          </GetProjectFolder>
+                        );
+                      }
+                    }
                     ))}
-                  </List>
+                </SortableList>
                 }
-                <HasPermission.No>
+{/* TODO                <HasPermission.No>
                   <List>
-                    {publishedProjects.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
+                    {folderOrProjectsOrderings.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === folderOrProjectsOrderings.length - 1)}>
                         <ProjectRow project={project} />
                       </Row>
                     ))}
                   </List>
-                </HasPermission.No>
+                </HasPermission.No>*/}
               </HasPermission>
             </>
           }
@@ -418,12 +434,12 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 }
 
-const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
+const publicationStatuses: PublicationStatus[] = ['draft', 'archived'];
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
   authUser: <GetAuthUser />,
+  folderOrProjectsOrderings: <GetFolderOrProjectOrderings />,
   projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
 });
 
