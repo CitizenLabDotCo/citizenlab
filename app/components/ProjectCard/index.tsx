@@ -168,14 +168,14 @@ const ProjectContent = styled.div`
   align-items: stretch;
 
   &.large {
-    margin-top: 18px;
-    margin-bottom: 35px;
-    margin-left: 68px;
-    margin-right: 32px;
+    padding-top: 18px;
+    padding-bottom: 35px;
+    padding-left: 68px;
+    padding-right: 32px;
 
     ${media.smallerThanMaxTablet`
-      margin-left: 20px;
-      margin-right: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
     `}
   }
 
