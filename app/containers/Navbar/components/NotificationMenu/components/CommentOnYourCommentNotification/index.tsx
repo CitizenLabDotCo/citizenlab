@@ -35,7 +35,7 @@ const CommentOnYourCommentNotification = memo<Props>(props => {
     <NotificationWrapper
       linkTo={mapPostTypeToLink(notification)}
       timing={notification.attributes.created_at}
-      icon="notification_comment"
+      icon="comments"
       isRead={!!notification.attributes.read_at}
     >
       <FormattedMessage
