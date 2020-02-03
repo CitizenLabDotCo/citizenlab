@@ -34,6 +34,12 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 
+const NotificationsWrapper = styled.div`
+  /* display: flex;
+  flex-direction: column;
+  align-items: stretch; */
+`;
+
 const EmptyStateContainer = styled.div`
   height: 200px;
   display: flex;
@@ -100,23 +106,9 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
     });
   }
 
-  renderList = () => {
-    const { notifications: { list } } = this.props;
-    if (isNilOrError(list) || list.length === 0) return [];
-    return list.map((notification) => {
-      return (
-        <Notification
-          notification={notification}
-          key={notification.id}
-        />
-      );
-    });
-  }
-
   render() {
     const { dropdownOpened } = this.state;
     const { notifications, authUser } = this.props;
-    const notificationsList = this.renderList();
 
     if (!isNilOrError(authUser)) {
       return (
@@ -147,8 +139,17 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
                   </LoadingContainer>
                 }
               >
-                {notificationsList}
-                {notifications.list !== undefined && notificationsList && notificationsList.length === 0 &&
+                {!isNilOrError(notifications?.list) && notifications.list.length > 0 &&
+                  <NotificationsWrapper>
+                    {notifications.list.map((notification) => (
+                      <Notification
+                        key={notification.id}
+                        notification={notification}
+                      />
+                    ))}
+                  </NotificationsWrapper>
+                }
+                {!isNilOrError(notifications?.list) && notifications.list.length === 0 &&
                   <EmptyStateContainer>
                     <EmptyStateImageWrapper>
                       <EmptyStateImage src={EmptyStateImg} role="presentation" alt="" />

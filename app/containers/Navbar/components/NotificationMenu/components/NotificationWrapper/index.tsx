@@ -8,14 +8,15 @@ import tracks from '../../../../tracks';
 import clHistory from 'utils/cl-router/history';
 
 const Container = styled.button`
-  flex: 1;
   display: flex;
+  text-align: left;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
   padding-left: 15px;
   padding-right: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
+  margin: 0;
   margin-bottom: 5px;
 
   &:hover,
@@ -48,10 +49,7 @@ const StyledIcon: any = styled(Icon)`
 `;
 
 const Body = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+  flex: 1 1 auto;
 `;
 
 const Message = styled.div<{ isRead: boolean }>`
@@ -59,8 +57,8 @@ const Message = styled.div<{ isRead: boolean }>`
   font-size: ${fontSizes.base}px;
   font-weight: ${props => props.isRead ? 'normal' : '500'};
   text-align: left;
-  margin-bottom: 4px;
   white-space: normal;
+  margin-bottom: 4px;
 
   a {
     color: #000;
@@ -76,10 +74,10 @@ const Message = styled.div<{ isRead: boolean }>`
       text-decoration: underline;
     }
   }
-
 `;
 
 const Timing = styled.span`
+  width: 100%;
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
   text-align: left;
