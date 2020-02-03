@@ -2,7 +2,7 @@ import React, { PureComponent, FormEvent, ButtonHTMLAttributes } from 'react';
 import Link from 'utils/cl-router/Link';
 import { isBoolean, isNil, isString, get } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
-import { darken } from 'polished';
+import { darken, lighten, transparentize } from 'polished';
 import { colors, invisibleA11yText, fontSizes } from 'utils/styleUtils';
 import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
@@ -122,9 +122,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     },
     'secondary-outlined': {
       bgColor: 'transparent',
-      bgHoverColor: 'transparent',
+      bgHoverColor: transparentize(0.95, colors.label),
       textColor: colors.label,
-      borderColor: colors.label
+      borderColor: lighten(0.25, colors.label),
     },
     text: {
       bgColor: 'transparent',

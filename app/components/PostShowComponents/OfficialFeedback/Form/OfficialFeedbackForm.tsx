@@ -151,7 +151,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
           <FormikSubmitWrapper
             animate
             bgColor={editForm ? colors.adminTextColor : colors.clRed}
-            icon="pen"
+            icon="send"
             textColor="white"
             fullWidth
             messages={{

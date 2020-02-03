@@ -55,18 +55,19 @@ const StyledA = styled.a`
 `;
 
 const TooltipWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
+  display: flex;
+  align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
   padding: 15px;
 
   a {
-    color: ${colors.clBlueDark};
+    color: ${colors.text};
     text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -75,7 +76,7 @@ const TooltipWrapper = styled.div`
     hyphens: auto;
 
     &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
+      color: ${darken(0.15, colors.text)};
       text-decoration: underline;
     }
   }
