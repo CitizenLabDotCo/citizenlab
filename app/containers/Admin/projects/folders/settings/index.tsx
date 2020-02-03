@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
 import { SectionTitle, SectionSubtitle, SectionField, Section } from 'components/admin/Section';
@@ -18,6 +18,9 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { addProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import { adopt } from 'react-adopt';
+import { convertUrlToUploadFile } from 'utils/fileTools';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
@@ -36,9 +39,30 @@ const goBack = () => {
   clHistory.push('/admin/projects');
 };
 
-const FolderSettings = ({ params }: WithRouterProps) => {
+interface DataProps {
+  projectFolder: GetProjectFolderChildProps;
+}
+
+const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) => {
   const { projectFolderId } = params;
   const mode = projectFolderId ? 'edit' : 'new';
+
+  if (mode === 'edit') { // Should handle data loading
+    useEffect(() => {
+      (async function iife() {
+        if (!isNilOrError(projectFolder)) {
+          setTitleMultiloc(projectFolder.attributes.title_multiloc);
+          setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
+          setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
+          if (projectFolder.attributes ?.header_bg ?.large) {
+            const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
+            setHeaderBg(headerFile);
+          }
+        }
+      }
+      )();
+    }, [projectFolder]);
+  }
 
   // locale things
   const locale = useLocale();
@@ -47,13 +71,9 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(isNilOrError(locale) ? null : locale);
 
   // if user locale changes, we set the form selectedLocale to it (necessary as locale is initially undefined)
-  const prevLocaleRef = useRef<Locale | null>(safeLocale);
   useEffect(() => {
-    if (prevLocaleRef.current !== safeLocale) {
-      prevLocaleRef.current = safeLocale;
-      setSelectedLocale(safeLocale);
-    }
-  });
+    setSelectedLocale(safeLocale);
+  }, [safeLocale]);
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
@@ -101,6 +121,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   };
 
   if (!selectedLocale) return null;
+  if (mode === 'edit' && isNilOrError(projectFolder)) return null;
 
   return (
     <Container mode={mode}>
@@ -191,4 +212,14 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   );
 };
 
-export default withRouter(FolderSettings);
+const FolderSettingsWithHoCs = withRouter(FolderSettings);
+
+const Data = adopt<DataProps, WithRouterProps>({
+  projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
+});
+
+export default (inputProps: WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <FolderSettingsWithHoCs {...inputProps} {...dataProps} />}
+  </Data>
+);
