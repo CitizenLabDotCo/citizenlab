@@ -24,6 +24,7 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { darken } from 'polished';
 import T from 'components/T';
 
 // images
@@ -160,11 +161,11 @@ const ManualText = styled.div`
   color: ${colors.label};
 
   a {
-    color: inherit;
+    color: ${colors.clBlueDark};
     text-decoration: underline;
 
     &:hover {
-      color: #000;
+      color: ${darken(0.15, colors.clBlueDark)};
       text-decoration: underline;
     }
   }

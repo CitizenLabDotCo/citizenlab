@@ -67,7 +67,7 @@ const TooltipWrapper = styled.div`
   padding: 15px;
 
   a {
-    color: ${colors.text};
+    color: ${colors.clBlueDark};
     text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -76,7 +76,7 @@ const TooltipWrapper = styled.div`
     hyphens: auto;
 
     &:hover {
-      color: ${darken(0.15, colors.text)};
+      color: ${darken(0.15, colors.clBlueDark)};
       text-decoration: underline;
     }
   }

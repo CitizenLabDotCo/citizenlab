@@ -13,7 +13,7 @@ const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
   padding: 5px;
 
   a {
-    color: inherit;
+    color: ${colors.clBlueDark};
     text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -22,7 +22,7 @@ const ContentWrapper = styled.div<{ tippytheme: 'light' | undefined }>`
     hyphens: auto;
 
     &:hover {
-      color: inherit;
+      color: ${darken(0.15, colors.clBlueDark)};
       text-decoration: underline;
     }
   }

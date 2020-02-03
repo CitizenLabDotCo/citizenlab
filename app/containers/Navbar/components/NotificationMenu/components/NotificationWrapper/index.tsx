@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
+import { darken } from 'polished';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { trackEventByName } from 'utils/analytics';
@@ -61,8 +62,8 @@ const Message = styled.div<{ isRead: boolean }>`
   margin-bottom: 4px;
 
   a {
-    color: #000;
-    font-weight: 500;
+    color: ${colors.clBlueDark};
+    text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-all;
@@ -70,7 +71,7 @@ const Message = styled.div<{ isRead: boolean }>`
     hyphens: auto;
 
     &:hover {
-      color: #000;
+      color: ${darken(0.15, colors.clBlueDark)};
       text-decoration: underline;
     }
   }
