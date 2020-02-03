@@ -7,7 +7,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 const Container = styled.div`
   display: flex;
   align-items: center;
-  padding: 13px;
+  padding: 18px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.clBlueDarkBg};
 `;
