@@ -15,8 +15,10 @@ import IconTooltip from 'components/UI/IconTooltip';
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import { addProjectFolder } from 'services/projectFolder';
+import clHistory from 'utils/cl-router/history';
 
-const Container = styled.div<({ mode: 'edit' | 'new'})>`
+const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
   flex-direction: column;
   ${({ mode }) => mode === 'new' ? `
@@ -64,10 +66,34 @@ const FolderSettings = ({ params }: WithRouterProps) => {
 
   // form status
   const [loading, setLoading] = useState<boolean>(false);
-  const submitState = 'enabled';
+  const [status, setStatus] = useState<'enabled' | 'error' | 'success'>('enabled');
 
   // form submission
-  const onSubmit = (event) => console.log(titleMultiloc, shortDescriptionMultiloc, descriptionMultiloc, headerBg);
+  const onSubmit = async (event) => {
+    setLoading(true);
+    try {
+      if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
+        const res = await addProjectFolder({
+          title_multiloc: titleMultiloc,
+          description_multiloc: descriptionMultiloc,
+          description_preview_multiloc: shortDescriptionMultiloc,
+          header_bg: headerBg ?.base64
+      });
+        if (isNilOrError(res)) {
+          setStatus('error');
+        } else {
+          clHistory.push(`/admin/projects/folders/${res.id}`);
+        }
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+    setLoading(false);
+
+    console.log(titleMultiloc, shortDescriptionMultiloc, descriptionMultiloc, headerBg);
+  };
 
   if (!selectedLocale) return null;
 
@@ -85,7 +111,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
         :
         <>
           <SectionTitle >
-            {< FormattedMessage {...messages.titleNewFolder} />}
+            {<FormattedMessage {...messages.titleNewFolder} />}
           </SectionTitle >
           <SectionSubtitle>
             <FormattedMessage {...messages.subtitleNewFolder} />
@@ -142,7 +168,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
           </SectionField>
           <SubmitWrapper
             loading={loading}
-            status={submitState}
+            status={status}
             onClick={onSubmit}
             messages={{
               buttonSave: messages.save,
