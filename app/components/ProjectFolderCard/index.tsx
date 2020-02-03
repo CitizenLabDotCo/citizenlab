@@ -390,11 +390,14 @@ const Data = adopt<DataProps, InputProps>({
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
-// TODO: remove intl if not used
 const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
 
+// TODO: remove intl if not used
 // TODO: make accesible
 // TODO: add footer to vertically center the content more
+// TODO: tracks
+// TODO: copy
+// TODO: data loading
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
