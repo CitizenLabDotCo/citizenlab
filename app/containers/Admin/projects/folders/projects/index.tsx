@@ -72,6 +72,10 @@ class AdminFoldersProjectsList extends PureComponent<Props, State> {
     projectFolderId && updateProjectFolderMembership(projectId, projectFolderId);
   }
 
+  removeProjectFromFolder = (projectId) => () => {
+    updateProjectFolderMembership(projectId, null);
+  }
+
   render() {
     const { projects, projectFolder } = this.props;
     const projectList = projects && !isNilOrError(projects.projectsList) ? projects.projectsList : null;
@@ -108,7 +112,14 @@ class AdminFoldersProjectsList extends PureComponent<Props, State> {
                     dropRow={handleDropRow}
                     lastItem={(index === inFolderProjects.length - 1)}
                   >
-                    <ProjectRow project={project} />
+                  <ProjectRow
+                    project={project}
+                    actions={[{
+                      buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
+                      handler: this.removeProjectFromFolder,
+                      icon: 'remove'
+                    }, 'manage']}
+                  />
                   </SortableRow>
                 ))
               )}

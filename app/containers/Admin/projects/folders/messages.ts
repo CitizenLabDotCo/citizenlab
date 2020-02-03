@@ -90,4 +90,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.addToFolder',
     defaultMessage: 'Add to folder',
   },
+  removeFromFolder: {
+    id: 'app.containers.AdminPage.SettingsPage.removeFromFolder',
+    defaultMessage: 'Remove from folder',
+  },
 });
