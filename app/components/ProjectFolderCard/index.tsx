@@ -474,23 +474,27 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         </ContentHeader>
       );
 
+      const screenReaderContent = (
+        <ScreenReaderOnly>
+          <ProjectTitle>
+            <FormattedMessage {...messages.a11y_projectTitle} />
+            <T value={project.attributes.title_multiloc} />
+          </ProjectTitle>
+
+          <ProjectDescription>
+            <FormattedMessage {...messages.a11y_projectDescription} />
+            <T value={project.attributes.description_preview_multiloc} />
+          </ProjectDescription>
+        </ScreenReaderOnly>
+      );
+
       return (
         <Container
           className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-project-card`}
           to={projectUrl}
           onClick={this.handleProjectCardOnClick(project.id)}
         >
-          <ScreenReaderOnly>
-            <ProjectTitle>
-              <FormattedMessage {...messages.a11y_projectTitle} />
-              <T value={project.attributes.title_multiloc} />
-            </ProjectTitle>
-
-            <ProjectDescription>
-              <FormattedMessage {...messages.a11y_projectDescription} />
-              <T value={project.attributes.description_preview_multiloc} />
-            </ProjectDescription>
-          </ScreenReaderOnly>
+          {screenReaderContent}
           {size !== 'large' && contentHeader}
 
           <ProjectImageContainer className={size}>
