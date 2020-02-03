@@ -27,7 +27,11 @@ export interface IProjectFolderData {
 }
 
 export function projectFolderByIdStream(projectFolderId: string) {
-  return streams.get<IProjectFolderData>({ apiEndpoint: `${apiEndpoint}/${projectFolderId}` });
+  return streams.get<{ data: IProjectFolderData }>({ apiEndpoint: `${apiEndpoint}/${projectFolderId}` });
+}
+
+export function projectFolderBySlugStream(projectFolderSlug: string) {
+  return streams.get<{ data: IProjectFolderData }>({ apiEndpoint: `${apiEndpoint}/by_slug/${projectFolderSlug}` });
 }
 
 export async function addProjectFolder(object: Partial<IProjectFolderAttributes>) {
