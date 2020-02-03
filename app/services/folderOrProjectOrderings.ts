@@ -16,7 +16,7 @@ export interface IFolderOrProjectOrderingData {
   };
 }
 
-export async function listFolderOrProjectOrderings() {
+export function listFolderOrProjectOrderings() {
   return streams.get<{ data: IFolderOrProjectOrderingData[] }>({ apiEndpoint });
 }
 
