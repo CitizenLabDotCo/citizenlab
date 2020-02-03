@@ -9,6 +9,8 @@ import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import Header from './Header';
 import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
+import ProjectCards from 'components/ProjectCards';
+import ProjectFolderInfo from './ProjectFolderInfo';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -119,10 +121,22 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                   <Spinner />
                 </Loading>
               ) : (
-                <>
-                  <Header projectSlug={this.props.params.slug} />
-                  <Content>{children}</Content>
-                </>
+                !isNilOrError(project) ? (
+                  <>
+                    <Header projectSlug={this.props.params.slug} />
+                    <Content>
+                      <ProjectFolderInfo projectId={project.id} />
+                      <ProjectCards
+                        pageSize={50}
+                        publicationStatuses={['published', 'archived']}
+                        sort="new"
+                        showTitle={false}
+                        showPublicationStatusFilter={true}
+                        layout="threecolumns"
+                      />
+                    </Content>
+                  </>
+                ) : null
               )
             )}
         </Container>

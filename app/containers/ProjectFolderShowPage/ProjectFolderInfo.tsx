@@ -6,12 +6,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import ImageZoom from 'react-medium-image-zoom';
 import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
-import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
@@ -94,7 +92,6 @@ interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
-  projectFiles: GetResourceFilesChildProps;
   authUser: GetAuthUserChildProps;
 }
 
@@ -103,7 +100,7 @@ interface Props extends InputProps, DataProps {
 }
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, projectFiles, theme, intl: { formatMessage }, authUser } = props;
+  const { project, projectImages, theme, intl: { formatMessage }, authUser } = props;
 
   if (isNilOrError(project)) return null;
 
@@ -129,9 +126,6 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
               <T value={project.attributes.description_multiloc} supportHtml={true}/>
             </QuillEditedContent>
           </ProjectDescription>
-          {!isNilOrError(projectFiles) && projectFiles && projectFiles.length > 0 &&
-            <FileAttachments files={projectFiles} />
-          }
         </Left>
 
         <Right>
@@ -175,7 +169,6 @@ const ProjectInfoWhithHoc = withTheme(injectIntl<Props>(ProjectInfo));
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
 

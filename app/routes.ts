@@ -181,7 +181,7 @@ export default function createRoutes() {
           })
         },
         {
-          path: 'projects/folder/:slug',
+          path: 'projects/folder',
           name: 'Project folder page',
           component: Loadable({
             loader: () => import('containers/ProjectFolderShowPage'),
