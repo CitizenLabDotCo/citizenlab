@@ -1,9 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty, get, isNumber, round } from 'lodash-es';
-import moment from 'moment';
-import Observer from '@researchgate/react-intersection-observer';
+import { isEmpty } from 'lodash-es';
 import bowser from 'bowser';
 
 // router
@@ -19,7 +17,6 @@ import { getProjectUrl } from 'services/projects';
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // i18n
 import T from 'components/T';
@@ -229,38 +226,6 @@ const ContentHeader = styled.div`
   }
 `;
 
-const Countdown = styled.div`
-  margin-top: 4px;
-`;
-
-const TimeRemaining = styled.div`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.small}px;
-  font-weight: 400;
-  margin-bottom: 8px;
-`;
-
-const ProgressBar = styled.div`
-  width: 100%;
-  max-width: 130px;
-  height: 5px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #d6dade;
-`;
-
-const ProgressBarOverlay: any = styled.div`
-  width: 0px;
-  height: 100%;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${colors.clRed};
-  transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
-  will-change: width;
-
-  &.visible {
-    width: ${(props: any) => props.progress}%;
-  }
-`;
-
 const ContentBody = styled.div`
   width: 100%;
   flex-grow: 1;
@@ -298,16 +263,6 @@ const ProjectDescription = styled.div`
   margin-top: 15px;
 `;
 
-const ContentHeaderLabel = styled.span`
-  height: ${ContentHeaderHeight}px;
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  font-weight: 500;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-`;
-
 const MapIcon = styled(Icon)`
   width: 27px;
   height: 21px;
@@ -330,32 +285,13 @@ export interface InputProps {
 interface DataProps {
   project: GetProjectChildProps;
   projectImages: GetProjectImagesChildProps;
-  phase: GetPhaseChildProps;
 }
 
 interface Props extends InputProps, DataProps {
   theme?: any;
 }
 
-interface State {
-  visible: boolean;
-}
-
-class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      visible: false
-    };
-  }
-
-  handleIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
-    if (event.isIntersecting) {
-      this.setState({ visible: true });
-      unobserve();
-    }
-  }
-
+class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
   handleProjectCardOnClick = (projectId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
   }
@@ -369,49 +305,12 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { visible } = this.state;
-    const { project, phase, size, projectImages, layout, className } = this.props;
+    const { project, size, projectImages, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
       const projectUrl = getProjectUrl(project);
-      const isFinished = (project.attributes.timeline_active === 'past');
       const isArchived = (project.attributes.publication_status === 'archived');
-      const startAt = get(phase, 'attributes.start_at');
-      const endAt = get(phase, 'attributes.end_at');
-      const timeRemaining = (endAt ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize() : null);
-      let countdown: JSX.Element | null = null;
-
-      if (isArchived) {
-        countdown = (
-          <ContentHeaderLabel className="e2e-project-card-archived-label">
-            <FormattedMessage {...messages.archived} />
-          </ContentHeaderLabel>
-        );
-      } else if (isFinished) {
-        countdown = (
-          <ContentHeaderLabel>
-            <FormattedMessage {...messages.finished} />
-          </ContentHeaderLabel>
-        );
-      } else if (timeRemaining) {
-        const totalDays = (timeRemaining ? moment.duration(moment(endAt).diff(moment(startAt))).asDays() : null);
-        const pastDays = (timeRemaining ? moment.duration(moment(moment()).diff(moment(startAt))).asDays() : null);
-        const progress = (timeRemaining && isNumber(pastDays) && isNumber(totalDays) ?  round((pastDays / totalDays) * 100, 1) : null);
-
-        countdown = (
-          <Countdown className="e2e-project-card-time-remaining">
-            <TimeRemaining className={size}>
-              <FormattedMessage {...messages.remaining} values={{ timeRemaining }} />
-            </TimeRemaining>
-            <Observer onChange={this.handleIntersection}>
-              <ProgressBar aria-hidden>
-                <ProgressBarOverlay progress={progress} className={visible ? 'visible' : ''} />
-              </ProgressBar>
-            </Observer>
-          </Countdown>
-        );
-      }
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent hasRightContent' ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${!countdown ? 'noContent' : ''}`}>
@@ -491,7 +390,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  phase: ({ project, render }) => <GetPhase id={get(project, 'relationships.current_phase.data.id')}>{render}</GetPhase>
 });
 
 // TODO: remove intl if not used
