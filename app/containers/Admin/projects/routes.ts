@@ -26,15 +26,15 @@ export default () => ({
         loading: () => null
       }),
     },
-    // {
-    //   path: '/:locale/admin/projects/folders/new',
-    //   name: 'admin projects single project',
-    //   component: Loadable({
-    //     loader: () => import('containers/Admin/projects/folders/settings'),
-    //     loading: LoadableLoadingAdmin,
-    //     delay: 500
-    //   }),
-    // },
+    {
+      path: '/:locale/admin/projects/folders/new',
+      name: 'admin projects single project',
+      component: Loadable({
+        loader: () => import('containers/Admin/projects/folders/settings'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
+    },
     {
       path: '/:locale/admin/projects/folders',
       name: 'admin projects single project',

@@ -8,7 +8,7 @@ export default defineMessages({
   },
   subtitleSettingsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.subtitleSettingsTab',
-    defaultMessage: 'Explain why these project belong together, define a visual identity.',
+    defaultMessage: 'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
   viewPublicFolder: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicFolder',
@@ -41,5 +41,33 @@ export default defineMessages({
   descriptionInputLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.descriptionInputLabel',
     defaultMessage: 'Description',
+  },
+  headerImageInputLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.headerImageInputLabel',
+    defaultMessage: 'Header image',
+  },
+  save: {
+    id: 'app.containers.AdminPage.SettingsPage.save',
+    defaultMessage: 'Save',
+  },
+  saveSuccess: {
+    id: 'app.containers.AdminPage.SettingsPage.saveSuccess',
+    defaultMessage: 'Success!',
+  },
+  saveErrorMessage: {
+    id: 'app.containers.AdminPage.SettingsPage.saveErrorMessage',
+    defaultMessage: 'Something went wrong, please try again later.',
+  },
+  saveSuccessMessage: {
+    id: 'app.containers.AdminPage.SettingsPage.saveSuccessMessage',
+    defaultMessage: 'Your changes have been saved.',
+  },
+  titleNewFolder: {
+    id: 'app.containers.AdminPage.SettingsPage.titleNewFolder',
+    defaultMessage: 'Create a new folder',
+  },
+  subtitleNewFolder: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleNewFolder',
+    defaultMessage: 'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
 });
