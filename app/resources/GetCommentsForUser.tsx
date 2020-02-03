@@ -115,7 +115,6 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
 
   render() {
     const { children } = this.props;
-    console.log(this.state);
     return (children as children)({ loadMore: this.loadMore, ...this.state });
   }
 }
