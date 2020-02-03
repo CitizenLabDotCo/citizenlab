@@ -56,8 +56,7 @@ const IconWrapper = styled.div`
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: solid 1px ${colors.separation};
-  background: #fff;
+  background: #f0f0f0;
   margin-bottom: 15px;
 `;
 
