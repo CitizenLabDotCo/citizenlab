@@ -26,6 +26,7 @@ export default class GoBackButton extends PureComponent<Props, State> {
           buttonStyle="text"
           icon="arrow-back"
           size="2"
+          padding="0"
           text={<FormattedMessage {...messages.goBack} />}
         />
       </Container>
