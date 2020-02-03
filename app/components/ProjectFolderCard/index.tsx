@@ -192,7 +192,6 @@ const ContentHeaderBottomMargin = 13;
 const ContentHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
 
   &.noContent {
     ${media.biggerThanMinTablet`
@@ -228,18 +227,6 @@ const ContentHeader = styled.div`
       padding-right: 10px;
     `}
   }
-`;
-
-const ContentHeaderLeft = styled.div`
-  min-height: ${ContentHeaderHeight}px;
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: 140px;
-  margin-right: 15px;
-`;
-
-const ContentHeaderRight = styled.div`
-  min-height: ${ContentHeaderHeight}px;
 `;
 
 const Countdown = styled.div`
@@ -311,46 +298,6 @@ const ProjectDescription = styled.div`
   margin-top: 15px;
 `;
 
-const ContentFooter = styled.div`
-  height: 53px;
-  flex-shrink: 0;
-  flex-grow: 0;
-  flex-basis: 53px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-top: 16px;
-  margin-top: 30px;
-  border-top: solid 1px #e8e8e8;
-
-  &.hidden {
-    border: none;
-
-    &.large {
-      margin-top: 0px;
-    }
-
-    &:not(.large) {
-      ${media.smallerThanMinTablet`
-        height: 20px;
-        flex-basis: 20px;
-        margin: 0px;
-        padding: 0px;
-      `}
-    }
-  }
-`;
-
-const ContentFooterSection = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
-
-const ContentFooterLeft = styled(ContentFooterSection)``;
-
-const ContentFooterRight = styled(ContentFooterSection)``;
-
 const ContentHeaderLabel = styled.span`
   height: ${ContentHeaderHeight}px;
   color: ${colors.label};
@@ -359,6 +306,18 @@ const ContentHeaderLabel = styled.span`
   text-transform: uppercase;
   display: flex;
   align-items: center;
+`;
+
+const MapIcon = styled(Icon)`
+  width: 27px;
+  height: 21px;
+  fill: ${colors.placeholder};
+  margin-right: 10px;
+`;
+
+const MapIconDescription = styled.span`
+  font-weight: bold;
+  margin-bottom: -2px;
 `;
 
 export interface InputProps {
@@ -418,12 +377,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
       const projectUrl = getProjectUrl(project);
       const isFinished = (project.attributes.timeline_active === 'past');
       const isArchived = (project.attributes.publication_status === 'archived');
-      const ideasCount = project.attributes.ideas_count;
-      const commentsCount = project.attributes.comments_count;
-      const hasAvatars = (project.relationships.avatars && project.relationships.avatars.data && project.relationships.avatars.data.length > 0);
-      const showIdeasCount = !(project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation') && ideasCount > 0;
-      const showCommentsCount = (commentsCount > 0);
-      const showFooter = (hasAvatars || showIdeasCount || showCommentsCount);
       const startAt = get(phase, 'attributes.start_at');
       const endAt = get(phase, 'attributes.end_at');
       const timeRemaining = (endAt ? moment.duration(moment(endAt).endOf('day').diff(moment())).humanize() : null);
@@ -462,15 +415,8 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent hasRightContent' ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${!countdown ? 'noContent' : ''}`}>
-          {countdown !== null &&
-            <ContentHeaderLeft className={size}>
-              {countdown}
-            </ContentHeaderLeft>
-          }
-
-          <ContentHeaderRight className={`${size}`}>
-            <div>TO DO</div>
-          </ContentHeaderRight>
+          <MapIcon name="simpleFolder" />
+          <MapIconDescription>3 projects</MapIconDescription>
         </ContentHeader>
       );
 
@@ -533,16 +479,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
                 }}
               </T>
             </ContentBody>
-
-            <ContentFooter className={`${size} ${!showFooter ? 'hidden' : ''}`}>
-              <ContentFooterLeft>
-                Placeholder
-              </ContentFooterLeft>
-
-              <ContentFooterRight>
-                3 projects
-              </ContentFooterRight>
-            </ContentFooter>
           </ProjectContent>
         </Container>
       );
@@ -560,6 +496,8 @@ const Data = adopt<DataProps, InputProps>({
 
 // TODO: remove intl if not used
 const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
+
+// TODO: make accesible
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
