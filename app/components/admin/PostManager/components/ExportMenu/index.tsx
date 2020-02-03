@@ -81,7 +81,7 @@ export default class ExportMenu extends PureComponent<Props, State> {
     return (
       <Container className={className}>
         <DropdownButton
-          buttonStyle="admin-text"
+          buttonStyle="admin-dark-text"
           onClick={this.toggleDropdown}
           icon="download"
           iconPos="right"
