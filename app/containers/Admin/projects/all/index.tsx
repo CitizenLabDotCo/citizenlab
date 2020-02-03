@@ -49,6 +49,7 @@ import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/P
 // style
 import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { IFolderData } from 'services/folder';
 
 const Container = styled.div``;
 
@@ -255,10 +256,10 @@ class AdminProjectsList extends PureComponent<Props, State> {
     }
   }
 
-  render () {
+  render() {
     const { selectedProjectTemplateId } = this.state;
     const { tenant, authUser, projects, className } = this.props;
-    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
+    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
 
     if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
@@ -273,7 +274,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
         return project.attributes.publication_status === 'archived';
       });
 
-      const row = (project: IProjectData) => {
+      const ProjectRow = (project: IProjectData) => {
         return (
           <RowContent className="e2e-admin-projects-list-item">
             <RowContentInner className="expand primary">
@@ -319,6 +320,23 @@ class AdminProjectsList extends PureComponent<Props, State> {
           </RowContent>
         );
       };
+      const FolderRow = (folder: IFolderData) => {
+        return (
+          <RowContent className="e2e-admin-projects-list-item">
+            <RowContentInner className="expand primary">
+              <RowTitle value={folder.attributes.title_multiloc} />
+            </RowContentInner>
+            <StyledButton
+              className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] ? folder.attributes.title_multiloc['en-GB'] : ''}`}
+              linkTo={`/admin/folders/${folder.id}/edit`}
+              buttonStyle="secondary"
+              icon="edit"
+            >
+              <FormattedMessage {...messages.editButtonLabel} />
+            </StyledButton>
+          </RowContent>
+        );
+      };
 
       lists = (
         <ListsContainer>
@@ -332,20 +350,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <HasPermission item="project" action="reorder">
-                  <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
-                    <ToggleWrapper>
-                      <ToggleLabel htmlFor="manual-sorting-toggle">
-                        <FormattedMessage {...messages.manualSortingProjects} />
-                      </ToggleLabel>
-                      <Toggle
-                        id="manual-sorting-toggle"
-                        value={(tenant.attributes.settings.manual_project_sorting as any).enabled}
-                        onChange={this.handleToggleManualProjectSorting}
-                      />
-                    </ToggleWrapper>
-                  </FeatureFlag>
-                </HasPermission>
+                <Button
+                  linkTo={'/admin/projects/folders/new'}
+                >
+                  <FormattedMessage {...messages.newProjectFolder} />
+                </Button>
               </ListHeader>
 
               <HasPermission item="project" action="reorder">
@@ -366,7 +375,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           dropRow={handleDropRow}
                           lastItem={(index === publishedProjects.length - 1)}
                         >
-                          {row(project)}
+                          {ProjectRow(project)}
                         </SortableRow>
                       ))
                     )}
@@ -375,7 +384,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <List>
                     {publishedProjects.map((project, index) => (
                       <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
-                        {row(project)}
+                        {ProjectRow(project)}
                       </Row>
                     ))}
                   </List>
@@ -384,7 +393,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <List>
                     {publishedProjects.map((project, index) => (
                       <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
-                        {row(project)}
+                        {ProjectRow(project)}
                       </Row>
                     ))}
                   </List>
@@ -419,7 +428,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         dropRow={handleDropRow}
                         lastItem={(index === draftProjects.length - 1)}
                       >
-                        {row(project)}
+                        {ProjectRow(project)}
                       </SortableRow>
                     ))
                   )}
@@ -428,7 +437,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <List>
                     {draftProjects.map((project, index) => (
                       <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
-                        {row(project)}
+                        {ProjectRow(project)}
                       </Row>
                     ))}
                   </List>
@@ -463,7 +472,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         dropRow={handleDropRow}
                         lastItem={index === archivedProjects.length - 1}
                       >
-                        {row(project)}
+                        {ProjectRow(project)}
                       </SortableRow>
                     ))
                   )}
@@ -477,7 +486,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         key={project.id}
                         lastItem={(index === archivedProjects.length - 1)}
                       >
-                        {row(project)}
+                        {ProjectRow(project)}
                       </Row>
                     ))}
                   </List>
@@ -500,7 +509,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
               <FormattedMessage {...messages.overviewPageSubtitle} />
               <HasPermission.No>
-              <FormattedMessage {...messages.overviewPageSubtitleModerator} />
+                <FormattedMessage {...messages.overviewPageSubtitleModerator} />
               </HasPermission.No>
             </HasPermission>
           </SectionSubtitle>
@@ -517,7 +526,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <ProjectTemplatePreviewPageAdmin
               projectTemplateId={selectedProjectTemplateId}
               goBack={this.closeTemplatePreview}
-              useTemplate={this.useTemplate}
             />
           }
         </ProjectTemplatePreviewContainer>
