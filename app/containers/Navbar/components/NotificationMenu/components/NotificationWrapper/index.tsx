@@ -1,62 +1,70 @@
 import React from 'react';
 import { FormattedRelative } from 'react-intl';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, media } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { trackEventByName } from 'utils/analytics';
 import tracks from '../../../../tracks';
 import clHistory from 'utils/cl-router/history';
 
 const Container = styled.button`
-  padding: 10px 0px;
+  flex: 1;
   display: flex;
-  flex-direction: row;
   cursor: pointer;
-  color: ${colors.label};
   border-radius: ${(props: any) => props.theme.borderRadius};
-  text-align: left;
-  outline: none;
-  width: 100%;
+  padding-left: 15px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 5px;
 
   &:hover,
   &:focus {
     color: ${colors.text};
     background-color: ${colors.clDropdownHoverBackground};
   }
+
+  ${media.smallerThanMinTablet`
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+  `}
 `;
 
 const IconContainer = styled.div`
-  flex: 0 0 60px;
-  width: 60px;
+  flex: 0 0 22px;
+  width: 22px;
   display: flex;
   justify-content: center;
-  padding-top: 4px;
-  border: solid 1px red;
+  margin-right: 15px;
 `;
 
 const StyledIcon: any = styled(Icon)`
-  flex: 0 0 17px;
-  height: 17px;
-  opacity: ${(props: any) => props.isRead ? '0.35' : '1'};
-  border: solid 1px red;
+  flex: 0 0 22px;
+  height: 22px;
+  fill: ${colors.label};
+  opacity: ${(props: any) => props.isRead ? '0.4' : '1'};
 `;
 
 const Body = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
 `;
 
 const Message = styled.div<{ isRead: boolean }>`
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: ${props => props.isRead ? 'normal' : '500'};
-  flex-grow: 1;
-  padding-bottom: 3px;
+  text-align: left;
+  margin-bottom: 4px;
   white-space: normal;
 
   a {
     color: #000;
-    text-decoration: underline;
+    font-weight: 500;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-all;
@@ -72,7 +80,9 @@ const Message = styled.div<{ isRead: boolean }>`
 `;
 
 const Timing = styled.span`
+  color: ${colors.label};
   font-size: ${fontSizes.small}px;
+  text-align: left;
 `;
 
 type Props = {
@@ -102,7 +112,11 @@ class NotificationWrapper extends React.PureComponent<Props> {
         </IconContainer>
         <Body>
           <Message isRead={isRead}>{children}</Message>
-          {timing && <Timing><FormattedRelative value={timing} /></Timing>}
+          {timing &&
+            <Timing>
+              <FormattedRelative value={timing} />
+            </Timing>
+          }
         </Body>
       </Container>
     );
