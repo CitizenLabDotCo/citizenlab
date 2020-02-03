@@ -88,7 +88,7 @@ const Container = styled(Link)`
 
   &.small,
   &.medium {
-    padding-top: 20px;
+    padding-top: 30px;
     padding-bottom: 30px;
   }
 
@@ -161,14 +161,14 @@ const ProjectContent = styled.div`
   align-items: stretch;
 
   &.large {
-    margin-top: 18px;
-    margin-bottom: 35px;
-    margin-left: 68px;
-    margin-right: 32px;
+    padding-top: 18px;
+    padding-bottom: 35px;
+    padding-left: 68px;
+    padding-right: 32px;
 
     ${media.smallerThanMaxTablet`
-      margin-left: 20px;
-      margin-right: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
     `}
   }
 
@@ -189,6 +189,11 @@ const ContentHeaderBottomMargin = 13;
 const ContentHeader = styled.div`
   display: flex;
   align-items: center;
+  padding-top: 12px;
+  padding-right: 0;
+  padding-bottom: 20px;
+  padding-left: 0;
+  margin-bottom: 30px;
 
   &.noContent {
     ${media.biggerThanMinTablet`
@@ -197,18 +202,14 @@ const ContentHeader = styled.div`
   }
 
   &.hasContent {
-    margin-bottom: ${ContentHeaderBottomMargin}px;
-
     &.large {
       margin-bottom: 0px;
-      padding-bottom: ${ContentHeaderBottomMargin}px;
       border-bottom: solid 1px #e8e8e8;
     }
   }
 
   &.small {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding: 0 30px;
 
     ${media.smallerThanMinTablet`
       padding-left: 20px;
@@ -393,6 +394,7 @@ const Data = adopt<DataProps, InputProps>({
 const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
 
 // TODO: make accesible
+// TODO: add footer to vertically center the content more
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
