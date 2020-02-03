@@ -433,6 +433,25 @@ if Apartment::Tenant.current == 'localhost'
       }
     })
 
+    2.times do
+      folder = ProjectFolder.create!(
+        title_multiloc: {
+          "en": Faker::Lorem.sentence,
+          "nl-BE": Faker::Lorem.sentence
+        },
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        description_preview_multiloc: {
+          "en" => "All things swimming pool.",
+          "nl-BE" => "Alles met zwembaden."
+        },
+        header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      )
+      ProjectHolderOrdering.create!(project_holder: folder)
+    end
+
     num_projects.times do
       project = Project.new({
         title_multiloc: {
@@ -452,8 +471,10 @@ if Apartment::Tenant.current == 'localhost'
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
         publication_status: ['published','published','published','published','published','draft','archived'][rand(7)],
-        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first }
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
+        folder_id: rand(3) == 0 ? nil : ProjectFolder.ids.shuffle.first
       })
+      ProjectHolderOrdering.create!(project_holder: project) if (project.published? && !project.folder_id)
 
       if project.continuous?
         project.update({
