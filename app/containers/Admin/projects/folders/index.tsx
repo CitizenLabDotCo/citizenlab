@@ -56,14 +56,12 @@ export class AdminProjectFolderEdition extends PureComponent<Props & InjectedInt
       },
       tabs: [
         {
-          label: formatMessage(messages.projectFolderSettingsTab),
-          url: `/admin/projects/folders/${`${projectFolderId}` || 'new'}`,
-          className: 'projectFolderSettings',
+          label: formatMessage(messages.projectFolderProjectsTab),
+          url: `/admin/projects/folders/${projectFolderId}`,
         },
         {
-          label: formatMessage(messages.projectFolderProjectsTab),
-          url: `/admin/projects/folders/${projectFolderId}/projects`,
-          className: 'projects',
+          label: formatMessage(messages.projectFolderSettingsTab),
+          url: `/admin/projects/folders/${projectFolderId}/settings`,
         }
       ]
     };
