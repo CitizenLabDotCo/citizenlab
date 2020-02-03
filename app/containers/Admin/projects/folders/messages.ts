@@ -14,15 +14,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicFolder',
     defaultMessage: 'View Folder',
   },
-  folderSettingsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.folderSettingsTab',
+  projectFolderSettingsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolderSettingsTab',
     defaultMessage: 'Settings',
   },
-  folderProjectsTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.folderProjectsTab',
+  projectFolderProjectsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectFolderProjectsTab',
     defaultMessage: 'Projects',
   },
-  newFolder: {
+  newProjectFolder: {
     id: 'app.containers.AdminPage.ProjectEdit.newFolder',
     defaultMessage: 'New folder',
   },

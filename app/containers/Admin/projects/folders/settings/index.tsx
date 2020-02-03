@@ -69,7 +69,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
   const [status, setStatus] = useState<'enabled' | 'error' | 'success'>('enabled');
 
   // form submission
-  const onSubmit = async (event) => {
+  const onSubmit = async () => {
     setLoading(true);
     try {
       if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
