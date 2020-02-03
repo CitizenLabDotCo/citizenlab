@@ -26,15 +26,19 @@ const Container = styled.button`
 `;
 
 const IconContainer = styled.div`
-  padding-top: 4px;
+  flex: 0 0 60px;
   width: 60px;
   display: flex;
   justify-content: center;
+  padding-top: 4px;
+  border: solid 1px red;
 `;
 
 const StyledIcon: any = styled(Icon)`
+  flex: 0 0 17px;
   height: 17px;
   opacity: ${(props: any) => props.isRead ? '0.35' : '1'};
+  border: solid 1px red;
 `;
 
 const Body = styled.div`
@@ -44,7 +48,6 @@ const Body = styled.div`
 `;
 
 const Message = styled.div<{ isRead: boolean }>`
-  color: red;
   font-size: ${fontSizes.base}px;
   font-weight: ${props => props.isRead ? 'normal' : '500'};
   flex-grow: 1;
