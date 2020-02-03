@@ -116,8 +116,6 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
       setStatus('error');
     }
     setLoading(false);
-
-    console.log(titleMultiloc, shortDescriptionMultiloc, descriptionMultiloc, headerBg);
   };
 
   if (!selectedLocale) return null;
