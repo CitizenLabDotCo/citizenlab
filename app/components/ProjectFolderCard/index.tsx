@@ -196,10 +196,6 @@ const ContentHeader = styled.div`
     `}
   }
 
-  &.hasRightContent.noLeftContent {
-    justify-content: flex-end;
-  }
-
   &.hasContent {
     margin-bottom: ${ContentHeaderBottomMargin}px;
 
@@ -266,13 +262,14 @@ const ProjectDescription = styled.div`
 const MapIcon = styled(Icon)`
   width: 27px;
   height: 21px;
-  fill: ${colors.placeholder};
+  fill: ${({ theme }) => theme.colorSecondary};
   margin-right: 10px;
 `;
 
 const MapIconDescription = styled.span`
   font-weight: bold;
   margin-bottom: -2px;
+  color: ${({ theme }) => theme.colorSecondary};
 `;
 
 export interface InputProps {
@@ -313,7 +310,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
       const isArchived = (project.attributes.publication_status === 'archived');
 
       const contentHeader = (
-        <ContentHeader className={`${size} hasContent hasRightContent' ${!countdown ? 'noLeftContent' : 'hasContent hasLeftContent'} ${!countdown ? 'noContent' : ''}`}>
+        <ContentHeader className={`${size} hasContent`}>
           <MapIcon name="simpleFolder" />
           <MapIconDescription>3 projects</MapIconDescription>
         </ContentHeader>
