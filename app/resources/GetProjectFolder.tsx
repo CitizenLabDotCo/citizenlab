@@ -12,7 +12,7 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
-type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
+type children = (renderProps: GetProjectFolderChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -22,9 +22,9 @@ interface State {
   projectFolder: IProjectFolderData | undefined | null | Error;
 }
 
-export type GetProjectChildProps = IProjectFolderData | undefined | null | Error;
+export type GetProjectFolderChildProps = IProjectFolderData | undefined | null | Error;
 
-export default class GetProject extends React.Component<Props, State> {
+export default class GetProjectFolder extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 

@@ -36,15 +36,15 @@ export default () => ({
       }),
     },
     {
-      path: '/:locale/admin/projects/folders',
-      name: 'admin projects single project',
+      path: '/:locale/admin/projects/folders/:projectFolderId',
+      name: 'admin projects edit folder',
       component: Loadable({
         loader: () => import('containers/Admin/projects/folders'),
         loading: LoadableLoadingAdmin,
         delay: 500
       }),
       indexRoute: {
-        name: 'admin projects single edit',
+        name: 'admin projects edit folder settings',
         component: Loadable({
           loader: () => import('containers/Admin/projects/folders/settings'),
           // TODO loader: () => import('containers/Admin/projects/folders/projects'),
@@ -53,8 +53,8 @@ export default () => ({
       },
       childRoutes: [
         {
-          path: '/:locale/admin/projects/folders/:folderId',
-          name: 'admin projects create new',
+          path: '/:locale/admin/projects/folders/:projectFolderId/projects',
+          name: 'admin projects edit folder projects',
           component: Loadable({
             loader: () => import('containers/Admin/projects/folders/settings'),
             loading: LoadableLoadingAdmin,

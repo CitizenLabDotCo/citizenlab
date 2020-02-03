@@ -15,8 +15,9 @@ import IconTooltip from 'components/UI/IconTooltip';
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { addProjectFolder } from 'services/projectFolder';
+import { addProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
+import GoBackButton from 'components/UI/GoBackButton';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
@@ -31,9 +32,13 @@ const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   ` : ''}
 `;
 
+const goBack = () => {
+  clHistory.push('/admin/projects');
+};
+
 const FolderSettings = ({ params }: WithRouterProps) => {
-  const { folderId } = params;
-  const mode = folderId ? 'edit' : 'new';
+  const { projectFolderId } = params;
+  const mode = projectFolderId ? 'edit' : 'new';
 
   // locale things
   const locale = useLocale();
@@ -110,6 +115,7 @@ const FolderSettings = ({ params }: WithRouterProps) => {
         </>
         :
         <>
+          <GoBackButton onClick={goBack} />
           <SectionTitle >
             {<FormattedMessage {...messages.titleNewFolder} />}
           </SectionTitle >
@@ -120,7 +126,9 @@ const FolderSettings = ({ params }: WithRouterProps) => {
       }
       <form onSubmit={onSubmit}>
         <Section>
-          <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
+          <SectionField>
+            <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
+          </SectionField>
           <SectionField>
             <InputMultiloc
               valueMultiloc={titleMultiloc}

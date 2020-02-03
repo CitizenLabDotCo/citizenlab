@@ -10,8 +10,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.subtitleSettingsTab',
     defaultMessage: 'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
-  viewPublicFolder: {
-    id: 'app.containers.AdminPage.ProjectEdit.viewPublicFolder',
+  viewPublicProjectFolder: {
+    id: 'app.containers.AdminPage.ProjectEdit.viewPublicProjectFolder',
     defaultMessage: 'View Folder',
   },
   projectFolderSettingsTab: {
