@@ -34,11 +34,7 @@ const LoadingContainer = styled.div`
   align-items: center;
 `;
 
-const NotificationsWrapper = styled.div`
-  /* display: flex;
-  flex-direction: column;
-  align-items: stretch; */
-`;
+const NotificationsWrapper = styled.div``;
 
 const EmptyStateContainer = styled.div`
   height: 200px;
@@ -149,7 +145,7 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
                     ))}
                   </NotificationsWrapper>
                 }
-                {!isNilOrError(notifications?.list) && notifications.list.length === 0 &&
+                {(notifications?.list === null || notifications?.list?.length === 0) &&
                   <EmptyStateContainer>
                     <EmptyStateImageWrapper>
                       <EmptyStateImage src={EmptyStateImg} role="presentation" alt="" />
