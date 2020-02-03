@@ -29,14 +29,14 @@ const TopContainer = styled.div`
 export interface InputProps { }
 
 interface DataProps {
-  // folder: GetFolderChildProps;
+  // projectFolder: GetProjectFolderChildProps;
 }
 
 interface State { }
 
 export interface Props extends InputProps, DataProps { }
 
-export class AdminFolderEdition extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
+export class AdminProjectFolderEdition extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
 
   goBack = () => {
     // todo why? keep ?
@@ -45,43 +45,43 @@ export class AdminFolderEdition extends PureComponent<Props & InjectedIntlProps 
     // const newPath = currentPath.replace(lastUrlSegment, '').replace(/\/$/, '');
     // const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
     //
-    // if (newLastUrlSegment === this.props.params.folderId) {
-    clHistory.push('/admin/folders');
+    // if (newLastUrlSegment === this.props.params.projectFolderId) {
+    clHistory.push('/admin/projectFolders');
     // } else {
     //   clHistory.push(newPath);
     // }
   }
 
   render() {
-    const { folderId } = this.props.params;
-    const {  intl: { formatMessage } } = this.props;
+    const { projectFolderId } = this.props.params;
+    const {  intl: { formatMessage }, localize } = this.props;
     const { children } = this.props;
     const tabbedProps = {
       resource: {
-        title:  formatMessage(messages.newFolder),
+        title:  formatMessage(messages.newProjectFolder),
       },
       tabs: [
         {
-          label: formatMessage(messages.folderSettingsTab),
-          url: `projects/folders/${`${folderId}/edit` || 'new'}`,
-          className: 'folderSettings',
+          label: formatMessage(messages.projectFolderSettingsTab),
+          url: `projects/projectFolders/${`${projectFolderId}` || 'new'}`,
+          className: 'projectFolderSettings',
         },
         {// TODO handle tab nav for new ?
-          label: formatMessage(messages.folderProjectsTab),
-          url: `projects/folders/${folderId}/projects`,
+          label: formatMessage(messages.projectFolderProjectsTab),
+          url: `projects/projectFolders/${projectFolderId}/projects`,
           className: 'projects',
         }
       ]
     };
     // <ActionsContainer>
-    //   {!isNilOrError(folder) &&
+    //   {!isNilOrError(projectFolder) &&
       //     <Button
       //       buttonStyle="cl-blue"
       //       icon="eye"
-      //       id="to-folder"
-      //       linkTo={`/folders/${folder.attributes.slug}`}
+      //       id="to-projectFolder"
+      //       linkTo={`/projectFolders/${projectFolder.attributes.slug}`}
       //     >
-      //       <FormattedMessage {...messages.viewPublicFolder} />
+      //       <FormattedMessage {...messages.viewPublicProjectFolder} />
       //     </Button>
       //   }
       //   </ActionsContainer>
@@ -99,14 +99,14 @@ export class AdminFolderEdition extends PureComponent<Props & InjectedIntlProps 
   }
 }
 
-export default withRouter(injectIntl<Props & WithRouterProps>(injectLocalize(AdminFolderEdition)));
+export default withRouter(injectIntl<Props & WithRouterProps>(injectLocalize(AdminProjectFolderEdition)));
 
 // const Data = adopt<DataProps, InputProps & WithRouterProps>({
-//   folder: ({ params, render }) => <GetFolder folderId={params.folderId}>{render}</GetFolder>,
+//   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
 // });
 //
 // export default (inputProps: InputProps & WithRouterProps) => (
 //   <Data {...inputProps}>
-//     {dataProps => <AdminFolderEditionWithHoCs {...inputProps} {...dataProps} />}
+//     {dataProps => <AdminProjectFolderEditionWithHoCs {...inputProps} {...dataProps} />}
 //   </Data>
 // );
