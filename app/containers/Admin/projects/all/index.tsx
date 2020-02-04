@@ -40,9 +40,9 @@ import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/P
 // style
 import styled from 'styled-components';
 import { IProjectFolderData } from 'services/projectFolders';
-import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton } from '../components/ProjectRow';
+import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon } from '../components/ProjectRow';
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
-import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
+import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 import GetProject from 'resources/GetProject';
 import GetProjectFolder from 'resources/GetProjectFolder';
 
@@ -151,8 +151,12 @@ class AdminProjectsList extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleReorder = (projectId, newOrder) => {
+  handleReorderProjects = (projectId, newOrder) => {
     reorderProject(projectId, newOrder);
+  }
+
+  handleReorderHolders = (itemId, newOrder) => {
+    reorderProjectHolder(itemId, newOrder);
   }
 
   closeTemplatePreview = () => {
@@ -208,6 +212,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
         return (
           <RowContent className="e2e-admin-projects-list-item">
             <RowContentInner className="expand primary">
+              <RowIcon name="simpleFolder"/>
               <RowTitle value={folder.attributes.title_multiloc} />
             </RowContentInner>
             <RowButton
@@ -244,7 +249,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <HasPermission item="project" action="reorder">
                 <SortableList
                   items={projectHoldersOrderings}
-                  onReorder={this.handleReorder}
+                  onReorder={this.handleReorderHolders}
                   className="projects-list e2e-admin-projects-list"
                   id="e2e-admin-published-projects-list"
                 >
@@ -255,14 +260,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           <GetProject projectId={item.relationships.project_holder.data.id}>
                             {project => isNilOrError(project) ? null : (
                               <SortableRow
-                                key={project.id}
-                                id={project.id}
+                                key={item.id}
+                                id={item.id}
                                 index={index}
                                 moveRow={handleDragRow}
                                 dropRow={handleDropRow}
                                 lastItem={(index === projectHoldersOrderings.length - 1)}
                               >
-                                <ProjectRow project={project} />
+                                <ProjectRow project={project} showIcon />
                               </SortableRow>
                             )}
                           </GetProject>
@@ -272,8 +277,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id}>
                             {projectFolder => isNilOrError(projectFolder) ? null : (
                               <SortableRow
-                                key={projectFolder.id}
-                                id={projectFolder.id}
+                                key={item.id}
+                                id={item.id}
                                 index={index}
                                 moveRow={handleDragRow}
                                 dropRow={handleDropRow}
@@ -299,7 +304,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                               id={project.id}
                               lastItem={(index === projectHoldersOrderings.length - 1)}
                             >
-                              <ProjectRow project={project} />
+                              <ProjectRow project={project} showIcon />
                             </Row>
                           )}
                         </GetProject>
@@ -333,7 +338,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <HasPermission item="project" action="reorder">
                 <SortableList
                   items={draftProjects}
-                  onReorder={this.handleReorder}
+                  onReorder={this.handleReorderProjects}
                   className="e2e-admin-projects-list"
                   id="e2e-admin-draft-projects-list"
                 >
@@ -377,7 +382,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <HasPermission item="project" action="reorder">
                 <SortableList
                   items={archivedProjects}
-                  onReorder={this.handleReorder}
+                  onReorder={this.handleReorderProjects}
                   className="e2e-admin-projects-list"
                   id="e2e-admin-archived-projects-list"
                 >
