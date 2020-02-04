@@ -197,7 +197,7 @@ const useQuill = (props: Props, toolbarId: string | null) => {
         placeholder: '',
         modules: {
           blotFormatter: (noImages && noVideos) ? false : true,
-          toolbar: toolbarId || false,
+          toolbar: toolbarId ? `#${toolbarId}` : false,
           keyboard: {
             bindings: {
               // overwrite default tab behavior
