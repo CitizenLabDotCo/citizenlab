@@ -1,27 +1,19 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { Subscription } from 'rxjs';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import IdeaButton from 'components/IdeaButton';
-
-// events
-import { selectedPhase$ } from 'containers/ProjectsShowPage/process/Timeline';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 
 // i18n
 import T from 'components/T';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 // style
-import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -43,22 +35,6 @@ const Container = styled.div`
 `;
 
 const HeaderContent = styled(ContentContainer)``;
-
-const ArchivedLabelWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const ArchivedLabel = styled.span`
-  color: #fff;
-  font-size: ${fontSizes.small}px;
-  font-weight: 500;
-  text-transform: uppercase;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  padding: 6px 12px;
-  background: rgba(255, 255, 255, .45);
-  margin-top: 15px;
-`;
 
 const HeaderTitle = styled.h1`
   color: #fff;
@@ -100,98 +76,32 @@ const HeaderImage: any = styled.div`
   right: 0;
 `;
 
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const StyledIdeaButton = styled(IdeaButton)`
-  margin-top: 30px;
-
-  ${media.biggerThanMinTablet`
-    display: none;
-  `}
-`;
-
 interface InputProps {
-  projectSlug: string;
+  projectFolderId: string;
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
-  events: GetEventsChildProps;
+  projectFolder: GetProjectFolderChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
-interface State {
-  selectedProjectPhaseId: string | null;
-}
-
-class ProjectsShowPage extends PureComponent<Props, State> {
-  subscription: Subscription;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedProjectPhaseId: null
-    };
-  }
-
-  componentDidMount() {
-    this.subscription = selectedPhase$.subscribe((selectedPhase) => {
-      this.setState({ selectedProjectPhaseId: selectedPhase?.id || null });
-    });
-  }
-
-  componentWillUnmount() {
-    this.subscription && this.subscription.unsubscribe();
-  }
-
+class ProjectsShowPage extends PureComponent<Props> {
   render() {
-    const { projectSlug, project, theme } = this.props;
-    const { selectedProjectPhaseId } = this.state;
+    const { projectFolder } = this.props;
 
-    if (!isNilOrError(project)) {
-      const projectHeaderImageLarge = project?.attributes?.header_bg?.large;
-      const projectType = project?.attributes?.process_type;
-      const projectPublicationStatus = project?.attributes?.publication_status;
-      const projectMethod = project?.attributes?.participation_method;
+    if (!isNilOrError(projectFolder)) {
+      const projectHeaderImageLarge = projectFolder?.attributes?.header_bg?.large;
 
       return (
         <>
-          <Container className={`${projectType} e2e-project-header-content`}>
+          <Container>
             <HeaderImage src={projectHeaderImageLarge || null} />
             <HeaderOverlay />
-            <HeaderContent className={projectType}>
+            <HeaderContent>
               <HeaderTitle>
-                <T value={project.attributes.title_multiloc} />
+                <T value={projectFolder.attributes.title_multiloc} />
               </HeaderTitle>
-              {projectPublicationStatus === 'archived' &&
-                <ArchivedLabelWrapper>
-                  <ArchivedLabel>
-                    <FormattedMessage {...messages.archived} />
-                  </ArchivedLabel>
-                </ArchivedLabelWrapper>
-              }
-              {/* Continuous Ideation Idea Button Desktop*/}
-              {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
-                <ButtonWrapper>
-                  <StyledIdeaButton
-                    participationContextType="project"
-                    projectId={project.id}
-                    bgColor="#fff"
-                    textColor={theme.colorMain}
-                    opacityDisabled="1"
-                    bgDisabledColor={colors.disabledPrimaryButtonBg}
-                    textDisabledColor="#fff"
-                    fontWeight="500"
-                    padding="13px 22px"
-                  />
-                </ButtonWrapper>
-              }
             </HeaderContent>
           </Container>
         </>
@@ -202,15 +112,14 @@ class ProjectsShowPage extends PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
-});
+// TODO refactor to memo + hooks
 
-const ProjectsShowPageWithHoC = withTheme(ProjectsShowPage);
+const Data = adopt<DataProps, InputProps>({
+  projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
+});
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectsShowPageWithHoC {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectsShowPage {...inputProps} {...dataProps} />}
   </Data>
 );
