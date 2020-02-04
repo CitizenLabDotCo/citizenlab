@@ -10,7 +10,7 @@ export interface IProjectHolderOrderingData {
     ordering: number;
   };
   relationships: {
-    containable: {
+    project_holder: {
       data: {
         id: string,
         type: 'project' | 'project_folder'
