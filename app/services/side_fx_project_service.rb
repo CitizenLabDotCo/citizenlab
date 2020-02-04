@@ -13,6 +13,7 @@ class SideFxProjectService
   end
 
   def after_create project, user
+    ProjectHolderService.new.fix_project_holder_orderings!
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
     @sfx_pc.after_create project, user if project.is_participation_context?
   end
@@ -23,6 +24,7 @@ class SideFxProjectService
   end
 
   def after_update project, user
+    ProjectHolderService.new.fix_project_holder_orderings!
     LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
     @sfx_pc.after_update project, user if project.is_participation_context?
   end
@@ -33,6 +35,7 @@ class SideFxProjectService
   end
 
   def after_destroy frozen_project, user
+    ProjectHolderService.new.fix_project_holder_orderings!
     remove_moderators frozen_project.id
     serialized_project = clean_time_attributes(frozen_project.attributes)
     LogActivityJob.perform_later(
