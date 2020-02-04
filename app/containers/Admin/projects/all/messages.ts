@@ -56,11 +56,11 @@ export default defineMessages({
     defaultMessage: 'Load more templates',
   },
   editButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
+    id: 'app.containers.AdminPage.ProjectDashboard.editButtonLabel',
     defaultMessage: 'Edit',
   },
   published: {
-    id: 'app.containers.AdminPage.ProjectEdit.published',
+    id: 'app.containers.AdminPage.ProjectDashboard.published',
     defaultMessage: 'Published',
   },
   publishedTooltip: {
@@ -96,7 +96,7 @@ export default defineMessages({
     defaultMessage: 'Create a project from a template',
   },
   newProjectFolder: {
-    id: 'app.containers.AdminPage.ProjectEdit.newProjectFolder',
+    id: 'app.containers.AdminPage.ProjectDashboard.newProjectFolder',
     defaultMessage: 'Create a project folder',
   }
 });
