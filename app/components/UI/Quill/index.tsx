@@ -1,4 +1,5 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
+import { isEqual } from 'lodash-es';
 
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
@@ -100,6 +101,7 @@ const Container = styled.div<{
     border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius};
     border: 1px solid ${colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
     ${quillEditedContent()};
 
     .ql-editor {
@@ -114,6 +116,7 @@ const Container = styled.div<{
 
 interface Props {
   id: string;
+  value?: string;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
@@ -128,29 +131,28 @@ interface Props {
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 
-const useQuill = (toolbarId: string, options: QuillOptionsStatic) => {
+const useQuill = (props: Props, toolbarId: string | null) => {
+  const { value, onChange } = props;
   const [editor, setEditor] = useState<Quill | null>(null);
-  const [content, setContent] = useState('');
   const [focussed, setFocussed] = useState(false);
   const editorRef: React.RefObject<any> = useRef();
 
   useEffect(() => {
     if (editor) {
-      if (options?.readOnly) {
-        editor.disable();
-      } else {
-        editor.enable();
+      const editorHtml = editor.root.innerHTML;
+
+      if (!isEqual(value, editorHtml)) {
+        const valueDelta = editor.clipboard.convert(value);
+        editor.setContents(valueDelta);
       }
     }
-  }, [editor, options]);
+  }, [editor, value]);
 
   useEffect(() => {
     const textChangeHandler = () => {
       if (editor) {
-        // const delta = editor.getContents();
-        // const text = editor.getText();
         const html = editor.root.innerHTML;
-        setContent(html);
+        onChange && onChange(html);
       }
     };
 
@@ -176,61 +178,64 @@ const useQuill = (toolbarId: string, options: QuillOptionsStatic) => {
         setEditor(null);
       }
     };
-  }, [editor]);
+  }, [editor, onChange]);
 
   useEffect(() => {
     if (!editor && editorRef && editorRef.current) {
-      const defaultOptions: QuillOptionsStatic = {
+      const { noAlign, noImages, noVideos, limitedTextFormatting } = props;
+      const editorOptions: QuillOptionsStatic = {
+        formats: [
+          'bold',
+          'italic',
+          'link',
+          ...(!limitedTextFormatting ? ['header', 'list'] : []),
+          ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
+          ...(!noImages ? ['image'] : []),
+          ...(!noVideos ? ['video'] : [])
+        ],
         theme: 'snow',
+        placeholder: '',
         modules: {
-          // toolbar: [
-          //   [{ header: [1, 2, false] }],
-          //   [{ list: 'ordered' }, { list: 'bullet' }],
-          //   [{ align: '' }, { align: 'center' }, { align: 'right' }],
-          //   ['bold', 'italic'],
-          //   ['link', 'image', 'video']
-          // ],
-          toolbar: `#${toolbarId}`,
-          blotFormatter: {}
+          blotFormatter: (noImages && noVideos) ? false : true,
+          toolbar: toolbarId || false,
+          keyboard: {
+            bindings: {
+              // overwrite default tab behavior
+              tab: {
+                key: 9,
+                handler: () => true // do nothing
+              },
+              'remove tab': {
+                key: 9,
+                shiftKey: true,
+                collapsed: true,
+                prefix: /\t$/,
+                handler: () => true // do nothing
+              }
+            }
+          },
+          clipboard: {
+            matchVisual: true
+          },
         },
       };
 
-      const editorOptions = {
-        ...defaultOptions,
-        ...options,
-      };
       setEditor(new Quill(editorRef.current, editorOptions));
     }
-  }, [editor, editorRef, options]);
+  }, [props, toolbarId, editor, editorRef]);
 
   return {
     editorRef,
-    editor,
-    content,
     focussed
   };
 };
 
-const QuillEditor2 = memo<Props & InjectedIntlProps>(({
-  id,
-  noToolbar,
-  noAlign,
-  noImages,
-  noVideos,
-  limitedTextFormatting,
-  hasError,
-  onChange,
-  intl: { formatMessage },
-  className,
-  children
-}) => {
-  const toolbarId = `ql-editor-toolbar-${id}`;
+const QuillEditor2 = memo<Props & InjectedIntlProps>((props) => {
+  const { intl: { formatMessage }, children, ...inputProps } = props;
+  const { id, noToolbar, noAlign, noImages, noVideos, limitedTextFormatting, hasError, className } = inputProps;
+  const toolbarId = !noToolbar && id ? `ql-editor-toolbar-${id}` : null;
 
-  const { editorRef, content, focussed } = useQuill(toolbarId, {});
-
-  useEffect(() => {
-    onChange && onChange(content);
-  }, [content, onChange]);
+  const { editorRef, focussed } = useQuill(inputProps, toolbarId);
 
   const trackAdvanced = (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
     trackEventByName(tracks.advancedEditing.name, {
@@ -299,7 +304,7 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>(({
       remove={formatMessage(messages.remove)}
     >
       {!noToolbar &&
-        <div id={toolbarId} >
+        <div id={toolbarId || undefined} >
           {!limitedTextFormatting &&
             <span
               className="ql-formats"
@@ -325,6 +330,7 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>(({
               </select>
             </span>
           }
+
           {!limitedTextFormatting && !noAlign &&
             <span className="ql-formats">
               <button
@@ -347,6 +353,7 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>(({
               />
             </span>
           }
+
           {!limitedTextFormatting &&
             <span className="ql-formats">
               <button
@@ -363,6 +370,7 @@ const QuillEditor2 = memo<Props & InjectedIntlProps>(({
               />
             </span>
           }
+
           <span className="ql-formats">
             <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
             <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
