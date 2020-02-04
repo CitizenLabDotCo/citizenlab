@@ -250,9 +250,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 >
                   {({ itemsList, handleDragRow, handleDropRow }) => (
                     itemsList.map((item: IFolderOrProjectOrderingData, index: number) => {
-                      if (item.relationships.containable.data.type === 'project') {
+                      if (item.relationships.project_holder.data.type === 'project') {
                         return (
-                          <GetProject projectId={item.relationships.containable.data.id}>
+                          <GetProject projectId={item.relationships.project_holder.data.id}>
                             {project => isNilOrError(project) ? null : (
                               <SortableRow
                                 key={project.id}
@@ -269,7 +269,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         );
                       } else {
                         return (
-                          <GetProjectFolder projectFolderId={item.relationships.containable.data.id}>
+                          <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id}>
                             {projectFolder => isNilOrError(projectFolder) ? null : (
                               <SortableRow
                                 key={projectFolder.id}

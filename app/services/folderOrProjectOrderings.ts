@@ -1,7 +1,7 @@
 import streams from 'utils/streams';
 
 import { API_PATH } from 'containers/App/constants';
-const apiEndpoint = `${API_PATH}/folder_or_project_orderings`;
+const apiEndpoint = `${API_PATH}/project_holder_orderings`;
 
 export interface IFolderOrProjectOrderingData {
   id: string;
@@ -10,7 +10,7 @@ export interface IFolderOrProjectOrderingData {
     ordering: number;
   };
   relationships: {
-    containable: {
+    project_holder: {
       data: { id: string, type: 'project' | 'project_folder' };
     }
   };
