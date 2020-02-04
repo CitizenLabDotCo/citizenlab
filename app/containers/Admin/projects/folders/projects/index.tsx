@@ -23,6 +23,7 @@ import ProjectRow from '../../components/ProjectRow';
 
 // style
 import styled from 'styled-components';
+import streams from 'utils/streams';
 
 const Container = styled.div``;
 
@@ -63,7 +64,12 @@ class AdminFoldersProjectsList extends PureComponent<Props & WithRouterProps> {
   }
 
   removeProjectFromFolder = (projectId) => () => {
-    updateProjectFolderMembership(projectId, null);
+    updateProjectFolderMembership(projectId, null).then(() => {
+      const { projectFolderId } = this.props.params;
+      streams.fetchAllWith({
+        dataId: [projectFolderId],
+      });
+    });
   }
 
   render() {
