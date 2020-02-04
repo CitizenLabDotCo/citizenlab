@@ -150,7 +150,7 @@ export async function updateProject(projectId, projectData: IUpdatedProjectPrope
   const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`]
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`]
   });
 
   // TODO: clear partial cache
