@@ -4,6 +4,8 @@ class CreateProjectHolderOrderings < ActiveRecord::Migration[6.0]
       t.integer :ordering
       t.uuid :project_holder_id
       t.string  :project_holder_type
+
+      t.timestamps
     end
   end
 end
