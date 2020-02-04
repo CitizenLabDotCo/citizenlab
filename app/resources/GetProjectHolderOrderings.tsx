@@ -2,7 +2,7 @@ import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
 import useProjectHolderOrderings from 'hooks/useProjectHolderOrderings';
 import { isNilOrError } from 'utils/helperUtils';
 
-type GetProjectHolderOrderingsChildProps = IProjectHolderOrderingData[] | undefined | null | Error;
+export type GetProjectHolderOrderingsChildProps = IProjectHolderOrderingData[] | undefined | null | Error;
 
 type children = (renderProps: GetProjectHolderOrderingsChildProps) => JSX.Element | null;
 
