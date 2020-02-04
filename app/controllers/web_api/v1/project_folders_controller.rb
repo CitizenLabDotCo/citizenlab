@@ -60,6 +60,10 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
 
   private
 
+  def secure_controller?
+    false
+  end
+
   def set_project_folder
     @project_folder = ProjectFolder.find(params[:id])
     authorize @project_folder
