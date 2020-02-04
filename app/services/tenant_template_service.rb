@@ -732,11 +732,11 @@ class TenantTemplateService
     IdeaFile.all.map do |i|
       {
         'idea_ref'        => lookup_ref(i.idea_id, :idea),
+        'name'            => i.name,
         'remote_file_url' => i.file_url,
         'ordering'        => i.ordering,
         'created_at'      => i.created_at.to_s,
-        'updated_at'      => i.updated_at.to_s,
-        'name'            => i.name
+        'updated_at'      => i.updated_at.to_s
       }
     end
   end
@@ -833,11 +833,11 @@ class TenantTemplateService
     InitiativeFile.all.map do |i|
       {
         'initiative_ref'  => lookup_ref(i.initiative_id, :initiative),
+        'name'            => i.name,
         'remote_file_url' => i.file_url,
         'ordering'        => i.ordering,
         'created_at'      => i.created_at.to_s,
         'updated_at'      => i.updated_at.to_s,
-        'name'            => i.name
       }
     end
   end
