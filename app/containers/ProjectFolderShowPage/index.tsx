@@ -114,7 +114,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
               ) : (
                 !isNilOrError(projectFolder) ? (
                   <>
-                    <Header projectFolderId={this.props.params.slug} />
+                    <Header projectFolderId={projectFolder.id} />
                     <Content>
                       <ContentContainer>
                         <ProjectFolderInfo projectFolderId={projectFolder.id} />
