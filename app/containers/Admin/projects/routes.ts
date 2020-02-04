@@ -47,7 +47,6 @@ export default () => ({
         name: 'admin projects edit folder projects',
         component: Loadable({
           loader: () => import('containers/Admin/projects/folders/projects'),
-          // TODO loader: () => import('containers/Admin/projects/folders/projects'),
           loading: () => null
         }),
       },
