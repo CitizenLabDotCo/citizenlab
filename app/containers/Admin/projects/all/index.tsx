@@ -212,7 +212,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </RowContentInner>
             <RowButton
               className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] ? folder.attributes.title_multiloc['en-GB'] : ''}`}
-              linkTo={`/admin/folders/${folder.id}`}
+              linkTo={`/admin/projects/folders/${folder.id}`}
               buttonStyle="secondary"
               icon="edit"
             >
@@ -288,16 +288,36 @@ class AdminProjectsList extends PureComponent<Props, State> {
                     }
                     ))}
                 </SortableList>
-                }
-{/* TODO                <HasPermission.No>
+                <HasPermission.No>
                   <List>
-                    {projectHoldersOrderings.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === projectHoldersOrderings.length - 1)}>
-                        <ProjectRow project={project} />
-                      </Row>
-                    ))}
+                    {projectHoldersOrderings.map((holder, index) => (
+                      holder.relationships.project_holder.data.type === 'project') ? (
+                        <GetProject projectId={holder.relationships.project_holder.data.id}>
+                          {project => isNilOrError(project) ? null : (
+                            <Row
+                              key={project.id}
+                              id={project.id}
+                              lastItem={(index === projectHoldersOrderings.length - 1)}
+                            >
+                              <ProjectRow project={project} />
+                            </Row>
+                          )}
+                        </GetProject>
+                      ) : (
+                        <GetProjectFolder projectFolderId={holder.relationships.project_holder.data.id}>
+                          {projectFolder => isNilOrError(projectFolder) ? null : (
+                            <Row
+                              key={projectFolder.id}
+                              id={projectFolder.id}
+                              lastItem={(index === projectHoldersOrderings.length - 1)}
+                            >
+                              {FolderRow(projectFolder)}
+                            </Row>
+                          )}
+                        </GetProjectFolder>
+                      ))}
                   </List>
-                </HasPermission.No>*/}
+                </HasPermission.No>
               </HasPermission>
             </>
           }

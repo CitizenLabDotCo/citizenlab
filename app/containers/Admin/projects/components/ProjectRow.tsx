@@ -38,7 +38,13 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-bottom: 4px;
 `;
 
-export const RowButton = styled(Button)``;
+const ActionsContainer = styled.div`
+  display: flex;
+`;
+
+export const RowButton = styled(Button)`
+  margin-left: 7px;
+`;
 
 interface InputProps {
   project: IProjectData;
@@ -98,16 +104,20 @@ export default ({ project, actions }: Props) => {
           />
         }
       </RowContentInner>
-      {actions ? actions.map(action => action === 'manage' ? ManageButton :
-        <RowButton
-          type="button"
-          className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
-          onClick={action.handler(project.id)}
-          buttonStyle="secondary"
-          icon={action.icon}
-        >
-          {action.buttonContent}
-        </RowButton>)
+      {actions ?
+        <ActionsContainer>
+          {actions.map(action => action === 'manage' ? ManageButton :
+            <RowButton
+              type="button"
+              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+              onClick={action.handler(project.id)}
+              buttonStyle="secondary"
+              icon={action.icon}
+            >
+              {action.buttonContent}
+            </RowButton>)
+          }
+        </ActionsContainer>
         : ManageButton}
     </RowContent>
   );
