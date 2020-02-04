@@ -10,9 +10,9 @@ class WebApi::V1::ProjectHolderOrderingsController < ::ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
     render json: linked_json(
-      @phos, 
-      WebApi::V1::ProjectHolderOrderingSerializer, 
-      params: fastjson_params
+      @phos,
+      WebApi::V1::ProjectHolderOrderingSerializer,
+      params: fastjson_params,
       include: [:project_holder]
       )
   end
@@ -21,8 +21,8 @@ class WebApi::V1::ProjectHolderOrderingsController < ::ApplicationController
     if @pho.insert_at(permitted_attributes(@pho)[:ordering])
       SideFxProjectHolderOrderingService.new.after_update(@pho, current_user)
       render json: WebApi::V1::ProjectHolderOrderingSerializer.new(
-        @pho, 
-        params: fastjson_params, 
+        @pho,
+        params: fastjson_params,
         ).serialized_json, status: :ok
     else
       render json: {errors: @pho.errors.details}, status: :unprocessable_entity

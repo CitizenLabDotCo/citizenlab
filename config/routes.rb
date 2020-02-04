@@ -22,10 +22,10 @@ Rails.application.routes.draw do
       end
       concern :post do
         resources :activities, only: [:index]
-        resources :comments, shallow: true, 
-          concerns: [:votable, :spam_reportable], 
+        resources :comments, shallow: true,
+          concerns: [:votable, :spam_reportable],
           defaults: { votable: 'Comment', spam_reportable: 'Comment' } do
-         
+
           get :children, on: :member
           post :mark_as_deleted, on: :member
         end
@@ -36,10 +36,10 @@ Rails.application.routes.draw do
         resources :spam_reports, shallow: true
       end
 
-      resources :ideas, 
-        concerns: [:votable, :spam_reportable, :post], 
+      resources :ideas,
+        concerns: [:votable, :spam_reportable, :post],
         defaults: { votable: 'Idea', spam_reportable: 'Idea', post: 'Idea' } do
-        
+
         resources :images, defaults: {container_type: 'Idea'}
         resources :files, defaults: {container_type: 'Idea'}
 
@@ -49,8 +49,8 @@ Rails.application.routes.draw do
         get :filter_counts, on: :collection
       end
 
-      resources :initiatives, 
-        concerns: [:votable, :spam_reportable, :post], 
+      resources :initiatives,
+        concerns: [:votable, :spam_reportable, :post],
         defaults: { votable: 'Initiative', spam_reportable: 'Initiative', post: 'Initiative' } do
 
         resources :images, defaults: {container_type: 'Initiative'}
@@ -141,6 +141,9 @@ Rails.application.routes.draw do
       resources :project_holder_orderings, only: [:index] do
         patch 'reorder', on: :member
       end
+      resources :project_folders, only: [:show, :create, :update, :destroy] do
+        get 'by_slug/:slug', on: :collection, to: 'projects_topics#by_slug'
+      end
 
       resources :notifications, only: [:index, :show] do
         post 'mark_read', on: :member
@@ -224,7 +227,7 @@ Rails.application.routes.draw do
       resources :baskets, except: [:index]
       resources :clusterings
 
-      resources :avatars, only: [:index, :show]      
+      resources :avatars, only: [:index, :show]
       resources :moderations, only: [:index] do
         patch ':moderatable_type/:moderatable_id' => 'moderations#update', on: :collection
       end
