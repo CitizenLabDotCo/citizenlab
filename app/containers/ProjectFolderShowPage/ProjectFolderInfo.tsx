@@ -148,7 +148,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
               {(title) => {
                 return (
                   <Sharing
-                    context="folder"
+                    context="project"
                     url={folderUrl}
                     titleLevel="h2"
                     twitterMessage={formatMessage(messages.twitterMessage, { title })}
