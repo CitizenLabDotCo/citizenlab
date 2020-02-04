@@ -113,7 +113,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 
   if (!isNilOrError(projectFolder)) {
     return (
-      <Container className="e2e-project-info">
+      <Container>
         <Fragment name={`folders/${projectFolder.id}/info`}>
           <ScreenReaderOnly>
             <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
@@ -128,7 +128,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 
           <Right>
             {!isNilOrError(projectImages) && projectImages.length > 0 &&
-              <ProjectImages className="e2e-project-images">
+              <ProjectImages>
                 {projectImages.filter(projectImage => projectImage).map((projectImage) => (
                   <ImageZoom
                     key={projectImage.id}
