@@ -3,6 +3,8 @@ class ProjectFolder < ApplicationRecord
   has_many :projects, dependent: :nullify, foreign_key: :folder_id
   has_many :project_holder_orderings, as: :project_holder, dependent: :destroy
 
+  mount_base64_uploader :header_bg, ProjectFolderHeaderBgUploader
+
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
 
