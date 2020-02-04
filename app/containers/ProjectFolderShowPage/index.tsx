@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isError, isUndefined } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
@@ -111,12 +112,12 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                   <Spinner />
                 </Loading>
               ) : (
-                // !isNilOrError(project) ? (
+                !isNilOrError(projectFolder) ? (
                   <>
                     {/* <Header projectSlug={this.props.params.slug} /> */}
                     <Content>
                       <ContentContainer>
-                        {/* <ProjectFolderInfo projectId={project.id} /> */}
+                        <ProjectFolderInfo projectFolderId={projectFolder.id} />
                         <ProjectCards
                           pageSize={50}
                           publicationStatuses={['published', 'archived']}
@@ -128,7 +129,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                       </ContentContainer>
                     </Content>
                   </>
-                // ) : null
+                ) : null
               )
             )}
         </Container>
