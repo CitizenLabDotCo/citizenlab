@@ -102,14 +102,15 @@ resource 'ProjectFolder' do
       example "Delete a folder" do
         old_count = ProjectFolder.count
         old_pho_count = ProjectHolderOrdering.count
-        project_ids = project_folder.project_ids
+        project_ids = project_folder.projects.published.order(:ordering).ids
         do_request
         expect(response_status).to eq 200
         expect{ProjectFolder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectFolder.count).to eq (old_count - 1)
 
-        # Two projects should have moved to the top as published
+        # Two projects should have moved to the bottom as published, preserving relative ordering
         expect(ProjectHolderOrdering.count).to eq (old_pho_count + 1)
+        expect(ProjectHolderOrdering.order(:ordering).last(2).map(&:project_holder_id)).to eq project_ids
       end
     end
 
