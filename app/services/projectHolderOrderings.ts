@@ -25,10 +25,10 @@ export function listProjectHolderOrderings() {
 
 export async function reorderProjectHolder(orderingId: string, newOrder: number) {
   return streams.update<{ data: IProjectHolderOrderingData }>(
-    `${apiEndpoint}/${orderingId}`,
+    `${apiEndpoint}/${orderingId}/reorder`,
     orderingId,
     {
-      project_holder_orderings: {
+      project_holder_ordering: {
         ordering: newOrder
       }
     }
