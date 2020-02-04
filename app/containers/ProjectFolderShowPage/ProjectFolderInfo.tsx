@@ -8,7 +8,7 @@ import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -86,11 +86,11 @@ const ProjectImages = styled.div`
 `;
 
 interface InputProps {
-  projectId: string;
+  projectFolderId: string;
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  projectFolder: GetProjectFolderChildProps;
   projectImages: GetProjectImagesChildProps;
   authUser: GetAuthUserChildProps;
 }
@@ -100,11 +100,8 @@ interface Props extends InputProps, DataProps {
 }
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, theme, intl: { formatMessage }, authUser } = props;
-
-  if (isNilOrError(project)) return null;
-
-  const projectUrl = location.href;
+  const { projectFolder, projectImages, theme, intl: { formatMessage }, authUser } = props;
+  const folderUrl = location.href;
   const utmParams = authUser ? {
     source:'share_project',
     campaign:'share_content',
@@ -114,75 +111,81 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
     campaign:'share_content'
   };
 
-  return (
-    <Container className="e2e-project-info">
-      <Fragment name={`projects/${project.id}/info`}>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
-        </ScreenReaderOnly>
-        <Left>
-          <ProjectDescription>
-            <QuillEditedContent textColor={theme.colorText}>
-              <T value={project.attributes.description_multiloc} supportHtml={true}/>
-            </QuillEditedContent>
-          </ProjectDescription>
-        </Left>
+  if (!isNilOrError(projectFolder)) {
+    return (
+      <Container className="e2e-project-info">
+        <Fragment name={`folders/${projectFolder.id}/info`}>
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
+          </ScreenReaderOnly>
+          <Left>
+            <ProjectDescription>
+              <QuillEditedContent textColor={theme.colorText}>
+                <T value={projectFolder.attributes.description_multiloc} supportHtml={true}/>
+              </QuillEditedContent>
+            </ProjectDescription>
+          </Left>
 
-        <Right>
-          {!isNilOrError(projectImages) && projectImages.length > 0 &&
-            <ProjectImages className="e2e-project-images">
-              {projectImages.filter(projectImage => projectImage).map((projectImage) => (
-                <ImageZoom
-                  key={projectImage.id}
-                  image={{
-                    src: projectImage.attributes.versions.large,
-                    alt: ''
-                  }}
-                  zoomImage={{
-                    src: projectImage.attributes.versions.large,
-                    alt: ''
-                  }}
-                />
-              ))}
-            </ProjectImages>
-          }
-          <T value={project.attributes.title_multiloc} maxLength={50} >
-            {(title) => {
-              return (
-                <Sharing
-                  context="project"
-                  url={projectUrl}
-                  titleLevel="h2"
-                  twitterMessage={formatMessage(messages.twitterMessage, { title })}
-                  utmParams={utmParams}
-                />);
-            }}
-          </T>
-        </Right>
-      </Fragment>
-    </Container>
-  );
+          <Right>
+            {!isNilOrError(projectImages) && projectImages.length > 0 &&
+              <ProjectImages className="e2e-project-images">
+                {projectImages.filter(projectImage => projectImage).map((projectImage) => (
+                  <ImageZoom
+                    key={projectImage.id}
+                    image={{
+                      src: projectImage.attributes.versions.large,
+                      alt: ''
+                    }}
+                    zoomImage={{
+                      src: projectImage.attributes.versions.large,
+                      alt: ''
+                    }}
+                  />
+                ))}
+              </ProjectImages>
+            }
+            <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
+              {(title) => {
+                return (
+                  <Sharing
+                    context="folder"
+                    url={folderUrl}
+                    titleLevel="h2"
+                    twitterMessage={formatMessage(messages.twitterMessage, { title })}
+                    utmParams={utmParams}
+                  />);
+              }}
+            </T>
+          </Right>
+        </Fragment>
+      </Container>
+    );
+  }
+
+  return null;
 };
 
 const ProjectInfoWhithHoc = withTheme(injectIntl<Props>(ProjectInfo));
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
+  projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
+  projectImages: ({ projectFolderId, render }) => <GetProjectImages projectFolderId={projectFolderId}>{render}</GetProjectImages>,
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(dataProps) => {
-      if (isNilOrError(dataProps.project)) return null;
+      if (!isNilOrError(dataProps.projectFolder)) {
+        return (
+          <ProjectInfoWhithHoc
+            {...inputProps}
+            {...dataProps}
+          />
+        );
+      }
 
-      return (
-        <ProjectInfoWhithHoc
-          {...inputProps}
-          {...dataProps}
-        />
-      );
+      return null;
     }}
   </Data>
 );
