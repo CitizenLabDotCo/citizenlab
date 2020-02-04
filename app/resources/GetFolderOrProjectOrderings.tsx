@@ -1,5 +1,5 @@
 import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
-import useFolderOrProjectOrderings from 'hooks/useProjectHolderOrderings';
+import useProjectHolderOrderings from 'hooks/useProjectHolderOrderings';
 import { isNilOrError } from 'utils/helperUtils';
 
 type GetProjectHolderOrderingsChildProps = IProjectHolderOrderingData[] | undefined | null | Error;
@@ -11,9 +11,9 @@ interface Props {
 }
 
 const GetProjectHolderOrderings = ({ children }: Props) => {
-  const folderOrProjectOrderings = useFolderOrProjectOrderings();
+  const projectHolderOrderings = useProjectHolderOrderings();
 
-  return (children as children)(isNilOrError(folderOrProjectOrderings) ? folderOrProjectOrderings : folderOrProjectOrderings.data);
+  return (children as children)(isNilOrError(projectHolderOrderings) ? projectHolderOrderings : projectHolderOrderings.data);
 };
 
 export default GetProjectHolderOrderings;
