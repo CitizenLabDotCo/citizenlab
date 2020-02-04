@@ -15,7 +15,7 @@ import ContentContainer from 'components/ContentContainer';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 
 // i18n
 import messages from './messages';
@@ -75,7 +75,7 @@ export interface InputProps {}
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
-  project: GetProjectChildProps;
+  projectFolder: GetProjectFolderChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -87,10 +87,10 @@ interface State {
 
 class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
-    const { locale, tenant, project } = this.props;
+    const { locale, tenant, projectFolder } = this.props;
     const { slug } = this.props.params;
-    const projectNotFound = isError(project);
-    const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(project));
+    const projectNotFound = isError(projectFolder);
+    const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder));
 
     return (
       <>
@@ -142,7 +142,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
+  projectFolder: ({ params, render }) => <GetProjectFolder projectFolderSlug={params.slug}>{render}</GetProjectFolder>,
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
