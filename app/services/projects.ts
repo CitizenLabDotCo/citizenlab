@@ -141,7 +141,7 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
   const projectId = response.data.id;
   await streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`]
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`]
   });
   return response;
 }
@@ -212,8 +212,8 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
     { project: { folder_id: newProjectFolderId } }
   );
   streams.fetchAllWith({
-    dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`],
+    dataId: [projectId, ...newProjectFolderId ? [newProjectFolderId] : []],
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`],
   });
   // TODO refetch project or folder orderings
 

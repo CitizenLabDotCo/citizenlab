@@ -3,10 +3,9 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IProjectData, reorderProject, updateProjectFolderMembership } from 'services/projects';
+import { reorderProject, updateProjectFolderMembership } from 'services/projects';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 
 // localisation
@@ -23,6 +22,7 @@ import ProjectRow from '../../components/ProjectRow';
 import { HeaderTitle } from '../../all/styles';
 import { withRouter, WithRouterProps } from 'react-router';
 import GetProject from 'resources/GetProject';
+import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
 const Container = styled.div``;
 
@@ -47,7 +47,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  projects: GetProjectsChildProps;
+  projectHoldersOrderings: GetProjectHolderOrderingsChildProps;
   projectFolder: GetProjectFolderChildProps;
 }
 
@@ -78,8 +78,8 @@ class AdminFoldersProjectsList extends PureComponent<Props, State> {
   }
 
   render() {
-    const { projects, projectFolder } = this.props;
-    const projectList = projects && !isNilOrError(projects.projectsList) ? projects.projectsList : null;
+    const { projectHoldersOrderings, projectFolder } = this.props;
+    const projectList = !isNilOrError(projectHoldersOrderings) ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project') : null;
     const inFolderProjects = !isNilOrError(projectFolder) && projectFolder.relationships.projects ?
       projectFolder.relationships.projects.data.map(projectRel => projectRel.id
       ) : null;
@@ -142,21 +142,25 @@ class AdminFoldersProjectsList extends PureComponent<Props, State> {
                 <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
               </ListHeader>
               <List>
-                {projectList.map((project: IProjectData, index: number) => (
-                  <Row
-                    key={project.id}
-                    id={project.id}
-                    lastItem={(index === projectList.length - 1)}
-                  >
-                    <ProjectRow
-                      project={project}
-                      actions={[{
-                        buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                        handler: this.addProjectToFolder,
-                        icon: 'add'
-                      }]}
-                    />
-                  </Row>
+                {projectList.map((projectHolderOrdering, index: number) => (
+                  <GetProject projectId={projectHolderOrdering.relationships.project_holder.data.id} key={projectHolderOrdering.relationships.project_holder.data.id}>
+                    {project => isNilOrError(project) ? null : (
+                      <Row
+                        key={project.id}
+                        id={project.id}
+                        lastItem={(index === projectList.length - 1)}
+                      >
+                        <ProjectRow
+                          project={project}
+                          actions={[{
+                            buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                            handler: this.addProjectToFolder,
+                            icon: 'add'
+                          }]}
+                        />
+                      </Row>
+                    )}
+                  </GetProject>
                 ))}
               </List>
             </>
@@ -171,7 +175,7 @@ const AdminFoldersProjectsListWithHocs = withRouter(AdminFoldersProjectsList);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
-  projects: <GetProjects publicationStatuses={['published']} filterCanModerate={true} />
+  projectHoldersOrderings: <GetProjectHolderOrderings />,
 });
 
 export default (inputProps: InputProps & WithRouterProps) => (
