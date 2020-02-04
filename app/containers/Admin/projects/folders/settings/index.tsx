@@ -15,7 +15,7 @@ import IconTooltip from 'components/UI/IconTooltip';
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { addProjectFolder } from 'services/projectFolders';
+import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
@@ -96,24 +96,46 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
   // form submission
   const onSubmit = async () => {
     setLoading(true);
-    try {
-      if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
-        const res = await addProjectFolder({
-          title_multiloc: titleMultiloc,
-          description_multiloc: descriptionMultiloc,
-          description_preview_multiloc: shortDescriptionMultiloc,
-          header_bg: headerBg ?.base64
-      });
-        if (isNilOrError(res)) {
-          setStatus('error');
+    if (mode === 'new') {
+      try {
+        if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
+          const res = await addProjectFolder({
+            title_multiloc: titleMultiloc,
+            description_multiloc: descriptionMultiloc,
+            description_preview_multiloc: shortDescriptionMultiloc,
+            header_bg: headerBg?.base64
+          });
+          if (isNilOrError(res)) {
+            setStatus('error');
+          } else {
+            clHistory.push(`/admin/projects/folders/${res.id}`);
+          }
         } else {
-          clHistory.push(`/admin/projects/folders/${res.id}`);
+          setStatus('error');
         }
-      } else {
+      } catch {
         setStatus('error');
       }
-    } catch {
-      setStatus('error');
+    } else {
+      try {
+        if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
+          const res = await updateProjectFolder(projectFolderId, {
+            title_multiloc: titleMultiloc,
+            description_multiloc: descriptionMultiloc,
+            description_preview_multiloc: shortDescriptionMultiloc,
+            header_bg: headerBg?.base64
+          });
+          if (isNilOrError(res)) {
+            setStatus('error');
+          } else {
+            setStatus('success');
+          }
+        } else {
+          setStatus('error');
+        }
+      } catch {
+        setStatus('error');
+      }
     }
     setLoading(false);
   };
@@ -190,7 +212,6 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
               maxImagePreviewWidth="500px"
               onAdd={handleHeaderBgOnAdd}
               onRemove={handleHeaderBgOnRemove}
-            // errorMessage={headerError}
             />
           </SectionField>
           <SubmitWrapper
