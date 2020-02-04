@@ -211,7 +211,6 @@ export interface QuillProps {
   theme?: string;
   style?: React.CSSProperties;
   readOnly?: boolean;
-  defaultValue?: string;
   placeholder?: string;
   tabIndex?: number;
   bounds?: string | HTMLElement;
