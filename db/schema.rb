@@ -237,12 +237,6 @@ ActiveRecord::Schema.define(version: 2020_01_31_133006) do
     t.index ["project_id"], name: "index_events_on_project_id"
   end
 
-  create_table "folder_or_project_orderings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "ordering"
-    t.uuid "containable_id"
-    t.string "containable_type"
-  end
-
   create_table "groups", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc", default: {}
     t.string "slug"
@@ -663,6 +657,14 @@ ActiveRecord::Schema.define(version: 2020_01_31_133006) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_project_folders_on_slug"
+  end
+
+  create_table "project_holder_orderings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "ordering"
+    t.uuid "project_holder_id"
+    t.string "project_holder_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

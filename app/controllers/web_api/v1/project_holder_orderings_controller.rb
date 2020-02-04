@@ -12,7 +12,7 @@ class WebApi::V1::ProjectHolderOrderingsController < ::ApplicationController
     render json: linked_json(
       @phos, 
       WebApi::V1::ProjectHolderOrderingSerializer, 
-      params: fastjson_params
+      params: fastjson_params,
       include: [:project_holder]
       )
   end

@@ -93,7 +93,7 @@ class Project < ApplicationRecord
   end)
 
   scope :published, -> {
-    where.not(publication_status: 'published')
+    where(publication_status: 'published')
   }
 
   scope :is_participation_context, -> {

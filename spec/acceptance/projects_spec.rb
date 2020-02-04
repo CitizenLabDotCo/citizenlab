@@ -422,7 +422,7 @@ resource "Projects" do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
           expect(Project.find_by(ordering: 2).id).to eq id
-          expect(old_second_project.reload.ordering).to eq 3 # previous second is now third
+          expect(old_second_project.reload.ordering).to eq 3 # previous third is now fourth
         end
       end
     end
