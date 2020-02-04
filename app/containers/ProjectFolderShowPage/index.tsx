@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isError, isUndefined } from 'lodash-es';
-import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
@@ -11,13 +10,12 @@ import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
 import ProjectCards from 'components/ProjectCards';
 import ProjectFolderInfo from './ProjectFolderInfo';
+import ContentContainer from 'components/ContentContainer';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // i18n
 import messages from './messages';
@@ -34,10 +32,6 @@ const Container = styled.main`
   display: flex;
   flex-direction: column;
   background: #fff;
-
-  &.greyBackground {
-    background: ${colors.background};
-  }
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -82,8 +76,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
   project: GetProjectChildProps;
-  phases: GetPhasesChildProps;
-  events: GetEventsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -95,17 +87,15 @@ interface State {
 
 class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
-    const { children, locale, tenant, project, phases, events } = this.props;
+    const { locale, tenant, project } = this.props;
     const { slug } = this.props.params;
     const projectNotFound = isError(project);
-    const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(project) || isUndefined(phases) || isUndefined(events));
-    const currentPath = location.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+    const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(project));
 
     return (
       <>
         <ProjectFolderShowPageMeta projectSlug={slug} />
-        <Container className={`${(lastUrlSegment === 'events' || lastUrlSegment === 'info') ? 'greyBackground' : ''} ${!loading ? 'loaded' : 'loading'}`}>
+        <Container className={`${!loading ? 'loaded' : 'loading'}`}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
               <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
@@ -121,22 +111,24 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                   <Spinner />
                 </Loading>
               ) : (
-                !isNilOrError(project) ? (
+                // !isNilOrError(project) ? (
                   <>
-                    <Header projectSlug={this.props.params.slug} />
+                    {/* <Header projectSlug={this.props.params.slug} /> */}
                     <Content>
-                      <ProjectFolderInfo projectId={project.id} />
-                      <ProjectCards
-                        pageSize={50}
-                        publicationStatuses={['published', 'archived']}
-                        sort="new"
-                        showTitle={false}
-                        showPublicationStatusFilter={true}
-                        layout="threecolumns"
-                      />
+                      <ContentContainer>
+                        {/* <ProjectFolderInfo projectId={project.id} /> */}
+                        <ProjectCards
+                          pageSize={50}
+                          publicationStatuses={['published', 'archived']}
+                          sort="new"
+                          showTitle={false}
+                          showPublicationStatusFilter={true}
+                          layout="threecolumns"
+                        />
+                      </ContentContainer>
                     </Content>
                   </>
-                ) : null
+                // ) : null
               )
             )}
         </Container>
@@ -145,12 +137,12 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
+// TODO: add vertical padding to ContentContainer
+
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
-  phases: ({ project, render }) => <GetPhases projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetPhases>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
