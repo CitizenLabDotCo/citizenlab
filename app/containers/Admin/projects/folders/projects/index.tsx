@@ -1,12 +1,15 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import { reorderProject, updateProjectFolderMembership } from 'services/projects';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProject from 'resources/GetProject';
+import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,14 +18,11 @@ import messages from '../messages';
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
 import IconTooltip from 'components/UI/IconTooltip';
+import { HeaderTitle } from '../../all/styles';
+import ProjectRow from '../../components/ProjectRow';
 
 // style
 import styled from 'styled-components';
-import ProjectRow from '../../components/ProjectRow';
-import { HeaderTitle } from '../../all/styles';
-import { withRouter, WithRouterProps } from 'react-router';
-import GetProject from 'resources/GetProject';
-import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
 const Container = styled.div``;
 
@@ -43,25 +43,14 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-export interface InputProps {
-}
-
 interface DataProps {
   projectHoldersOrderings: GetProjectHolderOrderingsChildProps;
   projectFolder: GetProjectFolderChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends DataProps { }
 
-interface State {
-}
-
-class AdminFoldersProjectsList extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
+class AdminFoldersProjectsList extends PureComponent<Props & WithRouterProps> {
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder); // TODO
@@ -79,10 +68,12 @@ class AdminFoldersProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { projectHoldersOrderings, projectFolder } = this.props;
-    const projectList = !isNilOrError(projectHoldersOrderings) ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project') : null;
-    const inFolderProjects = !isNilOrError(projectFolder) && projectFolder.relationships.projects ?
-      projectFolder.relationships.projects.data.map(projectRel => projectRel.id
-      ) : null;
+    const projectList = !isNilOrError(projectHoldersOrderings)
+      ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project')
+      : null;
+    const inFolderProjects = !isNilOrError(projectFolder) && projectFolder.relationships.projects
+      ? projectFolder.relationships.projects.data.map(projectRel => projectRel.id)
+      : null;
 
     return (
       <Container>
@@ -173,12 +164,12 @@ class AdminFoldersProjectsList extends PureComponent<Props, State> {
 
 const AdminFoldersProjectsListWithHocs = withRouter(AdminFoldersProjectsList);
 
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
+const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
   projectHoldersOrderings: <GetProjectHolderOrderings />,
 });
 
-export default (inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: WithRouterProps) => (
   <Data {...inputProps}>
     {dataProps => <AdminFoldersProjectsListWithHocs {...inputProps} {...dataProps} />}
   </Data>

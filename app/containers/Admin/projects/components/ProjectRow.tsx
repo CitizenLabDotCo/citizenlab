@@ -51,22 +51,16 @@ export const RowIcon = styled(Icon)`
   width: 17px;
 `;
 
-interface InputProps {
+interface Props {
   project: IProjectData;
   actions?: ({ buttonContent: JSX.Element, handler: (projectId: string) => () => void, icon: IconNames } | 'manage')[];
   showIcon?: boolean;
 }
 
-interface DataProps {
-
-}
-
-interface Props extends InputProps, DataProps { }
-
 export default ({ project, actions, showIcon }: Props) => {
   const ManageButton = (
     <RowButton
-      className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+      className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
       linkTo={`/admin/projects/${project.id}/edit`}
       buttonStyle="secondary"
       icon="edit"
@@ -116,7 +110,7 @@ export default ({ project, actions, showIcon }: Props) => {
           {actions.map(action => action === 'manage' ? ManageButton :
             <RowButton
               type="button"
-              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
               onClick={action.handler(project.id)}
               buttonStyle="secondary"
               icon={action.icon}
