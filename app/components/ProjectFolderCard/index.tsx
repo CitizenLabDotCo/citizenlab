@@ -12,10 +12,10 @@ import Icon from 'components/UI/Icon';
 import LazyImage from 'components/LazyImage';
 
 // services
-import { getProjectUrl } from 'services/projects';
+import { getProjectFolderUrl } from 'services/projectFolders';
 
 // resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
@@ -112,7 +112,7 @@ const Container = styled(Link)`
   `}
 `;
 
-const ProjectImageContainer =  styled.div`
+const FolderImageContainer =  styled.div`
   width: 100%;
   height: 254px;
   flex-grow: 0;
@@ -132,7 +132,7 @@ const ProjectImageContainer =  styled.div`
   }
 `;
 
-const ProjectImagePlaceholder = styled.div`
+const FolderImagePlaceholder = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
@@ -140,12 +140,12 @@ const ProjectImagePlaceholder = styled.div`
   background: ${colors.placeholderBg};
 `;
 
-const ProjectImagePlaceholderIcon = styled(Icon) `
+const FolderImagePlaceholderIcon = styled(Icon) `
   height: 45px;
   fill: #fff;
 `;
 
-const ProjectImage = styled(LazyImage)`
+const FolderImage = styled(LazyImage)`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -154,7 +154,7 @@ const ProjectImage = styled(LazyImage)`
   background: #fff;
 `;
 
-const ProjectContent = styled.div`
+const FolderContent = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -236,7 +236,7 @@ const ContentBody = styled.div`
   }
 `;
 
-const ProjectTitle = styled.h3`
+const FolderTitle = styled.h3`
   line-height: normal;
   font-weight: 500;
   font-size: ${fontSizes.xl}px;
@@ -249,7 +249,7 @@ const ProjectTitle = styled.h3`
   }
 `;
 
-const ProjectDescription = styled.div`
+const FolderDescription = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: normal;
@@ -274,14 +274,14 @@ const MapIconDescription = styled.span`
 `;
 
 export interface InputProps {
-  projectId: string;
+  projectFolderId: string;
   size: 'small' | 'medium' | 'large';
   layout?: 'dynamic' | 'threecolumns';
   className?: string;
 }
 
 interface DataProps {
-  project: GetProjectChildProps;
+  projectFolder: GetProjectFolderChildProps;
   projectImages: GetProjectImagesChildProps;
 }
 
@@ -290,25 +290,25 @@ interface Props extends InputProps, DataProps {
 }
 
 class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
-  handleProjectCardOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCard, { extra: { projectId } });
+  handleProjectCardOnClick = (projectFolderId: string) => () => {
+    trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
   }
 
-  handleCTAOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectId } });
+  handleCTAOnClick = (projectFolderId: string) => () => {
+    trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectFolderId } });
   }
 
-  handleProjectTitleOnClick = (projectId: string) => () => {
-    trackEventByName(tracks.clickOnProjectTitle, { extra: { projectId } });
+  handleProjectTitleOnClick = (projectFolderId: string) => () => {
+    trackEventByName(tracks.clickOnProjectTitle, { extra: { projectFolderId } });
   }
 
   render() {
-    const { project, size, projectImages, layout, className } = this.props;
+    const { projectFolder, size, projectImages, layout, className } = this.props;
 
-    if (!isNilOrError(project)) {
+    if (!isNilOrError(projectFolder)) {
       const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
-      const projectUrl = getProjectUrl(project);
-      const isArchived = (project.attributes.publication_status === 'archived');
+      const folderUrl = getProjectFolderUrl(projectFolder);
+      const isArchived = (projectFolder.attributes.publication_status === 'archived');
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent`}>
@@ -319,56 +319,56 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
 
       const screenReaderContent = (
         <ScreenReaderOnly>
-          <ProjectTitle>
+          <FolderTitle>
             <FormattedMessage {...messages.a11y_projectTitle} />
-            <T value={project.attributes.title_multiloc} />
-          </ProjectTitle>
+            <T value={projectFolder.attributes.title_multiloc} />
+          </FolderTitle>
 
-          <ProjectDescription>
+          <FolderDescription>
             <FormattedMessage {...messages.a11y_projectDescription} />
-            <T value={project.attributes.description_preview_multiloc} />
-          </ProjectDescription>
+            <T value={projectFolder.attributes.description_preview_multiloc} />
+          </FolderDescription>
         </ScreenReaderOnly>
       );
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-project-card`}
-          to={projectUrl}
-          onClick={this.handleProjectCardOnClick(project.id)}
+          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+          to={folderUrl}
+          onClick={this.handleProjectCardOnClick(projectFolder.id)}
         >
           {screenReaderContent}
           {size !== 'large' && contentHeader}
 
-          <ProjectImageContainer className={size}>
-            <ProjectImagePlaceholder>
-              <ProjectImagePlaceholderIcon name="project" />
-            </ProjectImagePlaceholder>
+          <FolderImageContainer className={size}>
+            <FolderImagePlaceholder>
+              <FolderImagePlaceholderIcon name="project" />
+            </FolderImagePlaceholder>
 
             {imageUrl &&
-              <ProjectImage
+              <FolderImage
                 src={imageUrl}
                 alt=""
                 cover={true}
               />
             }
-          </ProjectImageContainer>
+          </FolderImageContainer>
 
-          <ProjectContent className={size}>
+          <FolderContent className={size}>
             {size === 'large' && contentHeader}
 
             <ContentBody className={size} aria-hidden>
-              <ProjectTitle className="e2e-project-card-project-title" onClick={this.handleProjectTitleOnClick(project.id)}>
-                <T value={project.attributes.title_multiloc} />
-              </ProjectTitle>
+              <FolderTitle onClick={this.handleProjectTitleOnClick(projectFolder.id)}>
+                <T value={projectFolder.attributes.title_multiloc} />
+              </FolderTitle>
 
-              <T value={project.attributes.description_preview_multiloc}>
+              <T value={projectFolder.attributes.description_preview_multiloc}>
                 {(description) => {
                   if (!isEmpty(description)) {
                     return (
-                      <ProjectDescription className="e2e-project-card-project-description-preview">
+                      <FolderDescription >
                         {description}
-                      </ProjectDescription>
+                      </FolderDescription>
                     );
                   }
 
@@ -376,7 +376,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
                 }}
               </T>
             </ContentBody>
-          </ProjectContent>
+          </FolderContent>
         </Container>
       );
     }
@@ -386,7 +386,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
+  projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
   projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
