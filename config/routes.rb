@@ -141,8 +141,8 @@ Rails.application.routes.draw do
       resources :project_holder_orderings, only: [:index] do
         patch 'reorder', on: :member
       end
-      resources :project_folders, only: [:show, :create, :update, :destroy] do
-        get 'by_slug/:slug', on: :collection, to: 'projects_topics#by_slug'
+      resources :project_folders, except: [:index] do
+        get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
       end
 
       resources :notifications, only: [:index, :show] do

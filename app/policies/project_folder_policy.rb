@@ -1,15 +1,10 @@
 class ProjectFolderPolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
+  def show?
+    true
+  end
 
-    def initialize(user, scope)
-      @user  = user
-      @scope = scope
-    end
-
-    def resolve
-      scope.all
-    end
+  def by_slug?
+    show?
   end
 
   def create?
