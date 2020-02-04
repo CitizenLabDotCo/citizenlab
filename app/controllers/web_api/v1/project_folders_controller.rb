@@ -10,13 +10,19 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
       ).serialized_json
   end
 
+  def by_slug
+    @project_folder = ProjectFolder.find_by!(slug: params[:slug])
+    authorize @project_folder
+    show
+  end
+
   def create
     @project_folder = ProjectFolder.new(project_folder_params)
 
     authorize @project_folder
 
     if @project_folder.save
-      ProjectHolderOrdering.create(project_holder: @project_folder)
+      SideFxProjectFolderService.new.after_create(@project_folder, current_user)
 
       render json: WebApi::V1::ProjectFolderSerializer.new(
         @project_folder,
@@ -28,10 +34,24 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
     end
   end
 
+  def update
+    @project_folder.assign_attributes project_folder_params
+    authorize @project_folder
+    if @project_folder.save
+      SideFxProjectFolderService.new.after_update(@project_folder, current_user)
+      render json: WebApi::V1::ProjectFolderSerializer.new(
+        @project_folder, 
+        params: fastjson_params
+        ).serialized_json, status: :ok
+    else
+      render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
-    project_holder = @project_holder.destroy
-    if project_holder.destroyed?
-      ProjectHolderOrdering.delete(project_holder: @project_folder)
+    project_folder = @project_folder.destroy
+    if project_folder.destroyed?
+      SideFxProjectFolderService.new.after_destroy(@project_folder, current_user)
       head :ok
     else
       head 500
@@ -47,6 +67,7 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
 
   def project_folder_params
     params.require(:project_folder).permit(
+      :header_bg,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES
