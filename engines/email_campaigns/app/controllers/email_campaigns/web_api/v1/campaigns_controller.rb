@@ -106,6 +106,7 @@ module EmailCampaigns
     def deliveries
       @deliveries = @campaign.deliveries
         .includes(:user)
+        .order(:created_at)
         .page(params.dig(:page, :number))
         .per(params.dig(:page, :size))
       render json: linked_json(
