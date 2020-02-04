@@ -125,6 +125,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                           showTitle={false}
                           showPublicationStatusFilter={true}
                           layout="threecolumns"
+                          folderId={projectFolder.id}
                         />
                       </ContentContainer>
                     </Content>
