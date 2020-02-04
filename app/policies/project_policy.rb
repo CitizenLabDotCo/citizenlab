@@ -116,6 +116,7 @@ class ProjectPolicy < ApplicationPolicy
       :default_assignee_id,
       :location_allowed,
       :poll_anonymous,
+      :folder_id,
       title_multiloc: CL2_SUPPORTED_LOCALES, 
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,

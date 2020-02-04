@@ -243,6 +243,7 @@ resource "Projects" do
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
+        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -363,6 +364,7 @@ resource "Projects" do
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
+        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)"
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -389,6 +391,23 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+      end
+
+      example "Add a project to a folder" do
+        folder = create(:project_folder)
+        ProjectHolderService.new.fix_project_holder_orderings!
+        do_request(project: {folder_id: folder.id})
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
+      end
+
+      example "Remove a project from a folder" do
+        folder = create(:project_folder)
+        @project.update!(folder: folder)
+        ProjectHolderService.new.fix_project_holder_orderings!
+        do_request(project: {folder_id: nil})
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq nil
       end
 
       example "Clear all areas", document: false do
