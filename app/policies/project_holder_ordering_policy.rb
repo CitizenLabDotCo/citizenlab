@@ -8,13 +8,13 @@ class ProjectHolderOrderingPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(project_holder_type: 'Folder')
+      scope.where(project_holder_type: 'ProjectFolder')
         .or(scope.where(project_holder: Pundit.policy_scope(user, Project)))
     end
   end
 
   def reorder?
-    update?
+    user&.active? && user.admin?
   end
 
   def permitted_attributes_for_reorder

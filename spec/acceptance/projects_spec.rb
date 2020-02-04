@@ -29,6 +29,7 @@ resource "Projects" do
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :publication_statuses, "Return only ideas with the specified publication statuses (i.e. given an array of publication statuses); returns all pusblished ideas by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
+      parameter :folder, "Filter by folder (project folder id)", required: false
 
       example_request "List all published projects (default behaviour)" do
         expect(status).to eq(200)
@@ -49,6 +50,16 @@ resource "Projects" do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
+      end
+
+      example "List all projects from a folder" do
+        folder = create(:project_folder, projects: @projects.take(2))
+        ProjectHolderService.new.fix_project_holder_orderings!
+
+        do_request folder: folder.id
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map{|d| d[:id]}).to match_array @projects.take(2).map(&:id)
       end
 
       example "List all projects with an area" do
@@ -422,7 +433,7 @@ resource "Projects" do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
           expect(Project.find_by(ordering: 2).id).to eq id
-          expect(old_second_project.reload.ordering).to eq 3 # previous second is now third
+          expect(old_second_project.reload.ordering).to eq 3 # previous third is now fourth
         end
       end
     end

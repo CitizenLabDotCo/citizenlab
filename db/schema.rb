@@ -663,6 +663,8 @@ ActiveRecord::Schema.define(version: 2020_01_31_133006) do
     t.integer "ordering"
     t.uuid "project_holder_id"
     t.string "project_holder_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
