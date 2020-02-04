@@ -23,6 +23,8 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
   belongs_to :default_assignee, class_name: 'User', optional: true
+
+  has_many :project_holder_orderings, as: :project_holder, dependent: :destroy
   belongs_to :folder, optional: true, class_name: 'ProjectFolder'
   counter_culture :folder
 
@@ -89,6 +91,10 @@ class Project < ApplicationRecord
 
     where(id: subquery)
   end)
+
+  scope :published, -> {
+    where.not(publication_status: 'published')
+  }
 
   scope :is_participation_context, -> {
     where.not(process_type: 'timeline')
