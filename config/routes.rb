@@ -138,6 +138,9 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         patch 'reorder', on: :member
       end
+      resources :project_holder_orderings, only: [:index] do
+        patch 'reorder', on: :member
+      end
 
       resources :notifications, only: [:index, :show] do
         post 'mark_read', on: :member
