@@ -57,7 +57,7 @@ const Right = styled.div`
   `}
 `;
 
-const ProjectDescription = styled.div``;
+const Description = styled.div``;
 
 interface InputProps {
   projectFolderId: string;
@@ -72,7 +72,7 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-const ProjectInfo = (props: Props & InjectedIntlProps) => {
+const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
   const { projectFolder, theme, intl: { formatMessage }, authUser } = props;
   const folderUrl = location.href;
   const utmParams = authUser ? {
@@ -92,11 +92,11 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
             <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
           </ScreenReaderOnly>
           <Left>
-            <ProjectDescription>
+            <Description>
               <QuillEditedContent textColor={theme.colorText}>
                 <T value={projectFolder.attributes.description_multiloc} supportHtml={true}/>
               </QuillEditedContent>
-            </ProjectDescription>
+            </Description>
           </Left>
 
           <Right>
@@ -121,7 +121,7 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
   return null;
 };
 
-const ProjectInfoWhithHoc = withTheme(injectIntl<Props>(ProjectInfo));
+const ProjectFolderInfoWhithHoc = withTheme(injectIntl<Props>(ProjectFolderInfo));
 
 const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
@@ -133,7 +133,7 @@ export default (inputProps: InputProps) => (
     {(dataProps) => {
       if (!isNilOrError(dataProps.projectFolder)) {
         return (
-          <ProjectInfoWhithHoc
+          <ProjectFolderInfoWhithHoc
             {...inputProps}
             {...dataProps}
           />
