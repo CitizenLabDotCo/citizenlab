@@ -30,6 +30,12 @@ export interface IProjectFolderData {
   };
 }
 
+export function getProjectFolderUrl(projectFolder: IProjectFolderData) {
+  const slug = projectFolder.attributes.slug;
+
+  return `folders/${slug}`;
+}
+
 export function projectFolderByIdStream(projectFolderId: string) {
   return streams.get<{ data: IProjectFolderData }>({ apiEndpoint: `${apiEndpoint}/${projectFolderId}` });
 }
