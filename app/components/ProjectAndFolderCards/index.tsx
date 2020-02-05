@@ -19,8 +19,9 @@ import SelectPublicationStatus from '../ProjectCards/SelectPublicationStatus';
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProjectfrom from 'resources/GetProject';
+import GetProjectFolder from 'resources/GetProjectFolder';
+import GetProjectHolderOrderings from 'resources/GetProjectHolderOrderings';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -502,7 +503,8 @@ const ProjectCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(ProjectCards
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>
+  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>,
+  projectHolderOrderings: <GetProjectHolderOrderings />
 });
 
 export default (inputProps: InputProps) => (
