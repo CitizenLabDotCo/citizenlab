@@ -12,7 +12,7 @@ class ProjectHolderService
     })
     ProjectHolderOrdering.where(project_holder_type: 'ProjectFolder').where.not(project_holder_id: folder_ids).destroy_all
 
-    project_ids = Project.where('folder_id IS NULL').published.ids
+    project_ids = Project.where(folder_id: nil).published.ids
     missing_project_ids = project_ids - ProjectHolderOrdering.where(project_holder_type: 'Project').where(project_holder_id: project_ids).pluck(:project_holder_id)
     ProjectHolderOrdering.create!(missing_project_ids.reverse.map{|id|
       {project_holder_id: id, project_holder_type: 'Project'}
