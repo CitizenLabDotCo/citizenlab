@@ -1,19 +1,19 @@
-import { IFolderOrProjectOrderingData } from 'services/folderOrProjectOrderings';
-import useFolderOrProjectOdergings from 'hooks/useFolderOrProjectOrdering';
+import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
+import useProjectHolderOrderings from 'hooks/useProjectHolderOrderings';
 import { isNilOrError } from 'utils/helperUtils';
 
-type GetFolderOrProjectOrderingsChildProps = IFolderOrProjectOrderingData[] | undefined | null | Error;
+type GetProjectHolderOrderingsChildProps = IProjectHolderOrderingData[] | undefined | null | Error;
 
-type children = (renderProps: GetFolderOrProjectOrderingsChildProps) => JSX.Element | null;
+type children = (renderProps: GetProjectHolderOrderingsChildProps) => JSX.Element | null;
 
 interface Props {
   children?: children;
 }
 
-const GetFolderOrProjectOrderings = ({ children }: Props) => {
-  const folderOrProjectOrderings = useFolderOrProjectOdergings();
+const GetProjectHolderOrderings = ({ children }: Props) => {
+  const projectHolderOrderings = useProjectHolderOrderings();
 
-  return (children as children)(isNilOrError(folderOrProjectOrderings) ? folderOrProjectOrderings : folderOrProjectOrderings.data);
+  return (children as children)(isNilOrError(projectHolderOrderings) ? projectHolderOrderings : projectHolderOrderings.data);
 };
 
-export default GetFolderOrProjectOrderings;
+export default GetProjectHolderOrderings;
