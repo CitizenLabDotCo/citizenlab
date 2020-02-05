@@ -24,13 +24,17 @@ import tracks from './tracks';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
+import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
+import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
 
 // utils
 import { getProjectUrl } from 'services/projects';
+import { getProjectFolderUrl } from 'services/projectFolders';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
@@ -373,7 +377,9 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
-  projects: GetProjectsChildProps;
+  projectHolderOrderings: GetProjectHolderOrderingsChildProps;
+  project: GetProjectChildProps;
+  projectFolder: GetProjectFolderChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -423,14 +429,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
 
   render() {
     const {
-      projects,
       location,
       locale,
       authUser,
       tenant,
-      intl: { formatMessage }
+      intl: { formatMessage },
+      projectHolderOrderings
     } = this.props;
-    const { projectsList } = projects;
     const { projectsDropdownOpened } = this.state;
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
     let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
@@ -481,7 +486,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </NavigationItemText>
                 </NavigationItem>
 
-                {tenantLocales && projectsList && projectsList.length > 0 &&
+                {tenantLocales && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
@@ -503,58 +508,46 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       onClickOutside={this.toggleProjectsDropdown}
                       content={(
                         <ProjectsList>
-                          {projectsList.map((project, index) => (
-                            <ProjectsListItem
-                              key={project.id}
-                              to={getProjectUrl(project)}
-                              className={`${index === projectsList.length - 1} ? 'last' : ''`}
-                            >
-                              {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
-                            </ProjectsListItem>
-                          ))}
-                          {itemsList.map((item: IProjectHolderOrderingData, index: number) => {
-                            if (item.relationships.project_holder.data.type === 'project') {
-                              return (
-                                <GetProject projectId={item.relationships.project_holder.data.id}>
-                                  {project => isNilOrError(project) ? null : (
-                                    <SortableRow
-                                      key={item.id}
-                                      id={item.id}
-                                      index={index}
-                                      moveRow={handleDragRow}
-                                      dropRow={handleDropRow}
-                                      lastItem={(index === projectHoldersOrderings.length - 1)}
-                                    >
-                                      <ProjectRow project={project} showIcon />
-                                    </SortableRow>
-                                  )}
-                                </GetProject>
-                              );
-                            } else {
-                              return (
-                                <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id}>
-                                  {projectFolder => isNilOrError(projectFolder) ? null : (
-                                    <SortableRow
-                                      key={item.id}
-                                      id={item.id}
-                                      index={index}
-                                      moveRow={handleDragRow}
-                                      dropRow={handleDropRow}
-                                      lastItem={(index === projectHoldersOrderings.length - 1)}
-                                    >
-                                      {FolderRow(projectFolder)}
-                                    </SortableRow>
-                                  )}
-                                </GetProjectFolder>
-                              );
+                          {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.map(
+                            (item: IProjectHolderOrderingData, index: number) => {
+                              const isProject = item.relationships.project_holder.data.type === 'project';
+
+                              if (isProject) {
+                                return (
+                                  <GetProject projectId={item.relationships.project_holder.data.id}>
+                                    {project => isNilOrError(project) ? null : (
+                                      <ProjectsListItem
+                                        key={project.id}
+                                        to={getProjectUrl(project)}
+                                        className={`${index === projectHolderOrderings.length - 1} ? 'last' : ''`}
+                                      >
+                                        {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
+                                      </ProjectsListItem>
+                                    )}
+                                  </GetProject>
+                                );
+                              } else {
+                                return (
+                                  <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id}>
+                                    {projectFolder => isNilOrError(projectFolder) ? null : (
+                                      <ProjectsListItem
+                                        key={projectFolder.id}
+                                        to={getProjectFolderUrl(projectFolder)}
+                                        className={`${index === projectHolderOrderings.length - 1} ? 'last' : ''`}
+                                      >
+                                        {!isNilOrError(locale) ? getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales) : null}
+                                      </ProjectsListItem>
+                                    )}
+                                  </GetProjectFolder>
+                                );
+                              }
                             }
-                          }
-                          ))}
+                          )}
                         </ProjectsList>
                       )}
                       footer={
                         <>
-                          {projectsList.length > 9 &&
+                          {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 9 &&
                             <ProjectsListFooter to={'/projects'}>
                               <FormattedMessage {...messages.allProjects} />
                             </ProjectsListFooter>
@@ -659,13 +652,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
   }
 }
 
-const projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
-
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projects: <GetProjects pageSize={250} publicationStatuses={projectsPublicationStatuses} sort="new" />
+  projectHolderOrderings: <GetProjectHolderOrderings />,
 });
 
 const NavbarWithHOCs = withRouter<Props>(injectIntl(Navbar));
