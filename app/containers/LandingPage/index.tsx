@@ -4,7 +4,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectCards from 'components/ProjectCards';
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import CityLogoSection from 'components/CityLogoSection';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -197,7 +197,7 @@ class LandingPage extends PureComponent<Props, State> {
               <StyledContentContainer mode="page">
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
-                    <ProjectCards
+                    <ProjectAndFolderCards
                       pageSize={6}
                       sort="new"
                       publicationStatuses={this.projectsPublicationStatuses}
