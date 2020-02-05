@@ -3,19 +3,15 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { size, isEqual, isEmpty, isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { stringify } from 'qs';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
-import SelectAreas from './SelectAreas';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetProject from 'resources/GetProject';
@@ -83,49 +79,12 @@ const Title = styled.h2`
   display: flex;
   align-items: center;
   padding: 0;
-  margin: 0;
+  padding-bottom: 15px;
   margin-right: 45px;
 
   ${media.smallerThanMinTablet`
     text-align: center;
     margin: 0;
-  `};
-`;
-
-const FiltersArea = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  &.fullWidth {
-    width: 100%;
-    justify-content: space-between;
-
-    ${media.smallerThanMinTablet`
-      justify-content: flex-start;
-    `};
-  }
-
-  &.alignRight {
-    justify-content: flex-end;
-
-    ${media.smallerThanMinTablet`
-      display: none;
-    `};
-  }
-`;
-
-const FilterArea = styled.div`
-  height: 60px;
-  display: flex;
-  align-items: center;
-
-  &.publicationstatus {
-    margin-right: 30px;
-  }
-
-  ${media.smallerThanMinTablet`
-    height: auto;
   `};
 `;
 
@@ -344,22 +303,11 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     this.props.projects.onLoadMore();
   }
 
-  handleAreasOnChange = (areas: string[]) => {
-    if (!isEqual(this.state.areas, areas)) {
-      trackEventByName(tracks.clickOnProjectsAreaFilter);
-      const { pathname } = removeLocale(this.props.location.pathname);
-      const query = { ...this.props.location.query, areas };
-      const search = `?${stringify(query, { indices: false, encode: false })}`;
-      clHistory.replace({ pathname, search });
-    }
-  }
-
   render() {
     const { cardSizes } = this.state;
     const { tenant, showTitle, layout, theme, projectHolderOrderings } = this.props;
-    const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
+    const { projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
-    const selectedAreas = (queryParameters.areas || this.emptyArray);
     const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
     if (!isNilOrError(tenant)) {
@@ -383,12 +331,6 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                 }
               </ScreenReaderOnly>
             )}
-
-            <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
-              <FilterArea>
-                <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
-              </FilterArea>
-            </FiltersArea>
           </Header>
 
           {querying &&
@@ -411,7 +353,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             </EmptyContainer>
           }
 
-          {!querying && hasProjects && projectsList && !isNilOrError(projectHolderOrderings) && (
+          {!querying && hasProjects && !isNilOrError(projectHolderOrderings) && (
             <ProjectsList id="e2e-projects-list">
               {projectHolderOrderings.map((item: IProjectHolderOrderingData, index: number) => {
                   const projectOrFolderId = item.relationships.project_holder.data.id;
@@ -460,11 +402,11 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
               // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
               // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length + 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length + 1) % 3 === 0 &&
                 <MockProjectCard className={layout} />
               }
 
-              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length - 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length - 1) % 3 === 0 &&
                 <>
                   <MockProjectCard className={layout} />
                   <MockProjectCard className={layout} />

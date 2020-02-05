@@ -13,10 +13,6 @@ export default defineMessages({
     id: 'app.components.ProjectFolderCards.stayTuned',
     defaultMessage: 'Stay tuned, a project is going to show up pretty soon.',
   },
-  areasTitle: {
-    id: 'app.containers.ProjectFolderCards.areasTitle',
-    defaultMessage: 'Areas',
-  },
   allProjects: {
     id: 'app.containers.ProjectFolderCards.allProjects',
     defaultMessage: 'All projects',
