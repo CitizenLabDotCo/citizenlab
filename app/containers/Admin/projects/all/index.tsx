@@ -11,11 +11,16 @@ import { trackPage } from 'utils/analytics';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
+import { IProjectFolderData } from 'services/projectFolders';
+import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject from 'resources/GetProject';
+import GetProjectFolder from 'resources/GetProjectFolder';
+import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -34,17 +39,11 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
-
+import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon } from '../components/ProjectRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 
 // style
 import styled from 'styled-components';
-import { IProjectFolderData } from 'services/projectFolders';
-import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon } from '../components/ProjectRow';
-import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
-import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
-import GetProject from 'resources/GetProject';
-import GetProjectFolder from 'resources/GetProjectFolder';
 
 const Container = styled.div``;
 
