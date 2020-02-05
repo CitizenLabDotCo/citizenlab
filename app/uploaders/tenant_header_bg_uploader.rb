@@ -1,4 +1,4 @@
-class HeaderBgUploader < CarrierWave::Uploader::Base
+class TenantHeaderBgUploader < CarrierWave::Uploader::Base
   include BaseImageUploader
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
