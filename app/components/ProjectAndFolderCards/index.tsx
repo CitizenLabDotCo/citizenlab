@@ -12,8 +12,7 @@ import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
-import SelectAreas from '../ProjectCards/SelectAreas';
-import SelectPublicationStatus from '../ProjectCards/SelectPublicationStatus';
+import SelectAreas from './SelectAreas';
 
 // resources
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
@@ -222,7 +221,6 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends GetProjectsInputProps {
   showTitle: boolean;
-  showPublicationStatusFilter: boolean;
   layout: 'dynamic' | 'threecolumns';
 }
 
@@ -346,11 +344,6 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     this.props.projects.onLoadMore();
   }
 
-  handlePublicationStatusOnChange = (status: SelectedPublicationStatus) => {
-    trackEventByName(tracks.clickOnProjectsPublicationStatusFilter);
-    this.props.projects.onChangePublicationStatus(status);
-  }
-
   handleAreasOnChange = (areas: string[]) => {
     if (!isEqual(this.state.areas, areas)) {
       trackEventByName(tracks.clickOnProjectsAreaFilter);
@@ -363,7 +356,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
 
   render() {
     const { cardSizes } = this.state;
-    const { tenant, showTitle, showPublicationStatusFilter, layout, theme, projectHolderOrderings } = this.props;
+    const { tenant, showTitle, layout, theme, projectHolderOrderings } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
@@ -392,12 +385,6 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             )}
 
             <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
-              {showPublicationStatusFilter &&
-                <FilterArea className="publicationstatus">
-                  <SelectPublicationStatus onChange={this.handlePublicationStatusOnChange} />
-                </FilterArea>
-              }
-
               <FilterArea>
                 <SelectAreas selectedAreas={selectedAreas} onChange={this.handleAreasOnChange} />
               </FilterArea>
