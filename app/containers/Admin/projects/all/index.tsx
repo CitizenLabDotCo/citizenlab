@@ -88,7 +88,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   projects: GetProjectsChildProps;
-  projectHoldersOrderings: GetProjectHolderOrderingsChildProps;
+  projectHolderOrderings: GetProjectHolderOrderingsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -194,11 +194,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { authUser, projects, className, projectHoldersOrderings } = this.props;
+    const { authUser, projects, className, projectHolderOrderings } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
 
-    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(projectHoldersOrderings)) {
+    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(projectHolderOrderings)) {
       const { projectsList } = projects;
       const draftProjects = projectsList.filter((project) => {
         return project.attributes.publication_status === 'draft';
@@ -228,7 +228,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
       lists = (
         <ListsContainer>
-          {projectHoldersOrderings && projectHoldersOrderings.length > 0 &&
+          {projectHolderOrderings && projectHolderOrderings.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -247,7 +247,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
               <HasPermission item="project" action="reorder">
                 <SortableList
-                  items={projectHoldersOrderings}
+                  items={projectHolderOrderings}
                   onReorder={this.handleReorderHolders}
                   className="projects-list e2e-admin-projects-list"
                   id="e2e-admin-published-projects-list"
@@ -264,7 +264,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                                 index={index}
                                 moveRow={handleDragRow}
                                 dropRow={handleDropRow}
-                                lastItem={(index === projectHoldersOrderings.length - 1)}
+                                lastItem={(index === projectHolderOrderings.length - 1)}
                               >
                                 <ProjectRow project={project} showIcon />
                               </SortableRow>
@@ -281,7 +281,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                                 index={index}
                                 moveRow={handleDragRow}
                                 dropRow={handleDropRow}
-                                lastItem={(index === projectHoldersOrderings.length - 1)}
+                                lastItem={(index === projectHolderOrderings.length - 1)}
                               >
                                 {FolderRow(projectFolder)}
                               </SortableRow>
@@ -294,14 +294,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </SortableList>
                 <HasPermission.No>
                   <List>
-                    {projectHoldersOrderings.map((holder, index) => (
+                    {projectHolderOrderings.map((holder, index) => (
                       holder.relationships.project_holder.data.type === 'project') ? (
                         <GetProject projectId={holder.relationships.project_holder.data.id}>
                           {project => isNilOrError(project) ? null : (
                             <Row
                               key={project.id}
                               id={project.id}
-                              lastItem={(index === projectHoldersOrderings.length - 1)}
+                              lastItem={(index === projectHolderOrderings.length - 1)}
                             >
                               <ProjectRow project={project} showIcon />
                             </Row>
@@ -313,7 +313,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                             <Row
                               key={projectFolder.id}
                               id={projectFolder.id}
-                              lastItem={(index === projectHoldersOrderings.length - 1)}
+                              lastItem={(index === projectHolderOrderings.length - 1)}
                             >
                               {FolderRow(projectFolder)}
                             </Row>
@@ -463,7 +463,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'archived'];
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  projectHoldersOrderings: <GetProjectHolderOrderings />,
+  projectHolderOrderings: <GetProjectHolderOrderings />,
   projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
 });
 
