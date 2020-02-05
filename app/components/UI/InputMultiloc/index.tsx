@@ -112,6 +112,9 @@ export default class InputMultiloc extends PureComponent<Props, State> {
             {label &&
               <LabelWrapper>
                 <Label htmlFor={id}>{label}</Label>
+                {currentTenantLocales.length > 1 &&
+                  <LanguageExtension>{selectedLocale.toUpperCase()}</LanguageExtension>
+                }
               </LabelWrapper>
             }
 
@@ -166,7 +169,7 @@ export default class InputMultiloc extends PureComponent<Props, State> {
                 </InputWrapper>
               );
             })}
-        </Container>
+          </Container>
         );
       }
     }
