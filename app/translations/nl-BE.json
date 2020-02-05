@@ -293,6 +293,7 @@
   "app.components.ProjectCards.stayTuned": "Blijf in de buurt, er wordt binnenkort een project toegevoegd.",
   "app.components.ProjectFolderCard.a11y_projectDescription": "",
   "app.components.ProjectFolderCard.a11y_projectTitle": "",
+  "app.components.ProjectFolderCard.numberOfProjects": "",
   "app.components.ProjectFolderCards.noProjectYet": "",
   "app.components.ProjectFolderCards.showMore": "",
   "app.components.ProjectFolderCards.stayTuned": "",
