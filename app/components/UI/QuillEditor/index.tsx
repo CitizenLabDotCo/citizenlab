@@ -20,9 +20,6 @@ import styled from 'styled-components';
 import { colors, quillEditedContent, media } from 'utils/styleUtils';
 
 const Container = styled.div<{
-  heading1: string,
-  heading2: string,
-  normal: string,
   videoPrompt: string,
   linkPrompt: string,
   visitPrompt: string,
@@ -30,27 +27,6 @@ const Container = styled.div<{
   edit: string,
   remove: string
 }>`
-  .ql-picker.ql-header {
-    .ql-picker-label::before {
-      content: '${props => props.normal}' !important;
-    }
-    .ql-picker-label[data-value='1']::before {
-      content: '${props => props.heading1}' !important;
-    }
-    .ql-picker-label[data-value='2']::before {
-      content: '${props => props.heading2}' !important;
-    }
-    .ql-picker-item::before {
-      content: '${props => props.normal}' !important;
-    }
-    .ql-picker-item[data-value='1']::before {
-      content: '${props => props.heading1}' !important;
-    }
-    .ql-picker-item[data-value='2']::before {
-      content: '${props => props.heading2}' !important;
-    }
-  }
-
   .ql-tooltip[data-mode=link]::before {
     content: '${props => props.linkPrompt}' !important;
   }
@@ -305,9 +281,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   return (
     <Container
       className={classNames}
-      heading1={formatMessage(messages.title)}
-      heading2={formatMessage(messages.subtitle)}
-      normal={formatMessage(messages.normalText)}
       videoPrompt={formatMessage(messages.videoPrompt)}
       linkPrompt={formatMessage(messages.linkPrompt)}
       visitPrompt={formatMessage(messages.visitPrompt)}
@@ -342,6 +315,12 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
               </select>
             </span>
           }
+
+          <span className="ql-formats">
+            <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
+            <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
+            <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
+          </span>
 
           {!limitedTextFormatting && !noAlign &&
             <span className="ql-formats">
@@ -382,12 +361,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
               />
             </span>
           }
-
-          <span className="ql-formats">
-            <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
-            <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
-            <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
-          </span>
 
           {!(noImages && noVideos) &&
             <span className="ql-formats">
