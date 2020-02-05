@@ -1,9 +1,9 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { isEqual } from 'lodash-es';
 
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html'; 
 import 'quill/dist/quill.snow.css';
 
 // i18n
@@ -117,6 +117,7 @@ const Container = styled.div<{
 interface Props {
   id: string;
   value?: string;
+  placeholder?: string;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
@@ -133,25 +134,26 @@ Quill.register('modules/blotFormatter', BlotFormatter);
 
 const useQuill = (props: Props, toolbarId: string | null) => {
   const { value, onChange } = props;
+
   const [editor, setEditor] = useState<Quill | null>(null);
+  const contentRef = useRef<string>();
   const [focussed, setFocussed] = useState(false);
   const editorRef: React.RefObject<any> = useRef();
 
   useEffect(() => {
-    if (editor) {
-      const editorHtml = editor.root.innerHTML;
-
-      if (!isEqual(value, editorHtml)) {
-        const valueDelta = editor.clipboard.convert(value);
-        editor.setContents(valueDelta);
-      }
+    if (editor && value !== contentRef.current) {
+      editor.clipboard.dangerouslyPasteHTML(value || '');
+      contentRef.current = value;
     }
   }, [editor, value]);
 
   useEffect(() => {
     const textChangeHandler = () => {
       if (editor) {
-        const html = editor.root.innerHTML;
+        const delta = editor.getContents();
+        const converter = new QuillDeltaToHtmlConverter(delta.ops || [], {});
+        const html = converter.convert();
+        contentRef.current = html;
         onChange && onChange(html);
       }
     };
@@ -182,7 +184,7 @@ const useQuill = (props: Props, toolbarId: string | null) => {
 
   useEffect(() => {
     if (!editor && editorRef && editorRef.current) {
-      const { noAlign, noImages, noVideos, limitedTextFormatting } = props;
+      const { placeholder, noAlign, noImages, noVideos, limitedTextFormatting } = props;
       const editorOptions: QuillOptionsStatic = {
         formats: [
           'bold',
@@ -194,7 +196,7 @@ const useQuill = (props: Props, toolbarId: string | null) => {
           ...(!noVideos ? ['video'] : [])
         ],
         theme: 'snow',
-        placeholder: '',
+        placeholder: placeholder || '',
         modules: {
           blotFormatter: (noImages && noVideos) ? false : true,
           toolbar: toolbarId ? `#${toolbarId}` : false,
