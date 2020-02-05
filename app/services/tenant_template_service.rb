@@ -412,7 +412,7 @@ class TenantTemplateService
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
         'ordering'                     => p.ordering,
-        'folder_ref'                   => lookup_ref(p.folder_id, :project_older)
+        'folder_ref'                   => lookup_ref(p.folder_id, :project_folder)
       })
       store_ref yml_project, p.id, :project
       yml_project
@@ -422,7 +422,7 @@ class TenantTemplateService
   def yml_project_holder_orderings
     ProjectHolderOrdering.all.map do |p|
       {
-        'project_holder_ref' => lookup_ref(p.project_id, [:project,:project_folder]),
+        'project_holder_ref' => lookup_ref(p.project_holder_id, [:project,:project_folder]),
         'ordering'           => p.ordering,
         'created_at'         => p.created_at.to_s,
         'updated_at'         => p.updated_at.to_s

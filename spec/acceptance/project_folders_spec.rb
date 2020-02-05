@@ -7,11 +7,6 @@ resource 'ProjectFolder' do
   before do
     header "Content-Type", "application/json"
 
-    # TODO make it work without this part
-    # @user = create(:user)
-    # token = Knock::AuthToken.new(payload: @user.to_token_payload).token
-    # header 'Authorization', "Bearer #{token}"
-
     @projects = ['published','published','draft','published','archived','archived','published']
       .map { |ps|  create(:project, publication_status: ps)}
     @folders = [create(:project_folder, projects: @projects.take(3)), create(:project_folder, projects: [@projects.last])]
