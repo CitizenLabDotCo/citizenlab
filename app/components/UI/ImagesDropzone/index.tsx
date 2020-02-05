@@ -49,9 +49,10 @@ const DropzoneLabelText = styled.span`
 `;
 
 const DropzoneLabelIcon = styled(Icon)`
-  height: 32px;
+  flex: 0 0 30px;
+  height: 30px;
   fill: ${colors.label};
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   transition: all 100ms ease-out;
 `;
 
@@ -189,6 +190,7 @@ const RemoveButton = styled.button`
 `;
 
 interface Props {
+  id?: string;
   images: UploadFile[] | null;
   acceptedFileTypes?: string | null | undefined;
   imagePreviewRatio: number;
@@ -315,16 +317,14 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    let { acceptedFileTypes, label, objectFit } = this.props;
-    const { images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, borderRadius, className } = this.props;
+    const { id, images, maxImageFileSize, maxNumberOfImages, maxImagePreviewWidth, imagePreviewRatio, borderRadius, className } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
     const remainingImages = (maxNumberOfImages && maxNumberOfImages !== 1 ? `(${maxNumberOfImages - size(images)} ${formatMessage(messages.remaining)})` : null);
     const maxImageSizeInMb = this.getMaxImageSizeInMb();
-
-    acceptedFileTypes = (acceptedFileTypes || '*');
-    label = (label || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImageLabel, { maxImageSizeInMb }) : formatMessage(messages.uploadMultipleImagesLabel)));
-    objectFit = (objectFit || 'cover');
+    const acceptedFileTypes = this.props.acceptedFileTypes || '*';
+    const label = this.props.label || (maxNumberOfImages && maxNumberOfImages === 1 ? formatMessage(messages.uploadImageLabel, { maxImageSizeInMb }) : formatMessage(messages.uploadMultipleImagesLabel));
+    const objectFit = this.props.objectFit || 'cover';
 
     return (
       <Container className={className}>
@@ -345,7 +345,7 @@ class ImagesDropzone extends PureComponent<Props & InjectedIntlProps, State> {
                 {({ getRootProps, getInputProps }) => {
                   return (
                     <DropzoneContent {...getRootProps()} borderRadius={borderRadius} className={images && maxNumberOfImages === images.length ? 'disabled' : ''}>
-                      <DropzoneInput {...getInputProps()} />
+                      <DropzoneInput {...getInputProps()} id={id || ''}/>
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload" ariaHidden />
                         <DropzoneLabelText>{label}</DropzoneLabelText>

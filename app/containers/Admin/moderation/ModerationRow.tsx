@@ -15,6 +15,10 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 import T from 'components/T';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -45,12 +49,12 @@ const BelongsToType = styled.span`
   margin-right: 6px;
 `;
 
-const ViewIconLinkWrapper = styled.div`
+const GoToLinkWrapper = styled.div`
   width: 18px;
   height: 18px;
 `;
 
-const ViewIconLink = styled(Link)`
+const GoToLink = styled(Link)`
   width: 100%;
   height: 100%;
   padding: 0;
@@ -59,7 +63,7 @@ const ViewIconLink = styled(Link)`
   cursor: pointer;
 `;
 
-const ViewIcon = styled(Icon)`
+const GoToIcon = styled(Icon)`
   width: 100%;
   height: 100%;
   fill: ${colors.label};
@@ -95,6 +99,24 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
     onSelect(moderation.id);
   }, [onSelect]);
 
+  const handleGoToLinkOnClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const url = event.currentTarget.href;
+    const type = event.currentTarget.dataset.type;
+    trackEventByName(tracks.goToLinkClicked, { type });
+    const win = window.open(url, '_blank');
+    win && win.focus();
+  }, []);
+
+  const handleBelongsToLinkOnClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    const url = event.currentTarget.href;
+    const belongsToType = event.currentTarget.dataset.belongstotype;
+    trackEventByName(tracks.belongsToLinkClicked, { belongsToType });
+    const win = window.open(url, '_blank');
+    win && win.focus();
+  }, []);
+
   return (
     <Container
       className={className}
@@ -121,7 +143,13 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
             <BelongsToType>
               <FormattedMessage {...messages[key]} />:
             </BelongsToType>
-            <a href={`/${key}s/${moderation.attributes.belongs_to[key].slug}`} role="button" target="_blank">
+            <a
+              href={`/${key}s/${moderation.attributes.belongs_to[key].slug}`}
+              role="button"
+              target="_blank"
+              onClick={handleBelongsToLinkOnClick}
+              data-belongstotype={key}
+            >
               <T value={moderation.attributes.belongs_to[key].title_multiloc} />
             </a>
           </BelongsToItem>
@@ -140,11 +168,16 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
           placement="bottom-end"
           content={<FormattedMessage {...messages.goToThisContentType} values={{ contentType: contentType.toLowerCase() }} />}
         >
-          <ViewIconLinkWrapper>
-            <ViewIconLink to={viewLink} target="_blank">
-              <ViewIcon name="goTo" />
-            </ViewIconLink>
-          </ViewIconLinkWrapper>
+          <GoToLinkWrapper>
+            <GoToLink
+              to={viewLink}
+              onClick={handleGoToLinkOnClick}
+              target="_blank"
+              data-type={contentType}
+            >
+              <GoToIcon name="goTo" />
+            </GoToLink>
+          </GoToLinkWrapper>
         </Tippy>
       </td>
     </Container>
