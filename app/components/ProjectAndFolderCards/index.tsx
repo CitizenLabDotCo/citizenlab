@@ -242,7 +242,7 @@ interface State {
   areas: string[];
 }
 
-class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   emptyArray: string[] = [];
 
   constructor(props) {
@@ -254,11 +254,11 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
   }
 
   componentDidMount() {
-    this.calculateProjectCardsLayout();
+    this.calculateCardsLayout();
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    this.calculateProjectCardsLayout();
+    this.calculateCardsLayout();
 
     const areas = this.getAreasFromQueryParams();
 
@@ -282,48 +282,47 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
     return areas;
   }
 
-  calculateProjectCardsLayout = () => {
-    const { projects, windowSize, layout } = this.props;
+  calculateCardsLayout = () => {
+    const { projectHolderOrderings, windowSize, layout } = this.props;
 
     if (
-      !isNilOrError(projects) &&
-      projects.projectsList &&
-      projects.projectsList.length > 0 &&
+      !isNilOrError(projectHolderOrderings) &&
+      projectHolderOrderings.length > 0 &&
       windowSize &&
       layout === 'dynamic'
     ) {
-      const { projectsList } = projects;
-      const initialProjectsCount = size(projectsList.slice(0, 6));
+
+      const initialCount = size(projectHolderOrderings.slice(0, 6));
       const isOdd = (number: number) => number % 2 === 1;
       const biggerThanSmallTablet = (windowSize >= viewportWidths.smallTablet);
       const biggerThanLargeTablet = (windowSize >= viewportWidths.largeTablet);
 
-      const cardSizes = projectsList.map((_project, index) => {
+      const cardSizes = projectHolderOrderings.map((_project, index) => {
         let cardSize: 'small' | 'medium' | 'large' = (biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small');
 
         if (index < 6) {
           if (biggerThanSmallTablet && !biggerThanLargeTablet) {
-            if ((!isOdd(initialProjectsCount) && (index === 0 || index === 1)) || (isOdd(initialProjectsCount) && index === 0)) {
+            if ((!isOdd(initialCount) && (index === 0 || index === 1)) || (isOdd(initialCount) && index === 0)) {
               cardSize = 'large';
             }
           }
 
           if (biggerThanLargeTablet) {
-            if (initialProjectsCount === 1 && index === 0) {
+            if (initialCount === 1 && index === 0) {
               cardSize = 'large';
-            } else if (initialProjectsCount === 2) {
+            } else if (initialCount === 2) {
               cardSize = 'medium';
-            } else if (initialProjectsCount === 3) {
+            } else if (initialCount === 3) {
               if (index === 0) {
                 cardSize = 'large';
               } else {
                 cardSize = 'medium';
               }
-            } else if (initialProjectsCount === 4 && index === 0) {
+            } else if (initialCount === 4 && index === 0) {
               cardSize = 'large';
-            } else if (initialProjectsCount === 5 && (index === 0 || index === 1)) {
+            } else if (initialCount === 5 && (index === 0 || index === 1)) {
               cardSize = 'medium';
-            } else if (initialProjectsCount === 6) {
+            } else if (initialCount === 6) {
               if (index === 0) {
                 cardSize = 'large';
               } else if (index === 1 || index === 2) {
@@ -427,39 +426,44 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
 
           {!querying && hasProjects && projectsList && !isNilOrError(projectHolderOrderings) && (
             <ProjectsList id="e2e-projects-list">
-
               {projectHolderOrderings.map((item: IProjectHolderOrderingData, index: number) => {
                   const projectOrFolderId = item.relationships.project_holder.data.id;
                   const projectOrFolderType = item.relationships.project_holder.data.type;
                   const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+                  const projectCard = (
+                    <GetProject
+                      projectId={projectOrFolderId}
+                    >
+                      {project => !isNilOrError(project) ? (
+                        <ProjectCard
+                          projectId={projectOrFolderId}
+                          size={size}
+                          layout={layout}
+                        />
+                      ) : null}
+                    </GetProject>
+                  );
+                  const projectFolderCard = (
+                    <GetProjectFolder
+                      projectFolderId={projectOrFolderId}
+                    >
+                      {projectFolder => !isNilOrError(projectFolder) ? (
+                        <ProjectFolderCard
+                          projectFolderId={projectOrFolderId}
+                          size={size}
+                          layout={layout}
+                        />
+                      ) : null}
+                    </GetProjectFolder>
+                  );
 
-                  if (projectOrFolderType === 'project') {
-                    return (
-                      <GetProject projectId={projectOrFolderId}>
-                        {project => !isNilOrError(project) ? (
-                          <ProjectCard
-                            key={projectOrFolderId}
-                            projectId={projectOrFolderId}
-                            size={size}
-                            layout={layout}
-                          />
-                        ) : null}
-                      </GetProject>
-                    );
-                  } else {
-                    return (
-                      <GetProjectFolder projectFolderId={projectOrFolderId}>
-                        {projectFolder => !isNilOrError(projectFolder) ? (
-                          <ProjectFolderCard
-                            key={projectOrFolderId}
-                            projectFolderId={projectOrFolderId}
-                            size={size}
-                            layout={layout}
-                          />
-                        ) : null}
-                      </GetProjectFolder>
-                    );
-                  }
+                  return (
+                    <React.Fragment key={index}>
+                      {projectOrFolderType === 'project' ?
+                        projectCard : projectFolderCard
+                      }
+                    </React.Fragment>
+                  );
                 }
               )}
 
@@ -509,7 +513,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
   }
 }
 
-const ProjectCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(ProjectCards)));
+const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(ProjectAndFolderCards)));
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
@@ -520,6 +524,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectCardsWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectAndFolderCardsWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
