@@ -18,7 +18,6 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
-import QuillEditor2 from 'components/UI/Quill';
 
 // services
 import {
@@ -43,7 +42,6 @@ interface State {
     [fieldName: string]: CLError[]
   };
   hasUrlError: boolean;
-  zolg: string;
 }
 
 export default class SettingsGeneralTab extends PureComponent<Props, State> {
@@ -58,24 +56,11 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
       errors: {},
       hasUrlError: false,
       saved: false,
-      zolg: '<p>a</p><p>a</p><p>zolg</p><p><br></p>'
     };
   }
 
   componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
-
-    setTimeout(() => {
-      this.setState({ zolg: '<p>a</p><p>a</p><p>wurps</p><p><br></p>' })
-    }, 1000);
-
-    setTimeout(() => {
-      this.setState({ zolg: '<p>a</p><p>a</p><p>blor</p><p><br></p>' })
-    }, 2000);
-
-    setTimeout(() => {
-      this.setState({ zolg: '<p>a</p><p>a</p><p>wazzaaaap</p><p><br></p>' })
-    }, 10000);
 
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
@@ -177,10 +162,6 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
     }));
   }
 
-  bleh = (zolg: string) => {
-    this.setState({ zolg });
-  }
-
   handleOrganizatioNameOnChange = this.handleCoreMultilocSettingOnChange('organization_name');
 
   render() {
@@ -213,10 +194,6 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionSubtitle>
               <FormattedMessage {...messages.subtitleBasic} />
             </SectionSubtitle>
-
-            <div>
-              <QuillEditor2 id="zolg" value={this.state.zolg} onChange={this.bleh} />
-            </div>
 
             <SectionField>
               <InputMultiloc
