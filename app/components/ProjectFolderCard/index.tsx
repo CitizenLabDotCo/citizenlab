@@ -299,7 +299,7 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
     const { projectFolder, size, layout, className } = this.props;
 
     if (!isNilOrError(projectFolder)) {
-      const imageUrl = projectFolder?.attributes?.header_bg?.medium;
+      const imageUrl = projectFolder.attributes.header_bg?.medium;
       const folderUrl = getProjectFolderUrl(projectFolder);
 
       const contentHeader = (
