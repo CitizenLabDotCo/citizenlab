@@ -1,10 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 import CityLogoSection from 'components/CityLogoSection';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -14,12 +13,15 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+const ProjectAndFolderCards = React.lazy(() => import('components/ProjectAndFolderCards'));
+const ProjectCards = React.lazy(() => import('components/ProjectCards'));
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -141,6 +143,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
+  foldersEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -170,7 +173,7 @@ class LandingPage extends PureComponent<Props, State> {
   projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage, foldersEnabled } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       // custom section
@@ -197,13 +200,26 @@ class LandingPage extends PureComponent<Props, State> {
               <StyledContentContainer mode="page">
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
-                    <ProjectAndFolderCards
-                      pageSize={6}
-                      sort="new"
-                      publicationStatuses={this.projectsPublicationStatuses}
-                      showTitle={true}
-                      layout="dynamic"
-                    />
+                    <Suspense fallback={null}>
+                      {foldersEnabled ?
+                        <ProjectAndFolderCards
+                          pageSize={6}
+                          sort="new"
+                          publicationStatuses={this.projectsPublicationStatuses}
+                          showTitle={true}
+                          layout="dynamic"
+                        />
+                      :
+                        <ProjectCards
+                          pageSize={6}
+                          sort="new"
+                          publicationStatuses={this.projectsPublicationStatuses}
+                          showTitle={true}
+                          showPublicationStatusFilter={false}
+                          layout="dynamic"
+                        />
+                      }
+                    </Suspense>
                   </SectionContainer>
                 </ProjectSection>
                 <FeatureFlag name="initiatives">
@@ -256,10 +272,13 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
+  foldersEnabled: <GetFeatureFlag name="project_folders" />,
   homepageInfoPage: <GetPage slug="homepage-info" />
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);
+
+// TODO: add spinner fallback for lazy-loaded cards?
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
