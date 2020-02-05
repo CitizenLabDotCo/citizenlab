@@ -24,7 +24,7 @@ class SideFxProjectService
   end
 
   def after_update project, user
-    if project.folder_id_previously_changed? || project.publication_status_previous_change.include?('published')
+    if project.folder_id_previously_changed? || project.publication_status_previous_change&.include?('published')
       ProjectHolderService.new.fix_project_holder_orderings!
     end
     LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i)
