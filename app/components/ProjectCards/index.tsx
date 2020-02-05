@@ -9,7 +9,6 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import ProjectCard from 'components/ProjectCard';
-import ProjectFolderCard from 'components/ProjectFolderCard';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 import SelectAreas from './SelectAreas';
