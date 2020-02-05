@@ -87,7 +87,7 @@ const Container = styled(Link)`
 
   &.small,
   &.medium {
-    padding-top: 30px;
+    padding-top: 20px;
     padding-bottom: 30px;
   }
 
@@ -188,11 +188,10 @@ const ContentHeaderBottomMargin = 13;
 const ContentHeader = styled.div`
   display: flex;
   align-items: center;
-  padding-top: 12px;
   padding-right: 0;
-  padding-bottom: 20px;
   padding-left: 0;
-  margin-bottom: 30px;
+  height: ${ContentHeaderHeight}px;
+  margin-bottom: ${ContentHeaderBottomMargin}px;
 
   &.noContent {
     ${media.biggerThanMinTablet`
