@@ -203,9 +203,6 @@ class LandingPage extends PureComponent<Props, State> {
                     <Suspense fallback={null}>
                       {foldersEnabled ?
                         <ProjectAndFolderCards
-                          pageSize={6}
-                          sort="new"
-                          publicationStatuses={this.projectsPublicationStatuses}
                           showTitle={true}
                           layout="dynamic"
                         />
