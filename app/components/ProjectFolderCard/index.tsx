@@ -301,11 +301,14 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
     if (!isNilOrError(projectFolder)) {
       const imageUrl = projectFolder.attributes.header_bg?.medium;
       const folderUrl = getProjectFolderUrl(projectFolder);
+      const numberOfProjects = projectFolder.relationships.projects.data.length;
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent`}>
           <MapIcon name="simpleFolder" />
-          <MapIconDescription>3 projects</MapIconDescription>
+          <MapIconDescription>
+            <FormattedMessage {...messages.numberOfProjects} values={{ numberOfProjects }} />
+          </MapIconDescription>
         </ContentHeader>
       );
 
