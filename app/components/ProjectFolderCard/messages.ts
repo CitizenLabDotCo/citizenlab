@@ -8,5 +8,9 @@ export default defineMessages({
   a11y_projectDescription: {
     id: 'app.components.ProjectFolderCard.a11y_projectDescription',
     defaultMessage: 'Project description: ',
+  },
+  numberOfProjects: {
+    id: 'app.components.ProjectFolderCard.numberOfProjects',
+    defaultMessage: '{numberOfProjects, plural, no {# projects} one {# project} other {# projects}}',
   }
 });
