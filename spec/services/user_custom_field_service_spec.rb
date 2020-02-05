@@ -1,7 +1,7 @@
 require "rails_helper"
 
 describe UserCustomFieldService do
-  let(:service) { CustomFieldService.new }
+  let(:service) { UserCustomFieldService.new }
 
   describe "delete_custom_field_values" do
 
