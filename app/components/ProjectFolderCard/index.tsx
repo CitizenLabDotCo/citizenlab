@@ -291,10 +291,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
   }
 
-  handleCTAOnClick = (projectFolderId: string) => () => {
-    trackEventByName(tracks.clickOnProjectCardCTA, { extra: { projectFolderId } });
-  }
-
   handleProjectTitleOnClick = (projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectFolderId } });
   }
