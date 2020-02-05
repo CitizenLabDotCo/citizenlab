@@ -19,6 +19,8 @@ import SelectPublicationStatus from '../ProjectCards/SelectPublicationStatus';
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -422,34 +424,32 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
             <ProjectsList id="e2e-projects-list">
               {projectsList.map((project, index) => {
                 const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
-                return <ProjectFolderCard key={project.id} projectFolderId={project.id} size={size} layout={layout} />;
-              })}
-
-              {/*
-              // A bit of a hack (but the most elegant one I could think of) to
-              // make the 3-column layout work for the last row of project cards when
-              // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
-              // Ideally would have been solved with CSS grid, but... IE11
-              */}
-              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length + 1) % 3 === 0 &&
-                <MockProjectCard className={layout} />
-              }
-
-              {!hasMore && (layout === 'threecolumns' || projectsList.length > 6) && (projectsList.length - 1) % 3 === 0 &&
-                <>
-                  <MockProjectCard className={layout} />
-                  <MockProjectCard className={layout} />
-                </>
-              }
-            </ProjectsList>
-          )}
-
-          {!querying && hasProjects && projectsList && (
-            <ProjectsList id="e2e-projects-list">
-              {projectsList.map((project, index) => {
-                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
                 return <ProjectCard key={project.id} projectId={project.id} size={size} layout={layout} />;
               })}
+
+              {itemsList.map((item: IProjectHolderOrderingData, index: number) => {
+                  const projectOrFolderId = item.relationships.project_holder.data.id;
+                  const projectOrFolderType = item.relationships.project_holder.data.type;
+
+                  if (projectOrFolderType === 'project') {
+                    return (
+                      <GetProject projectId={projectOrFolderId}>
+                        {project => !isNilOrError(project) ? (
+                          <div>x</div>
+                        ) : null}
+                      </GetProject>
+                    );
+                  } else {
+                    return (
+                      <GetProjectFolder projectFolderId={projectOrFolderId}>
+                        {projectFolder => !isNilOrError(projectFolder) ? (
+                          <div>x</div>
+                        ) : null}
+                      </GetProjectFolder>
+                    );
+                  }
+                }
+              )}
 
               {/*
               // A bit of a hack (but the most elegant one I could think of) to
