@@ -117,7 +117,7 @@ interface State {
 class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   subscriptions: Subscription[];
   titleInputElement: HTMLInputElement | null;
-  descriptionElement: any;
+  descriptionElement: HTMLDivElement | null;
 
   constructor(props) {
     super(props);
@@ -303,7 +303,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.titleInputElement = element;
   }
 
-  handleDescriptionSetRef = (element) => {
+  handleDescriptionSetRef = (element: HTMLDivElement) => {
+    console.log(element);
     this.descriptionElement = element;
   }
 
@@ -353,9 +354,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
-    } else if (descriptionError && has(this.descriptionElement, 'editor.root')) {
-      scrollToComponent(this.descriptionElement.editor.root, { align: 'top', offset: -200, duration: 300 });
-      setTimeout(() => this.descriptionElement.editor.root.focus(), 300);
+    } else if (descriptionError && this.descriptionElement) {
+      scrollToComponent(this.descriptionElement, { align: 'top', offset: -200, duration: 300 });
+      setTimeout(() => this.descriptionElement && this.descriptionElement.focus(), 300);
     }
 
     if (!pbContext) {

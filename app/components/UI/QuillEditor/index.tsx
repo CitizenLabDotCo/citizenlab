@@ -1,564 +1,405 @@
-import React, { PureComponent } from 'react';
-import { isFunction } from 'lodash-es';
+import React, { memo, useEffect, useRef, useState } from 'react';
 
-// Quill editor & modules
-import ReactQuill, { Quill } from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+// quill
+import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
+import BlotFormatter from 'quill-blot-formatter';
+import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+import 'quill/dist/quill.snow.css';
 
-// Image & video resize modules
-import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction, AlignAction, DeleteAction } from 'quill-blot-formatter';
-Quill.register('modules/blotFormatter', BlotFormatter);
-
-// BEGIN allow image alignment styles
-const FormatAttributesList = [
-  'alt',
-  'height',
-  'width',
-  'style',
-];
-
-const BaseImageFormat = Quill.import('formats/image');
-
-class ImageFormat extends BaseImageFormat {
-  static formats(domNode) {
-    return FormatAttributesList.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
-      return formats;
-    }, {});
-  }
-  format(name, value) {
-    if (FormatAttributesList.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
-      }
-    } else {
-      super.format(name, value);
-    }
-  }
-}
-ImageFormat.blotName = 'imageFormat';
-ImageFormat.tagName = 'img';
-
-Quill.register(ImageFormat, true);
-
-const BaseVideoFormat = Quill.import('formats/video');
-
-class VideoFormat extends BaseVideoFormat {
-  static formats(domNode) {
-    return FormatAttributesList.reduce((formats, attribute) => {
-      if (domNode.hasAttribute(attribute)) {
-        formats[attribute] = domNode.getAttribute(attribute);
-      }
-      return formats;
-    }, {});
-  }
-  format(name, value) {
-    if (FormatAttributesList.indexOf(name) > -1) {
-      if (value) {
-        this.domNode.setAttribute(name, value);
-      } else {
-        this.domNode.removeAttribute(name);
-      }
-    } else {
-      super.format(name, value);
-    }
-  }
-}
-VideoFormat.blotName = 'videoFormat';
-VideoFormat.tagName = 'iframe';
-Quill.register(VideoFormat, true);
-// END allow image & video resizing styles
-class CustomImageSpec extends ImageSpec {
-  getActions() {
-    return [ResizeAction, AlignAction, DeleteAction];
-  }
-}
-class CustomIframeVideoSpec extends IframeVideoSpec {
-  getActions() {
-    return [ResizeAction, AlignAction, DeleteAction];
-  }
-}
-
-// Localization
+// i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-// tracking
+// analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
-// Styling
+// styling
 import styled from 'styled-components';
-import { fontSizes, colors, quillEditedContent, media } from 'utils/styleUtils';
+import { colors, quillEditedContent, media } from 'utils/styleUtils';
 
-const Container: any = styled.div`
-  background: #fff;
-
-  .ql-snow.ql-toolbar button:hover .ql-stroke, .ql-snow .ql-toolbar button:hover .ql-stroke, .ql-snow.ql-toolbar button:focus .ql-stroke, .ql-snow .ql-toolbar button:focus .ql-stroke, .ql-snow.ql-toolbar button.ql-active .ql-stroke, .ql-snow .ql-toolbar button.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, .ql-snow.ql-toolbar button:hover .ql-stroke-miter, .ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, .ql-snow .ql-toolbar button:focus .ql-stroke-miter, .ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, .ql-picker-label:focus .ql-stroke, .ql-picker-item:focus .ql-stroke {
-    stroke: ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
+const Container = styled.div<{
+  heading1: string,
+  heading2: string,
+  normal: string,
+  videoPrompt: string,
+  linkPrompt: string,
+  visitPrompt: string,
+  save: string,
+  edit: string,
+  remove: string
+}>`
+  .ql-picker.ql-header {
+    .ql-picker-label::before {
+      content: '${props => props.normal}' !important;
+    }
+    .ql-picker-label[data-value='1']::before {
+      content: '${props => props.heading1}' !important;
+    }
+    .ql-picker-label[data-value='2']::before {
+      content: '${props => props.heading2}' !important;
+    }
+    .ql-picker-item::before {
+      content: '${props => props.normal}' !important;
+    }
+    .ql-picker-item[data-value='1']::before {
+      content: '${props => props.heading1}' !important;
+    }
+    .ql-picker-item[data-value='2']::before {
+      content: '${props => props.heading2}' !important;
+    }
   }
 
-  .ql-snow.ql-toolbar button:hover .ql-fill, .ql-snow .ql-toolbar button:hover .ql-fill, .ql-snow.ql-toolbar button:focus .ql-fill, .ql-snow .ql-toolbar button:focus .ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill, .ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-label:focus .ql-stroke.ql-fill, .ql-snow.ql-toolbar .ql-picker-item:focus .ql-stroke.ql-fill {
-    fill:  ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
+  .ql-tooltip[data-mode=link]::before {
+    content: '${props => props.linkPrompt}' !important;
   }
 
-  .ql-snow.ql-toolbar button:hover, .ql-snow .ql-toolbar button:hover, .ql-snow.ql-toolbar button:focus, .ql-snow .ql-toolbar button:focus, .ql-snow.ql-toolbar button.ql-active, .ql-snow .ql-toolbar button.ql-active, .ql-snow.ql-toolbar .ql-picker-label:hover,  .ql-snow.ql-toolbar .ql-picker-label:focus, .ql-snow .ql-toolbar .ql-picker-label:hover, .ql-snow.ql-toolbar .ql-picker-label.ql-active, .ql-snow .ql-toolbar .ql-picker-label.ql-active,  .ql-snow .ql-toolbar .ql-picker-label:focus, .ql-snow.ql-toolbar .ql-picker-item:hover, .ql-snow .ql-toolbar .ql-picker-item:hover, .ql-snow.ql-toolbar .ql-picker-item.ql-selected, .ql-snow.ql-toolbar .ql-picker-item:focus, .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-    color:  ${(props: any) => props.inAdmin ? colors.clBlue : props.theme.colorMain};
+  .ql-tooltip[data-mode=video]::before {
+    content: '${props => props.videoPrompt}' !important;
   }
 
-  .ql-toolbar {
+  .ql-tooltip::before {
+    content: '${props => props.visitPrompt}' !important;
+  }
+
+  .ql-tooltip.ql-editing a.ql-action::after {
+    content: '${props => props.save}' !important;
+  }
+
+  .ql-tooltip a.ql-action::after {
+    content: '${props => props.edit}' !important;
+  }
+
+  .ql-tooltip a.ql-remove::before {
+    content: '${props => props.remove}' !important;
+  }
+
+  .ql-toolbar.ql-snow {
     background: #f8f8f8;
-    border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
-    box-shadow: none !important;
-    border: 1px solid ${colors.separationDark} !important;
-    border-bottom: 0 !important;
+    border-radius: ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius} 0 0;
+    box-shadow: none;
+    border: 1px solid ${colors.separationDark};
+    border-bottom: 0;
   }
 
-  .ql-snow .ql-tooltip[data-mode="link"]::before {
-    content: ${(props: any) => `"${props.linkPrompt}"`};
-  }
+  &.focussed {
+    &:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
+      border-color: #000;
+    }
 
-  .ql-snow .ql-tooltip[data-mode="video"]::before {
-    content: ${(props: any) => `"${props.videoPrompt}"`};
-  }
-
-  .ql-snow .ql-tooltip::before {
-    content: ${(props: any) => `"${props.visitPrompt}"`};
-  }
-
-  .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
-    content: ${(props: any) => `"${props.save}"`};
-  }
-
-  .ql-snow .ql-tooltip a.ql-action::after {
-    content: ${(props: any) => `"${props.edit}"`};
-  }
-
-  .ql-snow .ql-tooltip a.ql-remove::before {
-    content: ${(props: any) => `"${props.remove}"`};
-  }
-
-  &.error .ql-container.ql-snow {
-    border-color: ${colors.clRedError};
-  }
-
-  &.focused {
-    &.error .ql-container.ql-snow {
+    &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
       border-color: ${colors.clRedError};
     }
-
-    .ql-container.ql-snow {
-      border-color: #999;
-    }
   }
 
-  .ql-container {
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
     width: 100%;
     height: 100%;
     max-height: ${({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
-    font-size: ${fontSizes.base}px;
-    line-height: 24px;
-    font-weight: 400;
-    border-radius: 0 0 ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius};
-    border: 1px solid ${colors.separationDark } !important;
+    cursor: text;
+    border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius};
+    border: 1px solid ${colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
-    -webkit-appearance: none;
     overflow-y: auto;
+    ${quillEditedContent()};
 
     .ql-editor {
       min-height: 300px;
     }
 
-    .ql-editor.ql-blank::before {
-      color: #aaa;
-      font-style: normal;
-      opacity: 1;
-    }
-
-    .ql-align .ql-picker-label svg {
-      top: -3px;
-    }
-
     ${media.smallerThanMaxTablet`
       max-height: ${({ theme: { mobileMenuHeight } }) => `calc(80vh - ${mobileMenuHeight}px)`};
     `}
-
-    ${quillEditedContent()};
   }
 `;
 
-// Typings
-export interface InputProps {
+interface Props {
+  id: string;
+  value?: string;
+  placeholder?: string;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
   noToolbar?: boolean;
-  id: string;
   inAdmin?: boolean;
   hasError?: boolean;
   labelId?: string;
-}
-export interface QuillProps {
-  onChange?: (string) => void;
-  value?: string;
   className?: string;
-  theme?: string;
-  style?: React.CSSProperties;
-  readOnly?: boolean;
-  placeholder?: string;
-  tabIndex?: number;
-  bounds?: string | HTMLElement;
-  onFocus?: () => void;
-  onBlur?: () => void;
-  onKeyPress?: React.EventHandler<any>;
-  onKeyDown?: React.EventHandler<any>;
-  onKeyUp?: React.EventHandler<any>;
-  children?: React.ReactElement<any>;
-  setRef?: (arg: any) => void | undefined;
+  onChange?: (html: string) => void;
+  setRef?: (arg: HTMLDivElement) => void | undefined;
 }
 
-interface State {
-  editorHtml: string;
-  isFocused: boolean;
-}
+Quill.register('modules/blotFormatter', BlotFormatter);
 
-interface ModulesConfig {
-  imageDrop?: boolean;
-  toolbar?: any;
-  blotFormatter?: any;
-  keyboard: any;
-}
+const useQuill = (props: Props, toolbarId: string | null) => {
+  const { value, onChange } = props;
 
-export interface Props extends InputProps, QuillProps { }
+  const [editor, setEditor] = useState<Quill | null>(null);
+  const contentRef = useRef<string>();
+  const [focussed, setFocussed] = useState(false);
+  const editorRef = useRef<HTMLDivElement>(null);
 
-// Quill override link handler
-function handleLink(value) {
-  if (value) {
-    const range = (this.quill as Quill).getSelection();
-    if (range && range.length !== 0) {
-      const tooltip = (this.quill as any).theme.tooltip;
-      tooltip.edit('link', 'https://');
-    } else {
-      (this.quill as Quill).format('link', false);
+  useEffect(() => {
+    if (editor && value !== contentRef.current) {
+      editor.clipboard.dangerouslyPasteHTML(value || '');
+      contentRef.current = value;
     }
-  }
-}
+  }, [editor, value]);
 
-function handlerTab() {
-  // do nothing
-  return true;
-}
-
-function handlerRemoveTab() {
-  // do nothing
-  return true;
-}
-
-class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
-  toolbarId: string;
-  modules: ModulesConfig;
-  formats: string[];
-  toolbar: JSX.Element | null;
-  quillRef: any;
-
-  componentDidMount() {
-    const { labelId } = this.props;
-    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', labelId);
-    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-multiline', 'true');
-    labelId && this.quillRef.current.getElementsByClassName('ql-editor')[0].setAttribute('role', 'textbox');
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      editorHtml: '',
-      isFocused: false
-    };
-    this.toolbarId = `ql-editor-toolbar-${props.id}`;
-    this.modules = this.getModuleConfig(props);
-    this.formats = this.getFormats(props);
-    this.toolbar = this.computeToolbar(props);
-    this.quillRef = React.createRef();
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.noToolbar !== prevProps.noToolbar
-    || this.props.noImages !== prevProps.noImages
-    || this.props.noVideos !== prevProps.noVideos) {
-      this.modules = this.getModuleConfig(this.props);
-    }
-    if (this.props.limitedTextFormatting !== prevProps.limitedTextFormatting
-    || this.props.noAlign !== prevProps.noAlign
-    || this.props.noImages !== prevProps.noImages
-    || this.props.noVideos !== prevProps.noVideos) {
-      this.modules = this.getModuleConfig(this.props);
-    }
-    if (this.props.noToolbar !== prevProps.noToolbar
-    || this.props.noAlign !== prevProps.noAlign
-    || this.props.noImages !== prevProps.noImages
-    || this.props.noVideos !== prevProps.noVideos
-    || this.props.limitedTextFormatting !== prevProps.limitedTextFormatting) {
-      this.modules = this.getModuleConfig(this.props);
-    }
-  }
-
-  getFormats({
-    noAlign,
-    noImages,
-    noVideos,
-    limitedTextFormatting,
-  }) {
-    const formats = ['bold', 'italic', 'link'];
-    if (!noImages) { formats.push('image', 'imageFormat', 'height', 'width', 'style'); }
-    if (!noVideos) { formats.push('video', 'videoFormat', 'height', 'width', 'style'); }
-    if (!limitedTextFormatting) {
-      formats.push('list');
-      if (!noAlign) {
-        formats.push('align');
+  useEffect(() => {
+    const textChangeHandler = () => {
+      if (editor) {
+        const delta = editor.getContents();
+        const converter = new QuillDeltaToHtmlConverter(delta.ops || [], {});
+        const html = converter.convert();
+        contentRef.current = html;
+        onChange && onChange(html);
       }
-      formats.push('header');
-    }
-    return formats;
-  }
-
-  getModuleConfig(props) {
-    const {
-      noToolbar,
-      noImages,
-      noVideos,
-    } = props;
-    return {
-      blotFormatter: (noImages && noVideos) ? false : {
-        specs: [CustomImageSpec, CustomIframeVideoSpec],
-      },
-      keyboard: {
-        // This will overwrite the default binding also named 'tab'
-        bindings: {
-          tab: {
-            key: 9,
-            handler: handlerTab
-          },
-          'remove tab': {
-            key: 9,
-            shiftKey: true,
-            collapsed: true,
-            prefix: /\t$/,
-            handler: handlerRemoveTab
-          }
-        }
-      },
-      toolbar: noToolbar ? false : {
-        container: `#${this.toolbarId}`,
-        handlers: {
-          link: handleLink,
-        }
-      },
     };
-  }
 
-  computeToolbar({
-    noToolbar,
-    noAlign,
-    noImages,
-    noVideos,
-    limitedTextFormatting,
-    intl: { formatMessage },
-  }) {
-    if (noToolbar) return null;
-    return (
-      <div id={this.toolbarId} >
-        {!limitedTextFormatting &&
-          <span className="ql-formats" role="button" onClick={this.trackClickDropdown()}>
-            <select className="ql-header" defaultValue={''}>
-              <option
-                value="2"
-                aria-selected={false}
-              >{formatMessage(messages.title)}
-              </option>
-              <option
-                value="3"
-                aria-selected={false}
-              >{formatMessage(messages.subtitle)}
-              </option>
-              <option
-                value=""
-                aria-selected
-              >{formatMessage(messages.normalText)}
-              </option>
-            </select>
-          </span>
+    const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
+      if (editor) {
+        if (range === null && oldRange !== null) {
+          setFocussed(false);
+        } else if (range !== null && oldRange === null) {
+          setFocussed(true);
         }
-        {!limitedTextFormatting && !noAlign &&
-          <span className="ql-formats">
-            <button
-              className="ql-align"
-              value=""
-              onClick={this.trackAdvanced('align', 'left')}
-              aria-label={formatMessage(messages.alignLeft)}
-            />
-            <button
-              className="ql-align"
-              value="center"
-              onClick={this.trackAdvanced('align', 'center')}
-              aria-label={formatMessage(messages.alignCenter)}
-            />
-            <button
-              className="ql-align"
-              value="right"
-              onClick={this.trackAdvanced('align', 'right')}
-              aria-label={formatMessage(messages.alignRight)}
-            />
-          </span>
-        }
-        {!limitedTextFormatting &&
-          <span className="ql-formats">
-            <button
-              className="ql-list"
-              value="ordered"
-              onClick={this.trackAdvanced('list', 'ordered')}
-              aria-label={formatMessage(messages.orderedList)}
-            />
-            <button
-              className="ql-list"
-              value="bullet"
-              onClick={this.trackAdvanced('list', 'bullet')}
-              aria-label={formatMessage(messages.unorderedList)}
-            />
-          </span>
-        }
-        <span className="ql-formats">
-          <button className="ql-bold" onClick={this.trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
-          <button className="ql-italic" onClick={this.trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
-          <button className="ql-link" onClick={this.trackBasic('link')} aria-label={formatMessage(messages.link)} />
-        </span>
+      }
+    };
 
-        {!(noImages && noVideos) &&
-          <span className="ql-formats">
-            {!noImages && <button className="ql-image" onClick={this.trackImage} aria-label={formatMessage(messages.image)} />}
-            {!noVideos && <button className="ql-video" onClick={this.trackVideo} aria-label={formatMessage(messages.video)} />}
-          </span>
-        }
-      </div>
-    );
-  }
-
-  setRef = (element) => {
-    if (isFunction(this.props.setRef)) {
-      this.props.setRef(element);
+    if (editor) {
+      editor.on('text-change', textChangeHandler);
+      editor.on('selection-change', selectionChangeHandler);
     }
-  }
 
-  handleChange = (html) => {
-    this.setState({ editorHtml: html });
-  }
-
-  trackAdvanced = (type, option) => {
     return () => {
+      if (editor) {
+        editor.off('text-change', textChangeHandler);
+        editor.off('selection-change', selectionChangeHandler);
+        setEditor(null);
+      }
+    };
+  }, [editor, onChange]);
+
+  useEffect(() => {
+    if (!editor && editorRef && editorRef.current) {
+      const { placeholder, noAlign, noImages, noVideos, limitedTextFormatting } = props;
+      const editorOptions: QuillOptionsStatic = {
+        formats: [
+          'bold',
+          'italic',
+          'link',
+          ...(!limitedTextFormatting ? ['header', 'list'] : []),
+          ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
+          ...(!noImages ? ['image'] : []),
+          ...(!noVideos ? ['video'] : [])
+        ],
+        theme: 'snow',
+        placeholder: placeholder || '',
+        modules: {
+          blotFormatter: (noImages && noVideos) ? false : true,
+          toolbar: toolbarId ? `#${toolbarId}` : false,
+          keyboard: {
+            bindings: {
+              // overwrite default tab behavior
+              tab: {
+                key: 9,
+                handler: () => true // do nothing
+              },
+              'remove tab': {
+                key: 9,
+                shiftKey: true,
+                collapsed: true,
+                prefix: /\t$/,
+                handler: () => true // do nothing
+              }
+            }
+          },
+          clipboard: {
+            matchVisual: true
+          },
+        },
+      };
+
+      setEditor(new Quill(editorRef.current, editorOptions));
+    }
+  }, [props, toolbarId, editor, editorRef]);
+
+  return {
+    editor,
+    editorRef,
+    focussed
+  };
+};
+
+const QuillEditor = memo<Props & InjectedIntlProps>((props) => {
+  const { intl: { formatMessage }, children, ...inputProps } = props;
+  const { id, noToolbar, noAlign, noImages, noVideos, limitedTextFormatting, hasError, setRef, className } = inputProps;
+  const toolbarId = !noToolbar && id ? `ql-editor-toolbar-${id}` : null;
+
+  const { editor, editorRef, focussed } = useQuill(inputProps, toolbarId);
+
+  useEffect(() => {
+    if (editor?.root && setRef) {
+      setRef(editor.root);
+    }
+  }, [editor]);
+
+  const trackAdvanced = (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.advancedEditing.name, {
+      extra: {
+        type,
+        option,
+      },
+    });
+  };
+
+  const trackClickDropdown = (event: React.MouseEvent<HTMLElement>) => {
+    if (event.currentTarget && event.currentTarget.classList.contains('ql-picker-item')) {
+      const value = event.currentTarget.getAttribute('data-value');
+      let option;
+
+      if (value === '1') {
+        option = 'title';
+      } else if (value === '2') {
+        option = 'subtitle';
+      } else {
+        option = 'normal';
+      }
+
       trackEventByName(tracks.advancedEditing.name, {
         extra: {
-          type,
           option,
+          type: 'heading',
         },
       });
-    };
-  }
+    }
+  };
 
-  trackClickDropdown = () => {
-    return (e) => {
-      if (e.target && e.target.classList.contains('ql-picker-item')) {
-        const value = e.target.getAttribute('data-value');
-        let option;
-        if (value === '1') {
-          option = 'title';
-        } else if (value === '2') {
-          option = 'subtitle';
-        } else {
-          option = 'normal';
-        }
-        trackEventByName(tracks.advancedEditing.name, {
-          extra: {
-            option,
-            type: 'heading',
-          },
-        });
-      }
-    };
-  }
-
-  trackBasic = (type) => {
-    return () => trackEventByName(tracks.basicEditing.name, {
+  const trackBasic = (type) => (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.basicEditing.name, {
       extra: {
         type,
       },
     });
-  }
+  };
 
-  trackImage = () => {
-    return trackEventByName(tracks.imageEditing.name);
-  }
+  const trackImage = (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.imageEditing.name);
+  };
 
-  trackVideo = () => {
-    return trackEventByName(tracks.videoEditing.name);
-  }
+  const trackVideo = (_event: React.MouseEvent<HTMLElement>) => {
+    trackEventByName(tracks.videoEditing.name);
+  };
 
-  handleOnFocus = () => {
-    this.setState({ isFocused: true });
-    this.props.onFocus && this.props.onFocus();
-  }
+  const classNames = [
+    className,
+    focussed ? 'focussed' : null,
+    hasError ? 'error' : null
+  ].filter(className => className).join(' ');
 
-  handleOnBlur = () => {
-    this.setState({ isFocused: false });
-    this.props.onBlur && this.props.onBlur();
-  }
+  return (
+    <Container
+      className={classNames}
+      heading1={formatMessage(messages.title)}
+      heading2={formatMessage(messages.subtitle)}
+      normal={formatMessage(messages.normalText)}
+      videoPrompt={formatMessage(messages.videoPrompt)}
+      linkPrompt={formatMessage(messages.linkPrompt)}
+      visitPrompt={formatMessage(messages.visitPrompt)}
+      save={formatMessage(messages.save)}
+      edit={formatMessage(messages.edit)}
+      remove={formatMessage(messages.remove)}
+    >
+      {!noToolbar &&
+        <div id={toolbarId || undefined} >
+          {!limitedTextFormatting &&
+            <span
+              className="ql-formats"
+              role="button"
+              onClick={trackClickDropdown}
+            >
+              <select className="ql-header" defaultValue={''}>
+                <option
+                  value="2"
+                  aria-selected={false}
+                >{formatMessage(messages.title)}
+                </option>
+                <option
+                  value="3"
+                  aria-selected={false}
+                >{formatMessage(messages.subtitle)}
+                </option>
+                <option
+                  value=""
+                  aria-selected
+                >{formatMessage(messages.normalText)}
+                </option>
+              </select>
+            </span>
+          }
 
-  render() {
-    const {
-      id,
-      noToolbar,
-      noAlign,
-      noImages,
-      noVideos,
-      limitedTextFormatting,
-      inAdmin,
-      hasError,
-      intl: { formatMessage },
-      ...quillProps
-    } = this.props;
-    const { isFocused } = this.state;
+          {!limitedTextFormatting && !noAlign &&
+            <span className="ql-formats">
+              <button
+                className="ql-align"
+                value=""
+                onClick={trackAdvanced('align', 'left')}
+                aria-label={formatMessage(messages.alignLeft)}
+              />
+              <button
+                className="ql-align"
+                value="center"
+                onClick={trackAdvanced('align', 'center')}
+                aria-label={formatMessage(messages.alignCenter)}
+              />
+              <button
+                className="ql-align"
+                value="right"
+                onClick={trackAdvanced('align', 'right')}
+                aria-label={formatMessage(messages.alignRight)}
+              />
+            </span>
+          }
 
-    return (
-      <Container
-        id="boundaries"
-        className={`${isFocused ? 'focused' : 'blurred'} ${hasError ? 'error' : ''}`}
-        inAdmin={inAdmin}
-        videoPrompt={formatMessage(messages.videoPrompt)}
-        linkPrompt={formatMessage(messages.linkPrompt)}
-        visitPrompt={formatMessage(messages.visitPrompt)}
-        save={formatMessage(messages.save)}
-        edit={formatMessage(messages.edit)}
-        remove={formatMessage(messages.remove)}
-        onFocus={this.handleOnFocus}
-        onBlur={this.handleOnBlur}
-        ref={this.quillRef}
-      >
-        {this.toolbar}
-        <ReactQuill
-          modules={this.modules}
-          bounds="#boundaries"
-          theme="snow"
-          formats={this.formats}
-          ref={this.setRef}
-          {...quillProps}
-        />
-      </Container >
-    );
-  }
-}
+          {!limitedTextFormatting &&
+            <span className="ql-formats">
+              <button
+                className="ql-list"
+                value="ordered"
+                onClick={trackAdvanced('list', 'ordered')}
+                aria-label={formatMessage(messages.orderedList)}
+              />
+              <button
+                className="ql-list"
+                value="bullet"
+                onClick={trackAdvanced('list', 'bullet')}
+                aria-label={formatMessage(messages.unorderedList)}
+              />
+            </span>
+          }
 
-export default injectIntl<Props>(QuillEditor);
+          <span className="ql-formats">
+            <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
+            <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
+            <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
+          </span>
+
+          {!(noImages && noVideos) &&
+            <span className="ql-formats">
+              {!noImages && <button className="ql-image" onClick={trackImage} aria-label={formatMessage(messages.image)} />}
+              {!noVideos && <button className="ql-video" onClick={trackVideo} aria-label={formatMessage(messages.video)} />}
+            </span>
+          }
+        </div>
+      }
+      <div id={id} ref={editorRef}>
+        {children}
+      </div>
+    </Container>
+  );
+});
+
+export default injectIntl(QuillEditor);
