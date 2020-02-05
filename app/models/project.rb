@@ -24,7 +24,7 @@ class Project < ApplicationRecord
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
   belongs_to :default_assignee, class_name: 'User', optional: true
 
-  has_one :project_holder_orderings, as: :project_holder, dependent: :destroy
+  has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
   belongs_to :folder, optional: true, class_name: 'ProjectFolder'
   counter_culture :folder
 
