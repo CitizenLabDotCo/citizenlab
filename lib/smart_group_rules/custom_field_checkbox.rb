@@ -5,7 +5,7 @@ module SmartGroupRules
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: 'checkbox').map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.for_resource_type('User').where(input_type: 'checkbox').map(&:id) } }
 
     def self.to_json_schema
       [   

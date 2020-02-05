@@ -18,9 +18,9 @@ class SideFxAreaService
   end
 
   def before_destroy area, user
-    domicile_custom_field = CustomField.find_by(key: 'domicile')
+    domicile_custom_field = CustomField.for_resource_type('User').find_by(code: 'domicile')
     if domicile_custom_field
-      CustomFieldService.new.delete_custom_field_option_values area.id, CustomField.find_by(key: 'domicile')
+      CustomFieldService.new.delete_custom_field_option_values area.id, domicile_custom_field
     end
     SmartGroupsService.new.filter_by_rule_value(Group.all, area.id).destroy_all
   end
