@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { has, isBoolean } from 'lodash-es';
+import { isBoolean } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // libraries
