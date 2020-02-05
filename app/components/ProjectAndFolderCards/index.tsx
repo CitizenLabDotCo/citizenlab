@@ -1,17 +1,16 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual, isEmpty, isString } from 'lodash-es';
+import { size, isEqual, isEmpty } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
 import Spinner from 'components/UI/Spinner';
-import Button from 'components/UI/Button';
+// import Button from 'components/UI/Button';
 
 // resources
-import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetProject from 'resources/GetProject';
@@ -28,14 +27,14 @@ import T from 'components/T';
 import messages from './messages';
 
 // tracking
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+// import { trackEventByName } from 'utils/analytics';
+// import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { rgba } from 'polished';
+// import { rgba } from 'polished';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
@@ -162,29 +161,28 @@ const EmptyMessageLine = styled.p`
   text-align: center;
 `;
 
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
+// const Footer = styled.div`
+//   width: 100%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   margin-top: 20px;
 
-  ${media.smallerThanMinTablet`
-    flex-direction: column;
-    align-items: stretch;
-    margin-top: 0px;
-  `}
-`;
+//   ${media.smallerThanMinTablet`
+//     flex-direction: column;
+//     align-items: stretch;
+//     margin-top: 0px;
+//   `}
+// `;
 
-const ShowMoreButton = styled(Button)``;
+// const ShowMoreButton = styled(Button)``;
 
-interface InputProps extends GetProjectsInputProps {
+interface InputProps {
   showTitle: boolean;
   layout: 'dynamic' | 'threecolumns';
 }
 
 interface DataProps {
-  projects: GetProjectsChildProps;
   tenant: GetTenantChildProps;
   windowSize: GetWindowSizeChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
@@ -214,29 +212,8 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     this.calculateCardsLayout();
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
+  componentDidUpdate() {
     this.calculateCardsLayout();
-
-    const areas = this.getAreasFromQueryParams();
-
-    if (!isEqual(this.state.areas, areas)) {
-      this.setState({ areas });
-    }
-
-    if (!isEqual(prevState.areas, this.state.areas)) {
-      this.props.projects.onChangeAreas(this.state.areas);
-    }
-  }
-
-  getAreasFromQueryParams = () => {
-    let areas: string[] = [];
-    const { query } = this.props.location;
-
-    if (query.areas && !isEmpty(query.areas)) {
-      areas = (isString(query.areas) ? [query.areas] : query.areas);
-    }
-
-    return areas;
   }
 
   calculateCardsLayout = () => {
@@ -298,16 +275,16 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     }
   }
 
-  showMore = () => {
-    trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    this.props.projects.onLoadMore();
-  }
+  // showMore = () => {
+  //   trackEventByName(tracks.clickOnProjectsShowMoreButton);
+  //   this.props.projects.onLoadMore();
+  // }
 
   render() {
     const { cardSizes } = this.state;
-    const { tenant, showTitle, layout, theme, projectHolderOrderings } = this.props;
-    const { projectsList, hasMore, querying, loadingMore } = this.props.projects;
-    const hasProjects = (projectsList && projectsList.length > 0);
+    const { tenant, showTitle, layout, /* theme, */ projectHolderOrderings } = this.props;
+    // const { hasMore, querying } = this.props.projects;
+    const hasProjects = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
     const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
     if (!isNilOrError(tenant)) {
@@ -333,13 +310,13 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             )}
           </Header>
 
-          {querying &&
+          {projectHolderOrderings === undefined &&
             <Loading id="projects-loading">
               <Spinner />
             </Loading>
           }
 
-          {!querying && !hasProjects &&
+          {/* !querying && */ !hasProjects &&
             <EmptyContainer id="projects-empty">
               <EmptyProjectsImage src={EmptyProjectsImageSrc} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />
               <EmptyMessage>
@@ -353,7 +330,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             </EmptyContainer>
           }
 
-          {!querying && hasProjects && !isNilOrError(projectHolderOrderings) && (
+          {/* !querying && */ !isNilOrError(projectHolderOrderings) && (
             <ProjectsList id="e2e-projects-list">
               {projectHolderOrderings.map((item: IProjectHolderOrderingData, index: number) => {
                   const projectOrFolderId = item.relationships.project_holder.data.id;
@@ -402,11 +379,11 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
               // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
               // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length + 1) % 3 === 0 &&
+              {/* !hasMore && */ (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length + 1) % 3 === 0 &&
                 <MockProjectCard className={layout} />
               }
 
-              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length - 1) % 3 === 0 &&
+              {/* !hasMore && */ (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length - 1) % 3 === 0 &&
                 <>
                   <MockProjectCard className={layout} />
                   <MockProjectCard className={layout} />
@@ -415,7 +392,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             </ProjectsList>
           )}
 
-          <Footer>
+          {/* <Footer>
             {!querying && hasProjects && hasMore &&
               <ShowMoreButton
                 onClick={this.showMore}
@@ -433,7 +410,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                 className="e2e-project-cards-show-more-button"
               />
             }
-          </Footer>
+          </Footer> */}
         </Container>
       );
     }
@@ -448,8 +425,10 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>,
 });
+
+// TODO: add load more behavior
+// TODO: add better spinner condition
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
