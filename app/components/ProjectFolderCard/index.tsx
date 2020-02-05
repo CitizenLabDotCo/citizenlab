@@ -286,7 +286,7 @@ interface Props extends InputProps, DataProps {
   theme?: any;
 }
 
-class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
+class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
   handleProjectCardOnClick = (projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
   }
@@ -381,20 +381,19 @@ const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
 });
 
-const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
+const ProjectFolderCardWithHoC = withTheme(injectIntl<Props>(ProjectFolderCard));
 
 // TODO: remove intl if not used
 // TODO: make accesible
 // TODO: add footer to vertically center the content more
 // TODO: tracks
 // TODO: copy
-// TODO: data loading
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {(dataProps) => {
       const props = { ...inputProps, ...dataProps };
-      return <ProjectCardWithHoC {...props} />;
+      return <ProjectFolderCardWithHoC {...props} />;
     }}
   </Data>
 );
