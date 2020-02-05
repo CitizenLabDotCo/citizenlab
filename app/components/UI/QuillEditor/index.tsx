@@ -101,7 +101,7 @@ const Container = styled.div<{
   }
 `;
 
-interface Props {
+export interface Props {
   id: string;
   value?: string;
   placeholder?: string;
@@ -115,6 +115,8 @@ interface Props {
   labelId?: string;
   className?: string;
   onChange?: (html: string) => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;
 }
 
@@ -134,6 +136,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   className,
   setRef,
   onChange,
+  onBlur,
+  onFocus,
   intl: {
     formatMessage
   },
@@ -181,7 +185,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
             }
           },
           clipboard: {
-            matchVisual: true
+            matchVisual: false
           },
         },
       };
@@ -205,8 +209,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
       if (editor) {
         if (range === null && oldRange !== null) {
           setFocussed(false);
+          onBlur && onBlur();
         } else if (range !== null && oldRange === null) {
           setFocussed(true);
+          onFocus && onFocus();
         }
       }
     };
