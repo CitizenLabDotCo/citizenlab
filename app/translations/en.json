@@ -1617,7 +1617,6 @@
   "app.containers.ProjectCards.currentlyWorkingOn": "Projects of {orgName}",
   "app.containers.ProjectCards.publicationStatus": "Publication status",
   "app.containers.ProjectFolderCards.allProjects": "All projects",
-  "app.containers.ProjectFolderCards.areasTitle": "Areas",
   "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} is currently working on",
   "app.containers.ProjectInfo.invisibleTitleMainContent": "Information about this project",
   "app.containers.ProjectInfo.twitterMessage": "{title} : share your ideas on",
