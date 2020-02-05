@@ -16,7 +16,6 @@ import { getProjectFolderUrl } from 'services/projectFolders';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
-import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
 
 // i18n
 import T from 'components/T';
@@ -282,7 +281,6 @@ export interface InputProps {
 
 interface DataProps {
   projectFolder: GetProjectFolderChildProps;
-  projectImages: GetProjectImagesChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -303,12 +301,11 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { projectFolder, size, projectImages, layout, className } = this.props;
+    const { projectFolder, size, layout, className } = this.props;
 
     if (!isNilOrError(projectFolder)) {
-      const imageUrl = (!isNilOrError(projectImages) && projectImages.length > 0 ? projectImages[0].attributes.versions.medium : null);
+      const imageUrl = projectFolder.attributes.header_bg.medium;
       const folderUrl = getProjectFolderUrl(projectFolder);
-      const isArchived = (projectFolder.attributes.publication_status === 'archived');
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent`}>
@@ -333,7 +330,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+          className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
           to={folderUrl}
           onClick={this.handleProjectCardOnClick(projectFolder.id)}
         >
@@ -387,7 +384,6 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps> {
 
 const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
-  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
 });
 
 const ProjectCardWithHoC = withTheme(injectIntl<Props>(ProjectCard));
