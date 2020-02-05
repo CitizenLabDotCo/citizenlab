@@ -133,8 +133,25 @@ interface Props {
 
 Quill.register('modules/blotFormatter', BlotFormatter);
 
-const useQuill = (props: Props, toolbarId: string | null) => {
-  const { value, onChange } = props;
+const QuillEditor = memo<Props & InjectedIntlProps>(({
+  id,
+  value,
+  placeholder,
+  noToolbar,
+  noAlign,
+  noImages,
+  noVideos,
+  limitedTextFormatting,
+  hasError,
+  className,
+  setRef,
+  onChange,
+  intl: {
+    formatMessage
+  },
+  children
+}) => {
+  const toolbarId = !noToolbar && id ? `ql-editor-toolbar-${id}` : null;
 
   const [editor, setEditor] = useState<Quill | null>(null);
   const contentRef = useRef<string>();
@@ -142,50 +159,7 @@ const useQuill = (props: Props, toolbarId: string | null) => {
   const editorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (editor && value !== contentRef.current) {
-      editor.clipboard.dangerouslyPasteHTML(value || '');
-      contentRef.current = value;
-    }
-  }, [editor, value]);
-
-  useEffect(() => {
-    const textChangeHandler = () => {
-      if (editor) {
-        const delta = editor.getContents();
-        const converter = new QuillDeltaToHtmlConverter(delta.ops || [], {});
-        const html = converter.convert();
-        contentRef.current = html;
-        onChange && onChange(html);
-      }
-    };
-
-    const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
-      if (editor) {
-        if (range === null && oldRange !== null) {
-          setFocussed(false);
-        } else if (range !== null && oldRange === null) {
-          setFocussed(true);
-        }
-      }
-    };
-
-    if (editor) {
-      editor.on('text-change', textChangeHandler);
-      editor.on('selection-change', selectionChangeHandler);
-    }
-
-    return () => {
-      if (editor) {
-        editor.off('text-change', textChangeHandler);
-        editor.off('selection-change', selectionChangeHandler);
-        setEditor(null);
-      }
-    };
-  }, [editor, onChange]);
-
-  useEffect(() => {
     if (!editor && editorRef && editorRef.current) {
-      const { placeholder, noAlign, noImages, noVideos, limitedTextFormatting } = props;
       const editorOptions: QuillOptionsStatic = {
         formats: [
           'bold',
@@ -225,27 +199,55 @@ const useQuill = (props: Props, toolbarId: string | null) => {
 
       setEditor(new Quill(editorRef.current, editorOptions));
     }
-  }, [props, toolbarId, editor, editorRef]);
+  }, [placeholder, noAlign, noImages, noVideos, limitedTextFormatting, toolbarId, editor, editorRef]);
 
-  return {
-    editor,
-    editorRef,
-    focussed
-  };
-};
+  useEffect(() => {
+    const textChangeHandler = () => {
+      if (editor) {
+        const delta = editor.getContents();
+        const converter = new QuillDeltaToHtmlConverter(delta.ops || [], {});
+        const html = converter.convert();
+        contentRef.current = html;
+        onChange && onChange(html);
+      }
+    };
 
-const QuillEditor = memo<Props & InjectedIntlProps>((props) => {
-  const { intl: { formatMessage }, children, ...inputProps } = props;
-  const { id, noToolbar, noAlign, noImages, noVideos, limitedTextFormatting, hasError, setRef, className } = inputProps;
-  const toolbarId = !noToolbar && id ? `ql-editor-toolbar-${id}` : null;
+    const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
+      if (editor) {
+        if (range === null && oldRange !== null) {
+          setFocussed(false);
+        } else if (range !== null && oldRange === null) {
+          setFocussed(true);
+        }
+      }
+    };
 
-  const { editor, editorRef, focussed } = useQuill(inputProps, toolbarId);
+    if (editor) {
+      editor.on('text-change', textChangeHandler);
+      editor.on('selection-change', selectionChangeHandler);
+    }
+
+    return () => {
+      if (editor) {
+        editor.off('text-change', textChangeHandler);
+        editor.off('selection-change', selectionChangeHandler);
+        setEditor(null);
+      }
+    };
+  }, [editor, onChange]);
 
   useEffect(() => {
     if (editor?.root && setRef) {
       setRef(editor.root);
     }
   }, [editor]);
+
+  useEffect(() => {
+    if (editor && value !== contentRef.current) {
+      editor.clipboard.dangerouslyPasteHTML(value || '');
+      contentRef.current = value;
+    }
+  }, [editor, value]);
 
   const trackAdvanced = (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
     trackEventByName(tracks.advancedEditing.name, {
