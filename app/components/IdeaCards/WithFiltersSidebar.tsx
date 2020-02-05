@@ -585,8 +585,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   icon="filter"
                   iconAriaHidden
                   text={this.filterMessage}
-                  borderColor="#ccc"
-                  borderHoverColor="#999"
                 />
               </>
             }

@@ -30,7 +30,7 @@ const Name = styled.div<{ color?: string, emphasize?: boolean }>`
   hyphens: auto;
 
   &.linkToProfile {
-    transition: all 100ms ease-out;
+    transition: all 80ms ease-out;
 
     &:hover {
       cursor: pointer;

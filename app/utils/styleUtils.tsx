@@ -223,9 +223,9 @@ export const stylingConsts = {
 
 // Reusable text styling
 export function quillEditedContent(
-  linkColor: string = colors.clBlueDark,
-  textColor: string = colors.text,
-  mentionColor: string = colors.text,
+  linkColor = colors.clBlueDark,
+  textColor = colors.text,
+  mentionColor = colors.text,
   fontSize: 'base' | 'medium' | 'large' = 'base',
   fontWeight: 300 | 400 = 400
 ) {
