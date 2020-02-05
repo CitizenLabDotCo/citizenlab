@@ -1,4 +1,5 @@
 class CustomFieldService
+  include CustomFieldUserOverrides
 
   def initialize
     @multiloc_service = MultilocService.new
@@ -15,9 +16,10 @@ class CustomFieldService
       type: "object",
       additionalProperties: false,
       properties: fields.inject({}) do |memo, field|
+        override_method = "#{field.resource_type.underscore}_#{field.code}_to_json_schema_field"
         memo[field.key] = 
-          if field.code && self.respond_to?("#{field.key}_to_json_schema_field", true)
-            send("#{field.key}_to_json_schema_field", field, locale)
+          if field.code && self.respond_to?(override_method, true)
+            send(override_method, field, locale)
           else
             send("#{field.input_type}_to_json_schema_field", field, locale)
           end
@@ -38,9 +40,10 @@ class CustomFieldService
 
   def fields_to_ui_schema fields, locale="en"
     fields.inject({}) do |memo, field|
+      override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
       memo[field.key] = 
-        if field.code && self.respond_to?("#{field.key}_to_ui_schema_field", true)
-          send("#{field.key}_to_ui_schema_field", field, locale)
+        if field.code && self.respond_to?(override_method, true)
+          send(override_method, field, locale)
         else
           send("#{field.input_type}_to_ui_schema_field", field, locale)
         end
