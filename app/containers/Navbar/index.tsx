@@ -512,6 +512,44 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                               {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
                             </ProjectsListItem>
                           ))}
+                          {itemsList.map((item: IProjectHolderOrderingData, index: number) => {
+                            if (item.relationships.project_holder.data.type === 'project') {
+                              return (
+                                <GetProject projectId={item.relationships.project_holder.data.id}>
+                                  {project => isNilOrError(project) ? null : (
+                                    <SortableRow
+                                      key={item.id}
+                                      id={item.id}
+                                      index={index}
+                                      moveRow={handleDragRow}
+                                      dropRow={handleDropRow}
+                                      lastItem={(index === projectHoldersOrderings.length - 1)}
+                                    >
+                                      <ProjectRow project={project} showIcon />
+                                    </SortableRow>
+                                  )}
+                                </GetProject>
+                              );
+                            } else {
+                              return (
+                                <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id}>
+                                  {projectFolder => isNilOrError(projectFolder) ? null : (
+                                    <SortableRow
+                                      key={item.id}
+                                      id={item.id}
+                                      index={index}
+                                      moveRow={handleDragRow}
+                                      dropRow={handleDropRow}
+                                      lastItem={(index === projectHoldersOrderings.length - 1)}
+                                    >
+                                      {FolderRow(projectFolder)}
+                                    </SortableRow>
+                                  )}
+                                </GetProjectFolder>
+                              );
+                            }
+                          }
+                          ))}
                         </ProjectsList>
                       )}
                       footer={
