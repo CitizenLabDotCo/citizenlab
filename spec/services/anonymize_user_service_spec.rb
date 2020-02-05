@@ -7,7 +7,7 @@ describe AnonymizeUserService do
     before(:all) do
       Apartment::Tenant.switch!('example_org')
       TenantTemplateService.new.resolve_and_apply_template('base', external_subfolder: false)
-      CustomField.for_resource_type('User').find_by(code: 'education').update(enabled: true)
+      CustomField.with_resource_type('User').find_by(code: 'education').update(enabled: true)
     end
 
     after(:all) do
