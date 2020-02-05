@@ -65,6 +65,18 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
   componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
 
+    setTimeout(() => {
+      this.setState({ zolg: '<p>a</p><p>a</p><p>wurps</p><p><br></p>' })
+    }, 1000);
+
+    setTimeout(() => {
+      this.setState({ zolg: '<p>a</p><p>a</p><p>blor</p><p><br></p>' })
+    }, 2000);
+
+    setTimeout(() => {
+      this.setState({ zolg: '<p>a</p><p>a</p><p>wazzaaaap</p><p><br></p>' })
+    }, 10000);
+
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
         this.setState({ tenant: currentTenant.data });
