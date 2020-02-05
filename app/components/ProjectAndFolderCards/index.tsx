@@ -19,7 +19,7 @@ import SelectPublicationStatus from '../ProjectCards/SelectPublicationStatus';
 import GetProjects, { GetProjectsChildProps, InputProps as GetProjectsInputProps, SelectedPublicationStatus } from 'resources/GetProjects';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import GetProjectfrom from 'resources/GetProject';
+import GetProject from 'resources/GetProject';
 import GetProjectFolder from 'resources/GetProjectFolder';
 import GetProjectHolderOrderings from 'resources/GetProjectHolderOrderings';
 
