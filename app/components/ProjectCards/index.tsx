@@ -422,7 +422,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
             <ProjectsList id="e2e-projects-list">
               {projectsList.map((project, index) => {
                 const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
-                return <ProjectFolderCard key={project.id} projectId={project.id} size={size} layout={layout} />;
+                return <ProjectFolderCard key={project.id} projectFolderId={project.id} size={size} layout={layout} />;
               })}
 
               {/*
