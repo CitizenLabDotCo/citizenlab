@@ -7,6 +7,8 @@ module AdminApi
       ActiveRecord::Base.transaction do
         service.resolve_and_apply_template same_template, validate: false
       end
+      # Projects from a folder are imported to the top level.
+      ProjectHolderService.new.fix_project_holder_orderings!
     end
 
     def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil
