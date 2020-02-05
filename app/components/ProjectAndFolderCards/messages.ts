@@ -2,39 +2,27 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   showMore: {
-    id: 'app.components.ProjectCards.showMore',
+    id: 'app.components.ProjectFolderCards.showMore',
     defaultMessage: 'Show more',
   },
   noProjectYet: {
-    id: 'app.components.ProjectCards.noProjectYet',
+    id: 'app.components.ProjectFolderCards.noProjectYet',
     defaultMessage: 'There is no project yet',
   },
   stayTuned: {
-    id: 'app.components.ProjectCards.stayTuned',
-    defaultMessage: 'Stay tuned, a project is gonna show up pretty soon.  ',
+    id: 'app.components.ProjectFolderCards.stayTuned',
+    defaultMessage: 'Stay tuned, a project is going to show up pretty soon.',
   },
   areasTitle: {
-    id: 'app.containers.ProjectCards.areasTitle',
+    id: 'app.containers.ProjectFolderCards.areasTitle',
     defaultMessage: 'Areas',
   },
   allProjects: {
-    id: 'app.containers.ProjectCards.allProjects',
+    id: 'app.containers.ProjectFolderCards.allProjects',
     defaultMessage: 'All projects',
   },
-  activeProjects: {
-    id: 'app.containers.ProjectCards.activeProjects',
-    defaultMessage: 'Active projects',
-  },
-  archivedProjects: {
-    id: 'app.containers.ProjectCards.archivedProjects',
-    defaultMessage: 'Archived projects',
-  },
-  publicationStatus: {
-    id: 'app.containers.ProjectCards.publicationStatus',
-    defaultMessage: 'Publication status',
-  },
   currentlyWorkingOn: {
-    id: 'app.containers.ProjectCards.currentlyWorkingOn',
+    id: 'app.containers.ProjectFolderCards.currentlyWorkingOn',
     defaultMessage: '{orgName} is currently working on',
   },
 });
