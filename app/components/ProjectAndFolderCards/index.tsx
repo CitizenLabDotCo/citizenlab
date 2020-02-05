@@ -21,7 +21,10 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetProject from 'resources/GetProject';
 import GetProjectFolder from 'resources/GetProjectFolder';
-import GetProjectHolderOrderings from 'resources/GetProjectHolderOrderings';
+import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
+
+// services
+import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -227,6 +230,7 @@ interface DataProps {
   projects: GetProjectsChildProps;
   tenant: GetTenantChildProps;
   windowSize: GetWindowSizeChildProps;
+  projectHolderOrderings: GetProjectHolderOrderingsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -360,7 +364,7 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
 
   render() {
     const { cardSizes } = this.state;
-    const { tenant, showTitle, showPublicationStatusFilter, layout, theme } = this.props;
+    const { tenant, showTitle, showPublicationStatusFilter, layout, theme, projectHolderOrderings } = this.props;
     const { queryParameters, projectsList, hasMore, querying, loadingMore } = this.props.projects;
     const hasProjects = (projectsList && projectsList.length > 0);
     const selectedAreas = (queryParameters.areas || this.emptyArray);
@@ -421,22 +425,24 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
             </EmptyContainer>
           }
 
-          {!querying && hasProjects && projectsList && (
+          {!querying && hasProjects && projectsList && !isNilOrError(projectHolderOrderings) && (
             <ProjectsList id="e2e-projects-list">
-              {projectsList.map((project, index) => {
-                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
-                return <ProjectCard key={project.id} projectId={project.id} size={size} layout={layout} />;
-              })}
 
-              {itemsList.map((item: IProjectHolderOrderingData, index: number) => {
+              {projectHolderOrderings.map((item: IProjectHolderOrderingData, index: number) => {
                   const projectOrFolderId = item.relationships.project_holder.data.id;
                   const projectOrFolderType = item.relationships.project_holder.data.type;
+                  const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
 
                   if (projectOrFolderType === 'project') {
                     return (
                       <GetProject projectId={projectOrFolderId}>
                         {project => !isNilOrError(project) ? (
-                          <div>x</div>
+                          <ProjectCard
+                            key={projectOrFolderId}
+                            projectId={projectOrFolderId}
+                            size={size}
+                            layout={layout}
+                          />
                         ) : null}
                       </GetProject>
                     );
@@ -444,7 +450,12 @@ class ProjectCards extends PureComponent<Props & InjectedIntlProps & WithRouterP
                     return (
                       <GetProjectFolder projectFolderId={projectOrFolderId}>
                         {projectFolder => !isNilOrError(projectFolder) ? (
-                          <div>x</div>
+                          <ProjectFolderCard
+                            key={projectOrFolderId}
+                            projectFolderId={projectOrFolderId}
+                            size={size}
+                            layout={layout}
+                          />
                         ) : null}
                       </GetProjectFolder>
                     );
@@ -503,8 +514,8 @@ const ProjectCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(ProjectCards
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
+  projectHolderOrderings: <GetProjectHolderOrderings />,
   projects: ({ render, ...getProjectsInputProps }) => <GetProjects {...getProjectsInputProps}>{render}</GetProjects>,
-  projectHolderOrderings: <GetProjectHolderOrderings />
 });
 
 export default (inputProps: InputProps) => (
