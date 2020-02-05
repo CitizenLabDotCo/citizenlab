@@ -293,6 +293,7 @@
   "app.components.ProjectCards.stayTuned": "Stay tuned, a project will show up soon.",
   "app.components.ProjectFolderCard.a11y_projectDescription": "Project description:",
   "app.components.ProjectFolderCard.a11y_projectTitle": "Project title:",
+  "app.components.ProjectFolderCard.numberOfProjects": "{numberOfProjects, plural, no {# projects} one {# project} other {# projects}}",
   "app.components.ProjectFolderCards.noProjectYet": "There is no project yet",
   "app.components.ProjectFolderCards.showMore": "Show more",
   "app.components.ProjectFolderCards.stayTuned": "Stay tuned, a project is going to show up pretty soon.",

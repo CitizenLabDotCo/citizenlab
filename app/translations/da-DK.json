@@ -293,6 +293,7 @@
   "app.components.ProjectCards.stayTuned": "{tenantName, select, DeloitteDK {Følg med, et verdensmål dukker op meget snart.} other {Følg med, et projekt dukker op meget snart.}}",
   "app.components.ProjectFolderCard.a11y_projectDescription": "",
   "app.components.ProjectFolderCard.a11y_projectTitle": "",
+  "app.components.ProjectFolderCard.numberOfProjects": "",
   "app.components.ProjectFolderCards.noProjectYet": "",
   "app.components.ProjectFolderCards.showMore": "",
   "app.components.ProjectFolderCards.stayTuned": "",
