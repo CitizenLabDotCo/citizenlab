@@ -140,6 +140,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
 }
 
 // TODO: add vertical padding to ContentContainer
+// Meta
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
