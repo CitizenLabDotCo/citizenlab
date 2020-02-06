@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -36,11 +36,11 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, projectFolder, authUser, intl }) => {
+const Meta: React.SFC<Props & InjectedIntlProps> = memo(({ locale, tenantLocales, projectFolder, authUser, intl }) => {
 
   if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(projectFolder) && projectFolder.attributes) {
     const { formatMessage } = intl;
-    const metaTitle = formatMessage(messages.metaTitle, { projectTitle: getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales, 50) });
+    const metaTitle = formatMessage(messages.metaTitle, { title: getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales, 50) });
     const description = stripHtml(getLocalized(projectFolder.attributes.description_multiloc, locale, tenantLocales), 250);
     const image = projectFolder.attributes.header_bg?.large;
     const { location } = window;
@@ -68,7 +68,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
 
   return null;
 
-};
+});
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
