@@ -11,7 +11,7 @@ import { trackPage } from 'utils/analytics';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
-import { IProjectFolderData } from 'services/projectFolders';
+import { IProjectFolderData, deleteProjectFolder } from 'services/projectFolders';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
 // resources
@@ -39,7 +39,7 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
-import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon } from '../components/ProjectRow';
+import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon, ActionsRowContainer } from '../components/ProjectRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 
 // style
@@ -192,6 +192,10 @@ class AdminProjectsList extends PureComponent<Props, State> {
     }
   }
 
+  removeFolder = (folderId: string) => () => {
+    deleteProjectFolder(folderId);
+  }
+
   render() {
     const { selectedProjectTemplateId } = this.state;
     const { authUser, projects, className, projectHolderOrderings } = this.props;
@@ -211,17 +215,27 @@ class AdminProjectsList extends PureComponent<Props, State> {
         return (
           <RowContent className="e2e-admin-projects-list-item">
             <RowContentInner className="expand primary">
-              <RowIcon name="simpleFolder"/>
+              <RowIcon name="simpleFolder" />
               <RowTitle value={folder.attributes.title_multiloc} />
             </RowContentInner>
-            <RowButton
-              className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] ? folder.attributes.title_multiloc['en-GB'] : ''}`}
-              linkTo={`/admin/projects/folders/${folder.id}`}
-              buttonStyle="secondary"
-              icon="edit"
-            >
-              <FormattedMessage {...messages.editButtonLabel} />
-            </RowButton>
+            <ActionsRowContainer>
+              <RowButton
+                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
+                onClick={this.removeFolder(folder.id)}
+                buttonStyle="secondary"
+                icon="remove"
+              >
+                <FormattedMessage {...messages.deleteButtonLabel} />
+              </RowButton>
+              <RowButton
+                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
+                linkTo={`/admin/projects/folders/${folder.id}`}
+                buttonStyle="secondary"
+                icon="edit"
+              >
+                <FormattedMessage {...messages.editButtonLabel} />
+              </RowButton>
+            </ActionsRowContainer>
           </RowContent>
         );
       };
@@ -256,7 +270,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                     itemsList.map((item: IProjectHolderOrderingData, index: number) => {
                       if (item.relationships.project_holder.data.type === 'project') {
                         return (
-                          <GetProject projectId={item.relationships.project_holder.data.id}>
+                          <GetProject projectId={item.relationships.project_holder.data.id} key={item.relationships.project_holder.data.id}>
                             {project => isNilOrError(project) ? null : (
                               <SortableRow
                                 key={item.id}
@@ -273,10 +287,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         );
                       } else {
                         return (
-                          <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id}>
+                          <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id} key={item.relationships.project_holder.data.id}>
                             {projectFolder => isNilOrError(projectFolder) ? null : (
                               <SortableRow
-                                key={item.id}
                                 id={item.id}
                                 index={index}
                                 moveRow={handleDragRow}
@@ -296,10 +309,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <List>
                     {projectHolderOrderings.map((holder, index) => (
                       holder.relationships.project_holder.data.type === 'project') ? (
-                        <GetProject projectId={holder.relationships.project_holder.data.id}>
+                        <GetProject projectId={holder.relationships.project_holder.data.id} key={holder.relationships.project_holder.data.id}>
                           {project => isNilOrError(project) ? null : (
                             <Row
-                              key={project.id}
                               id={project.id}
                               lastItem={(index === projectHolderOrderings.length - 1)}
                             >
@@ -308,10 +320,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           )}
                         </GetProject>
                       ) : (
-                        <GetProjectFolder projectFolderId={holder.relationships.project_holder.data.id}>
+                        <GetProjectFolder projectFolderId={holder.relationships.project_holder.data.id} key={holder.relationships.project_holder.data.id}>
                           {projectFolder => isNilOrError(projectFolder) ? null : (
                             <Row
-                              key={projectFolder.id}
                               id={projectFolder.id}
                               lastItem={(index === projectHolderOrderings.length - 1)}
                             >
@@ -406,8 +417,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <List id="e2e-admin-archived-projects-list">
                     {archivedProjects.map((project, index) => (
                       <Row
-                        className="e2e-admin-projects-list-item"
                         key={project.id}
+                        className="e2e-admin-projects-list-item"
                         lastItem={(index === archivedProjects.length - 1)}
                       >
                         <ProjectRow project={project} />

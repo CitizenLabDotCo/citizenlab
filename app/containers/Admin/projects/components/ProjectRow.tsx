@@ -38,7 +38,7 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-bottom: 4px;
 `;
 
-const ActionsContainer = styled.div`
+export const ActionsRowContainer = styled.div`
   display: flex;
 `;
 
@@ -107,7 +107,7 @@ export default ({ project, actions, showIcon }: Props) => {
         }
       </RowContentInner>
       {actions ?
-        <ActionsContainer>
+        <ActionsRowContainer>
           {actions.map(action => action === 'manage' ? ManageButton :
             <RowButton
               key={action.icon}
@@ -120,7 +120,7 @@ export default ({ project, actions, showIcon }: Props) => {
               {action.buttonContent}
             </RowButton>)
           }
-        </ActionsContainer>
+        </ActionsRowContainer>
         : ManageButton}
     </RowContent>
   );

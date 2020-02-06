@@ -58,6 +58,12 @@ export async function updateProjectFolder(projectFolderId: string, object: Parti
   return (!isNilOrError(response) ? response.data : response);
 }
 
-export function deleteProjectFolder(projectFolderId: string) {
-  return streams.delete(`${apiEndpoint}/${projectFolderId}`, projectFolderId);
+export async function deleteProjectFolder(projectFolderId: string) {
+  const response = await streams.delete(`${apiEndpoint}/${projectFolderId}`, projectFolderId);
+
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`],
+  });
+
+  return response;
 }
