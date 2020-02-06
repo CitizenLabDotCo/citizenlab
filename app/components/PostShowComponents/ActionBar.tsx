@@ -51,10 +51,6 @@ const StyledTranslateButton = styled(TranslateButton)`
   `}
 `;
 
-const StyledRight = styled.div`
-  margin-left: 35px;
-`;
-
 interface Props {
   rightContent: JSX.Element | null;
   leftContent: JSX.Element | null;
@@ -79,11 +75,7 @@ export default memo<Props>(({ rightContent, leftContent, showTranslateButton, tr
               />
             }
           </FeatureFlag>
-          {rightContent &&
-            <StyledRight>
-              {rightContent}
-            </StyledRight>
-          }
+          {rightContent}
         </Right>
       </Inner>
     </Container>

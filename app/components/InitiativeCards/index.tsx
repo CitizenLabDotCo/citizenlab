@@ -568,8 +568,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   onClick={this.openFiltersModal}
                   icon="filter"
                   text={this.filterMessage}
-                  borderColor="#ccc"
-                  borderHoverColor="#999"
                 />
               </>
             }

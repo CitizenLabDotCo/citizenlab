@@ -6,8 +6,8 @@ export default function useProjectHolderOrderings() {
     useState<{ data: IProjectHolderOrderingData[] } | undefined | null | Error>(undefined);
 
   useEffect(() => {
-    const subscription = listProjectHolderOrderings().observable.subscribe((folderOrProjectOrderings) => {
-      setProjectHolderOrderings(folderOrProjectOrderings);
+    const subscription = listProjectHolderOrderings().observable.subscribe((projectHolderOrderings) => {
+      setProjectHolderOrderings(projectHolderOrderings);
     });
 
     return () => subscription.unsubscribe();

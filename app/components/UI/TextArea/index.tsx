@@ -18,6 +18,7 @@ const Container: any = styled.div`
 
   .textarea {
     width: 100%;
+    color: ${colors.text};
     font-size: ${fontSizes.base}px;
     line-height: 24px;
     font-weight: 400;
