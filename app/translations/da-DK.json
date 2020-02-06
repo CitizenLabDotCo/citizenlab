@@ -13,6 +13,7 @@
   "app.components.AssignBudgetControl.a11y_price": "Pris",
   "app.components.AssignBudgetControl.assign": "Tildel",
   "app.components.AssignBudgetControl.assigned": "Tildelt",
+  "app.components.AssignBudgetControl.backToOverview": "",
   "app.components.AssignBudgetControl.seeIdea": "{tenantName, select, DeloitteDK {Se indlæg} other {Se ide}}",
   "app.components.AssignBudgetControl.undo": "Fortryd tilføjelsen",
   "app.components.AssignBudgetControl.verificationLinkText": "Bekræft din konto nu.",
