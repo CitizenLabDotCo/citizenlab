@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -23,7 +23,6 @@ import ProjectRow from '../../components/ProjectRow';
 
 // style
 import styled from 'styled-components';
-import streams from 'utils/streams';
 
 const Container = styled.div``;
 
@@ -51,7 +50,7 @@ interface DataProps {
 
 interface Props extends DataProps { }
 
-class AdminFoldersProjectsList extends PureComponent<Props & WithRouterProps> {
+class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   handleReorder = (projectId, newOrder) => {
     reorderProject(projectId, newOrder); // TODO
@@ -64,12 +63,8 @@ class AdminFoldersProjectsList extends PureComponent<Props & WithRouterProps> {
   }
 
   removeProjectFromFolder = (projectId) => () => {
-    updateProjectFolderMembership(projectId, null).then(() => {
-      const { projectFolderId } = this.props.params;
-      streams.fetchAllWith({
-        dataId: [projectFolderId],
-      });
-    });
+    const projectFolderId = !isNilOrError(this.props.projectFolder) ? this.props.projectFolder.id : undefined;
+    updateProjectFolderMembership(projectId, null, projectFolderId);
   }
 
   render() {
@@ -102,7 +97,7 @@ class AdminFoldersProjectsList extends PureComponent<Props & WithRouterProps> {
             >
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((projectId: string, index: number) => (
-                  <GetProject projectId={projectId} key={projectId}>
+                  <GetProject projectId={projectId} key={`out_${projectId}`}>
                     {project => isNilOrError(project) ? null : (
                       <SortableRow
                         key={project.id}
@@ -140,7 +135,7 @@ class AdminFoldersProjectsList extends PureComponent<Props & WithRouterProps> {
               </ListHeader>
               <List>
                 {projectList.map((projectHolderOrdering, index: number) => (
-                  <GetProject projectId={projectHolderOrdering.relationships.project_holder.data.id} key={projectHolderOrdering.relationships.project_holder.data.id}>
+                  <GetProject projectId={projectHolderOrdering.relationships.project_holder.data.id} key={`out_${projectHolderOrdering.relationships.project_holder.data.id}`}>
                     {project => isNilOrError(project) ? null : (
                       <Row
                         key={project.id}
