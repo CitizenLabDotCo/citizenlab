@@ -53,7 +53,6 @@ class DescriptionEditionForm extends React.Component<InjectedFormikProps<Props, 
           <SectionField>
             <Field
               component={FormikQuillMultiloc}
-              inAdmin
               id="project-description"
               name="description_multiloc"
               label={<FormattedMessage {...messages.descriptionLabel} />}

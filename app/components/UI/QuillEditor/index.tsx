@@ -1,8 +1,9 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
+import { trim } from 'lodash-es';
 
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
-import BlotFormatter from 'quill-blot-formatter';
+import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction, AlignAction, DeleteAction } from 'quill-blot-formatter';
 import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
 import 'quill/dist/quill.snow.css';
 
@@ -20,7 +21,6 @@ import styled from 'styled-components';
 import { colors, quillEditedContent, media } from 'utils/styleUtils';
 
 const Container = styled.div<{
-  inAdmin?: boolean,
   videoPrompt: string,
   linkPrompt: string,
   visitPrompt: string,
@@ -101,18 +101,19 @@ const Container = styled.div<{
   }
 `;
 
-export interface Props {
-  id: string;
-  value?: string;
-  placeholder?: string;
+export interface QuillEditorProps {
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
   noToolbar?: boolean;
-  inAdmin?: boolean;
+}
+
+interface Props extends QuillEditorProps {
+  id: string;
+  value?: string;
+  placeholder?: string;
   hasError?: boolean;
-  labelId?: string;
   className?: string;
   onChange?: (html: string) => void;
   onFocus?: () => void;
@@ -121,6 +122,81 @@ export interface Props {
 }
 
 Quill.register('modules/blotFormatter', BlotFormatter);
+
+// BEGIN allow image alignment styles
+const FormatAttributesList = [
+  'alt',
+  'height',
+  'width',
+  'style',
+];
+
+const BaseImageFormat = Quill.import('formats/image');
+
+class ImageFormat extends BaseImageFormat {
+  static formats(domNode) {
+    return FormatAttributesList.reduce((formats, attribute) => {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
+      }
+      return formats;
+    }, {});
+  }
+  format(name, value) {
+    if (FormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+ImageFormat.blotName = 'imageFormat';
+ImageFormat.tagName = 'img';
+Quill.register(ImageFormat, true);
+
+const BaseVideoFormat = Quill.import('formats/video');
+
+class VideoFormat extends BaseVideoFormat {
+  static formats(domNode) {
+    return FormatAttributesList.reduce((formats, attribute) => {
+      if (domNode.hasAttribute(attribute)) {
+        formats[attribute] = domNode.getAttribute(attribute);
+      }
+      return formats;
+    }, {});
+  }
+  format(name, value) {
+    if (FormatAttributesList.indexOf(name) > -1) {
+      if (value) {
+        this.domNode.setAttribute(name, value);
+      } else {
+        this.domNode.removeAttribute(name);
+      }
+    } else {
+      super.format(name, value);
+    }
+  }
+}
+VideoFormat.blotName = 'videoFormat';
+VideoFormat.tagName = 'iframe';
+Quill.register(VideoFormat, true);
+
+class CustomImageSpec extends ImageSpec {
+  getActions() {
+    return [ResizeAction, AlignAction, DeleteAction];
+  }
+}
+
+class CustomIframeVideoSpec extends IframeVideoSpec {
+  getActions() {
+    return [ResizeAction, AlignAction, DeleteAction];
+  }
+}
+// END allow image & video resizing styles
 
 const QuillEditor = memo<Props & InjectedIntlProps>(({
   id,
@@ -131,7 +207,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   noImages,
   noVideos,
   limitedTextFormatting,
-  inAdmin,
   hasError,
   className,
   setRef,
@@ -154,6 +229,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     if (!editor && editorRef && editorRef.current) {
       const editorOptions: QuillOptionsStatic = {
         bounds: editorRef.current,
+        // bounds: document.body,
         formats: [
           'bold',
           'italic',
@@ -166,7 +242,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
         theme: 'snow',
         placeholder: placeholder || '',
         modules: {
-          blotFormatter: (noImages && noVideos) ? false : true,
+          // blotFormatter: (!noImages || !noVideos) ? true : false,
+          blotFormatter: (noImages && noVideos) ? false : {
+            specs: [CustomImageSpec, CustomIframeVideoSpec],
+          },
           toolbar: toolbarId ? `#${toolbarId}` : false,
           keyboard: {
             bindings: {
@@ -238,9 +317,18 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   }, [editor]);
 
   useEffect(() => {
-    if (editor && value !== contentRef.current) {
-      editor.clipboard.dangerouslyPasteHTML(value || '');
-      contentRef.current = value;
+    if (editor) {
+      const valueHtml = value || '<p><br/></p>';
+
+      console.log('valueHtml: ' + valueHtml);
+      console.log('contentRef.current: ' + contentRef.current);
+      console.log(`equal?: ${valueHtml === contentRef.current}`);
+
+      if (valueHtml !== contentRef.current) {
+        contentRef.current = valueHtml;
+        console.log('dangerouslyPasteHTML');
+        editor.clipboard.dangerouslyPasteHTML(valueHtml);
+      }
     }
   }, [editor, value]);
 
@@ -300,7 +388,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   return (
     <Container
       className={classNames}
-      inAdmin={inAdmin}
       videoPrompt={formatMessage(messages.videoPrompt)}
       linkPrompt={formatMessage(messages.linkPrompt)}
       visitPrompt={formatMessage(messages.visitPrompt)}

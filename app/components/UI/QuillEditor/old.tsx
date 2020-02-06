@@ -536,7 +536,6 @@ class QuillEditor extends PureComponent<Props & InjectedIntlProps, State> {
       <Container
         id="boundaries"
         className={`${isFocused ? 'focused' : 'blurred'} ${hasError ? 'error' : ''}`}
-        inAdmin={inAdmin}
         videoPrompt={formatMessage(messages.videoPrompt)}
         linkPrompt={formatMessage(messages.linkPrompt)}
         visitPrompt={formatMessage(messages.visitPrompt)}

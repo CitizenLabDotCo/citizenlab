@@ -558,11 +558,10 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <WideSectionField>
               <QuillMultiloc
                 id="custom-section"
-                inAdmin={true}
                 label={this.customSectionLabel}
                 labelTooltip={this.customSectionTooltip}
                 valueMultiloc={attributesDiff.homepage_info || get(homepageInfoPage, 'attributes.body_multiloc')}
-                onChangeMultiloc={this.handleCustomSectionMultilocOnChange}
+                onChange={this.handleCustomSectionMultilocOnChange}
               />
               <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
             </WideSectionField>

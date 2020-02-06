@@ -438,7 +438,6 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
               <SectionField className="fullWidth">
                 <QuillMultiloc
                   id="description"
-                  inAdmin={true}
                   label={this.quillMultilocLabel}
                   valueMultiloc={phaseAttrs.description_multiloc}
                   onChangeMultiloc={this.handleEditorOnChange}
