@@ -57,7 +57,11 @@ const Right = styled.div`
   `}
 `;
 
-const Description = styled.div``;
+const Description = styled.div`
+  ${media.smallerThanMinTablet`
+    margin-bottom: 20px;
+  `}
+`;
 
 interface InputProps {
   projectFolderId: string;
@@ -87,33 +91,31 @@ const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
   if (!isNilOrError(projectFolder)) {
     return (
       <Container>
-        <Fragment name={`folders/${projectFolder.id}/info`}>
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
-          </ScreenReaderOnly>
-          <Left>
-            <Description>
-              <QuillEditedContent textColor={theme.colorText}>
-                <T value={projectFolder.attributes.description_multiloc} supportHtml={true}/>
-              </QuillEditedContent>
-            </Description>
-          </Left>
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
+        </ScreenReaderOnly>
+        <Left>
+          <Description>
+            <QuillEditedContent textColor={theme.colorText}>
+              <T value={projectFolder.attributes.description_multiloc} supportHtml={true}/>
+            </QuillEditedContent>
+          </Description>
+        </Left>
 
-          <Right>
-            <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
-              {(title) => {
-                return (
-                  <Sharing
-                    context="project"
-                    url={folderUrl}
-                    titleLevel="h2"
-                    twitterMessage={formatMessage(messages.twitterMessage, { title })}
-                    utmParams={utmParams}
-                  />);
-              }}
-            </T>
-          </Right>
-        </Fragment>
+        <Right>
+          <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
+            {(title) => {
+              return (
+                <Sharing
+                  context="project"
+                  url={folderUrl}
+                  titleLevel="h2"
+                  twitterMessage={formatMessage(messages.twitterMessage, { title })}
+                  utmParams={utmParams}
+                />);
+            }}
+          </T>
+        </Right>
       </Container>
     );
   }

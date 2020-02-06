@@ -32,7 +32,7 @@ const Container = styled.main`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
@@ -58,6 +58,16 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+`;
+
+const StyledContentContainer = styled(ContentContainer)`
+  flex: 1 1 auto;
+  padding-top: 20px;
+  padding-bottom: 100px;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 30px;
+  `}
 `;
 
 const ProjectNotFoundWrapper = styled.div`
@@ -116,7 +126,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                   <>
                     <Header projectFolderId={projectFolder.id} />
                     <Content>
-                      <ContentContainer>
+                      <StyledContentContainer>
                         <ProjectFolderInfo projectFolderId={projectFolder.id} />
                         <ProjectCards
                           pageSize={50}
@@ -127,7 +137,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
                           layout="threecolumns"
                           folderId={projectFolder.id}
                         />
-                      </ContentContainer>
+                      </StyledContentContainer>
                     </Content>
                   </>
                 ) : null
@@ -140,7 +150,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
 }
 
 // TODO: add vertical padding to ContentContainer
-// Meta
+// TODO: Meta
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
