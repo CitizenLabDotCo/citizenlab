@@ -8,7 +8,7 @@ import Helmet from 'react-helmet';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
@@ -24,25 +24,25 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 interface InputProps {
-  projectSlug: string;
+  projectFolderSlug: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
   tenantLocales: GetTenantLocalesChildProps;
-  project: GetProjectChildProps;
+  projectFolder: GetProjectFolderChildProps;
   authUser: GetAuthUserChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, project, authUser, intl }) => {
+const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, projectFolder, authUser, intl }) => {
 
-  if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(project) && project.attributes) {
+  if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(projectFolder) && projectFolder.attributes) {
     const { formatMessage } = intl;
-    const metaTitle = formatMessage(messages.metaTitle, { projectTitle: getLocalized(project.attributes.title_multiloc, locale, tenantLocales, 50) });
-    const description = stripHtml(getLocalized(project.attributes.description_multiloc, locale, tenantLocales), 250);
-    const image = project.attributes.header_bg.large;
+    const metaTitle = formatMessage(messages.metaTitle, { projectTitle: getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales, 50) });
+    const description = stripHtml(getLocalized(projectFolder.attributes.description_multiloc, locale, tenantLocales), 250);
+    const image = projectFolder.attributes.header_bg?.large;
     const { location } = window;
 
     return (
@@ -73,7 +73,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenantLocales, pro
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
+  projectFolder: ({ projectFolderSlug, render }) => <GetProjectFolder projectFolderSlug={projectFolderSlug}>{render}</GetProjectFolder>,
   authUser: <GetAuthUser />,
 });
 
