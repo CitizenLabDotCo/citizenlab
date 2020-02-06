@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderShowPage.invisibleTitleMainContent',
     defaultMessage: 'Information about this project',
   },
+  noProjectFoundHere: {
+    id: 'app.containers.ProjectFolderShowPage.noProjectFoundHere',
+    defaultMessage: '{tenantName, select, CQC {Log in to view this project.} other {There is no project here.}}',
+  },
+  goBackToList: {
+    id: 'app.containers.ProjectFolderShowPage.goBackToList',
+    defaultMessage: 'Go back to the list',
+  },
 });
