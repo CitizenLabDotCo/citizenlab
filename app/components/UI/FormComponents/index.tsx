@@ -59,11 +59,11 @@ export const FormSectionTitle = memo(({ message, values, subtitleMessage }: Form
   </TitleContainer>
 ));
 
-export const FormLabelStyled: any = styled.label`
+export const FormLabelStyled = styled.label<{ thin: boolean | undefined }>`
   font-size: ${fontSizes.base}px;
   color: ${({ theme }) => theme.colorText};
-  font-weight: ${(props) => (props as any).thin ? 400 : 600};
-  line-height: 21px;
+  font-weight: ${props => props.thin ? 400 : 600};
+  line-height: normal;
 
   &.invisible {
     ${invisibleA11yText}
@@ -77,11 +77,11 @@ export const FormSubtextStyled = styled.span`
 `;
 
 export const Spacer = styled.div`
-  height: 12px;
+  height: 10px;
 `;
 
-const OptionalText: any = styled.span`
-  font-weight: ${(props) => (props as any).thin ? 300 : 400};
+const OptionalText = styled.span<{ thin: boolean | undefined }>`
+  font-weight: ${props => props.thin ? 300 : 400};
 `;
 
 interface FormLabelGenericProps {
@@ -102,7 +102,7 @@ export interface FormLabelProps extends FormLabelGenericProps {
   subtextMessageValues?: OriginalFormattedMessage.Props['values'];
 }
 
-export const FormLabel = memo(({
+export const FormLabel = memo<FormLabelProps>(({
   labelMessage,
   labelMessageValues,
   subtextMessage,
@@ -115,28 +115,33 @@ export const FormLabel = memo(({
   thin,
   noSpace,
   optional
-}: FormLabelProps) => (
-    <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
-      <FormattedMessage {...labelMessage} values={labelMessageValues} />
-      {optional &&
-        <OptionalText thin={thin}>
-          {' ('}
-          <FormattedMessage {...messages.optional} />
-          {')'}
-        </OptionalText>
-      }
-      {subtextMessage &&
-        <>
-          <br />
-          <FormSubtextStyled>
-            <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
-          </FormSubtextStyled>
-        </>
-      }
-      {!noSpace && <Spacer />}
-      {children}
-    </FormLabelStyled>
-  ));
+}) => (
+  <FormLabelStyled
+    thin={thin}
+    id={id}
+    className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`}
+    htmlFor={htmlFor}
+  >
+    <FormattedMessage {...labelMessage} values={labelMessageValues} />
+    {optional &&
+      <OptionalText thin={thin}>
+        {' ('}
+        <FormattedMessage {...messages.optional} />
+        {')'}
+      </OptionalText>
+    }
+    {subtextMessage &&
+      <>
+        <br />
+        <FormSubtextStyled>
+          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
+        </FormSubtextStyled>
+      </>
+    }
+    {!noSpace && <Spacer />}
+    {children}
+  </FormLabelStyled>
+));
 
 interface FormLabelValueProps extends FormLabelGenericProps {
   labelValue: JSX.Element | string;

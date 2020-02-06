@@ -81,7 +81,6 @@ const ButtonBarContainer = styled.div`
   right: 0;
   background: #fff;
   border-top: solid 1px #ddd;
-  border: solid 2px red;
 `;
 
 interface Props {

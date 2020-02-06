@@ -36,7 +36,6 @@ const AdminHeader = styled.div`
 export interface Props {
   projectTemplateId: string;
   goBack?: () => void;
-  useTemplate?: () => void;
   className?: string;
 }
 

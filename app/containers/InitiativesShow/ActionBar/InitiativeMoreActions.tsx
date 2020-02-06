@@ -30,6 +30,7 @@ const Container = styled.div``;
 const MoreActionsMenuWrapper = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 35px;
 `;
 
 interface InputProps {
@@ -83,59 +84,61 @@ class InitiativeMoreActions extends PureComponent<Props & InjectedIntlProps, Sta
     const { initiative, className, authUser, color, id } = this.props;
     const { spamModalVisible } = this.state;
 
-    return !isNilOrError(authUser) && !isNilOrError(initiative) ? (
-      <Container className={className}>
-        <MoreActionsMenuWrapper>
-          <HasPermission item={initiative} action="edit" context={initiative}>
-            <MoreActionsMenu
-              label={<FormattedMessage {...messages.moreOptions} />}
-              color={color}
-              id={id}
-              actions={[
-                {
-                  label: <FormattedMessage {...messages.reportAsSpam} />,
-                  handler: this.openSpamModal,
-                },
-                {
-                  label: <FormattedMessage {...messages.editInitiative} />,
-                  handler: this.onEditInitiative,
-                },
-                {
-                  label: <FormattedMessage {...messages.deleteInitiative} />,
-                  handler: this.onDeleteInitiative(initiative.id),
-                }
-              ]}
-            />
-            <HasPermission.No>
+    if (!isNilOrError(authUser) && !isNilOrError(initiative)) {
+      return (
+        <Container className={className}>
+          <MoreActionsMenuWrapper>
+            <HasPermission item={initiative} action="edit" context={initiative}>
               <MoreActionsMenu
                 label={<FormattedMessage {...messages.moreOptions} />}
                 color={color}
                 id={id}
-                actions={[{
-                  label: <FormattedMessage {...messages.reportAsSpam} />,
-                  handler: this.openSpamModal,
-                }]}
+                actions={[
+                  {
+                    label: <FormattedMessage {...messages.reportAsSpam} />,
+                    handler: this.openSpamModal,
+                  },
+                  {
+                    label: <FormattedMessage {...messages.editInitiative} />,
+                    handler: this.onEditInitiative,
+                  },
+                  {
+                    label: <FormattedMessage {...messages.deleteInitiative} />,
+                    handler: this.onDeleteInitiative(initiative.id),
+                  }
+                ]}
               />
-            </HasPermission.No>
-          </HasPermission>
-        </MoreActionsMenuWrapper>
-        <Modal
-          opened={spamModalVisible}
-          close={this.closeSpamModal}
-          header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
-        >
-          <SpamReportForm
-            resourceId={initiative.id}
-            resourceType="initiatives"
-          />
-        </Modal>
-      </Container>
-    )
-      :
-      null;
-  }
+              <HasPermission.No>
+                <MoreActionsMenu
+                  label={<FormattedMessage {...messages.moreOptions} />}
+                  color={color}
+                  id={id}
+                  actions={[{
+                    label: <FormattedMessage {...messages.reportAsSpam} />,
+                    handler: this.openSpamModal,
+                  }]}
+                />
+              </HasPermission.No>
+            </HasPermission>
+          </MoreActionsMenuWrapper>
+          <Modal
+            opened={spamModalVisible}
+            close={this.closeSpamModal}
+            header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
+          >
+            <SpamReportForm
+              resourceId={initiative.id}
+              resourceType="initiatives"
+            />
+          </Modal>
+        </Container>
+      );
+    }
 
+    return null;
+  }
 }
+
 const InitiativeMoreActionsWithHOCs = injectIntl(InitiativeMoreActions);
 
 const Data = adopt<DataProps, InputProps>({

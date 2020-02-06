@@ -486,8 +486,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             </SectionField>
 
             <SectionField key={'logo'}>
-              <Label><FormattedMessage {...messages.logo} /></Label>
+              <Label htmlFor="tenant-logo-dropzone"><FormattedMessage {...messages.logo} /></Label>
               <ImagesDropzone
+                id="tenant-logo-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxNumberOfImages={1}
                 maxImageFileSize={5000000}
@@ -508,11 +509,12 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             </SubSectionTitle>
 
             <SectionField key={'header_bg'}>
-              <Label>
+              <Label htmlFor="landingpage-header-dropzone">
                 <FormattedMessage {...messages.header_bg} />
                 <IconTooltip content={<FormattedMessage {...messages.header_bgTooltip} />} />
               </Label>
               <ImagesDropzone
+                id="landingpage-header-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
                 maxNumberOfImages={1}
                 maxImageFileSize={5000000}
