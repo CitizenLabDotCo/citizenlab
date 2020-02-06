@@ -54,7 +54,6 @@ export default class AreaForm extends React.Component<InjectedFormikProps<Props,
           <SectionField>
             <Field
               component={FormikQuillMultiloc}
-              inAdmin
               name="description_multiloc"
               label={<FormattedMessage {...messages.fieldDescription} />}
               labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldDescriptionTooltip} />} />}

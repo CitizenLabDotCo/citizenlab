@@ -295,7 +295,6 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               <SectionField className="fullWidth">
                 <QuillMultiloc
                   id="description"
-                  inAdmin={true}
                   label={this.descriptionLabel}
                   valueMultiloc={eventAttrs.description_multiloc}
                   onChangeMultiloc={this.handleDescriptionMultilocOnChange}
