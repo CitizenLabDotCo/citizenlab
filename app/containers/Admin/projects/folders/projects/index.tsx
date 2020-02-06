@@ -152,7 +152,7 @@ class AdminFoldersProjectsList extends PureComponent<Props & WithRouterProps> {
                           actions={[{
                             buttonContent: <FormattedMessage {...messages.addToFolder} />,
                             handler: this.addProjectToFolder,
-                            icon: 'add'
+                            icon: 'plus-circle'
                           }]}
                         />
                       </Row>
