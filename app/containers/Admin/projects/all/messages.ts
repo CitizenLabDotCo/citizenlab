@@ -59,6 +59,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectDashboard.editButtonLabel',
     defaultMessage: 'Edit',
   },
+  deleteButtonLabel: {
+    id: 'app.containers.AdminPage.ProjectDashboard.deleteButtonLabel',
+    defaultMessage: 'Delete',
+  },
   published: {
     id: 'app.containers.AdminPage.ProjectDashboard.published',
     defaultMessage: 'Published',
