@@ -20,6 +20,7 @@ export interface InputProps {
   topics?: string[];
   publicationStatuses: PublicationStatus[];
   filterCanModerate?: boolean;
+  folderId?: string;
 }
 
 interface IQueryParameters {
@@ -30,6 +31,7 @@ interface IQueryParameters {
   topics?: string[];
   publication_statuses?: PublicationStatus[];
   filter_can_moderate?: boolean;
+  folder?: string;
 }
 
 interface IAccumulator {
@@ -111,7 +113,7 @@ export default class GetProjects extends Component<Props, State> {
             loadingMore: isLoadingMore,
           });
 
-          return projectsStream({ queryParameters }).observable.pipe(map((projects) => {
+          return projectsStream({ queryParameters }).observable.pipe(map(projects => {
             const selfLink = get(projects, 'links.self');
             const lastLink = get(projects, 'links.last');
             const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
@@ -168,6 +170,7 @@ export default class GetProjects extends Component<Props, State> {
         topics: props.topics,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
+        folder: props.folderId
       }, isNil)
     };
   }

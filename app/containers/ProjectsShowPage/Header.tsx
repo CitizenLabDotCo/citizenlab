@@ -13,7 +13,6 @@ import { selectedPhase$ } from 'containers/ProjectsShowPage/process/Timeline';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 
 // i18n
 import T from 'components/T';
@@ -120,7 +119,6 @@ interface InputProps {
 
 interface DataProps {
   project: GetProjectChildProps;
-  events: GetEventsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -206,7 +204,6 @@ class ProjectsShowPage extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
 });
 
 const ProjectsShowPageWithHoC = withTheme(ProjectsShowPage);
