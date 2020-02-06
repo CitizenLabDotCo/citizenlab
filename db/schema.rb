@@ -705,7 +705,6 @@ ActiveRecord::Schema.define(version: 2020_01_31_133006) do
     t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
     t.uuid "folder_id"
-    t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["folder_id"], name: "index_projects_on_folder_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end

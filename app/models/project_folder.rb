@@ -1,6 +1,6 @@
 class ProjectFolder < ApplicationRecord
 
-  has_many :projects, dependent: :nullify, foreign_key: :folder_id
+  has_many :projects, dependent: :destroy, foreign_key: :folder_id
   has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
 
   mount_base64_uploader :header_bg, ProjectFolderHeaderBgUploader
