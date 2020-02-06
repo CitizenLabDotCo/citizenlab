@@ -103,10 +103,7 @@ resource 'ProjectFolder' do
         expect{ProjectFolder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectFolder.count).to eq (old_count - 1)
 
-        # Two projects should have moved to the bottom as published, preserving relative ordering
-        expect(ProjectHolderOrdering.count).to eq (old_pho_count + 1)
-        # Doesn't work (CL2-4916)
-        # expect(ProjectHolderOrdering.order(:ordering).last(2).map(&:project_holder_id)).to eq project_ids
+        expect(ProjectHolderOrdering.count).to eq (old_pho_count - 1)
       end
     end
 
