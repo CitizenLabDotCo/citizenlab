@@ -886,6 +886,7 @@
   "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "",
   "app.containers.AdminPage.ProjectDashboard.archivedTooltip": "",
+  "app.containers.AdminPage.ProjectDashboard.deleteButtonLabel": "",
   "app.containers.AdminPage.ProjectDashboard.draftTooltip": "",
   "app.containers.AdminPage.ProjectDashboard.editButtonLabel": "",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "",

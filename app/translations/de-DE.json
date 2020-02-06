@@ -886,6 +886,7 @@
   "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "Sind Sie sich sicher, dass Sie diese Seite löschen möchten?",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "Ansehen",
   "app.containers.AdminPage.ProjectDashboard.archivedTooltip": "Archived projects are finished but still shown on the platform. It is clearly indicated that they are archived and that participation is no longer possible.",
+  "app.containers.AdminPage.ProjectDashboard.deleteButtonLabel": "",
   "app.containers.AdminPage.ProjectDashboard.draftTooltip": "Draft projects are not shown on the platform. You can work on them until they are ready to be published.",
   "app.containers.AdminPage.ProjectDashboard.editButtonLabel": "",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "{orgName, select, München {Liste der Bezirke im Mängelmelder} other {Liste der Projekte auf der Plattform}}",

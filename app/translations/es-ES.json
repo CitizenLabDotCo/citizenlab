@@ -886,6 +886,7 @@
   "app.containers.AdminPage.PagesPage.pageDeletionConfirmation": "¿Está seguro que desea eliminar esta página?",
   "app.containers.AdminPage.PagesPage.showButtonLabel": "Ver",
   "app.containers.AdminPage.ProjectDashboard.archivedTooltip": "Los proyectos archivados están terminados pero todavía se muestran en la plataforma. Se indica claramente que están archivados y que la participación ya no es posible.",
+  "app.containers.AdminPage.ProjectDashboard.deleteButtonLabel": "",
   "app.containers.AdminPage.ProjectDashboard.draftTooltip": "Borradores de proyecto no se muestran en la plataforma. Se puede trabajar sobre ellos hasta que están listos para publicarse.",
   "app.containers.AdminPage.ProjectDashboard.editButtonLabel": "",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Lista de proyectos en la plataforma",
