@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Sharing from 'components/Sharing';
+// import Sharing from 'components/Sharing';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
@@ -76,16 +76,16 @@ interface Props extends InputProps, DataProps {
 }
 
 const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
-  const { projectFolder, theme, intl: { formatMessage }, authUser } = props;
-  const folderUrl = location.href;
-  const utmParams = authUser ? {
-    source:'share_folder',
-    campaign:'share_content',
-    content: authUser.id
-  } : {
-    source:'share_folder',
-    campaign:'share_content'
-  };
+  const { projectFolder, theme, /* intl: { formatMessage }, authUser */  } = props;
+  // const folderUrl = location.href;
+  // const utmParams = authUser ? {
+  //   source:'share_folder',
+  //   campaign:'share_content',
+  //   content: authUser.id
+  // } : {
+  //   source:'share_folder',
+  //   campaign:'share_content'
+  // };
 
   if (!isNilOrError(projectFolder)) {
     return (
@@ -102,7 +102,7 @@ const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
         </Left>
 
         <Right>
-          <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
+          {/* <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
             {(title) => {
               return (
                 <Sharing
@@ -113,7 +113,7 @@ const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
                   utmParams={utmParams}
                 />);
             }}
-          </T>
+          </T> */}
         </Right>
       </Container>
     );
