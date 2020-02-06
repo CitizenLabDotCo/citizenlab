@@ -96,7 +96,7 @@ interface State {
   loaded: boolean;
 }
 
-class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
+class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { locale, tenant, projectFolder } = this.props;
     const { slug } = this.props.params;
@@ -105,7 +105,7 @@ class ProjectsShowPage extends PureComponent<Props & WithRouterProps, State> {
 
     return (
       <>
-        <ProjectFolderShowPageMeta projectSlug={slug} />
+        <ProjectFolderShowPageMeta projectFolderSlug={slug} />
         <Container className={`${!loading ? 'loaded' : 'loading'}`}>
           {projectNotFound ? (
             <ProjectNotFoundWrapper>
@@ -160,6 +160,6 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectsShowPage {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectFolderShowPage {...inputProps} {...dataProps} />}
   </Data>
 ));
