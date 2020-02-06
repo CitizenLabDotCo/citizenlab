@@ -7,7 +7,7 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
-    defaultMessage: 'Project: {projectTitle}',
+    defaultMessage: 'Project: {title}',
   },
   invisibleTitleMainContent: {
     id: 'app.containers.ProjectFolderShowPage.invisibleTitleMainContent',

@@ -3,7 +3,6 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Fragment from 'components/Fragment';
 import Sharing from 'components/Sharing';
 
 // resources
@@ -80,11 +79,11 @@ const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
   const { projectFolder, theme, intl: { formatMessage }, authUser } = props;
   const folderUrl = location.href;
   const utmParams = authUser ? {
-    source:'share_project',
+    source:'share_folder',
     campaign:'share_content',
     content: authUser.id
   } : {
-    source:'share_project',
+    source:'share_folder',
     campaign:'share_content'
   };
 
