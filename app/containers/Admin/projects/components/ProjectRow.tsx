@@ -65,6 +65,7 @@ export default ({ project, actions, showIcon }: Props) => {
       buttonStyle="secondary"
       icon="edit"
       type="button"
+      key="manage"
     >
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
@@ -109,6 +110,7 @@ export default ({ project, actions, showIcon }: Props) => {
         <ActionsContainer>
           {actions.map(action => action === 'manage' ? ManageButton :
             <RowButton
+              key={action.icon}
               type="button"
               className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
               onClick={action.handler(project.id)}
