@@ -70,7 +70,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
   render() {
     const { projectHoldersOrderings, projectFolder } = this.props;
     const projectList = !isNilOrError(projectHoldersOrderings)
-      ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project')
+      ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
       : null;
     const inFolderProjects = !isNilOrError(projectFolder) && projectFolder.relationships.projects
       ? projectFolder.relationships.projects.data.map(projectRel => projectRel.id)
@@ -90,6 +90,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
           {inFolderProjects && inFolderProjects.length > 0 ?
             <SortableList
+              key={`SORTABLE_LIST${inFolderProjects.length}`}
               items={inFolderProjects}
               onReorder={this.handleReorder}
               className="projects-list e2e-admin-projects-list"
@@ -97,11 +98,10 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
             >
               {({ itemsList, handleDragRow, handleDropRow }) => (
                 itemsList.map((projectId: string, index: number) => (
-                  <GetProject projectId={projectId} key={`out_${projectId}`}>
+                  <GetProject projectId={projectId} key={`in_${projectId}`}>
                     {project => isNilOrError(project) ? null : (
                       <SortableRow
-                        key={project.id}
-                        id={project.id}
+                        id={`in_${projectId}`}
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
@@ -117,7 +117,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                         />
                       </SortableRow>
                     )}
-                  </GetProject>
+                  </GetProject >
                 ))
               )}
             </SortableList>
@@ -133,27 +133,28 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                 </HeaderTitle>
                 <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
               </ListHeader>
-              <List>
-                {projectList.map((projectHolderOrdering, index: number) => (
-                  <GetProject projectId={projectHolderOrdering.relationships.project_holder.data.id} key={`out_${projectHolderOrdering.relationships.project_holder.data.id}`}>
-                    {project => isNilOrError(project) ? null : (
-                      <Row
-                        key={project.id}
-                        id={project.id}
-                        lastItem={(index === projectList.length - 1)}
-                      >
-                        <ProjectRow
-                          project={project}
-                          actions={[{
-                            buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                            handler: this.addProjectToFolder,
-                            icon: 'plus-circle'
-                          }]}
-                        />
-                      </Row>
-                    )}
-                  </GetProject>
-                ))}
+              <List key={`JUST_LIST${projectList.length}`}>
+                {projectList.map((projectId, index: number) => {
+                  return (
+                    <GetProject projectId={projectId} key={`out_${projectId}`}>
+                      {project => isNilOrError(project) ? null : (
+                        <Row
+                          id={projectId}
+                          lastItem={(index === projectList.length - 1)}
+                        >
+                          <ProjectRow
+                            project={project}
+                            actions={[{
+                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                              handler: this.addProjectToFolder,
+                              icon: 'plus-circle'
+                            }]}
+                          />
+                        </Row>
+                      )}
+                    </GetProject>
+                  );
+                })}
               </List>
             </>
           }
