@@ -35,6 +35,13 @@ const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   ` : ''}
 `;
 
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-bottom: 50px;
+`;
+
 const goBack = () => {
   clHistory.push('/admin/projects');
 };
@@ -155,7 +162,7 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
           </SectionSubtitle>
         </>
         :
-        <>
+        <Header>
           <GoBackButton onClick={goBack} />
           <SectionTitle >
             {<FormattedMessage {...messages.titleNewFolder} />}
@@ -163,7 +170,7 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
           <SectionSubtitle>
             <FormattedMessage {...messages.subtitleNewFolder} />
           </SectionSubtitle>
-        </>
+        </Header>
       }
       <form onSubmit={onSubmit}>
         <Section>
