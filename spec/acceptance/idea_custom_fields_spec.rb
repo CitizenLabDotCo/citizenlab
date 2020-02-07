@@ -2,9 +2,9 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 
-resource "Post Custom Fields" do
+resource "Idea Custom Fields" do
 
-  explanation "Fields in post forms which are customized by the city, scoped on the project level."
+  explanation "Fields in idea forms which are customized by the city, scoped on the project level."
 
   before do
     header "Content-Type", "application/json"
@@ -45,7 +45,7 @@ resource "Post Custom Fields" do
     end
 
     get "web_api/v1/projects/:project_id/custom_fields/:id" do
-      let(:custom_field) { create(:custom_field, :for_post_form) }
+      let(:custom_field) { create(:custom_field, :for_custom_form) }
       let(:id) { custom_field.id }
 
       example_request "Get one custom field by id" do
@@ -61,10 +61,10 @@ resource "Post Custom Fields" do
     #   end
     #   ValidationErrorHelper.new.error_fields(self, CustomField)
 
-    #   let(:post_form) { create(:post_form) }
-    #   let(:project) { create(:project, post_form: post_form) }
+    #   let(:custom_form) { create(:custom_form) }
+    #   let(:project) { create(:project, custom_form: custom_form) }
     #   let(:project_id) { project.id }
-    #   let(:id) { create(:custom_field, resource: post_form).id }
+    #   let(:id) { create(:custom_field, resource: custom_form).id }
     #   let(:description_multiloc) { {"en" => "New description"} }
 
     #   example_request "Update a custom field" do
@@ -83,7 +83,7 @@ resource "Post Custom Fields" do
       let(:code) { 'title' }
       let(:description_multiloc) { {"en" => "New description"} }
 
-      context "when the post_form doesn't exist yet" do
+      context "when the custom_form doesn't exist yet" do
         let(:project) { create(:project) }
 
         example "Update a built-in custom field", document: false do
@@ -93,14 +93,14 @@ resource "Post Custom Fields" do
           expect(json_response.dig(:data,:attributes,:code)).to eq code
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(CustomField.count).to eq 1
-          expect(PostForm.count).to eq 1
-          expect(project.reload.post_form).to eq PostForm.first
+          expect(CustomForm.count).to eq 1
+          expect(project.reload.custom_form).to eq CustomForm.first
         end
       end
 
-      context "when the post_form already exists" do
-        let(:post_form) { create(:post_form) }
-        let(:project) { create(:project, post_form: post_form) }
+      context "when the custom_form already exists" do
+        let(:custom_form) { create(:custom_form) }
+        let(:project) { create(:project, custom_form: custom_form) }
 
         context "when the field was not persisted yet" do
           example_request "Update a built-in custom field" do
@@ -114,7 +114,7 @@ resource "Post Custom Fields" do
 
         context "when the field is already persisted" do
           example "Update a built-in custom field", document: false do
-            cf = create(:custom_field, :for_post_form, code: code)
+            cf = create(:custom_field, resource: custom_form, code: code)
             do_request
             expect(response_status).to eq 200
             json_response = json_parse(response_body)
