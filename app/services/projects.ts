@@ -18,7 +18,6 @@ export interface IProjectData {
   id: string;
   type: 'project';
   attributes: {
-    folder_id?: string;
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     description_preview_multiloc: Multiloc;
@@ -90,6 +89,9 @@ export interface IProjectData {
     default_assignee?: {
       data: IRelationship | null
     }
+    folder?: {
+      data: IRelationship | null
+    }
   };
 }
 
@@ -114,6 +116,7 @@ export interface IUpdatedProjectProperties {
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
+  folder_id?: string | null;
 }
 
 export interface IProject {
@@ -205,11 +208,12 @@ export function getProjectIdeasUrl(project: IProjectData) {
   return projectUrl;
 }
 
-export async function updateProjectFolderMembership(projectId: string, newProjectFolderId: string | null, oldProjectFolderId?: string) {
+export async function updateProjectFolderMembership(projectId: string, projectData: IUpdatedProjectProperties, oldProjectFolderId?: string) {
+  const { folder_id: newProjectFolderId } = projectData;
   const response = await streams.update<IProject>(
     `${apiEndpoint}/${projectId}`,
     projectId,
-    { project: { folder_id: newProjectFolderId } }
+    { project: projectData }
   );
   await streams.fetchAllWith({
     dataId: [projectId, ...newProjectFolderId ? [newProjectFolderId] : oldProjectFolderId ? [oldProjectFolderId] : []],
