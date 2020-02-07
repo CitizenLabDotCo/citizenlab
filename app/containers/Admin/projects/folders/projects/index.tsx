@@ -72,7 +72,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
     const projectIds = !isNilOrError(projectHoldersOrderings)
       ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
       : null;
-    const inFolderProjects = !isNilOrError(projectFolder) && projectFolder.relationships.projects
+    const inFolderProjectIds = !isNilOrError(projectFolder) && projectFolder.relationships.projects
       ? projectFolder.relationships.projects.data.map(projectRel => projectRel.id)
       : null;
 
@@ -88,24 +88,15 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
           </ListHeader>
 
-          {inFolderProjects && inFolderProjects.length > 0 ?
-            <SortableList
-              key={`SORTABLE_LIST${inFolderProjects.length}`}
-              items={inFolderProjects}
-              onReorder={this.handleReorder}
-              className="projects-list e2e-admin-projects-list"
-              id="e2e-admin-published-projects-list"
-            >
-              {({ itemsList, handleDragRow, handleDropRow }) => (
-                itemsList.map((projectId: string, index: number) => (
-                  <GetProject projectId={projectId} key={`in_${projectId}`}>
+          {inFolderProjectIds && inFolderProjectIds.length > 0 ?
+            <List key={`JUST_LIST${inFolderProjectIds.length}`}>
+              {inFolderProjectIds.map((inFolderProjectId, index: number) => {
+                return (
+                  <GetProject projectId={inFolderProjectId} key={`in_${inFolderProjectId}`}>
                     {project => isNilOrError(project) ? null : (
-                      <SortableRow
-                        id={`in_${projectId}`}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={(index === inFolderProjects.length - 1)}
+                      <Row
+                        id={inFolderProjectId}
+                        lastItem={(index === inFolderProjectIds.length - 1)}
                       >
                         <ProjectRow
                           project={project}
@@ -115,12 +106,12 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                             icon: 'remove'
                           }, 'manage']}
                         />
-                      </SortableRow>
+                      </Row>
                     )}
-                  </GetProject >
-                ))
-              )}
-            </SortableList>
+                  </GetProject>
+                );
+              })}
+            </List>
             :
             <FormattedMessage {...messages.emptyFolder} />
           }
