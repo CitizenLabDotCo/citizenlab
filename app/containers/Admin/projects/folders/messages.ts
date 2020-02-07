@@ -84,7 +84,7 @@ export default defineMessages({
   },
   emptyFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.emptyFolder',
-    defaultMessage: 'There are currently no projects in this folder.',
+    defaultMessage: 'There are no projects in this folder.',
   },
   addToFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.addToFolder',
@@ -94,4 +94,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.removeFromFolder',
     defaultMessage: 'Remove from folder',
   },
+  noProjectsOutside: {
+    id: 'app.containers.AdminPage.FoldersEdit.noProjectsOutside',
+    defaultMessage: 'There are no projects outside this folder.',
+  }
 });
