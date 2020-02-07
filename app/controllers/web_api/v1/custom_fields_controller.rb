@@ -14,7 +14,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
   def schema
     authorize :custom_field
-    fields = CustomField.fields_for(@resource_type)
+    fields = CustomField.with_resource_type(@resource_type)
 
     service = CustomFieldService.new
     json_schema_multiloc = service.fields_to_json_schema_multiloc(Tenant.current, fields)
