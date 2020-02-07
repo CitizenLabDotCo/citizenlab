@@ -260,6 +260,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                       openIdea={this.onCardClick}
                       unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
                       disabledAssignBudgetClick={this.disabledAssignBudgetClick}
+                      projectId={projectId}
                     />
                   }
 

@@ -40,14 +40,14 @@ const Header = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 40px;
-  padding-bottom: 90px;
+  padding-top: 30px;
+  padding-bottom: 60px;
   padding-left: 30px;
   padding-right: 30px;
 
   ${media.smallerThanMaxTablet`
     padding-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 40px;
   `}
 `;
 
@@ -133,7 +133,7 @@ export default class PageLayout extends React.PureComponent<Props> {
     return (
       <Container className={className}>
         <TopLine>
-          <GoBackButton onClick={this.goBack} inCitizen />
+          <GoBackButton onClick={this.goBack} />
         </TopLine>
         <Header>
           <HeaderTitle>

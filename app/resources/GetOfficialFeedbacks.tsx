@@ -108,7 +108,7 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
   loadMore = () => {
     if (!this.state.loadingMore && this.state.hasMore) {
       const pageSize = this.pageSize$.getValue();
-      this.pageSize$.next(pageSize + 1);
+      this.pageSize$.next(pageSize + 10);
     }
   }
 

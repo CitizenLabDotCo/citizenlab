@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // styles
-import { colors, fontSizes } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 interface Props {
   translateButtonClicked: boolean;
@@ -27,14 +27,10 @@ const TranslateButton = (props: Props) => {
     <Button
       buttonStyle="secondary-outlined"
       onClick={onClick}
-      spinnerColor={colors.label}
       className={className}
+      icon="translate"
       fontSize={`${fontSizes.small}px`}
       padding="5px 10px"
-      fontWeight="500"
-      icon="translate"
-      borderColor={colors.separation}
-      width="fit-content"
     >
       {translateButtonClicked ?
         <FormattedMessage {...messages.seeOriginal} />

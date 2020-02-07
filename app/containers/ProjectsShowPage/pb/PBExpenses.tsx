@@ -36,26 +36,20 @@ import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, media } from 'utils/styleUtils';
+import { colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // a11y
 import { LiveMessage } from 'react-aria-live';
 
-const Container = styled.div``;
+const Container = styled.div`
+  background: #fff;
+`;
 
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  padding: 30px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fff;
-  border: solid 1px ${colors.separation};
-
-  ${media.smallerThanMaxTablet`
-    padding: 20px;
-  `}
 `;
 
 const Header = styled.div`
@@ -86,12 +80,12 @@ const Title = styled.h2`
   }
 `;
 
-const TitleIcon = styled(Icon)`
+const TitleIcon = styled(Icon) <({ viewMode: 'row' | 'column' }) >`
   flex: 0 0 18px;
   height: 18px;
   margin-right: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${({ viewMode }) => viewMode === 'column' && `
     display: none;
   `}
 `;
@@ -126,7 +120,7 @@ const BudgetAmount = styled.span`
   }
 `;
 
-const ProgressBar = styled.div`
+const ProgressBar = styled.div<({ viewMode: 'row' | 'column' }) >`
   width: 100%;
   height: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
@@ -134,7 +128,7 @@ const ProgressBar = styled.div`
   margin-bottom: 30px;
   background: repeating-linear-gradient(-45deg, #eff1f2, #eff1f2 10px, #e6e9ec 10px, #e6e9ec 20px);
 
-  ${media.smallerThanMinTablet`
+  ${({ viewMode }) => viewMode === 'column' && `
     margin-top: 20px;
     margin-bottom: 20px;
   `}
@@ -169,14 +163,14 @@ const ProgressBarPercentage = styled.span`
   }
 `;
 
-const Footer = styled.div`
+const Footer = styled.div<({ viewMode: 'row' | 'column' }) >`
   display: flex;
 
-  ${media.biggerThanMinTablet`
+  ${({ viewMode }) => viewMode === 'row' && `
     align-items: center;
   `}
 
-  ${media.smallerThanMinTablet`
+  ${({ viewMode }) => viewMode === 'column' && `
     flex-direction: column;
   `}
 `;
@@ -186,26 +180,18 @@ const Budgets = styled.div`
   flex-direction: column;
 `;
 
-const TotalBudgetDesktop = styled(Budget)`
+const TotalBudgetRow = styled(Budget)`
   white-space: nowrap;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
 `;
 
-const TotalBudgetMobile = styled(Budget)`
+const TotalBudgetColumn = styled(Budget)`
   margin-top: 10px;
-
-  ${media.biggerThanMinTablet`
-    display: none;
-  `}
 `;
 
-const Buttons = styled.div`
+const Buttons = styled.div<({ viewMode: 'row' | 'column' }) >`
   display: flex;
 
-  ${media.smallerThanMinTablet`
+  ${({ viewMode }) => viewMode === 'column' && `
     margin-top: 20px;
     flex-direction: column;
   `}
@@ -228,10 +214,10 @@ const DropdownWrapper = styled.div`
   justify-content: center;
 `;
 
-const SubmitExpensesButton = styled(Button)`
+const SubmitExpensesButton = styled(Button) <({ viewMode: 'row' | 'column' }) >`
   margin-left: 10px;
 
-  ${media.smallerThanMinTablet`
+  ${({ viewMode }) => viewMode === 'column' && `
     margin-left: 0px;
     margin-top: 12px;
   `}
@@ -240,6 +226,7 @@ const SubmitExpensesButton = styled(Button)`
 interface InputProps {
   participationContextId: string | null;
   participationContextType: IParticipationContextType;
+  viewMode: 'row' | 'column';
   className?: string;
 }
 
@@ -258,7 +245,7 @@ interface Tracks {
   expensesDropdownOpened: () => void;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   dropdownOpened: boolean;
@@ -306,16 +293,17 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
       phase,
       basket,
       className,
+      viewMode,
       intl: { formatMessage }
     } = this.props;
     const { processing, dropdownOpened } = this.state;
 
     if (!isNilOrError(locale) &&
-        !isNilOrError(tenant) &&
-        (
-          (participationContextType === 'project' && !isNilOrError(project)) ||
-          (participationContextType === 'phase' && !isNilOrError(phase))
-        )
+      !isNilOrError(tenant) &&
+      (
+        (participationContextType === 'project' && !isNilOrError(project)) ||
+        (participationContextType === 'phase' && !isNilOrError(phase))
+      )
     ) {
       const currency = tenant.attributes.settings.core.currency;
       const spentBudget = (!isNilOrError(basket) ? basket.attributes.total_budget : 0);
@@ -365,36 +353,38 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                 }
                 {validationStatus === 'validationError' &&
                   <>
-                    <TitleIcon name="error" ariaHidden />
+                    <TitleIcon name="error" ariaHidden viewMode={viewMode} />
                     <FormattedMessage {...messages.budgetExceeded} />
                   </>
                 }
                 {validationStatus === 'validationSuccess' &&
                   <>
-                    <TitleIcon name="checkmark" ariaHidden />
+                    <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
                     <FormattedMessage {...messages.budgetValidated} />
                   </>
                 }
                 <LiveMessage message={validationStatusMessage} aria-live="polite" />
               </Title>
               <Spacer />
-              <TotalBudgetDesktop aria-hidden>
-                <BudgetLabel>
-                  <FormattedMessage {...messages.totalBudget} />:
+              {viewMode === 'row' &&
+                <TotalBudgetRow aria-hidden>
+                  <BudgetLabel>
+                    <FormattedMessage {...messages.totalBudget} />:
                 </BudgetLabel>
-                <BudgetAmount>
-                  <FormattedNumber
-                    value={totalBudget}
-                    style="currency"
-                    currency={currency}
-                    minimumFractionDigits={0}
-                    maximumFractionDigits={0}
-                  />
-                </BudgetAmount>
-              </TotalBudgetDesktop>
+                  <BudgetAmount>
+                    <FormattedNumber
+                      value={totalBudget}
+                      style="currency"
+                      currency={currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </BudgetAmount>
+                </TotalBudgetRow>
+              }
             </Header>
 
-            <ProgressBar aria-hidden>
+            <ProgressBar aria-hidden viewMode={viewMode}>
               <ProgressBarOverlay
                 className={progressBarColor}
                 progress={budgetExceedsLimit ? 100 : progress}
@@ -403,7 +393,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
               </ProgressBarOverlay>
             </ProgressBar>
 
-            <Footer>
+            <Footer viewMode={viewMode}>
               <Budgets>
                 <Budget aria-hidden>
                   <BudgetLabel>
@@ -419,20 +409,22 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                     />
                   </BudgetAmount>
                 </Budget>
-                <TotalBudgetMobile aria-hidden>
-                  <BudgetLabel>
-                    <FormattedMessage {...messages.totalBudget} />:
+                {viewMode === 'column' &&
+                  <TotalBudgetColumn aria-hidden>
+                    <BudgetLabel>
+                      <FormattedMessage {...messages.totalBudget} />:
                   </BudgetLabel>
-                  <BudgetAmount>
-                    <FormattedNumber
-                      value={totalBudget}
-                      style="currency"
-                      currency={currency}
-                      minimumFractionDigits={0}
-                      maximumFractionDigits={0}
-                    />
-                  </BudgetAmount>
-                </TotalBudgetMobile>
+                    <BudgetAmount>
+                      <FormattedNumber
+                        value={totalBudget}
+                        style="currency"
+                        currency={currency}
+                        minimumFractionDigits={0}
+                        maximumFractionDigits={0}
+                      />
+                    </BudgetAmount>
+                  </TotalBudgetColumn>
+                }
                 <ScreenReaderOnly aria-live="polite">
                   <FormattedMessage {...messages.totalBudget} />:
                   {`${totalBudget} ${currency}`}
@@ -441,11 +433,11 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                 </ScreenReaderOnly>
               </Budgets>
               <Spacer />
-              <Buttons>
+              <Buttons viewMode={viewMode}>
                 <ManageBudgetWrapper>
                   <ManageBudgetButton
                     onClick={this.toggleExpensesDropdown}
-                    icon="moneybag"
+                    icon="basket"
                     iconAriaHidden
                     buttonStyle="primary-inverse"
                     borderColor={colors.separation}
@@ -481,6 +473,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                   bgColor={colors.adminTextColor}
                   disabled={validationStatus === 'validationSuccess' || budgetExceedsLimit || spentBudget === 0}
                   processing={processing}
+                  viewMode={viewMode}
                 >
                   <FormattedMessage {...messages.submitMyExpenses} />
                 </SubmitExpensesButton>
