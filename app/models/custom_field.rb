@@ -2,11 +2,12 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
   has_many :custom_field_options, dependent: :destroy
+  belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w(User PostForm)
   INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date)
 
-  CODES = %w(gender birthyear domicile education)
+  CODES = %w(gender birthyear domicile education title topic_ids)
 
   validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
   validates :key, presence: true, uniqueness: {scope: [:resource_type]}, format: { with: /\A[a-zA-Z0-9_]+\z/,

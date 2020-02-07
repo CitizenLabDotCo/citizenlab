@@ -313,10 +313,25 @@ de:
     council_meeting_description: >
       <p>Während dieser Ratssitzung werden diejenigen Bürgerinitiativen vorgestellt, die in weniger als 3 Monaten 100 Stimmen gewonnen haben.</p><p> Der Rat wird dann seine Sichtweise auf jede Idee darlegen.</p>
   custom_fields:
-    gender: Geschlecht
-    birthyear: Geburtsjahr
-    domicile: Wohnort
-    education: Bildungsweg
+    users:
+      gender: 
+        title: Gender
+      birthyear: 
+        title: Year of birth
+      domicile: 
+        title: Place of residence
+      education: 
+        title: Education
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      topic_ids:
+        title: Topics
+        description:
   custom_field_options:
     gender:
       male: Männlich

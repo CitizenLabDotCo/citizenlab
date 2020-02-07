@@ -89,10 +89,25 @@ nb:
     council_meeting_description: >
       <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
   custom_fields:
-    gender: Gender
-    birthyear: Year of birth
-    domicile: Place of residence
-    education: Education
+    users:
+      gender: 
+        title: Gender
+      birthyear: 
+        title: Year of birth
+      domicile: 
+        title: Place of residence
+      education: 
+        title: Education
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      topic_ids:
+        title: Topics
+        description:
   custom_field_options:
     gender:
       male: Male
