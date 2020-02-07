@@ -5,9 +5,9 @@ class CustomField < ApplicationRecord
   belongs_to :resource, polymorphic: true, optional: true
 
   FIELDABLE_TYPES = %w(User CustomForm)
-  INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date)
+  INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date custom)
 
-  CODES = %w(gender birthyear domicile education title topic_ids)
+  CODES = %w(gender birthyear domicile education title body topic_ids location images attachments)
 
   validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
   validates :key, presence: true, uniqueness: {scope: [:resource_type]}, format: { with: /\A[a-zA-Z0-9_]+\z/,

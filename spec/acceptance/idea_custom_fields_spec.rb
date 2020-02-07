@@ -39,7 +39,7 @@ resource "Idea Custom Fields" do
       example_request "List all custom fields for a project" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].size).to eq 6
       end
 
     end
