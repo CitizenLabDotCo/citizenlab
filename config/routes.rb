@@ -73,7 +73,7 @@ Rails.application.routes.draw do
 
 
       scope :users do
-        resources :custom_fields, defaults: {resource_type: 'User'} do
+        resources :custom_fields, controller: 'user_custom_fields' do
           patch 'reorder', on: :member
           get 'schema', on: :collection
           resources :custom_field_options do
@@ -134,6 +134,9 @@ Rails.application.routes.draw do
         resources :groups_projects, shallow: true, except: [:update]
         resources :moderators, except: [:update] do
           get :users_search, on: :collection
+        end
+        resources :custom_fields, controller: 'post_custom_fields', only: [:index, :show] do
+          patch 'by_code/:code', action: 'upsert_by_code', on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
         patch 'reorder', on: :member

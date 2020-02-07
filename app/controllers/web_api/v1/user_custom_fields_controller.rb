@@ -1,4 +1,4 @@
-class WebApi::V1::CustomFieldsController < ApplicationController
+class WebApi::V1::UserCustomFieldsController < ApplicationController
   before_action :set_custom_field, only: [:show, :update, :reorder, :destroy]
   before_action :set_resource_type, only: [:index, :schema, :create]
 
@@ -59,7 +59,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
         params: fastjson_params
         ).serialized_json, status: :ok
     else
-      render json: { errors: @custom_field.errors.detauls }, status: :unprocessable_entity
+      render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
     end
   end
 
@@ -92,8 +92,7 @@ class WebApi::V1::CustomFieldsController < ApplicationController
   private
 
   def set_resource_type
-    @resource_type = params[:resource_type]
-    raise RuntimeError, "must not be blank" if @resource_type.blank?
+    @resource_type = "User"
   end
 
   def set_custom_field
