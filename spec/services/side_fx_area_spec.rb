@@ -21,6 +21,13 @@ describe SideFxAreaService do
   end
 
   describe "before_destroy" do
+    it "destroys custom field option values for domicile that refer to this area" do
+      domicile_cf = create(:custom_field_select, code: 'domicile', key: 'domicile')
+      lives_in_area = create(:user, custom_field_values: {domicile_cf.key => area.id})
+      service.before_destroy(area, user)
+      expect(lives_in_area.reload.custom_field_values).to eq({})
+    end
+
     it "destroys any smart group that refers to this area" do
       group1 = create(:smart_group, rules: [{
         ruleType: 'lives_in',
