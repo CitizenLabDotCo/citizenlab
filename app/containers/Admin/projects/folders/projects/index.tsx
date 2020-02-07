@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
+import { List, Row } from 'components/admin/ResourceList';
 import IconTooltip from 'components/UI/IconTooltip';
 import { HeaderTitle } from '../../all/styles';
 import ProjectRow from '../../components/ProjectRow';
@@ -116,38 +116,39 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
             <FormattedMessage {...messages.emptyFolder} />
           }
 
-          {projectIds && projectIds.length > 0 &&
-            <>
-              <ListHeader>
-                <HeaderTitle>
-                  <FormattedMessage {...messages.otherProjects} />
-                </HeaderTitle>
-                <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
-              </ListHeader>
-              <List key={`JUST_LIST${projectIds.length}`}>
-                {projectIds.map((projectId, index: number) => {
-                  return (
-                    <GetProject projectId={projectId} key={`out_${projectId}`}>
-                      {project => isNilOrError(project) ? null : (
-                        <Row
-                          id={projectId}
-                          lastItem={(index === projectIds.length - 1)}
-                        >
-                          <ProjectRow
-                            project={project}
-                            actions={[{
-                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                              handler: this.addProjectToFolder,
-                              icon: 'plus-circle'
-                            }]}
-                          />
-                        </Row>
-                      )}
-                    </GetProject>
-                  );
-                })}
-              </List>
-            </>
+          <ListHeader>
+            <HeaderTitle>
+              <FormattedMessage {...messages.otherProjects} />
+            </HeaderTitle>
+            <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
+          </ListHeader>
+
+          {projectIds && projectIds.length > 0 ?
+            <List key={`JUST_LIST${projectIds.length}`}>
+              {projectIds.map((projectId, index: number) => {
+                return (
+                  <GetProject projectId={projectId} key={`out_${projectId}`}>
+                    {project => isNilOrError(project) ? null : (
+                      <Row
+                        id={projectId}
+                        lastItem={(index === projectIds.length - 1)}
+                      >
+                        <ProjectRow
+                          project={project}
+                          actions={[{
+                            buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                            handler: this.addProjectToFolder,
+                            icon: 'plus-circle'
+                          }]}
+                        />
+                      </Row>
+                    )}
+                  </GetProject>
+                );
+              })}
+            </List>
+            :
+            <FormattedMessage {...messages.noProjectsOutside} />
           }
         </ListsContainer>
       </Container>
