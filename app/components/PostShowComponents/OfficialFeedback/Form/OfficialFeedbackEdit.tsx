@@ -3,33 +3,38 @@ import React from 'react';
 import { updateOfficialFeedback, IOfficialFeedbackData } from 'services/officialFeedback';
 
 import { Formik } from 'formik';
-import OfficialFeedbackForm, { FormValues } from './OfficialFeedbackForm';
+import OfficialFeedbackForm, { OfficialFeedbackFormValues } from './OfficialFeedbackForm';
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 interface Props {
   feedback: IOfficialFeedbackData;
   closeForm: () => void;
+  className?: string;
 }
 
 export default class OfficialFeedbackEdit extends React.Component<Props> {
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
-    const { feedback: { id }, closeForm } = this.props;
-    setSubmitting(true);
-    updateOfficialFeedback(id, values)
-      .then(() => {
-        setSubmitting(false);
-        closeForm();
-      }).catch((errorResponse) => {
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
-      });
+  handleOnChange = (formValues: OfficialFeedbackFormValues) => {
+    this.setState({ formValues });
+  }
+
+  handleSubmit = (formValues: OfficialFeedbackFormValues) => {
+    // const { feedback: { id }, closeForm } = this.props;
+    // setSubmitting(true);
+    // updateOfficialFeedback(id, values)
+    //   .then(() => {
+    //     setSubmitting(false);
+    //     closeForm();
+    //   }).catch((errorResponse) => {
+    //     if (isCLErrorJSON(errorResponse)) {
+    //       const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+    //       setErrors(apiErrors);
+    //     } else {
+    //       setStatus('error');
+    //     }
+    //     setSubmitting(false);
+    //   });
   }
 
   renderFn = (props) => {
@@ -42,13 +47,18 @@ export default class OfficialFeedbackEdit extends React.Component<Props> {
   })
 
   render() {
-    return (
-        <Formik
-          initialValues={this.initialValues()}
-          render={this.renderFn}
-          onSubmit={this.handleSubmit}
-          validate={OfficialFeedbackForm.validate}
+    return null;
+
+    // return (
+      <Container className={className} >
+        <OfficialFeedbackForm
+          formValues={formValues}
+          onSubmit={this.handleOnChange}
+          onChange={this.handleOnSubmit}
+          editForm={false}
+          processing={processing}
         />
-    );
+      </Container>
+    // );
   }
 }

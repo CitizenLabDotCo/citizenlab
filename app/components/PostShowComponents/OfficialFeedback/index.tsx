@@ -1,44 +1,59 @@
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { isBoolean } from 'lodash-es';
 
+// resource hooks
+import useLocale from 'hooks/useLocale';
+import useTenantLocales from 'hooks/useTenantLocales';
+
 // components
-import OfficialFeedbackNew from './Form/OfficialFeedbackNew';
+import OfficialFeedbackForm from './Form/OfficialFeedbackForm';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+
+// stylings
+import styled from 'styled-components';
 
 interface Props {
   postId: string;
   postType: 'idea' | 'initiative';
   permissionToPost: boolean | undefined;
-  className?: string;
   a11y_pronounceLatestOfficialFeedbackPost?: boolean;
+  className?: string;
 }
 
-interface State {}
+const Container = styled.div``;
 
-export default class OfficialFeedback extends PureComponent<Props, State> {
-  render() {
-    const { postId, postType, permissionToPost, className, a11y_pronounceLatestOfficialFeedbackPost } = this.props;
+const OfficialFeedback = memo<Props>(({ postId, postType, permissionToPost, a11y_pronounceLatestOfficialFeedbackPost, className }) => {
 
-    if (isBoolean(permissionToPost)) {
-      return (
-        <div className={className}>
-          {permissionToPost &&
-            <OfficialFeedbackNew
-              postId={postId}
-              postType={postType}
-            />
-          }
+  const locale = useLocale();
+  const tenantLocales = useTenantLocales();
 
-          <OfficialFeedbackFeed
+  if (isBoolean(permissionToPost) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+    return (
+      <Container className={className || ''}>
+        {permissionToPost &&
+          <OfficialFeedbackForm
+            locale={locale}
+            tenantLocales={tenantLocales}
+            formType="new"
             postId={postId}
             postType={postType}
-            editingAllowed={permissionToPost}
-            a11y_pronounceLatestOfficialFeedbackPost={a11y_pronounceLatestOfficialFeedbackPost}
           />
-        </div>
-      );
-    }
+        }
 
-    return null;
+        <OfficialFeedbackFeed
+          postId={postId}
+          postType={postType}
+          editingAllowed={permissionToPost}
+          a11y_pronounceLatestOfficialFeedbackPost={a11y_pronounceLatestOfficialFeedbackPost}
+        />
+      </Container>
+    );
   }
-}
+
+  return null;
+});
+
+export default OfficialFeedback;

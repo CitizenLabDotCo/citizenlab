@@ -1,10 +1,10 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { trim } from 'lodash-es';
+import usePrevious from 'hooks/usePrevious';
+import { debounce } from 'lodash-es';
 
 // quill
 import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
-import BlotFormatter, { ImageSpec, IframeVideoSpec, ResizeAction, AlignAction, DeleteAction } from 'quill-blot-formatter';
-import { QuillDeltaToHtmlConverter } from 'quill-delta-to-html';
+import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
 // i18n
@@ -19,6 +19,9 @@ import tracks from './tracks';
 // styling
 import styled from 'styled-components';
 import { colors, quillEditedContent, media } from 'utils/styleUtils';
+
+// typings
+import { Locale } from 'typings';
 
 const Container = styled.div<{
   videoPrompt: string,
@@ -112,10 +115,11 @@ export interface QuillEditorProps {
 interface Props extends QuillEditorProps {
   id: string;
   value?: string;
+  locale?: Locale;
   placeholder?: string;
   hasError?: boolean;
   className?: string;
-  onChange?: (html: string) => void;
+  onChange?: (html: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;
@@ -124,18 +128,19 @@ interface Props extends QuillEditorProps {
 Quill.register('modules/blotFormatter', BlotFormatter);
 
 // BEGIN allow image alignment styles
-const FormatAttributesList = [
+const attributes = [
   'alt',
-  'height',
   'width',
-  'style',
+  'height',
+  'style'
 ];
 
 const BaseImageFormat = Quill.import('formats/image');
+const BaseVideoFormat = Quill.import('formats/video');
 
 class ImageFormat extends BaseImageFormat {
   static formats(domNode) {
-    return FormatAttributesList.reduce((formats, attribute) => {
+    return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
         formats[attribute] = domNode.getAttribute(attribute);
       }
@@ -143,7 +148,7 @@ class ImageFormat extends BaseImageFormat {
     }, {});
   }
   format(name, value) {
-    if (FormatAttributesList.indexOf(name) > -1) {
+    if (attributes.indexOf(name) > -1) {
       if (value) {
         this.domNode.setAttribute(name, value);
       } else {
@@ -154,15 +159,13 @@ class ImageFormat extends BaseImageFormat {
     }
   }
 }
-ImageFormat.blotName = 'imageFormat';
+ImageFormat.blotName = 'image';
 ImageFormat.tagName = 'img';
 Quill.register(ImageFormat, true);
 
-const BaseVideoFormat = Quill.import('formats/video');
-
 class VideoFormat extends BaseVideoFormat {
   static formats(domNode) {
-    return FormatAttributesList.reduce((formats, attribute) => {
+    return attributes.reduce((formats, attribute) => {
       if (domNode.hasAttribute(attribute)) {
         formats[attribute] = domNode.getAttribute(attribute);
       }
@@ -170,7 +173,7 @@ class VideoFormat extends BaseVideoFormat {
     }, {});
   }
   format(name, value) {
-    if (FormatAttributesList.indexOf(name) > -1) {
+    if (attributes.indexOf(name) > -1) {
       if (value) {
         this.domNode.setAttribute(name, value);
       } else {
@@ -181,26 +184,15 @@ class VideoFormat extends BaseVideoFormat {
     }
   }
 }
-VideoFormat.blotName = 'videoFormat';
+VideoFormat.blotName = 'video';
 VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
-
-class CustomImageSpec extends ImageSpec {
-  getActions() {
-    return [ResizeAction, AlignAction, DeleteAction];
-  }
-}
-
-class CustomIframeVideoSpec extends IframeVideoSpec {
-  getActions() {
-    return [ResizeAction, AlignAction, DeleteAction];
-  }
-}
 // END allow image & video resizing styles
 
 const QuillEditor = memo<Props & InjectedIntlProps>(({
   id,
   value,
+  locale,
   placeholder,
   noToolbar,
   noAlign,
@@ -221,19 +213,21 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   const toolbarId = !noToolbar && id ? `ql-editor-toolbar-${id}` : null;
 
   const [editor, setEditor] = useState<Quill | null>(null);
-  const contentRef = useRef<string>();
+  const contentRef = useRef<string>(value || '');
+  const prevEditor = usePrevious(editor);
   const [focussed, setFocussed] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
 
+  // initialize quill
   useEffect(() => {
     if (!editor && editorRef && editorRef.current) {
       const editorOptions: QuillOptionsStatic = {
         bounds: editorRef.current,
-        // bounds: document.body,
         formats: [
           'bold',
           'italic',
           'link',
+          ...attributes,
           ...(!limitedTextFormatting ? ['header', 'list'] : []),
           ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
           ...(!noImages ? ['image'] : []),
@@ -242,10 +236,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
         theme: 'snow',
         placeholder: placeholder || '',
         modules: {
-          // blotFormatter: (!noImages || !noVideos) ? true : false,
-          blotFormatter: (noImages && noVideos) ? false : {
-            specs: [CustomImageSpec, CustomIframeVideoSpec],
-          },
+          blotFormatter: (!noImages || !noVideos) ? true : false,
           toolbar: toolbarId ? `#${toolbarId}` : false,
           keyboard: {
             bindings: {
@@ -273,62 +264,57 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     }
   }, [placeholder, noAlign, noImages, noVideos, limitedTextFormatting, toolbarId, editor, editorRef]);
 
-  useEffect(() => {
-    const textChangeHandler = () => {
-      if (editor) {
-        const delta = editor.getContents();
-        const converter = new QuillDeltaToHtmlConverter(delta.ops || [], {});
-        const html = converter.convert();
-        contentRef.current = html;
-        onChange && onChange(html);
-      }
-    };
-
-    const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
-      if (editor) {
-        if (range === null && oldRange !== null) {
-          setFocussed(false);
-          onBlur && onBlur();
-        } else if (range !== null && oldRange === null) {
-          setFocussed(true);
-          onFocus && onFocus();
-        }
-      }
-    };
-
+  const textChangeHandler = () => {
     if (editor) {
-      editor.on('text-change', textChangeHandler);
+      const html = editor.root.innerHTML;
+
+      if (html !== contentRef.current) {
+        // console.log('textChangeHandler:');
+        // console.log(contentRef.current);
+        // console.log(html);
+        contentRef.current = html;
+        onChange && onChange(html, locale);
+      }
+    }
+  };
+
+  const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
+
+  const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
+    if (editor) {
+      if (range === null && oldRange !== null) {
+        setFocussed(false);
+        onBlur && onBlur();
+      } else if (range !== null && oldRange === null) {
+        setFocussed(true);
+        onFocus && onFocus();
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (editor) {
+      editor.on('text-change', debouncedTextChangeHandler);
       editor.on('selection-change', selectionChangeHandler);
+      setRef && setRef(editor.root);
     }
 
     return () => {
       if (editor) {
-        editor.off('text-change', textChangeHandler);
+        editor.off('text-change', debouncedTextChangeHandler);
         editor.off('selection-change', selectionChangeHandler);
         setEditor(null);
       }
     };
-  }, [editor, onChange]);
-
-  useEffect(() => {
-    if (editor?.root && setRef) {
-      setRef(editor.root);
-    }
   }, [editor]);
 
   useEffect(() => {
-    if (editor) {
-      const valueHtml = value || '<p><br/></p>';
-
-      console.log('valueHtml: ' + valueHtml);
-      console.log('contentRef.current: ' + contentRef.current);
-      console.log(`equal?: ${valueHtml === contentRef.current}`);
-
-      if (valueHtml !== contentRef.current) {
-        contentRef.current = valueHtml;
-        console.log('dangerouslyPasteHTML');
-        editor.clipboard.dangerouslyPasteHTML(valueHtml);
-      }
+    if ((!prevEditor && editor && value) || (prevEditor && editor && value !== contentRef.current)) {
+      // console.log('dangerouslyPasteHTML:');
+      // console.log(contentRef.current);
+      // console.log(value);
+      contentRef.current = value || '';
+      editor.clipboard.dangerouslyPasteHTML(value || '');
     }
   }, [editor, value]);
 

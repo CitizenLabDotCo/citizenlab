@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 // Styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // resources
 import { IOfficialFeedbackData } from 'services/officialFeedback';
@@ -17,8 +17,8 @@ import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback
 import Radio from 'components/UI/Radio';
 import { Section } from 'components/admin/Section';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import MentionsTextAreaMultiloc from 'components/UI/MentionsTextAreaMultiloc';
-import InputMultiloc from 'components/UI/InputMultiloc';
+import MentionsTextArea from 'components/UI/MentionsTextArea';
+import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 
@@ -48,8 +48,8 @@ interface Props {
   mode: 'latest' | 'new';
   latestOfficialFeedback: IOfficialFeedbackData | null;
   onChangeMode: (value) => void;
-  onChangeBody: (value) => void;
-  onChangeAuthor: (value) => void;
+  onChangeBody: (value: Multiloc) => void;
+  onChangeAuthor: (value: Multiloc) => void;
   submit: () => void;
   valid: boolean;
 }
@@ -68,6 +68,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
 
   renderFullForm = () => {
     const { latestOfficialFeedback, mode, onChangeMode, intl: { formatMessage } } = this.props;
+
     if (!latestOfficialFeedback) return null;
 
     return (
@@ -105,8 +106,26 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ selectedLocale: locale });
   }
 
+  handleBodyOnChange = (value: string, locale: Locale | undefined) => {
+    if (locale && this.props.onChangeBody) {
+      this.props.onChangeBody({
+        ...this.props.newOfficialFeedback.body_multiloc,
+        [locale]: value
+      });
+    }
+  }
+
+  handleAuthorOnChange = (value: string, locale: Locale | undefined) => {
+    if (locale && this.props.onChangeAuthor) {
+      this.props.onChangeAuthor({
+        ...this.props.newOfficialFeedback.author_multiloc,
+        [locale]: value
+      });
+    }
+  }
+
   renderFeedbackForm = () => {
-    const { intl: { formatMessage }, newOfficialFeedback, onChangeBody, onChangeAuthor } = this.props;
+    const { intl: { formatMessage }, newOfficialFeedback } = this.props;
     const { selectedLocale } = this.state;
 
     return (
@@ -117,27 +136,26 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           values={newOfficialFeedback}
         />
 
-        <MentionsTextAreaMultiloc
-          selectedLocale={selectedLocale}
+        <MentionsTextArea
           placeholder={formatMessage(messages.feedbackBodyPlaceholder)}
           rows={8}
           padding="12px"
-          fontSize={fontSizes.base}
-          backgroundColor="#FFF"
+          background="#fff"
           placeholderFontWeight="400"
           ariaLabel={formatMessage(messages.officialUpdateBody)}
           name="body_multiloc"
-          valueMultiloc={newOfficialFeedback.body_multiloc}
-          onChange={onChangeBody}
+          value={newOfficialFeedback.body_multiloc?.[selectedLocale] || ''}
+          locale={selectedLocale}
+          onChange={this.handleBodyOnChange}
         />
 
-        <InputMultiloc
-          selectedLocale={selectedLocale}
+        <Input
+          type="text"
+          value={newOfficialFeedback?.author_multiloc?.[selectedLocale] || ''}
+          locale={selectedLocale}
           placeholder={formatMessage(messages.feedbackAuthorPlaceholder)}
           ariaLabel={formatMessage(messages.officialUpdateAuthor)}
-          valueMultiloc={newOfficialFeedback.author_multiloc}
-          onChange={onChangeAuthor}
-          type="text"
+          onChange={this.handleAuthorOnChange}
         />
       </Section>
     );

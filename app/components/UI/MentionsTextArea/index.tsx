@@ -16,7 +16,10 @@ import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
-const Container: any = styled.div`
+// typings
+import { Locale } from 'typings';
+
+const Container = styled.div<{ placeholderFontWeight: string }>`
   position: relative;
 
   textarea {
@@ -31,7 +34,7 @@ const Container: any = styled.div`
     &::placeholder {
       color: ${colors.clIconSecondary} !important;
       opacity: 1;
-      font-weight: ${(props: any) => props.placeholderFontWeight} !important;
+      font-weight: ${props => props.placeholderFontWeight} !important;
     }
   }
 
@@ -40,17 +43,18 @@ const Container: any = styled.div`
   }
 `;
 
-type Props = {
+export interface InputProps {
   id?: string;
   className?: string;
   name: string;
   value?: string | null;
+  locale?: Locale;
   placeholder?: string;
   rows: number;
   postId?: string;
   postType?: 'idea' | 'initiative';
   error?: string | null;
-  onChange?: (arg: string) => void;
+  onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: () => void;
   onBlur?: () => void;
   getTextareaRef?: (element: HTMLTextAreaElement) => void;
@@ -65,10 +69,13 @@ type Props = {
   background?: string;
   placeholderFontWeight?: string;
   ariaLabel?: string;
-  theme: any;
-};
+}
 
-type State = {
+interface Props extends InputProps {
+  theme: any;
+}
+
+interface State {
   style: object | null;
   mentionStyle: object | null;
 };
@@ -165,7 +172,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
 
   handleOnChange = (event) => {
     if (this.props.onChange) {
-      this.props.onChange(event.target.value);
+      this.props.onChange(event.target.value, this.props.locale);
     }
   }
 
@@ -221,7 +228,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
       return (
         <Container
           className={className}
-          placeholderFontWeight={placeholderFontWeight}
+          placeholderFontWeight={placeholderFontWeight as string}
         >
           <MentionsInput
             id={id}

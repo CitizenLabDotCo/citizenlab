@@ -9,8 +9,8 @@ import scrollToComponent from 'react-scroll-to-component';
 import { FormSection, FormSectionTitle, FormLabel, FormSubmitFooter } from 'components/UI/FormComponents';
 import { SectionField } from 'components/admin/Section';
 import TopicsPicker from 'components/UI/TopicsPicker';
-import InputMultiloc from 'components/UI/InputMultiloc';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
+import Input from 'components/UI/Input';
+import QuillEditor from 'components/UI/QuillEditor';
 import LocationInput from 'components/UI/LocationInput';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import FileUploader from 'components/UI/FileUploader';
@@ -257,14 +257,30 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
     this.topicElement = element;
   }
 
+  handleTitleOnChange = (value: string, locale: Locale |undefined) => {
+    if (locale && this.props.onChangeTitle) {
+      this.props.onChangeTitle({
+        ...this.props.title_multiloc,
+        [locale]: value
+      });
+    }
+  }
+
+  handleBodyOnChange = (value: string, locale: Locale |undefined) => {
+    if (locale && this.props.onChangeBody) {
+      this.props.onChangeTitle({
+        ...this.props.body_multiloc,
+        [locale]: value
+      });
+    }
+  }
+
   render() {
     const {
       locale,
       title_multiloc,
       publishing,
-      onChangeTitle,
       body_multiloc,
-      onChangeBody,
       topic_ids,
       position,
       onChangePosition,
@@ -290,13 +306,13 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.titleLabel}
               subtextMessage={messages.titleLabelSubtext}
             >
-              <InputMultiloc
+              <Input
                 type="text"
                 id="e2e-initiative-title-input"
-                valueMultiloc={title_multiloc || {}}
-                onChange={onChangeTitle}
+                value={title_multiloc?.[locale] || ''}
+                locale={locale}
+                onChange={this.handleTitleOnChange}
                 onBlur={this.onBlur('title_multiloc')}
-                selectedLocale={locale}
                 autocomplete="off"
                 setRef={this.handleTitleInputSetRef}
               />
@@ -313,15 +329,14 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               subtextMessage={messages.descriptionLabelSubtext}
               id="description-label-id"
             />
-            <QuillMultiloc
+            <QuillEditor
               id="body"
-              selectedLocale={locale}
-              valueMultiloc={body_multiloc || {}}
-              onChangeMultiloc={onChangeBody}
-              noVideos
-              noAlign
+              value={body_multiloc?.[locale] || ''}
+              locale={locale}
+              onChange={this.handleBodyOnChange}
+              noVideos={true}
+              noAlign={true}
               onBlur={this.onBlur('body_multiloc')}
-              labelId="description-label-id"
               setRef={this.handleDescriptionSetRef}
             />
             {touched.body_multiloc && errors.body_multiloc

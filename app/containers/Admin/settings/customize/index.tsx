@@ -372,6 +372,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   handleCustomSectionMultilocOnChange = (homepageInfoPageMultiloc: Multiloc) => {
+    console.log('output:');
+    console.log(homepageInfoPageMultiloc);
+
     this.setState((state) => ({
       attributesDiff: {
         ...(state.attributesDiff || {}),
