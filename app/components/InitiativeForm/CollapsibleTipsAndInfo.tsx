@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import CollapsibleBox from 'components/UI/CollapsibleBox';
+const TipsContent = React.lazy(() => import('./TipsContent'));
 
 // styling
 import { colors } from 'utils/styleUtils';
@@ -15,7 +16,6 @@ export interface Props {
 }
 
 const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
-  const TipsContent = React.lazy(() => import('./TipsContent'));
 
   return (
     <CollapsibleBox
