@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 
 // components
 import CollapsibleBox from 'components/UI/CollapsibleBox';
+const Map = React.lazy(() => import('./Map'));
 
 export interface Props {
   address: string;
@@ -10,8 +11,6 @@ export interface Props {
 }
 
 const DropdownMap = memo(({ address, position, className }: Props) => {
-  const Map = React.lazy(() => import('./Map'));
-
   return (
     <CollapsibleBox
       e2eId="e2e-map-toggle"
