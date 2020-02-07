@@ -178,6 +178,8 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
             {!isNilOrError(project) && tabbedProps.tabs.findIndex(tab => tab.className === 'ideas') !== -1 &&
               <Button
                 id="new-idea"
+                buttonStyle="cl-blue-outlined"
+                icon="idea2"
                 linkTo={`/projects/${project.attributes.slug}/ideas/new`}
                 text={formatMessage(messages.addNewIdea)}
                 onClick={this.onNewIdea(pathname)}

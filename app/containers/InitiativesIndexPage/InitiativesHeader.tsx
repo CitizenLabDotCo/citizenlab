@@ -24,6 +24,7 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { darken } from 'polished';
 import T from 'components/T';
 
 // images
@@ -69,14 +70,12 @@ const HeaderContent = styled.div`
   z-index: 1;
 `;
 
-const HeaderTitle = styled.div`
-  & h2 {
-    color: ${({ theme }) => theme.colorText};
-    font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
-    font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
-    line-height: normal;
-    text-align: center;
-  }
+const HeaderTitle = styled.h2`
+  color: ${({ theme }) => theme.colorText};
+  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+  font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
+  line-height: normal;
+  text-align: center;
   width: 100%;
   max-width: 600px;
   margin: 0;
@@ -187,7 +186,6 @@ class SignedOutHeader extends PureComponent<Props, State> {
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage
-                tagName="h2"
                 {...messages.header}
                 values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
               />
