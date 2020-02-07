@@ -69,7 +69,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   render() {
     const { projectHoldersOrderings, projectFolder } = this.props;
-    const projectList = !isNilOrError(projectHoldersOrderings)
+    const projectIds = !isNilOrError(projectHoldersOrderings)
       ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
       : null;
     const inFolderProjects = !isNilOrError(projectFolder) && projectFolder.relationships.projects
@@ -125,7 +125,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
             <FormattedMessage {...messages.emptyFolder} />
           }
 
-          {projectList && projectList.length > 0 &&
+          {projectIds && projectIds.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -133,14 +133,14 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                 </HeaderTitle>
                 <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
               </ListHeader>
-              <List key={`JUST_LIST${projectList.length}`}>
-                {projectList.map((projectId, index: number) => {
+              <List key={`JUST_LIST${projectIds.length}`}>
+                {projectIds.map((projectId, index: number) => {
                   return (
                     <GetProject projectId={projectId} key={`out_${projectId}`}>
                       {project => isNilOrError(project) ? null : (
                         <Row
                           id={projectId}
-                          lastItem={(index === projectList.length - 1)}
+                          lastItem={(index === projectIds.length - 1)}
                         >
                           <ProjectRow
                             project={project}
