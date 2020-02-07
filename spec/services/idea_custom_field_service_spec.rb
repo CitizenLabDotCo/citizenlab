@@ -3,16 +3,39 @@ require "rails_helper"
 describe IdeaCustomFieldService do
   let(:service) { IdeaCustomFieldService.new }
 
-  describe "merge_built_in_fields" do
+  describe "db_and_built_in_fields" do
 
     it "overrides built in custom fields with database custom fields by code" do
       custom_form = create(:custom_form)
       cf1 = create(:custom_field, resource: custom_form, code: 'title')
       cf2 = create(:custom_field, resource: custom_form, code: nil)
-      output = service.merge_built_in_fields(CustomField.all)
+      output = service.db_and_built_in_fields(custom_form)
       expect(output).to include cf1
       expect(output).to include cf2
-      expect(output.map(&:code)).to match_array ['title','topic_ids', nil]
+      expect(output.map(&:code)).to match_array [
+        'title',
+        'body',
+        'topic_ids',
+        'location',
+        'images',
+        'attachments',
+        nil
+      ]
+    end
+
+    it "outputs valid custom fields" do
+      custom_form = create(:custom_form)
+      expect(service.db_and_built_in_fields(custom_form)).to all(be_valid)
+    end
+
+    it "doesn't return anything outside of the passed custom_fields_scope" do
+      custom_form = create(:custom_form)
+      cf1 = create(:custom_field, resource: custom_form)
+      cf2 = create(:custom_field, resource: custom_form)
+      custom_fields_scope = CustomField.where(id: cf1)
+      output = service.db_and_built_in_fields(custom_form, custom_fields_scope: custom_fields_scope)
+      expect(output.size).to be > 1
+      expect(output).not_to include(cf2)
     end
 
   end

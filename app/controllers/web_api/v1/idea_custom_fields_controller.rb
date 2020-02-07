@@ -1,14 +1,14 @@
 class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   before_action :set_custom_field, only: [:show, :update]
-  before_action :set_resource, only: [:index, :upsert_by_code]
+  before_action :set_custom_form, only: [:index, :upsert_by_code]
   skip_after_action :verify_policy_scoped
 
   def index
     @db_custom_fields = IdeaCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
-      .where(resource: @resource)
+      .where(resource: @custom_form)
       .order(:ordering)
 
-    @custom_fields = IdeaCustomFieldService.new.merge_built_in_fields(@db_custom_fields)
+    @custom_fields = IdeaCustomFieldService.new.db_and_built_in_fields(@custom_form, custom_fields_scope: @db_custom_fields)
   
     render json: WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
   end
@@ -18,13 +18,11 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   end
 
   def upsert_by_code
-    @custom_field = IdeaCustomFieldService.new.find_or_build_field(@resource, params[:code])
+    @custom_field = IdeaCustomFieldService.new.find_or_build_field(@custom_form, params[:code])
     @custom_field.assign_attributes custom_field_params
-    if !@resource
-      @resource = CustomForm.create
-      Project.update(custom_form: @resource)
-    end
-    @custom_field.resource = @resource
+
+    @custom_form.save! if !@custom_form.persisted?
+
     authorize @custom_field, policy_class: IdeaCustomFieldPolicy
     already_existed = @custom_field.persisted?
 
@@ -54,9 +52,9 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
       )
   end
 
-  def set_resource
+  def set_custom_form
     @project = Project.find(params[:project_id])
-    @resource = @project.custom_form
+    @custom_form = @project.custom_form || CustomForm.new(project: @project)
   end
 
   def set_custom_field
