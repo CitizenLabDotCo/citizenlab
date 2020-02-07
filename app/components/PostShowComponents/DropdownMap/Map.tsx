@@ -12,7 +12,7 @@ export interface Props {
   position: GeoJSON.Point;
 }
 
-const MapComponent = memo(({ position }: Props) => {
+const MapComponent = memo<Props>(({ position }) => {
   const points: any = [{ ...position }];
   const center = position.coordinates;
 
