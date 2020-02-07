@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { forOwn } from 'lodash-es';
 
 // components
 import QuillEditor, { QuillEditorProps } from 'components/UI/QuillEditor';
@@ -30,12 +29,13 @@ const LanguageExtension = styled.span`
   display: inline-block;
 `;
 
-interface InputProps extends QuillEditorProps {
+export interface InputProps extends QuillEditorProps {
   id: string;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null;
   labelTooltip?: JSX.Element;
   onChange?: (value: Multiloc) => void;
+  onBlur?: () => void;
   className?: string;
 }
 
@@ -49,13 +49,17 @@ interface State {}
 
 class QuillMultiloc extends PureComponent<Props, State> {
 
-  handleOnChange = (locale: Locale) => (value: string) => {
-    if (this.props.onChange) {
+  handleOnChange = (value: string, locale: Locale | undefined) => {
+    if (locale && this.props.onChange) {
       this.props.onChange({
         ...this.props.valueMultiloc,
         [locale]: value
       });
     }
+  }
+
+  handleOnBlur = () => {
+    this.props.onBlur?.();
   }
 
   render() {
@@ -96,7 +100,8 @@ class QuillMultiloc extends PureComponent<Props, State> {
                 <QuillEditor
                   id={idLocale}
                   value={valueMultiloc?.[locale] || ''}
-                  onChange={this.handleOnChange(locale)}
+                  locale={locale}
+                  onChange={this.handleOnChange}
                   noToolbar={noToolbar}
                   noImages={noImages}
                   noVideos={noVideos}

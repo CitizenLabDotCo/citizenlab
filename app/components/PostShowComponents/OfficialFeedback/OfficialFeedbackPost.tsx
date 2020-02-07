@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Locale, Multiloc } from 'typings';
 
 // components
-import OfficialFeedbackEdit from './Form/OfficialFeedbackEdit';
+import OfficialFeedbackForm from './Form/OfficialFeedbackForm';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -171,12 +171,15 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
-    if (showEditForm) {
+    if (showEditForm && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       return (
         <EditFormContainer key={officialFeedbackPost.id}>
-          <OfficialFeedbackEdit
+          <OfficialFeedbackForm
+            locale={locale}
+            tenantLocales={tenantLocales}
+            formType="edit"
             feedback={officialFeedbackPost}
-            closeForm={this.closeEditForm}
+            onClose={this.closeEditForm}
           />
         </EditFormContainer>
       );

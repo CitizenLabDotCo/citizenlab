@@ -16,6 +16,9 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { isBoolean } from 'util';
 
+// typings
+import { Locale } from 'typings';
+
 const Container: any = styled.div`
   width: 100%;
   position: relative;
@@ -85,10 +88,11 @@ export type InputProps = {
   id?: string | undefined;
   label?: string | JSX.Element | null | undefined;
   value?: string | null | undefined;
+  locale?: Locale;
   type: 'text' | 'email' | 'password' | 'number' | 'date';
   placeholder?: string | null | undefined;
   error?: string | JSX.Element | null | undefined;
-  onChange?: (arg: string) => void;
+  onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
@@ -116,11 +120,11 @@ type State = {};
 export class Input extends React.PureComponent<Props, State> {
 
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { maxCharCount, onChange, name, formikContext } = this.props;
+    const { maxCharCount, onChange, name, formikContext, locale } = this.props;
 
     if (!maxCharCount || size(event.currentTarget.value) <= maxCharCount) {
       if (onChange) {
-        onChange(event.currentTarget.value);
+        onChange(event.currentTarget.value, locale);
       }
 
       if (name && formikContext && formikContext.handleChange) {

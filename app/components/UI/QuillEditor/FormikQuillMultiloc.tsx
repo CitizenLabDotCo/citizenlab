@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
 // components
-import QuillMultiloc, { MultilocEditorProps } from 'components/UI/QuillEditor/QuillMultiloc';
+import QuillMultiloc, { InputProps as MultilocEditorProps } from 'components/UI/QuillEditor/QuillMultiloc';
 
 export default class FormikQuillMultiloc extends PureComponent<FieldProps & MultilocEditorProps> {
   handleOnChange = (newValue) => {
@@ -22,7 +22,7 @@ export default class FormikQuillMultiloc extends PureComponent<FieldProps & Mult
         {...this.props}
         id={id ? id : name} // id is not required if there is only one field with the same name on the page.
         valueMultiloc={value}
-        onChangeMultiloc={this.handleOnChange}
+        onChange={this.handleOnChange}
         onBlur={this.handleOnBlur}
       />
     );

@@ -85,10 +85,10 @@ class StatusChangeFormWrapper extends PureComponent<Props & InjectedIntlProps, S
   onChangeMode = (event) => {
     this.setState({ mode: event });
   }
-  onChangeBody = (value) => {
+  onChangeBody = (value: Multiloc) => {
     this.setState((state) => ({ newOfficialFeedback: { ...state.newOfficialFeedback, body_multiloc: value }, touched: true }));
   }
-  onChangeAuthor = (value) => {
+  onChangeAuthor = (value: Multiloc) => {
     this.setState((state) => ({ newOfficialFeedback: { ...state.newOfficialFeedback, author_multiloc: value }, touched: true }));
   }
 

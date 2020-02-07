@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { get } from 'lodash-es';
 
 // components
 import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
 
-// services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+// resources
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
@@ -32,11 +32,10 @@ const LanguageExtension = styled(Label)`
   font-weight: 500;
 `;
 
-export type Props = {
+export interface InputProps {
   id?: string | undefined;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null | undefined;
-  labelTooltip?: JSX.Element;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   type: 'text' | 'email' | 'password' | 'number';
@@ -44,50 +43,22 @@ export type Props = {
   errorMultiloc?: Multiloc | null;
   maxCharCount?: number | undefined;
   disabled?: boolean;
-  selectedLocale?: Locale;
   ariaLabel?: string;
-  setRef?: (arg: HTMLInputElement) => void | undefined;
-  autoFocus?: boolean;
-  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
-};
+  className?: string;
+}
 
-type State = {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-};
+interface DataProps {
+  tenantLocales: GetTenantLocalesChildProps;
+}
 
-export default class InputMultiloc extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
+interface Props extends InputProps, DataProps { }
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      locale: null,
-      currentTenant: null
-    };
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
+class InputMultiloc extends PureComponent<Props, State> {
 
-    this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$
-      ).subscribe(([locale, currentTenant]) => {
-        this.setState({ locale, currentTenant });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleOnChange = (locale: Locale) => (value: string) => {
-    if (this.props.onChange) {
+  handleOnChange = (value: string, locale: Locale | undefined) => {
+    if (locale && this.props.onChange) {
       this.props.onChange({
         ...this.props.valueMultiloc,
         [locale]: value
@@ -96,81 +67,72 @@ export default class InputMultiloc extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, currentTenant } = this.state;
-    const { selectedLocale, label, placeholder, valueMultiloc, errorMultiloc, ariaLabel, setRef, autoFocus, autocomplete } = this.props;
+    const {
+      id,
+      valueMultiloc,
+      label,
+      onBlur,
+      type,
+      placeholder,
+      errorMultiloc,
+      maxCharCount,
+      disabled,
+      ariaLabel,
+      className,
+      tenantLocales
+    } = this.props;
 
-    if (locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+    if (!isNilOrError(tenantLocales)) {
+      return (
+        <Container
+          id={id}
+          className={`${className || ''} e2e-multiloc-input`}
+        >
+          {tenantLocales.map((tenantLocale, index) => {
+            const value = valueMultiloc?.[tenantLocale] || null;
+            const error = errorMultiloc?.[tenantLocale] || null;
+            const inputId = id && `${id}-${tenantLocale}`;
 
-      if (selectedLocale) {
-        const value = get(valueMultiloc, [selectedLocale], null);
-        const error = get(errorMultiloc, [selectedLocale], null);
-        const id = this.props.id && `${this.props.id}-${selectedLocale}`;
+            return (
+              <InputWrapper
+                key={tenantLocale}
+                className={`${index === tenantLocales.length - 1 && 'last'}`}
+              >
+                {label &&
+                  <LabelWrapper>
+                    <Label htmlFor={inputId}>{label}</Label>
+                    {tenantLocales.length > 1 &&
+                      <LanguageExtension>{tenantLocale.toUpperCase()}</LanguageExtension>
+                    }
+                  </LabelWrapper>
+                }
 
-        return (
-          <InputWrapper>
-            {label &&
-              <LabelWrapper>
-                <Label htmlFor={id}>{label}</Label>
-              </LabelWrapper>
-            }
-
-            <Input
-              setRef={setRef}
-              id={id}
-              value={value}
-              type={this.props.type}
-              placeholder={placeholder}
-              error={error}
-              onChange={this.handleOnChange(selectedLocale)}
-              onBlur={this.props.onBlur}
-              maxCharCount={this.props.maxCharCount}
-              disabled={this.props.disabled}
-              ariaLabel={ariaLabel}
-              autoFocus={autoFocus}
-              autocomplete={autocomplete}
-            />
-          </InputWrapper>
-        );
-      } else {
-        return (
-          <Container id={this.props.id} className={`${this.props['className']} e2e-multiloc-input`} >
-            {currentTenantLocales.map((currentTenantLocale, index) => {
-              const value = get(valueMultiloc, [currentTenantLocale], null);
-              const error = get(errorMultiloc, [currentTenantLocale], null);
-              const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
-
-              return (
-                <InputWrapper key={currentTenantLocale} className={`${index === currentTenantLocales.length - 1 && 'last'}`}>
-                  {label &&
-                    <LabelWrapper>
-                      <Label htmlFor={id}>{label}</Label>
-                      {currentTenantLocales.length > 1 &&
-                        <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-                      }
-                    </LabelWrapper>
-                  }
-
-                  <Input
-                    id={id}
-                    value={value}
-                    type={this.props.type}
-                    placeholder={placeholder}
-                    error={error}
-                    onChange={this.handleOnChange(currentTenantLocale)}
-                    onBlur={this.props.onBlur}
-                    maxCharCount={this.props.maxCharCount}
-                    disabled={this.props.disabled}
-                    ariaLabel={ariaLabel}
-                  />
-                </InputWrapper>
-              );
-            })}
+                <Input
+                  id={inputId}
+                  value={value}
+                  locale={tenantLocale}
+                  type={type}
+                  placeholder={placeholder}
+                  error={error}
+                  onChange={this.handleOnChange}
+                  onBlur={onBlur}
+                  maxCharCount={maxCharCount}
+                  disabled={disabled}
+                  ariaLabel={ariaLabel}
+                />
+              </InputWrapper>
+            );
+          })}
         </Container>
-        );
-      }
+      );
     }
 
     return null;
   }
 }
+
+export default (InputProps: InputProps) => (
+  <GetTenantLocales>
+    {tenantLocales => <InputMultiloc {...InputProps} tenantLocales={tenantLocales} />}
+  </GetTenantLocales>
+);

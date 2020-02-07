@@ -304,7 +304,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   handleDescriptionSetRef = (element: HTMLDivElement) => {
-    console.log(element);
     this.descriptionElement = element;
   }
 
@@ -456,7 +455,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               onChange={this.handleDescriptionOnChange}
               setRef={this.handleDescriptionSetRef}
               hasError={descriptionError !== null}
-              labelId="editor-label"
             />
             {descriptionError && <Error text={descriptionError} />}
           </FormElement>
