@@ -11,11 +11,9 @@ import { fontSizes, colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-const Title = styled.div`
-  & h2 {
-    font-size: ${fontSizes.base}px;
-    font-weight: 600;
-  }
+const Title = styled.h2`
+  font-size: ${fontSizes.base}px;
+  font-weight: 600;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 7px;
 `;
@@ -47,7 +45,7 @@ const InitiativeInfoContent = memo(() => {
     return (
       <Content>
         <Title>
-          <FormattedMessage tagName="h2" {...messages.explanationTitle} />
+          <FormattedMessage {...messages.explanationTitle} />
         </Title>
         <FormattedMessage
           {...messages.explanationContent}
