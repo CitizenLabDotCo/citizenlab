@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
+const timeout = 300;
+
 const Container = styled.div`
   background: #fff;
   border: 1px solid ${colors.separation};
@@ -102,7 +104,7 @@ const Wrapper = styled.div<{ contentBackgroundColor?: string }>`
     &.content-enter-active {
       height: 100%;
       opacity: 1;
-      transition: all 250ms ease-out;
+      transition: all ${timeout}ms ease-out;
     }
   }
 
@@ -113,7 +115,7 @@ const Wrapper = styled.div<{ contentBackgroundColor?: string }>`
     &.content-exit-active {
       height: 0;
       opacity: 0;
-      transition: all 250ms ease-out;
+      transition: all ${timeout}ms ease-out;
     }
   }
 `;
@@ -157,7 +159,7 @@ const CollapsibleBox = memo<Props>((props) => {
       <CSSTransition
         classNames="content"
         in={showContent}
-        timeout={300}
+        timeout={timeout}
         mountOnEnter={true}
         unmountOnExit={true}
         exit={true}
