@@ -13,6 +13,7 @@
   "app.components.AssignBudgetControl.a11y_price": "Price:",
   "app.components.AssignBudgetControl.assign": "Assign",
   "app.components.AssignBudgetControl.assigned": "Assigned",
+  "app.components.AssignBudgetControl.backToOverview": "Back to overview",
   "app.components.AssignBudgetControl.seeIdea": "See idea",
   "app.components.AssignBudgetControl.undo": "Undo assignment",
   "app.components.AssignBudgetControl.verificationLinkText": "Verify your profile now.",
