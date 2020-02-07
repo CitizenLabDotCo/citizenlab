@@ -39,7 +39,6 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
         params: fastjson_params
         ).serialized_json, status: :ok
     else
-      byebug
       render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
     end
 
