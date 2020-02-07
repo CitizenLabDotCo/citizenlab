@@ -14,7 +14,7 @@ export interface Props {
   className?: string;
 }
 
-const CollapsibleTipsAndInfo = memo<Props>(({ className }: Props) => {
+const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
   const TipsContent = React.lazy(() => import('./TipsContent'));
 
   return (
