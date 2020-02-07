@@ -140,6 +140,11 @@ ActiveRecord::Schema.define(version: 2020_02_06_165218) do
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
+  create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "campaign"
     t.uuid "recipient_id"
@@ -639,11 +644,6 @@ ActiveRecord::Schema.define(version: 2020_02_06_165218) do
     t.index ["user_id"], name: "index_polls_responses_on_user_id"
   end
 
-  create_table "post_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "project_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.string "file"
@@ -691,9 +691,9 @@ ActiveRecord::Schema.define(version: 2020_02_06_165218) do
     t.uuid "default_assignee_id"
     t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
-    t.uuid "post_form_id"
+    t.uuid "custom_form_id"
     t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
-    t.index ["post_form_id"], name: "index_projects_on_post_form_id"
+    t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 

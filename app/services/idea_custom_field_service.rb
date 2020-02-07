@@ -1,4 +1,4 @@
-class PostCustomFieldService
+class IdeaCustomFieldService
 
   def merge_built_in_fields custom_fields_scope
     custom_fields = custom_fields_scope.to_a
@@ -11,8 +11,8 @@ class PostCustomFieldService
     ]
   end
 
-  def find_or_build_field post_form, code
-    CustomField.find_by(code: code) ||
+  def find_or_build_field custom_form, code
+    custom_form&.custom_fields&.find_by(code: code) ||
       build_built_in_fields.find{|bicf| bicf.code == code}
   end
 

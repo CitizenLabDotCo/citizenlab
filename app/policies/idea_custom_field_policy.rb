@@ -1,4 +1,4 @@
-class PostCustomFieldPolicy < ApplicationPolicy
+class IdeaCustomFieldPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 
@@ -12,7 +12,7 @@ class PostCustomFieldPolicy < ApplicationPolicy
         scope
       elsif user&.project_moderator?
         scope
-          .joins(post_form: [:project])
+          .joins(custom_form: [:project])
           .where(projects: ProjectPolicy::Scope.new(user, Project).moderatable)
       else
         scope.none
@@ -23,7 +23,7 @@ class PostCustomFieldPolicy < ApplicationPolicy
   def show?
     user&.active? && (
       user.admin? ||
-      user.project_moderator?(record&.post_form&.project.id)
+      user.project_moderator?(record&.custom_form&.project.id)
     )
   end
 

@@ -4,7 +4,7 @@ class CustomField < ApplicationRecord
   has_many :custom_field_options, dependent: :destroy
   belongs_to :resource, polymorphic: true, optional: true
 
-  FIELDABLE_TYPES = %w(User PostForm)
+  FIELDABLE_TYPES = %w(User CustomForm)
   INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date)
 
   CODES = %w(gender birthyear domicile education title topic_ids)
@@ -17,7 +17,7 @@ class CustomField < ApplicationRecord
   validates :description_multiloc, multiloc: {presence: false}
   validates :required, inclusion: {in: [true, false]}
   validates :enabled, inclusion: {in: [true, false]}
-  validates :code, inclusion: {in: CODES}, uniqueness: true, allow_nil: true
+  validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
 
 
   before_validation :set_default_enabled
