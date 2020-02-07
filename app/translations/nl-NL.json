@@ -13,6 +13,7 @@
   "app.components.AssignBudgetControl.a11y_price": "Prijs:",
   "app.components.AssignBudgetControl.assign": "Voeg toe",
   "app.components.AssignBudgetControl.assigned": "Toegevoegd",
+  "app.components.AssignBudgetControl.backToOverview": "",
   "app.components.AssignBudgetControl.seeIdea": "Bekijk idee",
   "app.components.AssignBudgetControl.undo": "Verwijderen",
   "app.components.AssignBudgetControl.verificationLinkText": "Verifieer nu je identiteit.",

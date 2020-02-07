@@ -19,7 +19,8 @@ import messages from '../messages';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, viewportWidths } from 'utils/styleUtils';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 const StyledProjectArchivedIndicator = styled(ProjectArchivedIndicator)`
   padding-top: 30px;
@@ -38,6 +39,13 @@ const StyledContentContainer = styled(ContentContainer)`
 
 const StyledPBExpenses = styled(PBExpenses)`
   margin-bottom: 60px;
+  padding: 30px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px ${colors.separation};
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+  `}
 `;
 
 interface InputProps {
@@ -46,6 +54,7 @@ interface InputProps {
 
 interface DataProps {
   project: GetProjectChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -55,7 +64,8 @@ interface State {}
 class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
 
   render () {
-    const { project, params } = this.props;
+    const { project, params, windowSize } = this.props;
+    const smallerThanBigTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
     if (!isNilOrError(project)) {
       if (project.attributes.process_type !== 'continuous') {
@@ -74,6 +84,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 <StyledPBExpenses
                   participationContextId={projectId}
                   participationContextType="project"
+                  viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               }
               <IdeaCards
@@ -98,7 +109,8 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
+  windowSize: <GetWindowSize />
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
