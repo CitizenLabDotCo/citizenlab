@@ -44,6 +44,7 @@ import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/P
 
 // style
 import styled from 'styled-components';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 const Container = styled.div``;
 
@@ -89,6 +90,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   projects: GetProjectsChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
+  foldersEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -198,7 +200,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { authUser, projects, className, projectHolderOrderings } = this.props;
+    const { authUser, projects, className, projectHolderOrderings, foldersEnabled } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
 
@@ -252,11 +254,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <Button
-                  linkTo={'/admin/projects/folders/new'}
-                >
-                  <FormattedMessage {...messages.newProjectFolder} />
-                </Button>
+                {foldersEnabled &&
+                  <Button
+                    linkTo={'/admin/projects/folders/new'}
+                  >
+                    <FormattedMessage {...messages.newProjectFolder} />
+                  </Button>
+                }
+
               </ListHeader>
 
               <HasPermission item="project" action="reorder">
@@ -475,7 +480,8 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
+  foldersEnabled: <GetFeatureFlag name="project_folders" />
 });
 
 export default (inputProps: InputProps) => (
