@@ -511,13 +511,13 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                           {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.map(
                             (item: IProjectHolderOrderingData, index: number) => {
                               const isProject = item.relationships.project_holder.data.type === 'project';
+                              const projectOrFolderId = item.relationships.project_holder.data.id;
 
                               if (isProject) {
                                 return (
-                                  <GetProject projectId={item.relationships.project_holder.data.id}>
+                                  <GetProject key={projectOrFolderId} projectId={projectOrFolderId}>
                                     {project => isNilOrError(project) ? null : (
                                       <ProjectsListItem
-                                        key={project.id}
                                         to={getProjectUrl(project)}
                                         className={`${index === projectHolderOrderings.length - 1} ? 'last' : ''`}
                                       >
@@ -528,7 +528,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                                 );
                               } else {
                                 return (
-                                  <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id}>
+                                  <GetProjectFolder key={projectOrFolderId} projectFolderId={projectOrFolderId}>
                                     {projectFolder => isNilOrError(projectFolder) ? null : (
                                       <ProjectsListItem
                                         key={projectFolder.id}
