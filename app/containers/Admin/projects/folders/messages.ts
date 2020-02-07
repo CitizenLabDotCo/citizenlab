@@ -84,7 +84,7 @@ export default defineMessages({
   },
   emptyFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.emptyFolder',
-    defaultMessage: 'This folder is empty, you\'re in the right place to add projects to it, though !',
+    defaultMessage: 'There are currently no projects in this folder.',
   },
   addToFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.addToFolder',

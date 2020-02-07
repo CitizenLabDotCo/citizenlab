@@ -843,7 +843,6 @@
   "app.containers.AdminPage.FaviconPage.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.FoldersEdit.addToFolder": "Add to folder",
   "app.containers.AdminPage.FoldersEdit.descriptionInputLabel": "Description",
-  "app.containers.AdminPage.FoldersEdit.emptyFolder": "This folder is empty, you're in the right place to add projects to it, though !",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Header image",
   "app.containers.AdminPage.FoldersEdit.inFolder": "In this folder",
   "app.containers.AdminPage.FoldersEdit.newFolder": "New folder",
