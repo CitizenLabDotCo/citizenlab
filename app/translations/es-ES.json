@@ -847,6 +847,7 @@
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "",
   "app.containers.AdminPage.FoldersEdit.inFolder": "",
   "app.containers.AdminPage.FoldersEdit.newFolder": "",
+  "app.containers.AdminPage.FoldersEdit.noProjectsOutside": "",
   "app.containers.AdminPage.FoldersEdit.otherProjects": "",
   "app.containers.AdminPage.FoldersEdit.otherProjectsTooltip": "",
   "app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab": "",
