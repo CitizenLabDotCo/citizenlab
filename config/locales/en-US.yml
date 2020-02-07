@@ -145,6 +145,15 @@ en:
       topic_ids:
         title: Topics
         description:
+      location:
+        title: Location
+        description:
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
   custom_field_options:
     gender:
       male: Male
