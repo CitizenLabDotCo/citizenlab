@@ -42,6 +42,12 @@ const Header = styled.div`
   margin-bottom: 50px;
 `;
 
+const StyledGoBackButton = styled(GoBackButton)`
+  display: flex;
+  justify-content: start;
+  margin-bottom: 20px;
+`;
+
 const goBack = () => {
   clHistory.push('/admin/projects');
 };
@@ -151,90 +157,92 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
   if (mode === 'edit' && isNilOrError(projectFolder)) return null;
 
   return (
-    <Container mode={mode}>
-      {mode === 'edit' ?
-        <>
-          <SectionTitle>
-            {<FormattedMessage {...messages.titleSettingsTab} />}
-          </SectionTitle>
-          <SectionSubtitle>
-            <FormattedMessage {...messages.subtitleSettingsTab} />
-          </SectionSubtitle>
-        </>
-        :
-        <Header>
-          <GoBackButton onClick={goBack} />
-          <SectionTitle >
-            {<FormattedMessage {...messages.titleNewFolder} />}
-          </SectionTitle >
-          <SectionSubtitle>
-            <FormattedMessage {...messages.subtitleNewFolder} />
-          </SectionSubtitle>
-        </Header>
-      }
-      <form onSubmit={onSubmit}>
-        <Section>
-          <SectionField>
-            <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
-          </SectionField>
-          <SectionField>
-            <InputMultiloc
-              valueMultiloc={titleMultiloc}
-              type="text"
-              onChange={setTitleMultiloc}
-              selectedLocale={selectedLocale}
-              label={<FormattedMessage {...messages.titleInputLabel} />}
-            />
-          </SectionField>
-          <SectionField>
-            <TextAreaMultiloc
-              valueMultiloc={shortDescriptionMultiloc}
-              name="textAreaMultiloc"
-              onChange={setShortDescriptionMultiloc}
-              selectedLocale={selectedLocale}
-              label={<FormattedMessage {...messages.shortDescriptionInputLabel} />}
-              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />} />}
-            />
-          </SectionField>
-          <SectionField>
-            <QuillMultiloc
-              id="description"
-              valueMultiloc={descriptionMultiloc}
-              onChangeMultiloc={setDescriptionMultiloc}
-              selectedLocale={selectedLocale}
-              label={<FormattedMessage {...messages.descriptionInputLabel} />}
-            />
-          </SectionField>
+    <>
+      <StyledGoBackButton onClick={goBack} />
+      <Container mode={mode}>
+        {mode === 'edit' ?
+          <>
+            <SectionTitle>
+              {<FormattedMessage {...messages.titleSettingsTab} />}
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleSettingsTab} />
+            </SectionSubtitle>
+          </>
+          :
+          <Header>
+            <SectionTitle >
+              {<FormattedMessage {...messages.titleNewFolder} />}
+            </SectionTitle >
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitleNewFolder} />
+            </SectionSubtitle>
+          </Header>
+        }
+        <form onSubmit={onSubmit}>
+          <Section>
+            <SectionField>
+              <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
+            </SectionField>
+            <SectionField>
+              <InputMultiloc
+                valueMultiloc={titleMultiloc}
+                type="text"
+                onChange={setTitleMultiloc}
+                selectedLocale={selectedLocale}
+                label={<FormattedMessage {...messages.titleInputLabel} />}
+              />
+            </SectionField>
+            <SectionField>
+              <TextAreaMultiloc
+                valueMultiloc={shortDescriptionMultiloc}
+                name="textAreaMultiloc"
+                onChange={setShortDescriptionMultiloc}
+                selectedLocale={selectedLocale}
+                label={<FormattedMessage {...messages.shortDescriptionInputLabel} />}
+                labelTooltip={<IconTooltip content={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />} />}
+              />
+            </SectionField>
+            <SectionField>
+              <QuillMultiloc
+                id="description"
+                valueMultiloc={descriptionMultiloc}
+                onChangeMultiloc={setDescriptionMultiloc}
+                selectedLocale={selectedLocale}
+                label={<FormattedMessage {...messages.descriptionInputLabel} />}
+              />
+            </SectionField>
 
-          <SectionField key={'header_bg'}>
-            <Label>
-              <FormattedMessage {...messages.headerImageInputLabel} />
-            </Label>
-            <ImagesDropzone
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxNumberOfImages={1}
-              maxImageFileSize={5000000}
-              images={headerBg ? [headerBg] : null}
-              imagePreviewRatio={480 / 1440}
-              maxImagePreviewWidth="500px"
-              onAdd={handleHeaderBgOnAdd}
-              onRemove={handleHeaderBgOnRemove}
+            <SectionField key={'header_bg'}>
+              <Label>
+                <FormattedMessage {...messages.headerImageInputLabel} />
+              </Label>
+              <ImagesDropzone
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxNumberOfImages={1}
+                maxImageFileSize={5000000}
+                images={headerBg ? [headerBg] : null}
+                imagePreviewRatio={480 / 1440}
+                maxImagePreviewWidth="500px"
+                onAdd={handleHeaderBgOnAdd}
+                onRemove={handleHeaderBgOnRemove}
+              />
+            </SectionField>
+            <SubmitWrapper
+              loading={loading}
+              status={status}
+              onClick={onSubmit}
+              messages={{
+                buttonSave: messages.save,
+                buttonSuccess: messages.saveSuccess,
+                messageError: messages.saveErrorMessage,
+                messageSuccess: messages.saveSuccessMessage,
+              }}
             />
-          </SectionField>
-          <SubmitWrapper
-            loading={loading}
-            status={status}
-            onClick={onSubmit}
-            messages={{
-              buttonSave: messages.save,
-              buttonSuccess: messages.saveSuccess,
-              messageError: messages.saveErrorMessage,
-              messageSuccess: messages.saveSuccessMessage,
-            }}
-          />
-        </Section>
-      </form>
-    </Container>
+          </Section>
+        </form>
+      </Container>
+    </>
   );
 };
 
