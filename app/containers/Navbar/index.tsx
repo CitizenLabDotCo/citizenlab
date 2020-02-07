@@ -508,7 +508,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       content={(
                         <ProjectsList>
                           {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.map(
-                            (item: IProjectHolderOrderingData, index: number) => {
+                            (item: IProjectHolderOrderingData) => {
                               const isProject = item.relationships.project_holder.data.type === 'project';
                               const projectOrFolderId = item.relationships.project_holder.data.id;
 
