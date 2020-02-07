@@ -89,7 +89,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
           </ListHeader>
 
           {inFolderProjectIds && inFolderProjectIds.length > 0 ?
-            <List key={`JUST_LIST${inFolderProjectIds.length}`}>
+            <List key={`IN_FOLDER_LIST${inFolderProjectIds.length}`}>
               {inFolderProjectIds.map((inFolderProjectId, index: number) => {
                 return (
                   <GetProject projectId={inFolderProjectId} key={`in_${inFolderProjectId}`}>
@@ -124,7 +124,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
           </ListHeader>
 
           {projectIds && projectIds.length > 0 ?
-            <List key={`JUST_LIST${projectIds.length}`}>
+            <List key={`OUTSIDE_LIST${projectIds.length}`}>
               {projectIds.map((projectId, index: number) => {
                 return (
                   <GetProject projectId={projectId} key={`out_${projectId}`}>
