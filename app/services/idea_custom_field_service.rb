@@ -1,11 +1,12 @@
 class IdeaCustomFieldService
 
-  def merge_built_in_fields custom_fields_scope
-    custom_fields = custom_fields_scope.to_a
-    codes = custom_fields.map(&:code)
+  def db_and_built_in_fields custom_form, custom_fields_scope: nil
+    cfs = custom_form.custom_fields
+    cfs = cfs.merge(custom_fields_scope) if custom_fields_scope
+    codes = cfs.map(&:code)
     [
-      *custom_fields,
-      *build_built_in_fields.reject do |custom_field|
+      *cfs,
+      *build_built_in_fields(custom_form).reject do |custom_field|
         codes.include?(custom_field.code)
       end
     ]
@@ -13,16 +14,17 @@ class IdeaCustomFieldService
 
   def find_or_build_field custom_form, code
     custom_form&.custom_fields&.find_by(code: code) ||
-      build_built_in_fields.find{|bicf| bicf.code == code}
+      build_built_in_fields(custom_form).find{|bicf| bicf.code == code}
   end
 
   private
     
-  def build_built_in_fields
+  def build_built_in_fields custom_form
     ml_s = MultilocService.new
     [
       CustomField.new(
         id: SecureRandom.uuid,
+        resource: custom_form,
         key: 'title',
         code: 'title',
         input_type: 'text',
@@ -43,6 +45,7 @@ class IdeaCustomFieldService
       ),
       CustomField.new(
         id: SecureRandom.uuid,
+        resource: custom_form,
         key: 'body',
         code: 'body',
         input_type: 'multiline_text',
@@ -63,6 +66,7 @@ class IdeaCustomFieldService
       ),
       CustomField.new(
         id: SecureRandom.uuid,
+        resource: custom_form,
         key: 'topic_ids',
         code: 'topic_ids',
         input_type: 'multiselect',
@@ -83,6 +87,7 @@ class IdeaCustomFieldService
       ),
       CustomField.new(
         id: SecureRandom.uuid,
+        resource: custom_form,
         key: 'location',
         code: 'location',
         input_type: 'custom',
@@ -103,6 +108,7 @@ class IdeaCustomFieldService
       ),
       CustomField.new(
         id: SecureRandom.uuid,
+        resource: custom_form,
         key: 'images',
         code: 'images',
         input_type: 'custom',
@@ -123,6 +129,7 @@ class IdeaCustomFieldService
       ),
       CustomField.new(
         id: SecureRandom.uuid,
+        resource: custom_form,
         key: 'attachments',
         code: 'attachments',
         input_type: 'custom',
