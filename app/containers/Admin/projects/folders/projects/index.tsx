@@ -61,12 +61,12 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
   addProjectToFolder = (projectId) => () => {
     const projectFolderId = !isNilOrError(this.props.projectFolder) ? this.props.projectFolder.id : null;
 
-    projectFolderId && updateProjectFolderMembership(projectId, projectFolderId);
+    projectFolderId && updateProjectFolderMembership(projectId, { folder_id: projectFolderId });
   }
 
   removeProjectFromFolder = (projectId) => () => {
     const projectFolderId = !isNilOrError(this.props.projectFolder) ? this.props.projectFolder.id : undefined;
-    updateProjectFolderMembership(projectId, null, projectFolderId);
+    updateProjectFolderMembership(projectId, { folder_id: null }, projectFolderId);
   }
 
   render() {
