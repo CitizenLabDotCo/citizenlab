@@ -1,6 +1,5 @@
 import React from 'react';
 import { isNil, isEmpty, size } from 'lodash-es';
-import { FormikConsumer, FormikContext } from 'formik';
 
 // components
 import Error from 'components/UI/Error';
@@ -83,7 +82,7 @@ const CharCount = styled.div`
   }
 `;
 
-export type InputProps = {
+export type Props = {
   ariaLabel?: string;
   id?: string | undefined;
   label?: string | JSX.Element | null | undefined;
@@ -109,39 +108,25 @@ export type InputProps = {
   onGreyBackground?: boolean;
 };
 
-interface DataProps {
-  formikContext?: FormikContext<any>;
-}
-
-interface Props extends InputProps, DataProps {}
-
 type State = {};
 
 export class Input extends React.PureComponent<Props, State> {
 
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { maxCharCount, onChange, name, formikContext, locale } = this.props;
+    const { maxCharCount, onChange, name, locale } = this.props;
 
     if (!maxCharCount || size(event.currentTarget.value) <= maxCharCount) {
       if (onChange) {
         onChange(event.currentTarget.value, locale);
       }
-
-      if (name && formikContext && formikContext.handleChange) {
-        formikContext.handleChange(event);
-      }
     }
   }
 
   handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
-    const { onBlur, formikContext } = this.props;
+    const { onBlur } = this.props;
 
     if (onBlur) {
       onBlur(event);
-    }
-
-    if (name && formikContext && formikContext.handleBlur) {
-      formikContext.handleBlur(event);
     }
   }
 
@@ -152,14 +137,9 @@ export class Input extends React.PureComponent<Props, State> {
   render() {
     const { label, ariaLabel, className, onGreyBackground } = this.props;
     let { value, placeholder, error } = this.props;
-    const { formikContext } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
-
-    if (name && formikContext && formikContext.values[name]) {
-      value = (value || formikContext.values[name]);
-    }
 
     value = (value || '');
     placeholder = (placeholder || '');
@@ -226,8 +206,4 @@ export class Input extends React.PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => (
-  <FormikConsumer>
-    {formikContext => <Input {...inputProps} formikContext={formikContext} />}
-  </FormikConsumer>
-);
+export default Input;

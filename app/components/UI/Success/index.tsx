@@ -1,46 +1,40 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { isBoolean } from 'lodash-es';
 
 // components
 import Icon from 'components/UI/Icon';
 import CSSTransition from 'react-transition-group/CSSTransition';
-import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
-interface IStyledSuccessMessageInner {
-  showBackground: boolean;
-}
-
-const Container = styled.div``;
+const timeout = 350;
 
 const SuccessMessageText = styled.div`
   font-size: ${fontSizes.base}px;
-  color: #40af65;
+  color: ${colors.clGreenSuccess};
   font-weight: 400;
-  line-height: 22px;
+  line-height: normal;
 `;
 
 const CheckmarkIcon = styled(Icon)`
-  fill: #40af65;
+  flex: 0 0 22px;
+  width: 22px;
+  fill: ${colors.clGreenSuccess};
   margin-right: 13px;
-  width: 28px;
-  height: 22px;
 `;
 
-const StyledSuccessMessageInner = styled.div`
+const StyledSuccessMessageInner = styled.div<{ showBackground: boolean }>`
   width: 100%;
   display: flex;
   align-items: center;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${(props: IStyledSuccessMessageInner) => (props.showBackground ? '#ecf7ef' : 'transparent')};
+  background: ${(props => props.showBackground ? colors.clGreenSuccessBackground : 'transparent')};
   padding: 10px 13px;
-  margin-top: 5px;
 `;
 
-const StyledSuccessMessage: any = styled.div`
+const Container = styled.div`
   position: relative;
   overflow: hidden;
 
@@ -51,8 +45,8 @@ const StyledSuccessMessage: any = styled.div`
     &.success-enter-active {
       max-height: 60px;
       opacity: 1;
-      transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: max-height ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                  opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -63,49 +57,69 @@ const StyledSuccessMessage: any = styled.div`
     &.success-exit-active {
       max-height: 0px;
       opacity: 0;
-      transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: max-height ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
 `;
 
-type Props = {
-  text: string | null;
+interface Props {
+  text: string | JSX.Element | null;
   showIcon?: boolean;
   showBackground?: boolean;
+  animate: boolean;
   className?: string;
-};
+}
 
-type State = {};
+interface State {
+  mounted: boolean;
+}
 
-export default class Success extends React.PureComponent<Props, State> {
+export default class Success extends PureComponent<Props, State> {
+  static defaultProps = {
+    animate: true
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      mounted: false
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
+
   render() {
-    const { text, className } = this.props;
-    let { showIcon, showBackground } = this.props;
-    const timeout = 400;
+    const { text, className, animate } = this.props;
+    const { mounted } = this.state;
+    const showIcon = isBoolean(this.props.showIcon) ? this.props.showIcon : true;
+    const showBackground = isBoolean(this.props.showBackground) ? this.props.showBackground : true;
 
-    showIcon = (isBoolean(showIcon) ? showIcon : true);
-    showBackground = (isBoolean(showBackground) ? showBackground : true);
-
-    const successElement = (text ? (
-      <CSSTransition classNames="success" timeout={timeout}>
-        <StyledSuccessMessage className="e2e-success-message">
+    return (
+      <CSSTransition
+        in={!!(mounted && text)}
+        timeout={timeout}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        enter={animate}
+        exit={animate}
+        classNames="success"
+      >
+        <Container className={`e2e-success-message ${className}`}>
           <StyledSuccessMessageInner showBackground={showBackground}>
             {showIcon && <CheckmarkIcon name="checkmark" />}
             <SuccessMessageText>
               {text}
             </SuccessMessageText>
           </StyledSuccessMessageInner>
-        </StyledSuccessMessage>
+        </Container>
       </CSSTransition>
-    ) : null);
-
-    return (
-      <Container className={className}>
-        <TransitionGroup>
-          {successElement}
-        </TransitionGroup>
-      </Container>
     );
   }
 }

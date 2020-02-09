@@ -6,7 +6,7 @@ jest.mock('services/officialFeedback', () => ({
      deleteOfficialFeedbackFromInitiative: jest.fn()
 }));
 
-jest.mock('./Form/OfficialFeedbackEdit', () => 'OfficialFeedbackEdit');
+jest.mock('./Form/OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('components/UI/MoreActionsMenu', () => 'MoreActionsMenu');
 jest.mock('components/UI/QuillEditedContent', () => 'QuillEditedContent');
 jest.mock('components/T');
@@ -66,6 +66,6 @@ describe('<OfficialFeedbackPost />', () => {
     actions.forEach(action => action.handler());
     expect(officialFeedbackSerivce.deleteOfficialFeedbackFromIdea).toHaveBeenCalledTimes(0);
     expect(officialFeedbackSerivce.deleteOfficialFeedbackFromInitiative).toHaveBeenCalledTimes(1);
-    expect(wrapper.find('OfficialFeedbackEdit'));
+    expect(wrapper.find('OfficialFeedbackForm'));
   });
 });

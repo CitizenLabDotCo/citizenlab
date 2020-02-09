@@ -65,4 +65,20 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo',
     defaultMessage: 'This will be shown to users posting an initiative. These criteria define when an initiative can be eligible or not'
   },
+  initiativeSettingsFormSave: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSave',
+    defaultMessage: 'Save'
+  },
+  initiativeSettingsFormSaved: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSave',
+    defaultMessage: 'Saved!'
+  },
+  initiativeSettingsFormError: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
+    defaultMessage: 'Something went wrong. Please try again.'
+  },
+  initiativeSettingsFormSuccess: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
+    defaultMessage: 'Your changes have been saved.'
+  },
 });

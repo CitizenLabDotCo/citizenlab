@@ -2,13 +2,10 @@ import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
 // components
-import QuillMultiloc, { InputProps } from 'components/UI/QuillEditor/QuillMultiloc';
+import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
 
-// typings
-import { Multiloc } from 'typings';
-
-export default class FormikQuillMultiloc extends PureComponent<FieldProps & InputProps> {
-  handleOnChange = (newValue: Multiloc) => {
+export default class FormikQuill extends PureComponent<FieldProps & QuillEditorProps> {
+  handleOnChange = (newValue: string) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
     this.props.form.setStatus('enabled');
   }
@@ -21,9 +18,9 @@ export default class FormikQuillMultiloc extends PureComponent<FieldProps & Inpu
     const { field } = this.props;
 
     return (
-      <QuillMultiloc
+      <QuillEditor
         {...this.props}
-        valueMultiloc={field.value}
+        value={field.value}
         onChange={this.handleOnChange}
         onBlur={this.handleOnBlur}
       />

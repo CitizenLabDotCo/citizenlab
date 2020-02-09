@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Locale, Multiloc } from 'typings';
 
 // components
-import OfficialFeedbackForm from './Form/OfficialFeedbackForm';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
