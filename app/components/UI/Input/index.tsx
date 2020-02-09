@@ -108,12 +108,10 @@ export type Props = {
   onGreyBackground?: boolean;
 };
 
-type State = {};
-
-export class Input extends React.PureComponent<Props, State> {
+export class Input extends React.PureComponent<Props> {
 
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { maxCharCount, onChange, name, locale } = this.props;
+    const { maxCharCount, onChange, locale } = this.props;
 
     if (!maxCharCount || size(event.currentTarget.value) <= maxCharCount) {
       if (onChange) {
