@@ -6,7 +6,7 @@ import useLocale from 'hooks/useLocale';
 import useTenantLocales from 'hooks/useTenantLocales';
 
 // components
-import OfficialFeedbackForm from './Form/OfficialFeedbackForm';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 import OfficialFeedbackFeed from './OfficialFeedbackFeed';
 
 // utils

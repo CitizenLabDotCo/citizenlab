@@ -7,6 +7,9 @@ import Quill, { Sources, QuillOptionsStatic, RangeStatic } from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
+// components
+import Label from 'components/UI/Label';
+
 // i18n
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -104,19 +107,18 @@ const Container = styled.div<{
   }
 `;
 
-export interface QuillEditorProps {
+export interface Props {
+  id: string;
+  value?: string;
+  label?: string | JSX.Element | null;
+  labelTooltip?: JSX.Element;
+  locale?: Locale;
+  placeholder?: string;
+  noToolbar?: boolean;
   noImages?: boolean;
   noVideos?: boolean;
   noAlign?: boolean;
   limitedTextFormatting?: boolean;
-  noToolbar?: boolean;
-}
-
-interface Props extends QuillEditorProps {
-  id: string;
-  value?: string;
-  locale?: Locale;
-  placeholder?: string;
   hasError?: boolean;
   className?: string;
   onChange?: (html: string, locale: Locale | undefined) => void;
@@ -192,6 +194,8 @@ Quill.register(VideoFormat, true);
 const QuillEditor = memo<Props & InjectedIntlProps>(({
   id,
   value,
+  label,
+  labelTooltip,
   locale,
   placeholder,
   noToolbar,
@@ -266,13 +270,18 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   const textChangeHandler = () => {
     if (editor) {
-      const html = editor.root.innerHTML;
+      let html = editor.root.innerHTML;
 
       if (html !== contentRef.current) {
-        // console.log('textChangeHandler:');
-        // console.log(contentRef.current);
-        // console.log(html);
+        console.log('textChangeHandler:');
+        console.log(contentRef.current);
+        console.log(html);
         contentRef.current = html;
+
+        if (html === '<p><br></p>') {
+          html = '';
+        }
+
         onChange && onChange(html, locale);
       }
     }
@@ -310,9 +319,9 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   useEffect(() => {
     if ((!prevEditor && editor && value) || (prevEditor && editor && value !== contentRef.current)) {
-      // console.log('dangerouslyPasteHTML:');
-      // console.log(contentRef.current);
-      // console.log(value);
+      console.log('dangerouslyPasteHTML:');
+      console.log(contentRef.current);
+      console.log(value);
       contentRef.current = value || '';
       editor.clipboard.dangerouslyPasteHTML(value || '');
     }
@@ -381,6 +390,13 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
       edit={formatMessage(messages.edit)}
       remove={formatMessage(messages.remove)}
     >
+      {label &&
+        <Label>
+          {label}
+          {labelTooltip}
+        </Label>
+      }
+
       {!noToolbar &&
         <div id={toolbarId || undefined} >
           {!limitedTextFormatting &&

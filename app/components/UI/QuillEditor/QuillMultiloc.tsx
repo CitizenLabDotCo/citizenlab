@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import QuillEditor, { QuillEditorProps } from 'components/UI/QuillEditor';
-import Label from 'components/UI/Label';
+import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
 
 // style
 import styled from 'styled-components';
@@ -29,14 +28,9 @@ const LanguageExtension = styled.span`
   display: inline-block;
 `;
 
-export interface InputProps extends QuillEditorProps {
-  id: string;
+export interface InputProps extends Omit<QuillEditorProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
-  label?: string | JSX.Element | null;
-  labelTooltip?: JSX.Element;
-  onChange?: (value: Multiloc) => void;
-  onBlur?: () => void;
-  className?: string;
+  onChange?: (arg: Multiloc) => void;
 }
 
 interface DataProps {
@@ -65,7 +59,6 @@ class QuillMultiloc extends PureComponent<Props, State> {
   render() {
     const {
       tenantLocales,
-      label,
       labelTooltip,
       id,
       valueMultiloc,
@@ -82,24 +75,23 @@ class QuillMultiloc extends PureComponent<Props, State> {
         <Container id={id} className={`${className || ''} e2e-multiloc-editor`} >
           {tenantLocales.map((locale, index) => {
             const idLocale = id && `${id}-${locale}`;
-            const idLabelLocale = id && `label-${id}-${locale}`;
+            const label = this.props.label ? (
+              <>
+                {this.props.label}
+                {tenantLocales.length > 1 && <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>}
+              </>
+            ) : null;
 
             return (
               <EditorWrapper
                 key={locale}
                 className={`${index === tenantLocales.length - 1 && 'last'}`}
               >
-                {label &&
-                  <Label id={idLabelLocale}>
-                    {label}
-                    {tenantLocales.length > 1 && <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>}
-                    {labelTooltip}
-                  </Label>
-                }
-
                 <QuillEditor
                   id={idLocale}
                   value={valueMultiloc?.[locale] || ''}
+                  label={label}
+                  labelTooltip={labelTooltip}
                   locale={locale}
                   onChange={this.handleOnChange}
                   noToolbar={noToolbar}
