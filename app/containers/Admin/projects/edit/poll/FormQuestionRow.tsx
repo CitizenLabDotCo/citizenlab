@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 // Components
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import { TextCell, Row } from 'components/admin/ResourceList';
-import InputMultiloc from 'components/UI/InputMultiloc';
+import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 
 // i18n
@@ -43,9 +43,20 @@ class FormQuestionRow extends PureComponent<Props, State> {
     this.setState({ selectedLocale });
   }
 
+  onChangeTitle = (value: string, locale: Locale | undefined) => {
+    if (locale) {
+      const titleMultiloc = {
+        ...this.props.titleMultiloc,
+        [locale]: value
+      };
+
+      this.props.onChange(titleMultiloc);
+    }
+  }
+
   render() {
     const { selectedLocale } = this.state;
-    const { titleMultiloc, onChange, onSave, onCancel } = this.props;
+    const { titleMultiloc, onSave, onCancel } = this.props;
     return (
       <Row
         className="e2e-form-question-row"
@@ -60,12 +71,12 @@ class FormQuestionRow extends PureComponent<Props, State> {
           }
         </TextCell>
         <TextCell className="expand">
-          <InputMultiloc
-            valueMultiloc={titleMultiloc}
-            type="text"
-            onChange={onChange}
-            selectedLocale={selectedLocale}
+          <Input
             autoFocus
+            value={titleMultiloc[selectedLocale]}
+            locale={selectedLocale}
+            type="text"
+            onChange={this.onChangeTitle}
           />
         </TextCell>
 

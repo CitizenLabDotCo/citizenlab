@@ -37,6 +37,10 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
+const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+  border: solid 1px red;
+`;
+
 const StyledSectionField = styled(SectionField)`
   margin-top: 45px;
 `;
@@ -241,9 +245,6 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
     const { selectedLocale, formValues, processing, error, success } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && formValues) {
-
-      console.log(formValues);
-
       return (
         <Container className={className || ''}>
           <SectionTitle>
@@ -292,17 +293,17 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               />
             </SectionField>
 
-            <FormLocaleSwitcher
-              locales={tenant.attributes.settings.core.locales}
-              selectedLocale={selectedLocale}
-              onLocaleChange={this.handleSelectedLocaleOnChange}
-              values={{
-                eligibility_criteria: formValues.eligibility_criteria,
-                threshold_reached_message: formValues.threshold_reached_message
-              }}
-            />
-
             <StyledSectionField>
+              <StyledFormLocaleSwitcher
+                locales={tenant.attributes.settings.core.locales}
+                selectedLocale={selectedLocale}
+                onLocaleChange={this.handleSelectedLocaleOnChange}
+                values={{
+                  eligibility_criteria: formValues.eligibility_criteria,
+                  threshold_reached_message: formValues.threshold_reached_message
+                }}
+              />
+
               <QuillEditor
                 id="threshold_reached_message"
                 value={formValues.threshold_reached_message[selectedLocale]}

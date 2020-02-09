@@ -270,18 +270,12 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   const textChangeHandler = () => {
     if (editor) {
-      let html = editor.root.innerHTML;
+      const html = editor.root.innerHTML === '<p><br></p>' ? '' : editor.root.innerHTML;
 
       if (html !== contentRef.current) {
-        console.log('textChangeHandler:');
-        console.log(contentRef.current);
-        console.log(html);
+        // console.log('textChangeHandler:');
+        // console.log(html);
         contentRef.current = html;
-
-        if (html === '<p><br></p>') {
-          html = '';
-        }
-
         onChange && onChange(html, locale);
       }
     }
@@ -319,11 +313,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   useEffect(() => {
     if ((!prevEditor && editor && value) || (prevEditor && editor && value !== contentRef.current)) {
-      console.log('dangerouslyPasteHTML:');
-      console.log(contentRef.current);
-      console.log(value);
-      contentRef.current = value || '';
       editor.clipboard.dangerouslyPasteHTML(value || '');
+      contentRef.current = editor.root.innerHTML;
+      // console.log('dangerouslyPastedHTML:');
+      // console.log(contentRef.current);
     }
   }, [editor, value]);
 
