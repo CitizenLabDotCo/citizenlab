@@ -280,7 +280,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                                 dropRow={handleDropRow}
                                 lastItem={(index === projectHolderOrderings.length - 1)}
                               >
-                                <ProjectRow project={project} showIcon />
+                                <ProjectRow project={project} />
                               </SortableRow>
                             )}
                           </GetProject>
@@ -315,7 +315,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                               id={project.id}
                               lastItem={(index === projectHolderOrderings.length - 1)}
                             >
-                              <ProjectRow project={project} showIcon />
+                              <ProjectRow project={project} />
                             </Row>
                           )}
                         </GetProject>
