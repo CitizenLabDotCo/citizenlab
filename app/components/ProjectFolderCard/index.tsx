@@ -314,7 +314,7 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
             ariaHidden
             colorTheme={{
               clIconPrimary: `${theme.colorSecondary}`,
-              clIconAccent: `${theme.colorSecondary}`,
+              clIconSecondary: `${theme.colorSecondary}`,
             }}
           />
           <MapIconDescription aria-hidden>
