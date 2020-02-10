@@ -75,7 +75,6 @@ class Edit extends React.PureComponent<Props> {
             }}
             render={this.renderFn}
             onSubmit={this.handleSubmit}
-            validate={TopicForm.validate}
           />
         }
       </Section>

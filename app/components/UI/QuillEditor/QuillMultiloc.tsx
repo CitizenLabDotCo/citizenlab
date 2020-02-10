@@ -25,7 +25,7 @@ const EditorWrapper = styled.div`
 
 const LanguageExtension = styled.span`
   font-weight: 500;
-  display: inline-block;
+  margin-left: 4px;
 `;
 
 export interface InputProps extends Omit<QuillEditorProps, 'value' | 'onChange'> {
@@ -59,9 +59,9 @@ class QuillMultiloc extends PureComponent<Props, State> {
   render() {
     const {
       tenantLocales,
-      labelTooltip,
       id,
       valueMultiloc,
+      labelTooltipText,
       noToolbar,
       noImages,
       noVideos,
@@ -77,7 +77,7 @@ class QuillMultiloc extends PureComponent<Props, State> {
             const idLocale = id && `${id}-${locale}`;
             const label = this.props.label ? (
               <>
-                {this.props.label}
+                <span>{this.props.label}</span>
                 {tenantLocales.length > 1 && <LanguageExtension>{locale.toUpperCase()}</LanguageExtension>}
               </>
             ) : null;
@@ -91,7 +91,7 @@ class QuillMultiloc extends PureComponent<Props, State> {
                   id={idLocale}
                   value={valueMultiloc?.[locale] || ''}
                   label={label}
-                  labelTooltip={labelTooltip}
+                  labelTooltipText={labelTooltipText}
                   locale={locale}
                   onChange={this.handleOnChange}
                   noToolbar={noToolbar}

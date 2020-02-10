@@ -268,7 +268,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
   handleBodyOnChange = (value: string, locale: Locale |undefined) => {
     if (locale && this.props.onChangeBody) {
-      this.props.onChangeTitle({
+      this.props.onChangeBody({
         ...this.props.body_multiloc,
         [locale]: value
       });

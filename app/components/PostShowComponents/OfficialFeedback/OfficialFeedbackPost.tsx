@@ -38,6 +38,7 @@ const Container = styled.div`
   font-size: ${fontSizes.base}px;
   padding: 30px;
   padding-top: 35px;
+  margin-bottom: 15px;
 
   ${media.smallerThanMinTablet`
     padding: 20px;
@@ -52,7 +53,8 @@ const PostContainer = styled(Container)`
 `;
 
 const EditFormContainer = styled(Container)`
-  background: ${colors.adminBackground};
+  background: ${transparentize(0.93, colors.clRedError)};
+  background: ${colors.background};
 `;
 
 const Body = styled.div`

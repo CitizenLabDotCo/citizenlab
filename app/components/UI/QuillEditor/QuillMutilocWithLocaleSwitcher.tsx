@@ -1,111 +1,107 @@
-// import React, { memo, useState, useCallback, useEffect, FormEvent } from 'react';
-// import { get } from 'lodash-es';
-// import { isNilOrError } from 'utils/helperUtils';
+import React, { memo, useState, useCallback, useEffect } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
-// // components
-// import QuillEditor, { QuillEditorProps } from 'components/UI/QuillEditor';
-// import Label from 'components/UI/Label';
-// import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+// components
+import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
+import Label from 'components/UI/Label';
+import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import IconTooltip from 'components/UI/IconTooltip';
 
-// // hooks
-// import useTenant from 'hooks/useTenant';
+// hooks
+import useLocale from 'hooks/useLocale';
 
-// // style
-// import styled from 'styled-components';
+// style
+import styled from 'styled-components';
 
-// // typings
-// import { Locale, Multiloc } from 'typings';
+// typings
+import { Locale, Multiloc } from 'typings';
 
-// const Container = styled.div``;
+const Container = styled.div``;
 
-// const Wrapper = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   padding-bottom: 8px;
-// `;
+const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`;
 
-// const StyledLabel = styled(Label)`
-//   flex: 1;
-//   padding-bottom: 0px;
-// `;
+const StyledLabel = styled(Label)`
+  margin-bottom: 0px;
+`;
 
-// const Spacer = styled.div`
-//   flex: 1;
-// `;
+const StyledIconTooltip = styled(IconTooltip)``;
 
-// const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
-//   width: auto;
-// `;
+const Spacer = styled.div`
+  flex: 1;
+`;
 
-// export interface Props extends Omit<QuillEditorProps, 'value' | 'onChange'> {
-//   value: Multiloc | null | undefined;
-//   onChange: (value: Multiloc, locale: Locale) => void;
-//   onSelectedLocaleChange?: (locale: Locale) => void;
-// }
+const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+  width: auto;
+  margin-left: 20px;
+`;
 
-// const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
+export interface Props extends Omit<QuillEditorProps, 'value' | 'onChange' | 'locale' | 'labelTooltip'> {
+  valueMultiloc: Multiloc | null | undefined;
+  labelTooltipText?: string | JSX.Element | null;
+  onChange: (value: Multiloc, locale: Locale) => void;
+}
 
-//   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
+const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
+  const { valueMultiloc, onChange, className, label, labelTooltipText, ...quillProps } = props;
 
-//   const tenant = useTenant();
-//   const tenantLocales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
+  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
-//   useEffect(() => {
-//     const newSelectedLocale = tenantLocales && tenantLocales.length > 0 ? tenantLocales[0] : null;
-//     setSelectedLocale(newSelectedLocale);
-//     props.onSelectedLocaleChange && newSelectedLocale && props.onSelectedLocaleChange(newSelectedLocale);
-//   }, [tenantLocales]);
+  const locale = useLocale();
 
-//   const handleValueOnChange = useCallback((value: string, locale: Locale) => {
-//     if (!isNilOrError(selectedLocale)) {
-//       props.onChange({
-//         ...value,
-//         [locale]: value
-//       });
-//     }
-//   }, [value, selectedLocale]);
+  useEffect(() => {
+    !isNilOrError(locale) && setSelectedLocale(locale);
+  }, [locale]);
 
-//   const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
-//     setSelectedLocale(newSelectedLocale);
-//     onSelectedLocaleChange && onSelectedLocaleChange(newSelectedLocale);
-//   }, []);
+  const handleValueOnChange = useCallback((value: string, locale: Locale) => {
+    const newValueMultiloc = {
+      ...(valueMultiloc || {}),
+      [locale]: value
+    } as Multiloc;
 
-//   const handleOnBlur = useCallback((event: FormEvent<HTMLInputElement>) => {
-//     onBlur && onBlur(event);
-//   }, []);
+    onChange(newValueMultiloc, locale);
+  }, [valueMultiloc, onChange]);
 
-//   return (
-//     <Container className={className}>
-//       <Wrapper>
-//         {label ? <StyledLabel htmlFor={id}>{label}</StyledLabel> : <Spacer />}
+  const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
+    setSelectedLocale(newSelectedLocale);
+  }, []);
 
-//         {selectedLocale &&
-//           <StyledFormLocaleSwitcher
-//             onLocaleChange={handleOnSelectedLocaleChange}
-//             selectedLocale={selectedLocale}
-//             values={{
-//               input_field: valueMultiloc as Multiloc
-//             }}
-//           />
-//         }
-//       </Wrapper>
+  if (selectedLocale && valueMultiloc) {
+    return (
+      <Container className={className}>
+        <LabelContainer>
+          {label &&
+            <StyledLabel htmlFor={`${props.id}-${selectedLocale}`}>
+              <span>{label}</span>
+              {labelTooltipText && <StyledIconTooltip content={labelTooltipText} />}
+            </StyledLabel>
+          }
 
-//       <QuillEditor
-//         id={idLocale}
-//         value={valueMultiloc?.[locale] || ''}
-//         label={label}
-//         labelTooltip={labelTooltip}
-//         locale={locale}
-//         onChange={this.handleOnChange}
-//         noToolbar={noToolbar}
-//         noImages={noImages}
-//         noVideos={noVideos}
-//         noAlign={noAlign}
-//         limitedTextFormatting={limitedTextFormatting}
-//       />
-//     </Container>
-//   );
-// });
+          {!label && <Spacer />}
 
-// export default QuillMutilocWithLocaleSwitcher;
+          <StyledFormLocaleSwitcher
+            onLocaleChange={handleOnSelectedLocaleChange}
+            selectedLocale={selectedLocale}
+            values={{ valueMultiloc }}
+          />
+        </LabelContainer>
+
+        <QuillEditor
+          {...quillProps}
+          id={`${props.id}-${selectedLocale}`}
+          value={valueMultiloc[selectedLocale]}
+          locale={selectedLocale}
+          onChange={handleValueOnChange}
+        />
+      </Container>
+    );
+  }
+
+  return null;
+});
+
+export default QuillMutilocWithLocaleSwitcher;

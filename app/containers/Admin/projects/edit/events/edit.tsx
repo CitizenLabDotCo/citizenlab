@@ -297,7 +297,7 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   id="description"
                   label={this.descriptionLabel}
                   valueMultiloc={eventAttrs.description_multiloc}
-                  onChangeMultiloc={this.handleDescriptionMultilocOnChange}
+                  onChange={this.handleDescriptionMultilocOnChange}
                 />
                 <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
               </SectionField>

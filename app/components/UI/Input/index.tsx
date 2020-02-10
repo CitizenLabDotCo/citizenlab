@@ -4,6 +4,7 @@ import { isNil, isEmpty, size } from 'lodash-es';
 // components
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -45,11 +46,6 @@ const Container: any = styled.div`
       padding-right: 62px;
     }
 
-    &::placeholder {
-      color: ${colors.label} !important;
-      opacity: 1;
-    }
-
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
     }
@@ -62,10 +58,6 @@ const Container: any = styled.div`
       padding-right: ${props => props.error && '40px'};
     `}
   }
-`;
-
-const LabelWrapper = styled.div`
-  display: flex;
 `;
 
 const CharCount = styled.div`
@@ -86,6 +78,7 @@ export type Props = {
   ariaLabel?: string;
   id?: string | undefined;
   label?: string | JSX.Element | null | undefined;
+  labelTooltipText?: string | JSX.Element | null;
   value?: string | null | undefined;
   locale?: Locale;
   type: 'text' | 'email' | 'password' | 'number' | 'date';
@@ -133,7 +126,7 @@ export class Input extends React.PureComponent<Props> {
   }
 
   render() {
-    const { label, ariaLabel, className, onGreyBackground } = this.props;
+    const { label, labelTooltipText, ariaLabel, className, onGreyBackground } = this.props;
     let { value, placeholder, error } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
@@ -150,9 +143,10 @@ export class Input extends React.PureComponent<Props> {
       <Container error={hasError} className={className || ''}>
 
         {label &&
-          <LabelWrapper>
-            <Label htmlFor={id}>{label}</Label>
-          </LabelWrapper>
+          <Label htmlFor={id}>
+            <span>{label}</span>
+            {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+          </Label>
         }
 
         <input

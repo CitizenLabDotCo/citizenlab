@@ -108,7 +108,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
             id="area_term"
             label={<FormattedMessage {...messages.areaTerm} />}
             valueMultiloc={areaTerm}
-            onValueChange={this.handleAreaChange}
+            onChange={this.handleAreaChange}
             placeholder={formatMessage(messages.areaTermPlaceholder)}
           />
         </SectionField>
@@ -119,7 +119,7 @@ class AreaTermConfig extends PureComponent<Props, State> {
             id="areas_term"
             label={<FormattedMessage {...messages.areasTerm} />}
             valueMultiloc={areasTerm}
-            onValueChange={this.handleAreasChange}
+            onChange={this.handleAreasChange}
             placeholder={formatMessage(messages.areasTermPlaceholder)}
           />
         </SectionField>

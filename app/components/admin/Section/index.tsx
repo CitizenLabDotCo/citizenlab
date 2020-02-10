@@ -78,11 +78,6 @@ export const SectionField = styled.div`
     outline: none;
     padding: 12px;
 
-    &::placeholder {
-      color: #aaa;
-      opacity: 1;
-    }
-
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
     }

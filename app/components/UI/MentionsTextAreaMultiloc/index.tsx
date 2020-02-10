@@ -28,7 +28,7 @@ const LabelWrapper = styled.div`
   display: flex;
 `;
 
-const LanguageExtension = styled(Label)`
+const LanguageExtension = styled.span`
   font-weight: 500;
 `;
 

@@ -56,15 +56,15 @@ const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
 `;
 
 const StyledMentionsTextArea = styled(MentionsTextArea)`
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 `;
 
 const StyledInput = styled(Input)`
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 `;
 
 const StyledError = styled(Error)`
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 `;
 
 const SuccessMessage = styled.div`
@@ -268,6 +268,8 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
           processing: false,
           success: true
         });
+
+        setTimeout(() => this.setState({ success: false }), 6000);
       } catch {
         this.setState({
           processing: false,
@@ -279,10 +281,10 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
   }
 
   render() {
-    const { formType, onClose, className, tenantLocales, intl } = this.props;
+    const { formType, onClose, className, tenantLocales, intl: { formatMessage } } = this.props;
     const { selectedLocale, formValues, processing, error, success } = this.state;
-    const errorMessage = error ? intl.formatMessage(messages.updateButtonError) : null;
-    const successMessage = success ? intl.formatMessage(messages.updateMessageSuccess) : null;
+    const errorMessage = error ? formatMessage(messages.updateButtonError) : null;
+    const successMessage = success ? formatMessage(messages.updateMessageSuccess) : null;
 
     if (selectedLocale) {
       return (
@@ -306,15 +308,15 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
             <StyledMentionsTextArea
               name="official-feedback-form-mentions-textarea"
               locale={selectedLocale}
+              ariaLabel={formatMessage(messages.officialUpdateBody)}
               value={formValues.bodyMultiloc?.[selectedLocale] || ''}
               onChange={this.handleBodyOnChange}
-              placeholder={intl.formatMessage(messages.textAreaPlaceholder)}
+              placeholder={formatMessage(messages.textAreaPlaceholder)}
+              placeholderFontWeight="400"
               rows={8}
               padding="12px"
               fontSize={`${fontSizes.base}px`}
               background="#fff"
-              placeholderFontWeight="400"
-              ariaLabel={intl.formatMessage(messages.officialUpdateBody)}
             />
 
             <StyledInput
@@ -322,8 +324,8 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
               locale={selectedLocale}
               value={formValues.authorMultiloc?.[selectedLocale] || ''}
               onChange={this.handleAuthorOnChange}
-              placeholder={intl.formatMessage(messages.officialNamePlaceholder)}
-              ariaLabel={intl.formatMessage(messages.officialUpdateAuthor)}
+              placeholder={formatMessage(messages.officialNamePlaceholder)}
+              ariaLabel={formatMessage(messages.officialUpdateAuthor)}
             />
           </Section>
 
@@ -334,7 +336,7 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
               bgColor={formType === 'edit' ? colors.adminTextColor : colors.clRed}
               icon="pen"
               textColor="white"
-              fullWidth={true}
+              fullWidth={formType === 'new'}
               onClick={this.handleOnSubmit}
               disabled={!this.validate()}
               processing={processing}

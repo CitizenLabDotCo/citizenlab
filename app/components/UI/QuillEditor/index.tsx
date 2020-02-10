@@ -9,6 +9,7 @@ import 'quill/dist/quill.snow.css';
 
 // components
 import Label from 'components/UI/Label';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -111,7 +112,7 @@ export interface Props {
   id: string;
   value?: string;
   label?: string | JSX.Element | null;
-  labelTooltip?: JSX.Element;
+  labelTooltipText?: string | JSX.Element | null;
   locale?: Locale;
   placeholder?: string;
   noToolbar?: boolean;
@@ -195,7 +196,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   id,
   value,
   label,
-  labelTooltip,
+  labelTooltipText,
   locale,
   placeholder,
   noToolbar,
@@ -268,34 +269,40 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     }
   }, [placeholder, noAlign, noImages, noVideos, limitedTextFormatting, toolbarId, editor, editorRef]);
 
-  const textChangeHandler = () => {
-    if (editor) {
-      const html = editor.root.innerHTML === '<p><br></p>' ? '' : editor.root.innerHTML;
-
-      if (html !== contentRef.current) {
-        // console.log('textChangeHandler:');
-        // console.log(html);
-        contentRef.current = html;
-        onChange && onChange(html, locale);
-      }
+  useEffect(() => {
+    if ((!prevEditor && editor && value) || (prevEditor && editor && value !== contentRef.current)) {
+      const delta = editor.clipboard.convert(value);
+      editor.setContents(delta);
+      contentRef.current = editor.root.innerHTML;
     }
-  };
-
-  const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
-
-  const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
-    if (editor) {
-      if (range === null && oldRange !== null) {
-        setFocussed(false);
-        onBlur && onBlur();
-      } else if (range !== null && oldRange === null) {
-        setFocussed(true);
-        onFocus && onFocus();
-      }
-    }
-  };
+  }, [editor, value]);
 
   useEffect(() => {
+    const textChangeHandler = () => {
+      if (editor) {
+        const html = editor.root.innerHTML === '<p><br></p>' ? '' : editor.root.innerHTML;
+
+        if (html !== contentRef.current) {
+          contentRef.current = html;
+          onChange && onChange(html, locale);
+        }
+      }
+    };
+
+    const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
+      if (editor) {
+        if (range === null && oldRange !== null) {
+          setFocussed(false);
+          onBlur && onBlur();
+        } else if (range !== null && oldRange === null) {
+          setFocussed(true);
+          onFocus && onFocus();
+        }
+      }
+    };
+
+    const debouncedTextChangeHandler = debounce(textChangeHandler, 100);
+
     if (editor) {
       editor.on('text-change', debouncedTextChangeHandler);
       editor.on('selection-change', selectionChangeHandler);
@@ -306,19 +313,9 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
       if (editor) {
         editor.off('text-change', debouncedTextChangeHandler);
         editor.off('selection-change', selectionChangeHandler);
-        setEditor(null);
       }
     };
-  }, [editor]);
-
-  useEffect(() => {
-    if ((!prevEditor && editor && value) || (prevEditor && editor && value !== contentRef.current)) {
-      editor.clipboard.dangerouslyPasteHTML(value || '');
-      contentRef.current = editor.root.innerHTML;
-      // console.log('dangerouslyPastedHTML:');
-      // console.log(contentRef.current);
-    }
-  }, [editor, value]);
+  }, [editor, locale, onChange, onblur, onFocus]);
 
   const trackAdvanced = (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
     trackEventByName(tracks.advancedEditing.name, {
@@ -385,8 +382,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     >
       {label &&
         <Label>
-          {label}
-          {labelTooltip}
+          <span>{label}</span>
+          {labelTooltipText && <IconTooltip content={labelTooltipText} />}
         </Label>
       }
 
