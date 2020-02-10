@@ -83,7 +83,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
         <ListsContainer>
           <ListHeader>
             <HeaderTitle>
-              <FormattedMessage {...messages.inFolder} />
+              <FormattedMessage {...messages.projectsAlreadyAdded} />
             </HeaderTitle>
 
             <Spacer />
@@ -120,7 +120,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
           <ListHeader>
             <HeaderTitle>
-              <FormattedMessage {...messages.otherProjects} />
+              <FormattedMessage {...messages.projectsYouCanAdd} />
             </HeaderTitle>
             <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
           </ListHeader>
