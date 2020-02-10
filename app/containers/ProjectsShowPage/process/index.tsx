@@ -24,7 +24,8 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // style
 import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
+import { colors, media, viewportWidths } from 'utils/styleUtils';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 const Container = styled.div`
   display: flex;
@@ -74,6 +75,13 @@ const SecondRowContentContainer = styled(ContentContainer)`
 
 const StyledPBExpenses = styled(PBExpenses)`
   margin-bottom: -120px;
+  padding: 30px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px ${colors.separation};
+
+  ${media.smallerThanMaxTablet`
+    padding: 20px;
+  `}
 `;
 
 const StyledPhaseSurvey = styled(PhaseSurvey)`
@@ -105,6 +113,7 @@ interface InputProps {
 
 interface DataProps {
   project: GetProjectChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -140,11 +149,12 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
   }
 
   render() {
-    const { project, className, params: { slug } } = this.props;
+    const { project, className, params: { slug }, windowSize } = this.props;
     const { selectedPhase } = this.state;
     const selectedPhaseId = (selectedPhase ? selectedPhase.id : null);
     const isPBPhase = selectedPhase?.attributes?.participation_method === 'budgeting';
     const participationMethod = (!isNilOrError(selectedPhase) ? selectedPhase.attributes.participation_method : null);
+    const smallerThanBigTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
     if (!isNilOrError(project) && selectedPhase !== undefined) {
       if (project.attributes.process_type !== 'timeline') {
@@ -162,6 +172,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
                 <StyledPBExpenses
                   participationContextId={selectedPhaseId}
                   participationContextType="phase"
+                  viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
               }
               <StyledPhaseSurvey
@@ -196,7 +207,8 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
+  windowSize: <GetWindowSize />
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (

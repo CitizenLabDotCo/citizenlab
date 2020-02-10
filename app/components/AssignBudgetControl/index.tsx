@@ -30,16 +30,19 @@ import tracks from 'containers/ProjectsShowPage/pb/tracks';
 // utils
 import streams from 'utils/streams';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import { FormattedNumber } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedNumber, InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import PBExpenses from 'containers/ProjectsShowPage/pb/PBExpenses';
+import { darken } from 'polished';
 
 const IdeaCardContainer = styled.div`
   display: flex;
@@ -76,26 +79,58 @@ const IdeaCardButton = styled(Button)`
   margin-right: 12px;
 `;
 
-const BudgetBoxAssigned = styled.div`
-  margin-top: 12px;
-`;
-
 const AssignedLabel = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+const ControlWrapperHorizontalRule: any = styled.hr`
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: ${colors.separation};
+  margin: 20px 0;
 `;
 
 const AssignedIcon = styled(Icon)`
-  height: 12px;
-  fill: ${colors.clGreenSuccess};
-  margin-right: 4px;
+  height: 39px;
+  color: ${colors.adminTextColor};
+  margin-bottom: 4px;
 `;
 
 const AssignedText = styled.div`
   color: ${colors.clGreenSuccess};
-  font-size: ${fontSizes.small}px;
+  font-size: ${fontSizes.base}px;
   font-weight: 400;
   hyphens: auto;
+`;
+
+const ActionsWrapper = styled.div`
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  color: ${colors.label};
+`;
+
+const Separator = styled.div`
+  font-size: ${fontSizes.xs}px;
+  margin-left: 10px;
+  margin-right: 10px;
+`;
+
+const ActionButton = styled.button`
+  font-size: ${fontSizes.base}px;
+  font-weight: 500;
+  text-decoration: underline;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+
+  &:hover, &:focus {
+    color: ${darken(.5, colors.label)};
+  }
 `;
 
 interface InputProps {
@@ -107,6 +142,7 @@ interface InputProps {
   unauthenticatedAssignBudgetClick?: () => void;
   disabledAssignBudgetClick?: () => void;
   className?: string;
+  projectId: string;
 }
 
 interface DataProps {
@@ -128,13 +164,13 @@ interface Tracks {
   disabledAssignClick: () => void;
 }
 
-interface Props extends DataProps, InputProps {}
+interface Props extends DataProps, InputProps { }
 
 interface State {
   processing: boolean;
 }
 
-class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
+class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -144,7 +180,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
 
   disabledReasonNotVerified = () => {
     const { idea } = this.props;
-    const disabledReason = !isNilOrError(idea) ? idea.attributes?.action_descriptor?.budgeting?.disabled_reason : null;
+    const disabledReason = !isNilOrError(idea) ? idea.attributes ?.action_descriptor ?.budgeting ?.disabled_reason : null;
 
     return disabledReason === 'not_verified';
   }
@@ -253,9 +289,16 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
     this.props.openIdea && this.props.openIdea(event);
   }
 
-  render () {
+  goBack = () => {
+    const { project, participationContextType } = this.props;
+    if (!isNilOrError(project)) {
+      clHistory.push(`/projects/${project.attributes.slug}/${participationContextType === 'project' ? 'ideas' : 'process'}`);
+    }
+  }
+
+  render() {
     const { processing } = this.state;
-    const { view, ideaId, authUser, locale, tenant, idea, basket, className } = this.props;
+    const { view, ideaId, authUser, locale, tenant, idea, basket, className, participationContextId, participationContextType, intl: { formatMessage } } = this.props;
 
     if (
       !isUndefined(authUser) &&
@@ -278,59 +321,71 @@ class AssignBudgetControl extends PureComponent<Props & Tracks, State> {
               processing={processing}
               bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
               bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
-              icon={!isInBasket ? 'add' : 'remove'}
+              icon={!isInBasket ? 'basket-plus' : 'remove'}
               className={`e2e-assign-budget-button ${isInBasket ? 'in-basket' : 'not-in-basket'}`}
-            >
-              {!isInBasket ? (
-                <FormattedMessage {...messages.assign} />
-              ) : (
-                <FormattedMessage {...messages.undo} />
-              )}
-            </IdeaCardButton>
+              ariaLabel={!isInBasket ? formatMessage(messages.assign)
+                : formatMessage(messages.undo)}
+            />
           </IdeaCardContainer>
         );
       } else if (view === 'ideaPage') {
         return (
           <IdeaPageContainer className={fullClassName} aria-live="polite">
-            <BudgetBox>
-              <Budget>
-                <ScreenReaderOnly>
-                  <FormattedMessage {...messages.a11y_price} />
-                </ScreenReaderOnly>
-                <FormattedNumber
-                  value={idea.attributes.budget}
-                  style="currency"
-                  currency={tenant.attributes.settings.core.currency}
-                  minimumFractionDigits={0}
-                  maximumFractionDigits={0}
-                />
-              </Budget>
-              {isInBasket && !processing &&
-                <BudgetBoxAssigned>
-                  <AssignedLabel>
-                    <AssignedIcon name="checkmark" />
-                    <AssignedText>
-                      <FormattedMessage {...messages.assigned} />
-                    </AssignedText>
-                  </AssignedLabel>
-                </BudgetBoxAssigned>
-              }
-            </BudgetBox>
-            <Button
-              onClick={this.assignBudget}
-              processing={processing}
-              bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
-              bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
-              fullWidth={true}
-              icon={!isInBasket ? 'add' : 'remove'}
-              iconAriaHidden
-            >
-              {!isInBasket ? (
-                <FormattedMessage {...messages.assign} />
-              ) : (
-                <FormattedMessage {...messages.undo} />
-              )}
-            </Button>
+            {(isInBasket && !processing) ?
+              <AssignedLabel>
+                <AssignedIcon name="basket-checkmark" />
+                <AssignedText>
+                  <FormattedMessage {...messages.assigned} />
+                </AssignedText>
+                <ActionsWrapper>
+                  <ActionButton
+                    onClick={this.assignBudget}
+                  >
+                    <FormattedMessage {...messages.undo} />
+                  </ActionButton>
+                  <Separator aria-hidden>•</Separator>
+                  <ActionButton
+                    onClick={this.goBack}
+                  >
+                    <FormattedMessage {...messages.backToOverview} />
+                  </ActionButton>
+                </ActionsWrapper>
+              </AssignedLabel>
+              :
+              <>
+                <Budget>
+                  <ScreenReaderOnly>
+                    <FormattedMessage {...messages.a11y_price} />
+                  </ScreenReaderOnly>
+                  <BudgetBox>
+                    <FormattedNumber
+                      value={idea.attributes.budget}
+                      style="currency"
+                      currency={tenant.attributes.settings.core.currency}
+                      minimumFractionDigits={0}
+                      maximumFractionDigits={0}
+                    />
+                  </BudgetBox>
+                </Budget>
+                <Button
+                  onClick={this.assignBudget}
+                  processing={processing}
+                  bgColor={disabled ? colors.disabledPrimaryButtonBg : (isInBasket ? colors.adminSecondaryTextColor : colors.adminTextColor)}
+                  bgHoverColor={disabled ? colors.disabledPrimaryButtonBg : undefined}
+                  icon="basket-plus"
+                  fullWidth={true}
+                  iconAriaHidden
+                >
+                  <FormattedMessage {...messages.assign} />
+                </Button>
+              </>
+            }
+            <ControlWrapperHorizontalRule aria-hidden />
+            <PBExpenses
+              participationContextId={participationContextId}
+              participationContextType={participationContextType}
+              viewMode="column"
+            />
           </IdeaPageContainer>
         );
       }
@@ -345,7 +400,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ project, phase, participationContextType, render }) => {
     let basketId: string | null = null;
@@ -360,14 +415,14 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
-const AssignBudgetControlWithHoCs = injectTracks<Props>({
+const AssignBudgetControlWithHoCs = injectIntl(injectTracks<Props>({
   basketCreated: tracks.basketCreated,
   ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
   ideaAddedToBasket: tracks.ideaAddedToBasket,
   basketSubmitted: tracks.basketSubmitted,
   unauthenticatedAssignClick: tracks.unauthenticatedAssignClick,
   disabledAssignClick: tracks.disabledAssignClick
-})(AssignBudgetControl);
+})(AssignBudgetControl));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
