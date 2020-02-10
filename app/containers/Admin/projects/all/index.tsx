@@ -11,7 +11,7 @@ import { trackPage } from 'utils/analytics';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
-import { IProjectFolderData, deleteProjectFolder } from 'services/projectFolders';
+import { IProjectFolderData } from 'services/projectFolders';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
 // resources
@@ -39,7 +39,7 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
-import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon, ActionsRowContainer } from '../components/ProjectRow';
+import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon } from '../components/ProjectRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 
 // style
