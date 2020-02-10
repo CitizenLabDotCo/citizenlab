@@ -76,7 +76,7 @@ interface Props extends InputProps {
 interface State {
   style: object | null;
   mentionStyle: object | null;
-};
+}
 
 class MentionsTextArea extends PureComponent<Props, State> {
   textareaElement = React.createRef();

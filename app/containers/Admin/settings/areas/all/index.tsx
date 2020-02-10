@@ -52,7 +52,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
   render() {
     const { terminologyOpened } = this.state;
-    const { areas, intl: { formatMessage }} = this.props;
+    const { areas, intl: { formatMessage } } = this.props;
 
     if (isNilOrError(areas)) return null;
 
