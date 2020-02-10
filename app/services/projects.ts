@@ -208,12 +208,11 @@ export function getProjectIdeasUrl(project: IProjectData) {
   return projectUrl;
 }
 
-export async function updateProjectFolderMembership(projectId: string, projectData: IUpdatedProjectProperties, oldProjectFolderId?: string) {
-  const { folder_id: newProjectFolderId } = projectData;
+export async function updateProjectFolderMembership(projectId: string, newProjectFolderId: string | null, oldProjectFolderId?: string) {
   const response = await streams.update<IProject>(
     `${apiEndpoint}/${projectId}`,
     projectId,
-    { project: projectData }
+    { folder_id: newProjectFolderId }
   );
   await streams.fetchAllWith({
     dataId: [projectId, ...newProjectFolderId ? [newProjectFolderId] : oldProjectFolderId ? [oldProjectFolderId] : []],
