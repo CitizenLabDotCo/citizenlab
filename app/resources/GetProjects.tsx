@@ -170,7 +170,7 @@ export default class GetProjects extends Component<Props, State> {
         topics: props.topics,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
-        folder: props.folderId
+        folder_id: props.folderId
       }, isNil)
     };
   }
