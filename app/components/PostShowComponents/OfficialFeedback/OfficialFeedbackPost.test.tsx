@@ -6,7 +6,7 @@ jest.mock('services/officialFeedback', () => ({
      deleteOfficialFeedbackFromInitiative: jest.fn()
 }));
 
-jest.mock('./Form/OfficialFeedbackForm', () => 'OfficialFeedbackForm');
+jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('components/UI/MoreActionsMenu', () => 'MoreActionsMenu');
 jest.mock('components/UI/QuillEditedContent', () => 'QuillEditedContent');
 jest.mock('components/T');

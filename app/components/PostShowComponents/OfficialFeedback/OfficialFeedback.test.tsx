@@ -2,7 +2,7 @@ import React from 'react';
 
 import { shallow } from 'enzyme';
 
-jest.mock('./Form/OfficialFeedbackForm', () => 'OfficialFeedbackForm');
+jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('./OfficialFeedbackFeed', () => 'OfficialFeedbackFeed');
 
 import OfficialFeedback from './';
