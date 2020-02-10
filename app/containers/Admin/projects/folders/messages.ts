@@ -70,13 +70,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.subtitleNewFolder',
     defaultMessage: 'Explain why grouped project belong together, define a visual identity, expose shared information.',
   },
-  inFolder: {
-    id: 'app.containers.AdminPage.FoldersEdit.inFolder',
-    defaultMessage: 'In this folder',
+  projectsAlreadyAdded: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectsAlreadyAdded',
+    defaultMessage: 'Projects added to this folder',
   },
-  otherProjects: {
-    id: 'app.containers.AdminPage.FoldersEdit.otherProjects',
-    defaultMessage: 'Outside this folder',
+  projectsYouCanAdd: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectsYouCanAdd',
+    defaultMessage: 'Projects you can add to this folder',
   },
   otherProjectsTooltip: {
     id: 'app.containers.AdminPage.FoldersEdit.otherProjectsTooltip',
@@ -84,7 +84,7 @@ export default defineMessages({
   },
   emptyFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.emptyFolder',
-    defaultMessage: 'This folder is empty, you\'re in the right place to add projects to it, though !',
+    defaultMessage: 'There are no projects in this folder.',
   },
   addToFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.addToFolder',
@@ -94,4 +94,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.removeFromFolder',
     defaultMessage: 'Remove from folder',
   },
+  noProjectsOutside: {
+    id: 'app.containers.AdminPage.FoldersEdit.noProjectsOutside',
+    defaultMessage: 'There are no projects outside this folder.',
+  }
 });
