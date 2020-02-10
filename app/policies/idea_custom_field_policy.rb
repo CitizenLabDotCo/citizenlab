@@ -9,11 +9,12 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
 
     def resolve
       if user&.admin?
-        scope
+        scope.all
       elsif user&.project_moderator?
         scope
-          .joins(custom_form: [:project])
-          .where(projects: ProjectPolicy::Scope.new(user, Project).moderatable)
+          .joins("LEFT JOIN custom_forms ON custom_fields.resource_id = custom_forms.id")
+          .joins("LEFT JOIN projects ON projects.custom_form_id = custom_forms.id")
+          .where("projects.id" => ProjectPolicy::Scope.new(user, Project).moderatable)
       else
         scope.none
       end
@@ -23,7 +24,7 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
   def show?
     user&.active? && (
       user.admin? ||
-      user.project_moderator?(record&.custom_form&.project.id)
+      (record&.resource&.project && user.project_moderator?(record.resource.project.id))
     )
   end
 
