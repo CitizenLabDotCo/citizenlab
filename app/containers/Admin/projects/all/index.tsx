@@ -192,10 +192,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
     }
   }
 
-  removeFolder = (folderId: string) => () => {
-    deleteProjectFolder(folderId);
-  }
-
   render() {
     const { selectedProjectTemplateId } = this.state;
     const { authUser, projects, className, projectHolderOrderings } = this.props;
@@ -218,24 +214,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <RowIcon name="simpleFolder" />
               <RowTitle value={folder.attributes.title_multiloc} />
             </RowContentInner>
-            <ActionsRowContainer>
-              <RowButton
-                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-                onClick={this.removeFolder(folder.id)}
-                buttonStyle="secondary"
-                icon="remove"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </RowButton>
-              <RowButton
-                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-                linkTo={`/admin/projects/folders/${folder.id}`}
-                buttonStyle="secondary"
-                icon="edit"
-              >
-                <FormattedMessage {...messages.editButtonLabel} />
-              </RowButton>
-            </ActionsRowContainer>
+            <RowButton
+              className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
+              linkTo={`/admin/projects/folders/${folder.id}`}
+              buttonStyle="secondary"
+              icon="edit"
+            >
+              <FormattedMessage {...messages.editButtonLabel} />
+            </RowButton>
           </RowContent>
         );
       };
