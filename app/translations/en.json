@@ -849,7 +849,6 @@
   "app.containers.AdminPage.FoldersEdit.inFolder": "In this folder",
   "app.containers.AdminPage.FoldersEdit.newFolder": "New folder",
   "app.containers.AdminPage.FoldersEdit.otherProjects": "Outside this folder",
-  "app.containers.AdminPage.FoldersEdit.otherProjectsTooltip": "These are the all the projects of the platform that are not in a folder.",
   "app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab": "Projects",
   "app.containers.AdminPage.FoldersEdit.projectFolderSettingsTab": "Settings",
   "app.containers.AdminPage.FoldersEdit.removeFromFolder": "Remove from folder",
