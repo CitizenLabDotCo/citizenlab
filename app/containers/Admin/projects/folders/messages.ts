@@ -94,4 +94,24 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.removeFromFolder',
     defaultMessage: 'Remove from folder',
   },
+  deleteFolderLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderLabel',
+    defaultMessage: 'Delete this folder',
+  },
+  deleteFolderLabelTooltip: {
+    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderLabelTooltip',
+    defaultMessage: 'This will remove this folder and all the projects inside.',
+  },
+  deleteButtonLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.deleteButtonLabel',
+    defaultMessage: 'Delete',
+  },
+  deleteFolderError: {
+    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderError',
+    defaultMessage: 'There was an issue removing this folder. Please try again.',
+  },
+  deleteFolderConfirmation: {
+    id: 'app.containers.AdminPage.FoldersEdit.deleteFolderConfirmation',
+    defaultMessage: 'Are you sure you want to delete this folder and all the projects it contains ?',
+  },
 });
