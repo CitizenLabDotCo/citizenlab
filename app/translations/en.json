@@ -851,6 +851,7 @@
   "app.containers.AdminPage.FoldersEdit.otherProjects": "Outside this folder",
   "app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab": "Projects",
   "app.containers.AdminPage.FoldersEdit.projectFolderSettingsTab": "Settings",
+  "app.containers.AdminPage.FoldersEdit.projectsYouCanAddTooltip": "This is a list of projects you can add to this folder.",
   "app.containers.AdminPage.FoldersEdit.removeFromFolder": "Remove from folder",
   "app.containers.AdminPage.FoldersEdit.save": "Save",
   "app.containers.AdminPage.FoldersEdit.saveErrorMessage": "Something went wrong, please try again later.",
