@@ -15,7 +15,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects = @projects.where(publication_status: 'published')
     end
 
-    @projects = @projects.where(folder_id: params[:folder]) if params[:folder].present?
+    @projects = @projects.where(folder_id: params[:folder]) if params.keys.include?('folder')
 
     if params[:areas].present?
       @projects = @projects.with_some_areas(params[:areas])
