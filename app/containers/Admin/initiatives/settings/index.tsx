@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, isNaN } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -11,13 +11,13 @@ import { updateTenant } from 'services/tenant';
 // components
 import { SectionTitle, Section, SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import QuillEditor from 'components/UI/QuillEditor';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMutilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
 import Toggle from 'components/UI/Toggle';
 import Warning from 'components/UI/Warning';
+import Error from 'components/UI/Error';
+import errorMessages from 'components/UI/Error/messages';
 import Label from 'components/UI/Label';
-import IconTooltip from 'components/UI/IconTooltip';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -37,16 +37,13 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
 `;
 
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
-  border: solid 1px red;
-`;
-
 const StyledSectionField = styled(SectionField)`
   margin-top: 45px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const ErrorMessage = styled.div`
@@ -85,8 +82,8 @@ interface FormValues {
 }
 
 interface State {
-  selectedLocale: Locale;
   formValues: FormValues;
+  touched: boolean;
   processing: boolean;
   error: boolean;
   success: boolean;
@@ -96,8 +93,8 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
   constructor(props) {
     super(props);
     this.state = {
-      selectedLocale: null as any,
       formValues: null as any,
+      touched: false,
       processing: false,
       error: false,
       success: false
@@ -111,7 +108,6 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
       const initiativesSettings = tenant.attributes.settings.initiatives;
 
       this.setState({
-        selectedLocale: locale,
         formValues: {
           days_limit: initiativesSettings.days_limit,
           eligibility_criteria: initiativesSettings.eligibility_criteria,
@@ -124,8 +120,10 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.formValues !== this.state.formValues && (this.state.error || this.state.success)) {
+    if (prevState.formValues && this.state.formValues && prevState.formValues !== this.state.formValues) {
       this.setState({
+        touched: true,
+        processing: false,
         success: false,
         error: false
       });
@@ -134,12 +132,20 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
 
   validate = () => {
     const { tenant } = this.props;
-    const { formValues } = this.state;
+    const { touched, processing, formValues } = this.state;
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : null;
     let validated = false;
 
-    if (tenantLocales) {
+    if (touched && !processing && tenantLocales && !isEmpty(formValues)) {
       validated = true;
+
+      if (isNaN(formValues.voting_threshold) ||
+          formValues.voting_threshold < 2 ||
+          isNaN(formValues.days_limit) ||
+          formValues.days_limit < 1
+      ) {
+        validated = false;
+      }
 
       tenantLocales.forEach((locale) => {
         if (isEmpty(formValues.eligibility_criteria[locale]) || isEmpty(formValues.threshold_reached_message[locale])) {
@@ -153,9 +159,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
 
   handleSubmit = async () => {
     const { tenant } = this.props;
-    const { formValues, processing } = this.state;
+    const { formValues } = this.state;
 
-    if (!isNilOrError(tenant) && !isEmpty(formValues) && !processing && this.validate()) {
+    if (!isNilOrError(tenant) && this.validate()) {
       this.setState({ processing: true });
 
       try {
@@ -166,13 +172,14 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
         });
 
         this.setState({
+          touched: false,
           processing: false,
           success: true,
           error: false
         });
-      } catch {
+      } catch (error) {
         this.setState({
-          processing: true,
+          processing: false,
           error: true
         });
       }
@@ -208,41 +215,31 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
     }));
   }
 
-  handleSelectedLocaleOnChange = (selectedLocale: Locale) => {
-    this.setState({ selectedLocale });
-  }
-
-  handleEligibilityCriteriaOnChange = (value: string, locale: Locale | undefined) => {
+  handleEligibilityCriteriaOnChange = (valueMultiloc: Multiloc, locale: Locale | undefined) => {
     if (locale) {
       this.setState(({ formValues }) => ({
         formValues: {
           ...formValues,
-          eligibility_criteria: {
-            ...formValues.eligibility_criteria,
-            [locale]: value
-          }
+          eligibility_criteria: valueMultiloc
         }
       }));
     }
   }
 
-  handleThresholdReachedMessageOnChange = (value: string, locale: Locale | undefined) => {
+  handleThresholdReachedMessageOnChange = (valueMultiloc: Multiloc, locale: Locale | undefined) => {
     if (locale) {
       this.setState(({ formValues }) => ({
         formValues: {
           ...formValues,
-          threshold_reached_message: {
-            ...formValues.threshold_reached_message,
-            [locale]: value
-          }
+          threshold_reached_message: valueMultiloc
         }
       }));
     }
   }
 
   render() {
-    const { locale, tenant, className } = this.props;
-    const { selectedLocale, formValues, processing, error, success } = this.state;
+    const { locale, tenant, className, intl } = this.props;
+    const { formValues, processing, error, success } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && formValues) {
       return (
@@ -272,9 +269,19 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 className="e2e-voting-threshold"
                 name="voting_threshold"
                 type="number"
+                min="2"
+                required={true}
                 value={formValues.voting_threshold.toString()}
                 onChange={this.handleVotingTresholdOnChange}
               />
+
+              {isNaN(formValues.voting_threshold) &&
+                <Error text={intl.formatMessage(errorMessages.blank)} />
+              }
+
+              {!isNaN(formValues.voting_threshold) && formValues.voting_threshold < 2 &&
+                <Error text={intl.formatMessage(messages.initiativeSettingsVotingThresholdError)} />
+              }
             </SectionField>
 
             <SectionField>
@@ -288,29 +295,23 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 className="e2e-days-limit"
                 name="days_limit"
                 type="number"
+                min="1"
+                required={true}
                 value={formValues.days_limit.toString()}
                 onChange={this.handleDaysLimitOnChange}
               />
+              {isNaN(formValues.days_limit) &&
+                <Error text={intl.formatMessage(errorMessages.blank)} />
+              }
             </SectionField>
 
             <StyledSectionField>
-              <StyledFormLocaleSwitcher
-                locales={tenant.attributes.settings.core.locales}
-                selectedLocale={selectedLocale}
-                onLocaleChange={this.handleSelectedLocaleOnChange}
-                values={{
-                  eligibility_criteria: formValues.eligibility_criteria,
-                  threshold_reached_message: formValues.threshold_reached_message
-                }}
-              />
-
-              <QuillEditor
+              <QuillMutilocWithLocaleSwitcher
                 id="threshold_reached_message"
-                value={formValues.threshold_reached_message[selectedLocale]}
+                valueMultiloc={formValues.threshold_reached_message}
                 onChange={this.handleThresholdReachedMessageOnChange}
-                locale={selectedLocale}
-                label={<FormattedMessage {...messages.fieldThresholdReachedMessage} />}
-                labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldThresholdReachedMessageInfo} />} />}
+                label={intl.formatMessage(messages.fieldThresholdReachedMessage)}
+                labelTooltipText={intl.formatMessage(messages.fieldThresholdReachedMessageInfo)}
                 noImages={true}
                 noVideos={true}
                 noAlign={true}
@@ -318,13 +319,12 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               />
             </StyledSectionField>
             <SectionField>
-              <QuillEditor
+              <QuillMutilocWithLocaleSwitcher
                 id="eligibility_criteria"
-                value={formValues.eligibility_criteria[selectedLocale]}
+                valueMultiloc={formValues.eligibility_criteria}
                 onChange={this.handleEligibilityCriteriaOnChange}
-                locale={selectedLocale}
-                label={<FormattedMessage {...messages.fieldEligibilityCriteria} />}
-                labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldEligibilityCriteriaInfo} />} />}
+                label={intl.formatMessage(messages.fieldEligibilityCriteria)}
+                labelTooltipText={intl.formatMessage(messages.fieldEligibilityCriteriaInfo)}
                 noImages={true}
                 noVideos={true}
                 noAlign={true}

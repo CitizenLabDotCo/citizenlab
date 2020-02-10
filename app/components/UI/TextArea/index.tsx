@@ -31,11 +31,6 @@ const Container: any = styled.div`
     overflow: hidden;
     -webkit-appearance: none;
 
-    &::placeholder {
-      color: #aaa;
-      opacity: 1;
-    }
-
     &:focus {
       border-color: #666;
     }

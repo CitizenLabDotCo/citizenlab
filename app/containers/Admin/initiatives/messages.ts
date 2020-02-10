@@ -77,6 +77,10 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
     defaultMessage: 'Something went wrong. Please try again.'
   },
+  initiativeSettingsVotingThresholdError: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
+    defaultMessage: 'The voting treshold needs to be at least 2'
+  },
   initiativeSettingsFormSuccess: {
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
     defaultMessage: 'Your changes have been saved.'

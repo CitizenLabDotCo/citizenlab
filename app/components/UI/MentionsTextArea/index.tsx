@@ -32,8 +32,6 @@ const Container = styled.div<{ placeholderFontWeight: string }>`
     }
 
     &::placeholder {
-      color: ${colors.clIconSecondary} !important;
-      opacity: 1;
       font-weight: ${props => props.placeholderFontWeight} !important;
     }
   }

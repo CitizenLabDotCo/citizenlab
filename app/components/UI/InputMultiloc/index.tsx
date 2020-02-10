@@ -24,11 +24,7 @@ const InputWrapper = styled.div`
   }
 `;
 
-const LabelWrapper = styled.div`
-  display: flex;
-`;
-
-const LanguageExtension = styled(Label)`
+const LanguageExtension = styled.span`
   font-weight: 500;
 `;
 
@@ -36,6 +32,7 @@ export interface InputProps {
   id?: string | undefined;
   valueMultiloc: Multiloc | null | undefined;
   label?: string | JSX.Element | null | undefined;
+  labelTooltipText?: string | JSX.Element | null;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   type: 'text' | 'email' | 'password' | 'number';
@@ -99,12 +96,10 @@ class InputMultiloc extends PureComponent<Props, State> {
                 className={`${index === tenantLocales.length - 1 && 'last'}`}
               >
                 {label &&
-                  <LabelWrapper>
-                    <Label htmlFor={inputId}>{label}</Label>
-                    {tenantLocales.length > 1 &&
-                      <LanguageExtension>{tenantLocale.toUpperCase()}</LanguageExtension>
-                    }
-                  </LabelWrapper>
+                  <Label htmlFor={inputId}>
+                    <span>{label}</span>
+                    {tenantLocales.length > 1 && <LanguageExtension>{tenantLocale.toUpperCase()}</LanguageExtension>}
+                  </Label>
                 }
 
                 <Input

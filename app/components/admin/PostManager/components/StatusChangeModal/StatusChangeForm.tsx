@@ -25,14 +25,23 @@ import Button from 'components/UI/Button';
 // Typings
 import { Multiloc, Locale, MultilocFormValues } from 'typings';
 
+const StyledSection = styled(Section)``;
+
 const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
   margin: 10px 0;
 `;
 
+const StyledMentionsTextArea = styled(MentionsTextArea)`
+  margin-bottom: 15px;
+`;
+
+const StyledInput = styled(Input)``;
+
 const StyledRadio = styled(Radio)`
   margin-top: 25px;
 `;
-const StyledButton = styled(Button)`
+
+const ChangeStatusButton = styled(Button)`
   margin-top: 25px;
 `;
 
@@ -80,9 +89,11 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           name="statusChangeMethod"
           label={formatMessage(messages.newFeedbackMode)}
         />
+
         {mode === 'new' &&
           this.renderFeedbackForm()
         }
+
         <StyledRadio
           onChange={onChangeMode}
           currentValue={mode}
@@ -102,7 +113,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     );
   }
 
-  onLocaleChange = (locale: Locale) => () => {
+  onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
   }
 
@@ -129,14 +140,14 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     const { selectedLocale } = this.state;
 
     return (
-      <Section>
+      <StyledSection>
         <StyledFormLocaleSwitcher
           onLocaleChange={this.onLocaleChange}
           selectedLocale={selectedLocale}
           values={newOfficialFeedback}
         />
 
-        <MentionsTextArea
+        <StyledMentionsTextArea
           placeholder={formatMessage(messages.feedbackBodyPlaceholder)}
           rows={8}
           padding="12px"
@@ -149,7 +160,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           onChange={this.handleBodyOnChange}
         />
 
-        <Input
+        <StyledInput
           type="text"
           value={newOfficialFeedback?.author_multiloc?.[selectedLocale] || ''}
           locale={selectedLocale}
@@ -157,7 +168,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           ariaLabel={formatMessage(messages.officialUpdateAuthor)}
           onChange={this.handleAuthorOnChange}
         />
-      </Section>
+      </StyledSection>
     );
   }
 
@@ -170,14 +181,14 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           ? this.renderFullForm()
           : this.renderFeedbackForm()
         }
-        <StyledButton
+        <ChangeStatusButton
           processing={loading}
           disabled={!valid}
           onClick={submit}
           bgColor={colors.clBlue}
         >
           <FormattedMessage {...messages.statusChangeSave}/>
-        </StyledButton>
+        </ChangeStatusButton>
         {error && <Error text={formatMessage(messages.statusChangeGenericError)}/>}
       </>
     );
