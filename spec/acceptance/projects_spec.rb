@@ -62,6 +62,16 @@ resource "Projects" do
         expect(json_response[:data].map{|d| d[:id]}).to match_array @projects.take(2).map(&:id)
       end
 
+      example "List all top-level projects" do
+        folder = create(:project_folder, projects: @projects.take(2))
+        ProjectHolderService.new.fix_project_holder_orderings!
+
+        do_request folder: nil, publication_statuses: Project::PUBLICATION_STATUSES
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].map{|d| d[:id]}).to match_array @projects.drop(2).map(&:id)
+      end
+
       example "List all projects with an area" do
         a1 = create(:area)
         a2 = create(:area)
