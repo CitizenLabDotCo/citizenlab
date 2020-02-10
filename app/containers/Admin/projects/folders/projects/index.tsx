@@ -131,7 +131,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                 <HeaderTitle>
                   <FormattedMessage {...messages.otherProjects} />
                 </HeaderTitle>
-                <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
+                <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
               </ListHeader>
               <List key={`JUST_LIST${projectIds.length}`}>
                 {projectIds.map((projectId, index: number) => {

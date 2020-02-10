@@ -78,9 +78,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.otherProjects',
     defaultMessage: 'Outside this folder',
   },
-  otherProjectsTooltip: {
-    id: 'app.containers.AdminPage.FoldersEdit.otherProjectsTooltip',
-    defaultMessage: 'These are the all the projects of the platform that are not in a folder.',
+  projectsYouCanAddTooltip: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectsYouCanAddTooltip',
+    defaultMessage: 'This is a list of projects you can add to this folder.',
   },
   emptyFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.emptyFolder',
