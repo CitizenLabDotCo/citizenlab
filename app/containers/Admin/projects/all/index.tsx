@@ -310,7 +310,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         );
                       }
                     }
-                    ))}
+                  ))}
                 </SortableList>
                 <HasPermission.No>
                   <List>
