@@ -233,7 +233,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 buttonStyle="secondary"
                 icon="edit"
               >
-                <FormattedMessage {...messages.editButtonLabel} />
+                <FormattedMessage {...messages.manageButtonLabel} />
               </RowButton>
             </ActionsRowContainer>
           </RowContent>
