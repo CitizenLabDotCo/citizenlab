@@ -890,6 +890,7 @@
   "app.containers.AdminPage.ProjectDashboard.draftTooltip": "Draft projects are not shown on the platform. You can work on them until they are ready to be published.",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "List of projects on the platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projects dashboard",
+  "app.containers.AdminPage.ProjectDashboard.manageButtonLabel": "Manage",
   "app.containers.AdminPage.ProjectDashboard.newProjectFolder": "Create a project folder",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitle": "Create new projects or manage existing ones.",
   "app.containers.AdminPage.ProjectDashboard.overviewPageSubtitleModerator": "Here are the projects on the platform you are moderating.",
