@@ -19,18 +19,19 @@ describe('email consent', () => {
       // get the unsubscription link and visit it
       cy.wrap($body).find('a.e2e-unsubscribe').then(link => {
         cy.visit(link.prop('href'));
+
+        cy.wait(700);
+        // check users has been unsubscribed
+        cy.get('#e2e-email-settings-page');
+        cy.get('#e2e-consent-form');
+        cy.get('.e2e-unsubscribe-status').contains('success').contains('Official');
+
+        // gets official category, turn it back on and save
+        cy.get('input#manual').parent().click();
+        cy.get('.e2e-submit-wrapper-button').click();
+        cy.contains('saved');
       });
     });
 
-    cy.wait(400);
-    // check users has been unsubscribed
-    cy.get('#e2e-email-settings-page');
-    cy.get('#e2e-consent-form');
-    cy.get('.e2e-unsubscribe-status').contains('success').contains('Official');
-
-    // gets official category, turn it back on and save
-    cy.get('input#manual').parent().click();
-    cy.get('.e2e-submit-wrapper-button').click();
-    cy.contains('saved');
   });
 });

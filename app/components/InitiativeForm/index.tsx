@@ -391,16 +391,17 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
               optional
-            >
-              <ImagesDropzone
-                images={banner ? [banner] : null}
-                imagePreviewRatio={360 / 1440}
-                maxNumberOfImages={1}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                onAdd={this.addBanner}
-                onRemove={this.removeBanner}
-              />
-            </FormLabel>
+              htmlFor="initiative-banner-dropzone"
+            />
+            <ImagesDropzone
+              id="initiative-banner-dropzone"
+              images={banner ? [banner] : null}
+              imagePreviewRatio={360 / 1440}
+              maxNumberOfImages={1}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              onAdd={this.addBanner}
+              onRemove={this.removeBanner}
+            />
             {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />}
           </SectionField>
           <SectionField id="e2e-iniatiative-img-dropzone">
@@ -408,16 +409,17 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
               optional
-            >
-              <ImagesDropzone
-                images={image ? [image] : null}
-                imagePreviewRatio={135 / 298}
-                maxNumberOfImages={1}
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                onAdd={this.addImage}
-                onRemove={this.removeImage}
-              />
-            </FormLabel>
+              htmlFor="initiative-image-dropzone"
+            />
+            <ImagesDropzone
+              id="initiative-image-dropzone"
+              images={image ? [image] : null}
+              imagePreviewRatio={135 / 298}
+              maxNumberOfImages={1}
+              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+              onAdd={this.addImage}
+              onRemove={this.removeImage}
+            />
             {touched.image
               && errors.image
               && <Error message={errors.image.message} />}
