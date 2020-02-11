@@ -202,7 +202,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     const { authUser, projects: { projectsList }, className, projectHolderOrderings } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
-    const hasProjectsToShow = projectsList && projectsList.length > 0;
+    const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
 
     if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
       const draftProjectsOutsideFolders = projectsList.filter((project) => {
@@ -457,7 +457,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
           {userIsAdmin && <StyledCreateProject />}
 
-          {hasProjectsToShow &&
+          {hasProjectsOrFolders &&
             <PageWrapper>
               {lists}
             </PageWrapper>
