@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
+import { List, Row } from 'components/admin/ResourceList';
 import IconTooltip from 'components/UI/IconTooltip';
 import { HeaderTitle } from '../../all/styles';
 import ProjectRow from '../../components/ProjectRow';
@@ -24,7 +24,9 @@ import ProjectRow from '../../components/ProjectRow';
 // style
 import styled from 'styled-components';
 
-const Container = styled.div``;
+const Container = styled.div`
+  min-height: 60vh;
+`;
 
 const ListsContainer = styled.div``;
 
@@ -69,10 +71,10 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   render() {
     const { projectHoldersOrderings, projectFolder } = this.props;
-    const projectIds = !isNilOrError(projectHoldersOrderings)
+    const projectThatCanBeAddedIds = !isNilOrError(projectHoldersOrderings)
       ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
       : null;
-    const inFolderProjects = !isNilOrError(projectFolder) && projectFolder.relationships.projects
+    const inFolderProjectIds = !isNilOrError(projectFolder) && projectFolder.relationships.projects
       ? projectFolder.relationships.projects.data.map(projectRel => projectRel.id)
       : null;
 
@@ -81,31 +83,22 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
         <ListsContainer>
           <ListHeader>
             <HeaderTitle>
-              <FormattedMessage {...messages.inFolder} />
+              <FormattedMessage {...messages.projectsAlreadyAdded} />
             </HeaderTitle>
 
             <Spacer />
 
           </ListHeader>
 
-          {inFolderProjects && inFolderProjects.length > 0 ?
-            <SortableList
-              key={`SORTABLE_LIST${inFolderProjects.length}`}
-              items={inFolderProjects}
-              onReorder={this.handleReorder}
-              className="projects-list e2e-admin-projects-list"
-              id="e2e-admin-published-projects-list"
-            >
-              {({ itemsList, handleDragRow, handleDropRow }) => (
-                itemsList.map((projectId: string, index: number) => (
-                  <GetProject projectId={projectId} key={`in_${projectId}`}>
+          {inFolderProjectIds && inFolderProjectIds.length > 0 ?
+            <List key={`IN_FOLDER_LIST${inFolderProjectIds.length}`}>
+              {inFolderProjectIds.map((inFolderProjectId, index: number) => {
+                return (
+                  <GetProject projectId={inFolderProjectId} key={`in_${inFolderProjectId}`}>
                     {project => isNilOrError(project) ? null : (
-                      <SortableRow
-                        id={`in_${projectId}`}
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={(index === inFolderProjects.length - 1)}
+                      <Row
+                        id={inFolderProjectId}
+                        lastItem={(index === inFolderProjectIds.length - 1)}
                       >
                         <ProjectRow
                           project={project}
@@ -115,48 +108,49 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                             icon: 'remove'
                           }, 'manage']}
                         />
-                      </SortableRow>
+                      </Row>
                     )}
-                  </GetProject >
-                ))
-              )}
-            </SortableList>
+                  </GetProject>
+                );
+              })}
+            </List>
             :
             <FormattedMessage {...messages.emptyFolder} />
           }
 
-          {projectIds && projectIds.length > 0 &&
-            <>
-              <ListHeader>
-                <HeaderTitle>
-                  <FormattedMessage {...messages.otherProjects} />
-                </HeaderTitle>
-                <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
-              </ListHeader>
-              <List key={`JUST_LIST${projectIds.length}`}>
-                {projectIds.map((projectId, index: number) => {
-                  return (
-                    <GetProject projectId={projectId} key={`out_${projectId}`}>
-                      {project => isNilOrError(project) ? null : (
-                        <Row
-                          id={projectId}
-                          lastItem={(index === projectIds.length - 1)}
-                        >
-                          <ProjectRow
-                            project={project}
-                            actions={[{
-                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                              handler: this.addProjectToFolder,
-                              icon: 'plus-circle'
-                            }]}
-                          />
-                        </Row>
-                      )}
-                    </GetProject>
-                  );
-                })}
-              </List>
-            </>
+          <ListHeader>
+            <HeaderTitle>
+              <FormattedMessage {...messages.projectsYouCanAdd} />
+            </HeaderTitle>
+            <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
+          </ListHeader>
+
+          {projectThatCanBeAddedIds && projectThatCanBeAddedIds.length > 0 ?
+            <List key={`OUTSIDE_LIST${projectThatCanBeAddedIds.length}`}>
+              {projectThatCanBeAddedIds.map((projectId, index: number) => {
+                return (
+                  <GetProject projectId={projectId} key={`out_${projectId}`}>
+                    {project => isNilOrError(project) ? null : (
+                      <Row
+                        id={projectId}
+                        lastItem={(index === projectThatCanBeAddedIds.length - 1)}
+                      >
+                        <ProjectRow
+                          project={project}
+                          actions={[{
+                            buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                            handler: this.addProjectToFolder,
+                            icon: 'plus-circle'
+                          }]}
+                        />
+                      </Row>
+                    )}
+                  </GetProject>
+                );
+              })}
+            </List>
+            :
+            <FormattedMessage {...messages.noProjectsOutside} />
           }
         </ListsContainer>
       </Container>
