@@ -32,8 +32,8 @@ resource "ProjectHolderOrderings" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:included].map { |d| d.dig(:type) }.count('project_folder')).to eq 1
-        expect(json_response[:included].map { |d| d.dig(:type) }.count('project')).to eq 2
+        expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project')).to eq 2
       end
     end
 
