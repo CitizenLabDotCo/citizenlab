@@ -9,7 +9,7 @@ import T from 'components/T';
 import { fontSizes } from 'utils/styleUtils';
 import StatusLabel from 'components/UI/StatusLabel';
 import Button from 'components/UI/Button';
-import Icon, { IconNames } from 'components/UI/Icon';
+import { IconNames } from 'components/UI/Icon';
 
 export const RowContent = styled.div`
   flex: 1;
@@ -46,18 +46,12 @@ export const RowButton = styled(Button)`
   margin-left: 7px;
 `;
 
-export const RowIcon = styled(Icon)`
-  margin-right: 10px;
-  width: 17px;
-`;
-
 interface Props {
   project: IProjectData;
   actions?: ({ buttonContent: JSX.Element, handler: (projectId: string) => () => void, icon: IconNames } | 'manage')[];
-  showIcon?: boolean;
 }
 
-export default ({ project, actions, showIcon }: Props) => {
+export default ({ project, actions }: Props) => {
   const ManageButton = (
     <RowButton
       className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
@@ -74,7 +68,6 @@ export default ({ project, actions, showIcon }: Props) => {
   return (
     <RowContent className="e2e-admin-projects-list-item">
       <RowContentInner className="expand primary">
-        {showIcon && <RowIcon name="file" />}
         <RowTitle value={project.attributes.title_multiloc} />
         {project.attributes.visible_to === 'groups' &&
           <GetProjectGroups projectId={project.id}>
