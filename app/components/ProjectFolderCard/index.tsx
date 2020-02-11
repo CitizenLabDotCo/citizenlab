@@ -219,6 +219,10 @@ const ContentHeader = styled.div`
       padding-right: 10px;
     `}
   }
+
+  &.large {
+    padding-bottom: 10px;
+  }
 `;
 
 const ContentBody = styled.div`
@@ -296,7 +300,7 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { projectFolder, size, layout, className } = this.props;
+    const { projectFolder, size, layout, className, theme } = this.props;
 
     if (!isNilOrError(projectFolder)) {
       const imageUrl = projectFolder.attributes.header_bg?.medium;
@@ -305,10 +309,20 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent`}>
-          <MapIcon name="simpleFolder" />
-          <MapIconDescription>
-            <FormattedMessage {...messages.numberOfProjects} values={{ numberOfProjects }} />
+          <MapIcon
+            name="folder"
+            ariaHidden
+            colorTheme={{
+              clIconPrimary: `${theme.colorSecondary}`,
+              clIconSecondary: `${theme.colorSecondary}`,
+            }}
+          />
+          <MapIconDescription aria-hidden>
+            {numberOfProjects}
           </MapIconDescription>
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.numberOfProjects} values={{ numberOfProjects }} />
+          </ScreenReaderOnly>
         </ContentHeader>
       );
 
