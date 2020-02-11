@@ -51,7 +51,7 @@ export const PageTitle = styled.h1`
 `;
 
 export const SectionField = styled.div`
-  margin-bottom: ${remCalc(30)};
+  margin-bottom: 35px;
   transition: all 200ms ease-in-out;
   width: 100%;
   max-width: 500px;
