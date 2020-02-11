@@ -897,10 +897,7 @@ const icons = {
 };
 
 const Icon = memo<Props>(props => {
-  let { colorTheme } = props;
-  const { ...otherProps } = props;
-  colorTheme = colorTheme || colors;
-  const propsWithTheme = { ...otherProps, colorTheme };
+  const propsWithTheme = { ...props, colorTheme: props.colorTheme || colors };
 
   return (icons[props.name])(propsWithTheme);
 });
