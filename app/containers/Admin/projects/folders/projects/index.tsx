@@ -44,7 +44,13 @@ const ListHeader = styled.div`
   }
 `;
 
+const StyledHeaderTitle = styled(HeaderTitle)`
+  font-weight: bold;
+`;
+
 const ListTitle = styled.h4`
+  font-weight: normal;
+  font-style: italic;
 `;
 
 const Spacer = styled.div`
@@ -107,9 +113,9 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
       <Container>
         <ListsContainer>
           <ListHeader>
-            <HeaderTitle>
+            <StyledHeaderTitle>
               <FormattedMessage {...messages.projectsAlreadyAdded} />
-            </HeaderTitle>
+            </StyledHeaderTitle>
 
             <Spacer />
 
@@ -144,9 +150,9 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
           }
           {(hasOtherDraftProjectIds || hasOtherArchivedProjectIds || hasOtherPublishedProjectIds) &&
             <ListHeader>
-              <HeaderTitle>
+              <StyledHeaderTitle>
                 <FormattedMessage {...messages.projectsYouCanAdd} />
-              </HeaderTitle>
+              </StyledHeaderTitle>
               <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
             </ListHeader>
           }
