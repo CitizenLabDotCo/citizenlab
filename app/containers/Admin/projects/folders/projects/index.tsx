@@ -122,7 +122,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
             <HeaderTitle>
               <FormattedMessage {...messages.projectsYouCanAdd} />
             </HeaderTitle>
-            <IconTooltip content={<FormattedMessage {...messages.otherProjectsTooltip} />} />
+            <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
           </ListHeader>
 
           {projectThatCanBeAddedIds && projectThatCanBeAddedIds.length > 0 ?
