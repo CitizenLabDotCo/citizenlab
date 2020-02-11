@@ -22,8 +22,7 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
   end
 
   def schema?
-    user&.active? && record&.resource&.project &&
-      Pundit.policy(user, record.resource.project).show?
+    true
   end
 
   def show?
