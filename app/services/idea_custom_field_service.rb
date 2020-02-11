@@ -90,7 +90,7 @@ class IdeaCustomFieldService
         resource: custom_form,
         key: 'location',
         code: 'location',
-        input_type: 'custom',
+        input_type: 'text',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.location.title',
           locales: CL2_SUPPORTED_LOCALES
@@ -111,7 +111,7 @@ class IdeaCustomFieldService
         resource: custom_form,
         key: 'images',
         code: 'images',
-        input_type: 'custom',
+        input_type: 'files',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.images.title',
           locales: CL2_SUPPORTED_LOCALES
@@ -132,7 +132,7 @@ class IdeaCustomFieldService
         resource: custom_form,
         key: 'attachments',
         code: 'attachments',
-        input_type: 'custom',
+        input_type: 'files',
         title_multiloc: ml_s.i18n_to_multiloc(
           'custom_fields.ideas.attachments.title',
           locales: CL2_SUPPORTED_LOCALES

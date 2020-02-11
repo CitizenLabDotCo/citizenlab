@@ -59,6 +59,7 @@ describe CustomFieldService do
         create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true),
         create(:custom_field, key: 'field7', input_type: 'number'),
         create(:custom_field, key: 'field8', input_type: 'multiselect', required: true),
+        create(:custom_field, key: 'field9', input_type: 'files', required: true),
       ]
       create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1) 
       create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3) 
@@ -121,8 +122,16 @@ describe CustomFieldService do
                :enum=>["option_a", "option_b"],
                :enumNames=>["youth council", "youth council"]},
              :minItems=>1},
+            "field9"=>
+            {:title=>"Did you attend",
+             :description=>"Which councils are you attending in our city?",
+             :type=>"array",
+             :items=>{
+               :type=>"string",
+               :format=>"data-url",
+              }},
            },
-         :required=>["field2","field8"]}
+         :required=>["field2","field8","field9"]}
       )
     end
 
@@ -139,6 +148,13 @@ describe CustomFieldService do
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'domicile', :enum)).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
+    end
+
+    it "it creates a valid schema for the built in idea custom fields" do
+      custom_form = create(:custom_form)
+      fields = IdeaCustomFieldService.new.db_and_built_in_fields(custom_form)
+      schema = service.fields_to_json_schema(fields, locale)
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
   end
 
