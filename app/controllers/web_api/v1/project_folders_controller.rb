@@ -1,6 +1,16 @@
 class WebApi::V1::ProjectFoldersController < ApplicationController
   before_action :set_project_folder, only: [:show, :update, :destroy]
 
+  def index
+    @project_folders = policy_scope(ProjectFolder)
+    @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
+
+    @project_folders = @project_folders
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: linked_json(@project_folders, WebApi::V1::ProjectFolderSerializer, params: fastjson_params)
+  end
 
   def show
     render json: WebApi::V1::ProjectFolderSerializer.new(

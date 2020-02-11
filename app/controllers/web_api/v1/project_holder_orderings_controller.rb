@@ -3,37 +3,13 @@ class WebApi::V1::ProjectHolderOrderingsController < ::ApplicationController
 
   def index
     @phos = policy_scope(ProjectHolderOrdering)
-      .includes(:project_holder)
       .order(:ordering)
-
-    projects = Project.where(project_holder_ordering: @phos)
-    if params[:filter_can_moderate]
-      projects = projects.moderatable 
-      @phos = @phos.where(project_holder: projects)
-    end
 
     @phos = @phos
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    user_baskets = current_user&.baskets
-      &.where(participation_context_type: 'Project')
-      &.group_by do |basket|
-        [basket.participation_context_id, basket.participation_context_type]
-      end
-    user_baskets ||= {}
-    instance_options = {
-      user_baskets: user_baskets,
-      allocated_budgets: ParticipationContextService.new.allocated_budgets(projects),
-      timeline_active: TimelineService.new.timeline_active_on_collection(projects)
-    }
-
-    render json: linked_json(
-      @phos, 
-      WebApi::V1::ProjectHolderOrderingSerializer, 
-      params: fastjson_params(superhero: 'batman'),
-      include: [:project_holder]
-      )
+    render json: linked_json(@phos, WebApi::V1::ProjectHolderOrderingSerializer, params: fastjson_params)
   end
 
   def reorder
