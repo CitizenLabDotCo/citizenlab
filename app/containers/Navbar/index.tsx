@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent, MouseEvent, FormEvent } from 'react';
-import { get, includes } from 'lodash-es';
+import { get, includes, isNil } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import { locales } from 'containers/App/constants';
@@ -527,14 +527,26 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                               } else {
                                 return (
                                   <GetProjectFolder key={projectOrFolderId} projectFolderId={projectOrFolderId}>
-                                    {projectFolder => isNilOrError(projectFolder) ? null : (
-                                      <ProjectsListItem
-                                        key={projectFolder.id}
-                                        to={getProjectFolderUrl(projectFolder)}
-                                      >
-                                        {!isNilOrError(locale) ? getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales) : null}
-                                      </ProjectsListItem>
-                                    )}
+                                    {projectFolder => {
+                                      if (!isNilOrError(projectFolder)) {
+                                        const hasProjects = projectFolder.relationships.projects.data.length > 0;
+
+                                        if (hasProjects && !isNilOrError(locale)) {
+                                          return (
+                                            <ProjectsListItem
+                                              key={projectFolder.id}
+                                              to={getProjectFolderUrl(projectFolder)}
+                                            >
+                                              {getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales)}
+                                            </ProjectsListItem>
+                                          );
+                                        }
+
+                                        return null;
+                                      }
+
+                                      return null;
+                                    }}
                                   </GetProjectFolder>
                                 );
                               }
