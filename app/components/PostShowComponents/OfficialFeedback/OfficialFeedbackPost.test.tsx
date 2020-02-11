@@ -25,7 +25,6 @@ describe('<OfficialFeedbackPost />', () => {
       <OfficialFeedbackPost
         editingAllowed={false}
         officialFeedbackPost={mockOfficialFeedbackPost}
-        last={false}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
@@ -39,7 +38,6 @@ describe('<OfficialFeedbackPost />', () => {
       <OfficialFeedbackPost
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
-        last={false}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
@@ -55,7 +53,6 @@ describe('<OfficialFeedbackPost />', () => {
       <OfficialFeedbackPost
         editingAllowed={true}
         officialFeedbackPost={mockOfficialFeedbackPost}
-        last={false}
         locale="en"
         tenantLocales={['en', 'nl-BE']}
         intl={intl}
