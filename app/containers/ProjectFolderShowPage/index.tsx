@@ -134,7 +134,7 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
                           sort="new"
                           showTitle={false}
                           showPublicationStatusFilter={true}
-                          layout="threecolumns"
+                          layout="dynamic"
                           folderId={projectFolder.id}
                         />
                       </StyledContentContainer>
