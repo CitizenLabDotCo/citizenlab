@@ -11,6 +11,7 @@ describe IdeaCustomFieldPolicy do
   context "for a mortal user" do
     let(:user) { create(:user) }
 
+      it { should     permit(:schema)    }
       it { should_not permit(:show)    }
       it { should_not permit(:upsert_by_code)  }
 
@@ -22,6 +23,7 @@ describe IdeaCustomFieldPolicy do
   context "for a moderator of the field's project" do
     let(:user) { create(:moderator, project: project) }
 
+      it { should     permit(:schema)    }
       it { should     permit(:show)    }
       it { should     permit(:upsert_by_code)  }
 
@@ -33,6 +35,7 @@ describe IdeaCustomFieldPolicy do
   context "for a moderator of another project" do
     let(:user) { create(:moderator) }
 
+      it { should     permit(:schema)    }
       it { should_not permit(:show)    }
       it { should_not permit(:upsert_by_code)  }
 
@@ -44,6 +47,7 @@ describe IdeaCustomFieldPolicy do
   context "for an admin" do
     let(:user) { create(:admin) }
 
+      it { should     permit(:schema)    }
       it { should     permit(:show)    }
       it { should     permit(:upsert_by_code)  }
 
