@@ -30,12 +30,21 @@ resource "Projects" do
       parameter :publication_statuses, "Return only ideas with the specified publication statuses (i.e. given an array of publication statuses); returns all pusblished ideas by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
       parameter :folder, "Filter by folder (project folder id)", required: false
+      parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
 
       example_request "List all published projects (default behaviour)" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
         expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+      end
+
+      example "List only projects with specified IDs", document: false do
+        filter_ids = [@projects.first.id, @projects.last.id]
+        do_request(filter_ids: filter_ids)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map { |d| d.dig(:id) }).to match_array filter_ids
       end
 
       example "List all draft or archived projects", document: false do
