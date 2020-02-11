@@ -353,13 +353,25 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                     <GetProjectFolder
                       projectFolderId={projectOrFolderId}
                     >
-                      {projectFolder => !isNilOrError(projectFolder) ? (
-                        <ProjectFolderCard
-                          projectFolderId={projectOrFolderId}
-                          size={size}
-                          layout={layout}
-                        />
-                      ) : null}
+                      {projectFolder => {
+                        if (!isNilOrError(projectFolder)) {
+                          const hasProjects = projectFolder.relationships.projects.data.length;
+
+                          if (hasProjects) {
+                            return (
+                              <ProjectFolderCard
+                                projectFolderId={projectOrFolderId}
+                                size={size}
+                                layout={layout}
+                              />
+                            );
+                          }
+
+                          return null;
+                        }
+
+                        return null;
+                      }}
                     </GetProjectFolder>
                   );
 
