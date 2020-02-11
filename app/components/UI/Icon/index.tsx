@@ -3,7 +3,7 @@ import Svg from './Svg';
 import { colors } from 'utils/styleUtils';
 
 export type clColorTheme = {
-  clIconPrimary: string;
+  clIconPrimary?: string;
   clIconSecondary?: string;
   clIconAccent?: string;
   clIconBackground?: string;
