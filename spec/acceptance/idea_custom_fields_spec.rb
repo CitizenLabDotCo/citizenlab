@@ -28,11 +28,6 @@ resource "Idea Custom Fields" do
     end
   
     get "web_api/v1/projects/:project_id/custom_fields" do
-      with_options scope: :page do
-        parameter :number, "Page number"
-        parameter :size, "Number of custom fields per page"
-      end
-
       let(:project) { create(:project) }
       let(:project_id) { project.id }
 
