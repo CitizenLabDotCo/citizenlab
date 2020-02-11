@@ -20,6 +20,7 @@ import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
 import { convertUrlToUploadFile } from 'utils/fileTools';
+import GoBackButton from 'components/UI/GoBackButton';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
@@ -40,6 +41,16 @@ const Header = styled.div`
   align-items: start;
   margin-bottom: 50px;
 `;
+
+const StyledGoBackButton = styled(GoBackButton)`
+  display: flex;
+  justify-content: start;
+  margin-bottom: 20px;
+`;
+
+const goBack = () => {
+  clHistory.push('/admin/projects');
+};
 
 interface DataProps {
   projectFolder: GetProjectFolderChildProps;
@@ -158,6 +169,8 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
             </SectionSubtitle>
           </>
           :
+          <>
+          <StyledGoBackButton onClick={goBack} />
           <Header>
             <SectionTitle >
               {<FormattedMessage {...messages.titleNewFolder} />}
@@ -166,6 +179,7 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
               <FormattedMessage {...messages.subtitleNewFolder} />
             </SectionSubtitle>
           </Header>
+          </>
         }
         <form onSubmit={onSubmit}>
           <Section>
