@@ -340,58 +340,54 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
         </ScreenReaderOnly>
       );
 
-      if (numberOfProjects > 0) {
-        return (
-          <Container
-            className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
-            to={folderUrl}
-            onClick={this.handleProjectCardOnClick(projectFolder.id)}
-          >
-            {screenReaderContent}
-            {size !== 'large' && contentHeader}
+      return (
+        <Container
+          className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+          to={folderUrl}
+          onClick={this.handleProjectCardOnClick(projectFolder.id)}
+        >
+          {screenReaderContent}
+          {size !== 'large' && contentHeader}
 
-            <FolderImageContainer className={size}>
-              <FolderImagePlaceholder>
-                <FolderImagePlaceholderIcon name="project" />
-              </FolderImagePlaceholder>
+          <FolderImageContainer className={size}>
+            <FolderImagePlaceholder>
+              <FolderImagePlaceholderIcon name="project" />
+            </FolderImagePlaceholder>
 
-              {imageUrl &&
-                <FolderImage
-                  src={imageUrl}
-                  alt=""
-                  cover={true}
-                />
-              }
-            </FolderImageContainer>
+            {imageUrl &&
+              <FolderImage
+                src={imageUrl}
+                alt=""
+                cover={true}
+              />
+            }
+          </FolderImageContainer>
 
-            <FolderContent className={size}>
-              {size === 'large' && contentHeader}
+          <FolderContent className={size}>
+            {size === 'large' && contentHeader}
 
-              <ContentBody className={size} aria-hidden>
-                <FolderTitle onClick={this.handleProjectTitleOnClick(projectFolder.id)}>
-                  <T value={projectFolder.attributes.title_multiloc} />
-                </FolderTitle>
+            <ContentBody className={size} aria-hidden>
+              <FolderTitle onClick={this.handleProjectTitleOnClick(projectFolder.id)}>
+                <T value={projectFolder.attributes.title_multiloc} />
+              </FolderTitle>
 
-                <T value={projectFolder.attributes.description_preview_multiloc}>
-                  {(description) => {
-                    if (!isEmpty(description)) {
-                      return (
-                        <FolderDescription >
-                          {description}
-                        </FolderDescription>
-                      );
-                    }
+              <T value={projectFolder.attributes.description_preview_multiloc}>
+                {(description) => {
+                  if (!isEmpty(description)) {
+                    return (
+                      <FolderDescription >
+                        {description}
+                      </FolderDescription>
+                    );
+                  }
 
-                    return null;
-                  }}
-                </T>
-              </ContentBody>
-            </FolderContent>
-          </Container>
-        );
-      }
-
-      return null;
+                  return null;
+                }}
+              </T>
+            </ContentBody>
+          </FolderContent>
+        </Container>
+      );
     }
 
     return null;
