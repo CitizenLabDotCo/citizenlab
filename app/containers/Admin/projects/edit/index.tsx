@@ -87,6 +87,11 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         className: 'ideas',
       },
       {
+        label: formatMessage(messages.ideaFormTab),
+        url: `${baseTabsUrl}/ideaform`,
+        className: 'ideaform',
+      },
+      {
         label: formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
         className: 'events',
@@ -115,7 +120,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     }
 
     if (project.attributes.process_type === 'timeline') {
-      tabs.splice(3, 0, {
+      tabs.splice(4, 0, {
         label: formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
         className: 'phases',
