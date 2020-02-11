@@ -78,6 +78,18 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.projectsYouCanAdd',
     defaultMessage: 'Projects you can add to this folder',
   },
+  otherPublishedProjects: {
+    id: 'app.containers.AdminPage.FoldersEdit.otherPublishedProjects',
+    defaultMessage: 'Published projects',
+  },
+  otherArchivedProjects: {
+    id: 'app.containers.AdminPage.FoldersEdit.otherArchivedProjects',
+    defaultMessage: 'Archived projects',
+  },
+  otherDraftProjects: {
+    id: 'app.containers.AdminPage.FoldersEdit.otherDraftProjects',
+    defaultMessage: 'Draft projects',
+  },
   projectsYouCanAddTooltip: {
     id: 'app.containers.AdminPage.FoldersEdit.projectsYouCanAddTooltip',
     defaultMessage: 'This is a list of projects you can add to this folder.',
