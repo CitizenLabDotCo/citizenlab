@@ -41,6 +41,7 @@ import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
 import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon } from '../components/ProjectRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
+import FeatureFlag from 'components/FeatureFlag';
 
 // style
 import styled from 'styled-components';
@@ -194,17 +195,19 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { authUser, projects, className, projectHolderOrderings } = this.props;
+    const { authUser, projects: { projectsList }, className, projectHolderOrderings } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
+    const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
 
-    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(projectHolderOrderings)) {
-      const { projectsList } = projects;
-      const draftProjects = projectsList.filter((project) => {
-        return project.attributes.publication_status === 'draft';
+    if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
+      const draftProjectsOutsideFolders = projectsList.filter((project) => {
+        const projectHasFolder = project.relationships.folder?.data;
+        return project.attributes.publication_status === 'draft' && !projectHasFolder;
       });
-      const archivedProjects = projectsList.filter((project) => {
-        return project.attributes.publication_status === 'archived';
+      const archivedProjectsOutsideFolders = projectsList.filter((project) => {
+        const projectHasFolder = project.relationships.folder?.data;
+        return project.attributes.publication_status === 'archived' && !projectHasFolder;
       });
 
       const FolderRow = (folder: IProjectFolderData) => {
@@ -238,11 +241,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <Spacer />
 
-                <Button
-                  linkTo={'/admin/projects/folders/new'}
-                >
-                  <FormattedMessage {...messages.newProjectFolder} />
-                </Button>
+                <FeatureFlag name="project_folders">
+                  <Button
+                    linkTo={'/admin/projects/folders/new'}
+                  >
+                    <FormattedMessage {...messages.newProjectFolder} />
+                  </Button>
+                </FeatureFlag>
+
               </ListHeader>
 
               <HasPermission item="project" action="reorder">
@@ -289,7 +295,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         );
                       }
                     }
-                    ))}
+                  ))}
                 </SortableList>
                 <HasPermission.No>
                   <List>
@@ -323,7 +329,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </>
           }
 
-          {draftProjects && draftProjects.length > 0 &&
+          {draftProjectsOutsideFolders && draftProjectsOutsideFolders.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -333,7 +339,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               </ListHeader>
               <HasPermission item="project" action="reorder">
                 <SortableList
-                  items={draftProjects}
+                  items={draftProjectsOutsideFolders}
                   onReorder={this.handleReorderProjects}
                   className="e2e-admin-projects-list"
                   id="e2e-admin-draft-projects-list"
@@ -347,7 +353,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={(index === draftProjects.length - 1)}
+                        lastItem={(index === draftProjectsOutsideFolders.length - 1)}
                       >
                         <ProjectRow project={project} />
                       </SortableRow>
@@ -356,8 +362,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </SortableList>
                 <HasPermission.No>
                   <List>
-                    {draftProjects.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
+                    {draftProjectsOutsideFolders.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === draftProjectsOutsideFolders.length - 1)}>
                         <ProjectRow project={project} />
                       </Row>
                     ))}
@@ -367,7 +373,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </>
           }
 
-          {archivedProjects && archivedProjects.length > 0 &&
+          {archivedProjectsOutsideFolders && archivedProjectsOutsideFolders.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -377,7 +383,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               </ListHeader>
               <HasPermission item="project" action="reorder">
                 <SortableList
-                  items={archivedProjects}
+                  items={archivedProjectsOutsideFolders}
                   onReorder={this.handleReorderProjects}
                   className="e2e-admin-projects-list"
                   id="e2e-admin-archived-projects-list"
@@ -391,7 +397,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={index === archivedProjects.length - 1}
+                        lastItem={index === archivedProjectsOutsideFolders.length - 1}
                       >
                         <ProjectRow project={project} />
                       </SortableRow>
@@ -401,11 +407,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <HasPermission.No>
                   <List id="e2e-admin-archived-projects-list">
-                    {archivedProjects.map((project, index) => (
+                    {archivedProjectsOutsideFolders.map((project, index) => (
                       <Row
                         key={project.id}
                         className="e2e-admin-projects-list-item"
-                        lastItem={(index === archivedProjects.length - 1)}
+                        lastItem={(index === archivedProjectsOutsideFolders.length - 1)}
                       >
                         <ProjectRow project={project} />
                       </Row>
@@ -437,9 +443,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
           {userIsAdmin && <StyledCreateProject />}
 
-          <PageWrapper>
-            {lists}
-          </PageWrapper>
+          {hasProjectsOrFolders &&
+            <PageWrapper>
+              {lists}
+            </PageWrapper>
+          }
         </CreateAndEditProjectsContainer>
 
         <ProjectTemplatePreviewContainer className={!selectedProjectTemplateId ? 'hidden' : ''}>
@@ -461,7 +469,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
 });
 
 export default (inputProps: InputProps) => (
