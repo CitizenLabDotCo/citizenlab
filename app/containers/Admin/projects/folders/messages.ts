@@ -112,6 +112,6 @@ export default defineMessages({
   },
   deleteFolderConfirmation: {
     id: 'app.containers.AdminPage.FoldersEdit.deleteFolderConfirmation',
-    defaultMessage: 'Are you sure you want to delete this folder and all the projects it contains ?',
+    defaultMessage: 'Are you sure you want to delete this folder and all the projects it contains?',
   },
 });
