@@ -48,6 +48,7 @@ export const RowButton = styled(Button)`
 
 export const RowIcon = styled(Icon)`
   margin-right: 10px;
+  height: 14px;
   width: 17px;
 `;
 
