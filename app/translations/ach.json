@@ -1046,6 +1046,7 @@
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "",
+  "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.save": "",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "",
