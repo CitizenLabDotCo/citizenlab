@@ -15,24 +15,24 @@ resource 'ProjectFolder' do
 
   get "web_api/v1/project_folders" do
     with_options scope: :page do
-        parameter :number, "Page number"
-        parameter :size, "Number of folders per page"
-      end
-      parameter :filter_ids, "Filter out only folders with the given list of IDs", required: false
+      parameter :number, "Page number"
+      parameter :size, "Number of folders per page"
+    end
+    parameter :filter_ids, "Filter out only folders with the given list of IDs", required: false
 
-      example_request "List all folders" do
-        expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-      end
+    example_request "List all folders" do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+    end
 
-      example "List only folders with specified IDs", document: false do
-        filter_ids = [@folders.first.id]
-        do_request(filter_ids: filter_ids)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].map { |d| d.dig(:id) }).to match_array filter_ids
-      end
+    example "List only folders with specified IDs", document: false do
+      filter_ids = [@folders.first.id]
+      do_request(filter_ids: filter_ids)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+      expect(json_response[:data].map { |d| d.dig(:id) }).to match_array filter_ids
+    end
   end
 
   get "web_api/v1/project_folders/:id" do
