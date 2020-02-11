@@ -17,7 +17,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
-import GoBackButton from 'components/UI/GoBackButton';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
 import { convertUrlToUploadFile } from 'utils/fileTools';
@@ -41,16 +40,6 @@ const Header = styled.div`
   align-items: start;
   margin-bottom: 50px;
 `;
-
-const StyledGoBackButton = styled(GoBackButton)`
-  display: flex;
-  justify-content: start;
-  margin-bottom: 20px;
-`;
-
-const goBack = () => {
-  clHistory.push('/admin/projects');
-};
 
 interface DataProps {
   projectFolder: GetProjectFolderChildProps;
@@ -158,7 +147,6 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
 
   return (
     <>
-      <StyledGoBackButton onClick={goBack} />
       <Container mode={mode}>
         {mode === 'edit' ?
           <>
