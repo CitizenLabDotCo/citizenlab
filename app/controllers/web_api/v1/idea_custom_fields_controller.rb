@@ -1,6 +1,6 @@
 class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   before_action :set_custom_field, only: [:show, :update]
-  before_action :set_custom_form, only: [:index, :upsert_by_code]
+  before_action :set_custom_form, only: [:index, :schema, :upsert_by_code]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -11,6 +11,17 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
     @custom_fields = IdeaCustomFieldService.new.db_and_built_in_fields(@custom_form, custom_fields_scope: @db_custom_fields)
   
     render json: WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
+  end
+
+  def schema
+    authorize :custom_field, policy_class: IdeaCustomFieldPolicy
+    @custom_fields = IdeaCustomFieldService.new.db_and_built_in_fields(@custom_form)
+
+    service = CustomFieldService.new
+    json_schema_multiloc = service.fields_to_json_schema_multiloc(Tenant.current, @custom_fields)
+    ui_schema_multiloc = service.fields_to_ui_schema_multiloc(Tenant.current, @custom_fields)
+
+    render json: {json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc}
   end
 
   def show
@@ -60,6 +71,10 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   def set_custom_field
     @custom_field = CustomField.find(params[:id])
     authorize @custom_field, policy_class: IdeaCustomFieldPolicy
+  end
+
+  def secure_controller?
+    false
   end
 
 end
