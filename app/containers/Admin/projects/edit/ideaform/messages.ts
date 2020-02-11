@@ -23,4 +23,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved successfully.',
   },
+  errorMessage: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.errorMessage',
+    defaultMessage: 'Something went wrong, please try again later',
+  },
 });
