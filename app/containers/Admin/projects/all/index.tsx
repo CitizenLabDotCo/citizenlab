@@ -490,7 +490,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>
 });
 
 export default (inputProps: InputProps) => (
