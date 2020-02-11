@@ -122,7 +122,7 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: "number"
     }
-  end 
+  end
   
   # *** multiline_text ***
 
@@ -154,9 +154,13 @@ class CustomFieldService
       title: handle_title(field, locale),
       description: handle_description(field, locale),
       type: "string",
-      enum: field.custom_field_options.order(:ordering).map(&:key),
-      enumNames: field.custom_field_options.order(:ordering).map{|o| handle_title(o, locale)}
-    }
+    }.tap do |items|
+      options = field.custom_field_options.order(:ordering)
+      unless options.empty?
+        items[:enum] = options.map(&:key)
+        items[:enumNames] = options.map{|o| handle_title(o, locale)}
+      end
+    end
   end
   
   # *** multiselect ***
@@ -171,12 +175,16 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: "array",
       uniqueItems: true,
+      minItems: (field.enabled && field.required) ? 1 : 0,
       items: {
         type: "string",
-        enum: field.custom_field_options.order(:ordering).map(&:key),
-        enumNames: field.custom_field_options.order(:ordering).map{|o| handle_title(o, locale)}
-      },
-      minItems: (field.enabled && field.required) ? 1 : 0
+      }.tap do |items|
+        options = field.custom_field_options.order(:ordering)
+        unless options.empty?
+          items[:enum] = options.map(&:key)
+          items[:enumNames] = options.map{|o| handle_title(o, locale)}
+        end
+      end,
     }
   end 
   
@@ -206,6 +214,24 @@ class CustomFieldService
       description: handle_description(field, locale),
       type: "string",
       format: "date"
+    }
+  end
+
+  # *** files ***
+
+  def files_to_ui_schema_field field, locale
+    base_ui_schema_field(field, locale)
+  end
+
+  def files_to_json_schema_field field, locale
+    {
+      title: handle_title(field, locale),
+      description: handle_description(field, locale),
+      type: "array",
+      items: {
+        type: "string",
+        format: "data-url",
+      }
     }
   end
 

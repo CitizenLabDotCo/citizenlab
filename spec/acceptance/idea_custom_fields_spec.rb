@@ -10,15 +10,18 @@ resource "Idea Custom Fields" do
     header "Content-Type", "application/json"
   end
 
+  get "web_api/v1/projects/:project_id/custom_fields/schema" do
 
-  # get "web_api/v1/projects/:project_id/custom_fields/schema" do
-  #   example_request "Get the json schema and ui schema for the custom fields" do
-  #     expect(status).to eq 200
-  #     json_response = json_parse(response_body)
-  #     expect(json_response.dig(:json_schema_multiloc)).to be_present
-  #     expect(json_response.dig(:ui_schema_multiloc)).to be_present
-  #   end
-  # end
+    let(:project) { create(:project) }
+    let(:project_id) { project.id }
+
+    example_request "Get the json schema and ui schema for the custom fields" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response.dig(:json_schema_multiloc)).to be_present
+      expect(json_response.dig(:ui_schema_multiloc)).to be_present
+    end
+  end
 
   context "when authenticated as admin" do
     before do

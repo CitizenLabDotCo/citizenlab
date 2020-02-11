@@ -21,6 +21,10 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
     end
   end
 
+  def schema?
+    true
+  end
+
   def show?
     user&.active? && (
       user.admin? ||
