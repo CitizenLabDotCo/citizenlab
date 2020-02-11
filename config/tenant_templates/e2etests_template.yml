@@ -176,7 +176,7 @@ models:
   - &5
     resource_type: User
     key: gender
-    title_multiloc: custom_fields.gender
+    title_multiloc: custom_fields.users.gender.title
     input_type: select
     required: false
     ordering: 0
@@ -184,7 +184,7 @@ models:
     code: gender
   - resource_type: User
     key: birthyear
-    title_multiloc: custom_fields.birthyear
+    title_multiloc: custom_fields.users.birthyear.title
     input_type: number
     required: false
     ordering: 1
@@ -192,7 +192,7 @@ models:
     code: birthyear
   - resource_type: User
     key: domicile
-    title_multiloc: custom_fields.domicile
+    title_multiloc: custom_fields.users.domicile.title
     input_type: select
     required: false
     ordering: 2
@@ -201,7 +201,7 @@ models:
   - &6
     resource_type: User
     key: education
-    title_multiloc: custom_fields.education
+    title_multiloc: custom_fields.users.education.title
     input_type: select
     required: false
     ordering: 3

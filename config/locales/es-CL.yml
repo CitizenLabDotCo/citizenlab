@@ -261,10 +261,34 @@ es-CL:
     council_meeting_description: >
       <p>Durante esta reunión del concejo, se presentarán aquellas iniciativas ciudadanas que obtuvieron sobre 100 votos en menos de 3 meses.</p><p>El concejo entonces entregará su visión sobre cada idea.</p>
   custom_fields:
-    gender: Género
-    birthyear: Año de nacimiento
-    domicile: Lugar de residencia
-    education: Educación
+    users:
+      gender: 
+        title: Gender
+      birthyear: 
+        title: Year of birth
+      domicile: 
+        title: Place of residence
+      education: 
+        title: Education
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      topic_ids:
+        title: Topics
+        description:
+      location:
+        title: Location
+        description:
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
   custom_field_options:
     gender:
       male: Hombre
