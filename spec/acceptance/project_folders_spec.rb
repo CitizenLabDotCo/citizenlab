@@ -13,6 +13,8 @@ resource 'ProjectFolder' do
     ProjectHolderService.new.fix_project_holder_orderings!
   end
 
+  # TODO index spec
+
   get "web_api/v1/project_folders/:id" do
     let(:id) {@folders.first.id}
 

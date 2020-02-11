@@ -8,6 +8,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else 
       policy_scope(Project)
     end
+    @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]
 
     if params[:publication_statuses].present?
       @projects = @projects.where(publication_status: params[:publication_statuses])
