@@ -21,6 +21,7 @@ export interface InputProps {
   publicationStatuses: PublicationStatus[];
   filterCanModerate?: boolean;
   folderId?: string;
+  filterIds?: string[];
 }
 
 interface IQueryParameters {
@@ -32,6 +33,7 @@ interface IQueryParameters {
   publication_statuses?: PublicationStatus[];
   filter_can_moderate?: boolean;
   folder?: string;
+  filter_ids?: string[];
 }
 
 interface IAccumulator {
@@ -76,7 +78,8 @@ export default class GetProjects extends Component<Props, State> {
         sort: props.sort,
         areas: props.areas,
         topics: props.topics,
-        publication_statuses: props.publicationStatuses
+        publication_statuses: props.publicationStatuses,
+        filter_ids: props.filterIds
       },
       projectsList: undefined,
       hasMore: false,
@@ -120,7 +123,7 @@ export default class GetProjects extends Component<Props, State> {
 
             if (isNilOrError(projects)) {
               reportError({
-                message: 'There was an incorrect response for projects',
+                message: 'There was an incpublicationStatusesorrect response for projects',
                 response: projects
               });
             }
@@ -170,7 +173,8 @@ export default class GetProjects extends Component<Props, State> {
         topics: props.topics,
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
-        folder: props.folderId
+        folder: props.folderId,
+        filter_ids: props.filterIds
       }, isNil)
     };
   }
