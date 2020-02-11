@@ -42,6 +42,7 @@ import IconTooltip from 'components/UI/IconTooltip';
 import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, RowIcon } from '../components/ProjectRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import FeatureFlag from 'components/FeatureFlag';
+import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
@@ -79,6 +80,12 @@ const ListHeader = styled.div`
 
 const Spacer = styled.div`
   flex: 1;
+`;
+
+const FolderIcon = styled(Icon)`
+  margin-right: 10px;
+  height: 14px;
+  width: 17px;
 `;
 
 export interface InputProps {
@@ -202,11 +209,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
     if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
       const draftProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder?.data;
+        const projectHasFolder = project.relationships.folder ?.data;
         return project.attributes.publication_status === 'draft' && !projectHasFolder;
       });
       const archivedProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder?.data;
+        const projectHasFolder = project.relationships.folder ?.data;
         return project.attributes.publication_status === 'archived' && !projectHasFolder;
       });
 
@@ -214,7 +221,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
         return (
           <RowContent className="e2e-admin-projects-list-item">
             <RowContentInner className="expand primary">
-              <RowIcon name="simpleFolder" />
+              <FolderIcon name="simpleFolder" />
               <RowTitle value={folder.attributes.title_multiloc} />
             </RowContentInner>
             <RowButton
@@ -223,7 +230,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               buttonStyle="secondary"
               icon="edit"
             >
-              <FormattedMessage {...messages.editButtonLabel} />
+              <FormattedMessage {...messages.manageButtonLabel} />
             </RowButton>
           </RowContent>
         );
@@ -272,7 +279,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                                 dropRow={handleDropRow}
                                 lastItem={(index === projectHolderOrderings.length - 1)}
                               >
-                                <ProjectRow project={project} showIcon />
+                                <ProjectRow project={project} />
                               </SortableRow>
                             )}
                           </GetProject>
@@ -295,7 +302,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         );
                       }
                     }
-                  ))}
+                    ))}
                 </SortableList>
                 <HasPermission.No>
                   <List>
@@ -307,7 +314,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                               id={project.id}
                               lastItem={(index === projectHolderOrderings.length - 1)}
                             >
-                              <ProjectRow project={project} showIcon />
+                              <ProjectRow project={project} />
                             </Row>
                           )}
                         </GetProject>
