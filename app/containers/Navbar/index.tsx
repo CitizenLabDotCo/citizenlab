@@ -1,6 +1,6 @@
 // libraries
 import React, { PureComponent, MouseEvent, FormEvent } from 'react';
-import { get, includes, isNil } from 'lodash-es';
+import { get, includes } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import { locales } from 'containers/App/constants';
