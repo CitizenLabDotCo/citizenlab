@@ -123,10 +123,11 @@ export default class GetProjects extends Component<Props, State> {
 
             if (isNilOrError(projects)) {
               reportError({
-                message: 'There was an incpublicationStatusesorrect response for projects',
+                message: 'There was an incorrect response for projects',
                 response: projects
               });
             }
+
             return {
               queryParameters,
               hasMore,
