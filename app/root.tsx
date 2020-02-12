@@ -15,6 +15,8 @@ import 'file-loader?name=[name].[ext]!./.htaccess';
 import createRoutes from './routes';
 import { initializeAnalytics } from 'utils/analytics';
 import { init } from '@sentry/browser';
+import { isError } from 'util';
+import GetTenant from 'resources/GetTenant';
 
 const rootRoute = {
   component: App,
@@ -23,13 +25,22 @@ const rootRoute = {
 
 const Root = () => {
   return (
-    <LanguageProvider>
-      <Router
-        history={browserHistory}
-        routes={rootRoute}
-        render={applyRouterMiddleware(useScroll())}
-      />
-    </LanguageProvider>
+    <GetTenant>
+      {tenant => {
+        if (isError(tenant) && tenant.message === 'Not Found') {
+          window.location.href = 'https://www.citizenlab.co/gone';
+        }
+        return (
+          <LanguageProvider>
+            <Router
+              history={browserHistory}
+              routes={rootRoute}
+              render={applyRouterMiddleware(useScroll())}
+            />
+          </LanguageProvider>
+        );
+      }}
+    </GetTenant>
   );
 };
 
