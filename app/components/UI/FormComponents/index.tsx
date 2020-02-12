@@ -136,7 +136,7 @@ export const FormLabel = memo<FormLabelProps>(({
       <>
         <br />
         <FormSubtextStyled>
-          {subtextMessage ? <FormattedMessage {...subtextMessage} values={subtextMessageValues} />: subtext}
+          {subtextMessage ? <FormattedMessage {...subtextMessage} values={subtextMessageValues} /> : subtext}
         </FormSubtextStyled>
       </>
     }
