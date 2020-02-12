@@ -8,6 +8,7 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousInformation/edit",
   "/admin/projects/continuousInformation/description",
+  "/admin/projects/continuousInformation/ideaform",
   "/admin/projects/continuousInformation/events",
   "/admin/projects/continuousInformation/permissions",
 ]
@@ -17,6 +18,7 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousGoogleForm/edit",
   "/admin/projects/continuousGoogleForm/description",
+  "/admin/projects/continuousGoogleForm/ideaform",
   "/admin/projects/continuousGoogleForm/events",
   "/admin/projects/continuousGoogleForm/permissions",
 ]
@@ -26,8 +28,9 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousTypeform/edit",
   "/admin/projects/continuousTypeform/description",
-  "/admin/projects/continuousTypeform/events",
+  "/admin/projects/continuousTypeform/ideaform",
   "/admin/projects/continuousTypeform/survey-results",
+  "/admin/projects/continuousTypeform/events",
   "/admin/projects/continuousTypeform/permissions",
 ]
 `;
@@ -36,6 +39,7 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousTypeform/edit",
   "/admin/projects/continuousTypeform/description",
+  "/admin/projects/continuousTypeform/ideaform",
   "/admin/projects/continuousTypeform/events",
   "/admin/projects/continuousTypeform/permissions",
 ]
@@ -45,6 +49,7 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousTypeform/edit",
   "/admin/projects/continuousTypeform/description",
+  "/admin/projects/continuousTypeform/ideaform",
   "/admin/projects/continuousTypeform/events",
   "/admin/projects/continuousTypeform/permissions",
 ]
@@ -55,6 +60,7 @@ Array [
   "/admin/projects/timelineIdeation/edit",
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
+  "/admin/projects/timelineIdeation/ideaform",
   "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
@@ -67,6 +73,7 @@ Array [
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/survey-results",
+  "/admin/projects/timelineIdeation/ideaform",
   "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
@@ -78,6 +85,7 @@ Array [
   "/admin/projects/timelineIdeation/edit",
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
+  "/admin/projects/timelineIdeation/ideaform",
   "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
@@ -89,6 +97,7 @@ Array [
   "/admin/projects/timelineInformation/edit",
   "/admin/projects/timelineInformation/description",
   "/admin/projects/timelineInformation/ideas",
+  "/admin/projects/timelineInformation/ideaform",
   "/admin/projects/timelineInformation/timeline",
   "/admin/projects/timelineInformation/events",
   "/admin/projects/timelineInformation/permissions",
