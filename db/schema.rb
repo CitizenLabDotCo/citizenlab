@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_06_165218) do
+ActiveRecord::Schema.define(version: 2020_02_13_001613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -136,7 +136,6 @@ ActiveRecord::Schema.define(version: 2020_02_06_165218) do
     t.boolean "enabled", default: true, null: false
     t.string "code"
     t.uuid "resource_id"
-    t.index ["resource_type", "key"], name: "index_custom_fields_on_resource_type_and_key", unique: true
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 
