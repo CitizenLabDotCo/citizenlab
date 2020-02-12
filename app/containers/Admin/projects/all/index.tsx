@@ -503,7 +503,7 @@ const Data = adopt<DataProps, InputProps>({
       : projectHolderOrderings
         .filter(item => item.relationships.project_holder.data.type === 'project')
         .map(item => item.relationships.project_holder.data.id);
-    return <GetProjects publicationStatuses={['published']} filterIds={projectIds} filterCanModerate={true}>{render}</GetProjects>;
+    return <GetProjects publicationStatuses={['published']} filteredProjectIds={projectIds} filterCanModerate={true}>{render}</GetProjects>;
   },
   projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
 });
