@@ -94,7 +94,7 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  projects: GetProjectsChildProps;
+  projectsWithoutFolder: GetProjectsChildProps;
   publishedProjects: GetProjectsChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
 }
@@ -206,19 +206,17 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { authUser, projects: { projectsList }, className, projectHolderOrderings, publishedProjects } = this.props;
+    const { authUser, projectsWithoutFolder: { projectsList: projectsWithoutFolderList }, className, projectHolderOrderings, publishedProjects } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
     const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
 
-    if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
-      const draftProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder?.data;
-        return project.attributes.publication_status === 'draft' && !projectHasFolder;
+    if (!isNilOrError(projectsWithoutFolderList) && !isNilOrError(projectHolderOrderings)) {
+      const draftProjectsWithoutFolder = projectsWithoutFolderList.filter((project) => {
+        return project.attributes.publication_status === 'draft';
       });
-      const archivedProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder?.data;
-        return project.attributes.publication_status === 'archived' && !projectHasFolder;
+      const archivedProjectsWithoutFolder = projectsWithoutFolderList.filter((project) => {
+        return project.attributes.publication_status === 'archived';
       });
 
       const FolderRow = (folder: IProjectFolderData) => {
@@ -356,7 +354,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </>
           }
 
-          {draftProjectsOutsideFolders && draftProjectsOutsideFolders.length > 0 &&
+          {draftProjectsWithoutFolder && draftProjectsWithoutFolder.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -366,7 +364,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               </ListHeader>
               <HasPermission item="project" action="reorder">
                 <SortableList
-                  items={draftProjectsOutsideFolders}
+                  items={draftProjectsWithoutFolder}
                   onReorder={this.handleReorderProjects}
                   className="e2e-admin-projects-list"
                   id="e2e-admin-draft-projects-list"
@@ -380,7 +378,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={(index === draftProjectsOutsideFolders.length - 1)}
+                        lastItem={(index === draftProjectsWithoutFolder.length - 1)}
                       >
                         <ProjectRow project={project} />
                       </SortableRow>
@@ -389,8 +387,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </SortableList>
                 <HasPermission.No>
                   <List>
-                    {draftProjectsOutsideFolders.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === draftProjectsOutsideFolders.length - 1)}>
+                    {draftProjectsWithoutFolder.map((project, index) => (
+                      <Row key={project.id} lastItem={(index === draftProjectsWithoutFolder.length - 1)}>
                         <ProjectRow project={project} />
                       </Row>
                     ))}
@@ -400,7 +398,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             </>
           }
 
-          {archivedProjectsOutsideFolders && archivedProjectsOutsideFolders.length > 0 &&
+          {archivedProjectsWithoutFolder && archivedProjectsWithoutFolder.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -410,7 +408,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
               </ListHeader>
               <HasPermission item="project" action="reorder">
                 <SortableList
-                  items={archivedProjectsOutsideFolders}
+                  items={archivedProjectsWithoutFolder}
                   onReorder={this.handleReorderProjects}
                   className="e2e-admin-projects-list"
                   id="e2e-admin-archived-projects-list"
@@ -424,7 +422,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
-                        lastItem={index === archivedProjectsOutsideFolders.length - 1}
+                        lastItem={index === archivedProjectsWithoutFolder.length - 1}
                       >
                         <ProjectRow project={project} />
                       </SortableRow>
@@ -434,11 +432,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <HasPermission.No>
                   <List id="e2e-admin-archived-projects-list">
-                    {archivedProjectsOutsideFolders.map((project, index) => (
+                    {archivedProjectsWithoutFolder.map((project, index) => (
                       <Row
                         key={project.id}
                         className="e2e-admin-projects-list-item"
-                        lastItem={(index === archivedProjectsOutsideFolders.length - 1)}
+                        lastItem={(index === archivedProjectsWithoutFolder.length - 1)}
                       >
                         <ProjectRow project={project} />
                       </Row>
@@ -504,7 +502,7 @@ const Data = adopt<DataProps, InputProps>({
         .map(item => item.relationships.project_holder.data.id);
     return <GetProjects publicationStatuses={['published']} filteredProjectIds={projectIds} filterCanModerate={true}>{render}</GetProjects>;
   },
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>
+  projectsWithoutFolder: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>
 });
 
 export default (inputProps: InputProps) => (
