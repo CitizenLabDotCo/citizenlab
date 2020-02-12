@@ -80,22 +80,43 @@ Apartment.configure do |config|
   # config.prepend_environment = !Rails.env.production?
 end
 
+
+class RescuedApartmentMiddleware < Apartment::Elevators::Generic
+  def call(env)
+    request = Rack::Request.new(env)
+
+    database = @processor.call(request)
+
+    if database
+      Apartment::Tenant.switch(database) { @app.call(env) }
+    else
+      @app.call(env)
+    end
+  rescue Apartment::TenantNotFound
+    # This allows us to catch the exception from a rails controller
+    @app.call(env)
+  end
+
+  def parse_tenant_name request
+    if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events" || request.path == "/hooks/typeform_events"
+      nil
+    else
+      if Rails.env.development? || Rails.env.staging?
+        ENV.fetch('OVERRIDE_HOST', request.host).gsub(/\./, "_")
+      else
+        request.host.gsub(/\./, "_")
+      end
+    end
+  end
+end
+
 # Setup a custom Tenant switching middleware. The Proc should return the name of the Tenant that
 # you want to switch to.
 # Rails.application.config.middleware.use 'Apartment::Elevators::Generic', lambda { |request|
 #   request.host.split('.').first
 # }
-Rails.application.config.middleware.use Apartment::Elevators::Generic, (Proc.new do |request|
-  if request.path =~ /^\/admin_api\/.*/ || request.path =~ /^\/okcomputer.*/ || request.path == "/hooks/mailgun_events" || request.path == "/hooks/typeform_events"
-    nil
-  else
-    if Rails.env.development? || Rails.env.staging?
-      ENV.fetch('OVERRIDE_HOST', request.host).gsub(/\./, "_")
-    else
-      request.host.gsub(/\./, "_")
-    end
-  end
-end)
+Rails.application.config.middleware.use RescuedApartmentMiddleware
+
 # Rails.application.config.middleware.use RescuedApartmentElevator, Proc.new { |request| puts request.path; request.host.gsub(/\./, "_") }
 # Rails.application.config.middleware.use Apartment::Elevators::Domain
 # Rails.application.config.middleware.use 'Apartment::Elevators::Subdomain'
