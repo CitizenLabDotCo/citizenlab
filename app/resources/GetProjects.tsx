@@ -21,7 +21,7 @@ export interface InputProps {
   publicationStatuses: PublicationStatus[];
   filterCanModerate?: boolean;
   folderId?: string;
-  filterIds?: string[];
+  filteredProjectIds?: string[];
 }
 
 interface IQueryParameters {
@@ -79,7 +79,7 @@ export default class GetProjects extends Component<Props, State> {
         areas: props.areas,
         topics: props.topics,
         publication_statuses: props.publicationStatuses,
-        filter_ids: props.filterIds
+        filter_ids: props.filteredProjectIds
       },
       projectsList: undefined,
       hasMore: false,
@@ -174,7 +174,7 @@ export default class GetProjects extends Component<Props, State> {
         publication_statuses: props.publicationStatuses,
         filter_can_moderate: props.filterCanModerate,
         folder: props.folderId,
-        filter_ids: props.filterIds
+        filter_ids: props.filteredProjectIds
       }, isNil)
     };
   }
