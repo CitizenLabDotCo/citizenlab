@@ -1,8 +1,7 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isEmpty } from 'lodash-es';
-import CSSTransition from 'react-transition-group/CSSTransition';
 
 // hooks
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
@@ -11,15 +10,13 @@ import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
 import { updateIdeaCustomField } from 'services/ideaCustomFields';
 
 // components
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
 import IdeaCustomField from './IdeaCustomField';
-import { SectionTitle, SectionSubtitle, Section } from 'components/admin/Section';
+import { SectionTitle, SectionSubtitle, Section, SectionField } from 'components/admin/Section';
 
 // i18n
-import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -31,106 +28,36 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { Multiloc } from 'typings';
 
-const timeout = 400;
-
 const Container = styled.div``;
 
-const CustomFieldsContainer = styled.div``;
-
-const CustomField = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  border-top: solid 1px ${colors.separation};
-  border-bottom: solid 1px ${colors.separation};
+const Header = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 40px;
 `;
 
-const CollapsedContent = styled.div`
+const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
 `;
 
-const CollapseContainer = styled.div`
-  opacity: 0;
-  display: none;
-  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  will-change: opacity, height;
-
-  &.collapse-enter {
-    opacity: 0;
-    max-height: 0px;
-    overflow: hidden;
-    display: block;
-
-    &.collapse-enter-active {
-      opacity: 1;
-      max-height: 1000px;
-      overflow: hidden;
-      display: block;
-    }
-  }
-
-  &.collapse-enter-done {
-    opacity: 1;
-    overflow: visible;
-    display: block;
-  }
-
-  &.collapse-exit {
-    opacity: 1;
-    max-height: 1000px;
-    overflow: hidden;
-    display: block;
-
-    &.collapse-exit-active {
-      opacity: 0;
-      max-height: 0px;
-      overflow: hidden;
-      display: block;
-    }
-  }
-
-  &.collapse-exit-done {
-    display: none;
-  }
-`;
-
-const CustomFieldTitle = styled.div`
-  color: ${colors.text};
-  font-size: ${fontSizes.large}px;
-  font-weight: 400;
-  line-height: normal;
-`;
-
-const EditIcon = styled(Icon)`
-  width: 15px;
-  height: 15px;
-  fill: ${colors.label};
-  transition: all 80ms ease-out;
-`;
-
-const CustomFieldEditButton = styled.button`
-  width: 15px;
-  height: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0;
+const StyledSectionTitle = styled(SectionTitle)`
   padding: 0;
-  border: none;
-  cursor: pointer;
-
-  &:hover {
-    ${EditIcon} {
-      fill: #000;
-    }
-  }
+  margin: 0;
 `;
 
-const ButtonContainer = styled.div`
+const CollapseExpandAllButton = styled(Button)``;
+
+const Content = styled.div`
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 30px;
+`;
+
+const Footer = styled.div`
+  min-height: 50px;
   display: flex;
   align-items: center;
 `;
@@ -149,14 +76,49 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
   const projectId = params.projectId;
 
   const [changes, setChanges] = useState<IChanges>({});
+  const [collapsed, setCollapsed] = useState<{ [key: string]: boolean }>({});
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
-  const [collapsed, setCollapsed] = useState(true);
 
   const ideaCustomFields = useIdeaCustomFields({ projectId });
 
+  const allExpanded = Object.getOwnPropertyNames(collapsed).every(key => collapsed[key] === false);
+
+  useEffect(() => {
+    if (!isNilOrError(ideaCustomFields) && isEmpty(collapsed)) {
+      const newCollapsed = {};
+      ideaCustomFields.data.forEach((ideaCustomField) => {
+        newCollapsed[ideaCustomField.id] = true;
+      });
+      setCollapsed(newCollapsed);
+    }
+  }, [ideaCustomFields, collapsed]);
+
+  const handleIdeaCustomFieldOnCollapseExpand = useCallback((ideaCustomFieldId: string) => {
+    setSuccess(false);
+    setError(false);
+    setCollapsed((collapsed) => ({
+      ...collapsed,
+      [ideaCustomFieldId]: !collapsed[ideaCustomFieldId]
+    }));
+  }, []);
+
+  const handleCollapseExpandAll = useCallback(() => {
+    const newCollapsed = {};
+
+    if (!allExpanded) {
+      Object.keys(collapsed).forEach((key) => newCollapsed[key] = false);
+    } else {
+      Object.keys(collapsed).forEach((key) => newCollapsed[key] = true);
+    }
+
+    setCollapsed(newCollapsed);
+  }, [collapsed, allExpanded]);
+
   const handleIdeaCustomFieldOnChange = useCallback((ideaCustomFieldId: string, { description_multiloc }: { description_multiloc: Multiloc }) => {
+    setSuccess(false);
+    setError(false);
     setChanges((changes) => ({
       ...changes,
       [ideaCustomFieldId]: {
@@ -164,14 +126,6 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
       }
     }));
   }, []);
-
-  const removeFocus = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-  }, []);
-
-  const handleCollapseExpand = useCallback(() => {
-    setCollapsed(!collapsed);
-  }, [collapsed]);
 
   const handleOnSubmit = useCallback(async () => {
     if (!isNilOrError(ideaCustomFields)) {
@@ -186,11 +140,10 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
         });
 
         await Promise.all(promises);
-        setChanges({})
+        setChanges({});
         setProcessing(false);
         setSuccess(true);
         setError(false);
-        setTimeout(() => setSuccess(false), 5000);
       } catch (error) {
         setProcessing(false);
         setSuccess(false);
@@ -202,49 +155,39 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
   if (!isNilOrError(ideaCustomFields)) {
     return (
       <Container className={className || ''}>
-        <SectionTitle>
-          <FormattedMessage {...messages.title} />
-        </SectionTitle>
-        <SectionSubtitle>
-          <FormattedMessage {...messages.subtitle} />
-        </SectionSubtitle>
-        <Section>
-          <CustomFieldsContainer>
-            {ideaCustomFields.data.map((ideaCustomField) => {
-              return (
-                <CustomField key={ideaCustomField.id}>
-                  <CollapsedContent>
-                    <CustomFieldTitle>
-                      <T value={ideaCustomField.attributes.title_multiloc} />
-                    </CustomFieldTitle>
-                    <CustomFieldEditButton onMouseDown={removeFocus} onClick={handleCollapseExpand}>
-                      <EditIcon name="edit" />
-                    </CustomFieldEditButton>
-                  </CollapsedContent>
+        <Header>
+          <TitleContainer>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.title} />
+            </StyledSectionTitle>
+            <CollapseExpandAllButton
+              buttonStyle="secondary"
+              padding="7px 10px"
+              onClick={handleCollapseExpandAll}
+              text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
+            />
+          </TitleContainer>
+          <SectionSubtitle>
+            <FormattedMessage {...messages.subtitle} />
+          </SectionSubtitle>
+        </Header>
 
-                  <CSSTransition
-                    classNames="collapse"
-                    in={!collapsed}
-                    timeout={timeout}
-                    mounOnEnter={false}
-                    unmountOnExit={false}
-                    enter={true}
-                    exit={true}
-                  >
-                    <CollapseContainer>
-                      <IdeaCustomField
-                        ideaCustomField={ideaCustomField}
-                        onChange={handleIdeaCustomFieldOnChange}
-                      />
-                    </CollapseContainer>
-                  </CSSTransition>
-                </CustomField>
-              );
-            })}
-          </CustomFieldsContainer>
-        </Section>
+        <Content>
+          {ideaCustomFields.data.map((ideaCustomField, index) => {
+            return (
+              <IdeaCustomField
+                key={ideaCustomField.id}
+                collapsed={collapsed[ideaCustomField.id]}
+                first={index === 0}
+                ideaCustomField={ideaCustomField}
+                onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
+                onChange={handleIdeaCustomFieldOnChange}
+              />
+            );
+          })}
+        </Content>
 
-        <ButtonContainer>
+        <Footer>
           <Button
             buttonStyle="admin-dark"
             onClick={handleOnSubmit}
@@ -256,11 +199,24 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
               : <FormattedMessage {...messages.save} />
             }
           </Button>
-        </ButtonContainer>
 
-        {success && <Success text={formatMessage(messages.saveSuccessMessage)} showBackground={false} />}
+          {success &&
+            <Success
+              text={formatMessage(messages.saveSuccessMessage)}
+              showBackground={false}
+              showIcon={false}
+            />
+          }
 
-        {error && <Error text={formatMessage(messages.errorMessage)} showBackground={false} />}
+          {error &&
+            <Error
+              text={formatMessage(messages.errorMessage)}
+              showBackground={false}
+              showIcon={false}
+            />
+          }
+
+        </Footer>
       </Container>
     );
   }
