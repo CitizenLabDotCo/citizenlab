@@ -10,7 +10,7 @@ class CustomField < ApplicationRecord
   CODES = %w(gender birthyear domicile education title body topic_ids location images attachments)
 
   validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
-  validates :key, presence: true, uniqueness: {scope: [:resource_type]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
+  validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
     message: "only letters, numbers and underscore" }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: {presence: true}
