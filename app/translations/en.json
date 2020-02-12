@@ -1046,6 +1046,7 @@
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Title and dates",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Event name",
+  "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Something went wrong, please try again later",
   "app.containers.AdminPage.ProjectIdeaForm.save": "Save",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Your changes have been saved successfully.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
