@@ -213,11 +213,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
     if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
       const draftProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder ?.data;
+        const projectHasFolder = project.relationships.folder?.data;
         return project.attributes.publication_status === 'draft' && !projectHasFolder;
       });
       const archivedProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder ?.data;
+        const projectHasFolder = project.relationships.folder?.data;
         return project.attributes.publication_status === 'archived' && !projectHasFolder;
       });
 
@@ -317,7 +317,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                         );
                       }
                     }
-                    ))}
+                  ))}
                 </SortableList>
                 <HasPermission.No>
                   <List>
