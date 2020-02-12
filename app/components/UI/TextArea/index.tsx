@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNil, isEmpty, isFunction } from 'lodash-es';
+import { isEmpty, isFunction } from 'lodash-es';
 
 // components
 import Error from 'components/UI/Error';
@@ -112,16 +112,6 @@ export default class TextArea extends React.PureComponent<Props, State> {
     }
   }
 
-  setRef = (element) => {
-    if (element) {
-      this.textareaElement = element;
-
-      if (this.props.autofocus) {
-        element.focus();
-      }
-    }
-  }
-
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const value = this.props.maxCharCount ? event.currentTarget.value.substr(0, this.props.maxCharCount) : event.currentTarget.value;
 
@@ -141,6 +131,8 @@ export default class TextArea extends React.PureComponent<Props, State> {
       this.props.onBlur();
     }
   }
+
+  noop = () => { };
 
   render() {
     const { id, name, label, labelTooltipText, value, rows, placeholder, error, children, maxCharCount, disabled, className } = this.props;
@@ -165,7 +157,6 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onChange={this.handleOnChange}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
-            innerRef={this.setRef}
             disabled={disabled}
           />
           {value && maxCharCount &&

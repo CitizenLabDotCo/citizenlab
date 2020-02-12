@@ -21,7 +21,7 @@ import { colors, fontSizes } from 'utils/styleUtils';
 // typings
 import { Multiloc } from 'typings';
 
-const timeout = 300;
+const timeout = 250;
 
 const Container = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ const ChevronIcon = styled(Icon)`
   fill: ${colors.label};
   margin-left: 20px;
   transition: fill 80ms ease-out,
-              transform 250ms ease-out;
+              transform 200ms ease-out;
 `;
 
 const CollapsedContent = styled.div`
@@ -166,8 +166,8 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
           classNames="collapse"
           in={collapsed === false}
           timeout={timeout}
-          mounOnEnter={false}
-          unmountOnExit={false}
+          mounOnEnter={true}
+          unmountOnExit={true}
           enter={true}
           exit={true}
         >
