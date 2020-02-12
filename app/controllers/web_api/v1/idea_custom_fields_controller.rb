@@ -1,6 +1,6 @@
 class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   before_action :set_custom_field, only: [:show, :update]
-  before_action :set_custom_form, only: [:index, :schema, :upsert_by_code]
+  before_action :set_custom_form, only: [:index, :schema]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -29,10 +29,20 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   end
 
   def upsert_by_code
-    @custom_field = IdeaCustomFieldService.new.find_or_build_field(@custom_form, params[:code])
-    @custom_field.assign_attributes custom_field_params
+    # Wrapping this in a transaction, to avoid the race condition where
+    # simultaneous requests, when custom_form does not exist yet, make
+    # multiple custom_forms and the last form gets associated to the project
+    ActiveRecord::Base.transaction do
+      # Row-level locking of the project record
+      # See https://www.2ndquadrant.com/en/blog/postgresql-anti-patterns-read-modify-write-cycles/
+      @project = Project.lock.find(params[:project_id])
+      @custom_form = @project.custom_form || CustomForm.new(project: @project)
 
-    @custom_form.save! if !@custom_form.persisted?
+      @custom_field = IdeaCustomFieldService.new.find_or_build_field(@custom_form, params[:code])
+      @custom_field.assign_attributes custom_field_params
+
+      @custom_form.save! if !@custom_form.persisted?
+    end
 
     authorize @custom_field, policy_class: IdeaCustomFieldPolicy
     already_existed = @custom_field.persisted?
