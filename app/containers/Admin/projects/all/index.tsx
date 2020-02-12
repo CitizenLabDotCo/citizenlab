@@ -504,7 +504,7 @@ const Data = adopt<DataProps, InputProps>({
         .map(item => item.relationships.project_holder.data.id);
     return <GetProjects publicationStatuses={['published']} filteredProjectIds={projectIds} filterCanModerate={true}>{render}</GetProjects>;
   },
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>
 });
 
 export default (inputProps: InputProps) => (
