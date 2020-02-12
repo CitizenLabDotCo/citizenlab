@@ -1,18 +1,13 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
-import { isBoolean } from 'lodash-es';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
-// hooks
-import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
-
 // services
-import { updateIdeaCustomField, IIdeaCustomFieldData } from 'services/ideaCustomFields'
+import { IIdeaCustomFieldData } from 'services/ideaCustomFields';
 
 // components
 import Icon from 'components/UI/Icon';
-import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import { SectionTitle, SectionSubtitle, Section, SectionField } from 'components/admin/Section';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
 // i18n
 import T from 'components/T';
@@ -91,7 +86,7 @@ const CollapseContainer = styled.div`
 
     &.collapse-enter-active {
       opacity: 1;
-      max-height: 150px;
+      max-height: 200px;
       overflow: hidden;
       display: block;
     }
@@ -105,7 +100,7 @@ const CollapseContainer = styled.div`
 
   &.collapse-exit {
     opacity: 1;
-    max-height: 150px;
+    max-height: 200px;
     overflow: hidden;
     display: block;
 
@@ -178,11 +173,11 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         >
           <CollapseContainer>
             <CollapseContainerInner>
-              <InputMultilocWithLocaleSwitcher
-                type="text"
+              <TextAreaMultilocWithLocaleSwitcher
                 label={<FormattedMessage {...messages.descriptionLabel} />}
                 valueMultiloc={descriptionMultiloc}
-                onValueChange={handleOnChange}
+                onChange={handleOnChange}
+                rows={3}
               />
             </CollapseContainerInner>
           </CollapseContainer>

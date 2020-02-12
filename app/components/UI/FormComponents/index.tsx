@@ -98,6 +98,7 @@ interface FormLabelGenericProps {
 export interface FormLabelProps extends FormLabelGenericProps {
   labelMessage: Messages['key'];
   labelMessageValues?: OriginalFormattedMessage.Props['values'];
+  subtext?: string;
   subtextMessage?: Messages['key'];
   subtextMessageValues?: OriginalFormattedMessage.Props['values'];
 }
@@ -105,6 +106,7 @@ export interface FormLabelProps extends FormLabelGenericProps {
 export const FormLabel = memo<FormLabelProps>(({
   labelMessage,
   labelMessageValues,
+  subtext,
   subtextMessage,
   subtextMessageValues,
   id,
@@ -130,11 +132,11 @@ export const FormLabel = memo<FormLabelProps>(({
         {')'}
       </OptionalText>
     }
-    {subtextMessage &&
+    {(subtextMessage || subtext) &&
       <>
         <br />
         <FormSubtextStyled>
-          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
+          {subtextMessage ? <FormattedMessage {...subtextMessage} values={subtextMessageValues} />: subtext}
         </FormSubtextStyled>
       </>
     }
