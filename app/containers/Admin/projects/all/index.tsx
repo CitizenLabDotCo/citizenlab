@@ -18,7 +18,6 @@ import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/proje
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetProject from 'resources/GetProject';
 import GetProjectFolder from 'resources/GetProjectFolder';
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
