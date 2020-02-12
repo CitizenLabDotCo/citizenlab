@@ -14,7 +14,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
 import IdeaCustomField from './IdeaCustomField';
-import { SectionTitle, SectionSubtitle, Section, SectionField } from 'components/admin/Section';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -23,7 +23,6 @@ import { InjectedIntlProps } from 'react-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Multiloc } from 'typings';
