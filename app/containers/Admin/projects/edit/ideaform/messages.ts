@@ -27,4 +27,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.errorMessage',
     defaultMessage: 'Something went wrong, please try again later',
   },
+  descriptionLabel: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.descriptionLabel',
+    defaultMessage: 'Field description',
+  },
+  collapseAll: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.collapseAll',
+    defaultMessage: 'Collapse all fields',
+  },
+  expandAll: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.expandAll',
+    defaultMessage: 'Expand all fields',
+  },
 });
