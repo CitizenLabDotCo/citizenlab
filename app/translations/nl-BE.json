@@ -1046,6 +1046,7 @@
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Titel en data",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Projectactiviteiten",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Naam van de activiteit",
+  "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.save": "",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "",

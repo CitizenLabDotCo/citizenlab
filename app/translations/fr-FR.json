@@ -1046,6 +1046,7 @@
   "app.containers.AdminPage.ProjectEvents.titleColumnHeader": "Titre et dates",
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Evénements du projet",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Nom de l'événement",
+  "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.save": "",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "",
