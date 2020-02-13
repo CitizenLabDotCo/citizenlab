@@ -1053,7 +1053,7 @@
   "app.containers.AdminPage.ProjectIdeaForm.save": "Save",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Your changes have been saved successfully.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
-  "app.containers.AdminPage.ProjectIdeaForm.subtitle": "This is just another random subtitle.",
+  "app.containers.AdminPage.ProjectIdeaForm.subtitle": "Configure what users see when they post an idea.",
   "app.containers.AdminPage.ProjectIdeaForm.title": "Idea form",
   "app.containers.AdminPage.ProjectTimeline.addPhaseButton": "Add a phase",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",

@@ -9,7 +9,7 @@ export default defineMessages({
   },
   subtitle: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.subtitle',
-    defaultMessage: 'This is just another random subtitle.',
+    defaultMessage: 'Configure what users see when they post an idea.',
   },
   save: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.save',
