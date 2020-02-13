@@ -26,11 +26,11 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, isModerator } from 'services/permissions/roles';
 
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
-import { HeaderTitle } from './styles';
+import { HeaderTitle } from './StyledComponents';
 import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
 import Button from 'components/UI/Button';
@@ -66,7 +66,7 @@ const StyledCreateProject = styled(CreateProject)`
 
 const ListsContainer = styled.div``;
 
-const ListHeader = styled.div`
+export const ListHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -204,6 +204,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
       publishedProjectsWithoutFolder,
     } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
+    const userIsModerator = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
 
     let lists: JSX.Element | null = null;
     const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
@@ -218,7 +219,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
       lists = (
         <ListsContainer>
-          {projectHolderOrderings && projectHolderOrderings.length > 0 &&
+          {userIsModerator && <ModeratorProjectList />}
+
+          {userIsAdmin && projectHolderOrderings && projectHolderOrderings.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -285,10 +288,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
                       }
                   ))}
                 </SortableList>
-                <HasPermission.No>
-                  {/* Only admins have this permission. This means if user has no permission, the user is a project mod */}
-                  <ModeratorProjectList />
-                </HasPermission.No>
               </HasPermission>
             </>
           }
