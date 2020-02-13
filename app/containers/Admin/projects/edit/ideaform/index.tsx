@@ -61,6 +61,10 @@ const Footer = styled.div`
   align-items: center;
 `;
 
+const ErrorWrapper = styled.div`
+  flex-grow: 1;
+`;
+
 interface Props {
   className?: string;
 }
@@ -208,11 +212,13 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
           }
 
           {error &&
-            <Error
-              text={formatMessage(messages.errorMessage)}
-              showBackground={false}
-              showIcon={false}
-            />
+            <ErrorWrapper>
+              <Error
+                text={formatMessage(messages.errorMessage)}
+                showBackground={false}
+                showIcon={false}
+              />
+            </ErrorWrapper>
           }
 
         </Footer>
