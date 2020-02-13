@@ -18,7 +18,7 @@ import messages from '../messages';
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import IconTooltip from 'components/UI/IconTooltip';
-import { HeaderTitle } from '../../all/styles';
+import { HeaderTitle } from '../../all/StyledComponents';
 import ProjectRow from '../../components/ProjectRow';
 
 // style
