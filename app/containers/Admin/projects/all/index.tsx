@@ -11,7 +11,7 @@ import { trackPage } from 'utils/analytics';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
-import { IProjectFolderData, deleteProjectFolder } from 'services/projectFolders';
+import { deleteProjectFolder } from 'services/projectFolders';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
 // resources
@@ -27,7 +27,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { isAdmin, isModerator, isProjectModerator } from 'services/permissions/roles';
+import { isAdmin, isModerator } from 'services/permissions/roles';
 
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
@@ -38,10 +38,10 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
-import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, ActionsRowContainer } from '../components/ProjectRow';
+import ProjectRow from '../components/ProjectRow';
+import FolderRow from '../components/FolderRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import FeatureFlag from 'components/FeatureFlag';
-import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
@@ -79,12 +79,6 @@ const ListHeader = styled.div`
 
 const Spacer = styled.div`
   flex: 1;
-`;
-
-const FolderIcon = styled(Icon)`
-  margin-right: 10px;
-  height: 14px;
-  width: 17px;
 `;
 
 export interface InputProps {
@@ -216,7 +210,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
       publishedProjectsUserCanModerate
     } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
-    const userIsProjectMod = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
     const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
 
@@ -227,35 +220,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
       const archivedProjectsWithoutFolder = projectsWithoutFolderList.filter((project) => {
         return project.attributes.publication_status === 'archived';
       });
-
-      const FolderRow = (folder: IProjectFolderData) => {
-        return (
-          <RowContent className="e2e-admin-projects-list-item">
-            <RowContentInner className="expand primary">
-              <FolderIcon name="simpleFolder" />
-              <RowTitle value={folder.attributes.title_multiloc} />
-            </RowContentInner>
-            <ActionsRowContainer>
-              <RowButton
-                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-                onClick={this.removeFolder(folder.id)}
-                buttonStyle="secondary"
-                icon="remove"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </RowButton>
-              <RowButton
-                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-                linkTo={`/admin/projects/folders/${folder.id}`}
-                buttonStyle="secondary"
-                icon="edit"
-              >
-                <FormattedMessage {...messages.manageButtonLabel} />
-              </RowButton>
-            </ActionsRowContainer>
-          </RowContent>
-        );
-      };
 
       lists = (
         <ListsContainer>
@@ -318,7 +282,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                                   dropRow={handleDropRow}
                                   lastItem={(index === projectHolderOrderings.length - 1)}
                                 >
-                                  {FolderRow(projectFolder)}
+                                  <FolderRow folder={projectFolder} />
                                 </SortableRow>
                               )}
                             </GetProjectFolder>
@@ -332,6 +296,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                 </SortableList>
                 <HasPermission.No>
                   <List>
+
                     {projectHolderOrderings.map((holder, index) => {
                       if (holder.relationships.project_holder.data.type === 'project') {
                         const project = !isNilOrError(publishedProjectsWithoutFolder.projectsList)
@@ -355,7 +320,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                                   id={projectFolder.id}
                                   lastItem={(index === projectHolderOrderings.length - 1)}
                                 >
-                                  {FolderRow(projectFolder)}
+                                  <FolderRow folder={projectFolder} />
                                 </Row>
                               )}
                             </GetProjectFolder>
@@ -511,7 +476,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  publishedProjectsUserCanModerate: <GetProjects publicationStatuses={['published']} filterCanModerate={true} />,
   publishedProjectsWithoutFolder: ({ projectHolderOrderings, render }) => {
     const projectIds = isNilOrError(projectHolderOrderings)
       ? []
@@ -520,7 +484,17 @@ const Data = adopt<DataProps, InputProps>({
         .map(item => item.relationships.project_holder.data.id);
     return <GetProjects publicationStatuses={['published']} filteredProjectIds={projectIds} filterCanModerate={true}>{render}</GetProjects>;
   },
-  projectsWithoutFolder: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>
+  projectsWithoutFolder: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>,
+  publishedProjectsUserCanModerate: ({ authUser, render }) => {
+    /* publishedProjectsUserCanModerate is used to temporarily display a flat project list for project moderators */
+    const userIsProjectMod = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
+
+    if (userIsProjectMod) {
+      return <GetProjects publicationStatuses={['published']} filterCanModerate={true}>{render}</GetProjects>;
+    }
+
+    return null;
+  },
 });
 
 export default (inputProps: InputProps) => (
