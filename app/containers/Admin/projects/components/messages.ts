@@ -8,7 +8,7 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   manageButtonLabel: {
-    id: 'app.containers.Admin.projects.all.components.deleteButtonLabel',
+    id: 'app.containers.Admin.projects.all.components.manageButtonLabel',
     defaultMessage: 'Manage',
   },
 });
