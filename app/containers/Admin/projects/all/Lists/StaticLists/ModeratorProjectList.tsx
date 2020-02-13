@@ -5,41 +5,118 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from '../../../components/ProjectRow';
+import { ListHeader, HeaderTitle } from '../../StyledComponents';
+import IconTooltip from 'components/UI/IconTooltip';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../../messages';
+
+// types
+import { IProjectData } from 'services/projects';
 
 interface DataProps {
-  publishedProjectsUserCanModerate: GetProjectsChildProps;
+  projects: GetProjectsChildProps;
 }
 
-const ModeratorProjectList = memo<DataProps>(({ publishedProjectsUserCanModerate: { projectsList } }) => {
-  if (!isNilOrError(projectsList)) {
+interface Props extends DataProps {}
+
+function getFilteredProjects(projects: IProjectData[], publicationStatus: PublicationStatus) {
+  return projects.filter((project) => {
+    return project.attributes.publication_status === publicationStatus;
+  });
+}
+
+const ModeratorProjectList = memo<Props>(({ projects }) => {
+  if (
+    !isNilOrError(projects) &&
+    projects.projectsList &&
+    projects.projectsList.length > 0
+  ) {
+    const { projectsList } = projects;
+    const publishedProjects = getFilteredProjects(projectsList, 'published');
+    const archivedProjects = getFilteredProjects(projectsList, 'archived');
+    const draftProjects = getFilteredProjects(projectsList, 'draft');
+
     return (
-      <List>
-        {projectsList.map((project, index) => {
-            return (
-              <Row
-                key={index}
-                id={project.id}
-                lastItem={(index === projectsList.length - 1)}
-              >
-                <ProjectRow project={project} />
-              </Row>
-            );
-          }
-        )}
-      </List>
+      <>
+        {publishedProjects && publishedProjects.length > 0 &&
+          <>
+            <ListHeader>
+              <HeaderTitle>
+                <FormattedMessage {...messages.published} />
+              </HeaderTitle>
+              <IconTooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
+            </ListHeader>
+            <List>
+              {publishedProjects.map((project, index) => {
+                  return (
+                    <Row
+                      key={index}
+                      id={project.id}
+                      lastItem={(index === projectsList.length - 1)}
+                    >
+                      <ProjectRow project={project} />
+                    </Row>
+                  );
+                }
+              )}
+            </List>
+          </>
+        }
+        {draftProjects && draftProjects.length > 0 &&
+          <>
+            <ListHeader>
+              <HeaderTitle>
+                <FormattedMessage {...messages.draft} />
+              </HeaderTitle>
+              <IconTooltip content={<FormattedMessage {...messages.draftTooltip} />} />
+            </ListHeader>
+            <List>
+              {draftProjects.map((project, index) => (
+                <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
+                  <ProjectRow project={project} />
+                </Row>
+              ))}
+            </List>
+          </>
+        }
+        {archivedProjects && archivedProjects.length > 0 &&
+          <>
+            <ListHeader>
+              <HeaderTitle>
+                <FormattedMessage {...messages.archived} />
+              </HeaderTitle>
+              <IconTooltip content={<FormattedMessage {...messages.archivedTooltip} />} />
+            </ListHeader>
+            <List>
+              {archivedProjects.map((project, index) => (
+                <Row
+                  key={project.id}
+                  lastItem={(index === archivedProjects.length - 1)}
+                >
+                  <ProjectRow project={project} />
+                </Row>
+              ))}
+            </List>
+          </>
+        }
+      </>
     );
   }
 
   return null;
 });
 
+const publicationStatuses: PublicationStatus[] = ['published', 'draft', 'archived'];
+
 const Data = adopt<DataProps>({
-  publishedProjectsUserCanModerate: <GetProjects publicationStatuses={['published']} filterCanModerate={true} />,
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
 });
 
 export default () => (
