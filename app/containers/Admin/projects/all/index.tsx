@@ -42,6 +42,7 @@ import ProjectRow from '../components/ProjectRow';
 import FolderRow from '../components/FolderRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import FeatureFlag from 'components/FeatureFlag';
+import ModeratorProjectList from './Lists/StaticLists/ModeratorProjectList';
 
 // style
 import styled from 'styled-components';
@@ -210,6 +211,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
       publishedProjectsUserCanModerate
     } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
+    const userIsProjectMod = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
+
     let lists: JSX.Element | null = null;
     const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
 
@@ -271,7 +274,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           </SortableRow>
                         );
                       } else {
-                        if (userIsAdmin) {
                           return (
                             <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id} key={item.relationships.project_holder.data.id}>
                               {projectFolder => isNilOrError(projectFolder) ? null : (
@@ -288,49 +290,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
                             </GetProjectFolder>
                           );
                         }
-
-                        return <div />;
                       }
-                    }
                   ))}
                 </SortableList>
                 <HasPermission.No>
-                  <List>
-
-                    {projectHolderOrderings.map((holder, index) => {
-                      if (holder.relationships.project_holder.data.type === 'project') {
-                        const project = !isNilOrError(publishedProjectsWithoutFolder.projectsList)
-                          && publishedProjectsWithoutFolder.projectsList.find(project => project.id === holder.relationships.project_holder.data.id);
-                        if (!project) return null;
-
-                        return (
-                          <Row
-                            id={project.id}
-                            lastItem={(index === projectHolderOrderings.length - 1)}
-                          >
-                            <ProjectRow project={project} />
-                          </Row>
-                        );
-                      } else {
-                        if (userIsAdmin) {
-                          return (
-                            <GetProjectFolder projectFolderId={holder.relationships.project_holder.data.id} key={holder.relationships.project_holder.data.id}>
-                              {projectFolder => isNilOrError(projectFolder) ? null : (
-                                <Row
-                                  id={projectFolder.id}
-                                  lastItem={(index === projectHolderOrderings.length - 1)}
-                                >
-                                  <FolderRow folder={projectFolder} />
-                                </Row>
-                              )}
-                            </GetProjectFolder>
-                          );
-                        }
-
-                        return <div />;
-                        }
-                    })}
-                  </List>
+                  <ModeratorProjectList />}
                 </HasPermission.No>
               </HasPermission>
             </>
