@@ -27,7 +27,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { isAdmin } from 'services/permissions/roles';
+import { isAdmin, isModerator, isProjectModerator } from 'services/permissions/roles';
 
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
@@ -95,7 +95,8 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   projectsWithoutFolder: GetProjectsChildProps;
-  publishedProjects: GetProjectsChildProps;
+  publishedProjectsUserCanModerate: GetProjectsChildProps;
+  publishedProjectsWithoutFolder: GetProjectsChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
 }
 
@@ -206,8 +207,16 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const { authUser, projectsWithoutFolder: { projectsList: projectsWithoutFolderList }, className, projectHolderOrderings, publishedProjects } = this.props;
+    const {
+      authUser,
+      projectsWithoutFolder: { projectsList: projectsWithoutFolderList },
+      className,
+      projectHolderOrderings,
+      publishedProjectsWithoutFolder,
+      publishedProjectsUserCanModerate
+    } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
+    const userIsProjectMod = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
     const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
 
@@ -280,8 +289,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   {({ itemsList, handleDragRow, handleDropRow }) => (
                     itemsList.map((item: IProjectHolderOrderingData, index: number) => {
                       if (item.relationships.project_holder.data.type === 'project') {
-                        const project = !isNilOrError(publishedProjects.projectsList)
-                          && publishedProjects.projectsList.find(project => project.id === item.relationships.project_holder.data.id);
+                        const project = !isNilOrError(publishedProjectsWithoutFolder.projectsList)
+                          && publishedProjectsWithoutFolder.projectsList.find(project => project.id === item.relationships.project_holder.data.id);
 
                         if (!project) return <div />;
 
@@ -298,21 +307,25 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           </SortableRow>
                         );
                       } else {
-                        return (
-                          <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id} key={item.relationships.project_holder.data.id}>
-                            {projectFolder => isNilOrError(projectFolder) ? null : (
-                              <SortableRow
-                                id={item.id}
-                                index={index}
-                                moveRow={handleDragRow}
-                                dropRow={handleDropRow}
-                                lastItem={(index === projectHolderOrderings.length - 1)}
-                              >
-                                {FolderRow(projectFolder)}
-                              </SortableRow>
-                            )}
-                          </GetProjectFolder>
-                        );
+                        if (userIsAdmin) {
+                          return (
+                            <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id} key={item.relationships.project_holder.data.id}>
+                              {projectFolder => isNilOrError(projectFolder) ? null : (
+                                <SortableRow
+                                  id={item.id}
+                                  index={index}
+                                  moveRow={handleDragRow}
+                                  dropRow={handleDropRow}
+                                  lastItem={(index === projectHolderOrderings.length - 1)}
+                                >
+                                  {FolderRow(projectFolder)}
+                                </SortableRow>
+                              )}
+                            </GetProjectFolder>
+                          );
+                        }
+
+                        return <div />;
                       }
                     }
                   ))}
@@ -321,8 +334,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   <List>
                     {projectHolderOrderings.map((holder, index) => {
                       if (holder.relationships.project_holder.data.type === 'project') {
-                        const project = !isNilOrError(publishedProjects.projectsList)
-                          && publishedProjects.projectsList.find(project => project.id === holder.relationships.project_holder.data.id);
+                        const project = !isNilOrError(publishedProjectsWithoutFolder.projectsList)
+                          && publishedProjectsWithoutFolder.projectsList.find(project => project.id === holder.relationships.project_holder.data.id);
                         if (!project) return null;
 
                         return (
@@ -334,19 +347,23 @@ class AdminProjectsList extends PureComponent<Props, State> {
                           </Row>
                         );
                       } else {
-                        return (
-                          <GetProjectFolder projectFolderId={holder.relationships.project_holder.data.id} key={holder.relationships.project_holder.data.id}>
-                            {projectFolder => isNilOrError(projectFolder) ? null : (
-                              <Row
-                                id={projectFolder.id}
-                                lastItem={(index === projectHolderOrderings.length - 1)}
-                              >
-                                {FolderRow(projectFolder)}
-                              </Row>
-                            )}
-                          </GetProjectFolder>
-                        );
-                      }
+                        if (userIsAdmin) {
+                          return (
+                            <GetProjectFolder projectFolderId={holder.relationships.project_holder.data.id} key={holder.relationships.project_holder.data.id}>
+                              {projectFolder => isNilOrError(projectFolder) ? null : (
+                                <Row
+                                  id={projectFolder.id}
+                                  lastItem={(index === projectHolderOrderings.length - 1)}
+                                >
+                                  {FolderRow(projectFolder)}
+                                </Row>
+                              )}
+                            </GetProjectFolder>
+                          );
+                        }
+
+                        return <div />;
+                        }
                     })}
                   </List>
                 </HasPermission.No>
@@ -494,7 +511,8 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  publishedProjects: ({ projectHolderOrderings, render }) => {
+  publishedProjectsUserCanModerate: <GetProjects publicationStatuses={['published']} filterCanModerate={true} />,
+  publishedProjectsWithoutFolder: ({ projectHolderOrderings, render }) => {
     const projectIds = isNilOrError(projectHolderOrderings)
       ? []
       : projectHolderOrderings
