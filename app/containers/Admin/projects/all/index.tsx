@@ -286,8 +286,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   ))}
                 </SortableList>
                 <HasPermission.No>
-                  {/* Only admins have this permissions. This means if user has no permission, user is a project mod */}
-                  <ModeratorProjectList />}
+                  {/* Only admins have this permission. This means if user has no permission, the user is a project mod */}
+                  <ModeratorProjectList />
                 </HasPermission.No>
               </HasPermission>
             </>
