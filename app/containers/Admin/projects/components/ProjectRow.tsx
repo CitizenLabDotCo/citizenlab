@@ -1,49 +1,26 @@
 import React from 'react';
-import { IProjectData } from 'services/projects';
-import GetProjectGroups from 'resources/GetProjectGroups';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import styled from 'styled-components';
-import T from 'components/T';
-import { fontSizes } from 'utils/styleUtils';
+
+// components
+import { RowContent, RowContentInner, RowTitle, RowButton, ActionsRowContainer } from './StyledComponents';
 import StatusLabel from 'components/UI/StatusLabel';
-import Button from 'components/UI/Button';
+
+// resources
+import GetProjectGroups from 'resources/GetProjectGroups';
+
+// types
 import { IconNames } from 'components/UI/Icon';
-
-export const RowContent = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-export const RowContentInner = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-right: 20px;
-`;
-
-export const RowTitle = styled(T)`
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 24px;
-  margin-right: 10px;
-`;
+import { IProjectData } from 'services/projects';
 
 const StyledStatusLabel = styled(StatusLabel)`
   margin-right: 5px;
   margin-top: 4px;
   margin-bottom: 4px;
-`;
-
-export const ActionsRowContainer = styled.div`
-  display: flex;
-`;
-
-export const RowButton = styled(Button)`
-  margin-left: 7px;
 `;
 
 interface Props {
