@@ -38,6 +38,21 @@ describe IdeaCustomFieldService do
       expect(output).not_to include(cf2)
     end
 
+    it "takes the order of the built-in fields" do
+      custom_form = create(:custom_form)
+      cf1 = create(:custom_field, resource: custom_form, code: 'location')
+      output = service.db_and_built_in_fields(custom_form)
+      expect(output).to include cf1
+      expect(output.map(&:code)).to eq [
+        'title',
+        'body',
+        'topic_ids',
+        'location',
+        'images',
+        'attachments',
+      ]
+    end
+
   end
 
 end
