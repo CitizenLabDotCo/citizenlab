@@ -11,7 +11,6 @@ import { trackPage } from 'utils/analytics';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
-import { deleteProjectFolder } from 'services/projectFolders';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
 // resources
@@ -27,7 +26,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { isAdmin, isModerator } from 'services/permissions/roles';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
@@ -90,7 +89,6 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   projectsWithoutFolder: GetProjectsChildProps;
-  publishedProjectsUserCanModerate: GetProjectsChildProps;
   publishedProjectsWithoutFolder: GetProjectsChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
 }
@@ -196,10 +194,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
     }
   }
 
-  removeFolder = (folderId: string) => () => {
-    deleteProjectFolder(folderId);
-  }
-
   render() {
     const { selectedProjectTemplateId } = this.state;
     const {
@@ -208,10 +202,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
       className,
       projectHolderOrderings,
       publishedProjectsWithoutFolder,
-      publishedProjectsUserCanModerate
     } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
-    const userIsProjectMod = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
 
     let lists: JSX.Element | null = null;
     const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
@@ -294,6 +286,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
                   ))}
                 </SortableList>
                 <HasPermission.No>
+                  {/* Only admins have this permissions. This means if user has no permission, user is a project mod */}
                   <ModeratorProjectList />}
                 </HasPermission.No>
               </HasPermission>
@@ -449,16 +442,6 @@ const Data = adopt<DataProps, InputProps>({
     return <GetProjects publicationStatuses={['published']} filteredProjectIds={projectIds} filterCanModerate={true}>{render}</GetProjects>;
   },
   projectsWithoutFolder: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>,
-  publishedProjectsUserCanModerate: ({ authUser, render }) => {
-    /* publishedProjectsUserCanModerate is used to temporarily display a flat project list for project moderators */
-    const userIsProjectMod = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
-
-    if (userIsProjectMod) {
-      return <GetProjects publicationStatuses={['published']} filterCanModerate={true}>{render}</GetProjects>;
-    }
-
-    return null;
-  },
 });
 
 export default (inputProps: InputProps) => (

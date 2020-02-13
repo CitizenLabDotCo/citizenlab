@@ -11,8 +11,8 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// types
-import { IProjectFolderData } from 'services/projectFolders';
+// types & services
+import { IProjectFolderData, deleteProjectFolder } from 'services/projectFolders';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -22,6 +22,12 @@ const FolderIcon = styled(Icon)`
 
 interface Props {
   folder: IProjectFolderData;
+}
+
+function removeFolder(folderId: string) {
+  return function () {
+    deleteProjectFolder(folderId);
+  };
 }
 
 const FolderRow = memo<Props>(({ folder }) => {
@@ -34,7 +40,7 @@ const FolderRow = memo<Props>(({ folder }) => {
       <ActionsRowContainer>
         <RowButton
           className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-          onClick={this.removeFolder(folder.id)}
+          onClick={removeFolder(folder.id)}
           buttonStyle="secondary"
           icon="remove"
         >
