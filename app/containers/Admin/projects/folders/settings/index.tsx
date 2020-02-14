@@ -18,12 +18,12 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { addProjectFolder, updateProjectFolder, deleteProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
-import GoBackButton from 'components/UI/GoBackButton';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
+import GoBackButton from 'components/UI/GoBackButton';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
@@ -199,6 +199,8 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             </SectionSubtitle>
           </>
           :
+          <>
+          <StyledGoBackButton onClick={goBack} />
           <Header>
             <SectionTitle >
               {<FormattedMessage {...messages.titleNewFolder} />}
@@ -207,6 +209,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
               <FormattedMessage {...messages.subtitleNewFolder} />
             </SectionSubtitle>
           </Header>
+          </>
         }
         <form onSubmit={onSubmit}>
           <Section>

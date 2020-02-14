@@ -458,6 +458,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
       !ideaEditPage &&
       !initiativeEditPage;
 
+    const totalProjectsListLength = (isNilOrError(projectHolderOrderings) ? 0 : projectHolderOrderings.length)
+      + (isNilOrError(archivedProjectList) ? 0 : archivedProjectList.length);
+
     return (
       <>
         {showMobileNav &&
@@ -566,7 +569,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       )}
                       footer={
                         <>
-                          {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 9 &&
+                          {totalProjectsListLength > 9 &&
                             <ProjectsListFooter to={'/projects'}>
                               <FormattedMessage {...messages.allProjects} />
                             </ProjectsListFooter>
@@ -676,7 +679,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   locale: <GetLocale />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  archivedProjects: <GetProjects publicationStatuses={['archived']} />
+  archivedProjects: <GetProjects publicationStatuses={['archived']} folderId="nil" />
 });
 
 const NavbarWithHOCs = withRouter<Props>(injectIntl(Navbar));
