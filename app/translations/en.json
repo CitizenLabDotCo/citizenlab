@@ -844,6 +844,7 @@
   "app.containers.AdminPage.FaviconPage.saveSuccessMessage": "Your changes have been saved.",
   "app.containers.AdminPage.FoldersEdit.addToFolder": "Add to folder",
   "app.containers.AdminPage.FoldersEdit.deleteButtonLabel": "Delete",
+  "app.containers.AdminPage.FoldersEdit.deleteFolderConfirmation": "Are you sure you want to delete this folder and all the projects it contains?",
   "app.containers.AdminPage.FoldersEdit.deleteFolderError": "There was an issue removing this folder. Please try again.",
   "app.containers.AdminPage.FoldersEdit.deleteFolderLabel": "Delete this folder",
   "app.containers.AdminPage.FoldersEdit.deleteFolderLabelTooltip": "This will remove this folder and all the projects inside.",
