@@ -225,7 +225,7 @@ describe Surveys::TypeformApiParser do
       expect(tf_api)
         .to receive(:form)
         .with(form_id: form_id)
-        .and_return(OpenStruct.new(parsed_response: form_response_return_value))
+        .and_return(OpenStruct.new(parsed_response: form_response_return_value, code: 200, 'success?' => true))
 
       expect(tf_api)
         .to receive(:all_responses)
