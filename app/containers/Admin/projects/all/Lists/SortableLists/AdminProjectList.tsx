@@ -1,9 +1,6 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
-// style
-import styled from 'styled-components';
-
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -13,11 +10,9 @@ import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from '
 
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import FeatureFlag from 'components/FeatureFlag';
 import ProjectRow from '../../../components/ProjectRow';
 import { ListHeader, HeaderTitle } from '../../StyledComponents';
 import IconTooltip from 'components/UI/IconTooltip';
-import Button from 'components/UI/Button';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,10 +21,6 @@ import messages from '../../messages';
 // services
 import { IProjectData, reorderProject } from 'services/projects';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
-
-const Spacer = styled.div`
-  flex: 1;
-`;
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -76,17 +67,6 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
                 <FormattedMessage {...messages.published} />
               </HeaderTitle>
               <IconTooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
-
-              <Spacer />
-
-              <FeatureFlag name="project_folders">
-                <Button
-                  linkTo={'/admin/projects/folders/new'}
-                >
-                  <FormattedMessage {...messages.newProjectFolder} />
-                </Button>
-              </FeatureFlag>
-
             </ListHeader>
 
             <SortableList
