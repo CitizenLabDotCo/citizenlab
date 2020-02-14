@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // services
-import { reorderProject, updateProjectFolderMembership } from 'services/projects';
+import { reorderProject, updateProjectFolderMembership, PublicationStatus } from 'services/projects';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
@@ -23,6 +23,7 @@ import ProjectRow from '../../components/ProjectRow';
 
 // style
 import styled from 'styled-components';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 const Container = styled.div`
   min-height: 60vh;
@@ -35,10 +36,21 @@ const ListHeader = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 25px;
-
-  & ~ & {
+  &:not(:first-child) {
     margin-top: 70px;
   }
+  & + & {
+    margin-top: 30px;
+  }
+`;
+
+const StyledHeaderTitle = styled(HeaderTitle)`
+  font-weight: bold;
+`;
+
+const ListTitle = styled.h4`
+  font-weight: normal;
+  font-style: italic;
 `;
 
 const Spacer = styled.div`
@@ -48,6 +60,7 @@ const Spacer = styled.div`
 interface DataProps {
   projectHoldersOrderings: GetProjectHolderOrderingsChildProps;
   projectFolder: GetProjectFolderChildProps;
+  projects: GetProjectsChildProps;
 }
 
 interface Props extends DataProps { }
@@ -70,10 +83,28 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
   }
 
   render() {
-    const { projectHoldersOrderings, projectFolder } = this.props;
-    const projectThatCanBeAddedIds = !isNilOrError(projectHoldersOrderings)
-      ? projectHoldersOrderings.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
+    const { projectHoldersOrderings, projectFolder, projects: { projectsList } } = this.props;
+    const otherPublishedProjectIds = !isNilOrError(projectHoldersOrderings)
+      ? projectHoldersOrderings
+        .filter(item => item.relationships.project_holder.data.type === 'project')
+        .map(item => item.relationships.project_holder.data.id)
       : null;
+    const hasOtherPublishedProjectIds = otherPublishedProjectIds && otherPublishedProjectIds.length > 0;
+
+    const otherDraftProjectIds = !isNilOrError(projectsList)
+      ? projectsList
+        .filter(item => item.attributes.publication_status === 'draft')
+        .map(item => item.id)
+      : null;
+    const hasOtherDraftProjectIds = otherDraftProjectIds && otherDraftProjectIds.length > 0;
+
+    const otherArchivedProjectIds = !isNilOrError(projectsList)
+      ? projectsList
+        .filter(item => item.attributes.publication_status === 'archived')
+        .map(item => item.id)
+      : null;
+    const hasOtherArchivedProjectIds = otherArchivedProjectIds && otherArchivedProjectIds.length > 0;
+
     const inFolderProjectIds = !isNilOrError(projectFolder) && projectFolder.relationships.projects
       ? projectFolder.relationships.projects.data.map(projectRel => projectRel.id)
       : null;
@@ -82,9 +113,9 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
       <Container>
         <ListsContainer>
           <ListHeader>
-            <HeaderTitle>
+            <StyledHeaderTitle>
               <FormattedMessage {...messages.projectsAlreadyAdded} />
-            </HeaderTitle>
+            </StyledHeaderTitle>
 
             <Spacer />
 
@@ -117,52 +148,125 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
             :
             <FormattedMessage {...messages.emptyFolder} />
           }
+          {(hasOtherDraftProjectIds || hasOtherArchivedProjectIds || hasOtherPublishedProjectIds) &&
+            <ListHeader>
+              <StyledHeaderTitle>
+                <FormattedMessage {...messages.projectsYouCanAdd} />
+              </StyledHeaderTitle>
+              <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
+            </ListHeader>
+          }
 
-          <ListHeader>
-            <HeaderTitle>
-              <FormattedMessage {...messages.projectsYouCanAdd} />
-            </HeaderTitle>
-            <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
-          </ListHeader>
+          {otherPublishedProjectIds && otherPublishedProjectIds.length > 0 &&
+            <>
+              <ListHeader>
+                <ListTitle>
+                  <FormattedMessage {...messages.otherPublishedProjects} />
+                </ListTitle>
+              </ListHeader>
+              <List key={`JUST_LIST${otherPublishedProjectIds.length}`}>
+                {otherPublishedProjectIds.map((projectId, index: number) => {
+                  return (
+                    <GetProject projectId={projectId} key={`out_${projectId}`}>
+                      {project => isNilOrError(project) ? null : (
+                        <Row
+                          id={projectId}
+                          lastItem={(index === otherPublishedProjectIds.length - 1)}
+                        >
+                          <ProjectRow
+                            project={project}
+                            actions={[{
+                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                              handler: this.addProjectToFolder,
+                              icon: 'plus-circle'
+                            }]}
+                          />
+                        </Row>
+                      )}
+                    </GetProject>
+                  );
+                })}
+              </List>
+            </>
+          }
 
-          {projectThatCanBeAddedIds && projectThatCanBeAddedIds.length > 0 ?
-            <List key={`OUTSIDE_LIST${projectThatCanBeAddedIds.length}`}>
-              {projectThatCanBeAddedIds.map((projectId, index: number) => {
-                return (
-                  <GetProject projectId={projectId} key={`out_${projectId}`}>
-                    {project => isNilOrError(project) ? null : (
-                      <Row
-                        id={projectId}
-                        lastItem={(index === projectThatCanBeAddedIds.length - 1)}
-                      >
-                        <ProjectRow
-                          project={project}
-                          actions={[{
-                            buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                            handler: this.addProjectToFolder,
-                            icon: 'plus-circle'
-                          }]}
-                        />
-                      </Row>
-                    )}
-                  </GetProject>
-                );
-              })}
-            </List>
-            :
-            <FormattedMessage {...messages.noProjectsOutside} />
+          {otherArchivedProjectIds && otherArchivedProjectIds.length > 0 &&
+            <>
+              <ListHeader>
+                <ListTitle>
+                  <FormattedMessage {...messages.otherArchivedProjects} />
+                </ListTitle>
+              </ListHeader>
+              <List key={`JUST_LIST${otherArchivedProjectIds.length}`}>
+                {otherArchivedProjectIds.map((projectId, index: number) => {
+                  return (
+                    <GetProject projectId={projectId} key={`out_${projectId}`}>
+                      {project => isNilOrError(project) ? null : (
+                        <Row
+                          id={projectId}
+                          lastItem={(index === otherArchivedProjectIds.length - 1)}
+                        >
+                          <ProjectRow
+                            project={project}
+                            actions={[{
+                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                              handler: this.addProjectToFolder,
+                              icon: 'plus-circle'
+                            }]}
+                          />
+                        </Row>
+                      )}
+                    </GetProject>
+                  );
+                })}
+              </List>
+            </>
+          }
+          {otherDraftProjectIds && otherDraftProjectIds.length > 0 &&
+            <>
+              <ListHeader>
+                <ListTitle>
+                  <FormattedMessage {...messages.otherDraftProjects} />
+                </ListTitle>
+              </ListHeader>
+              <List key={`JUST_LIST${otherDraftProjectIds.length}`}>
+                {otherDraftProjectIds.map((projectId, index: number) => {
+                  return (
+                    <GetProject projectId={projectId} key={`out_${projectId}`}>
+                      {project => isNilOrError(project) ? null : (
+                        <Row
+                          id={projectId}
+                          lastItem={(index === otherDraftProjectIds.length - 1)}
+                        >
+                          <ProjectRow
+                            project={project}
+                            actions={[{
+                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                              handler: this.addProjectToFolder,
+                              icon: 'plus-circle'
+                            }]}
+                          />
+                        </Row>
+                      )}
+                    </GetProject>
+                  );
+                })}
+              </List>
+            </>
           }
         </ListsContainer>
       </Container>
     );
   }
 }
-
 const AdminFoldersProjectsListWithHocs = withRouter(AdminFoldersProjectsList);
+
+const publicationStatuses: PublicationStatus[] = ['draft', 'archived'];
 
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
   projectHoldersOrderings: <GetProjectHolderOrderings />,
+  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil" />
 });
 
 export default (inputProps: WithRouterProps) => (
