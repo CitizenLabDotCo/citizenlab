@@ -55,6 +55,7 @@ resource "Votes" do
     example_request "Create a vote to an idea" do
       expect(response_status).to eq 201
       json_response = json_parse(response_body)
+      expect(json_response.dig(:data,:relationships,:user,:data,:id)).to be_nil
       expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
       expect(@idea.reload.upvotes_count).to eq 3
     end
