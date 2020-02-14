@@ -74,7 +74,7 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  projectsEnabled: GetFeatureFlagChildProps;
+  foldersEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -175,7 +175,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
     const {
       authUser,
       className,
-      projectsEnabled
+      foldersEnabled
     } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     const userIsModerator = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
@@ -202,8 +202,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <ListsContainer>
               <Suspense fallback={<Spinner />}>
                 {userIsModerator && <ModeratorProjectList />}
-                {userIsAdmin && projectsEnabled && <AdminProjectListWithFolders />}
-                {userIsAdmin && !projectsEnabled && <AdminProjectList />}
+                {userIsAdmin && foldersEnabled && <AdminProjectListWithFolders />}
+                {userIsAdmin && !foldersEnabled && <AdminProjectList />}
               </Suspense>
             </ListsContainer>
           </PageWrapper>
