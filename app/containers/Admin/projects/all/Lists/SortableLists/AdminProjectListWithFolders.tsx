@@ -89,6 +89,7 @@ const AdminProjectList = memo<Props>(({ projectsWithoutFolder, projectHolderOrde
           {({ itemsList, handleDragRow, handleDropRow }) => (
             itemsList.map((item: IProjectHolderOrderingData, index: number) => {
               const holderType = item.relationships.project_holder.data.type;
+
               if (holderType === 'project') {
                 const projectId = item.relationships.project_holder.data.id;
                 const project = (
