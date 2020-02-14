@@ -60,6 +60,7 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
 
     return (
       <>
+        {/* projectHolderOrderings will only contain projects, no folders, in this file */}
         {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0 &&
           <>
             <ListHeader>
