@@ -2,12 +2,36 @@ module Surveys
   class TypeformApiParser
     include TypeformParser
 
+    class AuthorizationError < StandardError
+      def initialize(options={})
+        super
+        @error_key = options.fetch(:error_key, 'INVALID_AUTHORIZATION')
+        @description = options.fetch(:description, 'Invalid authorization header "Bearer"')
+      end
+
+      def error_key
+        @error_key
+      end
+
+      def description
+        @description
+      end
+    end
+
     def initialize tf_api=Typeform::Api.new(Tenant.settings('typeform_surveys','user_token'))
       @tf_api = tf_api
     end
 
     def get_responses form_id
-      tf_form = @tf_api.form(form_id: form_id).parsed_response
+      response = @tf_api.form(form_id: form_id)
+      if !response.success?
+        if [401, 403].include? response.code
+          raise AuthorizationError.new(error_key: response.parsed_response['code'], description: response.parsed_response['description'])
+        else 
+          raise "Unhandled Typeform API error: #{response.parsed_response}"
+        end
+      end
+      tf_form = response.parsed_response
       field_id_to_title = extract_field_titles(tf_form)
       tf_responses = @tf_api.all_responses(form_id: form_id, completed: true)
       tf_responses.map{|tfr| response_to_surveys_response(tfr, field_id_to_title, form_id)}

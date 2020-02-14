@@ -15,7 +15,7 @@ class ApplicationController < ActionController::API
       status: :bad_request
   end
 
-  rescue_from ClErrors::TransactionError, :with => :transaction_error
+  rescue_from ClErrors::TransactionError, with: :transaction_error
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
