@@ -1,6 +1,7 @@
-import streams from 'utils/streams';
-
+import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
+import { ILinks } from 'typings';
+
 const apiEndpoint = `${API_PATH}/project_holder_orderings`;
 
 export interface IProjectHolderOrderingData {
@@ -19,12 +20,17 @@ export interface IProjectHolderOrderingData {
   };
 }
 
-export function listProjectHolderOrderings() {
-  return streams.get<{ data: IProjectHolderOrderingData[] }>({ apiEndpoint });
+export interface IProjectHolderOrdering {
+  data: IProjectHolderOrderingData[];
+  links: ILinks;
+}
+
+export function listProjectHolderOrderings(streamParams: IStreamParams | null = null) {
+  return streams.get<IProjectHolderOrdering>({ apiEndpoint, ...streamParams });
 }
 
 export async function reorderProjectHolder(orderingId: string, newOrder: number) {
-  return streams.update<{ data: IProjectHolderOrderingData }>(
+  return streams.update<IProjectHolderOrdering>(
     `${apiEndpoint}/${orderingId}/reorder`,
     orderingId,
     {

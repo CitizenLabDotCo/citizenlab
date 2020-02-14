@@ -84,10 +84,8 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   render() {
     const { projectHoldersOrderings, projectFolder, projects: { projectsList } } = this.props;
-    const otherPublishedProjectIds = !isNilOrError(projectHoldersOrderings)
-      ? projectHoldersOrderings
-        .filter(item => item.relationships.project_holder.data.type === 'project')
-        .map(item => item.relationships.project_holder.data.id)
+    const otherPublishedProjectIds = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
+      ? projectHoldersOrderings.list.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
       : null;
     const hasOtherPublishedProjectIds = otherPublishedProjectIds && otherPublishedProjectIds.length > 0;
 
