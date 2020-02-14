@@ -15,7 +15,7 @@ import IconTooltip from 'components/UI/IconTooltip';
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
+import { addProjectFolder, updateProjectFolder, IProjectFolderDiff } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
@@ -60,33 +60,29 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
   const { projectFolderId } = params;
   const mode = projectFolderId ? 'edit' : 'new';
 
-  if (mode === 'edit') { // Should handle data loading
-    useEffect(() => {
-      (async function iife() {
-        if (!isNilOrError(projectFolder)) {
-          setTitleMultiloc(projectFolder.attributes.title_multiloc);
-          setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
-          setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
-          if (projectFolder.attributes?.header_bg?.large) {
-            const headerFile = await convertUrlToUploadFile(projectFolder.attributes?.header_bg?.large, null, null);
-            setHeaderBg(headerFile);
-          }
-        }
+  useEffect(() => {
+    if (mode === 'edit' && !isNilOrError(projectFolder)) {
+      setTitleMultiloc(projectFolder.attributes.title_multiloc);
+      setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
+      setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
+
+      if (projectFolder.attributes?.header_bg?.large) {
+        convertUrlToUploadFile(projectFolder.attributes.header_bg.large).then(headerFile => setHeaderBg(headerFile));
       }
-      )();
-    }, [projectFolder]);
-  }
+    }
+  }, [mode, projectFolder]);
 
   // locale things
   const locale = useLocale();
-  const safeLocale = isNilOrError(locale) ? null : locale;
 
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(isNilOrError(locale) ? null : locale);
 
   // if user locale changes, we set the form selectedLocale to it (necessary as locale is initially undefined)
   useEffect(() => {
-    setSelectedLocale(safeLocale);
-  }, [safeLocale]);
+    if (!isNilOrError(locale)) {
+      setSelectedLocale(locale);
+    }
+  }, [locale]);
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
@@ -108,144 +104,127 @@ const FolderSettings = ({ params, projectFolder }: WithRouterProps & DataProps) 
 
   // form submission
   const onSubmit = async () => {
-    setLoading(true);
-    if (mode === 'new') {
+    if (!loading && titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
+      const updateObject: Partial<IProjectFolderDiff> = {
+        title_multiloc: titleMultiloc,
+        description_multiloc: descriptionMultiloc,
+        description_preview_multiloc: shortDescriptionMultiloc,
+        header_bg: headerBg?.base64
+      };
+
+      setLoading(true);
+
       try {
-        if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
-          const res = await addProjectFolder({
-            title_multiloc: titleMultiloc,
-            description_multiloc: descriptionMultiloc,
-            description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg?.base64
-          });
-          if (isNilOrError(res)) {
-            setStatus('error');
-          } else {
-            clHistory.push(`/admin/projects/folders/${res.id}`);
-          }
+        const response = mode === 'new' ? await addProjectFolder(updateObject) : await updateProjectFolder(projectFolderId, updateObject);
+
+        if (!isNilOrError(response)) {
+          mode === 'new' && clHistory.push(`/admin/projects/folders/${response.id}`);
+          setStatus('success');
         } else {
           setStatus('error');
         }
       } catch {
         setStatus('error');
       }
-    } else {
-      try {
-        if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
-          const res = await updateProjectFolder(projectFolderId, {
-            title_multiloc: titleMultiloc,
-            description_multiloc: descriptionMultiloc,
-            description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg?.base64
-          });
-          if (isNilOrError(res)) {
-            setStatus('error');
-          } else {
-            setStatus('success');
-          }
-        } else {
-          setStatus('error');
-        }
-      } catch {
-        setStatus('error');
-      }
+
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  if (!selectedLocale) return null;
-  if (mode === 'edit' && isNilOrError(projectFolder)) return null;
+  if (selectedLocale && (mode !== 'edit' || (mode === 'edit' && !isNilOrError(projectFolder)))) {
+    return (
+      <>
+        <Container mode={mode}>
+          {mode === 'edit' ?
+            <>
+              <SectionTitle>
+                {<FormattedMessage {...messages.titleSettingsTab} />}
+              </SectionTitle>
+              <SectionSubtitle>
+                <FormattedMessage {...messages.subtitleSettingsTab} />
+              </SectionSubtitle>
+            </>
+            :
+            <>
+            <StyledGoBackButton onClick={goBack} />
+            <Header>
+              <SectionTitle >
+                {<FormattedMessage {...messages.titleNewFolder} />}
+              </SectionTitle >
+              <SectionSubtitle>
+                <FormattedMessage {...messages.subtitleNewFolder} />
+              </SectionSubtitle>
+            </Header>
+            </>
+          }
+          <form onSubmit={onSubmit}>
+            <Section>
+              <SectionField>
+                <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
+              </SectionField>
+              <SectionField>
+                <InputMultiloc
+                  valueMultiloc={titleMultiloc}
+                  type="text"
+                  onChange={setTitleMultiloc}
+                  selectedLocale={selectedLocale}
+                  label={<FormattedMessage {...messages.titleInputLabel} />}
+                />
+              </SectionField>
+              <SectionField>
+                <TextAreaMultiloc
+                  valueMultiloc={shortDescriptionMultiloc}
+                  name="textAreaMultiloc"
+                  onChange={setShortDescriptionMultiloc}
+                  selectedLocale={selectedLocale}
+                  label={<FormattedMessage {...messages.shortDescriptionInputLabel} />}
+                  labelTooltip={<IconTooltip content={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />} />}
+                />
+              </SectionField>
+              <SectionField>
+                <QuillMultiloc
+                  id="description"
+                  valueMultiloc={descriptionMultiloc}
+                  onChangeMultiloc={setDescriptionMultiloc}
+                  selectedLocale={selectedLocale}
+                  label={<FormattedMessage {...messages.descriptionInputLabel} />}
+                />
+              </SectionField>
 
-  return (
-    <>
-      <Container mode={mode}>
-        {mode === 'edit' ?
-          <>
-            <SectionTitle>
-              {<FormattedMessage {...messages.titleSettingsTab} />}
-            </SectionTitle>
-            <SectionSubtitle>
-              <FormattedMessage {...messages.subtitleSettingsTab} />
-            </SectionSubtitle>
-          </>
-          :
-          <>
-          <StyledGoBackButton onClick={goBack} />
-          <Header>
-            <SectionTitle >
-              {<FormattedMessage {...messages.titleNewFolder} />}
-            </SectionTitle >
-            <SectionSubtitle>
-              <FormattedMessage {...messages.subtitleNewFolder} />
-            </SectionSubtitle>
-          </Header>
-          </>
-        }
-        <form onSubmit={onSubmit}>
-          <Section>
-            <SectionField>
-              <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
-            </SectionField>
-            <SectionField>
-              <InputMultiloc
-                valueMultiloc={titleMultiloc}
-                type="text"
-                onChange={setTitleMultiloc}
-                selectedLocale={selectedLocale}
-                label={<FormattedMessage {...messages.titleInputLabel} />}
+              <SectionField key={'header_bg'}>
+                <Label>
+                  <FormattedMessage {...messages.headerImageInputLabel} />
+                </Label>
+                <ImagesDropzone
+                  acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                  maxNumberOfImages={1}
+                  maxImageFileSize={5000000}
+                  images={headerBg ? [headerBg] : null}
+                  imagePreviewRatio={480 / 1440}
+                  maxImagePreviewWidth="500px"
+                  onAdd={handleHeaderBgOnAdd}
+                  onRemove={handleHeaderBgOnRemove}
+                />
+              </SectionField>
+              <SubmitWrapper
+                loading={loading}
+                status={status}
+                onClick={onSubmit}
+                messages={{
+                  buttonSave: messages.save,
+                  buttonSuccess: messages.saveSuccess,
+                  messageError: messages.saveErrorMessage,
+                  messageSuccess: messages.saveSuccessMessage,
+                }}
               />
-            </SectionField>
-            <SectionField>
-              <TextAreaMultiloc
-                valueMultiloc={shortDescriptionMultiloc}
-                name="textAreaMultiloc"
-                onChange={setShortDescriptionMultiloc}
-                selectedLocale={selectedLocale}
-                label={<FormattedMessage {...messages.shortDescriptionInputLabel} />}
-                labelTooltip={<IconTooltip content={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />} />}
-              />
-            </SectionField>
-            <SectionField>
-              <QuillMultiloc
-                id="description"
-                valueMultiloc={descriptionMultiloc}
-                onChangeMultiloc={setDescriptionMultiloc}
-                selectedLocale={selectedLocale}
-                label={<FormattedMessage {...messages.descriptionInputLabel} />}
-              />
-            </SectionField>
+            </Section>
+          </form>
+        </Container>
+      </>
+    );
+  }
 
-            <SectionField key={'header_bg'}>
-              <Label>
-                <FormattedMessage {...messages.headerImageInputLabel} />
-              </Label>
-              <ImagesDropzone
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
-                images={headerBg ? [headerBg] : null}
-                imagePreviewRatio={480 / 1440}
-                maxImagePreviewWidth="500px"
-                onAdd={handleHeaderBgOnAdd}
-                onRemove={handleHeaderBgOnRemove}
-              />
-            </SectionField>
-            <SubmitWrapper
-              loading={loading}
-              status={status}
-              onClick={onSubmit}
-              messages={{
-                buttonSave: messages.save,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </Section>
-        </form>
-      </Container>
-    </>
-  );
+  return null;
 };
 
 const FolderSettingsWithHoCs = withRouter(FolderSettings);

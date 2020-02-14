@@ -25,8 +25,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProject from 'resources/GetProject';
+import GetProjectFolder from 'resources/GetProjectFolder';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
@@ -375,8 +375,6 @@ interface DataProps {
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
-  project: GetProjectChildProps;
-  projectFolder: GetProjectFolderChildProps;
   archivedProjects: GetProjectsChildProps;
 }
 
@@ -452,14 +450,12 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
     const emailSettingsPage = isPage('email-settings', location.pathname);
+    const totalProjectsListLength = (!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list ? projectHolderOrderings.list.length : 0) + (isNilOrError(archivedProjectList) ? 0 : archivedProjectList.length);
     const showMobileNav = !adminPage &&
       !ideaFormPage &&
       !initiativeFormPage &&
       !ideaEditPage &&
       !initiativeEditPage;
-
-    const totalProjectsListLength = (isNilOrError(projectHolderOrderings) ? 0 : projectHolderOrderings.length)
-      + (isNilOrError(archivedProjectList) ? 0 : archivedProjectList.length);
 
     return (
       <>
@@ -488,7 +484,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </NavigationItemText>
                 </NavigationItem>
 
-                {tenantLocales && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0 &&
+                {tenantLocales && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
@@ -510,7 +506,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       onClickOutside={this.toggleProjectsDropdown}
                       content={(
                         <ProjectsList>
-                          {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.map(
+                          {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.map(
                             (item: IProjectHolderOrderingData) => {
                               const isProject = item.relationships.project_holder.data.type === 'project';
                               const projectOrFolderId = item.relationships.project_holder.data.id;

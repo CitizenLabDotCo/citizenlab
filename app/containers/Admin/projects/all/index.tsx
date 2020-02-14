@@ -209,7 +209,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
     const { authUser, projects: { projectsList }, className, projectHolderOrderings } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     let lists: JSX.Element | null = null;
-    const hasProjectsOrFolders = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
+    const hasProjectsOrFolders = projectHolderOrderings?.list && projectHolderOrderings.list.length > 0;
+
+    console.log(projectHolderOrderings);
 
     if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
       const draftProjectsOutsideFolders = projectsList.filter((project) => {
@@ -252,7 +254,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
       lists = (
         <ListsContainer>
-          {projectHolderOrderings && projectHolderOrderings.length > 0 &&
+          {projectHolderOrderings?.list && projectHolderOrderings.list.length > 0 &&
             <>
               <ListHeader>
                 <HeaderTitle>
@@ -264,6 +266,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
                 <FeatureFlag name="project_folders">
                   <Button
+                    icon="plus-circle"
+                    buttonStyle="admin-dark"
                     linkTo={'/admin/projects/folders/new'}
                   >
                     <FormattedMessage {...messages.newProjectFolder} />
@@ -274,16 +278,21 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
               <HasPermission item="project" action="reorder">
                 <SortableList
-                  items={projectHolderOrderings}
+                  items={projectHolderOrderings.list}
                   onReorder={this.handleReorderHolders}
                   className="projects-list e2e-admin-projects-list"
                   id="e2e-admin-published-projects-list"
                 >
                   {({ itemsList, handleDragRow, handleDropRow }) => (
                     itemsList.map((item: IProjectHolderOrderingData, index: number) => {
-                      if (item.relationships.project_holder.data.type === 'project') {
+                      const isLastItem = !!(projectHolderOrderings?.list?.length && index === projectHolderOrderings.list.length - 1);
+
+                      if (item.relationships.project_holder.data.type === 'project' && projectHolderOrderings?.list) {
                         return (
-                          <GetProject projectId={item.relationships.project_holder.data.id} key={item.relationships.project_holder.data.id}>
+                          <GetProject
+                            projectId={item.relationships.project_holder.data.id}
+                            key={item.relationships.project_holder.data.id}
+                          >
                             {project => isNilOrError(project) ? null : (
                               <SortableRow
                                 key={item.id}
@@ -291,59 +300,72 @@ class AdminProjectsList extends PureComponent<Props, State> {
                                 index={index}
                                 moveRow={handleDragRow}
                                 dropRow={handleDropRow}
-                                lastItem={(index === projectHolderOrderings.length - 1)}
+                                lastItem={isLastItem}
                               >
                                 <ProjectRow project={project} />
                               </SortableRow>
                             )}
                           </GetProject>
                         );
-                      } else {
-                        return (
-                          <GetProjectFolder projectFolderId={item.relationships.project_holder.data.id} key={item.relationships.project_holder.data.id}>
-                            {projectFolder => isNilOrError(projectFolder) ? null : (
-                              <SortableRow
-                                id={item.id}
-                                index={index}
-                                moveRow={handleDragRow}
-                                dropRow={handleDropRow}
-                                lastItem={(index === projectHolderOrderings.length - 1)}
-                              >
-                                {FolderRow(projectFolder)}
-                              </SortableRow>
-                            )}
-                          </GetProjectFolder>
-                        );
                       }
+
+                      return (
+                        <GetProjectFolder
+                          projectFolderId={item.relationships.project_holder.data.id}
+                          key={item.relationships.project_holder.data.id}
+                        >
+                          {projectFolder => isNilOrError(projectFolder) ? null : (
+                            <SortableRow
+                              id={item.id}
+                              index={index}
+                              moveRow={handleDragRow}
+                              dropRow={handleDropRow}
+                              lastItem={isLastItem}
+                            >
+                              {FolderRow(projectFolder)}
+                            </SortableRow>
+                          )}
+                        </GetProjectFolder>
+                      );
                     }
                   ))}
                 </SortableList>
                 <HasPermission.No>
                   <List>
-                    {projectHolderOrderings.map((holder, index) => (
-                      holder.relationships.project_holder.data.type === 'project') ? (
-                        <GetProject projectId={holder.relationships.project_holder.data.id} key={holder.relationships.project_holder.data.id}>
-                          {project => isNilOrError(project) ? null : (
-                            <Row
-                              id={project.id}
-                              lastItem={(index === projectHolderOrderings.length - 1)}
-                            >
-                              <ProjectRow project={project} />
-                            </Row>
-                          )}
-                        </GetProject>
-                      ) : (
+                    {projectHolderOrderings.list.map((holder, index) => {
+                      const isLastItem = !!(projectHolderOrderings?.list?.length && index === projectHolderOrderings.list.length - 1);
+
+                      if (holder.relationships.project_holder.data.type === 'project') {
+                        return (
+                          <GetProject
+                            projectId={holder.relationships.project_holder.data.id}
+                            key={holder.relationships.project_holder.data.id}
+                          >
+                            {project => isNilOrError(project) ? null : (
+                              <Row
+                                id={project.id}
+                                lastItem={isLastItem}
+                              >
+                                <ProjectRow project={project} />
+                              </Row>
+                            )}
+                          </GetProject>
+                        );
+                      }
+
+                      return (
                         <GetProjectFolder projectFolderId={holder.relationships.project_holder.data.id} key={holder.relationships.project_holder.data.id}>
                           {projectFolder => isNilOrError(projectFolder) ? null : (
                             <Row
                               id={projectFolder.id}
-                              lastItem={(index === projectHolderOrderings.length - 1)}
+                              lastItem={isLastItem}
                             >
                               {FolderRow(projectFolder)}
                             </Row>
                           )}
                         </GetProjectFolder>
-                      ))}
+                      );
+                    })}
                   </List>
                 </HasPermission.No>
               </HasPermission>
