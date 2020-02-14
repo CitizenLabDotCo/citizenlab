@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import { Subscription } from 'rxjs';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
@@ -28,12 +28,13 @@ import PageWrapper from 'components/admin/PageWrapper';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
-import ModeratorProjectList from './Lists/StaticLists/ModeratorProjectList';
+import Spinner from 'components/UI/Spinner';
+const ModeratorProjectList = React.lazy(() => import('./Lists/StaticLists/ModeratorProjectList'));
+const AdminProjectList = React.lazy(() => import('./Lists/SortableLists/AdminProjectList'));
+const AdminProjectListWithFolders = React.lazy(() => import('./Lists/SortableLists/AdminProjectListWithFolders'));
 
 // style
 import styled from 'styled-components';
-import AdminProjectListWithFolders from './Lists/SortableLists/AdminProjectListWithFolders';
-import AdminProjectList from './Lists/SortableLists/AdminProjectList';
 
 const Container = styled.div``;
 
@@ -199,9 +200,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
           <PageWrapper>
             <ListsContainer>
-              {userIsModerator && <ModeratorProjectList />}
-              {userIsAdmin && projectsEnabled && <AdminProjectListWithFolders />}
-              {userIsAdmin && !projectsEnabled && <AdminProjectList />}
+              <Suspense fallback={<Spinner />}>
+                {userIsModerator && <ModeratorProjectList />}
+                {userIsAdmin && projectsEnabled && <AdminProjectListWithFolders />}
+                {userIsAdmin && !projectsEnabled && <AdminProjectList />}
+              </Suspense>
             </ListsContainer>
           </PageWrapper>
         </CreateAndEditProjectsContainer>
