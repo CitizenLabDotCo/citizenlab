@@ -1,10 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { listProjectHolderOrderings, IProjectHolderOrderingData } from 'services/projectHolderOrderings';
 import { isNilOrError } from 'utils/helperUtils';
-import { unionBy, isString, isNumber } from 'lodash-es';
+import { unionBy, isString } from 'lodash-es';
 
 export interface InputProps {
   pageSize?: number;
@@ -24,8 +21,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000 }: InputProp
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageNumber$] = useState(new BehaviorSubject<number>(null as any));
-  const [pageSize$] = useState(new BehaviorSubject<number>(pageSize));
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -35,30 +30,17 @@ export default function useProjectHolderOrderings({ pageSize = 1000 }: InputProp
   }, [hasMore]);
 
   useEffect(() => {
-    setPageNumber(1); // reset pageNumber when pageSize changes
-    pageSize$.next(pageSize);
+    // reset pageNumber on pageSize change
+    setPageNumber(1);
   }, [pageSize]);
 
   useEffect(() => {
-    pageNumber$.next(pageNumber);
-  }, [pageNumber]);
-
-  useEffect(() => {
-    const subscription = combineLatest(
-      pageNumber$,
-      pageSize$
-    ).pipe(
-      filter(([pageNumber, pageSize]) => !!(isNumber(pageNumber) && isNumber(pageSize))),
-      distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-      switchMap(([pageNumber, pageSize]) => {
-        return listProjectHolderOrderings({
-          queryParameters: {
-            'page[number]': pageNumber,
-            'page[size]': pageSize
-          }
-        }).observable;
-      })
-    ).subscribe((newList) => {
+    const subscription = listProjectHolderOrderings({
+      queryParameters: {
+        'page[number]': pageNumber,
+        'page[size]': pageSize
+      }
+    }).observable.subscribe((newList) => {
       setLoadingInitial(false);
       setLoadingMore(false);
 
@@ -75,7 +57,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000 }: InputProp
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber$, pageSize$]);
+  }, [pageNumber, pageSize]);
 
   return {
     list,
