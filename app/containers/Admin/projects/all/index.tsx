@@ -11,7 +11,7 @@ import { trackPage } from 'utils/analytics';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';
-import { IProjectFolderData, deleteProjectFolder } from 'services/projectFolders';
+import { IProjectFolderData } from 'services/projectFolders';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
 // resources
@@ -39,7 +39,7 @@ import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
-import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton, ActionsRowContainer } from '../components/ProjectRow';
+import ProjectRow, { RowContent, RowContentInner, RowTitle, RowButton } from '../components/ProjectRow';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import FeatureFlag from 'components/FeatureFlag';
 import Icon from 'components/UI/Icon';
@@ -200,10 +200,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
     }
   }
 
-  removeFolder = (folderId: string) => () => {
-    deleteProjectFolder(folderId);
-  }
-
   render() {
     const { selectedProjectTemplateId } = this.state;
     const { authUser, projects: { projectsList }, className, projectHolderOrderings } = this.props;
@@ -215,11 +211,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
     if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
       const draftProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder?.data;
+        const projectHasFolder = project.relationships.folder ?.data;
         return project.attributes.publication_status === 'draft' && !projectHasFolder;
       });
       const archivedProjectsOutsideFolders = projectsList.filter((project) => {
-        const projectHasFolder = project.relationships.folder?.data;
+        const projectHasFolder = project.relationships.folder ?.data;
         return project.attributes.publication_status === 'archived' && !projectHasFolder;
       });
 
@@ -230,24 +226,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
               <FolderIcon name="simpleFolder" />
               <RowTitle value={folder.attributes.title_multiloc} />
             </RowContentInner>
-            <ActionsRowContainer>
-              <RowButton
-                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-                onClick={this.removeFolder(folder.id)}
-                buttonStyle="secondary"
-                icon="remove"
-              >
-                <FormattedMessage {...messages.deleteButtonLabel} />
-              </RowButton>
-              <RowButton
-                className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-                linkTo={`/admin/projects/folders/${folder.id}`}
-                buttonStyle="secondary"
-                icon="edit"
-              >
-                <FormattedMessage {...messages.manageButtonLabel} />
-              </RowButton>
-            </ActionsRowContainer>
+            <RowButton
+              className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
+              linkTo={`/admin/projects/folders/${folder.id}`}
+              buttonStyle="secondary"
+              icon="edit"
+            >
+              <FormattedMessage {...messages.manageButtonLabel} />
+            </RowButton>
           </RowContent>
         );
       };
