@@ -68,6 +68,14 @@ export default () => ({
           }),
         },
         {
+          path: '/:locale/admin/projects/:projectId/ideaform',
+          name: 'admin projects idea form',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/ideaform'),
+            loading: () => null
+          }),
+        },
+        {
           path: '/:locale/admin/projects/:projectId/timeline',
           name: 'admin projects timeline',
           component: Loadable({
