@@ -8,9 +8,10 @@ class ParticipantsService
     {item_type: 'Vote', action: 'comment_upvoted', score: 1},
     {item_type: 'Vote', action: 'comment_downvoted', score: 1},
     {item_type: 'Basket', action: 'created', score: 3},
+    {item_type: 'Polls::Response', action: 'created', score: 1},
   ]
 
-  PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting]
+  PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting, :polling]
 
 
   def participants options={}
@@ -80,6 +81,13 @@ class ParticipantsService
       baskets = Basket.submitted.where(participation_context_id: participation_context_ids)
       baskets = baskets.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: baskets.select(:user_id)))
+    end
+    # Polling
+    if actions.include? :polling 
+      participation_context_ids = projects.map(&:id) + Phase.where(project: projects).ids
+      poll_responses = Polls::Response.where(participation_context_id: participation_context_ids)
+      poll_responses = poll_responses.where('created_at::date >= (?)::date', since) if since
+      participants = participants.or(User.where(id: poll_responses.select(:user_id)))
     end
     participants
   end
