@@ -271,10 +271,34 @@ nl-BE:
     council_meeting_description: >
       <p>Tijdens deze zitting van de gemeenteraad worden die burgerinitiatieven voorgesteld die 100 stemmen verzamelden in minder dan 3 maanden.</p><p>De raad geeft daarna feedback op elk idee.</p>
   custom_fields:
-    gender: Geslacht
-    birthyear: Geboortejaar
-    domicile: Woonplaats
-    education: Opleiding
+    users:
+      gender: 
+        title: Gender
+      birthyear: 
+        title: Year of birth
+      domicile: 
+        title: Place of residence
+      education: 
+        title: Education
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      topic_ids:
+        title: Topics
+        description:
+      location:
+        title: Location
+        description:
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
   custom_field_options:
     gender:
       male: Man

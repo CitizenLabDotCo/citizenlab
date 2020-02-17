@@ -1,4 +1,4 @@
-class CustomFieldPolicy < ApplicationPolicy
+class UserCustomFieldPolicy < ApplicationPolicy
   class Scope
     attr_reader :user, :scope
 

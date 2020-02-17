@@ -59,6 +59,7 @@ describe CustomFieldService do
         create(:custom_field, key: 'field6', input_type: 'date', enabled: false, required: true),
         create(:custom_field, key: 'field7', input_type: 'number'),
         create(:custom_field, key: 'field8', input_type: 'multiselect', required: true),
+        create(:custom_field, key: 'field9', input_type: 'files', required: true),
       ]
       create(:custom_field_option, key: 'option_1', custom_field: fields[2], ordering: 1) 
       create(:custom_field_option, key: 'option_3', custom_field: fields[2], ordering: 3) 
@@ -121,8 +122,16 @@ describe CustomFieldService do
                :enum=>["option_a", "option_b"],
                :enumNames=>["youth council", "youth council"]},
              :minItems=>1},
+            "field9"=>
+            {:title=>"Did you attend",
+             :description=>"Which councils are you attending in our city?",
+             :type=>"array",
+             :items=>{
+               :type=>"string",
+               :format=>"data-url",
+              }},
            },
-         :required=>["field2","field8"]}
+         :required=>["field2","field8","field9"]}
       )
     end
 
@@ -139,6 +148,13 @@ describe CustomFieldService do
       schema = service.fields_to_json_schema(fields, locale)
       expect(JSON::Validator.validate!(metaschema, schema)).to be true
       expect(schema.dig(:properties, 'domicile', :enum)).to match (Area.all.order(created_at: :desc).map(&:id).push('outside'))
+    end
+
+    it "it creates a valid schema for the built in idea custom fields" do
+      custom_form = create(:custom_form)
+      fields = IdeaCustomFieldService.new.db_and_built_in_fields(custom_form)
+      schema = service.fields_to_json_schema(fields, locale)
+      expect(JSON::Validator.validate!(metaschema, schema)).to be true
     end
   end
 
@@ -172,57 +188,6 @@ describe CustomFieldService do
          "ui:order"=>
           ["field1", "field2", "field3", "field6", "field5", "field4", "field7"]}
       )
-    end
-  end
-
-  describe "delete_custom_field_values" do
-
-    it "deletes the custom field values from all users" do
-      cf1 = create(:custom_field)
-      cf2 = create(:custom_field)
-      users_with_cf = create_list(:user, 5, custom_field_values: {cf1.key => 'some_value', cf2.key => 'other_value'})
-      users_without_cf = create_list(:user, 5)
-      service.delete_custom_field_values(cf1)
-      expect(User.all.map{|u| u.custom_field_values.keys}.flatten).to include(cf2.key)
-      expect(User.all.map{|u| u.custom_field_values.keys}.flatten).not_to include(cf1.key)
-    end
-  end
-
-  describe "delete_custom_field_option_values" do
-
-    it "deletes the custom field option values from all users for a multiselect" do
-      cf1 = create(:custom_field_multiselect)
-      cfo1 = create(:custom_field_option, custom_field: cf1)
-      cfo2 = create(:custom_field_option, custom_field: cf1)
-      cf2 = create(:custom_field_select)
-      cfo3 = create(:custom_field_option, custom_field: cf2)
-      v1 = {cf1.key => [cfo1.key], cf2.key => cfo3.key}
-      u1 = create(:user, custom_field_values: v1)
-      v2 = {cf1.key => [cfo1.key, cfo2.key]}
-      u2 = create(:user, custom_field_values: v2)
-      v3 = {cf1.key => [cfo2.key]}
-      u3 = create(:user, custom_field_values: v3)
-
-      service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
-
-      expect(u1.reload.custom_field_values).to eq({cf2.key => cfo3.key})
-      expect(u2.reload.custom_field_values).to eq({cf1.key => [cfo2.key]})
-      expect(u3.reload.custom_field_values).to eq v3
-    end
-
-    it "deletes the custom field option values from all users for a single select" do
-      cf1 = create(:custom_field_select)
-      cfo1 = create(:custom_field_option, custom_field: cf1)
-      cfo2 = create(:custom_field_option, custom_field: cf1)
-      v1 = {cf1.key => cfo1.key}
-      u1 = create(:user, custom_field_values: v1)
-      v2 = {cf1.key => cfo2.key}
-      u2 = create(:user, custom_field_values: v2)
-
-      service.delete_custom_field_option_values(cfo1.key, cfo1.custom_field)
-
-      expect(u1.reload.custom_field_values).to eq({})
-      expect(u2.reload.custom_field_values).to eq v2
     end
   end
 

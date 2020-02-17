@@ -180,6 +180,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      idea_custom_fields: {
+        enabled: true,
+        allowed: true
+      },
       widgets: {
         enabled: true,
         allowed: true
@@ -736,6 +740,22 @@ if Apartment::Tenant.current == 'localhost'
 
     10.times do |i|
       Verification::IdCard.create!(card_id: i.to_s*3)
+    end
+
+    3.times do |i|
+      process_type = ['continuous', 'timeline', 'timeline'].shuffle.first
+      project =  if process_type == 'timeline'
+        Phase.where(participation_method: ['ideation', 'budgeting']).all.shuffle.first&.project
+      elsif process_type == 'continuous'
+        Project.where(participation_method: ['ideation', 'budgeting']).all.shuffle.first
+      end
+
+      if project
+        custom_form = project.custom_form || CustomForm.create!(project: project)
+        custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, ['title','body','location'].shuffle.first)
+        custom_field.description_multiloc = create_for_some_locales{Faker::Lorem.sentence}
+        custom_field.save!
+      end
     end
   end
 
