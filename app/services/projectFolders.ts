@@ -1,6 +1,6 @@
 import { Multiloc, ImageSizes } from 'typings';
 
-import streams from 'utils/streams';
+import streams, { IStreamParams } from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { API_PATH } from 'containers/App/constants';
@@ -28,6 +28,10 @@ export interface IProjectFolderData {
       data: { id: string, type: 'project' }[];
     }
   };
+}
+
+export function projectFoldersStream(streamParams: IStreamParams | null = null) {
+  return streams.get<{ data: IProjectFolderData }>({ apiEndpoint, ...streamParams });
 }
 
 export function getProjectFolderUrl(projectFolder: IProjectFolderData) {
