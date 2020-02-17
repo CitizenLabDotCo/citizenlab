@@ -527,21 +527,15 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                                 return (
                                   <GetProjectFolder key={projectOrFolderId} projectFolderId={projectOrFolderId}>
                                     {projectFolder => {
-                                      if (!isNilOrError(projectFolder)) {
-                                        const hasProjects = projectFolder.relationships.projects.data.length > 0;
-
-                                        if (hasProjects && !isNilOrError(locale)) {
-                                          return (
-                                            <ProjectsListItem
-                                              key={projectFolder.id}
-                                              to={getProjectFolderUrl(projectFolder)}
-                                            >
-                                              {getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales)}
-                                            </ProjectsListItem>
-                                          );
-                                        }
-
-                                        return null;
+                                      if (!isNilOrError(projectFolder) && !isNilOrError(locale)) {
+                                        return (
+                                          <ProjectsListItem
+                                            key={projectFolder.id}
+                                            to={getProjectFolderUrl(projectFolder)}
+                                          >
+                                            {getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales)}
+                                          </ProjectsListItem>
+                                        );
                                       }
 
                                       return null;
