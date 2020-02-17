@@ -106,6 +106,8 @@ export interface ITenantSettings {
     enabled_fragments: String[]
   };
   verification?: TenantFeature;
+  idea_custom_fields?: TenantFeature;
+  user_custom_fields?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
