@@ -207,8 +207,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
     let lists: JSX.Element | null = null;
     const hasProjectsOrFolders = projectHolderOrderings?.list && projectHolderOrderings.list.length > 0;
 
-    console.log(projectHolderOrderings);
-
     if (!isNilOrError(projectsList) && !isNilOrError(projectHolderOrderings)) {
       const draftProjectsOutsideFolders = projectsList.filter((project) => {
         const projectHasFolder = project.relationships.folder ?.data;
