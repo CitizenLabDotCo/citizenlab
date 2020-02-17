@@ -31,7 +31,7 @@ export interface IProjectFolderData {
 }
 
 export function projectFoldersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IProjectFolderData }>({ apiEndpoint, ...streamParams });
+  return streams.get<{ data: IProjectFolderData[] }>({ apiEndpoint, ...streamParams });
 }
 
 export function getProjectFolderUrl(projectFolder: IProjectFolderData) {
