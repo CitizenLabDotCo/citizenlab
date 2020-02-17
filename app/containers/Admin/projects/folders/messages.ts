@@ -90,10 +90,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.otherDraftProjects',
     defaultMessage: 'Draft projects',
   },
-  projectsYouCanAddTooltip: {
-    id: 'app.containers.AdminPage.FoldersEdit.projectsYouCanAddTooltip',
-    defaultMessage: 'This is a list of projects you can add to this folder.',
-  },
   emptyFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.emptyFolder',
     defaultMessage: 'There are no projects in this folder.',
