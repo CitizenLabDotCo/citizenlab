@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
+import { combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import { listProjectHolderOrderings, IProjectHolderOrderingData } from 'services/projectHolderOrderings';
+import { projectByIdStream } from 'services/projects';
+import { projectFolderByIdStream } from 'services/projectFolders';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 
@@ -40,18 +44,32 @@ export default function useProjectHolderOrderings({ pageSize = 1000 }: InputProp
         'page[number]': pageNumber,
         'page[size]': pageSize
       }
-    }).observable.subscribe((newList) => {
+    }).observable.pipe(
+      switchMap((projectHolderOrderings) => {
+        return combineLatest(
+          projectHolderOrderings.data.map((projectHolderOrdering) => {
+            if (projectHolderOrdering.relationships.project_holder.data.type === 'project') {
+              return projectByIdStream(projectHolderOrdering.relationships.project_holder.data.id).observable;
+            }
+
+            return projectFolderByIdStream(projectHolderOrdering.relationships.project_holder.data.id).observable;
+          })
+        ).pipe(
+          map(projects => ({ projectHolderOrderings, projects }))
+        );
+      })
+    ).subscribe(({ projectHolderOrderings }) => {
       setLoadingInitial(false);
       setLoadingMore(false);
 
-      if (isNilOrError(newList)) {
+      if (isNilOrError(projectHolderOrderings)) {
         setList(null);
         setHasMore(false);
       } else {
-        const selfLink = newList?.links?.self;
-        const lastLink = newList?.links?.last;
+        const selfLink = projectHolderOrderings?.links?.self;
+        const lastLink = projectHolderOrderings?.links?.last;
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-        setList(prevList => !isNilOrError(prevList) ? unionBy(prevList, newList.data, 'id') : newList.data);
+        setList(prevList => !isNilOrError(prevList) ? unionBy(prevList, projectHolderOrderings.data, 'id') : projectHolderOrderings.data);
         setHasMore(hasMore);
       }
     });
