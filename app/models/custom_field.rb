@@ -2,21 +2,22 @@ class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_type]
 
   has_many :custom_field_options, dependent: :destroy
+  belongs_to :resource, polymorphic: true, optional: true
 
-  FIELDABLE_TYPES = %w(User)
-  INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date)
+  FIELDABLE_TYPES = %w(User CustomForm)
+  INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date files)
 
-  CODES = %w(gender birthyear domicile education)
+  CODES = %w(gender birthyear domicile education title body topic_ids location images attachments)
 
   validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
-  validates :key, presence: true, uniqueness: {scope: [:resource_type]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
+  validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
     message: "only letters, numbers and underscore" }
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
   validates :required, inclusion: {in: [true, false]}
   validates :enabled, inclusion: {in: [true, false]}
-  validates :code, inclusion: {in: CODES}, uniqueness: true, allow_nil: true
+  validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
 
 
   before_validation :set_default_enabled
@@ -24,7 +25,7 @@ class CustomField < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_destroy :check_group_references, prepend: true
 
-  scope :fields_for, -> (resource_type) { where(resource_type: resource_type) }
+  scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
   scope :enabled, -> { where(enabled: true) }
   scope :support_multiple_values, -> { where(input_type: 'multiselect') }
   scope :support_single_value, -> { where.not(input_type: 'multiselect') }

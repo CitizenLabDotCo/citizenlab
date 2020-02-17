@@ -81,7 +81,7 @@ module SmartGroupRules
     end
 
     def description_property locale
-      CustomField.find_by(key: 'domicile').title_multiloc[locale]
+      CustomField.with_resource_type('User').find_by(key: 'domicile').title_multiloc[locale]
     end
 
     def description_rule_type

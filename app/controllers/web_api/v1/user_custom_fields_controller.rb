@@ -1,9 +1,10 @@
-class WebApi::V1::CustomFieldsController < ApplicationController
+class WebApi::V1::UserCustomFieldsController < ApplicationController
   before_action :set_custom_field, only: [:show, :update, :reorder, :destroy]
   before_action :set_resource_type, only: [:index, :schema, :create]
+  skip_after_action :verify_policy_scoped
 
   def index
-    @custom_fields = policy_scope(CustomField)
+    @custom_fields = UserCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
       .where(resource_type: @resource_type)
       .order(:ordering)
 
@@ -13,8 +14,8 @@ class WebApi::V1::CustomFieldsController < ApplicationController
   end
 
   def schema
-    authorize :custom_field
-    fields = CustomField.fields_for(@resource_type)
+    authorize :custom_field, policy_class: UserCustomFieldPolicy
+    fields = CustomField.with_resource_type(@resource_type)
 
     service = CustomFieldService.new
     json_schema_multiloc = service.fields_to_json_schema_multiloc(Tenant.current, fields)
@@ -31,9 +32,9 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
 
   def create
-    @custom_field = CustomField.new permitted_attributes(CustomField)
+    @custom_field = CustomField.new custom_field_params(CustomField)
     @custom_field.resource_type = @resource_type
-    authorize @custom_field
+    authorize @custom_field, policy_class: UserCustomFieldPolicy
 
     SideFxCustomFieldService.new.before_create @custom_field, current_user
 
@@ -50,8 +51,8 @@ class WebApi::V1::CustomFieldsController < ApplicationController
 
 
   def update
-    @custom_field.assign_attributes permitted_attributes(@custom_field)
-    authorize @custom_field
+    @custom_field.assign_attributes custom_field_params(@custom_field)
+    authorize @custom_field, policy_class: UserCustomFieldPolicy
     if @custom_field.save
       SideFxCustomFieldService.new.after_update(@custom_field, current_user)
       render json: WebApi::V1::CustomFieldSerializer.new(
@@ -59,12 +60,12 @@ class WebApi::V1::CustomFieldsController < ApplicationController
         params: fastjson_params
         ).serialized_json, status: :ok
     else
-      render json: { errors: @custom_field.errors.detauls }, status: :unprocessable_entity
+      render json: { errors: @custom_field.errors.details }, status: :unprocessable_entity
     end
   end
 
   def reorder
-    if @custom_field.insert_at(permitted_attributes(@custom_field)[:ordering])
+    if @custom_field.insert_at(custom_field_params(@custom_field)[:ordering])
       SideFxCustomFieldService.new.after_update(@custom_field, current_user)
       render json: WebApi::V1::CustomFieldSerializer.new(
         @custom_field.reload, 
@@ -92,13 +93,21 @@ class WebApi::V1::CustomFieldsController < ApplicationController
   private
 
   def set_resource_type
-    @resource_type = params[:resource_type]
-    raise RuntimeError, "must not be blank" if @resource_type.blank?
+    @resource_type = "User"
   end
 
   def set_custom_field
     @custom_field = CustomField.find(params[:id])
-    authorize @custom_field
+    authorize @custom_field, policy_class: UserCustomFieldPolicy
+  end
+
+  def custom_field_params resource
+    params
+      .require(:custom_field)
+      .permit(
+        UserCustomFieldPolicy.new(current_user, resource)
+          .send("permitted_attributes_for_#{params[:action]}")
+      )
   end
 
   def secure_controller?
