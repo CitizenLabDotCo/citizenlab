@@ -222,3 +222,9 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
 
   return response;
 }
+
+export function getFilteredProjects(projects: IProjectData[], publicationStatus: PublicationStatus) {
+  return projects.filter((project) => {
+    return project.attributes.publication_status === publicationStatus;
+  });
+}

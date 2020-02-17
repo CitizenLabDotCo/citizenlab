@@ -13,24 +13,18 @@ import ProjectRow from '../../components/ProjectRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 import IconTooltip from 'components/UI/IconTooltip';
 
+// services
+import { getFilteredProjects } from 'services/projects';
+
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-
-// types
-import { IProjectData } from 'services/projects';
 
 interface DataProps {
   projects: GetProjectsChildProps;
 }
 
 interface Props extends DataProps {}
-
-function getFilteredProjects(projects: IProjectData[], publicationStatus: PublicationStatus) {
-  return projects.filter((project) => {
-    return project.attributes.publication_status === publicationStatus;
-  });
-}
 
 const ModeratorProjectList = memo<Props>(({ projects }) => {
   if (

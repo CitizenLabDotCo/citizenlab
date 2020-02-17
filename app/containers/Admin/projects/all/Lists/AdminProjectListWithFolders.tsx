@@ -25,7 +25,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { IProjectData, reorderProject } from 'services/projects';
+import { IProjectData, reorderProject, getFilteredProjects } from 'services/projects';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
 const Spacer = styled.div`
@@ -38,12 +38,6 @@ interface DataProps {
 }
 
 interface Props extends DataProps { }
-
-function getFilteredProjects(projects: IProjectData[], publicationStatus: PublicationStatus) {
-  return projects.filter((project) => {
-    return project.attributes.publication_status === publicationStatus;
-  });
-}
 
 function handleReorderHolders(itemId, newOrder) {
   return function () {
