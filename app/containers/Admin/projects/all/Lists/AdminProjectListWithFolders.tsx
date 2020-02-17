@@ -83,57 +83,56 @@ const AdminProjectList = memo<Props>(({ projectsWithoutFolder, projectHolderOrde
           {({ itemsList, handleDragRow, handleDropRow }) => (
             itemsList.map((item: IProjectHolderOrderingData, index: number) => {
               const holderType = item.relationships.project_holder.data.type;
+              const holderId = item.relationships.project_holder.data.id;
 
               if (holderType === 'project') {
-                const projectId = item.relationships.project_holder.data.id;
                 const project = (
                   !isNilOrError(projectsWithoutFolder) &&
                   projectsWithoutFolder.projectsList &&
                   projectsWithoutFolder.projectsList.length > 0
                 )
-                ?
-                  projectsWithoutFolder.projectsList.find(project => project.id === projectId)
-                :
+                  ?
+                  projectsWithoutFolder.projectsList.find(project => project.id === holderId)
+                  :
                   null;
-
-                if (!project) return <div />;
 
                 return (
                   <SortableRow
-                    key={item.id}
-                    id={item.id}
+                    key={holderId}
+                    id={holderId}
                     index={index}
                     moveRow={handleDragRow}
                     dropRow={handleDropRow}
                     lastItem={(index === projectHolderOrderings.length - 1)}
                   >
-                    <ProjectRow project={project} />
+                    {project ? <ProjectRow project={project} /> : <div />}
                   </SortableRow>
                 );
               } else if (holderType === 'project_folder') {
-                  return (
-                    <GetProjectFolder
-                      projectFolderId={item.relationships.project_holder.data.id}
-                      key={item.relationships.project_holder.data.id}
-                    >
-                      {projectFolder => isNilOrError(projectFolder) ? null : (
-                        <SortableRow
-                          id={item.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={(index === projectHolderOrderings.length - 1)}
-                        >
-                          <FolderRow folder={projectFolder} />
-                        </SortableRow>
-                      )}
-                    </GetProjectFolder>
-                  );
-                } else {
-                  return <div />;
-                }
+                return (
+                  <GetProjectFolder
+                    projectFolderId={holderId}
+                    key={holderId}
+                  >
+                    {projectFolder => (
+                      <SortableRow
+                        id={holderId}
+                        key={holderId}
+                        index={index}
+                        moveRow={handleDragRow}
+                        dropRow={handleDropRow}
+                        lastItem={(index === projectHolderOrderings.length - 1)}
+                      >
+                        {!isNilOrError(projectFolder) ? <FolderRow folder={projectFolder} /> : <div />}
+                      </SortableRow>
+                    )}
+                  </GetProjectFolder>
+                );
+              } else {
+                return <div />;
               }
-          ))}
+            }
+            ))}
         </SortableList>
       </>
     );
@@ -230,7 +229,7 @@ const publicationStatuses: PublicationStatus[] = ['published', 'draft', 'archive
 
 const Data = adopt<DataProps>({
   projectHolderOrderings: <GetProjectHolderOrderings />,
-  projectsWithoutFolder: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil"/>,
+  projectsWithoutFolder: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil" />,
 });
 
 export default () => (
