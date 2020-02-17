@@ -1,23 +1,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { IAction } from 'components/UI/MoreActionsMenu';
 import * as officialFeedbackSerivce from 'services/officialFeedback';
+import { mockOfficialFeedback } from 'services/__mocks__/officialFeedback';
+import { OfficialFeedbackPost } from './OfficialFeedbackPost';
+
 jest.mock('services/officialFeedback', () => ({
      deleteOfficialFeedbackFromIdea: jest.fn(),
      deleteOfficialFeedbackFromInitiative: jest.fn()
 }));
-
 jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('components/UI/MoreActionsMenu', () => 'MoreActionsMenu');
 jest.mock('components/UI/QuillEditedContent', () => 'QuillEditedContent');
 jest.mock('components/T');
 jest.mock('utils/cl-intl');
+
 const Intl = require('utils/cl-intl/__mocks__/');
 const { intl } = Intl;
-
-import { mockOfficialFeedback } from 'services/__mocks__/officialFeedback';
 const mockOfficialFeedbackPost = mockOfficialFeedback.data[0];
-
-import { OfficialFeedbackPost } from './OfficialFeedbackPost';
 
 describe('<OfficialFeedbackPost />', () => {
   it('renders correctly for non-admin', () => {
@@ -59,7 +59,7 @@ describe('<OfficialFeedbackPost />', () => {
         postType="initiative"
       />
     );
-    const actions = wrapper.find('OfficialFeedbackPost__StyledMoreActionsMenu').prop('actions');
+    const actions = wrapper.find('OfficialFeedbackPost__StyledMoreActionsMenu').prop('actions') as IAction[];
     actions.forEach(action => action.handler());
     expect(officialFeedbackSerivce.deleteOfficialFeedbackFromIdea).toHaveBeenCalledTimes(0);
     expect(officialFeedbackSerivce.deleteOfficialFeedbackFromInitiative).toHaveBeenCalledTimes(1);
