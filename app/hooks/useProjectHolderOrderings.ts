@@ -64,11 +64,11 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
       switchMap((projectHolderOrderings) => {
         const projectIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project')
-          .map(holder => holder.id);
+          .map(holder => holder.relationships.project_holder.data.id);
 
         const projectFoldersIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project_folder')
-          .map(holder => holder.id);
+          .map(holder => holder.relationships.project_holder.data.id);
 
         return combineLatest([
           projectsStream({
@@ -76,17 +76,18 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
               areas,
               filter_ids: projectIds
             }
-          }),
+          }).observable,
           projectFoldersStream({
             queryParameters: {
               filter_ids: projectFoldersIds
             }
-          })
+          }).observable
         ]).pipe(
           map(projects => ({ projectHolderOrderings, projects }))
         );
       })
     ).subscribe(({ projectHolderOrderings }) => {
+      console.log(projectHolderOrderings);
       setLoadingInitial(false);
       setLoadingMore(false);
 
