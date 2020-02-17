@@ -55,14 +55,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.loadMoreTemplates',
     defaultMessage: 'Load more templates',
   },
-  deleteButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectDashboard.deleteButtonLabel',
-    defaultMessage: 'Delete',
-  },
-  manageButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectDashboard.manageButtonLabel',
-    defaultMessage: 'Manage',
-  },
   published: {
     id: 'app.containers.AdminPage.ProjectDashboard.published',
     defaultMessage: 'Published',
