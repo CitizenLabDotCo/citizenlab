@@ -1,6 +1,7 @@
 import React from 'react';
 import { Subject, combineLatest } from 'rxjs';
 import { mapValues, isFunction, get } from 'lodash-es';
+import { isNilOrError } from 'utils/helperUtils';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
@@ -27,7 +28,7 @@ const events$ = new Subject<IEvent>();
 const pageChanges$ = new Subject<IPageChange>();
 
 combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => {
-  if (isFunction(get(window, 'analytics.track'))) {
+  if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
     analytics.track(
       event.name,
       { ...event.properties, ...tenantInfo(tenant.data) },
@@ -37,7 +38,7 @@ combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => 
 });
 
 combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageChange]) => {
-  if (isFunction(get(window, 'analytics.page'))) {
+  if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
     analytics.page(
       '',
       {
@@ -53,7 +54,7 @@ combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageCh
 });
 
 combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
-  if (isFunction(get(window, 'analytics.identify')) && isFunction(get(window, 'analytics.group'))) {
+  if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.identify')) && isFunction(get(window, 'analytics.group'))) {
     if (user) {
       analytics.identify(
         user.data.id,
