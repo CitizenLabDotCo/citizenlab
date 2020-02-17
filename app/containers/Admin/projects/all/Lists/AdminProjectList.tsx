@@ -10,13 +10,13 @@ import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from '
 
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
-import ProjectRow from '../../../components/ProjectRow';
-import { ListHeader, HeaderTitle } from '../../StyledComponents';
+import ProjectRow from '../../components/ProjectRow';
+import { ListHeader, HeaderTitle } from '../StyledComponents';
 import IconTooltip from 'components/UI/IconTooltip';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../../messages';
+import messages from '../messages';
 
 // services
 import { IProjectData, reorderProject } from 'services/projects';

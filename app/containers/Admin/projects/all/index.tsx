@@ -29,9 +29,9 @@ import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import Spinner from 'components/UI/Spinner';
-const ModeratorProjectList = React.lazy(() => import('./Lists/StaticLists/ModeratorProjectList'));
-const AdminProjectList = React.lazy(() => import('./Lists/SortableLists/AdminProjectList'));
-const AdminProjectListWithFolders = React.lazy(() => import('./Lists/SortableLists/AdminProjectListWithFolders'));
+const ModeratorProjectList = React.lazy(() => import('./Lists/ModeratorProjectList'));
+const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
+const AdminProjectListWithFolders = React.lazy(() => import('./Lists/AdminProjectListWithFolders'));
 
 // style
 import styled from 'styled-components';
