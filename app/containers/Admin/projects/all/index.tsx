@@ -12,7 +12,6 @@ import { trackPage } from 'utils/analytics';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,7 +30,6 @@ import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/P
 import Spinner from 'components/UI/Spinner';
 const ModeratorProjectList = React.lazy(() => import('./Lists/ModeratorProjectList'));
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
-const AdminProjectListWithFolders = React.lazy(() => import('./Lists/AdminProjectListWithFolders'));
 
 // style
 import styled from 'styled-components';
@@ -74,7 +72,6 @@ export interface InputProps {
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  foldersEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -175,7 +172,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
     const {
       authUser,
       className,
-      foldersEnabled
     } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
     const userIsModerator = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
@@ -202,8 +198,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <ListsContainer>
               <Suspense fallback={<Spinner />}>
                 {userIsModerator && <ModeratorProjectList />}
-                {userIsAdmin && foldersEnabled && <AdminProjectListWithFolders />}
-                {userIsAdmin && !foldersEnabled && <AdminProjectList />}
+                {userIsAdmin && <AdminProjectList />}
               </Suspense>
             </ListsContainer>
           </PageWrapper>
@@ -225,7 +220,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  foldersEnabled: <GetFeatureFlag name="project_folders" />,
 });
 
 export default (inputProps: InputProps) => (
