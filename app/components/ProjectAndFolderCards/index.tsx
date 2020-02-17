@@ -18,7 +18,7 @@ import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize'
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
 // services
-import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
+import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
 
 // routing
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -410,9 +410,9 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
 
           {!loadingInitial && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 && (
             <ProjectsList id="e2e-projects-list">
-              {projectHolderOrderings.list.map((item: IProjectHolderOrderingData, index: number) => {
-                const projectOrFolderId = item.relationships.project_holder.data.id;
-                const projectOrFolderType = item.relationships.project_holder.data.type;
+              {projectHolderOrderings.list.map((item: IProjectHolderOrderingContent, index: number) => {
+                const projectOrFolderId = item.projectHolder.id;
+                const projectOrFolderType = item.projectHolderType;
                 const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
 
                 return (

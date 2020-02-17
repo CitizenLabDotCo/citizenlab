@@ -84,7 +84,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
   render() {
     const { projectHoldersOrderings, projectFolder, projects: { projectsList } } = this.props;
     const otherPublishedProjectIds = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
-      ? projectHoldersOrderings.list.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
+      ? projectHoldersOrderings.list.filter(item => item.projectHolderType === 'project').map(item => item.projectHolder.id)
       : null;
     const hasOtherPublishedProjectIds = otherPublishedProjectIds && otherPublishedProjectIds.length > 0;
 
@@ -262,7 +262,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'archived'];
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
   projectHoldersOrderings: <GetProjectHolderOrderings />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil" />
+  projects: <GetProjects publicationStatuses={publicationStatuses} folderId="nil" />
 });
 
 export default (inputProps: WithRouterProps) => (

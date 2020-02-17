@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { listProjectHolderOrderings, IProjectHolderOrderingData } from 'services/projectHolderOrderings';
-import { projectsStream } from 'services/projects';
-import { projectFoldersStream } from 'services/projectFolders';
+import { listProjectHolderOrderings } from 'services/projectHolderOrderings';
+import { projectsStream, IProjectData } from 'services/projects';
+import { projectFoldersStream, IProjectFolderData } from 'services/projectFolders';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 
@@ -12,8 +12,24 @@ export interface InputProps {
   areaFilter?: string[];
 }
 
+export type IProjectHolderOrderingContent = {
+  id: string;
+  projectHolderType: 'project';
+  attributes: {
+    ordering: number;
+  };
+  projectHolder: IProjectData;
+} | {
+  id: string;
+  projectHolderType: 'project_folder';
+  attributes: {
+    ordering: number;
+  };
+  projectHolder: IProjectFolderData;
+};
+
 export interface IOutput {
-  list: IProjectHolderOrderingData[] | undefined | null;
+  list: IProjectHolderOrderingContent[] | undefined | null;
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
@@ -21,16 +37,8 @@ export interface IOutput {
   onChangeAreas: (areas: string[] | null) => void;
 }
 
-// interface IQueryParameters {
-//   'page[number]': number;
-//   'page[size]': number;
-//   areas?: string[];
-//   // TODO 3 publication_statuses?: PublicationStatus[];
-//   filter_can_moderate?: boolean;
-// }
-
 export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter }: InputProps) {
-  const [list, setList] = useState<IProjectHolderOrderingData[] | undefined | null>(undefined);
+  const [list, setList] = useState<IProjectHolderOrderingContent[] | undefined | null>(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -83,11 +91,10 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
             }
           }).observable
         ]).pipe(
-          map(projects => ({ projectHolderOrderings, projects }))
+          map((projects) => ({ projectHolderOrderings, projects: projects[0].data, projectFolders: projects[1].data }))
         );
       })
-    ).subscribe(({ projectHolderOrderings }) => {
-      console.log(projectHolderOrderings);
+    ).subscribe(({ projectHolderOrderings, projects, projectFolders }) => {
       setLoadingInitial(false);
       setLoadingMore(false);
 
@@ -97,8 +104,32 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
       } else {
         const selfLink = projectHolderOrderings ?.links ?.self;
         const lastLink = projectHolderOrderings ?.links ?.last;
+
+        const receivedItems = projectHolderOrderings.data.map(ordering => {
+          const holderType = ordering.relationships.project_holder.data.type;
+          const holderId = ordering.relationships.project_holder.data.id;
+          const holder = holderType === 'project'
+            ? projects.find(project => project.id === holderId)
+            : projectFolders.find(projectFolder => projectFolder.id === holderId);
+
+          return {
+            id: ordering.id,
+            projectHolderType: holderType,
+            attributes: {
+              ordering: ordering.attributes.ordering,
+            },
+            projectHolder: holder
+          };
+        }).filter(item => {
+          if (item.projectHolder === undefined) {
+            console.log('Missing Holder !');
+
+            return false;
+          } else return true;
+        }) as IProjectHolderOrderingContent[];
+
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-        setList(prevList => !isNilOrError(prevList) ? unionBy(prevList, projectHolderOrderings.data, 'id') : projectHolderOrderings.data);
+        setList(prevList => !isNilOrError(prevList) ? unionBy(prevList, receivedItems, 'id') : receivedItems);
         setHasMore(hasMore);
       }
     });
