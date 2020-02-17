@@ -4,8 +4,8 @@ import { API_PATH } from 'containers/App/constants';
 const apiEndpoint = `${API_PATH}/project_holder_orderings`;
 
 /*
-  Data structure to handle the order when there's a mix of projects and folders,
-  as seen in the admin project overview when the folders feature is enabled.
+  Data structure to handle the ordering of published projects and folders.
+  Projects and folders are not included, they have to be fetched separately.
 */
 
 export interface IProjectHolderOrderingData {
