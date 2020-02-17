@@ -17,7 +17,9 @@ namespace :checks do
       end
     end
 
-    Tenant.all.each do |tenant|
+    Tenant.select do |tenant|
+      tenant.settings.dig('core', 'lifecycle_stage') == 'active' || tenant.host.ends_with?(ENV.fetch('TEMPLATE_URL_SUFFIX','.localhost'))
+    end.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         cl2_tenant_models.each do |claz|
           claz.all.find_each do |object|
