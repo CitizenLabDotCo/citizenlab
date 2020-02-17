@@ -302,7 +302,7 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
   render() {
     const { projectFolder, size, layout, className, theme } = this.props;
 
-    if (!isNilOrError(projectFolder) && projectFolder.relationships.projects.data.length > 0) {
+    if (!isNilOrError(projectFolder)) {
       const imageUrl = projectFolder.attributes.header_bg?.medium;
       const folderUrl = getProjectFolderUrl(projectFolder);
       const numberOfProjects = projectFolder.relationships.projects.data.length;

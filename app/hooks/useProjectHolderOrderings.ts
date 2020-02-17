@@ -33,8 +33,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000 }: InputProp
     }
   }, [hasMore]);
 
+  // reset pageNumber on pageSize change
   useEffect(() => {
-    // reset pageNumber on pageSize change
     setPageNumber(1);
   }, [pageSize]);
 
@@ -59,9 +59,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000 }: InputProp
         );
       })
     ).subscribe(({ projectHolderOrderings }) => {
-      setLoadingInitial(false);
-      setLoadingMore(false);
-
       if (isNilOrError(projectHolderOrderings)) {
         setList(null);
         setHasMore(false);
@@ -69,13 +66,16 @@ export default function useProjectHolderOrderings({ pageSize = 1000 }: InputProp
         const selfLink = projectHolderOrderings?.links?.self;
         const lastLink = projectHolderOrderings?.links?.last;
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-        setList(prevList => !isNilOrError(prevList) ? unionBy(prevList, projectHolderOrderings.data, 'id') : projectHolderOrderings.data);
+        setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, projectHolderOrderings.data, 'id') : projectHolderOrderings.data);
         setHasMore(hasMore);
       }
+
+      setLoadingInitial(false);
+      setLoadingMore(false);
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize]);
+  }, [pageNumber, pageSize, loadingMore]);
 
   return {
     list,
