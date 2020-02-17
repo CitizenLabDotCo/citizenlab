@@ -1,18 +1,25 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 
+// style
+import styled from 'styled-components';
+
 // utils
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
+import GetProjectFolder from 'resources/GetProjectFolder';
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
+import FolderRow from '../../components/FolderRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
 import IconTooltip from 'components/UI/IconTooltip';
+import Button from 'components/UI/Button';
+import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,12 +29,16 @@ import messages from '../messages';
 import { IProjectData, reorderProject, getFilteredProjects } from 'services/projects';
 import { IProjectHolderOrderingData, reorderProjectHolder } from 'services/projectHolderOrderings';
 
+const Spacer = styled.div`
+  flex: 1;
+`;
+
 interface DataProps {
-  projects: GetProjectsChildProps;
+  projectsWithoutFolder: GetProjectsChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends DataProps { }
 
 function handleReorderHolders(itemId, newOrder) {
   return function () {
@@ -41,61 +52,105 @@ function handleReorderProjects(projectId, newOrder) {
   };
 }
 
-const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
-  if (
-    !isNilOrError(projects) &&
-    projects.projectsList &&
-    projects.projectsList.length > 0
-  ) {
-    const { projectsList } = projects;
-    const publishedProjects = getFilteredProjects(projectsList, 'published');
-    const archivedProjects = getFilteredProjects(projectsList, 'archived');
-    const draftProjects = getFilteredProjects(projectsList, 'draft');
+const AdminProjectList = memo<Props>(({ projectsWithoutFolder, projectHolderOrderings }) => {
+  let publishedItems: JSX.Element | null = null;
+  let itemsWithoutFolder: JSX.Element | null = null;
 
-    return (
+  if (!isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0) {
+    publishedItems = (
       <>
-        {/* projectHolderOrderings will only contain projects, no folders, in this file */}
-        {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0 &&
-          <>
-            <ListHeader>
-              <HeaderTitle>
-                <FormattedMessage {...messages.published} />
-              </HeaderTitle>
-              <IconTooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
-            </ListHeader>
+        <ListHeader>
+          <HeaderTitle>
+            <FormattedMessage {...messages.published} />
+          </HeaderTitle>
+          <IconTooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
 
-            <SortableList
-              items={projectHolderOrderings}
-              onReorder={handleReorderHolders}
-              className="projects-list e2e-admin-projects-list"
-              id="e2e-admin-published-projects-list"
+          <Spacer />
+          <FeatureFlag name="project_folders">
+            <Button
+              linkTo={'/admin/projects/folders/new'}
             >
-              {({ itemsList, handleDragRow, handleDropRow }) => (
-                itemsList.map((item: IProjectHolderOrderingData, index: number) => {
-                  const project = publishedProjects.find(project => project.id === item.relationships.project_holder.data.id);
+              <FormattedMessage {...messages.newProjectFolder} />
+            </Button>
+          </FeatureFlag>
+        </ListHeader>
 
-                  if (project) {
-                    return (
+        <SortableList
+          items={projectHolderOrderings}
+          onReorder={handleReorderHolders}
+          className="projects-list e2e-admin-projects-list"
+          id="e2e-admin-published-projects-list"
+        >
+          {({ itemsList, handleDragRow, handleDropRow }) => (
+            itemsList.map((item: IProjectHolderOrderingData, index: number) => {
+              const holderType = item.relationships.project_holder.data.type;
+              const holderId = item.relationships.project_holder.data.id;
+
+              if (holderType === 'project') {
+                const project = (
+                  !isNilOrError(projectsWithoutFolder) &&
+                  projectsWithoutFolder.projectsList &&
+                  projectsWithoutFolder.projectsList.length > 0
+                )
+                  ?
+                  projectsWithoutFolder.projectsList.find(project => project.id === holderId)
+                  :
+                  null;
+
+                return (
+                  <SortableRow
+                    key={holderId}
+                    id={holderId}
+                    index={index}
+                    moveRow={handleDragRow}
+                    dropRow={handleDropRow}
+                    lastItem={(index === projectHolderOrderings.length - 1)}
+                  >
+                    {project ? <ProjectRow project={project} /> : <div />}
+                  </SortableRow>
+                );
+              } else if (holderType === 'project_folder') {
+                return (
+                  <GetProjectFolder
+                    projectFolderId={holderId}
+                    key={holderId}
+                  >
+                    {projectFolder => (
                       <SortableRow
-                        key={item.id}
-                        id={item.id}
+                        id={holderId}
+                        key={holderId}
                         index={index}
                         moveRow={handleDragRow}
                         dropRow={handleDropRow}
                         lastItem={(index === projectHolderOrderings.length - 1)}
                       >
-                        <ProjectRow project={project} />
+                        {!isNilOrError(projectFolder) ? <FolderRow folder={projectFolder} /> : <div />}
                       </SortableRow>
-                    );
-                  }
+                    )}
+                  </GetProjectFolder>
+                );
+              } else {
+                return <div />;
+              }
+            }
+            ))}
+        </SortableList>
+      </>
+    );
+  }
 
-                  return <div key={index} />;
-                }
-              ))}
-            </SortableList>
-          </>
-        }
-        {draftProjects && draftProjects.length > 0 &&
+  if (
+    !isNilOrError(projectsWithoutFolder) &&
+    projectsWithoutFolder.projectsList &&
+    projectsWithoutFolder.projectsList.length > 0
+  ) {
+    const { projectsList } = projectsWithoutFolder;
+    const archivedProjectsWithoutFolder = getFilteredProjects(projectsList, 'archived');
+    const draftProjectsWithoutFolder = getFilteredProjects(projectsList, 'draft');
+
+    itemsWithoutFolder = (
+      <>
+        {draftProjectsWithoutFolder && draftProjectsWithoutFolder.length > 0 &&
           <>
             <ListHeader>
               <HeaderTitle>
@@ -104,7 +159,7 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
               <IconTooltip content={<FormattedMessage {...messages.draftTooltip} />} />
             </ListHeader>
             <SortableList
-              items={draftProjects}
+              items={draftProjectsWithoutFolder}
               onReorder={handleReorderProjects}
               className="e2e-admin-projects-list"
               id="e2e-admin-draft-projects-list"
@@ -118,7 +173,7 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
                     index={index}
                     moveRow={handleDragRow}
                     dropRow={handleDropRow}
-                    lastItem={(index === draftProjects.length - 1)}
+                    lastItem={(index === draftProjectsWithoutFolder.length - 1)}
                   >
                     <ProjectRow project={project} />
                   </SortableRow>
@@ -127,7 +182,7 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
             </SortableList>
           </>
         }
-        {archivedProjects && archivedProjects.length > 0 &&
+        {archivedProjectsWithoutFolder && archivedProjectsWithoutFolder.length > 0 &&
           <>
             <ListHeader>
               <HeaderTitle>
@@ -136,7 +191,7 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
               <IconTooltip content={<FormattedMessage {...messages.archivedTooltip} />} />
             </ListHeader>
             <SortableList
-              items={archivedProjects}
+              items={archivedProjectsWithoutFolder}
               onReorder={handleReorderProjects}
               className="e2e-admin-projects-list"
               id="e2e-admin-archived-projects-list"
@@ -150,7 +205,7 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
                     index={index}
                     moveRow={handleDragRow}
                     dropRow={handleDropRow}
-                    lastItem={index === archivedProjects.length - 1}
+                    lastItem={index === archivedProjectsWithoutFolder.length - 1}
                   >
                     <ProjectRow project={project} />
                   </SortableRow>
@@ -163,14 +218,19 @@ const AdminProjectList = memo<Props>(({ projects, projectHolderOrderings }) => {
     );
   }
 
-  return null;
+  return (
+    <>
+      {publishedItems}
+      {itemsWithoutFolder}
+    </>
+  );
 });
 
 const publicationStatuses: PublicationStatus[] = ['published', 'draft', 'archived'];
 
 const Data = adopt<DataProps>({
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
   projectHolderOrderings: <GetProjectHolderOrderings />,
+  projectsWithoutFolder: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil" />,
 });
 
 export default () => (
