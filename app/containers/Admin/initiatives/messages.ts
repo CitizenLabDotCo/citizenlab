@@ -70,7 +70,7 @@ export default defineMessages({
     defaultMessage: 'Save'
   },
   initiativeSettingsFormSaved: {
-    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSave',
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSaved',
     defaultMessage: 'Saved!'
   },
   initiativeSettingsFormError: {
