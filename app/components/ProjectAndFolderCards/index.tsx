@@ -308,7 +308,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             )}
           </Header>
 
-          {projectHolderOrderings === undefined &&
+          {loadingInitial &&
             <Loading id="projects-loading">
               <Spinner />
             </Loading>
@@ -406,11 +406,9 @@ const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(Pro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  projectHolderOrderings: <GetProjectHolderOrderings pageSize={1} />,
+  projectHolderOrderings: <GetProjectHolderOrderings />
 });
 
-// TODO: add load more behavior
-// TODO: add better spinner condition
 // TODO: tracks
 
 export default (inputProps: InputProps) => (
