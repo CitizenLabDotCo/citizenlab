@@ -1,20 +1,18 @@
 import React from 'react';
-import { isNil, isEmpty, isFunction } from 'lodash-es';
+import { isEmpty, isFunction } from 'lodash-es';
 
 // components
 import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-autosize-textarea';
+import Label from 'components/UI/Label';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
-const Container: any = styled.div`
+const Container = styled.div`
   position: relative;
-  padding: 0;
-  margin: 0;
-  border: none;
-  -webkit-appearance: none;
 
   .textarea {
     width: 100%;
@@ -74,7 +72,9 @@ const TextAreaContainer: any = styled.div`
 export type Props = {
   id?: string | undefined;
   name?: string;
-  value?: string;
+  label?: string | JSX.Element | null | undefined;
+  labelTooltipText?: string | JSX.Element | null;
+  value?: string | null;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
   error?: string | null | undefined;
@@ -84,6 +84,7 @@ export type Props = {
   autofocus?: boolean | undefined;
   maxCharCount?: number;
   disabled?: boolean;
+  className?: string;
 };
 
 type State = {};
@@ -91,8 +92,8 @@ type State = {};
 export default class TextArea extends React.PureComponent<Props, State> {
   textareaElement: HTMLTextAreaElement | null = null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.textareaElement = null;
   }
 
@@ -103,16 +104,6 @@ export default class TextArea extends React.PureComponent<Props, State> {
           this.textareaElement.focus();
         }
       }, 50);
-    }
-  }
-
-  setRef = (element) => {
-    if (element) {
-      this.textareaElement = element;
-
-      if (this.props.autofocus) {
-        element.focus();
-      }
     }
   }
 
@@ -136,29 +127,31 @@ export default class TextArea extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
-    let { rows, placeholder } = this.props;
-    const { name, value, error, children, maxCharCount, disabled } = this.props;
-    const hasError = (!isNil(error) && !isEmpty(error));
-    const className = this.props['className'];
+  noop = () => { };
 
-    rows = (rows || 5);
-    placeholder = (placeholder || undefined);
+  render() {
+    const { id, name, label, labelTooltipText, value, rows, placeholder, error, children, maxCharCount, disabled, className } = this.props;
 
     return (
       <Container className={className}>
+        {label &&
+          <Label htmlFor={id}>
+            <span>{label}</span>
+            {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+          </Label>
+        }
+
         <TextAreaContainer className="TextArea CLTextareaComponentContainer">
           <TextareaAutosize
-            id={this.props.id}
-            className={`textarea CLTextareaComponent ${hasError ? 'error' : ''}`}
+            id={id}
+            className={`textarea CLTextareaComponent ${!isEmpty(error) ? 'error' : ''}`}
             name={name || ''}
-            rows={rows}
-            value={value}
-            placeholder={placeholder}
+            rows={rows || 5}
+            value={value || ''}
+            placeholder={placeholder || undefined}
             onChange={this.handleOnChange}
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
-            innerRef={this.setRef}
             disabled={disabled}
           />
           {value && maxCharCount &&

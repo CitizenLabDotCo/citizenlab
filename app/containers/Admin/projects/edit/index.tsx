@@ -87,6 +87,12 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         className: 'ideas',
       },
       {
+        label: formatMessage(messages.ideaFormTab),
+        url: `${baseTabsUrl}/ideaform`,
+        feature: 'idea_custom_fields',
+        className: 'ideaform',
+      },
+      {
         label: formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
         className: 'events',
@@ -99,12 +105,21 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       },
     ];
 
-    if (project.attributes.process_type === 'continuous' && project.attributes.participation_method !== 'ideation' && project.attributes.participation_method !== 'budgeting') {
+    const processType = project.attributes.process_type;
+    const participationMethod = project.attributes.participation_method;
+
+    if (processType === 'continuous' && participationMethod !== 'ideation' && participationMethod !== 'budgeting') {
       tabs = reject(tabs, { className: 'ideas' });
     }
 
-    if (project.attributes.process_type === 'continuous' && project.attributes.participation_method === 'poll' ||
-        (project.attributes.process_type === 'timeline' && !isNilOrError(phases)
+    if ((processType === 'continuous' && participationMethod !== 'ideation' && participationMethod !== 'budgeting') ||
+        (processType === 'timeline' && !isNilOrError(phases)
+        && phases.filter(phase => phase.attributes.participation_method === 'ideation' || phase.attributes.participation_method === 'budgeting').length === 0)) {
+      tabs = reject(tabs, { className: 'ideaform' });
+    }
+
+    if (processType === 'continuous' && participationMethod === 'poll' ||
+        (processType === 'timeline' && !isNilOrError(phases)
         && phases.filter(phase => phase.attributes.participation_method === 'poll').length > 0)) {
       tabs.splice(3, 0, {
         label: formatMessage(messages.pollTab),
@@ -114,8 +129,8 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       });
     }
 
-    if (project.attributes.process_type === 'timeline') {
-      tabs.splice(3, 0, {
+    if (processType === 'timeline') {
+      tabs.splice(4, 0, {
         label: formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
         className: 'phases',
@@ -124,10 +139,10 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
     if (surveys_enabled && typeform_enabled) {
       if (
-        (project.attributes.process_type === 'continuous'
-          && project.attributes.participation_method === 'survey'
+        (processType === 'continuous'
+          && participationMethod === 'survey'
           && project.attributes.survey_service === 'typeform'
-        ) || (project.attributes.process_type === 'timeline'
+        ) || (processType === 'timeline'
           && !isNilOrError(phases) && phases.filter(phase => phase.attributes.participation_method === 'survey' && phase.attributes.survey_service === 'typeform').length > 0
         )) {
         tabs.splice(3, 0, {
