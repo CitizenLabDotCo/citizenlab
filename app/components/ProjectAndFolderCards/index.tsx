@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual, isEmpty } from 'lodash-es';
+import { size, isEqual, isEmpty, isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
+import { stringify } from 'qs';
 
 // components
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
+import SelectAreas from 'components/ProjectCards/SelectAreas';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 
@@ -17,6 +19,10 @@ import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from '
 
 // services
 import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
+
+// routing
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -173,6 +179,43 @@ const Footer = styled.div`
   `}
 `;
 
+const FiltersArea = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+
+&.fullWidth {
+  width: 100%;
+  justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    justify-content: flex-start;
+    `};
+  }
+
+  &.alignRight {
+    justify-content: flex-end;
+
+    ${media.smallerThanMinTablet`
+      display: none;
+      `};
+    }
+    `;
+
+const FilterArea = styled.div`
+    height: 60px;
+    display: flex;
+    align-items: center;
+
+    &.publicationstatus {
+      margin-right: 30px;
+    }
+
+    ${media.smallerThanMinTablet`
+      height: auto;
+      `};
+      `;
+
 const ShowMoreButton = styled(Button)``;
 
 interface InputProps {
@@ -210,8 +253,19 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     this.calculateCardsLayout();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     this.calculateCardsLayout();
+
+    const areas = this.getAreasFromQueryParams();
+
+    if (!isEqual(this.state.areas, areas)) {
+      this.setState({ areas });
+    }
+
+    const { projectHolderOrderings } = this.props;
+    if (!isEqual(prevState.areas, this.state.areas) && !isNilOrError(projectHolderOrderings)) {
+      projectHolderOrderings.onChangeAreas(this.state.areas);
+    }
   }
 
   calculateCardsLayout = () => {
@@ -273,13 +327,34 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     }
   }
 
+  getAreasFromQueryParams = () => {
+    let areas: string[] = [];
+    const { query } = this.props.location;
+
+    if (query.areas && !isEmpty(query.areas)) {
+      areas = (isString(query.areas) ? [query.areas] : query.areas);
+    }
+
+    return areas;
+  }
+
   showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     this.props.projectHolderOrderings.onLoadMore();
   }
 
+  handleAreasOnChange = (areas: string[]) => {
+    if (!isEqual(this.state.areas, areas)) {
+      // TODO trackEventByName(tracks.clickOnProjectsAreaFilter);
+      const { pathname } = removeLocale(this.props.location.pathname);
+      const query = { ...this.props.location.query, areas };
+      const search = `?${stringify(query, { indices: false, encode: false })}`;
+      clHistory.replace({ pathname, search });
+    }
+  }
+
   render() {
-    const { cardSizes } = this.state;
+    const { cardSizes, areas } = this.state;
     const { tenant, showTitle, layout, theme, projectHolderOrderings } = this.props;
     const { loadingInitial, loadingMore, hasMore } = projectHolderOrderings;
     const hasProjects = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0;
@@ -299,13 +374,18 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                 }
               </Title>
             ) : (
-              <ScreenReaderOnly>
-                {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
-                  ? <T value={customCurrentlyWorkingOn} />
-                  : <FormattedMessage {...messages.currentlyWorkingOn} />
-                }
-              </ScreenReaderOnly>
-            )}
+                <ScreenReaderOnly>
+                  {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                    ? <T value={customCurrentlyWorkingOn} />
+                    : <FormattedMessage {...messages.currentlyWorkingOn} />
+                  }
+                </ScreenReaderOnly>
+              )}
+            <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
+              <FilterArea>
+                <SelectAreas selectedAreas={areas} onChange={this.handleAreasOnChange} />
+              </FilterArea>
+            </FiltersArea>
           </Header>
 
           {loadingInitial &&
@@ -331,28 +411,28 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
           {!loadingInitial && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 && (
             <ProjectsList id="e2e-projects-list">
               {projectHolderOrderings.list.map((item: IProjectHolderOrderingData, index: number) => {
-                  const projectOrFolderId = item.relationships.project_holder.data.id;
-                  const projectOrFolderType = item.relationships.project_holder.data.type;
-                  const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+                const projectOrFolderId = item.relationships.project_holder.data.id;
+                const projectOrFolderType = item.relationships.project_holder.data.type;
+                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
 
-                  return (
-                    <React.Fragment key={index}>
-                      {projectOrFolderType === 'project' ? (
-                        <ProjectCard
-                          projectId={projectOrFolderId}
-                          size={size}
-                          layout={layout}
-                        />
-                      ) : (
+                return (
+                  <React.Fragment key={index}>
+                    {projectOrFolderType === 'project' ? (
+                      <ProjectCard
+                        projectId={projectOrFolderId}
+                        size={size}
+                        layout={layout}
+                      />
+                    ) : (
                         <ProjectFolderCard
                           projectFolderId={projectOrFolderId}
                           size={size}
                           layout={layout}
                         />
                       )}
-                    </React.Fragment>
-                  );
-                }
+                  </React.Fragment>
+                );
+              }
               )}
 
               {/*
