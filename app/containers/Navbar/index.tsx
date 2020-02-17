@@ -25,13 +25,9 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
-import GetProject from 'resources/GetProject';
-import GetProjectFolder from 'resources/GetProjectFolder';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
-import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
 
 // utils
 import { getProjectUrl } from 'services/projects';
@@ -49,6 +45,8 @@ import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
+import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 const Container = styled.header`
   width: 100%;
@@ -507,47 +505,32 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       content={(
                         <ProjectsList>
                           {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.map(
-                            (item: IProjectHolderOrderingData) => {
-                              const isProject = item.relationships.project_holder.data.type === 'project';
-                              const projectOrFolderId = item.relationships.project_holder.data.id;
-
-                              if (isProject) {
+                            (item: IProjectHolderOrderingContent) => {
+                              if (item.projectHolderType === 'project') {
                                 return (
-                                  <GetProject key={projectOrFolderId} projectId={projectOrFolderId}>
-                                    {project => isNilOrError(project) ? null : (
-                                      <ProjectsListItem
-                                        to={getProjectUrl(project)}
-                                      >
-                                        {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
-                                      </ProjectsListItem>
-                                    )}
-                                  </GetProject>
+
+                                  <ProjectsListItem
+                                    key={item.projectHolder.id}
+                                    to={getProjectUrl(item.projectHolder)}
+                                  >
+                                    {!isNilOrError(locale) ? getLocalized(item.projectHolder.attributes.title_multiloc, locale, tenantLocales) : null}
+                                  </ProjectsListItem>
                                 );
                               } else {
-                                return (
-                                  <GetProjectFolder key={projectOrFolderId} projectFolderId={projectOrFolderId}>
-                                    {projectFolder => {
-                                      if (!isNilOrError(projectFolder)) {
-                                        const hasProjects = projectFolder.relationships.projects.data.length > 0;
+                                const projectFolder = item.projectHolder;
 
-                                        if (hasProjects && !isNilOrError(locale)) {
-                                          return (
-                                            <ProjectsListItem
-                                              key={projectFolder.id}
-                                              to={getProjectFolderUrl(projectFolder)}
-                                            >
-                                              {getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales)}
-                                            </ProjectsListItem>
-                                          );
-                                        }
+                                if (projectFolder.relationships.projects.data.length > 0) {
+                                  return (
+                                    <ProjectsListItem
+                                      key={projectFolder.id}
+                                      to={getProjectFolderUrl(projectFolder)}
+                                    >
+                                      {!isNilOrError(locale) ? getLocalized(item.projectHolder.attributes.title_multiloc, locale, tenantLocales) : null}
+                                    </ProjectsListItem>
+                                  );
+                                }
 
-                                        return null;
-                                      }
-
-                                      return null;
-                                    }}
-                                  </GetProjectFolder>
-                                );
+                                return null;
                               }
                             }
                           )}
