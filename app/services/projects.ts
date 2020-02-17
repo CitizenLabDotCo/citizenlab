@@ -209,15 +209,13 @@ export function getProjectIdeasUrl(project: IProjectData) {
 }
 
 export async function updateProjectFolderMembership(projectId: string, newProjectFolderId: string | null, oldProjectFolderId?: string) {
-  const response = await streams.update<IProject>(
-    `${apiEndpoint}/${projectId}`,
-    projectId,
-    { project: { folder_id: newProjectFolderId } }
-  );
+  const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: { folder_id: newProjectFolderId } });
+
   await streams.fetchAllWith({
-    dataId: [projectId, ...newProjectFolderId ? [newProjectFolderId] : oldProjectFolderId ? [oldProjectFolderId] : []],
+    dataId: [projectId, newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
     apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`],
   });
+
   // TODO refetch project or folder orderings
 
   return response;
