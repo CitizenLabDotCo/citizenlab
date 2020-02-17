@@ -82,7 +82,7 @@ export default defineMessages({
     defaultMessage: 'The voting treshold needs to be at least 2'
   },
   initiativeSettingsFormSuccess: {
-    id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSuccess',
     defaultMessage: 'Your changes have been saved.'
   },
 });
