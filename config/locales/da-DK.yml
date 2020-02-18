@@ -148,10 +148,34 @@ da:
     council_meeting_description: >
       <p>Under dette rådsmøde vil de borgerinitiativer, der har samlet 100 stemmer på mindre end 3 måneder, blive præsenteret.</p><p> Rådet vil så belyse deres perspektiv på hver idé.</p>
   custom_fields:
-    gender: Køn
-    birthyear: Fødselsår
-    domicile: Lokalområde
-    education: Uddannelse
+    users:
+      gender: 
+        title: Gender
+      birthyear: 
+        title: Year of birth
+      domicile: 
+        title: Place of residence
+      education: 
+        title: Education
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      topic_ids:
+        title: Topics
+        description:
+      location:
+        title: Location
+        description:
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
   custom_field_options:
     gender:
       male: Mand

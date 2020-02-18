@@ -74,6 +74,7 @@ class TenantTemplateService
 
     Apartment::Tenant.switch(tenant.schema_name) do
       @template['models']['area']                                  = yml_areas
+      @template['models']['custom_form']                           = yml_custom_forms
       @template['models']['custom_field']                          = yml_custom_fields
       @template['models']['custom_field_option']                   = yml_custom_field_options
       @template['models']['topic']                                 = yml_topics
@@ -301,12 +302,24 @@ class TenantTemplateService
     end
   end
 
+  def yml_custom_forms
+    CustomForm.all.map do |c|
+      yml_custom_form = {
+        'created_at'           => c.created_at.to_s,
+        'updated_at'           => c.updated_at.to_s,
+      }
+      store_ref yml_custom_form, c.id, :custom_form
+      yml_custom_form
+    end
+  end
+
   def yml_custom_fields
     # No custom fields are required anymore because 
     # the user choices cannot be remembered.
     CustomField.all.map do |c|
       yml_custom_field = {
         'resource_type'        => c.resource_type,
+        'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
         'key'                  => c.key,
         'input_type'           => c.input_type,
         'title_multiloc'       => c.title_multiloc,
@@ -412,7 +425,8 @@ class TenantTemplateService
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
         'ordering'                     => p.ordering,
-        'folder_ref'                   => lookup_ref(p.folder_id, :project_folder)
+        'folder_ref'                   => lookup_ref(p.folder_id, :project_folder),
+        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field)
       })
       store_ref yml_project, p.id, :project
       yml_project

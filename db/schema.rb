@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_31_133006) do
+ActiveRecord::Schema.define(version: 2020_02_13_001613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -135,7 +135,13 @@ ActiveRecord::Schema.define(version: 2020_01_31_133006) do
     t.datetime "updated_at", null: false
     t.boolean "enabled", default: true, null: false
     t.string "code"
-    t.index ["resource_type", "key"], name: "index_custom_fields_on_resource_type_and_key", unique: true
+    t.uuid "resource_id"
+    t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
+  end
+
+  create_table "custom_forms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "email_campaigns_campaign_email_commands", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -705,6 +711,8 @@ ActiveRecord::Schema.define(version: 2020_01_31_133006) do
     t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
     t.uuid "folder_id"
+    t.uuid "custom_form_id"
+    t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["folder_id"], name: "index_projects_on_folder_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end

@@ -21,6 +21,7 @@ module Surveys::SurveyParticipationContext
         with: /\Ahttps:\/\/docs.google.com\/forms\/d\/e\/.*\/viewform\?embedded=true\z/,
         message: "Not a valid Google Forms embed URL"
       }
+      survey.before_validation :strip_survey_embed_url
     end
   end
 
@@ -48,5 +49,9 @@ module Surveys::SurveyParticipationContext
 
   def google_forms?
     self.survey_service == 'google_forms'
+  end
+
+  def strip_survey_embed_url
+    self.survey_embed_url = survey_embed_url&.strip
   end
 end

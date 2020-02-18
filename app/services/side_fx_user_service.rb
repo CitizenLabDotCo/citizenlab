@@ -3,7 +3,7 @@ class SideFxUserService
   include SideFxHelper
 
   def before_create user, current_user
-    if (CustomField.where(enabled: true).count == 0) && (user.invite_status != 'pending')
+    if (CustomField.with_resource_type('User').enabled.count == 0) && (user.invite_status != 'pending')
       user.registration_completed_at ||= Time.now
     end
   end
