@@ -774,7 +774,6 @@
   "app.containers.Admin.initiatives.titleManageTab": "Administra las iniciativas de tu plataforma",
   "app.containers.Admin.initiatives.titleSettingsTab": "Define cómo funcionarán las iniciativas en tu contexto",
   "app.containers.Admin.initiatives.warningTresholdSettings": "Cambiar esto afectará todas las iniciativas activas",
-  "app.containers.Admin.projects.all.components.deleteButtonLabel": "",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "",
   "app.containers.AdminPage.DashboardPage._blank": "desconocido",
   "app.containers.AdminPage.DashboardPage.activeUsers": "Usuarios activos",
