@@ -597,7 +597,7 @@
   "app.containers.Admin.Invitations.groupsPlaceholder": "crwdns18802:0crwdne18802:0",
   "app.containers.Admin.Invitations.helmetDescription": "crwdns19106:0crwdne19106:0",
   "app.containers.Admin.Invitations.helmetTitle": "crwdns19107:0crwdne19107:0",
-  "app.containers.Admin.Invitations.importInfo": "crwdns18803:0{emailColumnName}crwdnd18803:0{downloadLink}crwdnd18803:0{supportPageLink}crwdne18803:0",
+  "app.containers.Admin.Invitations.importInfo": "crwdns18803:0{downloadLink}crwdnd18803:0{supportPageLink}crwdne18803:0",
   "app.containers.Admin.Invitations.importLabel": "crwdns18804:0crwdne18804:0",
   "app.containers.Admin.Invitations.importOptionsInfo": "crwdns18805:0{supportPageLink}crwdne18805:0",
   "app.containers.Admin.Invitations.importTab": "crwdns18806:0crwdne18806:0",
