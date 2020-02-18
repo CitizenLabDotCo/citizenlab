@@ -199,8 +199,6 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             </SectionSubtitle>
           </>
           :
-          <>
-          <StyledGoBackButton onClick={goBack} />
           <Header>
             <SectionTitle >
               {<FormattedMessage {...messages.titleNewFolder} />}
@@ -209,7 +207,6 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
               <FormattedMessage {...messages.subtitleNewFolder} />
             </SectionSubtitle>
           </Header>
-          </>
         }
         <form onSubmit={onSubmit}>
           <Section>
