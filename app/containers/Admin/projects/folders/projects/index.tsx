@@ -17,8 +17,7 @@ import messages from '../messages';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
-import IconTooltip from 'components/UI/IconTooltip';
-import { HeaderTitle } from '../../all/styles';
+import { HeaderTitle } from '../../all/StyledComponents';
 import ProjectRow from '../../components/ProjectRow';
 
 // style
@@ -85,7 +84,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
     const { projectHoldersOrderings, projectFolder, projects: { projectsList } } = this.props;
 
     const otherPublishedProjectIds = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
-      ? projectHoldersOrderings.list.filter(item => item.relationships.project_holder.data.type === 'project').map(item => item.relationships.project_holder.data.id)
+      ? projectHoldersOrderings.list.filter(item => item.projectHolderType === 'project').map(item => item.projectHolder.id)
       : null;
 
     const hasOtherPublishedProjectIds = otherPublishedProjectIds && otherPublishedProjectIds.length > 0;
@@ -150,7 +149,6 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
               <StyledHeaderTitle>
                 <FormattedMessage {...messages.projectsYouCanAdd} />
               </StyledHeaderTitle>
-              <IconTooltip content={<FormattedMessage {...messages.projectsYouCanAddTooltip} />} />
             </ListHeader>
           }
 
@@ -263,7 +261,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'archived'];
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
   projectHoldersOrderings: <GetProjectHolderOrderings />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil" />
+  projects: <GetProjects publicationStatuses={publicationStatuses} folderId="nil" />
 });
 
 export default (inputProps: WithRouterProps) => (
