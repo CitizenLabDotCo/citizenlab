@@ -854,7 +854,7 @@
   "app.containers.AdminPage.FoldersEdit.emptyFolder": "",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "",
   "app.containers.AdminPage.FoldersEdit.newFolder": "",
-  "app.containers.AdminPage.FoldersEdit.noProjectsOutside": "",
+  "app.containers.AdminPage.FoldersEdit.noProjectsToAdd": "",
   "app.containers.AdminPage.FoldersEdit.otherArchivedProjects": "",
   "app.containers.AdminPage.FoldersEdit.otherDraftProjects": "",
   "app.containers.AdminPage.FoldersEdit.otherPublishedProjects": "",
