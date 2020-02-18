@@ -235,31 +235,31 @@ es-CL:
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Género
       birthyear:
-        title: Year of birth
+        title: Año de nacimiento
       domicile:
-        title: Place of residence
+        title: Lugar de residencia
       education:
-        title: Education
+        title: Educación
     ideas:
       title:
-        title: Title
+        title: Título
         description:
       body:
-        title: Description
+        title: Descripción
         description:
       topic_ids:
-        title: Topics
+        title: Temas
         description:
       location:
-        title: Location
+        title: Ubicación
         description:
       images:
-        title: Images
+        title: Imágenes
         description:
       attachments:
-        title: Attachments
+        title: Archivos adjuntos
         description:
   custom_field_options:
     gender:
