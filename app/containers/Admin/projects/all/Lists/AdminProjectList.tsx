@@ -68,6 +68,7 @@ const AdminProjectList = memo<Props>(({ projectsWithoutFolder, projectHolderOrde
           <FeatureFlag name="project_folders">
             <Button
               linkTo={'/admin/projects/folders/new'}
+              buttonStyle="admin-dark"
             >
               <FormattedMessage {...messages.newProjectFolder} />
             </Button>
