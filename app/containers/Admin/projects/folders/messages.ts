@@ -122,8 +122,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.deleteFolderConfirmation',
     defaultMessage: 'Are you sure you want to delete this folder and all the projects it contains?',
   },
-  noProjectsOutside: {
-    id: 'app.containers.AdminPage.FoldersEdit.noProjectsOutside',
-    defaultMessage: 'There are no projects outside this folder.',
-  }
+  noProjectsToAdd: {
+    id: 'app.containers.AdminPage.FoldersEdit.noProjectsToAdd',
+    defaultMessage: 'There are no projects that you can add to this folder.',
+  },
 });
