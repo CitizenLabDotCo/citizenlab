@@ -58,7 +58,7 @@ RSpec.describe EmailCampaigns::Campaigns::UserDigest, type: :model do
       user = create(:user)
       invitee = create(:invited_user)
 
-      expect(campaign.apply_recipient_filters).to match([user, invitee.invitee_invite.inviter])
+      expect(campaign.apply_recipient_filters.map(&:id)).to match_array([user.id, invitee.invitee_invite.inviter.id])
     end
   end
 end
