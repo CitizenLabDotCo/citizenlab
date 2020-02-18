@@ -167,7 +167,7 @@ export function reorderProject(projectId: IProjectData['id'], newOrder: number) 
 
 export async function deleteProject(projectId: string) {
   const response = await streams.delete(`${apiEndpoint}/${projectId}`, projectId);
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`] });
   return response;
 }
 
