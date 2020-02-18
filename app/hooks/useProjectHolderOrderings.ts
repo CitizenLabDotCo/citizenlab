@@ -78,7 +78,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
           .filter(holder => holder.relationships.project_holder.data.type === 'project_folder')
           .map(holder => holder.relationships.project_holder.data.id);
 
-        return combineLatest([
+        return combineLatest(
           projectsStream({
             queryParameters: {
               areas,
@@ -90,7 +90,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
               filter_ids: projectFoldersIds
             }
           }).observable
-        ]).pipe(
+        ).pipe(
           map((projects) => ({ projectHolderOrderings, projects: projects[0].data, projectFolders: projects[1].data }))
         );
       })
@@ -111,6 +111,9 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
           const holder = holderType === 'project'
             ? projects.find(project => project.id === holderId)
             : projectFolders.find(projectFolder => projectFolder.id === holderId);
+            if (!holder) {
+              console.log('filtered project', holderId);
+            }
 
           return {
             id: ordering.id,
@@ -120,22 +123,16 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
             },
             projectHolder: holder
           };
-        }).filter(item => {
-          if (item.projectHolder === undefined) {
-            console.log('Missing Holder !');
-
-            return false;
-          } else return true;
-        }) as IProjectHolderOrderingContent[];
+        }).filter(item => item.projectHolder) as IProjectHolderOrderingContent[];
 
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-        setList(prevList => !isNilOrError(prevList) ? unionBy(prevList, receivedItems, 'id') : receivedItems);
+        setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, receivedItems, 'id') : receivedItems);
         setHasMore(hasMore);
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas]);
+  }, [pageNumber, pageSize, areas, loadingMore]);
 
   return {
     list,
@@ -144,10 +141,5 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
     loadingMore,
     onLoadMore,
     onChangeAreas,
-    queryParameters: {
-      areas,
-      'page[number]': pageNumber,
-      'page[size]': pageSize
-    }
   };
 }
