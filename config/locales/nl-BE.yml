@@ -297,31 +297,31 @@ nl-BE:
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Geslacht
       birthyear:
-        title: Year of birth
+        title: Geboortejaar
       domicile:
-        title: Place of residence
+        title: Verblijfplaats
       education:
-        title: Education
+        title: Opleiding
     ideas:
       title:
-        title: Title
+        title: Titel
         description:
       body:
-        title: Description
+        title: Beschrijving
         description:
       topic_ids:
-        title: Topics
+        title: Thema's
         description:
       location:
-        title: Location
+        title: Locatie
         description:
       images:
-        title: Images
+        title: Afbeeldingen
         description:
       attachments:
-        title: Attachments
+        title: Bijlagen
         description:
   custom_field_options:
     gender:
