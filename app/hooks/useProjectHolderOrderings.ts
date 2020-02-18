@@ -57,8 +57,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
     setPageNumber(1);
   }, []);
 
+  // reset pageNumber on pageSize change
   useEffect(() => {
-    // reset pageNumber on pageSize change
     setPageNumber(1);
   }, [pageSize]);
 
@@ -95,8 +95,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
         );
       })
     ).subscribe(({ projectHolderOrderings, projects, projectFolders }) => {
-      setLoadingInitial(false);
-      setLoadingMore(false);
 
       if (isNilOrError(projectHolderOrderings)) {
         setList(null);
@@ -129,6 +127,9 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
         setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, receivedItems, 'id') : receivedItems);
         setHasMore(hasMore);
       }
+
+      setLoadingInitial(false);
+      setLoadingMore(false);
     });
 
     return () => subscription.unsubscribe();
