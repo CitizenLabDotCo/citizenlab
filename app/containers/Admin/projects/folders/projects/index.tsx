@@ -72,7 +72,6 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   addProjectToFolder = (projectId) => () => {
     const projectFolderId = !isNilOrError(this.props.projectFolder) ? this.props.projectFolder.id : null;
-
     projectFolderId && updateProjectFolderMembership(projectId, projectFolderId);
   }
 
@@ -83,25 +82,23 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   render() {
     const { projectHoldersOrderings, projectFolder, projects: { projectsList } } = this.props;
-    const otherPublishedProjectIds = !isNilOrError(projectHoldersOrderings)
-      ? projectHoldersOrderings
-        .filter(item => item.relationships.project_holder.data.type === 'project')
-        .map(item => item.relationships.project_holder.data.id)
+
+    const otherPublishedProjectIds = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
+      ? projectHoldersOrderings.list.filter(item => item.projectHolderType === 'project').map(item => item.projectHolder.id)
       : null;
+
     const hasOtherPublishedProjectIds = otherPublishedProjectIds && otherPublishedProjectIds.length > 0;
 
     const otherDraftProjectIds = !isNilOrError(projectsList)
-      ? projectsList
-        .filter(item => item.attributes.publication_status === 'draft')
-        .map(item => item.id)
+      ? projectsList.filter(item => item.attributes.publication_status === 'draft').map(item => item.id)
       : null;
+
     const hasOtherDraftProjectIds = otherDraftProjectIds && otherDraftProjectIds.length > 0;
 
     const otherArchivedProjectIds = !isNilOrError(projectsList)
-      ? projectsList
-        .filter(item => item.attributes.publication_status === 'archived')
-        .map(item => item.id)
+      ? projectsList.filter(item => item.attributes.publication_status === 'archived').map(item => item.id)
       : null;
+
     const hasOtherArchivedProjectIds = otherArchivedProjectIds && otherArchivedProjectIds.length > 0;
 
     const inFolderProjectIds = !isNilOrError(projectFolder) && projectFolder.relationships.projects
@@ -264,7 +261,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'archived'];
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
   projectHoldersOrderings: <GetProjectHolderOrderings />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} folderId="nil" />
+  projects: <GetProjects publicationStatuses={publicationStatuses} folderId="nil" />
 });
 
 export default (inputProps: WithRouterProps) => (
