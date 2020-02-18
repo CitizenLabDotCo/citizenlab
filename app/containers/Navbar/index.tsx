@@ -25,13 +25,11 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
-import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
 
 // utils
 import { getProjectUrl } from 'services/projects';
@@ -40,7 +38,7 @@ import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { getLocalized } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 import injectIntl from 'utils/cl-intl/injectIntl';
 import { InjectedIntlProps } from 'react-intl';
@@ -375,8 +373,6 @@ interface DataProps {
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
-  project: GetProjectChildProps;
-  projectFolder: GetProjectFolderChildProps;
   archivedProjects: GetProjectsChildProps;
 }
 
@@ -386,7 +382,7 @@ interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
+class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -431,6 +427,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
       locale,
       authUser,
       tenant,
+      localize,
       intl: { formatMessage },
       projectHolderOrderings,
       archivedProjects: { projectsList: archivedProjectList }
@@ -452,14 +449,12 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
     const emailSettingsPage = isPage('email-settings', location.pathname);
+    const totalProjectsListLength = (!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list ? projectHolderOrderings.list.length : 0) + (isNilOrError(archivedProjectList) ? 0 : archivedProjectList.length);
     const showMobileNav = !adminPage &&
       !ideaFormPage &&
       !initiativeFormPage &&
       !ideaEditPage &&
       !initiativeEditPage;
-
-    const totalProjectsListLength = (isNilOrError(projectHolderOrderings) ? 0 : projectHolderOrderings.length)
-      + (isNilOrError(archivedProjectList) ? 0 : archivedProjectList.length);
 
     return (
       <>
@@ -488,7 +483,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                   </NavigationItemText>
                 </NavigationItem>
 
-                {tenantLocales && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0 &&
+                {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
@@ -510,48 +505,33 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                       onClickOutside={this.toggleProjectsDropdown}
                       content={(
                         <ProjectsList>
-                          {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.map(
-                            (item: IProjectHolderOrderingData) => {
-                              const isProject = item.relationships.project_holder.data.type === 'project';
-                              const projectOrFolderId = item.relationships.project_holder.data.id;
-
-                              if (isProject) {
+                          {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.map(
+                            (item: IProjectHolderOrderingContent) => {
+                              if (item.projectHolderType === 'project') {
                                 return (
-                                  <GetProject key={projectOrFolderId} projectId={projectOrFolderId}>
-                                    {project => isNilOrError(project) ? null : (
-                                      <ProjectsListItem
-                                        to={getProjectUrl(project)}
-                                      >
-                                        {!isNilOrError(locale) ? getLocalized(project.attributes.title_multiloc, locale, tenantLocales) : null}
-                                      </ProjectsListItem>
-                                    )}
-                                  </GetProject>
+
+                                  <ProjectsListItem
+                                    key={item.projectHolder.id}
+                                    to={getProjectUrl(item.projectHolder)}
+                                  >
+                                    {localize(item.projectHolder.attributes.title_multiloc)}
+                                  </ProjectsListItem>
                                 );
                               } else {
-                                return (
-                                  <GetProjectFolder key={projectOrFolderId} projectFolderId={projectOrFolderId}>
-                                    {projectFolder => {
-                                      if (!isNilOrError(projectFolder)) {
-                                        const hasProjects = projectFolder.relationships.projects.data.length > 0;
+                                const projectFolder = item.projectHolder;
 
-                                        if (hasProjects && !isNilOrError(locale)) {
-                                          return (
-                                            <ProjectsListItem
-                                              key={projectFolder.id}
-                                              to={getProjectFolderUrl(projectFolder)}
-                                            >
-                                              {getLocalized(projectFolder.attributes.title_multiloc, locale, tenantLocales)}
-                                            </ProjectsListItem>
-                                          );
-                                        }
+                                if (projectFolder.relationships.projects.data.length > 0) {
+                                  return (
+                                    <ProjectsListItem
+                                      key={projectFolder.id}
+                                      to={getProjectFolderUrl(projectFolder)}
+                                    >
+                                      {localize(item.projectHolder.attributes.title_multiloc)}
+                                    </ProjectsListItem>
+                                  );
+                                }
 
-                                        return null;
-                                      }
-
-                                      return null;
-                                    }}
-                                  </GetProjectFolder>
-                                );
+                                return null;
                               }
                             }
                           )}
@@ -561,7 +541,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps, 
                                 key={index}
                                 to={getProjectUrl(archivedProject)}
                               >
-                                {!isNilOrError(locale) ? getLocalized(archivedProject.attributes.title_multiloc, locale, tenantLocales) : null}
+                                {localize(archivedProject.attributes.title_multiloc)}
                               </ProjectsListItem>
                             );
                           })}
@@ -682,7 +662,7 @@ const Data = adopt<DataProps, InputProps>({
   archivedProjects: <GetProjects publicationStatuses={['archived']} folderId="nil" />
 });
 
-const NavbarWithHOCs = withRouter<Props>(injectIntl(Navbar));
+const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

@@ -1,24 +1,28 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { size, isEqual, isEmpty } from 'lodash-es';
+import { size, isEqual, isEmpty, isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
+import { stringify } from 'qs';
 
 // components
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
+import SelectAreas from 'components/ProjectCards/SelectAreas';
 import Spinner from 'components/UI/Spinner';
-// import Button from 'components/UI/Button';
+import Button from 'components/UI/Button';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import GetProject from 'resources/GetProject';
-import GetProjectFolder from 'resources/GetProjectFolder';
 import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
 
 // services
-import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
+import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
+
+// routing
+import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -27,14 +31,14 @@ import T from 'components/T';
 import messages from './messages';
 
 // tracking
-// import { trackEventByName } from 'utils/analytics';
-// import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-// import { rgba } from 'polished';
+import { rgba } from 'polished';
 
 // svg
 import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg';
@@ -161,21 +165,58 @@ const EmptyMessageLine = styled.p`
   text-align: center;
 `;
 
-// const Footer = styled.div`
-//   width: 100%;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   margin-top: 20px;
+const Footer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
 
-//   ${media.smallerThanMinTablet`
-//     flex-direction: column;
-//     align-items: stretch;
-//     margin-top: 0px;
-//   `}
-// `;
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 0px;
+  `}
+`;
 
-// const ShowMoreButton = styled(Button)``;
+const FiltersArea = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+
+&.fullWidth {
+  width: 100%;
+  justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    justify-content: flex-start;
+    `};
+  }
+
+  &.alignRight {
+    justify-content: flex-end;
+
+    ${media.smallerThanMinTablet`
+      display: none;
+      `};
+    }
+    `;
+
+const FilterArea = styled.div`
+    height: 60px;
+    display: flex;
+    align-items: center;
+
+    &.publicationstatus {
+      margin-right: 30px;
+    }
+
+    ${media.smallerThanMinTablet`
+      height: auto;
+      `};
+      `;
+
+const ShowMoreButton = styled(Button)``;
 
 interface InputProps {
   showTitle: boolean;
@@ -212,8 +253,19 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     this.calculateCardsLayout();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(_prevProps: Props, prevState: State) {
     this.calculateCardsLayout();
+
+    const areas = this.getAreasFromQueryParams();
+
+    if (!isEqual(this.state.areas, areas)) {
+      this.setState({ areas });
+    }
+
+    const { projectHolderOrderings } = this.props;
+    if (!isEqual(prevState.areas, this.state.areas) && !isNilOrError(projectHolderOrderings)) {
+      projectHolderOrderings.onChangeAreas(this.state.areas);
+    }
   }
 
   calculateCardsLayout = () => {
@@ -221,17 +273,17 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
 
     if (
       !isNilOrError(projectHolderOrderings) &&
-      projectHolderOrderings.length > 0 &&
+      projectHolderOrderings.list &&
+      projectHolderOrderings.list.length > 0 &&
       windowSize &&
       layout === 'dynamic'
     ) {
-
-      const initialCount = size(projectHolderOrderings.slice(0, 6));
+      const initialCount = size(projectHolderOrderings.list.slice(0, 6));
       const isOdd = (number: number) => number % 2 === 1;
       const biggerThanSmallTablet = (windowSize >= viewportWidths.smallTablet);
       const biggerThanLargeTablet = (windowSize >= viewportWidths.largeTablet);
 
-      const cardSizes = projectHolderOrderings.map((_project, index) => {
+      const cardSizes = projectHolderOrderings.list.map((_project, index) => {
         let cardSize: 'small' | 'medium' | 'large' = (biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small');
 
         if (index < 6) {
@@ -275,16 +327,37 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
     }
   }
 
-  // showMore = () => {
-  //   trackEventByName(tracks.clickOnProjectsShowMoreButton);
-  //   this.props.projects.onLoadMore();
-  // }
+  getAreasFromQueryParams = () => {
+    let areas: string[] = [];
+    const { query } = this.props.location;
+
+    if (query.areas && !isEmpty(query.areas)) {
+      areas = (isString(query.areas) ? [query.areas] : query.areas);
+    }
+
+    return areas;
+  }
+
+  showMore = () => {
+    trackEventByName(tracks.clickOnProjectsShowMoreButton);
+    this.props.projectHolderOrderings.onLoadMore();
+  }
+
+  handleAreasOnChange = (areas: string[]) => {
+    if (!isEqual(this.state.areas, areas)) {
+      // TODO trackEventByName(tracks.clickOnProjectsAreaFilter);
+      const { pathname } = removeLocale(this.props.location.pathname);
+      const query = { ...this.props.location.query, areas };
+      const search = `?${stringify(query, { indices: false, encode: false })}`;
+      clHistory.replace({ pathname, search });
+    }
+  }
 
   render() {
-    const { cardSizes } = this.state;
-    const { tenant, showTitle, layout, /* theme, */ projectHolderOrderings } = this.props;
-    // const { hasMore, querying } = this.props.projects;
-    const hasProjects = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.length > 0;
+    const { cardSizes, areas } = this.state;
+    const { tenant, showTitle, layout, theme, projectHolderOrderings } = this.props;
+    const { loadingInitial, loadingMore, hasMore } = projectHolderOrderings;
+    const hasProjects = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0;
     const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
     if (!isNilOrError(tenant)) {
@@ -301,22 +374,27 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                 }
               </Title>
             ) : (
-              <ScreenReaderOnly>
-                {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
-                  ? <T value={customCurrentlyWorkingOn} />
-                  : <FormattedMessage {...messages.currentlyWorkingOn} />
-                }
-              </ScreenReaderOnly>
-            )}
+                <ScreenReaderOnly>
+                  {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                    ? <T value={customCurrentlyWorkingOn} />
+                    : <FormattedMessage {...messages.currentlyWorkingOn} />
+                  }
+                </ScreenReaderOnly>
+              )}
+            <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
+              <FilterArea>
+                <SelectAreas selectedAreas={areas} onChange={this.handleAreasOnChange} />
+              </FilterArea>
+            </FiltersArea>
           </Header>
 
-          {projectHolderOrderings === undefined &&
+          {loadingInitial &&
             <Loading id="projects-loading">
               <Spinner />
             </Loading>
           }
 
-          {/* !querying && */ !hasProjects &&
+          {!loadingInitial && !hasProjects &&
             <EmptyContainer id="projects-empty">
               <EmptyProjectsImage src={EmptyProjectsImageSrc} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />
               <EmptyMessage>
@@ -330,59 +408,31 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             </EmptyContainer>
           }
 
-          {/* !querying && */ !isNilOrError(projectHolderOrderings) && (
+          {!loadingInitial && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 && (
             <ProjectsList id="e2e-projects-list">
-              {projectHolderOrderings.map((item: IProjectHolderOrderingData, index: number) => {
-                  const projectOrFolderId = item.relationships.project_holder.data.id;
-                  const projectOrFolderType = item.relationships.project_holder.data.type;
-                  const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
-                  const projectCard = (
-                    <GetProject
-                      projectId={projectOrFolderId}
-                    >
-                      {project => !isNilOrError(project) ? (
-                        <ProjectCard
-                          projectId={projectOrFolderId}
+              {projectHolderOrderings.list.map((item: IProjectHolderOrderingContent, index: number) => {
+                const projectOrFolderId = item.projectHolder.id;
+                const projectOrFolderType = item.projectHolderType;
+                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+
+                return (
+                  <React.Fragment key={index}>
+                    {projectOrFolderType === 'project' ? (
+                      <ProjectCard
+                        projectId={projectOrFolderId}
+                        size={size}
+                        layout={layout}
+                      />
+                    ) : (
+                        <ProjectFolderCard
+                          projectFolderId={projectOrFolderId}
                           size={size}
                           layout={layout}
                         />
-                      ) : null}
-                    </GetProject>
-                  );
-                  const projectFolderCard = (
-                    <GetProjectFolder
-                      projectFolderId={projectOrFolderId}
-                    >
-                      {projectFolder => {
-                        if (!isNilOrError(projectFolder)) {
-                          const hasProjects = projectFolder.relationships.projects.data.length;
-
-                          if (hasProjects) {
-                            return (
-                              <ProjectFolderCard
-                                projectFolderId={projectOrFolderId}
-                                size={size}
-                                layout={layout}
-                              />
-                            );
-                          }
-
-                          return null;
-                        }
-
-                        return null;
-                      }}
-                    </GetProjectFolder>
-                  );
-
-                  return (
-                    <React.Fragment key={index}>
-                      {projectOrFolderType === 'project' ?
-                        projectCard : projectFolderCard
-                      }
-                    </React.Fragment>
-                  );
-                }
+                      )}
+                  </React.Fragment>
+                );
+              }
               )}
 
               {/*
@@ -391,11 +441,11 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
               // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
               // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {/* !hasMore && */ (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length + 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.list.length > 6) && (projectHolderOrderings.list.length + 1) % 3 === 0 &&
                 <MockProjectCard className={layout} />
               }
 
-              {/* !hasMore && */ (layout === 'threecolumns' || projectHolderOrderings.length > 6) && (projectHolderOrderings.length - 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.list.length > 6) && (projectHolderOrderings.list.length - 1) % 3 === 0 &&
                 <>
                   <MockProjectCard className={layout} />
                   <MockProjectCard className={layout} />
@@ -404,8 +454,8 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             </ProjectsList>
           )}
 
-          {/* <Footer>
-            {!querying && hasProjects && hasMore &&
+          <Footer>
+            {!loadingInitial && hasProjects && hasMore &&
               <ShowMoreButton
                 onClick={this.showMore}
                 size="1"
@@ -422,7 +472,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                 className="e2e-project-cards-show-more-button"
               />
             }
-          </Footer> */}
+          </Footer>
         </Container>
       );
     }
@@ -436,11 +486,9 @@ const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(Pro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  projectHolderOrderings: <GetProjectHolderOrderings />,
+  projectHolderOrderings: <GetProjectHolderOrderings />
 });
 
-// TODO: add load more behavior
-// TODO: add better spinner condition
 // TODO: tracks
 
 export default (inputProps: InputProps) => (

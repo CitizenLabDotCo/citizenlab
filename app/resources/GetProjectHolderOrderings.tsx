@@ -1,19 +1,12 @@
-import { IProjectHolderOrderingData } from 'services/projectHolderOrderings';
-import useProjectHolderOrderings from 'hooks/useProjectHolderOrderings';
-import { isNilOrError } from 'utils/helperUtils';
+import useProjectHolderOrderings, { InputProps, IOutput } from 'hooks/useProjectHolderOrderings';
 
-export type GetProjectHolderOrderingsChildProps = IProjectHolderOrderingData[] | undefined | null | Error;
+export interface GetProjectHolderOrderingsChildProps extends IOutput {}
 
-type children = (renderProps: GetProjectHolderOrderingsChildProps) => JSX.Element | null;
+type children = (renderProps: IOutput) => JSX.Element | null;
 
-interface Props {
-  children?: children;
-}
-
-const GetProjectHolderOrderings = ({ children }: Props) => {
-  const projectHolderOrderings = useProjectHolderOrderings();
-
-  return (children as children)(isNilOrError(projectHolderOrderings) ? projectHolderOrderings : projectHolderOrderings.data);
+const GetProjectHolderOrderings: React.SFC<InputProps> = (props) => {
+  const projectHolderOrderings = useProjectHolderOrderings({ pageSize: props.pageSize });
+  return (props.children as children)(projectHolderOrderings);
 };
 
 export default GetProjectHolderOrderings;

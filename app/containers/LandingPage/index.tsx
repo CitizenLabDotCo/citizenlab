@@ -14,14 +14,12 @@ import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 const ProjectAndFolderCards = React.lazy(() => import('components/ProjectAndFolderCards'));
-const ProjectCards = React.lazy(() => import('components/ProjectCards'));
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -143,7 +141,6 @@ interface DataProps {
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
-  foldersEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -173,7 +170,7 @@ class LandingPage extends PureComponent<Props, State> {
   projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage, foldersEnabled } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       // custom section
@@ -201,21 +198,10 @@ class LandingPage extends PureComponent<Props, State> {
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
                     <Suspense fallback={null}>
-                      {foldersEnabled ?
-                        <ProjectAndFolderCards
-                          showTitle={true}
-                          layout="dynamic"
-                        />
-                      :
-                        <ProjectCards
-                          pageSize={6}
-                          sort="new"
-                          publicationStatuses={this.projectsPublicationStatuses}
-                          showTitle={true}
-                          showPublicationStatusFilter={false}
-                          layout="dynamic"
-                        />
-                      }
+                      <ProjectAndFolderCards
+                        showTitle={true}
+                        layout="dynamic"
+                      />
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
@@ -269,7 +255,6 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  foldersEnabled: <GetFeatureFlag name="project_folders" />,
   homepageInfoPage: <GetPage slug="homepage-info" />
 });
 
