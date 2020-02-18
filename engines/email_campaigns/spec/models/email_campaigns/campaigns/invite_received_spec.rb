@@ -40,5 +40,12 @@ RSpec.describe EmailCampaigns::Campaigns::InviteReceived, type: :model do
 
       expect(recipients.where(id: invite.invitee.id).count).to eq 1
     end
+
+    it "does not send out anything if the invite is deleted" do
+      activity.item.destroy!
+      recipients = campaign.apply_recipient_filters(activity: activity.reload)
+
+      expect(recipients.count).to eq 0
+    end
   end
 end

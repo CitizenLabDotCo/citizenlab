@@ -124,9 +124,9 @@ def object_from_template classname, attributes
   when 'Event'
     nil
   when 'CustomField'
-    CustomField.where(code: attributes['code']).first
+    CustomField.with_resource_type('User').where(code: attributes['code']).first
   when 'CustomFieldOption'
-    CustomFieldOption.where(key: attributes['key'], custom_field: CustomField.where(code: attributes['custom_field_ref']['code'])).first
+    CustomFieldOption.where(key: attributes['key'], custom_field: CustomField.with_resource_type('User').where(code: attributes['custom_field_ref']['code'])).first
   else
     nil
   end

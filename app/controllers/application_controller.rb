@@ -8,13 +8,14 @@ class ApplicationController < ActionController::API
   after_action :verify_policy_scoped, only: :index
 
   rescue_from ActiveRecord::RecordNotFound, with: :send_not_found
+  rescue_from Apartment::TenantNotFound, with: :tenant_not_found
 
   rescue_from ActionController::UnpermittedParameters do |pme|
     render json: { error:  { unknown_parameters: pme.params } }, 
       status: :bad_request
   end
 
-  rescue_from ClErrors::TransactionError, :with => :transaction_error
+  rescue_from ClErrors::TransactionError, with: :transaction_error
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -37,6 +38,10 @@ class ApplicationController < ActionController::API
     else
       render json: error, status: 404
     end
+  end
+
+  def tenant_not_found
+    head 404
   end
 
   def send_no_content(status=204)

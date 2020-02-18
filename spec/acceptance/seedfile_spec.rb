@@ -25,8 +25,9 @@ describe "seedfile", slow_test: true do
       expect(Page.count).to be 17 # 8 generated + 5 legal pages + 1 initiatives + 3 success stories
       expect(IdeaStatus.count).to be > 0
       expect(Group.count).to be > 0
-      expect(CustomField.count).to be > 0
+      expect(CustomField.with_resource_type('User').count).to be > 0
       expect(CustomFieldOption.count).to be > 0
+      expect(CustomField.with_resource_type('CustomForm').count).to be > 0
       expect(Invite.count).to be > 0
       expect(Verification::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0

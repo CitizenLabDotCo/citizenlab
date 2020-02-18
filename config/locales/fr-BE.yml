@@ -284,10 +284,34 @@ fr-BE:
     council_meeting_description: >
       <p>Durant le conseil communal, les citoyens qui auront obtenu 100 votes en mois de 3 mois seront représenté.</p><p>Le conseil évaluera ensuite, chaque idée individuellement.</p>
   custom_fields:
-    gender: Genre
-    birthyear: Année de naissance
-    domicile: Localité
-    education: Niveau d'études
+    users:
+      gender: 
+        title: Gender
+      birthyear: 
+        title: Year of birth
+      domicile: 
+        title: Place of residence
+      education: 
+        title: Education
+    ideas:
+      title:
+        title: Title
+        description:
+      body:
+        title: Description
+        description:
+      topic_ids:
+        title: Topics
+        description:
+      location:
+        title: Location
+        description:
+      images:
+        title: Images
+        description:
+      attachments:
+        title: Attachments
+        description:
   custom_field_options:
     gender:
       male: Masculin

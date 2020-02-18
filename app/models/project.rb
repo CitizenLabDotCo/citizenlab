@@ -23,6 +23,7 @@ class Project < ApplicationRecord
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
   belongs_to :default_assignee, class_name: 'User', optional: true
+  belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
   belongs_to :folder, optional: true, class_name: 'ProjectFolder'
