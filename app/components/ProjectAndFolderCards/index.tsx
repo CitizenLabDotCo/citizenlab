@@ -424,12 +424,12 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                         layout={layout}
                       />
                     ) : (
-                        <ProjectFolderCard
-                          projectFolderId={projectOrFolderId}
-                          size={size}
-                          layout={layout}
-                        />
-                      )}
+                      <ProjectFolderCard
+                        projectFolderId={projectOrFolderId}
+                        size={size}
+                        layout={layout}
+                      />
+                    )}
                   </React.Fragment>
                 );
               }
