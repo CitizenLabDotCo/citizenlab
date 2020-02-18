@@ -126,7 +126,7 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
                   <>
                     <Header projectFolderId={projectFolder.id} />
                     <Content>
-                      <StyledContentContainer>
+                      <StyledContentContainer mode="page">
                         <ProjectFolderInfo projectFolderId={projectFolder.id} />
                         <ProjectCards
                           pageSize={50}
