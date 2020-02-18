@@ -216,8 +216,6 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
     apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`],
   });
 
-  // TODO refetch project or folder orderings
-
   return response;
 }
 
