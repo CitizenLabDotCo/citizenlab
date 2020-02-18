@@ -338,31 +338,31 @@ de:
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Geschlecht
       birthyear:
-        title: Year of birth
+        title: Geburtsjahr
       domicile:
-        title: Place of residence
+        title: Wohnort
       education:
-        title: Education
+        title: Bildungsweg
     ideas:
       title:
-        title: Title
+        title: Titel
         description:
       body:
-        title: Description
+        title: Beschreibung
         description:
       topic_ids:
-        title: Topics
+        title: Themen
         description:
       location:
-        title: Location
+        title: Standort
         description:
       images:
-        title: Images
+        title: Bilder
         description:
       attachments:
-        title: Attachments
+        title: Anhänge
         description:
   custom_field_options:
     gender:
