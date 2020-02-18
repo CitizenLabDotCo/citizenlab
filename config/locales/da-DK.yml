@@ -173,31 +173,31 @@ da:
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Køn
       birthyear:
-        title: Year of birth
+        title: Fødselsår
       domicile:
-        title: Place of residence
+        title: Bopæl
       education:
-        title: Education
+        title: Uddannelse
     ideas:
       title:
-        title: Title
+        title: Titel
         description:
       body:
-        title: Description
+        title: Beskrivelse
         description:
       topic_ids:
-        title: Topics
+        title: Emner
         description:
       location:
-        title: Location
+        title: Beliggenhed
         description:
       images:
-        title: Images
+        title: Billeder
         description:
       attachments:
-        title: Attachments
+        title: Vedhæftede filer
         description:
   custom_field_options:
     gender:
