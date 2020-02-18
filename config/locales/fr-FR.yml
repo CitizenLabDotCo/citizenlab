@@ -309,31 +309,31 @@ fr:
   custom_fields:
     users:
       gender:
-        title: Gender
+        title: Genre
       birthyear:
-        title: Year of birth
+        title: Année de naissance
       domicile:
-        title: Place of residence
+        title: Localité
       education:
-        title: Education
+        title: Éducation
     ideas:
       title:
-        title: Title
+        title: Titre
         description:
       body:
         title: Description
         description:
       topic_ids:
-        title: Topics
+        title: Thèmes
         description:
       location:
-        title: Location
+        title: Adresse
         description:
       images:
         title: Images
         description:
       attachments:
-        title: Attachments
+        title: Pièces jointes
         description:
   custom_field_options:
     gender:
