@@ -144,12 +144,15 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
             :
             <FormattedMessage {...messages.emptyFolder} />
           }
-          {(hasOtherDraftProjectIds || hasOtherArchivedProjectIds || hasOtherPublishedProjectIds) &&
-            <ListHeader>
-              <StyledHeaderTitle>
-                <FormattedMessage {...messages.projectsYouCanAdd} />
-              </StyledHeaderTitle>
-            </ListHeader>
+
+          <ListHeader>
+            <StyledHeaderTitle>
+              <FormattedMessage {...messages.projectsYouCanAdd} />
+            </StyledHeaderTitle>
+          </ListHeader>
+
+          {(!hasOtherDraftProjectIds && !hasOtherArchivedProjectIds && !hasOtherPublishedProjectIds) &&
+            <FormattedMessage {...messages.noProjectsToAdd} />
           }
 
           {otherPublishedProjectIds && otherPublishedProjectIds.length > 0 &&
