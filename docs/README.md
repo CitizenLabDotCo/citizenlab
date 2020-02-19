@@ -1,5 +1,34 @@
 # Changelog
 
+## 2020-02-19
+
+### Fixed
+
+### Added
+
+### Changed
+
+## 2020-01-29
+
+### Fixed
+
+- Rich text editor no longer allows non-video iframe content
+- Smart groups that refer to a deleted project now get cleaned up when deleting a project
+- All cookie consent buttons are now reachable on IE11
+- More accessibility fixes
+- The organization name is no longer missing in the password reset email
+
+### Added
+
+- CSAM verification
+  - Users can authenticate and verify using BeID or itsme
+  - User properties controlled by a verification method are locked in the user profile
+  - Base layer of support for other similar verification methods in the future
+- The order of project templates can now be changed in Templates HQ
+
+### Changed
+- Project templates overview no longer shows the filters
+
 ## 2020-01-17
 
 ### Fixed
