@@ -126,6 +126,48 @@ describe TenantTemplateService do
     end
   end
 
+  describe "apply_template", slow_test: true do
+    it "associates refs correctly, when the target of the ref has exactly the same attributes" do
+      yml = <<~YAML
+        ---
+        models:
+          custom_form:
+          - &1
+            created_at: 2020-02-18 22:46:33 UTC
+            updated_at: 2020-02-18 22:46:33 UTC
+          - &2
+            created_at: 2020-02-18 22:46:33 UTC
+            updated_at: 2020-02-18 22:46:33 UTC
+          custom_field:
+            - resource_type: CustomForm
+              resource_ref: *1
+              key: body
+              input_type: multiline_text
+              title_multiloc:
+                en: Description
+              description_multiloc:
+                nl-BE: Debitis expedita qui nostrum.
+              code: body
+            - resource_type: CustomForm
+              resource_ref: *2
+              key: title
+              input_type: text
+              title_multiloc:
+                en: Description
+              description_multiloc:
+                nl-BE: Minima et ipsa debitis.
+              code: title
+        YAML
+        template = YAML.load(yml)
+
+        service.apply_template(template)
+
+        expect(CustomForm.count).to eq 2
+        expect(CustomField.count).to eq 2
+        expect(CustomField.all.map(&:resource)).to match_array CustomForm.all
+    end
+  end
+
   describe "tenant_to_template", slow_test: true do
     it "Successfully generates a tenant template from a given tenant" do
       load Rails.root.join("db","seeds.rb")
@@ -153,5 +195,7 @@ describe TenantTemplateService do
       end
     end
   end
+
+
 
 end

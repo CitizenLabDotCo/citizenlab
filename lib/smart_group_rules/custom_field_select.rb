@@ -6,7 +6,7 @@ module SmartGroupRules
 
     include CustomFieldRule
 
-    validates :custom_field_id, inclusion: { in: proc { CustomField.where(input_type: ['select', 'multiselect']).map(&:id) } }
+    validates :custom_field_id, inclusion: { in: proc { CustomField.with_resource_type('User').where(input_type: ['select', 'multiselect']).map(&:id) } }
     validates :value, inclusion: { in: -> (record) { CustomFieldOption.where(custom_field_id: record.custom_field_id).map(&:id) } }, if: :needs_value?
 
     def self.to_json_schema

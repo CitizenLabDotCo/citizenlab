@@ -22,7 +22,7 @@ RSpec.describe EmailCampaigns::Campaigns::AssigneeDigest, type: :model do
       moderator = create(:moderator)
       user = create(:user)
 
-      expect(campaign.apply_recipient_filters).to match([admin, moderator])
+      expect(campaign.apply_recipient_filters.map(&:id)).to match_array([admin.id, moderator.id])
     end
   end
 end
