@@ -1,5 +1,48 @@
 # Changelog
 
+## 2020-02-19
+
+### Fixed
+
+- Loading more comments on the user profile page works again
+- Accessibility improvements
+- Adding an image no longer pops up the file dialog twice
+- Changed to dedicated IP in mailgun to improve general deliverability of emails
+
+### Added
+
+- Improvements to the PB UI to make sure users confirm their basket at the end
+- Ideation configurability i1
+  - The idea form can be customized, on a project level, to display custom description texts for every field
+- People filling out a poll are now included in the 'participated in' smart group rules
+- Make me admin section in Admin HQ
+
+### Changed
+
+- When a platform no longer is available at a url, the application redirects to the CitizenLab website
+- New platforms automatically get a moderator@citizenlab.co admin user with a strong password in LastPass
+
+## 2020-01-29
+
+### Fixed
+
+- Rich text editor no longer allows non-video iframe content
+- Smart groups that refer to a deleted project now get cleaned up when deleting a project
+- All cookie consent buttons are now reachable on IE11
+- More accessibility fixes
+- The organization name is no longer missing in the password reset email
+
+### Added
+
+- CSAM verification
+  - Users can authenticate and verify using BeID or itsme
+  - User properties controlled by a verification method are locked in the user profile
+  - Base layer of support for other similar verification methods in the future
+- The order of project templates can now be changed in Templates HQ
+
+### Changed
+- Project templates overview no longer shows the filters
+
 ## 2020-01-17
 
 ### Fixed

@@ -28,7 +28,11 @@ import clHistory from 'utils/cl-router/history';
 
 const Container = styled.div``;
 
-const MoreActionsMenuWrapper = styled.div``;
+const MoreActionsMenuWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 35px;
+`;
 
 interface InputProps {
   idea: IIdeaData;
