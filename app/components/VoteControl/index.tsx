@@ -547,45 +547,38 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
     if (!showVoteControl) return null;
 
     return (
-      <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
+      <>
+        <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
+          <Upvote
+            active={myVoteMode === 'up'}
+            onMouseDown={this.removeFocus}
+            onClick={this.onClickUpvote}
+            ref={this.setUpvoteRef}
+            className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
+            enabled={upvotingEnabled}
+          >
+            <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
+              <VoteIcon title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
+            </VoteIconContainer>
+            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+          </Upvote>
+
+          <Downvote
+            active={myVoteMode === 'down'}
+            onMouseDown={this.removeFocus}
+            onClick={this.onClickDownvote}
+            ref={this.setDownvoteRef}
+            className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
+            enabled={downvotingEnabled}
+          >
+            <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
+              <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
+            </VoteIconContainer>
+            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+          </Downvote>
+        </Container>
         <LiveMessage message={a11yVoteMessage} aria-live="polite" />
-
-        <Upvote
-          active={myVoteMode === 'up'}
-          onMouseDown={this.removeFocus}
-          onClick={this.onClickUpvote}
-          ref={this.setUpvoteRef}
-          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
-          enabled={upvotingEnabled}
-          aria-describedby="upvote-button"
-        >
-          <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
-            <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
-          </VoteIconContainer>
-          <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
-          <ScreenReaderOnly id="upvote-button">
-            <FormattedMessage {...messages.a11y_xUpvotes} values={{ count: upvotesCount }} />
-          </ScreenReaderOnly>
-        </Upvote>
-
-        <Downvote
-          active={myVoteMode === 'down'}
-          onMouseDown={this.removeFocus}
-          onClick={this.onClickDownvote}
-          ref={this.setDownvoteRef}
-          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
-          enabled={downvotingEnabled}
-          aria-describedby="downvote-button"
-        >
-          <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-            <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
-          </VoteIconContainer>
-          <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
-          <ScreenReaderOnly id="downvote-button">
-            <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
-          </ScreenReaderOnly>
-        </Downvote>
-      </Container>
+      </>
     );
   }
 }
