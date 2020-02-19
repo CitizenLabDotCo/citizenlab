@@ -11,7 +11,7 @@ module OmniauthMethods
         locale: Tenant.current.closest_locale_to('fr-FR'),
         remote_avatar_url: auth.info['image'],
       }.tap do |attrs|
-        custom_fields = CustomField.fields_for('User').enabled.pluck(:code)
+        custom_fields = CustomField.with_resource_type('User').enabled.pluck(:code)
         if custom_fields.include?('birthyear')
           attrs[:birthyear] = (Date.parse(auth.extra.raw_info.birthdate)&.year rescue nil)
         end

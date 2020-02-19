@@ -78,7 +78,7 @@ class UserPolicy < ApplicationPolicy
   def allowed_custom_field_keys
     locked_keys = Verification::VerificationService.new.locked_custom_fields(record)
     enabled_fields = CustomField
-      .fields_for('User')
+      .with_resource_type('User')
       .where.not(key: locked_keys)
       .enabled
     simple_keys = enabled_fields.support_single_value.pluck(:key).map(&:to_sym)

@@ -4,8 +4,12 @@ module AdminApi
     def import template
       service = TenantTemplateService.new
       same_template = service.translate_and_fix_locales template
+      project_ids_before = Project.ids
       ActiveRecord::Base.transaction do
         service.resolve_and_apply_template same_template, validate: false
+      end
+      Project.where.not(id: project_ids_before).each do |project|
+        project.update!(slug: SlugService.new.generate_slug(project, project.slug))
       end
     end
 

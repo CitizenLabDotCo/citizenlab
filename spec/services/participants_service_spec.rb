@@ -6,8 +6,8 @@ describe ParticipantsService do
   describe "participants" do
 
     it "returns participants across the whole platform at any time" do
-      participants = create_list(:user, 4)
-      pp1, pp2, pp3, pp4 = participants
+      participants = create_list(:user, 5)
+      pp1, pp2, pp3, pp4, pp5 = participants
       others = create_list(:user, 3)
       
       travel_to Time.now - 100.days do
@@ -21,6 +21,7 @@ describe ParticipantsService do
         create(:activity, item: create(:idea), action: 'created', user: others.first)
       end
       create(:activity, item: create(:idea), action: 'published', user: pp4)
+      create(:activity, item: create(:poll_response), action: 'created', user: pp5)
 
       expect(service.participants().map(&:id)).to match_array participants.map(&:id)
     end
@@ -72,6 +73,15 @@ describe ParticipantsService do
       create(:comment, post: idea, author: pp4)
 
       expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
+    end
+
+    it "returns participants of a poll" do
+      poll = create(:continuous_poll_project)
+      responses = create_list(:poll_response, 2, participation_context: poll)
+      participants = responses.map(&:user)
+      others = create_list(:user, 2) + [create(:poll_response, participation_context: create(:continuous_poll_project)).user]
+
+      expect(service.projects_participants([poll]).map(&:id)).to match_array participants.map(&:id)
     end
 
     it "returns participants of a given project since a given date" do

@@ -508,6 +508,16 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+      "idea_custom_fields": {
+        "type": "object",
+        "description":  "Allows admins and moderators to customize the form fields for ideas, per project",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
       "clustering": {
         "type": "object",
         "description":  "Allows admins to analyze ideas by creating clustered visualizations",

@@ -5,6 +5,7 @@ module Surveys
 
         skip_after_action :verify_authorized, only: [:index_xlsx]
         before_action :set_participation_context
+        rescue_from TypeformApiParser::AuthorizationError, with: :typeform_authorization_error
 
         def index_xlsx
           authorize [:surveys, :response], :index_xlsx?
@@ -34,6 +35,10 @@ module Surveys
 
         def set_participation_context
           @participation_context = params[:pc_class].find(params[:participation_context_id])
+        end
+
+        def typeform_authorization_error exception
+          render json: { errors: { base: [{ error: exception.error_key, message: exception.description }] } }, status: 403
         end
       end
     end

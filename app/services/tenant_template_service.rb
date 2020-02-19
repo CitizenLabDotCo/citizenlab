@@ -34,7 +34,7 @@ class TenantTemplateService
           elsif field_name.end_with?('_ref')
             if field_value
               begin
-                id, ref_class = obj_to_id_and_class[field_value]
+                id, ref_class = obj_to_id_and_class[field_value.object_id]
                 model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
               rescue Exception => e
                 raise e
@@ -62,7 +62,7 @@ class TenantTemplateService
         rescue Exception => e
           raise e
         end
-        obj_to_id_and_class[attributes] = [model.id, model_class]
+        obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
       end
     end
     nil
@@ -74,6 +74,7 @@ class TenantTemplateService
 
     Apartment::Tenant.switch(tenant.schema_name) do
       @template['models']['area']                                  = yml_areas
+      @template['models']['custom_form']                           = yml_custom_forms
       @template['models']['custom_field']                          = yml_custom_fields
       @template['models']['custom_field_option']                   = yml_custom_field_options
       @template['models']['topic']                                 = yml_topics
@@ -299,12 +300,24 @@ class TenantTemplateService
     end
   end
 
+  def yml_custom_forms
+    CustomForm.all.map do |c|
+      yml_custom_form = {
+        'created_at'           => c.created_at.to_s,
+        'updated_at'           => c.updated_at.to_s,
+      }
+      store_ref yml_custom_form, c.id, :custom_form
+      yml_custom_form
+    end
+  end
+
   def yml_custom_fields
     # No custom fields are required anymore because 
     # the user choices cannot be remembered.
     CustomField.all.map do |c|
       yml_custom_field = {
         'resource_type'        => c.resource_type,
+        'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
         'key'                  => c.key,
         'input_type'           => c.input_type,
         'title_multiloc'       => c.title_multiloc,
@@ -394,7 +407,8 @@ class TenantTemplateService
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
-        'ordering'                     => p.ordering
+        'ordering'                     => p.ordering,
+        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field) 
       })
       store_ref yml_project, p.id, :project
       yml_project
