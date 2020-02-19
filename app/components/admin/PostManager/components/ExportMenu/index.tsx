@@ -2,43 +2,18 @@ import React, { PureComponent } from 'react';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
-import Icon from 'components/UI/Icon';
+import Button from 'components/UI/Button';
 import ExportButtons from './ExportButtons';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // typings
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { ManagerType } from '../../';
 
-const DropdownButton = styled.button`
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-`;
-
-const DropdownButtonText = styled.div`
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.small}px;
-  font-weight: 500;
-  line-height: ${fontSizes.base}px;
-  transition: all 100ms ease-out;
-  margin-right: 10px;
-`;
-
-const DropdownButtonIcon = styled(Icon)`
-  width: 14px;
-  height: 18px;
-  color: ${colors.clIconSecondary};
-  transition: all 100ms ease-out;
-  margin-top: 1px;
-`;
+const DropdownButton = styled(Button)``;
 
 const Container = styled.div`
   height: 100%;
@@ -46,17 +21,6 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   cursor: pointer;
-
-  &:hover,
-  &:focus {
-    ${DropdownButtonText} {
-      color: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
-    }
-
-    ${DropdownButtonIcon} {
-      fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
-    }
-  }
 `;
 
 export type exportType = 'selected_posts' | 'project' | 'all';
@@ -115,17 +79,20 @@ export default class ExportMenu extends PureComponent<Props, State> {
     const { exportQueryParameter, exportType } = this.getExportQueryParameters();
 
     return (
-      <Container className={className} onMouseDown={this.removeFocus} onClick={this.toggleDropdown}>
-        <DropdownButton>
-          <DropdownButtonText>
-            <FormattedMessage {...messages.exports} />
-          </DropdownButtonText>
-          <DropdownButtonIcon name="download" />
+      <Container className={className}>
+        <DropdownButton
+          buttonStyle="admin-dark-text"
+          onClick={this.toggleDropdown}
+          icon="download"
+          iconPos="right"
+          padding="0px"
+        >
+          <FormattedMessage {...messages.exports} />
         </DropdownButton>
 
         <Dropdown
           width="100%"
-          top="30px"
+          top="35px"
           right="-5px"
           mobileRight="-5px"
           opened={dropdownOpened}

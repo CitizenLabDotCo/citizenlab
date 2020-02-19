@@ -79,15 +79,15 @@ export default class GetCommentsForUser extends React.Component<Props, State> {
 
           // if we had not set loading more, we should'nt aggregate the content,
           // it's either first load for this id or a refetch
-          this.setState({
+          this.setState(({ pageNumber }) => ({
             hasMore,
             commentsList: (!loadingMore
               ? newComments.data
               : [...(!isNilOrError(commentsList) ? commentsList : []), ...newComments.data]),
             loadingMore: false,
-            pageNumber: selfLink,
-            querying: false
-          });
+            querying: false,
+            pageNumber: loadingMore ? pageNumber + 1 : pageNumber
+          }));
         }
 
       })

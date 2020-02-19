@@ -39,7 +39,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
   }
 
   render() {
-    const { ideaId, participationContextId, participationContextType, budgetingDescriptor } = this.props;
+    const { ideaId, participationContextId, participationContextType, budgetingDescriptor, projectId } = this.props;
     const { error } = this.state;
 
     return (
@@ -52,6 +52,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
             participationContextType={participationContextType}
             unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
             disabledAssignBudgetClick={this.disabledBudgetingClick}
+            projectId={projectId}
           />
         }
         {error === 'budgetingDisabled' &&
