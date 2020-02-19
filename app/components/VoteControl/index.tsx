@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -29,7 +29,6 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 interface IVoteComponent {
   active: boolean;
