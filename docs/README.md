@@ -4,9 +4,23 @@
 
 ### Fixed
 
+- Loading more comments on the user profile page works again
+- Accessibility improvements
+- Adding an image no longer pops up the file dialog twice
+- Changed to dedicated IP in mailgun to improve general deliverability of emails
+
 ### Added
 
+- Improvements to the PB UI to make sure users confirm their basket at the end
+- Ideation configurability i1
+  - The idea form can be customized, on a project level, to display custom description texts for every field
+- People filling out a poll are now included in the 'participated in' smart group rules
+- Make me admin section in Admin HQ
+
 ### Changed
+
+- When a platform no longer is available at a url, the application redirects to the CitizenLab website
+- New platforms automatically get a moderator@citizenlab.co admin user with a strong password in LastPass
 
 ## 2020-01-29
 
