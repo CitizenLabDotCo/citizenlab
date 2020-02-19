@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
 
 // i18n
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
@@ -24,6 +24,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
@@ -230,6 +231,12 @@ interface Props {
   disabledVoteClick?: (disabled_reason?: string) => void;
   className?: string;
   noVerificationShortFlow?: boolean;
+  /*
+    For a11y, we disabled voting by keyboard on the idea cards themselves as it's currently not possible
+    to make it in an aria-friendly way. Voting by keyboard still works on the idea page itself.
+    As a replacement, number of votes are read to screen readers when going over the idea card.
+  */
+  location: 'ideaCard' | 'ideaPage';
 }
 
 interface State {
@@ -538,7 +545,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { size, className, intl: { formatMessage } } = this.props;
+    const { size, className, intl: { formatMessage }, location } = this.props;
     const { showVoteControl, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, upvotesCount, downvotesCount, a11yVoteMessage } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
@@ -547,7 +554,15 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <>
-        <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
+        <Container
+          className={`
+            ${className}
+            e2e-vote-controls
+            ${myVoteMode === null ? 'neutral' : myVoteMode}
+            ${votingEnabled && 'enabled'}
+          `}
+          aria-hidden={location === 'ideaCard'}
+        >
           <Upvote
             active={myVoteMode === 'up'}
             onMouseDown={this.removeFocus}
@@ -555,6 +570,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             ref={this.setUpvoteRef}
             className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
             enabled={upvotingEnabled}
+            tabIndex={location === 'ideaCard' ? -1 : 0}
           >
             <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
               <VoteIcon title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
@@ -569,6 +585,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             ref={this.setDownvoteRef}
             className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
             enabled={downvotingEnabled}
+            tabIndex={location === 'ideaCard' ? -1 : 0}
           >
             <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
               <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
@@ -576,7 +593,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
           </Downvote>
         </Container>
-        <LiveMessage message={a11yVoteMessage} aria-live="polite" />
+        {location === 'ideaPage' ?
+          <LiveMessage message={a11yVoteMessage} aria-live="polite" />
+        :
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
+          </ScreenReaderOnly>
+        }
       </>
     );
   }
