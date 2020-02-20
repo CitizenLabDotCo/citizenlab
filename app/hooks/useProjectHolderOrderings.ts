@@ -10,6 +10,7 @@ import { unionBy, isString } from 'lodash-es';
 export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
+  publicationStatusFilter?: string[];
 }
 
 export type IProjectHolderOrderingContent = {
@@ -35,15 +36,17 @@ export interface IOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   onChangeAreas: (areas: string[] | null) => void;
+  onChangePublicationStatus: (areas: string[] | null) => void;
 }
 
-export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter }: InputProps) {
+export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter, publicationStatusFilter }: InputProps) {
   const [list, setList] = useState<IProjectHolderOrderingContent[] | undefined | null>(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [publicationStatuses, setPublicationSatuses] = useState<string[] | undefined>(publicationStatusFilter);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -54,6 +57,11 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
 
   const onChangeAreas = useCallback((areas) => {
     setAreas(areas);
+    setPageNumber(1);
+  }, []);
+
+  const onChangePublicationStatus = useCallback((publicationStatuses) => {
+    setPublicationSatuses(publicationStatuses);
     setPageNumber(1);
   }, []);
 
@@ -99,6 +107,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
       if (isNilOrError(projectHolderOrderings)) {
         setList(null);
         setHasMore(false);
+        setLoadingInitial(false);
+        setLoadingMore(false);
       } else {
         const selfLink = projectHolderOrderings ?.links ?.self;
         const lastLink = projectHolderOrderings ?.links ?.last;
@@ -109,9 +119,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
           const holder = holderType === 'project'
             ? projects.find(project => project.id === holderId)
             : projectFolders.find(projectFolder => projectFolder.id === holderId);
-            if (!holder) {
-              console.log('filtered project', holderId);
-            }
 
           return {
             id: ordering.id,
@@ -124,16 +131,20 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
         }).filter(item => item.projectHolder) as IProjectHolderOrderingContent[];
 
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-        setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, receivedItems, 'id') : receivedItems);
         setHasMore(hasMore);
-      }
+        setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, receivedItems, 'id') : receivedItems);
 
-      setLoadingInitial(false);
-      setLoadingMore(false);
+        if (hasMore && receivedItems.length <= 3) {
+          onLoadMore();
+        } else {
+          setLoadingInitial(false);
+          setLoadingMore(false);
+        }
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas, loadingMore]);
+  }, [pageNumber, pageSize, areas, loadingMore, publicationStatuses]);
 
   return {
     list,
@@ -142,5 +153,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
     loadingMore,
     onLoadMore,
     onChangeAreas,
+    onChangePublicationStatus
   };
 }
