@@ -486,7 +486,7 @@ const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(Pro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  projectHolderOrderings: <GetProjectHolderOrderings />
+  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['published', 'archived']} pageSize={6} />
 });
 
 // TODO: tracks

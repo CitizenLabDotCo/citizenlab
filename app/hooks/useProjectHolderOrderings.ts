@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { listProjectHolderOrderings } from 'services/projectHolderOrderings';
-import { projectsStream, IProjectData } from 'services/projects';
+import { projectsStream, IProjectData, PublicationStatus } from 'services/projects';
 import { projectFoldersStream, IProjectFolderData } from 'services/projectFolders';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
@@ -10,7 +10,7 @@ import { unionBy, isString } from 'lodash-es';
 export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
-  publicationStatusFilter?: string[];
+  publicationStatusFilter?: PublicationStatus[];
 }
 
 export type IProjectHolderOrderingContent = {
@@ -73,6 +73,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
   useEffect(() => {
     const subscription = listProjectHolderOrderings({
       queryParameters: {
+        areas,
+        publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize
       }
@@ -89,7 +91,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         return combineLatest(
           projectsStream({
             queryParameters: {
-              areas,
               filter_ids: projectIds
             }
           }).observable,
@@ -107,8 +108,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
       if (isNilOrError(projectHolderOrderings)) {
         setList(null);
         setHasMore(false);
-        setLoadingInitial(false);
-        setLoadingMore(false);
       } else {
         const selfLink = projectHolderOrderings ?.links ?.self;
         const lastLink = projectHolderOrderings ?.links ?.last;
@@ -133,14 +132,9 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
         setHasMore(hasMore);
         setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, receivedItems, 'id') : receivedItems);
-
-        if (hasMore && receivedItems.length <= 3) {
-          onLoadMore();
-        } else {
-          setLoadingInitial(false);
-          setLoadingMore(false);
-        }
       }
+      setLoadingInitial(false);
+      setLoadingMore(false);
     });
 
     return () => subscription.unsubscribe();
