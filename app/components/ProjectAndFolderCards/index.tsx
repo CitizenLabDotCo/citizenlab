@@ -411,6 +411,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
           {!loadingInitial && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 && (
             <ProjectsList id="e2e-projects-list">
               {projectHolderOrderings.list.map((item: IProjectHolderOrderingContent, index: number) => {
+                console.log(projectHolderOrderings.list);
                 const projectOrFolderId = item.projectHolder.id;
                 const projectOrFolderType = item.projectHolderType;
                 const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
@@ -486,7 +487,7 @@ const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(Pro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['published', 'archived']} pageSize={6} />
+  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published']} pageSize={6} />
 });
 
 // TODO: tracks
