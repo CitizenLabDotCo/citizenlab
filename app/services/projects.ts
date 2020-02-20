@@ -116,7 +116,6 @@ export interface IUpdatedProjectProperties {
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
-  folder_id?: string | null;
 }
 
 export interface IProject {
@@ -127,7 +126,16 @@ export interface IProjects {
   data: IProjectData[];
 }
 
-export function projectsStream(streamParams: IStreamParams | null = null) {
+interface IQueryParametersWithPS {
+  publication_statuses: PublicationStatus[];
+  [key: string]: any;
+}
+
+interface StreamParamsForProjects extends IStreamParams {
+  queryParameters: IQueryParametersWithPS;
+}
+
+export function projectsStream(streamParams: StreamParamsForProjects) {
   return streams.get<IProjects>({ apiEndpoint, ...streamParams });
 }
 
