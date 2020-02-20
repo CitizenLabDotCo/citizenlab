@@ -23,11 +23,11 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-bottom: 4px;
 `;
 
-const PublicationStatusLabel = styled(StatusLabel)`
-  margin-left: auto;
-  margin-top: 4px;
-  margin-bottom: 4px;
-`;
+// const PublicationStatusLabel = styled(StatusLabel)`
+//   margin-left: auto;
+//   margin-top: 4px;
+//   margin-bottom: 4px;
+// `;
 
 interface Props {
   project: IProjectData;
@@ -47,6 +47,8 @@ export default ({ project, actions }: Props) => {
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
   );
+  const publicationStatus = project.attributes.publication_status;
+  const isDraftOrArchivedProject = publicationStatus === 'draft' || publicationStatus === 'archived';
 
   return (
     <RowContent className="e2e-admin-projects-list-item">
@@ -82,10 +84,12 @@ export default ({ project, actions }: Props) => {
           />
         }
 
-        <PublicationStatusLabel
-          text={'Published'}
-          color="adminOrangeIcons"
-        />
+        {isDraftOrArchivedProject &&
+          <StatusLabel
+            text={publicationStatus}
+            color="orangered"
+          />
+        }
       </RowContentInner>
       {actions ?
         <ActionsRowContainer>
@@ -106,3 +110,6 @@ export default ({ project, actions }: Props) => {
     </RowContent>
   );
 };
+
+// TODO: localize pub status?
+// TODO: color of status label
