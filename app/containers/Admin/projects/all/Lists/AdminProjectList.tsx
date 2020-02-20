@@ -14,10 +14,8 @@ import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from '
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
 import FolderRow from '../../components/FolderRow';
-import { ListHeader, HeaderTitle } from '../StyledComponents';
-import IconTooltip from 'components/UI/IconTooltip';
+import { ListHeader } from '../StyledComponents';
 import Button from 'components/UI/Button';
-import FeatureFlag from 'components/FeatureFlag';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -26,6 +24,7 @@ import messages from '../messages';
 // services
 import { reorderProjectHolder } from 'services/projectHolderOrderings';
 import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
+import FeatureFlag from 'components/FeatureFlag';
 
 const Spacer = styled.div`
   flex: 1;
@@ -48,7 +47,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
     return (
       <>
         <ListHeader>
-          {/* <FeatureFlag name="project_folders"> */}
+          <FeatureFlag name="project_folders">
             <Spacer />
             <Button
               linkTo={'/admin/projects/folders/new'}
@@ -56,7 +55,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
             >
               <FormattedMessage {...messages.newProjectFolder} />
             </Button>
-          {/* </FeatureFlag> */}
+          </FeatureFlag>
         </ListHeader>
 
         <SortableList
@@ -92,7 +91,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
 });
 
 const Data = adopt<DataProps>({
-  projectHolderOrderings: <GetProjectHolderOrderings />,
+  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published', 'draft']} />,
 });
 
 export default () => (
