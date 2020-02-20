@@ -3,6 +3,8 @@ class ProjectsFilteringService
   def apply_common_index_filters projects_scope, params
     if params[:publication_statuses].present?
       projects_scope = projects_scope.where(publication_status: params[:publication_statuses])
+    else
+      projects_scope = projects_scope.where(publication_status: ['published', 'archived'])
     end
     if params[:areas].present?
       projects_scope = projects_scope.with_some_areas(params[:areas])
