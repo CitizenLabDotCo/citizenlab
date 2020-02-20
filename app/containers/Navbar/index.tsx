@@ -641,13 +641,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
   }
 }
 
-const publicationStatuses = ['published', 'archived'];
-
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={publicationStatuses} />,
+  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['published', 'archived']} />,
 });
 
 const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));
