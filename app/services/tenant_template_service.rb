@@ -34,7 +34,7 @@ class TenantTemplateService
           elsif field_name.end_with?('_ref')
             if field_value
               begin
-                id, ref_class = obj_to_id_and_class[field_value]
+                id, ref_class = obj_to_id_and_class[field_value.object_id]
                 model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
               rescue Exception => e
                 raise e
@@ -62,7 +62,7 @@ class TenantTemplateService
         rescue Exception => e
           raise e
         end
-        obj_to_id_and_class[attributes] = [model.id, model_class]
+        obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
       end
     end
     nil
