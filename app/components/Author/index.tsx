@@ -127,7 +127,7 @@ class Author extends PureComponent<Props, State> {
           <AuthorMeta>
             <AuthorNameContainer>
               <ScreenReaderOnly>
-                <FormattedMessage {...messages.user} />:
+                <FormattedMessage {...messages.a11y_postedBy} />:
               </ScreenReaderOnly>
               {authorName}
             </AuthorNameContainer>
