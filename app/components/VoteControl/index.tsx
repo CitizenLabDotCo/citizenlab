@@ -236,7 +236,7 @@ interface Props {
     to make it in an aria-friendly way. Voting by keyboard still works on the idea page itself.
     As a replacement, number of votes are read to screen readers when going over the idea card.
   */
-  location: 'ideaCard' | 'ideaPage';
+  location: 'ideaCard' | 'ideaPage' | 'ideaMap';
 }
 
 interface State {
@@ -549,6 +549,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
     const { showVoteControl, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, upvotesCount, downvotesCount, a11yVoteMessage } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
+    const votingHiddenForScreenReader = location === 'ideaCard';
 
     if (!showVoteControl) return null;
 
@@ -561,7 +562,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             ${myVoteMode === null ? 'neutral' : myVoteMode}
             ${votingEnabled && 'enabled'}
           `}
-          aria-hidden={location === 'ideaCard'}
+          aria-hidden={votingHiddenForScreenReader}
         >
           <Upvote
             active={myVoteMode === 'up'}
@@ -570,7 +571,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             ref={this.setUpvoteRef}
             className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
             enabled={upvotingEnabled}
-            tabIndex={location === 'ideaCard' ? -1 : 0}
+            tabIndex={votingHiddenForScreenReader ? -1 : 0}
           >
             <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
               <VoteIcon title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
@@ -585,7 +586,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             ref={this.setDownvoteRef}
             className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
             enabled={downvotingEnabled}
-            tabIndex={location === 'ideaCard' ? -1 : 0}
+            tabIndex={votingHiddenForScreenReader ? -1 : 0}
           >
             <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
               <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
@@ -593,12 +594,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
           </Downvote>
         </Container>
-        {location === 'ideaPage' ?
-          <LiveMessage message={a11yVoteMessage} aria-live="polite" />
-        :
+        {votingHiddenForScreenReader ?
           <ScreenReaderOnly>
             <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
           </ScreenReaderOnly>
+        :
+          <LiveMessage message={a11yVoteMessage} aria-live="polite" />
         }
       </>
     );
