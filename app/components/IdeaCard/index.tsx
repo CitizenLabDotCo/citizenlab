@@ -305,7 +305,11 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                 </BottomBounceUp>
               }
 
-              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId && participationContextId && participationContextType &&
+              {showAssignBudgetDisabled === 'assignBudgetDisabled' &&
+               budgetingDescriptor &&
+               projectId &&
+               participationContextId &&
+               participationContextType &&
                 <BottomBounceUp icon="lock-outlined">
                   <DisabledWrapper>
                     <AssignBudgetDisabled
@@ -333,9 +337,9 @@ const Data = adopt<DataProps, InputProps>({
   ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-const IdeaCardWithHoC = injectLocalize(injectIntl(IdeaCard));
+const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
 
-export default (inputProps: InputProps & InjectedLocalized & InjectedIntlProps) => (
+export default (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <IdeaCardWithHoC {...inputProps} {...dataProps} />}
   </Data>
