@@ -333,6 +333,7 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
 
           <ButtonContainer>
             <SubmitButton
+              className="e2e-official-feedback-form-submit-button"
               bgColor={formType === 'edit' ? colors.adminTextColor : colors.clRed}
               icon="pen"
               textColor="white"

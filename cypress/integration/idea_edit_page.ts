@@ -67,8 +67,7 @@ describe('Idea edit page', () => {
 
     // verify location
     cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Antwerp');
-    cy.get('.e2e-idea-form-location-input-field input').should('have.value', 'Antwerpen, Belgium');
-    cy.get('.e2e-idea-form-location-input-field input').should('not.equal', 'antwerp');
+    cy.get('.e2e-idea-form-location-input-field input').should('not.have.value', 'antwerp');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
