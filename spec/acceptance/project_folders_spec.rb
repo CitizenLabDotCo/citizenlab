@@ -26,7 +26,7 @@ resource 'ProjectFolder' do
       expect(json_response[:data].size).to eq 2
     end
 
-    example "List only folders with specified IDs", document: false do
+    example "List only folders with specified IDs", document: true do
       filter_ids = [@folders.first.id]
       do_request(filter_ids: filter_ids)
       json_response = json_parse(response_body)
