@@ -32,11 +32,11 @@ resource "Projects" do
       parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
 
-      example_request "List all published projects (default behaviour)" do
+      example_request "List all published and archived projects (default behaviour)" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
-        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+        expect(json_response[:data].size).to eq 6
+        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }.uniq).to match_array ['published', 'archived']
       end
 
       example "List only projects with specified IDs" do
@@ -93,7 +93,7 @@ resource "Projects" do
         p2.areas << a2
         p2.save!
 
-        do_request areas: [a1.id]
+        do_request areas: [a1.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d[:id]}).to match_array [p1.id, @projects[1].id, @projects[3].id]
@@ -116,7 +116,7 @@ resource "Projects" do
         p3.areas = [a3]
         p3.save!
 
-        do_request areas: [a1.id, a2.id]
+        do_request areas: [a1.id, a2.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d[:id]}).to match_array [p1.id, p2.id, @projects.last.id]
@@ -129,7 +129,7 @@ resource "Projects" do
         p1.topics << t1
         p1.save!
 
-        do_request topics: [t1.id]
+        do_request topics: [t1.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq p1.id
@@ -143,14 +143,14 @@ resource "Projects" do
         p1.topics = [t1, t2]
         p1.save!
 
-        do_request topics: [t1.id, t2.id]
+        do_request topics: [t1.id, t2.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq p1.id
       end
 
       example "Admins can moderate all projects", document: false do
-        do_request filter_can_moderate: true
+        do_request filter_can_moderate: true, publication_statuses: ['published']
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4

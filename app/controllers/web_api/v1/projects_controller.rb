@@ -17,8 +17,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
         @projects = @projects.where(folder_id: params[:folder])
       end
     end
-
-    params[:publication_statuses] ||= 'published'
+    
     @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
     @projects = @projects

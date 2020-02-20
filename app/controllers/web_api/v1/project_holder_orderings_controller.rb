@@ -4,12 +4,10 @@ class WebApi::V1::ProjectHolderOrderingsController < ::ApplicationController
   def index
     @phos = policy_scope(ProjectHolderOrdering)
 
-    if (params.keys & %w(publication_statuses areas topics)).present?
-      @phos = @phos.where(project_holder_type: 'ProjectFolder')
-        .or(@phos.where(project_holder: ProjectsFilteringService.new.apply_common_index_filters(
-          Pundit.policy_scope(current_user, Project), 
-          params)))
-    end
+    @phos = @phos.where(project_holder_type: ProjectFolder.name)
+      .or(@phos.where(project_holder: ProjectsFilteringService.new.apply_common_index_filters(
+        Pundit.policy_scope(current_user, Project), 
+        params)))
 
     @phos = @phos
       .order(:ordering)
