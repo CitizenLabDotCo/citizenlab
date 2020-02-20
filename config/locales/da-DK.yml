@@ -72,8 +72,31 @@ da:
     homepage_info_body: ""
     initiatives_title: Initiativer 
     initiatives_body: >
-      <h2 class="ql-align-center"><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png" height="374.3745928338762" width="819"></h2> <h2>Hvad er borgerinitiativer?</h2> <p>Borgerinitiativer er initiativer, der starter nedefra og op. Et behov, et ønske, en drøm, ... foreslået af dig eller andre borgere. Du og eventuelle andre initiativtagere ønsker at ændre eller forbedre en nuværende situation eller starte noget helt nyt fra bunden af.
-      </p> <p>Det, der adskiller borgerinitiativer fra andre projekter på CitizenLab platformen, er, at de følger et sæt er foruddefinerede regler, og at det inkluderer inddragelse af den kommunale ledelse. De foruddefinerede regler, ofte formaliseret i lovgivningen, angiver de betingelser, der skal være opfyldt for at få ledelsen i kommunen involveret. Denne proces er nødvendig for at borgerinitiativer kan nå deres mål, som måske kan kræve officielle tilladelse til en midlertidig brug af et offentligt rum, støtte fra eksperter til at gennemføre dine planer, …</p> <p>Borgerinitiativer skal komme mange til gode og handler derfor aldrig om personlig interesse, men altid om kollektiv interesse.</p> <h2>Hvorfor skulle du starte et borgerinitiativ her?</h2> <p>Dette er den officielle borgerinddragelsesplatform for $|orgName|, der tilbyder følgende fordele:</p> <ul> <li>$|orgName| er allerede til stede og lytter aktivt til hvad der sker på platformen. Så der er ikke behov for at finde og nå ud til relevante personer inden for $|orgName| organisation.</li> <li>Denne platform er lavet specifikt til inddragende processer såsom borgerinitiativer. Alle elementer, processen, ... er alle bygget til at optimere til dette mål, hvilket langt fra er tilfældet for de klassiske 'sociale medier'.</li> <li>Andre borgere er allerede her på platformen hvilket øger den potentielle rækkevidde for at samle støtte til dit initiativ.</li> </ul> <h2>Hvilke skridt skal man tage?</h2> <p><strong>1. Kontroller, om dit initiativ passer til $|orgName| kriterier</strong></p> <p>$|initiativesEligibilityCriteria|</p> <p><strong>2. Tjek om hvad $|orgName| tilbyder, for at hjælpe dig med at nå dit mål</strong></p> <p>$|initiativesThresholdReachedMessage|</p> <p><strong>3. Forbered dit initiativ sammen med andre borgere, som ønsker at være involveret</strong></p> <p>Så snart du offentliggør dit initiativ på platformen, begynder timeren at køre. Derfor er det vigtigt at være godt forberedt, når du opretter dit initiativ. <a href="/initiatives/new" target="_blank">Find ud af, hvordan du forbereder dig, før du offentliggør et initiativ.</a></p> <p><strong>4. Publicér dit initiativ</strong></p> <p>Publicer dit initiativ <a href="/initiatives/new" target="_blank">her</a>. Når du har trykket på knappen 'Publicer dit initiativ', vil det være synligt for alle andre borgere, og timeren begynder at køre.</p> <p><strong>5. Saml støtte for at nå tærsklen til tiden</strong></p> <p>Nu hvor dit initiativ er offentliggjort, er det tid til at samle støtte til det. Sørg for at samle $|initiativesVotingThreshold| stemmer på $|initiativesDaysLimit| dage for at skabe involvering af byen $|orgName|. Til dette kan du bruge delingsindstillingerne på platformen eller alle andre værktøjer og kanaler, som du er anvender.</p> <p><em>Har du stadig spørgsmål? Kontakt os </em><a href="mailto:support@citizenlab.co" target="_blank"><em>her</em></a><em>.</em></p>
+      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png" height="374.3745928338762" width="819" alt="">
+      <h2>Hvad er borgerinitiativer?</h2>
+      <p>Borgerinitiativer er initiativer, der starter nedefra og op. Et behov, et ønske, en drøm, ... foreslået af dig eller andre borgere. Du og eventuelle andre initiativtagere ønsker at ændre eller forbedre en nuværende situation eller starte noget helt nyt fra bunden af.
+      </p>
+      <p>Det, der adskiller borgerinitiativer fra andre projekter på CitizenLab platformen, er, at de følger et sæt er foruddefinerede regler, og at det inkluderer inddragelse af den kommunale ledelse. De foruddefinerede regler, ofte formaliseret i lovgivningen, angiver de betingelser, der skal være opfyldt for at få ledelsen i kommunen involveret. Denne proces er nødvendig for at borgerinitiativer kan nå deres mål, som måske kan kræve officielle tilladelse til en midlertidig brug af et offentligt rum, støtte fra eksperter til at gennemføre dine planer, …</p>
+      <p>Borgerinitiativer skal komme mange til gode og handler derfor aldrig om personlig interesse, men altid om kollektiv interesse.</p>
+      <h2>Hvorfor skulle du starte et borgerinitiativ her?</h2>
+      <p>Dette er den officielle borgerinddragelsesplatform for $|orgName|, der tilbyder følgende fordele:</p>
+      <ul>
+          <li>$|orgName| er allerede til stede og lytter aktivt til hvad der sker på platformen. Så der er ikke behov for at finde og nå ud til relevante personer inden for $|orgName| organisation.</li>
+          <li>Denne platform er lavet specifikt til inddragende processer såsom borgerinitiativer. Alle elementer, processen, ... er alle bygget til at optimere til dette mål, hvilket langt fra er tilfældet for de klassiske 'sociale medier'.</li>
+          <li>Andre borgere er allerede her på platformen hvilket øger den potentielle rækkevidde for at samle støtte til dit initiativ.</li>
+      </ul>
+      <h2>Hvilke skridt skal man tage?</h2>
+      <h3>1. Kontroller, om dit initiativ passer til $|orgName| kriterier</h3>
+      <p>$|initiativesEligibilityCriteria|</p>
+      <h3>2. Tjek om hvad $|orgName| tilbyder, for at hjælpe dig med at nå dit mål</h3>
+      <p>$|initiativesThresholdReachedMessage|</p>
+      <h3>3. Forbered dit initiativ sammen med andre borgere, som ønsker at være involveret</h3>
+      <p>Så snart du offentliggør dit initiativ på platformen, begynder timeren at køre. Derfor er det vigtigt at være godt forberedt, når du opretter dit initiativ. <a href="/initiatives/new" target="_blank">Find ud af, hvordan du forbereder dig, før du offentliggør et initiativ</a>.</p>
+      <h3>4. Publicér dit initiativ</h3>
+      <p><a href="/initiatives/new" target="_blank">Publicer dit initiativ</a>. Når du har trykket på knappen 'Publicer dit initiativ', vil det være synligt for alle andre borgere, og timeren begynder at køre.</p>
+      <h3>5. Saml støtte for at nå tærsklen til tiden</h3>
+      <p>Nu hvor dit initiativ er offentliggjort, er det tid til at samle støtte til det. Sørg for at samle $|initiativesVotingThreshold| stemmer på $|initiativesDaysLimit| dage for at skabe involvering af byen $|orgName|. Til dette kan du bruge delingsindstillingerne på platformen eller alle andre værktøjer og kanaler, som du er anvender.</p>
+      <p><em>Har du stadig spørgsmål? <a href="mailto:support@citizenlab.co" target="_blank">Kontakt os</a>.</em></p>
     initiatives_success_1_title: River Shuttle
     initiatives_success_1_body: >
       <p><em>Liège (BE)</em></p> <p><strong>Emne: Mobilitet</strong></p> <p><img src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg" alt=""></p> <h2>Hvordan det startede</h2> <p>Liège, en af ​​Belgiens største byer, åbnede deres borgerinddragelsesplatform for at skaffe input til deres 'Byplan', en flerårig strategisk plan, der indeholder politiske prioriteringer for byen.</p> <p>Efter en åben opfordring til borgerne om at komme med ideer, omgrupperede byen disse ideer i større tematiske klynger. Initiativet 'River Shuttle' startede fra en af ​​disse klynger og blev åbnet for afstemning til alle indbyggere.</p> <p>Over 15% af Lièges 200.000 indbyggere besøgte platformen og afgav deres stemmer.</p> <h2>Projektet</h2> <p>Liège har allerede med succes anvendt en flodtransporttjeneste til turistmæssige formål i løbet af 2 sommersæsoner, så turister kunne opdage byen fra Meuse-floden. Dette inspirerede mindst 9 borgere til at give input til, hvordan de troede, at denne service kunne forbedres og udvides. Hvad de havde tilfælles var:</p> <ul> <li>ønsket om at begynde at anvende denne pendulsejllads også for pendlere,</li> <li>at udvide tjenesten fra sommer til året rundt, og</li> <li>at tilføje mange flere stop til færgenruten.</li> </ul> <p>Der blev afgivet i alt 1336 stemmer og der blev skabt yderligere en klynge, baseret på kommentarer fra de deltagende borgere.</p> <p>TByen Liège lyttede til dette initiativ og besluttede at handle efter det. I dag udføres en dybdegående undersøgelse af, hvordan pendulsejlladsen faktisk kan udvides. Resultaterne af denne undersøgelse vil blive brugt til fremtidig implementering.</p> <h2>Succesfaktorer</h2> <ul> <li>Den grundlæggende infrastruktur skal være til stede: Implementeringen af ​​dette initiativ behøver ikke at starte fra nul. Infrastrukturen, i dette tilfælde den største omkostning, er der allerede, ligesom erfaringer med udnyttelsen og de juridiske rammer.</li> <li>En del af den større proces: Fordi dette initiativ stammede fra Liège 'Byplan'-proces, var borgerne bag initiativet inkluderet i den samlede kommunikationsplan. På grund af inddragelse af beslutningstagere og involvering af byens administration, var der sikret en ordentlig og struktureret opfølgning.</li> <li>En del af et større problem: Selvom pendlertjenesten, som foreslås i dette initiativ, aldrig vil blive brugt af alle byens borgere, sigter den dog mod at løse et større problem, der påvirker alle mennesker, der bor i byen, nemlig trafikpropper.</li> </ul> <p><em>Mere sammenhæng: </em><a href="https://www.citizenlab.co/case-studies-en/liege" target="_blank"><em>CitizenLab-sag Liège</em></a></p> <p>Kender du et inspirerende borgerinitiativ, der bør føjes til denne liste? <a href="mailto:support@citizenlab.co" target="_blank">Føj dit eget inspirerende borgerinitiativ til listen</a>!</p>
@@ -149,32 +172,32 @@ da:
       <p>Under dette rådsmøde vil de borgerinitiativer, der har samlet 100 stemmer på mindre end 3 måneder, blive præsenteret.</p><p> Rådet vil så belyse deres perspektiv på hver idé.</p>
   custom_fields:
     users:
-      gender: 
-        title: Gender
-      birthyear: 
-        title: Year of birth
-      domicile: 
-        title: Place of residence
-      education: 
-        title: Education
+      gender:
+        title: Køn
+      birthyear:
+        title: Fødselsår
+      domicile:
+        title: Bopæl
+      education:
+        title: Uddannelse
     ideas:
       title:
-        title: Title
+        title: Titel
         description:
       body:
-        title: Description
+        title: Beskrivelse
         description:
       topic_ids:
-        title: Topics
+        title: Emner
         description:
       location:
-        title: Location
+        title: Beliggenhed
         description:
       images:
-        title: Images
+        title: Billeder
         description:
       attachments:
-        title: Attachments
+        title: Vedhæftede filer
         description:
   custom_field_options:
     gender:
@@ -206,80 +229,80 @@ da:
       <li>Være forskelligt fra andre initiativer, der allerede er på platformen</li>
       </ul>
   smart_group_rules:
-    is_empty: "%{property} has no value"
-    not_is_empty: "%{property} has any value"
+    is_empty: "%{property} har ingen værdi"
+    not_is_empty: "%{property} har enhver værdi"
     custom_field_checkbox:
-      is_checked: "%{property} checked"
-      not_is_checked: "%{property} not checked"
+      is_checked: "%{property} tjekket"
+      not_is_checked: "%{property} ikke tjekket"
     custom_field_date:
-      is_before: "%{property} is before %{value}"
-      is_exactly: "%{property} is %{value}"
-      is_after: "%{property} is after %{value}"
+      is_before: "%{property} er før %{value}"
+      is_exactly: "%{property} er %{value}"
+      is_after: "%{property} er efter %{value}"
     custom_field_number:
-      is_equal: "%{property} equals %{value}"
-      not_is_equal: "%{property} doesn't equal %{value}"
-      is_larger_than: "%{property} is larger than %{value}"
-      is_larger_than_or_equal: "%{property} is larger than or equals %{value}"
-      is_smaller_than: "%{property} is smaller than %{value}"
-      is_smaller_than_or_equal: "%{property} is smaller than or equals %{value}"
+      is_equal: "%{property} er lig med %{value}"
+      not_is_equal: "%{property} er ikke lig med %{value}"
+      is_larger_than: "%{property} er større end %{value}"
+      is_larger_than_or_equal: "%{property} er større end eller lig med %{value}"
+      is_smaller_than: "%{property} er mindre end %{value}"
+      is_smaller_than_or_equal: "%{property} er mindre end eller lig med %{value}"
     custom_field_select:
-      has_value: "%{property} is %{value}"
-      not_has_value: "%{property} isn't %{value}"
+      has_value: "%{property} er %{value}"
+      not_has_value: "%{property} er ikke %{value}"
     custom_field_text:
-      is: "%{property} is %{value}"
-      not_is: "%{property} is not %{value}"
-      contains: "%{property} contains %{value}"
-      not_contains: "%{property} doesn't contain %{value}"
-      begins_with: "%{property} begins with %{value}"
-      not_begins_with: "%{property} doesn't begin with %{value}"
-      ends_on: "%{property} ends on %{value}"
-      not_ends_on: "%{property} doesn't end on %{value}"
+      is: "%{property} er %{value}"
+      not_is: "%{property} er ikke %{value}"
+      contains: "%{property} indeholder %{value}"
+      not_contains: "%{property} indeholder ikke %{value}"
+      begins_with: "%{property} starter med %{value}"
+      not_begins_with: "%{property} starter ikke med %{value}"
+      ends_on: "%{property} slutter med  %{value}"
+      not_ends_on: "%{property} slutter ikke med %{value}"
     email:
       property: "e-mail"
     lives_in:
-      has_value_outside: "%{property} is somewhere else"
-      not_has_value_outside: "%{property} is not somewhere else"
+      has_value_outside: "%{property} er et andet sted"
+      not_has_value_outside: "%{property} er ikke et andet sted"
     participated_in_idea_status:
-      in: "Participation in an idea with status %{value}"
-      not_in: "No participation in an idea with status %{value}"
-      posted_in: "Posted an idea with status %{value}"
-      not_posted_in: "Did not post an idea with status %{value}"
-      commented_in: "Commented on an idea with status %{value}"
-      not_commented_in: "Did not comment on an idea with status %{value}"
-      voted_idea_in: "Voted on an idea with status %{value}"
-      not_voted_idea_in: "Did not vote on an idea with status %{value}"
-      voted_comment_in: "Voted on a comment on an idea with status %{value}"
-      not_voted_comment_in: "Did not vote on a comment on an idea with status %{value}"
+      in: "Deltagelse i en idé med statussen %{value}"
+      not_in: "Ingen deltagelse i en idé med statussen %{value}"
+      posted_in: "Slog en idé op med statussen %{value}"
+      not_posted_in: "Slog ikke en idé op med statussen %{value}"
+      commented_in: "Kommenterede på en idé med statussen %{value}"
+      not_commented_in: "Kommenterede ikke på en idé med statussen %{value}"
+      voted_idea_in: "Stemte på en idé med statussen %{value}"
+      not_voted_idea_in: "Stemte ikke på en idé med statussen %{value}"
+      voted_comment_in: "Stemte på en kommentar på en idé med statussen %{value}"
+      not_voted_comment_in: "Stemte ikke på en kommentar på en idé med statussen %{value}"
     participated_in_project:
-      in: "Participation in an idea in the project %{value}"
-      not_in: "No participation in an idea in the project %{value}"
-      posted_in: "Posted an idea in the project %{value}"
-      not_posted_in: "Did not post an idea in the project %{value}"
-      commented_in: "Commented on an idea in the project %{value}"
-      not_commented_in: "Did not comment on an idea in the project %{value}"
-      voted_idea_in: "Voted on an idea in the project %{value}"
-      not_voted_idea_in: "Did not vote on an idea in the project %{value}"
-      voted_comment_in: "Voted on a comment on an idea in the project %{value}"
-      not_voted_comment_in: "Did not vote on a comment on an idea in the project %{value}"
-      budgeted_in: "Assigned a budget in the project %{value}"
-      not_budgeted_in: "Didn't assign a budget in the project %{value}"
+      in: "Deltagelse i en idé i projektet %{value}"
+      not_in: "Ingen deltagelse i en ide i projektet\n %{value}"
+      posted_in: "Slog en idé op i projektet %{value}"
+      not_posted_in: "Slog ikke en idé op i projektet %{value}"
+      commented_in: "Kommenterede på en idé i projektet %{value}"
+      not_commented_in: "Kommenterede ikke på en idé i projektet %{value}"
+      voted_idea_in: "Stemte på en idé i projektet %{value}"
+      not_voted_idea_in: "Stemte ikke på en idé i projektet %{value}"
+      voted_comment_in: "Stemte på en kommentar på en idé i projektet %{value}"
+      not_voted_comment_in: "Stemte ikke på en kommentar på en idé i projektet %{value}"
+      budgeted_in: "Tildelt et budget i projektet %{value}"
+      not_budgeted_in: "Ikke tildelt et budget i projektet %{value}"
     participated_in_topic:
-      in: "Participation in an idea with topic %{value}"
-      not_in: "No participation in an idea with topic %{value}"
-      posted_in: "Posted an idea with topic %{value}"
-      not_posted_in: "Did not post an idea with topic %{value}"
-      commented_in: "Commented on an idea with topic %{value}"
-      not_commented_in: "Did not comment on an idea with topic %{value}"
-      voted_idea_in: "Voted on an idea with topic %{value}"
-      not_voted_idea_in: "Did not vote on an idea with topic %{value}"
-      voted_comment_in: "Voted on a comment on an idea with topic %{value}"
-      not_voted_comment_in: "Did not vote on a comment on an idea with topic %{value}"
+      in: "Deltagelse i en idé med emnet %{value}"
+      not_in: "Ingen deltagelse i en idé med emnet %{value}"
+      posted_in: "Slog en idé op med emnet %{value}"
+      not_posted_in: "Slog ikke en idé op med emnet %{value}"
+      commented_in: "Kommenterede på en idé med emnet %{value}"
+      not_commented_in: "Kommenterede ikke på en idé med emnet %{value}"
+      voted_idea_in: "Stemte på en idé med emnet %{value}"
+      not_voted_idea_in: "Stemte ikke på en idé med emnet %{value}"
+      voted_comment_in: "Stemte på en kommentar på en idé med emnet %{value}"
+      not_voted_comment_in: "Stemte ikke på en kommentar på en idé med emnet %{value}"
     registration_completed_at:
-      property: "registration"
+      property: "registrering"
     role:
-      is_admin: "Role is admin"
-      not_is_admin: "Role is not admin"
-      is_project_moderator: "Role is project moderator"
-      not_is_project_moderator: "Role is not project moderator"
-      is_normal_user: "Role is normal user"
-      not_is_normal_user: "Role is not normal user"
+      is_admin: "Rolle er administrator"
+      not_is_admin: "Rolle er ikke administrator"
+      is_project_moderator: "Rolle er projektadministrator "
+      not_is_project_moderator: "Rolle er ikke projektadministrator "
+      is_normal_user: "Rolle er normal bruger "
+      not_is_normal_user: "Rolle er ikke normal bruger "
