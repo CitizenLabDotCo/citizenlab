@@ -220,8 +220,8 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
   const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: { folder_id: newProjectFolderId } });
 
   await streams.fetchAllWith({
-    dataId: [projectId, newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`],
+    dataId: [newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
+    apiEndpoint: [`${API_PATH}/project_holder_orderings`],
   });
 
   return response;
