@@ -1,6 +1,7 @@
 import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
 import { ILinks } from 'typings';
+import { PublicationStatus } from 'services/projects';
 
 const apiEndpoint = `${API_PATH}/project_holder_orderings`;
 
@@ -30,7 +31,16 @@ export interface IProjectHolderOrdering {
   links: ILinks;
 }
 
-export function listProjectHolderOrderings(streamParams: IStreamParams | null = null) {
+interface IQueryParametersWithPS {
+  publication_statuses: PublicationStatus[];
+  [key: string]: any;
+}
+
+interface StreamParamsForProjects extends IStreamParams {
+  queryParameters: IQueryParametersWithPS;
+}
+
+export function listProjectHolderOrderings(streamParams: StreamParamsForProjects) {
   return streams.get<IProjectHolderOrdering>({ apiEndpoint, ...streamParams });
 }
 

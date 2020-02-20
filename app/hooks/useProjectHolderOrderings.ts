@@ -10,7 +10,7 @@ import { unionBy, isString } from 'lodash-es';
 export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
-  publicationStatusFilter?: PublicationStatus[];
+  publicationStatusFilter: PublicationStatus[];
 }
 
 export type IProjectHolderOrderingContent = {
@@ -36,7 +36,7 @@ export interface IOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   onChangeAreas: (areas: string[] | null) => void;
-  onChangePublicationStatus: (areas: string[] | null) => void;
+  onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
 export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter, publicationStatusFilter }: InputProps) {
@@ -46,7 +46,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
-  const [publicationStatuses, setPublicationSatuses] = useState<string[] | undefined>(publicationStatusFilter);
+  const [publicationStatuses, setPublicationSatuses] = useState<PublicationStatus[]>(publicationStatusFilter);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -80,9 +80,11 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
       }
     }).observable.pipe(
       switchMap((projectHolderOrderings) => {
+        console.log(projectHolderOrderings);
         const projectIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project')
           .map(holder => holder.relationships.project_holder.data.id);
+          console.log(projectIds);
 
         const projectFoldersIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project_folder')
@@ -91,7 +93,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         return combineLatest(
           projectsStream({
             queryParameters: {
-              filter_ids: projectIds
+              filter_ids: projectIds,
+              publication_statuses: publicationStatuses
             }
           }).observable,
           projectFoldersStream({
@@ -104,7 +107,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         );
       })
     ).subscribe(({ projectHolderOrderings, projects, projectFolders }) => {
-
       if (isNilOrError(projectHolderOrderings)) {
         setList(null);
         setHasMore(false);
