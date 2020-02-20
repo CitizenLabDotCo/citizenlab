@@ -65,6 +65,7 @@ class VoteWrapper extends PureComponent<Props, State> {
             unauthenticatedVoteClick={this.unauthenticatedVoteClick}
             disabledVoteClick={this.disabledVoteClick}
             size="3"
+            location="ideaPage"
           />
         }
         {error === 'votingDisabled' &&
