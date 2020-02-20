@@ -31,7 +31,7 @@ describe('Initiative form page', () => {
 
   it('has a working initiative edit form', () => {
     cy.get('#initiative-form');
-    cy.get('#e2e-initiative-title-input-en-GB').as('titleInput');
+    cy.get('#e2e-initiative-title-input').as('titleInput');
     cy.get('#body .ql-editor').as('descriptionInput');
 
     // check initial values
@@ -57,8 +57,8 @@ describe('Initiative form page', () => {
     cy.get('.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div').first().click();
 
     // verify location
-    cy.get('.e2e-initiative-location-input input').its('val').should('not.equal', 'antwerp');
-    cy.get('.e2e-initiative-location-input input').its('val').should('not.be.empty');
+    cy.get('.e2e-initiative-location-input input').should('contain.value', 'Antwerp');
+    cy.get('.e2e-initiative-location-input input').should('not.have.value', 'antwerp');
 
     // verify that image and file upload components are present
     cy.get('#e2e-initiative-file-upload');

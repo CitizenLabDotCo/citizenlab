@@ -331,9 +331,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   validateDescription = (description: string | null) => {
     if (!description) {
       return <FormattedMessage {...messages.descriptionEmptyError} />;
-    }
-
-    if (description && description.length < 30) {
+    } else if (description && description.length < 30) {
       return <FormattedMessage {...messages.descriptionLengthError} />;
     }
 

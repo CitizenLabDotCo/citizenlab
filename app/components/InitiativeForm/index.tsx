@@ -301,7 +301,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
         <StyledFormSection>
           <FormSectionTitle message={messages.formGeneralSectionTitle} />
 
-          <SectionField>
+          <SectionField id="e2e-initiative-form-title-section">
             <FormLabel
               labelMessage={messages.titleLabel}
               subtextMessage={messages.titleLabelSubtext}
@@ -323,7 +323,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             </FormLabel>
           </SectionField>
 
-          <SectionField>
+          <SectionField id="e2e-initiative-form-description-section">
             <FormLabel
               labelMessage={messages.descriptionLabel}
               subtextMessage={messages.descriptionLabelSubtext}
