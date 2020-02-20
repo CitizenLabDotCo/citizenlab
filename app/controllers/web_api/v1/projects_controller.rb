@@ -10,12 +10,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
     @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]
 
-    if params[:publication_statuses].present?
-      @projects = @projects.where(publication_status: params[:publication_statuses])
-    else
-      @projects = @projects.where(publication_status: 'published')
-    end
-
     if params.keys.include?('folder')
       if params[:folder].blank? || params[:folder] == 'nil' || params[:folder] == 'null'
         @projects = @projects.where(folder_id: nil) 
@@ -24,11 +18,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       end
     end
 
-    if params[:areas].present?
-      @projects = @projects.with_some_areas(params[:areas])
-        .or(@projects.without_areas)
-    end
-    @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
+    params[:publication_statuses] ||= 'published'
+    @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
     @projects = @projects
       .order(:ordering)
