@@ -23,6 +23,12 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-bottom: 4px;
 `;
 
+const PublicationStatusLabel = styled(StatusLabel)`
+  margin-left: auto;
+  margin-top: 4px;
+  margin-bottom: 4px;
+`;
+
 interface Props {
   project: IProjectData;
   actions?: ({ buttonContent: JSX.Element, handler: (projectId: string) => () => void, icon: IconNames } | 'manage')[];
@@ -75,6 +81,11 @@ export default ({ project, actions }: Props) => {
             icon="lock"
           />
         }
+
+        <PublicationStatusLabel
+          text={'Published'}
+          color="adminOrangeIcons"
+        />
       </RowContentInner>
       {actions ?
         <ActionsRowContainer>
