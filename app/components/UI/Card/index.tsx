@@ -98,7 +98,7 @@ interface Props {
   to: string;
   imageUrl?: string | null;
   header?: JSX.Element;
-  title: string;
+  title: JSX.Element | string;
   body?: JSX.Element | string;
   footer?: JSX.Element | string;
   onClick: (event: MouseEvent<HTMLDivElement>) => void;

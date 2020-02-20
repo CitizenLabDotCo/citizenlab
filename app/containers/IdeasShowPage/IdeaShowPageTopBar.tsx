@@ -163,6 +163,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
             unauthenticatedVoteClick={onUnauthenticatedVoteClick}
             disabledVoteClick={onDisabledVoteClick}
             size="1"
+            location="ideaPage"
           />
         </Right>
       </TopBarInner>
