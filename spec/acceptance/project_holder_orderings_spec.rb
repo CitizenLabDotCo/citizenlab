@@ -16,9 +16,10 @@ resource "ProjectHolderOrderings" do
       token = Knock::AuthToken.new(payload: @user.to_token_payload).token
       header 'Authorization', "Bearer #{token}"
 
-      @projects = ['published','published','draft','published','archived','archived','published']
+      @projects = ['published','published','draft','draft','published','archived','archived','published']
         .map { |ps|  create(:project, publication_status: ps)}
-      @folder = create(:project_folder, projects: @projects.take(2))
+      @folder_projects_count = 3
+      @folder = create(:project_folder, projects: @projects.take(@folder_projects_count))
       ProjectHolderService.new.fix_project_holder_orderings!
     end
 
@@ -31,9 +32,9 @@ resource "ProjectHolderOrderings" do
       example_request "List all project holder orderings" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].size).to eq ((@projects.count + 1) - @folder_projects_count)
         expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project_folder')).to eq 1
-        expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project')).to eq 2
+        expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project')).to eq (@projects.count - @folder_projects_count)
       end
     end
 
