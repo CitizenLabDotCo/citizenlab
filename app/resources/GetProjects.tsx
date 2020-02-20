@@ -30,7 +30,7 @@ interface IQueryParameters {
   sort?: Sort;
   areas?: string[];
   topics?: string[];
-  publication_statuses?: PublicationStatus[];
+  publication_statuses: PublicationStatus[];
   filter_can_moderate?: boolean;
   folder?: string;
   filter_ids?: string[];
