@@ -3,9 +3,16 @@ class WebApi::V1::ProjectHolderOrderingsController < ::ApplicationController
 
   def index
     @phos = policy_scope(ProjectHolderOrdering)
-      .order(:ordering)
+
+    if (params.keys & %w(publication_statuses areas topics)).present?
+      @phos = @phos.where(project_holder_type: 'ProjectFolder')
+        .or(@phos.where(project_holder: ProjectsFilteringService.new.apply_common_index_filters(
+          Pundit.policy_scope(current_user, Project), 
+          params)))
+    end
 
     @phos = @phos
+      .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
