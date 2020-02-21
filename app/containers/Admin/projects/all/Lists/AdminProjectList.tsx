@@ -50,21 +50,20 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
   if (!isNilOrError(projectHolderOrderingsList) && projectHolderOrderingsList.length > 0) {
     return (
       <>
-        <StyledListHeader>
-          <HeaderTitle>
-            <FormattedMessage {...messages.projectsAndFolders} />
-          </HeaderTitle>
-          <FeatureFlag name="project_folders">
-            <Spacer />
-            <Button
-              linkTo={'/admin/projects/folders/new'}
-              buttonStyle="admin-dark"
-            >
-              <FormattedMessage {...messages.newProjectFolder} />
-            </Button>
-          </FeatureFlag>
-        </StyledListHeader>
-
+        <FeatureFlag name="project_folders">
+          <StyledListHeader>
+            <HeaderTitle>
+              <FormattedMessage {...messages.projectsAndFolders} />
+            </HeaderTitle>
+              <Spacer />
+              <Button
+                linkTo={'/admin/projects/folders/new'}
+                buttonStyle="admin-dark"
+              >
+                <FormattedMessage {...messages.newProjectFolder} />
+              </Button>
+          </StyledListHeader>
+        </FeatureFlag>
         <SortableList
           items={projectHolderOrderingsList}
           onReorder={handleReorderHolders}
