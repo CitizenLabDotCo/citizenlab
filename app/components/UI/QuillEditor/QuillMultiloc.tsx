@@ -72,9 +72,8 @@ class QuillMultiloc extends PureComponent<Props, State> {
 
     if (!isNilOrError(tenantLocales)) {
       return (
-        <Container id={id} className={`${className || ''} e2e-multiloc-editor`} >
+        <Container className={`${className || ''} e2e-multiloc-editor`} >
           {tenantLocales.map((locale, index) => {
-            const idLocale = id && `${id}-${locale}`;
             const label = this.props.label ? (
               <>
                 <span>{this.props.label}</span>
@@ -88,7 +87,7 @@ class QuillMultiloc extends PureComponent<Props, State> {
                 className={`${index === tenantLocales.length - 1 && 'last'}`}
               >
                 <QuillEditor
-                  id={idLocale}
+                  id={`${id}-${locale}`}
                   value={valueMultiloc?.[locale] || ''}
                   label={label}
                   labelTooltipText={labelTooltipText}

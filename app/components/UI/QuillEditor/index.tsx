@@ -215,8 +215,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   },
   children
 }) => {
-  const toolbarId = !noToolbar && id ? `ql-editor-toolbar-${id}` : null;
-  const labelId = locale ? `label-${id}-${locale}` : id;
+  const editorId = locale ? `${id}-${locale}` : id;
+  const toolbarId = !noToolbar ? `ql-editor-toolbar-${editorId}` : null;
 
   const [editor, setEditor] = useState<Quill | null>(null);
   const contentRef = useRef<string>(value || '');
@@ -272,7 +272,9 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   useEffect(() => {
     if (!prevEditor && editor && editorRef?.current) {
-      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', labelId);
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('name', editorId);
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('id', editorId);
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', editorId);
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-multiline', 'true');
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('role', 'textbox');
     }
@@ -298,10 +300,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
     const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
       if (range === null && oldRange !== null) {
-        console.log('setFocussed(false)');
         setFocussed(false);
       } else if (range !== null && oldRange === null) {
-        console.log('setFocussed(true)');
         setFocussed(true);
       }
     };
@@ -324,12 +324,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   useEffect(() => {
     if (focussed && onFocus) {
-      console.log('onFocus');
       onFocus();
     }
 
     if (!focussed && onBlur) {
-      console.log('onBlur');
       onBlur();
     }
   }, [focussed, onFocus, onBlur]);
@@ -382,7 +380,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   };
 
   const handleLabelOnClick = useCallback(() => {
-    console.log('handleLabelOnClick');
     editor && editor.focus();
   }, [editor]);
 
@@ -403,14 +400,14 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
       remove={formatMessage(messages.remove)}
     >
       {label &&
-        <Label htmlFor={labelId} onClick={handleLabelOnClick}>
+        <Label htmlFor={editorId} onClick={handleLabelOnClick}>
           <span>{label}</span>
           {labelTooltipText && <IconTooltip content={labelTooltipText} />}
         </Label>
       }
 
       {!noToolbar &&
-        <div id={toolbarId || undefined} >
+        <div id={toolbarId || ''} >
           {!limitedTextFormatting &&
             <span
               className="ql-formats"
@@ -491,10 +488,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
           }
         </div>
       }
-      <div
-        id={id}
-        ref={editorRef}
-      >
+      <div ref={editorRef}>
         {children}
       </div>
     </Container>

@@ -461,6 +461,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <FormElement id="e2e-idea-description-input">
             <FormLabel
               id="editor-label"
+              htmlFor="editor"
               labelMessage={messages.descriptionLabel}
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
             />
