@@ -124,7 +124,6 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                               handler: this.removeProjectFromFolder,
                               icon: 'remove'
                             }, 'manage']}
-                            showPublicationStatusLabel
                           />
                         )}
                       </GetProject>
@@ -155,11 +154,10 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                         <ProjectRow
                           project={project}
                           actions={[{
-                            buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
-                            handler: this.removeProjectFromFolder,
-                            icon: 'remove'
-                          }, 'manage']}
-                          showPublicationStatusLabel
+                            buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                            handler: this.addProjectToFolder,
+                            icon: 'plus-circle'
+                          }]}
                         />
                       </Row>
                     )}
