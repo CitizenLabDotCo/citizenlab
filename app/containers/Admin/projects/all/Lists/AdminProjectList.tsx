@@ -24,7 +24,7 @@ import messages from '../messages';
 // services
 import { reorderProjectHolder } from 'services/projectHolderOrderings';
 import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
-import FeatureFlag from 'components/FeatureFlag';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const StyledListHeader = styled(ListHeader)`
   margin-bottom: 30px;
@@ -36,6 +36,7 @@ const Spacer = styled.div`
 
 interface DataProps {
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
+  folderEnabled: boolean;
 }
 
 interface Props extends DataProps { }
@@ -44,17 +45,21 @@ function handleReorderHolders(itemId, newOrder) {
   reorderProjectHolder(itemId, newOrder);
 }
 
-const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
+const AdminProjectList = memo<Props>(({ projectHolderOrderings, folderEnabled }) => {
   const projectHolderOrderingsList = projectHolderOrderings.list;
 
   if (!isNilOrError(projectHolderOrderingsList) && projectHolderOrderingsList.length > 0) {
     return (
       <>
-        <FeatureFlag name="project_folders">
-          <StyledListHeader>
-            <HeaderTitle>
-              <FormattedMessage {...messages.projectsAndFolders} />
-            </HeaderTitle>
+        <StyledListHeader>
+          <HeaderTitle>
+            {folderEnabled
+              ? <FormattedMessage {...messages.projectsAndFolders} />
+              : <FormattedMessage {...messages.existingProjects} />
+            }
+          </HeaderTitle>
+          {folderEnabled &&
+            <>
               <Spacer />
               <Button
                 linkTo={'/admin/projects/folders/new'}
@@ -62,8 +67,9 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
               >
                 <FormattedMessage {...messages.newProjectFolder} />
               </Button>
-          </StyledListHeader>
-        </FeatureFlag>
+            </>
+          }
+        </StyledListHeader>
         <SortableList
           items={projectHolderOrderingsList}
           onReorder={handleReorderHolders}
@@ -72,20 +78,20 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
         >
           {({ itemsList, handleDragRow, handleDropRow }) => (
             itemsList.map((item: IProjectHolderOrderingContent, index: number) => {
-                return (
-                  <SortableRow
-                    key={item.id}
-                    id={item.id}
-                    index={index}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                    lastItem={(index === projectHolderOrderingsList.length - 1)}
-                  >
-                    {item.projectHolderType === 'project'
+              return (
+                <SortableRow
+                  key={item.id}
+                  id={item.id}
+                  index={index}
+                  moveRow={handleDragRow}
+                  dropRow={handleDropRow}
+                  lastItem={(index === projectHolderOrderingsList.length - 1)}
+                >
+                  {item.projectHolderType === 'project'
                     ? <ProjectRow project={item.projectHolder} />
                     : <FolderRow folder={item.projectHolder} />}
-                  </SortableRow>
-                );
+                </SortableRow>
+              );
             }
             ))}
         </SortableList>
@@ -98,6 +104,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
 
 const Data = adopt<DataProps>({
   projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published', 'draft']} />,
+  folderEnabled: <GetFeatureFlag name="project_folders" />
 });
 
 export default () => (
