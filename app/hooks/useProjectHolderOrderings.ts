@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 import { listProjectHolderOrderings } from 'services/projectHolderOrderings';
 import { projectsStream, IProjectData, PublicationStatus } from 'services/projects';
 import { projectFoldersStream, IProjectFolderData } from 'services/projectFolders';
@@ -80,6 +80,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         'page[size]': pageSize
       }
     }).observable.pipe(
+      distinctUntilChanged(),
       switchMap((projectHolderOrderings) => {
         const projectIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project')
@@ -146,7 +147,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas, loadingMore, publicationStatuses]);
+  }, [pageNumber, pageSize, areas, publicationStatuses]);
 
   return {
     list,
