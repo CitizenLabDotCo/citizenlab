@@ -33,6 +33,7 @@ type Props = {
   children?: any;
   hidden?: boolean;
   className?: string;
+  onClick?: (event: React.MouseEvent) => void;
 };
 
 type State = {};
