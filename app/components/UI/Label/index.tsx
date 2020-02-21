@@ -8,7 +8,7 @@ const Container = styled.label`
   align-items: center;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 21px;
+  line-height: normal;
   margin: 0;
   padding: 0;
   margin-bottom: 10px;
