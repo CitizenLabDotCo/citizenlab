@@ -43,7 +43,6 @@ export default ({ project, actions }: Props) => {
     </RowButton>
   );
   const publicationStatus = project.attributes.publication_status;
-  const isDraftOrArchivedProject = publicationStatus === 'draft' || publicationStatus === 'archived';
 
   return (
     <RowContent className="e2e-admin-projects-list-item">
@@ -79,11 +78,9 @@ export default ({ project, actions }: Props) => {
           />
         }
 
-        {isDraftOrArchivedProject &&
-          <PublicationStatusLabel
-            publicationStatus={publicationStatus}
-          />
-        }
+        <PublicationStatusLabel
+          publicationStatus={publicationStatus}
+        />
       </RowContentInner>
       {actions ?
         <ActionsRowContainer>
