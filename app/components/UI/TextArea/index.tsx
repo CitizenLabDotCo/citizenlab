@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, isFunction } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 
 // components
 import Error from 'components/UI/Error';
