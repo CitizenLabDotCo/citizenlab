@@ -6,7 +6,7 @@ resource "ProjectHolderOrderings" do
 
   explanation "Either a project folder or a top-level published project"
 
-  before do 
+  before do
     header "Content-Type", "application/json"
   end
 
@@ -29,14 +29,14 @@ resource "ProjectHolderOrderings" do
       end
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only holders with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns published and archived holders by default", required: false
+      parameter :publication_statuses, "Return only holders with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all holders by default", required: false
 
       example_request "List all project holder orderings" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].size).to eq 6
         expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project_folder')).to eq 1
-        expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project')).to eq 4
+        expect(json_response[:data].map{|d| d.dig(:relationships, :project_holder, :data, :type)}.count('project')).to eq 5
       end
 
       example "List all draft or archived project holder orderings" do
@@ -46,7 +46,7 @@ resource "ProjectHolderOrderings" do
         expect(json_response[:data].map { |d| d.dig(:relationships, :project_holder, :data, :id) }).to match_array [@folder.id, @projects[3].id, @projects[5].id, @projects[6].id]
       end
 
-      example "List all projects with an area" do
+      example "List all projects with the specified areas (i.e. given an array of areas); always includes folders; returns all holders by default;" do
         a1 = create(:area)
         a2 = create(:area)
 
@@ -60,8 +60,8 @@ resource "ProjectHolderOrderings" do
 
         do_request areas: [a1.id]
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
-        expect(json_response[:data].map { |d| d.dig(:relationships, :project_holder, :data, :id) }).to match_array [@folder.id, @projects[4].id, @projects[5].id, @projects[6].id]
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].map { |d| d.dig(:relationships, :project_holder, :data, :id) }).to match_array [@folder.id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
       end
 
       example "List all projects with a topic" do

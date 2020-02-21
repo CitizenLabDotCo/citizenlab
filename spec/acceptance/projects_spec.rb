@@ -6,7 +6,7 @@ resource "Projects" do
 
   explanation "Ideas have to be posted in a city project, or they can be posted in the open idea box."
 
-  before do 
+  before do
     header "Content-Type", "application/json"
   end
 
@@ -27,16 +27,16 @@ resource "Projects" do
       end
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all pusblished projects by default", required: false
+      parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
       parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
 
-      example_request "List all published and archived projects (default behaviour)" do
+      example_request "List all projects (default behaviour)" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 6
-        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }.uniq).to match_array ['published', 'archived']
+        expect(json_response[:data].size).to eq 7
+        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
       end
 
       example "List only projects with specified IDs" do
@@ -318,14 +318,14 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
-          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
+          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
           expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
-          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
-          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
+          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
+          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
           expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
-          expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
-          expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
-          expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed 
+          expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
+          expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
+          expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed
 
         end
 
@@ -356,7 +356,7 @@ resource "Projects" do
     end
 
     patch "web_api/v1/projects/:id" do
-      before do 
+      before do
         @project = create(:project, process_type: 'continuous')
       end
 
