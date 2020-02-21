@@ -26,13 +26,23 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 interface Props {
   project: IProjectData;
-  actions?: ({ buttonContent: JSX.Element, handler: (projectId: string) => () => void, icon: IconNames } | 'manage')[];
+  actions?: ({
+      buttonContent: JSX.Element,
+      handler: (projectId: string) => () => void,
+      icon: IconNames
+    } | 'manage'
+  )[];
+  showPublicationStatusLabel?: boolean;
 }
 
-export default ({ project, actions }: Props) => {
+export default ({ project, actions, showPublicationStatusLabel }: Props) => {
   const ManageButton = (
     <RowButton
-      className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+      className={`
+        e2e-admin-edit-project
+        ${project.attributes.title_multiloc['en-GB'] || ''}
+        ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}
+      `}
       linkTo={`/admin/projects/${project.id}/edit`}
       buttonStyle="secondary"
       icon="edit"
@@ -78,9 +88,12 @@ export default ({ project, actions }: Props) => {
           />
         }
 
-        <PublicationStatusLabel
-          publicationStatus={publicationStatus}
-        />
+        {showPublicationStatusLabel &&
+          <PublicationStatusLabel
+            publicationStatus={publicationStatus}
+          />
+        }
+
       </RowContentInner>
       {actions ?
         <ActionsRowContainer>
@@ -88,7 +101,11 @@ export default ({ project, actions }: Props) => {
             <RowButton
               key={action.icon}
               type="button"
-              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+              className={`
+                e2e-admin-edit-project
+                ${project.attributes.title_multiloc['en-GB'] || ''}
+                ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}
+              `}
               onClick={action.handler(project.id)}
               buttonStyle="secondary"
               icon={action.icon}
