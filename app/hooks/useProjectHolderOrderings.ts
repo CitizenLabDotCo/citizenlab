@@ -11,6 +11,7 @@ export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
+  noEmptyFolder?: boolean;
 }
 
 export type IProjectHolderOrderingContent = {
@@ -39,7 +40,7 @@ export interface IOutput {
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
-export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter, publicationStatusFilter }: InputProps) {
+export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter, publicationStatusFilter, noEmptyFolder }: InputProps) {
   const [list, setList] = useState<IProjectHolderOrderingContent[] | undefined | null>(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
@@ -92,7 +93,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
           projectsStream({
             queryParameters: {
               filter_ids: projectIds,
-              publication_statuses: publicationStatuses
             }
           }).observable,
           projectFoldersStream({
@@ -119,6 +119,14 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
             ? projects.find(project => project.id === holderId)
             : projectFolders.find(projectFolder => projectFolder.id === holderId);
 
+          if (!holder) {
+            return null;
+          }
+
+          if (noEmptyFolder && holder.type === 'project_folder' && holder.relationships.projects.data.length === 0) {
+            return null;
+          }
+
           return {
             id: ordering.id,
             projectHolderType: holderType,
@@ -127,7 +135,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
             },
             projectHolder: holder
           };
-        }).filter(item => item.projectHolder) as IProjectHolderOrderingContent[];
+        }).filter(item => item) as IProjectHolderOrderingContent[];
 
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
         setHasMore(hasMore);
