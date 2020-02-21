@@ -1,7 +1,6 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -10,6 +9,7 @@ import messages from '../messages';
 // components
 import { RowContent, RowContentInner, RowTitle, RowButton, ActionsRowContainer } from './StyledComponents';
 import StatusLabel from 'components/UI/StatusLabel';
+import PublicationStatusLabel from './PublicationStatusLabel';
 
 // resources
 import GetProjectGroups from 'resources/GetProjectGroups';
@@ -23,12 +23,6 @@ const StyledStatusLabel = styled(StatusLabel)`
   margin-top: 4px;
   margin-bottom: 4px;
 `;
-
-// const PublicationStatusLabel = styled(StatusLabel)`
-//   margin-left: auto;
-//   margin-top: 4px;
-//   margin-bottom: 4px;
-// `;
 
 interface Props {
   project: IProjectData;
@@ -50,10 +44,6 @@ export default ({ project, actions }: Props) => {
   );
   const publicationStatus = project.attributes.publication_status;
   const isDraftOrArchivedProject = publicationStatus === 'draft' || publicationStatus === 'archived';
-  const publicationStatusColor = {
-    draft: 'orangered',
-    archived: colors.clRedError
-  }[publicationStatus];
 
   return (
     <RowContent className="e2e-admin-projects-list-item">
@@ -90,9 +80,8 @@ export default ({ project, actions }: Props) => {
         }
 
         {isDraftOrArchivedProject &&
-          <StatusLabel
-            text={<FormattedMessage {...messages[publicationStatus]} />}
-            color={publicationStatusColor}
+          <PublicationStatusLabel
+            publicationStatus={publicationStatus}
           />
         }
       </RowContentInner>
