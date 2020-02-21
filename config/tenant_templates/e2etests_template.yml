@@ -592,7 +592,7 @@ models:
     roles: []
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
-  email_campaigns/unsubscription_token:  
+  email_campaigns/unsubscription_token:
     - token: ABzaQSlYBNRWlF8kHDl5NoK7oJwVduoDgy4B4Tm2zeqCYdqx5blnB8OliZ6JtBoX
       user_ref: *admin
     - token: Zplh8js6UGm5ZdUlKGn7kEnmTWGDsALQ5ouR0WPUY8M3W1egODgscUb47RGGnNzj
@@ -637,6 +637,7 @@ models:
       user_ref: *67
   project:
   - &project1
+    # hard dependence of project_card test case
     title_multiloc:
       en-GB: Test project 1 timeline with file
       nl-BE: Test project 1 timeline with file
