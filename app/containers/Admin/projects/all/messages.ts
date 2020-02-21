@@ -98,5 +98,9 @@ export default defineMessages({
   projectsAndFolders: {
     id: 'app.containers.AdminPage.projects.all.projectsAndFolders',
     defaultMessage: 'Projects and Folders',
+  },
+  existingProjects: {
+    id: 'app.containers.AdminPage.projects.all.existingProjects',
+    defaultMessage: 'Existing projects',
   }
 });
