@@ -14,8 +14,8 @@ import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from '
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
 import FolderRow from '../../components/FolderRow';
-import { ListHeader } from '../StyledComponents';
 import Button from 'components/UI/Button';
+import { ListHeader, HeaderTitle } from '../StyledComponents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -47,6 +47,9 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
     return (
       <>
         <ListHeader>
+          <HeaderTitle>
+            <FormattedMessage {...messages.projectsAndFolders} />
+          </HeaderTitle>
           <FeatureFlag name="project_folders">
             <Spacer />
             <Button
