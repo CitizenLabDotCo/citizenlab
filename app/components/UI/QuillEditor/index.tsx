@@ -221,6 +221,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   const contentRef = useRef<string>(value || '');
   const prevEditor = usePrevious(editor);
   const [focussed, setFocussed] = useState(false);
+  const prevFocussed = usePrevious(focussed);
   const editorRef = useRef<HTMLDivElement>(null);
 
   // initialize quill
@@ -322,11 +323,11 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   }, [editor, locale, onChange]);
 
   useEffect(() => {
-    if (focussed && onFocus) {
+    if (!prevFocussed && focussed && onFocus) {
       onFocus();
     }
 
-    if (!focussed && onBlur) {
+    if (prevFocussed && !focussed && onBlur) {
       onBlur();
     }
   }, [focussed, onFocus, onBlur]);
