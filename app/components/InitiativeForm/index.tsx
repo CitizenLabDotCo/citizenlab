@@ -325,17 +325,18 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
           <SectionField id="e2e-initiative-form-description-section">
             <FormLabel
+              id="description-label-id"
+              htmlFor="body"
               labelMessage={messages.descriptionLabel}
               subtextMessage={messages.descriptionLabelSubtext}
-              id="description-label-id"
             />
             <QuillEditor
               id="body"
               value={body_multiloc?.[locale] || ''}
               locale={locale}
-              onChange={this.handleBodyOnChange}
               noVideos={true}
               noAlign={true}
+              onChange={this.handleBodyOnChange}
               onBlur={this.onBlur('body_multiloc')}
               setRef={this.handleDescriptionSetRef}
             />
