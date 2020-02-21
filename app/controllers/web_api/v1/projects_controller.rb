@@ -8,16 +8,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else 
       policy_scope(Project)
     end
-    @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]
-
-    if params.keys.include?('folder')
-      if params[:folder].blank? || params[:folder] == 'nil' || params[:folder] == 'null'
-        @projects = @projects.where(folder_id: nil) 
-      else
-        @projects = @projects.where(folder_id: params[:folder])
-      end
-    end
-    
+    @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]  
+    @projects = @projects.where(folder_id: params[:folder]) if params.keys.include?('folder')
     @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
     @projects = @projects
