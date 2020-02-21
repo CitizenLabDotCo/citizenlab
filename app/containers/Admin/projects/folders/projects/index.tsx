@@ -125,6 +125,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                               handler: this.removeProjectFromFolder,
                               icon: 'remove'
                             }, 'manage']}
+                            showPublicationStatusLabel
                           />
                         )}
                       </GetProject>
