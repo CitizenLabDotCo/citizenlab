@@ -126,10 +126,13 @@ export interface IProjects {
   data: IProjectData[];
 }
 
-interface IQueryParametersWithPS {
+type IQueryParametersWithPS = {
   publication_statuses: PublicationStatus[];
   [key: string]: any;
-}
+} | {
+  filter_ids: string[];
+  [key: string]: any;
+};
 
 interface StreamParamsForProjects extends IStreamParams {
   queryParameters: IQueryParametersWithPS;
