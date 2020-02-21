@@ -12,6 +12,7 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // hooks
 import useModerations from 'hooks/useModerations';
@@ -23,6 +24,10 @@ import { updateModerationStatus, IModerationData, TModerationStatuses } from 'se
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
@@ -49,12 +54,9 @@ const StyledPageTitle = styled(PageTitle)`
   margin-bottom: 0px;
 `;
 
-const BetaLabel = styled.span`
-  color: ${colors.clIconAccent};
-  font-size: ${fontSizes.medium}px;
-  line-height: ${fontSizes.medium + 4}px;
-  font-weight: 600;
+const StyledIconTooltip = styled(IconTooltip)`
   margin-left: 8px;
+  margin-bottom: 3px;
 `;
 
 const Filters = styled.div`
@@ -201,10 +203,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, [moderationItems, selectedRows, processing]);
 
   const handleOnModerationStatusChange = useCallback((value: TModerationStatuses) => {
+    trackEventByName(value === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked);
     onModerationStatusChange(value);
   }, [onModerationStatusChange]);
 
   const handePageNumberChange = useCallback((pageNumber: number) => {
+    trackEventByName(tracks.pageNumberClicked);
     onPageNumberChange(pageNumber);
   }, [onPageNumberChange]);
 
@@ -222,6 +226,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const markAs = useCallback(async (event: React.FormEvent) => {
     if (selectedRows.length > 0 && !isNilOrError(moderationItems) && moderationStatus && !processing) {
       event.preventDefault();
+      trackEventByName(moderationStatus === 'read' ? tracks.markedAsNotViewedButtonClicked : tracks.markedAsNotViewedButtonClicked, { selectedItemsCount: selectedRows.length });
       setProcessing(true);
       const moderations = selectedRows.map((moderationId) => moderationItems.find(item => item.id === moderationId)) as IModerationData[];
       const updatedModerationStatus = (moderationStatus === 'read' ? 'unread' : 'read');
@@ -251,14 +256,18 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <StyledPageTitle>
             <FormattedMessage {...messages.pageTitle} />
           </StyledPageTitle>
-          <BetaLabel>(Beta)</BetaLabel>
+          <StyledIconTooltip
+            content={<FormattedMessage {...messages.helpTooltipText} />}
+            iconSize="20px"
+            placement="right"
+          />
         </PageTitleWrapper>
 
         <Filters>
           {selectedRows.length > 0 &&
             <MarkAsButton
               icon="label"
-              style="cl-blue"
+              buttonStyle="cl-blue"
               processing={processing}
               onClick={markAs}
             >

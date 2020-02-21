@@ -17,7 +17,7 @@ interface Props extends  Omit<OriginalButtonProps, 'className' | 'text' | 'disab
     messageSuccess: { id: string; defaultMessage?: string; },
     messageError: { id: string; defaultMessage?: string; },
   };
-  style?: ButtonStyles;
+  buttonStyle?: ButtonStyles;
   animate?: boolean;
 }
 
@@ -40,7 +40,7 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { isSubmitting, style, animate } = this.props;
+    const { isSubmitting, buttonStyle: style, animate } = this.props;
     const buttonProps = omit(this.props, ['status', 'isSubmitting', 'isValid', 'messages', 'style', 'status', 'touched']);
 
     return (
@@ -48,7 +48,7 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
         status={this.getStatus()}
         loading={isSubmitting}
         messages={this.props.messages || messages}
-        style={style || 'primary'}
+        buttonStyle={style || 'primary'}
         animate={animate}
         {...buttonProps}
       />

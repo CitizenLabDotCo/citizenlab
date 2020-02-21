@@ -45,7 +45,13 @@ const Filters = styled.div`
   margin-bottom: 20px;
 `;
 
-const Left = styled.div``;
+const Left = styled.div`
+  display: none;
+`;
+
+const Spacer = styled.div`
+  flex: 1;
+`;
 
 const Right = styled.div``;
 
@@ -133,7 +139,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
       $organizationTypes: [String!]
     ) {
       publishedProjectTemplates(
-        first: 6,
+        first: 24,
         after: $cursor,
         departments: $departments,
         purposes: $purposes,
@@ -192,7 +198,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
   }, []);
 
   const handleSearchOnChange = useCallback((searchValue: string) => {
-    trackEventByName(tracks.searchValueChanged, { searchValue });
+    trackEventByName(tracks.projectTemplatesSearchValueChanged, { searchValue });
     setSearch(!isEmpty(searchValue) ? searchValue : null);
   }, []);
 
@@ -241,6 +247,8 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
           <ParticipationLevelFilter onChange={handleParticipationLevelFilterOnChange} />
         </Left>
 
+        <Spacer />
+
         <Right>
           <StyledSearchInput
             placeholder={searchPlaceholder}
@@ -278,7 +286,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
               <LoadMoreButton
                 processing={loadingMore}
                 onClick={handleLoadMoreTemplatesOnClick}
-                style="secondary"
+                buttonStyle="secondary"
               >
                 <FormattedMessage {...messages.loadMoreTemplates} />
               </LoadMoreButton>

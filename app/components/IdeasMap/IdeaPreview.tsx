@@ -276,6 +276,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                     unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
                     disabledVoteClick={this.handleDisabledVoteClick}
                     noVerificationShortFlow
+                    location="ideaMap"
                   />
                   <CommentsCount>
                     <CommentIcon name="comments" />

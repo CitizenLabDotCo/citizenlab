@@ -89,6 +89,7 @@ const InfoboxText = styled.div`
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDarker)};
+      text-decoration: underline;
     }
   }
 

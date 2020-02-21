@@ -1,5 +1,5 @@
 import React, { PureComponent, createRef } from 'react';
-import { get, isUndefined, isString } from 'lodash-es';
+import { isUndefined, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
@@ -150,13 +150,8 @@ const LeftColumn = styled.div`
 `;
 
 const StyledTranslateButtonMobile = styled(TranslateButton)`
-  display: none;
   width: fit-content;
-  margin-bottom: 40px;
-
-  ${media.smallerThanMinTablet`
-    display: block;
-  `}
+  margin-bottom: 20px;
 `;
 
 const InitiativeHeader = styled.div`
@@ -173,15 +168,8 @@ const InitiativeBannerContainer = styled.div`
   width: 100%;
   height: 163px;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  align-items: stretch;
   position: relative;
-  z-index: 3;
-  flex-direction: column;
   background: ${({ theme }) => theme.colorMain};
 
   ${media.smallerThanMinTablet`
@@ -189,39 +177,36 @@ const InitiativeBannerContainer = styled.div`
   `}
 `;
 
-const InitiativeBannerImage = styled.div<{ src: string | null }>`
-  ${({ src }) => src ? `background-image: url(${src});` : ''}
+const InitiativeBannerImage = styled.div<{ src: string }>`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: -2;
+  background-image: url(${props => props.src});
 `;
 
 const InitiativeHeaderOverlay = styled.div`
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: -1;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
 `;
 
-const NotOnDesktop = styled.div`
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
-`;
-
-const OnlyOnDesktop = styled.div`
-  ${media.smallerThanMaxTablet`
-    display: none;
-  `}
+const InitiativeBannerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  z-index: 1;
 `;
 
 const MobileMoreActionContainer = styled.div`
@@ -318,7 +303,6 @@ interface State {
 }
 
 export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
-  initialState: State;
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: number;
 
@@ -334,7 +318,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
   }
 
   componentDidMount() {
-    const newInitiativeId = get(this.props.location.query, 'new_initiative_id');
+    const newInitiativeId = this.props.location.query?.['new_initiative_id'];
 
     this.setLoaded();
 
@@ -411,35 +395,33 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     } = this.props;
     const { loaded, initiativeIdForSocialSharing, translateButtonClicked, a11y_pronounceLatestOfficialFeedbackPost } = this.state;
     const { formatMessage } = this.props.intl;
-    let content: JSX.Element | null = null;
     const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
     const votingThreshold = initiativeSettings ? initiativeSettings.voting_threshold : null;
     const daysLimit = initiativeSettings ? initiativeSettings.days_limit : null;
+    let content: JSX.Element | null = null;
 
     if (initiativeSettings && !isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
-      const initiativeHeaderImageLarge = (initiative.attributes.header_bg.large || null);
-      const authorId: string | null = get(initiative, 'relationships.author.data.id', null);
-      const initiativePublishedAt = initiative.attributes.published_at;
-      const titleMultiloc = initiative.attributes.title_multiloc;
-      const initiativeTitle = localize(titleMultiloc);
-      const initiativeImageLarge: string | null = get(initiativeImages, '[0].attributes.versions.large', null);
-      const initiativeGeoPosition = (initiative.attributes.location_point_geojson || null);
-      const initiativeAddress = (initiative.attributes.location_description || null);
-      const topicIds = (initiative.relationships.topics.data ? initiative.relationships.topics.data.map(item => item.id) : []);
+      const initiativeHeaderImageLarge = initiative?.attributes?.header_bg?.large;
+      const authorId = initiative?.relationships?.author?.data?.id;
+      const initiativePublishedAt = initiative?.attributes?.published_at;
+      const initiativeTitle = localize(initiative?.attributes?.title_multiloc);
+      const initiativeImageLarge = initiativeImages?.[0]?.attributes?.versions?.large;
+      const initiativeGeoPosition = initiative?.attributes?.location_point_geojson;
+      const initiativeAddress = initiative?.attributes?.location_description;
+      const topicIds = initiative?.relationships?.topics?.data?.map(item => item.id) || [];
       const initiativeUrl = location.href;
-      const initiativeId = initiative.id;
-      const initiativeBody = localize(initiative.attributes.body_multiloc);
-      const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
-      const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
-      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+      const initiativeId = initiative?.id;
+      const initiativeBody = localize(initiative?.attributes?.body_multiloc);
+      const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
+      const isNotDesktop = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_initiative',
         campaign: 'share_content',
         content: authUser.id
       } : {
-          source: 'share_initiative',
-          campaign: 'share_content'
-        };
+        source: 'share_initiative',
+        campaign: 'share_content'
+      };
       const showTranslateButton = (
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
@@ -450,70 +432,65 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         <>
           <InitiativeMeta initiativeId={initiativeId} />
 
-          {initiativeHeaderImageLarge &&
-            <OnlyOnDesktop>
-              <InitiativeBannerContainer>
-                <InitiativeBannerImage src={initiativeHeaderImageLarge} />
-              </InitiativeBannerContainer>
-            </OnlyOnDesktop>
+          {isDesktop && initiativeHeaderImageLarge &&
+            <InitiativeBannerContainer>
+              {initiativeHeaderImageLarge && <InitiativeBannerImage src={initiativeHeaderImageLarge} />}
+            </InitiativeBannerContainer>
           }
 
-          <NotOnDesktop>
+          {isNotDesktop &&
             <InitiativeBannerContainer>
-              <InitiativeBannerImage src={initiativeHeaderImageLarge} />
-              {initiativeHeaderImageLarge && <InitiativeHeaderOverlay />}
-              <MobileMoreActionContainer>
-                <InitiativeMoreActions
-                  initiative={initiative}
-                  id="e2e-initiative-more-actions-mobile"
+              {initiativeHeaderImageLarge &&
+                <>
+                  <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+                  <InitiativeHeaderOverlay />
+                </>
+              }
+              <InitiativeBannerContent>
+                <MobileMoreActionContainer>
+                  <InitiativeMoreActions
+                    initiative={initiative}
+                    id="e2e-initiative-more-actions-mobile"
+                    color="white"
+                  />
+                </MobileMoreActionContainer>
+                <Title
+                  postId={initiativeId}
+                  postType="initiative"
+                  title={initiativeTitle}
+                  locale={locale}
+                  translateButtonClicked={translateButtonClicked}
                   color="white"
+                  align="left"
                 />
-              </MobileMoreActionContainer>
-              <Title
-                postId={initiativeId}
-                postType="initiative"
-                title={initiativeTitle}
-                locale={locale}
-                translateButtonClicked={translateButtonClicked}
-                color="white"
-                align="left"
-              />
-              <PostedByMobile
-                authorId={authorId}
-              />
+                <PostedByMobile
+                  authorId={authorId}
+                />
+                </InitiativeBannerContent>
             </InitiativeBannerContainer>
-          </NotOnDesktop>
+          }
 
-          <OnlyOnDesktop>
+          {isDesktop &&
             <ActionBar
               initiativeId={initiativeId}
               translateButtonClicked={translateButtonClicked}
               onTranslateInitiative={this.onTranslateInitiative}
             />
-          </OnlyOnDesktop>
+          }
 
-          <NotOnDesktop>
+          {isNotDesktop &&
             <StyledVoteControl
               initiativeId={initiativeId}
               onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
             />
-          </NotOnDesktop>
+          }
 
           <InitiativeContainer>
-            <FeatureFlag name="machine_translations">
-              {showTranslateButton && smallerThanSmallTablet &&
-                <StyledTranslateButtonMobile
-                  translateButtonClicked={translateButtonClicked}
-                  onClick={this.onTranslateInitiative}
-                />
-              }
-            </FeatureFlag>
-
             <Content>
               <LeftColumn>
                 <Topics postType="initiative" topicIds={topicIds} />
 
-                <OnlyOnDesktop>
+                {isDesktop &&
                   <InitiativeHeader>
                     <Title
                       postType="initiative"
@@ -523,9 +500,9 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                       translateButtonClicked={translateButtonClicked}
                     />
                   </InitiativeHeader>
-                </OnlyOnDesktop>
+                }
 
-                {biggerThanLargeTablet &&
+                {isDesktop &&
                   <PostedBy
                     authorId={authorId}
                     showAboutInitiatives
@@ -540,15 +517,26 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   />
                 }
 
+                {isNotDesktop && showTranslateButton &&
+                  <FeatureFlag name="machine_translations">
+                    <StyledTranslateButtonMobile
+                      translateButtonClicked={translateButtonClicked}
+                      onClick={this.onTranslateInitiative}
+                    />
+                  </FeatureFlag>
+                }
+
                 {initiativeGeoPosition && initiativeAddress &&
                   <StyledLoadableDropdownMap
                     address={initiativeAddress}
                     position={initiativeGeoPosition}
                   />
                 }
+
                 <ScreenReaderOnly>
                   <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
                 </ScreenReaderOnly>
+
                 <Body
                   postId={initiativeId}
                   postType="initiative"
@@ -577,21 +565,19 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   commentsCount={initiative.attributes.comments_count}
                 />
 
-                {smallerThanLargeTablet &&
-                  <>
-                    <SharingMobile
-                      context="initiative"
-                      url={initiativeUrl}
-                      twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
-                      emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
-                      emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
-                      utmParams={utmParams}
-                    />
-                  </>
+                {isNotDesktop &&
+                  <SharingMobile
+                    context="initiative"
+                    url={initiativeUrl}
+                    twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
+                    emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
+                    emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
+                    utmParams={utmParams}
+                  />
                 }
               </LeftColumn>
 
-              {biggerThanLargeTablet &&
+              {isDesktop &&
                 <RightColumnDesktop>
                   <MetaContent>
                     <ScreenReaderOnly>

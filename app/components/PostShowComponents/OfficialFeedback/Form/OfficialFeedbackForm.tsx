@@ -151,7 +151,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
           <FormikSubmitWrapper
             animate
             bgColor={editForm ? colors.adminTextColor : colors.clRed}
-            icon="pen"
+            icon="send"
             textColor="white"
             fullWidth
             messages={{
@@ -164,7 +164,7 @@ class OfficialFeedbackForm extends Component<Props & InjectedIntlProps & FormikP
             {...{ isValid, isSubmitting, status, touched }}
           />
           {onCancel &&
-            <CancelButton style="text" onClick={onCancel} textColor={editForm ? colors.adminTextColor : colors.clRed}>
+            <CancelButton buttonStyle="text" onClick={onCancel} textColor={editForm ? colors.adminTextColor : colors.clRed}>
               <FormattedMessage {...messages.cancel} />
             </CancelButton>
           }

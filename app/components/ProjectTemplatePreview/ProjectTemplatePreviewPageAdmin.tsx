@@ -65,10 +65,10 @@ const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(({ params,
       <Container className={className || ''}>
         <AdminHeader>
           {goBack
-            ? <Button style="text" icon="arrow-back" onClick={onGoBack}><FormattedMessage {...messages.goBack} /></Button>
-            : <Button style="text" icon="list" onClick={onGoBack}><FormattedMessage {...messages.seeMoreTemplates} /></Button>
+            ? <Button buttonStyle="text" icon="arrow-back" onClick={onGoBack}><FormattedMessage {...messages.goBack} /></Button>
+            : <Button buttonStyle="text" icon="list" onClick={onGoBack}><FormattedMessage {...messages.seeMoreTemplates} /></Button>
           }
-          <Button onClick={onOpenModal} style="admin-dark"><FormattedMessage {...messages.useTemplate} /></Button>
+          <Button onClick={onOpenModal} buttonStyle="admin-dark"><FormattedMessage {...messages.useTemplate} /></Button>
         </AdminHeader>
 
         <ProjectTemplatePreview projectTemplateId={templateId} />

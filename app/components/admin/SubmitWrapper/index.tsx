@@ -75,7 +75,7 @@ interface Props extends Omit<OriginalButtonProps, 'className' | 'text' | 'disabl
     messageError: any,
   };
   onClick?: (event: FormEvent<any>) => void;
-  style?: ButtonStyles;
+  buttonStyle?: ButtonStyles;
   animate?: boolean;
 }
 
@@ -96,14 +96,9 @@ export default class SubmitWrapper extends PureComponent<Props> {
   }
 
   render () {
-    let style = this.props.style || 'cl-blue';
+    const style = this.props.buttonStyle || 'cl-blue';
 
-    if (this.props.status === 'success') {
-      style = 'success';
-      this.removeFocus(this.submitButton);
-    }
-
-    if (this.props.status === 'error') {
+    if (this.props.status === 'success' || this.props.status === 'error') {
       this.removeFocus(this.submitButton);
     }
 
@@ -114,7 +109,7 @@ export default class SubmitWrapper extends PureComponent<Props> {
       <Wrapper fullWidth={!!buttonProps.fullWidth}>
         <Button
           className="e2e-submit-wrapper-button"
-          style={style}
+          buttonStyle={style}
           processing={loading}
           disabled={status === 'disabled' || status === 'success'}
           onClick={onClick}

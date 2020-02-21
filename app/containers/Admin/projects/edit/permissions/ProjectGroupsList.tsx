@@ -198,7 +198,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
 
         <AddGroupButton
           text={formatMessage(messages.add)}
-          style="cl-blue"
+          buttonStyle="cl-blue"
           size="1"
           icon="plus-circle"
           onClick={this.handleOnAddGroupClick}
@@ -218,7 +218,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
             <GroupMembershipCount className="expand">
               <FormattedMessage {...messages.members} values={{ count: projectGroup.membership_count }} />
             </GroupMembershipCount>
-            <Button onClick={this.createDeleteGroupHandler(projectGroup.group_project_id)} style="text" icon="delete">
+            <Button onClick={this.createDeleteGroupHandler(projectGroup.group_project_id)} buttonStyle="text" icon="delete">
               <FormattedMessage {...messages.deleteButtonLabel} />
             </Button>
           </Row>

@@ -175,7 +175,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             </ExpiredText>
             <StyledProgressBar
               progress={voteCount / voteLimit}
-              color={colors.secondaryText}
+              color={colors.label}
               bgColor={colors.lightGreyishBlue}
               bgShaded={true}
             />

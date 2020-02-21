@@ -25,8 +25,9 @@ import eventEmitter from 'utils/eventEmitter';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
-import { FormattedNumber } from 'react-intl';
-
+import { FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
 // styles
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -36,10 +37,6 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { IOpenPostPageModalEvent } from 'containers/App';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
-
-// i18n
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from './messages';
 
 const IdeaBudget = styled.div`
   color: ${colors.clRed};
@@ -125,7 +122,7 @@ interface State {
   showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
 }
 
-class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
+class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -184,7 +181,17 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
   }
 
   render() {
-    const { idea, ideaImage, ideaAuthor, tenant, participationMethod, participationContextId, participationContextType, localize } = this.props;
+    const {
+      idea,
+      ideaImage,
+      ideaAuthor,
+      tenant,
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      localize,
+      intl: { formatMessage }
+    } = this.props;
     const { showVotingDisabled, showAssignBudgetDisabled } = this.state;
 
     if (
@@ -198,6 +205,8 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
       const budgetingDescriptor = idea?.attributes?.action_descriptor?.budgeting;
       const projectId = idea?.relationships?.project.data?.id;
       const ideaTitle = localize(idea.attributes.title_multiloc);
+      const a11y_ideaTitle = <ScreenReaderOnly>{formatMessage(messages.a11y_ideaTitle)}</ScreenReaderOnly>;
+      const title = <span>{a11y_ideaTitle}{ideaTitle}</span>;
       const ideaAuthorId = !isNilOrError(ideaAuthor) ? ideaAuthor.id : null;
       const ideaBudget = idea?.attributes?.budget;
       const ideaImageUrl = ideaImage?.attributes?.versions?.medium;
@@ -229,7 +238,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
               />
             </IdeaBudget>
           : undefined}
-          title={ideaTitle}
+          title={title}
           body={
             <StyledAuthor
               authorId={ideaAuthorId}
@@ -248,6 +257,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                       unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
+                      location="ideaCard"
                     />
                   }
 
@@ -260,6 +270,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                       openIdea={this.onCardClick}
                       unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
                       disabledAssignBudgetClick={this.disabledAssignBudgetClick}
+                      projectId={projectId}
                     />
                   }
 
@@ -294,7 +305,11 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized, State> {
                 </BottomBounceUp>
               }
 
-              {showAssignBudgetDisabled === 'assignBudgetDisabled' && budgetingDescriptor && projectId && participationContextId && participationContextType &&
+              {showAssignBudgetDisabled === 'assignBudgetDisabled' &&
+               budgetingDescriptor &&
+               projectId &&
+               participationContextId &&
+               participationContextType &&
                 <BottomBounceUp icon="lock-outlined">
                   <DisabledWrapper>
                     <AssignBudgetDisabled
@@ -322,7 +337,7 @@ const Data = adopt<DataProps, InputProps>({
   ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
 });
 
-const IdeaCardWithHoC = injectLocalize(IdeaCard);
+const IdeaCardWithHoC = injectIntl(injectLocalize(IdeaCard));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

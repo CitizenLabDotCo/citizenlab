@@ -27,14 +27,14 @@ const OptionRow = ({ pollOptionId, pollOptionTitle, deleteOption, editOption }: 
         <StyledButton
           className="e2e-edit-option"
           onClick={editOption}
-          style="text"
+          buttonStyle="text"
           icon="edit"
         />
       </TextCell>
       <Button
         className="e2e-delete-option"
         onClick={deleteOption}
-        style="text"
+        buttonStyle="text"
         icon="delete"
       >
         <FormattedMessage {...messages.deleteOption} />

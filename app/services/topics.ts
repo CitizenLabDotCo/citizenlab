@@ -11,6 +11,7 @@ export interface ITopicData {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
     icon: string;
+    ordering: number;
   };
 }
 
@@ -28,4 +29,20 @@ export function topicByIdStream(topicId: string) {
 
 export function topicsStream(streamParams: IStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
+}
+
+export function addTopic(object) {
+  return streams.add<ITopic>(apiEndpoint, { topic: object });
+}
+
+export function updateTopic(topicId: string, object) {
+  return streams.update<ITopic>(`${apiEndpoint}/${topicId}`, topicId, { topic: object });
+}
+
+export function reorderTopic(topicId: string, index: number) {
+  return streams.update<ITopic>(`${API_PATH}/topics/${topicId}/reorder`, topicId, { topic: { ordering: index } });
+}
+
+export function deleteTopic(topicId: string) {
+  return streams.delete(`${apiEndpoint}/${topicId}`, topicId);
 }

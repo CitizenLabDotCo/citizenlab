@@ -102,6 +102,7 @@ type Props = DefaultProps & LabelProps & {
   className?: string;
   notFocusable?: boolean;
   disabled?: boolean;
+  autoFocus?: boolean;
 };
 
 interface State {
@@ -117,7 +118,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      inputFocused: false
+      inputFocused: !!props.autoFocus
     };
   }
 
@@ -163,7 +164,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, indeterminate, className, notFocusable, id, disabled } = this.props;
+    const { label, size, checked, indeterminate, className, notFocusable, id, disabled, autoFocus } = this.props;
     const { inputFocused } = this.state;
 
     return (
@@ -188,6 +189,7 @@ export default class Checkbox extends PureComponent<Props, State> {
             onFocus={this.handleOnFocus}
             onBlur={this.handleOnBlur}
             disabled={disabled}
+            autoFocus={autoFocus}
           />
           {checked && <CheckmarkIcon ariaHidden name="checkmark" />}
           {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}

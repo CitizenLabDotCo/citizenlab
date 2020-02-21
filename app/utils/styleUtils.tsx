@@ -192,7 +192,7 @@ export const colors = {
   emailBg: '#e6ebec',
 
   // buttons
-  disabledPrimaryButtonBg: '#d0d0d0',
+  disabledPrimaryButtonBg: '#cfcfcf',
   clBlueButtonText: '#1391A1'
 };
 
@@ -223,9 +223,9 @@ export const stylingConsts = {
 
 // Reusable text styling
 export function quillEditedContent(
-  linkColor: string = colors.clBlueDark,
-  textColor: string = colors.text,
-  mentionColor: string = colors.text,
+  linkColor = colors.clBlueDark,
+  textColor = colors.text,
+  mentionColor = colors.text,
   fontSize: 'base' | 'medium' | 'large' = 'base',
   fontWeight: 300 | 400 = 400
 ) {

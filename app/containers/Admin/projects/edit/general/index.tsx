@@ -138,6 +138,11 @@ const ParticipationContextWrapper = styled.div`
   }
 `;
 
+const DeleteProjectSectionField = styled(SectionField)`
+  margin-top: 30px;
+  margin-bottom: 60px;
+`;
+
 const ButtonWrapper = styled.div`
   display: flex;
 `;
@@ -873,7 +878,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
             {project &&
               <HasPermission item={project.data} action="delete">
-                <SectionField>
+                <DeleteProjectSectionField>
                   <Label>
                     <FormattedMessage {...messages.deleteProjectLabel} />
                     <IconTooltip content={<FormattedMessage {...messages.deleteProjectLabelTooltip} />} />
@@ -882,7 +887,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     <Button
                       type="button"
                       icon="delete"
-                      style="delete"
+                      buttonStyle="delete"
                       onClick={this.deleteProject}
                       processing={processingDelete}
                     >
@@ -890,7 +895,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     </Button>
                   </ButtonWrapper>
                   <Error text={this.state.deleteError} />
-                </SectionField>
+                </DeleteProjectSectionField>
               </HasPermission>
             }
 

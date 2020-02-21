@@ -69,7 +69,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
               <FormattedMessage {...messages.noCampaignsDescription} />
             </NoCampaignsDescription>
             <Button
-              style="cl-blue"
+              buttonStyle="cl-blue"
               icon="plus-circle"
               linkTo="/admin/emails/custom/new"
             >
@@ -83,7 +83,7 @@ class Campaigns extends React.Component<Props & InjectedIntlProps, State> {
         <>
           <ButtonWrapper>
             <Button
-              style="cl-blue"
+              buttonStyle="cl-blue"
               icon="plus-circle"
               linkTo="/admin/emails/custom/new"
             >

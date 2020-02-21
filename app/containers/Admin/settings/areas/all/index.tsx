@@ -76,7 +76,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
         <ButtonWrapper>
           <Button
-            style="cl-blue"
+            buttonStyle="cl-blue"
             icon="plus-circle"
             linkTo="/admin/settings/areas/new"
           >
@@ -91,14 +91,14 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
               </TextCell>
               <Button
                 onClick={this.handleDeleteClick(area.id)}
-                style="text"
+                buttonStyle="text"
                 icon="delete"
               >
                 <FormattedMessage {...messages.deleteButtonLabel} />
               </Button>
               <Button
                 linkTo={`/admin/settings/areas/${area.id}`}
-                style="secondary"
+                buttonStyle="secondary"
                 icon="edit"
               >
                 <FormattedMessage {...messages.editButtonLabel} />

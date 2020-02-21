@@ -1,7 +1,4 @@
 import { useState, useEffect, useCallback } from 'react';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import shallowCompare from 'utils/shallowCompare';
 import { moderationsStream, IModerationData, TModerationStatuses } from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
@@ -12,69 +9,51 @@ interface InputProps {
   moderationStatus?: TModerationStatuses;
 }
 
-export default function useModerations({ pageNumber = 1, pageSize = 12, moderationStatus = undefined } : InputProps = {}) {
-  const pageNumber$ = new BehaviorSubject(pageNumber);
-  const pageSize$ = new BehaviorSubject(pageSize);
-  const moderationStatus$ = new BehaviorSubject(moderationStatus);
-
+export default function useModerations(props: InputProps) {
+  const [pageNumber, setPageNumber] = useState(props.pageNumber);
+  const [pageSize, setPageSize] = useState(props.pageNumber);
+  const [moderationStatus, setModerationStatus] = useState(props.moderationStatus);
   const [list, setList] = useState<IModerationData[] | undefined | null | Error>(undefined);
-  const [internalPageSize, setInternalPageSize] = useState(pageSize);
-  const [internalModerationStatus, setInternalModerationStatus] = useState(moderationStatus);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
 
-  const onPageNumberChange = useCallback((pageNumber: number) => {
-    pageNumber$.next(pageNumber);
+  const onPageNumberChange = useCallback((newPageNumber: number) => {
+    setPageNumber(newPageNumber);
   }, []);
 
-  const onPageSizeChange = useCallback((pageSize: number) => {
-    pageSize$.next(pageSize);
-    pageNumber$.next(1);
+  const onPageSizeChange = useCallback((newPageSize: number) => {
+    setPageSize(newPageSize);
+    setPageNumber(1);
   }, []);
 
-  const onModerationStatusChange = useCallback((moderationStatus: TModerationStatuses) => {
-    moderationStatus$.next((moderationStatus === 'read' || moderationStatus === 'unread') ? moderationStatus : undefined);
+  const onModerationStatusChange = useCallback((newModerationStatus: TModerationStatuses) => {
+    setModerationStatus(newModerationStatus);
   }, []);
 
   useEffect(() => {
-    pageNumber$.next(pageNumber);
-    pageSize$.next(pageSize);
-    moderationStatus$.next(moderationStatus);
-  }, [pageNumber, pageSize, moderationStatus]);
+    setPageNumber(props.pageNumber);
+    setPageSize(props.pageSize);
+    setModerationStatus(props.moderationStatus);
+  }, [props.pageNumber, props.pageSize, props.moderationStatus]);
 
   useEffect(() => {
-    const subscription = combineLatest(
-      pageNumber$.pipe(distinctUntilChanged()),
-      pageSize$.pipe(distinctUntilChanged()),
-      moderationStatus$.pipe(distinctUntilChanged())
-    ).pipe(
-      map(([pageNumber, pageSize, moderationStatus]) => ({ pageNumber, pageSize, moderationStatus })),
-      distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-      switchMap(({ pageNumber, pageSize, moderationStatus }) => {
-        return moderationsStream({
-          queryParameters: {
-            'page[number]': pageNumber,
-            'page[size]': pageSize,
-            moderation_status: moderationStatus
-          }
-        }).observable.pipe(
-          map(response => ({ response, moderationStatus, pageSize }))
-        );
-      })
-    )
-    .subscribe(({ response, moderationStatus, pageSize }) => {
+    const subscription = moderationsStream({
+      queryParameters: {
+        'page[number]': pageNumber || 1,
+        'page[size]': pageSize,
+        moderation_status: moderationStatus
+      }
+    }).observable.subscribe((response) => {
       const list = !isNilOrError(response) ? response.data : response;
       const currentPage = getPageNumberFromUrl(response?.links?.self) || 1;
       const lastPage = getPageNumberFromUrl(response?.links?.last) || 1;
       setList(list);
       setCurrentPage(currentPage);
       setLastPage(lastPage);
-      setInternalPageSize(pageSize);
-      setInternalModerationStatus(moderationStatus);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [pageNumber, pageSize, moderationStatus]);
 
   return {
     list,
@@ -83,7 +62,7 @@ export default function useModerations({ pageNumber = 1, pageSize = 12, moderati
     onPageNumberChange,
     onPageSizeChange,
     onModerationStatusChange,
-    pageSize: internalPageSize,
-    moderationStatus: internalModerationStatus
+    pageSize,
+    moderationStatus
   };
 }

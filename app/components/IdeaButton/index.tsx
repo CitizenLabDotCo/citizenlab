@@ -55,11 +55,12 @@ const StyledA = styled.a`
 `;
 
 const TooltipWrapper = styled.div`
-  display: flex;
-  align-items: center;
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
+  display: flex;
+  align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
@@ -92,8 +93,8 @@ interface ITracks {
 }
 
 interface InputProps extends ButtonContainerProps {
-  projectId?: string | undefined;
-  phaseId?: string | undefined;
+  projectId?: string | undefined | null;
+  phaseId?: string | undefined | null;
   className?: string;
   participationContextType: IParticipationContextType | null;
 }
@@ -172,7 +173,13 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             hideOnClick={false}
           >
             <ButtonWrapper tabIndex={isPostingDisabled ? 0 : -1} className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
-              <Button {...this.props} aria-describedby="tooltip-content" linkTo={linkTo} disabled={isPostingDisabled} ariaDisabled={false}>
+              <Button
+                {...this.props}
+                aria-describedby="tooltip-content"
+                linkTo={linkTo}
+                disabled={isPostingDisabled}
+                ariaDisabled={false}
+              >
                 <FormattedMessage {...messages.startAnIdea} />
               </Button>
             </ButtonWrapper>

@@ -47,7 +47,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
         <EditTitleButton
           className="e2e-edit-question"
           onClick={onEdit}
-          style="text"
+          buttonStyle="text"
           icon="edit"
           ariaLabel="edit"
         />
@@ -58,7 +58,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
       <Button
         className="e2e-delete-question"
         onClick={onDelete}
-        style="text"
+        buttonStyle="text"
         icon="delete"
       >
         <FormattedMessage {...messages.deleteQuestion} />
@@ -66,7 +66,7 @@ const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOpti
       <Button
         className="e2e-edit-options"
         onClick={onEditOptions}
-        style="secondary"
+        buttonStyle="secondary"
       >
         <FormattedMessage {...messages.editOptions} />
       </Button>

@@ -54,9 +54,7 @@ const ActionBar = memo<Props>(({ onTranslateInitiative, translateButtonClicked, 
           }]}
         />
       }
-      rightContent={isNilOrError(initiative)
-        ? null
-        : <StyledInitiativeMoreActions id="e2e-initiative-more-actions-desktop" initiative={initiative} />}
+      rightContent={isNilOrError(initiative) ? null : <StyledInitiativeMoreActions id="e2e-initiative-more-actions-desktop" initiative={initiative} />}
       showTranslateButton={showTranslateButton}
       onTranslate={onTranslateInitiative}
       translateButtonClicked={translateButtonClicked}
