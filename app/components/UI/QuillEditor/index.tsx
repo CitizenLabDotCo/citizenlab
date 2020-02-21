@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import usePrevious from 'hooks/usePrevious';
 import { debounce } from 'lodash-es';
 
@@ -216,6 +216,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   children
 }) => {
   const toolbarId = !noToolbar && id ? `ql-editor-toolbar-${id}` : null;
+  const labelId = locale ? `label-${id}-${locale}` : id;
 
   const [editor, setEditor] = useState<Quill | null>(null);
   const contentRef = useRef<string>(value || '');
@@ -270,6 +271,12 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   }, [placeholder, noAlign, noImages, noVideos, limitedTextFormatting, toolbarId, editor, editorRef]);
 
   useEffect(() => {
+    if (!prevEditor && editor && editorRef?.current) {
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', labelId);
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-multiline', 'true');
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('role', 'textbox');
+    }
+
     if ((!prevEditor && editor && value) || (prevEditor && editor && value !== contentRef.current)) {
       const delta = editor.clipboard.convert(value);
       editor.setContents(delta);
@@ -290,14 +297,12 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     };
 
     const selectionChangeHandler = (range: RangeStatic, oldRange: RangeStatic, _source: Sources) => {
-      if (editor) {
-        if (range === null && oldRange !== null) {
-          setFocussed(false);
-          onBlur && onBlur();
-        } else if (range !== null && oldRange === null) {
-          setFocussed(true);
-          onFocus && onFocus();
-        }
+      if (range === null && oldRange !== null) {
+        console.log('setFocussed(false)');
+        setFocussed(false);
+      } else if (range !== null && oldRange === null) {
+        console.log('setFocussed(true)');
+        setFocussed(true);
       }
     };
 
@@ -315,7 +320,19 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
         editor.off('selection-change', selectionChangeHandler);
       }
     };
-  }, [editor, locale, onChange, onblur, onFocus]);
+  }, [editor, locale, onChange]);
+
+  useEffect(() => {
+    if (focussed && onFocus) {
+      console.log('onFocus');
+      onFocus();
+    }
+
+    if (!focussed && onBlur) {
+      console.log('onBlur');
+      onBlur();
+    }
+  }, [focussed, onFocus, onBlur]);
 
   const trackAdvanced = (type, option) => (_event: React.MouseEvent<HTMLElement>) => {
     trackEventByName(tracks.advancedEditing.name, {
@@ -364,6 +381,11 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     trackEventByName(tracks.videoEditing.name);
   };
 
+  const handleLabelOnClick = useCallback(() => {
+    console.log('handleLabelOnClick');
+    editor && editor.focus();
+  }, [editor]);
+
   const classNames = [
     className,
     focussed ? 'focussed' : null,
@@ -381,7 +403,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
       remove={formatMessage(messages.remove)}
     >
       {label &&
-        <Label>
+        <Label htmlFor={labelId} onClick={handleLabelOnClick}>
           <span>{label}</span>
           {labelTooltipText && <IconTooltip content={labelTooltipText} />}
         </Label>
@@ -469,7 +491,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
           }
         </div>
       }
-      <div id={id} ref={editorRef}>
+      <div
+        id={id}
+        ref={editorRef}
+      >
         {children}
       </div>
     </Container>
