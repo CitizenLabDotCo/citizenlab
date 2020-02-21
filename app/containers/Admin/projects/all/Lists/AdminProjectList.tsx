@@ -79,7 +79,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
                     lastItem={(index === projectHolderOrderingsList.length - 1)}
                   >
                     {item.projectHolderType === 'project'
-                    ? <ProjectRow project={item.projectHolder} showPublicationStatusLabel />
+                    ? <ProjectRow project={item.projectHolder} />
                     : <FolderRow folder={item.projectHolder} />}
                   </SortableRow>
                 );
