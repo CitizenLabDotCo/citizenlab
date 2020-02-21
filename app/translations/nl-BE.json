@@ -774,6 +774,8 @@
   "app.containers.Admin.initiatives.titleManageTab": "Beheer de initiatieven op je platform",
   "app.containers.Admin.initiatives.titleSettingsTab": "Bepaal hoe initiatieven er in jouw context uitzien",
   "app.containers.Admin.initiatives.warningTresholdSettings": "Dit wijzigen heeft een impact op alle actieve initiatieven",
+  "app.containers.Admin.projects.all.components.archived": "",
+  "app.containers.Admin.projects.all.components.draft": "",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "",
   "app.containers.AdminPage.DashboardPage._blank": "onbekend",
   "app.containers.AdminPage.DashboardPage.activeUsers": "Actieve gebruikers",
