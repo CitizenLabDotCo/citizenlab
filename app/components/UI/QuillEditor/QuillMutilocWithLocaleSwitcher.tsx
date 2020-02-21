@@ -71,11 +71,13 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   }, []);
 
   if (selectedLocale && valueMultiloc) {
+    const id = `${props.id}-${selectedLocale}`;
+
     return (
       <Container className={className}>
         <LabelContainer>
           {label &&
-            <StyledLabel htmlFor={`${props.id}-${selectedLocale}`}>
+            <StyledLabel htmlFor={id}>
               <span>{label}</span>
               {labelTooltipText && <StyledIconTooltip content={labelTooltipText} />}
             </StyledLabel>
@@ -92,7 +94,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
 
         <QuillEditor
           {...quillProps}
-          id={props.id}
+          id={id}
           value={valueMultiloc[selectedLocale]}
           locale={selectedLocale}
           onChange={handleValueOnChange}

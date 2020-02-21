@@ -215,8 +215,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   },
   children
 }) => {
-  const editorId = locale ? `${id}-${locale}` : id;
-  const toolbarId = !noToolbar ? `ql-editor-toolbar-${editorId}` : null;
+  const toolbarId = !noToolbar ? `ql-editor-toolbar-${id}` : null;
 
   const [editor, setEditor] = useState<Quill | null>(null);
   const contentRef = useRef<string>(value || '');
@@ -272,9 +271,9 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   useEffect(() => {
     if (!prevEditor && editor && editorRef?.current) {
-      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('name', editorId);
-      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('id', editorId);
-      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', editorId);
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('name', id);
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('id', id);
+      editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', id);
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-multiline', 'true');
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('role', 'textbox');
     }
@@ -400,7 +399,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
       remove={formatMessage(messages.remove)}
     >
       {label &&
-        <Label htmlFor={editorId} onClick={handleLabelOnClick}>
+        <Label htmlFor={id} onClick={handleLabelOnClick}>
           <span>{label}</span>
           {labelTooltipText && <IconTooltip content={labelTooltipText} />}
         </Label>
