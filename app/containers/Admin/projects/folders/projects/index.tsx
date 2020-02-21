@@ -159,7 +159,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                             buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
                             handler: this.removeProjectFromFolder,
                             icon: 'remove'
-                          }, 'manage']}
+                          }]}
                           showPublicationStatusLabel
                         />
                       </Row>
