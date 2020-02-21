@@ -47,7 +47,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
-  const [publicationStatuses, setPublicationSatuses] = useState<PublicationStatus[]>(publicationStatusFilter);
+  const [publicationStatuses, setPublicationStatuses] = useState<PublicationStatus[]>(publicationStatusFilter);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -62,7 +62,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
   }, []);
 
   const onChangePublicationStatus = useCallback((publicationStatuses) => {
-    setPublicationSatuses(publicationStatuses);
+    setPublicationStatuses(publicationStatuses);
     setPageNumber(1);
   }, []);
 
