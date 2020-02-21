@@ -46,7 +46,7 @@ resource "ProjectHolderOrderings" do
         expect(json_response[:data].map { |d| d.dig(:relationships, :project_holder, :data, :id) }).to match_array [@folder.id, @projects[3].id, @projects[5].id, @projects[6].id]
       end
 
-      example "List all projects with an area" do
+      example "List all project holder orderings with an area" do
         a1 = create(:area)
         a2 = create(:area)
 
@@ -64,7 +64,7 @@ resource "ProjectHolderOrderings" do
         expect(json_response[:data].map { |d| d.dig(:relationships, :project_holder, :data, :id) }).to match_array [@folder.id, @projects[4].id, @projects[5].id, @projects[6].id]
       end
 
-      example "List all projects with a topic" do
+      example "List all project holder orderings with a topic" do
         t1 = create(:topic)
 
         p1 = @projects[4]
@@ -87,7 +87,7 @@ resource "ProjectHolderOrderings" do
         let(:id) { ProjectHolderOrdering.find_by(ordering: 2).id }
         let(:ordering) { 1 }
 
-        example "Reorder a project" do
+        example "Reorder a project holder ordering" do
           old_second_project = ProjectHolderOrdering.find_by(ordering: ordering)
           do_request
           expect(response_status).to eq 200
