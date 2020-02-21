@@ -517,18 +517,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                               } else {
                                 const projectFolder = item.projectHolder;
 
-                                if (projectFolder.relationships.projects.data.length > 0) {
-                                  return (
-                                    <ProjectsListItem
-                                      key={projectFolder.id}
-                                      to={getProjectFolderUrl(projectFolder)}
-                                    >
-                                      {localize(item.projectHolder.attributes.title_multiloc)}
-                                    </ProjectsListItem>
-                                  );
-                                }
-
-                                return null;
+                                return (
+                                  <ProjectsListItem
+                                    key={projectFolder.id}
+                                    to={getProjectFolderUrl(projectFolder)}
+                                  >
+                                    {localize(item.projectHolder.attributes.title_multiloc)}
+                                  </ProjectsListItem>
+                                );
                               }
                             }
                           )}
@@ -645,7 +641,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['published', 'archived']} />,
+  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published']} noEmptyFolder/>,
 });
 
 const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));
