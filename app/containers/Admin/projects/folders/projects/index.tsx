@@ -16,7 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { List, Row } from 'components/admin/ResourceList';
+import { List, Row, SortableList, SortableRow } from 'components/admin/ResourceList';
 import { HeaderTitle } from '../../all/StyledComponents';
 import ProjectRow from '../../components/ProjectRow';
 
@@ -97,29 +97,42 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
           </ListHeader>
 
           {inFolderProjectIds && inFolderProjectIds.length > 0 ?
-            <List key={`IN_FOLDER_LIST${inFolderProjectIds.length}`}>
-              {inFolderProjectIds.map((inFolderProjectId, index: number) => {
-                return (
-                  <GetProject projectId={inFolderProjectId} key={`in_${inFolderProjectId}`}>
-                    {project => isNilOrError(project) ? null : (
-                      <Row
-                        id={inFolderProjectId}
-                        lastItem={(index === inFolderProjectIds.length - 1)}
-                      >
-                        <ProjectRow
-                          project={project}
-                          actions={[{
-                            buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
-                            handler: this.removeProjectFromFolder,
-                            icon: 'remove'
-                          }, 'manage']}
-                        />
-                      </Row>
-                    )}
-                  </GetProject>
-                );
-              })}
-            </List>
+            <SortableList
+              key={`IN_FOLDER_LIST${inFolderProjectIds.length}`}
+              items={inFolderProjectIds}
+              onReorder={this.handleReorder}
+              className="projects-list e2e-admin-folder-projects-list"
+              id="e2e-admin-fodlers-projects-list"
+            >
+              {({ itemsList, handleDragRow, handleDropRow }) => (
+                itemsList.map((projectId, index) => {
+                  return (
+                    <SortableRow
+                      key={projectId}
+                      id={projectId}
+                      index={index}
+                      moveRow={handleDragRow}
+                      dropRow={handleDropRow}
+                      lastItem={(index === itemsList.length - 1)}
+                    >
+                      <GetProject projectId={projectId} key={`in_${projectId}`}>
+                        {project => isNilOrError(project) ? null : (
+
+                          <ProjectRow
+                            project={project}
+                            actions={[{
+                              buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
+                              handler: this.removeProjectFromFolder,
+                              icon: 'remove'
+                            }, 'manage']}
+                          />
+                        )}
+                      </GetProject>
+                    </SortableRow>
+                  );
+                })
+              )}
+            </SortableList>
             :
             <FormattedMessage {...messages.emptyFolder} />
           }

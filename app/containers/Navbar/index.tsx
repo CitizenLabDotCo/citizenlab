@@ -645,7 +645,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['published', 'archived']} />,
+  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published']} />,
 });
 
 const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));
