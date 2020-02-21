@@ -1,6 +1,7 @@
 import React from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -49,6 +50,10 @@ export default ({ project, actions }: Props) => {
   );
   const publicationStatus = project.attributes.publication_status;
   const isDraftOrArchivedProject = publicationStatus === 'draft' || publicationStatus === 'archived';
+  const publicationStatusColor = {
+    draft: 'orangered',
+    archived: colors.clRedError
+  }[publicationStatus];
 
   return (
     <RowContent className="e2e-admin-projects-list-item">
@@ -86,8 +91,8 @@ export default ({ project, actions }: Props) => {
 
         {isDraftOrArchivedProject &&
           <StatusLabel
-            text={publicationStatus}
-            color="orangered"
+            text={<FormattedMessage {...messages[publicationStatus]} />}
+            color={publicationStatusColor}
           />
         }
       </RowContentInner>
@@ -110,6 +115,3 @@ export default ({ project, actions }: Props) => {
     </RowContent>
   );
 };
-
-// TODO: localize pub status?
-// TODO: color of status label
