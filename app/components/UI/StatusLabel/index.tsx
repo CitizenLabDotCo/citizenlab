@@ -45,5 +45,3 @@ const StatusLabel: SFC<Props> = (props: Props) => {
 };
 
 export default StatusLabel;
-
-// TODO: check where statuslabel is used to see if new colors work out
