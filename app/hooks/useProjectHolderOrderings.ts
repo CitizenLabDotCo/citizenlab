@@ -93,7 +93,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
           projectsStream({
             queryParameters: {
               filter_ids: projectIds,
-              publication_statuses: publicationStatuses
             }
           }).observable,
           projectFoldersStream({
