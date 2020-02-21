@@ -1,4 +1,5 @@
 import React from 'react';
+import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -6,7 +7,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { Form, Field, InjectedFormikProps } from 'formik';
+import { Form, Field, InjectedFormikProps, FormikErrors } from 'formik';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
@@ -24,6 +25,15 @@ export interface FormValues {
 }
 
 class AreaForm extends React.Component<InjectedFormikProps<Props & InjectedIntlProps, FormValues>> {
+  public static validate = (values: FormValues): FormikErrors<FormValues> => {
+    const errors: FormikErrors<FormValues> = {};
+
+    if (every(getValues(values.title_multiloc), isEmpty)) {
+      errors.title_multiloc = [{ error: 'blank' }] as any;
+    }
+    return errors;
+  }
+
   render() {
     const { isSubmitting, errors, isValid, touched, status, intl: { formatMessage } } = this.props;
 
