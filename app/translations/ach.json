@@ -774,6 +774,8 @@
   "app.containers.Admin.initiatives.titleManageTab": "",
   "app.containers.Admin.initiatives.titleSettingsTab": "",
   "app.containers.Admin.initiatives.warningTresholdSettings": "",
+  "app.containers.Admin.projects.all.components.archived": "",
+  "app.containers.Admin.projects.all.components.draft": "",
   "app.containers.Admin.projects.all.components.manageButtonLabel": "",
   "app.containers.AdminPage.DashboardPage._blank": "",
   "app.containers.AdminPage.DashboardPage.activeUsers": "",
