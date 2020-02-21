@@ -242,7 +242,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
         theme: 'snow',
         placeholder: placeholder || '',
         modules: {
-          blotFormatter: (!noImages || !noVideos) ? true : false,
+          blotFormatter: !noImages || !noVideos ? true : false,
           toolbar: toolbarId ? `#${toolbarId}` : false,
           keyboard: {
             bindings: {
