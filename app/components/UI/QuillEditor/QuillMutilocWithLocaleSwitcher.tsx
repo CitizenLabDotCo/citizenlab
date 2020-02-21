@@ -92,7 +92,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
 
         <QuillEditor
           {...quillProps}
-          id={`${props.id}-${selectedLocale}`}
+          id={props.id}
           value={valueMultiloc[selectedLocale]}
           locale={selectedLocale}
           onChange={handleValueOnChange}

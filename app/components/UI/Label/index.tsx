@@ -39,8 +39,9 @@ type Props = {
 type State = {};
 
 export default class Label extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
+
+  handleOnClick = (event: React.MouseEvent) => {
+    this.props.onClick && this.props.onClick(event);
   }
 
   render() {
@@ -51,6 +52,7 @@ export default class Label extends React.PureComponent<Props, State> {
         id={id}
         className={`${className} ${booleanClass(className, className)} ${booleanClass(this.props.hidden, 'invisible')}`}
         htmlFor={htmlFor}
+        onClick={this.handleOnClick}
       >
         {children || value}
       </Container>
