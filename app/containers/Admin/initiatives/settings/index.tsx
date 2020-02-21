@@ -11,7 +11,7 @@ import { updateTenant } from 'services/tenant';
 // components
 import { SectionTitle, Section, SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMutilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
 import Toggle from 'components/UI/Toggle';
 import Warning from 'components/UI/Warning';
@@ -306,7 +306,7 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
             </SectionField>
 
             <StyledSectionField>
-              <QuillMutilocWithLocaleSwitcher
+              <QuillMultilocWithLocaleSwitcher
                 id="threshold_reached_message"
                 valueMultiloc={formValues.threshold_reached_message}
                 onChange={this.handleThresholdReachedMessageOnChange}
@@ -319,7 +319,7 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               />
             </StyledSectionField>
             <SectionField>
-              <QuillMutilocWithLocaleSwitcher
+              <QuillMultilocWithLocaleSwitcher
                 id="eligibility_criteria"
                 valueMultiloc={formValues.eligibility_criteria}
                 onChange={this.handleEligibilityCriteriaOnChange}

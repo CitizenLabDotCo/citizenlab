@@ -8,7 +8,7 @@ import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import IconTooltip from 'components/UI/IconTooltip';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useLocale from 'hooks/useLocale';
 
 // style
 import styled from 'styled-components';
@@ -40,41 +40,36 @@ const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
-  onChange?: (value: Multiloc) => void;
-  onSelectedLocaleChange?: (locale: Locale) => void;
+  onChange: (value: Multiloc, locale: Locale) => void;
 }
 
 const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
-
-  const { valueMultiloc, onChange, onSelectedLocaleChange, label, labelTooltipText, ...inputProps } = props;
-  const { id, className } = props;
+  const { valueMultiloc, onChange, className, label, labelTooltipText, ...textAreaProps } = props;
 
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
-  const tenant = useTenant();
-  const tenantLocales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
+  const locale = useLocale();
 
   useEffect(() => {
-    const newSelectedLocale = tenantLocales && tenantLocales.length > 0 ? tenantLocales[0] : null;
-    setSelectedLocale(newSelectedLocale);
-    onSelectedLocaleChange && newSelectedLocale && onSelectedLocaleChange(newSelectedLocale);
-  }, [tenantLocales, onSelectedLocaleChange]);
+    !isNilOrError(locale) && setSelectedLocale(locale);
+  }, [locale]);
 
-  const handleValueOnChange = useCallback((value: string) => {
-    if (onChange && !isNilOrError(selectedLocale)) {
-      onChange({
-        ...valueMultiloc,
-        [selectedLocale]: value
-      });
-    }
-  }, [valueMultiloc, selectedLocale, onChange]);
+  const handleValueOnChange = useCallback((value: string, locale: Locale) => {
+    const newValueMultiloc = {
+      ...(valueMultiloc || {}),
+      [locale]: value
+    } as Multiloc;
+
+    onChange(newValueMultiloc, locale);
+  }, [valueMultiloc, onChange]);
 
   const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
     setSelectedLocale(newSelectedLocale);
-    onSelectedLocaleChange && onSelectedLocaleChange(newSelectedLocale);
-  }, [onSelectedLocaleChange]);
+  }, []);
 
   if (selectedLocale) {
+    const id = `${props.id}-${selectedLocale}`;
+
     return (
       <Container className={className}>
         <LabelContainer>
@@ -93,8 +88,9 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
         </LabelContainer>
 
         <TextArea
-          {...inputProps}
+          {...textAreaProps}
           value={valueMultiloc?.[selectedLocale] || null}
+          locale={selectedLocale}
           onChange={handleValueOnChange}
         />
       </Container>
