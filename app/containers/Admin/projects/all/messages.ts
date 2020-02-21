@@ -96,7 +96,7 @@ export default defineMessages({
     defaultMessage: 'Create a project folder',
   },
   projectsAndFolders: {
-    id: 'app.containers.AdminPage.projects.all.newProjectFolder',
+    id: 'app.containers.AdminPage.projects.all.projectsAndFolders',
     defaultMessage: 'Projects and Folders',
   }
 });
