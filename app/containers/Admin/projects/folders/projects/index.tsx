@@ -60,7 +60,8 @@ interface Props extends DataProps { }
 class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   handleReorder = (projectId, newOrder) => {
-    reorderProject(projectId, newOrder); // TODO
+    console.log(projectId, newOrder);
+    reorderProject(projectId, newOrder);
   }
 
   addProjectToFolder = (projectId) => () => {
@@ -117,7 +118,6 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                     >
                       <GetProject projectId={projectId} key={`in_${projectId}`}>
                         {project => isNilOrError(project) ? null : (
-
                           <ProjectRow
                             project={project}
                             actions={[{
