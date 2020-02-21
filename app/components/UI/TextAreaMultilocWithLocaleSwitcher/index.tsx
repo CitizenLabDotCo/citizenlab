@@ -27,7 +27,8 @@ const LabelContainer = styled.div`
 
 const StyledLabel = styled(Label)`
   flex: 1;
-  padding-bottom: 0px;
+  padding: 0;
+  margin: 0;
 `;
 
 const Spacer = styled.div`

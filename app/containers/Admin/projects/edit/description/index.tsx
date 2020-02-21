@@ -95,6 +95,7 @@ class ProjectDescription extends PureComponent<Props & InjectedIntlProps & WithR
     this.setState({
       descriptionPreviewMultiloc,
       touched: true,
+      success: false
     });
   }
 
@@ -102,6 +103,7 @@ class ProjectDescription extends PureComponent<Props & InjectedIntlProps & WithR
     this.setState({
       descriptionMultiloc,
       touched: true,
+      success: false
     });
   }
 
