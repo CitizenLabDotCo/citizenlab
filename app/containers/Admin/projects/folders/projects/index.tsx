@@ -60,7 +60,6 @@ interface Props extends DataProps { }
 class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   handleReorder = (projectId, newOrder) => {
-    console.log(projectId, newOrder);
     reorderProject(projectId, newOrder);
   }
 
