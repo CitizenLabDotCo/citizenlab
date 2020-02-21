@@ -9,6 +9,7 @@ import messages from '../messages';
 // components
 import { RowContent, RowContentInner, RowTitle, RowButton, ActionsRowContainer } from './StyledComponents';
 import StatusLabel from 'components/UI/StatusLabel';
+import PublicationStatusLabel from './PublicationStatusLabel';
 
 // resources
 import GetProjectGroups from 'resources/GetProjectGroups';
@@ -25,13 +26,23 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 interface Props {
   project: IProjectData;
-  actions?: ({ buttonContent: JSX.Element, handler: (projectId: string) => () => void, icon: IconNames } | 'manage')[];
+  actions?: ({
+      buttonContent: JSX.Element,
+      handler: (projectId: string) => () => void,
+      icon: IconNames
+    } | 'manage'
+  )[];
+  hidePublicationStatusLabel?: boolean;
 }
 
-export default ({ project, actions }: Props) => {
+export default ({ project, actions, hidePublicationStatusLabel }: Props) => {
   const ManageButton = (
     <RowButton
-      className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+      className={`
+        e2e-admin-edit-project
+        ${project.attributes.title_multiloc['en-GB'] || ''}
+        ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}
+      `}
       linkTo={`/admin/projects/${project.id}/edit`}
       buttonStyle="secondary"
       icon="edit"
@@ -41,6 +52,7 @@ export default ({ project, actions }: Props) => {
       <FormattedMessage {...messages.editButtonLabel} />
     </RowButton>
   );
+  const publicationStatus = project.attributes.publication_status;
 
   return (
     <RowContent className="e2e-admin-projects-list-item">
@@ -75,6 +87,13 @@ export default ({ project, actions }: Props) => {
             icon="lock"
           />
         }
+
+        {!hidePublicationStatusLabel &&
+          <PublicationStatusLabel
+            publicationStatus={publicationStatus}
+          />
+        }
+
       </RowContentInner>
       {actions ?
         <ActionsRowContainer>
@@ -82,7 +101,11 @@ export default ({ project, actions }: Props) => {
             <RowButton
               key={action.icon}
               type="button"
-              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] || ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
+              className={`
+                e2e-admin-edit-project
+                ${project.attributes.title_multiloc['en-GB'] || ''}
+                ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}
+              `}
               onClick={action.handler(project.id)}
               buttonStyle="secondary"
               icon={action.icon}
