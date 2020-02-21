@@ -85,7 +85,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.noValidPasswordError',
     defaultMessage: 'The password must be at least 8 characters long',
   },
-
   noValidLocaleError: {
     id: 'app.containers.SignUp.noValidLocaleError',
     defaultMessage: 'Language not supported',

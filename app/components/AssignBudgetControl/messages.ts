@@ -41,4 +41,8 @@ export default defineMessages({
     id: 'app.components.AssignBudgetControl.a11y_price',
     defaultMessage: 'Price: ',
   },
+  backToOverview: {
+    id: 'app.components.AssignBudgetControl.backToOverview',
+    defaultMessage: 'Back to overview',
+  },
 });

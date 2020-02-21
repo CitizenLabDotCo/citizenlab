@@ -147,7 +147,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
       <Container>
         <DropdownContainer>
           <StyledButton
-            style="text"
+            buttonStyle="text"
             onClick={this.toggleDropdown}
             className="e2e-open-time-presets"
           >

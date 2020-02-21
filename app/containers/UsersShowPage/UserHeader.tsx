@@ -128,7 +128,7 @@ export const UserHeader = memo<Props>((props) => {
             {!isNilOrError(authUser) && authUser.id === user.id &&
               <EditProfileButton
                 linkTo="/profile/edit"
-                style="text"
+                buttonStyle="text"
                 icon="pencil"
                 iconAriaHidden
                 className="e2e-edit-profile"

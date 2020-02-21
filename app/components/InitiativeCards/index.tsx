@@ -564,12 +564,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                 />
 
                 <MobileFilterButton
-                  style="secondary-outlined"
+                  buttonStyle="secondary-outlined"
                   onClick={this.openFiltersModal}
                   icon="filter"
                   text={this.filterMessage}
-                  borderColor="#ccc"
-                  borderHoverColor="#999"
                 />
               </>
             }
@@ -618,7 +616,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                     <ShowMoreButton
                       id="e2e-initiative-cards-show-more-button"
                       onClick={this.loadMore}
-                      style="secondary"
+                      buttonStyle="secondary"
                       text={<FormattedMessage {...messages.showMore} />}
                       processing={loadingMore}
                       height="50px"

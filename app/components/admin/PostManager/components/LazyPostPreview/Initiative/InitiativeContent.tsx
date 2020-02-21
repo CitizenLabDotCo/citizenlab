@@ -147,7 +147,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
           <Top>
             <Button
               icon="edit"
-              style="text"
+              buttonStyle="text"
               textColor={colors.adminTextColor}
               onClick={handleClickEdit}
             >
@@ -155,7 +155,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
             </Button>
             <Button
               icon="delete"
-              style="text"
+              buttonStyle="text"
               textColor={colors.adminTextColor}
               onClick={this.handleClickDelete}
             >

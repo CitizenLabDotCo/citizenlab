@@ -144,6 +144,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       window.history.replaceState(null, '', window.location.pathname);
       this.openVerificationModal('success', null);
     }
+    if (this.props.location.query?.verification_error) {
+      window.history.replaceState(null, '', window.location.pathname);
+      this.openVerificationModal('error', { error: this.props.location.query.error || null } as ContextShape);
+    }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser, mightOpenVerificationModal } = this.state;

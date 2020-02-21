@@ -22,7 +22,7 @@ import messages from './messages';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes } from 'utils/styleUtils';
+import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
@@ -186,6 +186,9 @@ class ProjectsShowPage extends PureComponent<Props, State> {
                     projectId={project.id}
                     bgColor="#fff"
                     textColor={theme.colorMain}
+                    opacityDisabled="1"
+                    bgDisabledColor={colors.disabledPrimaryButtonBg}
+                    textDisabledColor="#fff"
                     fontWeight="500"
                     padding="13px 22px"
                   />

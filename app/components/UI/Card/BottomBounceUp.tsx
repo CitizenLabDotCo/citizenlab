@@ -40,14 +40,14 @@ const IconWrapper = styled.div`
   position: absolute;
   top: -18px;
   right: 25px;
-  width: 38px;
-  height: 38px;
+  width: 39px;
+  height: 39px;
   display:flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  border: solid 1px ${colors.separation};
-  background: #fff;
+  /* border: solid 1px ${colors.separation}; */
+  background: #f0f0f0;
 `;
 
 const StyledIcon = styled(Icon) `

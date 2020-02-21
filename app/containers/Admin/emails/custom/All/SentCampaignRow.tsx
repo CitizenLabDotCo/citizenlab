@@ -28,7 +28,7 @@ const SentCampaignRow = ({ campaign }: Props) => (
     <Button
       linkTo={`/admin/emails/custom/${campaign.id}`}
       icon="charts"
-      style="text"
+      buttonStyle="text"
     >
       <FormattedMessage {...messages.statsButton} />
     </Button>

@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
-type VerificationMethodNames = 'cow' | 'bogus';
+export type VerificationMethodNames = 'cow' | 'bogus' | 'bosa_fas';
 
 export type IDLookupMethod = {
   id: string;

@@ -194,14 +194,14 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
           <Top>
             <Button
               icon="edit"
-              style="text"
+              buttonStyle="text"
               onClick={handleClickEdit}
             >
               <FormattedMessage {...messages.edit}/>
             </Button>
             <Button
               icon="delete"
-              style="text"
+              buttonStyle="text"
               onClick={this.handleClickDelete}
             >
               <FormattedMessage {...messages.delete}/>

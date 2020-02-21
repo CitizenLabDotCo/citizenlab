@@ -71,18 +71,7 @@ const DropdownButton = styled.button`
   }
 `;
 
-const DropdownListItem = styled(Button)`
-  &.Button.button {
-    font-size: ${fontSizes.medium}px;
-  }
-
-  a:not(.processing):focus,
-  button:not(.processing):focus,
-  a:not(.processing):hover,
-  button:not(.processing):hover {
-    background: ${colors.clDropdownHoverBackground};
-  }
-`;
+const DropdownListItem = styled(Button)``;
 
 interface InputProps {
   theme?: any;
@@ -170,7 +159,7 @@ class UserMenu extends PureComponent<Props, State> {
                     id="admin-link"
                     linkTo={'/admin/dashboard'}
                     onClick={this.closeDropdown}
-                    style="text"
+                    buttonStyle="text"
                     bgHoverColor={colors.clDropdownHoverBackground}
                     icon="admin"
                     iconAriaHidden
@@ -187,7 +176,7 @@ class UserMenu extends PureComponent<Props, State> {
                   id="e2e-my-ideas-page-link"
                   linkTo={`/profile/${userSlug}`}
                   onClick={this.closeDropdown}
-                  style="text"
+                  buttonStyle="text"
                   bgHoverColor={colors.clDropdownHoverBackground}
                   icon="profile1"
                   iconAriaHidden
@@ -203,7 +192,7 @@ class UserMenu extends PureComponent<Props, State> {
                   id="e2e-profile-edit-link"
                   linkTo={'/profile/edit'}
                   onClick={this.closeDropdown}
-                  style="text"
+                  buttonStyle="text"
                   bgHoverColor={colors.clDropdownHoverBackground}
                   icon="settings"
                   iconAriaHidden
@@ -218,7 +207,7 @@ class UserMenu extends PureComponent<Props, State> {
                 <DropdownListItem
                   id="e2e-sign-out-link"
                   onClick={this.signOut}
-                  style="text"
+                  buttonStyle="text"
                   bgHoverColor={colors.clDropdownHoverBackground}
                   icon="power"
                   iconAriaHidden

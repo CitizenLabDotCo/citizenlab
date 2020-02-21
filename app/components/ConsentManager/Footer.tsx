@@ -27,7 +27,7 @@ const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleC
       <ButtonContainer>
         <CancelButton
           onClick={handleCancelBack}
-          style="primary-inverse"
+          buttonStyle="primary-inverse"
           textColor={colors.adminTextColor}
           textHoverColor={colors.adminTextColor}
         >
@@ -35,7 +35,7 @@ const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleC
         </CancelButton>
         <Button
           onClick={handleCancelConfirm}
-          style="primary"
+          buttonStyle="primary"
           bgColor={colors.adminTextColor}
           bgHoverColor={darken(0.1, colors.adminTextColor)}
         >
@@ -47,7 +47,7 @@ const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleC
         <CancelButton
           onClick={handleCancel}
           className="integration-cancel"
-          style="primary-inverse"
+          buttonStyle="primary-inverse"
           textColor={colors.adminTextColor}
           textHoverColor={colors.adminTextColor}
         >
@@ -55,7 +55,7 @@ const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleC
         </CancelButton>
         <Button
           onClick={handleSave}
-          style="primary"
+          buttonStyle="primary"
           bgColor={colors.adminTextColor}
           bgHoverColor={darken(0.1, colors.adminTextColor)}
           className="integration-save"
@@ -66,7 +66,7 @@ const Footer = ({ validate, mode, handleCancelBack, handleCancelConfirm, handleC
         </Button>
       </ButtonContainer>
     ) : (
-    <Button onClick={handleCancel} style="primary" bgColor={colors.adminTextColor} bgHoverColor={darken(0.1, colors.adminTextColor)}>
+    <Button onClick={handleCancel} buttonStyle="primary" bgColor={colors.adminTextColor} bgHoverColor={darken(0.1, colors.adminTextColor)}>
       <FormattedMessage {...messages.close} />
     </Button>
   ));

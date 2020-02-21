@@ -117,11 +117,7 @@ const ButtonContainer = styled.div`
   `}
 `;
 
-const BrowseInitiativesButton = styled(Button)`
-  &:hover .buttonText {
-    text-decoration: underline;
-  }
-`;
+const BrowseInitiativesButton = styled(Button)``;
 
 const StartInitiativeButton = styled(Button)`
   margin-left: 20px;
@@ -167,9 +163,9 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
           <BrowseInitiativesButton
             fontWeight="500"
             padding="13px 22px"
-            style="text"
+            buttonStyle="text"
             textColor={theme.colorMain}
-            textHoverColor={theme.colorMain}
+            textDecorationHover="underline"
             fullWidth={smallerThanSmallTablet}
             linkTo="/initiatives"
             text={<FormattedMessage {...messages.browseInitiative} />}

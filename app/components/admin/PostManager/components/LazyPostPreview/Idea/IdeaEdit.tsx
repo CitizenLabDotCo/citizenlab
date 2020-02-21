@@ -249,7 +249,7 @@ class IdeaEdit extends PureComponent<Props, State> {
           <Top>
             <Button
               icon="arrow-back"
-              style="text"
+              buttonStyle="text"
               textColor={colors.adminTextColor}
               onClick={goBack}
             >

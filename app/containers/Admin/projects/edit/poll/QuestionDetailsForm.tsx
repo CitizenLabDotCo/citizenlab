@@ -138,7 +138,7 @@ export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps
           />
           <Button
             className="e2e-form-question-settings-save"
-            style="secondary"
+            buttonStyle="secondary"
             onClick={this.onSave}
             disabled={!isValid}
           >

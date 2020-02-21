@@ -168,7 +168,7 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
 
           <AddGroupButton
             text={formatMessage(messages.addModerators)}
-            style="cl-blue"
+            buttonStyle="cl-blue"
             size="1"
             icon="plus-circle"
             onClick={this.handleOnAddModeratorsClick}

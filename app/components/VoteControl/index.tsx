@@ -24,12 +24,12 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 interface IVoteComponent {
   active: boolean;
@@ -231,6 +231,12 @@ interface Props {
   disabledVoteClick?: (disabled_reason?: string) => void;
   className?: string;
   noVerificationShortFlow?: boolean;
+  /*
+    For a11y, we disabled voting by keyboard on the idea cards themselves as it's currently not possible
+    to make it in an aria-friendly way. Voting by keyboard still works on the idea page itself.
+    As a replacement, number of votes are read to screen readers when going over the idea card.
+  */
+  location: 'ideaCard' | 'ideaPage' | 'ideaMap';
 }
 
 interface State {
@@ -539,53 +545,63 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { size, className, intl: { formatMessage } } = this.props;
+    const { size, className, intl: { formatMessage }, location } = this.props;
     const { showVoteControl, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, upvotesCount, downvotesCount, a11yVoteMessage } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
+    const votingHiddenForScreenReader = location === 'ideaCard';
 
     if (!showVoteControl) return null;
 
     return (
-      <Container className={`${className} e2e-vote-controls ${myVoteMode === null ? 'neutral' : myVoteMode} ${votingEnabled && 'enabled'}`}>
-        <LiveMessage message={a11yVoteMessage} aria-live="polite" />
-
-        <Upvote
-          active={myVoteMode === 'up'}
-          onMouseDown={this.removeFocus}
-          onClick={this.onClickUpvote}
-          ref={this.setUpvoteRef}
-          className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
-          enabled={upvotingEnabled}
-          aria-describedby="upvote-button"
+      <>
+        <Container
+          className={`
+            ${className}
+            e2e-vote-controls
+            ${myVoteMode === null ? 'neutral' : myVoteMode}
+            ${votingEnabled && 'enabled'}
+          `}
+          aria-hidden={votingHiddenForScreenReader}
         >
-          <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
-            <VoteIcon ariaHidden title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
-          </VoteIconContainer>
-          <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
-          <ScreenReaderOnly id="upvote-button">
-            <FormattedMessage {...messages.a11y_xUpvotes} values={{ count: upvotesCount }} />
-          </ScreenReaderOnly>
-        </Upvote>
+          <Upvote
+            active={myVoteMode === 'up'}
+            onMouseDown={this.removeFocus}
+            onClick={this.onClickUpvote}
+            ref={this.setUpvoteRef}
+            className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
+            enabled={upvotingEnabled}
+            tabIndex={votingHiddenForScreenReader ? -1 : 0}
+          >
+            <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
+              <VoteIcon title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
+            </VoteIconContainer>
+            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+          </Upvote>
 
-        <Downvote
-          active={myVoteMode === 'down'}
-          onMouseDown={this.removeFocus}
-          onClick={this.onClickDownvote}
-          ref={this.setDownvoteRef}
-          className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
-          enabled={downvotingEnabled}
-          aria-describedby="downvote-button"
-        >
-          <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-            <VoteIcon ariaHidden title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
-          </VoteIconContainer>
-          <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
-          <ScreenReaderOnly id="downvote-button">
-            <FormattedMessage {...messages.a11y_xDownvotes} values={{ count: downvotesCount }} />
+          <Downvote
+            active={myVoteMode === 'down'}
+            onMouseDown={this.removeFocus}
+            onClick={this.onClickDownvote}
+            ref={this.setDownvoteRef}
+            className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
+            enabled={downvotingEnabled}
+            tabIndex={votingHiddenForScreenReader ? -1 : 0}
+          >
+            <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
+              <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
+            </VoteIconContainer>
+            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+          </Downvote>
+        </Container>
+        {votingHiddenForScreenReader ?
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
           </ScreenReaderOnly>
-        </Downvote>
-      </Container>
+        :
+          <LiveMessage message={a11yVoteMessage} aria-live="polite" />
+        }
+      </>
     );
   }
 }

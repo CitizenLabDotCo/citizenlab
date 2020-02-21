@@ -201,7 +201,7 @@ class SignedOutHeader extends PureComponent<Props & InjectedLocalized & Injected
               <SignUpButton
                 fontWeight="500"
                 padding="13px 22px"
-                style="primary-inverse"
+                buttonStyle="primary-inverse"
                 onClick={this.goToSignUpPage}
                 text={<FormattedMessage {...messages.createAccount} />}
                 className="e2e-signed-out-header-cta-button"

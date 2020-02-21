@@ -60,7 +60,7 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
     const { exporting } = this.state;
     return (
       <Button
-        style="text"
+        buttonStyle="text"
         onClick={this.handleExportIdeas}
         processing={exporting}
         padding="0"
