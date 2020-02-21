@@ -11,6 +11,9 @@ import IconTooltip from 'components/UI/IconTooltip';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+// typings
+import { Locale } from 'typings';
+
 const Container = styled.div`
   position: relative;
 
@@ -74,11 +77,12 @@ export type Props = {
   name?: string;
   label?: string | JSX.Element | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
+  locale?: Locale;
   value?: string | null;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
   error?: string | null | undefined;
-  onChange?: (arg: string) => void | undefined;
+  onChange?: (value: string, locale: Locale | undefined) => void;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
   autofocus?: boolean | undefined;
@@ -110,8 +114,8 @@ export default class TextArea extends React.PureComponent<Props, State> {
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const value = this.props.maxCharCount ? event.currentTarget.value.substr(0, this.props.maxCharCount) : event.currentTarget.value;
 
-    if (this.props.onChange && isFunction(this.props.onChange)) {
-      this.props.onChange(value);
+    if (this.props.onChange) {
+      this.props.onChange(value, this.props.locale);
     }
   }
 
