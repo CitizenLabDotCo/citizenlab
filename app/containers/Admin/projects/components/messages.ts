@@ -15,8 +15,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.components.draft',
     defaultMessage: 'Draft',
   },
-  published: {
-    id: 'app.containers.Admin.projects.all.components.published',
-    defaultMessage: 'Published',
-  },
 });
