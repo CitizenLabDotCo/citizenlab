@@ -26,6 +26,10 @@ import { reorderProjectHolder } from 'services/projectHolderOrderings';
 import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
 import FeatureFlag from 'components/FeatureFlag';
 
+const StyledListHeader = styled(ListHeader)`
+  margin-bottom: 30px;
+`;
+
 const Spacer = styled.div`
   flex: 1;
 `;
@@ -46,7 +50,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
   if (!isNilOrError(projectHolderOrderingsList) && projectHolderOrderingsList.length > 0) {
     return (
       <>
-        <ListHeader>
+        <StyledListHeader>
           <HeaderTitle>
             <FormattedMessage {...messages.projectsAndFolders} />
           </HeaderTitle>
@@ -59,7 +63,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings }) => {
               <FormattedMessage {...messages.newProjectFolder} />
             </Button>
           </FeatureFlag>
-        </ListHeader>
+        </StyledListHeader>
 
         <SortableList
           items={projectHolderOrderingsList}
