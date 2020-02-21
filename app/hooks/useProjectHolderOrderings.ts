@@ -80,11 +80,9 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
       }
     }).observable.pipe(
       switchMap((projectHolderOrderings) => {
-        console.log(projectHolderOrderings);
         const projectIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project')
           .map(holder => holder.relationships.project_holder.data.id);
-          console.log(projectIds);
 
         const projectFoldersIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project_folder')
