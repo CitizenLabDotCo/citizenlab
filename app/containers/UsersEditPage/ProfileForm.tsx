@@ -111,7 +111,7 @@ class ProfileForm extends PureComponent<Props, State> {
       this.setLocaleOptions();
     }
 
-    if (authUser ?.attributes.avatar ?.medium !== prevProps.authUser ?.attributes.avatar ?.medium) {
+    if (authUser?.attributes.avatar?.medium !== prevProps.authUser?.attributes.avatar?.medium) {
       this.transformAPIAvatar();
     }
   }

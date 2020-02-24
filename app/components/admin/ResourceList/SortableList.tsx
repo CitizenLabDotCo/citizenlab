@@ -45,7 +45,7 @@ export class SortableList extends Component<InputProps, SortableListState> {
     const listItems = this.listItems();
     if (!listItems) return;
     const item = find(listItems, { id: itemId });
-    if (item && item.attributes.ordering !== toIndex) {
+    if (item && item.attributes ?.ordering !== toIndex) {
       this.props.onReorder(itemId, toIndex);
     } else {
       this.setState({ itemsWhileDragging: null });
