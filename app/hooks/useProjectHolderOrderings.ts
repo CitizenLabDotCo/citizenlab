@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
 import { listProjectHolderOrderings } from 'services/projectHolderOrderings';
 import { projectsStream, IProjectData, PublicationStatus } from 'services/projects';
 import { projectFoldersStream, IProjectFolderData } from 'services/projectFolders';
@@ -47,7 +47,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
-  const [publicationStatuses, setPublicationSatuses] = useState<PublicationStatus[]>(publicationStatusFilter);
+  const [publicationStatuses, setPublicationStatuses] = useState<PublicationStatus[]>(publicationStatusFilter);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -62,7 +62,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
   }, []);
 
   const onChangePublicationStatus = useCallback((publicationStatuses) => {
-    setPublicationSatuses(publicationStatuses);
+    setPublicationStatuses(publicationStatuses);
     setPageNumber(1);
   }, []);
 
@@ -80,6 +80,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         'page[size]': pageSize
       }
     }).observable.pipe(
+      distinctUntilChanged(),
       switchMap((projectHolderOrderings) => {
         const projectIds = projectHolderOrderings.data
           .filter(holder => holder.relationships.project_holder.data.type === 'project')
@@ -109,8 +110,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         setList(null);
         setHasMore(false);
       } else {
-        const selfLink = projectHolderOrderings ?.links ?.self;
-        const lastLink = projectHolderOrderings ?.links ?.last;
+        const selfLink = projectHolderOrderings?.links?.self;
+        const lastLink = projectHolderOrderings?.links?.last;
 
         const receivedItems = projectHolderOrderings.data.map(ordering => {
           const holderType = ordering.relationships.project_holder.data.type;
@@ -146,7 +147,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas, loadingMore, publicationStatuses]);
+  }, [pageNumber, pageSize, areas, publicationStatuses]);
 
   return {
     list,

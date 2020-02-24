@@ -22,6 +22,7 @@ import ProjectRow from '../../components/ProjectRow';
 
 // style
 import styled from 'styled-components';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 const Container = styled.div`
   min-height: 60vh;
@@ -53,6 +54,7 @@ const Spacer = styled.div`
 interface DataProps {
   projectHoldersOrderings: GetProjectHolderOrderingsChildProps;
   projectFolder: GetProjectFolderChildProps;
+  projectsInFolder: GetProjectsChildProps;
 }
 
 interface Props extends DataProps { }
@@ -60,7 +62,6 @@ interface Props extends DataProps { }
 class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   handleReorder = (projectId, newOrder) => {
-    console.log(projectId, newOrder);
     reorderProject(projectId, newOrder);
   }
 
@@ -75,15 +76,13 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
   }
 
   render() {
-    const { projectHoldersOrderings, projectFolder } = this.props;
+    const { projectHoldersOrderings, projectsInFolder } = this.props;
 
-    const otherProjectIds = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
-      ? projectHoldersOrderings.list.filter(item => item.projectHolderType === 'project').map(item => item.projectHolder.id)
+    const otherProjects = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
+      ? projectHoldersOrderings.list.filter(item => item.projectHolderType === 'project').map(item => item.projectHolder)
       : null;
 
-    const inFolderProjectIds = !isNilOrError(projectFolder) && projectFolder.relationships.projects
-      ? projectFolder.relationships.projects.data.map(projectRel => projectRel.id)
-      : null;
+    const inFolderFinalList = (!isNilOrError(projectsInFolder.projectsList) && projectsInFolder.projectsList.length > 0) ? projectsInFolder.projectsList : null;
 
     return (
       <Container>
@@ -97,38 +96,33 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
           </ListHeader>
 
-          {inFolderProjectIds && inFolderProjectIds.length > 0 ?
+          {inFolderFinalList ?
             <SortableList
-              key={`IN_FOLDER_LIST${inFolderProjectIds.length}`}
-              items={inFolderProjectIds}
+              key={`IN_FOLDER_LIST${inFolderFinalList.length}`}
+              items={inFolderFinalList}
               onReorder={this.handleReorder}
               className="projects-list e2e-admin-folder-projects-list"
               id="e2e-admin-fodlers-projects-list"
             >
               {({ itemsList, handleDragRow, handleDropRow }) => (
-                itemsList.map((projectId, index) => {
+                itemsList.map((project, index) => {
                   return (
                     <SortableRow
-                      key={projectId}
-                      id={projectId}
+                      key={project.id}
+                      id={project.id}
                       index={index}
                       moveRow={handleDragRow}
                       dropRow={handleDropRow}
                       lastItem={(index === itemsList.length - 1)}
                     >
-                      <GetProject projectId={projectId} key={`in_${projectId}`}>
-                        {project => isNilOrError(project) ? null : (
-                          <ProjectRow
-                            project={project}
-                            actions={[{
-                              buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
-                              handler: this.removeProjectFromFolder,
-                              icon: 'remove'
-                            }, 'manage']}
-                            showPublicationStatusLabel
-                          />
-                        )}
-                      </GetProject>
+                      <ProjectRow
+                        project={project}
+                        actions={[{
+                          buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
+                          handler: this.removeProjectFromFolder,
+                          icon: 'remove'
+                        }, 'manage']}
+                      />
                     </SortableRow>
                   );
                 })
@@ -143,24 +137,23 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
             </StyledHeaderTitle>
           </ListHeader>
 
-          {otherProjectIds && otherProjectIds.length > 0 ?
-            <List key={`JUST_LIST${otherProjectIds.length}`}>
-              {otherProjectIds.map((projectId, index: number) => {
+          {otherProjects && otherProjects.length > 0 ?
+            <List key={`JUST_LIST${otherProjects.length}`}>
+              {otherProjects.map((project, index: number) => {
                 return (
-                  <GetProject projectId={projectId} key={`out_${projectId}`}>
+                  <GetProject projectId={project.id} key={`out_${project.id}`}>
                     {project => isNilOrError(project) ? null : (
                       <Row
-                        id={projectId}
-                        lastItem={(index === otherProjectIds.length - 1)}
+                        id={project.id}
+                        lastItem={(index === otherProjects.length - 1)}
                       >
                         <ProjectRow
                           project={project}
                           actions={[{
-                            buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
-                            handler: this.removeProjectFromFolder,
-                            icon: 'remove'
-                          }, 'manage']}
-                          showPublicationStatusLabel
+                            buttonContent: <FormattedMessage {...messages.addToFolder} />,
+                            handler: this.addProjectToFolder,
+                            icon: 'plus-circle'
+                          }]}
                         />
                       </Row>
                     )}
@@ -182,6 +175,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'archived', 'publishe
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
   projectHoldersOrderings: <GetProjectHolderOrderings publicationStatusFilter={publicationStatuses} />,
+  projectsInFolder: ({ params, render }) => <GetProjects publicationStatuses={publicationStatuses} folderId={params.projectFolderId}>{render}</GetProjects>,
 });
 
 export default (inputProps: WithRouterProps) => (

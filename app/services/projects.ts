@@ -224,14 +224,14 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
 
   await streams.fetchAllWith({
     dataId: [newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
-    apiEndpoint: [`${API_PATH}/project_holder_orderings`],
+    apiEndpoint: [`${API_PATH}/project_holder_orderings`, `${API_PATH}/projects`],
   });
 
   return response;
 }
 
-export function getFilteredProjects(projects: IProjectData[], publicationStatus: PublicationStatus) {
+export function getFilteredProjects(projects: IProjectData[], publicationStatuses: PublicationStatus[]) {
   return projects.filter((project) => {
-    return project.attributes.publication_status === publicationStatus;
+    return publicationStatuses.includes(project.attributes.publication_status);
   });
 }

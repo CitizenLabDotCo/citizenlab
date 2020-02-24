@@ -11,10 +11,6 @@ import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources
 import { List, Row } from 'components/admin/ResourceList';
 import ProjectRow from '../../components/ProjectRow';
 import { ListHeader, HeaderTitle } from '../StyledComponents';
-import IconTooltip from 'components/UI/IconTooltip';
-
-// services
-import { getFilteredProjects } from 'services/projects';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,7 +20,7 @@ interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-interface Props extends DataProps {}
+interface Props extends DataProps { }
 
 const ModeratorProjectList = memo<Props>(({ projects }) => {
   if (
@@ -33,75 +29,33 @@ const ModeratorProjectList = memo<Props>(({ projects }) => {
     projects.projectsList.length > 0
   ) {
     const { projectsList } = projects;
-    const publishedProjects = getFilteredProjects(projectsList, 'published');
-    const archivedProjects = getFilteredProjects(projectsList, 'archived');
-    const draftProjects = getFilteredProjects(projectsList, 'draft');
 
-    return (
-      <>
-        {publishedProjects && publishedProjects.length > 0 &&
-          <>
-            <ListHeader>
-              <HeaderTitle>
-                <FormattedMessage {...messages.published} />
-              </HeaderTitle>
-              <IconTooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
-            </ListHeader>
-            <List>
-              {publishedProjects.map((project, index) => {
-                  return (
-                    <Row
-                      key={index}
-                      id={project.id}
-                      lastItem={(index === projectsList.length - 1)}
-                    >
-                      <ProjectRow project={project} />
-                    </Row>
-                  );
-                }
-              )}
-            </List>
-          </>
-        }
-        {draftProjects && draftProjects.length > 0 &&
-          <>
-            <ListHeader>
-              <HeaderTitle>
-                <FormattedMessage {...messages.draft} />
-              </HeaderTitle>
-              <IconTooltip content={<FormattedMessage {...messages.draftTooltip} />} />
-            </ListHeader>
-            <List>
-              {draftProjects.map((project, index) => (
-                <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
-                  <ProjectRow project={project} />
-                </Row>
-              ))}
-            </List>
-          </>
-        }
-        {archivedProjects && archivedProjects.length > 0 &&
-          <>
-            <ListHeader>
-              <HeaderTitle>
-                <FormattedMessage {...messages.archived} />
-              </HeaderTitle>
-              <IconTooltip content={<FormattedMessage {...messages.archivedTooltip} />} />
-            </ListHeader>
-            <List>
-              {archivedProjects.map((project, index) => (
+    if (projectsList && projectsList.length > 0) {
+      return (
+        <>
+          <ListHeader>
+            <HeaderTitle>
+              <FormattedMessage {...messages.existingProjects} />
+            </HeaderTitle>
+          </ListHeader>
+
+          <List>
+            {projectsList.map((project, index) => {
+              return (
                 <Row
-                  key={project.id}
-                  lastItem={(index === archivedProjects.length - 1)}
+                  key={index}
+                  id={project.id}
+                  lastItem={(index === projectsList.length - 1)}
                 >
                   <ProjectRow project={project} />
                 </Row>
-              ))}
-            </List>
-          </>
-        }
-      </>
-    );
+              );
+            }
+            )}
+          </List>
+        </>
+      );
+    }
   }
 
   return null;

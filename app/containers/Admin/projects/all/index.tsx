@@ -52,7 +52,9 @@ const StyledCreateProject = styled(CreateProject)`
   margin-bottom: 18px;
 `;
 
-const ListsContainer = styled.div``;
+const ListsContainer = styled.div`
+  min-height: 80vh;
+`;
 
 export const ListHeader = styled.div`
   display: flex;

@@ -32,10 +32,10 @@ interface Props {
       icon: IconNames
     } | 'manage'
   )[];
-  showPublicationStatusLabel?: boolean;
+  hidePublicationStatusLabel?: boolean;
 }
 
-export default ({ project, actions, showPublicationStatusLabel }: Props) => {
+export default ({ project, actions, hidePublicationStatusLabel }: Props) => {
   const ManageButton = (
     <RowButton
       className={`
@@ -88,7 +88,7 @@ export default ({ project, actions, showPublicationStatusLabel }: Props) => {
           />
         }
 
-        {showPublicationStatusLabel &&
+        {!hidePublicationStatusLabel &&
           <PublicationStatusLabel
             publicationStatus={publicationStatus}
           />
