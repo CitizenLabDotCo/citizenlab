@@ -124,9 +124,10 @@ export interface Props {
   className?: string;
   titleIconName?: IconNames;
   title: string | JSX.Element;
-  lazyLoadedContent: any; // TO DO
   contentBackgroundColor?: string;
   e2eId?: string;
+  /* children should be lazy-loaded. Search code for examples */
+  children: React.ReactNode;
 }
 
 const CollapsibleBox = memo<Props>((props) => {
@@ -140,7 +141,7 @@ const CollapsibleBox = memo<Props>((props) => {
     className,
     titleIconName,
     title,
-    lazyLoadedContent,
+    children,
     contentBackgroundColor,
     e2eId
   } = props;
@@ -166,7 +167,7 @@ const CollapsibleBox = memo<Props>((props) => {
       >
         <Wrapper contentBackgroundColor={contentBackgroundColor}>
           <Suspense fallback={null}>
-            {lazyLoadedContent}
+            {children}
           </Suspense>
         </Wrapper>
       </CSSTransition>
