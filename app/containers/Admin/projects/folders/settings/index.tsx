@@ -78,8 +78,8 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
           setTitleMultiloc(projectFolder.attributes.title_multiloc);
           setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
           setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
-          if (projectFolder.attributes ?.header_bg ?.large) {
-            const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
+          if (projectFolder.attributes?.header_bg?.large) {
+            const headerFile = await convertUrlToUploadFile(projectFolder.attributes?.header_bg?.large, null, null);
             setHeaderBg(headerFile);
           }
         }
@@ -127,7 +127,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             title_multiloc: titleMultiloc,
             description_multiloc: descriptionMultiloc,
             description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg ?.base64
+            header_bg: headerBg?.base64
           });
           if (isNilOrError(res)) {
             setStatus('error');
@@ -147,7 +147,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             title_multiloc: titleMultiloc,
             description_multiloc: descriptionMultiloc,
             description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg ?.base64
+            header_bg: headerBg?.base64
           });
           if (isNilOrError(res)) {
             setStatus('error');
