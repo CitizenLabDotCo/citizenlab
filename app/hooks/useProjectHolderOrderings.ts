@@ -110,8 +110,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
         setList(null);
         setHasMore(false);
       } else {
-        const selfLink = projectHolderOrderings ?.links ?.self;
-        const lastLink = projectHolderOrderings ?.links ?.last;
+        const selfLink = projectHolderOrderings?.links?.self;
+        const lastLink = projectHolderOrderings?.links?.last;
 
         const receivedItems = projectHolderOrderings.data.map(ordering => {
           const holderType = ordering.relationships.project_holder.data.type;
