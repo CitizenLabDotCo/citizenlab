@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
 import { SectionTitle, SectionSubtitle, SectionField, Section } from 'components/admin/Section';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { Multiloc, Locale, UploadFile } from 'typings';
-import InputMultiloc from 'components/UI/InputMultiloc';
 import Error from 'components/UI/Error';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import TextAreaMultiloc from 'components/UI/TextAreaMultiloc';
-import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
-import IconTooltip from 'components/UI/IconTooltip';
 import Label from 'components/UI/Label';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -26,8 +22,8 @@ import { InjectedIntlProps } from 'react-intl';
 import GoBackButton from 'components/UI/GoBackButton';
 import Input from 'components/UI/Input';
 import TextArea from 'components/UI/TextArea';
-import Quill from 'quill';
 import QuillEditor from 'components/UI/QuillEditor';
+import IconTooltip from 'components/UI/IconTooltip';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
