@@ -155,19 +155,29 @@ class WebApi::V1::InitiativesController < ApplicationController
     authorize @initiative
 
     service.before_update(@initiative, current_user)
+
+    saved = nil
     ActiveRecord::Base.transaction do
-      if @initiative.save
+      saved = @initiative.save
+      if saved
         authorize @initiative
         service.after_update(@initiative, current_user)
-        render json: WebApi::V1::InitiativeSerializer.new(
-          @initiative.reload, 
-          params: fastjson_params, 
-          include: [:author, :topics, :areas, :user_vote, :initiative_images]
-          ).serialized_json, status: :ok
-      else
-        render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
       end
-    end 
+    end
+
+    # Keeping `render` outside of the transaction is better anyway.
+    # Additionally, if we wouldn't do it here, we're running into an issue
+    # where carrierwave is not storing the actual header_bg file on the
+    # filesystem. The root cause it not exactly clear.
+    if saved
+      render json: WebApi::V1::InitiativeSerializer.new(
+        @initiative.reload,
+        params: fastjson_params,
+        include: [:author, :topics, :areas, :user_vote, :initiative_images]
+        ).serialized_json, status: :ok
+    else
+      render json: { errors: @initiative.errors.details }, status: :unprocessable_entity
+    end
   end
 
   def destroy
