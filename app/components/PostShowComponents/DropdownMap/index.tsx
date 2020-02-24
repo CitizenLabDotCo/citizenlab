@@ -17,10 +17,9 @@ const DropdownMap = memo(({ address, position, className }: Props) => {
       className={className}
       titleIconName="position"
       title={address}
-      lazyLoadedContent={
-        <Map position={position} />
-      }
-    />
+    >
+      <Map position={position} />
+    </CollapsibleBox>
   );
 });
 

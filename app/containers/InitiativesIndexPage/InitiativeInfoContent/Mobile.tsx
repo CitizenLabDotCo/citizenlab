@@ -18,8 +18,9 @@ const Mobile = memo<Props>(({ className }: Props) => {
       className={className}
       titleIconName="info"
       title={<FormattedMessage {...messages.explanationTitle} />}
-      lazyLoadedContent={<InitiatiativeInfoContent />}
-    />
+    >
+      <InitiatiativeInfoContent />
+    </CollapsibleBox>
   );
 
 });

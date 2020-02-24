@@ -22,9 +22,10 @@ const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
       className={className}
       titleIconName="info"
       title={<FormattedMessage {...messages.tipsTitle} />}
-      lazyLoadedContent={<TipsContent />}
       contentBackgroundColor={colors.lightGreyishBlue}
-    />
+    >
+      <TipsContent />
+    </CollapsibleBox>
   );
 
 });
