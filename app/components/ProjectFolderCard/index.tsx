@@ -20,9 +20,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // tracking
@@ -292,7 +290,7 @@ interface Props extends InputProps, DataProps {
   theme?: any;
 }
 
-class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
+class ProjectFolderCard extends PureComponent<Props> {
   handleProjectCardOnClick = (projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
   }
@@ -421,9 +419,8 @@ const Data = adopt<DataProps, InputProps>({
   }
 });
 
-const ProjectFolderCardWithHoC = withTheme(injectIntl<Props>(ProjectFolderCard));
+const ProjectFolderCardWithHoC = withTheme(ProjectFolderCard);
 
-// TODO: remove intl if not used
 // TODO: make accesible
 // TODO: add footer to vertically center the content more
 // TODO: tracks
