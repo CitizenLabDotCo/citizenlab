@@ -1278,6 +1278,7 @@
   "app.containers.AdminPage.groups.permissions.saveSuccess": "¡guardado!",
   "app.containers.AdminPage.groups.permissions.saveSuccessMessage": "Los cambios han sido guardados.",
   "app.containers.AdminPage.groups.permissions.unknownName": "Nombre desconocido",
+  "app.containers.AdminPage.projects.all.existingProjects": "",
   "app.containers.AdminPage.projects.all.newProjectFolder": "",
   "app.containers.AdminPage.projects.all.projectsAndFolders": "",
   "app.containers.AdminPage.widgets.copied": "Copiado en el portapapeles",
