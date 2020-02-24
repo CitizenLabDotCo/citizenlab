@@ -2,7 +2,7 @@ class WebApi::V1::ProjectHolderOrderingsController < ::ApplicationController
   before_action :set_project_holder_ordering, only: [:reorder]
 
   def index
-    @phos = policy_scope(ProjectHolderOrdering)
+    @phos = policy_scope(ProjectHolderOrdering).includes(:project_holder)
 
     @phos = @phos.where(project_holder_type: ProjectFolder.name)
       .or(@phos.where(project_holder: ProjectsFilteringService.new.apply_common_index_filters(
