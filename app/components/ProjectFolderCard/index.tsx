@@ -425,6 +425,7 @@ const ProjectFolderCardWithHoC = withTheme(ProjectFolderCard);
 // TODO: add footer to vertically center the content more
 // TODO: tracks
 // TODO: copy
+// TODO: card first shows number of projects including draft, and changes when filtering is done a (after it's already showing)
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
