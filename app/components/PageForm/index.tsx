@@ -60,7 +60,6 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
     return (
       <FormikQuillMultiloc
         label={<FormattedMessage {...messages.editContent} />}
-        inAdmin
         id={`${this.props.slug}-${props.fieldName}`}
         {...props}
       />

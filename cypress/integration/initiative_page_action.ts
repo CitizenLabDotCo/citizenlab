@@ -36,7 +36,7 @@ describe('Initiative show page actions', () => {
       });
 
       // save
-      cy.get('.e2e-submit-wrapper-button').click();
+      cy.get('.e2e-official-feedback-form-submit-button').click();
       cy.wait(2000);
       cy.get('.e2e-official-feedback-post-body').contains(officialFeedbackBody);
       cy.get('.e2e-official-feedback-post-author').contains(officialFeedbackAuthor);

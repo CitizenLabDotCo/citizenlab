@@ -21,6 +21,7 @@ const Container = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
+  padding: 20px;
 `;
 
 const StyledQuillEditedContent = styled(QuillEditedContent)`

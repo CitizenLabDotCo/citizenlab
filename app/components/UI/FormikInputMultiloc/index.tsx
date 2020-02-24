@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import InputMultiloc, { Props as VanillaInputMultilocProps } from 'components/UI/InputMultiloc';
+import InputMultiloc, { InputProps } from 'components/UI/InputMultiloc';
 import { FieldProps } from 'formik';
 
-class FormikInputMultiloc extends PureComponent<FieldProps & VanillaInputMultilocProps> {
+class FormikInputMultiloc extends PureComponent<FieldProps & InputProps> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
     this.props.form.setStatus('enabled');

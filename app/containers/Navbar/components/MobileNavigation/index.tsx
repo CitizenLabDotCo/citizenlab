@@ -126,7 +126,14 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
 
         <NavigationItem to="/projects" className={secondUrlSegment === 'projects' ? 'active' : ''}>
           <NavigationIconWrapper>
-            <NavigationIcon ariaHidden name="folder" />
+            <NavigationIcon
+              ariaHidden
+              name="folder"
+              colorTheme={{
+                clIconPrimary: `${colors.clIconPrimary}`,
+                clIconSecondary: `${colors.clIconAccent}`
+              }}
+            />
           </NavigationIconWrapper>
           <NavigationLabel>
             <FormattedMessage {...messages.mobilePageProjects} />
