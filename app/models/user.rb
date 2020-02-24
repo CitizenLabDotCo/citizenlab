@@ -185,7 +185,7 @@ class User < ApplicationRecord
   end
 
   def super_admin?
-    admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl)$/i)
+    admin? && !!(email =~ /citizen\-?lab\.(eu|be|fr|ch|de|nl|co|uk|us|cl|dk)$/i)
   end
 
   def project_moderator? project_id=nil
