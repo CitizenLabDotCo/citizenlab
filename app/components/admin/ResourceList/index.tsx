@@ -19,7 +19,7 @@ const StyledList = styled.div`
 
 const timeout = 200;
 
-export const StyledRow = styled.div`
+const Container = styled.div`
   align-items: center !important;
   border-top: 1px solid ${colors.separation};
   display: flex !important;
@@ -113,24 +113,24 @@ export const TextCell = styled.div`
   line-height: 20px;
 `;
 
-export const List: SFC<{ className?: string, id?: string }> = ({ children, ...props }) => (
-  <StyledList className="e2e-admin-list" {...props}>
+export const List: SFC<{ className?: string, id?: string }> = ({ children, className, id }) => (
+  <StyledList className="e2e-admin-list" {...{ className, id }}>
     <TransitionGroup>
       {children}
     </TransitionGroup>
   </StyledList>
 );
 
-export const Row: SFC<{ className?: string, id?: string, lastItem?: boolean }> = ({ children, ...props }) => (
-  <CSSTransition classNames="list-item" timeout={timeout} {...props}>
-    <StyledRow className={`e2e-admin-list-row ${props['className']} ${props.lastItem && 'last-item'}`}>
+export const Row: SFC<{ className?: string, id?: string, lastItem?: boolean }> = ({ children, className, lastItem }) => (
+  <CSSTransition classNames="list-item" timeout={timeout}>
+    <Container className={`e2e-admin-list-row ${className || ''} ${lastItem && 'last-item'}`}>
       {children}
-    </StyledRow>
+    </Container>
   </CSSTransition>
 );
 
 export const HeadRow: SFC = ({ children, ...props }) => (
-  <StyledRow className={`e2e-admin-list-head-row ${props['className']}`}>
+  <Container className={`e2e-admin-list-head-row ${props['className']}`}>
     {children}
-  </StyledRow>
+  </Container>
 );
