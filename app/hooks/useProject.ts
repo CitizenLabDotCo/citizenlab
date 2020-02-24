@@ -12,6 +12,8 @@ export default function useProject({ projectId, projectSlug }: Props) {
   const [project, setProject] = useState<IProjectData | undefined | null | Error>(undefined);
 
   useEffect(() => {
+    setProject(undefined);
+
     let observable: Observable<IProject | null> = of(null);
 
     if (projectId) {
