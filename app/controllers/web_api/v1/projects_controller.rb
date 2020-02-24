@@ -8,20 +8,12 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     else 
       policy_scope(Project)
     end
+    @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]  
+    @projects = @projects.where(folder_id: params[:folder]) if params.keys.include?('folder')
+    @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
-    if params[:publication_statuses].present?
-      @projects = @projects.where(publication_status: params[:publication_statuses])
-    else
-      @projects = @projects.where(publication_status: 'published')
-    end
-
-    if params[:areas].present?
-      @projects = @projects.with_some_areas(params[:areas])
-        .or(@projects.without_areas)
-    end
-    @projects = @projects.with_all_topics(params[:topics]) if params[:topics].present?
-
-    @projects = ProjectSortingService.new.sort(@projects)
+    @projects = @projects
+      .order(:ordering)
       .includes(:project_images, :phases, :areas, :topics)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
