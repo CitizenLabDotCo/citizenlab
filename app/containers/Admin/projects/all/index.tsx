@@ -19,7 +19,7 @@ import messages from './messages';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { isAdmin, isModerator } from 'services/permissions/roles';
+import { isAdmin } from 'services/permissions/roles';
 
 // components
 import CreateProject from './CreateProject';
@@ -176,7 +176,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
       className,
     } = this.props;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
-    const userIsModerator = !isNilOrError(authUser) ? isModerator({ data: authUser }) : false;
 
     return (
       <Container className={className}>
@@ -199,8 +198,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
           <PageWrapper>
             <ListsContainer>
               <Suspense fallback={<Spinner />}>
-                {userIsModerator && <ModeratorProjectList />}
-                {userIsAdmin && <AdminProjectList />}
+                {userIsAdmin ? <AdminProjectList /> : <ModeratorProjectList />}
               </Suspense>
             </ListsContainer>
           </PageWrapper>
