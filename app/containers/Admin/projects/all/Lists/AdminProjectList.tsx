@@ -36,7 +36,7 @@ const Spacer = styled.div`
 
 interface DataProps {
   projectHolderOrderings: GetProjectHolderOrderingsChildProps;
-  folderEnabled: boolean;
+  foldersEnabled: boolean;
 }
 
 interface Props extends DataProps { }
@@ -45,7 +45,7 @@ function handleReorderHolders(itemId, newOrder) {
   reorderProjectHolder(itemId, newOrder);
 }
 
-const AdminProjectList = memo<Props>(({ projectHolderOrderings, folderEnabled }) => {
+const AdminProjectList = memo<Props>(({ projectHolderOrderings, foldersEnabled }) => {
   const projectHolderOrderingsList = projectHolderOrderings.list;
 
   if (!isNilOrError(projectHolderOrderingsList) && projectHolderOrderingsList.length > 0) {
@@ -53,12 +53,12 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings, folderEnabled })
       <>
         <StyledListHeader>
           <HeaderTitle>
-            {folderEnabled
+            {foldersEnabled
               ? <FormattedMessage {...messages.projectsAndFolders} />
               : <FormattedMessage {...messages.existingProjects} />
             }
           </HeaderTitle>
-          {folderEnabled &&
+          {foldersEnabled &&
             <>
               <Spacer />
               <Button
@@ -104,7 +104,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings, folderEnabled })
 
 const Data = adopt<DataProps>({
   projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published', 'draft']} />,
-  folderEnabled: <GetFeatureFlag name="project_folders" />
+  foldersEnabled: <GetFeatureFlag name="project_folders" />
 });
 
 export default () => (
