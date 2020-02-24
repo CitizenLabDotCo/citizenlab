@@ -16,13 +16,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { List, Row } from 'components/admin/ResourceList';
+import { List, Row, SortableList, SortableRow } from 'components/admin/ResourceList';
 import { HeaderTitle } from '../../all/StyledComponents';
 import ProjectRow from '../../components/ProjectRow';
 
 // style
 import styled from 'styled-components';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 const Container = styled.div`
   min-height: 60vh;
@@ -47,11 +46,6 @@ const StyledHeaderTitle = styled(HeaderTitle)`
   font-weight: bold;
 `;
 
-const ListTitle = styled.h4`
-  font-weight: normal;
-  font-style: italic;
-`;
-
 const Spacer = styled.div`
   flex: 1;
 `;
@@ -59,7 +53,6 @@ const Spacer = styled.div`
 interface DataProps {
   projectHoldersOrderings: GetProjectHolderOrderingsChildProps;
   projectFolder: GetProjectFolderChildProps;
-  projects: GetProjectsChildProps;
 }
 
 interface Props extends DataProps { }
@@ -67,7 +60,8 @@ interface Props extends DataProps { }
 class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 
   handleReorder = (projectId, newOrder) => {
-    reorderProject(projectId, newOrder); // TODO
+    console.log(projectId, newOrder);
+    reorderProject(projectId, newOrder);
   }
 
   addProjectToFolder = (projectId) => () => {
@@ -81,25 +75,11 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
   }
 
   render() {
-    const { projectHoldersOrderings, projectFolder, projects: { projectsList } } = this.props;
+    const { projectHoldersOrderings, projectFolder } = this.props;
 
-    const otherPublishedProjectIds = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
+    const otherProjectIds = (!isNilOrError(projectHoldersOrderings) && projectHoldersOrderings.list)
       ? projectHoldersOrderings.list.filter(item => item.projectHolderType === 'project').map(item => item.projectHolder.id)
       : null;
-
-    const hasOtherPublishedProjectIds = otherPublishedProjectIds && otherPublishedProjectIds.length > 0;
-
-    const otherDraftProjectIds = !isNilOrError(projectsList)
-      ? projectsList.filter(item => item.attributes.publication_status === 'draft').map(item => item.id)
-      : null;
-
-    const hasOtherDraftProjectIds = otherDraftProjectIds && otherDraftProjectIds.length > 0;
-
-    const otherArchivedProjectIds = !isNilOrError(projectsList)
-      ? projectsList.filter(item => item.attributes.publication_status === 'archived').map(item => item.id)
-      : null;
-
-    const hasOtherArchivedProjectIds = otherArchivedProjectIds && otherArchivedProjectIds.length > 0;
 
     const inFolderProjectIds = !isNilOrError(projectFolder) && projectFolder.relationships.projects
       ? projectFolder.relationships.projects.data.map(projectRel => projectRel.id)
@@ -118,14 +98,60 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
           </ListHeader>
 
           {inFolderProjectIds && inFolderProjectIds.length > 0 ?
-            <List key={`IN_FOLDER_LIST${inFolderProjectIds.length}`}>
-              {inFolderProjectIds.map((inFolderProjectId, index: number) => {
+            <SortableList
+              key={`IN_FOLDER_LIST${inFolderProjectIds.length}`}
+              items={inFolderProjectIds}
+              onReorder={this.handleReorder}
+              className="projects-list e2e-admin-folder-projects-list"
+              id="e2e-admin-fodlers-projects-list"
+            >
+              {({ itemsList, handleDragRow, handleDropRow }) => (
+                itemsList.map((projectId, index) => {
+                  return (
+                    <SortableRow
+                      key={projectId}
+                      id={projectId}
+                      index={index}
+                      moveRow={handleDragRow}
+                      dropRow={handleDropRow}
+                      lastItem={(index === itemsList.length - 1)}
+                    >
+                      <GetProject projectId={projectId} key={`in_${projectId}`}>
+                        {project => isNilOrError(project) ? null : (
+                          <ProjectRow
+                            project={project}
+                            actions={[{
+                              buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
+                              handler: this.removeProjectFromFolder,
+                              icon: 'remove'
+                            }, 'manage']}
+                            showPublicationStatusLabel
+                          />
+                        )}
+                      </GetProject>
+                    </SortableRow>
+                  );
+                })
+              )}
+            </SortableList>
+            :
+            <FormattedMessage {...messages.emptyFolder} />
+          }
+          <ListHeader>
+            <StyledHeaderTitle>
+              <FormattedMessage {...messages.projectsYouCanAdd} />
+            </StyledHeaderTitle>
+          </ListHeader>
+
+          {otherProjectIds && otherProjectIds.length > 0 ?
+            <List key={`JUST_LIST${otherProjectIds.length}`}>
+              {otherProjectIds.map((projectId, index: number) => {
                 return (
-                  <GetProject projectId={inFolderProjectId} key={`in_${inFolderProjectId}`}>
+                  <GetProject projectId={projectId} key={`out_${projectId}`}>
                     {project => isNilOrError(project) ? null : (
                       <Row
-                        id={inFolderProjectId}
-                        lastItem={(index === inFolderProjectIds.length - 1)}
+                        id={projectId}
+                        lastItem={(index === otherProjectIds.length - 1)}
                       >
                         <ProjectRow
                           project={project}
@@ -134,6 +160,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                             handler: this.removeProjectFromFolder,
                             icon: 'remove'
                           }, 'manage']}
+                          showPublicationStatusLabel
                         />
                       </Row>
                     )}
@@ -141,116 +168,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                 );
               })}
             </List>
-            :
-            <FormattedMessage {...messages.emptyFolder} />
-          }
-
-          <ListHeader>
-            <StyledHeaderTitle>
-              <FormattedMessage {...messages.projectsYouCanAdd} />
-            </StyledHeaderTitle>
-          </ListHeader>
-
-          {(!hasOtherDraftProjectIds && !hasOtherArchivedProjectIds && !hasOtherPublishedProjectIds) &&
-            <FormattedMessage {...messages.noProjectsToAdd} />
-          }
-
-          {otherPublishedProjectIds && otherPublishedProjectIds.length > 0 &&
-            <>
-              <ListHeader>
-                <ListTitle>
-                  <FormattedMessage {...messages.otherPublishedProjects} />
-                </ListTitle>
-              </ListHeader>
-              <List key={`JUST_LIST${otherPublishedProjectIds.length}`}>
-                {otherPublishedProjectIds.map((projectId, index: number) => {
-                  return (
-                    <GetProject projectId={projectId} key={`out_${projectId}`}>
-                      {project => isNilOrError(project) ? null : (
-                        <Row
-                          id={projectId}
-                          lastItem={(index === otherPublishedProjectIds.length - 1)}
-                        >
-                          <ProjectRow
-                            project={project}
-                            actions={[{
-                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                              handler: this.addProjectToFolder,
-                              icon: 'plus-circle'
-                            }]}
-                          />
-                        </Row>
-                      )}
-                    </GetProject>
-                  );
-                })}
-              </List>
-            </>
-          }
-
-          {otherArchivedProjectIds && otherArchivedProjectIds.length > 0 &&
-            <>
-              <ListHeader>
-                <ListTitle>
-                  <FormattedMessage {...messages.otherArchivedProjects} />
-                </ListTitle>
-              </ListHeader>
-              <List key={`JUST_LIST${otherArchivedProjectIds.length}`}>
-                {otherArchivedProjectIds.map((projectId, index: number) => {
-                  return (
-                    <GetProject projectId={projectId} key={`out_${projectId}`}>
-                      {project => isNilOrError(project) ? null : (
-                        <Row
-                          id={projectId}
-                          lastItem={(index === otherArchivedProjectIds.length - 1)}
-                        >
-                          <ProjectRow
-                            project={project}
-                            actions={[{
-                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                              handler: this.addProjectToFolder,
-                              icon: 'plus-circle'
-                            }]}
-                          />
-                        </Row>
-                      )}
-                    </GetProject>
-                  );
-                })}
-              </List>
-            </>
-          }
-          {otherDraftProjectIds && otherDraftProjectIds.length > 0 &&
-            <>
-              <ListHeader>
-                <ListTitle>
-                  <FormattedMessage {...messages.otherDraftProjects} />
-                </ListTitle>
-              </ListHeader>
-              <List key={`JUST_LIST${otherDraftProjectIds.length}`}>
-                {otherDraftProjectIds.map((projectId, index: number) => {
-                  return (
-                    <GetProject projectId={projectId} key={`out_${projectId}`}>
-                      {project => isNilOrError(project) ? null : (
-                        <Row
-                          id={projectId}
-                          lastItem={(index === otherDraftProjectIds.length - 1)}
-                        >
-                          <ProjectRow
-                            project={project}
-                            actions={[{
-                              buttonContent: <FormattedMessage {...messages.addToFolder} />,
-                              handler: this.addProjectToFolder,
-                              icon: 'plus-circle'
-                            }]}
-                          />
-                        </Row>
-                      )}
-                    </GetProject>
-                  );
-                })}
-              </List>
-            </>
+            : <FormattedMessage {...messages.noProjectsToAdd} />
           }
         </ListsContainer>
       </Container>
@@ -259,12 +177,11 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
 }
 const AdminFoldersProjectsListWithHocs = withRouter(AdminFoldersProjectsList);
 
-const publicationStatuses: PublicationStatus[] = ['draft', 'archived'];
+const publicationStatuses: PublicationStatus[] = ['draft', 'archived', 'published'];
 
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
-  projectHoldersOrderings: <GetProjectHolderOrderings />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} folderId="nil" />
+  projectHoldersOrderings: <GetProjectHolderOrderings publicationStatusFilter={publicationStatuses} />,
 });
 
 export default (inputProps: WithRouterProps) => (
