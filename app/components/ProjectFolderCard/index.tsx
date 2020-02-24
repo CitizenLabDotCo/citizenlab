@@ -110,7 +110,7 @@ const Container = styled(Link)`
   `}
 `;
 
-const FolderImageContainer =  styled.div`
+const FolderImageContainer = styled.div`
   width: 100%;
   height: 254px;
   flex-grow: 0;
@@ -138,7 +138,7 @@ const FolderImagePlaceholder = styled.div`
   background: ${colors.placeholderBg};
 `;
 
-const FolderImagePlaceholderIcon = styled(Icon) `
+const FolderImagePlaceholderIcon = styled(Icon)`
   height: 45px;
   fill: #fff;
 `;
@@ -313,7 +313,7 @@ class ProjectFolderCard extends PureComponent<Props> {
       !isNilOrError(projectFolder) &&
       !isNilOrError(publishedAndArchivedProjects.projectsList)
     ) {
-      const imageUrl = projectFolder.attributes.header_bg?.medium;
+      const imageUrl = projectFolder.attributes.header_bg ?.medium;
       const folderUrl = getProjectFolderUrl(projectFolder);
       const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
 
@@ -407,15 +407,17 @@ class ProjectFolderCard extends PureComponent<Props> {
 const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
   publishedAndArchivedProjects: ({ projectFolder, render }) => {
-    const filteredProjectIds = !isNilOrError(projectFolder) ? projectFolder.relationships.projects.data.map(project => project.id) : undefined;
-    return (
-    <GetProjects
-      publicationStatuses={['published', 'archived']}
-      filteredProjectIds={filteredProjectIds}
-    >
-      {render}
-    </GetProjects>
-    );
+    if (!isNilOrError(projectFolder)) {
+      return (
+        <GetProjects
+          publicationStatuses={['published', 'archived']}
+          folderId={projectFolder.id}
+        >
+          {render}
+        </GetProjects>
+      );
+    }
+    return <>{render}</>;
   }
 });
 
@@ -425,7 +427,6 @@ const ProjectFolderCardWithHoC = withTheme(ProjectFolderCard);
 // TODO: add footer to vertically center the content more
 // TODO: tracks
 // TODO: copy
-// TODO: card first shows number of projects including draft, and changes when filtering is done a (after it's already showing)
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
