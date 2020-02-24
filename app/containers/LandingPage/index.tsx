@@ -1,10 +1,9 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 
 // components
 import ContentContainer from 'components/ContentContainer';
-import ProjectCards from 'components/ProjectCards';
 import CityLogoSection from 'components/CityLogoSection';
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -14,6 +13,7 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+const ProjectAndFolderCards = React.lazy(() => import('components/ProjectAndFolderCards'));
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -197,14 +197,12 @@ class LandingPage extends PureComponent<Props, State> {
               <StyledContentContainer mode="page">
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
-                    <ProjectCards
-                      pageSize={6}
-                      sort="new"
-                      publicationStatuses={this.projectsPublicationStatuses}
-                      showTitle={true}
-                      showPublicationStatusFilter={false}
-                      layout="dynamic"
-                    />
+                    <Suspense fallback={null}>
+                      <ProjectAndFolderCards
+                        showTitle={true}
+                        layout="dynamic"
+                      />
+                    </Suspense>
                   </SectionContainer>
                 </ProjectSection>
                 <FeatureFlag name="initiatives">
@@ -261,6 +259,8 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);
+
+// TODO: add spinner fallback for lazy-loaded cards?
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

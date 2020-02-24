@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Locale, Multiloc } from 'typings';
 
 // components
-import OfficialFeedbackEdit from './Form/OfficialFeedbackEdit';
+import OfficialFeedbackForm from './OfficialFeedbackForm';
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
 import T from 'components/T';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -38,6 +38,7 @@ const Container = styled.div`
   font-size: ${fontSizes.base}px;
   padding: 30px;
   padding-top: 35px;
+  margin-bottom: 15px;
 
   ${media.smallerThanMinTablet`
     padding: 20px;
@@ -52,7 +53,8 @@ const PostContainer = styled(Container)`
 `;
 
 const EditFormContainer = styled(Container)`
-  background: ${colors.adminBackground};
+  background: ${transparentize(0.93, colors.clRedError)};
+  background: ${colors.background};
 `;
 
 const Body = styled.div`
@@ -179,12 +181,15 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
     const { showEditForm } = this.state;
     const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
 
-    if (showEditForm) {
+    if (showEditForm && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       return (
         <EditFormContainer key={officialFeedbackPost.id}>
-          <OfficialFeedbackEdit
+          <OfficialFeedbackForm
+            locale={locale}
+            tenantLocales={tenantLocales}
+            formType="edit"
             feedback={officialFeedbackPost}
-            closeForm={this.closeEditForm}
+            onClose={this.closeEditForm}
           />
         </EditFormContainer>
       );

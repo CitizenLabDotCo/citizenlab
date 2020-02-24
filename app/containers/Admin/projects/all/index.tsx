@@ -1,30 +1,20 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Suspense } from 'react';
 import { Subscription } from 'rxjs';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { isBoolean, isString, isFunction } from 'lodash-es';
-import streams from 'utils/streams';
-import { API_PATH } from 'containers/App/constants';
+import { isString, isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 
 // tracking
 import { trackPage } from 'utils/analytics';
 
-// services
-import { IProjectData, reorderProject } from 'services/projects';
-import { updateTenant } from 'services/tenant';
-
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
-import GetProjectGroups from 'resources/GetProjectGroups';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // localisation
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // utils
@@ -32,22 +22,16 @@ import eventEmitter from 'utils/eventEmitter';
 import { isAdmin } from 'services/permissions/roles';
 
 // components
-import { SortableList, SortableRow, List, Row } from 'components/admin/ResourceList';
-import { HeaderTitle } from './styles';
 import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
-import Button from 'components/UI/Button';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
-import StatusLabel from 'components/UI/StatusLabel';
 import HasPermission from 'components/HasPermission';
-import Toggle from 'components/UI/Toggle';
-import FeatureFlag from 'components/FeatureFlag';
-import IconTooltip from 'components/UI/IconTooltip';
-
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
+import Spinner from 'components/UI/Spinner';
+const ModeratorProjectList = React.lazy(() => import('./Lists/ModeratorProjectList'));
+const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
 
 // style
-import { fontSizes } from 'utils/styleUtils';
 import styled from 'styled-components';
 
 const Container = styled.div``;
@@ -68,9 +52,11 @@ const StyledCreateProject = styled(CreateProject)`
   margin-bottom: 18px;
 `;
 
-const ListsContainer = styled.div``;
+const ListsContainer = styled.div`
+  min-height: 80vh;
+`;
 
-const ListHeader = styled.div`
+export const ListHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -81,58 +67,13 @@ const ListHeader = styled.div`
   }
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
-const ToggleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ToggleLabel = styled.label`
-  font-size: ${fontSizes.base}px;
-  margin-right: 15px;
-`;
-
-const RowContent = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const RowContentInner = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-right: 20px;
-`;
-
-const RowTitle = styled(T)`
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 24px;
-  margin-right: 10px;
-`;
-
-const StyledStatusLabel = styled(StatusLabel)`
-  margin-right: 5px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-`;
-
-const StyledButton = styled(Button)``;
-
 export interface InputProps {
   className?: string;
 }
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
-  projects: GetProjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -194,16 +135,8 @@ class AdminProjectsList extends PureComponent<Props, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  handleReorder = (projectId, newOrder) => {
-    reorderProject(projectId, newOrder);
-  }
-
   closeTemplatePreview = () => {
     this.setState({ selectedProjectTemplateId: null });
-  }
-
-  useTemplate = () => {
-    // empty
   }
 
   cleanup = () => {
@@ -236,258 +169,13 @@ class AdminProjectsList extends PureComponent<Props, State> {
     }
   }
 
-  handleToggleManualProjectSorting = async () => {
-    const { tenant } = this.props;
-
-    if (!isNilOrError(tenant) && tenant.attributes.settings.manual_project_sorting && isBoolean(tenant.attributes.settings.manual_project_sorting.enabled)) {
-      const manualProjectSorting = !tenant.attributes.settings.manual_project_sorting.enabled;
-
-      await updateTenant(tenant.id, {
-        settings: {
-          manual_project_sorting: {
-            allowed: true,
-            enabled: manualProjectSorting
-          }
-        }
-      });
-
-      await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects`] });
-    }
-  }
-
-  render () {
+  render() {
     const { selectedProjectTemplateId } = this.state;
-    const { tenant, authUser, projects, className } = this.props;
-    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
-    let lists: JSX.Element | null = null;
-
-    if (projects && !isNilOrError(projects.projectsList) && !isNilOrError(tenant)) {
-      const { projectsList } = projects;
-      const publishedProjects = projectsList.filter((project) => {
-        return project.attributes.publication_status === 'published';
-      });
-      const draftProjects = projectsList.filter((project) => {
-        return project.attributes.publication_status === 'draft';
-      });
-      const archivedProjects = projectsList.filter((project) => {
-        return project.attributes.publication_status === 'archived';
-      });
-
-      const row = (project: IProjectData) => {
-        return (
-          <RowContent className="e2e-admin-projects-list-item">
-            <RowContentInner className="expand primary">
-              <RowTitle value={project.attributes.title_multiloc} />
-              {project.attributes.visible_to === 'groups' &&
-                <GetProjectGroups projectId={project.id}>
-                  {(projectGroups) => {
-                    if (!isNilOrError(projectGroups)) {
-                      return (
-                        <StyledStatusLabel
-                          text={projectGroups.length > 0 ? (
-                            <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
-                          ) : (
-                              <FormattedMessage {...messages.onlyAdminsCanView} />
-                            )}
-                          color="clBlue"
-                          icon="lock"
-                        />
-                      );
-                    }
-
-                    return null;
-                  }}
-                </GetProjectGroups>
-              }
-
-              {project.attributes.visible_to === 'admins' &&
-                <StyledStatusLabel
-                  text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-                  color="clBlue"
-                  icon="lock"
-                />
-              }
-            </RowContentInner>
-            <StyledButton
-              className={`e2e-admin-edit-project ${project.attributes.title_multiloc['en-GB'] ? project.attributes.title_multiloc['en-GB'] : ''} ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}`}
-              linkTo={`/admin/projects/${project.id}/edit`}
-              buttonStyle="secondary"
-              icon="edit"
-            >
-              <FormattedMessage {...messages.editButtonLabel} />
-            </StyledButton>
-          </RowContent>
-        );
-      };
-
-      lists = (
-        <ListsContainer>
-          {publishedProjects && publishedProjects.length > 0 &&
-            <>
-              <ListHeader>
-                <HeaderTitle>
-                  <FormattedMessage {...messages.published} />
-                </HeaderTitle>
-                <IconTooltip content={<FormattedMessage {...messages.publishedTooltip} />} />
-
-                <Spacer />
-
-                <HasPermission item="project" action="reorder">
-                  <FeatureFlag name="manual_project_sorting" onlyCheckAllowed>
-                    <ToggleWrapper>
-                      <ToggleLabel htmlFor="manual-sorting-toggle">
-                        <FormattedMessage {...messages.manualSortingProjects} />
-                      </ToggleLabel>
-                      <Toggle
-                        id="manual-sorting-toggle"
-                        value={(tenant.attributes.settings.manual_project_sorting as any).enabled}
-                        onChange={this.handleToggleManualProjectSorting}
-                      />
-                    </ToggleWrapper>
-                  </FeatureFlag>
-                </HasPermission>
-              </ListHeader>
-
-              <HasPermission item="project" action="reorder">
-                {(tenant.attributes.settings.manual_project_sorting as any).enabled ?
-                  <SortableList
-                    items={publishedProjects}
-                    onReorder={this.handleReorder}
-                    className="projects-list e2e-admin-projects-list"
-                    id="e2e-admin-published-projects-list"
-                  >
-                    {({ itemsList, handleDragRow, handleDropRow }) => (
-                      itemsList.map((project: IProjectData, index: number) => (
-                        <SortableRow
-                          key={project.id}
-                          id={project.id}
-                          index={index}
-                          moveRow={handleDragRow}
-                          dropRow={handleDropRow}
-                          lastItem={(index === publishedProjects.length - 1)}
-                        >
-                          {row(project)}
-                        </SortableRow>
-                      ))
-                    )}
-                  </SortableList>
-                  :
-                  <List>
-                    {publishedProjects.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
-                        {row(project)}
-                      </Row>
-                    ))}
-                  </List>
-                }
-                <HasPermission.No>
-                  <List>
-                    {publishedProjects.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === publishedProjects.length - 1)}>
-                        {row(project)}
-                      </Row>
-                    ))}
-                  </List>
-                </HasPermission.No>
-              </HasPermission>
-            </>
-          }
-
-          {draftProjects && draftProjects.length > 0 &&
-            <>
-              <ListHeader>
-                <HeaderTitle>
-                  <FormattedMessage {...messages.draft} />
-                </HeaderTitle>
-                <IconTooltip content={<FormattedMessage {...messages.draftTooltip} />} />
-              </ListHeader>
-              <HasPermission item="project" action="reorder">
-                <SortableList
-                  items={draftProjects}
-                  onReorder={this.handleReorder}
-                  className="e2e-admin-projects-list"
-                  id="e2e-admin-draft-projects-list"
-                >
-                  {({ itemsList, handleDragRow, handleDropRow }) => (
-                    itemsList.map((project: IProjectData, index: number) => (
-                      <SortableRow
-                        key={project.id}
-                        id={project.id}
-                        className="e2e-admin-projects-list-item"
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={(index === draftProjects.length - 1)}
-                      >
-                        {row(project)}
-                      </SortableRow>
-                    ))
-                  )}
-                </SortableList>
-                <HasPermission.No>
-                  <List>
-                    {draftProjects.map((project, index) => (
-                      <Row key={project.id} lastItem={(index === draftProjects.length - 1)}>
-                        {row(project)}
-                      </Row>
-                    ))}
-                  </List>
-                </HasPermission.No>
-              </HasPermission>
-            </>
-          }
-
-          {archivedProjects && archivedProjects.length > 0 &&
-            <>
-              <ListHeader>
-                <HeaderTitle>
-                  <FormattedMessage {...messages.archived} />
-                </HeaderTitle>
-                <IconTooltip content={<FormattedMessage {...messages.archivedTooltip} />} />
-              </ListHeader>
-              <HasPermission item="project" action="reorder">
-                <SortableList
-                  items={archivedProjects}
-                  onReorder={this.handleReorder}
-                  className="e2e-admin-projects-list"
-                  id="e2e-admin-archived-projects-list"
-                >
-                  {({ itemsList, handleDragRow, handleDropRow }) => (
-                    itemsList.map((project: IProjectData, index: number) => (
-                      <SortableRow
-                        key={project.id}
-                        id={project.id}
-                        className="e2e-admin-projects-list-item"
-                        index={index}
-                        moveRow={handleDragRow}
-                        dropRow={handleDropRow}
-                        lastItem={index === archivedProjects.length - 1}
-                      >
-                        {row(project)}
-                      </SortableRow>
-                    ))
-                  )}
-                </SortableList>
-
-                <HasPermission.No>
-                  <List id="e2e-admin-archived-projects-list">
-                    {archivedProjects.map((project, index) => (
-                      <Row
-                        className="e2e-admin-projects-list-item"
-                        key={project.id}
-                        lastItem={(index === archivedProjects.length - 1)}
-                      >
-                        {row(project)}
-                      </Row>
-                    ))}
-                  </List>
-                </HasPermission.No>
-              </HasPermission>
-            </>
-          }
-        </ListsContainer>
-      );
-    }
+    const {
+      authUser,
+      className,
+    } = this.props;
+    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
 
     return (
       <Container className={className}>
@@ -500,7 +188,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
               <FormattedMessage {...messages.overviewPageSubtitle} />
               <HasPermission.No>
-              <FormattedMessage {...messages.overviewPageSubtitleModerator} />
+                <FormattedMessage {...messages.overviewPageSubtitleModerator} />
               </HasPermission.No>
             </HasPermission>
           </SectionSubtitle>
@@ -508,7 +196,11 @@ class AdminProjectsList extends PureComponent<Props, State> {
           {userIsAdmin && <StyledCreateProject />}
 
           <PageWrapper>
-            {lists}
+            <ListsContainer>
+              <Suspense fallback={<Spinner />}>
+                {userIsAdmin ? <AdminProjectList /> : <ModeratorProjectList />}
+              </Suspense>
+            </ListsContainer>
           </PageWrapper>
         </CreateAndEditProjectsContainer>
 
@@ -517,7 +209,6 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <ProjectTemplatePreviewPageAdmin
               projectTemplateId={selectedProjectTemplateId}
               goBack={this.closeTemplatePreview}
-              useTemplate={this.useTemplate}
             />
           }
         </ProjectTemplatePreviewContainer>
@@ -526,13 +217,9 @@ class AdminProjectsList extends PureComponent<Props, State> {
   }
 }
 
-const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
-
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
 });
 
 export default (inputProps: InputProps) => (

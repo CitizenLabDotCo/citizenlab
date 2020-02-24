@@ -180,7 +180,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
 
   disabledReasonNotVerified = () => {
     const { idea } = this.props;
-    const disabledReason = !isNilOrError(idea) ? idea.attributes ?.action_descriptor ?.budgeting ?.disabled_reason : null;
+    const disabledReason = !isNilOrError(idea) ? idea.attributes?.action_descriptor?.budgeting?.disabled_reason : null;
 
     return disabledReason === 'not_verified';
   }

@@ -36,23 +36,8 @@ describe('<FormOptionRow />', () => {
   beforeEach(() => {
     closeRow = jest.fn();
   });
-  describe('boundaries', () => {
-    it('reacts to mode change', () => {
-      const titleMultiloc = getTitleMultiloc('Vanilla');
-      const wrapper = shallow(
-        <FormOptionRow
-          titleMultiloc={titleMultiloc}
-          closeRow={closeRow}
-          locale="en"
-          mode="edit"
-          questionId="questionId"
-          optionId="optionId"
-        />
-      );
-      wrapper.setProps({ titleMultiloc: undefined, mode: 'new', optionId: undefined });
 
-      expect(wrapper.find('InputMultiloc').prop('valueMultiloc')).toEqual({});
-    });
+  describe('boundaries', () => {
     it('reacts to option change', () => {
       const titleMultiloc = getTitleMultiloc('Vanilla');
       const wrapper = shallow(
@@ -66,10 +51,10 @@ describe('<FormOptionRow />', () => {
         />
       );
       wrapper.setProps({ titleMultiloc: getTitleMultiloc('Pistachio'), optionId: 'anotherOption' });
-
-      expect(wrapper.find('InputMultiloc').prop('valueMultiloc')).toEqual(getTitleMultiloc('Pistachio'));
+      expect(wrapper.find('Input').prop('value')).toEqual('Pistachio');
     });
   });
+
   describe('handles language switch for multilingual content', () => {
     it('shows the passed in locale by default', () => {
       const wrapper = shallow(
@@ -80,10 +65,10 @@ describe('<FormOptionRow />', () => {
           questionId="questionId"
         />
       );
-
-      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('en');
+      expect(wrapper.find('Input').prop('locale')).toBe('en');
       expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('en');
     });
+
     it('reacts to locale change', () => {
       const wrapper = shallow(
         <FormOptionRow
@@ -94,8 +79,10 @@ describe('<FormOptionRow />', () => {
         />
       );
       wrapper.setProps({ locale: 'fr-BE' });
-      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
+      expect(wrapper.find('Input').prop('locale')).toBe('fr-BE');
+      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('fr-BE');
     });
+
     it('handles changing field locale', () => {
       const wrapper = shallow(
         <FormOptionRow
@@ -107,9 +94,10 @@ describe('<FormOptionRow />', () => {
         />
       );
       wrapper.find('FormLocaleSwitcher').prop('onLocaleChange')('fr-BE');
-      expect(wrapper.find('InputMultiloc').prop('selectedLocale')).toBe('fr-BE');
+      expect(wrapper.find('Input').prop('locale')).toBe('fr-BE');
     });
   });
+
   describe('handles input of title multiloc', () => {
     describe('for a new option', () => {
       it('passes down initial value', () => {
@@ -121,24 +109,28 @@ describe('<FormOptionRow />', () => {
             questionId="questionId"
           />
         );
-
-        expect(wrapper.find('InputMultiloc').prop('valueMultiloc')).toEqual({});
+        expect(wrapper.find('Input').prop('value')).toEqual(undefined);
       });
+
       it('reacts to user input', () => {
+        const titleMultiloc = getTitleMultiloc('Vanilla');
         const wrapper = shallow(
           <FormOptionRow
+            titleMultiloc={titleMultiloc}
             closeRow={closeRow}
             locale="en"
             mode="new"
             questionId="questionId"
           />
         );
-        const titleMultiloc = getTitleMultiloc('Vanilla');
-        wrapper.find('InputMultiloc').prop('onChange')(titleMultiloc);
-
-        expect(wrapper.find('InputMultiloc').prop('valueMultiloc')).toEqual(titleMultiloc);
+        wrapper.find('Input').prop('onChange')('Pistachio', 'en');
+        wrapper.find('Input').prop('onChange')('Chocolate', 'fr-BE');
+        const instance = wrapper.instance();
+        expect(instance.state.titleMultiloc['en']).toBe('Pistachio');
+        expect(instance.state.titleMultiloc['fr-BE']).toBe('Chocolate');
       });
     });
+
     describe('when editing an option', () => {
       it('passes down initial value', () => {
         const titleMultiloc = getTitleMultiloc('Vanilla');
@@ -152,8 +144,7 @@ describe('<FormOptionRow />', () => {
             optionId="optionId"
           />
         );
-
-        expect(wrapper.find('InputMultiloc').prop('valueMultiloc')).toEqual(titleMultiloc);
+        expect(wrapper.find('Input').prop('value')).toEqual(titleMultiloc['en']);
       });
 
       it('reacts to user input', () => {
@@ -167,13 +158,12 @@ describe('<FormOptionRow />', () => {
             optionId="optionId"
           />
         );
-        const titleMultiloc = getTitleMultiloc('Vanilla');
-        wrapper.find('InputMultiloc').prop('onChange')(titleMultiloc);
-
-        expect(wrapper.find('InputMultiloc').prop('valueMultiloc')).toEqual(titleMultiloc);
+        wrapper.find('Input').prop('onChange')('Vanilla', 'en');
+        expect(wrapper.find('Input').prop('value')).toEqual('Vanilla');
       });
     });
   });
+
   describe('handles saving', () => {
     describe('for a new option', () => {
       it('handles saving the new option', () => {
@@ -186,7 +176,6 @@ describe('<FormOptionRow />', () => {
             questionId="questionId"
           />
         );
-
         wrapper.find('.e2e-form-option-save').simulate('click');
         expect(addPollOptionSpy).toHaveBeenCalledTimes(1);
         expect(addPollOptionSpy).toHaveBeenCalledWith('questionId', { en: 'Vani' });
@@ -196,6 +185,7 @@ describe('<FormOptionRow />', () => {
         });
       });
     });
+
     describe('when editing an option', () => {
       it('handles updating the option', () => {
         const wrapper = shallow(
@@ -208,13 +198,13 @@ describe('<FormOptionRow />', () => {
           />
         );
         wrapper.setState({ titleMultiloc: getTitleMultiloc('Vanilla') });
-
         wrapper.find('.e2e-form-option-save').simulate('click');
         expect(updatePollOptionSpy).toHaveBeenCalledTimes(1);
         expect(updatePollOptionSpy).toHaveBeenCalledWith('optionId', { en: 'Vanilla' });
       });
     });
   });
+
   describe('handles cancelling', () => {
     describe('for a new option', () => {
       it('handles closing the form to cancel', () => {
@@ -226,11 +216,11 @@ describe('<FormOptionRow />', () => {
             questionId="questionId"
           />
         );
-
         wrapper.find('.e2e-form-option-cancel').simulate('click');
         expect(closeRow).toHaveBeenCalledTimes(1);
       });
     });
+
     describe('when editing an option', () => {
       it('handles closing the form to cancel', () => {
         const wrapper = shallow(
@@ -243,10 +233,8 @@ describe('<FormOptionRow />', () => {
             optionId="optionId"
           />
         );
-
         wrapper.find('.e2e-form-option-cancel').simulate('click');
         expect(closeRow).toHaveBeenCalledTimes(1);
-
       });
     });
   });

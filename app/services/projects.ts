@@ -89,11 +89,14 @@ export interface IProjectData {
     default_assignee?: {
       data: IRelationship | null
     }
+    folder?: {
+      data: IRelationship | null
+    }
   };
 }
 
 export interface IUpdatedProjectProperties {
-  header_bg?: string | { small: string, medium: string, large: string} | null;
+  header_bg?: string | { small: string, medium: string, large: string } | null;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
@@ -123,7 +126,19 @@ export interface IProjects {
   data: IProjectData[];
 }
 
-export function projectsStream(streamParams: IStreamParams | null = null) {
+type IQueryParametersWithPS = {
+  publication_statuses: PublicationStatus[];
+  [key: string]: any;
+} | {
+  filter_ids: string[];
+  [key: string]: any;
+};
+
+interface StreamParamsForProjects extends IStreamParams {
+  queryParameters: IQueryParametersWithPS;
+}
+
+export function projectsStream(streamParams: StreamParamsForProjects) {
   return streams.get<IProjects>({ apiEndpoint, ...streamParams });
 }
 
@@ -140,7 +155,7 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
   const projectId = response.data.id;
   await streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`]
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`]
   });
   return response;
 }
@@ -149,7 +164,7 @@ export async function updateProject(projectId, projectData: IUpdatedProjectPrope
   const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`]
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`]
   });
 
   // TODO: clear partial cache
@@ -163,7 +178,7 @@ export function reorderProject(projectId: IProjectData['id'], newOrder: number) 
 
 export async function deleteProject(projectId: string) {
   const response = await streams.delete(`${apiEndpoint}/${projectId}`, projectId);
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`] });
   return response;
 }
 
@@ -202,4 +217,21 @@ export function getProjectIdeasUrl(project: IProjectData) {
   }
 
   return projectUrl;
+}
+
+export async function updateProjectFolderMembership(projectId: string, newProjectFolderId: string | null, oldProjectFolderId?: string) {
+  const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: { folder_id: newProjectFolderId } });
+
+  await streams.fetchAllWith({
+    dataId: [newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
+    apiEndpoint: [`${API_PATH}/project_holder_orderings`, `${API_PATH}/projects`],
+  });
+
+  return response;
+}
+
+export function getFilteredProjects(projects: IProjectData[], publicationStatuses: PublicationStatus[]) {
+  return projects.filter((project) => {
+    return publicationStatuses.includes(project.attributes.publication_status);
+  });
 }

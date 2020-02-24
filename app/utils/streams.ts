@@ -14,7 +14,6 @@ export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
 interface IObject{ [key: string]: any; }
 export type IObserver<T> = Observer<T | pureFn<T> | null>;
-export type IObservable<T> = Observable<T>;
 export interface IStreamParams {
   bodyData?: IObject | null;
   queryParameters?: IObject | null;
@@ -39,7 +38,7 @@ export interface IStream<T> {
   type: 'singleObject' | 'arrayOfObjects' | 'unknown';
   fetch: fetchFn;
   observer: IObserver<T>;
-  observable: IObservable<T>;
+  observable: Observable<T>;
   subscription?: Subscription;
   dataIds: { [key: string]: true };
 }

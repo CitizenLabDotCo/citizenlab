@@ -1,12 +1,13 @@
-// Libraries
 import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
-import QuillEditor, { Props as VanillaProps } from 'components/UI/QuillEditor';
+// components
+import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
 
-class FormikEditor extends PureComponent<FieldProps & VanillaProps> {
-  handleOnChange = (html: string) => {
-    this.props.form.setFieldValue(this.props.field.name, html);
+export default class FormikQuill extends PureComponent<FieldProps & QuillEditorProps> {
+  handleOnChange = (newValue: string) => {
+    this.props.form.setFieldValue(this.props.field.name, newValue);
+    this.props.form.setStatus('enabled');
   }
 
   handleOnBlur = () => {
@@ -14,16 +15,15 @@ class FormikEditor extends PureComponent<FieldProps & VanillaProps> {
   }
 
   render() {
-    const { value } = this.props.field;
+    const { field } = this.props;
+
     return (
       <QuillEditor
-        {... this.props}
+        {...this.props}
+        value={field.value}
         onChange={this.handleOnChange}
-        value={value || ''}
         onBlur={this.handleOnBlur}
       />
     );
   }
 }
-
-export default FormikEditor;
