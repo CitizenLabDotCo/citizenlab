@@ -90,8 +90,8 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   renderFormikQuillMultiloc = (props) => {
     return (
       <FormikQuillMultiloc
-        label={<FormattedMessage {...messages.fieldBody} />}
-        labelTooltip={<IconTooltip content={<FormattedMessage {...messages.nameVariablesInfo} />} />}
+        label={this.props.intl.formatMessage(messages.fieldBody)}
+        labelTooltipText={this.props.intl.formatMessage(messages.nameVariablesInfo)}
         noVideos
         noAlign
         {...props}
@@ -100,7 +100,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   render() {
-    const { isSubmitting, errors, isValid, touched, status } = this.props;
+    const { isSubmitting, errors, isValid, touched, status, intl: { formatMessage } } = this.props;
     return (
       <Form>
         <StyledSection>
@@ -135,7 +135,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
                   name="group_ids"
                   component={FormikMultipleSelect}
                   options={this.groupsOptions(groups)}
-                  placeholder={this.props.intl.formatMessage(messages.allUsers)}
+                  placeholder={formatMessage(messages.allUsers)}
                 />
               )}
             </GetGroups>
@@ -171,7 +171,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               name="subject_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldSubject} />}
-              labelTooltip={<IconTooltip content={<FormattedMessage {...messages.fieldSubjectTooltip} />} />}
+              labelTooltipText={<IconTooltip content={<FormattedMessage {...messages.fieldSubjectTooltip} />} />}
               maxCharCount={80}
             />
             {touched.subject_multiloc && <Error

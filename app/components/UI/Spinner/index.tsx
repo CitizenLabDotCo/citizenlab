@@ -12,6 +12,12 @@ interface IStyledSpinner {
   color: string;
 }
 
+const Container = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
+
 const StyledSpinner: any = styled.div`
   width: ${(props: IStyledSpinner) => props.size};
   height: ${(props: IStyledSpinner) => props.size};
@@ -49,7 +55,9 @@ export default class Spinner extends PureComponent<Props, State> {
     const { size, thickness, color } = this.props;
 
     return (
-      <StyledSpinner className={className} size={size} thickness={thickness} color={color} />
+      <Container>
+        <StyledSpinner className={className} size={size} thickness={thickness} color={color} />
+      </Container>
     );
   }
 }

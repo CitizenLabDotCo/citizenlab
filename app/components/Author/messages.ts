@@ -2,8 +2,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  user: {
-    id: 'app.components.Author.user',
-    defaultMessage: 'User',
-  }
+  a11y_postedBy: {
+    id: 'app.components.Author.a11y_postedBy',
+    defaultMessage: 'Posted by: ',
+  },
 });

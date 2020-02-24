@@ -1,10 +1,10 @@
 import React from 'react';
 import { isNil, isEmpty, size } from 'lodash-es';
-import { FormikConsumer, FormikContext } from 'formik';
 
 // components
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -15,6 +15,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { isBoolean } from 'util';
+
+// typings
+import { Locale } from 'typings';
 
 const Container: any = styled.div`
   width: 100%;
@@ -43,11 +46,6 @@ const Container: any = styled.div`
       padding-right: 62px;
     }
 
-    &::placeholder {
-      color: ${colors.label} !important;
-      opacity: 1;
-    }
-
     &:focus {
       border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
     }
@@ -60,10 +58,6 @@ const Container: any = styled.div`
       padding-right: ${props => props.error && '40px'};
     `}
   }
-`;
-
-const LabelWrapper = styled.div`
-  display: flex;
 `;
 
 const CharCount = styled.div`
@@ -80,15 +74,17 @@ const CharCount = styled.div`
   }
 `;
 
-export type InputProps = {
+export type Props = {
   ariaLabel?: string;
   id?: string | undefined;
   label?: string | JSX.Element | null | undefined;
+  labelTooltipText?: string | JSX.Element | null;
   value?: string | null | undefined;
+  locale?: Locale;
   type: 'text' | 'email' | 'password' | 'number' | 'date';
   placeholder?: string | null | undefined;
   error?: string | JSX.Element | null | undefined;
-  onChange?: (arg: string) => void;
+  onChange?: (arg: string, locale: Locale | undefined) => void;
   onFocus?: (arg: React.FormEvent<HTMLInputElement>) => void;
   onBlur?: (arg: React.FormEvent<HTMLInputElement>) => void;
   setRef?: (arg: HTMLInputElement) => void | undefined;
@@ -105,39 +101,23 @@ export type InputProps = {
   onGreyBackground?: boolean;
 };
 
-interface DataProps {
-  formikContext?: FormikContext<any>;
-}
-
-interface Props extends InputProps, DataProps {}
-
-type State = {};
-
-export class Input extends React.PureComponent<Props, State> {
+export class Input extends React.PureComponent<Props> {
 
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const { maxCharCount, onChange, name, formikContext } = this.props;
+    const { maxCharCount, onChange, locale } = this.props;
 
     if (!maxCharCount || size(event.currentTarget.value) <= maxCharCount) {
       if (onChange) {
-        onChange(event.currentTarget.value);
-      }
-
-      if (name && formikContext && formikContext.handleChange) {
-        formikContext.handleChange(event);
+        onChange(event.currentTarget.value, locale);
       }
     }
   }
 
   handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
-    const { onBlur, formikContext } = this.props;
+    const { onBlur } = this.props;
 
     if (onBlur) {
       onBlur(event);
-    }
-
-    if (name && formikContext && formikContext.handleBlur) {
-      formikContext.handleBlur(event);
     }
   }
 
@@ -146,16 +126,11 @@ export class Input extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { label, ariaLabel, className, onGreyBackground } = this.props;
+    const { label, labelTooltipText, ariaLabel, className, onGreyBackground } = this.props;
     let { value, placeholder, error } = this.props;
-    const { formikContext } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
     const hasError = (!isNil(error) && !isEmpty(error));
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
-
-    if (name && formikContext && formikContext.values[name]) {
-      value = (value || formikContext.values[name]);
-    }
 
     value = (value || '');
     placeholder = (placeholder || '');
@@ -168,9 +143,10 @@ export class Input extends React.PureComponent<Props, State> {
       <Container error={hasError} className={className || ''}>
 
         {label &&
-          <LabelWrapper>
-            <Label htmlFor={id}>{label}</Label>
-          </LabelWrapper>
+          <Label htmlFor={id}>
+            <span>{label}</span>
+            {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+          </Label>
         }
 
         <input
@@ -222,8 +198,4 @@ export class Input extends React.PureComponent<Props, State> {
   }
 }
 
-export default (inputProps: InputProps) => (
-  <FormikConsumer>
-    {formikContext => <Input {...inputProps} formikContext={formikContext} />}
-  </FormikConsumer>
-);
+export default Input;

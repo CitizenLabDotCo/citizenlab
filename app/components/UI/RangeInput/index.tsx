@@ -1,6 +1,13 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import { colors } from 'utils/styleUtils';
+import styled from 'styled-components';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`;
 
 interface Props {
   step: number;
@@ -8,6 +15,7 @@ interface Props {
   max: number;
   value: number;
   onChange: (value: number) => void;
+  className?: string;
 }
 
 interface State {}
@@ -106,13 +114,7 @@ class RangeInput extends PureComponent<Props, State> {
     );
 
     return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          flexWrap: 'wrap'
-        }}
-      >
+      <Container className={this.props.className || ''}>
         <Range
           values={[this.props.value]}
           step={this.props.step}
@@ -122,7 +124,7 @@ class RangeInput extends PureComponent<Props, State> {
           renderTrack={track}
           renderThumb={thumb}
         />
-      </div>
+      </Container>
     );
   }
 }
