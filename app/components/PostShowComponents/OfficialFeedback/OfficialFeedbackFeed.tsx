@@ -127,11 +127,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 text={<FormattedMessage {...messages.showPreviousUpdates} />}
                 processing={loadingMore}
                 icon="showMore"
-                buttonStyle="secondary-outlined"
-                textColor={colors.clRedError}
-                textHoverColor={colors.clRedError}
-                iconColor={colors.clRedError}
-                iconHoverColor={colors.clRedError}
+                buttonStyle="secondary"
               />
             }
           </Container>

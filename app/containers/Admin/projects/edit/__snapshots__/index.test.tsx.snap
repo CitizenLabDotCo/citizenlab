@@ -4,7 +4,7 @@ exports[`<AdminProjectEdition /> lets you add an idea when on the ideas tab 1`] 
 
 exports[`<AdminProjectEdition /> lets you see the project 1`] = `"/projects/continuousInformation_slug"`;
 
-exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuous non-survey non-ideation project 1`] = `
+exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuous information project 1`] = `
 Array [
   "/admin/projects/continuousInformation/edit",
   "/admin/projects/continuousInformation/description",
@@ -55,9 +55,20 @@ Array [
   "/admin/projects/timelineIdeation/edit",
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
-  "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
+  "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/permissions",
+]
+`;
+
+exports[`<AdminProjectEdition /> renders the correct set of tabs for a timeline project with a single information phase 1`] = `
+Array [
+  "/admin/projects/timelineInformation/edit",
+  "/admin/projects/timelineInformation/description",
+  "/admin/projects/timelineInformation/ideas",
+  "/admin/projects/timelineInformation/events",
+  "/admin/projects/timelineInformation/timeline",
+  "/admin/projects/timelineInformation/permissions",
 ]
 `;
 
@@ -67,8 +78,8 @@ Array [
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/survey-results",
-  "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
+  "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/permissions",
 ]
 `;
@@ -78,19 +89,9 @@ Array [
   "/admin/projects/timelineIdeation/edit",
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
+  "/admin/projects/timelineIdeation/ideaform",
   "/admin/projects/timelineIdeation/timeline",
   "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
-]
-`;
-
-exports[`<AdminProjectEdition /> renders the correct set of tabs for a timeline project without ideation nor surveys 1`] = `
-Array [
-  "/admin/projects/timelineInformation/edit",
-  "/admin/projects/timelineInformation/description",
-  "/admin/projects/timelineInformation/ideas",
-  "/admin/projects/timelineInformation/timeline",
-  "/admin/projects/timelineInformation/events",
-  "/admin/projects/timelineInformation/permissions",
 ]
 `;

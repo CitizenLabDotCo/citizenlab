@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import MentionsTextAreaMultiloc, { Props as VanillaMentionsTextAreaMultilocProps } from 'components/UI/MentionsTextAreaMultiloc';
+import MentionsTextAreaMultiloc, { InputProps as MentionsTextAreaMultilocInputProps } from 'components/UI/MentionsTextAreaMultiloc';
 import { FieldProps } from 'formik';
 
-class FormikMentionsTextAreaMultiloc extends PureComponent<FieldProps & VanillaMentionsTextAreaMultilocProps> {
+class FormikMentionsTextAreaMultiloc extends PureComponent<FieldProps & MentionsTextAreaMultilocInputProps> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }

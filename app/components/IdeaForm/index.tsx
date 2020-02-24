@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { has, isBoolean } from 'lodash-es';
+import { isBoolean } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // libraries
@@ -26,6 +26,7 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData, getCurrentPhase } from 'services/phases';
+import { ideaCustomFieldsSchemasStream, IIdeaCustomFieldsSchemas } from 'services/ideaCustomFields';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -96,6 +97,7 @@ interface Props {
 }
 
 interface State {
+  locale: Locale | null;
   tenant: ITenant | null;
   topics: IOption[] | null;
   locationAllowed: boolean;
@@ -112,16 +114,18 @@ interface State {
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
+  ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas | null;
 }
 
 class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   subscriptions: Subscription[];
   titleInputElement: HTMLInputElement | null;
-  descriptionElement: any;
+  descriptionElement: HTMLDivElement | null;
 
   constructor(props) {
     super(props);
     this.state = {
+      locale: null,
       tenant: null,
       topics: null,
       pbContext: null,
@@ -137,7 +141,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budget: null,
       budgetError: null,
       ideaFiles: [],
-      ideaFilesToRemove: []
+      ideaFilesToRemove: [],
+      ideaCustomFieldsSchemas: null
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -150,6 +155,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const tenant$ = currentTenantStream().observable;
     const topics$ = topicsStream().observable;
     const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
+    const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(projectId as string).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
       switchMap((project) => {
         if (project) {
@@ -199,18 +205,21 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         locale$,
         tenant$,
         topics$,
-        pbContext$,
-        locationAllowed$
-      ).subscribe(([locale, tenant, topics, pbContext, locationAllowed]) => {
+      ).subscribe(([locale, tenant, topics]) => {
         const tenantLocales = tenant.data.attributes.settings.core.locales;
 
         this.setState({
+          locale,
           tenant,
-          pbContext,
-          locationAllowed,
           topics: this.getOptions(topics, locale, tenantLocales)
         });
       }),
+
+      pbContext$.subscribe(pbContext => this.setState({ pbContext })),
+
+      locationAllowed$.subscribe(locationAllowed => this.setState({ locationAllowed })),
+
+      ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas => this.setState({ ideaCustomFieldsSchemas })),
 
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
@@ -303,7 +312,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.titleInputElement = element;
   }
 
-  handleDescriptionSetRef = (element) => {
+  handleDescriptionSetRef = (element: HTMLDivElement) => {
     this.descriptionElement = element;
   }
 
@@ -322,9 +331,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   validateDescription = (description: string | null) => {
     if (!description) {
       return <FormattedMessage {...messages.descriptionEmptyError} />;
-    }
-
-    if (description && description.length < 30) {
+    } else if (description && description.length < 30) {
       return <FormattedMessage {...messages.descriptionLengthError} />;
     }
 
@@ -353,9 +360,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
-    } else if (descriptionError && has(this.descriptionElement, 'editor.root')) {
-      scrollToComponent(this.descriptionElement.editor.root, { align: 'top', offset: -200, duration: 300 });
-      setTimeout(() => this.descriptionElement.editor.root.focus(), 300);
+    } else if (descriptionError && this.descriptionElement) {
+      scrollToComponent(this.descriptionElement, { align: 'top', offset: -200, duration: 300 });
+      setTimeout(() => this.descriptionElement && this.descriptionElement.focus(), 300);
     }
 
     if (!pbContext) {
@@ -409,6 +416,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const { projectId } = this.props;
     const { formatMessage } = this.props.intl;
     const {
+      locale,
       tenant,
       topics,
       pbContext,
@@ -422,7 +430,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       descriptionError,
       budgetError,
       ideaFiles,
-      locationAllowed
+      locationAllowed,
+      ideaCustomFieldsSchemas
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
@@ -431,7 +440,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         <StyledFormSection>
           <FormSectionTitle message={messages.formGeneralSectionTitle} />
           <FormElement id="e2e-idea-title-input">
-            <FormLabel labelMessage={messages.titleLabel} htmlFor="title" />
+            <FormLabel
+              htmlFor="title"
+              labelMessage={messages.titleLabel}
+              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
+            />
             <Input
               id="title"
               type="text"
@@ -446,7 +459,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </FormElement>
 
           <FormElement id="e2e-idea-description-input">
-            <FormLabel labelMessage={messages.descriptionLabel} id="editor-label" />
+            <FormLabel
+              id="editor-label"
+              htmlFor="editor"
+              labelMessage={messages.descriptionLabel}
+              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
+            />
             <QuillEditor
               id="editor"
               noImages={true}
@@ -455,7 +473,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               onChange={this.handleDescriptionOnChange}
               setRef={this.handleDescriptionSetRef}
               hasError={descriptionError !== null}
-              labelId="editor-label"
             />
             {descriptionError && <Error text={descriptionError} />}
           </FormElement>
@@ -492,7 +509,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
           {topics && topics.length > 0 && (
             <FormElement>
-              <FormLabel labelMessage={messages.topicsLabel} htmlFor="topics" />
+              <FormLabel
+                htmlFor="topics"
+                labelMessage={messages.topicsLabel}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
+              />
               <TopicsPicker
                 value={selectedTopics}
                 onChange={this.handleTopicsOnChange}
@@ -503,7 +524,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
           {locationAllowed &&
             <FormElement>
-              <FormLabel labelMessage={messages.locationLabel}>
+              <FormLabel
+                labelMessage={messages.locationLabel}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
+              >
                 <LocationInput
                   className="e2e-idea-form-location-input-field"
                   value={address}
@@ -518,7 +542,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         <StyledFormSection>
           <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
           <FormElement id="e2e-idea-image-upload">
-            <FormLabel htmlFor="idea-image-dropzone" labelMessage={messages.imageUploadLabel} />
+            <FormLabel
+              htmlFor="idea-image-dropzone"
+              labelMessage={messages.imageUploadLabel}
+              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
+            />
             <ImagesDropzone
               id="idea-image-dropzone"
               images={imageFile}
@@ -532,7 +560,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           </FormElement>
 
           <FormElement id="e2e-idea-file-upload">
-            <FormLabel labelMessage={messages.fileUploadLabel}>
+            <FormLabel
+              labelMessage={messages.fileUploadLabel}
+              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
+            >
               <FileUploader
                 onFileAdd={this.handleIdeaFileOnAdd}
                 onFileRemove={this.handleIdeaFileOnRemove}

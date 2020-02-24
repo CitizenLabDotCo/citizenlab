@@ -101,7 +101,7 @@ const StyledIcon = styled(Icon)`
 
 export interface IAction {
   label: string | JSX.Element;
-  handler: { (): void };
+  handler: () => void;
   icon?: IconNames;
   name?: string;
 }

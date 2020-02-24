@@ -323,14 +323,13 @@ class ProfileForm extends PureComponent<Props, State> {
             <FormLabel thin labelMessage={messages.bio} id="label-bio" />
             <QuillEditor
               id="bio_multiloc"
-              noImages
-              noVideos
-              limitedTextFormatting
+              noImages={true}
+              noVideos={true}
+              limitedTextFormatting={true}
               value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
               placeholder={formatMessage({ ...messages.bio_placeholder })}
               onChange={createChangeHandler('bio_multiloc')}
               onBlur={createBlurHandler('bio_multiloc')}
-              labelId="label-bio"
             />
             <Error apiErrors={errors.bio_multiloc} />
           </SectionField>

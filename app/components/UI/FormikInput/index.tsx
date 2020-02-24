@@ -1,12 +1,10 @@
-import React from 'react';
-import Input, { InputProps as VanillaInputProps } from 'components/UI/Input';
+import React, { PureComponent } from 'react';
+import Input, { Props } from 'components/UI/Input';
 import { FieldProps } from 'formik';
+import { Locale } from 'typings';
 
-type State = {};
-
-class FormikInput extends React.Component<FieldProps & VanillaInputProps, State> {
-
-  handleOnChange = (newValue) => {
+class FormikInput extends PureComponent<FieldProps & Props> {
+  handleOnChange = (newValue: string, _locale: Locale | undefined) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }
 
