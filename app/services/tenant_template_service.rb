@@ -80,7 +80,9 @@ class TenantTemplateService
       @template['models']['topic']                                 = yml_topics
       @template['models']['user']                                  = yml_users
       @template['models']['email_campaigns/unsubscription_token']  = yml_unsubscription_tokens
+      @template['models']['project_folder']                        = yml_project_folders
       @template['models']['project']                               = yml_projects
+      @template['models']['project_holder_ordering']               = yml_project_holder_orderings
       @template['models']['project_file']                          = yml_project_files
       @template['models']['project_image']                         = yml_project_images
       @template['models']['projects_topic']                        = yml_projects_topics
@@ -393,6 +395,21 @@ class TenantTemplateService
     end
   end
 
+  def yml_project_folders
+    ProjectFolder.all.map do |f|
+      yml_folder = {
+        'title_multiloc'               => f.title_multiloc,
+        'description_multiloc'         => f.description_multiloc,
+        'remote_header_bg_url'         => f.header_bg_url,
+        'description_preview_multiloc' => f.description_preview_multiloc, 
+        'created_at'                   => f.created_at.to_s,
+        'updated_at'                   => f.updated_at.to_s
+      }
+      store_ref yml_folder, f.id, :project_folder
+      yml_folder
+    end
+  end
+
   def yml_projects
     Project.all.map do |p|
       yml_project = yml_participation_context p
@@ -408,10 +425,22 @@ class TenantTemplateService
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
         'ordering'                     => p.ordering,
-        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field) 
+        'folder_ref'                   => lookup_ref(p.folder_id, :project_folder),
+        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field)
       })
       store_ref yml_project, p.id, :project
       yml_project
+    end
+  end
+
+  def yml_project_holder_orderings
+    ProjectHolderOrdering.all.map do |p|
+      {
+        'project_holder_ref' => lookup_ref(p.project_holder_id, [:project,:project_folder]),
+        'ordering'           => p.ordering,
+        'created_at'         => p.created_at.to_s,
+        'updated_at'         => p.updated_at.to_s
+      }
     end
   end
 

@@ -653,6 +653,26 @@ ActiveRecord::Schema.define(version: 2020_02_13_001613) do
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
+  create_table "project_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.jsonb "title_multiloc"
+    t.jsonb "description_multiloc"
+    t.jsonb "description_preview_multiloc"
+    t.string "header_bg"
+    t.string "slug"
+    t.integer "projects_count", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_project_folders_on_slug"
+  end
+
+  create_table "project_holder_orderings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "ordering"
+    t.uuid "project_holder_id"
+    t.string "project_holder_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.string "image"
@@ -690,9 +710,10 @@ ActiveRecord::Schema.define(version: 2020_02_13_001613) do
     t.uuid "default_assignee_id"
     t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
+    t.uuid "folder_id"
     t.uuid "custom_form_id"
-    t.index ["created_at"], name: "index_projects_on_created_at", order: :desc
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
+    t.index ["folder_id"], name: "index_projects_on_folder_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -887,6 +908,7 @@ ActiveRecord::Schema.define(version: 2020_02_13_001613) do
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
   add_foreign_key "project_files", "projects"
   add_foreign_key "project_images", "projects"
+  add_foreign_key "projects", "project_folders", column: "folder_id"
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
