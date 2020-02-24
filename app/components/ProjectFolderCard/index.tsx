@@ -16,6 +16,7 @@ import { getProjectFolderUrl } from 'services/projectFolders';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
 import T from 'components/T';
@@ -284,6 +285,7 @@ export interface InputProps {
 
 interface DataProps {
   projectFolder: GetProjectFolderChildProps;
+  publishedAndArchivedProjects: GetProjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -300,12 +302,22 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { projectFolder, size, layout, className, theme } = this.props;
+    const {
+      projectFolder,
+      size,
+      layout,
+      className,
+      theme,
+      publishedAndArchivedProjects
+    } = this.props;
 
-    if (!isNilOrError(projectFolder)) {
+    if (
+      !isNilOrError(projectFolder) &&
+      !isNilOrError(publishedAndArchivedProjects.projectsList)
+    ) {
       const imageUrl = projectFolder.attributes.header_bg?.medium;
       const folderUrl = getProjectFolderUrl(projectFolder);
-      const numberOfProjects = projectFolder.relationships.projects.data.length;
+      const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent`}>
@@ -396,6 +408,17 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
 
 const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
+  publishedAndArchivedProjects: ({ projectFolder, render }) => {
+    const filteredProjectIds = !isNilOrError(projectFolder) ? projectFolder.relationships.projects.data.map(project => project.id) : undefined;
+    return (
+    <GetProjects
+      publicationStatuses={['published', 'archived']}
+      filteredProjectIds={filteredProjectIds}
+    >
+      {render}
+    </GetProjects>
+    );
+  }
 });
 
 const ProjectFolderCardWithHoC = withTheme(injectIntl<Props>(ProjectFolderCard));
