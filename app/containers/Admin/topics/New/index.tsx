@@ -16,6 +16,7 @@ import TopicForm, { FormValues } from '../TopicForm';
 
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
+
 type Props = {};
 
 export default class New extends React.Component<Props> {
@@ -62,7 +63,6 @@ export default class New extends React.Component<Props> {
           initialValues={this.initialValues()}
           render={this.renderFn}
           onSubmit={this.handleSubmit}
-          validate={TopicForm.validate}
         />
       </Section>
     );

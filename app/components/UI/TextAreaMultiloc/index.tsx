@@ -5,6 +5,7 @@ import { get } from 'lodash-es';
 // components
 import TextArea from 'components/UI/TextArea';
 import Label from 'components/UI/Label';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // services
 import { localeStream } from 'services/locale';
@@ -18,20 +19,14 @@ import { Locale, Multiloc } from 'typings';
 
 const Container = styled.div``;
 
-const TextAreaWrapper = styled.div`
+const TextAreaContainer = styled.div`
   &:not(.last) {
     margin-bottom: 12px;
   }
 `;
 
-const StyledLabel = styled(Label)``;
-
 const LanguageExtension = styled.span`
   font-weight: 500;
-`;
-
-const LabelTooltip = styled.div`
-  display: inline-block;
 `;
 
 export type Props = {
@@ -39,7 +34,7 @@ export type Props = {
   name: string;
   valueMultiloc?: Multiloc | null;
   label?: string | JSX.Element | null | undefined;
-  labelTooltip?: JSX.Element;
+  labelTooltipText?: string | JSX.Element | null;
   onChange?: (arg: Multiloc, locale: Locale) => void;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
@@ -95,21 +90,22 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
   }
 
   renderOnce = (currentTenantLocale, index, totalLocales) => {
-    const { label, labelTooltip, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc, renderPerLocale, disabled } = this.props;
+    const { label, labelTooltipText, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc, renderPerLocale, disabled } = this.props;
     const value = get(valueMultiloc, [currentTenantLocale], '') as string;
     const error = get(errorMultiloc, [currentTenantLocale], null);
     const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
 
     return (
-      <TextAreaWrapper key={currentTenantLocale} className={`${index === totalLocales - 1 && 'last'}`}>
+      <TextAreaContainer
+        key={currentTenantLocale}
+        className={`${index === totalLocales - 1 && 'last'}`}
+      >
         {label &&
-          <StyledLabel htmlFor={id}>
-            {label}
-            {totalLocales > 1 &&
-              <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-            }
-            {labelTooltip && <LabelTooltip>{labelTooltip}</LabelTooltip>}
-          </StyledLabel>
+          <Label htmlFor={id}>
+            <span>{label}</span>
+            {totalLocales > 1 && <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>}
+            {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+          </Label>
         }
 
         {renderPerLocale && renderPerLocale(currentTenantLocale)}
@@ -125,7 +121,7 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
           maxCharCount={maxCharCount}
           disabled={disabled}
         />
-      </TextAreaWrapper>
+      </TextAreaContainer>
     );
   }
 

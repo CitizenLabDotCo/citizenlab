@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
-import InputMultiloc, { InputProps } from 'components/UI/InputMultiloc';
+import MentionsTextArea, { InputProps } from 'components/UI/MentionsTextArea';
 import { FieldProps } from 'formik';
 
-class FormikInputMultiloc extends PureComponent<FieldProps & InputProps> {
+class FormikMentionsTextArea extends PureComponent<FieldProps & InputProps> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
-    this.props.form.setStatus('enabled');
   }
 
   handleOnBlur = () => {
@@ -15,9 +14,9 @@ class FormikInputMultiloc extends PureComponent<FieldProps & InputProps> {
   render() {
     const { value } = this.props.field;
     return (
-      <InputMultiloc
+      <MentionsTextArea
         {...this.props}
-        valueMultiloc={value}
+        value={value}
         onChange={this.handleOnChange}
         onBlur={this.handleOnBlur}
       />
@@ -25,4 +24,4 @@ class FormikInputMultiloc extends PureComponent<FieldProps & InputProps> {
   }
 }
 
-export default FormikInputMultiloc;
+export default FormikMentionsTextArea;

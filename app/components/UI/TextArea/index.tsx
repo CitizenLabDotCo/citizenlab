@@ -1,5 +1,5 @@
 import React from 'react';
-import { isEmpty, isFunction } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 
 // components
 import Error from 'components/UI/Error';
@@ -10,6 +10,9 @@ import IconTooltip from 'components/UI/IconTooltip';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+
+// typings
+import { Locale } from 'typings';
 
 const Container = styled.div`
   position: relative;
@@ -28,11 +31,6 @@ const Container = styled.div`
     background: #fff;
     overflow: hidden;
     -webkit-appearance: none;
-
-    &::placeholder {
-      color: #aaa;
-      opacity: 1;
-    }
 
     &:focus {
       border-color: #666;
@@ -79,11 +77,12 @@ export type Props = {
   name?: string;
   label?: string | JSX.Element | null | undefined;
   labelTooltipText?: string | JSX.Element | null;
+  locale?: Locale;
   value?: string | null;
   placeholder?: string | null | undefined;
   rows?: number | undefined;
   error?: string | null | undefined;
-  onChange?: (arg: string) => void | undefined;
+  onChange?: (value: string, locale: Locale | undefined) => void;
   onFocus?: () => void | undefined;
   onBlur?: () => void | undefined;
   autofocus?: boolean | undefined;
@@ -115,8 +114,8 @@ export default class TextArea extends React.PureComponent<Props, State> {
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
     const value = this.props.maxCharCount ? event.currentTarget.value.substr(0, this.props.maxCharCount) : event.currentTarget.value;
 
-    if (this.props.onChange && isFunction(this.props.onChange)) {
-      this.props.onChange(value);
+    if (this.props.onChange) {
+      this.props.onChange(value, this.props.locale);
     }
   }
 
