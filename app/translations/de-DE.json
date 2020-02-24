@@ -294,7 +294,7 @@
   "app.components.ProjectCards.stayTuned": "Bleiben Sie dran, hier entsteht bald ein Projekt.",
   "app.components.ProjectFolderCard.a11y_projectDescription": "Projektbeschreibung:",
   "app.components.ProjectFolderCard.a11y_projectTitle": "Projekttitel:",
-  "app.components.ProjectFolderCard.numberOfProjects": "{numberOfProjects, plural, one {# project} other {# projects}}",
+  "app.components.ProjectFolderCard.numberOfProjects": "{numberOfProjects, plural, no {# Projekte} one {# Projekt} other {# Projekte}}",
   "app.components.ProjectFolderCards.noProjectYet": "Es gibt noch kein Projekt",
   "app.components.ProjectFolderCards.showMore": "Mehr anzeigen",
   "app.components.ProjectFolderCards.stayTuned": "Bleiben Sie dran, hier entsteht bald ein Projekt.",
