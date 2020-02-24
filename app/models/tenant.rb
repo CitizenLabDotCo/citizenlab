@@ -3,7 +3,7 @@ class Tenant < ApplicationRecord
   include Frontend::TenantStyle
 
   mount_base64_uploader :logo, LogoUploader
-  mount_base64_uploader :header_bg, HeaderBgUploader
+  mount_base64_uploader :header_bg, TenantHeaderBgUploader
   mount_base64_uploader :favicon, FaviconUploader
 
   validates :name, :host, presence: true
