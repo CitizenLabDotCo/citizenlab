@@ -199,6 +199,8 @@ models:
       voting_enabled: true
       voting_method: unlimited
       remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+  project_holder_ordering:
+    - project_holder_ref: *1
   project_image:
     - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
       project_ref: *1

@@ -437,6 +437,24 @@ if Apartment::Tenant.current == 'localhost'
       }
     })
 
+    2.times do
+      folder = ProjectFolder.create!(
+        title_multiloc: {
+          "en": Faker::Lorem.sentence,
+          "nl-BE": Faker::Lorem.sentence
+        },
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        description_preview_multiloc: {
+          "en" => "All things swimming pool.",
+          "nl-BE" => "Alles met zwembaden."
+        },
+        header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      )
+    end
+
     num_projects.times do
       project = Project.new({
         title_multiloc: {
@@ -456,7 +474,8 @@ if Apartment::Tenant.current == 'localhost'
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
         publication_status: ['published','published','published','published','published','draft','archived'][rand(7)],
-        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first }
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
+        folder_id: rand(3) == 0 ? nil : ProjectFolder.ids.shuffle.first
       })
 
       if project.continuous?
@@ -726,6 +745,8 @@ if Apartment::Tenant.current == 'localhost'
         invitee: User.create!(email: Faker::Internet.email, locale: 'en', invite_status: 'pending', first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
       )
     end
+
+    ProjectHolderService.new.fix_project_holder_orderings!
 
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
       permitted_by = ['groups', 'admins_moderators'].shuffle.first

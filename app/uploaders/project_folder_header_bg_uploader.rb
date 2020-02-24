@@ -1,4 +1,4 @@
-class HeaderBgUploader < CarrierWave::Uploader::Base
+class ProjectFolderHeaderBgUploader < CarrierWave::Uploader::Base
   include BaseImageUploader
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -13,11 +13,6 @@ class HeaderBgUploader < CarrierWave::Uploader::Base
   #   tenant = Tenant.current
   #   "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   # end
-
-  def store_dir
-    tenant = model
-    "uploads/#{tenant.id}/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-  end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
@@ -41,15 +36,15 @@ class HeaderBgUploader < CarrierWave::Uploader::Base
   # end
 
   version :large do
-    process safe_resize_to_fill_for_gif: [1440,480]
+    process resize_to_fill: [1440,360]
   end
 
   version :medium do
-    process safe_resize_to_fill_for_gif: [720,152]
+    process resize_to_fill: [720,180]
   end
 
   version :small do
-    process safe_resize_to_fill_for_gif: [520,250]
+    process resize_to_fill: [520,250]
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

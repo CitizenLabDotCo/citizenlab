@@ -1,6 +1,6 @@
 class Project < ApplicationRecord
   include ParticipationContext
-  acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top, scope: [:publication_status]
+  acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:folder_id]
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
@@ -24,6 +24,10 @@ class Project < ApplicationRecord
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
   belongs_to :default_assignee, class_name: 'User', optional: true
   belongs_to :custom_form, optional: true, dependent: :destroy
+
+  has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
+  belongs_to :folder, optional: true, class_name: 'ProjectFolder'
+  counter_culture :folder
 
   has_one :project_sort_score
 
@@ -88,6 +92,10 @@ class Project < ApplicationRecord
 
     where(id: subquery)
   end)
+
+  scope :published, -> {
+    where(publication_status: 'published')
+  }
 
   scope :is_participation_context, -> {
     where.not(process_type: 'timeline')
