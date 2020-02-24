@@ -27,7 +27,7 @@ export default defineMessages({
   },
   explanationTitle: {
     id: 'app.containers.InitiativesIndexPage.explanationTitle',
-    defaultMessage: 'How does it work?'
+    defaultMessage: 'How do initiatives work?'
   },
   constraints: {
     id: 'app.containers.InitiativesIndexPage.constraints',

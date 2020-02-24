@@ -47,7 +47,7 @@ function convertBlobToFile(blob: Blob, fileName: string) {
   return <File>b;
 }
 
-export async function convertUrlToUploadFile(url: string, id: string | null, filename: string | null) {
+export async function convertUrlToUploadFile(url: string, id?: string | null, filename?: string | null) {
   const headers = new Headers();
   headers.append('cache-control', 'no-cache');
   headers.append('pragma', 'no-cache');

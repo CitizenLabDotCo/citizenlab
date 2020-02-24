@@ -10,6 +10,8 @@ import { IInviteError } from 'services/invites';
 import messages from './messages';
 import { colors, fontSizes } from 'utils/styleUtils';
 
+const timeout = 350;
+
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
   color: ${colors.clRedError};
@@ -39,7 +41,7 @@ const IconWrapper = styled.div`
   }
 `;
 
-const StyledErrorMessageInner = styled.div<{ showBackground: boolean }>`
+const ContainerInner = styled.div<{ showBackground: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -48,11 +50,11 @@ const StyledErrorMessageInner = styled.div<{ showBackground: boolean }>`
   background: ${(props) => (props.showBackground ? colors.clRedErrorBackground : 'transparent')};
 `;
 
-const StyledErrorMessage = styled.div<{ size: string; marginTop: string; marginBottom: string; }>`
+const Container = styled.div<{ size: string; marginTop: string; marginBottom: string; }>`
   position: relative;
   overflow: hidden;
 
-  ${StyledErrorMessageInner} {
+  ${ContainerInner} {
     margin-top: ${(props) => props.marginTop};
     margin-bottom: ${(props) => props.marginBottom};
     padding: ${(props) => {
@@ -118,8 +120,8 @@ const StyledErrorMessage = styled.div<{ size: string; marginTop: string; marginB
     &.error-enter-active {
       max-height: 60px;
       opacity: 1;
-      transition: max-height 400ms cubic-bezier(0.165, 0.84, 0.44, 1),
-                  opacity 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: max-height ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1),
+                  opacity ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -130,8 +132,8 @@ const StyledErrorMessage = styled.div<{ size: string; marginTop: string; marginB
     &.error-exit-active {
       max-height: 0px;
       opacity: 0;
-      transition: max-height 350ms cubic-bezier(0.19, 1, 0.22, 1),
-                  opacity 350ms cubic-bezier(0.19, 1, 0.22, 1);
+      transition: max-height ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1),
+                  opacity ${timeout}ms cubic-bezier(0.19, 1, 0.22, 1);
     }
   }
 `;
@@ -174,7 +176,9 @@ interface Props extends DefaultProps {
   message?: IMessageInfo['message'];
 }
 
-interface State {}
+interface State {
+  mounted: boolean;
+}
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {
@@ -186,6 +190,21 @@ export default class Error extends PureComponent<Props, State> {
     className: '',
     animate: true
   };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      mounted: false
+    };
+  }
+
+  componentDidMount() {
+    this.setState({ mounted: true });
+  }
+
+  componentWillUnmount() {
+    this.setState({ mounted: false });
+  }
 
   findMessage = (fieldName: string | undefined, error: string) => {
     if (fieldName && messages[`${fieldName}_${error}`]) {
@@ -200,32 +219,28 @@ export default class Error extends PureComponent<Props, State> {
   }
 
   render() {
+    const { mounted } = this.state;
     const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
-
-    const dedupApiErrors = apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) ?
-      uniqBy(apiErrors, 'error') : undefined;
+    const dedupApiErrors = apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) ? uniqBy(apiErrors, 'error') : undefined;
 
     return (
       <CSSTransition
         classNames="error"
-        in={!!(text || errors || apiErrors || message)}
-        timeout={{
-          enter: 400,
-          exit: 350
-        }}
+        in={!!(mounted && (text || errors || apiErrors || message))}
+        timeout={timeout}
         mounOnEnter={true}
         unmountOnExit={true}
         enter={animate}
         exit={animate}
       >
-        <StyledErrorMessage
+        <Container
           className={`e2e-error-message ${className}`}
           size={size}
           marginTop={marginTop}
           marginBottom={marginBottom}
           role="alert"
         >
-          <StyledErrorMessageInner
+          <ContainerInner
             showBackground={showBackground}
             className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
           >
@@ -312,8 +327,8 @@ export default class Error extends PureComponent<Props, State> {
                 </ErrorList>
               }
             </ErrorMessageText>
-          </StyledErrorMessageInner>
-        </StyledErrorMessage>
+          </ContainerInner>
+        </Container>
       </CSSTransition>
     );
   }

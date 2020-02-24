@@ -168,14 +168,14 @@ const ProjectContent = styled.div`
   align-items: stretch;
 
   &.large {
-    margin-top: 18px;
-    margin-bottom: 35px;
-    margin-left: 68px;
-    margin-right: 32px;
+    padding-top: 18px;
+    padding-bottom: 35px;
+    padding-left: 68px;
+    padding-right: 32px;
 
     ${media.smallerThanMaxTablet`
-      margin-left: 20px;
-      margin-right: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
     `}
   }
 
@@ -573,23 +573,27 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
         </ContentHeader>
       );
 
+      const screenReaderContent = (
+        <ScreenReaderOnly>
+          <ProjectTitle>
+            <FormattedMessage {...messages.a11y_projectTitle} />
+            <T value={project.attributes.title_multiloc} />
+          </ProjectTitle>
+
+          <ProjectDescription>
+            <FormattedMessage {...messages.a11y_projectDescription} />
+            <T value={project.attributes.description_preview_multiloc} />
+          </ProjectDescription>
+        </ScreenReaderOnly>
+      );
+
       return (
         <Container
           className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-project-card`}
           to={projectUrl}
           onClick={this.handleProjectCardOnClick(project.id)}
         >
-          <ScreenReaderOnly>
-            <ProjectTitle>
-              <FormattedMessage {...messages.a11y_projectTitle} />
-              <T value={project.attributes.title_multiloc} />
-            </ProjectTitle>
-
-            <ProjectDescription>
-              <FormattedMessage {...messages.a11y_projectDescription} />
-              <T value={project.attributes.description_preview_multiloc} />
-            </ProjectDescription>
-          </ScreenReaderOnly>
+          {screenReaderContent}
           {size !== 'large' && contentHeader}
 
           <ProjectImageContainer className={size}>
@@ -643,31 +647,31 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
               </ContentFooterLeft>
 
               <ContentFooterRight>
-                  <ProjectMetaItems>
-                    {showIdeasCount &&
-                      <MetaItem className="first">
-                        <MetaItemIcon ariaHidden name="idea2" />
-                        <MetaItemText aria-hidden>
-                          {ideasCount}
-                        </MetaItemText>
-                        <ScreenReaderOnly>
-                          {formatMessage(messages.xIdeas, { ideasCount })}
-                        </ScreenReaderOnly>
-                      </MetaItem>
-                    }
+                <ProjectMetaItems>
+                  {showIdeasCount &&
+                    <MetaItem className="first">
+                      <MetaItemIcon ariaHidden name="idea2" />
+                      <MetaItemText aria-hidden>
+                        {ideasCount}
+                      </MetaItemText>
+                      <ScreenReaderOnly>
+                        {formatMessage(messages.xIdeas, { ideasCount })}
+                      </ScreenReaderOnly>
+                    </MetaItem>
+                  }
 
-                    {showCommentsCount &&
-                      <MetaItem>
-                        <CommentIcon ariaHidden name="comments" />
-                        <MetaItemText aria-hidden>
-                          {commentsCount}
-                        </MetaItemText>
-                        <ScreenReaderOnly>
-                          {formatMessage(messages.xComments, { commentsCount })}
-                        </ScreenReaderOnly>
-                      </MetaItem>
-                    }
-                  </ProjectMetaItems>
+                  {showCommentsCount &&
+                    <MetaItem>
+                      <CommentIcon ariaHidden name="comments" />
+                      <MetaItemText aria-hidden>
+                        {commentsCount}
+                      </MetaItemText>
+                      <ScreenReaderOnly>
+                        {formatMessage(messages.xComments, { commentsCount })}
+                      </ScreenReaderOnly>
+                    </MetaItem>
+                  }
+                </ProjectMetaItems>
               </ContentFooterRight>
             </ContentFooter>
           </ProjectContent>

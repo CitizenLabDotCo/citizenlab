@@ -4,7 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // services
-import {  getProjectUrl } from 'services/projects';
+import { getProjectUrl } from 'services/projects';
 
 // resources
 import GetProject from 'resources/GetProject';
