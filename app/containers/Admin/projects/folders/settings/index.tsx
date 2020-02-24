@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
 import { SectionTitle, SectionSubtitle, SectionField, Section } from 'components/admin/Section';
@@ -24,6 +24,10 @@ import { convertUrlToUploadFile } from 'utils/fileTools';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 import GoBackButton from 'components/UI/GoBackButton';
+import Input from 'components/UI/Input';
+import TextArea from 'components/UI/TextArea';
+import Quill from 'quill';
+import QuillEditor from 'components/UI/QuillEditor';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
@@ -78,8 +82,8 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
           setTitleMultiloc(projectFolder.attributes.title_multiloc);
           setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
           setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
-          if (projectFolder.attributes?.header_bg?.large) {
-            const headerFile = await convertUrlToUploadFile(projectFolder.attributes?.header_bg?.large, null, null);
+          if (projectFolder.attributes ?.header_bg ?.large) {
+            const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
             setHeaderBg(headerFile);
           }
         }
@@ -127,7 +131,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             title_multiloc: titleMultiloc,
             description_multiloc: descriptionMultiloc,
             description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg?.base64
+            header_bg: headerBg ?.base64
           });
           if (isNilOrError(res)) {
             setStatus('error');
@@ -147,7 +151,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             title_multiloc: titleMultiloc,
             description_multiloc: descriptionMultiloc,
             description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg?.base64
+            header_bg: headerBg ?.base64
           });
           if (isNilOrError(res)) {
             setStatus('error');
@@ -179,6 +183,26 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
         setDeletionError(true);
       });
     }
+  };
+
+  // handlers
+  const handleTitleChange = (newTitle) => {
+    selectedLocale && setTitleMultiloc({
+      ...titleMultiloc,
+      [selectedLocale]: newTitle
+    });
+  };
+  const handleDescriptionChange = (newDescription) => {
+    selectedLocale && setDescriptionMultiloc({
+      ...descriptionMultiloc,
+      [selectedLocale]: newDescription
+    });
+  };
+  const handleShortDescriptionChange = (newShortDescription) => {
+    selectedLocale && setShortDescriptionMultiloc({
+      ...shortDescriptionMultiloc,
+      [selectedLocale]: newShortDescription
+    });
   };
 
   // ---- Rendering
@@ -214,30 +238,27 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
               <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
             </SectionField>
             <SectionField>
-              <InputMultiloc
-                valueMultiloc={titleMultiloc}
+              <Input
+                value={titleMultiloc ?.[selectedLocale]}
                 type="text"
-                onChange={setTitleMultiloc}
-                selectedLocale={selectedLocale}
+                onChange={handleTitleChange}
                 label={<FormattedMessage {...messages.titleInputLabel} />}
               />
             </SectionField>
             <SectionField>
-              <TextAreaMultiloc
-                valueMultiloc={shortDescriptionMultiloc}
+              <TextArea
+                value={shortDescriptionMultiloc ?.[selectedLocale]}
                 name="textAreaMultiloc"
-                onChange={setShortDescriptionMultiloc}
-                selectedLocale={selectedLocale}
+                onChange={handleShortDescriptionChange}
                 label={<FormattedMessage {...messages.shortDescriptionInputLabel} />}
-                labelTooltip={<IconTooltip content={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />} />}
+                labelTooltipText={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />}
               />
             </SectionField>
             <SectionField>
-              <QuillMultiloc
+              <QuillEditor
                 id="description"
-                valueMultiloc={descriptionMultiloc}
-                onChangeMultiloc={setDescriptionMultiloc}
-                selectedLocale={selectedLocale}
+                value={descriptionMultiloc ?.[selectedLocale]}
+                onChange={handleDescriptionChange}
                 label={<FormattedMessage {...messages.descriptionInputLabel} />}
               />
             </SectionField>

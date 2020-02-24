@@ -19,12 +19,6 @@ const LocationInputWrapper: any = styled.div`
     outline: none;
     cursor: text;
 
-    ::placeholder {
-      color: ${colors.label};
-      opacity: 1;
-      font-size: ${fontSizes.base}px;
-    }
-
     &:focus {
       border-color: #999;
     }

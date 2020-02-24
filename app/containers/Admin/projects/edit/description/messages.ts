@@ -3,21 +3,21 @@ import {
 } from 'react-intl';
 
 export default defineMessages({
-  saveButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectDescription.saveButtonLabel',
+  save: {
+    id: 'app.containers.AdminPage.ProjectDescription.save',
     defaultMessage: 'Save',
   },
-  saveErrorLabel: {
-    id: 'app.containers.AdminPage.ProjectDescription.saveErrorLabel',
-    defaultMessage: 'Error',
+  saved: {
+    id: 'app.containers.AdminPage.ProjectDescription.saved',
+    defaultMessage: 'Saved!',
   },
-  saveSuccessLabel: {
-    id: 'app.containers.AdminPage.ProjectDescription.saveSuccessLabel',
-    defaultMessage: 'Success!',
+  saveSuccessMessage: {
+    id: 'app.containers.AdminPage.ProjectDescription.saveSuccessMessage',
+    defaultMessage: 'Your changes have been saved successfully.',
   },
-  saveErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectDescription.saveErrorMessage',
-    defaultMessage: 'We could not save your changes, please try again.',
+  errorMessage: {
+    id: 'app.containers.AdminPage.ProjectDescription.errorMessage',
+    defaultMessage: 'Something went wrong, please try again later',
   },
   descriptionLabel: {
     id: 'app.containers.AdminPage.ProjectDescription.descriptionLabel',
@@ -34,10 +34,6 @@ export default defineMessages({
   descriptionPreviewTooltip: {
     id: 'app.containers.AdminPage.ProjectDescription.descriptionPreviewTooltip',
     defaultMessage: 'Shown on the project card on the home page.',
-  },
-  saveSuccessMessage: {
-    id: 'app.containers.AdminPage.ProjectDescription.saveSuccessMessage',
-    defaultMessage: 'Your changes have been saved.',
   },
   titleDescription: {
     id: 'app.containers.AdminPage.ProjectDescription.titleDescription',

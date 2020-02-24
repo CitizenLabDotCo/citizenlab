@@ -100,7 +100,7 @@ const CollapseContainer = styled.div`
 
 interface Props {
   label: JSX.Element | string;
-  labelTooltip?: React.ReactChild | null;
+  labelTooltipText?: string | JSX.Element | null;
   opened: boolean;
   onToggle: (event: React.MouseEvent) => void;
   className?: string;
@@ -118,7 +118,7 @@ class Collapse extends PureComponent<Props> {
   }
 
   render() {
-    const { label, labelTooltip, children, opened, className } = this.props;
+    const { label, labelTooltipText, children, opened, className } = this.props;
 
     return (
       <Container className={className}>
@@ -127,7 +127,7 @@ class Collapse extends PureComponent<Props> {
             <ArrowIcon name="chevron-right" className={`${opened && 'opened'}`} />
             {label}
           </CollapseExpandButton>
-          {labelTooltip && <IconTooltip content={labelTooltip} />}
+          {labelTooltipText && <IconTooltip content={labelTooltipText} />}
         </Label>
 
         <CSSTransition

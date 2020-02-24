@@ -21,34 +21,30 @@ describe('Initiative new page', () => {
   });
 
   it('shows an error when no title is provided', () => {
-    cy.get('#e2e-initiative-title-input-en-GB').click();
-    cy.get('.e2e-tips').click();
-
-    cy.get('.e2e-error-message').should('contain', 'Please provide a title');
+    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.get('#e2e-initiative-form-title-section .e2e-error-message').contains('Please provide a title');
   });
 
   it('shows an error when no description is provided', () => {
-    cy.get('#body .ql-editor').click();
-    cy.get('.e2e-tips').click();
-
-    cy.get('.e2e-error-message').should('contain', 'Please provide a description');
+    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.get('#e2e-initiative-form-description-section .e2e-error-message').contains('Please provide a description');
   });
 
   it('shows an error when the title is less than 10 characters long', () => {
-    cy.get('#e2e-initiative-title-input-en-GB').type(randomString(9));
-    cy.get('.e2e-tips').click().wait(200);
-    cy.get('.e2e-error-message').should('contain', 'The initiative title must be at least 10 characters long');
+    cy.get('#e2e-initiative-title-input').type(randomString(9)).blur();
+    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.get('#e2e-initiative-form-title-section .e2e-error-message').contains('The initiative title must be at least 10 characters long');
   });
 
   it('shows an error when the description is less than 300 characters long ()', () => {
-    cy.get('#body .ql-editor').type(randomString(9));
-    cy.get('.e2e-tips').click().wait(200);
-    cy.get('.e2e-error-message').should('contain', 'The initiative description must be at least 500 characters long');
+    cy.get('#e2e-initiative-form-description-section .ql-editor').type(randomString(9)).blur().wait(200);
+    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
+    cy.get('#e2e-initiative-form-description-section .e2e-error-message').contains('The initiative description must be at least 500 characters long');
   });
 
   it('has a working initiative form', () => {
-    cy.get('#e2e-initiative-title-input-en-GB').as('titleInput');
-    cy.get('#body .ql-editor').as('descriptionInput');
+    cy.get('#e2e-initiative-title-input').as('titleInput');
+    cy.get('#e2e-initiative-form-description-section .ql-editor').as('descriptionInput');
 
     // add title and description
     cy.get('@titleInput').type(initiativeTitle);
@@ -69,8 +65,8 @@ describe('Initiative new page', () => {
     cy.get('.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div').first().click();
 
     // verify location
-    cy.get('.e2e-initiative-location-input input').its('val').should('not.equal', 'antwerp');
-    cy.get('.e2e-initiative-location-input input').its('val').should('not.be.empty');
+    cy.get('.e2e-initiative-location-input input').should('contain.value', 'Antwerp');
+    cy.get('.e2e-initiative-location-input input').should('not.have.value', 'antwerp');
 
     // verify that image and file upload components are present
     cy.get('#e2e-iniatiative-banner-dropzone');

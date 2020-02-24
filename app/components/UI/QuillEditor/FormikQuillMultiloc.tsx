@@ -1,12 +1,14 @@
-// Libraries
 import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
 // components
-import QuillMultiloc, { MultilocEditorProps } from 'components/UI/QuillEditor/QuillMultiloc';
+import QuillMultiloc, { InputProps } from 'components/UI/QuillEditor/QuillMultiloc';
 
-export default class FormikQuillMultiloc extends PureComponent<FieldProps & MultilocEditorProps> {
-  handleOnChange = (newValue) => {
+// typings
+import { Multiloc } from 'typings';
+
+export default class FormikQuillMultiloc extends PureComponent<FieldProps & InputProps> {
+  handleOnChange = (newValue: Multiloc) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
     this.props.form.setStatus('enabled');
   }
@@ -16,13 +18,13 @@ export default class FormikQuillMultiloc extends PureComponent<FieldProps & Mult
   }
 
   render() {
-    const { field: { value, name }, id } = this.props;
+    const { field } = this.props;
+
     return (
       <QuillMultiloc
         {...this.props}
-        id={id ? id : name} // id is not required if there is only one field with the same name on the page.
-        valueMultiloc={value}
-        onChangeMultiloc={this.handleOnChange}
+        valueMultiloc={field.value}
+        onChange={this.handleOnChange}
         onBlur={this.handleOnBlur}
       />
     );

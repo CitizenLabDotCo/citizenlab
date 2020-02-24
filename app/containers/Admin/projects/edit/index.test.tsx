@@ -34,7 +34,7 @@ const children = () => <div/>;
 
 describe('<AdminProjectEdition />', () => {
 
-  it('renders the correct set of tabs for a continuous non-survey non-ideation project', () => {
+  it('renders the correct set of tabs for a continuous information project', () => {
     const surveys_enabled = true;
     const typeform_enabled = true;
     const phases = [];
@@ -154,7 +154,7 @@ describe('<AdminProjectEdition />', () => {
       expect(tabs.map(tab => tab.url)).toMatchSnapshot();
     });
 
-    it('renders the correct set of tabs for a timeline project without ideation nor surveys', () => {
+    it('renders the correct set of tabs for a timeline project with a single information phase', () => {
       const surveys_enabled = true;
       const typeform_enabled = true;
       const project = getMockProject('timelineInformation', 'timeline');
@@ -299,7 +299,7 @@ describe('<AdminProjectEdition />', () => {
       expect(linkPath).toMatchSnapshot();
     });
 
-    it('doesn\'t you add an idea when there\'s no ideation phase', () => {
+    it('doesn\'t let you add an idea when there\'s no ideation phase', () => {
       const surveys_enabled = true;
       const typeform_enabled = true;
       const phases = [];

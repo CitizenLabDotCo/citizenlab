@@ -8,7 +8,7 @@ const Container = styled.label`
   align-items: center;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 21px;
+  line-height: normal;
   margin: 0;
   padding: 0;
   margin-bottom: 10px;
@@ -33,13 +33,15 @@ type Props = {
   children?: any;
   hidden?: boolean;
   className?: string;
+  onClick?: (event: React.MouseEvent) => void;
 };
 
 type State = {};
 
 export default class Label extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
+
+  handleOnClick = (event: React.MouseEvent) => {
+    this.props.onClick && this.props.onClick(event);
   }
 
   render() {
@@ -50,6 +52,7 @@ export default class Label extends React.PureComponent<Props, State> {
         id={id}
         className={`${className} ${booleanClass(className, className)} ${booleanClass(this.props.hidden, 'invisible')}`}
         htmlFor={htmlFor}
+        onClick={this.handleOnClick}
       >
         {children || value}
       </Container>
