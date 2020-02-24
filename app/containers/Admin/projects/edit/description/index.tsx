@@ -1,15 +1,14 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo, useEffect, useCallback, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
+// Hooks
+import useTenantLocales from 'hooks/useTenantLocales';
+import useProject from 'hooks/useProject';
+
 // Services
 import { updateProject } from 'services/projects';
-
-// Resources
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 
 // Components
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
@@ -36,208 +35,161 @@ const ButtonContainer = styled.div`
   display: flex;
 `;
 
-interface InputProps {
+interface Props {
   className?: string;
 }
 
-interface DataProps {
-  tenantLocales: GetTenantLocalesChildProps;
-  project: GetProjectChildProps;
+interface IFormValues {
+  description_preview_multiloc: Multiloc | null;
+  description_multiloc: Multiloc | null;
 }
 
-interface Props extends InputProps, DataProps { }
+const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
+  const { intl: { formatMessage } } = props;
 
-interface State {
-  descriptionPreviewMultiloc: Multiloc | null;
-  descriptionMultiloc: Multiloc | null;
-  touched: boolean;
-  processing: boolean;
-  success: boolean;
-  errors: { [key: string]: any };
-}
+  const [touched, setTouched] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: any }>({});
+  const [formValues, setFormValues] = useState<IFormValues>({
+    description_preview_multiloc: null,
+    description_multiloc: null
+  });
 
-class ProjectDescription extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+  const tenantLocales = useTenantLocales();
+  const project = useProject({ projectId: props.params.projectId });
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      descriptionPreviewMultiloc: null,
-      descriptionMultiloc: null,
-      touched: false,
-      processing: false,
-      success: false,
-      errors: {}
-    };
-  }
-
-  componentDidMount() {
-    this.mapPropsToState();
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (isNilOrError(prevProps.project) && !isNilOrError(this.props.project)) {
-      this.mapPropsToState();
-    }
-  }
-
-  mapPropsToState = () => {
-    const { project } = this.props;
-
+  useEffect(() => {
     if (!isNilOrError(project)) {
-      this.setState({
-        descriptionPreviewMultiloc: project.attributes.description_preview_multiloc,
-        descriptionMultiloc: project.attributes.description_multiloc,
+      setFormValues({
+        description_preview_multiloc: project.attributes.description_preview_multiloc,
+        description_multiloc: project.attributes.description_multiloc
       });
     }
-  }
+  }, [project]);
 
-  handleDescriptionPreviewOnChange = (descriptionPreviewMultiloc: Multiloc, _locale: Locale) => {
-    this.setState({
-      descriptionPreviewMultiloc,
-      touched: true,
-      success: false
-    });
-  }
+  const handleDescriptionPreviewOnChange = useCallback((description_preview_multiloc: Multiloc, _locale: Locale) => {
+    setTouched(true);
+    setSuccess(false);
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      description_preview_multiloc
+    }));
+  }, []);
 
-  handleDescriptionOnChange = (descriptionMultiloc: Multiloc, _locale: Locale) => {
-    this.setState({
-      descriptionMultiloc,
-      touched: true,
-      success: false
-    });
-  }
+  const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc, _locale: Locale) => {
+    setTouched(true);
+    setSuccess(false);
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      description_multiloc
+    }));
+  }, []);
 
-  validate = () => {
-    const { tenantLocales } = this.props;
-    const { descriptionPreviewMultiloc, descriptionMultiloc } = this.state;
-
+  const validate = useCallback(() => {
     if (!isNilOrError(tenantLocales)) {
       // check that all fields have content for all tenant locales
-      return tenantLocales.every(locale => !isEmpty(descriptionPreviewMultiloc?.[locale]) && !isEmpty(descriptionMultiloc?.[locale]));
+      const { description_preview_multiloc, description_multiloc } = formValues;
+      return tenantLocales.every(locale => !isEmpty(description_preview_multiloc?.[locale]) && !isEmpty(description_multiloc?.[locale]));
     }
 
     return false;
-  }
+  }, [tenantLocales, formValues]);
 
-  handleOnSubmit = async () => {
-    const { project } = this.props;
-    const { processing, descriptionPreviewMultiloc, descriptionMultiloc } = this.state;
+  const handleOnSubmit = useCallback(() => {
+    const { description_preview_multiloc, description_multiloc } = formValues;
 
-    if (!processing && this.validate() && !isNilOrError(project) && descriptionMultiloc && descriptionPreviewMultiloc) {
-      this.setState({
-        processing: true,
-        success: false,
-        errors: {}
-      });
+    if (!processing && validate() && !isNilOrError(project) && description_preview_multiloc && description_multiloc) {
+      setProcessing(true);
+      setErrors({});
+      setSuccess(false);
 
-      try {
-        await updateProject(project.id, {
-          description_multiloc: descriptionMultiloc,
-          description_preview_multiloc: descriptionPreviewMultiloc
-        });
-      } catch (errorResponse) {
-        this.setState({
-          processing: false,
-          errors: errorResponse?.json?.errors || false,
-          success: false
-        });
-      }
-
-      this.setState({
-        processing: false,
-        success: true,
-        touched: false,
-        errors: {}
+      updateProject(project.id, {
+        description_multiloc,
+        description_preview_multiloc
+      }).then(() => {
+        setProcessing(false);
+        setErrors({});
+        setTouched(false);
+        setSuccess(true);
+      }).catch((errorResponse) => {
+        setProcessing(false);
+        setErrors(errorResponse?.json?.errors || {});
+        setSuccess(false);
       });
     }
+  }, [project, formValues, processing, validate]);
+
+  if (!isNilOrError(project)) {
+    return (
+      <Container>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleDescription} />
+        </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleDescription} />
+        </SectionSubtitle>
+
+        <Section>
+          <SectionField>
+            <TextAreaMultilocWithLocaleSwitcher
+              id="project-description-preview"
+              valueMultiloc={formValues.description_preview_multiloc}
+              onChange={handleDescriptionPreviewOnChange}
+              label={formatMessage(messages.descriptionPreviewLabel)}
+              labelTooltipText={formatMessage(messages.descriptionPreviewTooltip)}
+              rows={5}
+              maxCharCount={280}
+            />
+            <Error fieldName="description_preview_multiloc" apiErrors={errors?.description_preview_multiloc} />
+          </SectionField>
+
+          <SectionField>
+            <QuillMultilocWithLocaleSwitcher
+              id="project-description"
+              valueMultiloc={formValues.description_multiloc}
+              onChange={handleDescriptionOnChange}
+              label={formatMessage(messages.descriptionLabel)}
+              labelTooltipText={formatMessage(messages.descriptionTooltip)}
+            />
+            <Error fieldName="description_multiloc" apiErrors={errors?.description_multiloc} />
+          </SectionField>
+        </Section>
+
+        <ButtonContainer>
+          <Button
+            buttonStyle="admin-dark"
+            onClick={handleOnSubmit}
+            processing={processing}
+            disabled={!touched || !validate()}
+          >
+            {success
+              ? <FormattedMessage {...messages.saved} />
+              : <FormattedMessage {...messages.save} />
+            }
+          </Button>
+
+          {success &&
+            <Success
+              text={formatMessage(messages.saveSuccessMessage)}
+              showBackground={false}
+              showIcon={false}
+            />
+          }
+
+          {!isEmpty(errors) &&
+            <Error
+              text={formatMessage(messages.errorMessage)}
+              showBackground={false}
+              showIcon={false}
+            />
+          }
+        </ButtonContainer>
+      </Container>
+    );
   }
 
-  render() {
-    const { intl: { formatMessage }, project } = this.props;
-    const { descriptionPreviewMultiloc, descriptionMultiloc, processing, errors, success, touched } = this.state;
-
-    if (!isNilOrError(project)) {
-      return (
-        <Container>
-          <SectionTitle>
-            <FormattedMessage {...messages.titleDescription} />
-          </SectionTitle>
-          <SectionSubtitle>
-            <FormattedMessage {...messages.subtitleDescription} />
-          </SectionSubtitle>
-
-          <Section>
-            <SectionField>
-              <TextAreaMultilocWithLocaleSwitcher
-                id="project-description-preview"
-                valueMultiloc={descriptionPreviewMultiloc}
-                onChange={this.handleDescriptionPreviewOnChange}
-                label={formatMessage(messages.descriptionPreviewLabel)}
-                labelTooltipText={formatMessage(messages.descriptionPreviewTooltip)}
-                rows={5}
-                maxCharCount={280}
-              />
-              <Error fieldName="description_preview_multiloc" apiErrors={errors?.description_preview_multiloc} />
-            </SectionField>
-
-            <SectionField>
-              <QuillMultilocWithLocaleSwitcher
-                id="project-description"
-                valueMultiloc={descriptionMultiloc}
-                onChange={this.handleDescriptionOnChange}
-                label={formatMessage(messages.descriptionLabel)}
-                labelTooltipText={formatMessage(messages.descriptionTooltip)}
-              />
-              <Error fieldName="description_multiloc" apiErrors={errors?.description_multiloc} />
-            </SectionField>
-          </Section>
-
-          <ButtonContainer>
-            <Button
-              buttonStyle="admin-dark"
-              onClick={this.handleOnSubmit}
-              processing={processing}
-              disabled={!touched || !this.validate()}
-            >
-              {success
-                ? <FormattedMessage {...messages.saved} />
-                : <FormattedMessage {...messages.save} />
-              }
-            </Button>
-
-            {success &&
-              <Success
-                text={formatMessage(messages.saveSuccessMessage)}
-                showBackground={false}
-                showIcon={false}
-              />
-            }
-
-            {!isEmpty(errors) &&
-              <Error
-                text={formatMessage(messages.errorMessage)}
-                showBackground={false}
-                showIcon={false}
-              />
-            }
-          </ButtonContainer>
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  tenantLocales: <GetTenantLocales />,
-  project: ({ params, render }) => <GetProject projectId={params.projectId}>{render}</GetProject>
+  return null;
 });
 
-const ProjectDescriptionWithHOCs = injectIntl(ProjectDescription);
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <ProjectDescriptionWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter(injectIntl(ProjectDescription));
