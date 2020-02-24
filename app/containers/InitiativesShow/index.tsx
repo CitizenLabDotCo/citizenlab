@@ -20,7 +20,7 @@ import SharingModalContent from 'components/PostShowComponents/SharingModalConte
 
 import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
-import LoadableDropdownMap from 'components/PostShowComponents/DropdownMap/LoadableDropdownMap';
+import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Body from 'components/PostShowComponents/Body';
 import Image from 'components/PostShowComponents/Image';
 import Footer from 'components/PostShowComponents/Footer';
@@ -215,7 +215,7 @@ const MobileMoreActionContainer = styled.div`
   right: 10px;
 `;
 
-const StyledLoadableDropdownMap = styled(LoadableDropdownMap)`
+const StyledDropdownMap = styled(DropdownMap)`
   margin-bottom: 40px;
 
   ${media.smallerThanMaxTablet`
@@ -527,7 +527,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 }
 
                 {initiativeGeoPosition && initiativeAddress &&
-                  <StyledLoadableDropdownMap
+                  <StyledDropdownMap
                     address={initiativeAddress}
                     position={initiativeGeoPosition}
                   />

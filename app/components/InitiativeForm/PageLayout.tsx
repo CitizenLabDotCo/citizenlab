@@ -7,7 +7,7 @@ import clHistory from 'utils/cl-router/history';
 import GoBackButton from 'components/UI/GoBackButton';
 import TipsBox from './TipsBox';
 import ContentContainer from 'components/ContentContainer';
-import CollapsibleTipsBox from './CollapsibleTipsBox';
+import CollapsibleTipsAndInfo from './CollapsibleTipsAndInfo';
 
 // style
 import { media, colors, fontSizes } from 'utils/styleUtils';
@@ -83,9 +83,8 @@ const TwoColumns = styled.div`
   `}
 `;
 
-const StyledCollapsibleTipsBox = styled(CollapsibleTipsBox)`
+const StyledCollapsibleTipsAndInfo = styled(CollapsibleTipsAndInfo)`
   max-width: 580px;
-  box-sizing: border-box;
   margin-bottom: 20px;
 
   ${media.biggerThanMaxTablet`
@@ -147,7 +146,7 @@ export default class PageLayout extends React.PureComponent<Props> {
         <StyledContentContainer mode="page">
           <TwoColumns>
             <div>
-              <StyledCollapsibleTipsBox />
+              <StyledCollapsibleTipsAndInfo />
               {children}
             </div>
             <TipsContainer>
