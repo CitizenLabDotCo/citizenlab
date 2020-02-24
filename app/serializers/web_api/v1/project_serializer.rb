@@ -67,6 +67,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
+  belongs_to :folder, serializer: WebApi::V1::ProjectFolderSerializer
+
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
   has_many :topics
