@@ -175,6 +175,10 @@ namespace :cl2_back do
             },
           ]
         },
+        project_folders: {
+          enabled: true,
+          allowed: true
+        },
       }
     })
 

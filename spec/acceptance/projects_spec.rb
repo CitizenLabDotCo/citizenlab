@@ -6,7 +6,7 @@ resource "Projects" do
 
   explanation "Ideas have to be posted in a city project, or they can be posted in the open idea box."
 
-  before do 
+  before do
     header "Content-Type", "application/json"
   end
 
@@ -27,14 +27,24 @@ resource "Projects" do
       end
       parameter :topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
-      parameter :publication_statuses, "Return only ideas with the specified publication statuses (i.e. given an array of publication statuses); returns all pusblished ideas by default", required: false
+      parameter :publication_statuses, "Return only projects with the specified publication statuses (i.e. given an array of publication statuses); returns all projects by default", required: false
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
+      parameter :folder, "Filter by folder (project folder id)", required: false
+      parameter :filter_ids, "Filter out only projects with the given list of IDs", required: false
 
-      example_request "List all published projects (default behaviour)" do
+      example_request "List all projects (default behaviour)" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 4
-        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).to all(eq 'published')
+        expect(json_response[:data].size).to eq 7
+        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
+      end
+
+      example "List only projects with specified IDs" do
+        filter_ids = [@projects.first.id, @projects.last.id]
+        do_request(filter_ids: filter_ids)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map { |d| d.dig(:id) }).to match_array filter_ids
       end
 
       example "List all draft or archived projects", document: false do
@@ -51,6 +61,26 @@ resource "Projects" do
         expect(json_response[:data].size).to eq 2
       end
 
+      example "List all projects from a folder" do
+        folder = create(:project_folder, projects: @projects.take(2))
+        ProjectHolderService.new.fix_project_holder_orderings!
+
+        do_request folder: folder.id
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map{|d| d[:id]}).to match_array @projects.take(2).map(&:id)
+      end
+
+      example "List all top-level projects" do
+        folder = create(:project_folder, projects: @projects.take(2))
+        ProjectHolderService.new.fix_project_holder_orderings!
+
+        do_request folder: nil, publication_statuses: Project::PUBLICATION_STATUSES
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 5
+        expect(json_response[:data].map{|d| d[:id]}).to match_array @projects.drop(2).map(&:id)
+      end
+
       example "List all projects with an area" do
         a1 = create(:area)
         a2 = create(:area)
@@ -63,7 +93,7 @@ resource "Projects" do
         p2.areas << a2
         p2.save!
 
-        do_request areas: [a1.id]
+        do_request areas: [a1.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d[:id]}).to match_array [p1.id, @projects[1].id, @projects[3].id]
@@ -86,7 +116,7 @@ resource "Projects" do
         p3.areas = [a3]
         p3.save!
 
-        do_request areas: [a1.id, a2.id]
+        do_request areas: [a1.id, a2.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].map{|d| d[:id]}).to match_array [p1.id, p2.id, @projects.last.id]
@@ -99,7 +129,7 @@ resource "Projects" do
         p1.topics << t1
         p1.save!
 
-        do_request topics: [t1.id]
+        do_request topics: [t1.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq p1.id
@@ -113,14 +143,14 @@ resource "Projects" do
         p1.topics = [t1, t2]
         p1.save!
 
-        do_request topics: [t1.id, t2.id]
+        do_request topics: [t1.id, t2.id], publication_statuses: ['published']
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq p1.id
       end
 
       example "Admins can moderate all projects", document: false do
-        do_request filter_can_moderate: true
+        do_request filter_can_moderate: true, publication_statuses: ['published']
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
@@ -232,6 +262,7 @@ resource "Projects" do
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
+        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -287,14 +318,14 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
-          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method 
+          expect(json_response.dig(:data,:attributes,:participation_method)).to eq participation_method
           expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
-          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled 
-          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled 
+          expect(json_response.dig(:data,:attributes,:posting_enabled)).to eq posting_enabled
+          expect(json_response.dig(:data,:attributes,:commenting_enabled)).to eq commenting_enabled
           expect(json_response.dig(:data,:attributes,:voting_enabled)).to eq voting_enabled
-          expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method 
-          expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max 
-          expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed 
+          expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
+          expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
+          expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed
 
         end
 
@@ -325,7 +356,7 @@ resource "Projects" do
     end
 
     patch "web_api/v1/projects/:id" do
-      before do 
+      before do
         @project = create(:project, process_type: 'continuous')
       end
 
@@ -352,6 +383,7 @@ resource "Projects" do
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
+        parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)"
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -378,6 +410,23 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+      end
+
+      example "Add a project to a folder" do
+        folder = create(:project_folder)
+        ProjectHolderService.new.fix_project_holder_orderings!
+        do_request(project: {folder_id: folder.id})
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
+      end
+
+      example "Remove a project from a folder" do
+        folder = create(:project_folder)
+        @project.update!(folder: folder)
+        ProjectHolderService.new.fix_project_holder_orderings!
+        do_request(project: {folder_id: nil})
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq nil
       end
 
       example "Clear all areas", document: false do
@@ -422,7 +471,7 @@ resource "Projects" do
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
           expect(Project.find_by(ordering: 2).id).to eq id
-          expect(old_second_project.reload.ordering).to eq 3 # previous second is now third
+          expect(old_second_project.reload.ordering).to eq 1 # previous third is now second
         end
       end
     end
