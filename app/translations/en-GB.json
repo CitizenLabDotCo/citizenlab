@@ -609,6 +609,7 @@
   "app.containers.Admin.Invitations.inviteStatusPending": "Pending",
   "app.containers.Admin.Invitations.inviteTextLabel": "Add a personal message to the invitation",
   "app.containers.Admin.Invitations.invitedSince": "Invited on",
+  "app.containers.Admin.Invitations.invitesSupportPageURL": "",
   "app.containers.Admin.Invitations.localeLabel": "Select the language of the invitation",
   "app.containers.Admin.Invitations.moderatorLabel": "Give these people moderation rights",
   "app.containers.Admin.Invitations.moderatorLabelTooltip": "When you select this option, the people you're inviting will become project moderator of the selected projects. You can find more information on moderation rights {moderatorLabelTooltipLink}.",

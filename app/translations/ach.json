@@ -609,6 +609,7 @@
   "app.containers.Admin.Invitations.inviteStatusPending": "",
   "app.containers.Admin.Invitations.inviteTextLabel": "",
   "app.containers.Admin.Invitations.invitedSince": "",
+  "app.containers.Admin.Invitations.invitesSupportPageURL": "",
   "app.containers.Admin.Invitations.localeLabel": "",
   "app.containers.Admin.Invitations.moderatorLabel": "",
   "app.containers.Admin.Invitations.moderatorLabelTooltip": "",
