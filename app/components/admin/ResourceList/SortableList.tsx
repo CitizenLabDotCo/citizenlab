@@ -44,8 +44,7 @@ export class SortableList extends Component<InputProps, SortableListState> {
   handleDropRow = (itemId, toIndex) => {
     const listItems = this.listItems();
     if (!listItems) return;
-    // the second check lets a list of ids to be sorted instead of a list of orderings.
-    const item = find(listItems, { id: itemId }) || listItems.find(item => itemId === item);
+    const item = find(listItems, { id: itemId });
     if (item && item.attributes ?.ordering !== toIndex) {
       this.props.onReorder(itemId, toIndex);
     } else {

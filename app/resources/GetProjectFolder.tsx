@@ -58,7 +58,6 @@ export default class GetProjectFolder extends React.Component<Props, State> {
           return of(null);
         })
       )
-      // TODO gather included projects
       .subscribe((projectFolder) => {
         this.setState({ projectFolder: !isNilOrError(projectFolder) ? projectFolder.data : projectFolder });
       })
