@@ -710,8 +710,8 @@ ActiveRecord::Schema.define(version: 2020_02_13_001613) do
     t.uuid "default_assignee_id"
     t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
-    t.uuid "custom_form_id"
     t.uuid "folder_id"
+    t.uuid "custom_form_id"
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
     t.index ["folder_id"], name: "index_projects_on_folder_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
