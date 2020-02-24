@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { listProjectHolderOrderings } from 'services/projectHolderOrderings';
-import { projectsStream, IProjectData } from 'services/projects';
+import { projectsStream, IProjectData, PublicationStatus } from 'services/projects';
 import { projectFoldersStream, IProjectFolderData } from 'services/projectFolders';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
@@ -10,6 +10,8 @@ import { unionBy, isString } from 'lodash-es';
 export interface InputProps {
   pageSize?: number;
   areaFilter?: string[];
+  publicationStatusFilter: PublicationStatus[];
+  noEmptyFolder?: boolean;
 }
 
 export type IProjectHolderOrderingContent = {
@@ -35,15 +37,17 @@ export interface IOutput {
   loadingMore: boolean;
   onLoadMore: () => void;
   onChangeAreas: (areas: string[] | null) => void;
+  onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
-export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter }: InputProps) {
+export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter, publicationStatusFilter, noEmptyFolder }: InputProps) {
   const [list, setList] = useState<IProjectHolderOrderingContent[] | undefined | null>(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [pageNumber, setPageNumber] = useState(1);
   const [areas, setAreas] = useState<string[] | undefined>(areaFilter);
+  const [publicationStatuses, setPublicationSatuses] = useState<PublicationStatus[]>(publicationStatusFilter);
 
   const onLoadMore = useCallback(() => {
     if (hasMore) {
@@ -57,6 +61,11 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
     setPageNumber(1);
   }, []);
 
+  const onChangePublicationStatus = useCallback((publicationStatuses) => {
+    setPublicationSatuses(publicationStatuses);
+    setPageNumber(1);
+  }, []);
+
   // reset pageNumber on pageSize change
   useEffect(() => {
     setPageNumber(1);
@@ -65,6 +74,8 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
   useEffect(() => {
     const subscription = listProjectHolderOrderings({
       queryParameters: {
+        areas,
+        publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize
       }
@@ -81,8 +92,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
         return combineLatest(
           projectsStream({
             queryParameters: {
-              areas,
-              filter_ids: projectIds
+              filter_ids: projectIds,
             }
           }).observable,
           projectFoldersStream({
@@ -95,7 +105,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
         );
       })
     ).subscribe(({ projectHolderOrderings, projects, projectFolders }) => {
-
       if (isNilOrError(projectHolderOrderings)) {
         setList(null);
         setHasMore(false);
@@ -109,9 +118,14 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
           const holder = holderType === 'project'
             ? projects.find(project => project.id === holderId)
             : projectFolders.find(projectFolder => projectFolder.id === holderId);
-            if (!holder) {
-              console.log('filtered project', holderId);
-            }
+
+          if (!holder) {
+            return null;
+          }
+
+          if (noEmptyFolder && holder.type === 'project_folder' && holder.relationships.projects.data.length === 0) {
+            return null;
+          }
 
           return {
             id: ordering.id,
@@ -121,19 +135,18 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
             },
             projectHolder: holder
           };
-        }).filter(item => item.projectHolder) as IProjectHolderOrderingContent[];
+        }).filter(item => item) as IProjectHolderOrderingContent[];
 
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
-        setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, receivedItems, 'id') : receivedItems);
         setHasMore(hasMore);
+        setList(prevList => !isNilOrError(prevList) && loadingMore ? unionBy(prevList, receivedItems, 'id') : receivedItems);
       }
-
       setLoadingInitial(false);
       setLoadingMore(false);
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, areas, loadingMore]);
+  }, [pageNumber, pageSize, areas, loadingMore, publicationStatuses]);
 
   return {
     list,
@@ -142,5 +155,6 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter 
     loadingMore,
     onLoadMore,
     onChangeAreas,
+    onChangePublicationStatus
   };
 }

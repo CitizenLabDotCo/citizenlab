@@ -116,7 +116,6 @@ export interface IUpdatedProjectProperties {
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
-  folder_id?: string | null;
 }
 
 export interface IProject {
@@ -127,7 +126,19 @@ export interface IProjects {
   data: IProjectData[];
 }
 
-export function projectsStream(streamParams: IStreamParams | null = null) {
+type IQueryParametersWithPS = {
+  publication_statuses: PublicationStatus[];
+  [key: string]: any;
+} | {
+  filter_ids: string[];
+  [key: string]: any;
+};
+
+interface StreamParamsForProjects extends IStreamParams {
+  queryParameters: IQueryParametersWithPS;
+}
+
+export function projectsStream(streamParams: StreamParamsForProjects) {
   return streams.get<IProjects>({ apiEndpoint, ...streamParams });
 }
 
@@ -212,8 +223,8 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
   const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: { folder_id: newProjectFolderId } });
 
   await streams.fetchAllWith({
-    dataId: [projectId, newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`],
+    dataId: [newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
+    apiEndpoint: [`${API_PATH}/project_holder_orderings`],
   });
 
   return response;
