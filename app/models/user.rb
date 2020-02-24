@@ -47,7 +47,7 @@ class User < ApplicationRecord
   validates :locale, inclusion: { in: proc {Tenant.settings('core','locales')} }
   validates :bio_multiloc, multiloc: {presence: false}
   validates :gender, inclusion: {in: GENDERS}, allow_nil: true
-  validates :birthyear, numericality: {only_integer: true, greater_than: Time.now.year - 120, less_than: Time.now.year}, allow_nil: true
+  validates :birthyear, numericality: {only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.now.year}, allow_nil: true
   validates :domicile, inclusion: {in: proc {['outside'] + Area.select(:id).map(&:id)}}, allow_nil: true
   # Follows ISCED2011 scale
   validates :education, numericality: {only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 8}, allow_nil: true
