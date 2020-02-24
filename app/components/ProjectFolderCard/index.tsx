@@ -16,12 +16,11 @@ import { getProjectFolderUrl } from 'services/projectFolders';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
 import T from 'components/T';
-import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import injectIntl from 'utils/cl-intl/injectIntl';
 import messages from './messages';
 
 // tracking
@@ -284,13 +283,14 @@ export interface InputProps {
 
 interface DataProps {
   projectFolder: GetProjectFolderChildProps;
+  publishedAndArchivedProjects: GetProjectsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
   theme?: any;
 }
 
-class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
+class ProjectFolderCard extends PureComponent<Props> {
   handleProjectCardOnClick = (projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
   }
@@ -300,12 +300,22 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { projectFolder, size, layout, className, theme } = this.props;
+    const {
+      projectFolder,
+      size,
+      layout,
+      className,
+      theme,
+      publishedAndArchivedProjects
+    } = this.props;
 
-    if (!isNilOrError(projectFolder)) {
+    if (
+      !isNilOrError(projectFolder) &&
+      !isNilOrError(publishedAndArchivedProjects.projectsList)
+    ) {
       const imageUrl = projectFolder.attributes.header_bg?.medium;
       const folderUrl = getProjectFolderUrl(projectFolder);
-      const numberOfProjects = projectFolder.relationships.projects.data.length;
+      const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
 
       const contentHeader = (
         <ContentHeader className={`${size} hasContent`}>
@@ -396,15 +406,26 @@ class ProjectFolderCard extends PureComponent<Props & InjectedIntlProps> {
 
 const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
+  publishedAndArchivedProjects: ({ projectFolder, render }) => {
+    const filteredProjectIds = !isNilOrError(projectFolder) ? projectFolder.relationships.projects.data.map(project => project.id) : undefined;
+    return (
+    <GetProjects
+      publicationStatuses={['published', 'archived']}
+      filteredProjectIds={filteredProjectIds}
+    >
+      {render}
+    </GetProjects>
+    );
+  }
 });
 
-const ProjectFolderCardWithHoC = withTheme(injectIntl<Props>(ProjectFolderCard));
+const ProjectFolderCardWithHoC = withTheme(ProjectFolderCard);
 
-// TODO: remove intl if not used
 // TODO: make accesible
 // TODO: add footer to vertically center the content more
 // TODO: tracks
 // TODO: copy
+// TODO: card first shows number of projects including draft, and changes when filtering is done a (after it's already showing)
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
