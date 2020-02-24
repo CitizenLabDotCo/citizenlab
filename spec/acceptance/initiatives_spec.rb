@@ -424,13 +424,25 @@ resource "Initiatives" do
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
       end
 
-      describe do
-        example "The header image can be removed" do
-          @initiative.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
-          expect(@initiative.reload.header_bg_url).to be_present
-          do_request initiative: {header_bg: nil}
-          expect(@initiative.reload.header_bg_url).to be nil
-        end
+    end
+
+    describe do
+      let(:id) { @initiative.id }
+      let(:header_bg) { encode_image_as_base64("header.jpg")}
+      example "The header image can be updated and the file is present", document: false do
+        do_request
+        expect(@initiative.reload.header_bg_url).to be_present
+        expect(@initiative.reload.header_bg.file).to be_present
+      end
+    end
+
+    describe do
+      let(:id) { @initiative.id }
+      example "The header image can be removed" do
+        @initiative.update(header_bg: Rails.root.join("spec/fixtures/header.jpg").open)
+        expect(@initiative.reload.header_bg_url).to be_present
+        do_request initiative: {header_bg: nil}
+        expect(@initiative.reload.header_bg_url).to be nil
       end
     end
 
