@@ -609,6 +609,7 @@
   "app.containers.Admin.Invitations.inviteStatusPending": "In behandeling",
   "app.containers.Admin.Invitations.inviteTextLabel": "Voeg een persoonlijk bericht toe aan de uitnodiging",
   "app.containers.Admin.Invitations.invitedSince": "Uitgenodigd op",
+  "app.containers.Admin.Invitations.invitesSupportPageURL": "",
   "app.containers.Admin.Invitations.localeLabel": "Selecteer de taal van de uitnodiging",
   "app.containers.Admin.Invitations.moderatorLabel": "Geef deze mensen projectmoderator-rechten",
   "app.containers.Admin.Invitations.moderatorLabelTooltip": "Indien geactiveerd, krijgen mensen die je uitnodiging accepteren ook moderatorrechten voor een of meerdere projecten. Meer info over de rol van projectmoderator vind je {moderatorLabelTooltipLink}.",
