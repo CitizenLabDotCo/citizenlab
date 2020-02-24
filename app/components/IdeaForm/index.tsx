@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { has, isBoolean } from 'lodash-es';
+import { isBoolean } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // libraries
@@ -120,7 +120,7 @@ interface State {
 class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   subscriptions: Subscription[];
   titleInputElement: HTMLInputElement | null;
-  descriptionElement: any;
+  descriptionElement: HTMLDivElement | null;
 
   constructor(props) {
     super(props);
@@ -312,7 +312,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.titleInputElement = element;
   }
 
-  handleDescriptionSetRef = (element) => {
+  handleDescriptionSetRef = (element: HTMLDivElement) => {
     this.descriptionElement = element;
   }
 
@@ -331,9 +331,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   validateDescription = (description: string | null) => {
     if (!description) {
       return <FormattedMessage {...messages.descriptionEmptyError} />;
-    }
-
-    if (description && description.length < 30) {
+    } else if (description && description.length < 30) {
       return <FormattedMessage {...messages.descriptionLengthError} />;
     }
 
@@ -362,9 +360,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
-    } else if (descriptionError && has(this.descriptionElement, 'editor.root')) {
-      scrollToComponent(this.descriptionElement.editor.root, { align: 'top', offset: -200, duration: 300 });
-      setTimeout(() => this.descriptionElement.editor.root.focus(), 300);
+    } else if (descriptionError && this.descriptionElement) {
+      scrollToComponent(this.descriptionElement, { align: 'top', offset: -200, duration: 300 });
+      setTimeout(() => this.descriptionElement && this.descriptionElement.focus(), 300);
     }
 
     if (!pbContext) {
@@ -463,6 +461,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <FormElement id="e2e-idea-description-input">
             <FormLabel
               id="editor-label"
+              htmlFor="editor"
               labelMessage={messages.descriptionLabel}
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
             />
@@ -474,7 +473,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               onChange={this.handleDescriptionOnChange}
               setRef={this.handleDescriptionSetRef}
               hasError={descriptionError !== null}
-              labelId="editor-label"
             />
             {descriptionError && <Error text={descriptionError} />}
           </FormElement>

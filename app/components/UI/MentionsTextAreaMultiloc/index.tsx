@@ -1,22 +1,20 @@
 import React from 'react';
-import { Subscription, combineLatest } from 'rxjs';
-import { get } from 'lodash-es';
 
 // components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-// since it will only be seen by admins, making the whoice of using the admin Label component for now.
 import Label from 'components/UI/Label';
 
-// services
-import { localeStream } from 'services/locale';
-import { currentTenantStream, ITenant } from 'services/tenant';
+// resources
+import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
 
 // typings
 import { Locale, Multiloc } from 'typings';
-import { fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
@@ -30,65 +28,41 @@ const LabelWrapper = styled.div`
   display: flex;
 `;
 
-const LanguageExtension = styled(Label)`
+const LanguageExtension = styled.span`
   font-weight: 500;
 `;
 
-export type Props = {
+export interface InputProps {
   name: string;
   rows: number;
   valueMultiloc: Multiloc | null | undefined;
-  id?: string | undefined;
-  label?: string | JSX.Element | null | undefined;
+  id?: string;
+  label?: string | JSX.Element | null;
   onChange?: (arg: Multiloc, locale: Locale) => void;
-  placeholder?: string | undefined;
+  placeholder?: string;
   errorMultiloc?: Multiloc | null;
   selectedLocale?: Locale;
   postId?: string;
   postType?: 'idea' | 'initiative';
-  padding?: string | undefined;
+  padding?: string;
   onBlur?: () => void;
-  onFocus?: () => void | undefined;
+  onFocus?: () => void;
   fontSize?: number;
   backgroundColor?: string;
   placeholderFontWeight?: string;
   ariaLabel?: string;
-};
+  className?: string;
+}
 
-type State = {
-  locale: Locale | null;
-  currentTenant: ITenant | null;
-};
+interface DataProps {
+  tenantLocales: GetTenantLocalesChildProps;
+}
 
-export default class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
-  subscriptions: Subscription[];
+interface Props extends InputProps, DataProps { }
 
-  constructor(props: Props) {
-    super(props as any);
-    this.state = {
-      locale: null,
-      currentTenant: null
-    };
-    this.subscriptions = [];
-  }
+interface State {}
 
-  componentDidMount() {
-    const locale$ = localeStream().observable;
-    const currentTenant$ = currentTenantStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$
-      ).subscribe(([locale, currentTenant]) => {
-        this.setState({ locale, currentTenant });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
+class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
 
   handleOnChange = (locale: Locale) => (value: string) => {
     if (this.props.onChange) {
@@ -100,14 +74,13 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
   }
 
   render() {
-    const { locale, currentTenant } = this.state;
-    const { onBlur,
+    const {
+      onBlur,
       onFocus,
       padding,
       postId,
       postType,
       rows,
-      selectedLocale,
       label,
       placeholder,
       valueMultiloc,
@@ -115,86 +88,61 @@ export default class MentionsTextAreaMultiloc extends React.PureComponent<Props,
       fontSize,
       backgroundColor,
       placeholderFontWeight,
-      ariaLabel
+      ariaLabel,
+      className,
+      tenantLocales
     } = this.props;
 
-    if (locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+    if (!isNilOrError(tenantLocales)) {
+      return (
+        <Container id={this.props.id} className={`${className || ''} e2e-multiloc-input`} >
+          {tenantLocales.map((tenantLocale, index) => {
+            const value = valueMultiloc?.[tenantLocale] || null;
+            const error = errorMultiloc?.[tenantLocale] || null;
+            const id = this.props.id && `${this.props.id}-${tenantLocale}`;
 
-      if (selectedLocale) {
-        const value = get(valueMultiloc, [selectedLocale], null);
-        const error = get(errorMultiloc, [selectedLocale], null);
-        const id = this.props.id && `${this.props.id}-${selectedLocale}`;
-        return (
-          <MentionsTextAreaWrapper>
-            {label &&
-              <LabelWrapper>
-                <Label htmlFor={id}>{label}</Label>
-              </LabelWrapper>
-            }
+            return (
+              <MentionsTextAreaWrapper key={tenantLocale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
+                {label &&
+                  <LabelWrapper>
+                    <Label htmlFor={id}>{label}</Label>
+                    {tenantLocales.length > 1 &&
+                      <LanguageExtension>{tenantLocale.toUpperCase()}</LanguageExtension>
+                    }
+                  </LabelWrapper>
+                }
 
-            <MentionsTextArea
-              id={id}
-              name={name}
-              value={value}
-              placeholder={placeholder}
-              rows={rows}
-              postId={postId}
-              postType={postType}
-              padding={padding}
-              error={error}
-              onChange={this.handleOnChange(selectedLocale)}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              fontSize={`${fontSize || fontSizes.base}px`}
-              background={backgroundColor}
-              placeholderFontWeight={placeholderFontWeight}
-              ariaLabel={ariaLabel}
-            />
-          </MentionsTextAreaWrapper>
-        );
-      } else {
-        return (
-          <Container id={this.props.id} className={`${this.props['className']} e2e-multiloc-input`} >
-            {currentTenantLocales.map((currentTenantLocale, index) => {
-              const value = get(valueMultiloc, [currentTenantLocale], null);
-              const error = get(errorMultiloc, [currentTenantLocale], null);
-              const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
-
-              return (
-                <MentionsTextAreaWrapper key={currentTenantLocale} className={`${index === currentTenantLocales.length - 1 && 'last'}`}>
-                  {label &&
-                    <LabelWrapper>
-                      <Label htmlFor={id}>{label}</Label>
-                      {currentTenantLocales.length > 1 &&
-                        <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>
-                      }
-                    </LabelWrapper>
-                  }
-
-                  <MentionsTextArea
-                    id={id}
-                    name={name}
-                    value={value}
-                    placeholder={placeholder}
-                    rows={rows}
-                    postId={postId}
-                    postType={postType}
-                    padding={padding}
-                    error={error}
-                    onChange={this.handleOnChange(currentTenantLocale)}
-                    onBlur={onBlur}
-                    onFocus={onFocus}
-                    ariaLabel={ariaLabel}
-                  />
-                </MentionsTextAreaWrapper>
-              );
-            })}}
+                <MentionsTextArea
+                  id={id}
+                  name={name}
+                  value={value}
+                  placeholder={placeholder}
+                  rows={rows}
+                  postId={postId}
+                  postType={postType}
+                  padding={padding}
+                  error={error}
+                  onChange={this.handleOnChange(tenantLocale)}
+                  onBlur={onBlur}
+                  onFocus={onFocus}
+                  ariaLabel={ariaLabel}
+                  fontSize={fontSize ? `${fontSize}px` : undefined}
+                  background={backgroundColor}
+                  placeholderFontWeight={placeholderFontWeight}
+                />
+              </MentionsTextAreaWrapper>
+            );
+          })}
         </Container>
-        );
-      }
+      );
     }
 
     return null;
   }
 }
+
+export default (InputProps: InputProps) => (
+  <GetTenantLocales>
+    {tenantLocales => <MentionsTextAreaMultiloc {...InputProps} tenantLocales={tenantLocales} />}
+  </GetTenantLocales>
+);

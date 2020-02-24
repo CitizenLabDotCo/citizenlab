@@ -616,6 +616,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       apiErrors,
       processingDelete
     } = this.state;
+    const { intl: { formatMessage } } = this.props;
 
     if (!get(this.props, 'params.projectId') || (get(this.props, 'params.projectId') && project !== undefined)) {
       const projectAttrs = { ...(project ? project.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
@@ -680,7 +681,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 type="text"
                 valueMultiloc={projectAttrs.title_multiloc}
                 label={<FormattedMessage {...messages.titleLabel} />}
-                labelTooltip={<IconTooltip content={<FormattedMessage {...messages.titleLabelTooltip} />} />}
+                labelTooltipText={formatMessage(messages.titleLabelTooltip)}
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />

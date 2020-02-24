@@ -59,6 +59,10 @@ export default defineMessages({
     id: 'app.components.ProjectTemplatePreview.projectTitleError',
     defaultMessage: 'Please type a project title',
   },
+  projectTitleMultilocError: {
+    id: 'app.components.ProjectTemplatePreview.projectTitleMultilocError',
+    defaultMessage: 'Please type a project title for all languages',
+  },
   projectNoStartDateError: {
     id: 'app.components.ProjectTemplatePreview.projectNoStartDateError',
     defaultMessage: 'Please select a start date for the project',

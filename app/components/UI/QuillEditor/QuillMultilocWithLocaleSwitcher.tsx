@@ -2,7 +2,7 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
+import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
 import Label from 'components/UI/Label';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import IconTooltip from 'components/UI/IconTooltip';
@@ -26,10 +26,10 @@ const LabelContainer = styled.div`
 `;
 
 const StyledLabel = styled(Label)`
-  flex: 1;
-  padding: 0;
-  margin: 0;
+  margin-bottom: 0px;
 `;
+
+const StyledIconTooltip = styled(IconTooltip)``;
 
 const Spacer = styled.div`
   flex: 1;
@@ -37,15 +37,17 @@ const Spacer = styled.div`
 
 const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
   width: auto;
+  margin-left: 20px;
 `;
 
-export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
+export interface Props extends Omit<QuillEditorProps, 'value' | 'onChange' | 'locale' | 'labelTooltip'> {
   valueMultiloc: Multiloc | null | undefined;
+  labelTooltipText?: string | JSX.Element | null;
   onChange: (value: Multiloc, locale: Locale) => void;
 }
 
-const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
-  const { valueMultiloc, onChange, className, label, labelTooltipText, ...textAreaProps } = props;
+const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
+  const { valueMultiloc, onChange, className, label, labelTooltipText, ...quillProps } = props;
 
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
@@ -68,29 +70,32 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     setSelectedLocale(newSelectedLocale);
   }, []);
 
-  if (selectedLocale) {
+  if (selectedLocale && valueMultiloc) {
     const id = `${props.id}-${selectedLocale}`;
 
     return (
       <Container className={className}>
         <LabelContainer>
-          {label ? (
+          {label &&
             <StyledLabel htmlFor={id}>
               <span>{label}</span>
-              {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+              {labelTooltipText && <StyledIconTooltip content={labelTooltipText} />}
             </StyledLabel>
-          ) : <Spacer />}
+          }
+
+          {!label && <Spacer />}
 
           <StyledFormLocaleSwitcher
             onLocaleChange={handleOnSelectedLocaleChange}
             selectedLocale={selectedLocale}
-            values={{ valueMultiloc: valueMultiloc as Multiloc }}
+            values={{ valueMultiloc }}
           />
         </LabelContainer>
 
-        <TextArea
-          {...textAreaProps}
-          value={valueMultiloc?.[selectedLocale] || null}
+        <QuillEditor
+          {...quillProps}
+          id={id}
+          value={valueMultiloc[selectedLocale]}
           locale={selectedLocale}
           onChange={handleValueOnChange}
         />
@@ -101,4 +106,4 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
   return null;
 });
 
-export default TextAreaMultilocWithLocaleSwitcher;
+export default QuillMutilocWithLocaleSwitcher;
