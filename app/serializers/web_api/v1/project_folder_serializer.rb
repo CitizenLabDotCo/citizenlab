@@ -6,6 +6,8 @@ class WebApi::V1::ProjectFolderSerializer < WebApi::V1::BaseSerializer
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  has_many :projects
+  has_many :projects do |object|
+    object.projects.order(:ordering)
+  end
 
 end
