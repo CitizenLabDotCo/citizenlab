@@ -11,7 +11,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 const Container = styled.div`
   width: 100%;
@@ -64,7 +64,9 @@ class VotingDisabled extends PureComponent<Props, State> {
   onVerify = (event) => {
     event.stopPropagation();
     event.preventDefault();
+
     const { project } = this.props;
+
     if (!isNilOrError(project)) {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;

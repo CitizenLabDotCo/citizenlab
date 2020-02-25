@@ -14,7 +14,7 @@ import Icon from 'components/UI/Icon';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

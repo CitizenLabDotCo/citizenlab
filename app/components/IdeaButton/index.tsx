@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 // tracks
 import { injectTracks } from 'utils/analytics';

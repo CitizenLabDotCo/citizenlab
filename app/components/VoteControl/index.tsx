@@ -3,7 +3,9 @@ import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -224,6 +226,12 @@ const Downvote = styled(Vote)`
   }
 `;
 
+export interface IVoteAction {
+  action_type: 'upvote' | 'downvote';
+  context_type: 'idea';
+  context_id: string;
+}
+
 interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
@@ -389,7 +397,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
         const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
         const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
-
         const projectProcessType = get(project, 'data.attributes.process_type');
         const projectParticipationMethod = get(project, 'data.attributes.participation_method');
         const pbProject = (project && projectProcessType === 'continuous' && projectParticipationMethod === 'budgeting' ? project : null);
@@ -403,13 +410,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
         const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
 
-        const currentOrLatestPhaseId = lastPhaseHasPassed ? lastPhase?.data.id : project?.data.relationships.current_phase?.data?.id;
+        // const currentOrLatestPhaseId = lastPhaseHasPassed ? lastPhase?.data.id : project?.data.relationships.current_phase?.data?.id;
 
-        if (shouldVerify && !this.props.noVerificationShortFlow) {
-          const pcType = phases ? 'phase' : 'project';
-          const pcId = pcType === 'phase' ? currentOrLatestPhaseId : project?.data.id;
-          verificationNeeded('ActionVote', pcId || '', pcType, 'voting');
-        }
+        // if (shouldVerify && !this.props.noVerificationShortFlow) {
+        //   const pcType = phases ? 'phase' : 'project';
+        //   const pcId = pcType === 'phase' ? currentOrLatestPhaseId : project?.data.id;
+        //   openVerificationModalWithContext('ActionVote', pcId || '', pcType, 'voting');
+        // }
 
         this.setState({
           project,
@@ -475,8 +482,19 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
 
     if (!authUser) {
-      setMightOpenVerificationModal('ActionVote');
-      unauthenticatedVoteClick && unauthenticatedVoteClick();
+      // unauthenticatedVoteClick && unauthenticatedVoteClick();
+
+      // if verification required
+      clHistory.push({
+        pathname: '/sign-up',
+        query: {
+          action: stringify({
+            action_type: 'upvote',
+            context_type: 'idea',
+            context_id: '123456789'
+          })
+        }
+      });
     } else if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
       disabledVoteClick && disabledVoteClick(votingDisabledReason || undefined);
     } else if (authUser && this.state.voting === null) {

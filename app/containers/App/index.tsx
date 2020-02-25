@@ -49,7 +49,7 @@ import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { VerificationModalEvents, OpenVerificationModalData } from 'containers/App/events';
+import { openVerificationModal$, closeVerificationModal$ } from 'containers/App/verificationModalEvents';
 import { getJwt } from 'utils/auth/jwt';
 
 // style
@@ -102,7 +102,6 @@ type State = {
   verificationModalOpened: boolean;
   verificationModalInitialStep: VerificationModalSteps;
   verificationModalContext: ContextShape | null;
-  mightOpenVerificationModal: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
 };
@@ -128,7 +127,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalOpened: false,
       verificationModalContext: null,
       verificationModalInitialStep: null,
-      mightOpenVerificationModal: false,
       navbarRef: null,
       mobileNavbarRef: null
     };
@@ -150,7 +148,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      const { authUser, mightOpenVerificationModal } = this.state;
+      const { authUser } = this.state;
       const previousPathname = location.pathname;
       const nextPathname = newLocation.pathname;
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
@@ -168,10 +166,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           pathname: '/complete-signup',
           search: newLocation.search
         });
-        // when unsigned and leaving the flow or signed in and not coming from the flow, remove the flag
-      } else if (!authUser && mightOpenVerificationModal && !nextPathname.endsWith('sign-up') && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')
-        || (authUser && mightOpenVerificationModal && !previousPathname.endsWith('sign-up') && !previousPathname.replace(/\/$/, '').endsWith('complete-signup'))) {
-        this.setState({ mightOpenVerificationModal: false });
       }
     });
 
@@ -215,26 +209,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
-      eventEmitter.observeEvent<IOpenPostPageModalEvent>('cardClick').subscribe(({ eventValue }) => {
-        const { id, slug, type } = eventValue;
+      eventEmitter.observeEvent<IOpenPostPageModalEvent>('cardClick').subscribe(({ eventValue: { id, slug, type } }) => {
         this.openPostPageModal(id, slug, type);
       }),
 
-      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.open).subscribe(({ eventValue }) => {
-        this.openVerificationModal(eventValue.step, eventValue.context);
+      openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
+        this.openVerificationModal(step, context);
       }),
 
-      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.verificationNeeded).subscribe(({ eventValue }) => {
-        if (this.state.mightOpenVerificationModal) {
-          this.openVerificationModal(eventValue.step, eventValue.context);
-        }
-      }),
-
-      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.mightOpen).subscribe(() => {
-        this.setState({ mightOpenVerificationModal: true });
-      }),
-
-      eventEmitter.observeEvent(VerificationModalEvents.close).subscribe(() => {
+      closeVerificationModal$.subscribe(() => {
         this.closeVerificationModal();
       }),
 
@@ -283,8 +266,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({
       verificationModalOpened: true,
       verificationModalInitialStep: step,
-      verificationModalContext: context,
-      mightOpenVerificationModal: false
+      verificationModalContext: context
     });
   }
 
@@ -292,8 +274,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({
       verificationModalOpened: false,
       verificationModalInitialStep: null,
-      verificationModalContext: null,
-      mightOpenVerificationModal: false
+      verificationModalContext: null
     });
   }
 
