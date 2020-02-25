@@ -1529,7 +1529,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Toutes les initiatives en cours pour {orgName}.",
   "app.containers.InitiativesIndexPage.metaDescription": "Explorer et soutenir les initiatives menées par {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Toutes les initiatives • {orgName}",
-  "app.containers.InitiativesIndexPage.readMore": "En savoir plus ici.",
+  "app.containers.InitiativesIndexPage.readMore": "En savoir plus sur les initiatives.",
   "app.containers.InitiativesIndexPage.startInitiative": "Déposer une initiative",
   "app.containers.InitiativesIndexPage.success": "succès",
   "app.containers.InitiativesIndexPage.successStoryTitle": "Exemples d'initiatives réussies",
