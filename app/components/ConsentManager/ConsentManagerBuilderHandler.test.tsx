@@ -46,22 +46,22 @@ let resetPreferences = jest.fn();
 let saveConsent = jest.fn();
 
 // mimics props for a first time user, takes in the blacklist
-const firstTimeUser = (blacklistedDestinations) => ({
+const firstTimeUser = (blacklistedDestinationIds) => ({
   setPreferences,
   resetPreferences,
   saveConsent,
-  blacklistedDestinations,
+  blacklistedDestinationIds,
   destinations,
   newDestinations: destinations,
   preferences: initialPreferences
 });
 
 // mimics props for a returning user
-const returningUser = (blacklistedDestinations) => ({
+const returningUser = (blacklistedDestinationIds) => ({
   setPreferences,
   resetPreferences,
   saveConsent,
-  blacklistedDestinations,
+  blacklistedDestinationIds,
   destinations,
   newDestinations: [],
   preferences: {
@@ -72,7 +72,7 @@ const returningUser = (blacklistedDestinations) => ({
 });
 
 // mimics props for a returning user when there's new destinations added in segment
-const returningUserNewDestinations = (blacklistedDestinations) => {
+const returningUserNewDestinations = (blacklistedDestinationIds) => {
   const newDestination = {
     name: 'NewTool',
     description: 'NewTool is the new kid in town, lets you record everything the user does and watch in in real time !',
@@ -84,7 +84,7 @@ const returningUserNewDestinations = (blacklistedDestinations) => {
     setPreferences,
     resetPreferences,
     saveConsent,
-    blacklistedDestinations,
+    blacklistedDestinationIds,
     destinations: [...destinations, newDestination],
     newDestinations: [newDestination],
     preferences: {
@@ -227,7 +227,7 @@ describe('<ConsentManagerBuilderHandler />', () => {
               resetPreferences,
               saveConsent,
               destinations,
-              blacklistedDestinations: [],
+              blacklistedDestinationIds: [],
               newDestinations: [],
               preferences: {
                 advertising: false,
@@ -255,7 +255,7 @@ describe('<ConsentManagerBuilderHandler />', () => {
                 website: 'intercomUrl',
                 id: 'Intercom',
               }],
-              blacklistedDestinations: [],
+              blacklistedDestinationIds: [],
               newDestinations: [],
               preferences: {
                 advertising: false,
