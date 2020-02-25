@@ -2,7 +2,7 @@ import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { includes, isUndefined, get } from 'lodash-es';
 import { isNilOrError, capitalizeParticipationContextType } from 'utils/helperUtils';
-import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -178,26 +178,26 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
     };
   }
 
-  disabledReasonNotVerified = () => {
-    const { idea } = this.props;
-    const disabledReason = !isNilOrError(idea) ? idea.attributes ?.action_descriptor ?.budgeting ?.disabled_reason : null;
+  // disabledReasonNotVerified = () => {
+  //   const { idea } = this.props;
+  //   const disabledReason = !isNilOrError(idea) ? idea.attributes ?.action_descriptor ?.budgeting ?.disabled_reason : null;
+  //   return disabledReason === 'not_verified';
+  // }
 
-    return disabledReason === 'not_verified';
-  }
+  // isVerificationRequired = () => {
+  //   const { participationContextId, participationContextType } = this.props;
 
-  isVerificationRequired = () => {
-    const { participationContextId, participationContextType } = this.props;
-    if (this.disabledReasonNotVerified()) {
-      verificationNeeded('ActionBudget', participationContextId, participationContextType, 'budgeting');
-    }
-  }
+  //   if (this.disabledReasonNotVerified()) {
+  //     openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType, 'budgeting');
+  //   }
+  // }
 
-  componentDidMount() {
-    this.isVerificationRequired();
-  }
-  componentDidUpdate() {
-    this.isVerificationRequired();
-  }
+  // componentDidMount() {
+  //   this.isVerificationRequired();
+  // }
+  // componentDidUpdate() {
+  //   this.isVerificationRequired();
+  // }
 
   isDisabled = () => {
     const { participationContextType, project, phase } = this.props;
@@ -225,7 +225,6 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
     };
 
     if (!authUser) {
-      setMightOpenVerificationModal('ActionBudget');
       unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
       this.props.unauthenticatedAssignClick();
     } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {

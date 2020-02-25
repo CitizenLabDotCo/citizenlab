@@ -10,7 +10,7 @@ import VerificationError from './VerificationError';
 import VerificationFormLookup from './VerificationFormLookup';
 
 // events
-import { closeVerificationModal } from 'containers/App/events';
+import { closeVerificationModal } from 'containers/App/verificationModalEvents';
 
 // style
 import styled from 'styled-components';

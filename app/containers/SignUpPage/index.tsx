@@ -16,6 +16,7 @@ import SignUpPageMeta from './SignUpPageMeta';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
+import { parse } from 'qs';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -106,6 +107,11 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    if (isString(this.props?.location?.query?.action)) {
+      const action = parse(this.props.location.query.action);
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
         window.scrollTo(0, 0);

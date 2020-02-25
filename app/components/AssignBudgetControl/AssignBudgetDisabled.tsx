@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { IIdeaData } from 'services/ideas';
 import messages from './messages';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
