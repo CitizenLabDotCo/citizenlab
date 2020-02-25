@@ -113,9 +113,13 @@ export default defineMessages({// Cookie policy
     id: 'app.containers.CookiePolicy.cookiesListLinkText',
     defaultMessage: 'manage your preferences',
   },
-  contactInfo: {
-    id: 'app.containers.CookiePolicy.contactInfo',
-    defaultMessage: 'Further questions or remarks? You\'ll find us here: support@citizenlab.co.',
+  contact: {
+    id: 'app.containers.CookiePolicy.contact',
+    defaultMessage: 'Further questions or remarks? {contactLink}!',
+  },
+  contactLinkText: {
+    id: 'app.containers.CookiePolicy.contactLinkText',
+    defaultMessage: 'Contact us',
   },
   informationPageName: {
     id: 'app.containers.CookiePolicy.informationPageName',
