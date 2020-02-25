@@ -153,11 +153,11 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                 <FormattedMessage tagName="p" {...messages.intro} />
                 <FormattedMessage
                   tagName="p"
-                  {...messages.changePreferences}
+                  {...messages.changePreferencesText}
                   values={{
-                    changePreferencesButton: (
+                    changePreferencesLinkText: (
                       <StyledButton onClick={openConsentManager} className="changePreferencesButton">
-                        <FormattedMessage {...messages.changePreferencesButtonText} />
+                        <FormattedMessage {...messages.changePreferencesLinkText} />
                       </StyledButton>
                     )
                   }}

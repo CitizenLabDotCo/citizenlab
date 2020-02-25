@@ -13,13 +13,13 @@ export default defineMessages({// Cookie policy
     id: 'app.containers.CookiePolicy.intro',
     defaultMessage: 'As most websites, we use cookies to optimise the experience you and other visitors have on this platform. Because we want to be fully transparent on the why & how of this cookie use, you’ll find all details below, in as clearly written wording as possible. Cookies used on our platform are never used to identify and track specific users, they don’t "know who you are". Important to stress though, is that they do track technical data, such as a browser info, approximate location and an IP address. Although they are not used in such a way, in combination with other data sources, this could lead to an identification.',
   },
-  changePreferences: {
-    id: 'app.containers.CookiePolicy.changePreferences',
-    defaultMessage: 'At any time, you can change your preferences {changePreferencesButton}.',
+  changePreferencesText: {
+    id: 'app.containers.CookiePolicy.changePreferencesText',
+    defaultMessage: 'At any time, {changePreferencesLinkText}.',
   },
-  changePreferencesButtonText: {
-    id: 'app.containers.CookiePolicy.changePreferencesButtonText',
-    defaultMessage: 'here',
+  changePreferencesLinkText: {
+    id: 'app.containers.CookiePolicy.changePreferencesLinkText',
+    defaultMessage: 'you can change your preferences',
   },
   whoAreWeTitle: {
     id: 'app.containers.CookiePolicy.whoAreWeTitle',
