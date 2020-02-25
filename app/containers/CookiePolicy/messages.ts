@@ -105,13 +105,13 @@ export default defineMessages({// Cookie policy
     id: 'app.containers.CookiePolicy.functionalLinkText',
     defaultMessage: 'Intercom',
   },
-  cookiesList: {
-    id: 'app.containers.CookiePolicy.cookiesList',
-    defaultMessage: 'You can find a full, up-to date list of 3rd parties and manage your preferences {cookiesListButton}.',
+  cookiesListText: {
+    id: 'app.containers.CookiePolicy.cookiesListText',
+    defaultMessage: 'You can find a full, up-to date list of 3rd parties and {cookiesListLinkText}.',
   },
-  cookiesListButtonText: {
-    id: 'app.containers.CookiePolicy.cookiesListButtonText',
-    defaultMessage: 'here',
+  cookiesListLinkText: {
+    id: 'app.containers.CookiePolicy.cookiesListLinkText',
+    defaultMessage: 'manage your preferences',
   },
   contactInfo: {
     id: 'app.containers.CookiePolicy.contactInfo',

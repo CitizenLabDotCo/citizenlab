@@ -226,11 +226,11 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                 />
                 <FormattedMessage
                   tagName="p"
-                  {...messages.cookiesList}
+                  {...messages.cookiesListText}
                   values={{
-                    cookiesListButton: (
+                    cookiesListLinkText: (
                       <StyledButton onClick={openConsentManager} className="cookieList" >
-                        {formatMessage(messages.cookiesListButtonText)}
+                        {formatMessage(messages.cookiesListLinkText)}
                       </StyledButton>
                     )
                   }}
