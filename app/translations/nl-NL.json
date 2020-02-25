@@ -1529,7 +1529,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Alle initiatieven die plaatsvinden in {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Ontdek en steun de initiatieven in {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Alle initiatieven • {orgName}",
-  "app.containers.InitiativesIndexPage.readMore": "Lees er hier meer over.",
+  "app.containers.InitiativesIndexPage.readMore": "Lees meer over initiatieven.",
   "app.containers.InitiativesIndexPage.startInitiative": "Start een initiatief",
   "app.containers.InitiativesIndexPage.success": "succes",
   "app.containers.InitiativesIndexPage.successStoryTitle": "Leer van deze succesverhalen",
