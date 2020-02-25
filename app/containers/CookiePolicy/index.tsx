@@ -235,7 +235,17 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                     )
                   }}
                 />
-                <FormattedMessage tagName="p" {...messages.contactInfo} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.contact}
+                  values={{
+                    contactLink: (
+                      <a href="mailto:support@citizenlab.co" role="button">
+                        <FormattedMessage {...messages.contactLinkText} />
+                      </a>
+                    )
+                  }}
+                />
               </QuillEditedContent>
             </PageDescription>
           </Fragment>
