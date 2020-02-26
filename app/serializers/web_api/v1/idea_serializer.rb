@@ -17,7 +17,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
       },
       voting: {
         enabled: !voting_disabled_reason,
-        downvoting_enabled: @participation_context_service.get_participation_context(object.project).downvoting_enabled
+        downvoting_enabled: @participation_context_service.get_participation_context(object.project).downvoting_enabled,
         disabled_reason: voting_disabled_reason,
         future_enabled: voting_disabled_reason && @participation_context_service.future_voting_enabled_phase(object.project, current_user(params))&.start_at,
         cancelling_enabled: !cancelling_votes_disabled_reason
