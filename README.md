@@ -202,3 +202,10 @@ require './engines/blorgh/spec/factories/blorghs.rb'
 ## Disabling Bootsnap
 
 Uncomment `require 'bootsnap/setup'` in `config/boot.rb`
+
+
+## Troubleshooting
+
+### Rails generate commands result in uninitialized constant errors
+
+This issue was introduced since we're using Zeitwerk for autoloading and remains unresolved. Commenting `config.eager_load = true` in development.rb will allow you to run the command.
