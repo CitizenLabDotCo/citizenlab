@@ -168,6 +168,13 @@ resource "Votes" do
       expect(@idea.reload.upvotes_count).to eq 2
       expect(@idea.reload.downvotes_count).to eq 1
     end
+
+    example "[error] Downvote in a project where downvoting is disabled", document: false do
+      @project.update! downvoting_enabled: false
+      @idea.votes.create(user: @user, mode: 'down')
+      do_request
+      expect(status).to eq 401
+    end
   end
 
   delete "web_api/v1/votes/:id" do
