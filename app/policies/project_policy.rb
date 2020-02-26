@@ -106,6 +106,7 @@ class ProjectPolicy < ApplicationPolicy
       :posting_enabled,
       :commenting_enabled,
       :voting_enabled,
+      :downvoting_enabled,
       :voting_method,
       :voting_limited_max,
       :survey_embed_url,
