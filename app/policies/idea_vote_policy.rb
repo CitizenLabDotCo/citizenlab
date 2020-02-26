@@ -52,7 +52,7 @@ class IdeaVotePolicy < ApplicationPolicy
     pcs = ParticipationContextService.new
 
     if vode.down?
-      return false if !pcs.get_participation_context(vote.votable.project)&.downvoting_enabled,
+      return false if !pcs.get_participation_context(vote.votable.project)&.downvoting_enabled
     end
 
     idea = vote.votable
