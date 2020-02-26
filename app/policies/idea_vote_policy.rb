@@ -32,6 +32,7 @@ class IdeaVotePolicy < ApplicationPolicy
   end
 
   def down?
+    # TODO check if enabled in PC
     (user&.active? && (record.user_id == user.id) && check_changing_votes_allowed(record, user))
   end
 
