@@ -154,6 +154,7 @@ module AdminApi
         'posting_enabled'              => pc.posting_enabled,
         'commenting_enabled'           => pc.commenting_enabled,
         'voting_enabled'               => pc.voting_enabled,
+        'downvoting_enabled'           => pc.downvoting_enabled,
         'voting_method'                => pc.voting_method,
         'voting_limited_max'           => pc.voting_limited_max,
         'max_budget'                   => pc.max_budget,
