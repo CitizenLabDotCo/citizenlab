@@ -398,7 +398,6 @@ resource "Projects" do
       let(:header_bg) { encode_image_as_base64("header.jpg")}
       let(:area_ids) { create_list(:area, 2).map(&:id) }
       let(:visible_to) { 'groups' }
-      let(:downvoting_enabled) { false }
       let(:presentation_mode) { 'card' }
       let(:publication_status) { 'archived' }
       let(:default_assignee_id) { create(:admin).id }
@@ -410,8 +409,7 @@ resource "Projects" do
         expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
         expect(json_response.dig(:data,:attributes,:slug)).to eq "changed-title"
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
-        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'
-        expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq downvoting_enabled        
+        expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'       
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
         expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
@@ -445,6 +443,23 @@ resource "Projects" do
         do_request(project: {default_assignee_id: nil})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to be_nil
+      end
+
+      example "Disable downvoting", document: false do
+        tn = Tenant.current
+        tn.settings['disable_downvoting'] = {'allowed' => true, 'enabled' => true}
+        tn.save!
+        do_request(project: {downvoting_enabled: false})
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq false  
+      end
+
+      example "Disable downvoting when feature is not enabled", document: false do
+        tn = Tenant.current
+        tn.settings['disable_downvoting'] = {'allowed' => false, 'enabled' => false}
+        tn.save!
+        do_request(project: {downvoting_enabled: false})
+        expect(@project.reload.downvoting_enabled).to eq true
       end
 
       describe do
