@@ -32,9 +32,7 @@ class IdeaVotePolicy < ApplicationPolicy
   end
 
   def down?
-    user&.active? && 
-    (record.user_id == user.id) &&
-    check_changing_votes_allowed(record, user)
+    (user&.active? && (record.user_id == user.id) && check_changing_votes_allowed(record, user))
   end
 
   def destroy?
