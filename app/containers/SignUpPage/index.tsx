@@ -16,7 +16,7 @@ import SignUpPageMeta from './SignUpPageMeta';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { parse } from 'qs';
+import { stringify, parse } from 'qs';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -77,6 +77,12 @@ const RightInner = styled.div`
   `}
 `;
 
+export interface IAction {
+  type: 'upvote' | 'downvote';
+  context_type: 'idea';
+  context_id: string;
+}
+
 interface InputProps {}
 
 interface DataProps {
@@ -87,6 +93,7 @@ interface Props extends InputProps, DataProps { }
 
 interface State {
   goBackToUrl: string;
+  action: IAction | null;
 }
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
@@ -95,9 +102,9 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      goBackToUrl: '/'
+      goBackToUrl: '/',
+      action: null
     };
-    this.subscriptions = [];
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
@@ -107,10 +114,26 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    if (isString(this.props?.location?.query?.action)) {
-      const action = parse(this.props.location.query.action);
-      window.history.replaceState(null, '', window.location.pathname);
-    }
+
+    const action = {
+      action_type: 'upvote',
+      context_type: 'idea',
+      context_id: '123456789'
+    };
+
+    console.log(stringify(action));
+
+    console.log(this.props.location);
+
+    console.log(parse(this.props.location.query));
+
+    console.log(parse('?action[action_type]=upvote&action[context_type]=idea&action[context_id]=123456789'));
+
+    // if (isString(this.props?.location?.query?.action)) {
+    //   const action: IAction = parse(this.props.location.query.action);
+    //   this.setState({ action });
+    //   window.history.replaceState(null, '', window.location.pathname);
+    // }
 
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
@@ -130,6 +153,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location } = this.props;
+    const { action } = this.state;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
@@ -147,6 +171,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
                 step1Title={title}
                 isInvitation={isInvitation}
                 token={token}
+                action={action}
                 onSignUpCompleted={this.onSignUpCompleted}
               />
             </RightInner>

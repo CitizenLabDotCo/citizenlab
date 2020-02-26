@@ -226,12 +226,6 @@ const Downvote = styled(Vote)`
   }
 `;
 
-export interface IVoteAction {
-  action_type: 'upvote' | 'downvote';
-  context_type: 'idea';
-  context_id: string;
-}
-
 interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
