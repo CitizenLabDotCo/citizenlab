@@ -32,8 +32,9 @@ class IdeaVotePolicy < ApplicationPolicy
   end
 
   def down?
-    # TODO check if enabled in PC
-    (user&.active? && (record.user_id == user.id) && check_changing_votes_allowed(record, user))
+    user&.active? && 
+    (record.user_id == user.id) &&
+    check_changing_votes_allowed(record, user)
   end
 
   def destroy?
@@ -49,6 +50,10 @@ class IdeaVotePolicy < ApplicationPolicy
 
   def check_voting_allowed vote, user
     pcs = ParticipationContextService.new
+
+    if vode.down?
+      return false if !pcs.get_participation_context(vote.votable.project)&.downvoting_enabled,
+    end
 
     idea = vote.votable
     idea && !pcs.voting_disabled_reason_for_idea(idea, user)
