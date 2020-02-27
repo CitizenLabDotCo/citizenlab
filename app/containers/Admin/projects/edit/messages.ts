@@ -133,6 +133,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
     defaultMessage: 'Voting limit',
   },
+  enableDownvoting: {
+    id: 'app.containers.AdminPage.ProjectEdit.enableDownvoting',
+    defaultMessage: 'Disable downvoting',
+  },
+  enableDownvotingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.enableDownvotingTooltip',
+    defaultMessage: 'If set to true, citizens won\'t be able to downvote.',
+  },
+  downvotingDisabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
+    defaultMessage: 'No',
+  },
+  downvotingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
+    defaultMessage: 'Yes',
+  },
   phasePermissions: {
     id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',
     defaultMessage: 'Enabled actions',
