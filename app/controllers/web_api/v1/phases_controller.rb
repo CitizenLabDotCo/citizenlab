@@ -67,7 +67,6 @@ class WebApi::V1::PhasesController < ApplicationController
       :posting_enabled,
       :commenting_enabled,
       :voting_enabled,
-      :downvoting_enabled,
       :voting_method,
       :voting_limited_max,
       :presentation_mode,
