@@ -201,7 +201,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
       !isUndefined(ideaAuthor)
     ) {
       const votingDescriptor = idea?.attributes?.action_descriptor?.voting;
-      console.log(votingDescriptor);
       const commentingDescriptor = idea?.attributes?.action_descriptor?.commenting;
       const budgetingDescriptor = idea?.attributes?.action_descriptor?.budgeting;
       const projectId = idea?.relationships?.project.data?.id;
