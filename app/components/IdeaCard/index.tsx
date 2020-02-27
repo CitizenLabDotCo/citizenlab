@@ -257,7 +257,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                       unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
-                      location="ideaCard"
+                      ariaHidden={true}
                     />
                   }
 

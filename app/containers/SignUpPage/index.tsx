@@ -16,7 +16,6 @@ import SignUpPageMeta from './SignUpPageMeta';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { stringify, parse } from 'qs';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -78,10 +77,32 @@ const RightInner = styled.div`
 `;
 
 export interface IAction {
-  type: 'upvote' | 'downvote';
-  context_type: 'idea';
-  context_id: string;
+  action_type: 'upvote' | 'downvote';
+  action_context_type: 'idea';
+  action_context_id: string;
+  action_context_pathname: string;
 }
+
+export const redirectToSignUpPage = (action: IAction) => {
+  clHistory.push({
+    pathname: '/sign-up',
+    query: action
+  });
+};
+
+export const redirectToActionPage = (action: IAction) => {
+  const { action_type, action_context_id, action_context_type, action_context_pathname } = action;
+
+  clHistory.push({
+    pathname: action_context_pathname,
+    query: {
+      action_type,
+      action_context_type,
+      action_context_id,
+      action_context_pathname
+    } as IAction
+  });
+};
 
 interface InputProps {}
 
@@ -114,26 +135,20 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    const { action_type, action_context_id, action_context_type, action_context_pathname } = this.props.location.query;
 
-    const action = {
-      action_type: 'upvote',
-      context_type: 'idea',
-      context_id: '123456789'
-    };
+    if (action_type && action_context_id && action_context_type && action_context_pathname) {
+      this.setState({
+        action: {
+          action_type,
+          action_context_type,
+          action_context_id,
+          action_context_pathname
+        } as IAction
+      });
 
-    console.log(stringify(action));
-
-    console.log(this.props.location);
-
-    console.log(parse(this.props.location.query));
-
-    console.log(parse('?action[action_type]=upvote&action[context_type]=idea&action[context_id]=123456789'));
-
-    // if (isString(this.props?.location?.query?.action)) {
-    //   const action: IAction = parse(this.props.location.query.action);
-    //   this.setState({ action });
-    //   window.history.replaceState(null, '', window.location.pathname);
-    // }
+      window.history.replaceState(null, '', window.location.pathname);
+    }
 
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
@@ -148,7 +163,12 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   onSignUpCompleted = () => {
     trackEventByName(tracks.successfulSignUp);
-    clHistory.push(this.state.goBackToUrl);
+
+    if (this.state.action) {
+      redirectToActionPage(this.state.action);
+    } else {
+      clHistory.push(this.state.goBackToUrl);
+    }
   }
 
   render() {

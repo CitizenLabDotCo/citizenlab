@@ -3,7 +3,6 @@ import { isString, isObject, isUndefined, includes } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
-import { parse } from 'qs';
 
 // components
 import Error from 'components/UI/Error';
@@ -23,7 +22,7 @@ import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { IAction } from 'containers/SignUpPage';
+import { IAction, redirectToActionPage } from 'containers/SignUpPage';
 
 const Container = styled.main`
   width: 100%;
@@ -103,18 +102,44 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  action: IAction | null;
+}
 
 class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
+  
+  constructor(props) {
+    super(props);
+    this.state = {
+      action: null
+    };
+  }
 
   componentDidMount() {
-    console.log(JSON.stringify(this.props.location, null, 2));
-    console.log(parse(this.props.location.search));
-    // window.history.replaceState(null, '', window.location.pathname);
+    const { action_type, action_context_id, action_context_type, action_context_pathname } = this.props.location.query;
+
+    if (action_type && action_context_id && action_context_type && action_context_pathname) {
+      this.setState({
+        action: {
+          action_type,
+          action_context_type,
+          action_context_id,
+          action_context_pathname
+        } as IAction
+      });
+
+      window.history.replaceState(null, '', window.location.pathname);
+    }
   }
 
   redirect = () => {
-    clHistory.push('/');
+    const { action } = this.state;
+
+    if (action) {
+      redirectToActionPage(action);
+    } else {
+      clHistory.push('/');
+    }
   }
 
   focusTitle = (titleEl: HTMLHeadingElement) => {

@@ -5,6 +5,7 @@ import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
@@ -22,17 +23,13 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.main`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const TopBarInner = styled.div`
@@ -53,11 +50,7 @@ const TopBarInner = styled.div`
 const Left = styled.div`
   height: 48px;
   align-items: center;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-  `}
+  display: flex;
 `;
 
 const Right = styled.div``;
@@ -114,13 +107,14 @@ interface InputProps {
 }
 
 interface DataProps {
+  windowSize: GetWindowSizeChildProps;
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, project }) => {
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, project, windowSize }) => {
 
   const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -146,32 +140,38 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
     }
   }, [project]);
 
-  return (
-    <Container className={className}>
-      <TopBarInner>
-        <Left>
-          <GoBackButton onClick={onGoBack}>
-            <GoBackIcon name="arrow-back" />
-          </GoBackButton>
-          <GoBackLabel>
-            <FormattedMessage {...messages.goBack} />
-          </GoBackLabel>
-        </Left>
-        <Right>
-          <VoteControl
-            ideaId={ideaId}
-            unauthenticatedVoteClick={onUnauthenticatedVoteClick}
-            disabledVoteClick={onDisabledVoteClick}
-            size="1"
-            location="ideaPage"
-          />
-        </Right>
-      </TopBarInner>
-    </Container>
-  );
+  const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
+
+  if (smallerThanLargeTablet) {
+    return (
+      <Container className={className}>
+        <TopBarInner>
+          <Left>
+            <GoBackButton onClick={onGoBack}>
+              <GoBackIcon name="arrow-back" />
+            </GoBackButton>
+            <GoBackLabel>
+              <FormattedMessage {...messages.goBack} />
+            </GoBackLabel>
+          </Left>
+          <Right>
+            <VoteControl
+              ideaId={ideaId}
+              unauthenticatedVoteClick={onUnauthenticatedVoteClick}
+              disabledVoteClick={onDisabledVoteClick}
+              size="1"
+            />
+          </Right>
+        </TopBarInner>
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
 });
