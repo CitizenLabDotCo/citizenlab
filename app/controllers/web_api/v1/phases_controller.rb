@@ -54,7 +54,7 @@ class WebApi::V1::PhasesController < ApplicationController
   private
 
   def set_phase
-    @phase = Phase.find_by(id: params[:id])
+    @phase = Phase.find params[:id]
     authorize @phase
   end
 
