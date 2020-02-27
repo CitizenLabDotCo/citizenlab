@@ -21,6 +21,7 @@ class ParticipationContextService
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
     voting_disabled: 'voting_disabled',
+    downvoting_disabled: 'downvoting_disabled',
     not_permitted: 'not_permitted',
     not_verified: 'not_verified',
     voting_limited_max_reached: 'voting_limited_max_reached',
@@ -133,11 +134,28 @@ class ParticipationContextService
     end
   end
 
+  def voting_disabled_reason_for_vote vote, user
+    case vote.votable_type
+    when Idea.name
+      idea = vote.votable
+      if vote.down? && !get_participation_context(idea.project)&.downvoting_enabled
+        return VOTING_DISABLED_REASONS[:downvoting_disabled]
+      end
+      voting_disabled_reason_for_idea idea, user
+    when Initiative.name
+      voting_disabled_reason_for_initiative vote.votable, user
+    when Comment.name
+      voting_disabled_reason_for_comment vote.votable, user
+    else
+      raise "No support for votable type #{vote.votable_type}"
+    end
+  end
+
   def voting_disabled_reason_for_comment comment, user
     case comment.post_type
-    when 'Idea'
+    when Idea.name
       commenting_disabled_reason_for_idea comment.post, user
-    when 'Initiative'
+    when Initiative.name
       voting_disabled_reason_for_initiative comment.post, user
     else
       raise "No support for post type #{comment.post_type}"
