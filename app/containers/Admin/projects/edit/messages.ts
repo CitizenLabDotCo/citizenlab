@@ -133,21 +133,21 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
     defaultMessage: 'Voting limit',
   },
-  enableDownvoting: {
-    id: 'app.containers.AdminPage.ProjectEdit.enableDownvoting',
-    defaultMessage: 'Disable downvoting',
+  downvoting: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvoting',
+    defaultMessage: 'Downvoting',
   },
-  enableDownvotingTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.enableDownvotingTooltip',
-    defaultMessage: 'If set to true, citizens won\'t be able to downvote.',
+  downvotingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingTooltip',
+    defaultMessage: 'Insert copy TODO',
   },
   downvotingDisabled: {
-    id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
-    defaultMessage: 'No',
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
+    defaultMessage: 'Disabled',
   },
   downvotingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
-    defaultMessage: 'Yes',
+    defaultMessage: 'Enabled',
   },
   phasePermissions: {
     id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',

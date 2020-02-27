@@ -110,7 +110,7 @@ export interface IUpdatedProjectProperties {
   voting_enabled?: boolean | null;
   voting_method?: 'limited' | 'unlimited' | null;
   voting_limited_max?: number | null;
-  downvoting_enabled?: boolean;
+  downvoting_enabled?: boolean | null;
   presentation_mode?: PresentationMode | null;
   publication_status?: PublicationStatus;
   max_budget?: number | null;
