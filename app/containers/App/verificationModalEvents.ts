@@ -12,19 +12,29 @@ enum VerificationModalEvents {
   close = 'closeVerificationModal'
 }
 
-export function openVerificationModalWithContext(location: string, participationContextId: string, participationContextType: IParticipationContextType, action: ICitizenAction) {
+export function openVerificationModalWithContext(source: string, participationContextId: string, participationContextType: IParticipationContextType, action: ICitizenAction) {
   eventEmitter.emit<OpenVerificationModalData>(
-    location,
+    source,
     VerificationModalEvents.open,
-    { step: 'method-selection', context: { action, id: participationContextId, type: participationContextType } }
+    {
+      step: 'method-selection',
+      context: {
+        action,
+        id: participationContextId,
+        type: participationContextType
+      }
+    }
   );
 }
 
-export function openVerificationModalWithoutContext(location: string) {
+export function openVerificationModalWithoutContext(source: string) {
   eventEmitter.emit<OpenVerificationModalData>(
-    location,
+    source,
     VerificationModalEvents.open,
-    { step: 'method-selection', context: null }
+    {
+      step: 'method-selection',
+      context: null
+    }
   );
 }
 

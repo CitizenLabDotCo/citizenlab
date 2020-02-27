@@ -216,49 +216,54 @@ export default class SideModal extends PureComponent<Props, State> {
 
   render() {
     const { children, opened, label } = this.props;
+    const modalPortalElement = document?.getElementById('modal-portal');
 
-    return ReactDOM.createPortal((
-      <CSSTransition
-        classNames="modal"
-        in={opened}
-        timeout={{
-          enter: enterTimeout + enterDelay,
-          exit: exitTimeout + exitDelay
-        }}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={true}
-      >
-        <Overlay
-          id="e2e-modal-container"
-          className={this.props.className}
-          aria-modal="true"
-          role="dialog"
-          aria-label={label}
+    if (modalPortalElement) {
+      return ReactDOM.createPortal((
+        <CSSTransition
+          classNames="modal"
+          in={opened}
+          timeout={{
+            enter: enterTimeout + enterDelay,
+            exit: exitTimeout + exitDelay
+          }}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
         >
-          <FocusOn autoFocus={false}>
-            <ModalContainer
-              onClickOutside={this.manuallyCloseModal}
-              closeOnClickOutsideEnabled={!this.state.innerModalOpened}
-            >
-              <ModalContent id="e2e-side-modal-content">
-                {children}
-              </ModalContent>
-            </ModalContainer>
+          <Overlay
+            id="e2e-modal-container"
+            className={this.props.className}
+            aria-modal="true"
+            role="dialog"
+            aria-label={label}
+          >
+            <FocusOn autoFocus={false}>
+              <ModalContainer
+                onClickOutside={this.manuallyCloseModal}
+                closeOnClickOutsideEnabled={!this.state.innerModalOpened}
+              >
+                <ModalContent id="e2e-side-modal-content">
+                  {children}
+                </ModalContent>
+              </ModalContainer>
 
-            <CloseButton
-              className="e2e-modal-close-button"
-              onClick={this.clickCloseButton}
-            >
-              <HiddenSpan>
-                <FormattedMessage {...messages.closeButtonAria} />
-              </HiddenSpan>
-              <CloseIcon name="close" />
-            </CloseButton >
-          </FocusOn>
-        </Overlay>
-      </CSSTransition>
-    ), document.body);
+              <CloseButton
+                className="e2e-modal-close-button"
+                onClick={this.clickCloseButton}
+              >
+                <HiddenSpan>
+                  <FormattedMessage {...messages.closeButtonAria} />
+                </HiddenSpan>
+                <CloseIcon name="close" />
+              </CloseButton >
+            </FocusOn>
+          </Overlay>
+        </CSSTransition>
+      ), modalPortalElement);
+    }
+
+    return null;
   }
 }

@@ -57,4 +57,20 @@ export default defineMessages({
     id: 'app.containers.VoteControl.a11y_totalVotes',
     defaultMessage: 'Total upvotes: {upvotesCount}. Total downvotes: {downvotesCount}.',
   },
+  voteSuccessTitle: {
+    id: 'app.containers.VoteControl.voteSuccessTitle',
+    defaultMessage: 'Your vote was successfully registered!',
+  },
+  voteErrorTitle: {
+    id: 'app.containers.VoteControl.voteErrorTitle',
+    defaultMessage: 'Something went wrong',
+  },
+  voteErrorSubTitle: {
+    id: 'app.containers.VoteControl.voteErrorSubTitle',
+    defaultMessage: 'Due to an error your vote could not being registered. Please try again in a few minutes.',
+  },
+  close: {
+    id: 'app.containers.VoteControl.close',
+    defaultMessage: 'Close',
+  },
 });

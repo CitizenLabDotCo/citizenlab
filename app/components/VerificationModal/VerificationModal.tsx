@@ -118,7 +118,6 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
       width={820}
       opened={opened}
       close={onClose}
-      remaining
     >
       <Container className={`e2e-verification-modal ${className || ''}`}>
         {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
