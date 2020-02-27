@@ -116,7 +116,7 @@ export interface IParticipationContextConfig {
   voting_enabled?: boolean | null;
   voting_method?: 'unlimited' | 'limited' | null;
   voting_limited_max?: number | null;
-  downvoting_enabled?: boolean;
+  downvoting_enabled?: boolean | null;
   location_allowed?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
   max_budget?: number | null;
@@ -315,7 +315,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_enabled: (participation_method === 'ideation' ? true : null),
       voting_method: (participation_method === 'ideation' ? 'unlimited' : null),
       voting_limited_max: null,
-      downvoting_enabled: (participation_method === 'ideation' ? false : null),
+      downvoting_enabled: (participation_method === 'ideation' ? true : null),
       location_allowed: ((participation_method === 'ideation' || participation_method === 'budgeting') ? true : null),
       presentation_mode: (participation_method === 'ideation' ? 'card' : null),
       survey_embed_url: null,
@@ -355,7 +355,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
     this.setState({ voting_limited_max: parseInt(voting_limited_max, 10), noVotingLimit: null });
   }
 
-  handleDownvotingDisabledOnChange = (downvoting_enabled: boolean) => {
+  handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
     this.setState({ downvoting_enabled });
   }
 
@@ -634,11 +634,11 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <FeatureFlag name="disable_downvoting">
                       <SectionField>
                         <Label>
-                          <FormattedMessage {...messages.enableDownvoting} />
-                          <IconTooltip content={<FormattedMessage {...messages.enableDownvotingTooltip} />} />
+                          <FormattedMessage {...messages.downvoting} />
+                          <IconTooltip content={<FormattedMessage {...messages.downvotingTooltip} />} />
                         </Label>
                         <Radio
-                          onChange={this.handleDownvotingDisabledOnChange}
+                          onChange={this.handleDownvotingEnabledOnChange}
                           currentValue={downvoting_enabled}
                           value={true}
                           name="enableDownvoting"
@@ -646,7 +646,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                           label={<FormattedMessage {...messages.downvotingEnabled} />}
                         />
                         <Radio
-                          onChange={this.handleDownvotingDisabledOnChange}
+                          onChange={this.handleDownvotingEnabledOnChange}
                           currentValue={downvoting_enabled}
                           value={false}
                           name="enableDownvoting"
