@@ -201,6 +201,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
       !isUndefined(ideaAuthor)
     ) {
       const votingDescriptor = idea?.attributes?.action_descriptor?.voting;
+      console.log(votingDescriptor);
       const commentingDescriptor = idea?.attributes?.action_descriptor?.commenting;
       const budgetingDescriptor = idea?.attributes?.action_descriptor?.budgeting;
       const projectId = idea?.relationships?.project.data?.id;
@@ -217,7 +218,8 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
         idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
         commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
         idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-        votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
+        votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled',
+        votingDescriptor && votingDescriptor.downvoting_enabled ? 'e2e-downvoting-enabled' : 'e2e-downvoting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
       const commentsCount = idea.attributes.comments_count;
 
@@ -258,6 +260,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       location="ideaCard"
+                      hideDownvote={!votingDescriptor.downvoting_enabled}
                     />
                   }
 
