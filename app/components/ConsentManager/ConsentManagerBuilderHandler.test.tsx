@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 // component to test
-import { IDestination, initialPreferences } from './';
+import { IDestination, initialPreferences, adminIntegrations } from './';
 import ConsentManagerBuilderHandler from './ConsentManagerBuilderHandler';
 
 // mock depencies
@@ -46,23 +46,25 @@ let resetPreferences = jest.fn();
 let saveConsent = jest.fn();
 
 // mimics props for a first time user, takes in the blacklist
-const firstTimeUser = (blacklistedDestinationIds) => ({
+const firstTimeUser = (tenantBlacklistedDestinationIds, isPriviledged) => ({
   setPreferences,
   resetPreferences,
   saveConsent,
-  blacklistedDestinationIds,
   destinations,
+  tenantBlacklistedDestinationIds,
+  roleBlacklistedDestinationIds : isPriviledged ? [] : adminIntegrations,
   newDestinations: destinations,
   preferences: initialPreferences
 });
 
 // mimics props for a returning user
-const returningUser = (blacklistedDestinationIds) => ({
+const returningUser = (tenantBlacklistedDestinationIds, isPriviledged) => ({
   setPreferences,
   resetPreferences,
   saveConsent,
-  blacklistedDestinationIds,
   destinations,
+  tenantBlacklistedDestinationIds,
+  roleBlacklistedDestinationIds : isPriviledged ? [] : adminIntegrations,
   newDestinations: [],
   preferences: {
     advertising: false,
@@ -72,7 +74,7 @@ const returningUser = (blacklistedDestinationIds) => ({
 });
 
 // mimics props for a returning user when there's new destinations added in segment
-const returningUserNewDestinations = (blacklistedDestinationIds) => {
+const returningUserNewDestinations = (tenantBlacklistedDestinationIds, isPriviledged) => {
   const newDestination = {
     name: 'NewTool',
     description: 'NewTool is the new kid in town, lets you record everything the user does and watch in in real time !',
@@ -84,7 +86,8 @@ const returningUserNewDestinations = (blacklistedDestinationIds) => {
     setPreferences,
     resetPreferences,
     saveConsent,
-    blacklistedDestinationIds,
+    tenantBlacklistedDestinationIds,
+    roleBlacklistedDestinationIds : isPriviledged ? [] : adminIntegrations,
     destinations: [...destinations, newDestination],
     newDestinations: [newDestination],
     preferences: {
@@ -106,7 +109,7 @@ describe('<ConsentManagerBuilderHandler />', () => {
     it('passes down props and handlers from SCM', () => {
       const wrapper = shallow(
         <ConsentManagerBuilderHandler
-          {...firstTimeUser([])}
+          {...firstTimeUser([], false)}
         />
       );
 
@@ -123,21 +126,21 @@ describe('<ConsentManagerBuilderHandler />', () => {
 
   describe('classifies detinations into categories: ', () => {
     it('...without a blacklist', () => {
-      const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser([])} />);
+      const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser([], false)} />);
       const { categorizedDestinations } = wrapper.find('Container').props();
       expect(categorizedDestinations.functional.map(destination => destination.id)).toEqual(['FunctionalTool']);
       expect(categorizedDestinations.advertising.map(destination => destination.id)).toEqual(['Google Tag Manager', 'AdvertisingTool']);
       expect(categorizedDestinations.analytics.map(destination => destination.id)).toEqual(['MarketingTool']);
     });
     it('...with a blacklist', () => {
-      const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager'])} />);
+      const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager'], false)} />);
       const { categorizedDestinations } = wrapper.find('Container').props();
       expect(categorizedDestinations.functional.map(destination => destination.id)).toEqual(['FunctionalTool']);
       expect(categorizedDestinations.advertising.map(destination => destination.id)).toEqual(['AdvertisingTool']);
       expect(categorizedDestinations.analytics.map(destination => destination.id)).toEqual(['MarketingTool']);
     });
     it('...with a bigger blacklist', () => {
-      const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager', 'MarketingTool'])} />);
+      const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager', 'MarketingTool'], false)} />);
       const { categorizedDestinations } = wrapper.find('Container').props();
       expect(categorizedDestinations.functional.map(destination => destination.id)).toEqual(['FunctionalTool']);
       expect(categorizedDestinations.advertising.map(destination => destination.id)).toEqual(['AdvertisingTool']);
@@ -148,18 +151,18 @@ describe('<ConsentManagerBuilderHandler />', () => {
   describe('determines whether consent is required', () => {
     describe('first time user', () => {
       it('expects consent for a first time user', () => {
-        const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser([])} />);
+        const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser([], false)} />);
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(true);
       });
       it('expects consent for a first time user with a blacklist', () => {
-        const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager'])} />);
+        const wrapper = shallow(<ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager'], false)} />);
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(true);
       });
       it('doesn\'t expects consent for a first time user if all destinations are on the blacklist', () => {
         const wrapper = shallow(
-          <ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager', 'MarketingTool', 'FunctionalTool', 'AdvertisingTool'])} />
+          <ConsentManagerBuilderHandler {...firstTimeUser(['Google Tag Manager', 'MarketingTool', 'FunctionalTool', 'AdvertisingTool'], false)} />
         );
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(false);
@@ -167,25 +170,25 @@ describe('<ConsentManagerBuilderHandler />', () => {
     });
     describe('returing user (no new destinations)', () => {
       it('doesn\'t expect consent for a returing user (no new destinations)', () => {
-        const wrapper = shallow(<ConsentManagerBuilderHandler {...returningUser([])} />);
+        const wrapper = shallow(<ConsentManagerBuilderHandler {...returningUser([], false)} />);
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(false);
       });
       it('doesn\'t expect consent for a returing user (no new destinations) with a blacklist', () => {
-        const wrapper = shallow(<ConsentManagerBuilderHandler {...returningUser(['Google Tag Manager'])} />);
+        const wrapper = shallow(<ConsentManagerBuilderHandler {...returningUser(['Google Tag Manager'], false)} />);
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(false);
       });
       it('doesn\'t expect consent for a returing user (no new destinations) if all destinations are on the blacklist', () => {
         const wrapper = shallow(
-          <ConsentManagerBuilderHandler {...returningUser(['Google Tag Manager', 'MarketingTool', 'FunctionalTool', 'AdvertisingTool'])} />
+          <ConsentManagerBuilderHandler {...returningUser(['Google Tag Manager', 'MarketingTool', 'FunctionalTool', 'AdvertisingTool'], false)} />
         );
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(false);
       });
     });
     describe('returing user', () => {
-      it('expects consent for a returing user', () => {
+      it('expects consent for a returing user is there is new destinations', () => {
         const wrapper = shallow(<ConsentManagerBuilderHandler {...returningUserNewDestinations([])} />);
         const { isConsentRequired } = wrapper.find('Container').props();
         expect(isConsentRequired).toEqual(true);
@@ -219,7 +222,7 @@ describe('<ConsentManagerBuilderHandler />', () => {
     });
 
     describe('handles blacklist changes', () => {
-      it('expects consent when a destination was taken off the blacklist', () => {
+      it('expects consent when a destination was taken off the tenant blacklist', () => {
         const wrapper = shallow(
           <ConsentManagerBuilderHandler
             {...{
@@ -227,7 +230,8 @@ describe('<ConsentManagerBuilderHandler />', () => {
               resetPreferences,
               saveConsent,
               destinations,
-              blacklistedDestinationIds: [],
+              tenantBlacklistedDestinationIds: [],
+              roleBlacklistedDestinationIds: [],
               newDestinations: [],
               preferences: {
                 advertising: false,
@@ -255,13 +259,45 @@ describe('<ConsentManagerBuilderHandler />', () => {
                 website: 'intercomUrl',
                 id: 'Intercom',
               }],
-              blacklistedDestinationIds: [],
+              tenantBlacklistedDestinationIds: [],
+              roleBlacklistedDestinationIds: [],
               newDestinations: [],
               preferences: {
                 advertising: false,
                 analytics: true,
                 functional: false,
-                tenantBlacklisted: ['Intercom', 'SatisMeter']
+                tenantBlacklisted: [],
+                roleBlacklisted: ['SatisMeter', 'Intercom']
+              }
+            }}
+          />
+        );
+        const { isConsentRequired } = wrapper.find('Container').props();
+        expect(isConsentRequired).toEqual(true);
+      });
+      it('expects consent again when a user becomes admin', () => {
+        const wrapper = shallow(
+          <ConsentManagerBuilderHandler
+            {...{
+              setPreferences,
+              resetPreferences,
+              saveConsent,
+              destinations: [...destinations, {
+                name: 'Intercom',
+                description: 'Only for admins',
+                category: 'Helpdesk',
+                website: 'intercomUrl',
+                id: 'Intercom',
+              }],
+              tenantBlacklistedDestinationIds: [],
+              roleBlacklistedDestinationIds: [],
+              newDestinations: [],
+              preferences: {
+                advertising: false,
+                analytics: true,
+                functional: false,
+                tenantBlacklisted: [],
+                roleBlacklisted: ['SatisMeter', 'Intercom']
               }
             }}
           />
