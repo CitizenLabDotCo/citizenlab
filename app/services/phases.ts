@@ -22,7 +22,7 @@ export interface IPhaseData {
     voting_enabled: boolean;
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
-    downvoting_enabled: boolean; // ?
+    downvoting_enabled: boolean;
     presentation_mode: 'card' | 'map';
     max_budget?: number;
     survey_service?: SurveyServices;
