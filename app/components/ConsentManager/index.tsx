@@ -36,6 +36,7 @@ export interface CustomPreferences {
   advertising: boolean | null;
   functional: boolean | null;
   tenantBlacklisted?: string[] | undefined;
+  roleBlacklisted?: string[] | undefined;
 }
 
 // the format in which we'll present the destinations to the user
@@ -78,145 +79,134 @@ function reportToSegment(err) {
   });
 }
 
-export class ConsentManager extends PureComponent<Props> {
-  handleMapCustomPreferences = (destinations: IDestination[], preferences: CustomPreferences) => {
-    const { tenant } = this.props;
-    const blacklistedDestinationIds = this.getBlacklistedDestinations();
-
-    if (!isNilOrError(tenant)) {
-      return this.mapCustomPreferences(destinations, preferences, blacklistedDestinationIds);
-    }
-
-    return ({ customPreferences: {}, destinationPreferences: {} });
-  }
-
-  getBlacklistedDestinations = () => {
-    const { tenant, authUser } = this.props;
-
-    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
-    const tenantBlacklistedDestinations = !isNilOrError(tenant) ? tenant.attributes.settings.core.segment_destinations_blacklist : [];
-
-    return [...(tenantBlacklistedDestinations || []), ...(!isPrivilegedUser ? adminIntegrations : [])];
-  }
-
-  mapCustomPreferences = (
+function handleMapCustomPreferences(
+  tenantBlacklistedDestinationIds: string[] | undefined,
+  roleBlacklistedDestinationIds: string[] | undefined) {
+  return function _(
     destinations: IDestination[],
     preferences: CustomPreferences,
-    blacklistedDestinationIds: string[] | null
-  ) => {
+  ) {
     /** takes in the full list of destinations (coming from Segment),
     * the preferences set by the user and the destinations that the user doesn't have access to
     * gives out both the custom preferences picked by the user to save and the preferences
     * of the user in the format { [preferenceId]: booleanConsent }
     **/
-    const remainingDestinations = this.removeBlacklistedDestinations(destinations, blacklistedDestinationIds);
-    const customPreferences = this.getCustomPreferences(preferences, remainingDestinations, blacklistedDestinationIds);
+
+    const blacklistedDestinationIds = [...tenantBlacklistedDestinationIds || [], ...roleBlacklistedDestinationIds || []];
+    const whitelistedDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationIds);
+
+    const customPreferences = getCustomPreferences(preferences, whitelistedDestinations, tenantBlacklistedDestinationIds || [], roleBlacklistedDestinationIds || []);
+
     const destinationPreferences = {
-      ...this.getDestinationPreferences(customPreferences, remainingDestinations),
-      ...this.formatBlacklistDestinations(blacklistedDestinationIds)
+      ...getDestinationPreferences(customPreferences, whitelistedDestinations),
+      ...formatBlacklistDestinations(blacklistedDestinationIds)
     };
 
     return {
       customPreferences,
       destinationPreferences
     } as { customPreferences: CustomPreferences, destinationPreferences: { [destinationId: string]: boolean } };
-  }
+  };
+}
 
-  removeBlacklistedDestinations = (destinations: IDestination[], blacklistedDestinationIds: string[] | null) => {
-    if (destinations && blacklistedDestinationIds) {
-      return destinations.filter(destination => !(blacklistedDestinationIds).includes(destination.id));
+function getCustomPreferences(
+  preferences: CustomPreferences,
+  accessibleDestinations: IDestination[],
+  tenantBlacklistedDestinationIds: string[],
+  roleBlacklistedDestinationIds: string[]
+) {
+  const customPreferences = {} as CustomPreferences;
+
+  for (const [preferenceName, value] of Object.entries(preferences)) {
+    // use user preference if set
+    if (typeof value === 'boolean') {
+      customPreferences[preferenceName] = value;
+
+      // for categories that contain destinations (for implicit consent) default unset preferences to true (clicking accept without opening)
+    } else if (preferenceName === 'advertising' && accessibleDestinations.find(destination => ADVERTISING_CATEGORIES.includes(destination.category))) {
+      customPreferences['advertising'] = true;
+    } else if (preferenceName === 'functional' && accessibleDestinations.find(destination => FUNCTIONAL_CATEGORIES.includes(destination.category))) {
+      customPreferences['functional'] = true;
+    } else if (preferenceName === 'analytics' && accessibleDestinations.find(destination => MARKETING_AND_ANALYTICS_CATEGORIES.includes(destination.category))) {
+      customPreferences['analytics'] = true;
+      // and leave the empty categories null
+    } else {
+      customPreferences[preferenceName] = null;
     }
-
-    return [];
   }
 
-  getCustomPreferences = (
-    preferences: CustomPreferences,
-    remainingDestinations: IDestination[],
-    blacklistedDestinationIds: string[] | null
-  ) => {
-    const customPreferences = {} as CustomPreferences;
+  // remember what was on the blacklists to determine what was consented by the user and what was overwritten
+  customPreferences.tenantBlacklisted = tenantBlacklistedDestinationIds;
+  customPreferences.roleBlacklisted = roleBlacklistedDestinationIds;
 
-    // get user preferences, default unset preferences to true
-    // for categories that contain destinations (for implicit consent)
-    // and leave the empty categories null
-    for (const [preferenceName, value] of Object.entries(preferences)) {
-      if (typeof value === 'boolean') {
-        customPreferences[preferenceName] = value;
-      } else if (preferenceName === 'advertising' && remainingDestinations.find(destination => ADVERTISING_CATEGORIES.includes(destination.category))) {
-        customPreferences['advertising'] = true;
-      } else if (preferenceName === 'functional' && remainingDestinations.find(destination => FUNCTIONAL_CATEGORIES.includes(destination.category))) {
-        customPreferences['functional'] = true;
-      } else if (preferenceName === 'analytics' && remainingDestinations.find(destination => MARKETING_AND_ANALYTICS_CATEGORIES.includes(destination.category))) {
-        customPreferences['analytics'] = true;
-      } else {
-        customPreferences[preferenceName] = null;
-      }
+  return customPreferences;
+}
+
+function removeBlacklistedDestinations(destinations: IDestination[], blacklistedDestinationIds: string[]) {
+  return destinations.filter(destination => !(blacklistedDestinationIds).includes(destination.id));
+}
+
+function getDestinationPreferences(customPreferences: CustomPreferences, remainingDestinations: IDestination[]) {
+  const destinationPreferences = {};
+
+  // for each non-blacklisted destination, set the preference for this destination to be
+  // the preference the user set for the category it belongs to
+  for (const destination of remainingDestinations) {
+    if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
+      destinationPreferences[destination.id] = customPreferences.advertising;
+    } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
+      destinationPreferences[destination.id] = customPreferences.functional;
+    } else if (MARKETING_AND_ANALYTICS_CATEGORIES.find(c => c === destination.category)) {
+      destinationPreferences[destination.id] = customPreferences.analytics;
+    } else {
+      // Fallback to marketing preference but send an error so we update the categories
+      withScope(scope => {
+        scope.setExtra('wrongDestination', destination.id);
+        scope.setExtra('wrongDestinationCategory', destination.category);
+        reportError('A segment destination doesn\'t belong to a category');
+      });
+      destinationPreferences[destination.id] =
+        customPreferences.analytics;
     }
-
-    // set the tenantBlacklisted value on the customPreferences object so we can use
-    // it to later calculate whether a tenant has removed an item from blacklist
-    // or the user has gained access to some preferences
-    // and ask consent again when this happens
-    customPreferences.tenantBlacklisted = blacklistedDestinationIds || undefined;
-
-    return customPreferences;
   }
 
-  getDestinationPreferences = (customPreferences: CustomPreferences, remainingDestinations: IDestination[]) => {
-    const destinationPreferences = {};
+  return destinationPreferences;
+}
 
-    // for each non-blacklisted destination, set the preference for this destination to be
-    // the preference the user set for the category it belongs to
-      for (const destination of remainingDestinations) {
-      if (ADVERTISING_CATEGORIES.find(c => c === destination.category)) {
-        destinationPreferences[destination.id] = customPreferences.advertising;
-      } else if (FUNCTIONAL_CATEGORIES.find(c => c === destination.category)) {
-        destinationPreferences[destination.id] = customPreferences.functional;
-      } else if (MARKETING_AND_ANALYTICS_CATEGORIES.find(c => c === destination.category)) {
-        destinationPreferences[destination.id] = customPreferences.analytics;
-      } else {
-        // Fallback to marketing preference but send an error so we update the categories
-        withScope(scope => {
-          scope.setExtra('wrongDestination', destination.id);
-          scope.setExtra('wrongDestinationCategory', destination.category);
-          reportError('A segment destination doesn\'t belong to a category');
-        });
-        destinationPreferences[destination.id] =
-          customPreferences.analytics;
-      }
-    }
+/** helper function
+* put the blacklist in the format { destinationId: false }
+**/
+function formatBlacklistDestinations(blacklistedDestinationIds: string[] | null) {
+  /** helper function
+  * reducer function, when passed in to _array.reduce, transforms the array
+  * into an object with the elements of the array as keys, and false as values
+  **/
+  const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
 
-    return destinationPreferences;
-  }
+  return blacklistedDestinationIds ? blacklistedDestinationIds.reduce(reducerArrayToObject, {}) : {};
+}
 
-  formatBlacklistDestinations = (blacklistedDestinationIds: string[] | null) => {
-    // put the blacklist in the format { destinationId: false }
-
-    /** helper function
-    * reducer function, when passed in to _array.reduce, transforms the array
-    * into an object with the elements of the array as keys, and false as values
-    **/
-    const reducerArrayToObject = (acc, curr) => (acc[curr] = false, acc);
-
-    return blacklistedDestinationIds ? blacklistedDestinationIds.reduce(reducerArrayToObject, {}) : {};
-  }
-
+export class ConsentManager extends PureComponent<Props> {
   render() {
-    const { tenant } = this.props;
+    const { tenant, authUser } = this.props;
+
+    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
+    const tenantBlacklistedDestinations = (!isNilOrError(tenant) ? tenant.attributes.settings.core.segment_destinations_blacklist : []) || [];
+    const roleBlacklistedDestinations = isPrivilegedUser ? [] : adminIntegrations;
 
     if (!isNilOrError(tenant)) {
       return (
         <ConsentManagerBuilder
           writeKey={CL_SEGMENT_API_KEY}
-          mapCustomPreferences={this.handleMapCustomPreferences}
+          mapCustomPreferences={handleMapCustomPreferences(tenantBlacklistedDestinations, roleBlacklistedDestinations)}
           initialPreferences={initialPreferences}
           onError={reportToSegment}
         >
           {(consentManagerProps: ConsentManagerProps) => (
             <ConsentManagerBuilderHandler
               {...consentManagerProps}
-              blacklistedDestinationIds={this.getBlacklistedDestinations()}
+              tenantBlacklistedDestinationIds={tenantBlacklistedDestinations}
+              roleBlacklistedDestinationIds={roleBlacklistedDestinations}
             />
           )}
         </ConsentManagerBuilder>

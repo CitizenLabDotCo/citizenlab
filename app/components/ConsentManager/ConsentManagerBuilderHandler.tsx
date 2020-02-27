@@ -3,13 +3,14 @@ import { ConsentManagerProps, IDestination } from './';
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES } from './categories';
 
 interface Props extends ConsentManagerProps {
-  blacklistedDestinationIds: string[];
+  roleBlacklistedDestinationIds: string[];
+  tenantBlacklistedDestinationIds: string[];
 }
 
 import Container from './Container';
 
 const getCategorizedDestinations = (destinationArray: IDestination[]) => {
-  // agregate the remaining destinations into categories
+  // agregate the available destinations into categories
 
   const categorizedDestinations = {
     advertising: [] as IDestination[],
@@ -31,7 +32,7 @@ const getCategorizedDestinations = (destinationArray: IDestination[]) => {
   return categorizedDestinations;
 };
 
-const removeBlacklistedDestinations = (destinations: IDestination[], blacklistedDestinations: string []) => {
+const removeBlacklistedDestinations = (destinations: IDestination[], blacklistedDestinations: string[]) => {
   // removes the blacklistedDestinations from the destination and newDestinations
   // arrays, they will be programmatically set to false when saving preferences.
   const isNotBlackListedDestination = (destination: IDestination) => !blacklistedDestinations.includes(destination.id);
@@ -46,37 +47,49 @@ const ConsentManagerBuilderHandler = ({
   newDestinations,
   destinations,
   preferences,
-  blacklistedDestinationIds
+  tenantBlacklistedDestinationIds,
+  roleBlacklistedDestinationIds,
 }: Props) => {
-  const { tenantBlacklisted: tenantBlacklistedDestinationIds } = preferences;
+  // the preference object represents the previously set user preferences (= the cookie)
+  const { tenantBlacklisted: oldTenantBlacklistedIds, roleBlacklisted: oldRoleBlacklistedIds } = preferences;
+
+  // all the destinations this user has no access to
+  const blacklistedDestinationIds = [...tenantBlacklistedDestinationIds, ...roleBlacklistedDestinationIds];
+  // ell the destinations this user didn't have access to last time consent was saved
+  const oldBlacklistedDestinationIds = [...oldTenantBlacklistedIds || [], ...oldRoleBlacklistedIds || []];
+
+  console.log(blacklistedDestinationIds, oldRoleBlacklistedIds);
+  // all the new destinations in segment that this user has access to
   const whitelistedNewDestinations = removeBlacklistedDestinations(newDestinations, blacklistedDestinationIds);
-  const whitelistedDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationIds);
-  const categorizedDestinations = getCategorizedDestinations(whitelistedDestinations);
 
-  if (blacklistedDestinationIds !== tenantBlacklistedDestinationIds) {
-    // anything that was removed from the blacklist is a new destination to our user
-    const noLongerBlacklistedDestinationIds = (tenantBlacklistedDestinationIds || []).filter(destinationId => !blacklistedDestinationIds.includes(destinationId));
+  // all the destinations that were previously disabled for this user and are no longer on their blacklists
+  const noLongerBlacklisted = (oldBlacklistedDestinationIds || [])
+    .filter(destinationId => !blacklistedDestinationIds.includes(destinationId))
+    .map(destinationId => destinations.find(destination => destination.id === destinationId))
+    .filter(des => des) as IDestination[];
 
-    noLongerBlacklistedDestinationIds.forEach(destinationId => {
-      const destination = destinations.find(destination => destination.id === destinationId);
-      if (destination) {
-        whitelistedNewDestinations.push(destination);
-      }
-    });
+  // The banner should appear...if there is new destinations that are not on a blacklist
+  const isConsentRequired = whitelistedNewDestinations.length > 0
+    // if a destination was removed from the blacklists
+    || noLongerBlacklisted.length > 0;
 
-    // anything that was added to the blacklist will be programmatically set to false later...
-    const newBlacklistedDestinationIds = blacklistedDestinationIds.filter(destinationId =>
-      !(tenantBlacklistedDestinationIds || []).includes(destinationId));
+  const newBlacklistedDestinationIds = tenantBlacklistedDestinationIds
+    .filter(destinationId => !(oldTenantBlacklistedIds || []).includes(destinationId));
 
-    // if there are no new destinations, the banner won't show so we save programmatically to apply
-    // the blacklist on the previous user choice and overwrite blacklisted destinations to false
-    if (newBlacklistedDestinationIds.length > 0 && whitelistedNewDestinations.length === 0) {
-      saveConsent();
-    }
+  // is there's nothing new to show the user
+  // but there is new blacklisted destinations on the tenant, we save without showing
+  // overriting user preferences by setting blacklisted tenant items to false
+
+  // if destinations were removed from the role black list, we don't override the users consent
+  // to avoid admins consenting each time they log in.
+  // the non-privileged users that were once admin will be safeguarded from admin destinations in analyics.js
+  if (newBlacklistedDestinationIds.length > 0 && !isConsentRequired) {
+    saveConsent();
   }
 
-  // if there is a new destination the user has not consented to, consent is required
-  const isConsentRequired = whitelistedNewDestinations.length > 0;
+  // The destinations to show the user in the consent modal.
+  const whitelistedDestinations = removeBlacklistedDestinations(destinations, blacklistedDestinationIds);
+  const categorizedDestinations = getCategorizedDestinations(whitelistedDestinations);
 
   return (
     <Container
