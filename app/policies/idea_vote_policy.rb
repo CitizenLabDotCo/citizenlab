@@ -48,10 +48,11 @@ class IdeaVotePolicy < ApplicationPolicy
 
   def check_voting_allowed vote, user
     pcs = ParticipationContextService.new
-
-    idea = vote.votable
-    return false  if vote.down? && !pcs.get_participation_context(idea.project)&.downvoting_enabled
-    idea && !pcs.voting_disabled_reason_for_idea(idea, user)
+    # Not using voting_disabled_reason_for_idea because
+    # voting_disabled_reason_for_vote also checks if
+    # downvoting is disabled (and therefore needs the
+    # vote object).
+    vote.votable && !pcs.voting_disabled_reason_for_vote(vote, user)
   end
 
   def check_cancelling_votes_allowed vote, user

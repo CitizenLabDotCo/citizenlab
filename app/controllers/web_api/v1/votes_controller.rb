@@ -148,7 +148,7 @@ class WebApi::V1::VotesController < ApplicationController
     pcs = ParticipationContextService.new
     reason = if exception.record.votable.kind_of? Idea
       ( 
-        pcs.voting_disabled_reason_for_idea(exception.record.votable, exception.record.user) ||
+        pcs.voting_disabled_reason_for_vote(exception.record, exception.record.user) ||
         pcs.cancelling_votes_disabled_reason_for_idea(exception.record.votable, exception.record.user)
       )
     elsif exception.record.votable.kind_of?(Initiative) && exception.record.mode == 'down'
