@@ -259,7 +259,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       location="ideaCard"
-                      hideDownvote={!votingDescriptor.downvoting_enabled}
+                      showDownvote={votingDescriptor.downvoting_enabled}
                     />
                   }
 
