@@ -58,7 +58,6 @@ const ConsentManagerBuilderHandler = ({
   // ell the destinations this user didn't have access to last time consent was saved
   const oldBlacklistedDestinationIds = [...oldTenantBlacklistedIds || [], ...oldRoleBlacklistedIds || []];
 
-  console.log(blacklistedDestinationIds, oldRoleBlacklistedIds);
   // all the new destinations in segment that this user has access to
   const whitelistedNewDestinations = removeBlacklistedDestinations(newDestinations, blacklistedDestinationIds);
 
