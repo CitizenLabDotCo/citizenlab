@@ -9,7 +9,7 @@ import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 
 // styling
-import { Container, Header, ForegroundIcon, Title, Subtitle, ButtonContainer } from './modalStyles';
+import { Container, ForegroundIcon, Title, Subtitle, ButtonContainer } from './modalStyles';
 import { colors } from 'utils/styleUtils';
 
 interface Props {

@@ -29,13 +29,19 @@ const Container = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${colors.clBlue};
+  color: ${colors.clBlueDark};
+  text-decoration: underline;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
 `;
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
   text-decoration: underline;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -94,7 +100,7 @@ class VotingDisabled extends PureComponent<Props, State> {
     } else if (disabled_reason === 'not_verified') {
       return messages.votingDisabledNotVerified;
     } else {
-      return messages.votingDisabledForProject;
+      return messages.votingDisabled;
     }
   }
 

@@ -19,7 +19,7 @@ const Container = styled.div`
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
   text-decoration: underline;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -43,7 +43,9 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
+
     const { participationContextId, participationContextType } = this.props;
+
     openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType, 'budgeting');
   }
 

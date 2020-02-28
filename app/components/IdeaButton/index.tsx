@@ -116,7 +116,9 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
 
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
+
     const { participationContextType, projectId, phaseId } = this.props;
+
     if (participationContextType === 'project' && projectId) {
       openVerificationModalWithContext('ActionPost', projectId, 'project', 'posting');
     } else if (participationContextType === 'phase' && phaseId) {
