@@ -400,7 +400,7 @@
   "app.components.VoteControl.downvote": "",
   "app.components.VoteControl.upvote": "",
   "app.components.VoteControl.verificationLinkText": "",
-  "app.components.VoteControl.votingDisabledForProject": "",
+  "app.components.VoteControl.votingDisabled": "",
   "app.components.VoteControl.votingDisabledMaxReached": "",
   "app.components.VoteControl.votingDisabledNotPermitted": "",
   "app.components.VoteControl.votingDisabledNotVerified": "",

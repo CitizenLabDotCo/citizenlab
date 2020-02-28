@@ -400,7 +400,7 @@
   "app.components.VoteControl.downvote": "Downvote",
   "app.components.VoteControl.upvote": "Upvote",
   "app.components.VoteControl.verificationLinkText": "Verify your identity now.",
-  "app.components.VoteControl.votingDisabledForProject": "Voting on ideas in {projectName} will be possible from",
+  "app.components.VoteControl.votingDisabled": "Voting on ideas in {projectName} is currently not enabled",
   "app.components.VoteControl.votingDisabledMaxReached": "You've reached your maximum number of votes in {projectName}",
   "app.components.VoteControl.votingDisabledNotPermitted": "Unfortunately, you don't have the rights to vote on this idea",
   "app.components.VoteControl.votingDisabledNotVerified": "Voting on this idea requires verification of your identity. {verificationLink}",
