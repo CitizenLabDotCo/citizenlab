@@ -400,7 +400,7 @@
   "app.components.VoteControl.downvote": "{tenantName, select, DeloitteDK {Stem ned} other {Downvote}}",
   "app.components.VoteControl.upvote": "{tenantName, select, DeloitteDK {Stem op} other {Upvote}}",
   "app.components.VoteControl.verificationLinkText": "Bekræft din konto nu.",
-  "app.components.VoteControl.votingDisabledForProject": "{tenantName, select, DeloitteDK {Afstemning på indlæg i {projectName} vil være muligt fra} other {Afstemning på ideer i {projectName} vil være muligt fra}}",
+  "app.components.VoteControl.votingDisabled": "",
   "app.components.VoteControl.votingDisabledMaxReached": "Du har opnået dit maksimale antal stemmer i {projectName}",
   "app.components.VoteControl.votingDisabledNotPermitted": "{tenantName, select, DeloitteDK {Desværre har du ikke rettigheder til at stemme på dette indlæg} other {Desværre har du ikke rettigheder til at stemme på denne idé}}",
   "app.components.VoteControl.votingDisabledNotVerified": "At stemme på denne idé kræver bekræftelse af din konto. {verificationLink}",
