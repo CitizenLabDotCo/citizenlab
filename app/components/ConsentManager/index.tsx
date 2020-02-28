@@ -3,7 +3,8 @@ import { ConsentManagerBuilder } from '@segment/consent-manager';
 import { CL_SEGMENT_API_KEY } from 'containers/App/constants';
 import { adopt } from 'react-adopt';
 import { withScope } from '@sentry/browser';
-import { isAdmin, isModerator } from 'services/permissions/roles';
+import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+
 import { ADVERTISING_CATEGORIES, FUNCTIONAL_CATEGORIES, MARKETING_AND_ANALYTICS_CATEGORIES } from './categories';
 
 // utils
@@ -18,6 +19,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 export const adminIntegrations = ['Intercom', 'SatisMeter'];
+export const superAdminIntegrationsBl = ['SatisMeter'];
 
 // 3rd parties will receive events (Facebook, Google, ...). A destination is an object that represents such a 3rd party.
 // Also called integrations. Below is the format in which Sentry sends out destinations.
@@ -191,9 +193,10 @@ export class ConsentManager extends PureComponent<Props> {
     const { tenant, authUser } = this.props;
 
     const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
+    const isSuperAdminUser = !isNilOrError(authUser) && isSuperAdmin({ data: authUser });
     const tenantBlacklistedDestinations = (!isNilOrError(tenant) ? tenant.attributes.settings.core.segment_destinations_blacklist : []) || [];
-    const roleBlacklistedDestinations = isPrivilegedUser ? [] : adminIntegrations;
-
+    const roleBlacklistedDestinations = !isPrivilegedUser ? adminIntegrations : isSuperAdminUser ? superAdminIntegrationsBl : [];
+    console.log(roleBlacklistedDestinations);
     if (!isNilOrError(tenant)) {
       return (
         <ConsentManagerBuilder
