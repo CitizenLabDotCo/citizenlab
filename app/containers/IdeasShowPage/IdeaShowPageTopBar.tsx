@@ -120,7 +120,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, project }) => {
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, project, idea }) => {
 
   const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -146,6 +146,8 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
     }
   }, [project]);
 
+  if (isNilOrError(idea)) return null;
+
   return (
     <Container className={className}>
       <TopBarInner>
@@ -164,6 +166,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
             disabledVoteClick={onDisabledVoteClick}
             size="1"
             location="ideaPage"
+            showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
           />
         </Right>
       </TopBarInner>

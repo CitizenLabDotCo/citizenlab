@@ -237,7 +237,7 @@ interface Props {
     As a replacement, number of votes are read to screen readers when going over the idea card.
   */
   location: 'ideaCard' | 'ideaPage' | 'ideaMap';
-  hideDownvote?: boolean;
+  showDownvote: boolean;
 }
 
 interface State {
@@ -546,7 +546,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { size, className, intl: { formatMessage }, location, hideDownvote } = this.props;
+    const { size, className, intl: { formatMessage }, location, showDownvote } = this.props;
     const { showVoteControl, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, upvotesCount, downvotesCount, a11yVoteMessage } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
@@ -580,7 +580,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
           </Upvote>
 
-          {!hideDownvote &&
+          {showDownvote &&
             <Downvote
               active={myVoteMode === 'down'}
               onMouseDown={this.removeFocus}

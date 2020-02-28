@@ -277,7 +277,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                     disabledVoteClick={this.handleDisabledVoteClick}
                     noVerificationShortFlow
                     location="ideaMap"
-                    hideDownvote={!idea.attributes.action_descriptor.voting.downvoting_enabled}
+                    showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
                   />
                   <CommentsCount>
                     <CommentIcon name="comments" />

@@ -139,7 +139,7 @@ export default defineMessages({
   },
   downvotingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingTooltip',
-    defaultMessage: 'Insert copy TODO',
+    defaultMessage: 'By disabling, people can only upvote an idea. As a consequence, you\'ll have less information on what people think about that idea.',
   },
   downvotingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
