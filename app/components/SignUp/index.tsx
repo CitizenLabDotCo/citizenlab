@@ -33,7 +33,7 @@ import { fontSizes } from 'utils/styleUtils';
 // typings
 import { IAction } from 'containers/SignUpPage';
 
-const timeout = 900;
+const timeout = 650;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const Container = styled.div`
