@@ -17,8 +17,8 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingDisabledPossibleLater',
     defaultMessage: 'Voting on ideas in {projectName} will be possible starting from {enabledFromDate}',
   },
-  votingDisabledForProject: {
-    id: 'app.components.VoteControl.votingDisabledForProject',
+  votingDisabled: {
+    id: 'app.components.VoteControl.votingDisabled',
     defaultMessage: 'Voting on ideas in {projectName} is currently not enabled',
   },
   votingDisabledMaxReached: {

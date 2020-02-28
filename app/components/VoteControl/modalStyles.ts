@@ -1,6 +1,6 @@
 import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
-import { fontSizes, media, colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 export const Container = styled.div`
   width: 100%;
