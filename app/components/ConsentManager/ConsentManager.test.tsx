@@ -98,7 +98,8 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: true,
-        tenantBlacklisted: adminIntegrations
+        tenantBlacklisted: [],
+        roleBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -124,7 +125,8 @@ describe('<ConsentManager />', () => {
         advertising: false,
         analytics: false,
         functional: true,
-        tenantBlacklisted: adminIntegrations
+        tenantBlacklisted: [],
+        roleBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: false,
@@ -153,7 +155,8 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: false,
-        tenantBlacklisted: blacklist.concat(adminIntegrations)
+        tenantBlacklisted: blacklist,
+        roleBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -176,7 +179,9 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: true,
-        tenantBlacklisted: blacklist.concat(adminIntegrations)
+        tenantBlacklisted: blacklist,
+        roleBlacklisted: adminIntegrations
+
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -199,7 +204,8 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: true,
-        tenantBlacklisted: blacklist
+        tenantBlacklisted: blacklist,
+        roleBlacklisted: []
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
