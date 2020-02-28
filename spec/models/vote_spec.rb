@@ -17,8 +17,9 @@ RSpec.describe Vote, type: :model do
       idea = create(:idea)
       user = create(:user)
       vote = create(:vote, votable: idea, user: user)
-      expect{ create(:vote, mode: 'up', votable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
-      expect{ create(:vote, mode: 'down', votable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
+      expect(build(:vote, mode: 'up', votable: idea, user: user)).not_to be_valid
+      # Must be valid to be able to turn upvote into downvote in transaction
+      expect(build(:vote, mode: 'down', votable: idea, user: user)).to be_valid
     end
   end
 end
