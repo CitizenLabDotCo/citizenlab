@@ -983,7 +983,7 @@
   "app.containers.AdminPage.ProjectEdit.downvoting": "Downvoting",
   "app.containers.AdminPage.ProjectEdit.downvotingDisabled": "Disabled",
   "app.containers.AdminPage.ProjectEdit.downvotingEnabled": "Enabled",
-  "app.containers.AdminPage.ProjectEdit.downvotingTooltip": "Insert copy TODO",
+  "app.containers.AdminPage.ProjectEdit.downvotingTooltip": "'By disabling, people can only upvote an idea. As a consequence, you\'ll have less information on what people think about that idea.",
   "app.containers.AdminPage.ProjectEdit.draft": "Draft",
   "app.containers.AdminPage.ProjectEdit.draftStatus": "Draft",
   "app.containers.AdminPage.ProjectEdit.editButtonLabel": "Manage",
