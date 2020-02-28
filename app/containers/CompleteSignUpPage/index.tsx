@@ -107,7 +107,7 @@ interface State {
 }
 
 class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
-  
+
   constructor(props) {
     super(props);
     this.state = {
