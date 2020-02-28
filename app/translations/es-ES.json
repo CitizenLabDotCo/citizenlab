@@ -400,7 +400,7 @@
   "app.components.VoteControl.downvote": "Votar en contra",
   "app.components.VoteControl.upvote": "Votar a favor",
   "app.components.VoteControl.verificationLinkText": "Verifica tu identidad.",
-  "app.components.VoteControl.votingDisabledForProject": "Votar por ideas en {projectName} será posible a partir de",
+  "app.components.VoteControl.votingDisabled": "",
   "app.components.VoteControl.votingDisabledMaxReached": "Has alcanzado el número máximo de votos en {projectName}",
   "app.components.VoteControl.votingDisabledNotPermitted": "Lamentablemente, no tienes permiso para votar por esta idea",
   "app.components.VoteControl.votingDisabledNotVerified": "Votar sobre esta idea requiere la verificación de tu identidad. {verificationLink}",
