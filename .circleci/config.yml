@@ -284,6 +284,18 @@ workflows:
           compose_file: docker-compose-production.yml
           env_file: ".env-web"
           stack_name: "cl2"
+      - deploy-to-swarm:
+          requires:
+            - test
+            - push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: "52.13.59.174"
+          compose_file: docker-compose-production.yml
+          env_file: ".env-web"
+          stack_name: "cl2"
   check-for-inconsistent-data:
     triggers:
       - schedule:
