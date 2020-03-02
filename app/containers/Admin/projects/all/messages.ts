@@ -55,20 +55,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.loadMoreTemplates',
     defaultMessage: 'Load more templates',
   },
-  xGroupsHaveAccess: {
-    id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
-    defaultMessage: '{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}',
-  },
-  onlyAdminsCanView: {
-    id: 'app.containers.AdminPage.ProjectEdit.onlyAdminsCanView',
-    defaultMessage: 'Only admins can view',
-  },
-  editButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.editButtonLabel',
-    defaultMessage: 'Edit',
-  },
   published: {
-    id: 'app.containers.AdminPage.ProjectEdit.published',
+    id: 'app.containers.AdminPage.ProjectDashboard.published',
     defaultMessage: 'Published',
   },
   publishedTooltip: {
@@ -84,7 +72,7 @@ export default defineMessages({
     defaultMessage: 'Draft projects are not shown on the platform. You can work on them with other admin and project moderators, until they are ready to be published.',
   },
   archived: {
-  id: 'app.containers.AdminPage.ProjectEdit.archived',
+    id: 'app.containers.AdminPage.ProjectEdit.archived',
     defaultMessage: 'Archived',
   },
   archivedTooltip: {
@@ -102,5 +90,17 @@ export default defineMessages({
   createAProjectFromATemplate: {
     id: 'app.containers.AdminPage.ProjectEdit.createAProjectFromATemplate',
     defaultMessage: 'Create a project from a template',
+  },
+  newProjectFolder: {
+    id: 'app.containers.AdminPage.projects.all.newProjectFolder',
+    defaultMessage: 'Create a project folder',
+  },
+  projectsAndFolders: {
+    id: 'app.containers.AdminPage.projects.all.projectsAndFolders',
+    defaultMessage: 'Projects and folders',
+  },
+  existingProjects: {
+    id: 'app.containers.AdminPage.projects.all.existingProjects',
+    defaultMessage: 'Existing projects',
   }
 });

@@ -148,7 +148,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps> {
 
     if (isNilOrError(tenant)) return null;
 
-    const azureProviderName = tenant ?.attributes ?.settings ?.azure_ad_login ?.login_mechanism_name;
+    const azureProviderName = tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name;
 
     if (externalLoginsCount > 0) {
       return (
