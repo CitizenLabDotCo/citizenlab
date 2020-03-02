@@ -145,14 +145,8 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   </b>
                 )
               }}
-            >
-              {(text) => (
-                <>
-                  {text}
-                  {thresholdReachedTooltip}
-                </>
-              )}
-            </FormattedMessage>
+            />
+            {thresholdReachedTooltip}
           </OnDesktop>
           <OnMobile>
             <FormattedMessage
@@ -166,14 +160,8 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                   </b>
                 )
               }}
-            >
-              {(text) => (
-                <>
-                  {text}
-                  {thresholdReachedTooltip}
-                </>
-              )}
-            </FormattedMessage>
+            />
+            {thresholdReachedTooltip}
           </OnMobile>
         </StatusExplanation>
         <VoteCounter>
