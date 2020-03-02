@@ -114,7 +114,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, project, windowSize }) => {
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, project, windowSize }) => {
 
   const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -142,7 +142,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
 
   const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
 
-  if (smallerThanLargeTablet) {
+  if (!isNilOrError(idea) && smallerThanLargeTablet) {
     return (
       <Container className={className}>
         <TopBarInner>
@@ -160,6 +160,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
               unauthenticatedVoteClick={onUnauthenticatedVoteClick}
               disabledVoteClick={onDisabledVoteClick}
               size="1"
+              showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
             />
           </Right>
         </TopBarInner>

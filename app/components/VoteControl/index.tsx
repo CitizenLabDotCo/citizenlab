@@ -96,7 +96,7 @@ const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boo
   ` : css``}
 `;
 
-const VoteIcon = styled(Icon)<{ size: '1' | '2' | '3', enabled: boolean | null }>`
+const VoteIcon = styled(Icon) <{ size: '1' | '2' | '3', enabled: boolean | null }>`
   width: 19px;
   height: 19px;
   fill: ${colors.label};
@@ -237,6 +237,7 @@ interface Props {
   disabledVoteClick?: (disabled_reason?: string) => void;
   ariaHidden?: boolean;
   className?: string;
+  showDownvote: boolean;
 }
 
 interface State {
@@ -401,7 +402,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
         const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
         const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
         const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
-        const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
+        const verifiedButNotPermitted = !shouldVerify && votingDisabledReason === 'not_permitted';
         const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
 
         this.setState({
@@ -586,7 +587,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   }
 
   render() {
-    const { size, className, intl: { formatMessage }, ariaHidden } = this.props;
+    const { size, className, intl: { formatMessage }, ariaHidden, showDownvote } = this.props;
     const { idea, showVoteControl, myVoteMode, votingAnimation, upvotesCount, downvotesCount, a11yVoteMessage, votingSuccessModalOpened, votingErrorModalOpened } = this.state;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
@@ -622,20 +623,22 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
           </Upvote>
 
-          <Downvote
-            active={myVoteMode === 'down'}
-            onMouseDown={this.removeFocus}
-            onClick={this.onClickDownvote}
-            ref={this.setDownvoteRef}
-            className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
-            enabled={downvotingEnabled}
-            tabIndex={ariaHidden ? -1 : 0}
-          >
-            <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-              <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
-            </VoteIconContainer>
-            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
-          </Downvote>
+          {showDownvote &&
+            <Downvote
+              active={myVoteMode === 'down'}
+              onMouseDown={this.removeFocus}
+              onClick={this.onClickDownvote}
+              ref={this.setDownvoteRef}
+              className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
+              enabled={downvotingEnabled}
+              tabIndex={ariaHidden ? -1 : 0}
+            >
+              <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
+                <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
+              </VoteIconContainer>
+              <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+            </Downvote>
+          }
         </Container>
 
         <VotingSuccessModal
@@ -652,7 +655,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           <ScreenReaderOnly>
             <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
           </ScreenReaderOnly>
-        :
+          :
           <LiveMessage message={a11yVoteMessage} aria-live="polite" />
         }
       </>

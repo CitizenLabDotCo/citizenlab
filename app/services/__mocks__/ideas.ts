@@ -41,7 +41,8 @@ export const getIdea = (id: string, enTitle?: string): IIdeaData => ({
         enabled: true,
         disabled_reason: null,
         future_enabled: null,
-        cancelling_enabled: true
+        cancelling_enabled: true,
+        downvoting_enabled: true
       },
       commenting: {
         enabled: false,

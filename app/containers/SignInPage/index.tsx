@@ -66,8 +66,8 @@ const RightInner = styled.div`
 const SignInPage = memo(() => {
   const previousPathName = useContext(PreviousPathnameContext);
 
-  const onSuccess = useCallback(() => () => {
-    if (previousPathName && !(previousPathName.endsWith('/sign-up') || previousPathName.endsWith('/sign-in'))) {
+  const onSuccess = useCallback(() => {
+    if (previousPathName && !previousPathName.endsWith('/sign-up') && !previousPathName.endsWith('/sign-in')) {
       // go back to the page you were previously on after signing in
       clHistory.push(previousPathName);
     } else {
