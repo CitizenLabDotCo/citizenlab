@@ -269,48 +269,65 @@ describe ParticipationContextService do
     end
 
     context "continuous project" do
-      it "returns nil when voting is enabled in the current project with unlimited voting" do
-        project = create(:continuous_project, with_permissions: true)
-        expect(service.voting_disabled_reason_for_project(project, user)).to be_nil
-        idea = create(:idea, project: project)
-        expect(service.voting_disabled_reason_for_idea(idea, user)).to be_nil
-      end
+      context "for a normal user" do
+        let(:user) { create(:user) }
+        it "returns nil when voting is enabled in the current project with unlimited voting" do
+          project = create(:continuous_project, with_permissions: true)
+          expect(service.voting_disabled_reason_for_project(project, user)).to be_nil
+          idea = create(:idea, project: project)
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to be_nil
+        end
 
-      it "returns 'voting_disabled' if voting is disabled" do
-        project = create(:continuous_project, voting_enabled: false)
-        expect(service.voting_disabled_reason_for_project(project, user)).to eq 'voting_disabled'
-        idea = create(:idea, project: project)
-        expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'voting_disabled'
-      end
+        it "returns 'voting_disabled' if voting is disabled" do
+          project = create(:continuous_project, voting_enabled: false)
+          expect(service.voting_disabled_reason_for_project(project, user)).to eq 'voting_disabled'
+          idea = create(:idea, project: project)
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'voting_disabled'
+        end
 
-      it "returns 'not_permitted' if voting is not permitted" do
-        project = create(:continuous_project, with_permissions: true)
-        idea = create(:idea, project: project)
-        permission = project.permissions.find_by(action: 'voting')
-        permission.update!(permitted_by: 'groups', 
-          group_ids: create_list(:group, 2).map(&:id)
-          )
-        expect(service.voting_disabled_reason_for_project(project, user)).to eq 'not_permitted'
-        expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
-      end
+        it "returns 'not_permitted' if voting is not permitted" do
+          project = create(:continuous_project, with_permissions: true)
+          idea = create(:idea, project: project)
+          permission = project.permissions.find_by(action: 'voting')
+          permission.update!(permitted_by: 'groups', 
+            group_ids: create_list(:group, 2).map(&:id)
+            )
+          expect(service.voting_disabled_reason_for_project(project, user)).to eq 'not_permitted'
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
+        end
 
-      it "returns 'voting_limited_max_reached' when the user reached his limit" do
-        project = create(:continuous_project, 
-          voting_method: 'limited', voting_limited_max: 3, 
-          with_permissions: true
-          )
-        ideas = create_list(:idea, 3, project: project)
-        ideas.each{|idea| create(:vote, votable: idea, user: user)}
-        idea = create(:idea, project: project)
-        expect(service.voting_disabled_reason_for_project(project, user)).to eq 'voting_limited_max_reached'
-        expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'voting_limited_max_reached'
-      end
+        it "returns 'voting_limited_max_reached' when the user reached his limit" do
+          project = create(:continuous_project, 
+            voting_method: 'limited', voting_limited_max: 3, 
+            with_permissions: true
+            )
+          ideas = create_list(:idea, 3, project: project)
+          ideas.each{|idea| create(:vote, votable: idea, user: user)}
+          idea = create(:idea, project: project)
+          expect(service.voting_disabled_reason_for_project(project, user)).to eq 'voting_limited_max_reached'
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'voting_limited_max_reached'
+        end
 
-      it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
-        expect(service.voting_disabled_reason_for_project(project, user)).to eq 'project_inactive'
-        idea = create(:idea, project: project)
-        expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
+        it "returns 'project_inactive' when the project is archived" do
+          project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
+          expect(service.voting_disabled_reason_for_project(project, user)).to eq 'project_inactive'
+          idea = create(:idea, project: project)
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
+        end
+      end
+      context "for an unauthenticated visitor" do
+        let(:user) { nil }
+
+        it "returns 'not_permitted' if voting is not permitted and verification is not involved" do
+          project = create(:continuous_project, with_permissions: true)
+          idea = create(:idea, project: project)
+          permission = project.permissions.find_by(action: 'voting')
+          permission.update!(permitted_by: 'groups', 
+            group_ids: create_list(:group, 2).map(&:id)
+            )
+          expect(service.voting_disabled_reason_for_project(project, user)).to eq 'not_permitted'
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_permitted'
+        end
       end
     end
   end
