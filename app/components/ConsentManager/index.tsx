@@ -196,7 +196,6 @@ export class ConsentManager extends PureComponent<Props> {
     const isSuperAdminUser = !isNilOrError(authUser) && isSuperAdmin({ data: authUser });
     const tenantBlacklistedDestinations = (!isNilOrError(tenant) ? tenant.attributes.settings.core.segment_destinations_blacklist : []) || [];
     const roleBlacklistedDestinations = !isPrivilegedUser ? adminIntegrations : isSuperAdminUser ? superAdminIntegrationsBl : [];
-    console.log(roleBlacklistedDestinations);
     if (!isNilOrError(tenant)) {
       return (
         <ConsentManagerBuilder

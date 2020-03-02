@@ -670,6 +670,54 @@ describe('<ConsentManagerBuilderHandler />', () => {
             expect(saveConsent).toHaveBeenCalledTimes(0);
           });
         });
+        describe('migrating from previous cookie system', () => {
+          it('as an admin: doesn\'t ask for consent, doesn\'t save', () => {
+            const wrapper = shallow(
+              <ConsentManagerBuilderHandler
+                setPreferences={setPreferences}
+                resetPreferences={resetPreferences}
+                saveConsent={saveConsent}
+                destinations={destinations}
+                tenantBlacklistedDestinationIds={[]}
+                roleBlacklistedDestinationIds={[]}
+                newDestinations={[]}
+                preferences={{
+                  advertising: false,
+                  analytics: true,
+                  functional: true,
+                  tenantBlacklisted: [],
+                  roleBlacklisted: undefined
+                }}
+              />
+            );
+            const { isConsentRequired } = wrapper.find('Container').props();
+            expect(isConsentRequired).toEqual(false);
+            expect(saveConsent).toHaveBeenCalledTimes(0);
+          });
+          it('unprivileged: doesn\'t ask for consent, doesn\'t save', () => {
+            const wrapper = shallow(
+              <ConsentManagerBuilderHandler
+                setPreferences={setPreferences}
+                resetPreferences={resetPreferences}
+                saveConsent={saveConsent}
+                destinations={destinations}
+                tenantBlacklistedDestinationIds={[]}
+                roleBlacklistedDestinationIds={adminIntegrations}
+                newDestinations={[]}
+                preferences={{
+                  advertising: false,
+                  analytics: true,
+                  functional: true,
+                  tenantBlacklisted: adminIntegrations,
+                  roleBlacklisted: undefined
+                }}
+              />
+            );
+            const { isConsentRequired } = wrapper.find('Container').props();
+            expect(isConsentRequired).toEqual(false);
+            expect(saveConsent).toHaveBeenCalledTimes(0);
+          });
+        });
       });
     });
   });
