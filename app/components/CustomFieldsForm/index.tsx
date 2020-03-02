@@ -79,7 +79,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  customFieldsShema: GetCustomFieldsSchemaChildProps;
+  customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -88,9 +88,8 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   submitbuttonElement: HTMLButtonElement | null;
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
-
+  constructor(props) {
+    super(props);
     this.submitbuttonElement = null;
     this.subscriptions = [];
   }
@@ -144,9 +143,10 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   }
 
   validate = (formData, errors) => {
-    const { customFieldsShema } = this.props;
-    if (!isNilOrError(customFieldsShema)) {
-      const { schema, uiSchema } = customFieldsShema;
+    const { customFieldsSchema } = this.props;
+
+    if (!isNilOrError(customFieldsSchema)) {
+      const { schema, uiSchema } = customFieldsSchema;
       const requiredFieldNames = get(schema, 'required', []);
       const disabledFieldNames = get(uiSchema, 'ui:disabled', []);
       const fieldNames = get(schema, 'properties', null) as object;
@@ -168,6 +168,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
       }).forEach((requiredFieldName) => {
         errors[requiredFieldName].addError(requiredErrorMessage);
       });
+
       if (!isNilOrError(schema)) {
         Object.keys(fieldNames).filter(fieldName => {
           return !isNil(formData[fieldName]) && schema.properties[fieldName].type === 'number' && !Number.isInteger(formData[fieldName]);
@@ -384,46 +385,49 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { customFieldsShema } = this.props;
-    if (isNilOrError(customFieldsShema)) return null;
+    const { customFieldsSchema } = this.props;
 
-    const { schema, uiSchema } = customFieldsShema;
-    const { id } = this.props;
+    if (!isNilOrError(customFieldsSchema)) {
+      const { schema, uiSchema } = customFieldsSchema;
+      const { id } = this.props;
+      const widgets: any = {
+        TextWidget: this.CustomInput,
+        TextareaWidget: this.CustomTextarea,
+        SelectWidget: this.CustomSelect,
+        CheckboxWidget: this.CustomCheckbox,
+        DateWidget: this.CustomDate,
+      };
 
-    const widgets: any = {
-      TextWidget: this.CustomInput,
-      TextareaWidget: this.CustomTextarea,
-      SelectWidget: this.CustomSelect,
-      CheckboxWidget: this.CustomCheckbox,
-      DateWidget: this.CustomDate,
-    };
+      return (
+        <Container id={id ? id : ''} className={this.props['className']}>
+          {schema && uiSchema &&
+            <Form
+              schema={schema}
+              uiSchema={uiSchema}
+              formData={this.props.formData}
+              widgets={widgets}
+              FieldTemplate={this.CustomFieldTemplate}
+              ObjectFieldTemplate={this.ObjectFieldTemplate}
+              transformErrors={this.transformErrors}
+              noHtml5Validate={true}
+              liveValidate={false}
+              showErrorList={false}
+              validate={this.validate}
+              onChange={this.handleOnChange}
+              onSubmit={this.handleOnSubmit}
+              onError={this.handleOnError}
+            >
+              <InvisibleSubmitButton ref={this.setButtonRef} />
+            </Form>
+          }
+        </Container>
+      );
+    }
 
-    return (
-      <Container id={id ? id : ''} className={this.props['className']}>
-        {schema && uiSchema &&
-          <Form
-            schema={schema}
-            uiSchema={uiSchema}
-            formData={this.props.formData}
-            widgets={widgets}
-            FieldTemplate={this.CustomFieldTemplate}
-            ObjectFieldTemplate={this.ObjectFieldTemplate}
-            transformErrors={this.transformErrors}
-            noHtml5Validate={true}
-            liveValidate={false}
-            showErrorList={false}
-            validate={this.validate}
-            onChange={this.handleOnChange}
-            onSubmit={this.handleOnSubmit}
-            onError={this.handleOnError}
-          >
-            <InvisibleSubmitButton ref={this.setButtonRef} />
-          </Form>
-        }
-      </Container>
-    );
+    return null;
   }
 }
+
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
     return (
@@ -434,7 +438,7 @@ function renderLabel(id, label, required, descriptionJSX) {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  customFieldsShema: <GetCustomFieldsSchema />
+  customFieldsSchema: <GetCustomFieldsSchema />
 });
 
 const CustomFieldsFormWithHoc = injectIntl<Props>(CustomFieldsForm);

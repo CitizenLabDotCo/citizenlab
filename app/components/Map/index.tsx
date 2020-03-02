@@ -234,7 +234,7 @@ class CLMap extends React.PureComponent<Props, State> {
     });
 
     if (bounds && bounds.length > 0 && this.props.fitBounds && !this.state.initiated) {
-      this.map.fitBounds(bounds, { maxZoom: 12 });
+      this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
       this.setState({ initiated: true });
     }
 

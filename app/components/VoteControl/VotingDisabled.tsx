@@ -11,7 +11,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import messages from './messages';
 import clHistory from 'utils/cl-router/history';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 const Container = styled.div`
   width: 100%;
@@ -29,13 +29,19 @@ const Container = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${colors.clBlue};
+  color: ${colors.clBlueDark};
+  text-decoration: underline;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
 `;
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
   text-decoration: underline;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -64,7 +70,9 @@ class VotingDisabled extends PureComponent<Props, State> {
   onVerify = (event) => {
     event.stopPropagation();
     event.preventDefault();
+
     const { project } = this.props;
+
     if (!isNilOrError(project)) {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;
@@ -92,7 +100,7 @@ class VotingDisabled extends PureComponent<Props, State> {
     } else if (disabled_reason === 'not_verified') {
       return messages.votingDisabledNotVerified;
     } else {
-      return messages.votingDisabledForProject;
+      return messages.votingDisabled;
     }
   }
 

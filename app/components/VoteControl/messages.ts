@@ -17,8 +17,8 @@ export default defineMessages({
     id: 'app.components.VoteControl.votingDisabledPossibleLater',
     defaultMessage: 'Voting on ideas in {projectName} will be possible starting from {enabledFromDate}',
   },
-  votingDisabledForProject: {
-    id: 'app.components.VoteControl.votingDisabledForProject',
+  votingDisabled: {
+    id: 'app.components.VoteControl.votingDisabled',
     defaultMessage: 'Voting on ideas in {projectName} is currently not enabled',
   },
   votingDisabledMaxReached: {
@@ -56,5 +56,21 @@ export default defineMessages({
   a11y_totalVotes: {
     id: 'app.containers.VoteControl.a11y_totalVotes',
     defaultMessage: 'Total upvotes: {upvotesCount}. Total downvotes: {downvotesCount}.',
+  },
+  voteSuccessTitle: {
+    id: 'app.containers.VoteControl.voteSuccessTitle',
+    defaultMessage: 'Your vote was successfully registered!',
+  },
+  voteErrorTitle: {
+    id: 'app.containers.VoteControl.voteErrorTitle',
+    defaultMessage: 'Something went wrong',
+  },
+  voteErrorSubTitle: {
+    id: 'app.containers.VoteControl.voteErrorSubTitle',
+    defaultMessage: 'Due to an error your vote could not being registered. Please try again in a few minutes.',
+  },
+  close: {
+    id: 'app.containers.VoteControl.close',
+    defaultMessage: 'Close',
   },
 });
