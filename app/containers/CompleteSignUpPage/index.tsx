@@ -21,6 +21,9 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
+// typings
+import { IAction, redirectToActionPage } from 'containers/SignUpPage';
+
 const Container = styled.main`
   width: 100%;
   margin: 0;
@@ -99,12 +102,44 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  action: IAction | null;
+}
 
 class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      action: null
+    };
+  }
+
+  componentDidMount() {
+    const { action_type, action_context_id, action_context_type, action_context_pathname } = this.props.location.query;
+
+    if (action_type && action_context_id && action_context_type && action_context_pathname) {
+      this.setState({
+        action: {
+          action_type,
+          action_context_type,
+          action_context_id,
+          action_context_pathname
+        } as IAction
+      });
+
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }
+
   redirect = () => {
-    clHistory.push('/');
+    const { action } = this.state;
+
+    if (action) {
+      redirectToActionPage(action);
+    } else {
+      clHistory.push('/');
+    }
   }
 
   focusTitle = (titleEl: HTMLHeadingElement) => {

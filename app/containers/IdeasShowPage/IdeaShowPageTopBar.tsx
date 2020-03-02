@@ -5,6 +5,7 @@ import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
@@ -14,7 +15,7 @@ import Icon from 'components/UI/Icon';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -22,17 +23,13 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.main`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${colors.separation};
-
-  ${media.biggerThanMaxTablet`
-    display: none;
-  `}
 `;
 
 const TopBarInner = styled.div`
@@ -53,11 +50,7 @@ const TopBarInner = styled.div`
 const Left = styled.div`
   height: 48px;
   align-items: center;
-  display: none;
-
-  ${media.smallerThanMaxTablet`
-    display: flex;
-  `}
+  display: flex;
 `;
 
 const Right = styled.div``;
@@ -114,13 +107,14 @@ interface InputProps {
 }
 
 interface DataProps {
+  windowSize: GetWindowSizeChildProps;
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, project, idea }) => {
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, project, windowSize }) => {
 
   const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -146,37 +140,41 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, projec
     }
   }, [project]);
 
-  if (isNilOrError(idea)) return null;
+  const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
 
-  return (
-    <Container className={className}>
-      <TopBarInner>
-        <Left>
-          <GoBackButton onClick={onGoBack}>
-            <GoBackIcon name="arrow-back" />
-          </GoBackButton>
-          <GoBackLabel>
-            <FormattedMessage {...messages.goBack} />
-          </GoBackLabel>
-        </Left>
-        <Right>
-          <VoteControl
-            ideaId={ideaId}
-            unauthenticatedVoteClick={onUnauthenticatedVoteClick}
-            disabledVoteClick={onDisabledVoteClick}
-            size="1"
-            location="ideaPage"
-            showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
-          />
-        </Right>
-      </TopBarInner>
-    </Container>
-  );
+  if (!isNilOrError(idea) && smallerThanLargeTablet) {
+    return (
+      <Container className={className}>
+        <TopBarInner>
+          <Left>
+            <GoBackButton onClick={onGoBack}>
+              <GoBackIcon name="arrow-back" />
+            </GoBackButton>
+            <GoBackLabel>
+              <FormattedMessage {...messages.goBack} />
+            </GoBackLabel>
+          </Left>
+          <Right>
+            <VoteControl
+              ideaId={ideaId}
+              unauthenticatedVoteClick={onUnauthenticatedVoteClick}
+              disabledVoteClick={onDisabledVoteClick}
+              size="1"
+              showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
+            />
+          </Right>
+        </TopBarInner>
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
+  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
 
 export default (inputProps: InputProps) => (
