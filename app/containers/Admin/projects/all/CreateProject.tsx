@@ -11,7 +11,7 @@ import Icon from 'components/UI/Icon';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import ProjectTemplateCards from './ProjectTemplateCards';
 import AdminProjectEditGeneral  from 'containers/Admin/projects/edit/general';
-import { HeaderTitle } from './styles';
+import { HeaderTitle } from './StyledComponents';
 
 // hooks
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
