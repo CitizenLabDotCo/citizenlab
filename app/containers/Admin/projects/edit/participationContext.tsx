@@ -116,6 +116,7 @@ export interface IParticipationContextConfig {
   voting_enabled?: boolean | null;
   voting_method?: 'unlimited' | 'limited' | null;
   voting_limited_max?: number | null;
+  downvoting_enabled?: boolean | null;
   location_allowed?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
   max_budget?: number | null;
@@ -160,6 +161,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_enabled: true,
       voting_method: 'unlimited',
       voting_limited_max: 5,
+      downvoting_enabled: true,
       location_allowed: true,
       presentation_mode: 'card',
       max_budget: null,
@@ -193,6 +195,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             voting_enabled,
             voting_method,
             voting_limited_max,
+            downvoting_enabled,
             location_allowed,
             presentation_mode,
             max_budget,
@@ -208,6 +211,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             voting_enabled,
             voting_method,
             voting_limited_max,
+            downvoting_enabled,
             location_allowed,
             presentation_mode,
             max_budget,
@@ -239,6 +243,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_enabled,
       voting_method,
       voting_limited_max,
+      downvoting_enabled,
       location_allowed,
       presentation_mode,
       max_budget,
@@ -261,7 +266,8 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         location_allowed,
         presentation_mode,
         voting_method: (voting_enabled ? voting_method : null),
-        voting_limited_max: (voting_enabled && voting_method === 'limited' ? voting_limited_max : null)
+        voting_limited_max: (voting_enabled && voting_method === 'limited' ? voting_limited_max : null),
+        downvoting_enabled: (voting_enabled ? downvoting_enabled : null)
       }, isNil) as IParticipationContextConfig;
     } else if (participation_method === 'survey') {
       output = {
@@ -309,6 +315,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_enabled: (participation_method === 'ideation' ? true : null),
       voting_method: (participation_method === 'ideation' ? 'unlimited' : null),
       voting_limited_max: null,
+      downvoting_enabled: (participation_method === 'ideation' ? true : null),
       location_allowed: ((participation_method === 'ideation' || participation_method === 'budgeting') ? true : null),
       presentation_mode: (participation_method === 'ideation' ? 'card' : null),
       survey_embed_url: null,
@@ -346,6 +353,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
 
   handleVotingLimitOnChange = (voting_limited_max: string) => {
     this.setState({ voting_limited_max: parseInt(voting_limited_max, 10), noVotingLimit: null });
+  }
+
+  handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
+    this.setState({ downvoting_enabled });
   }
 
   handleLocationAllowedOnChange = (location_allowed: boolean) => {
@@ -403,6 +414,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_enabled,
       voting_method,
       voting_limited_max,
+      downvoting_enabled,
       location_allowed,
       presentation_mode,
       max_budget,
@@ -477,7 +489,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 />
               </FeatureFlag>
               {surveys_enabled &&
-               (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
+                (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
                 <StyledRadio
                   onChange={this.handleParticipationMethodOnChange}
                   currentValue={participation_method}
@@ -577,46 +589,74 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   </ToggleRow>
                 </StyledSectionField>
                 {voting_enabled &&
-                  <SectionField>
-                    <Label>
-                      <FormattedMessage {...messages.votingMethod} />
-                      <IconTooltip content={<FormattedMessage {...messages.votingMethodTooltip} />} />
-                    </Label>
-                    <Radio
-                      onChange={this.handeVotingMethodOnChange}
-                      currentValue={voting_method}
-                      value="unlimited"
-                      name="votingmethod"
-                      id="votingmethod-unlimited"
-                      label={<FormattedMessage {...messages.unlimited} />}
-                    />
-                    <Radio
-                      onChange={this.handeVotingMethodOnChange}
-                      currentValue={voting_method}
-                      value="limited"
-                      name="votingmethod"
-                      id="votingmethod-limited"
-                      label={<FormattedMessage {...messages.limited} />}
-                    />
-                    <Error apiErrors={apiErrors && apiErrors.voting_method} />
+                  <>
+                    <SectionField>
+                      <Label>
+                        <FormattedMessage {...messages.votingMethod} />
+                        <IconTooltip content={<FormattedMessage {...messages.votingMethodTooltip} />} />
+                      </Label>
+                      <Radio
+                        onChange={this.handeVotingMethodOnChange}
+                        currentValue={voting_method}
+                        value="unlimited"
+                        name="votingmethod"
+                        id="votingmethod-unlimited"
+                        label={<FormattedMessage {...messages.unlimited} />}
+                      />
+                      <Radio
+                        onChange={this.handeVotingMethodOnChange}
+                        currentValue={voting_method}
+                        value="limited"
+                        name="votingmethod"
+                        id="votingmethod-limited"
+                        label={<FormattedMessage {...messages.limited} />}
+                      />
+                      <Error apiErrors={apiErrors && apiErrors.voting_method} />
 
-                    {participation_method === 'ideation' && voting_method === 'limited' &&
-                      <>
-                        <Label htmlFor="voting-title">
-                          <FormattedMessage {...messages.votingLimit} />
+                      {participation_method === 'ideation' && voting_method === 'limited' &&
+                        <>
+                          <Label htmlFor="voting-title">
+                            <FormattedMessage {...messages.votingLimit} />
+                          </Label>
+                          <VotingLimitInput
+                            id="voting-limit"
+                            type="number"
+                            min="1"
+                            placeholder=""
+                            value={(voting_limited_max ? voting_limited_max.toString() : null)}
+                            onChange={this.handleVotingLimitOnChange}
+                          />
+                          <Error text={noVotingLimit} apiErrors={apiErrors && apiErrors.voting_limit} />
+                        </>
+                      }
+                    </SectionField>
+
+                    <FeatureFlag name="disable_downvoting">
+                      <SectionField>
+                        <Label>
+                          <FormattedMessage {...messages.downvoting} />
+                          <IconTooltip content={<FormattedMessage {...messages.downvotingTooltip} />} />
                         </Label>
-                        <VotingLimitInput
-                          id="voting-limit"
-                          type="number"
-                          min="1"
-                          placeholder=""
-                          value={(voting_limited_max ? voting_limited_max.toString() : null)}
-                          onChange={this.handleVotingLimitOnChange}
+                        <Radio
+                          onChange={this.handleDownvotingEnabledOnChange}
+                          currentValue={downvoting_enabled}
+                          value={true}
+                          name="enableDownvoting"
+                          id="enableDownvoting-true"
+                          label={<FormattedMessage {...messages.downvotingEnabled} />}
                         />
-                        <Error text={noVotingLimit} apiErrors={apiErrors && apiErrors.voting_limit} />
-                      </>
-                    }
-                  </SectionField>
+                        <Radio
+                          onChange={this.handleDownvotingEnabledOnChange}
+                          currentValue={downvoting_enabled}
+                          value={false}
+                          name="enableDownvoting"
+                          id="enableDownvoting-false"
+                          label={<FormattedMessage {...messages.downvotingDisabled} />}
+                        />
+                        <Error apiErrors={apiErrors && apiErrors.downvoting_enabled} />
+                      </SectionField>
+                    </FeatureFlag>
+                  </>
                 }
 
                 <SectionField className="e2e-participation-context-location-allowed">
