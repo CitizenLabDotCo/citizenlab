@@ -59,6 +59,22 @@ resource "Votes" do
       expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
       expect(@idea.reload.upvotes_count).to eq 3
     end
+
+    describe "When the user already voted" do
+      before do
+        @vote = create(:vote, votable: @idea, user: @user, mode: 'up')
+      end
+
+      example "[error] Upvote the same idea", document: false do
+        do_request mode: 'up'
+        expect(status).to eq 422
+      end
+
+      example "[error] Downvote the same idea", document: false do
+        do_request mode: 'down'
+        expect(status).to eq 422
+      end
+    end
   end
 
   post "web_api/v1/ideas/:idea_id/votes/up" do

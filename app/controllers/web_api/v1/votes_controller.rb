@@ -29,7 +29,16 @@ class WebApi::V1::VotesController < ApplicationController
 
     SideFxVoteService.new.before_create(@vote, current_user)
 
-    if @vote.save
+    saved = nil
+    begin
+      saved = @vote.save
+    rescue ActiveRecord::RecordNotUnique => e
+      # Case when uniqueness DB constraint is violated
+      render json: { errors: { base: [{ error: e.message }] } }, status: :unprocessable_entity
+      return
+    end
+
+    if saved
       SideFxVoteService.new.after_create(@vote, current_user)
       render json: WebApi::V1::VoteSerializer.new(
         @vote, 
