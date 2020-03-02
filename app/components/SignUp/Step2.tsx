@@ -110,16 +110,14 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
     const { authUser } = this.props;
 
-    if (authUser) {
+    if (authUser && isObject(formData)) {
       try {
         this.setState({
           processing: true,
           unknownError: null
         });
 
-        if (isObject(formData)) {
-          await completeRegistration(formData);
-        }
+        await completeRegistration(formData);
 
         this.setState({ processing: false });
         this.props.onCompleted();
