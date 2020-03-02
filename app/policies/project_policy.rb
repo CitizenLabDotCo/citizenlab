@@ -98,7 +98,7 @@ class ProjectPolicy < ApplicationPolicy
 
 
   def shared_permitted_attributes
-    [
+    shared = [
       :slug, 
       :header_bg,
       :visible_to,
@@ -123,6 +123,8 @@ class ProjectPolicy < ApplicationPolicy
       area_ids: [],
       topic_ids: []
     ]
+    shared += [:downvoting_enabled] if Tenant.current.has_feature? 'disable_downvoting'
+    shared
   end
 
   def permitted_attributes_for_create
