@@ -90,7 +90,7 @@ const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boo
   ` : css``}
 `;
 
-const VoteIcon = styled(Icon)<{ size: '1' | '2' | '3', enabled: boolean | null }>`
+const VoteIcon = styled(Icon) <{ size: '1' | '2' | '3', enabled: boolean | null }>`
   width: 19px;
   height: 19px;
   fill: ${colors.label};
@@ -237,6 +237,7 @@ interface Props {
     As a replacement, number of votes are read to screen readers when going over the idea card.
   */
   location: 'ideaCard' | 'ideaPage' | 'ideaMap';
+  showDownvote: boolean;
 }
 
 interface State {
@@ -400,14 +401,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
         const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
         const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
         const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
-        const verifiedButNotPermitted = !shouldVerify &&  votingDisabledReason === 'not_permitted';
+        const verifiedButNotPermitted = !shouldVerify && votingDisabledReason === 'not_permitted';
         const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
 
-        const currentOrLatestPhaseId = lastPhaseHasPassed ? lastPhase?.data.id : project?.data.relationships.current_phase?.data?.id;
+        const currentOrLatestPhaseId = lastPhaseHasPassed ? lastPhase ?.data.id : project ?.data.relationships.current_phase ?.data ?.id;
 
         if (shouldVerify && !this.props.noVerificationShortFlow) {
           const pcType = phases ? 'phase' : 'project';
-          const pcId = pcType === 'phase' ? currentOrLatestPhaseId : project?.data.id;
+          const pcId = pcType === 'phase' ? currentOrLatestPhaseId : project ?.data.id;
           verificationNeeded('ActionVote', pcId || '', pcType, 'voting');
         }
 
@@ -485,7 +486,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
 
         const currentPhase = getCurrentPhase(phases ? phases.map(phase => phase.data) : null);
         const participationContext = project ? project.data : currentPhase;
-        const refetchIdeas = participationContext?.attributes?.voting_method === 'limited';
+        const refetchIdeas = participationContext ?.attributes ?.voting_method === 'limited';
 
         // Change vote (up -> down or down -> up)
         if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
@@ -545,7 +546,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { size, className, intl: { formatMessage }, location } = this.props;
+    const { size, className, intl: { formatMessage }, location, showDownvote } = this.props;
     const { showVoteControl, myVoteMode, votingAnimation, votingEnabled, cancellingEnabled, upvotesCount, downvotesCount, a11yVoteMessage } = this.state;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled);
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled);
@@ -579,26 +580,28 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps, State> {
             <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
           </Upvote>
 
-          <Downvote
-            active={myVoteMode === 'down'}
-            onMouseDown={this.removeFocus}
-            onClick={this.onClickDownvote}
-            ref={this.setDownvoteRef}
-            className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
-            enabled={downvotingEnabled}
-            tabIndex={votingHiddenForScreenReader ? -1 : 0}
-          >
-            <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-              <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
-            </VoteIconContainer>
-            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
-          </Downvote>
+          {showDownvote &&
+            <Downvote
+              active={myVoteMode === 'down'}
+              onMouseDown={this.removeFocus}
+              onClick={this.onClickDownvote}
+              ref={this.setDownvoteRef}
+              className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
+              enabled={downvotingEnabled}
+              tabIndex={votingHiddenForScreenReader ? -1 : 0}
+            >
+              <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
+                <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
+              </VoteIconContainer>
+              <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+            </Downvote>
+          }
         </Container>
         {votingHiddenForScreenReader ?
           <ScreenReaderOnly>
             <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
           </ScreenReaderOnly>
-        :
+          :
           <LiveMessage message={a11yVoteMessage} aria-live="polite" />
         }
       </>
