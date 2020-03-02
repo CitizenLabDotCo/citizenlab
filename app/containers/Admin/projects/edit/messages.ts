@@ -133,6 +133,22 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
     defaultMessage: 'Voting limit',
   },
+  downvoting: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvoting',
+    defaultMessage: 'Downvoting',
+  },
+  downvotingTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingTooltip',
+    defaultMessage: 'By disabling, people can only upvote an idea. As a consequence, you\'ll have less information on what people think about that idea.',
+  },
+  downvotingDisabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
+    defaultMessage: 'Disabled',
+  },
+  downvotingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.downvotingEnabled',
+    defaultMessage: 'Enabled',
+  },
   phasePermissions: {
     id: 'app.containers.AdminPage.ProjectEdit.phasePermissions',
     defaultMessage: 'Enabled actions',
