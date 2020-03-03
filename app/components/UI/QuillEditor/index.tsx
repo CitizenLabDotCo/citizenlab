@@ -410,8 +410,13 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   }, [editor]);
 
   const handleCustomLink = useCallback(() => {
-    const value = prompt('Enter link URL');
-    editor && editor.format('button', value);
+    if (!editor) return;
+    const selection = editor.getSelection();
+    if (selection && selection.length > 0) {
+      trackBasic('custom-link');
+      const value = prompt('Enter link URL');
+      editor.format('button', value);
+    }
   }, [editor]);
 
   const classNames = [
