@@ -11,6 +11,8 @@ describe('Project ideas page', () => {
   });
 
   it('shows the list of idea cards', () => {
+    cy.location('pathname').should('eq', '/en-GB/projects/an-idea-bring-it-to-your-council/ideas');
+    cy.get('#e2e-project-ideas-page');
     cy.get('#e2e-ideas-container');
   });
 
