@@ -415,7 +415,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     const selection = editor.getSelection();
     if (selection && selection.length > 0) {
       trackBasic('custom-link');
-      const value = prompt('Enter link URL');
+      const value = prompt(formatMessage(messages.customLinkPrompt));
       editor.format('button', value);
     }
   }, [editor]);
@@ -475,7 +475,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
             <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
             <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
             <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
-            {withCTAButton && <button onClick={handleCustomLink} aria-label={formatMessage(messages.link)} type="button">
+            {withCTAButton && <button onClick={handleCustomLink} aria-label={formatMessage(messages.customLink)} type="button">
               CTA
             </button>}
           </span>
@@ -526,6 +526,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
               {!noVideos && <button className="ql-video" onClick={trackVideo} aria-label={formatMessage(messages.video)} />}
             </span>
           }
+
+          <span className="ql-formats">
+            <button className="ql-clean" aria-label={formatMessage(messages.clean)} />
+          </span>
         </div>
       }
       <div ref={editorRef}>
