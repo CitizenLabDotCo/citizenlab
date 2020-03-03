@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
+import { Subscription } from 'rxjs';
 
 // libraries
 import TransitionGroup from 'react-transition-group/TransitionGroup';
@@ -8,7 +9,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Step1 from './Step1';
-import Step2 from './Step2';
+import Step3 from './Step3';
 import SocialSignUp from './SocialSignUp';
 import FeatureFlag from 'components/FeatureFlag';
 
@@ -114,11 +115,16 @@ const SignupHelperText = styled.p`
   padding-bottom: 20px;
 `;
 
+const SelectedPhaseEventSource = 'SignUp';
+const SelectedPhaseEventName = 'signUpFlowNextStep';
+export const signUpNextStep$ = eventEmitter.observeEvent(SelectedPhaseEventName);
+export const signUpGoToNextStep = () =>  eventEmitter.emit(SelectedPhaseEventSource, SelectedPhaseEventName, null);
+
 interface InputProps {
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   step1Title?: string | JSX.Element;
-  step2Title?: string | JSX.Element;
+  step3Title?: string | JSX.Element;
   action?: IAction | null;
   onSignUpCompleted: (userId: string) => void;
 }
@@ -131,17 +137,29 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  visibleStep: 'step1' | 'step2';
+  visibleStep: number;
   userId: string | null;
 }
 
 class SignUp extends PureComponent<Props, State> {
+  subscription: Subscription | undefined;
+
   constructor(props) {
     super(props);
     this.state = {
-      visibleStep: 'step1',
+      visibleStep: 1,
       userId: null
     };
+  }
+
+  componentDidMount() {
+    this.subscription = signUpNextStep$.subscribe(() => {
+      this.setState(state => ({ visibleStep: state.visibleStep + 1 }));
+    });
+  }
+
+  componentWillUnmount() {
+    this.subscription?.unsubscribe();
   }
 
   handleStep1Completed = (userId: string) => {
@@ -150,14 +168,13 @@ class SignUp extends PureComponent<Props, State> {
     this.setState({ userId });
 
     if (!isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
-      eventEmitter.emit('SignUp', 'signUpFlowGoToSecondStep', null);
-      this.setState({ visibleStep: 'step2' });
+      signUpGoToNextStep();
     } else {
       this.props.onSignUpCompleted(userId);
     }
   }
 
-  handleStep2Completed = () => {
+  handleStep3Completed = () => {
     const { userId } = this.state;
 
     if (userId) {
@@ -178,14 +195,14 @@ class SignUp extends PureComponent<Props, State> {
 
   render() {
     const { visibleStep } = this.state;
-    const { isInvitation, token, step1Title, step2Title, action, tenant } = this.props;
+    const { isInvitation, token, step1Title, step3Title, action, tenant } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
       <Container className="e2e-sign-up-container">
         <ContainerInner>
           <TransitionGroup>
-            {visibleStep === 'step1' &&
+            {visibleStep === 1 &&
               <CSSTransition
                 timeout={timeout}
                 classNames="step"
@@ -219,14 +236,14 @@ class SignUp extends PureComponent<Props, State> {
               </CSSTransition>
             }
 
-            {visibleStep === 'step2' &&
+            {visibleStep === 3 &&
               <CSSTransition
                 timeout={timeout}
                 classNames="step"
               >
                 <StepContainer>
-                  <Title tabIndex={0} ref={this.focusTitle}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
-                  <Step2 onCompleted={this.handleStep2Completed} />
+                  <Title tabIndex={0} ref={this.focusTitle}>{step3Title || <FormattedMessage {...messages.step3Title} />}</Title>
+                  <Step3 onCompleted={this.handleStep3Completed} />
                 </StepContainer>
               </CSSTransition>
             }

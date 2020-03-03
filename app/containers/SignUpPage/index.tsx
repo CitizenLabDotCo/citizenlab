@@ -10,12 +10,9 @@ import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { PreviousPathnameContext } from 'context';
 
 // components
-import SignUp from 'components/SignUp';
+import SignUp, { signUpNextStep$ } from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
 import SignUpPageMeta from './SignUpPageMeta';
-
-// utils
-import eventEmitter from 'utils/eventEmitter';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -118,7 +115,7 @@ interface State {
 }
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
-  subscriptions: Subscription[];
+  subscription: Subscription | undefined;
 
   constructor(props) {
     super(props);
@@ -150,15 +147,13 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
       window.history.replaceState(null, '', window.location.pathname);
     }
 
-    this.subscriptions = [
-      eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
-        window.scrollTo(0, 0);
-      })
-    ];
+    this.subscription = signUpNextStep$.subscribe(() => {
+      window.scrollTo(0, 0);
+    });
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscription?.unsubscribe();
   }
 
   onSignUpCompleted = () => {
