@@ -1788,7 +1788,7 @@
   "app.containers.SignUp.signUpPage": "sign up page",
   "app.containers.SignUp.skip": "Hopp over dette steget",
   "app.containers.SignUp.step1Title": "Opprett en konto",
-  "app.containers.SignUp.step2Title": "Almost there",
+  "app.containers.SignUp.step3Title": "",
   "app.containers.SignUp.submit": "Registrer deg",
   "app.containers.SignUp.tacApproval": "Check here to confirm that you have read and agree to our {tacLink}.",
   "app.containers.SignUp.tacError": "Accepting our terms and conditions is needed to proceed",

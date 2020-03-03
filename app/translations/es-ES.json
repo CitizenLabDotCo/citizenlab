@@ -1788,7 +1788,7 @@
   "app.containers.SignUp.signUpPage": "página de registro",
   "app.containers.SignUp.skip": "Omitir este paso",
   "app.containers.SignUp.step1Title": "Inscríbete",
-  "app.containers.SignUp.step2Title": "Casi terminado",
+  "app.containers.SignUp.step3Title": "",
   "app.containers.SignUp.submit": "Inscríbete",
   "app.containers.SignUp.tacApproval": "Marca aquí para confirmar que has leído y aceptas nuestra {tacLink}.",
   "app.containers.SignUp.tacError": "Es necesario aceptar nuestros términos y condiciones para continuar.",
