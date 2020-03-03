@@ -534,6 +534,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               limitedTextFormatting
               noImages
               noVideos
+              withCTAButton
             />
           </SectionField>
 
