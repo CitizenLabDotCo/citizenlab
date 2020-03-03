@@ -6,7 +6,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import Error from 'components/UI/Error';
-import Step2 from 'components/SignUp/Step2';
+import Step3 from 'components/SignUp/Step3';
 import SignInUpBanner from 'components/SignInUpBanner';
 
 // resources
@@ -171,7 +171,7 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
               {!authError ? (
                 <>
                   <Title tabIndex={0} ref={this.focusTitle}><FormattedMessage {...messages.title} /></Title>
-                  <Step2 onCompleted={this.redirect} />
+                  <Step3 onCompleted={this.redirect} />
                 </>
               ) : (
                 <>

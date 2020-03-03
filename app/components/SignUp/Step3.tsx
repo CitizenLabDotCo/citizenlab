@@ -91,7 +91,7 @@ type State = {
   apiErrors: CLErrorsJSON | null;
 };
 
-class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
+class Step3 extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -103,7 +103,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleOnSubmitButtonClick = (event: FormEvent) => {
     event.preventDefault();
-    eventEmitter.emit('SignUpStep2', 'customFieldsSubmitEvent', null);
+    eventEmitter.emit('SignUpStep3', 'customFieldsSubmitEvent', null);
   }
 
   handleCustomFieldsFormOnSubmit = async (formData) => {
@@ -151,7 +151,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(authUser) && !isNilOrError(customFieldsSchema)) {
       return (
-        <Container id="e2e-signup-step2">
+        <Container id="e2e-signup-step3">
           <CustomFieldsForm
             id="e2e-custom-signup-form"
             formData={authUser.attributes.custom_field_values}
@@ -161,14 +161,14 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <ButtonWrapper>
               <Button
-                id="e2e-signup-step2-button"
+                id="e2e-signup-step3-button"
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}
               />
               {!customFieldsSchema.hasRequiredFields &&
                 <SkipButton
-                  className="e2e-signup-step2-skip-btn"
+                  className="e2e-signup-step3-skip-btn"
                   onClick={this.skipStep}
                 >
                   {formatMessage(messages.skip)}
@@ -185,7 +185,7 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const Step2WithHocs = injectIntl<Props>(Step2);
+const Step3WithHocs = injectIntl<Props>(Step3);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
@@ -194,6 +194,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <Step2WithHocs {...inputProps} {...dataprops} />}
+    {dataprops => <Step3WithHocs {...inputProps} {...dataprops} />}
   </Data>
 );
