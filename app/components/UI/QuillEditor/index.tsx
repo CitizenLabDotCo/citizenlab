@@ -96,7 +96,7 @@ const Container = styled.div<{
     border: 1px solid ${colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-    ${quillEditedContent()};
+    ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
     .ql-editor {
       min-height: 300px;
@@ -126,6 +126,7 @@ export interface Props {
   onFocus?: () => void;
   onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;
+  withCTAButton?: boolean;
 }
 
 Quill.register('modules/blotFormatter', BlotFormatter);
@@ -192,6 +193,29 @@ VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
 // END allow image & video resizing styles
 
+// BEGIN custom button implementation
+const Inline = Quill.import('blots/inline');
+
+class CustomButton extends Inline {
+  static create(value) {
+    const node = super.create();
+    node.setAttribute('href', value);
+    node.setAttribute('type', 'button');
+    node.setAttribute('target', '_blank');
+    return node;
+  }
+
+  static formats(node) {
+    return node.getAttribute('href');
+  }
+}
+CustomButton.blotName = 'button';
+CustomButton.tagName = 'a';
+CustomButton.className = 'custom-button';
+
+Quill.register(CustomButton);
+// END custom button implementation
+
 const QuillEditor = memo<Props & InjectedIntlProps>(({
   id,
   value,
@@ -210,6 +234,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   onChange,
   onBlur,
   onFocus,
+  withCTAButton,
   intl: {
     formatMessage
   },
@@ -234,6 +259,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
           'italic',
           'link',
           ...attributes,
+          ...(withCTAButton ? ['button'] : []),
           ...(!limitedTextFormatting ? ['header', 'list'] : []),
           ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
           ...(!noImages ? ['image'] : []),
@@ -271,7 +297,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   }, [placeholder, noAlign, noImages, noVideos, limitedTextFormatting, toolbarId, editor, editorRef]);
 
   useEffect(() => {
-    if (!prevEditor && editor && editorRef?.current) {
+    if (!prevEditor && editor && editorRef ?.current) {
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('name', id);
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('id', id);
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', id);
@@ -383,6 +409,11 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     editor && editor.focus();
   }, [editor]);
 
+  const handleCustomLink = useCallback(() => {
+    const value = prompt('Enter link URL');
+    editor && editor.format('button', value);
+  }, [editor]);
+
   const classNames = [
     className,
     focussed ? 'focussed' : null,
@@ -438,6 +469,9 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
             <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
             <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
             <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
+            {withCTAButton && <button onClick={handleCustomLink} aria-label={formatMessage(messages.link)} type="button">
+              CTA
+            </button>}
           </span>
 
           {!limitedTextFormatting && !noAlign &&
