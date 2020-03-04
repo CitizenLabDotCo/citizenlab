@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe PhoneService do
   let(:service) { subject }
-  let(:p1) { "1-208-809-2788 x6972" }
 
   describe "phone_or_email" do
     it "detects phone numbers" do
