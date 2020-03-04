@@ -35,7 +35,7 @@ describe TenantTemplateService do
               organization_name: locales.map { |locale|
                 [locale,Faker::Address.city]
               }.to_h,
-              timezone: "Europe/Brussels",
+              timezone: "Brussels",
               color_main: Faker::Color.hex_color,
               color_secondary: Faker::Color.hex_color,
               color_text: Faker::Color.hex_color,
@@ -93,7 +93,7 @@ describe TenantTemplateService do
               organization_name: locales.map { |locale|
                 [locale,Faker::Address.city]
               }.to_h,
-              timezone: "Europe/Brussels",
+              timezone: "Brussels",
               color_main: Faker::Color.hex_color,
               color_secondary: Faker::Color.hex_color,
               color_text: Faker::Color.hex_color,
