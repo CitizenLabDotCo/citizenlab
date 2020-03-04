@@ -155,9 +155,9 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   tagName="p"
                   {...messages.changePreferencesText}
                   values={{
-                    changePreferencesLinkText: (
+                    changePreferencesButton: (
                       <StyledButton onClick={openConsentManager} className="changePreferencesButton">
-                        <FormattedMessage {...messages.changePreferencesLinkText} />
+                        <FormattedMessage {...messages.changePreferencesButtonText} />
                       </StyledButton>
                     )
                   }}
@@ -228,9 +228,9 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   tagName="p"
                   {...messages.cookiesListText}
                   values={{
-                    cookiesListLinkText: (
+                    cookiesListButton: (
                       <StyledButton onClick={openConsentManager} className="cookieList" >
-                        {formatMessage(messages.cookiesListLinkText)}
+                        {formatMessage(messages.cookiesListButtonText)}
                       </StyledButton>
                     )
                   }}
