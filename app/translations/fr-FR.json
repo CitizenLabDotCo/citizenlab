@@ -616,6 +616,7 @@
   "app.containers.Admin.Invitations.inviteStatusPending": "En attente",
   "app.containers.Admin.Invitations.inviteTextLabel": "Ajouter un message personnel à l'invitation",
   "app.containers.Admin.Invitations.invitedSince": "Invité le",
+  "app.containers.Admin.Invitations.invitesSupportPageURL": "",
   "app.containers.Admin.Invitations.localeLabel": "Choisissez la langue de l'invitation",
   "app.containers.Admin.Invitations.moderatorLabel": "Donner à ces personnes des droits de modérateur",
   "app.containers.Admin.Invitations.moderatorLabelTooltip": "Une fois activée, les personnes qui reçoivent et qui acceptent vos invitations recevront également des droits de modérateurs pour un ou plusieurs projets. Pour plus d'information sur ce rôle de modétateur {moderatorLabelTooltipLink}.",
