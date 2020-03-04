@@ -408,7 +408,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { projects, locale, tenantLocales, groups } = this.props;
+    const { projects, locale, tenantLocales, groups, intl: { formatMessage } } = this.props;
     const {
       selectedEmails,
       selectedFileBase64,
@@ -435,7 +435,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
         opened={invitationOptionsOpened}
         onToggle={this.toggleOptions}
         label={<FormattedMessage {...messages.invitationOptions} />}
-        labelTooltip={selectedView === 'import' ? (
+        labelTooltipText={selectedView === 'import' ? (
           <FormattedMessage
             {...messages.importOptionsInfo}
             values={{
@@ -464,7 +464,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     values={{
                       moderatorLabelTooltipLink: (
                         // tslint:disable-next-line
-                        <a href={this.props.intl.formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
+                        <a href={formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
                           <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
                         </a>
                       )

@@ -136,16 +136,21 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
     const prevIdea = prevProps.idea;
 
     if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
+      const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const prevVotingEnabled = prevIdea.attributes.action_descriptor.voting.enabled;
+      const votingDisabledReason = idea.attributes.action_descriptor.voting.disabled_reason;
+      const prevVotingDisabledReason = prevIdea.attributes.action_descriptor.voting.disabled_reason;
       const ideaBudgetingEnabled =  idea.attributes?.action_descriptor?.budgeting?.enabled;
       const prevIdeaBudgetingEnabled = prevIdea.attributes?.action_descriptor?.budgeting?.enabled;
       const ideaBudgetingDisabledReason = idea.attributes?.action_descriptor?.budgeting?.disabled_reason;
       const prevIdeaBudgetingDisabledReason = prevIdea.attributes?.action_descriptor?.budgeting?.disabled_reason;
 
-      if (
-        ideaBudgetingEnabled !== prevIdeaBudgetingEnabled ||
-        ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason
-      ) {
+      if ((votingEnabled !== prevVotingEnabled) || (votingDisabledReason !== prevVotingDisabledReason)) {
         this.setState({ showVotingDisabled: null });
+      }
+
+      if ((ideaBudgetingEnabled !== prevIdeaBudgetingEnabled) || (ideaBudgetingDisabledReason !== prevIdeaBudgetingDisabledReason)) {
+        this.setState({ showAssignBudgetDisabled: null });
       }
     }
   }
@@ -217,7 +222,8 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
         idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
         commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
         idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-        votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled'
+        votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled',
+        votingDescriptor && votingDescriptor.downvoting_enabled ? 'e2e-downvoting-enabled' : 'e2e-downvoting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
       const commentsCount = idea.attributes.comments_count;
 
@@ -257,7 +263,8 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                       unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
-                      location="ideaCard"
+                      ariaHidden={true}
+                      showDownvote={votingDescriptor.downvoting_enabled}
                     />
                   }
 

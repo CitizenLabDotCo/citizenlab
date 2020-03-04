@@ -1,5 +1,24 @@
 # Changelog
 
+## 2020-02-24
+
+### Fixed
+
+- Initiative image not found errors
+- Templates generator out of disk space
+
+### Added
+
+- Folders i1
+  - When enabled, an admin can create, edit, delete folders and move projects into and out of folders
+  - Folders show in the project lists and can be ordered within projects
+
+### Changed
+
+- Initiative explanatory texts show on mobile views
+- Existing platforms have a moderator@citizenlab.co admin user with a strong password in LastPass
+- In the admin section, projects are no longer presented by publication status (Folders i1)
+
 ## 2020-02-19
 
 ### Fixed
@@ -47,8 +66,8 @@
 
 ### Fixed
 
-- Further accesibility improvements: 
-  - Screen reader improvement for translations 
+- Further accesibility improvements:
+  - Screen reader improvement for translations
   - Some color contrast improvements
 
 ### Added
@@ -166,7 +185,7 @@
 - Improved accessibility of the select component, radio button, image upload and tooltip
 
 ### Fixed
-- When adding a vote that triggers the voting limit on a project/phase, the other idea cards now automatically get updated with disabled vote buttons 
+- When adding a vote that triggers the voting limit on a project/phase, the other idea cards now automatically get updated with disabled vote buttons
 - Fix for mobile bottom menu not being clickable when idea page was opened
 - Navigating directly between projects via the menu no longer results in faulty idea card collections
 - Display toggle (map or list view) of idea and initiative cards works again

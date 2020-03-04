@@ -21,6 +21,7 @@ const StyledButton = styled.button`
   align-items: center;
   text-transform: uppercase;
   font-weight: 500;
+  white-space: nowrap;
   padding: 7px 8px;
   margin-right: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};

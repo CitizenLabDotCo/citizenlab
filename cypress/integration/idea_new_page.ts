@@ -22,27 +22,29 @@ describe('Idea new page', () => {
   it('shows an error when no title is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message').should('contain', 'Please provide a title');
+    cy.get('#e2e-idea-title-input .e2e-error-message').contains('Please provide a title');
   });
 
   it('shows an error when no description is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message').should('contain', 'Please provide a description');
+    cy.get('#e2e-idea-description-input .e2e-error-message').contains('Please provide a description');
   });
 
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input #title').type(randomString(9));
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message').should('contain', 'The idea title must be at least 10 characters long');
+    cy.get('#e2e-idea-title-input .e2e-error-message').contains('The idea title must be at least 10 characters long');
   });
 
   it('shows an error when the description is less than 30 characters long', () => {
     cy.get('#idea-form');
     cy.get('#e2e-idea-description-input .ql-editor').type(randomString(20));
+    cy.get('#e2e-idea-description-input .ql-editor').blur();
+    cy.wait(200);
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message').should('contain', 'The idea description must be at least 30 characters long');
+    cy.get('#e2e-idea-description-input .e2e-error-message').contains('The idea description must be at least 30 characters long');
   });
 
   it('has a working idea form', () => {
@@ -68,8 +70,8 @@ describe('Idea new page', () => {
     cy.get('.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div').first().click();
 
     // verify the location
-    cy.get('.e2e-idea-form-location-input-field input').its('val').should('not.equal', 'antwerp');
-    cy.get('.e2e-idea-form-location-input-field input').its('val').should('not.be.empty');
+    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Antwerp');
+    cy.get('.e2e-idea-form-location-input-field input').should('not.have.value', 'antwerp');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
