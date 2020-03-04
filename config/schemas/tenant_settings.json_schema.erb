@@ -165,9 +165,21 @@
         "description":  "Allow signing in with normal email/password",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
+        "required-settings": ["phone"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
+          "enabled": { "type": "boolean", "default": true},
+          "phone": {
+            "description": "Optionally allows users to register using a phone number if they have no email address. Currently a hack and not advised.",
+            "type": "boolean",
+            "default": "false"
+          },
+          "phone_email_postfix": {
+            "description": "What to add after the phone number to store it as an email (e.g. `+phone@test.com` stores phone numbers as `32478637483+phone@test.com`)",
+            "type": "string",
+            "format": "email",
+            "pattern": "^.*@.*$"
+          }
         }
       },
 
