@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
 // events
-import { openVerificationModalWithoutContext } from 'containers/App/events';
+import { openVerificationModalWithoutContext } from 'containers/App/verificationModalEvents';
 
 const Container = styled(FormSection)`
   display: flex;
