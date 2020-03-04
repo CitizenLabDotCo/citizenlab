@@ -5,8 +5,9 @@ import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
-
-export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | 'not_verified' | null;
+export type IdeaVotingDisabledReason = 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null | undefined;
+export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | 'not_verified' | null | undefined;
+export type IdeaBudgetingDisabledReason = 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null | undefined;
 
 export interface IIdeaData {
   id: string;
@@ -31,22 +32,22 @@ export interface IIdeaData {
       voting:{
         enabled: boolean,
         future_enabled: string | null,
-        disabled_reason: 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null
+        disabled_reason: IdeaVotingDisabledReason;
         cancelling_enabled: boolean,
         downvoting_enabled: boolean
       },
       commenting: {
-        enabled: boolean,
-        future_enabled: string | null,
-        disabled_reason: IdeaCommentingDisabledReason,
+        enabled: boolean;
+        future_enabled: string | null;
+        disabled_reason: IdeaCommentingDisabledReason;
       },
       comment_voting: {
-        enabled: boolean
+        enabled: boolean;
       },
       budgeting?: {
-        enabled: boolean,
-        future_enabled: string | null,
-        disabled_reason: 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null,
+        enabled: boolean;
+        future_enabled: string | null;
+        disabled_reason: IdeaBudgetingDisabledReason;
       }
     }
   };

@@ -19,7 +19,7 @@ import { LiveMessage } from 'react-aria-live';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, IIdea } from 'services/ideas';
+import { ideaByIdStream, IIdea, IdeaVotingDisabledReason } from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 import { projectByIdStream, IProject } from 'services/projects';
@@ -232,7 +232,7 @@ interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
   unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
-  disabledVoteClick?: (disabled_reason?: string) => void;
+  disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   ariaHidden?: boolean;
   className?: string;
   showDownvote: boolean;
@@ -442,19 +442,21 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       const { action_type, action_context_id, action_context_type } = action;
 
       if (
-        authUser &&
-        myVoteId !== undefined &&
         !voting &&
-        idea &&
-        (project || phases) &&
+        myVoteId !== undefined &&
+        !isNilOrError(authUser) &&
+        !isNilOrError(idea) &&
+        (!isNilOrError(project) || !isNilOrError(phases)) &&
         action_type === ('upvote' || 'downvote') &&
         action_context_type === 'idea' &&
         action_context_id === this.props.ideaId
       ) {
         clHistory.replace(this.props.location.pathname);
 
-        this.onClickVote(action_type === 'upvote' ? 'up' : 'down').then(() => {
-          this.setState({ votingSuccessModalOpened: true });
+        this.vote(action_type === 'upvote' ? 'up' : 'down').then((response) => {
+          if (response === 'success') {
+            this.setState({ votingSuccessModalOpened: true });
+          }
         }).catch(() => {
           this.setState({ votingErrorModalOpened: true });
         });
@@ -469,40 +471,37 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   onClickUpvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    this.onClickVote('up');
+    this.vote('up');
   }
 
   onClickDownvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    this.onClickVote('down');
+    this.vote('down');
   }
 
-  onClickVote = async (voteMode: 'up' | 'down') => {
+  vote = async (voteMode: 'up' | 'down') => {
     const { authUser, myVoteId, myVoteMode, voting, idea, project, phases } = this.state;
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
+    const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
 
-    if (!authUser) {
-      if (votingDisabledReason === 'not_verified') {
-        redirectActionToSignUpPage({
-          action_type: voteMode ? 'upvote' : 'downvote',
-          action_context_type: 'idea',
-          action_context_id: ideaId,
-          action_context_pathname: window.location.pathname,
-          action_requires_verification: true
-        });
-      } else {
-        unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
-      }
-    }
-
-    if (authUser) {
-      if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
-        disabledVoteClick && disabledVoteClick(votingDisabledReason || undefined);
-      } else if (voting === null) {
+    if (!voting) {
+      if (isNilOrError(authUser)) {
+        if (votingDisabledReason === 'not_verified') {
+          redirectActionToSignUpPage({
+            action_type: voteMode ? 'upvote' : 'downvote',
+            action_context_type: 'idea',
+            action_context_id: ideaId,
+            action_context_pathname: window.location.pathname,
+            action_requires_verification: true
+          });
+        } else {
+          unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
+        }
+      } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
         try {
           this.voting$.next(voteMode);
 
@@ -552,11 +551,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
         } catch (error) {
           this.voting$.next(null);
           await ideaByIdStream(ideaId).fetch();
+          throw 'error';
         }
+      } else if (disabledVoteClick && votingDisabledReason) {
+        disabledVoteClick(votingDisabledReason);
       }
     }
 
-    throw 'error';
+    return;
   }
 
   setUpvoteRef = (element: HTMLButtonElement) => {
