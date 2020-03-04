@@ -121,6 +121,37 @@ resource "Users" do
           expect(response_status).to eq 422
         end
       end
+
+      context "with phone password_login turned on" do
+        before do
+          settings = Tenant.current.settings
+          settings['password_login'] = {
+            "allowed" => true,
+            "enabled" => true,
+            "phone" => true,
+            "phone_email_pattern" => "phone+__PHONE__@test.com"
+          }
+          Tenant.current.update!(settings: settings)
+        end
+
+        describe do
+          let(:email) { "someone@citizenlab.co" }
+          example_request "Register with email when an email is passed", document: false do
+            expect(response_status).to eq 201
+            json_response = json_parse(response_body)
+            expect(User.find_by(email: email)).to be_present
+          end
+        end
+
+        describe do
+          let(:email) { "32487365898" }
+          example_request "Registers a user with a phone number in the email when a phone number is passed", document: false do
+            expect(response_status).to eq 201
+            json_response = json_parse(response_body)
+            expect(User.find_by(email: "phone+32487365898@test.com")).to be_present
+          end
+        end
+      end
     end
   end
 
