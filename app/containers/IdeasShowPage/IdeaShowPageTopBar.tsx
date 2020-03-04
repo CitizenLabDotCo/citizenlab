@@ -27,6 +27,9 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
+// typings
+import { IdeaVotingDisabledReason } from 'services/ideas';
+
 const Container = styled.main`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
@@ -132,7 +135,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
     clHistory.push('/sign-in');
   }, []);
 
-  const onDisabledVoteClick = useCallback((disabled_reason: string) => {
+  const onDisabledVoteClick = useCallback((disabled_reason: IdeaVotingDisabledReason) => {
     if (authUser && disabled_reason === 'not_verified') {
       if (!isNilOrError(project)) {
         const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
