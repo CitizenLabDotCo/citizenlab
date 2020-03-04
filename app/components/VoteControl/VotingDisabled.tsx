@@ -1,17 +1,31 @@
 import React, { MouseEvent, PureComponent } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { darken } from 'polished';
+import { adopt } from 'react-adopt';
+import clHistory from 'utils/cl-router/history';
+
+// components
+import Link from 'utils/cl-router/Link';
+
+// services
+import { IIdeaData } from 'services/ideas';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+// i18n
+import messages from './messages';
+import T from 'components/T';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import { IIdeaData } from 'services/ideas';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import messages from './messages';
-import clHistory from 'utils/cl-router/history';
-import { fontSizes, colors } from 'utils/styleUtils';
+
+// utils
 import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+
+// styling
+import styled from 'styled-components';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -59,6 +73,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
 }
 
@@ -85,6 +100,7 @@ class VotingDisabled extends PureComponent<Props, State> {
   }
 
   reasonToMessage = () => {
+    const { authUser } = this.props;
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
 
     if (disabled_reason === 'project_inactive') {
@@ -97,7 +113,7 @@ class VotingDisabled extends PureComponent<Props, State> {
       return future_enabled ? messages.votingDisabledPhaseNotYetStarted : messages.votingDisabledPhaseCompleted;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingDisabledNotPermitted;
-    } else if (disabled_reason === 'not_verified') {
+    } else if (authUser && disabled_reason === 'not_verified') {
       return messages.votingDisabledNotVerified;
     } else {
       return messages.votingDisabled;
@@ -169,8 +185,13 @@ class VotingDisabled extends PureComponent<Props, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>
+});
+
 export default (inputProps: InputProps) => (
-  <GetProject projectId={inputProps.projectId}>
-    {project => <VotingDisabled {...inputProps} project={project} />}
-  </GetProject>
+  <Data {...inputProps}>
+    {dataProps => <VotingDisabled {...inputProps} {...dataProps} />}
+  </Data>
 );

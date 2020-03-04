@@ -28,14 +28,12 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { getAction, redirectActionToSignUpPage } from 'containers/SignUpPage';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { redirectToSignUpPage } from 'containers/SignUpPage';
 
 interface IVoteComponent {
   active: boolean;
@@ -301,15 +299,10 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       distinctUntilChanged()
     ) as Observable<string>;
 
+    this.programmaticalyCastVote();
     this.id$.next(this.props.ideaId);
-
-    if (this.upvoteElement) {
-      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
+    this.upvoteElement?.addEventListener('animationend', this.votingAnimationDone);
+    this.downvoteElement?.addEventListener('animationend', this.votingAnimationDone);
 
     const idea$ = id$.pipe(
       switchMap((ideaId: string) => {
@@ -428,48 +421,45 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     ];
   }
 
-  componentDidUpdate(prevProps: Props, _prevState: State) {
-    const { ideaId, location: { query, pathname } } = this.props;
-    const { action_type, action_context_id, action_context_type } = query;
-    const { authUser, idea, project, phases, myVoteId, voting } = this.state;
-
-    if (ideaId !== prevProps.ideaId) {
-      this.id$.next(ideaId);
-    }
-
-    // Trigger programmatic vote when the page url contains the vote action parameters.
-    // Performs some extra checks to make sure all the necessary data is loaded before triggering the vote
-    if (
-      authUser &&
-      myVoteId !== undefined &&
-      !voting &&
-      idea &&
-      project &&
-      phases !== undefined &&
-      action_type &&
-      action_context_type === 'idea' &&
-      action_context_id === ideaId
-    ) {
-      clHistory.replace(pathname);
-
-      this.onClickVote(action_type === 'upvote' ? 'up' : 'down').then(() => {
-        this.setState({ votingSuccessModalOpened: true });
-      }).catch(() => {
-        this.setState({ votingErrorModalOpened: true });
-      });
-    }
+  componentDidUpdate() {
+    this.programmaticalyCastVote();
+    this.id$.next(this.props.ideaId);
   }
 
   componentWillUnmount() {
-    if (this.upvoteElement) {
-      this.upvoteElement.removeEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.removeEventListener('animationend', this.votingAnimationDone);
-    }
-
+    this.upvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
+    this.downvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  // Trigger programmatic vote when the page url contains the vote action parameters.
+  // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
+  programmaticalyCastVote = () => {
+    const action = getAction(this.props.location.query);
+
+    if (action) {
+      const { authUser, idea, project, phases, myVoteId, voting } = this.state;
+      const { action_type, action_context_id, action_context_type } = action;
+
+      if (
+        authUser &&
+        myVoteId !== undefined &&
+        !voting &&
+        idea &&
+        (project || phases) &&
+        action_type === ('upvote' || 'downvote') &&
+        action_context_type === 'idea' &&
+        action_context_id === this.props.ideaId
+      ) {
+        clHistory.replace(this.props.location.pathname);
+
+        this.onClickVote(action_type === 'upvote' ? 'up' : 'down').then(() => {
+          this.setState({ votingSuccessModalOpened: true });
+        }).catch(() => {
+          this.setState({ votingErrorModalOpened: true });
+        });
+      }
+    }
   }
 
   votingAnimationDone = () => {
@@ -497,11 +487,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
     if (!authUser) {
       if (votingDisabledReason === 'not_verified') {
-        redirectToSignUpPage({
+        redirectActionToSignUpPage({
           action_type: voteMode ? 'upvote' : 'downvote',
           action_context_type: 'idea',
           action_context_id: ideaId,
-          action_context_pathname: window.location.pathname
+          action_context_pathname: window.location.pathname,
+          action_requires_verification: true
         });
       } else {
         unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
@@ -557,13 +548,15 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             const totalVotesMessage = this.props.intl.formatMessage(messages.a11y_totalVotes, { upvotesCount, downvotesCount });
             return { a11yVoteMessage: `${actionMessage} ${totalVotesMessage}` };
           });
+          return 'success';
         } catch (error) {
           this.voting$.next(null);
           await ideaByIdStream(ideaId).fetch();
-          throw error;
         }
       }
     }
+
+    throw 'error';
   }
 
   setUpvoteRef = (element: HTMLButtonElement) => {

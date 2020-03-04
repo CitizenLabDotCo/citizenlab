@@ -44,15 +44,11 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     };
   }
 
-  redirectToSignUpPage = () => {
-    clHistory.replace('/sign-up');
-  }
-
   componentDidMount() {
     const { location, authUser } = this.props;
 
     if (authUser === null) {
-      this.redirectToSignUpPage();
+      clHistory.replace('/sign-up');
     }
 
     if (location && location.query && location.query.position && isString(location.query.position)) {
@@ -79,7 +75,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
-      this.redirectToSignUpPage();
+      clHistory.replace('/sign-up');
     }
   }
 
