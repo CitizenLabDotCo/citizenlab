@@ -15,9 +15,8 @@ describe('Initiative new page', () => {
   beforeEach(() => {
     cy.setLoginCookie(email, password);
     cy.visit('/initiatives/new');
-    cy.wait(500);
-    cy.acceptCookies();
     cy.get('#initiative-form');
+    cy.acceptCookies();
   });
 
   it('shows an error when no title is provided', () => {
@@ -86,7 +85,11 @@ describe('Initiative new page', () => {
       // save the form
       cy.get('.e2e-initiative-publish-button .e2e-submit-form').click();
 
+      // wait 3s for page redirection to finish
+      cy.wait(3000);
+
       // verify the content of the newly created initiative page
+      cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
       cy.get('#e2e-initiative-show');
       cy.get('#e2e-initiative-show').find('#e2e-initiative-title').contains(initiativeTitle);
       cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
