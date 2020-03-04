@@ -1,13 +1,13 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { isEmpty } from 'lodash-es';
+import { isObject } from 'lodash-es';
 
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Spinner from 'components/UI/Spinner';
-import CustomFieldsForm from 'components/Loadable/CustomFieldsForm';
+import CustomFieldsForm from 'components/CustomFieldsForm';
 
 // services
 import { completeRegistration } from 'services/users';
@@ -110,16 +110,14 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
     const { authUser } = this.props;
 
-    if (authUser) {
+    if (authUser && isObject(formData)) {
       try {
         this.setState({
           processing: true,
           unknownError: null
         });
 
-        if (formData && !isEmpty(formData)) {
-          await completeRegistration(formData);
-        }
+        await completeRegistration(formData);
 
         this.setState({ processing: false });
         this.props.onCompleted();
@@ -143,13 +141,15 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
     const { processing, unknownError } = this.state;
     const { authUser, customFieldsSchema } = this.props;
 
-    if (authUser === undefined || customFieldsSchema === undefined) {
+    if (isNilOrError(authUser) || isNilOrError(customFieldsSchema)) {
       return (
-        <Loading id="ideas-loading">
+        <Loading>
           <Spinner />
         </Loading>
       );
-    } else if (!isNilOrError(authUser) && !isNilOrError(customFieldsSchema)) {
+    }
+
+    if (!isNilOrError(authUser) && !isNilOrError(customFieldsSchema)) {
       return (
         <Container id="e2e-signup-step2">
           <CustomFieldsForm
@@ -162,7 +162,6 @@ class Step2 extends PureComponent<Props & InjectedIntlProps, State> {
             <ButtonWrapper>
               <Button
                 id="e2e-signup-step2-button"
-                size="1"
                 processing={processing}
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}

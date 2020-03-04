@@ -30,7 +30,10 @@ import messages from './messages';
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
-const timeout = 900;
+// typings
+import { IAction } from 'containers/SignUpPage';
+
+const timeout = 650;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const Container = styled.div`
@@ -116,6 +119,7 @@ interface InputProps {
   token?: string | null | undefined;
   step1Title?: string | JSX.Element;
   step2Title?: string | JSX.Element;
+  action?: IAction | null;
   onSignUpCompleted: (userId: string) => void;
 }
 
@@ -174,7 +178,7 @@ class SignUp extends PureComponent<Props, State> {
 
   render() {
     const { visibleStep } = this.state;
-    const { isInvitation, token, step1Title, step2Title, tenant } = this.props;
+    const { isInvitation, token, step1Title, step2Title, action, tenant } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
@@ -206,7 +210,10 @@ class SignUp extends PureComponent<Props, State> {
                   </FeatureFlag>
 
                   {!isInvitation &&
-                    <SocialSignUp tenant={tenant} goToSignIn={this.goToSignIn} />
+                    <SocialSignUp
+                      action={action}
+                      goToSignIn={this.goToSignIn}
+                    />
                   }
                 </StepContainer>
               </CSSTransition>

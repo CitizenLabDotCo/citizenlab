@@ -21,32 +21,15 @@ const BoxContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #FFF;
   padding: 40px 80px;
-  border: 1px solid ${colors.separation};
   justify-content: space-between;
   min-height: 250px;
-  border-radius: ${({ theme }) => theme.borderRadius};
   position: relative;
   overflow: hidden;
   margin-bottom: 70px;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-color: transparent;
-    border-style: solid;
-  }
-
-  &::after {
-    border-radius: 3px;
-    border-width: 10px;
-    border-right-color: ${colors.clGreen};
-    border-top-color: ${colors.clGreen};
-  }
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
   ${media.smallerThanMaxTablet`
     padding: 60px 50px 50px;
@@ -68,37 +51,30 @@ const BackgroundIcon = styled(Icon)`
   top: -200px;
   right: -150px;
 `;
-const NewLabel = styled.div`
- position: absolute;
- z-index: 2;
- top: 11px;
- right: 15px;
- text-transform: uppercase;
- color: ${colors.clGreen};
- font-weight: 600;
-`;
 
-const Title = styled.div`
-  h2 {
-    font-size: ${fontSizes.xxl}px;
-    line-height: 33px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
+const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.xxl}px;
+  line-height: 33px;
+  font-weight: 600;
+  margin-bottom: 10px;
   max-width: 400px;
+
   ${media.smallerThanMinTablet`
     max-width: none;
   `}
 `;
+
 const Text = styled.div`
   max-width: 400px;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
+
   ${media.smallerThanMinTablet`
     max-width: none;
   `}
 `;
+
 const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -148,12 +124,9 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
     <Container className={className}>
       <BoxContainer>
         <BackgroundIcon name="initiatives"/>
-        <NewLabel>
-          <FormattedMessage {...messages.new} />
-        </NewLabel>
         <div>
           <Title>
-            <FormattedMessage tagName="h2" {...messages.initiativesBoxTitle} />
+            <FormattedMessage {...messages.initiativesBoxTitle} />
           </Title>
           <Text>
             <FormattedMessage {...messages.initiativesBoxText} />

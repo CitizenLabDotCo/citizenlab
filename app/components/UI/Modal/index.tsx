@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import { isFunction } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
@@ -252,18 +251,12 @@ export type Props = {
   skipText?: JSX.Element;
   children?: any;
   closeOnClickOutside?: boolean;
-  remaining?: boolean;
 };
 
 type State = {};
 
 export default class Modal extends PureComponent<Props, State> {
-  unlisten: Function | null;
-  goBackUrl: string | null;
-  el: HTMLDivElement;
-  ModalPortal = document.getElementById('modal-portal');
-  ModalContentElement: HTMLDivElement | null;
-  ModalCloseButtonElement: HTMLButtonElement | null;
+  unlisten: null | (() => void);
 
   static defaultProps = {
     fixedHeight: false,
@@ -273,34 +266,6 @@ export default class Modal extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.unlisten = null;
-    this.goBackUrl = null;
-    this.el = document.createElement('div');
-    this.ModalContentElement = null;
-    this.ModalCloseButtonElement = null;
-  }
-
-  componentDidMount() {
-    if (!this.ModalPortal) {
-      console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
-    } else {
-      this.ModalPortal.appendChild(this.el);
-    }
-
-    if (this.props.opened) {
-      this.openModal();
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.props.opened) {
-      this.cleanup();
-    }
-
-    if (!this.ModalPortal) {
-      console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
-    } else {
-      this.ModalPortal.removeChild(this.el);
-    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -311,14 +276,15 @@ export default class Modal extends PureComponent<Props, State> {
     }
   }
 
+  componentWillUnmount() {
+    this.cleanup();
+  }
+
   openModal = () => {
-    this.goBackUrl = window.location.href;
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.handleKeypress);
     eventEmitter.emit('modal', 'modalOpened', null);
-    if (!this.props.remaining) {
-      this.unlisten = clHistory.listen(this.props.close);
-    }
+    this.unlisten = clHistory.listen(() => this.props.close());
   }
 
   manuallyCloseModal = () => {
@@ -327,10 +293,6 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   handlePopstateEvent = () => {
-    if (location.href === this.goBackUrl) {
-      trackEventByName(tracks.clickBack);
-    }
-
     this.props.close();
   }
 
@@ -342,13 +304,10 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   cleanup = () => {
-    this.goBackUrl = null;
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.handleKeypress);
-
-    if (isFunction(this.unlisten)) {
-      this.unlisten();
-    }
+    this.unlisten && this.unlisten();
+    this.unlisten = null;
   }
 
   clickOutsideModal = () => {
@@ -365,13 +324,9 @@ export default class Modal extends PureComponent<Props, State> {
     this.manuallyCloseModal();
   }
 
-  setContentRef = (element: HTMLDivElement) => {
-    this.ModalContentElement = (element || null);
-  }
-
   setCloseButtonRef = (element: HTMLButtonElement) => {
-    this.ModalCloseButtonElement = (element || null);
-    setTimeout(() => element && element.blur(), 100);
+    // remove focus on close button after modal has opened
+    setTimeout(() => element && element.blur(), 80);
   }
 
   removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -381,63 +336,69 @@ export default class Modal extends PureComponent<Props, State> {
   render() {
     const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
     const hasFixedHeight = this.props.fixedHeight || bowser.msie;
+    const modalPortalElement = document?.getElementById('modal-portal');
 
-    return ReactDOM.createPortal((
-      <CSSTransition
-        classNames="modal"
-        in={opened}
-        timeout={timeout}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        enter={true}
-        exit={false}
-      >
-        <Overlay
-          id="e2e-modal-container"
-          className={this.props.className}
+    if (modalPortalElement) {
+      return ReactDOM.createPortal((
+        <CSSTransition
+          classNames="modal"
+          in={opened}
+          timeout={timeout}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={false}
         >
-          <StyledFocusOn width={width as number}>
-            <ModalContainer
-              className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
-              onClickOutside={this.clickOutsideModal}
-              hasHeaderOrFooter={header !== undefined || footer !== undefined}
-              ariaLabelledBy="modal-header"
-              aria-modal="true"
-              role="dialog"
-              isModal
+          <Overlay
+            id="e2e-modal-container"
+            className={this.props.className}
+          >
+            <StyledFocusOn
+              width={width as number}
+              autoFocus={true}
             >
-              <CloseButton
-                className="e2e-modal-close-button"
-                onMouseDown={this.removeFocus}
-                onClick={this.clickCloseButton}
-                ref={this.setCloseButtonRef}
+              <ModalContainer
+                className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
+                onClickOutside={this.clickOutsideModal}
+                hasHeaderOrFooter={header !== undefined || footer !== undefined}
+                ariaLabelledBy="modal-header"
+                aria-modal="true"
+                role="dialog"
+                isModal
               >
-                <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
-              </CloseButton >
+                <CloseButton
+                  className="e2e-modal-close-button"
+                  onMouseDown={this.removeFocus}
+                  onClick={this.clickCloseButton}
+                  ref={this.setCloseButtonRef}
+                >
+                  <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
+                </CloseButton >
 
-              {header &&
-                <HeaderContainer>
-                  <HeaderTitle id="modal-header">{header}</HeaderTitle>
-                </HeaderContainer>
-              }
+                {header &&
+                  <HeaderContainer>
+                    <HeaderTitle id="modal-header">{header}</HeaderTitle>
+                  </HeaderContainer>
+                }
 
-              <ModalContent ref={this.setContentRef}>
-                {children}
-              </ModalContent>
+                <ModalContent>
+                  {children}
+                </ModalContent>
 
-              <Spacer aria-hidden />
+                <Spacer aria-hidden />
 
-              {footer && <FooterContainer>{footer}</FooterContainer>}
+                {footer && <FooterContainer>{footer}</FooterContainer>}
 
-              {hasSkipButton && skipText &&
-                <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
-              }
-            </ModalContainer>
-          </StyledFocusOn>
-        </Overlay>
-      </CSSTransition>
-    ),
-      document.body
-    );
+                {hasSkipButton && skipText &&
+                  <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
+                }
+              </ModalContainer>
+            </StyledFocusOn>
+          </Overlay>
+        </CSSTransition>
+      ), modalPortalElement);
+    }
+
+    return null;
   }
 }

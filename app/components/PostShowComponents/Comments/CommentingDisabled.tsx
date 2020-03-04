@@ -18,7 +18,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 const Container = styled.div`
   margin-bottom: 30px;
