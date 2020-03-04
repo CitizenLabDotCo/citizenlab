@@ -15,10 +15,10 @@ export default defineMessages({// Cookie policy
   },
   changePreferencesText: {
     id: 'app.containers.CookiePolicy.changePreferencesText',
-    defaultMessage: 'At any time, {changePreferencesLinkText}.',
+    defaultMessage: 'At any time, {changePreferencesButton}.',
   },
-  changePreferencesLinkText: {
-    id: 'app.containers.CookiePolicy.changePreferencesLinkText',
+  changePreferencesButtonText: {
+    id: 'app.containers.CookiePolicy.changePreferencesButtonText',
     defaultMessage: 'you can change your preferences',
   },
   whoAreWeTitle: {
@@ -107,10 +107,10 @@ export default defineMessages({// Cookie policy
   },
   cookiesListText: {
     id: 'app.containers.CookiePolicy.cookiesListText',
-    defaultMessage: 'You can find a full, up-to date list of 3rd parties and {cookiesListLinkText}.',
+    defaultMessage: 'You can find a full, up-to date list of 3rd parties and {cookiesListButton}.',
   },
-  cookiesListLinkText: {
-    id: 'app.containers.CookiePolicy.cookiesListLinkText',
+  cookiesListButtonText: {
+    id: 'app.containers.CookiePolicy.cookiesListButtonText',
     defaultMessage: 'manage your preferences',
   },
   contact: {
