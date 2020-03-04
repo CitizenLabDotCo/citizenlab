@@ -22,7 +22,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 // tracks
 import { injectTracks } from 'utils/analytics';
@@ -116,7 +116,9 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
 
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
+
     const { participationContextType, projectId, phaseId } = this.props;
+
     if (participationContextType === 'project' && projectId) {
       openVerificationModalWithContext('ActionPost', projectId, 'project', 'posting');
     } else if (participationContextType === 'phase' && phaseId) {

@@ -53,20 +53,21 @@ class StatusChangeModal extends PureComponent<Props, State> {
 
     return (
       <Modal
-        opened={!!initiativeId && !!newStatusId}
+        opened={!!(initiativeId && newStatusId)}
         close={this.close}
+        closeOnClickOutside={false}
         header={<FormattedMessage {...messages.changeStatusModalTitle} />}
       >
-        {!!initiativeId && !!newStatusId &&
+        {!!(initiativeId && newStatusId) &&
           <StatusChangeFormWrapper
-            {... { initiativeId, newStatusId }}
+            initiativeId={initiativeId}
+            newStatusId={newStatusId}
             closeModal={this.close}
           />
         }
       </Modal>
     );
   }
-
 }
 
 export default StatusChangeModal;

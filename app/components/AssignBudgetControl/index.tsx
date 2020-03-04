@@ -2,7 +2,6 @@ import React, { PureComponent, FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { includes, isUndefined, get } from 'lodash-es';
 import { isNilOrError, capitalizeParticipationContextType } from 'utils/helperUtils';
-import { setMightOpenVerificationModal, verificationNeeded } from 'containers/App/events';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -178,27 +177,6 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
     };
   }
 
-  disabledReasonNotVerified = () => {
-    const { idea } = this.props;
-    const disabledReason = !isNilOrError(idea) ? idea.attributes ?.action_descriptor ?.budgeting ?.disabled_reason : null;
-
-    return disabledReason === 'not_verified';
-  }
-
-  isVerificationRequired = () => {
-    const { participationContextId, participationContextType } = this.props;
-    if (this.disabledReasonNotVerified()) {
-      verificationNeeded('ActionBudget', participationContextId, participationContextType, 'budgeting');
-    }
-  }
-
-  componentDidMount() {
-    this.isVerificationRequired();
-  }
-  componentDidUpdate() {
-    this.isVerificationRequired();
-  }
-
   isDisabled = () => {
     const { participationContextType, project, phase } = this.props;
 
@@ -218,6 +196,7 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
     const { ideaId, idea, authUser, basket, participationContextId, participationContextType, unauthenticatedAssignBudgetClick, disabledAssignBudgetClick } = this.props;
     const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
     const isInBasket = includes(basketIdeaIds, ideaId);
+
     const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     const done = async () => {
       await timeout(200);
@@ -225,15 +204,13 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
     };
 
     if (!authUser) {
-      setMightOpenVerificationModal('ActionBudget');
       unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
       this.props.unauthenticatedAssignClick();
     } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
-      const budgetingEnabled = get(idea.attributes.action_descriptor.budgeting, 'enabled', null);
+      const budgetingEnabled = idea?.attributes?.action_descriptor?.budgeting?.enabled;
 
       if (budgetingEnabled === false) {
         disabledAssignBudgetClick && disabledAssignBudgetClick();
-        this.props.disabledAssignClick();
       } else {
         this.setState({ processing: true });
 

@@ -76,6 +76,34 @@ const RightInner = styled.div`
   `}
 `;
 
+export interface IAction {
+  action_type: 'upvote' | 'downvote';
+  action_context_type: 'idea';
+  action_context_id: string;
+  action_context_pathname: string;
+}
+
+export const redirectToSignUpPage = (action: IAction) => {
+  clHistory.push({
+    pathname: '/sign-up',
+    query: action
+  });
+};
+
+export const redirectToActionPage = (action: IAction) => {
+  const { action_type, action_context_id, action_context_type, action_context_pathname } = action;
+
+  clHistory.push({
+    pathname: action_context_pathname,
+    query: {
+      action_type,
+      action_context_type,
+      action_context_id,
+      action_context_pathname
+    } as IAction
+  });
+};
+
 interface InputProps {}
 
 interface DataProps {
@@ -86,6 +114,7 @@ interface Props extends InputProps, DataProps { }
 
 interface State {
   goBackToUrl: string;
+  action: IAction | null;
 }
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
@@ -94,9 +123,9 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      goBackToUrl: '/'
+      goBackToUrl: '/',
+      action: null
     };
-    this.subscriptions = [];
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
@@ -106,6 +135,21 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    const { action_type, action_context_id, action_context_type, action_context_pathname } = this.props.location.query;
+
+    if (action_type && action_context_id && action_context_type && action_context_pathname) {
+      this.setState({
+        action: {
+          action_type,
+          action_context_type,
+          action_context_id,
+          action_context_pathname
+        } as IAction
+      });
+
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
         window.scrollTo(0, 0);
@@ -119,11 +163,17 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   onSignUpCompleted = () => {
     trackEventByName(tracks.successfulSignUp);
-    clHistory.push(this.state.goBackToUrl);
+
+    if (this.state.action) {
+      redirectToActionPage(this.state.action);
+    } else {
+      clHistory.push(this.state.goBackToUrl);
+    }
   }
 
   render() {
     const { location } = this.props;
+    const { action } = this.state;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
@@ -141,6 +191,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
                 step1Title={title}
                 isInvitation={isInvitation}
                 token={token}
+                action={action}
                 onSignUpCompleted={this.onSignUpCompleted}
               />
             </RightInner>

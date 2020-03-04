@@ -89,10 +89,11 @@ const Tab = styled.div`
 `;
 
 const ChildWrapper = styled.div`
+  margin-bottom: 60px;
+  padding: 42px;
   border: 1px solid ${colors.separation};
   background: ${colors.adminContentBackground};
-  margin-bottom: 2rem;
-  padding: 3rem;
+
   @media print {
     border: none;
     padding: 0;

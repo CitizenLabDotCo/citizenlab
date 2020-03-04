@@ -72,17 +72,7 @@ const PasswordLabelContainer = styled.div`
   justify-content: space-between;
 `;
 
-const StyledInput = styled(Input)`
-  input {
-    &::placeholder {
-      color: ${colors.label};
-    }
-
-    &:focus::placeholder {
-      color: #aaa;
-    }
-  }
-`;
+const StyledInput = styled(Input)``;
 
 const PasswordInput = styled(StyledInput)``;
 

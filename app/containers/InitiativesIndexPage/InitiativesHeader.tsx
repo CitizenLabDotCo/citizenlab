@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { get } from 'lodash-es';
 
 // components
 import Button from 'components/UI/Button';
 import AvatarBubbles from 'components/AvatarBubbles';
-import Link from 'utils/cl-router/Link';
+import InitiativeInfoContent from './InitiativeInfoContent';
+import InitiativeInfoMobile from './InitiativeInfoContent/Mobile';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -24,7 +24,6 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { darken } from 'polished';
 import T from 'components/T';
 
 // images
@@ -44,7 +43,7 @@ const Header = styled.div`
   width: 100%;
   min-height: 350px;
   margin: 0;
-  padding: 0;
+  padding: 20px 15px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -86,8 +85,12 @@ const HeaderTitle = styled.h2`
   `}
 `;
 
-const Bold = styled.span`
-  font-weight: 600;
+const StyledInitiativeInfoMobile = styled(InitiativeInfoMobile)`
+  width: 100%;
+
+  ${media.biggerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const StyledAvatarBubbles = styled(AvatarBubbles)`
@@ -105,7 +108,7 @@ const StartInitiative = styled(Button)`
   `}
 `;
 
-const Manual = styled.div`
+const InitiativeInfo = styled.div`
   width: 100%;
   min-height: 145px;
   height: auto;
@@ -125,7 +128,7 @@ const Manual = styled.div`
   `}
 `;
 
-const ManualContent = styled.div`
+const Wrapper = styled.div`
   width: auto;
   max-width: 1150px;
   height: 100%;
@@ -145,30 +148,6 @@ const Illustration = styled.img`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
-`;
-
-const ManualTitle = styled.h2`
-  color: ${({ theme }) => theme.colorText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 7px;
-`;
-
-const ManualText = styled.div`
-  margin: 30px 0;
-  color: ${colors.label};
-
-  a {
-    color: ${colors.clBlueDark};
-    text-decoration: underline;
-
-    &:hover {
-      color: ${darken(0.15, colors.clBlueDark)};
-      text-decoration: underline;
-    }
-  }
 `;
 
 export interface InputProps {
@@ -199,9 +178,10 @@ class SignedOutHeader extends PureComponent<Props, State> {
     return (
       <Container className={`e2e-initiatives-header ${className}`}>
         <Header>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
-        </ScreenReaderOnly>
+          <ScreenReaderOnly>
+            <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
+          </ScreenReaderOnly>
+          <StyledInitiativeInfoMobile />
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage
@@ -223,33 +203,12 @@ class SignedOutHeader extends PureComponent<Props, State> {
             className="e2e-initiatives-header-cta-button"
           />
         </Header>
-        <Manual>
-          <ManualContent>
+        <InitiativeInfo>
+          <Wrapper>
             <Illustration src={illustrationSrc} alt="" />
-            <ManualText>
-              <ManualTitle>
-                <FormattedMessage {...messages.explanationTitle} />
-              </ManualTitle>
-              <FormattedMessage
-                {...messages.explanationContent}
-                values={{
-                  constraints: (
-                    <Bold>
-                      <FormattedMessage
-                        {...messages.constraints}
-                        values={{
-                          voteThreshold: get(tenant, 'attributes.settings.initiatives.voting_threshold'),
-                          daysLimit: get(tenant, 'attributes.settings.initiatives.days_limit')
-                        }}
-                      />
-                    </Bold>
-                  ),
-                  link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore} /></Link>
-                }}
-              />
-            </ManualText>
-          </ManualContent>
-        </Manual>
+            <InitiativeInfoContent />
+          </Wrapper>
+        </InitiativeInfo>
       </Container>
     );
   }

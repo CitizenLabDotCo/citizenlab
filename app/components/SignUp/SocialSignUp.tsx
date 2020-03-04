@@ -7,7 +7,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import AuthProviderButton from 'components/AuthProviderButton';
 
 // resources
-import { GetTenantChildProps } from 'resources/GetTenant';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
@@ -26,6 +26,9 @@ import { darken } from 'polished';
 // logos
 import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
 import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
+
+// typings
+import { IAction } from 'containers/SignUpPage';
 
 const Container = styled.div`
   width: 100%;
@@ -103,11 +106,12 @@ const AlreadyHaveAnAccount = styled(Link)`
 `;
 
 interface InputProps {
+  action?: IAction | null;
   goToSignIn: () => void;
-  tenant: GetTenantChildProps;
 }
 
 interface DataProps {
+  tenant: GetTenantChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
@@ -128,7 +132,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps> {
   }
 
   handleOnAccept = (provider: SSOProvider) => () => {
-    setTimeout(() => handleOnSSOClick(provider)(), 200);
+    setTimeout(() => handleOnSSOClick(provider, this.props.action)(), 200);
   }
 
   externalLoginsCount = () => {
@@ -144,7 +148,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps> {
 
     if (isNilOrError(tenant)) return null;
 
-    const azureProviderName = tenant ?.attributes ?.settings ?.azure_ad_login ?.login_mechanism_name;
+    const azureProviderName = tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name;
 
     if (externalLoginsCount > 0) {
       return (
@@ -219,6 +223,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps> {
 const FooterWithInjectedIntl = injectIntl<Props>(Footer);
 
 const Data = adopt<DataProps, {}>({
+  tenant: <GetTenant />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,

@@ -20,7 +20,7 @@ import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resour
 
 // utils
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { openVerificationModalWithoutContext } from 'containers/App/events';
+import { openVerificationModalWithoutContext } from 'containers/App/verificationModalEvents';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';

@@ -33,11 +33,16 @@ class VoteWrapper extends PureComponent<Props, State> {
   componentDidUpdate(prevProps : Props) {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
-    if (!isNilOrError(idea) && !isNilOrError(prevIdea) && (
-      idea.attributes.action_descriptor.voting.enabled !== prevIdea.attributes.action_descriptor.voting.enabled
-      || idea.attributes.action_descriptor.voting.disabled_reason !== prevIdea.attributes.action_descriptor.voting.disabled_reason
-    )) {
-      this.setState({ error: null });
+
+    if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
+      const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
+      const prevVotingEnabled = prevIdea.attributes.action_descriptor.voting.enabled;
+      const votingDisabledReason = idea.attributes.action_descriptor.voting.disabled_reason;
+      const prevVotingDisabledReason = prevIdea.attributes.action_descriptor.voting.disabled_reason;
+
+      if ((votingEnabled !== prevVotingEnabled) || (votingDisabledReason !== prevVotingDisabledReason)) {
+        this.setState({ error: null });
+      }
     }
   }
 
@@ -65,7 +70,7 @@ class VoteWrapper extends PureComponent<Props, State> {
             unauthenticatedVoteClick={this.unauthenticatedVoteClick}
             disabledVoteClick={this.disabledVoteClick}
             size="3"
-            location="ideaPage"
+            showDownvote={votingDescriptor.downvoting_enabled}
           />
         }
         {error === 'votingDisabled' &&
