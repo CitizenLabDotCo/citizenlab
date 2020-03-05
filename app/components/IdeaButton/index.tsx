@@ -113,32 +113,36 @@ class IdeaButton extends PureComponent<Props> {
     notVerified: messages.postingNotVerified
   };
 
-  onClick = (event: React.FormEvent) => {
+  onClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    const { project, authUser, participationContextType, phaseId, projectId } = this.props;
-    const pcType = participationContextType;
-    const pcId = pcType === 'phase' ? phaseId : projectId;
-    const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
+    if (!this.props.onClick) {
+      const { project, authUser, participationContextType, phaseId, projectId } = this.props;
+      const pcType = participationContextType;
+      const pcId = pcType === 'phase' ? phaseId : projectId;
+      const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
 
-    if (!isNilOrError(authUser)) {
-      if (!isNilOrError(project)) {
-        if (postingDisabledReason === 'not_verified' && pcType && pcId) {
-          openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
-        } else if (!postingDisabledReason) {
-          clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
+      if (!isNilOrError(authUser)) {
+        if (!isNilOrError(project)) {
+          if (postingDisabledReason === 'not_verified' && pcType && pcId) {
+            openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
+          } else if (!postingDisabledReason) {
+            clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
+          }
+        } else if (project === null) {
+          clHistory.push('/ideas/new');
         }
-      } else if (project === null) {
-        clHistory.push('/ideas/new');
+      } else if (pcType && pcId) {
+        redirectActionToSignUpPage({
+          action_type: 'post',
+          action_context_type: pcType,
+          action_context_id: pcId,
+          action_context_pathname: window.location.pathname,
+          action_requires_verification: postingDisabledReason === 'not_verified'
+        });
       }
-    } else if (pcType && pcId) {
-      redirectActionToSignUpPage({
-        action_type: 'post',
-        action_context_type: pcType,
-        action_context_id: pcId,
-        action_context_pathname: window.location.pathname,
-        action_requires_verification: postingDisabledReason === 'not_verified'
-      });
+    } else {
+      this.props.onClick(event);
     }
   }
 
