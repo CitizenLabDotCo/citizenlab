@@ -1652,7 +1652,7 @@
   "app.containers.ProjectCards.currentlyWorkingOn": "{tenantName, select, DeloitteDK {Verdensmålene af {orgName}} other {Projekter i {orgName}}}",
   "app.containers.ProjectCards.publicationStatus": "Publiceringsstatus",
   "app.containers.ProjectFolderCards.allProjects": "Alle projekter",
-  "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} arbejder i øjeblikket på",
+  "app.containers.ProjectFolderCards.currentlyWorkingOn": "{orgName} arbejder i øjeblikket med",
   "app.containers.ProjectFolderShowPage.goBackToList": "Gå tilbage til listen",
   "app.containers.ProjectFolderShowPage.invisibleTitleMainContent": "Oplysninger om dette projekt",
   "app.containers.ProjectFolderShowPage.metaTitle": "Projekt: {title}",
