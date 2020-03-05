@@ -74,6 +74,7 @@ type Props = DefaultProps & {
   className?: string;
   notFocusable?: boolean;
   disabled?: boolean;
+  label?: string | JSX.Element | null;
 };
 
 export default class Checkbox extends PureComponent<Props> {
@@ -86,7 +87,7 @@ export default class Checkbox extends PureComponent<Props> {
   }
 
   render() {
-    const { label, size, checked, indeterminate, className, notFocusable, id, disabled } = this.props;
+    const { label, size, checked, indeterminate, className, notFocusable, disabled } = this.props;
     const hasLabel = !!label;
 
     return (
