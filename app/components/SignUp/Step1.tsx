@@ -10,6 +10,8 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Checkbox from 'components/UI/Checkbox';
+import AccessibleCheckbox from 'components/UI/Checkbox/AccessibleCheckbox';
+
 import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
@@ -388,7 +390,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <FormElement>
               <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-                <Checkbox
+                <AccessibleCheckbox
                   id="terms-and-conditions-checkbox"
                   className="e2e-terms-and-conditions"
                   checked={this.state.tacAccepted}
