@@ -460,7 +460,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       if (
         loaded &&
         authUser &&
-        voting !== null &&
+        voting === null &&
         myVoteId !== undefined &&
         action_type === ('upvote' || 'downvote') &&
         action_context_type === 'idea' &&
