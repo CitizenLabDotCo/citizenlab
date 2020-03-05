@@ -145,7 +145,6 @@ type Props = DefaultProps & LabelProps & {
   className?: string;
   notFocusable?: boolean;
   disabled?: boolean;
-  autoFocus?: boolean;
 };
 
 interface State {
@@ -182,7 +181,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 
   render() {
-    const { label, size, checked, indeterminate, className, notFocusable, id, disabled, autoFocus } = this.props;
+    const { label, size, checked, indeterminate, className, notFocusable, id, disabled } = this.props;
     const hasLabel = !!label;
 
     return (
@@ -205,7 +204,6 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 }
 
-// autoFocus
 // e2e-checkbox
 // TODO: handle indeterminate case
 // check in different places
