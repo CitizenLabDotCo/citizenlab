@@ -1,12 +1,26 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
+import { adopt } from 'react-adopt';
+
+// services
+import { IIdeaData } from 'services/ideas';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from './messages';
+
+// utils
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+
+// styling
 import styled from 'styled-components';
 import { darken } from 'polished';
-import { FormattedMessage } from 'utils/cl-intl';
-import { IIdeaData } from 'services/ideas';
-import messages from './messages';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { openVerificationModalWithContext } from 'containers/App/events';
+
+// typings
 import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
@@ -19,7 +33,7 @@ const Container = styled.div`
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
   text-decoration: underline;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -31,11 +45,17 @@ const StyledButton = styled.button`
   }
 `;
 
-interface Props {
+interface InputProps {
   budgetingDescriptor: IIdeaData['attributes']['action_descriptor']['budgeting'];
   participationContextId: string;
   participationContextType: IParticipationContextType;
 }
+
+interface DataProps {
+  authUser: GetAuthUserChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State { }
 
@@ -52,12 +72,14 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   }
 
   reasonToMessage = () => {
-    if (this.props.budgetingDescriptor) {
-      const { disabled_reason, future_enabled } = this.props.budgetingDescriptor;
+    const { budgetingDescriptor, authUser } = this.props;
+
+    if (budgetingDescriptor) {
+      const { disabled_reason, future_enabled } = budgetingDescriptor;
 
       if (disabled_reason && future_enabled) {
         return messages.budgetingDisabledFutureEnabled;
-      } else if (disabled_reason === 'not_verified') {
+      } else if (authUser && disabled_reason === 'not_verified') {
         return messages.budgetingDisabledNotVerified;
       } else if (disabled_reason === 'not_permitted') {
         return messages.budgetingDisabledNotPermitted;
@@ -86,4 +108,12 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   }
 }
 
-export default AssignBudgetDisabled;
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <AssignBudgetDisabled {...inputProps} {...dataProps} />}
+  </Data>
+);

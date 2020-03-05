@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { memo, useCallback, useContext } from 'react';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -10,6 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import SignIn from 'components/SignIn';
 import SignInUpBanner from 'components/SignInUpBanner';
 import SignInPageMeta from './SignInPageMeta';
+
 // style
 import styled from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
@@ -62,38 +63,33 @@ const RightInner = styled.div`
   `}
 `;
 
-export default class SignInPage extends PureComponent {
-  onSuccess = (previousPathname: string | null) => () => {
-    if (previousPathname && !(previousPathname.endsWith('/sign-up') || previousPathname.endsWith('/sign-in'))) {
+const SignInPage = memo(() => {
+  const previousPathName = useContext(PreviousPathnameContext);
+
+  const onSuccess = useCallback(() => {
+    if (previousPathName && !previousPathName.endsWith('/sign-up') && !previousPathName.endsWith('/sign-in')) {
       // go back to the page you were previously on after signing in
-      clHistory.push(previousPathname);
+      clHistory.push(previousPathName);
     } else {
       clHistory.push('/');
     }
-  }
+  }, [previousPathName]);
 
-  goToSignUpForm = () => {
-    clHistory.push('/sign-up');
-  }
+  return (
+    <>
+      <SignInPageMeta />
+      <Container className="e2e-sign-in-page">
+        <Left>
+          <SignInUpBanner />
+        </Left>
+        <Right>
+          <RightInner>
+            <SignIn onSignedIn={onSuccess} />
+          </RightInner>
+        </Right>
+      </Container>
+    </>
+  );
+});
 
-  render() {
-    return (
-      <>
-        <SignInPageMeta />
-        <Container className="e2e-sign-in-page">
-          <Left>
-            <SignInUpBanner />
-          </Left>
-          <Right>
-            <RightInner>
-              <PreviousPathnameContext.Consumer>
-                {previousPathName => <SignIn onSignedIn={this.onSuccess(previousPathName)} />}
-              </PreviousPathnameContext.Consumer>
-            </RightInner>
-          </Right>
-        </Container>
-      </>
-
-    );
-  }
-}
+export default SignInPage;

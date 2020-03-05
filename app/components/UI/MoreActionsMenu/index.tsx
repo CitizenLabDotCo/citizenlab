@@ -119,7 +119,7 @@ interface State {
   visible: boolean;
 }
 
-export default class Popover extends PureComponent<Props, State> {
+export default class MoreActionsMenu extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {

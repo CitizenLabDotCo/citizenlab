@@ -46,21 +46,17 @@ interface DataProps {
 interface Props extends DataProps { }
 
 export class InitiativesEditPage extends React.PureComponent<Props> {
-  redirectToSignUpPage = () => {
-    clHistory.replace('/sign-up');
-  }
-
   componentDidMount() {
     const { authUser } = this.props;
 
     if (authUser === null) {
-      this.redirectToSignUpPage();
+      clHistory.replace('/sign-up');
     }
   }
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
-      this.redirectToSignUpPage();
+      clHistory.replace('/sign-up');
     }
   }
 

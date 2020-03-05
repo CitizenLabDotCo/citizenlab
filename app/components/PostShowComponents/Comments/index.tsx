@@ -100,71 +100,77 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
     }, []
   );
 
-  const commentingEnabled: boolean = get(post, 'attributes.action_descriptor.commenting.enabled', true);
-  const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null);
-  const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
-  const loaded = (!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project));
-  const phaseId = isNilOrError(project) ? undefined : project.relationships?.current_phase?.data?.id;
+  if (!isNilOrError(post)) {
+    const commentingEnabled: boolean = get(post, 'attributes.action_descriptor.commenting.enabled', true);
+    const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null);
+    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
+    const loaded = (!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project));
+    const phaseId = isNilOrError(project) ? undefined : project.relationships?.current_phase?.data?.id;
 
-  return (
-    <Container className={`e2e-comments-${loaded ? 'loaded' : 'loading'} ${className}`}>
-      <ScreenReaderOnly>
-        <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
-      </ScreenReaderOnly>
-      {loaded && !isNilOrError(commentsList) ? (
-        <>
-          {/*
-            Show warning messages when there are no comments and you're logged in as an admin.
-            Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
-          */}
-          {isEmpty(commentsList) && userIsAdmin &&
-            <StyledWarning>
-              <FormattedMessage {...messages.noComments} />
-            </StyledWarning>
-          }
+    return (
+      <Container className={`e2e-comments-${loaded ? 'loaded' : 'loading'} ${className}`}>
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
+        </ScreenReaderOnly>
+        {loaded && !isNilOrError(commentsList) ? (
+          <>
+            {/*
+              Show warning messages when there are no comments and you're logged in as an admin.
+              Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
+            */}
+            {isEmpty(commentsList) && userIsAdmin &&
+              <StyledWarning>
+                <FormattedMessage {...messages.noComments} />
+              </StyledWarning>
+            }
 
-          <CommentingDisabled
-            isLoggedIn={!!authUser}
-            commentingEnabled={commentingEnabled}
-            commentingDisabledReason={commentingDisabledReason}
-            projectId={get(post, 'relationships.project.data.id')}
-            phaseId={phaseId}
-          />
+            <CommentingDisabled
+              isLoggedIn={!!authUser}
+              commentingEnabled={commentingEnabled}
+              commentingDisabledReason={commentingDisabledReason}
+              projectId={get(post, 'relationships.project.data.id')}
+              phaseId={phaseId}
+              postId={postId}
+              postType={postType}
+            />
 
-          <Comments
-            postId={postId}
-            postType={postType}
-            comments={commentsList}
-            sortOrder={sortOrder}
-            loading={loadingInital}
-            onSortOrderChange={handleSortOrderChange}
-          />
+            <Comments
+              postId={postId}
+              postType={postType}
+              comments={commentsList}
+              sortOrder={sortOrder}
+              loading={loadingInital}
+              onSortOrderChange={handleSortOrderChange}
+            />
 
-          {hasMore && !loadingMore &&
-            <Observer onChange={handleIntersection} rootMargin="3000px">
-              <LoadMore />
-            </Observer>
-          }
+            {hasMore && !loadingMore &&
+              <Observer onChange={handleIntersection} rootMargin="3000px">
+                <LoadMore />
+              </Observer>
+            }
 
-          {loadingMore && !posting &&
-            <LoadingMore>
-              <LoadingMoreMessage>
-                <FormattedMessage {...messages.loadingMoreComments} />
-              </LoadingMoreMessage>
-            </LoadingMore>
-          }
+            {loadingMore && !posting &&
+              <LoadingMore>
+                <LoadingMoreMessage>
+                  <FormattedMessage {...messages.loadingMoreComments} />
+                </LoadingMoreMessage>
+              </LoadingMore>
+            }
 
-          <ParentCommentForm
-            postId={postId}
-            postType={postType}
-            postingComment={handleCommentPosting}
-          />
-        </>
-      ) : (
-        <LoadingComments />
-      )}
-    </Container>
-  );
+            <ParentCommentForm
+              postId={postId}
+              postType={postType}
+              postingComment={handleCommentPosting}
+            />
+          </>
+        ) : (
+          <LoadingComments />
+        )}
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 const Data = adopt<DataProps, InputProps>({

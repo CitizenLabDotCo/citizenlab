@@ -1,17 +1,31 @@
 import React, { MouseEvent, PureComponent } from 'react';
-import Link from 'utils/cl-router/Link';
-import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { darken } from 'polished';
+import { adopt } from 'react-adopt';
+import clHistory from 'utils/cl-router/history';
+
+// components
+import Link from 'utils/cl-router/Link';
+
+// services
+import { IIdeaData } from 'services/ideas';
+
+// resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+
+// i18n
+import messages from './messages';
+import T from 'components/T';
 import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
-import { IIdeaData } from 'services/ideas';
-import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import messages from './messages';
-import clHistory from 'utils/cl-router/history';
+
+// utils
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+
+// styling
+import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { darken } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -29,13 +43,19 @@ const Container = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: ${colors.clBlue};
+  color: ${colors.clBlueDark};
+  text-decoration: underline;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
 `;
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
   text-decoration: underline;
-  transition: all 100ms ease-out;
+  transition: all 80ms ease-out;
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -53,6 +73,7 @@ interface InputProps {
 }
 
 interface DataProps {
+  authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
 }
 
@@ -64,7 +85,9 @@ class VotingDisabled extends PureComponent<Props, State> {
   onVerify = (event) => {
     event.stopPropagation();
     event.preventDefault();
+
     const { project } = this.props;
+
     if (!isNilOrError(project)) {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;
@@ -77,6 +100,7 @@ class VotingDisabled extends PureComponent<Props, State> {
   }
 
   reasonToMessage = () => {
+    const { authUser } = this.props;
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
 
     if (disabled_reason === 'project_inactive') {
@@ -89,10 +113,10 @@ class VotingDisabled extends PureComponent<Props, State> {
       return future_enabled ? messages.votingDisabledPhaseNotYetStarted : messages.votingDisabledPhaseCompleted;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingDisabledNotPermitted;
-    } else if (disabled_reason === 'not_verified') {
+    } else if (authUser && disabled_reason === 'not_verified') {
       return messages.votingDisabledNotVerified;
     } else {
-      return messages.votingDisabledForProject;
+      return messages.votingDisabled;
     }
   }
 
@@ -161,8 +185,13 @@ class VotingDisabled extends PureComponent<Props, State> {
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>
+});
+
 export default (inputProps: InputProps) => (
-  <GetProject projectId={inputProps.projectId}>
-    {project => <VotingDisabled {...inputProps} project={project} />}
-  </GetProject>
+  <Data {...inputProps}>
+    {dataProps => <VotingDisabled {...inputProps} {...dataProps} />}
+  </Data>
 );

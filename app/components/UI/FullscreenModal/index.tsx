@@ -162,6 +162,7 @@ class FullscreenModal extends PureComponent<Props, State> {
   render() {
     const { children, opened, topBar, bottomBar, animateInOut, navbarRef, mobileNavbarRef } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
+    const modalPortalElement = document?.getElementById('modal-portal');
     let modalContent: React.ReactChild | null = null;
 
     if (animateInOut || (!animateInOut && opened)) {
@@ -200,8 +201,8 @@ class FullscreenModal extends PureComponent<Props, State> {
       ), document.getElementById('modal-portal') as HTMLElement);
     }
 
-    if (!animateInOut && opened) {
-      return ReactDOM.createPortal(modalContent, document.getElementById('modal-portal') as HTMLElement);
+    if (!animateInOut && opened && modalPortalElement) {
+      return ReactDOM.createPortal(modalContent, modalPortalElement);
     }
 
     return null;

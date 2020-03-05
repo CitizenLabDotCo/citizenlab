@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -8,17 +8,24 @@ import Link from 'utils/cl-router/Link';
 import T from 'components/T';
 
 // resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 // services
 import { IIdeaData } from 'services/ideas';
+
+// utils
+import { redirectActionToSignUpPage } from 'containers/SignUpPage';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModalWithContext } from 'containers/App/events';
+import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+
+// styling
+import styled from 'styled-components';
 
 const Container = styled.div`
   margin-bottom: 30px;
@@ -27,12 +34,15 @@ const Container = styled.div`
 interface InputProps {
   projectId: string | null;
   phaseId: string | undefined;
+  postId: string;
+  postType: 'idea' | 'initiative';
   isLoggedIn: boolean | null;
   commentingEnabled: boolean | null;
   commentingDisabledReason: IIdeaData['attributes']['action_descriptor']['commenting']['disabled_reason'] | null;
 }
 
 interface DataProps {
+  authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
 }
 
@@ -40,7 +50,7 @@ interface Props extends InputProps, DataProps {}
 
 class CommentingDisabled extends PureComponent<Props> {
   calculateMessageDescriptor = () => {
-    const { isLoggedIn, commentingEnabled, commentingDisabledReason } = this.props;
+    const { authUser, isLoggedIn, commentingEnabled, commentingDisabledReason } = this.props;
 
     if (commentingEnabled && isLoggedIn) {
       return null;
@@ -50,7 +60,7 @@ class CommentingDisabled extends PureComponent<Props> {
       return messages.commentingDisabledInContext;
     } else if (commentingDisabledReason === 'idea_not_in_current_phase') {
       return messages.commentingDisabledIdeaNotInCurrentPhase;
-    } else if (commentingDisabledReason === 'not_verified') {
+    } else if (authUser && commentingDisabledReason === 'not_verified') {
       return messages.commentingDisabledNotVerified;
     } else if (isLoggedIn && commentingDisabledReason === 'not_permitted') {
       return messages.commentingNotPermitted;
@@ -66,11 +76,20 @@ class CommentingDisabled extends PureComponent<Props> {
   }
 
   onVerify = () => {
-    const { projectId, phaseId } = this.props;
-    if (phaseId) {
-      openVerificationModalWithContext('ActionComment', phaseId, 'phase', 'commenting');
-    } else if (projectId) {
-      openVerificationModalWithContext('ActionComment', projectId, 'project', 'commenting');
+    const { projectId, phaseId, postId, postType, authUser } = this.props;
+
+    if (!isNilOrError(authUser)) {
+      const pcId = phaseId || projectId || null;
+      const pcType = phaseId ? 'phase' : 'project';
+      pcId && openVerificationModalWithContext('ActionComment', pcId, pcType, 'commenting');
+    } else {
+      redirectActionToSignUpPage({
+        action_type: 'comment',
+        action_context_type: postType,
+        action_context_id: postId,
+        action_context_pathname: window.location.pathname,
+        action_requires_verification: true
+      });
     }
   }
 
@@ -101,8 +120,13 @@ class CommentingDisabled extends PureComponent<Props> {
   }
 }
 
+const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>
+});
+
 export default (inputProps: InputProps) => (
-  <GetProject projectId={inputProps.projectId}>
-    {project => <CommentingDisabled {...inputProps} project={project} />}
-  </GetProject>
+  <Data {...inputProps}>
+    {dataProps => <CommentingDisabled {...inputProps} {...dataProps} />}
+  </Data>
 );

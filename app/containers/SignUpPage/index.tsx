@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { isString } from 'lodash-es';
+import { isString, isBoolean, isObject } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -76,6 +76,51 @@ const RightInner = styled.div`
   `}
 `;
 
+export type IActionType = 'upvote' | 'downvote' | 'comment' | 'post';
+
+export type IActionContextType = 'idea' | 'initiative' | 'project' | 'phase';
+
+export interface IAction {
+  action_type: IActionType;
+  action_context_type: IActionContextType;
+  action_context_id: string;
+  action_context_pathname: string;
+  action_requires_verification: boolean;
+}
+
+export function getAction(action) {
+  if (isObject(action)) {
+    const { action_type, action_context_id, action_context_type, action_context_pathname, action_requires_verification } = action as any;
+
+    if (
+      action_type === ('upvote' || 'downvote' || 'comment' || 'post') &&
+      action_context_type === ('idea' || 'initiative' || 'project' || 'phase') &&
+      isString(action_context_id) &&
+      isString(action_context_pathname) &&
+      (isBoolean(action_requires_verification) || isString(action_requires_verification))
+    ) {
+      const validatedAction: IAction = {
+        action_type,
+        action_context_type,
+        action_context_id,
+        action_context_pathname,
+        action_requires_verification: isBoolean(action_requires_verification) ? action_requires_verification : (action_requires_verification === 'true')
+      };
+
+      return validatedAction;
+    }
+  }
+
+  return;
+}
+
+export const redirectActionToSignUpPage = (action: IAction) => {
+  clHistory.push({
+    pathname: '/sign-up',
+    query: action
+  });
+};
+
 interface InputProps {}
 
 interface DataProps {
@@ -86,6 +131,7 @@ interface Props extends InputProps, DataProps { }
 
 interface State {
   goBackToUrl: string;
+  action: IAction | null;
 }
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
@@ -94,9 +140,9 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      goBackToUrl: '/'
+      goBackToUrl: '/',
+      action: null
     };
-    this.subscriptions = [];
   }
 
   static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
@@ -106,6 +152,10 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
+    const action = getAction(this.props.location.query);
+    this.setState({ action: action || null });
+    action && window.history.replaceState(null, '', window.location.pathname);
+
     this.subscriptions = [
       eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
         window.scrollTo(0, 0);
@@ -119,11 +169,15 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   onSignUpCompleted = () => {
     trackEventByName(tracks.successfulSignUp);
-    clHistory.push(this.state.goBackToUrl);
+    const action = getAction(this.state.action);
+    const pathname = action?.action_context_pathname || this.state.goBackToUrl;
+    const query = action;
+    clHistory.push({ pathname, query });
   }
 
   render() {
     const { location } = this.props;
+    const { action } = this.state;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
@@ -141,6 +195,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
                 step1Title={title}
                 isInvitation={isInvitation}
                 token={token}
+                action={action}
                 onSignUpCompleted={this.onSignUpCompleted}
               />
             </RightInner>

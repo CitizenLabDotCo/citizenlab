@@ -101,7 +101,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     const { location, authUser } = this.props;
 
     if (authUser === null) {
-      this.redirectToSignUpPage();
+      clHistory.replace('/sign-up');
     }
 
     if (isString(location.query.position)) {
@@ -126,12 +126,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
   componentDidUpdate(prevProps: Props) {
     if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
-      this.redirectToSignUpPage();
+      clHistory.replace('/sign-up');
     }
-  }
-
-  redirectToSignUpPage = () => {
-    clHistory.replace('/sign-up');
   }
 
   handleOnIdeaSubmit = async () => {

@@ -9,6 +9,9 @@ import Error from 'components/UI/Error';
 import Step2 from 'components/SignUp/Step2';
 import SignInUpBanner from 'components/SignInUpBanner';
 
+// utils
+import { IAction, getAction } from 'containers/SignUpPage';
+
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -99,12 +102,30 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  action: IAction | null;
+}
 
 class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      action: null
+    };
+  }
+
+  componentDidMount() {
+    const action = getAction(this.props.location.query);
+    this.setState({ action: action || null });
+    window.history.replaceState(null, '', window.location.pathname);
+  }
+
   redirect = () => {
-    clHistory.push('/');
+    const action = getAction(this.state.action);
+    const pathname = action?.action_context_pathname || '/';
+    const query = action;
+    clHistory.push({ pathname, query });
   }
 
   focusTitle = (titleEl: HTMLHeadingElement) => {
