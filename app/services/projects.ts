@@ -37,6 +37,7 @@ export interface IProjectData {
     voting_enabled: boolean;
     voting_method: 'limited' | 'unlimited';
     voting_limited_max: number;
+    downvoting_enabled: boolean;
     presentation_mode: PresentationMode;
     internal_role: 'open_idea_box' | null;
     publication_status: PublicationStatus;
@@ -109,6 +110,7 @@ export interface IUpdatedProjectProperties {
   voting_enabled?: boolean | null;
   voting_method?: 'limited' | 'unlimited' | null;
   voting_limited_max?: number | null;
+  downvoting_enabled?: boolean | null;
   presentation_mode?: PresentationMode | null;
   publication_status?: PublicationStatus;
   max_budget?: number | null;

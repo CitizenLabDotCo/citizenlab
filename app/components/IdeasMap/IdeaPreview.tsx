@@ -1,7 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 
@@ -243,8 +242,8 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
     const { idea, locale, windowSize, className, localize } = this.props;
 
     if (!isNilOrError(idea)) {
-      const ideaAddress = get(idea, 'attributes.location_description');
-      const ideaBody = localize(idea.attributes.body_multiloc);
+      const ideaAddress = idea?.attributes?.location_description;
+      const ideaBody = localize(idea?.attributes?.body_multiloc);
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
       return (
@@ -275,8 +274,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                     size={smallerThanSmallTablet ? '1' : '2'}
                     unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
                     disabledVoteClick={this.handleDisabledVoteClick}
-                    noVerificationShortFlow
-                    location="ideaMap"
+                    showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
                   />
                   <CommentsCount>
                     <CommentIcon name="comments" />

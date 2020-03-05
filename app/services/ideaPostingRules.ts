@@ -21,7 +21,8 @@ const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: 
     case 'posting_disabled':
       return 'postingDisabled';
     case 'not_verified':
-      return 'notVerified';
+      // return 'notVerified';
+      return signedIn ? 'notVerified' : null;
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:
