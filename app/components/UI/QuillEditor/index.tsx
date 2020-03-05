@@ -286,7 +286,6 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   const [focussed, setFocussed] = useState(false);
   const prevFocussed = usePrevious(focussed);
   const editorRef = useRef<HTMLDivElement>(null);
-  const [linkDropdownOpen, setLinkDropdownOpen] = useState(false);
 
   // initialize quill
   useEffect(() => {
@@ -462,10 +461,11 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     if (!editor) return;
     const selection = editor.getSelection();
 
+    // copied from the snow toolbar code
+    // to manually add the handler that would have been callen on the toolbar button
     if (selection == null || selection.length === 0) return;
-    const preview = editor.getText(selection);
-
-    const tooltip = editor.theme.tooltip;
+    const preview = editor.getText(selection as any);
+    const tooltip = (editor as any).theme.tooltip;
     tooltip.edit('link', preview);
 
   }, [editor]);
