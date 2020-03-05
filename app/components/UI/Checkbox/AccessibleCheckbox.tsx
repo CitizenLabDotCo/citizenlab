@@ -1,67 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import { colors, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
-
-const Container = styled.div<{ size: string }>`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  &.hasNoLabel {
-    flex: 0 0 ${({ size }) => parseInt(size, 10) + 2}px;
-    width: ${({ size }) => parseInt(size, 10) + 2}px;
-    height: ${({ size }) => parseInt(size, 10) + 2}px;
-  }
-
-  label {
-    cursor: pointer;
-  }
-
-  &.disabled {
-    cursor: not-allowed;
-    label {
-      cursor: not-allowed;
-    }
-  }
-`;
-
-const InputWrapper = styled.div<{ checked: boolean, size: string }>`
-  position: relative;
-  flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
-  width: ${({ size }) => parseInt(size, 10)}px;
-  height: ${({ size }) => parseInt(size, 10)}px;
-  color: #fff;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: solid 1px ${colors.separationDark};
-  border-radius: ${(props) => props.theme.borderRadius};
-  background: ${(props) => props.checked ? colors.clGreen : '#fff'};
-  border-color: ${(props) => props.checked ? colors.clGreen : colors.separationDark};
-  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.15);
-
-  &.focused {
-    outline: ${customOutline};
-  }
-
-  &:hover {
-    border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
-  }
-`;
-
-const Input = styled.input`
-  &[type='checkbox'] {
-    /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-    clip: rect(1px, 1px, 1px, 1px);
-  }
-`;
 
 const MarkIcon = styled(Icon)`
   fill: #fff;
