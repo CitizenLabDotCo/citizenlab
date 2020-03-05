@@ -73,10 +73,10 @@ const IndeterminateIcon = styled(Icon)`
   width: 12px;
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ disabled: boolean }>`
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -110,12 +110,12 @@ const StyledCheckbox = styled.div<{ checked: boolean, size: string, indeterminat
     outline: ${customOutline};
   }
 
-  &:hover {
-    border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
-  }
-
   ${MarkIcon} {
     display: ${({ checked, indeterminate }) => checked || indeterminate ? 'block' : 'none'}
+  }
+
+  &:hover {
+    border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
   }
 `;
 
@@ -165,35 +165,6 @@ export default class Checkbox extends PureComponent<Props, State> {
     };
   }
 
-  handleOnClick = (event: React.MouseEvent) => {
-    if (!this.props.disabled) {
-      const targetElement = event?.target as HTMLElement | undefined;
-      const parentElement = targetElement?.parentElement;
-      const targetElementIsLink = targetElement?.hasAttribute('href');
-      const parentElementIsLink = parentElement?.hasAttribute('href');
-
-      if (!targetElementIsLink && !parentElementIsLink) {
-        event.preventDefault();
-        this.props.onChange(event);
-      }
-    }
-  }
-
-  handleOnKeyDown = (event: React.KeyboardEvent) => {
-    if (!this.props.disabled) {
-      const targetElement = event?.target as HTMLElement | undefined;
-      const parentElement = targetElement?.parentElement;
-      const targetElementIsLink = targetElement?.hasAttribute('href');
-      const parentElementIsLink = parentElement?.hasAttribute('href');
-
-      // if key = Space
-      if (!targetElementIsLink && !parentElementIsLink && event.keyCode === 32) {
-        event.preventDefault();
-        this.props.onChange(event);
-      }
-    }
-  }
-
   handleOnChange = (event) => {
     this.props.onChange(event);
   }
@@ -212,46 +183,17 @@ export default class Checkbox extends PureComponent<Props, State> {
 
   render() {
     const { label, size, checked, indeterminate, className, notFocusable, id, disabled, autoFocus } = this.props;
-    const { inputFocused } = this.state;
     const hasLabel = !!label;
 
     return (
-      // <Container
-      //   size={size as string}
-      //   onMouseDown={this.removeFocus}
-      //   onClick={this.handleOnClick}
-      //   onKeyDown={this.handleOnKeyDown}
-      //   className={`${className ? className : ''} ${label ? 'hasLabel' : 'hasNoLabel'} ${disabled ? 'disabled' : ''}`}
-      // >
-      //   <InputWrapper
-      //     className={`e2e-checkbox ${checked ? 'checked' : ''} ${inputFocused ? 'focused' : ''}`}
-      //     checked={!!(checked || indeterminate)}
-      //     size={size as string}
-      //   >
-      //     <Input
-      //       tabIndex={notFocusable ? -1 : 0}
-      //       id={id}
-      //       aria-checked={checked}
-      //       type="checkbox"
-      //       defaultChecked={checked}
-      //       onFocus={this.handleOnFocus}
-      //       onBlur={this.handleOnBlur}
-      //       disabled={disabled}
-      //       autoFocus={autoFocus}
-      //     />
-      //     {checked && <CheckmarkIcon ariaHidden name="checkmark" />}
-      //     {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}
-      //   </InputWrapper>
-
-      //   {label &&
-      //     <Label htmlFor={id}>
-      //       {label}
-      //     </Label>
-      //   }
-      // </Container>
-      <Label>
+      <Label htmlFor={id} disabled={disabled as boolean}>
         <CheckboxContainer className={className} hasLabel={hasLabel}>
-          <HiddenCheckbox onChange={this.handleOnChange} checked={checked} />
+          <HiddenCheckbox
+            id={id}
+            onChange={this.handleOnChange}
+            checked={checked}
+            disabled={disabled}
+          />
           <StyledCheckbox checked={checked} size={size as string} indeterminate={indeterminate}>
             <MarkIcon ariaHidden name={indeterminate ? 'indeterminate' : 'checkmark'} />
           </StyledCheckbox>
@@ -262,4 +204,10 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 }
 
+// disabled state
+// hasNoLabel
+// notFocusable
+// autoFocus
+// e2e-checkbox
 // TODO: handle indeterminate case
+// check in different places
