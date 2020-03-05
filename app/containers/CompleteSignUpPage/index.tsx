@@ -9,6 +9,9 @@ import Error from 'components/UI/Error';
 import Step3 from 'components/SignUp/Step3';
 import SignInUpBanner from 'components/SignInUpBanner';
 
+// utils
+import { IAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'containers/SignUpPage';
+
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -20,9 +23,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-
-// typings
-import { IAction, redirectToActionPage } from 'containers/SignUpPage';
 
 const Container = styled.main`
   width: 100%;
@@ -116,27 +116,19 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { action_type, action_context_id, action_context_type, action_context_pathname } = this.props.location.query;
-
-    if (action_type && action_context_id && action_context_type && action_context_pathname) {
-      this.setState({
-        action: {
-          action_type,
-          action_context_type,
-          action_context_id,
-          action_context_pathname
-        } as IAction
-      });
-
-      window.history.replaceState(null, '', window.location.pathname);
-    }
+    const action = convertUrlSearchParamsToAction(this.props.location.search);
+    this.setState({ action: action || null });
+    window.history.replaceState(null, '', window.location.pathname);
   }
 
   redirect = () => {
     const { action } = this.state;
 
     if (action) {
-      redirectToActionPage(action);
+      clHistory.push({
+        pathname: action.action_context_pathname,
+        search: convertActionToUrlSearchParams(action)
+      });
     } else {
       clHistory.push('/');
     }

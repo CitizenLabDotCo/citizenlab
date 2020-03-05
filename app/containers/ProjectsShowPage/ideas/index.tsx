@@ -79,7 +79,7 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
         return (
           <>
             <StyledProjectArchivedIndicator projectId={projectId} />
-            <StyledContentContainer>
+            <StyledContentContainer id="e2e-project-ideas-page">
               {isPBProject &&
                 <StyledPBExpenses
                   participationContextId={projectId}

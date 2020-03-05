@@ -13,6 +13,7 @@ import messages from './messages';
 interface InputProps {
   project: IProjectData;
 }
+
 interface DataProps {
   phases: GetPhasesChildProps;
 }
@@ -21,6 +22,7 @@ interface Props extends InputProps, DataProps { }
 
 const TimelineProject = ({ project, phases }: Props) => {
   if (!isNilOrError(phases)) {
+
     if (phases.length > 1) {
       return (
         <li>
@@ -28,7 +30,7 @@ const TimelineProject = ({ project, phases }: Props) => {
           <ul>
             {phases.map(phase => (
               <li key={phase.id}>
-                <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phase.id } }}>
+                <Link to={{ pathname: `/projects/${project.attributes.slug}/process` }}>
                   <T value={phase.attributes.title_multiloc} />
                 </Link>
               </li>
@@ -37,16 +39,18 @@ const TimelineProject = ({ project, phases }: Props) => {
         </li>
       );
     }
+
     if (phases.length === 1) {
       return (
         <li key={phases[0].id}>
-          <Link to={{ pathname: `/projects/${project.attributes.slug}/process`, query: { phase: phases[0].id } }}>
+          <Link to={{ pathname: `/projects/${project.attributes.slug}/process` }}>
             <T value={phases[0].attributes.title_multiloc} />
           </Link>
         </li>
       );
     }
   }
+
   return null;
 };
 

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import Leaflet from 'leaflet';
 import clHistory from 'utils/cl-router/history';
-
+import { stringify } from 'qs';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -142,11 +142,13 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
 
   redirectToInitiativeCreation = () => {
     if (this.savedPosition) {
+      const { lat, lng } = this.savedPosition;
+
       trackEventByName(tracks.createInitiativeFromMap, { position: this.savedPosition });
 
       clHistory.push({
         pathname: '/initiatives/new',
-        query: { position: `[${this.savedPosition.lat}, ${this.savedPosition.lng}]` }
+        search: stringify({ lat, lng }, { addQueryPrefix: true })
       });
     }
   }

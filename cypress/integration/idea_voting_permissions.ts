@@ -27,6 +27,10 @@ describe('Idea voting permissions', () => {
       cy.apiVerifyBogus(response.body.jwt);
     });
   });
+
+  // cy.location('pathname').should('eq', '/en-GB/sign-up');
+  // cy.get('.e2e-sign-up-page');
+
   describe('a project that requires verification on votes', () => {
     const firstName = randomString();
     const lastName = randomString();
@@ -34,10 +38,11 @@ describe('Idea voting permissions', () => {
     const password = randomString();
     it('sends unsigned user to log-in then verify', () => {
       cy.visit('projects/verified-ideation/ideas');
-      cy.acceptCookies();
+      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
+      cy.get('#e2e-project-ideas-page');
+      cy.get('#e2e-ideas-container');
       cy.get('.e2e-ideacard-upvote-button').click();
-      cy.get('.e2e-register-button').click();
-      cy.wait(100);
+      cy.get('.e2e-sign-up-page');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
@@ -46,8 +51,9 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('#e2e-signup-step1-button').click();
-      cy.wait(300);
-      cy.get('.e2e-verification-modal');
+      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
+      cy.get('#e2e-project-ideas-page');
+      cy.get('#e2e-ideas-container');
     });
     it('sends unverified users to the verification flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);

@@ -15,9 +15,8 @@ describe('Initiative new page', () => {
   beforeEach(() => {
     cy.setLoginCookie(email, password);
     cy.visit('/initiatives/new');
-    cy.wait(500);
-    cy.acceptCookies();
     cy.get('#initiative-form');
+    cy.acceptCookies();
   });
 
   it('shows an error when no title is provided', () => {
@@ -48,7 +47,7 @@ describe('Initiative new page', () => {
 
     // add title and description
     cy.get('@titleInput').type(initiativeTitle);
-    cy.get('@descriptionInput').type(initiativeContent, { delay: 2 });
+    cy.get('@descriptionInput').type(initiativeContent, { delay: 1 });
 
     // verify the values
     cy.get('@titleInput').should('have.value', initiativeTitle);
@@ -73,25 +72,30 @@ describe('Initiative new page', () => {
     cy.get('#e2e-initiative-file-upload');
 
     // add an image
-    cy.fixture('cy.png', 'base64').then(fileContent => {
-      cy.get('#e2e-iniatiative-img-dropzone').upload(
-        { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
-        { subjectType: 'drag-n-drop' },
-      );
+    cy.fixture('cy.png', 'base64').then((fileContent) => {
+      return cy.get('#e2e-iniatiative-img-dropzone').upload({
+        fileContent, fileName: 'cy.png',
+        mimeType: 'image/png'
+      }, {
+        subjectType: 'drag-n-drop'
+      });
+    }).then(() => {
       cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
+
+      // save the form
+      cy.get('.e2e-initiative-publish-button .e2e-submit-form').click();
+
+      // wait 3s for page redirection to finish
+      cy.wait(3000);
+
+      // verify the content of the newly created initiative page
+      cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
+      cy.get('#e2e-initiative-show');
+      cy.get('#e2e-initiative-show').find('#e2e-initiative-title').contains(initiativeTitle);
+      cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
+      cy.get('#e2e-initiative-show').find('#e2e-initiative-topics').find('.e2e-initiative-topic').should('have.length', 1);
+      cy.get('#e2e-initiative-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
     });
-
-    // save the form
-    cy.wait(500);
-    cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.wait(3000);
-
-    // verify the content of the newly created initiative page
-    cy.get('#e2e-initiative-show');
-    cy.get('#e2e-initiative-show').find('#e2e-initiative-title').contains(initiativeTitle);
-    cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
-    cy.get('#e2e-initiative-show').find('#e2e-initiative-topics').find('.e2e-initiative-topic').should('have.length', 1);
-    cy.get('#e2e-initiative-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
   });
 
 });
