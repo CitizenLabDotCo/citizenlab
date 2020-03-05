@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { isString } from 'lodash-es';
+import { isString, isBoolean, isEmpty, isObject } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { stringify, parse } from 'qs';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -73,33 +74,52 @@ const RightInner = styled.div`
   `}
 `;
 
+export type IActionType = 'upvote' | 'downvote' | 'comment' | 'post';
+
+export type IActionContextType = 'idea' | 'initiative' | 'project' | 'phase';
+
 export interface IAction {
-  action_type: 'upvote' | 'downvote';
-  action_context_type: 'idea';
+  action_type: IActionType;
+  action_context_type: IActionContextType;
   action_context_id: string;
   action_context_pathname: string;
+  action_requires_verification: boolean;
 }
 
-export const redirectToSignUpPage = (action: IAction) => {
+export const redirectActionToSignUpPage = (action: IAction) => {
   clHistory.push({
     pathname: '/sign-up',
-    query: action
+    search: convertActionToUrlSearchParams(action)
   });
 };
 
-export const redirectToActionPage = (action: IAction) => {
-  const { action_type, action_context_id, action_context_type, action_context_pathname } = action;
+export function convertUrlSearchParamsToAction(input: string) {
+  const action = parse(input, { ignoreQueryPrefix: true, decoder: (str, defaultEncoder, charset, type) => {
+    if (type === 'value' && str === 'true') { return true; }
+    if (type === 'value' && str === 'false') { return false; }
+    return defaultEncoder(str, defaultEncoder, charset);
+  }}) as IAction;
 
-  clHistory.push({
-    pathname: action_context_pathname,
-    query: {
-      action_type,
-      action_context_type,
-      action_context_id,
-      action_context_pathname
-    } as IAction
-  });
-};
+  if (isObject(action) && !isEmpty(action)) {
+    const { action_type, action_context_id, action_context_type, action_context_pathname, action_requires_verification } = action;
+
+    if (
+      action_type === ('upvote' || 'downvote' || 'comment' || 'post') &&
+      action_context_type === ('idea' || 'initiative' || 'project' || 'phase') &&
+      isString(action_context_id) &&
+      isString(action_context_pathname) &&
+      isBoolean(action_requires_verification)
+    ) {
+      return action;
+    }
+  }
+
+  return;
+}
+
+export function convertActionToUrlSearchParams(action: IAction) {
+  return stringify(action, { addQueryPrefix: true });
+}
 
 interface InputProps {}
 
@@ -132,20 +152,9 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { action_type, action_context_id, action_context_type, action_context_pathname } = this.props.location.query;
-
-    if (action_type && action_context_id && action_context_type && action_context_pathname) {
-      this.setState({
-        action: {
-          action_type,
-          action_context_type,
-          action_context_id,
-          action_context_pathname
-        } as IAction
-      });
-
-      window.history.replaceState(null, '', window.location.pathname);
-    }
+    const action = convertUrlSearchParamsToAction(this.props.location.search);
+    this.setState({ action: action || null });
+    action && window.history.replaceState(null, '', window.location.pathname);
 
     this.subscription = signUpNextStep$.subscribe(() => {
       window.scrollTo(0, 0);
@@ -158,11 +167,17 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   onSignUpCompleted = () => {
     trackEventByName(tracks.successfulSignUp);
+    const { action, goBackToUrl } = this.state;
 
-    if (this.state.action) {
-      redirectToActionPage(this.state.action);
+    if (action) {
+      clHistory.push({
+        pathname: action.action_context_pathname,
+        search: convertActionToUrlSearchParams(action)
+      });
+    } else if (goBackToUrl) {
+      clHistory.push({ pathname: goBackToUrl });
     } else {
-      clHistory.push(this.state.goBackToUrl);
+      clHistory.push('/');
     }
   }
 

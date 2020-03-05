@@ -19,7 +19,7 @@ import { LiveMessage } from 'react-aria-live';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, IIdea } from 'services/ideas';
+import { ideaByIdStream, IIdea, IdeaVotingDisabledReason } from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 import { projectByIdStream, IProject } from 'services/projects';
@@ -28,14 +28,12 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { convertUrlSearchParamsToAction, redirectActionToSignUpPage } from 'containers/SignUpPage';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { redirectToSignUpPage } from 'containers/SignUpPage';
 
 interface IVoteComponent {
   active: boolean;
@@ -234,7 +232,7 @@ interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
   unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
-  disabledVoteClick?: (disabled_reason?: string) => void;
+  disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   ariaHidden?: boolean;
   className?: string;
   showDownvote: boolean;
@@ -301,15 +299,10 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       distinctUntilChanged()
     ) as Observable<string>;
 
+    this.programmaticalyCastVote();
     this.id$.next(this.props.ideaId);
-
-    if (this.upvoteElement) {
-      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
+    this.upvoteElement?.addEventListener('animationend', this.votingAnimationDone);
+    this.downvoteElement?.addEventListener('animationend', this.votingAnimationDone);
 
     const idea$ = id$.pipe(
       switchMap((ideaId: string) => {
@@ -428,48 +421,47 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     ];
   }
 
-  componentDidUpdate(prevProps: Props, _prevState: State) {
-    const { ideaId, location: { query, pathname } } = this.props;
-    const { action_type, action_context_id, action_context_type } = query;
-    const { authUser, idea, project, phases, myVoteId, voting } = this.state;
-
-    if (ideaId !== prevProps.ideaId) {
-      this.id$.next(ideaId);
-    }
-
-    // Trigger programmatic vote when the page url contains the vote action parameters.
-    // Performs some extra checks to make sure all the necessary data is loaded before triggering the vote
-    if (
-      authUser &&
-      myVoteId !== undefined &&
-      !voting &&
-      idea &&
-      project &&
-      phases !== undefined &&
-      action_type &&
-      action_context_type === 'idea' &&
-      action_context_id === ideaId
-    ) {
-      clHistory.replace(pathname);
-
-      this.onClickVote(action_type === 'upvote' ? 'up' : 'down').then(() => {
-        this.setState({ votingSuccessModalOpened: true });
-      }).catch(() => {
-        this.setState({ votingErrorModalOpened: true });
-      });
-    }
+  componentDidUpdate() {
+    this.programmaticalyCastVote();
+    this.id$.next(this.props.ideaId);
   }
 
   componentWillUnmount() {
-    if (this.upvoteElement) {
-      this.upvoteElement.removeEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.removeEventListener('animationend', this.votingAnimationDone);
-    }
-
+    this.upvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
+    this.downvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  // Trigger programmatic vote when the page url contains the vote action parameters.
+  // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
+  programmaticalyCastVote = () => {
+    const action = convertUrlSearchParamsToAction(this.props.location.search);
+
+    if (action) {
+      const { authUser, idea, project, phases, myVoteId, voting } = this.state;
+      const { action_type, action_context_id, action_context_type } = action;
+
+      if (
+        !voting &&
+        myVoteId !== undefined &&
+        !isNilOrError(authUser) &&
+        !isNilOrError(idea) &&
+        (!isNilOrError(project) || !isNilOrError(phases)) &&
+        action_type === ('upvote' || 'downvote') &&
+        action_context_type === 'idea' &&
+        action_context_id === this.props.ideaId
+      ) {
+        clHistory.replace(this.props.location.pathname);
+
+        this.vote(action_type === 'upvote' ? 'up' : 'down').then((response) => {
+          if (response === 'success') {
+            this.setState({ votingSuccessModalOpened: true });
+          }
+        }).catch(() => {
+          this.setState({ votingErrorModalOpened: true });
+        });
+      }
+    }
   }
 
   votingAnimationDone = () => {
@@ -479,39 +471,37 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   onClickUpvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    this.onClickVote('up');
+    this.vote('up');
   }
 
   onClickDownvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    this.onClickVote('down');
+    this.vote('down');
   }
 
-  onClickVote = async (voteMode: 'up' | 'down') => {
+  vote = async (voteMode: 'up' | 'down') => {
     const { authUser, myVoteId, myVoteMode, voting, idea, project, phases } = this.state;
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
+    const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
 
-    if (!authUser) {
-      if (votingDisabledReason === 'not_verified') {
-        redirectToSignUpPage({
-          action_type: voteMode ? 'upvote' : 'downvote',
-          action_context_type: 'idea',
-          action_context_id: ideaId,
-          action_context_pathname: window.location.pathname
-        });
-      } else {
-        unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
-      }
-    }
-
-    if (authUser) {
-      if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
-        disabledVoteClick && disabledVoteClick(votingDisabledReason || undefined);
-      } else if (voting === null) {
+    if (!voting) {
+      if (isNilOrError(authUser)) {
+        if (votingDisabledReason === 'not_verified') {
+          redirectActionToSignUpPage({
+            action_type: voteMode ? 'upvote' : 'downvote',
+            action_context_type: 'idea',
+            action_context_id: ideaId,
+            action_context_pathname: window.location.pathname,
+            action_requires_verification: true
+          });
+        } else {
+          unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
+        }
+      } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
         try {
           this.voting$.next(voteMode);
 
@@ -557,13 +547,18 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             const totalVotesMessage = this.props.intl.formatMessage(messages.a11y_totalVotes, { upvotesCount, downvotesCount });
             return { a11yVoteMessage: `${actionMessage} ${totalVotesMessage}` };
           });
+          return 'success';
         } catch (error) {
           this.voting$.next(null);
           await ideaByIdStream(ideaId).fetch();
-          throw error;
+          throw 'error';
         }
+      } else if (disabledVoteClick && votingDisabledReason) {
+        disabledVoteClick(votingDisabledReason);
       }
     }
+
+    return;
   }
 
   setUpvoteRef = (element: HTMLButtonElement) => {

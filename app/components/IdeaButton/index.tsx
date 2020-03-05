@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
+import clHistory from 'utils/cl-router/history';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -17,16 +18,18 @@ import Tippy from '@tippy.js/react';
 import Icon from 'components/UI/Icon';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// utils
+import { redirectActionToSignUpPage } from 'containers/SignUpPage';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 // tracks
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
+// import { injectTracks } from 'utils/analytics';
+// import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
@@ -88,10 +91,6 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface ITracks {
-  clickNewIdea: ({ extra: object }) => void;
-}
-
 interface InputProps extends ButtonContainerProps {
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
@@ -101,7 +100,7 @@ interface InputProps extends ButtonContainerProps {
 
 interface Props extends InputProps, DataProps { }
 
-class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
+class IdeaButton extends PureComponent<Props> {
   locationRef = window.location.href;
 
   disabledMessages: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
@@ -114,32 +113,52 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
     notVerified: messages.postingNotVerified
   };
 
-  onVerify = (event: React.MouseEvent) => {
+  onClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    const { participationContextType, projectId, phaseId } = this.props;
+    if (!this.props.onClick) {
+      const { project, authUser, participationContextType, phaseId, projectId } = this.props;
+      const pcType = participationContextType;
+      const pcId = pcType === 'phase' ? phaseId : projectId;
+      const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
 
-    if (participationContextType === 'project' && projectId) {
-      openVerificationModalWithContext('ActionPost', projectId, 'project', 'posting');
-    } else if (participationContextType === 'phase' && phaseId) {
-      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'posting');
+      if (!isNilOrError(authUser)) {
+        if (!isNilOrError(project)) {
+          if (postingDisabledReason === 'not_verified' && pcType && pcId) {
+            openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
+          } else if (!postingDisabledReason) {
+            clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
+          }
+        } else if (project === null) {
+          clHistory.push('/ideas/new');
+        }
+      } else if (pcType && pcId) {
+        redirectActionToSignUpPage({
+          action_type: 'post',
+          action_context_type: pcType,
+          action_context_id: pcId,
+          action_context_pathname: window.location.pathname,
+          action_requires_verification: postingDisabledReason === 'not_verified'
+        });
+      }
+    } else {
+      this.props.onClick(event);
     }
   }
 
-  onNewIdea = () => {
-    this.props.clickNewIdea({ extra: { urlFrom: this.locationRef } });
+  onVerify = (event?: React.MouseEvent) => {
+    event && event.preventDefault();
+    const { participationContextType, projectId, phaseId } = this.props;
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phaseId : projectId;
+    pcType && pcId && openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
   }
 
   render() {
     const { project, phase, authUser, className } = this.props;
-    const { show, enabled, disabledReason } = getPostingPermission({
-      project,
-      phase,
-      authUser
-    });
+    const { show, enabled, disabledReason } = getPostingPermission({ project, phase, authUser });
 
     if (show) {
-      const linkTo = !isNilOrError(project) ? `/projects/${project.attributes.slug}/ideas/new` : '/ideas/new';
       const isPostingDisabled = (!enabled && !!disabledReason);
       const tippyContent = (!enabled && !!disabledReason) ? (
         <TooltipWrapper id="tooltip-content" className="e2e-disabled-tooltip">
@@ -174,11 +193,14 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
             theme="light"
             hideOnClick={false}
           >
-            <ButtonWrapper tabIndex={isPostingDisabled ? 0 : -1} className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}>
+            <ButtonWrapper
+              tabIndex={isPostingDisabled ? 0 : -1}
+              className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}
+            >
               <Button
                 {...this.props}
                 aria-describedby="tooltip-content"
-                linkTo={linkTo}
+                onClick={this.onClick}
                 disabled={isPostingDisabled}
                 ariaDisabled={false}
               >
@@ -194,8 +216,6 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps & ITracks> {
   }
 }
 
-const IdeaButtonWithHOCs = injectIntl<Props>(injectTracks<Props & InjectedIntlProps>(tracks)(IdeaButton));
-
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   project: ({ projectId, render, }) => <GetProject projectId={projectId}>{render}</GetProject>,
@@ -204,6 +224,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaButtonWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaButton {...inputProps} {...dataProps} />}
   </Data>
 );
