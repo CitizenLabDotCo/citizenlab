@@ -22,10 +22,43 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors, quillEditedContent, media } from 'utils/styleUtils';
+import { colors, quillEditedContent, media, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
+import Tippy from '@tippy.js/react';
+import { lighten } from 'polished';
+
+const DropdownList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
+const DropdownListItem = styled.button`
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${colors.adminLightText};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  white-space: nowrap;
+  width: auto !important;
+  padding: 10px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    color: white;
+    background: ${lighten(.1, colors.adminMenuBackground)};
+  }
+`;
 
 const Container = styled.div<{
   videoPrompt: string,
@@ -69,6 +102,10 @@ const Container = styled.div<{
 
   .ql-tooltip a.ql-remove::before {
     content: '${props => props.remove}' !important;
+  }
+
+  span.ql-formats:last-child {
+    margin-right: 0;
   }
 
   .ql-toolbar.ql-snow {
@@ -249,6 +286,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   const [focussed, setFocussed] = useState(false);
   const prevFocussed = usePrevious(focussed);
   const editorRef = useRef<HTMLDivElement>(null);
+  const [linkDropdownOpen, setLinkDropdownOpen] = useState(false);
 
   // initialize quill
   useEffect(() => {
@@ -420,6 +458,18 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     }
   }, [editor]);
 
+  const handleNormalLink = useCallback(() => {
+    if (!editor) return;
+    const selection = editor.getSelection();
+
+    if (selection == null || selection.length === 0) return;
+    const preview = editor.getText(selection);
+
+    const tooltip = editor.theme.tooltip;
+    tooltip.edit('link', preview);
+
+  }, [editor]);
+
   const classNames = [
     className,
     focussed ? 'focussed' : null,
@@ -470,14 +520,43 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
               </select>
             </span>
           }
-
           <span className="ql-formats">
             <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
             <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
-            <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
-            {withCTAButton && <button onClick={handleCustomLink} aria-label={formatMessage(messages.customLink)} type="button">
-              CTA
-            </button>}
+            {withCTAButton ? (
+              <Tippy
+                placement="bottom"
+                interactive={true}
+                arrow={true}
+                trigger="click"
+                duration={[200, 0]}
+                flip={true}
+                flipBehavior="flip"
+                flipOnUpdate={true}
+                content={(
+                  <DropdownList>
+                    <DropdownListItem onClick={handleCustomLink} type="button">
+                      {formatMessage(messages.customLink)}
+                    </DropdownListItem>
+                    <DropdownListItem onClick={handleNormalLink} type="button" className="ql-link">
+                      {formatMessage(messages.link)}
+                    </DropdownListItem>
+                  </DropdownList>
+                )}
+              >
+                <button>
+                  <svg viewBox="0 0 18 18">
+                    <line className="ql-stroke" x1="7" x2="11" y1="7" y2="11" />
+                    <path className="ql-even ql-stroke" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z" />
+                    <path className="ql-even ql-stroke" d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z" />
+                  </svg>
+                </button>
+              </Tippy>
+            ) : (
+
+                <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
+              )
+            }
           </span>
 
           {!limitedTextFormatting && !noAlign &&
@@ -520,16 +599,16 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
             </span>
           }
 
-          {!(noImages && noVideos) &&
-            <span className="ql-formats">
-              {!noImages && <button className="ql-image" onClick={trackImage} aria-label={formatMessage(messages.image)} />}
-              {!noVideos && <button className="ql-video" onClick={trackVideo} aria-label={formatMessage(messages.video)} />}
-            </span>
-          }
+            {!(noImages && noVideos) &&
+              <span className="ql-formats">
+                {!noImages && <button className="ql-image" onClick={trackImage} aria-label={formatMessage(messages.image)} />}
+                {!noVideos && <button className="ql-video" onClick={trackVideo} aria-label={formatMessage(messages.video)} />}
+              </span>
+            }
 
-          <span className="ql-formats">
-            <button className="ql-clean" aria-label={formatMessage(messages.clean)} />
-          </span>
+            <span className="ql-formats">
+              <button className="ql-clean" aria-label={formatMessage(messages.clean)} />
+            </span>
         </div>
       }
       <div ref={editorRef}>
