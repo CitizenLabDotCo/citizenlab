@@ -87,6 +87,6 @@ export default defineMessages({
   },
   customLink: {
     id: 'app.components.QuillEditor.customLink',
-    defaultMessage: 'Add custom link',
+    defaultMessage: 'Add button',
   },
 });
