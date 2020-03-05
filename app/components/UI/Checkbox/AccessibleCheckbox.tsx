@@ -94,6 +94,7 @@ export default class Checkbox extends PureComponent<Props> {
       <Label disabled={disabled as boolean}>
         <CheckboxContainer className={className} hasLabel={hasLabel}>
           <HiddenCheckbox
+            className="e2e-checkbox"
             onChange={this.handleOnChange}
             checked={checked}
             disabled={disabled}
