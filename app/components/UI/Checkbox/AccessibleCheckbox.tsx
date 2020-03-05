@@ -63,7 +63,7 @@ const Input = styled.input`
   }
 `;
 
-const CheckmarkIcon = styled(Icon)`
+const MarkIcon = styled(Icon)`
   fill: #fff;
   width: 15px;
 `;
@@ -94,7 +94,7 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   width: 1px;
 `;
 
-const StyledCheckbox = styled.div<{ checked: boolean, size: string }>`
+const StyledCheckbox = styled.div<{ checked: boolean, size: string, indeterminate?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,8 +114,8 @@ const StyledCheckbox = styled.div<{ checked: boolean, size: string }>`
     border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
   }
 
-  ${CheckmarkIcon} {
-    display: ${({ checked }) => checked ? 'block' : 'none'}
+  ${MarkIcon} {
+    display: ${({ checked, indeterminate }) => checked || indeterminate ? 'block' : 'none'}
   }
 `;
 
@@ -252,8 +252,8 @@ export default class Checkbox extends PureComponent<Props, State> {
       <Label>
         <CheckboxContainer className={className} hasLabel={hasLabel}>
           <HiddenCheckbox onChange={this.handleOnChange} checked={checked} />
-          <StyledCheckbox checked={checked} size={size as string}>
-            <CheckmarkIcon ariaHidden name="checkmark" />
+          <StyledCheckbox checked={checked} size={size as string} indeterminate={indeterminate}>
+            <MarkIcon ariaHidden name={indeterminate ? 'indeterminate' : 'checkmark'} />
           </StyledCheckbox>
         </CheckboxContainer>
         {hasLabel && <span>{label}</span>}
@@ -261,3 +261,5 @@ export default class Checkbox extends PureComponent<Props, State> {
     );
   }
 }
+
+// TODO: handle indeterminate case
