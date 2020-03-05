@@ -437,7 +437,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   // Trigger programmatic vote when the page url contains the vote action parameters.
   // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
   programmaticalyCastVote = async () => {
+    console.log('location:');
+    console.log(this.props.location);
+
     const action = convertUrlSearchParamsToAction(this.props.location.search);
+
+    console.log('action:');
+    console.log(action);
 
     if (action) {
       const { authUser, myVoteId, voting, loaded } = this.state;
@@ -490,6 +496,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
+
+    console.log('voting:' + voting);
 
     if (!voting) {
       if (isNilOrError(authUser)) {
