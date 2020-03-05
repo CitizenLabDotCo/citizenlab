@@ -193,6 +193,7 @@ export default class Checkbox extends PureComponent<Props, State> {
             onChange={this.handleOnChange}
             checked={checked}
             disabled={disabled}
+            tabIndex={notFocusable ? -1 : 0}
           />
           <StyledCheckbox checked={checked} size={size as string} indeterminate={indeterminate}>
             <MarkIcon ariaHidden name={indeterminate ? 'indeterminate' : 'checkmark'} />
@@ -204,9 +205,6 @@ export default class Checkbox extends PureComponent<Props, State> {
   }
 }
 
-// disabled state
-// hasNoLabel
-// notFocusable
 // autoFocus
 // e2e-checkbox
 // TODO: handle indeterminate case
