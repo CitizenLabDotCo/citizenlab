@@ -481,7 +481,8 @@ if Apartment::Tenant.current == 'localhost'
       if project.continuous?
         project.update({
           posting_enabled: rand(4) != 0,
-          voting_enabled: rand(3) != 0,
+          voting_enabled: rand(4) != 0,
+          downvoting_enabled: rand(3) != 0,
           commenting_enabled: rand(4) != 0,
           voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
           voting_limited_max: rand(15)+1,
@@ -526,7 +527,8 @@ if Apartment::Tenant.current == 'localhost'
           if phase.ideation?
             phase.assign_attributes({
               posting_enabled: rand(4) != 0,
-              voting_enabled: rand(3) != 0,
+              voting_enabled: rand(4) != 0,
+              downvoting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
               voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
               voting_limited_max: rand(15)+1,

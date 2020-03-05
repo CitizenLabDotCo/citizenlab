@@ -21,6 +21,7 @@ class ParticipationContextService
     project_inactive: 'project_inactive',
     not_ideation: 'not_ideation',
     voting_disabled: 'voting_disabled',
+    downvoting_disabled: 'downvoting_disabled',
     not_permitted: 'not_permitted',
     not_verified: 'not_verified',
     voting_limited_max_reached: 'voting_limited_max_reached',
@@ -96,8 +97,12 @@ class ParticipationContextService
       POSTING_DISABLED_REASONS[:not_ideation]
     elsif !context.posting_enabled
       POSTING_DISABLED_REASONS[:posting_disabled]
-    elsif !context_permission(context, 'posting')&.granted_to?(user)
-      not_permitted_reason context, user, 'posting', POSTING_DISABLED_REASONS
+    elsif !(permission = context_permission(context, 'posting'))&.granted_to?(user)
+      if requires_verification?(permission)
+        POSTING_DISABLED_REASONS[:not_verified]
+      else
+        POSTING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
@@ -126,18 +131,39 @@ class ParticipationContextService
       COMMENTING_DISABLED_REASONS[:not_supported]
     elsif !context.commenting_enabled
       COMMENTING_DISABLED_REASONS[:commenting_disabled]
-    elsif !context_permission(context, 'commenting')&.granted_to?(user)
-      not_permitted_reason context, user, 'commenting', COMMENTING_DISABLED_REASONS
+    elsif !(permission = context_permission(context, 'commenting'))&.granted_to?(user)
+      if requires_verification?(permission)
+        COMMENTING_DISABLED_REASONS[:not_verified]
+      else
+        COMMENTING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
   end
 
+  def voting_disabled_reason_for_vote vote, user
+    case vote.votable_type
+    when Idea.name
+      idea = vote.votable
+      if vote.down? && !get_participation_context(idea.project)&.downvoting_enabled
+        return VOTING_DISABLED_REASONS[:downvoting_disabled]
+      end
+      voting_disabled_reason_for_idea idea, user
+    when Initiative.name
+      voting_disabled_reason_for_initiative vote.votable, user
+    when Comment.name
+      voting_disabled_reason_for_comment vote.votable, user
+    else
+      raise "No support for votable type #{vote.votable_type}"
+    end
+  end
+
   def voting_disabled_reason_for_comment comment, user
     case comment.post_type
-    when 'Idea'
+    when Idea.name
       commenting_disabled_reason_for_idea comment.post, user
-    when 'Initiative'
+    when Initiative.name
       voting_disabled_reason_for_initiative comment.post, user
     else
       raise "No support for post type #{comment.post_type}"
@@ -171,8 +197,12 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:not_ideation]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
-    elsif !context_permission(context, 'voting')&.granted_to?(user)
-      not_permitted_reason context, user, 'voting', VOTING_DISABLED_REASONS
+    elsif !(permission = context_permission(context, 'voting'))&.granted_to?(user)
+      if requires_verification?(permission)
+        VOTING_DISABLED_REASONS[:not_verified]
+      else
+        VOTING_DISABLED_REASONS[:not_permitted]
+      end
     elsif (
       user && 
       context.voting_limited? && 
@@ -194,8 +224,12 @@ class ParticipationContextService
       VOTING_DISABLED_REASONS[:idea_not_in_current_phase]
     elsif !context.voting_enabled
       VOTING_DISABLED_REASONS[:voting_disabled]
-    elsif !context_permission(context, 'voting')&.granted_to?(user)
-      not_permitted_reason context, user, 'voting', VOTING_DISABLED_REASONS
+    elsif !(permission = context_permission(context, 'voting'))&.granted_to?(user)
+      if requires_verification?(permission)
+        VOTING_DISABLED_REASONS[:not_verified]
+      else
+        VOTING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
@@ -211,8 +245,12 @@ class ParticipationContextService
       TAKING_SURVEY_DISABLED_REASONS[:project_inactive]
     elsif !context.survey?
       TAKING_SURVEY_DISABLED_REASONS[:not_survey]
-    elsif !context_permission(context, 'taking_survey')&.granted_to?(user)
-      not_permitted_reason context, user, 'taking_survey', TAKING_SURVEY_DISABLED_REASONS
+    elsif !(permission = context_permission(context, 'taking_survey'))&.granted_to?(user)
+      if requires_verification?(permission)
+        TAKING_SURVEY_DISABLED_REASONS[:not_verified]
+      else
+        TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
@@ -228,8 +266,12 @@ class ParticipationContextService
       TAKING_POLL_DISABLED_REASONS[:project_inactive]
     elsif !context.poll?
       TAKING_POLL_DISABLED_REASONS[:not_poll]
-    elsif !context_permission(context, 'taking_poll')&.granted_to?(user)
-      not_permitted_reason context, user, 'taking_poll', TAKING_POLL_DISABLED_REASONS
+    elsif !(permission = context_permission(context, 'taking_poll'))&.granted_to?(user)
+      if requires_verification?(permission)
+        TAKING_POLL_DISABLED_REASONS[:not_verified]
+      else
+        TAKING_POLL_DISABLED_REASONS[:not_permitted]
+      end
     elsif user && context.poll_responses.where(user: user).exists?
       TAKING_POLL_DISABLED_REASONS[:already_responded]
     else
@@ -249,8 +291,12 @@ class ParticipationContextService
   def budgeting_disabled_reason_for_context context, user
     if !context
       BUDGETING_DISABLED_REASONS[:project_inactive]
-    elsif !context_permission(context, 'budgeting')&.granted_to?(user)
-      not_permitted_reason context, user, 'budgeting', BUDGETING_DISABLED_REASONS
+    elsif !(permission = context_permission(context, 'budgeting'))&.granted_to?(user)
+      if requires_verification?(permission)
+        BUDGETING_DISABLED_REASONS[:not_verified]
+      else
+        BUDGETING_DISABLED_REASONS[:not_permitted]
+      end
     else
       nil
     end
@@ -325,15 +371,10 @@ class ParticipationContextService
     Permission.includes(:groups).find{|permission| permission.id == id}.groups
   end
 
-  def not_permitted_reason context, user, action, reasons
-    permission = context_permission context, action
-    if !permission || !user
-      reasons[:not_permitted]
-    elsif !user.verified && permission.permitted_by == 'groups' && @verification_service.find_verification_group(groups_by_permission_id(permission.id))
-      reasons[:not_verified]
-    else
-      reasons[:not_permitted]
-    end
+  def requires_verification? permission
+    permission &&
+      permission.permitted_by == 'groups' &&
+      @verification_service.find_verification_group(groups_by_permission_id(permission.id))
   end
 
 end

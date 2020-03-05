@@ -54,12 +54,12 @@ class WebApi::V1::PhasesController < ApplicationController
   private
 
   def set_phase
-    @phase = Phase.find_by(id: params[:id])
+    @phase = Phase.find params[:id]
     authorize @phase
   end
 
   def phase_params
-    params.require(:phase).permit(
+    permitted = [
       :project_id,
       :start_at,
       :end_at,
@@ -77,7 +77,9 @@ class WebApi::V1::PhasesController < ApplicationController
       :poll_anonymous,
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES
-    )
+    ]
+    permitted += [:downvoting_enabled] if Tenant.current.has_feature? 'disable_downvoting'
+    params.require(:phase).permit(permitted)
   end
 
   def secure_controller?

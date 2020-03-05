@@ -50,7 +50,7 @@ class Phase < ApplicationRecord
   def validate_no_other_overlapping_phases
     ts = TimelineService.new
     ts.other_project_phases(self).each do |other_phase|
-      if ts.overlaps? self, other_phase
+      if start_at.present? && end_at.present? && ts.overlaps?(self, other_phase)
         errors.add(:base, :has_other_overlapping_phases, message: 'has other phases which overlap in start and end date')
       end
     end

@@ -59,6 +59,22 @@ resource "Votes" do
       expect(json_response.dig(:data,:attributes,:mode)).to eq "up"
       expect(@idea.reload.upvotes_count).to eq 3
     end
+
+    describe "When the user already voted" do
+      before do
+        @vote = create(:vote, votable: @idea, user: @user, mode: 'up')
+      end
+
+      example "[error] Upvote the same idea", document: false do
+        do_request mode: 'up'
+        expect(status).to eq 422
+      end
+
+      example "[error] Downvote the same idea", document: false do
+        do_request mode: 'down'
+        expect(status).to eq 422
+      end
+    end
   end
 
   post "web_api/v1/ideas/:idea_id/votes/up" do
@@ -165,6 +181,17 @@ resource "Votes" do
       expect(status).to eq 422
       json_response = json_parse(response_body)
       expect(json_response[:errors][:base][0][:error]).to eq "already_downvoted"
+      expect(@idea.reload.upvotes_count).to eq 2
+      expect(@idea.reload.downvotes_count).to eq 1
+    end
+
+    example "[error] Downvote in a project where downvoting is disabled", document: false do
+      @project.update! downvoting_enabled: false
+      @idea.votes.create(user: @user, mode: 'down')
+      do_request
+      expect(status).to eq 401
+      json_response = json_parse(response_body)
+      expect(json_response[:errors][:base][0][:error]).to eq ParticipationContextService::VOTING_DISABLED_REASONS[:downvoting_disabled]
       expect(@idea.reload.upvotes_count).to eq 2
       expect(@idea.reload.downvotes_count).to eq 1
     end

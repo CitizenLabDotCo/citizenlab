@@ -787,6 +787,16 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
+      },
+      "disable_downvoting": {
+        "type": "object",
+        "description": "Restrict chosen participation contexts to hide and forbid downvoting",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
       }
     },
   "dependencies": {

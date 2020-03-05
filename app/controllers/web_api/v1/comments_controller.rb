@@ -193,7 +193,7 @@ class WebApi::V1::CommentsController < ApplicationController
   private
 
   def set_comment
-    @comment = Comment.find_by(id: params[:id])
+    @comment = Comment.find params[:id]
     @post_type = @comment.post_type
     set_policy_class
     authorize @comment, policy_class: @policy_class

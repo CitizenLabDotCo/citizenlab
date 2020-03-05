@@ -69,30 +69,47 @@ describe ParticipationContextService do
 
 
   describe "voting_disabled_reasons" do
-    let(:user) { create(:user) }
+    context "for a normal user" do
+      let(:user) { create(:user) }
 
-    context "timeline project" do
-      it "returns 'not_verified' if it's in the current phase and voting is not permitted and a permitted group requires verification" do
-        project = create(:project_with_current_phase, with_permissions: true)
-        idea = create(:idea, project: project, phases: [project.phases[2]])
-        permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
-        verified_members = create(:smart_group, rules: [{ruleType: 'verified', predicate: 'is_verified'}])
-        permission.update!(permitted_by: 'groups', 
-          group_ids: [create(:group).id, verified_members.id]
-          )
-        expect(service.voting_disabled_reason_for_project(project, user)).to eq 'not_verified'
-        expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
+      context "timeline project" do
+        it "returns 'not_verified' if it's in the current phase and voting is not permitted and a permitted group requires verification" do
+          project = create(:project_with_current_phase, with_permissions: true)
+          idea = create(:idea, project: project, phases: [project.phases[2]])
+          permission = service.get_participation_context(project).permissions.find_by(action: 'voting')
+          verified_members = create(:smart_group, rules: [{ruleType: 'verified', predicate: 'is_verified'}])
+          permission.update!(permitted_by: 'groups', 
+            group_ids: [create(:group).id, verified_members.id]
+            )
+          expect(service.voting_disabled_reason_for_project(project, user)).to eq 'not_verified'
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
+        end
+      end
+
+      context "continuous project" do
+        it "returns 'not_verified' if voting is not permitted and a permitted group requires verification" do
+          project = create(:continuous_project, with_permissions: true)
+          idea = create(:idea, project: project)
+          permission = project.permissions.find_by(action: 'voting')
+          verified_members = create(:smart_group, rules: [{ruleType: 'verified', predicate: 'is_verified'}])
+          permission.update!(permitted_by: 'groups', 
+            group_ids: [create(:group).id, verified_members.id]
+            )
+          expect(service.voting_disabled_reason_for_project(project, user)).to eq 'not_verified'
+          expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
+        end
       end
     end
 
-    context "continuous project" do
+    context "for an unauthenticated visitor" do
+      let(:user) { nil }
       it "returns 'not_verified' if voting is not permitted and a permitted group requires verification" do
         project = create(:continuous_project, with_permissions: true)
         idea = create(:idea, project: project)
         permission = project.permissions.find_by(action: 'voting')
-        verified_members = create(:smart_group, rules: [{ruleType: 'verified', predicate: 'is_verified'}])
+        group = create(:smart_group, rules: [{ruleType: 'verified', predicate: 'is_verified'}])
         permission.update!(permitted_by: 'groups', 
-          group_ids: [create(:group).id, verified_members.id]
+          group_ids: [create(:group).id, group.id]
           )
         expect(service.voting_disabled_reason_for_project(project, user)).to eq 'not_verified'
         expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'not_verified'
