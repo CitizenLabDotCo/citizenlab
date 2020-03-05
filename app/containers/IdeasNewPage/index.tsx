@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isString, isEmpty, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import { parse } from 'qs';
 
 // libraries
 import { withRouter, WithRouterProps } from 'react-router';
@@ -99,17 +100,14 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 
   componentDidMount() {
     const { location, authUser } = this.props;
+    const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
+      return type === 'value' ? parseFloat(str) : str;
+    }});
 
     if (authUser === null) {
       clHistory.replace('/sign-up');
-    }
-
-    if (isString(location.query.position)) {
-      const coordinates = JSON.parse(location.query.position);
-      const lat = coordinates[0];
-      const lng = coordinates[1];
-
-      reverseGeocode(coordinates).then((position) => {
+    } else if (lat && lng) {
+      reverseGeocode([lat, lng]).then((position) => {
         this.globalState.set({
           // When an idea is posted through the map, we Google Maps gets an approximate address,
           // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
