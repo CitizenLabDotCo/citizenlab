@@ -127,18 +127,7 @@ type DefaultProps = {
   size?: string;
 };
 
-/**
- * If we have a label, an id is required. Otherwise id is optional.
- */
-type LabelProps = {
-  label: string | JSX.Element | null,
-  id: string
-} | {
-  label?: undefined,
-  id?: string | undefined
-};
-
-type Props = DefaultProps & LabelProps & {
+type Props = DefaultProps & {
   checked: boolean;
   indeterminate?: boolean;
   onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
@@ -147,37 +136,13 @@ type Props = DefaultProps & LabelProps & {
   disabled?: boolean;
 };
 
-interface State {
-  inputFocused: boolean;
-}
-
-export default class Checkbox extends PureComponent<Props, State> {
-
+export default class Checkbox extends PureComponent<Props> {
   static defaultProps: DefaultProps = {
     size: '22px'
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      inputFocused: !!props.autoFocus
-    };
-  }
-
   handleOnChange = (event) => {
     this.props.onChange(event);
-  }
-
-  handleOnFocus = () => {
-    this.setState({ inputFocused: true });
-  }
-
-  handleOnBlur = () => {
-    this.setState({ inputFocused: false });
-  }
-
-  removeFocus = (event: React.FormEvent) => {
-    event.preventDefault();
   }
 
   render() {
@@ -185,10 +150,9 @@ export default class Checkbox extends PureComponent<Props, State> {
     const hasLabel = !!label;
 
     return (
-      <Label htmlFor={id} disabled={disabled as boolean}>
+      <Label disabled={disabled as boolean}>
         <CheckboxContainer className={className} hasLabel={hasLabel}>
           <HiddenCheckbox
-            id={id}
             onChange={this.handleOnChange}
             checked={checked}
             disabled={disabled}
