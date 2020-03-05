@@ -493,7 +493,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
     if (!voting) {
       if (isNilOrError(authUser)) {
+        console.log('vote > !authUser');
         if (votingDisabledReason === 'not_verified') {
+          console.log('vote > redirectActionToSignUpPage');
           redirectActionToSignUpPage({
             action_type: voteMode ? 'upvote' : 'downvote',
             action_context_type: 'idea',
@@ -502,10 +504,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             action_requires_verification: true
           });
         } else {
+          console.log('vote > unauthenticatedVoteClick');
           unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
         }
       } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
+        console.log('vote > votingEnabled || (cancellingEnabled && isTryingToUndoVote');
+
         try {
+          console.log('vote > vote');
           this.voting$.next(voteMode);
 
           const currentPhase = getCurrentPhase(phases ? phases.map(phase => phase.data) : null);
@@ -557,6 +563,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           throw 'error';
         }
       } else if (votingDisabledReason) {
+        console.log('vote > disabledVoteClick');
         disabledVoteClick && disabledVoteClick(votingDisabledReason);
       }
     }

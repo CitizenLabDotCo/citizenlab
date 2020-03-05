@@ -136,8 +136,11 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
   }, []);
 
   const onDisabledVoteClick = useCallback((disabled_reason: IdeaVotingDisabledReason) => {
+    console.log('onDisabledVoteClick 1');
     if (authUser && disabled_reason === 'not_verified') {
+      console.log('onDisabledVoteClick 2');
       if (!isNilOrError(project)) {
+        console.log('onDisabledVoteClick 3');
         const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
         const pcId = project.relationships?.current_phase?.data?.id || project.id;
         pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
