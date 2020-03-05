@@ -119,8 +119,8 @@ const StyledCheckbox = styled.div<{ checked: boolean, size: string }>`
   }
 `;
 
-const CheckboxContainer = styled.div`
-  margin-right: 10px;
+const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
+  margin-right: ${({ hasLabel }) => hasLabel ? '10px' : '0px'};
 `;
 
 type DefaultProps = {
@@ -213,6 +213,7 @@ export default class Checkbox extends PureComponent<Props, State> {
   render() {
     const { label, size, checked, indeterminate, className, notFocusable, id, disabled, autoFocus } = this.props;
     const { inputFocused } = this.state;
+    const hasLabel = !!label;
 
     return (
       // <Container
@@ -249,16 +250,14 @@ export default class Checkbox extends PureComponent<Props, State> {
       //   }
       // </Container>
       <Label>
-        <CheckboxContainer className={className}>
+        <CheckboxContainer className={className} hasLabel={hasLabel}>
           <HiddenCheckbox onChange={this.handleOnChange} checked={checked} />
           <StyledCheckbox checked={checked} size={size as string}>
             <CheckmarkIcon ariaHidden name="checkmark" />
           </StyledCheckbox>
         </CheckboxContainer>
-        {label && <span>{label}</span>}
+        {hasLabel && <span>{label}</span>}
       </Label>
     );
   }
 }
-
-// TODO: only have margin-right when there is a label
