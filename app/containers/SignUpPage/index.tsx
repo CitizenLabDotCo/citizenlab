@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { isString, isBoolean, isObject } from 'lodash-es';
+import { isString, isBoolean, isEmpty, isObject } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
+import { stringify, parse } from 'qs';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -88,38 +89,40 @@ export interface IAction {
   action_requires_verification: boolean;
 }
 
-export function getAction(action) {
-  if (isObject(action)) {
-    const { action_type, action_context_id, action_context_type, action_context_pathname, action_requires_verification } = action as any;
+export const redirectActionToSignUpPage = (action: IAction) => {
+  clHistory.push({
+    pathname: '/sign-up',
+    search: convertActionToUrlSearchParams(action)
+  });
+};
+
+export function convertUrlSearchParamsToAction(input: string) {
+  const action = parse(input, { ignoreQueryPrefix: true, decoder: (str, defaultEncoder, charset, type) => {
+    if (type === 'value' && str === 'true') { return true; }
+    if (type === 'value' && str === 'false') { return false; }
+    return defaultEncoder(str, defaultEncoder, charset);
+  }}) as IAction;
+
+  if (isObject(action) && !isEmpty(action)) {
+    const { action_type, action_context_id, action_context_type, action_context_pathname, action_requires_verification } = action;
 
     if (
       action_type === ('upvote' || 'downvote' || 'comment' || 'post') &&
       action_context_type === ('idea' || 'initiative' || 'project' || 'phase') &&
       isString(action_context_id) &&
       isString(action_context_pathname) &&
-      (isBoolean(action_requires_verification) || isString(action_requires_verification))
+      isBoolean(action_requires_verification)
     ) {
-      const validatedAction: IAction = {
-        action_type,
-        action_context_type,
-        action_context_id,
-        action_context_pathname,
-        action_requires_verification: isBoolean(action_requires_verification) ? action_requires_verification : (action_requires_verification === 'true')
-      };
-
-      return validatedAction;
+      return action;
     }
   }
 
   return;
 }
 
-export const redirectActionToSignUpPage = (action: IAction) => {
-  clHistory.push({
-    pathname: '/sign-up',
-    query: action
-  });
-};
+export function convertActionToUrlSearchParams(action: IAction) {
+  return stringify(action, { addQueryPrefix: true });
+}
 
 interface InputProps {}
 
@@ -152,7 +155,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const action = getAction(this.props.location.query);
+    const action = convertUrlSearchParamsToAction(this.props.location.search);
     this.setState({ action: action || null });
     action && window.history.replaceState(null, '', window.location.pathname);
 
@@ -169,10 +172,18 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   onSignUpCompleted = () => {
     trackEventByName(tracks.successfulSignUp);
-    const action = getAction(this.state.action);
-    const pathname = action?.action_context_pathname || this.state.goBackToUrl;
-    const query = action;
-    clHistory.push({ pathname, query });
+    const { action, goBackToUrl } = this.state;
+
+    if (action) {
+      clHistory.push({
+        pathname: action.action_context_pathname,
+        search: convertActionToUrlSearchParams(action)
+      });
+    } else if (goBackToUrl) {
+      clHistory.push({ pathname: goBackToUrl });
+    } else {
+      clHistory.push('/');
+    }
   }
 
   render() {

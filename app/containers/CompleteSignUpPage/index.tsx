@@ -10,7 +10,7 @@ import Step2 from 'components/SignUp/Step2';
 import SignInUpBanner from 'components/SignInUpBanner';
 
 // utils
-import { IAction, getAction } from 'containers/SignUpPage';
+import { IAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'containers/SignUpPage';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -116,16 +116,22 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const action = getAction(this.props.location.query);
+    const action = convertUrlSearchParamsToAction(this.props.location.search);
     this.setState({ action: action || null });
     window.history.replaceState(null, '', window.location.pathname);
   }
 
   redirect = () => {
-    const action = getAction(this.state.action);
-    const pathname = action?.action_context_pathname || '/';
-    const query = action;
-    clHistory.push({ pathname, query });
+    const { action } = this.state;
+
+    if (action) {
+      clHistory.push({
+        pathname: action.action_context_pathname,
+        search: convertActionToUrlSearchParams(action)
+      });
+    } else {
+      clHistory.push('/');
+    }
   }
 
   focusTitle = (titleEl: HTMLHeadingElement) => {
