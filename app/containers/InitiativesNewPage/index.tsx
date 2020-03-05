@@ -5,7 +5,7 @@ import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import { reverseGeocode } from 'utils/locationTools';
-import { isString } from 'lodash-es';
+import { parse } from 'qs';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -46,17 +46,14 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
 
   componentDidMount() {
     const { location, authUser } = this.props;
+    const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
+      return type === 'value' ? parseFloat(str) : str;
+    }});
 
     if (authUser === null) {
       clHistory.replace('/sign-up');
-    }
-
-    if (location && location.query && location.query.position && isString(location.query.position)) {
-      const coordinates = JSON.parse(location.query.position);
-      const lat = coordinates[0];
-      const lng = coordinates[1];
-
-      reverseGeocode(coordinates).then((location_description) => {
+    } else if (lat && lng) {
+      reverseGeocode([lat, lng]).then((location_description) => {
         this.setState({ locationInfo: {
           // When an idea is posted through the map, we Google Maps gets an approximate address,
           // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map

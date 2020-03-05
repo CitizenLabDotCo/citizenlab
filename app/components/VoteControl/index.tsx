@@ -28,7 +28,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { getAction, redirectActionToSignUpPage } from 'containers/SignUpPage';
+import { convertUrlSearchParamsToAction, redirectActionToSignUpPage } from 'containers/SignUpPage';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
@@ -435,7 +435,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   // Trigger programmatic vote when the page url contains the vote action parameters.
   // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
   programmaticalyCastVote = () => {
-    const action = getAction(this.props.location.query);
+    const action = convertUrlSearchParamsToAction(this.props.location.search);
 
     if (action) {
       const { authUser, idea, project, phases, myVoteId, voting } = this.state;
