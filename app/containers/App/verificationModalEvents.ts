@@ -13,6 +13,8 @@ enum VerificationModalEvents {
 }
 
 export function openVerificationModalWithContext(source: string, participationContextId: string, participationContextType: IParticipationContextType, action: ICitizenAction) {
+  console.log('openVerificationModalWithContext');
+
   eventEmitter.emit<OpenVerificationModalData>(
     source,
     VerificationModalEvents.open,
