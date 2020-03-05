@@ -74,10 +74,53 @@ const IndeterminateIcon = styled(Icon)`
 `;
 
 const Label = styled.label`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
-  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  // Hide checkbox visually but remain accessible to screen readers.
+  // Source: https://polished.js.org/docs/#hidevisually
+  border: 0;
+  clip: rect(0 0 0 0);
+  clippath: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
+const StyledCheckbox = styled.div<{ checked: boolean, size: string }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
+  width: ${({ size }) => parseInt(size, 10)}px;
+  height: ${({ size }) => parseInt(size, 10)}px;
+  background: ${({ checked }) => checked ? colors.clGreen : '#fff'};
+  border-radius: ${(props) => props.theme.borderRadius};
+  transition: all 150ms;
+  border: solid 1px ${colors.separationDark};
+
+  ${HiddenCheckbox}:focus + & {
+    outline: ${customOutline};
+  }
+
+  &:hover {
+    border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
+  }
+
+  ${CheckmarkIcon} {
+    display: ${({ checked }) => checked ? 'block' : 'none'}
+  }
+`;
+
+const CheckboxContainer = styled.div`
+  margin-right: 10px;
 `;
 
 type DefaultProps = {
@@ -151,6 +194,10 @@ export default class Checkbox extends PureComponent<Props, State> {
     }
   }
 
+  handleOnChange = (event) => {
+    this.props.onChange(event);
+  }
+
   handleOnFocus = () => {
     this.setState({ inputFocused: true });
   }
@@ -201,24 +248,17 @@ export default class Checkbox extends PureComponent<Props, State> {
       //     </Label>
       //   }
       // </Container>
-      <>
-        <input
-          tabIndex={notFocusable ? -1 : 0}
-          id={id}
-          aria-checked={checked}
-          type="checkbox"
-          defaultChecked={checked}
-          onFocus={this.handleOnFocus}
-          onBlur={this.handleOnBlur}
-          disabled={disabled}
-          autoFocus={autoFocus}
-        />
-        {label &&
-          <Label htmlFor={id}>
-            {label}
-          </Label>
-        }
-      </>
+      <Label>
+        <CheckboxContainer className={className}>
+          <HiddenCheckbox onChange={this.handleOnChange} checked={checked} />
+          <StyledCheckbox checked={checked} size={size as string}>
+            <CheckmarkIcon ariaHidden name="checkmark" />
+          </StyledCheckbox>
+        </CheckboxContainer>
+        {label && <span>{label}</span>}
+      </Label>
     );
   }
 }
+
+// TODO: only have margin-right when there is a label
