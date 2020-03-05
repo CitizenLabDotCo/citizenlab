@@ -62,6 +62,7 @@ resource "Phases" do
         parameter :posting_enabled, "Can citizens post ideas in this phase? Defaults to true", required: false
         parameter :commenting_enabled, "Can citizens post comment in this phase? Defaults to true", required: false
         parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
+        parameter :downvoting_enabled, "Can citizens downvote in this phase? Defaults to true", required: false
         parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
         parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
@@ -176,18 +177,19 @@ resource "Phases" do
         parameter :title_multiloc, "The title of the phase in nultiple locales"
         parameter :description_multiloc, "The description of the phase in multiple languages. Supports basic HTML."
         parameter :participation_method, "The participation method of the project, either #{ParticipationContext::PARTICIPATION_METHODS.join(",")}. Defaults to ideation.", required: false
-        parameter :posting_enabled, "Can citizens post ideas in this phase? Defaults to true", required: false
-        parameter :commenting_enabled, "Can citizens post comment in this phase? Defaults to true", required: false
-        parameter :voting_enabled, "Can citizens vote in this phase? Defaults to true", required: false
-        parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}. Defaults to unlimited", required: false
-        parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited. Defaults to 10", required: false
+        parameter :posting_enabled, "Can citizens post ideas in this phase?", required: false
+        parameter :commenting_enabled, "Can citizens post comment in this phase?", required: false
+        parameter :voting_enabled, "Can citizens vote in this phase?", required: false
+        parameter :downvoting_enabled, "Can citizens vote in this phase?", required: false
+        parameter :voting_method, "How does voting work? Either #{ParticipationContext::VOTING_METHODS.join(",")}", required: false
+        parameter :voting_limited_max, "Number of votes a citizen can perform in this phase, only if the voting_method is limited", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}.", required: false
         parameter :survey_embed_url, "The identifier for the survey from the external API, if participation_method is set to survey", required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
-        parameter :location_allowed, "Can citizens add a location to their ideas? Defaults to true", required: false
+        parameter :location_allowed, "Can citizens add a location to their ideas?", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)

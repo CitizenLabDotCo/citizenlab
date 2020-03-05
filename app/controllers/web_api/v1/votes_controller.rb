@@ -29,7 +29,16 @@ class WebApi::V1::VotesController < ApplicationController
 
     SideFxVoteService.new.before_create(@vote, current_user)
 
-    if @vote.save
+    saved = nil
+    begin
+      saved = @vote.save
+    rescue ActiveRecord::RecordNotUnique => e
+      # Case when uniqueness DB constraint is violated
+      render json: { errors: { base: [{ error: e.message }] } }, status: :unprocessable_entity
+      return
+    end
+
+    if saved
       SideFxVoteService.new.after_create(@vote, current_user)
       render json: WebApi::V1::VoteSerializer.new(
         @vote, 
@@ -148,7 +157,7 @@ class WebApi::V1::VotesController < ApplicationController
     pcs = ParticipationContextService.new
     reason = if exception.record.votable.kind_of? Idea
       ( 
-        pcs.voting_disabled_reason_for_idea(exception.record.votable, exception.record.user) ||
+        pcs.voting_disabled_reason_for_vote(exception.record, exception.record.user) ||
         pcs.cancelling_votes_disabled_reason_for_idea(exception.record.votable, exception.record.user)
       )
     elsif exception.record.votable.kind_of?(Initiative) && exception.record.mode == 'down'

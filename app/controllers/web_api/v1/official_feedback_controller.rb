@@ -67,7 +67,7 @@ class WebApi::V1::OfficialFeedbackController < ApplicationController
   private
 
   def set_feedback
-    @feedback = OfficialFeedback.find_by(id: params[:id])
+    @feedback = OfficialFeedback.find params[:id]
     @post_type = @feedback.post_type
     set_policy_class
     authorize @feedback, policy_class: @policy_class
