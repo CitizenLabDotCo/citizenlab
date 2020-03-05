@@ -437,17 +437,25 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   // Trigger programmatic vote when the page url contains the vote action parameters.
   // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
   programmaticalyCastVote = async () => {
+    console.log('programmaticalyCastVote()');
     console.log('location:');
     console.log(this.props.location);
 
     const action = convertUrlSearchParamsToAction(this.props.location.search);
 
-    console.log('action:');
-    console.log(action);
-
     if (action) {
       const { authUser, myVoteId, voting, loaded } = this.state;
       const { action_type, action_context_id, action_context_type } = action;
+
+      console.log('action:');
+      console.log(action);
+      console.log('loaded: ' + loaded);
+      console.log('authUser: ' + !!authUser);
+      console.log('voting: ' + voting);
+      console.log('myVoteId: ' + myVoteId);
+      console.log('action_type: ' + action_type);
+      console.log('action_context_type: ' + action_context_type);
+      console.log('action_context_id: ' + action_context_id);
 
       if (
         loaded &&
@@ -497,13 +505,19 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
 
+    console.log('vote()');
     console.log('voting:' + voting);
+    console.log('authUser: ' + !!authUser);
+    console.log('votingDisabledReason: ' + votingDisabledReason);
+    console.log('votingEnabled: ' + votingEnabled);
+    console.log('cancellingEnabled: ' + cancellingEnabled);
+    console.log('isTryingToUndoVote: ' + isTryingToUndoVote);
 
     if (!voting) {
       if (isNilOrError(authUser)) {
-        console.log('vote > !authUser');
+        console.log('vote() > 1');
         if (votingDisabledReason === 'not_verified') {
-          console.log('vote > redirectActionToSignUpPage');
+          console.log('vote() > 1 > 1');
           redirectActionToSignUpPage({
             action_type: voteMode ? 'upvote' : 'downvote',
             action_context_type: 'idea',
@@ -512,14 +526,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             action_requires_verification: true
           });
         } else {
-          console.log('vote > unauthenticatedVoteClick');
+          console.log('vote() > 1 > 2');
           unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
         }
       } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
-        console.log('vote > votingEnabled || (cancellingEnabled && isTryingToUndoVote');
+        console.log('vote() > 2');
 
         try {
-          console.log('vote > vote');
+          console.log('vote() > execute vote');
           this.voting$.next(voteMode);
 
           const currentPhase = getCurrentPhase(phases ? phases.map(phase => phase.data) : null);
@@ -571,7 +585,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           throw 'error';
         }
       } else if (votingDisabledReason) {
-        console.log('vote > disabledVoteClick');
+        console.log('vote() > 3');
         disabledVoteClick && disabledVoteClick(votingDisabledReason);
       }
     }
