@@ -117,5 +117,6 @@ export default class Checkbox extends PureComponent<Props> {
   }
 }
 
+// check removed autofocus instances
 // e2e tests (checkbox, indeterminate?)
 // check in different places
