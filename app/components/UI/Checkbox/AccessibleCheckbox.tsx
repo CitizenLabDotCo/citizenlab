@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 
-const MarkIcon = styled(Icon)`
+const CheckMarkIcon = styled(Icon)`
   fill: #fff;
   width: 15px;
 `;
@@ -12,7 +12,6 @@ const IndeterminateIcon = styled(Icon)`
   fill: #fff;
   width: 12px;
 `;
-
 const Label = styled.label<{ disabled: boolean }>`
   display: flex;
   align-items: center;
@@ -34,14 +33,14 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   width: 1px;
 `;
 
-const StyledCheckbox = styled.div<{ checked: boolean, size: string, indeterminate?: boolean }>`
+const StyledCheckbox = styled.div<{checkedOrIndeterminate: boolean, size: string}>`
   display: flex;
   justify-content: center;
   align-items: center;
   flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
   width: ${({ size }) => parseInt(size, 10)}px;
   height: ${({ size }) => parseInt(size, 10)}px;
-  background: ${({ checked }) => checked ? colors.clGreen : '#fff'};
+  background: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#fff'};
   border-radius: ${(props) => props.theme.borderRadius};
   transition: all 150ms;
   border: solid 1px ${colors.separationDark};
@@ -50,12 +49,8 @@ const StyledCheckbox = styled.div<{ checked: boolean, size: string, indeterminat
     outline: ${customOutline};
   }
 
-  ${MarkIcon} {
-    display: ${({ checked, indeterminate }) => checked || indeterminate ? 'block' : 'none'}
-  }
-
   &:hover {
-    border-color: ${(props: any) => props.checked ? colors.clGreen : '#000'};
+    border-color: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#000'};
   }
 `;
 
@@ -87,7 +82,15 @@ export default class Checkbox extends PureComponent<Props> {
   }
 
   render() {
-    const { label, size, checked, indeterminate, className, notFocusable, disabled } = this.props;
+    const {
+      label,
+      size,
+      checked,
+      className,
+      notFocusable,
+      disabled,
+      indeterminate
+    } = this.props;
     const hasLabel = !!label;
 
     return (
@@ -100,8 +103,12 @@ export default class Checkbox extends PureComponent<Props> {
             disabled={disabled}
             tabIndex={notFocusable ? -1 : 0}
           />
-          <StyledCheckbox checked={checked} size={size as string} indeterminate={indeterminate}>
-            <MarkIcon ariaHidden name={indeterminate ? 'indeterminate' : 'checkmark'} />
+          <StyledCheckbox
+            checkedOrIndeterminate={(checked || indeterminate) as boolean}
+            size={size as string}
+          >
+            {checked && <CheckMarkIcon ariaHidden name="checkmark" />}
+            {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}
           </StyledCheckbox>
         </CheckboxContainer>
         {hasLabel && <span>{label}</span>}
@@ -110,6 +117,5 @@ export default class Checkbox extends PureComponent<Props> {
   }
 }
 
-// e2e-checkbox
-// TODO: handle indeterminate case
+// e2e tests (checkbox, indeterminate?)
 // check in different places
