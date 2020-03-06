@@ -28,7 +28,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { convertUrlSearchParamsToAction, redirectActionToSignUpPage } from 'containers/SignUpPage';
+import { convertUrlSearchParamsToAction, redirectActionToSignUpPage, IAction } from 'containers/SignUpPage';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
@@ -254,6 +254,7 @@ interface State {
   votingSuccessModalOpened: boolean;
   votingErrorModalOpened: boolean;
   loaded: boolean;
+  action: IAction | null;
 }
 
 class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -284,7 +285,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       phases: undefined,
       votingSuccessModalOpened: false,
       votingErrorModalOpened: false,
-      loaded: false
+      loaded: false,
+      action: null
     };
     this.voting$ = new BehaviorSubject(null);
     this.id$ = new BehaviorSubject(null);
@@ -300,6 +302,10 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       filter(ideaId => isString(ideaId)),
       distinctUntilChanged()
     ) as Observable<string>;
+
+    const action = convertUrlSearchParamsToAction(location.search);
+    this.setState({ action: action || null });
+    window.history.replaceState(null, '', window.location.pathname);
 
     this.id$.next(this.props.ideaId);
     this.upvoteElement?.addEventListener('animationend', this.votingAnimationDone);
@@ -423,9 +429,25 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     ];
   }
 
-  componentDidUpdate() {
-    this.programmaticalyCastVote();
-    this.id$.next(this.props.ideaId);
+  async componentDidUpdate(_prevProps: Props, prevState: State) {
+    const { ideaId } = this.props;
+    const { authUser, myVoteId, voting, loaded, action } = this.state;
+
+    this.id$.next(ideaId);
+
+    if (
+      !prevState.loaded &&
+      loaded &&
+      authUser &&
+      voting === null &&
+      myVoteId !== undefined &&
+      action &&
+      action.action_type === ('upvote' || 'downvote') &&
+      action.action_context_type === 'idea' &&
+      action.action_context_id === ideaId
+    ) {
+      this.programmaticalyCastVote(action.action_type === 'upvote' ? 'up' : 'down');
+    }
   }
 
   componentWillUnmount() {
@@ -436,33 +458,17 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
   // Trigger programmatic vote when the page url contains the vote action parameters.
   // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
-  programmaticalyCastVote = async () => {
-    const action = convertUrlSearchParamsToAction(this.props.location.search);
+  programmaticalyCastVote = async (voteMode: 'up' | 'down') => {
+    this.setState({ action: null });
 
-    if (action) {
-      const { authUser, myVoteId, voting, loaded } = this.state;
-      const { action_type, action_context_id, action_context_type } = action;
+    try {
+      const repsonse = await this.vote(voteMode);
 
-      if (
-        loaded &&
-        authUser &&
-        voting === null &&
-        myVoteId !== undefined &&
-        action_type === ('upvote' || 'downvote') &&
-        action_context_type === 'idea' &&
-        action_context_id === this.props.ideaId
-      ) {
-        clHistory.replace(this.props.location.pathname);
-
-        try {
-          const repsonse = await this.vote(action_type === 'upvote' ? 'up' : 'down');
-          if (repsonse === 'success') {
-            this.setState({ votingSuccessModalOpened: true });
-          }
-        } catch {
-          this.setState({ votingErrorModalOpened: true });
-        }
+      if (repsonse === 'success') {
+        this.setState({ votingSuccessModalOpened: true });
       }
+    } catch {
+      this.setState({ votingErrorModalOpened: true });
     }
   }
 
@@ -555,8 +561,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           await ideaByIdStream(ideaId).fetch();
           throw 'error';
         }
-      } else if (votingDisabledReason) {
-        disabledVoteClick && disabledVoteClick(votingDisabledReason);
+      } else if (disabledVoteClick && votingDisabledReason) {
+        disabledVoteClick(votingDisabledReason);
       }
     }
 
