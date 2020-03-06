@@ -54,7 +54,7 @@ export const SectionField = styled.div`
   margin-bottom: 35px;
   transition: all 200ms ease-in-out;
   width: 100%;
-  max-width: 500px;
+  max-width: 540px;
 
   &.fullWidth {
     max-width: 100%;
