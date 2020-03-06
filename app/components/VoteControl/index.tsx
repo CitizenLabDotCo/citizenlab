@@ -3,7 +3,6 @@ import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
@@ -305,7 +304,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
     const action = convertUrlSearchParamsToAction(location.search);
     this.setState({ action: action || null });
-    window.history.replaceState(null, '', window.location.pathname);
+    action && window.history.replaceState(null, '', window.location.pathname);
 
     this.id$.next(this.props.ideaId);
     this.upvoteElement?.addEventListener('animationend', this.votingAnimationDone);
