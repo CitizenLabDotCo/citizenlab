@@ -18,6 +18,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // events
 import { openVerificationModalWithoutContext } from 'containers/App/verificationModalEvents';
@@ -54,37 +55,63 @@ const ShieldIcon = styled(Icon)`
 `;
 
 const Content = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  margin-left: 20px;
+  margin-left: 30px;
   margin-right: 20px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
-    margin-left: 00px;
-    margin-right: 00px;
+    margin-left: 0px;
+    margin-right: 0px;
     margin-top: 20px;
     margin-bottom: 20px;
   `}
 `;
 
 const Title = styled.h2`
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 600;
-  line-height: normal;
+  line-height: 28px;
   padding: 0;
   margin: 0;
-  margin-bottom: 4px;
 `;
 
 const Text = styled.p`
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
+  margin: 0px;
+  margin-top: 16px;
+`;
+
+const StyledText = styled(Text)`
+  margin-top: 10px;
 `;
 
 const VerifyButton = styled(Button)``;
+
+const ReverifyButton = styled.button`
+  color: ${colors.clBlueDark};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: normal;
+  padding: 0px;
+  margin: 0px;
+  margin-top: 2px;
+  border: none;
+  text-decoration: underline;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
+  cursor: pointer;
+
+  &:hover {
+    color: ${darken(0.15, colors.clBlueDark)};
+    text-decoration: underline;
+  }
+`;
 
 const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
@@ -96,6 +123,12 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   if (isNilOrError(authUser)) return null;
 
   const authIsVerified = authUser.data.attributes.verified;
+
+  const reverifyButton = (
+    <ReverifyButton onClick={openVerificationModal}>
+      <FormattedMessage {...messages.clickHereToUpdateVerification} />
+    </ReverifyButton>
+  );
 
   return (
     <FeatureFlag name="verification">
@@ -110,18 +143,14 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
             />
             <Content>
               <Title>
-                <FormattedMessage {...messages.verifiedTitle} />
+                <FormattedMessage {...messages.verifiedIdentityTitle} />
               </Title>
               <Text>
-                <FormattedMessage {...messages.verifiedText} />
+                <FormattedMessage {...messages.verifiedIdentitySubtitle} />
               </Text>
-              <Button
-                buttonStyle="text"
-                padding="0px"
-                text={<FormattedMessage {...messages.verifyAgain} />}
-                whiteSpace="wrap"
-                onClick={openVerificationModal}
-              />
+              <Text>
+                <FormattedMessage {...messages.updateverification} values={{ reverifyButton }} />
+              </Text>
             </Content>
           </>
           :
@@ -139,11 +168,11 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
             </AvatarAndShield>
             <Content>
               <Title>
-                <FormattedMessage {...messages.verifyTitle} />
+                <FormattedMessage {...messages.becomeVerifiedTitle} />
               </Title>
-              <Text>
-                <FormattedMessage {...messages.verifyText} />
-              </Text>
+              <StyledText>
+                <FormattedMessage {...messages.becomeVerifiedSubtitle} />
+              </StyledText>
             </Content>
             <VerifyButton onClick={openVerificationModal} id="e2e-verify-user-button">
               <FormattedMessage {...messages.verifyNow} />

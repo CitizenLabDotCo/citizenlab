@@ -181,33 +181,37 @@ export default defineMessages({
   /*
   * VerificationStatus
   */
-  verifyTitle: {
-    id: 'app.containers.UsersEditPage.verifyTitle',
+ becomeVerifiedTitle: {
+    id: 'app.containers.UsersEditPage.becomeVerifiedTitle',
     defaultMessage: 'Verify your identity',
   },
-  verifyText: {
-    id: 'app.containers.UsersEditPage.verifyText',
-    defaultMessage: 'and become a verified citizen',
+  becomeVerifiedSubtitle: {
+    id: 'app.containers.UsersEditPage.becomeVerifiedSubtitle',
+    defaultMessage: 'To participate in projects for verified citizens.',
   },
   verifyNow: {
     id: 'app.containers.UsersEditPage.verifyNow',
     defaultMessage: 'Verify now',
   },
-  verifiedTitle: {
-    id: 'app.containers.UsersEditPage.verifiedTitle',
-    defaultMessage: 'Your account has been verified',
+  verifiedIdentityTitle: {
+    id: 'app.containers.UsersEditPage.verifiedIdentityTitle',
+    defaultMessage: 'You are a verified citizen',
   },
-  verifiedText: {
-    id: 'app.containers.UsersEditPage.verifiedText',
-    defaultMessage: 'Your identity has been verified. Your city will be able to base decision on you as part of the community',
+  verifiedIdentitySubtitle: {
+    id: 'app.containers.UsersEditPage.verifiedIdentitySubtitle',
+    defaultMessage: 'You can participate in projects that are only accessible to verified citizens.',
   },
-  verifyAgain: {
-    id: 'app.containers.UsersEditPage.verifyAgain',
-    defaultMessage: 'Information about you are outdated ? Click here to verify again.',
+  updateverification: {
+    id: 'app.containers.UsersEditPage.updateverification',
+    defaultMessage: 'Did your official information change? {reverifyButton}',
+  },
+  clickHereToUpdateVerification: {
+    id: 'app.containers.UsersEditPage.clickHereToUpdateVerification',
+    defaultMessage: 'Please click here to update your verification.',
   },
   blockedVerified: {
     id: 'app.containers.UsersEditPage.blockedVerified',
-    defaultMessage: 'You can\'t edit this field because it contains verified informtion',
+    defaultMessage: 'You can\'t edit this field because it contains verified information',
   },
   /*
   * Meta
