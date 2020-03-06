@@ -1789,7 +1789,7 @@
   "app.containers.SignUp.signUpPage": "registratiepagina",
   "app.containers.SignUp.skip": "Sla deze stap over",
   "app.containers.SignUp.step1Title": "Registreren",
-  "app.containers.SignUp.step2Title": "Je bent er bijna",
+  "app.containers.SignUp.step3Title": "",
   "app.containers.SignUp.submit": "Registreren",
   "app.containers.SignUp.tacApproval": "Vink aan om te bevestigen dat je onze {tacLink} hebt gelezen en goedgekeurd.",
   "app.containers.SignUp.tacError": "Het aanvaarden van onze gebruiksvoorwaarden is nodig om verder te gaan",

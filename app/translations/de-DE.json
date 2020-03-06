@@ -1789,7 +1789,7 @@
   "app.containers.SignUp.signUpPage": "Anmeldeseite",
   "app.containers.SignUp.skip": "Diesen Schritt überspringen",
   "app.containers.SignUp.step1Title": "Registrieren",
-  "app.containers.SignUp.step2Title": "Fast geschafft",
+  "app.containers.SignUp.step3Title": "",
   "app.containers.SignUp.submit": "Registrieren",
   "app.containers.SignUp.tacApproval": "Kreuzen Sie hier an, um zu bestätigen, dass Sie unsere {tacLink} gelesen haben und ihnen zustimmen.",
   "app.containers.SignUp.tacError": "Sie müssen unseren allgemeinen Geschäftsbedingungen zustimmen, um fortzufahren",
