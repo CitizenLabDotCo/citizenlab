@@ -302,7 +302,6 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
           {title && <StyledFormLabelValue noSpace htmlFor={id} thin labelValue={title} />}
           <InputContainer>
             <Checkbox
-              id={id}
               checked={(isBoolean(props.value) ? props.value : false)}
               onChange={onChange}
               label={(props.schema.description || null)}
