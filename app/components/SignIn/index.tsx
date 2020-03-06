@@ -28,6 +28,7 @@ import messages from './messages';
 
 // utils
 import { isValidEmail } from 'utils/validate';
+import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import { darken } from 'polished';
@@ -224,8 +225,9 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
   }
 
   validate(email: string | null, password: string | null) {
-    const { formatMessage } = this.props.intl;
-    const hasEmailError = (!email || !isValidEmail(email));
+    const { intl: { formatMessage }, tenant } = this.props;
+    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const hasEmailError = !phone && (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const passwordError = (!password ? formatMessage(messages.noPasswordError) : null);
 
@@ -276,6 +278,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
     const { className, title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
+    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
     const azureAdLogo: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.logo_url', null);
     const tenantLoginMechanismName: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name', null);
@@ -290,7 +293,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
               <FormElement>
                 <FormLabel
                   htmlFor="email"
-                  labelMessage={messages.emailLabel}
+                  labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
                   thin
                 />
                 <StyledInput
