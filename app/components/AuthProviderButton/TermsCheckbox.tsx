@@ -154,7 +154,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
           </TermsAndConditionsWrapper>
           <TermsAndConditionsWrapper>
             <Checkbox
-              className="e2e-terms-and-conditions"
+              className="e2e-terms-and-conditions-auth-button"
               checked={this.state.tacAccepted}
               onChange={this.handleTaCAcceptedOnChange}
               label={
@@ -175,7 +175,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
           </TermsAndConditionsWrapper>
           <TermsAndConditionsWrapper>
             <Checkbox
-              className="e2e-privacy-checkbox"
+              className="e2e-privacy-checkbox-auth-button"
               checked={this.state.privacyAccepted}
               onChange={this.handlePrivacyAcceptedOnChange}
               label={
@@ -196,7 +196,7 @@ class TermsCheckbox extends PureComponent<Props & InjectedIntlProps, State> {
           </TermsAndConditionsWrapper>
           <TermsAndConditionsWrapper>
             <Checkbox
-              className="e2e-email-checkbox"
+              className="e2e-email-checkbox-auth-button"
               checked={this.state.emailAccepted}
               onChange={this.handleEmailAcceptedOnChange}
               label={
