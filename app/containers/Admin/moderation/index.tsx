@@ -289,7 +289,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <thead>
             <tr>
               <th className="checkbox">
-                <Checkbox
+                <StyledCheckbox
                   checked={moderationItems.length > 0 && selectedRows.length === moderationItems.length}
                   indeterminate={selectedRows.length > 0 && selectedRows.length < moderationItems.length}
                   disabled={moderationItems.length === 0}
