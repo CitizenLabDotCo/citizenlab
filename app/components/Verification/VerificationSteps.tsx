@@ -1,16 +1,10 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
 // components
-import Modal from 'components/UI/Modal';
 import VerificationMethods from './VerificationMethods';
 import VerificationFormCOW from './VerificationFormCOW';
 import VerificationFormBogus from './VerificationFormBogus';
-import VerificationSuccess from './VerificationSuccess';
-import VerificationError from './VerificationError';
 import VerificationFormLookup from './VerificationFormLookup';
-
-// events
-import { closeVerificationModal } from 'containers/App/verificationModalEvents';
 
 // style
 import styled from 'styled-components';
@@ -30,9 +24,7 @@ export type ProjectContext = { id: string, type: IParticipationContextType, acti
 
 export type ErrorContext = { error: 'taken' | 'not_entitled' | null };
 
-export type ContextShape = ProjectContext
-| ErrorContext
-| null;
+export type ContextShape = ProjectContext | ErrorContext | null;
 
 export function isProjectContext(obj: ContextShape): obj is ProjectContext {
   return (obj as ProjectContext)?.id !== undefined;
@@ -51,24 +43,31 @@ export function isProjectOrErrorContext(obj: ContextShape) {
     return 'ErrorContext';
   }
 }
-export type VerificationModalSteps = 'method-selection' | 'success' | 'error' | null | IVerificationMethod['attributes']['name'];
+
+export type TVerificationSteps = 'method-selection' | 'success' | 'error' | null | IVerificationMethod['attributes']['name'];
 
 export interface Props {
-  opened: boolean;
-  initialActiveStep?: VerificationModalSteps;
-  className?: string;
   context: ContextShape; // TODO change to pass in additionnal rules info
+  initialActiveStep: TVerificationSteps;
+  onComplete?: () => void;
+  onError?: () => void;
+  className?: string;
 }
 
-const VerificationModal = memo<Props>(({ opened, className, context, initialActiveStep }) => {
+const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, onComplete, onError }) => {
 
-  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(initialActiveStep || 'method-selection');
+  const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep);
   const [method, setMethod] = useState<IDLookupMethod | null>(null);
 
   useEffect(() => {
-    // reset active step when modal opens or closes
-    setActiveStep(initialActiveStep || 'method-selection');
-  }, [opened, initialActiveStep]);
+    if (activeStep === 'success' && onComplete) {
+      onComplete();
+    }
+
+    if (activeStep === 'error' && (context === null || isErrorContext(context)) && onError) {
+      onError();
+    }
+  }, [onComplete, onError, context, activeStep]);
 
   const onMethodSelected = useCallback((selectedMethod: IVerificationMethod) => {
     const { name } = selectedMethod.attributes;
@@ -79,20 +78,12 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
     setActiveStep(name);
   }, []);
 
-  const onClose = useCallback(() => {
-    closeVerificationModal('VerificationModal');
-  }, []);
-
   const onCowCancel = useCallback(() => {
     setActiveStep('method-selection');
   }, []);
 
   const onCowVerified = useCallback(() => {
     setActiveStep('success');
-  }, []);
-
-  const onErrorBack = useCallback(() => {
-    setActiveStep('method-selection');
   }, []);
 
   const onBogusCancel = useCallback(() => {
@@ -114,38 +105,24 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
   }, []);
 
   return (
-    <Modal
-      width={820}
-      opened={opened}
-      close={onClose}
-    >
-      <Container className={`e2e-verification-modal ${className || ''}`}>
-        {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
-          <VerificationMethods context={context} onMethodSelected={onMethodSelected} />
-        }
+    <Container className={`e2e-verification-modal ${className || ''}`}>
+      {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
+        <VerificationMethods context={context} onMethodSelected={onMethodSelected} />
+      }
 
-        {activeStep === 'cow' &&
-          <VerificationFormCOW onCancel={onCowCancel} onVerified={onCowVerified} />
-        }
+      {activeStep === 'cow' &&
+        <VerificationFormCOW onCancel={onCowCancel} onVerified={onCowVerified} />
+      }
 
-        {activeStep === 'bogus' &&
-          <VerificationFormBogus onCancel={onBogusCancel} onVerified={onBogusVerified} />
-        }
+      {activeStep === 'bogus' &&
+        <VerificationFormBogus onCancel={onBogusCancel} onVerified={onBogusVerified} />
+      }
 
-        {activeStep === 'id_card_lookup' && method &&
-          <VerificationFormLookup onCancel={onLookupCancel} onVerified={onLookupVerified} method={method} />
-        }
-
-        {activeStep === 'success' &&
-          <VerificationSuccess />
-        }
-
-        {activeStep === 'error' && (context === null || isErrorContext(context)) &&
-          <VerificationError onBack={onErrorBack} context={context}/>
-        }
-      </Container>
-    </Modal>
+      {activeStep === 'id_card_lookup' && method &&
+        <VerificationFormLookup onCancel={onLookupCancel} onVerified={onLookupVerified} method={method} />
+      }
+    </Container>
   );
 });
 
-export default VerificationModal;
+export default VerificationSteps;
