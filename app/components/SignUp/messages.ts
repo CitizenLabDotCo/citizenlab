@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.step1Title',
     defaultMessage: 'Create an account',
   },
+  step2Title: {
+    id: 'app.containers.SignUp.step2Title',
+    defaultMessage: 'Verify your identity',
+  },
   step3Title: {
     id: 'app.containers.SignUp.step3Title',
     defaultMessage: 'Complete your profile',

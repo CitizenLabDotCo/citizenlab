@@ -34,9 +34,9 @@ import Footer from 'containers/Footer';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
-import VerificationModal from 'components/VerificationModal';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
+const VerificationModal = lazy(() => import('components/Verification/VerificationModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -57,7 +57,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { VerificationModalSteps, ContextShape } from 'components/VerificationModal/VerificationModal';
+import { TVerificationSteps, ContextShape } from 'components/Verification/VerificationSteps';
 
 const Container = styled.div`
   display: flex;
@@ -100,7 +100,7 @@ type State = {
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
   verificationModalOpened: boolean;
-  verificationModalInitialStep: VerificationModalSteps;
+  verificationModalInitialStep: TVerificationSteps;
   verificationModalContext: ContextShape | null;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
@@ -263,7 +263,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  openVerificationModal = (step: VerificationModalSteps, context: ContextShape | null) => {
+  openVerificationModal = (step: TVerificationSteps, context: ContextShape | null) => {
     if (this.state.authUser) {
       this.setState({
         verificationModalOpened: true,

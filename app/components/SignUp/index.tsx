@@ -9,6 +9,7 @@ import clHistory from 'utils/cl-router/history';
 
 // components
 import Step1 from './Step1';
+import VerificationSteps from 'components/Verification/VerificationSteps';
 import Step3 from './Step3';
 import SocialSignUp from './SocialSignUp';
 import FeatureFlag from 'components/FeatureFlag';
@@ -124,6 +125,7 @@ interface InputProps {
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   step1Title?: string | JSX.Element;
+  step2Title?: string | JSX.Element;
   step3Title?: string | JSX.Element;
   action?: IAction | null;
   onSignUpCompleted: (userId: string) => void;
@@ -137,7 +139,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  visibleStep: number;
+  activeStep: number;
   userId: string | null;
 }
 
@@ -147,14 +149,25 @@ class SignUp extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      visibleStep: 1,
+      activeStep: 1,
       userId: null
     };
   }
 
   componentDidMount() {
     this.subscription = signUpNextStep$.subscribe(() => {
-      this.setState(state => ({ visibleStep: state.visibleStep + 1 }));
+      const { activeStep, userId } = this.state;
+      const { action, customFieldsSchema } = this.props;
+      const hasVerificationStep = action?.action_requires_verification;
+      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+
+      if (activeStep === 1 && hasVerificationStep) {
+        this.setState({ activeStep: 2 });
+      } else if (hasCustomFields) {
+        this.setState({ activeStep: 3 });
+      } else if (userId) {
+        this.props.onSignUpCompleted(userId);
+      }
     });
   }
 
@@ -163,23 +176,16 @@ class SignUp extends PureComponent<Props, State> {
   }
 
   handleStep1Completed = (userId: string) => {
-    const { customFieldsSchema } = this.props;
-
     this.setState({ userId });
+    signUpGoToNextStep();
+  }
 
-    if (!isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
-      signUpGoToNextStep();
-    } else {
-      this.props.onSignUpCompleted(userId);
-    }
+  handleStep2Completed = () => {
+    signUpGoToNextStep();
   }
 
   handleStep3Completed = () => {
-    const { userId } = this.state;
-
-    if (userId) {
-      this.props.onSignUpCompleted(userId);
-    }
+    this.state.userId && this.props.onSignUpCompleted(this.state.userId);
   }
 
   goToSignIn = () => {
@@ -193,16 +199,20 @@ class SignUp extends PureComponent<Props, State> {
     titleEl && titleEl.focus();
   }
 
+  onVerificationError = () => {
+    console.log('error');
+  }
+
   render() {
-    const { visibleStep } = this.state;
-    const { isInvitation, token, step1Title, step3Title, action, tenant } = this.props;
+    const { activeStep } = this.state;
+    const { isInvitation, token, step1Title, step2Title, step3Title, action, tenant } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
       <Container className="e2e-sign-up-container">
         <ContainerInner>
           <TransitionGroup>
-            {visibleStep === 1 &&
+            {activeStep === 1 &&
               <CSSTransition
                 timeout={timeout}
                 classNames="step"
@@ -236,7 +246,24 @@ class SignUp extends PureComponent<Props, State> {
               </CSSTransition>
             }
 
-            {visibleStep === 3 &&
+            {activeStep === 2 &&
+              <CSSTransition
+                timeout={timeout}
+                classNames="step"
+              >
+                <StepContainer>
+                  <Title>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                  <VerificationSteps
+                    context={null}
+                    initialActiveStep="method-selection"
+                    onComplete={this.handleStep2Completed}
+                    onError={this.onVerificationError}
+                  />
+                </StepContainer>
+              </CSSTransition>
+            }
+
+            {activeStep === 3 &&
               <CSSTransition
                 timeout={timeout}
                 classNames="step"

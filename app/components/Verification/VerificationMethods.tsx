@@ -24,7 +24,7 @@ import { darken } from 'polished';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
-import { ContextShape, isProjectContext } from './VerificationModal';
+import { ContextShape, isProjectContext } from './VerificationSteps';
 import { AUTH_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'services/locale';

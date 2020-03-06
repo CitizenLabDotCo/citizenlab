@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getParticipationConditions, IParticipationConditions } from 'services/participationConditions';
-import { ProjectContext } from 'components/VerificationModal/VerificationModal';
+import { ProjectContext } from 'components/Verification/VerificationSteps';
 
 // doesn't react to prop changes, which is ok here because components are unmounted btwn uses
 
