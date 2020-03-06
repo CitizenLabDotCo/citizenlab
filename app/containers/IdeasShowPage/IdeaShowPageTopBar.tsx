@@ -136,12 +136,10 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
   }, []);
 
   const onDisabledVoteClick = useCallback((disabled_reason: IdeaVotingDisabledReason) => {
-    if (authUser && disabled_reason === 'not_verified') {
-      if (!isNilOrError(project)) {
-        const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-        const pcId = project.relationships?.current_phase?.data?.id || project.id;
-        pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
-      }
+    if (!isNilOrError(authUser) && !isNilOrError(project) && disabled_reason === 'not_verified') {
+      const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+      const pcId = project.relationships?.current_phase?.data?.id || project.id;
+      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
     }
   }, [authUser, project]);
 
