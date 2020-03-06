@@ -94,10 +94,12 @@ export default class Checkbox extends PureComponent<Props> {
     const hasLabel = !!label;
 
     return (
-      <Label disabled={disabled as boolean}>
-        <CheckboxContainer className={className} hasLabel={hasLabel}>
+      <Label
+        className={`${className ? className : ''}`}
+        disabled={disabled as boolean}
+      >
+        <CheckboxContainer hasLabel={hasLabel}>
           <HiddenCheckbox
-            className="e2e-checkbox"
             onChange={this.handleOnChange}
             checked={checked}
             disabled={disabled}
@@ -106,6 +108,7 @@ export default class Checkbox extends PureComponent<Props> {
           <StyledCheckbox
             checkedOrIndeterminate={(checked || indeterminate) as boolean}
             size={size as string}
+            className={`${checked ? 'checked' : ''} e2e-checkbox`}
           >
             {checked && <CheckMarkIcon ariaHidden name="checkmark" />}
             {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}
@@ -117,6 +120,7 @@ export default class Checkbox extends PureComponent<Props> {
   }
 }
 
-// check removed autofocus instances
 // e2e tests (checkbox, indeterminate?)
+// check removed autofocus instances
+// check removed ids (search for)
 // check in different places
