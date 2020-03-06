@@ -59,6 +59,5 @@ class TextImageService
           remote_image_url: image_data
         )
       end
-    text_image.image.url
   end
 end
