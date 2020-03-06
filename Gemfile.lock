@@ -1,4 +1,11 @@
 GIT
+  remote: https://github.com/CitizenLabDotCo/ice_cube.git
+  revision: 9fb61c41e0717cf85fb45daa341f6bd1edf8e12f
+  branch: CL2-5023-broken-backend
+  specs:
+    ice_cube (0.16.3)
+
+GIT
   remote: https://github.com/CitizenLabDotCo/knock.git
   revision: 2a73aac587e3358a701b731ae0fd1fb2660f8569
   specs:
@@ -37,13 +44,6 @@ GIT
   specs:
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
-
-GIT
-  remote: https://github.com/gssbzn/ice_cube.git
-  revision: 605394a6449c1b8f7f47baea7c362c3059bd1504
-  ref: 605394a
-  specs:
-    ice_cube (0.16.3)
 
 GIT
   remote: https://github.com/influitive/apartment.git
