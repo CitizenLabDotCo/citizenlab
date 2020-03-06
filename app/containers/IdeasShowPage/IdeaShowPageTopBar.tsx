@@ -145,7 +145,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
 
   const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
 
-  if (!isNilOrError(idea) && smallerThanLargeTablet) {
+  if (!isNilOrError(idea) && !isNilOrError(project) && smallerThanLargeTablet) {
     return (
       <Container className={className}>
         <TopBarInner>
