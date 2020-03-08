@@ -7,12 +7,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import IconTooltip from 'components/UI/IconTooltip';
-
-import { Title } from './styles';
+import Collapse from 'components/UI/Collapse';
+import { FormContainer, Title, Form, FormField, StyledLabel, LabelTextContainer, Footer, SubmitButton, CancelButton, HelpImage } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -27,83 +25,14 @@ import { FormattedMessage } from 'utils/cl-intl';
 // images
 import helpImage from './COWHelpImage.png';
 
-// style
-import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  max-width: 350px;
-
-  ${media.smallerThanMaxTablet`
-    max-width: auto;
-  `}
-`;
-
-const FormField = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-`;
-
-const StyledLabel = styled(Label)`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-`;
-
-const LabelTextContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-const FooterInner = styled.div`
-  width: 100%;
-  max-width: 350px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: flex;
-`;
-
-const SubmitButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-const CancelButton = styled(Button)``;
-
-const HelpImage = styled.img`
-  width: 100%;
-`;
-
-const HelpButton = styled.button`
-   margin: 0;
-   padding: 0;
-   color: ${colors.label};
-   cursor: pointer;
-`;
-
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
+  showHeader?: boolean;
   className?: string;
 }
 
-const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) => {
+const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, className }) => {
 
   const authUser = useAuthUser();
 
@@ -113,6 +42,8 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
   const [idError, setIdError] = useState<JSX.Element | null>(null);
   const [formError, setFormError] = useState<JSX.Element | null>(null);
   const [showHelp, setShowHelp] = useState<boolean>(false);
+
+  const inModal = !window.location.pathname.endsWith('/sign-up');
 
   const onRunChange = useCallback((run: string) => {
     setRunError(null);
@@ -185,37 +116,33 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
     onCancel();
   }, []);
 
-  const onShowHelpButtonClick = useCallback(() => {
+  const onToggleHelpButtonClick = useCallback(() => {
     setShowHelp(showHelp => !showHelp);
   }, []);
 
-  const removeFocus = useCallback((event) => {
-    event.preventDefault();
-  }, []);
-
   return (
-    <Container className={className}>
-      <Title>
-        <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
-      </Title>
+    <FormContainer className={className} inModal={inModal}>
+      {showHeader &&
+        <Title>
+          <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
+        </Title>
+      }
 
-      <Form>
+      <Form inModal={inModal}>
         <FormField>
           <StyledLabel htmlFor="run">
             <LabelTextContainer>
               <span>RUN</span>
               <IconTooltip maxTooltipWidth={200} content="Ingrese su número de RUT, con puntos y guión. Ej: 11.222.333-4" />
             </LabelTextContainer>
-            <div>
-              <Input
-                id="run"
-                type="text"
-                placeholder="xx.xxx.xxx-x"
-                onChange={onRunChange}
-                value={run}
-                error={runError}
-              />
-            </div>
+            <Input
+              id="run"
+              type="text"
+              placeholder="xx.xxx.xxx-x"
+              onChange={onRunChange}
+              value={run}
+              error={runError}
+            />
           </StyledLabel>
         </FormField>
 
@@ -225,26 +152,22 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
               <span>Número de Documento</span>
               <IconTooltip maxTooltipWidth={200} content="Ingrese el número de documento que se encuentra al frente de las cédulas y atrás en las cédulas antiguas. Ej: 111.222.333 en las cédulas nuevas o A012345678 en las cédulas antiguas." />
             </LabelTextContainer>
-            <div>
-              <Input
-                id="id-serial"
-                type="text"
-                onChange={onIdSerialChange}
-                value={idSerial}
-                error={idError}
-              />
-            </div>
+            <Input
+              id="id-serial"
+              type="text"
+              onChange={onIdSerialChange}
+              value={idSerial}
+              error={idError}
+            />
           </StyledLabel>
-          <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus} type="button">
-          {showHelp
-            ? (
-              <HelpImage src={helpImage} alt="help" />
-            )
-            : (
-              <FormattedMessage {...messages.showCOWHelp} />
-            )
-          }
-          </HelpButton>
+
+          <Collapse
+            opened={showHelp}
+            onToggle={onToggleHelpButtonClick}
+            label={<FormattedMessage {...messages.showCOWHelp} />}
+          >
+            <HelpImage src={helpImage} alt="help" />
+          </Collapse>
         </FormField>
 
         {formError &&
@@ -252,17 +175,15 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, className }) =>
         }
 
         <Footer>
-          <FooterInner>
-            <SubmitButton onClick={onSubmit}>
-              <FormattedMessage {...messages.submit} />
-            </SubmitButton>
-            <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
-              <FormattedMessage {...messages.cancel} />
-            </CancelButton>
-          </FooterInner>
+          <SubmitButton onClick={onSubmit}>
+            <FormattedMessage {...messages.submit} />
+          </SubmitButton>
+          <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
+            <FormattedMessage {...messages.cancel} />
+          </CancelButton>
         </Footer>
       </Form>
-    </Container>
+    </FormContainer>
   );
 });
 

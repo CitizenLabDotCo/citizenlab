@@ -27,11 +27,16 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalContent = styled.div`
+const ModalContent = styled.div<{ hasHeaderOrFooter: boolean }>`
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '40px'};
+
+  ${media.smallerThanMinTablet`
+    padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '20px'};
+  `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -72,7 +77,7 @@ const CloseButton = styled.button`
   `}
 `;
 
-const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModal: boolean }>`
+const ModalContainer = styled(clickOutside)`
   width: 100%;
   max-height: 80vh;
   margin-top: 60px;
@@ -82,7 +87,7 @@ const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModa
   flex-direction: column;
   outline: none;
   overflow: hidden;
-  padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '40px'};
+  padding: 0px;
   position: relative;
 
   &.fixedHeight {
@@ -96,7 +101,7 @@ const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModa
 
   ${media.smallerThanMinTablet`
     margin-top: 40px;
-    padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '20px'};
+    padding: 0px;
 
     &.fixedHeight {
       height: auto;
@@ -111,7 +116,7 @@ const StyledFocusOn = styled(FocusOn)<{ width: number }>`
   height: 100vh;
 `;
 
-const Overlay: any = styled.div`
+const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -134,8 +139,8 @@ const Overlay: any = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 12px;
+    padding-right: 12px;
   `}
 
   &.modal-enter {
@@ -336,6 +341,7 @@ export default class Modal extends PureComponent<Props, State> {
   render() {
     const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
     const hasFixedHeight = this.props.fixedHeight || bowser.msie;
+    const hasHeaderOrFooter = header !== undefined || footer !== undefined;
     const modalPortalElement = document?.getElementById('modal-portal');
 
     if (modalPortalElement) {
@@ -360,11 +366,9 @@ export default class Modal extends PureComponent<Props, State> {
               <ModalContainer
                 className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
-                hasHeaderOrFooter={header !== undefined || footer !== undefined}
                 ariaLabelledBy="modal-header"
                 aria-modal="true"
                 role="dialog"
-                isModal
               >
                 <CloseButton
                   className="e2e-modal-close-button"
@@ -381,7 +385,7 @@ export default class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 }
 
-                <ModalContent>
+                <ModalContent hasHeaderOrFooter={hasHeaderOrFooter}>
                   {children}
                 </ModalContent>
 

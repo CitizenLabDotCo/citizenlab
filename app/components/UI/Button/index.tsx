@@ -13,6 +13,7 @@ export type ButtonStyles =
   | 'primary-outlined'
   | 'secondary'
   | 'secondary-outlined'
+  | 'white'
   | 'success'
   | 'text'
   | 'cl-blue'
@@ -30,6 +31,8 @@ type DefaultStyleValues = {
     textHoverColor?: string;
     borderColor?: string;
     borderHoverColor?: string;
+    iconColor?: string;
+    iconHoverColor?: string;
   };
 };
 
@@ -108,7 +111,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     },
     'primary-outlined': {
       bgColor: 'transparent',
-      bgHoverColor: 'transparent',
+      bgHoverColor: transparentize(0.95, get(props.theme, 'colorMain')),
       textColor: get(props.theme, 'colorMain'),
       borderColor: get(props.theme, 'colorMain'),
     },
@@ -128,6 +131,14 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       bgHoverColor: transparentize(0.95, colors.label),
       textColor: colors.label,
       borderColor: lighten(0.25, colors.label),
+    },
+    white: {
+      bgColor: '#fff',
+      bgHoverColor: '#fff',
+      textColor: get(props.theme, 'colorText'),
+      borderColor: '#ddd',
+      borderHoverColor: darken(0.3, '#ddd'),
+      iconColor: get(props.theme, 'colorMain')
     },
     text: {
       bgColor: 'transparent',
@@ -176,7 +187,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const textColor = props.textColor || get(defaultStyleValues, `${props.buttonStyle}.textColor`);
   const textHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, textColor);
   const iconColor = props.iconColor || get(defaultStyleValues, `${props.buttonStyle}.iconColor`) || textColor;
-  const iconHoverColor = props.iconHoverColor || get(defaultStyleValues, `${props.buttonStyle}.iconHoverColor`) || textHoverColor;
+  const iconHoverColor = props.iconHoverColor || get(defaultStyleValues, `${props.buttonStyle}.iconHoverColor`) || darken(0.2, iconColor);
   const textDisabledColor = props.textDisabledColor || get(defaultStyleValues, `${props.buttonStyle}.textDisabledColor`) || textColor;
   const borderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
   const borderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, borderColor);
