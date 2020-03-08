@@ -17,6 +17,7 @@ import FeatureFlag from 'components/FeatureFlag';
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetVerificationMethods, { GetVerificationMethodsChildProps } from 'resources/GetVerificationMethods';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -134,6 +135,7 @@ interface InputProps {
 interface DataProps {
   tenant: GetTenantChildProps;
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  verificationMethods: GetVerificationMethodsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -283,7 +285,8 @@ class SignUp extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  customFieldsSchema: <GetCustomFieldsSchema />
+  customFieldsSchema: <GetCustomFieldsSchema />,
+  verificationMethods: <GetVerificationMethods />
 });
 
 export default (inputProps: InputProps) => (

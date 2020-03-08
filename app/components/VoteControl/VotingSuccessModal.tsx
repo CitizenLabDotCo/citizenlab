@@ -13,7 +13,7 @@ import { Container, Header, Background, Foreground, ForegroundIconContainer, For
 import { colors } from 'utils/styleUtils';
 
 // svg
-import illustration from 'components/VerificationModal/illustration.svg';
+import illustration from 'components/Verification/illustration.svg';
 
 interface Props {
   opened: boolean;

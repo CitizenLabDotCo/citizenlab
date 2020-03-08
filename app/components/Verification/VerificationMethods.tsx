@@ -6,6 +6,7 @@ import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import Spinner from 'components/UI/Spinner';
 import { Title, Subtitle } from './styles';
 
 // hooks
@@ -20,7 +21,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled, { withTheme } from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
@@ -30,33 +30,44 @@ import { getJwt } from 'utils/auth/jwt';
 import { removeUrlLocale } from 'services/locale';
 
 const Container = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  ${media.smallerThanMinTablet`
-    padding: 10px;
-  `}
-  ${media.largePhone`
-    padding: 0px;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 35px;
+
+  ${media.smallerThanMaxTablet`
+    justify-content: flex-start;
+    margin-bottom: 20px;
   `}
 `;
 
 const AboveTitle = styled.div`
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 25px;
-  ${media.smallerThanMaxTablet`
-    justify-content: flex-start;
-    margin-top: 15px;
-  `}
 `;
 
 const StyledAvatar = styled(Avatar)`
   margin-left: -5px;
   margin-right: -5px;
   z-index: 2;
+
   ${media.largePhone`
     margin-left: 0;
   `}
@@ -71,7 +82,11 @@ const ShieldIcon = styled(Icon)`
 
 const Content = styled.div`
   display: flex;
-  justify-content: center;
+
+  &.inModal {
+    justify-content: center;
+  }
+
   ${media.smallerThanMaxTablet`
     flex-wrap: wrap;
   `}
@@ -79,16 +94,15 @@ const Content = styled.div`
 
 const Context = styled.div`
   flex: 1 1 auto;
-  width: 100%;
-  padding-left: 20px;
-  padding-bottom: 20px;
-  margin-right: 40px;
-  margin-top: 32px;
-  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 32px;
+  padding-bottom: 32px;
+
   ${media.smallerThanMaxTablet`
     padding: 0;
     margin: 20px 0 30px;
@@ -107,30 +121,28 @@ const ContextItem = styled.span`
   font-size: ${fontSizes.small}px;
   line-height: normal;
   border-radius: ${props => props.theme.borderRadius};
-  border: 1px solid ${colors.lightGreyishBlue};
+  border: 1px solid #ccc;
   padding: 6px 13px;
   margin-bottom: 5px;
   max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  ${media.largePhone`
-    white-space: normal;
-  `}
+
   &:first-letter {
     text-transform: capitalize
   }
+
+  ${media.largePhone`
+    white-space: normal;
+  `}
 `;
 
 const Or = styled.span`
   color: ${(props: any) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
-  border-radius: 50%;
-  border: 1px solid ${colors.lightGreyishBlue};
   margin-top: 5px;
   margin-bottom: 10px;
-  min-width: 25px;
-  height: 25px;
   justify-content: center;
   display: flex;
   align-items: center;
@@ -138,44 +150,55 @@ const Or = styled.span`
 
 const ButtonsContainer = styled.div`
   flex: 1 1 auto;
-  width: 100%;
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 32px;
-  padding-bottom: 32px;
-  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  background: ${colors.background};
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  max-width: 423px;
 
-  ${media.smallerThanMaxTablet`
-    padding: 20px;
-    margin: 0;
-    max-width: unset;
-  `}
+  &.inModal {
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-top: 32px;
+    padding-bottom: 32px;
+    background: ${colors.background};
+    border-radius: ${(props: any) => props.theme.borderRadius};
+
+    &.withoutContext {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    ${media.smallerThanMinTablet`
+      padding: 20px;
+    `}
+  }
 `;
 
 const MethodButton = styled(Button)`
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+
+  &.last {
+    margin-bottom: 0px;
+  }
 `;
 
 interface Props {
   context: ContextShape | null;
   onMethodSelected: (selectedMethod: IVerificationMethod) => void;
+  showHeader?: boolean;
   className?: string;
   theme: any;
 }
 
-const VerificationMethods = memo<Props>(({ context, onMethodSelected, className, theme }) => {
+const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader, className }) => {
 
   const participationConditions = useParticipationConditions(isProjectContext(context) ? context : null);
-  const withContext = !!context;
 
   const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
+  const filteredVerificationMethods = !isNilOrError(verificationMethods) ? verificationMethods.data.filter(method => ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(method.attributes.name)) : [];
+
+  const inModal = !window.location.pathname.endsWith('/sign-up');
+  const withContext = !isNilOrError(participationConditions) && participationConditions.length > 0;
 
   const onVerifyBOSAButtonClick = useCallback(() => {
     const jwt = getJwt();
@@ -190,87 +213,90 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, className,
     }
   }, []);
 
-  return (
-    <Container id="e2e-verification-methods" className={className}>
-      <AboveTitle aria-hidden>
-        <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
-        <ShieldIcon name="verify_dark" />
-      </AboveTitle>
-      <Title id="modal-header">
-        <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
-        {withContext ? <FormattedMessage {...messages.toParticipateInThisProject} /> : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />}
-      </Title>
-      <Content>
-        {withContext && !isNilOrError(participationConditions) && participationConditions.length > 0 &&
-          <Context>
-            <Subtitle>
-              <FormattedMessage {...messages.participationConditions} />
-            </Subtitle>
+  if (verificationMethods === undefined || participationConditions === undefined) {
+    return (
+      <Loading>
+        <Spinner />
+      </Loading>
+    );
+  }
 
-            <ContextLabel>
-              <FormattedMessage {...messages.peopleMatchingConditions} />
-            </ContextLabel>
-
-            {participationConditions.map((rulesSet, index) => {
-              const rules = rulesSet.map((rule, ruleIndex) => (
-                <ContextItem className="e2e-rule-item" key={ruleIndex}>
-                  <T value={rule} />
-                </ContextItem>
-              ));
-              return index === 0 ? rules : (
-                <Fragment key={index}>
-                  <Or>
-                    <FormattedMessage {...messages.or} />
-                  </Or>
-                  {rules}
-                </Fragment>
-              );
-            })}
-          </Context>
+  if (verificationMethods !== undefined && participationConditions !== undefined) {
+    return (
+      <Container id="e2e-verification-methods" className={className}>
+        {showHeader &&
+          <Header>
+            <AboveTitle aria-hidden>
+              <StyledAvatar userId={!isNilOrError(authUser) ? authUser.data.id : null} size="55px" />
+              <ShieldIcon name="verify_dark" />
+            </AboveTitle>
+            <Title id="modal-header">
+              <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
+              {withContext
+                ? <FormattedMessage {...messages.toParticipateInThisProject} />
+                : <FormattedMessage {...messages.andUnlockYourCitizenPotential} />
+              }
+            </Title>
+          </Header>
         }
-        <ButtonsContainer className={withContext ? 'withContext' : 'withoutContext'}>
-          <Subtitle>
-            <FormattedMessage {...messages.verifyNow} />
-          </Subtitle>
+        <Content className={`${inModal ? 'inModal' : ''}`}>
+          {withContext && !isNilOrError(participationConditions) && participationConditions.length > 0 &&
+            <Context>
+              <Subtitle>
+                <FormattedMessage {...messages.participationConditions} />
+              </Subtitle>
 
-          {!isNilOrError(verificationMethods) && verificationMethods.data && verificationMethods.data.length > 0 &&
-            verificationMethods.data.filter(method => ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(method.attributes.name)).map(method => (
+              <ContextLabel>
+                <FormattedMessage {...messages.peopleMatchingConditions} />
+              </ContextLabel>
+
+              {participationConditions.map((rulesSet, index) => {
+                const rules = rulesSet.map((rule, ruleIndex) => (
+                  <ContextItem className="e2e-rule-item" key={ruleIndex}>
+                    <T value={rule} />
+                  </ContextItem>
+                ));
+                return index === 0 ? rules : (
+                  <Fragment key={index}>
+                    <Or>
+                      <FormattedMessage {...messages.or} />
+                    </Or>
+                    {rules}
+                  </Fragment>
+                );
+              })}
+            </Context>
+          }
+          <ButtonsContainer className={`${withContext ? 'withContext' : 'withoutContext'} ${inModal ? 'inModal' : ''}`}>
+            {filteredVerificationMethods.map((method, index) => (
               <MethodButton
                 key={method.id}
-                icon="verify_manually"
+                id={`e2e-${method.attributes.name}-button`}
+                className={index + 1 === filteredVerificationMethods.length ? 'last' : ''}
+                icon="shieldVerified"
+                iconColor={colors.clGreen}
+                iconHoverColor={colors.clGreen}
+                iconSize="22px"
                 onClick={onSelectMethodButtonClick(method)}
+                buttonStyle="white"
                 fullWidth={true}
-                size="1"
                 justify="left"
                 padding="14px 20px"
-                bgColor="#fff"
-                bgHoverColor="#fff"
-                iconColor={theme.colorMain}
-                iconHoverColor={darken(0.2, theme.colorMain)}
-                textColor={theme.colorText}
-                textHoverColor={darken(0.2, theme.colorText)}
-                borderColor="#e3e3e3"
-                borderHoverColor={darken(0.2, '#e3e3e3')}
-                boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
-                boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
-                id={`e2e-${method.attributes.name}-button`}
+                whiteSpace="wrap"
               >
-                {method.attributes.name === 'cow' ? (
-                  <FormattedMessage {...messages.verifyCow} />
-                ) : method.attributes.name === 'bosa_fas' ? (
-                  <FormattedMessage {...messages.verifyBOSA} />
-                ) : method.attributes.name === 'bogus' ?
-                      'Bogus verification (testing)'
-                      : method.attributes.name === 'id_card_lookup' ? (
-                        <T value={method.attributes.method_name_multiloc} />
-                      ) : null
-                }
+                {method.attributes.name === 'cow' && <FormattedMessage {...messages.verifyCow} />}
+                {method.attributes.name === 'bosa_fas' && <FormattedMessage {...messages.verifyBOSA} />}
+                {method.attributes.name === 'id_card_lookup' && <T value={method.attributes.method_name_multiloc} />}
+                {method.attributes.name === 'bogus' && 'Bogus verification (testing)'}
               </MethodButton>
             ))}
-        </ButtonsContainer>
-      </Content>
-    </Container>
-  );
+          </ButtonsContainer>
+        </Content>
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 export default withTheme(VerificationMethods);

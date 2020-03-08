@@ -1,10 +1,15 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import VerificationMethods from './VerificationMethods';
 import VerificationFormCOW from './VerificationFormCOW';
 import VerificationFormBogus from './VerificationFormBogus';
 import VerificationFormLookup from './VerificationFormLookup';
+import Spinner from 'components/UI/Spinner';
+
+// resource hooks
+import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // style
 import styled from 'styled-components';
@@ -14,10 +19,17 @@ import { IVerificationMethod, IDLookupMethod } from 'services/verificationMethod
 import { IParticipationContextType, ICitizenAction } from 'typings';
 
 const Container = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+`;
+
+const Loading = styled.div`
+  width: 100%;
+  height: 250px;
+  display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 export type ProjectContext = { id: string, type: IParticipationContextType, action: ICitizenAction };
@@ -49,15 +61,25 @@ export type TVerificationSteps = 'method-selection' | 'success' | 'error' | null
 export interface Props {
   context: ContextShape; // TODO change to pass in additionnal rules info
   initialActiveStep: TVerificationSteps;
+  showHeader?: boolean;
   onComplete?: () => void;
   onError?: () => void;
   className?: string;
 }
 
-const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, onComplete, onError }) => {
+const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, showHeader, onComplete, onError }) => {
 
   const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep);
   const [method, setMethod] = useState<IDLookupMethod | null>(null);
+
+  const verificationMethods = useVerificationMethods();
+
+  useEffect(() => {
+    if (!isNilOrError(verificationMethods) && verificationMethods.data.length === 1) {
+      setMethod(verificationMethods.data[0] as IDLookupMethod);
+      setActiveStep(verificationMethods.data[0].attributes.name);
+    }
+  }, [verificationMethods]);
 
   useEffect(() => {
     if (activeStep === 'success' && onComplete) {
@@ -104,25 +126,54 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
     setMethod(null);
   }, []);
 
-  return (
-    <Container className={`e2e-verification-modal ${className || ''}`}>
-      {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
-        <VerificationMethods context={context} onMethodSelected={onMethodSelected} />
-      }
+  if (verificationMethods === undefined) {
+    return (
+      <Loading>
+        <Spinner />
+      </Loading>
+    );
+  }
 
-      {activeStep === 'cow' &&
-        <VerificationFormCOW onCancel={onCowCancel} onVerified={onCowVerified} />
-      }
+  if (verificationMethods !== undefined) {
+    return (
+      <Container className={`e2e-verification-modal ${className || ''}`}>
+        {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
+          <VerificationMethods
+            context={context}
+            showHeader={showHeader}
+            onMethodSelected={onMethodSelected}
+          />
+        }
 
-      {activeStep === 'bogus' &&
-        <VerificationFormBogus onCancel={onBogusCancel} onVerified={onBogusVerified} />
-      }
+        {activeStep === 'cow' &&
+          <VerificationFormCOW
+            showHeader={showHeader}
+            onCancel={onCowCancel}
+            onVerified={onCowVerified}
+          />
+        }
 
-      {activeStep === 'id_card_lookup' && method &&
-        <VerificationFormLookup onCancel={onLookupCancel} onVerified={onLookupVerified} method={method} />
-      }
-    </Container>
-  );
+        {activeStep === 'bogus' &&
+          <VerificationFormBogus
+            showHeader={showHeader}
+            onCancel={onBogusCancel}
+            onVerified={onBogusVerified}
+          />
+        }
+
+        {activeStep === 'id_card_lookup' && method &&
+          <VerificationFormLookup
+            method={method}
+            showHeader={showHeader}
+            onCancel={onLookupCancel}
+            onVerified={onLookupVerified}
+          />
+        }
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 export default VerificationSteps;

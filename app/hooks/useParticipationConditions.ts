@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { of, Observable } from 'rxjs';
 import { getParticipationConditions, IParticipationConditions } from 'services/participationConditions';
 import { ProjectContext } from 'components/Verification/VerificationSteps';
 
@@ -8,16 +9,13 @@ export default function useParticipationConditions(props: ProjectContext | null)
   const [conditions, setConditions] = useState<IParticipationConditions | undefined | null | Error>(undefined);
 
   useEffect(() => {
-    const subscription = props ? getParticipationConditions(props.id, props.type, props.action).observable.subscribe((conditions) => {
+    const stream: Observable<IParticipationConditions | null> = props ? getParticipationConditions(props.id, props.type, props.action).observable : of(null);
+    const subscription = stream.subscribe((conditions) => {
       setConditions(conditions);
-    })
-    : null;
+    });
 
-    if (subscription) {
-      return () => subscription.unsubscribe();
-    }
-    return;
-  }, []);
+    return () => subscription.unsubscribe();
+  }, [props]);
 
   return conditions;
 }

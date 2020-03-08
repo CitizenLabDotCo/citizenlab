@@ -17,10 +17,9 @@ import { IVerificationMethod } from 'services/verificationMethods';
 import { IParticipationContextType, ICitizenAction } from 'typings';
 
 const Container = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 `;
 
 export type ProjectContext = { id: string, type: IParticipationContextType, action: ICitizenAction };
@@ -89,6 +88,7 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
       <Container className={`e2e-verification-modal ${className || ''}`}>
         <VerificationSteps
           context={context}
+          showHeader={true}
           initialActiveStep={initialActiveStep || 'method-selection'}
           onComplete={onComplete}
           onError={onError}
