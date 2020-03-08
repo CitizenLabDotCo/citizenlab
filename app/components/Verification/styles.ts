@@ -1,7 +1,7 @@
 import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import styled from 'styled-components';
-import { fontSizes, media, colors } from 'utils/styleUtils';
+import { fontSizes, media } from 'utils/styleUtils';
 
 export const FormContainer = styled.div<{ inModal: boolean }>`
   display: flex;
