@@ -70,7 +70,7 @@ export const LabelTextContainer = styled.div`
 
 export const Footer = styled.div`
   display: flex;
-  padding-top: 20px;
+  padding-top: 10px;
 `;
 
 export const SubmitButton = styled(Button)`

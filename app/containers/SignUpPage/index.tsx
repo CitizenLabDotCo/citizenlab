@@ -1,23 +1,23 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { isString, isBoolean, isEmpty, isObject } from 'lodash-es';
+import { isString, includes } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-import { stringify, parse } from 'qs';
-
-// context
-import { PreviousPathnameContext } from 'context';
 
 // components
-import SignUp, { signUpNextStep$ } from 'components/SignUp';
+import SignUp, { signUpNextStep$, IAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
 import SignUpPageMeta from './SignUpPageMeta';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+
+// context
+import { PreviousPathnameContext } from 'context';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -74,64 +74,20 @@ const RightInner = styled.div`
   `}
 `;
 
-export type IActionType = 'upvote' | 'downvote' | 'comment' | 'post';
-
-export type IActionContextType = 'idea' | 'initiative' | 'project' | 'phase';
-
-export interface IAction {
-  action_type: IActionType;
-  action_context_type: IActionContextType;
-  action_context_id: string;
-  action_context_pathname: string;
-  action_requires_verification: boolean;
-}
-
-export const redirectActionToSignUpPage = (action: IAction) => {
-  clHistory.push({
-    pathname: '/sign-up',
-    search: convertActionToUrlSearchParams(action)
-  });
-};
-
-export function convertUrlSearchParamsToAction(input: string) {
-  const action = parse(input, { ignoreQueryPrefix: true, decoder: (str, defaultEncoder, charset, type) => {
-    if (type === 'value' && str === 'true') { return true; }
-    if (type === 'value' && str === 'false') { return false; }
-    return defaultEncoder(str, defaultEncoder, charset);
-  }}) as IAction;
-
-  if (isObject(action) && !isEmpty(action)) {
-    const { action_type, action_context_id, action_context_type, action_context_pathname, action_requires_verification } = action;
-
-    if (
-      action_type === ('upvote' || 'downvote' || 'comment' || 'post') &&
-      action_context_type === ('idea' || 'initiative' || 'project' || 'phase') &&
-      isString(action_context_id) &&
-      isString(action_context_pathname) &&
-      isBoolean(action_requires_verification)
-    ) {
-      return action;
-    }
-  }
-
-  return;
-}
-
-export function convertActionToUrlSearchParams(action: IAction) {
-  return stringify(action, { addQueryPrefix: true });
-}
-
 interface InputProps {}
 
 interface DataProps {
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+  customFieldsSchema: GetCustomFieldsSchemaChildProps;
   previousPathName: string | null;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
-  goBackToUrl: string;
-  action: IAction | null;
+  action: IAction | null | undefined;
+  loaded: boolean;
 }
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
@@ -140,25 +96,34 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      goBackToUrl: '/',
-      action: null
+      action: null,
+      loaded: false
     };
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
-    const previousPathName = (nextProps.previousPathName ? removeLocale(nextProps.previousPathName).pathname : null);
-    const goBackToUrl = (previousPathName && !(previousPathName.endsWith('/sign-up') || previousPathName.endsWith('/sign-in')) ? previousPathName : '/');
-    return { goBackToUrl };
   }
 
   componentDidMount() {
     const action = convertUrlSearchParamsToAction(this.props.location.search);
     this.setState({ action: action || null });
-    action && window.history.replaceState(null, '', window.location.pathname);
+    action && window.history.replaceState(null, '', this.props.location.pathname);
+
+    this.setLoaded();
 
     this.subscription = signUpNextStep$.subscribe(() => {
       window.scrollTo(0, 0);
     });
+  }
+
+  componentDidUpdate() {
+    this.setLoaded();
+  }
+
+  setLoaded = () => {
+    const { customFieldsSchema, authUser } = this.props;
+    const { action } = this.state;
+
+    if (authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
+      this.setState({ loaded: true });
+    }
   }
 
   componentWillUnmount() {
@@ -166,27 +131,46 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   onSignUpCompleted = () => {
-    trackEventByName(tracks.successfulSignUp);
-    const { action, goBackToUrl } = this.state;
+    const { action } = this.state;
+    const { previousPathName } = this.props;
 
     if (action) {
       clHistory.push({
         pathname: action.action_context_pathname,
         search: convertActionToUrlSearchParams(action)
       });
-    } else if (goBackToUrl) {
-      clHistory.push({ pathname: goBackToUrl });
+    } else if (previousPathName && !previousPathName.endsWith('/sign-up') && !previousPathName.endsWith('/sign-in')) {
+      clHistory.push({
+        pathname: previousPathName
+      });
     } else {
       clHistory.push('/');
     }
   }
 
   render() {
-    const { location } = this.props;
-    const { action } = this.state;
+    const { location, customFieldsSchema, authUser } = this.props;
+    const { action, loaded } = this.state;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
+    const authError = includes(location.pathname, 'authentication-error');
+    let initialActiveStep: number = null as any;
+
+    if (!authError && authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
+      const hasVerificationStep = action?.action_requires_verification;
+      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+
+      if (!authUser) {
+        initialActiveStep = 1;
+      } else if (hasVerificationStep) {
+        initialActiveStep = 2;
+      } else if (hasCustomFields) {
+        initialActiveStep = 3;
+      } else {
+        this.onSignUpCompleted();
+      }
+    }
 
     return (
       <>
@@ -197,13 +181,17 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
           </Left>
           <Right>
             <RightInner>
-              <SignUp
-                step1Title={title}
-                isInvitation={isInvitation}
-                token={token}
-                action={action}
-                onSignUpCompleted={this.onSignUpCompleted}
-              />
+              {loaded &&
+                <SignUp
+                  initialActiveStep={initialActiveStep}
+                  step1Title={title}
+                  isInvitation={isInvitation}
+                  token={token}
+                  action={action}
+                  authError={authError}
+                  onSignUpCompleted={this.onSignUpCompleted}
+                />
+              }
             </RightInner>
           </Right>
         </Container>
@@ -212,14 +200,17 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const SignUpPageWithHoCs = withRouter(SignUpPage);
+const SignUpPageWithHoC = withRouter(SignUpPage);
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+  customFieldsSchema: <GetCustomFieldsSchema />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignUpPageWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
   </Data>
-);
+));

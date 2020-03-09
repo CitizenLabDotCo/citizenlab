@@ -28,7 +28,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { convertUrlSearchParamsToAction, redirectActionToSignUpPage } from 'containers/SignUpPage';
+import { convertUrlSearchParamsToAction, redirectActionToSignUpPage } from 'components/SignUp';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
