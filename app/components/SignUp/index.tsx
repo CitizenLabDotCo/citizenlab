@@ -169,15 +169,17 @@ export function convertActionToUrlSearchParams(action: IAction) {
   return stringify(action, { addQueryPrefix: true });
 }
 
+export type TSignUpSteps = 'account-creation' | 'verification' | 'custom-fields';
+
 interface InputProps {
-  initialActiveStep: number | null;
+  initialActiveStep: TSignUpSteps | null;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   step1Title?: string | JSX.Element;
   step2Title?: string | JSX.Element;
   step3Title?: string | JSX.Element;
   action?: IAction | null;
-  authError?: boolean;
+  error?: boolean;
   onSignUpCompleted: () => void;
 }
 
@@ -189,8 +191,9 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  activeStep: number | null;
+  activeStep: TSignUpSteps | null;
   userId: string | null;
+  error: boolean;
 }
 
 class SignUp extends PureComponent<Props, State> {
@@ -200,21 +203,24 @@ class SignUp extends PureComponent<Props, State> {
     super(props);
     this.state = {
       activeStep: props.initialActiveStep,
-      userId: null
+      userId: null,
+      error: false
     };
   }
 
   componentDidMount() {
+    this.mapErrorPropToState();
+
     this.subscription = signUpNextStep$.subscribe(() => {
       const { activeStep } = this.state;
       const { action, customFieldsSchema } = this.props;
       const hasVerificationStep = action?.action_requires_verification;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
-      if (activeStep === 1 && hasVerificationStep) {
-        this.setState({ activeStep: 2 });
+      if (activeStep === 'account-creation' && hasVerificationStep) {
+        this.setState({ activeStep: 'verification' });
       } else if (hasCustomFields) {
-        this.setState({ activeStep: 3 });
+        this.setState({ activeStep: 'custom-fields' });
       } else {
         this.onSignUpCompleted();
       }
@@ -222,7 +228,12 @@ class SignUp extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.mapErrorPropToState();
     this.subscription?.unsubscribe();
+  }
+
+  mapErrorPropToState = () => {
+    this.setState(state => ({ error: this.props.error || state.error }));
   }
 
   handleStep1Completed = (userId: string) => {
@@ -248,18 +259,18 @@ class SignUp extends PureComponent<Props, State> {
   }
 
   onVerificationError = () => {
-    console.log('onVerificationError');
+    this.setState({ error: true });
   }
 
   render() {
-    const { activeStep } = this.state;
-    const { isInvitation, token, step1Title, step2Title, step3Title, action, authError, tenant } = this.props;
+    const { activeStep, error } = this.state;
+    const { isInvitation, token, step1Title, step2Title, step3Title, action, tenant } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
       <Container className="e2e-sign-up-container">
         <ContainerInner>
-          {authError ? (
+          {error ? (
             <>
               <Title>
                 <FormattedMessage {...messages.somethingWentWrong} />
@@ -268,7 +279,7 @@ class SignUp extends PureComponent<Props, State> {
             </>
           ) : (
             <TransitionGroup>
-              {activeStep === 1 &&
+              {activeStep === 'account-creation' &&
                 <CSSTransition
                   timeout={timeout}
                   classNames="step"
@@ -302,7 +313,7 @@ class SignUp extends PureComponent<Props, State> {
                 </CSSTransition>
               }
 
-              {activeStep === 2 &&
+              {activeStep === 'verification' &&
                 <CSSTransition
                   timeout={timeout}
                   classNames="step"
@@ -319,7 +330,7 @@ class SignUp extends PureComponent<Props, State> {
                 </CSSTransition>
               }
 
-              {activeStep === 3 &&
+              {activeStep === 'custom-fields' &&
                 <CSSTransition
                   timeout={timeout}
                   classNames="step"

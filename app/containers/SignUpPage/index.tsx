@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import SignUp, { signUpNextStep$, IAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUp';
+import SignUp, { signUpNextStep$, TSignUpSteps, IAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
 import SignUpPageMeta from './SignUpPageMeta';
 
@@ -155,18 +155,18 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
     const authError = includes(location.pathname, 'authentication-error');
-    let initialActiveStep: number = null as any;
+    let initialActiveStep: TSignUpSteps | null = null;
 
     if (!authError && authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
       const hasVerificationStep = action?.action_requires_verification;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
       if (!authUser) {
-        initialActiveStep = 1;
+        initialActiveStep = 'account-creation';
       } else if (hasVerificationStep) {
-        initialActiveStep = 2;
+        initialActiveStep = 'verification';
       } else if (hasCustomFields) {
-        initialActiveStep = 3;
+        initialActiveStep = 'custom-fields';
       } else {
         this.onSignUpCompleted();
       }
@@ -188,7 +188,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
                   isInvitation={isInvitation}
                   token={token}
                   action={action}
-                  authError={authError}
+                  error={authError}
                   onSignUpCompleted={this.onSignUpCompleted}
                 />
               }
