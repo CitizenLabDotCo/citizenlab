@@ -138,7 +138,6 @@ export default class Radio extends PureComponent<Props, State> {
       const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
       const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
-      console.log(targetElementIsLink, parentElementIsLink);
       if (!targetElementIsLink && !parentElementIsLink) {
         onChange(value);
       }
