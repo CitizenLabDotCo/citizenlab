@@ -227,8 +227,11 @@ class SignUp extends PureComponent<Props, State> {
     });
   }
 
-  componentWillUnmount() {
+  componentDidUpdate() {
     this.mapErrorPropToState();
+  }
+
+  componentWillUnmount() {
     this.subscription?.unsubscribe();
   }
 
@@ -273,9 +276,9 @@ class SignUp extends PureComponent<Props, State> {
           {error ? (
             <>
               <Title>
-                <FormattedMessage {...messages.somethingWentWrong} />
+                <FormattedMessage {...messages.somethingWentWrongTitle} />
               </Title>
-              <Error text={<FormattedMessage {...messages.notSignedIn} />} />
+              <Error text={<FormattedMessage {...messages.somethingWentWrongText} />} />
             </>
           ) : (
             <TransitionGroup>
