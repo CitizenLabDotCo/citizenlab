@@ -61,6 +61,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.emailLabel',
     defaultMessage: 'Email',
   },
+  emailOrPhoneLabel: {
+    id: 'app.containers.SignUp.emailOrPhoneLabel',
+    defaultMessage: 'Email or phone',
+  },
   emailPlaceholder: {
     id: 'app.containers.SignUp.emailPlaceholder',
     defaultMessage: 'Enter your email address',
