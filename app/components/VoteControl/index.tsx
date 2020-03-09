@@ -612,7 +612,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           <FormattedMessage {...messages.a11y_upvotesDownvotes} values={{ upvotesCount, downvotesCount }} />
         </ScreenReaderOnly>
         <LiveMessage
-          message={this.props.intl.formatMessage(messages.a11y_upvotesDownvotes, { upvotesCount, downvotesCount })}
+          message={formatMessage(messages.a11y_upvotesDownvotes, { upvotesCount, downvotesCount })}
           aria-live="polite"
         />
       </>
