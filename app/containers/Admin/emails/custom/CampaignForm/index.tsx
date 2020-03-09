@@ -94,7 +94,6 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
         labelTooltipText={this.props.intl.formatMessage(messages.nameVariablesInfo)}
         noVideos
         noAlign
-        withCTAButton
         {...props}
       />
     );
