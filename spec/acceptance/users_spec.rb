@@ -31,24 +31,64 @@ resource "Users" do
     end
 
     post "web_api/v1/user_token" do
-      before do
-        @user = create(:user, password: 'supersecret')
-      end
       with_options scope: :auth do
-          parameter :email, "Email"
-          parameter :password, "Password"
-        end
-      let(:email) { @user.email }
-      let(:password) { 'supersecret' }
-
-      example_request "Authenticate a registered user" do
-        expect(status).to eq(201)
+        parameter :email, "Email"
+        parameter :password, "Password"
       end
 
-      example "[error] Authenticate an invited user" do
-        @user.update! invite_status: 'pending'
-        do_request
-        expect(status).to eq(404)
+      context "with phone password_login turned off" do
+        before do
+          @user = create(:user, password: 'supersecret')
+        end
+        let(:email) { @user.email }
+        let(:password) { 'supersecret' }
+
+        example_request "Authenticate a registered user" do
+          expect(status).to eq(201)
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:jwt)).to be_present
+        end
+
+        example "[error] Authenticate an invited user" do
+          @user.update! invite_status: 'pending'
+          do_request
+          expect(status).to eq(404)
+        end
+      end
+
+      context "with phone password_login turned on" do
+        before do
+          settings = Tenant.current.settings
+          settings['password_login'] = {
+            "allowed" => true,
+            "enabled" => true,
+            "phone" => true,
+            "phone_email_pattern" => "phone+__PHONE__@test.com"
+          }
+          Tenant.current.update!(settings: settings)
+        end
+
+        describe do
+          let!(:user) { create(:user, email: 'phone+3248751212@test.com', password: 'supersecret')}
+          let(:email) { '+324 875 12 12' }
+          let(:password) { 'supersecret' }
+          example_request "Authenticate a registered user by phone number", document: false do
+            expect(status).to eq(201)
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:jwt)).to be_present
+          end
+        end
+
+        describe do
+          let!(:user) { create(:user, password: 'supersecret')}
+          let(:email) { user.email }
+          let(:password) { 'supersecret' }
+          example_request "Authenticate a registered user by email", document: false do
+            expect(status).to eq(201)
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:jwt)).to be_present
+          end
+        end
       end
     end
 
@@ -119,6 +159,37 @@ resource "Users" do
 
         example_request "[error] Registering a user with case insensitive email duplicate", document: false do
           expect(response_status).to eq 422
+        end
+      end
+
+      context "with phone password_login turned on" do
+        before do
+          settings = Tenant.current.settings
+          settings['password_login'] = {
+            "allowed" => true,
+            "enabled" => true,
+            "phone" => true,
+            "phone_email_pattern" => "phone+__PHONE__@test.com"
+          }
+          Tenant.current.update!(settings: settings)
+        end
+
+        describe do
+          let(:email) { "someone@citizenlab.co" }
+          example_request "Register with email when an email is passed", document: false do
+            expect(response_status).to eq 201
+            json_response = json_parse(response_body)
+            expect(User.find_by(email: email)).to be_present
+          end
+        end
+
+        describe do
+          let(:email) { "+32 487 36 58 98" }
+          example_request "Registers a user with a phone number in the email when a phone number is passed", document: false do
+            expect(response_status).to eq 201
+            json_response = json_parse(response_body)
+            expect(User.find_by(email: "phone+32487365898@test.com")).to be_present
+          end
         end
       end
     end
