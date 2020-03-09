@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
-import bowser from 'bowser';
 
 // i18n
 import messages from './messages';
@@ -28,6 +27,7 @@ const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
 const ModalContent = styled.div<{ hasHeaderOrFooter: boolean }>`
+  flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
@@ -77,6 +77,12 @@ const CloseButton = styled.button`
   `}
 `;
 
+const StyledFocusOn = styled(FocusOn)<{ width: number }>`
+  width: 100%;
+  max-width: ${({ width }) => width}px;
+  display: flex;
+`;
+
 const ModalContainer = styled(clickOutside)`
   width: 100%;
   max-height: 80vh;
@@ -110,12 +116,6 @@ const ModalContainer = styled(clickOutside)`
   `}
 `;
 
-const StyledFocusOn = styled(FocusOn)<{ width: number }>`
-  width: 100%;
-  max-width: ${({ width }) => width}px;
-  height: 100vh;
-`;
-
 const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
@@ -125,7 +125,7 @@ const Overlay = styled.div`
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background: rgba(0, 0, 0, 0.75);
   padding-left: 30px;
@@ -236,10 +236,6 @@ const Skip = styled.div`
   `}
 `;
 
-const Spacer = styled.div`
-  flex: 1;
-`;
-
 export type Props = {
   opened: boolean;
   fixedHeight?: boolean;
@@ -340,7 +336,7 @@ export default class Modal extends PureComponent<Props, State> {
 
   render() {
     const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
-    const hasFixedHeight = this.props.fixedHeight || bowser.msie;
+    const hasFixedHeight = this.props.fixedHeight;
     const hasHeaderOrFooter = header !== undefined || footer !== undefined;
     const modalPortalElement = document?.getElementById('modal-portal');
 
@@ -388,8 +384,6 @@ export default class Modal extends PureComponent<Props, State> {
                 <ModalContent hasHeaderOrFooter={hasHeaderOrFooter}>
                   {children}
                 </ModalContent>
-
-                <Spacer aria-hidden />
 
                 {footer && <FooterContainer>{footer}</FooterContainer>}
 

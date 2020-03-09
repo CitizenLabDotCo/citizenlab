@@ -75,12 +75,11 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, showHeader, c
         setDesiredErrorError('Unkown desired error');
       }
     }
-
-  }, [desiredError, authUser]);
+  }, [desiredError, authUser, onVerified]);
 
   const onCancelButtonClicked = useCallback(() => {
     onCancel();
-  }, []);
+  }, [onCancel]);
 
   return (
     <FormContainer id="e2e-verification-bogus-form" className={className} inModal={inModal}>
