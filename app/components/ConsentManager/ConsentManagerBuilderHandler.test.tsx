@@ -196,9 +196,6 @@ describe('<ConsentManagerBuilderHandler />', () => {
           .toEqual(new Set(['Google Tag Manager', 'AdvertisingTool']));
         expect(new Set(categorizedDestinations.analytics.map(destination => destination.id)))
           .toEqual(new Set(['MarketingTool']));
-        //
-        // expect(categorizedDestinations.tenantBlacklisted).toEqual(emptyBlacklist);
-        // expect(categorizedDestinations.roleBlacklisted).toEqual([]);
       });
 
       it('...with a blacklist', () => {
@@ -211,9 +208,6 @@ describe('<ConsentManagerBuilderHandler />', () => {
           .toEqual(new Set(['AdvertisingTool']));
         expect(new Set(categorizedDestinations.analytics.map(destination => destination.id)))
           .toEqual(new Set([]));
-        //
-        // expect(categorizedDestinations.tenantBlacklisted).toEqual(blacklist);
-        // expect(categorizedDestinations.roleBlacklisted).toEqual([]);
       });
     });
   });

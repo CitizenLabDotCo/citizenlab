@@ -9,8 +9,10 @@ interface Props extends ConsentManagerProps {
 
 import Container from './Container';
 
+/*
+* agregate the available destinations into categories
+*/
 const getCategorizedDestinations = (destinationArray: IDestination[]) => {
-  // agregate the available destinations into categories
 
   const categorizedDestinations = {
     advertising: [] as IDestination[],
@@ -32,9 +34,11 @@ const getCategorizedDestinations = (destinationArray: IDestination[]) => {
   return categorizedDestinations;
 };
 
+/*
+* removes the blacklistedDestinations from the destination and newDestinations
+* arrays, they will be programmatically set to false when saving preferences.
+*/
 const removeBlacklistedDestinations = (destinations: IDestination[], blacklistedDestinations: string[]) => {
-  // removes the blacklistedDestinations from the destination and newDestinations
-  // arrays, they will be programmatically set to false when saving preferences.
   const isNotBlackListedDestination = (destination: IDestination) => !blacklistedDestinations.includes(destination.id);
 
   return destinations.filter(isNotBlackListedDestination);
@@ -76,10 +80,10 @@ const ConsentManagerBuilderHandler = ({
     .filter(destinationId => !(oldTenantBlacklistedIds || []).includes(destinationId));
 
   // is there's nothing new to show the user
-  // but there is new blacklisted destinations on the tenant, we save without showing
-  // overriting user preferences by setting blacklisted tenant items to false
+  // but there is new blacklisted destinations on the tenant, we save without showing,
+  // overwriting user preferences by setting blacklisted tenant items to false
 
-  // if destinations were removed from the role black list, we don't override the users consent
+  // if destinations were removed from the role black list, we don't overwrite the users consent
   // to avoid admins consenting each time they log in.
   // the non-privileged users that were once admin will be safeguarded from admin destinations in analyics.js
   if (newBlacklistedDestinationIds.length > 0 && !isConsentRequired) {
