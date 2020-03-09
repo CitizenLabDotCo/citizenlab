@@ -197,7 +197,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
   const verificationMethods = useVerificationMethods();
   const filteredVerificationMethods = !isNilOrError(verificationMethods) ? verificationMethods.data.filter(method => ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(method.attributes.name)) : [];
 
-  const inModal = !window.location.pathname.endsWith('/sign-up');
+  const inModal = !window.location.pathname.endsWith('/sign-up') && !window.location.pathname.endsWith('/complete-signup');
   const withContext = !isNilOrError(participationConditions) && participationConditions.length > 0;
 
   const onVerifyBOSAButtonClick = useCallback(() => {

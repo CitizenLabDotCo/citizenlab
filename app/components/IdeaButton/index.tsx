@@ -22,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { redirectActionToSignUpPage } from 'containers/SignUpPage';
+import { redirectActionToSignUpPage } from 'components/SignUp';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
