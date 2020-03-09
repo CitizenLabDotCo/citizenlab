@@ -598,11 +598,11 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
     const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) ||
-                        (myVoteMode === 'up' && cancellingEnabled) ||
-                        (votingDisabledReason === 'not_verified');
+                            (myVoteMode === 'up' && cancellingEnabled) ||
+                            (votingDisabledReason === 'not_verified');
     const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) ||
-                          (myVoteMode === 'down' && cancellingEnabled) ||
-                          (votingDisabledReason === 'not_verified');
+                              (myVoteMode === 'down' && cancellingEnabled) ||
+                              (votingDisabledReason === 'not_verified');
 
     if (!showVoteControl) return null;
 
