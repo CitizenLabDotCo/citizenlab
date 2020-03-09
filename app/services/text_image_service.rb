@@ -3,9 +3,7 @@ class TextImageService
   def swap_data_images imageable, field
     multiloc = imageable.send(field)
     multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = swap_data_images_text(text) do |image_data, image_type|
-        generate_text_image image_data, image_type, imageable, field
-      end
+      output[locale] = swap_data_images_text(text)
     end
   end
 
@@ -16,48 +14,51 @@ class TextImageService
       return text
     end
 
-    doc.css("img")
-      .select{|img| img.attr('src') =~ /^data:image\/([a-zA-Z]*);base64,.*$/}
-      .each do |img|
-        base64 = img.attr('src')
-        text_image = yield(base64, :base64)
-        img.set_attribute('src', text_image.image.url)
-        img.set_attribute('data-cl2-text-image-text-reference', text_image.text_reference)
-      end
+    # TODO: remove src if img has attribute 'data-cl2-text-image-text-reference'?
 
     doc.css("img")
-      .select do |img| 
-        ( img.attr('src') =~ /^$|^((http:\/\/.+)|(https:\/\/.+))/ &&
-          !img.attr('src').start_with?(Frontend::UrlService.new.home_url)
-          )
-      end
+      .select{|img| img.has_attribute?('src') }
       .each do |img|
-        old_url = img.attr('src')
-        text_image = yield(old_url, :url)
-        img.set_attribute('src', text_image.image.url)
+        img_src = img.attr('src')
+        text_image = if img_src =~ /^data:image\/([a-zA-Z]*);base64,.*$/
+          TextImage.create!(
+            imageable: imageable,
+            imageable_field: field,
+            image: image_data
+          )
+        else
+          TextImage.create!(
+            imageable: imageable,
+            imageable_field: field,
+            remote_image_url: image_data
+          )
+        end
         img.set_attribute('data-cl2-text-image-text-reference', text_image.text_reference)
+        img.remove_attribute('src')
       end
 
     doc.to_s
   end
 
-
-  private
-
-  def generate_text_image image_data, image_type, imageable, field
-    text_image = case image_type
-      when :base64
-        TextImage.create!(
-          imageable: imageable,
-          imageable_field: field,
-          image: image_data
-        )
-      when :url
-        TextImage.create!(
-          imageable: imageable,
-          imageable_field: field,
-          remote_image_url: image_data
-        )
+  def render_data_images imageable, field
+    multiloc = imageable.send(field)
+    multiloc.each_with_object({}) do |(locale, text), output|
+      doc = Nokogiri::HTML.fragment(text)
+      if doc.errors.any?
+        Rails.logger.debug doc.errors
+        return text
       end
+
+      doc.css("img")
+        .select{|img| !img.has_attribute?('src') }
+        .each do |img|
+          text_reference = img.attr('data-cl2-text-image-text-reference')
+          text_image = TextImage.find_by text_reference: text_reference
+          raise "Text image not found for #{imageable.class}[#{imageable.id}]->#{field}" if !text_image
+          img.set_attribute('src', text_image.image.url)
+        end
+
+      output[locale] = doc.to_s
+    end
   end
 end
