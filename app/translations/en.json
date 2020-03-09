@@ -326,7 +326,7 @@
   "app.components.QuillEditor.alignRight": "Align right",
   "app.components.QuillEditor.bold": "Bold",
   "app.components.QuillEditor.clean": "Remove formatting",
-  "app.components.QuillEditor.customLink": "Add custom link",
+  "app.components.QuillEditor.customLink": "Add button",
   "app.components.QuillEditor.customLinkPrompt": "Enter link:",
   "app.components.QuillEditor.edit": "Edit",
   "app.components.QuillEditor.image": "Upload image",
