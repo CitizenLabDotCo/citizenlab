@@ -36,12 +36,13 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
 
   const authUser = useAuthUser();
 
-  const [run, setRun] = useState<string>('');
-  const [idSerial, setIdSerial] = useState<string>('');
+  const [run, setRun] = useState('');
+  const [idSerial, setIdSerial] = useState('');
   const [runError, setRunError] = useState<JSX.Element | null>(null);
   const [idError, setIdError] = useState<JSX.Element | null>(null);
   const [formError, setFormError] = useState<JSX.Element | null>(null);
-  const [showHelp, setShowHelp] = useState<boolean>(false);
+  const [showHelp, setShowHelp] = useState(false);
+  const [processing, setProcessing] = useState(false);
 
   const inModal = !window.location.pathname.endsWith('/sign-up');
 
@@ -76,6 +77,8 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
 
     if (!hasEmptyFields) {
       try {
+        setProcessing(true);
+
         await verifyCOW(run, idSerial);
 
         const endpointsToRefetch = [`${API_PATH}/users/me`, `${API_PATH}/projects`];
@@ -90,8 +93,11 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
           partialApiEndpoint: partialEndpointsToRefetch
         });
 
+        setProcessing(false);
+
         onVerified();
       } catch (error) {
+        setProcessing(false);
 
         if (get(error, 'json.errors.base[0].error') === 'taken') {
           setFormError(<FormattedMessage {...messages.takenFormError} />);
@@ -175,7 +181,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
         }
 
         <Footer>
-          <SubmitButton onClick={onSubmit}>
+          <SubmitButton onClick={onSubmit} processing={processing}>
             <FormattedMessage {...messages.submit} />
           </SubmitButton>
           <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
