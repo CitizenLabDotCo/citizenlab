@@ -299,7 +299,8 @@ fr:
       <p>Courriel: <a href="mailto:collectif1030.0@gmail.com" target="_blank">collectif1030.0@gmail.com</a></p>
       <p>Site internet: <a href="www.facebook.com/1030zero" target="_blank">www.facebook.com/1030zero</a></p>
       <p><em>Source: </em><em>Burgervuur - De Wakkere Burger</em></p>
-      <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Faites-nous savoir</a> !</p>
+      <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Ajoutez votre propre initiative citoyenne à la liste</a> !</p>
+
     initiatives_success_3_title: Tables de pique-nique dans les aires de jeux
     initiatives_success_3_body: >
       <p><em>Wortegem-Petegem (BE)</em></p>
@@ -319,7 +320,8 @@ fr:
        <li>Cette initiative citoyenne était bien conçue, avec une finalité claire et des coûts fixes et d'entretien limités.</li>
       </ul>
       <p><em>Contexte: </em><a href="https://www.citizenlab.co/case-studies-nl/wortegem-petegem" target="_blank"><em>Dossier CitizenLab (NL)</em></a></p>
-      <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Ajoutez votre propre initiative citoyenne à la liste</a>!</p>
+      <p>Connaissez-vous une initiative citoyenne inspirante qui devrait s'ajouter à cette liste ? <a href="mailto:support@citizenlab.co" target="_blank">Ajoutez votre propre initiative citoyenne à la liste</a> !</p>
+
   projects:
     open_idea_project_title: Une idée? Apportez-la à votre conseil communal!
     open_idea_project_description_preview: Vous avez une idée qui ne correspond pas à l'un des projets existants? Ensuite, affichez-la ici, obtenez du soutien et inscrivez-la à l'ordre du jour politique!
