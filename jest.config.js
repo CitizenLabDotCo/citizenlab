@@ -33,7 +33,7 @@ module.exports = {
   reporters: ["default", "jest-junit"],
   coverageReporters: ["json", "lcov", "text-summary", "clover"],
   moduleNameMapper: {
-    "\\.(css|svg)$": "identity-obj-proxy"
+    "\\.(css|svg|png)$": "identity-obj-proxy"
   },
   testURL: "https://demo.stg.citizenlab.co/en/"
 };
