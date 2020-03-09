@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.SignIn.emailLabel',
     defaultMessage: 'Email',
   },
+  emailOrPhoneLabel: {
+    id: 'app.containers.SignIn.emailOrPhoneLabel',
+    defaultMessage: 'Email or phone',
+  },
   noEmailError: {
     id: 'app.containers.SignIn.noEmailError',
     defaultMessage: 'Please enter your email address',
