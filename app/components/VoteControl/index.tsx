@@ -14,7 +14,6 @@ import messages from './messages';
 import Icon from 'components/UI/Icon';
 import VotingSuccessModal from './VotingSuccessModal';
 import VotingErrorModal from './VotingErrorModal';
-import { LiveMessage } from 'react-aria-live';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -246,7 +245,6 @@ interface State {
   votingAnimation: 'up' | 'down' | null;
   myVoteId: string | null | undefined;
   myVoteMode: 'up' | 'down' | null | undefined;
-  a11yVoteMessage: string;
   idea: IIdea | null;
   project: IProject | null;
   phases: IPhase[] | null | undefined;
@@ -278,7 +276,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       votingAnimation: null,
       myVoteId: undefined,
       myVoteMode: undefined,
-      a11yVoteMessage: '',
       idea: null,
       project: null,
       phases: undefined,
@@ -549,11 +546,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
           await ideaByIdStream(ideaId).fetch();
           this.voting$.next(null);
-          this.setState(({ upvotesCount, downvotesCount }) => {
-            const actionMessage = this.props.intl.formatMessage(voteMode === 'up' ? messages.a11y_upvoteButtonClicked : messages.a11y_downvoteButtonClicked);
-            const totalVotesMessage = this.props.intl.formatMessage(messages.a11y_totalVotes, { upvotesCount, downvotesCount });
-            return { a11yVoteMessage: `${actionMessage} ${totalVotesMessage}` };
-          });
+
           return 'success';
         } catch (error) {
           this.voting$.next(null);
@@ -590,7 +583,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
   render() {
     const { size, className, intl: { formatMessage }, ariaHidden, showDownvote } = this.props;
-    const { idea, showVoteControl, myVoteMode, votingAnimation, upvotesCount, downvotesCount, a11yVoteMessage, votingSuccessModalOpened, votingErrorModalOpened } = this.state;
+    const { idea, showVoteControl, myVoteMode, votingAnimation, upvotesCount, downvotesCount, votingSuccessModalOpened, votingErrorModalOpened } = this.state;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
@@ -653,13 +646,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           onClose={this.closeVotingErrorModal}
         />
 
-        {ariaHidden ?
-          <ScreenReaderOnly>
-            <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
-          </ScreenReaderOnly>
-          :
-          <LiveMessage message={a11yVoteMessage} aria-live="polite" />
-        }
+        <ScreenReaderOnly aria-live="polite">
+          <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
+        </ScreenReaderOnly>
       </>
     );
   }
