@@ -312,8 +312,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       }
     }
 
-    console.log(tenant);
-
     return (
       <>
         {!emailInvitationTokenInvalid ?
