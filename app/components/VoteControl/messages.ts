@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'app.components.VoteControl.downvote',
     defaultMessage: 'Downvote',
   },
-  a11y_totalVotes: {
-    id: 'app.containers.VoteControl.a11y_totalVotes',
-    defaultMessage: 'Total upvotes: {upvotesCount}. Total downvotes: {downvotesCount}.',
+  a11y_upvotesDownvotes: {
+    id: 'app.containers.VoteControl.a11y_upvotesDownvotes',
+    defaultMessage: 'Total upvotes: {upvotesCount}, total downvotes: {downvotesCount}',
   },
   voteSuccessTitle: {
     id: 'app.containers.VoteControl.voteSuccessTitle',
