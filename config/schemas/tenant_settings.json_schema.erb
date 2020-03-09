@@ -28,8 +28,9 @@
           },
           "timezone": {
             "type": "string",
-            "default": "Europe/Brussels",
-            "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
+            "default": "Brussels",
+            "enum": [<%= ActiveSupport::TimeZone.all.sort_by{|tz| TimezoneService.new.display_timezone(tz)}.map(&:name).map{|l| "\"#{l}\""}.join(",") %>],
+            "enumNames": [<%= ActiveSupport::TimeZone.all.map{|tz| TimezoneService.new.display_timezone(tz)}.sort.map{|l| "\"#{l}\""}.join(",") %>]
           },
           "currency": {
             "type": "string",
