@@ -120,7 +120,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
 
   const onCancelButtonClicked = useCallback(() => {
     onCancel();
-  }, []);
+  }, [onCancel]);
 
   const onToggleHelpButtonClick = useCallback(() => {
     setShowHelp(showHelp => !showHelp);
