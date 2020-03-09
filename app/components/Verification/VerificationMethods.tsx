@@ -283,6 +283,8 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
                 justify="left"
                 padding="14px 20px"
                 whiteSpace="wrap"
+                boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
+                boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
               >
                 {method.attributes.name === 'cow' && <FormattedMessage {...messages.verifyCow} />}
                 {method.attributes.name === 'bosa_fas' && <FormattedMessage {...messages.verifyBOSA} />}

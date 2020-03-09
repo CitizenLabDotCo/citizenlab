@@ -159,7 +159,7 @@ class SignUp extends PureComponent<Props, State> {
   componentDidMount() {
     this.subscription = signUpNextStep$.subscribe(() => {
       const { activeStep, userId } = this.state;
-      const { action, customFieldsSchema } = this.props;
+      const { action, customFieldsSchema, onSignUpCompleted } = this.props;
       const hasVerificationStep = action?.action_requires_verification;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
@@ -167,8 +167,8 @@ class SignUp extends PureComponent<Props, State> {
         this.setState({ activeStep: 2 });
       } else if (hasCustomFields) {
         this.setState({ activeStep: 3 });
-      } else if (userId) {
-        this.props.onSignUpCompleted(userId);
+      } else if (userId && onSignUpCompleted) {
+        onSignUpCompleted(userId);
       }
     });
   }
