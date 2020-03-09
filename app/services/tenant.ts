@@ -52,6 +52,7 @@ export interface ITenantSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
+    phone?: boolean;
   };
   facebook_login?: {
     allowed: boolean;

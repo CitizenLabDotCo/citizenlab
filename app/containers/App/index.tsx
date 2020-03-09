@@ -264,11 +264,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   openVerificationModal = (step: VerificationModalSteps, context: ContextShape | null) => {
-    this.setState({
-      verificationModalOpened: true,
-      verificationModalInitialStep: step,
-      verificationModalContext: context
-    });
+    if (this.state.authUser) {
+      this.setState({
+        verificationModalOpened: true,
+        verificationModalInitialStep: step,
+        verificationModalContext: context
+      });
+    } else {
+      console.log('verification modal not opened because user is not authenticated');
+    }
   }
 
   closeVerificationModal = () => {

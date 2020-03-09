@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import styled, { withTheme } from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 import { IInitiativeData } from 'services/initiatives';
@@ -13,6 +13,7 @@ import Button from 'components/UI/Button';
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import IconTooltip from 'components/UI/IconTooltip';
 
 const Container = styled.div``;
 
@@ -48,14 +49,14 @@ interface Props extends InputProps, DataProps { }
 
 interface State { }
 
-class ThresholdReached extends PureComponent<Props, State> {
+class ThresholdReached extends PureComponent<Props & { theme: any }, State> {
 
   handleOnVote = () => {
     this.props.onVote();
   }
 
   render() {
-    const { initiative, initiativeSettings: { voting_threshold }, initiativeStatus, userVoted } = this.props;
+    const { initiative, initiativeSettings: { voting_threshold, threshold_reached_message }, initiativeStatus, userVoted } = this.props;
 
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
@@ -79,6 +80,17 @@ class ThresholdReached extends PureComponent<Props, State> {
               )
             }}
           />
+          {threshold_reached_message ? (
+            <IconTooltip
+              icon="info"
+              iconColor={this.props.theme.colorText}
+              theme="light"
+              placement="bottom"
+              content={
+                <T value={threshold_reached_message} supportHtml />
+              }
+            />
+          ) : <></>}
         </StatusExplanation>
         <VoteText>
           <FormattedMessage
@@ -102,4 +114,4 @@ class ThresholdReached extends PureComponent<Props, State> {
   }
 }
 
-export default ThresholdReached;
+export default withTheme(ThresholdReached);
