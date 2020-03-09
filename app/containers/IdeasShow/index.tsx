@@ -691,7 +691,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             </Content>
           </IdeaContainer>
 
-          {loaded && <Footer postId={ideaId} postType="idea" />}
+          <Footer postId={ideaId} postType="idea" />
         </>
       );
     }

@@ -3,23 +3,22 @@ import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
 import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
+import { LiveMessage } from 'react-aria-live';
 
 // components
 import Icon from 'components/UI/Icon';
 import VotingSuccessModal from './VotingSuccessModal';
 import VotingErrorModal from './VotingErrorModal';
-import { LiveMessage } from 'react-aria-live';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, IIdea } from 'services/ideas';
+import { ideaByIdStream, IIdea, IdeaVotingDisabledReason } from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 import { projectByIdStream, IProject } from 'services/projects';
@@ -28,14 +27,12 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import { convertUrlSearchParamsToAction, redirectActionToSignUpPage, IAction } from 'containers/SignUpPage';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
 import { lighten } from 'polished';
 import { colors, fontSizes } from 'utils/styleUtils';
-
-// typings
-import { redirectToSignUpPage } from 'containers/SignUpPage';
 
 interface IVoteComponent {
   active: boolean;
@@ -234,7 +231,7 @@ interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
   unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
-  disabledVoteClick?: (disabled_reason?: string) => void;
+  disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   ariaHidden?: boolean;
   className?: string;
   showDownvote: boolean;
@@ -249,12 +246,13 @@ interface State {
   votingAnimation: 'up' | 'down' | null;
   myVoteId: string | null | undefined;
   myVoteMode: 'up' | 'down' | null | undefined;
-  a11yVoteMessage: string;
   idea: IIdea | null;
   project: IProject | null;
   phases: IPhase[] | null | undefined;
   votingSuccessModalOpened: boolean;
   votingErrorModalOpened: boolean;
+  loaded: boolean;
+  action: IAction | null;
 }
 
 class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -279,12 +277,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       votingAnimation: null,
       myVoteId: undefined,
       myVoteMode: undefined,
-      a11yVoteMessage: '',
       idea: null,
       project: null,
       phases: undefined,
       votingSuccessModalOpened: false,
-      votingErrorModalOpened: false
+      votingErrorModalOpened: false,
+      loaded: false,
+      action: null
     };
     this.voting$ = new BehaviorSubject(null);
     this.id$ = new BehaviorSubject(null);
@@ -301,15 +300,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       distinctUntilChanged()
     ) as Observable<string>;
 
+    const action = convertUrlSearchParamsToAction(location.search);
+    this.setState({ action: action || null });
+    action && window.history.replaceState(null, '', window.location.pathname);
+
     this.id$.next(this.props.ideaId);
-
-    if (this.upvoteElement) {
-      this.upvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.addEventListener('animationend', this.votingAnimationDone);
-    }
+    this.upvoteElement?.addEventListener('animationend', this.votingAnimationDone);
+    this.downvoteElement?.addEventListener('animationend', this.votingAnimationDone);
 
     const idea$ = id$.pipe(
       switchMap((ideaId: string) => {
@@ -411,7 +408,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           phases,
           showVoteControl,
           upvotesCount,
-          downvotesCount
+          downvotesCount,
+          loaded: true
         });
       }),
 
@@ -428,48 +426,47 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     ];
   }
 
-  componentDidUpdate(prevProps: Props, _prevState: State) {
-    const { ideaId, location: { query, pathname } } = this.props;
-    const { action_type, action_context_id, action_context_type } = query;
-    const { authUser, idea, project, phases, myVoteId, voting } = this.state;
+  async componentDidUpdate(_prevProps: Props, prevState: State) {
+    const { ideaId } = this.props;
+    const { authUser, myVoteId, voting, loaded, action } = this.state;
 
-    if (ideaId !== prevProps.ideaId) {
-      this.id$.next(ideaId);
-    }
+    this.id$.next(ideaId);
 
-    // Trigger programmatic vote when the page url contains the vote action parameters.
-    // Performs some extra checks to make sure all the necessary data is loaded before triggering the vote
     if (
+      !prevState.loaded &&
+      loaded &&
       authUser &&
+      voting === null &&
       myVoteId !== undefined &&
-      !voting &&
-      idea &&
-      project &&
-      phases !== undefined &&
-      action_type &&
-      action_context_type === 'idea' &&
-      action_context_id === ideaId
+      action &&
+      action.action_type === ('upvote' || 'downvote') &&
+      action.action_context_type === 'idea' &&
+      action.action_context_id === ideaId
     ) {
-      clHistory.replace(pathname);
-
-      this.onClickVote(action_type === 'upvote' ? 'up' : 'down').then(() => {
-        this.setState({ votingSuccessModalOpened: true });
-      }).catch(() => {
-        this.setState({ votingErrorModalOpened: true });
-      });
+      this.programmaticalyCastVote(action.action_type === 'upvote' ? 'up' : 'down');
     }
   }
 
   componentWillUnmount() {
-    if (this.upvoteElement) {
-      this.upvoteElement.removeEventListener('animationend', this.votingAnimationDone);
-    }
-
-    if (this.downvoteElement) {
-      this.downvoteElement.removeEventListener('animationend', this.votingAnimationDone);
-    }
-
+    this.upvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
+    this.downvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  // Trigger programmatic vote when the page url contains the vote action parameters.
+  // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
+  programmaticalyCastVote = async (voteMode: 'up' | 'down') => {
+    this.setState({ action: null });
+
+    try {
+      const repsonse = await this.vote(voteMode);
+
+      if (repsonse === 'success') {
+        this.setState({ votingSuccessModalOpened: true });
+      }
+    } catch {
+      this.setState({ votingErrorModalOpened: true });
+    }
   }
 
   votingAnimationDone = () => {
@@ -479,39 +476,37 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   onClickUpvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    this.onClickVote('up');
+    this.vote('up');
   }
 
   onClickDownvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
-    this.onClickVote('down');
+    this.vote('down');
   }
 
-  onClickVote = async (voteMode: 'up' | 'down') => {
+  vote = async (voteMode: 'up' | 'down') => {
     const { authUser, myVoteId, myVoteMode, voting, idea, project, phases } = this.state;
     const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
+    const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
 
-    if (!authUser) {
-      if (votingDisabledReason === 'not_verified') {
-        redirectToSignUpPage({
-          action_type: voteMode ? 'upvote' : 'downvote',
-          action_context_type: 'idea',
-          action_context_id: ideaId,
-          action_context_pathname: window.location.pathname
-        });
-      } else {
-        unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
-      }
-    }
-
-    if (authUser) {
-      if ((!votingEnabled && voteMode !== myVoteMode) || (!cancellingEnabled && voteMode === myVoteMode)) {
-        disabledVoteClick && disabledVoteClick(votingDisabledReason || undefined);
-      } else if (voting === null) {
+    if (!voting) {
+      if (isNilOrError(authUser)) {
+        if (votingDisabledReason === 'not_verified') {
+          redirectActionToSignUpPage({
+            action_type: voteMode ? 'upvote' : 'downvote',
+            action_context_type: 'idea',
+            action_context_id: ideaId,
+            action_context_pathname: window.location.pathname,
+            action_requires_verification: true
+          });
+        } else {
+          unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
+        }
+      } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
         try {
           this.voting$.next(voteMode);
 
@@ -552,18 +547,19 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
           await ideaByIdStream(ideaId).fetch();
           this.voting$.next(null);
-          this.setState(({ upvotesCount, downvotesCount }) => {
-            const actionMessage = this.props.intl.formatMessage(voteMode === 'up' ? messages.a11y_upvoteButtonClicked : messages.a11y_downvoteButtonClicked);
-            const totalVotesMessage = this.props.intl.formatMessage(messages.a11y_totalVotes, { upvotesCount, downvotesCount });
-            return { a11yVoteMessage: `${actionMessage} ${totalVotesMessage}` };
-          });
+
+          return 'success';
         } catch (error) {
           this.voting$.next(null);
           await ideaByIdStream(ideaId).fetch();
-          throw error;
+          throw 'error';
         }
+      } else if (disabledVoteClick && votingDisabledReason) {
+        disabledVoteClick(votingDisabledReason);
       }
     }
+
+    return;
   }
 
   setUpvoteRef = (element: HTMLButtonElement) => {
@@ -588,17 +584,43 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
   render() {
     const { size, className, intl: { formatMessage }, ariaHidden, showDownvote } = this.props;
-    const { idea, showVoteControl, myVoteMode, votingAnimation, upvotesCount, downvotesCount, a11yVoteMessage, votingSuccessModalOpened, votingErrorModalOpened } = this.state;
+    const {
+      idea,
+      showVoteControl,
+      myVoteMode,
+      votingAnimation,
+      upvotesCount,
+      downvotesCount,
+      votingSuccessModalOpened,
+      votingErrorModalOpened
+    } = this.state;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
-    const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) || (myVoteMode === 'up' && cancellingEnabled) || (votingDisabledReason === 'not_verified');
-    const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) || (myVoteMode === 'down' && cancellingEnabled) || (votingDisabledReason === 'not_verified');
+    const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) ||
+                            (myVoteMode === 'up' && cancellingEnabled) ||
+                            (votingDisabledReason === 'not_verified');
+    const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) ||
+                              (myVoteMode === 'down' && cancellingEnabled) ||
+                              (votingDisabledReason === 'not_verified');
 
     if (!showVoteControl) return null;
 
+    const screenreaderContent = (
+      <>
+        <ScreenReaderOnly>
+          <FormattedMessage {...messages.a11y_upvotesDownvotes} values={{ upvotesCount, downvotesCount }} />
+        </ScreenReaderOnly>
+        <LiveMessage
+          message={formatMessage(messages.a11y_upvotesDownvotes, { upvotesCount, downvotesCount })}
+          aria-live="polite"
+        />
+      </>
+    );
+
     return (
       <>
+        {screenreaderContent}
         <Container
           className={`
             ${className}
@@ -613,12 +635,19 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             onMouseDown={this.removeFocus}
             onClick={this.onClickUpvote}
             ref={this.setUpvoteRef}
-            className={`${votingAnimation === 'up' ? 'voteClick' : 'upvote'} ${upvotingEnabled && 'enabled'} e2e-ideacard-upvote-button`}
+            className={`
+              ${votingAnimation === 'up' ? 'voteClick' : 'upvote'}
+              ${upvotingEnabled && 'enabled'}
+              e2e-ideacard-upvote-button
+            `}
             enabled={upvotingEnabled}
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
-              <VoteIcon title={formatMessage(messages.upvote)} name="upvote" size={size} enabled={upvotingEnabled} />
+              <VoteIcon name="upvote" size={size} enabled={upvotingEnabled} ariaHidden />
+              <ScreenReaderOnly>
+                <FormattedMessage {...messages.upvote} />
+              </ScreenReaderOnly>
             </VoteIconContainer>
             <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
           </Upvote>
@@ -629,12 +658,19 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
               onMouseDown={this.removeFocus}
               onClick={this.onClickDownvote}
               ref={this.setDownvoteRef}
-              className={`${votingAnimation === 'down' ? 'voteClick' : 'downvote'} ${downvotingEnabled && 'enabled'} e2e-ideacard-downvote-button`}
+              className={`
+                ${votingAnimation === 'down' ? 'voteClick' : 'downvote'}
+                ${downvotingEnabled && 'enabled'}
+                e2e-ideacard-downvote-button
+              `}
               enabled={downvotingEnabled}
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-                <VoteIcon title={formatMessage(messages.downvote)} name="downvote" size={size} enabled={downvotingEnabled} />
+                <VoteIcon name="downvote" size={size} enabled={downvotingEnabled} ariaHidden />
+                <ScreenReaderOnly>
+                  <FormattedMessage {...messages.downvote} />
+                </ScreenReaderOnly>
               </VoteIconContainer>
               <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
             </Downvote>
@@ -650,14 +686,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           opened={votingErrorModalOpened}
           onClose={this.closeVotingErrorModal}
         />
-
-        {ariaHidden ?
-          <ScreenReaderOnly>
-            <FormattedMessage {...messages.a11y_totalVotes} values={{ upvotesCount, downvotesCount }} />
-          </ScreenReaderOnly>
-          :
-          <LiveMessage message={a11yVoteMessage} aria-live="polite" />
-        }
       </>
     );
   }

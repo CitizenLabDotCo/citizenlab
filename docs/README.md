@@ -1,5 +1,18 @@
 # Changelog
 
+## 2020-03-05
+
+### Fixed
+
+- Signup step 2 can no longer be skipped when there are required fields
+- Correct tooltip link for support article on invitations
+- Correct error messages when not filling in start/end date of a phase
+
+### Added
+
+- Setting to disable downvoting in a phase/project, feature flagged
+- When a non-logged in visitor tries to vote on an idea that requires verification, the verification modal automatically appears after registering
+
 ## 2020-02-24
 
 ### Fixed

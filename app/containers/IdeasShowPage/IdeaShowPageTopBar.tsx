@@ -6,6 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
@@ -25,6 +26,9 @@ import messages from './messages';
 import styled from 'styled-components';
 import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { lighten } from 'polished';
+
+// typings
+import { IdeaVotingDisabledReason } from 'services/ideas';
 
 const Container = styled.main`
   height: ${props => props.theme.mobileTopBarHeight}px;
@@ -108,13 +112,14 @@ interface InputProps {
 
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
+  authUser: GetAuthUserChildProps;
   idea: GetIdeaChildProps;
   project: GetProjectChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, project, windowSize }) => {
+const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, project, windowSize, authUser }) => {
 
   const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -130,19 +135,17 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
     clHistory.push('/sign-in');
   }, []);
 
-  const onDisabledVoteClick = useCallback((disabled_reason: string) => {
-    if (disabled_reason === 'not_verified') {
-      if (!isNilOrError(project)) {
-        const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-        const pcId = project.relationships?.current_phase?.data?.id || project.id;
-        pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
-      }
+  const onDisabledVoteClick = useCallback((disabled_reason: IdeaVotingDisabledReason) => {
+    if (!isNilOrError(authUser) && !isNilOrError(project) && disabled_reason === 'not_verified') {
+      const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+      const pcId = project.relationships?.current_phase?.data?.id || project.id;
+      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
     }
-  }, [project]);
+  }, [authUser, project]);
 
   const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
 
-  if (!isNilOrError(idea) && smallerThanLargeTablet) {
+  if (!isNilOrError(idea) && !isNilOrError(project) && smallerThanLargeTablet) {
     return (
       <Container className={className}>
         <TopBarInner>
@@ -173,6 +176,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
+  authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
