@@ -189,12 +189,12 @@ export default defineMessages({
     id: 'app.containers.SignUp.signUpPage',
     defaultMessage: 'sign up page',
   },
-  somethingWentWrong: {
-    id: 'app.containers.SignUp.somethingWentWrong',
-    defaultMessage: 'Oops, something went wrong!',
+  somethingWentWrongTitle: {
+    id: 'app.containers.SignUp.somethingWentWrongTitle',
+    defaultMessage: 'Something went wrong',
   },
-  notSignedIn: {
-    id: 'app.containers.SignUp.notSignedIn',
-    defaultMessage: "Something went wrong and we can't sign you in right now. Please try again in a few minutes.",
+  somethingWentWrongText: {
+    id: 'app.containers.SignUp.somethingWentWrongText',
+    defaultMessage: 'Something went wrong while trying to create your account. Please try again in a few minutes.',
   },
 });
