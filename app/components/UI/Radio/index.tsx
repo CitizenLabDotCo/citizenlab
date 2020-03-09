@@ -100,7 +100,7 @@ type LabelProps = {
 };
 
 export type Props = LabelProps & {
-  onChange?: {(event): void};
+  onChange?: { (event): void };
   currentValue?: any;
   value: any;
   /**
@@ -138,6 +138,7 @@ export default class Radio extends PureComponent<Props, State> {
       const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
       const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
 
+      console.log(targetElementIsLink, parentElementIsLink);
       if (!targetElementIsLink && !parentElementIsLink) {
         onChange(value);
       }
@@ -170,20 +171,20 @@ export default class Radio extends PureComponent<Props, State> {
 
     return (
       <Container className={`${className} ${disabled ? 'disabled' : 'enabled'}`}>
-        <Input
-          id={id}
-          type="radio"
-          name={name}
-          value={value}
-          checked={checked}
-          aria-checked={checked}
-          onFocus={this.handleOnFocus}
-          onBlur={this.handleOnBlur}
-          onChange={this.handleOnChange}
-          required={isRequired}
-        />
-
         <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>
+          <Input
+            id={id}
+            type="radio"
+            name={name}
+            value={value}
+            checked={checked}
+            aria-checked={checked}
+            onFocus={this.handleOnFocus}
+            onBlur={this.handleOnBlur}
+            onChange={this.handleOnChange}
+            required={isRequired}
+          />
+
           <CustomRadio
             className={
               `${inputFocused ? 'focused' : ''}
@@ -192,7 +193,7 @@ export default class Radio extends PureComponent<Props, State> {
               circle`
             }
           >
-            {checked && <Checked aria-hidden color={buttonColor || colors.clGreen}/>}
+            {checked && <Checked aria-hidden color={buttonColor || colors.clGreen} />}
           </CustomRadio>
           {label}
         </Label>
