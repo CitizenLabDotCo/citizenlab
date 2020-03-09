@@ -75,7 +75,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
       hasEmptyFields = true;
     }
 
-    if (!hasEmptyFields) {
+    if (!hasEmptyFields && !processing) {
       try {
         setProcessing(true);
 
@@ -116,7 +116,7 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
       }
     }
 
-  }, [run, idSerial]);
+  }, [run, idSerial, processing]);
 
   const onCancelButtonClicked = useCallback(() => {
     onCancel();
