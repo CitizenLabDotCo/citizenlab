@@ -38,4 +38,15 @@ describe Verification::VerificationPolicy do
     end
   end
 
+  context "for a mortal user that didn't complete her registration yet" do
+    let(:user) { create(:user, registration_completed_at: nil) }
+
+    it { should permit(:create) }
+
+    it "should index the verification" do
+      verification.save!
+      expect(scope.resolve.size).to eq 1
+    end
+  end
+
 end
