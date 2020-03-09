@@ -1879,7 +1879,7 @@
   "app.containers.UsersShowPage.seeIdea": "{tenantName, select, DeloitteDK {Se indlæg} other {Se ide}}",
   "app.containers.UsersShowPage.seeInitiative": "Se initiativ",
   "app.containers.UsersShowPage.tryAgain": "Der opstod en fejl, prøv venligst igen senere. ",
-  "app.containers.VoteControl.a11y_totalVotes": "Totale Upvotes: {upvotesCount}. Totale downvotes: {downvotesCount}.",
+  "app.containers.VoteControl.a11y_upvotesDownvotes": "",
   "app.containers.VoteControl.close": "Tæt",
   "app.containers.VoteControl.voteErrorSubTitle": "På grund af en fejl blev din stemme ikke registreret. Prøv venligst igen om et par minutter.",
   "app.containers.VoteControl.voteErrorTitle": "Noget gik galt",
