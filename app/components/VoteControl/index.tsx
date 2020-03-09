@@ -440,7 +440,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       action.action_context_type === 'idea' &&
       action.action_context_id === ideaId
     ) {
-      console.log('zolg');
       clHistory.replace(location.pathname);
       this.programmaticalyCastVote(action.action_type === 'upvote' ? 'up' : 'down');
     }
