@@ -151,12 +151,23 @@ class User < ApplicationRecord
     where('lower(email) = lower(?)', email).first
   end
 
+  # This method is used by knock to get the user.
+  # Default is by email, but we want to compare
+  # case insensitively and forbid login for 
+  # invitees.
   def self.from_token_request request
-    # This method is used by knock to get the user.
-    # Default is by email, but we want to compare
-    # case insensitively and forbid login for 
-    # invitees.
-    not_invited.find_by_cimail request.params["auth"]["email"]
+    email = request.params["auth"]["email"]
+
+    # Hack to embed phone numbers in email
+    if Tenant.current.has_feature?('password_login') && Tenant.settings('password_login','phone')
+      phone_service = PhoneService.new
+      if phone_service.phone_or_email(email) == :phone
+        pattern = Tenant.settings('password_login', 'phone_email_pattern')
+        email = pattern.gsub('__PHONE__', phone_service.normalize_phone(email))
+      end
+    end
+
+    not_invited.find_by_cimail email
   end
 
   def to_token_payload
