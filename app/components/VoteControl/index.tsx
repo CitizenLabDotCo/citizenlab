@@ -451,8 +451,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  // Trigger programmatic vote when the page url contains the vote action parameters.
-  // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
+  // Programmatically trigger vote when the page url contains the vote action parameters.
   programmaticalyCastVote = async (voteMode: 'up' | 'down') => {
     try {
       const repsonse = await this.vote(voteMode);
