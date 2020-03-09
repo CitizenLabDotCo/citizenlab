@@ -113,10 +113,9 @@ gem 'scenic'
 gem 'acts_as_list'
 gem 'faker'
 
-# Using a fork while waiting for release/merge of these 2 PRs
-# https://github.com/seejohnrun/ice_cube/pull/458
-# https://github.com/seejohnrun/ice_cube/pull/459
-gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube', branch: 'CL2-5023-broken-backend'
+# This fork was made to support the latest verions of Ruby
+# and Rails.
+gem 'ice_cube', github: 'CitizenLabDotCo/ice_cube'
 gem 'skylight'
 gem 'mailgun-ruby'
 gem 'dalli'
