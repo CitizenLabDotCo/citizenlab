@@ -1,7 +1,6 @@
 GIT
   remote: https://github.com/CitizenLabDotCo/ice_cube.git
-  revision: 9fb61c41e0717cf85fb45daa341f6bd1edf8e12f
-  branch: CL2-5023-broken-backend
+  revision: 4671442d581d185a40933fa06a9c773f22f6070f
   specs:
     ice_cube (0.16.3)
 
