@@ -1879,7 +1879,7 @@
   "app.containers.UsersShowPage.seeIdea": "Idee anschauen",
   "app.containers.UsersShowPage.seeInitiative": "Initiative ansehen",
   "app.containers.UsersShowPage.tryAgain": "Ein Fehler ist aufgetreten, bitte später erneut versuchen.",
-  "app.containers.VoteControl.a11y_totalVotes": "Upvotes insgesamt: {AnzahlUpvotes}. Downvotes gesamt: {Anzahl Downvotes}.",
+  "app.containers.VoteControl.a11y_upvotesDownvotes": "",
   "app.containers.VoteControl.close": "Schließen",
   "app.containers.VoteControl.voteErrorSubTitle": "Aufgrund einer Störung konnte Ihre Stimme nicht registriert werden. Versuchen Sie es bitte in einigen Minuten erneut.",
   "app.containers.VoteControl.voteErrorTitle": "Etwas ging schief",
