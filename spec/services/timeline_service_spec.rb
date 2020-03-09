@@ -37,12 +37,12 @@ describe TimelineService do
       t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = Tenant.current.settings
-      settings['core']['timezone'] = "Europe/Brussels"
+      settings['core']['timezone'] = "Brussels"
       Tenant.current.update!(settings: settings)
       expect(service.current_phase(project, t)&.id).to be nil
 
       settings = Tenant.current.settings
-      settings['core']['timezone'] = "America/Santiago"
+      settings['core']['timezone'] = "Santiago"
       Tenant.current.update!(settings: settings)
       expect(service.current_phase(project, t)&.id).to eq phase.id
     end
@@ -61,12 +61,12 @@ describe TimelineService do
       t = Time.new(2019,9,9,23) # 11 pm utc = 1 am Brussels == 8pm Santiage
 
       settings = Tenant.current.settings
-      settings['core']['timezone'] = "Europe/Brussels"
+      settings['core']['timezone'] = "Brussels"
       Tenant.current.update!(settings: settings)
       expect(service.current_and_future_phases(project, t)).to eq []
 
       settings = Tenant.current.settings
-      settings['core']['timezone'] = "America/Santiago"
+      settings['core']['timezone'] = "Santiago"
       Tenant.current.update!(settings: settings)
       expect(service.current_and_future_phases(project, t)).to eq [phase]
     end
@@ -113,12 +113,12 @@ describe TimelineService do
 
       travel_to Time.new(2019,9,9,23) do# 11 pm utc = 1 am Brussels == 8pm Santiage
         settings = Tenant.current.settings
-        settings['core']['timezone'] = "Europe/Brussels"
+        settings['core']['timezone'] = "Brussels"
         Tenant.current.update!(settings: settings)
         expect(service.timeline_active(project)).to eq :past
 
         settings = Tenant.current.settings
-        settings['core']['timezone'] = "America/Santiago"
+        settings['core']['timezone'] = "Santiago"
         Tenant.current.update!(settings: settings)
         expect(service.timeline_active(project)).to eq :present
       end

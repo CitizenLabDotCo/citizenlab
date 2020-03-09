@@ -72,7 +72,7 @@ RSpec.describe Tenant, type: :model do
 
   describe "Getting the settings of the current tenant" do
     it "succeeds when the setting is available" do
-      expect(Tenant.settings 'core', 'timezone').to eq('Europe/Brussels')
+      expect(Tenant.settings 'core', 'timezone').to eq('Brussels')
     end
 
     it "raise an error when there is no current tenant" do
