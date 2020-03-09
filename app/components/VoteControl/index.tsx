@@ -4,6 +4,7 @@ import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rx
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -27,7 +28,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { convertUrlSearchParamsToAction, redirectActionToSignUpPage, IAction } from 'containers/SignUpPage';
+import { convertUrlSearchParamsToAction, redirectActionToSignUpPage } from 'containers/SignUpPage';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
@@ -253,7 +254,6 @@ interface State {
   votingSuccessModalOpened: boolean;
   votingErrorModalOpened: boolean;
   loaded: boolean;
-  action: IAction | null;
 }
 
 class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -284,8 +284,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       phases: undefined,
       votingSuccessModalOpened: false,
       votingErrorModalOpened: false,
-      loaded: false,
-      action: null
+      loaded: false
     };
     this.voting$ = new BehaviorSubject(null);
     this.id$ = new BehaviorSubject(null);
@@ -301,10 +300,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       filter(ideaId => isString(ideaId)),
       distinctUntilChanged()
     ) as Observable<string>;
-
-    const action = convertUrlSearchParamsToAction(location.search);
-    this.setState({ action: action || null });
-    action && window.history.replaceState(null, '', window.location.pathname);
 
     this.id$.next(this.props.ideaId);
     this.upvoteElement?.addEventListener('animationend', this.votingAnimationDone);
@@ -428,14 +423,14 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     ];
   }
 
-  async componentDidUpdate(_prevProps: Props, prevState: State) {
-    const { ideaId } = this.props;
-    const { authUser, myVoteId, voting, loaded, action } = this.state;
+  async componentDidUpdate() {
+    const { ideaId, location } = this.props;
+    const { authUser, myVoteId, voting, loaded } = this.state;
+    const action = convertUrlSearchParamsToAction(location.search);
 
     this.id$.next(ideaId);
 
     if (
-      !prevState.loaded &&
       loaded &&
       authUser &&
       voting === null &&
@@ -445,6 +440,8 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       action.action_context_type === 'idea' &&
       action.action_context_id === ideaId
     ) {
+      console.log('zolg');
+      clHistory.replace(location.pathname);
       this.programmaticalyCastVote(action.action_type === 'upvote' ? 'up' : 'down');
     }
   }
@@ -458,8 +455,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   // Trigger programmatic vote when the page url contains the vote action parameters.
   // First performs some extra checks to make sure all the necessary data is loaded before triggering the vote.
   programmaticalyCastVote = async (voteMode: 'up' | 'down') => {
-    this.setState({ action: null });
-
     try {
       const repsonse = await this.vote(voteMode);
 

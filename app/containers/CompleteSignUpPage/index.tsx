@@ -118,7 +118,7 @@ class CompleteSignUpPage extends PureComponent<Props & WithRouterProps, State> {
   componentDidMount() {
     const action = convertUrlSearchParamsToAction(this.props.location.search);
     this.setState({ action: action || null });
-    window.history.replaceState(null, '', window.location.pathname);
+    action && window.history.replaceState(null, '', window.location.pathname);
   }
 
   redirect = () => {
