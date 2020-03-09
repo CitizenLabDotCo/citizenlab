@@ -1879,7 +1879,7 @@
   "app.containers.UsersShowPage.seeIdea": "",
   "app.containers.UsersShowPage.seeInitiative": "",
   "app.containers.UsersShowPage.tryAgain": "",
-  "app.containers.VoteControl.a11y_totalVotes": "",
+  "app.containers.VoteControl.a11y_upvotesDownvotes": "",
   "app.containers.VoteControl.close": "",
   "app.containers.VoteControl.voteErrorSubTitle": "",
   "app.containers.VoteControl.voteErrorTitle": "",
