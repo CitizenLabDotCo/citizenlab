@@ -12,7 +12,7 @@
 
 - Add tooltip explaining what the city will do when the voting threshold is reached for a successful initiative
 - Added verification step to the signup flow
-- Continious flow from vote button clicked to vote casted for unauthenticated, unverified users (click vote button -> account creation -> verification -> optional/required custom signup fields -> programmatically cast vote -> successfully voted message appears)
+- New continuous flow from vote button clicked to vote casted for unauthenticated, unverified users (click vote button -> account creation -> verification -> optional/required custom signup fields -> programmatically cast vote -> successfully voted message appears)
 
 ### Changed
 
