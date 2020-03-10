@@ -15,6 +15,7 @@ class Initiative < ApplicationRecord
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
   has_many :notifications, foreign_key: :post_id, dependent: :nullify
+  has_many :text_images, as: :imageable, dependent: :destroy
 
   belongs_to :assignee, class_name: 'User', optional: true
 
