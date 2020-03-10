@@ -131,19 +131,19 @@ models:
       title_multiloc: pages.homepage_info_title
       body_multiloc: pages.homepage_info_body
       slug: homepage-info
-    -
+    - &6
       title_multiloc: pages.initiatives_title
       body_multiloc: pages.initiatives_body
       slug: initiatives
-    -
+    - &7
       title_multiloc: pages.initiatives_success_1_title
       body_multiloc: pages.initiatives_success_1_body
       slug: initiatives-success-1
-    -
+    - &8
       title_multiloc: pages.initiatives_success_2_title
       body_multiloc: pages.initiatives_success_2_body
       slug: initiatives-success-2
-    -
+    - &9
       title_multiloc: pages.initiatives_success_3_title
       body_multiloc: pages.initiatives_success_3_body
       slug: initiatives-success-3
@@ -303,3 +303,29 @@ models:
       key: "8"
       title_multiloc: custom_field_options.education.ISCED8
       ordering: 6
+  text_image:
+    # en
+    - imageable_ref: *1
+      imageable_field: body_multiloc
+      remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      text_reference: e2c7bc7a-017d-4887-a3cb-b94185617a59
+    - imageable_ref: *1
+      imageable_field: body_multiloc
+      remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      text_reference: 392d0e47-e5f9-41ab-9ceb-affac617b8b1
+    - imageable_ref: *6
+      imageable_field: body_multiloc
+      remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      text_reference: b4e659ab-2830-48fd-b3ce-96e16856262f
+    - imageable_ref: *7
+      imageable_field: body_multiloc
+      remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      text_reference: 3302395e-0a1b-4be8-8ab2-9fc0dff61d4d
+    - imageable_ref: *8
+      imageable_field: body_multiloc
+      remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      text_reference: 033f5120-1f24-4d8b-ad89-82b94eb3c0db
+    - imageable_ref: *9
+      imageable_field: body_multiloc
+      remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1548761162/image_nwmsub.png
+      text_reference: 7430afb9-bbd4-49f3-a894-c7d41e642de7
