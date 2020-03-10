@@ -23,18 +23,17 @@ interface Props {
   onCancel: () => void;
   onVerified: () => void;
   showHeader?: boolean;
+  inModal: boolean;
   className?: string;
 }
 
-const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, showHeader, className }) => {
+const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, showHeader, inModal, className }) => {
 
   const authUser = useAuthUser();
 
   const [desiredError, setDesiredError] = useState<string>('');
   const [desiredErrorError, setDesiredErrorError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string| null>(null);
-
-  const inModal = !window.location.pathname.endsWith('/sign-up');
 
   const onDesiredErrorChange = useCallback((desiredError: string) => {
     setDesiredErrorError(null);

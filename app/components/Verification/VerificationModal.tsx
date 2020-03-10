@@ -85,6 +85,7 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
         {initialActiveStep !== 'success' && initialActiveStep !== 'error' &&
           <VerificationSteps
             context={context}
+            inModal={true}
             showHeader={true}
             initialActiveStep={initialActiveStep || 'method-selection'}
             onComplete={onComplete}

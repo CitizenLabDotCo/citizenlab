@@ -173,6 +173,7 @@ export type TSignUpSteps = 'account-creation' | 'verification' | 'custom-fields'
 
 interface InputProps {
   initialActiveStep: TSignUpSteps | null;
+  inModal: boolean;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   step1Title?: string | JSX.Element;
@@ -267,7 +268,7 @@ class SignUp extends PureComponent<Props, State> {
 
   render() {
     const { activeStep, error } = this.state;
-    const { isInvitation, token, step1Title, step2Title, step3Title, action, tenant } = this.props;
+    const { isInvitation, inModal, token, step1Title, step2Title, step3Title, action, tenant } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
@@ -326,6 +327,7 @@ class SignUp extends PureComponent<Props, State> {
                     <VerificationSteps
                       context={null}
                       initialActiveStep="method-selection"
+                      inModal={inModal}
                       onComplete={this.handleStep2Completed}
                       onError={this.onVerificationError}
                     />
