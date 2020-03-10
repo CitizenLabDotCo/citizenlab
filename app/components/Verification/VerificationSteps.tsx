@@ -62,12 +62,13 @@ export interface Props {
   context: ContextShape; // TODO change to pass in additionnal rules info
   initialActiveStep: TVerificationSteps;
   showHeader?: boolean;
+  inModal: boolean;
   onComplete?: () => void;
   onError?: () => void;
   className?: string;
 }
 
-const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, showHeader, onComplete, onError }) => {
+const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, showHeader, inModal, onComplete, onError }) => {
 
   const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep);
   const [method, setMethod] = useState<IDLookupMethod | null>(null);
@@ -141,6 +142,7 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
           <VerificationMethods
             context={context}
             showHeader={showHeader}
+            inModal={inModal}
             onMethodSelected={onMethodSelected}
           />
         }
@@ -148,6 +150,7 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
         {activeStep === 'cow' &&
           <VerificationFormCOW
             showHeader={showHeader}
+            inModal={inModal}
             onCancel={onCowCancel}
             onVerified={onCowVerified}
           />
@@ -156,6 +159,7 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
         {activeStep === 'bogus' &&
           <VerificationFormBogus
             showHeader={showHeader}
+            inModal={inModal}
             onCancel={onBogusCancel}
             onVerified={onBogusVerified}
           />
@@ -165,6 +169,7 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
           <VerificationFormLookup
             method={method}
             showHeader={showHeader}
+            inModal={inModal}
             onCancel={onLookupCancel}
             onVerified={onLookupVerified}
           />

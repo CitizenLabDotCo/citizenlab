@@ -30,11 +30,12 @@ interface Props {
   onCancel: () => void;
   onVerified: () => void;
   showHeader?: boolean;
+  inModal: boolean;
   className?: string;
   method: IDLookupMethod;
 }
 
-const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, showHeader, className, method }) => {
+const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, showHeader, inModal, className, method }) => {
 
   const authUser = useAuthUser();
 
@@ -42,8 +43,6 @@ const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, showHeader, 
   const [cardIdError, setCardIdError] = useState<JSX.Element | null>(null);
   const [formError, setFormError] = useState<JSX.Element | null>(null);
   const [showHelp, setShowHelp] = useState<boolean>(false);
-
-  const inModal = !window.location.pathname.endsWith('/sign-up');
 
   const onCardIdChange = useCallback((cardId: string) => {
     setCardIdError(null);

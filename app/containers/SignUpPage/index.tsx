@@ -184,6 +184,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
               {loaded &&
                 <SignUp
                   initialActiveStep={initialActiveStep}
+                  inModal={false}
                   step1Title={title}
                   isInvitation={isInvitation}
                   token={token}

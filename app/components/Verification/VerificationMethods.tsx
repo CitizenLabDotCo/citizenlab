@@ -185,11 +185,12 @@ interface Props {
   context: ContextShape | null;
   onMethodSelected: (selectedMethod: IVerificationMethod) => void;
   showHeader?: boolean;
+  inModal: boolean;
   className?: string;
   theme: any;
 }
 
-const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader, className }) => {
+const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader, inModal, className }) => {
 
   const participationConditions = useParticipationConditions(isProjectContext(context) ? context : null);
 
@@ -197,7 +198,6 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
   const verificationMethods = useVerificationMethods();
   const filteredVerificationMethods = !isNilOrError(verificationMethods) ? verificationMethods.data.filter(method => ['cow', 'bosa_fas', 'bogus', 'id_card_lookup'].includes(method.attributes.name)) : [];
 
-  const inModal = !window.location.pathname.endsWith('/sign-up') && !window.location.pathname.endsWith('/complete-signup');
   const withContext = !isNilOrError(participationConditions) && participationConditions.length > 0;
 
   const onVerifyBOSAButtonClick = useCallback(() => {

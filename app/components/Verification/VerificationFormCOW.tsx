@@ -29,10 +29,11 @@ interface Props {
   onCancel: () => void;
   onVerified: () => void;
   showHeader?: boolean;
+  inModal: boolean;
   className?: string;
 }
 
-const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, className }) => {
+const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, inModal, className }) => {
 
   const authUser = useAuthUser();
 
@@ -43,8 +44,6 @@ const VerificationFormCOW = memo<Props>(({ onCancel, onVerified, showHeader, cla
   const [formError, setFormError] = useState<JSX.Element | null>(null);
   const [showHelp, setShowHelp] = useState(false);
   const [processing, setProcessing] = useState(false);
-
-  const inModal = !window.location.pathname.endsWith('/sign-up');
 
   const onRunChange = useCallback((run: string) => {
     setRunError(null);
