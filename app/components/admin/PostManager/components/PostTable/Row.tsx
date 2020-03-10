@@ -65,19 +65,6 @@ type Props = {
 };
 
 export default class Row extends React.PureComponent<Props> {
-  onClickRow = (event) => {
-    const {
-      onToggleSelect,
-      onSingleSelect
-    } = this.props;
-
-    if (event.ctrlKey) {
-      onToggleSelect();
-    } else {
-      onSingleSelect();
-    }
-  }
-
   onClickCheckbox = (event) => {
     event.stopPropagation();
     this.props.onToggleSelect();
@@ -103,7 +90,6 @@ export default class Row extends React.PureComponent<Props> {
             selection={selection}
             activeFilterMenu={activeFilterMenu}
             className={className}
-            onClickRow={this.onClickRow}
             onClickCheckbox={this.onClickCheckbox}
             onClickTitle={this.onClickTitle}
             nothingHappens={nothingHappens}
@@ -121,7 +107,6 @@ export default class Row extends React.PureComponent<Props> {
             selection={selection}
             activeFilterMenu={activeFilterMenu}
             className={className}
-            onClickRow={this.onClickRow}
             onClickCheckbox={this.onClickCheckbox}
             onClickTitle={this.onClickTitle}
             nothingHappens={nothingHappens}
