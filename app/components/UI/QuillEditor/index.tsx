@@ -27,7 +27,6 @@ import { colors, quillEditedContent, media, fontSizes } from 'utils/styleUtils';
 // typings
 import { Locale } from 'typings';
 import Tippy from '@tippy.js/react';
-import { lighten } from 'polished';
 
 const DropdownList = styled.div`
   display: flex;
@@ -42,7 +41,7 @@ const DropdownListItem = styled.button`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: ${colors.adminLightText};
+  color: ${colors.text};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   white-space: nowrap;
@@ -51,12 +50,13 @@ const DropdownListItem = styled.button`
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   white-space: nowrap;
+  text-align: left;
 
   &:hover,
   &:focus {
     outline: none;
     color: white;
-    background: ${lighten(.1, colors.adminMenuBackground)};
+    background: ${colors.adminMenuBackground};
   }
 `;
 
@@ -525,7 +525,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
             <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
             {withCTAButton ? (
               <Tippy
-                placement="bottom"
+                placement="bottom-start"
+                theme="light"
                 interactive={true}
                 arrow={true}
                 trigger="click"
