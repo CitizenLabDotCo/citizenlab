@@ -114,10 +114,10 @@ da:
           <li>at tilføje mange flere stop til færgenruten.</li>
       </ul>
       <p>Der blev afgivet i alt 1336 stemmer og der blev skabt yderligere en klynge, baseret på kommentarer fra de deltagende borgere.</p>
-      <p>TByen Liège lyttede til dette initiativ og besluttede at handle efter det. I dag udføres en dybdegående undersøgelse af, hvordan pendulsejlladsen faktisk kan udvides. Resultaterne af denne undersøgelse vil blive brugt til fremtidig implementering.</p>
+      <p>TByen Liège lyttede til dette borgerforslag og besluttede at handle efter det. I dag udføres en dybdegående undersøgelse af, hvordan pendulsejlladsen faktisk kan udvides. Resultaterne af denne undersøgelse vil blive brugt til fremtidig implementering.</p>
       <h2>Succesfaktorer</h2>
       <ul>
-          <li>Den grundlæggende infrastruktur skal være til stede: Implementeringen af ​​dette initiativ behøver ikke at starte fra nul. Infrastrukturen, i dette tilfælde den største omkostning, er der allerede, ligesom erfaringer med udnyttelsen og de juridiske rammer.</li>
+          <li>Den grundlæggende infrastruktur skal være til stede: Implementeringen af ​​dette borgerforslag behøver ikke at starte fra nul. Infrastrukturen, i dette tilfælde den største omkostning, er der allerede, ligesom erfaringer med udnyttelsen og de juridiske rammer.</li>
           <li>En del af den større proces: Fordi dette borgerforslag stammede fra Liège 'Byplan'-proces, var borgerne bag borgerforslag inkluderet i den samlede kommunikationsplan. På grund af inddragelse af beslutningstagere og involvering af byens administration, var der sikret en ordentlig og struktureret opfølgning.</li>
           <li>En del af et større problem: Selvom pendlertjenesten, som foreslås i dette borgerforslag, aldrig vil blive brugt af alle byens borgere, sigter den dog mod at løse et større problem, der påvirker alle mennesker, der bor i byen, nemlig trafikpropper.</li>
       </ul>
@@ -239,7 +239,7 @@ da:
       ISCED8: Ph.d. eller tilsvarende
   initiatives:
     default_threshold_reached_message: >
-      <p> Initiativtagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
+      <p> Tagerne er inviteret til at præsentere deres borgerforslag på næste rådsmøde. Vi bringer en officiel opdatering. </p>
     default_eligibility_criteria: >
       <p>Borgerforslag bør</p>
       <ul>
