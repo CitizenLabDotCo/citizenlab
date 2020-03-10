@@ -7,6 +7,10 @@ export default defineMessages({
   },
   step2Title: {
     id: 'app.containers.SignUp.step2Title',
+    defaultMessage: 'Verify your identity',
+  },
+  step3Title: {
+    id: 'app.containers.SignUp.step3Title',
     defaultMessage: 'Complete your profile',
   },
   tokenLabel: {
@@ -56,6 +60,10 @@ export default defineMessages({
   emailLabel: {
     id: 'app.containers.SignUp.emailLabel',
     defaultMessage: 'Email',
+  },
+  emailOrPhoneLabel: {
+    id: 'app.containers.SignUp.emailOrPhoneLabel',
+    defaultMessage: 'Email or phone',
   },
   emailPlaceholder: {
     id: 'app.containers.SignUp.emailPlaceholder',
@@ -180,5 +188,13 @@ export default defineMessages({
   signUpPage: {
     id: 'app.containers.SignUp.signUpPage',
     defaultMessage: 'sign up page',
+  },
+  somethingWentWrongTitle: {
+    id: 'app.containers.SignUp.somethingWentWrongTitle',
+    defaultMessage: 'Something went wrong',
+  },
+  somethingWentWrongText: {
+    id: 'app.containers.SignUp.somethingWentWrongText',
+    defaultMessage: 'Something went wrong while trying to create your account. Please try again in a few minutes.',
   },
 });

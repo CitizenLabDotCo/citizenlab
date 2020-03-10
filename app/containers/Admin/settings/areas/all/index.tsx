@@ -14,7 +14,7 @@ import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
-import Collapse from 'components/admin/Collapse';
+import Collapse from 'components/UI/Collapse';
 
 interface InputProps { }
 

@@ -14,7 +14,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // svg
 import illustration from './illustration.svg';
@@ -24,7 +24,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
 `;
 
 const ImageAvatarContainer = styled.div`
@@ -42,16 +41,12 @@ const Subtitle = styled.h2`
   width: 100%;
   max-width: 500px;
   color: ${colors.text};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.medium}px;
   line-height: normal;
   font-weight: 300;
   text-align: center;
   margin: 0;
   padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.base}px;
-  `}
 `;
 
 interface Props {

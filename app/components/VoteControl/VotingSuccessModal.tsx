@@ -13,7 +13,7 @@ import { Container, Header, Background, Foreground, ForegroundIconContainer, For
 import { colors } from 'utils/styleUtils';
 
 // svg
-import illustration from 'components/VerificationModal/illustration.svg';
+import illustration from 'components/Verification/illustration.svg';
 
 interface Props {
   opened: boolean;
@@ -28,7 +28,7 @@ export default memo<Props>(({ opened, onClose, className }) => {
       opened={opened}
       close={onClose}
     >
-      <Container className={className}>
+      <Container className={`e2e-programmtic-vote-success-modal ${className}`}>
         <Header>
           <Background src={illustration} alt="" role="presentation"/>
           <Foreground>

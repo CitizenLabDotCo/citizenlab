@@ -28,7 +28,7 @@ import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.s
 import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
 
 // typings
-import { IAction } from 'containers/SignUpPage';
+import { IAction } from 'components/SignUp';
 
 const Container = styled.div`
   width: 100%;
