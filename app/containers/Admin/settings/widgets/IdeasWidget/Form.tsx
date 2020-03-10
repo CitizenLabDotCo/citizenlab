@@ -7,7 +7,7 @@ import { Section, SubSection, SectionField } from 'components/admin/Section';
 import { default as ErrorxBox } from 'components/UI/Error';
 import FormikInput from 'components/UI/FormikInput';
 import Label from 'components/UI/Label';
-import Collapse from 'components/admin/Collapse';
+import Collapse from 'components/UI/Collapse';
 import FormikToggle from 'components/UI/FormikToggle';
 import FormikColorPickerInput from 'components/UI/FormikColorPickerInput';
 import FormikSelect from 'components/UI/FormikSelect';
