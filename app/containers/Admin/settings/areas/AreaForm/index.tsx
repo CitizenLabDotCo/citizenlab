@@ -58,6 +58,7 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & InjectedIntlP
               name="description_multiloc"
               label={<FormattedMessage {...messages.fieldDescription} />}
               labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
+              withCTAButton
             />
             {touched.description_multiloc && <Error
               fieldName="description_multiloc"
