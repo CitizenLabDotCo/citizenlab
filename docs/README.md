@@ -5,7 +5,7 @@
 ### Fixed
 
 - Fixed consent banner popping up every time you log in as admin
-- Fixed back-office initiative status change 'Use latest officla updates' radio button not working
+- Fixed back-office initiative status change 'Use latest official updates' radio button not working
 - Fixed broken copy in Initiative page right-hand widget
 
 ### Added
