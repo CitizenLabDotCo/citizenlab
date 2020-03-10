@@ -1,5 +1,19 @@
 # Changelog
 
+## 2020-03-10
+
+### Fixed
+
+- Fixed consent banner popping up every time you log in as admin
+- Fixed back-office initiative status change 'Use latest officla updates' radio button not working
+- Fixed broken copy in Initiative page right-hand widget
+
+### Added
+
+- Add tooltip explaining what the city will do when the voting threshold is reached for a successful initiative
+- Added verification step to the signup flow
+- Continious flow from vote button clicked to vote casted for unauthenticated, unverified users (click vote button -> account creation -> verification -> optional custom signup fields -> programmatically cast vote)
+
 ## 2020-03-05
 
 ### Fixed
