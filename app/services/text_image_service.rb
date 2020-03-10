@@ -6,11 +6,17 @@ class TextImageService
       doc = Nokogiri::HTML.fragment(text)
       if doc.errors.any?
         Rails.logger.debug doc.errors
-        return text
+        return multiloc
       end
 
-      # TODO: remove src if img has attribute 'data-cl2-text-image-text-reference'?
+      # When the frontend returns the rendered src attribute.
+      doc.css("img")
+        .select{|img| img.has_attribute?('src') && img.has_attribute?('data-cl2-text-image-text-reference') }
+        .each do |img|
+          img.remove_attribute('src')
+        end
 
+      # When the user inserted new images in the text.
       doc.css("img")
         .select{|img| img.has_attribute?('src') }
         .each do |img|
