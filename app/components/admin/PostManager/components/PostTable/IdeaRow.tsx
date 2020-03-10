@@ -45,7 +45,6 @@ type InputProps = {
   selection: Set<string>,
   activeFilterMenu: TFilterMenu;
   className?: string;
-  onClickRow: (event) => void;
   onClickCheckbox: (event) => void;
   onClickTitle: (event) => void;
   nothingHappens: (event) => void;
@@ -104,7 +103,6 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
       phases,
       statuses,
       className,
-      onClickRow,
       onClickCheckbox,
       onClickTitle,
       nothingHappens,
@@ -123,7 +121,6 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
           className={`${className} e2e-idea-manager-idea-row`}
           as={StyledRow}
           active={active}
-          onClick={onClickRow}
           ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
@@ -161,7 +158,6 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
         <SubRow
           {...{
             active,
-            onClickRow,
             className,
             activeFilterMenu,
             selectedPhases,
