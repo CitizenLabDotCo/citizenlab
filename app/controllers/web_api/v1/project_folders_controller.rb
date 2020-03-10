@@ -6,17 +6,18 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
     @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
     @project_folders = @project_folders
+      .includes(:project_folder_images)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@project_folders, WebApi::V1::ProjectFolderSerializer, params: fastjson_params)
+    render json: linked_json(@project_folders, WebApi::V1::ProjectFolderSerializer, params: fastjson_params, include: ['project_folder_images'])
   end
 
   def show
     render json: WebApi::V1::ProjectFolderSerializer.new(
       @project_folder,
       params: fastjson_params,
-      include: [:projects]
+      include: [:projects, :project_folder_images],
       ).serialized_json
   end
 
@@ -50,7 +51,7 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
     if @project_folder.save
       SideFxProjectFolderService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::ProjectFolderSerializer.new(
-        @project_folder, 
+        @project_folder,
         params: fastjson_params
         ).serialized_json, status: :ok
     else

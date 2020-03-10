@@ -21,6 +21,13 @@ class WebApi::V1::ImagesController < ApplicationController
       policy_scope_class: ProjectImagePolicy::Scope,
       image_relationship: :project_images,
       container_id: :project_id
+    },
+    'ProjectFolder' => {
+      container_class: ProjectFolder,
+      image_class: ProjectFolderImage,
+      policy_scope_class: ProjectFolderImagePolicy::Scope,
+      image_relationship: :project_folder_images,
+      container_id: :project_folder_id
     }
   }
 
@@ -43,7 +50,7 @@ class WebApi::V1::ImagesController < ApplicationController
     authorize @image
     if @image.save
       render json: WebApi::V1::ImageSerializer.new(
-        @image, 
+        @image,
         params: fastjson_params
         ).serialized_json, status: :created
     else
@@ -57,7 +64,7 @@ class WebApi::V1::ImagesController < ApplicationController
   def update
     if @image.update(image_params)
       render json: WebApi::V1::ImageSerializer.new(
-        @image, 
+        @image,
         params: fastjson_params
         ).serialized_json, status: :ok
     else
