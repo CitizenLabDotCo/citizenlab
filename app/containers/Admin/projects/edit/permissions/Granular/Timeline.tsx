@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Collapse from 'components/admin/Collapse';
+import Collapse from 'components/UI/Collapse';
 import ActionsForm from './ActionsForm';
 
 // services

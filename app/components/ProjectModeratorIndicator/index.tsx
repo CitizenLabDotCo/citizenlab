@@ -82,7 +82,7 @@ class ProjectModeratorIndicator extends PureComponent<Props, State> {
       return (
         <StyledContentContainer className={className}>
           <Container>
-            <StyledIcon name="shield" />
+            <StyledIcon name="shieldVerified" />
             <Text>
               <FormattedMessage {...messages.projectModeratorIndicator} />
             </Text>

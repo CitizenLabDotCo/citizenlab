@@ -14,6 +14,8 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
 import { isValidEmail } from 'utils/validate';
+import { isCLErrorJSON } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { signUp } from 'services/auth';
@@ -33,8 +35,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
-import { isNilOrError } from 'utils/helperUtils';
 
 const Form = styled.form`
   width: 100%;

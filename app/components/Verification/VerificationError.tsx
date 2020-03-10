@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
 // Types
-import { ErrorContext } from './VerificationModal';
+import { ErrorContext } from './VerificationSteps';
 
 const Container = styled.div`
   width: 100%;
