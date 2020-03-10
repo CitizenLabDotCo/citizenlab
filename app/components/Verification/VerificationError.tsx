@@ -1,16 +1,16 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Button from 'components/UI/Button';
 import { Title } from './styles';
+import Icon from 'components/UI/Icon';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors, media } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // Types
 import { ErrorContext } from './VerificationSteps';
@@ -20,6 +20,13 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+`;
+
+const StyledIcon = styled(Icon)`
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
+  fill: ${colors.clRedError};
   margin-bottom: 30px;
 `;
 
@@ -27,33 +34,20 @@ const Subtitle = styled.h2`
   width: 100%;
   max-width: 500px;
   color: ${colors.text};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.medium}px;
   line-height: normal;
   font-weight: 300;
   text-align: center;
   margin: 0;
   padding: 0;
-
-  ${media.smallerThanMaxTablet`
-    font-size: ${fontSizes.base}px;
-  `}
-`;
-
-const CancelButton = styled(Button)`
-  margin-top: 50px;
 `;
 
 interface Props {
   className?: string;
-  onBack: () => void;
   context: ErrorContext | null;
 }
 
-export default memo<Props>(({ className, onBack, context }) => {
-
-  const onCancelButtonClicked = useCallback(() => {
-    onBack();
-  }, [onBack]);
+export default memo<Props>(({ className, context }) => {
 
   let message = messages.errorGenericSubtitle;
 
@@ -67,18 +61,13 @@ export default memo<Props>(({ className, onBack, context }) => {
 
   return (
     <Container id="e2e-verification-errror" className={className}>
+      <StyledIcon name="error" />
       <Title className="e2e-user-verified-errror-modal-content">
         <strong><FormattedMessage {...messages.errorTitle} /></strong>
       </Title>
       <Subtitle>
         <FormattedMessage {...message} />
       </Subtitle>
-      <CancelButton
-        onClick={onCancelButtonClicked}
-        buttonStyle="secondary"
-      >
-        <FormattedMessage {...messages.back} />
-      </CancelButton>
     </Container>
   );
 });
