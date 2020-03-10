@@ -34,7 +34,7 @@ describe('Idea voting permissions', () => {
       cy.acceptCookies();
       cy.get('.e2e-assign-budget').first().find('button').click();
       cy.get('.e2e-assign-disabled').find('button').click();
-      cy.get('.e2e-verification-modal');
+      cy.get('.e2e-verification-steps');
     });
     it('lets verified users budget', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);

@@ -35,7 +35,7 @@ describe('Idea commenting permissions', () => {
       cy.get('.e2e-comments-loaded');
       cy.get('#submit-comment').should('not.exist');
       cy.get('.e2e-commenting-disabled').find('button').click();
-      cy.get('.e2e-verification-modal');
+      cy.get('.e2e-verification-steps');
     });
     it('lets verified users comment', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);

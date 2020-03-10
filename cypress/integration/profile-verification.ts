@@ -20,7 +20,7 @@ describe('profile verification', () => {
   it('show not verified section and verification button', () => {
     cy.get('.e2e-not-verified');
     cy.get('#e2e-verify-user-button').click();
-    cy.get('.e2e-verification-modal');
+    cy.get('.e2e-verification-steps');
   });
 
   it('shows verified section', () => {
@@ -38,16 +38,16 @@ describe('profile verification', () => {
     cy.setLoginCookie(peasantEmail, peasantPassword);
     cy.wait(500);
     cy.visit('/profile/edit?verification_success');
-    cy.get('.e2e-verification-modal').find('.e2e-user-verified-success-modal-content');
+    cy.get('.e2e-verification-steps').find('.e2e-user-verified-success-modal-content');
     cy.visit('?verification_success');
-    cy.get('.e2e-verification-modal').find('.e2e-user-verified-success-modal-content');
+    cy.get('.e2e-verification-steps').find('.e2e-user-verified-success-modal-content');
   });
 
   it('opens the verification modal error after redirection', () => {
     cy.setLoginCookie(peasantEmail, peasantPassword);
     cy.wait(500);
     cy.visit('/profile/edit?verification_error=true');
-    cy.get('.e2e-verification-modal').find('.e2e-user-verified-errror-modal-content');
+    cy.get('.e2e-verification-steps').find('.e2e-user-verified-errror-modal-content');
   });
 
   after(() => {
