@@ -43,6 +43,10 @@ class TextImageService
   end
 
   def render_data_images imageable, field
+    prefetched_text_images = imageable.text_images.map do |ti|
+      [ti.text_reference, ti]
+    end.to_h
+    
     multiloc = imageable.send(field)
     multiloc.each_with_object({}) do |(locale, text), output|
       doc = Nokogiri::HTML.fragment(text)
@@ -52,10 +56,10 @@ class TextImageService
       end
 
       doc.css("img")
-        .select{|img| !img.has_attribute?('src') }
+        .select{|img| img.has_attribute?('data-cl2-text-image-text-reference') }
         .each do |img|
           text_reference = img.attr('data-cl2-text-image-text-reference')
-          text_image = TextImage.find_by text_reference: text_reference
+          text_image = prefetched_text_images[text_reference]
           raise "Text image not found for #{imageable.class}[#{imageable.id}]->#{field}" if !text_image
           img.set_attribute('src', text_image.image.url)
         end

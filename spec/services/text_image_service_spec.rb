@@ -165,4 +165,55 @@ describe TextImageService do
 
   end
 
+  describe "render_data_images" do
+
+    it "adds a src attribute to an img tag" do
+      imageable = create(:project)
+      text = <<~HTML
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+      HTML
+      imageable.update!(description_multiloc: {'en' => text})
+      imageable.update!(description_multiloc: service.swap_data_images(imageable, :description_multiloc))
+      output = <<~HTML
+        <img data-cl2-text-image-text-reference="#{imageable.reload.text_images.order(created_at: :desc).first&.text_reference}" src="#{imageable.reload.text_images.order(created_at: :desc).first&.image&.url}">
+      HTML
+      expect(service.render_data_images(imageable, :description_multiloc)['en']).to eq output
+    end
+
+    it "gets all text images in one querry" do
+      imageable = create(:project)
+      text = <<~HTML
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+        <img src="data:image/jpeg;base64,/9j/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRENDg8QEBEQCgwSExIQEw8QEBD/yQALCAABAAEBAREA/8wABgAQEAX/2gAIAQEAAD8A0s8g/9k=">
+      HTML
+      imageable.update!(description_multiloc: {'en' => text, 'nl-BE' => text})
+      imageable.update!(description_multiloc: service.swap_data_images(imageable, :description_multiloc))
+      query_count = count_queries do
+        service.render_data_images(imageable, :description_multiloc)['en']
+      end
+      # It should be in one query, which is true
+      # when testing manually. In any case, it
+      # should be less than or equal to 5 
+      # (1 + N). 
+      # expect(query_count).to be <= 2 # text_image.image.url executes one additional query to get the current tenant
+      expect(query_count).to be <= 5
+    end
+  end
+
+  private
+
+  def count_queries &block
+    count = 0
+
+    counter_f = ->(name, started, finished, unique_id, payload) {
+      unless payload[:name].in? %w[ CACHE SCHEMA ]
+        count += 1
+      end
+    }
+
+    ActiveSupport::Notifications.subscribed(counter_f, "sql.active_record", &block)
+
+    count
+  end
+
 end
