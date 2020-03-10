@@ -313,7 +313,7 @@ class ProjectFolderCard extends PureComponent<Props> {
       !isNilOrError(projectFolder) &&
       !isNilOrError(publishedAndArchivedProjects.projectsList)
     ) {
-      const imageUrl = projectFolder.attributes.header_bg ?.medium;
+      const imageUrl = projectFolder.attributes.header_bg ?.small;
       const folderUrl = getProjectFolderUrl(projectFolder);
       const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
 
