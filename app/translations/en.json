@@ -866,6 +866,7 @@
   "app.containers.AdminPage.FoldersEdit.otherArchivedProjects": "Archived projects",
   "app.containers.AdminPage.FoldersEdit.otherDraftProjects": "Draft projects",
   "app.containers.AdminPage.FoldersEdit.otherPublishedProjects": "Published projects",
+  "app.containers.AdminPage.FoldersEdit.projectFolderImagesInputLabel": "Folder images",
   "app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab": "Folder projects",
   "app.containers.AdminPage.FoldersEdit.projectFolderSettingsTab": "Settings",
   "app.containers.AdminPage.FoldersEdit.projectsAlreadyAdded": "Projects added to this folder",
