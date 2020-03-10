@@ -122,6 +122,7 @@ class TenantTemplateService
       @template['models']['polls/option']                          = yml_poll_options
       @template['models']['polls/response']                        = yml_poll_responses
       @template['models']['polls/response_option']                 = yml_poll_response_options
+      @template['models']['text_image']                            = yml_text_images
     end
     @template
   end
@@ -542,7 +543,7 @@ class TenantTemplateService
 
   def yml_campaigns
     EmailCampaigns::Campaign.where(type: "EmailCampaigns::Campaigns::Manual").map do |c|
-      {
+      yml_campaign = {
         'type'             => c.type,
         'author_ref'       => lookup_ref(c.author_id, :user),
         'enabled'          => c.enabled,
@@ -552,6 +553,8 @@ class TenantTemplateService
         'created_at'       => c.created_at.to_s,
         'updated_at'       => c.updated_at.to_s,
       }
+      store_ref yml_campaign, c.id, :email_campaign
+      yml_campaign
     end
   end
 
@@ -1005,6 +1008,19 @@ class TenantTemplateService
       }
       store_ref yml_response_option, r.id, :poll_response_option
       yml_response_option
+    end
+  end
+
+  def yml_text_images
+    TextImage.all.map do |ti|
+      {
+        'imageable_ref'   => lookup_ref(ti.imageable_id, [:page, :phase, :project, :initiaitve, :email_campaign]),
+        'imageable_field' => ti.imageable_field,
+        'image'           => ti.image,
+        'text_reference'  => ti.text_reference,
+        'created_at'      => ti.created_at.to_s,
+        'updated_at'      => ti.updated_at.to_s
+      }
     end
   end
 
