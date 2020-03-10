@@ -6,10 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import { Title } from './styles';
+import { FormContainer, Title, Form, FormField, StyledLabel, LabelTextContainer, Footer, SubmitButton, CancelButton } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -21,68 +19,22 @@ import { verifyBogus } from 'services/verify';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
-// style
-import styled from 'styled-components';
-
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  max-width: 350px;
-`;
-
-const FormField = styled.div`
-  margin-bottom: 20px;
-`;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-const FooterInner = styled.div`
-  width: 100%;
-  max-width: 350px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: flex;
-`;
-
-const StyledLabel = styled(Label)`
-  display: flex;
-  flex-direction: column;
-`;
-
-const LabelTextContainer = styled.div`
-  display: inline-block;
-  margin-bottom: 10px;
-`;
-
-const SubmitButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-const CancelButton = styled(Button)``;
-
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
+  showHeader?: boolean;
   className?: string;
 }
 
-const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) => {
+const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, showHeader, className }) => {
 
   const authUser = useAuthUser();
 
   const [desiredError, setDesiredError] = useState<string>('');
   const [desiredErrorError, setDesiredErrorError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string| null>(null);
+
+  const inModal = !window.location.pathname.endsWith('/sign-up');
 
   const onDesiredErrorChange = useCallback((desiredError: string) => {
     setDesiredErrorError(null);
@@ -123,20 +75,21 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
         setDesiredErrorError('Unkown desired error');
       }
     }
-
-  }, [desiredError, authUser]);
+  }, [desiredError, authUser, onVerified]);
 
   const onCancelButtonClicked = useCallback(() => {
     onCancel();
-  }, []);
+  }, [onCancel]);
 
   return (
-    <Container id="e2e-verification-bogus-form" className={className}>
-      <Title>
-        <strong>Verify your identity (fake)</strong>
-      </Title>
+    <FormContainer id="e2e-verification-bogus-form" className={className} inModal={inModal}>
+      {showHeader &&
+        <Title>
+          <strong>Verify your identity (fake)</strong>
+        </Title>
+      }
 
-      <Form>
+      <Form inModal={inModal}>
         <FormField>
           <StyledLabel>
             <LabelTextContainer>
@@ -157,17 +110,15 @@ const VerificationFormBogus = memo<Props>(({ onCancel, onVerified, className }) 
         }
 
         <Footer>
-          <FooterInner>
-            <SubmitButton id="e2e-verification-bogus-submit-button" onClick={onSubmit}>
-              <FormattedMessage {...messages.submit} />
-            </SubmitButton>
-            <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
-              <FormattedMessage {...messages.cancel} />
-            </CancelButton>
-          </FooterInner>
+          <SubmitButton id="e2e-verification-bogus-submit-button" onClick={onSubmit}>
+            <FormattedMessage {...messages.submit} />
+          </SubmitButton>
+          <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
+            <FormattedMessage {...messages.cancel} />
+          </CancelButton>
         </Footer>
       </Form>
-    </Container>
+    </FormContainer>
   );
 });
 

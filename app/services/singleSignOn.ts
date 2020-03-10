@@ -1,5 +1,5 @@
 import { AUTH_PATH } from 'containers/App/constants';
-import { IAction, convertActionToUrlSearchParams } from 'containers/SignUpPage';
+import { IAction, convertActionToUrlSearchParams } from 'components/SignUp';
 
 export type SSOProvider = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
 

@@ -1,16 +1,19 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-
-// libraries
+import { Subscription } from 'rxjs';
+import { isString, isBoolean, isEmpty, isObject } from 'lodash-es';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clHistory from 'utils/cl-router/history';
+import { stringify, parse } from 'qs';
 
 // components
 import Step1 from './Step1';
-import Step2 from './Step2';
+import VerificationSteps from 'components/Verification/VerificationSteps';
+import Step3 from './Step3';
 import SocialSignUp from './SocialSignUp';
 import FeatureFlag from 'components/FeatureFlag';
+import Error from 'components/UI/Error';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -19,7 +22,10 @@ import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resource
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEmpty } from 'lodash-es';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // i18n
 import T from 'components/T';
@@ -29,9 +35,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
-
-// typings
-import { IAction } from 'containers/SignUpPage';
 
 const timeout = 650;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -114,13 +117,70 @@ const SignupHelperText = styled.p`
   padding-bottom: 20px;
 `;
 
+const SelectedPhaseEventSource = 'SignUp';
+const SelectedPhaseEventName = 'signUpFlowNextStep';
+export const signUpNextStep$ = eventEmitter.observeEvent(SelectedPhaseEventName);
+export const signUpGoToNextStep = () =>  eventEmitter.emit(SelectedPhaseEventSource, SelectedPhaseEventName, null);
+
+export type IActionType = 'upvote' | 'downvote' | 'comment' | 'post';
+
+export type IActionContextType = 'idea' | 'initiative' | 'project' | 'phase';
+
+export interface IAction {
+  action_type: IActionType;
+  action_context_type: IActionContextType;
+  action_context_id: string;
+  action_context_pathname: string;
+  action_requires_verification: boolean;
+}
+
+export const redirectActionToSignUpPage = (action: IAction) => {
+  clHistory.push({
+    pathname: '/sign-up',
+    search: convertActionToUrlSearchParams(action)
+  });
+};
+
+export function convertUrlSearchParamsToAction(input: string) {
+  const action = parse(input, { ignoreQueryPrefix: true, decoder: (str, defaultEncoder, charset, type) => {
+    if (type === 'value' && str === 'true') { return true; }
+    if (type === 'value' && str === 'false') { return false; }
+    return defaultEncoder(str, defaultEncoder, charset);
+  }}) as IAction;
+
+  if (isObject(action) && !isEmpty(action)) {
+    const { action_type, action_context_id, action_context_type, action_context_pathname, action_requires_verification } = action;
+
+    if (
+      action_type === ('upvote' || 'downvote' || 'comment' || 'post') &&
+      action_context_type === ('idea' || 'initiative' || 'project' || 'phase') &&
+      isString(action_context_id) &&
+      isString(action_context_pathname) &&
+      isBoolean(action_requires_verification)
+    ) {
+      return action;
+    }
+  }
+
+  return;
+}
+
+export function convertActionToUrlSearchParams(action: IAction) {
+  return stringify(action, { addQueryPrefix: true });
+}
+
+export type TSignUpSteps = 'account-creation' | 'verification' | 'custom-fields';
+
 interface InputProps {
+  initialActiveStep: TSignUpSteps | null;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   step1Title?: string | JSX.Element;
   step2Title?: string | JSX.Element;
+  step3Title?: string | JSX.Element;
   action?: IAction | null;
-  onSignUpCompleted: (userId: string) => void;
+  error?: boolean;
+  onSignUpCompleted: () => void;
 }
 
 interface DataProps {
@@ -131,106 +191,161 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  visibleStep: 'step1' | 'step2';
+  activeStep: TSignUpSteps | null;
   userId: string | null;
+  error: boolean;
 }
 
 class SignUp extends PureComponent<Props, State> {
-  constructor(props) {
+  subscription: Subscription | undefined;
+
+  constructor(props: Props) {
     super(props);
     this.state = {
-      visibleStep: 'step1',
-      userId: null
+      activeStep: props.initialActiveStep,
+      userId: null,
+      error: false
     };
   }
 
+  componentDidMount() {
+    this.mapErrorPropToState();
+
+    this.subscription = signUpNextStep$.subscribe(() => {
+      const { activeStep } = this.state;
+      const { action, customFieldsSchema } = this.props;
+      const hasVerificationStep = action?.action_requires_verification;
+      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+
+      if (activeStep === 'account-creation' && hasVerificationStep) {
+        this.setState({ activeStep: 'verification' });
+      } else if (hasCustomFields) {
+        this.setState({ activeStep: 'custom-fields' });
+      } else {
+        this.onSignUpCompleted();
+      }
+    });
+  }
+
+  componentDidUpdate() {
+    this.mapErrorPropToState();
+  }
+
+  componentWillUnmount() {
+    this.subscription?.unsubscribe();
+  }
+
+  mapErrorPropToState = () => {
+    this.setState(state => ({ error: this.props.error || state.error }));
+  }
+
   handleStep1Completed = (userId: string) => {
-    const { customFieldsSchema } = this.props;
-
     this.setState({ userId });
-
-    if (!isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
-      eventEmitter.emit('SignUp', 'signUpFlowGoToSecondStep', null);
-      this.setState({ visibleStep: 'step2' });
-    } else {
-      this.props.onSignUpCompleted(userId);
-    }
+    signUpGoToNextStep();
   }
 
   handleStep2Completed = () => {
-    const { userId } = this.state;
+    signUpGoToNextStep();
+  }
 
-    if (userId) {
-      this.props.onSignUpCompleted(userId);
-    }
+  handleStep3Completed = () => {
+    this.onSignUpCompleted();
+  }
+
+  onSignUpCompleted = () => {
+    trackEventByName(tracks.successfulSignUp);
+    this.props.onSignUpCompleted();
   }
 
   goToSignIn = () => {
     clHistory.push('/sign-in');
   }
 
-  focusTitle = (titleEl: HTMLHeadingElement | null) => {
-    // focus step 2 page title to make the custom field easily reachable with keyboard navigation
-    // hitting the tab key once should bring the user to the first custom field
-    // before the user had to navigate the entire navbar first
-    titleEl && titleEl.focus();
+  onVerificationError = () => {
+    this.setState({ error: true });
   }
 
   render() {
-    const { visibleStep } = this.state;
-    const { isInvitation, token, step1Title, step2Title, action, tenant } = this.props;
+    const { activeStep, error } = this.state;
+    const { isInvitation, token, step1Title, step2Title, step3Title, action, tenant } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
       <Container className="e2e-sign-up-container">
         <ContainerInner>
-          <TransitionGroup>
-            {visibleStep === 'step1' &&
-              <CSSTransition
-                timeout={timeout}
-                classNames="step"
-              >
-                <StepContainer>
-                  <Title>
-                    {step1Title || <FormattedMessage {...messages.step1Title} />}
-                  </Title>
+          {error ? (
+            <>
+              <Title>
+                <FormattedMessage {...messages.somethingWentWrongTitle} />
+              </Title>
+              <Error text={<FormattedMessage {...messages.somethingWentWrongText} />} />
+            </>
+          ) : (
+            <TransitionGroup>
+              {activeStep === 'account-creation' &&
+                <CSSTransition
+                  timeout={timeout}
+                  classNames="step"
+                >
+                  <StepContainer>
+                    <Title>
+                      {step1Title || <FormattedMessage {...messages.step1Title} />}
+                    </Title>
 
-                  {!isEmpty(signupHelperText) &&
-                    <SignupHelperText>
-                      <T value={signupHelperText} supportHtml />
-                    </SignupHelperText>
-                  }
+                    {!isEmpty(signupHelperText) &&
+                      <SignupHelperText>
+                        <T value={signupHelperText} supportHtml />
+                      </SignupHelperText>
+                    }
 
-                  <FeatureFlag name="password_login">
-                    <Step1
-                      isInvitation={isInvitation}
-                      token={token}
-                      onCompleted={this.handleStep1Completed}
+                    <FeatureFlag name="password_login">
+                      <Step1
+                        isInvitation={isInvitation}
+                        token={token}
+                        onCompleted={this.handleStep1Completed}
+                      />
+                    </FeatureFlag>
+
+                    {!isInvitation &&
+                      <SocialSignUp
+                        action={action}
+                        goToSignIn={this.goToSignIn}
+                      />
+                    }
+                  </StepContainer>
+                </CSSTransition>
+              }
+
+              {activeStep === 'verification' &&
+                <CSSTransition
+                  timeout={timeout}
+                  classNames="step"
+                >
+                  <StepContainer>
+                    <Title>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                    <VerificationSteps
+                      context={null}
+                      initialActiveStep="method-selection"
+                      onComplete={this.handleStep2Completed}
+                      onError={this.onVerificationError}
                     />
-                  </FeatureFlag>
+                  </StepContainer>
+                </CSSTransition>
+              }
 
-                  {!isInvitation &&
-                    <SocialSignUp
-                      action={action}
-                      goToSignIn={this.goToSignIn}
-                    />
-                  }
-                </StepContainer>
-              </CSSTransition>
-            }
-
-            {visibleStep === 'step2' &&
-              <CSSTransition
-                timeout={timeout}
-                classNames="step"
-              >
-                <StepContainer>
-                  <Title tabIndex={0} ref={this.focusTitle}>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
-                  <Step2 onCompleted={this.handleStep2Completed} />
-                </StepContainer>
-              </CSSTransition>
-            }
-          </TransitionGroup>
+              {activeStep === 'custom-fields' &&
+                <CSSTransition
+                  timeout={timeout}
+                  classNames="step"
+                >
+                  <StepContainer>
+                    <Title>{step3Title || <FormattedMessage {...messages.step3Title} />}</Title>
+                    <Step3 onCompleted={this.handleStep3Completed} />
+                  </StepContainer>
+                </CSSTransition>
+              }
+            </TransitionGroup>
+          )}
         </ContainerInner>
       </Container>
     );
@@ -239,7 +354,7 @@ class SignUp extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  customFieldsSchema: <GetCustomFieldsSchema />
+  customFieldsSchema: <GetCustomFieldsSchema />,
 });
 
 export default (inputProps: InputProps) => (

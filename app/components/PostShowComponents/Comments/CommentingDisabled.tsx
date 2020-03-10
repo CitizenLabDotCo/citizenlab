@@ -15,7 +15,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
 
 // utils
-import { redirectActionToSignUpPage } from 'containers/SignUpPage';
+import { redirectActionToSignUpPage } from 'components/SignUp';
 
 // i18n
 import messages from './messages';
