@@ -81,7 +81,7 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
       opened={opened}
       close={onClose}
     >
-      <Container className={`e2e-verification-modal ${className || ''}`}>
+      <Container className={`e2e-verification-steps ${className || ''}`}>
         {initialActiveStep !== 'success' && initialActiveStep !== 'error' &&
           <VerificationSteps
             context={context}

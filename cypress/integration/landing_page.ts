@@ -58,7 +58,7 @@ describe('Landing page - signed in', () => {
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
     cy.get('#e2e-singed-in-header-verifiaction .e2e-singed-in-header-accept-btn').click();
-    cy.get('.e2e-verification-modal');
+    cy.get('.e2e-verification-steps');
     cy.get('.e2e-modal-close-button').click();
     cy.get('#e2e-singed-in-header-verifiaction .e2e-singed-in-header-verification-skip-btn').click();
     cy.get('#e2e-singed-in-header-complete-profile .e2e-singed-in-header-accept-btn a').should('have.attr', 'href').and('include', '/en-GB/profile/edit');

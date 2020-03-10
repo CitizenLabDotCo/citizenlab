@@ -28,7 +28,7 @@ export default memo<Props>(({ opened, onClose, className }) => {
       opened={opened}
       close={onClose}
     >
-      <Container className={className}>
+      <Container className={`e2e-programmtic-vote-success-modal ${className}`}>
         <Header>
           <Background src={illustration} alt="" role="presentation"/>
           <Foreground>
