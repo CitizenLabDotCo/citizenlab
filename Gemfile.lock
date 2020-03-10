@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/CitizenLabDotCo/ice_cube.git
+  revision: 4671442d581d185a40933fa06a9c773f22f6070f
+  specs:
+    ice_cube (0.16.3)
+
+GIT
   remote: https://github.com/CitizenLabDotCo/knock.git
   revision: 2a73aac587e3358a701b731ae0fd1fb2660f8569
   specs:
@@ -37,13 +43,6 @@ GIT
   specs:
     fast_jsonapi (1.5)
       activesupport (>= 4.2)
-
-GIT
-  remote: https://github.com/gssbzn/ice_cube.git
-  revision: 605394a6449c1b8f7f47baea7c362c3059bd1504
-  ref: 605394a
-  specs:
-    ice_cube (0.16.3)
 
 GIT
   remote: https://github.com/influitive/apartment.git
@@ -459,7 +458,7 @@ GEM
       actionmailer (>= 3)
       premailer (~> 1.7, >= 1.7.9)
     public_suffix (4.0.1)
-    puma (4.3.1)
+    puma (4.3.3)
       nio4r (~> 2.0)
     pundit (2.0.0)
       activesupport (>= 3.0.0)

@@ -221,7 +221,7 @@ en-GB:
     homepage_info_body: ""
     initiatives_title: Initiatives
     initiatives_body: >
-      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png" height="374.3745928338762" width="819" alt="">
+      <img style="margin-bottom: 30px" src="https://res.cloudinary.com/citizenlabco/image/upload/v1565619952/1d327595-c1b4-4013-8484-cd110cf619b4_odampn.png" height="374.3745928338762" width="819" alt="">
       <h2>What are citizen initiatives?</h2>
       <p>Citizen initiatives are initiatives that start from the bottom-up, that originate from a need, desire, dream, ... envisioned by you or other citizens. You and the other initiators want to change or improve a current situation or start something from scratch.</p>
       <p>What sets citizen initiatives apart is that they follow some rule-based system and that it includes the involvement of your (local) government. The rule-based system, often formalised in legislation, indicates the conditions that need to be met to get the (local) government officially involved. This involvement is needed for citizen initiatives to reach their objective, think of a city's permission for a temporary usage of a public space, support by city experts to implement your plans, ...</p>
@@ -249,7 +249,7 @@ en-GB:
     initiatives_success_1_body: >
       <p><em>Liège (BE)</em></p>
       <p><strong>Topic: Mobility</strong></p>
-      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg" alt="">
+      <img style="margin-bottom: 30px" src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg" alt="">
       <h2>How it started</h2>
       <p>Liège, one of Belgium's biggest cities, opened up their participation platform to crowdsource input for their 'City Plan', a multi-annual strategic plan containing policy priorities for the city.</p>
       <p>After an open call for ideas, the city regrouped these ideas in bigger thematic clusters. The 'River Shuttle' initiative started from one of these clusters and was opened up for voting to all inhabitants.</p>
@@ -275,50 +275,50 @@ en-GB:
     initiatives_success_2_body: >
       <p><em>Schaerbeek (BE)</em></p>
       <p><strong>Topic: Mobility</strong></p>
-      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg" height="450" width="675" alt="">
+      <img style="margin-bottom: 30px" src="https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg" height="450" width="675" alt="">
       <h2>How it started</h2>
       <p>Several streets in Schaerbeek have long been unsafe for vulnerable road users. After a fatal traffic accident in July 2017 in the 'zone 30', some citizens decided to take action. </p>
       <h2>The project</h2>
       <p>1030/0 is a citizens' movement that stands up for road safety and better mobility in Schaerbeek. The four main axes of their operation are:</p>
       <ul>
-       <li>Vision Zero: zero kill, zero heavy casualties in traffic.</li>
-       <li>Quality of life: a "municipality 30" where the active road user can travel efficiently and safely, but also a municipality with space for meetings and socialising. </li>
-       <li>Special attention to the most vulnerable on the road: children, the elderly, people with disabilities.</li>
-       <li>Health: improving road safety makes it possible to promote active modes of transport and combat air pollution.</li>
+        <li>Vision Zero: zero kill, zero heavy casualties in traffic.</li>
+        <li>Quality of life: a "municipality 30" where the active road user can travel efficiently and safely, but also a municipality with space for meetings and socialising. </li>
+        <li>Special attention to the most vulnerable on the road: children, the elderly, people with disabilities.</li>
+        <li>Health: improving road safety makes it possible to promote active modes of transport and combat air pollution.</li>
       </ul>
       <p>What they have obtained so far:</p>
       <ul>
-       <li>Zone 30 obtained.</li>
-       <li>Vision Zero was taken over as an official policy line.</li>
-       <li>The municipality has drawn up a strategic road safety note.</li>
-       <li>The police bicycle brigade has been (re)established.</li>
-       <li>Extra resources for speed control have been freed up.</li>
-       <li>Since 2019, there is a system of 'living streets' established.</li>
+        <li>Zone 30 obtained.</li>
+        <li>Vision Zero was taken over as an official policy line.</li>
+        <li>The municipality has drawn up a strategic road safety note.</li>
+        <li>The police bicycle brigade has been (re)established.</li>
+        <li>Extra resources for speed control have been freed up.</li>
+        <li>Since 2019, there is a system of 'living streets' established.</li>
       </ul>
       <h2>Succes factors</h2>
       <ul>
-       <li>Large mobilization: several demonstrations with 60-200 participants each.</li>
-       <li>Proactive media approach: building good relationships and thinking visually and narratively . Especially on the Flemish side there was already a lot of media attention for the initiative.</li>
-       <li>Theme is very popular among the population.</li>
-       <li>Perseverance and outdoors: in just one year's time, they organised 20 different actions.</li>
+        <li>Large mobilization: several demonstrations with 60-200 participants each.</li>
+        <li>Proactive media approach: building good relationships and thinking visually and narratively . Especially on the Flemish side there was already a lot of media attention for the initiative.</li>
+        <li>Theme is very popular among the population.</li>
+        <li>Perseverance and outdoors: in just one year's time, they organised 20 different actions.</li>
       </ul>
       <h2>Bottlenecks</h2>
       <ul>
-       <li>Diversity is a working point, not only in terms of origin but also in terms of age. It is being improved through collaborations with local youth centres and non-profits.</li>
-       <li>French-speaking media are more difficult to reach.</li>
+        <li>Diversity is a working point, not only in terms of origin but also in terms of age. It is being improved through collaborations with local youth centres and non-profits.</li>
+        <li>French-speaking media are more difficult to reach.</li>
       </ul>
       <h2>Contact</h2>
       <p>Email: <a href="mailto:collectif1030.0@gmail.com" target="_blank">collectif1030.0@gmail.com</a></p>
       <p>Website: <a href="www.facebook.com/1030zero" target="_blank">www.facebook.com/1030zero</a></p>
 
-      <p><em>Source: </em><em>Burgervuur - De Wakkere Burger</em></a>
-      </p>
-      <p>Do you know an inspiring citizen initiative that should be added to this list? <a href="mailto:support@citizenlab.co" target="_blank">Add your own inspiring citizen initiative to the list</a>!</p>
+      <p><em>Source: </em><em>Burgervuur - De Wakkere Burger</em></a></p>
+      <p>Do you know an inspiring citizen initiative that should be added to this list? <a href="mailto:support@citizenlab.co" target="_blank">Add your own inspiring citizen initiative to the list!</a>!</p>
+
     initiatives_success_3_title: Picnic tables at playgrounds
     initiatives_success_3_body: >
       <p><em>Wortegem-Petegem (BE)</em></p>
       <p><strong>Topic: Squares and streets</strong></p>
-      <img src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg" height="552" width="736" alt="">
+      <img style="margin-bottom: 30px" src="https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg" height="552" width="736" alt="">
       <h2>How it started</h2>
       <p>This initiative originated from a participatory budgeting project of Wortegem-Petegem. This small Belgian municipality with 6.500 inhabitants, opened up 100.000€ of its budget for crowdsourced initiatives. </p>
       <p>Citizens were invited to share their initiatives on the digital participation platform of Wortegem-Petegem during a two month period. </p>

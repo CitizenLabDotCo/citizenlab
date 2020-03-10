@@ -36,6 +36,19 @@ resource "Verifications" do
     end
 
     describe do
+      let(:desired_error) { nil }
+      before do
+        @user.update(registration_completed_at: nil)
+      end
+      example_request "Fake verify with bogus for a user that didn't complete her registation yet" do
+        expect(status).to eq(201)
+        expect(@user.reload.verified).to be true
+        expect(@user.last_name).to eq "BOGUS"
+        expect(@user.custom_field_values["gender"]).to eq "female"
+      end
+    end
+
+    describe do
       let(:desired_error) { "no_match" }
       example_request "[error] Fake verify with bogus without a match" do
         expect(status).to eq (422)

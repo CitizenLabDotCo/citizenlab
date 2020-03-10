@@ -7,48 +7,48 @@ da:
       "comment_marked_as_spam": Rapportering af kommentar-spam
       "comment_on_your_comment": Et svar på min kommentar
       "comment_on_your_idea": En kommentar på min idé
-      "comment_on_your_initiative": En kommentar på mit initiativ
+      "comment_on_your_initiative": En kommentar på mit borgerforslag
       "first_idea_published": Publicering af min første idé
       "idea_assigned_to_you": Tildeling af en idé til mig
       "idea_marked_as_spam": Rapportering af idé-spam
       "idea_published": Publicering af min idé
-      "initiative_assigned_to_you": Tildeling af et initiativ til mig
-      "initiative_marked_as_spam": Rapportering af initiativ-spam
-      "initiative_published": Publicering af mit initiativ
+      "initiative_assigned_to_you": Tildeling af et borgerforslag til mig
+      "initiative_marked_as_spam": Rapportering af borgerforslag-spam
+      "initiative_published": Publicering af mit borgerforslag
       "invite_received": Invitation
       "invite_reminder": Invitationspåmindelse
       "mention_in_comment": Nævnelse i en kommentar
       "mention_in_official_feedback": Nævnelse i en opdatering
       "new_comment_for_admin": Ny kommentar i et projekt jeg modererer
       "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommenteret på
-      "new_comment_on_commented_initiative": Ny kommentar på et initiativ jeg har kommenteret på
+      "new_comment_on_commented_initiative": Ny kommentar på et borgerforslag jeg har kommenteret på
       "new_comment_on_voted_idea": Ny kommentar på en idé jeg har stemt på
-      "new_comment_on_voted_initiative": Ny kommentar på et initiativ jeg har stemt på
+      "new_comment_on_voted_initiative": Ny kommentar på et borgerforslag jeg har stemt på
       "new_idea_for_admin": Ny idé i et projekt jeg modererer
-      "new_initiative_for_admin": Nyt initiativ
+      "new_initiative_for_admin": Nyt borgerforslag
       "official_feedback_on_commented_idea": Opdatering på en idé jeg har kommenteret på
-      "official_feedback_on_commented_initiative": Opdatering på et initiativ jeg har kommenteret på
+      "official_feedback_on_commented_initiative": Opdatering på et borgerforslag jeg har kommenteret på
       "official_feedback_on_voted_idea": Opdatering på en idé jeg har stemt på
-      "official_feedback_on_voted_initiative": Opdatering på et initiativ jeg har stemt på
+      "official_feedback_on_voted_initiative": Opdatering på et borgerforslag jeg har stemt på
       "official_feedback_on_your_idea": Opdatering på min idé
-      "official_feedback_on_your_initiative": Opdatering på mit initiativ
+      "official_feedback_on_your_initiative": Opdatering på mit borgerforslag
       "password_reset": Nulstilling af adgangskode
       "project_moderation_rights_received": Rettigheder til projektmoderering modtaget
       "project_phase_started": Ny projektfase
       "project_phase_upcoming": Kommende ny projektfase
       "status_change_of_commented_idea": Statusændring af en idé jeg har kommenteret på
-      "status_change_of_commented_initiative": Statusændring af et initiativ jeg har kommenteret på
+      "status_change_of_commented_initiative": Statusændring af et borgerforslag jeg har kommenteret på
       "status_change_of_voted_idea": Statusændring af en idé jeg har stemt på
-      "status_change_of_voted_initiative": Statusændring af et initiativ jeg har stemt på
+      "status_change_of_voted_initiative": Statusændring af et borgerforslag jeg har stemt på
       "status_change_of_your_idea": Statusændring af min idé
-      "status_change_of_your_initiative": Statusændring af mit initiativ
-      "threshold_reached_for_admin": Initiativet har nået stemmegrænsen
+      "status_change_of_your_initiative": Statusændring af mit borgerforslag
+      "threshold_reached_for_admin": Borgerforslag har nået stemmegrænsen
       "welcome": Efter registrering
       "admin_digest": Ugentlig oversigt for administratorer
       "moderator_digest": Ugentlig oversigt for projektmoderatorer
       "assignee_digest": Ugentlig oversigt over tildelte ideer
       "user_digest": Ugentlig oversigt
-      "your_proposed_initiatives_digest": Ugentlig oversigt over dine initiativer
+      "your_proposed_initiatives_digest": Ugentlig oversigt over dine borgerforslag
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
