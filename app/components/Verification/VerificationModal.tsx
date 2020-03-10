@@ -67,10 +67,6 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
     closeVerificationModal('VerificationModal');
   }, []);
 
-  const onErrorBack = useCallback(() => {
-    console.log('onErrorBack');
-  }, []);
-
   const onComplete = useCallback(() => {
     setActiveStep('success');
   }, []);
@@ -86,20 +82,22 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
       close={onClose}
     >
       <Container className={`e2e-verification-modal ${className || ''}`}>
-        <VerificationSteps
-          context={context}
-          showHeader={true}
-          initialActiveStep={initialActiveStep || 'method-selection'}
-          onComplete={onComplete}
-          onError={onError}
-        />
+        {initialActiveStep !== 'success' && initialActiveStep !== 'error' &&
+          <VerificationSteps
+            context={context}
+            showHeader={true}
+            initialActiveStep={initialActiveStep || 'method-selection'}
+            onComplete={onComplete}
+            onError={onError}
+          />
+        }
 
         {activeStep === 'success' &&
           <VerificationSuccess />
         }
 
         {activeStep === 'error' && (context === null || isErrorContext(context)) &&
-          <VerificationError onBack={onErrorBack} context={context}/>
+          <VerificationError context={context}/>
         }
       </Container>
     </Modal>

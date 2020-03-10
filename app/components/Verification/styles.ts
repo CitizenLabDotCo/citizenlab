@@ -20,7 +20,7 @@ export const Title = styled.h1`
   flex-direction: column;
   align-items: stretch;
   margin: 0;
-  margin-bottom: 40px;
+  margin-bottom: 35px;
   padding: 0;
 
   strong {

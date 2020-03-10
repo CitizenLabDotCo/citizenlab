@@ -3,6 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq, has } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
+import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
@@ -92,7 +93,7 @@ type Props = {};
 type State = {
   previousPathname: string | null;
   tenant: ITenant | null;
-  authUser: IUser | null;
+  authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
@@ -117,7 +118,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.state = {
       previousPathname: null,
       tenant: null,
-      authUser: null,
+      authUser: undefined,
       modalId: null,
       modalSlug: null,
       modalType: null,
@@ -137,16 +138,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
-
-    if (has(this.props.location.query, 'verification_success')) {
-      window.history.replaceState(null, '', window.location.pathname);
-      this.openVerificationModal('success', null);
-    }
-
-    if (this.props.location.query?.verification_error) {
-      window.history.replaceState(null, '', window.location.pathname);
-      this.openVerificationModal('error', { error: this.props.location.query.error || null } as ContextShape);
-    }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
@@ -241,6 +232,22 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.authUser === undefined && !isNilOrError(this.state.authUser)) {
+      const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
+
+      if (has(urlSearchParams, 'verification_success')) {
+        window.history.replaceState(null, '', window.location.pathname);
+        this.openVerificationModal('success', null);
+      }
+
+      if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
+        window.history.replaceState(null, '', window.location.pathname);
+        this.openVerificationModal('error', { error: this.props.location.query?.error || null } as ContextShape);
+      }
+    }
   }
 
   openPostPageModal = (id: string, slug: string, type: 'idea' | 'initiative') => {
