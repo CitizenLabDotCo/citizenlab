@@ -3,41 +3,37 @@ class TextImageService
   def swap_data_images imageable, field
     multiloc = imageable.send(field)
     multiloc.each_with_object({}) do |(locale, text), output|
-      output[locale] = swap_data_images_text(text)
-    end
-  end
-
-  def swap_data_images_text text
-    doc = Nokogiri::HTML.fragment(text)
-    if doc.errors.any?
-      Rails.logger.debug doc.errors
-      return text
-    end
-
-    # TODO: remove src if img has attribute 'data-cl2-text-image-text-reference'?
-
-    doc.css("img")
-      .select{|img| img.has_attribute?('src') }
-      .each do |img|
-        img_src = img.attr('src')
-        text_image = if img_src =~ /^data:image\/([a-zA-Z]*);base64,.*$/
-          TextImage.create!(
-            imageable: imageable,
-            imageable_field: field,
-            image: image_data
-          )
-        else
-          TextImage.create!(
-            imageable: imageable,
-            imageable_field: field,
-            remote_image_url: image_data
-          )
-        end
-        img.set_attribute('data-cl2-text-image-text-reference', text_image.text_reference)
-        img.remove_attribute('src')
+      doc = Nokogiri::HTML.fragment(text)
+      if doc.errors.any?
+        Rails.logger.debug doc.errors
+        return text
       end
 
-    doc.to_s
+      # TODO: remove src if img has attribute 'data-cl2-text-image-text-reference'?
+
+      doc.css("img")
+        .select{|img| img.has_attribute?('src') }
+        .each do |img|
+          img_src = img.attr('src')
+          text_image = if img_src =~ /^data:image\/([a-zA-Z]*);base64,.*$/
+            TextImage.create!(
+              imageable: imageable,
+              imageable_field: field,
+              image: img_src
+            )
+          else
+            TextImage.create!(
+              imageable: imageable,
+              imageable_field: field,
+              remote_image_url: img_src
+            )
+          end
+          img.set_attribute('data-cl2-text-image-text-reference', text_image.text_reference)
+          img.remove_attribute('src')
+        end
+
+      output[locale] = doc.to_s
+    end
   end
 
   def render_data_images imageable, field
