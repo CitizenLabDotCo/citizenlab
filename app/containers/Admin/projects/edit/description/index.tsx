@@ -151,6 +151,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>((pr
               onChange={handleDescriptionOnChange}
               label={formatMessage(messages.descriptionLabel)}
               labelTooltipText={formatMessage(messages.descriptionTooltip)}
+              withCTAButton
             />
             <Error fieldName="description_multiloc" apiErrors={errors?.description_multiloc} />
           </SectionField>

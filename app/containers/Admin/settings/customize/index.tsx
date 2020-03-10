@@ -562,6 +562,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 labelTooltipText={formatMessage(messages.customSectionInfo)}
                 valueMultiloc={attributesDiff.homepage_info || get(homepageInfoPage, 'attributes.body_multiloc')}
                 onChange={this.handleCustomSectionMultilocOnChange}
+                withCTAButton
               />
               <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
             </WideSectionField>

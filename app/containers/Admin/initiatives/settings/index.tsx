@@ -316,6 +316,7 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 noVideos={true}
                 noAlign={true}
                 limitedTextFormatting={true}
+                withCTAButton
               />
             </StyledSectionField>
             <SectionField>
@@ -328,6 +329,7 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 noImages={true}
                 noVideos={true}
                 noAlign={true}
+                withCTAButton
               />
             </SectionField>
           </Section>

@@ -22,10 +22,43 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { colors, quillEditedContent, media } from 'utils/styleUtils';
+import { colors, quillEditedContent, media, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
+import Tippy from '@tippy.js/react';
+
+const DropdownList = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+`;
+
+const DropdownListItem = styled.button`
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${colors.text};
+  font-size: ${fontSizes.small}px;
+  font-weight: 400;
+  white-space: nowrap;
+  width: auto !important;
+  padding: 10px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: left;
+
+  &:hover,
+  &:focus {
+    outline: none;
+    color: white;
+    background: ${colors.adminMenuBackground};
+  }
+`;
 
 const Container = styled.div<{
   videoPrompt: string,
@@ -71,6 +104,10 @@ const Container = styled.div<{
     content: '${props => props.remove}' !important;
   }
 
+  span.ql-formats:last-child {
+    margin-right: 0;
+  }
+
   .ql-toolbar.ql-snow {
     background: #f8f8f8;
     border-radius: ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius} 0 0;
@@ -96,7 +133,7 @@ const Container = styled.div<{
     border: 1px solid ${colors.separationDark};
     box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
-    ${quillEditedContent()};
+    ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
     .ql-editor {
       min-height: 300px;
@@ -126,6 +163,7 @@ export interface Props {
   onFocus?: () => void;
   onBlur?: () => void;
   setRef?: (arg: HTMLDivElement) => void | undefined;
+  withCTAButton?: boolean;
 }
 
 Quill.register('modules/blotFormatter', BlotFormatter);
@@ -192,6 +230,30 @@ VideoFormat.tagName = 'iframe';
 Quill.register(VideoFormat, true);
 // END allow image & video resizing styles
 
+// BEGIN custom button implementation
+const Inline = Quill.import('blots/inline');
+
+class CustomButton extends Inline {
+  static create(value) {
+    const node = super.create();
+    node.setAttribute('href', value);
+    node.setAttribute('type', 'button');
+    node.setAttribute('target', '_blank');
+    node.setAttribute('rel', 'noorefferer');
+    return node;
+  }
+
+  static formats(node) {
+    return node.getAttribute('href');
+  }
+}
+CustomButton.blotName = 'button';
+CustomButton.tagName = 'a';
+CustomButton.className = 'custom-button';
+
+Quill.register(CustomButton);
+// END custom button implementation
+
 const QuillEditor = memo<Props & InjectedIntlProps>(({
   id,
   value,
@@ -210,6 +272,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   onChange,
   onBlur,
   onFocus,
+  withCTAButton,
   intl: {
     formatMessage
   },
@@ -234,6 +297,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
           'italic',
           'link',
           ...attributes,
+          ...(withCTAButton ? ['button'] : []),
           ...(!limitedTextFormatting ? ['header', 'list'] : []),
           ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
           ...(!noImages ? ['image'] : []),
@@ -271,7 +335,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   }, [placeholder, noAlign, noImages, noVideos, limitedTextFormatting, toolbarId, editor, editorRef]);
 
   useEffect(() => {
-    if (!prevEditor && editor && editorRef?.current) {
+    if (!prevEditor && editor && editorRef ?.current) {
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('name', id);
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('id', id);
       editorRef.current.getElementsByClassName('ql-editor')[0].setAttribute('aria-labelledby', id);
@@ -383,6 +447,29 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     editor && editor.focus();
   }, [editor]);
 
+  const handleCustomLink = useCallback(() => {
+    if (!editor) return;
+    const selection = editor.getSelection();
+    if (selection && selection.length > 0) {
+      trackBasic('custom-link');
+      const value = prompt(formatMessage(messages.customLinkPrompt));
+      editor.format('button', value);
+    }
+  }, [editor]);
+
+  const handleNormalLink = useCallback(() => {
+    if (!editor) return;
+    const selection = editor.getSelection();
+
+    // copied from the snow toolbar code
+    // to manually add the handler that would have been callen on the toolbar button
+    if (selection == null || selection.length === 0) return;
+    const preview = editor.getText(selection as any);
+    const tooltip = (editor as any).theme.tooltip;
+    tooltip.edit('link', preview);
+
+  }, [editor]);
+
   const classNames = [
     className,
     focussed ? 'focussed' : null,
@@ -433,11 +520,44 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
               </select>
             </span>
           }
-
           <span className="ql-formats">
             <button className="ql-bold" onClick={trackBasic('bold')} aria-label={formatMessage(messages.bold)} />
             <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
-            <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
+            {withCTAButton ? (
+              <Tippy
+                placement="bottom-start"
+                theme="light"
+                interactive={true}
+                arrow={true}
+                trigger="click"
+                duration={[200, 0]}
+                flip={true}
+                flipBehavior="flip"
+                flipOnUpdate={true}
+                content={(
+                  <DropdownList>
+                    <DropdownListItem onClick={handleCustomLink} type="button">
+                      {formatMessage(messages.customLink)}
+                    </DropdownListItem>
+                    <DropdownListItem onClick={handleNormalLink} type="button" className="ql-link">
+                      {formatMessage(messages.link)}
+                    </DropdownListItem>
+                  </DropdownList>
+                )}
+              >
+                <button type="button">
+                  <svg viewBox="0 0 18 18">
+                    <line className="ql-stroke" x1="7" x2="11" y1="7" y2="11" />
+                    <path className="ql-even ql-stroke" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z" />
+                    <path className="ql-even ql-stroke" d="M13.423,9.1a3.476,3.476,0,0,0-4.679-.36,3.476,3.476,0,0,0,.36,4.679c1.392,1.392,2.5,2.542,4.679.36S14.815,10.5,13.423,9.1Z" />
+                  </svg>
+                </button>
+              </Tippy>
+            ) : (
+
+                <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
+              )
+            }
           </span>
 
           {!limitedTextFormatting && !noAlign &&
@@ -480,12 +600,16 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
             </span>
           }
 
-          {!(noImages && noVideos) &&
+            {!(noImages && noVideos) &&
+              <span className="ql-formats">
+                {!noImages && <button className="ql-image" onClick={trackImage} aria-label={formatMessage(messages.image)} />}
+                {!noVideos && <button className="ql-video" onClick={trackVideo} aria-label={formatMessage(messages.video)} />}
+              </span>
+            }
+
             <span className="ql-formats">
-              {!noImages && <button className="ql-image" onClick={trackImage} aria-label={formatMessage(messages.image)} />}
-              {!noVideos && <button className="ql-video" onClick={trackVideo} aria-label={formatMessage(messages.video)} />}
+              <button className="ql-clean" aria-label={formatMessage(messages.clean)} />
             </span>
-          }
         </div>
       }
       <div ref={editorRef}>

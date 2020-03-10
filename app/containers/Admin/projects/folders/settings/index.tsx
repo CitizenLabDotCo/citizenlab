@@ -256,6 +256,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
                 value={descriptionMultiloc ?.[selectedLocale]}
                 onChange={handleDescriptionChange}
                 label={<FormattedMessage {...messages.descriptionInputLabel} />}
+                withCTAButton
               />
             </SectionField>
 

@@ -441,6 +441,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
                   label={this.quillMultilocLabel}
                   valueMultiloc={phaseAttrs.description_multiloc}
                   onChange={this.handleEditorOnChange}
+                  withCTAButton
                 />
                 <Error apiErrors={errors && errors.description_multiloc} />
               </SectionField>

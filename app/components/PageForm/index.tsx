@@ -62,6 +62,7 @@ class PageForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
         label={<FormattedMessage {...messages.editContent} />}
         id={`${this.props.slug}-${props.fieldName}`}
         {...props}
+        withCTAButton
       />
     );
   }
