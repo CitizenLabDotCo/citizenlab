@@ -31,7 +31,7 @@ class SanitizationService
       },
       image: {
         tags: %w(img),
-        attributes: %w(src style width height data-align),
+        attributes: %w(src style width height data-align data-cl2-text-image-text-reference),
       },
       video: {
         tags: %w(iframe),
