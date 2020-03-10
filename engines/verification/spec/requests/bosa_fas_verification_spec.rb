@@ -68,6 +68,18 @@ describe "bosa_fas verification" do
     })
   end
 
+  it "successfully verifies a user that hasn't completed her registration" do
+    @user.update!(registration_completed_at: nil)
+
+    get "/auth/bosa_fas?token=#{@token}&pathname=/yipie"
+    follow_redirect!
+
+    expect(response).to redirect_to("/en/yipie?verification_success=true")
+    expect(@user.reload).to have_attributes({
+      verified: true,
+    })
+  end
+
   it "redirect to a path without an ending slash when no pathname is passed" do
     get "/auth/bosa_fas?token=#{@token}"
     follow_redirect!

@@ -14,7 +14,10 @@ module Verification
     end
 
     def create?
-      user&.active? && record.user == user
+      # We don't check the usual user.active? because users who didn't
+      # complete their registration yet should be able to verify as part of
+      # the sign up flow
+      user&.invite_not_pending? && record.user == user
     end
 
   end

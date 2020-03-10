@@ -187,6 +187,10 @@ class User < ApplicationRecord
     invite_status == 'pending'
   end
 
+  def invite_not_pending?
+    invite_status != 'pending'
+  end
+
   def display_name
     [first_name, last_name].compact.join(" ")
   end
