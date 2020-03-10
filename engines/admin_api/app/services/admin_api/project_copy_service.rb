@@ -10,6 +10,7 @@ module AdminApi
       end
       Project.where.not(id: project_ids_before).each do |project|
         project.update!(slug: SlugService.new.generate_slug(project, project.slug))
+        fix_project_text_images! project
       end
       # Projects from a folder are imported to the top level.
       ProjectHolderService.new.fix_project_holder_orderings!
@@ -420,6 +421,18 @@ module AdminApi
 
     def shift_timestamp value, shift_timestamps
       value && (value + shift_timestamps.days)
+    end
+
+    def fix_project_text_images! project
+      # In order to not accumulate text images as
+      # demo content is reused for new demo
+      # content, we add the src in the project
+      # export template and generate the text 
+      # images on import instead.
+      project.update! description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc)
+      project.phases.each do |phase|
+        phase.update! description_multiloc: TextImageService.new.swap_data_images(phase, :description_multiloc)
+      end
     end
 
   end
