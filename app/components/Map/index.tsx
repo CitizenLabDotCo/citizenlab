@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { compact, get, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+const seattleJson = require('./Seattle.json');
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
@@ -205,6 +206,8 @@ class CLMap extends React.PureComponent<Props, State> {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       }).addTo(this.map);
+
+      Leaflet.geoJSON(seattleJson).addTo(this.map);
 
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
