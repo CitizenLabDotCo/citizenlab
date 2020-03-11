@@ -36,8 +36,10 @@ const Inner = styled.div`
 
 const Left = styled.div`
   flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
+  margin-right: 20px;
 `;
 
 const Right = styled.div`
