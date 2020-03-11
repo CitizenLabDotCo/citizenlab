@@ -70,6 +70,7 @@ type Props = DefaultProps & {
   notFocusable?: boolean;
   disabled?: boolean;
   label?: string | JSX.Element | null;
+  id?: string;
 };
 
 export default class Checkbox extends PureComponent<Props> {
@@ -89,7 +90,8 @@ export default class Checkbox extends PureComponent<Props> {
       className,
       notFocusable,
       disabled,
-      indeterminate
+      indeterminate,
+      id
     } = this.props;
     const hasLabel = !!label;
 
@@ -104,6 +106,7 @@ export default class Checkbox extends PureComponent<Props> {
             checked={checked}
             disabled={disabled}
             tabIndex={notFocusable ? -1 : 0}
+            id={id}
           />
           <StyledCheckbox
             checkedOrIndeterminate={(checked || indeterminate) as boolean}
@@ -120,7 +123,8 @@ export default class Checkbox extends PureComponent<Props> {
   }
 }
 
-// admin/initiatives bug => onClick in Initiative/IdeaRow
 // check where checkbox is used in different places
 // tests
 // check idea editing in idea manager
+// description of poll project not loading
+// valuesList checkbox label: do we need the label to be on the right? If not, we can just use the Checkbox label prop
