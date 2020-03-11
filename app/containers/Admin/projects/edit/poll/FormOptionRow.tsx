@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 // Components
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import { TextCell, Row } from 'components/admin/ResourceList';
-import InputMultiloc from 'components/UI/InputMultiloc';
+import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 
 // Typings
@@ -60,8 +60,15 @@ class FormOptionRow extends PureComponent<Props, State> {
     this.setState({ selectedLocale });
   }
 
-  onChangeTitle = (titleMultiloc: Multiloc) => {
-    this.setState({ titleMultiloc });
+  onChangeTitle = (value: string, locale: Locale | undefined) => {
+    if (locale) {
+      this.setState((state) => ({
+        titleMultiloc: {
+          ...state.titleMultiloc,
+          [locale]: value
+        }
+      }));
+    }
   }
 
   onSave = () => {
@@ -98,12 +105,12 @@ class FormOptionRow extends PureComponent<Props, State> {
         </TextCell>
 
         <TextCell className="expand">
-          <InputMultiloc
+          <Input
             autoFocus
-            valueMultiloc={titleMultiloc}
+            value={titleMultiloc[selectedLocale]}
+            locale={selectedLocale}
             type="text"
             onChange={this.onChangeTitle}
-            selectedLocale={selectedLocale}
           />
         </TextCell>
 

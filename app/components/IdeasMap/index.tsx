@@ -4,8 +4,9 @@ import Leaflet from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 
-// Utils
+// Tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
@@ -138,11 +139,13 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
   redirectToIdeaCreation = () => {
     if (this.savedPosition && this.props.params && this.props.params.slug) {
+      const { lat, lng } = this.savedPosition;
+
       trackEventByName(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
 
       clHistory.push({
         pathname: `/projects/${this.props.params.slug}/ideas/new`,
-        query: { position: `[${this.savedPosition.lat}, ${this.savedPosition.lng}]` }
+        search: stringify({ lat, lng }, { addQueryPrefix: true })
       });
     }
   }

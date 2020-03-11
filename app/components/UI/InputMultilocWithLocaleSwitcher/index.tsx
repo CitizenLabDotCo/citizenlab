@@ -1,11 +1,11 @@
-import React, { memo, useState, useCallback, useEffect, FormEvent } from 'react';
-import { get } from 'lodash-es';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import Input, { Props as InputProps } from 'components/UI/Input';
 import Label from 'components/UI/Label';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // hooks
 import useTenant from 'hooks/useTenant';
@@ -18,11 +18,11 @@ import { Locale, Multiloc } from 'typings';
 
 const Container = styled.div``;
 
-const Wrapper = styled.div`
+const LabelContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 8px;
+  margin-bottom: 10px;
 `;
 
 const StyledLabel = styled(Label)`
@@ -38,41 +38,16 @@ const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
   width: auto;
 `;
 
-interface Props {
-  id?: string | undefined;
+export interface Props extends Omit<InputProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
-  label?: string | JSX.Element | null | undefined;
-  onValueChange?: (value: Multiloc) => void;
+  onChange?: (value: Multiloc) => void;
   onSelectedLocaleChange?: (locale: Locale) => void;
-  onBlur?: (event: FormEvent<HTMLInputElement>) => void;
-  type: 'text' | 'email' | 'password' | 'number';
-  placeholder?: string | null | undefined;
-  errorMultiloc?: Multiloc | null;
-  maxCharCount?: number | undefined;
-  disabled?: boolean;
-  ariaLabel?: string;
-  ref?: (arg: HTMLInputElement) => void | undefined;
-  autoFocus?: boolean;
-  className?: string;
 }
 
-const InputMultilocWithLocaleSwitcher = memo<Props>(({
-  id,
-  valueMultiloc,
-  label,
-  onValueChange,
-  onSelectedLocaleChange,
-  onBlur,
-  type,
-  placeholder,
-  errorMultiloc,
-  maxCharCount,
-  disabled,
-  ariaLabel,
-  ref,
-  autoFocus,
-  className
-}) => {
+const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
+
+  const { valueMultiloc, onChange, onSelectedLocaleChange, label, labelTooltipText, ...inputProps } = props;
+  const { id, className } = props;
 
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
@@ -83,32 +58,33 @@ const InputMultilocWithLocaleSwitcher = memo<Props>(({
     const newSelectedLocale = tenantLocales && tenantLocales.length > 0 ? tenantLocales[0] : null;
     setSelectedLocale(newSelectedLocale);
     onSelectedLocaleChange && newSelectedLocale && onSelectedLocaleChange(newSelectedLocale);
-  }, [tenantLocales]);
+  }, [tenantLocales, onSelectedLocaleChange]);
 
   const handleValueOnChange = useCallback((value: string) => {
-    if (onValueChange && !isNilOrError(selectedLocale)) {
-      onValueChange({
+    if (onChange && !isNilOrError(selectedLocale)) {
+      onChange({
         ...valueMultiloc,
         [selectedLocale]: value
       });
     }
-  }, [valueMultiloc, selectedLocale]);
+  }, [valueMultiloc, selectedLocale, onChange]);
 
   const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
     setSelectedLocale(newSelectedLocale);
     onSelectedLocaleChange && onSelectedLocaleChange(newSelectedLocale);
-  }, []);
+  }, [onSelectedLocaleChange]);
 
-  const handleOnBlur = useCallback((event: FormEvent<HTMLInputElement>) => {
-    onBlur && onBlur(event);
-  }, []);
+  if (selectedLocale) {
+    return (
+      <Container className={className}>
+        <LabelContainer>
+          {label ? (
+            <StyledLabel htmlFor={id}>
+              <span>{label}</span>
+              {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+            </StyledLabel>
+          ) : <Spacer />}
 
-  return (
-    <Container className={className}>
-      <Wrapper>
-        {label ? <StyledLabel htmlFor={id}>{label}</StyledLabel> : <Spacer />}
-
-        {selectedLocale &&
           <StyledFormLocaleSwitcher
             onLocaleChange={handleOnSelectedLocaleChange}
             selectedLocale={selectedLocale}
@@ -116,25 +92,18 @@ const InputMultilocWithLocaleSwitcher = memo<Props>(({
               input_field: valueMultiloc as Multiloc
             }}
           />
-        }
-      </Wrapper>
+        </LabelContainer>
 
-      <Input
-        setRef={ref}
-        id={id}
-        value={get(valueMultiloc, `${selectedLocale}`, null)}
-        type={type}
-        placeholder={placeholder}
-        error={get(errorMultiloc, `${selectedLocale}`, null)}
-        onChange={handleValueOnChange}
-        onBlur={handleOnBlur}
-        maxCharCount={maxCharCount}
-        disabled={disabled}
-        ariaLabel={ariaLabel}
-        autoFocus={autoFocus}
-      />
-    </Container>
-  );
+        <Input
+          {...inputProps}
+          value={valueMultiloc?.[selectedLocale] || null}
+          onChange={handleValueOnChange}
+        />
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 export default InputMultilocWithLocaleSwitcher;

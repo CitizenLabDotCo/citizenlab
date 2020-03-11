@@ -3,7 +3,7 @@ import { get, isEmpty, transform } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import streams from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
-import { convertToGraphqlLocale } from 'utils/helperUtils';
+import { convertToGraphqlLocale, isNilOrError } from 'utils/helperUtils';
 import bowser from 'bowser';
 import moment from 'moment';
 
@@ -15,6 +15,7 @@ import { gql } from 'apollo-boost';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
 // hooks
+import useTenantLocales from 'hooks/useTenantLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // components
@@ -123,12 +124,13 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
 
   const templateId: string | undefined = (projectTemplateId || get(params, 'projectTemplateId'));
 
+  const tenantLocales = useTenantLocales();
   const graphqlTenantLocales = useGraphqlTenantLocales();
 
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
-  const [titleError, setTitleError] = useState<Multiloc | null>(null);
+  const [titleError, setTitleError] = useState<string | null>(null);
   const [startDateError, setStartDateError] = useState<string | null>(null);
   const [processing, setProcessing] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -171,8 +173,12 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
 
     trackEventByName(tracks.useTemplateModalCreateProjectButtonClicked, { projectTemplateId });
 
-    if (invalidTitle) {
-      setTitleError({ [`${selectedLocale}`]: intl.formatMessage(messages.projectTitleError) });
+    if (invalidTitle && !isNilOrError(tenantLocales)) {
+      if (tenantLocales.length === 1) {
+        setTitleError(intl.formatMessage(messages.projectTitleError));
+      } else {
+        setTitleError(intl.formatMessage(messages.projectTitleMultilocError));
+      }
     }
 
     if (noDate) {
@@ -212,7 +218,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
         setResponseError(error);
       }
     }
-  }, [titleMultiloc, startDate, selectedLocale]);
+  }, [tenantLocales, titleMultiloc, startDate, selectedLocale]);
 
   const onClose = useCallback(() => {
     close();
@@ -294,9 +300,9 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
               placeholder={intl.formatMessage(messages.typeProjectName)}
               type="text"
               valueMultiloc={titleMultiloc}
-              onValueChange={onTitleChange}
+              onChange={onTitleChange}
               onSelectedLocaleChange={onSelectedLocaleChange}
-              errorMultiloc={titleError}
+              error={titleError}
               autoFocus={true}
             />
 

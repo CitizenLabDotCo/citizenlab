@@ -9,7 +9,7 @@ import Label from 'components/UI/Label';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
-import Collapse from 'components/admin/Collapse';
+import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
@@ -408,7 +408,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   render() {
-    const { projects, locale, tenantLocales, groups } = this.props;
+    const { projects, locale, tenantLocales, groups, intl: { formatMessage } } = this.props;
     const {
       selectedEmails,
       selectedFileBase64,
@@ -429,25 +429,18 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     const projectOptions = this.getProjectOptions(projects, locale, tenantLocales);
     const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
-    let supportPageURL = 'http://support.citizenlab.co/eng-getting-started/invite-people-to-the-platform';
-
-    if (/^nl\-.*$/.test(locale || '')) {
-      supportPageURL = 'http://support.citizenlab.co/nl-opstartgids/uitnodigingen-versturen';
-    } else if (/^fr\-.*$/.test(locale || '')) {
-      supportPageURL = 'http://support.citizenlab.co/fr-demarrez-avec-votre-plateforme/inviter-des-utilisateurs-sur-la-plate-forme';
-    }
 
     const invitationOptions = (
       <Collapse
         opened={invitationOptionsOpened}
         onToggle={this.toggleOptions}
         label={<FormattedMessage {...messages.invitationOptions} />}
-        labelTooltip={selectedView === 'import' ? (
+        labelTooltipText={selectedView === 'import' ? (
           <FormattedMessage
             {...messages.importOptionsInfo}
             values={{
               // tslint:disable-next-line
-              supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+              supportPageLink: <a href={this.props.intl.formatMessage(messages.invitesSupportPageURL)} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
             }}
           />
         ) : null}
@@ -471,7 +464,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     values={{
                       moderatorLabelTooltipLink: (
                         // tslint:disable-next-line
-                        <a href={this.props.intl.formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
+                        <a href={formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
                           <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
                         </a>
                       )
@@ -534,6 +527,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               limitedTextFormatting
               noImages
               noVideos
+              withCTAButton
             />
           </SectionField>
 
@@ -578,7 +572,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                           values={{
                             emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
                             downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                            supportPageLink: <a href={supportPageURL} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                            supportPageLink: <a href={this.props.intl.formatMessage(messages.invitesSupportPageURL)} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
                           }}
                         />
                       }

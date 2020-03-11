@@ -223,11 +223,12 @@ export const stylingConsts = {
 
 // Reusable text styling
 export function quillEditedContent(
+  buttonColor = colors.clBlueDark,
   linkColor = colors.clBlueDark,
   textColor = colors.text,
   mentionColor = colors.text,
   fontSize: 'base' | 'medium' | 'large' = 'base',
-  fontWeight: 300 | 400 = 400
+  fontWeight: 300 | 400 = 400,
 ) {
   let lineHeight = 25;
 
@@ -365,6 +366,23 @@ export function quillEditedContent(
 
     iframe {
       max-width: 100%;
+    }
+
+    .custom-button {
+      padding: 11px 22px;
+      display: inline-block;
+      background-color: ${buttonColor};
+      color: white;
+      border-radius: 3px;
+      text-decoration: none;
+      font-size: ${fontSizes.large}px;
+      font-weight: normal;
+      line-height: 24px;
+
+      &:hover {
+        text-decoration: none;
+        color: white;
+      }
     }
   `;
 }

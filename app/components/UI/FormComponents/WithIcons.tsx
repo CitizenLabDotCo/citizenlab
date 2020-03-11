@@ -46,7 +46,7 @@ export const FormLabelWithIcon = memo(({
       <>
         <br/>
         <FormSubtextStyled>
-            <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
+          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
         </FormSubtextStyled>
       </>
     }

@@ -3,6 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq, has } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
+import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
@@ -34,9 +35,9 @@ import Footer from 'containers/Footer';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
-import VerificationModal from 'components/VerificationModal';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
+const VerificationModal = lazy(() => import('components/Verification/VerificationModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -49,7 +50,7 @@ import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { VerificationModalEvents, OpenVerificationModalData } from 'containers/App/events';
+import { openVerificationModal$, closeVerificationModal$ } from 'containers/App/verificationModalEvents';
 import { getJwt } from 'utils/auth/jwt';
 
 // style
@@ -57,7 +58,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { VerificationModalSteps, ContextShape } from 'components/VerificationModal/VerificationModal';
+import { TVerificationSteps, ContextShape } from 'components/Verification/VerificationSteps';
 
 const Container = styled.div`
   display: flex;
@@ -92,7 +93,7 @@ type Props = {};
 type State = {
   previousPathname: string | null;
   tenant: ITenant | null;
-  authUser: IUser | null;
+  authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
@@ -100,9 +101,8 @@ type State = {
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
   verificationModalOpened: boolean;
-  verificationModalInitialStep: VerificationModalSteps;
+  verificationModalInitialStep: TVerificationSteps;
   verificationModalContext: ContextShape | null;
-  mightOpenVerificationModal: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
 };
@@ -118,7 +118,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.state = {
       previousPathname: null,
       tenant: null,
-      authUser: null,
+      authUser: undefined,
       modalId: null,
       modalSlug: null,
       modalType: null,
@@ -128,7 +128,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       verificationModalOpened: false,
       verificationModalContext: null,
       verificationModalInitialStep: null,
-      mightOpenVerificationModal: false,
       navbarRef: null,
       mobileNavbarRef: null
     };
@@ -140,17 +139,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
 
-    if (has(this.props.location.query, 'verification_success')) {
-      window.history.replaceState(null, '', window.location.pathname);
-      this.openVerificationModal('success', null);
-    }
-    if (this.props.location.query?.verification_error) {
-      window.history.replaceState(null, '', window.location.pathname);
-      this.openVerificationModal('error', { error: this.props.location.query.error || null } as ContextShape);
-    }
-
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      const { authUser, mightOpenVerificationModal } = this.state;
+      const { authUser } = this.state;
       const previousPathname = location.pathname;
       const nextPathname = newLocation.pathname;
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
@@ -168,10 +158,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           pathname: '/complete-signup',
           search: newLocation.search
         });
-        // when unsigned and leaving the flow or signed in and not coming from the flow, remove the flag
-      } else if (!authUser && mightOpenVerificationModal && !nextPathname.endsWith('sign-up') && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')
-        || (authUser && mightOpenVerificationModal && !previousPathname.endsWith('sign-up') && !previousPathname.replace(/\/$/, '').endsWith('complete-signup'))) {
-        this.setState({ mightOpenVerificationModal: false });
       }
     });
 
@@ -215,26 +201,15 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         }
       }),
 
-      eventEmitter.observeEvent<IOpenPostPageModalEvent>('cardClick').subscribe(({ eventValue }) => {
-        const { id, slug, type } = eventValue;
+      eventEmitter.observeEvent<IOpenPostPageModalEvent>('cardClick').subscribe(({ eventValue: { id, slug, type } }) => {
         this.openPostPageModal(id, slug, type);
       }),
 
-      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.open).subscribe(({ eventValue }) => {
-        this.openVerificationModal(eventValue.step, eventValue.context);
+      openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
+        this.openVerificationModal(step, context);
       }),
 
-      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.verificationNeeded).subscribe(({ eventValue }) => {
-        if (this.state.mightOpenVerificationModal) {
-          this.openVerificationModal(eventValue.step, eventValue.context);
-        }
-      }),
-
-      eventEmitter.observeEvent<OpenVerificationModalData>(VerificationModalEvents.mightOpen).subscribe(() => {
-        this.setState({ mightOpenVerificationModal: true });
-      }),
-
-      eventEmitter.observeEvent(VerificationModalEvents.close).subscribe(() => {
+      closeVerificationModal$.subscribe(() => {
         this.closeVerificationModal();
       }),
 
@@ -259,6 +234,22 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.authUser === undefined && !isNilOrError(this.state.authUser)) {
+      const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
+
+      if (has(urlSearchParams, 'verification_success')) {
+        window.history.replaceState(null, '', window.location.pathname);
+        this.openVerificationModal('success', null);
+      }
+
+      if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
+        window.history.replaceState(null, '', window.location.pathname);
+        this.openVerificationModal('error', { error: this.props.location.query?.error || null } as ContextShape);
+      }
+    }
+  }
+
   openPostPageModal = (id: string, slug: string, type: 'idea' | 'initiative') => {
     this.setState({
       modalId: id,
@@ -279,21 +270,23 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  openVerificationModal = (step: VerificationModalSteps, context: ContextShape | null) => {
-    this.setState({
-      verificationModalOpened: true,
-      verificationModalInitialStep: step,
-      verificationModalContext: context,
-      mightOpenVerificationModal: false
-    });
+  openVerificationModal = (step: TVerificationSteps, context: ContextShape | null) => {
+    if (this.state.authUser) {
+      this.setState({
+        verificationModalOpened: true,
+        verificationModalInitialStep: step,
+        verificationModalContext: context
+      });
+    } else {
+      console.log('verification modal not opened because user is not authenticated');
+    }
   }
 
   closeVerificationModal = () => {
     this.setState({
       verificationModalOpened: false,
       verificationModalInitialStep: null,
-      verificationModalContext: null,
-      mightOpenVerificationModal: false
+      verificationModalContext: null
     });
   }
 

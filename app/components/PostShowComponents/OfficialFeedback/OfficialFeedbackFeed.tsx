@@ -130,8 +130,6 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 buttonStyle="secondary-outlined"
                 textColor={colors.clRedError}
                 textHoverColor={colors.clRedError}
-                iconColor={colors.clRedError}
-                iconHoverColor={colors.clRedError}
               />
             }
           </Container>

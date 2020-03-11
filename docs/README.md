@@ -1,5 +1,56 @@
 # Changelog
 
+## 2020-03-10
+
+### Fixed
+
+- Fixed consent banner popping up every time you log in as admin
+- Fixed back-office initiative status change 'Use latest official updates' radio button not working
+- Fixed broken copy in Initiative page right-hand widget
+
+### Added
+
+- Add tooltip explaining what the city will do when the voting threshold is reached for a successful initiative
+- Added verification step to the signup flow
+- New continuous flow from vote button clicked to vote casted for unauthenticated, unverified users (click vote button -> account creation -> verification -> optional/required custom signup fields -> programmatically cast vote -> successfully voted message appears)
+- The rich text editor in the admin now supports buttons
+
+### Changed
+
+- Admin HQ: new and improved list of timezones
+
+## 2020-03-05
+
+### Fixed
+
+- Signup step 2 can no longer be skipped when there are required fields
+- Correct tooltip link for support article on invitations
+- Correct error messages when not filling in start/end date of a phase
+
+### Added
+
+- Setting to disable downvoting in a phase/project, feature flagged
+- When a non-logged in visitor tries to vote on an idea that requires verification, the verification modal automatically appears after registering
+
+## 2020-02-24
+
+### Fixed
+
+- Initiative image not found errors
+- Templates generator out of disk space
+
+### Added
+
+- Folders i1
+  - When enabled, an admin can create, edit, delete folders and move projects into and out of folders
+  - Folders show in the project lists and can be ordered within projects
+
+### Changed
+
+- Initiative explanatory texts show on mobile views
+- Existing platforms have a moderator@citizenlab.co admin user with a strong password in LastPass
+- In the admin section, projects are no longer presented by publication status (Folders i1)
+
 ## 2020-02-19
 
 ### Fixed
@@ -47,8 +98,8 @@
 
 ### Fixed
 
-- Further accesibility improvements: 
-  - Screen reader improvement for translations 
+- Further accesibility improvements:
+  - Screen reader improvement for translations
   - Some color contrast improvements
 
 ### Added
@@ -166,7 +217,7 @@
 - Improved accessibility of the select component, radio button, image upload and tooltip
 
 ### Fixed
-- When adding a vote that triggers the voting limit on a project/phase, the other idea cards now automatically get updated with disabled vote buttons 
+- When adding a vote that triggers the voting limit on a project/phase, the other idea cards now automatically get updated with disabled vote buttons
 - Fix for mobile bottom menu not being clickable when idea page was opened
 - Navigating directly between projects via the menu no longer results in faulty idea card collections
 - Display toggle (map or list view) of idea and initiative cards works again

@@ -14,7 +14,7 @@ import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
-import Collapse from 'components/admin/Collapse';
+import Collapse from 'components/UI/Collapse';
 
 interface InputProps { }
 
@@ -52,7 +52,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
   render() {
     const { terminologyOpened } = this.state;
-    const { areas } = this.props;
+    const { areas, intl: { formatMessage } } = this.props;
 
     if (isNilOrError(areas)) return null;
 
@@ -68,8 +68,8 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
         <Collapse
           opened={terminologyOpened}
           onToggle={this.handleToggleTerminology}
-          label={<FormattedMessage {...messages.subtitleTerminology} />}
-          labelTooltip={<FormattedMessage {...messages.terminologyTooltip} />}
+          label={formatMessage(messages.subtitleTerminology)}
+          labelTooltipText={formatMessage(messages.terminologyTooltip)}
         >
           <AreaTermConfig />
         </Collapse>

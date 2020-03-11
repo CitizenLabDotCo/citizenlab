@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { adopt } from 'react-adopt';
+import clHistory from 'utils/cl-router/history';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,19 +23,26 @@ import injectIntl from 'utils/cl-intl/injectIntl';
 // services
 import { deleteIdea, IIdeaData } from 'services/ideas';
 
-// router
-import clHistory from 'utils/cl-router/history';
+// styling
+import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
 const MoreActionsMenuWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 35px;
+
+  &.hasLeftMargin {
+    ${media.biggerThanMaxTablet`
+      margin-left: 35px;
+    `}
+  }
 `;
 
 interface InputProps {
   idea: IIdeaData;
+  hasLeftMargin: boolean;
   className?: string;
 }
 
@@ -80,13 +87,13 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
   }
 
   render() {
-    const { idea, className, authUser } = this.props;
+    const { idea, hasLeftMargin, className, authUser } = this.props;
     const { spamModalVisible } = this.state;
 
     if (!isNilOrError(authUser) && !isNilOrError(idea)) {
       return (
         <Container className={className}>
-          <MoreActionsMenuWrapper>
+          <MoreActionsMenuWrapper className={hasLeftMargin ? 'hasLeftMargin' : ''}>
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
                 label={<FormattedMessage {...messages.moreOptions} />}

@@ -14,7 +14,7 @@ describe('Sign up step 2 page', () => {
     });
 
     it('does not show it when no custom fields are enabled', () => {
-      cy.visit('/complete-signup').wait(1000);
+      cy.visit('/complete-signup');
       cy.location('pathname').should('eq', '/en-GB/');
       cy.get('#e2e-landing-page');
     });
@@ -38,9 +38,11 @@ describe('Sign up step 2 page', () => {
     });
 
     it('can skip the 2nd sign-up step and get redirected to the landing page', () => {
-      cy.visit('/complete-signup').wait(1000);
-      cy.get('#e2e-signup-step2');
-      cy.get('.e2e-signup-step2-skip-btn').click();
+      cy.visit('/complete-signup');
+      cy.location('pathname').should('eq', '/en-GB/complete-signup');
+      cy.get('#e2e-custom-signup-form');
+      cy.get('#e2e-signup-step3');
+      cy.get('.e2e-signup-step3-skip-btn').click();
       cy.location('pathname').should('eq', '/en-GB/');
       cy.get('#e2e-landing-page');
     });
@@ -69,12 +71,11 @@ describe('Sign up step 2 page', () => {
 
     it('shows an error message when submitting an empty form', () => {
       cy.visit('/complete-signup');
-      // custom fields form is loadable,
-      // so it takes some time for it to load
-      cy.wait(2000);
-      // and so it's also better to look for the form, rather than for the container (what we did before)
+      cy.location('pathname').should('eq', '/en-GB/complete-signup');
       cy.get('#e2e-custom-signup-form');
-      cy.get('#e2e-signup-step2-button').click();
+      cy.get('#e2e-signup-step3');
+      cy.get('.e2e-signup-step3-skip-btn').should('not.exist');
+      cy.get('#e2e-signup-step3-button').click();
       cy.get('.e2e-error-message').should('contain', 'This field is required');
     });
 
@@ -101,10 +102,13 @@ describe('Sign up step 2 page', () => {
     });
 
     it('successfully completes the sign-up process', () => {
-      cy.visit('/complete-signup').wait(1000);
-      cy.get('#e2e-signup-step2');
+      cy.visit('/complete-signup');
+      cy.location('pathname').should('eq', '/en-GB/complete-signup');
+      cy.get('#e2e-custom-signup-form');
+      cy.get('#e2e-signup-step3');
+      cy.get('.e2e-signup-step3-skip-btn').should('not.exist');
       cy.get(`#root_${randomFieldName}`).type('test');
-      cy.get('#e2e-signup-step2-button').click();
+      cy.get('#e2e-signup-step3-button').click();
       cy.location('pathname').should('eq', '/en-GB/');
       cy.get('#e2e-landing-page');
     });

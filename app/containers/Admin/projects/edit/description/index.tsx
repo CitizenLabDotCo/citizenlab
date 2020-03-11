@@ -1,90 +1,196 @@
-// Libraries
-import React from 'react';
+import React, { memo, useEffect, useCallback, useState } from 'react';
 import { isEmpty } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { Formik } from 'formik';
 import { withRouter, WithRouterProps } from 'react-router';
 
-// Services / Data loading
-import { updateProject, IProjectData } from 'services/projects';
-import GetProject from 'resources/GetProject';
+// Hooks
+import useTenantLocales from 'hooks/useTenantLocales';
+import useProject from 'hooks/useProject';
+
+// Services
+import { updateProject } from 'services/projects';
 
 // Components
-import DescriptionEditionForm, { Values } from './DescriptionEditionForm';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import Button from 'components/UI/Button';
+import Error from 'components/UI/Error';
+import Success from 'components/UI/Success';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+
+// Styling
+import styled from 'styled-components';
 
 // Typing
-import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
+import { Multiloc, Locale } from 'typings';
 
-export interface InputProps { }
+const Container = styled.div``;
 
-interface DataProps {
-  project: IProjectData;
+const ButtonContainer = styled.div`
+  display: flex;
+`;
+
+interface Props {
+  className?: string;
 }
 
-interface Props extends InputProps, DataProps { }
+interface IFormValues {
+  description_preview_multiloc: Multiloc | null;
+  description_multiloc: Multiloc | null;
+}
 
-class ProjectDescription extends React.PureComponent<Props> {
+const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
+  const { intl: { formatMessage } } = props;
 
-  saveProject = (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
-    const { project } = this.props;
+  const [touched, setTouched] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: any }>({});
+  const [formValues, setFormValues] = useState<IFormValues>({
+    description_preview_multiloc: null,
+    description_multiloc: null
+  });
 
-    if (!isEmpty(values) && project.id) {
-      setSubmitting(true);
-      setStatus(null);
+  const tenantLocales = useTenantLocales();
+  const project = useProject({ projectId: props.params.projectId });
 
-      // Send the values to the API
-      updateProject(project.id, values).then(() => {
-        // Reset the Formik context for touched and errors tracking
-        resetForm();
-        setStatus('success');
-      }).catch((errorResponse) => {
-        // Process errors from the API and push them to the Formik context
-        if (isCLErrorJSON(errorResponse)) {
-          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-          setErrors(apiErrors);
-        } else {
-          setStatus('error');
-        }
-        setSubmitting(false);
+  useEffect(() => {
+    if (!isNilOrError(project)) {
+      setFormValues({
+        description_preview_multiloc: project.attributes.description_preview_multiloc,
+        description_multiloc: project.attributes.description_multiloc
       });
     }
-  }
+  }, [project]);
 
-  render() {
-    const { description_preview_multiloc, description_multiloc }: Values = this.props.project.attributes;
+  const handleDescriptionPreviewOnChange = useCallback((description_preview_multiloc: Multiloc, _locale: Locale) => {
+    setTouched(true);
+    setSuccess(false);
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      description_preview_multiloc
+    }));
+  }, []);
 
+  const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc, _locale: Locale) => {
+    setTouched(true);
+    setSuccess(false);
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      description_multiloc
+    }));
+  }, []);
+
+  const validate = useCallback(() => {
+    if (!isNilOrError(tenantLocales)) {
+      // check that all fields have content for all tenant locales
+      const { description_preview_multiloc, description_multiloc } = formValues;
+      return tenantLocales.every(locale => !isEmpty(description_preview_multiloc?.[locale]) && !isEmpty(description_multiloc?.[locale]));
+    }
+
+    return false;
+  }, [tenantLocales, formValues]);
+
+  const handleOnSubmit = useCallback(() => {
+    const { description_preview_multiloc, description_multiloc } = formValues;
+
+    if (!processing && validate() && !isNilOrError(project) && description_preview_multiloc && description_multiloc) {
+      setProcessing(true);
+      setErrors({});
+      setSuccess(false);
+
+      updateProject(project.id, {
+        description_multiloc,
+        description_preview_multiloc
+      }).then(() => {
+        setProcessing(false);
+        setErrors({});
+        setTouched(false);
+        setSuccess(true);
+      }).catch((errorResponse) => {
+        setProcessing(false);
+        setErrors(errorResponse?.json?.errors || {});
+        setSuccess(false);
+      });
+    }
+  }, [project, formValues, processing, validate]);
+
+  if (!isNilOrError(project)) {
     return (
-      <>
+      <Container>
         <SectionTitle>
           <FormattedMessage {...messages.titleDescription} />
         </SectionTitle>
         <SectionSubtitle>
           <FormattedMessage {...messages.subtitleDescription} />
         </SectionSubtitle>
-        <Formik
-          onSubmit={this.saveProject}
-          initialValues={{
-            description_preview_multiloc,
-            description_multiloc,
-          }}
-        >
-          {(formikProps) => (
-            <DescriptionEditionForm {...formikProps} />
-          )}
-        </Formik>
-      </>
+
+        <Section>
+          <SectionField>
+            <TextAreaMultilocWithLocaleSwitcher
+              id="project-description-preview"
+              valueMultiloc={formValues.description_preview_multiloc}
+              onChange={handleDescriptionPreviewOnChange}
+              label={formatMessage(messages.descriptionPreviewLabel)}
+              labelTooltipText={formatMessage(messages.descriptionPreviewTooltip)}
+              rows={5}
+              maxCharCount={280}
+            />
+            <Error fieldName="description_preview_multiloc" apiErrors={errors?.description_preview_multiloc} />
+          </SectionField>
+
+          <SectionField>
+            <QuillMultilocWithLocaleSwitcher
+              id="project-description"
+              valueMultiloc={formValues.description_multiloc}
+              onChange={handleDescriptionOnChange}
+              label={formatMessage(messages.descriptionLabel)}
+              labelTooltipText={formatMessage(messages.descriptionTooltip)}
+              withCTAButton
+            />
+            <Error fieldName="description_multiloc" apiErrors={errors?.description_multiloc} />
+          </SectionField>
+        </Section>
+
+        <ButtonContainer>
+          <Button
+            buttonStyle="admin-dark"
+            onClick={handleOnSubmit}
+            processing={processing}
+            disabled={!touched || !validate()}
+          >
+            {success
+              ? <FormattedMessage {...messages.saved} />
+              : <FormattedMessage {...messages.save} />
+            }
+          </Button>
+
+          {success &&
+            <Success
+              text={formatMessage(messages.saveSuccessMessage)}
+              showBackground={false}
+              showIcon={false}
+            />
+          }
+
+          {!isEmpty(errors) &&
+            <Error
+              text={formatMessage(messages.errorMessage)}
+              showBackground={false}
+              showIcon={false}
+            />
+          }
+        </ButtonContainer>
+      </Container>
     );
   }
-}
 
-export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <GetProject projectId={inputProps.params.projectId}>
-    {project => !isNilOrError(project) ? <ProjectDescription {...inputProps} project={project} /> : null}
-  </GetProject>
-));
+  return null;
+});
+
+export default withRouter(injectIntl(ProjectDescription));
