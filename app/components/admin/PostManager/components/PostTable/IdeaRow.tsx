@@ -124,7 +124,7 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
           ref={(instance) => { instance && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <Checkbox checked={!!active} onChange={onClickCheckbox} size="17px"/>
+            <Checkbox checked={!!active} onChange={onClickCheckbox} size="21px"/>
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-idea-manager-idea-title" onClick={onClickTitle}>
