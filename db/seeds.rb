@@ -453,6 +453,7 @@ if Apartment::Tenant.current == 'localhost'
         },
         header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
       )
+      AdminPublication.create!(publication: folder)
     end
 
     num_projects.times do
@@ -474,8 +475,7 @@ if Apartment::Tenant.current == 'localhost'
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
         publication_status: ['published','published','published','published','published','draft','archived'][rand(7)],
-        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
-        folder_id: rand(3) == 0 ? nil : ProjectFolder.ids.shuffle.first
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first }
       })
 
       if project.continuous?
@@ -489,7 +489,13 @@ if Apartment::Tenant.current == 'localhost'
           location_allowed: rand(4) != 0,
         })
       end
+
       project.save!
+      AdminPublication.create!(
+        publication: project, 
+        parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolder.name).ids.shuffle.first)
+        )
+
       [0,1,2,3,4][rand(5)].times do |i|
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
@@ -747,8 +753,6 @@ if Apartment::Tenant.current == 'localhost'
         invitee: User.create!(email: Faker::Internet.email, locale: 'en', invite_status: 'pending', first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
       )
     end
-
-    ProjectHolderService.new.fix_project_holder_orderings!
 
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
       permitted_by = ['groups', 'admins_moderators'].shuffle.first
