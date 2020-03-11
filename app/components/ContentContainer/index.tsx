@@ -35,6 +35,7 @@ const Inner: any = styled.div<{ maxWidth?: string }>`
 
 interface Props {
   children?: any;
+  id?: string;
   className?: string;
   mode?: 'oldPage' | 'banner' | 'page' | 'text';
   maxWidth?: number | string;
@@ -44,7 +45,7 @@ interface State {}
 
 export default class ContentContainer extends PureComponent<Props, State> {
   render () {
-    const { mode, className, children } = this.props;
+    const { mode, id, className, children } = this.props;
     let maxWidth = this.props.maxWidth;
 
     if (!maxWidth) {
@@ -60,7 +61,7 @@ export default class ContentContainer extends PureComponent<Props, State> {
     }
 
     return (
-      <Outer className={`${className} ${bowser.msie ? 'ie' : ''}`}>
+      <Outer id={id || ''} className={`${className} ${bowser.msie ? 'ie' : ''}`}>
         <Inner className={`inner ${bowser.msie ? 'ie' : ''}`} maxWidth={maxWidth} >
           {children}
         </Inner>

@@ -45,18 +45,18 @@ export default function createRoutes() {
         },
         {
           path: 'complete-signup',
-          name: 'completeSignUpPage',
+          name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/CompleteSignUpPage'),
+            loader: () => import('containers/SignUpPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
         },
         {
           path: 'authentication-error',
-          name: 'completeSignUpPage',
+          name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/CompleteSignUpPage'),
+            loader: () => import('containers/SignUpPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
@@ -179,6 +179,15 @@ export default function createRoutes() {
             loading: LoadableLoadingCitizen,
             delay: 500
           })
+        },
+        {
+          path: 'folders/:slug',
+          name: 'Project folder page',
+          component: Loadable({
+            loader: () => import('containers/ProjectFolderShowPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500
+          }),
         },
         {
           path: 'projects/:slug',

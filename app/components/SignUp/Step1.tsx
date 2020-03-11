@@ -15,11 +15,14 @@ import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
 import { isValidEmail } from 'utils/validate';
+import { isCLErrorJSON } from 'utils/errorUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { signUp } from 'services/auth';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInvitedUser, { GetInvitedUserChildProps } from 'resources/GetInvitedUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -33,7 +36,6 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
-import { isCLErrorJSON } from 'utils/errorUtils';
 
 const Form = styled.form`
   width: 100%;
@@ -103,6 +105,7 @@ type InputProps = {
 interface DataProps {
   locale: GetLocaleChildProps;
   invitedUser: GetInvitedUserChildProps;
+  tenant: GetTenantChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -224,12 +227,13 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   handleOnSubmit = async (event: React.FormEvent<any>) => {
     event.preventDefault();
 
-    const { isInvitation } = this.props;
+    const { isInvitation, tenant } = this.props;
     const { formatMessage } = this.props.intl;
     const { locale } = this.props;
     const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted, emailAccepted } = this.state;
     let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
-    const hasEmailError = (!email || !isValidEmail(email));
+    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const hasEmailError = !phone && (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
@@ -274,7 +278,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { isInvitation } = this.props;
+    const { isInvitation, tenant } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       token,
@@ -292,6 +296,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
       emailInvitationTokenInvalid
     } = this.state;
     const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp));
+    const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
 
     let unknownApiError: string | null = null;
 
@@ -358,7 +363,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
 
             <FormElement>
-              <FormLabel labelMessage={messages.emailLabel} htmlFor="email" thin />
+              <FormLabel labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel} htmlFor="email" thin />
               <Input
                 type="email"
                 id="email"
@@ -478,6 +483,7 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   invitedUser: ({ token, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>,
+  tenant: <GetTenant />,
 });
 
 const Step1WithHocs = injectIntl<Props>(Step1);

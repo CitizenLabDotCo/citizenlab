@@ -183,4 +183,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
+  invitesSupportPageURL: {
+    id: 'app.containers.Admin.Invitations.invitesSupportPageURL',
+    defaultMessage: 'http://support.citizenlab.co/en/articles/1771605-invite-people-to-the-platform',
+  }
 });

@@ -65,4 +65,24 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo',
     defaultMessage: 'This will be shown to users posting an initiative. These criteria define when an initiative can be eligible or not'
   },
+  initiativeSettingsFormSave: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSave',
+    defaultMessage: 'Save'
+  },
+  initiativeSettingsFormSaved: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSaved',
+    defaultMessage: 'Saved!'
+  },
+  initiativeSettingsFormError: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormError',
+    defaultMessage: 'Something went wrong. Please try again.'
+  },
+  initiativeSettingsVotingThresholdError: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsVotingThresholdError',
+    defaultMessage: 'The voting treshold needs to be at least 2'
+  },
+  initiativeSettingsFormSuccess: {
+    id: 'app.containers.Admin.initiatives.initiativeSettingsFormSuccess',
+    defaultMessage: 'Your changes have been saved.'
+  },
 });

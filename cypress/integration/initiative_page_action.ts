@@ -4,8 +4,8 @@ describe('Initiative show page actions', () => {
   describe('not logged in', () => {
     before(() => {
       cy.visit('/initiatives/cleaning-the-sidewalks-party');
-      cy.acceptCookies();
       cy.get('#e2e-initiative-show');
+      cy.acceptCookies();
     });
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
@@ -20,8 +20,8 @@ describe('Initiative show page actions', () => {
     before(() => {
       cy.setAdminLoginCookie();
       cy.visit('/initiatives/cleaning-the-sidewalks-party');
-      cy.acceptCookies();
       cy.get('#e2e-initiative-show');
+      cy.acceptCookies();
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
@@ -36,7 +36,7 @@ describe('Initiative show page actions', () => {
       });
 
       // save
-      cy.get('.e2e-submit-wrapper-button').click();
+      cy.get('.e2e-official-feedback-form-submit-button').click();
       cy.wait(2000);
       cy.get('.e2e-official-feedback-post-body').contains(officialFeedbackBody);
       cy.get('.e2e-official-feedback-post-author').contains(officialFeedbackAuthor);
@@ -103,8 +103,8 @@ describe('Initiative show page actions', () => {
       beforeEach(() => {
         cy.setLoginCookie(email, password);
         cy.visit('/initiatives/cleaning-the-sidewalks-party');
-        cy.acceptCookies();
         cy.get('#e2e-initiative-show');
+        cy.acceptCookies();
       });
 
       it('shows a working comment input', () => {

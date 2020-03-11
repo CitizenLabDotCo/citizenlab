@@ -15,7 +15,7 @@ export const FormSection = styled.div`
   min-width: 560px;
   padding: 40px 40px 30px;
   color: ${({ theme }) => theme.colorText};
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
@@ -36,8 +36,8 @@ const FormSectionTitleStyled = styled.h2`
 `;
 
 const FormSectionSubtitleStyled = styled.p`
-  color: ${colors.label};
-  font-size: ${fontSizes.medium}px;
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
 `;

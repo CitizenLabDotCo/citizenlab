@@ -98,7 +98,8 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: true,
-        tenantBlacklisted: adminIntegrations
+        tenantBlacklisted: [],
+        roleBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -124,7 +125,8 @@ describe('<ConsentManager />', () => {
         advertising: false,
         analytics: false,
         functional: true,
-        tenantBlacklisted: adminIntegrations
+        tenantBlacklisted: [],
+        roleBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: false,
@@ -153,7 +155,8 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: false,
-        tenantBlacklisted: blacklist.concat(adminIntegrations)
+        tenantBlacklisted: blacklist,
+        roleBlacklisted: adminIntegrations
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -176,7 +179,9 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: true,
-        tenantBlacklisted: blacklist.concat(adminIntegrations)
+        tenantBlacklisted: blacklist,
+        roleBlacklisted: adminIntegrations
+
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -199,7 +204,8 @@ describe('<ConsentManager />', () => {
         advertising: true,
         analytics: true,
         functional: true,
-        tenantBlacklisted: blacklist
+        tenantBlacklisted: blacklist,
+        roleBlacklisted: []
       });
       expect(destinationPreferences).toEqual({
         AdvertisingTool: true,
@@ -207,6 +213,29 @@ describe('<ConsentManager />', () => {
         'Google Tag Manager': false,
         MarketingTool: true,
         SatisMeter: true
+      });
+    });
+    it('acts correctly for super admins (no satismeter)', () => {
+      const blacklist = ['Google Tag Manager'];
+      const user = makeUser({ roles: [{ type: 'admin' }], highest_role: 'super_admin' });
+      const wrapper = shallow(<ConsentManager authUser={user.data} tenant={getTenant(blacklist)} />);
+      const handleMapCustomPreferences = wrapper.find('ConsentManagerBuilder').props().mapCustomPreferences;
+
+      const preferences = initialPreferences;
+      const { customPreferences, destinationPreferences } = handleMapCustomPreferences(destinations, preferences);
+      expect(customPreferences).toEqual({
+        advertising: true,
+        analytics: true,
+        functional: true,
+        tenantBlacklisted: blacklist,
+        roleBlacklisted: ['SatisMeter']
+      });
+      expect(destinationPreferences).toEqual({
+        AdvertisingTool: true,
+        FunctionalTool: true,
+        'Google Tag Manager': false,
+        MarketingTool: true,
+        SatisMeter: false
       });
     });
   });

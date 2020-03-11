@@ -34,7 +34,7 @@ export default withRouter<InputProps>((props: WithRouterProps) => (
       return (
         <>
           <StyledProjectArchivedIndicator projectId={project.id} />
-          <StyledContentContainer>
+          <StyledContentContainer id="e2e-project-info-page">
             <Fragment name={`projects/${project.id}/info`}>
               <ProjectInfo projectId={project.id} />
             </Fragment>

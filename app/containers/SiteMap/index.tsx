@@ -116,7 +116,7 @@ interface Props extends DataProps { }
 
 const SiteMap = ({ projects, tenant, authUser }: Props) => {
   const loaded = projects !== undefined;
-  const successStories = !isNilOrError(tenant) ? tenant.attributes.settings ?.initiatives ?.success_stories : [];
+  const successStories = !isNilOrError(tenant) ? tenant.attributes.settings?.initiatives?.success_stories : [];
 
   const scrollTo = component => (event: any) => {
     // if the event is synthetic, it's a key event and we move focus

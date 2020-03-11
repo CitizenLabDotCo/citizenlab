@@ -1,25 +1,23 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { isString } from 'lodash-es';
+import { isString, includes } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
+import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
-import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
-
-// context
-import { PreviousPathnameContext } from 'context';
 
 // components
-import SignUp from 'components/SignUp';
+import SignUp, { signUpNextStep$, TSignUpSteps, IAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUp';
 import SignInUpBanner from 'components/SignInUpBanner';
 import SignUpPageMeta from './SignUpPageMeta';
 
-// utils
-import eventEmitter from 'utils/eventEmitter';
+// resources
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+// context
+import { PreviousPathnameContext } from 'context';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -79,54 +77,100 @@ const RightInner = styled.div`
 interface InputProps {}
 
 interface DataProps {
+  locale: GetLocaleChildProps;
+  authUser: GetAuthUserChildProps;
+  customFieldsSchema: GetCustomFieldsSchemaChildProps;
   previousPathName: string | null;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
-  goBackToUrl: string;
+  action: IAction | null | undefined;
+  loaded: boolean;
 }
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
-  subscriptions: Subscription[];
+  subscription: Subscription | undefined;
 
   constructor(props) {
     super(props);
     this.state = {
-      goBackToUrl: '/'
+      action: null,
+      loaded: false
     };
-    this.subscriptions = [];
-  }
-
-  static getDerivedStateFromProps(nextProps: Props, _prevState: State) {
-    const previousPathName = (nextProps.previousPathName ? removeLocale(nextProps.previousPathName).pathname : null);
-    const goBackToUrl = (previousPathName && !(previousPathName.endsWith('/sign-up') || previousPathName.endsWith('/sign-in')) ? previousPathName : '/');
-    return { goBackToUrl };
   }
 
   componentDidMount() {
-    this.subscriptions = [
-      eventEmitter.observeEvent('signUpFlowGoToSecondStep').subscribe(() => {
-        window.scrollTo(0, 0);
-      })
-    ];
+    const action = convertUrlSearchParamsToAction(this.props.location.search);
+    this.setState({ action: action || null });
+    action && window.history.replaceState(null, '', this.props.location.pathname);
+
+    this.setLoaded();
+
+    this.subscription = signUpNextStep$.subscribe(() => {
+      window.scrollTo(0, 0);
+    });
+  }
+
+  componentDidUpdate() {
+    this.setLoaded();
+  }
+
+  setLoaded = () => {
+    const { customFieldsSchema, authUser } = this.props;
+    const { action } = this.state;
+
+    if (authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
+      this.setState({ loaded: true });
+    }
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscription?.unsubscribe();
   }
 
   onSignUpCompleted = () => {
-    trackEventByName(tracks.successfulSignUp);
-    clHistory.push(this.state.goBackToUrl);
+    const { action } = this.state;
+    const { previousPathName } = this.props;
+
+    if (action) {
+      clHistory.push({
+        pathname: action.action_context_pathname,
+        search: convertActionToUrlSearchParams(action)
+      });
+    } else if (previousPathName && !previousPathName.endsWith('/sign-up') && !previousPathName.endsWith('/sign-in')) {
+      clHistory.push({
+        pathname: previousPathName
+      });
+    } else {
+      clHistory.push('/');
+    }
   }
 
   render() {
-    const { location } = this.props;
+    const { location, customFieldsSchema, authUser } = this.props;
+    const { action, loaded } = this.state;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token = isString(location.query.token) ? location.query.token : null;
     const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
+    const authError = includes(location.pathname, 'authentication-error');
+    let initialActiveStep: TSignUpSteps | null = null;
+
+    if (!authError && authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
+      const hasVerificationStep = action?.action_requires_verification;
+      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+
+      if (!authUser) {
+        initialActiveStep = 'account-creation';
+      } else if (hasVerificationStep) {
+        initialActiveStep = 'verification';
+      } else if (hasCustomFields) {
+        initialActiveStep = 'custom-fields';
+      } else {
+        this.onSignUpCompleted();
+      }
+    }
 
     return (
       <>
@@ -137,12 +181,18 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
           </Left>
           <Right>
             <RightInner>
-              <SignUp
-                step1Title={title}
-                isInvitation={isInvitation}
-                token={token}
-                onSignUpCompleted={this.onSignUpCompleted}
-              />
+              {loaded &&
+                <SignUp
+                  initialActiveStep={initialActiveStep}
+                  inModal={false}
+                  step1Title={title}
+                  isInvitation={isInvitation}
+                  token={token}
+                  action={action}
+                  error={authError}
+                  onSignUpCompleted={this.onSignUpCompleted}
+                />
+              }
             </RightInner>
           </Right>
         </Container>
@@ -151,14 +201,17 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 }
 
-const SignUpPageWithHoCs = withRouter(SignUpPage);
+const SignUpPageWithHoC = withRouter(SignUpPage);
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
+  authUser: <GetAuthUser />,
+  customFieldsSchema: <GetCustomFieldsSchema />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignUpPageWithHoCs {...inputProps} {...dataProps} />}
+    {dataProps => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
   </Data>
-);
+));

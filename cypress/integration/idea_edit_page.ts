@@ -66,8 +66,8 @@ describe('Idea edit page', () => {
     cy.get('.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div').first().click();
 
     // verify location
-    cy.get('.e2e-idea-form-location-input-field input').its('val').should('not.equal', 'antwerp');
-    cy.get('.e2e-idea-form-location-input-field input').its('val').should('not.be.empty');
+    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Antwerp');
+    cy.get('.e2e-idea-form-location-input-field input').should('not.have.value', 'antwerp');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');

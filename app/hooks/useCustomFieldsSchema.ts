@@ -21,7 +21,7 @@ export default function useCustomFieldsSchema() {
         setCustomFields({
           schema: customFields['json_schema_multiloc'][locale],
           uiSchema: customFields['ui_schema_multiloc'][locale],
-          hasRequiredFields: !isEmpty(get(customFieldsSchemaForUsersStream, `json_schema_multiloc.${locale}.required`, null)),
+          hasRequiredFields: !isEmpty(get(customFields, `json_schema_multiloc.${locale}.required`, null)),
           hasCustomFields: hasCustomFields(customFields, locale),
         });
       });
