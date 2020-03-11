@@ -15,7 +15,7 @@ const List = styled.ul`
   list-style: none;
 `;
 
-const ListItemText = styled.div`
+const ListItemText = styled.label`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
@@ -110,11 +110,8 @@ export default class ValuesList extends PureComponent<Props, State> {
     event.preventDefault();
   }
 
-  handleOnToggle = (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
-    if (event.type === 'click' || (event.type === 'keydown' && event['key'] === 'Enter')) {
-      event.preventDefault();
-      this.props.onChange(entry.value);
-    }
+  handleOnToggle = (entry) => (_event: React.MouseEvent | React.KeyboardEvent) => {
+    this.props.onChange(entry.value);
   }
 
   handleOnClickOutside = (event: React.FormEvent) => {
@@ -177,18 +174,15 @@ export default class ValuesList extends PureComponent<Props, State> {
                   aria-selected={checked}
                   key={entry.value}
                   onMouseDown={this.removeFocus}
-                  onKeyDown={this.handleOnToggle(entry)}
-                  onClick={this.handleOnToggle(entry)}
-                  tabIndex={0}
                   className={classNames}
                 >
-                  <ListItemText>
+                  <ListItemText htmlFor={`${index}`}>
                     {entry.text}
                   </ListItemText>
 
                   {multiple &&
                     <ListItemCheckbox
-                      notFocusable
+                      id={`${index}`}
                       checked={checked}
                       onChange={this.handleOnToggle(entry)}
                     />
