@@ -123,3 +123,4 @@ export default class Checkbox extends PureComponent<Props> {
 // admin/initiatives bug => onClick in Initiative/IdeaRow
 // check where checkbox is used in different places
 // tests
+// check idea editing in idea manager
