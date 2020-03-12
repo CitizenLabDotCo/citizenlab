@@ -15,7 +15,7 @@ const List = styled.ul`
   list-style: none;
 `;
 
-const ListItemText = styled.label`
+const ListItemText = styled.span`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
@@ -178,8 +178,8 @@ export default class ValuesList extends PureComponent<Props, State> {
                       onChange={this.handleOnToggle(entry)}
                       label={
                         <ListItemText>
-                        {entry.text}
-                      </ListItemText>
+                          {entry.text}
+                        </ListItemText>
                       }
                     />
                     :
