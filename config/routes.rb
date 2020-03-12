@@ -141,7 +141,7 @@ Rails.application.routes.draw do
         end
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
       end
-      resources :admin_publications, only: [:index, :update] do
+      resources :admin_publications, only: [:index] do
         patch 'reorder', on: :member
       end
       resources :project_folders do

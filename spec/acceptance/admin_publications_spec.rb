@@ -94,8 +94,6 @@ resource "AdminPublication" do
       end
     end
 
-    # TODO update
-
     patch "web_api/v1/admin_publications/:id/reorder" do
       with_options scope: :admin_publication do
         parameter :ordering, "The position, starting from 0, where the folder or project should be at. Publications after will move down.", required: true

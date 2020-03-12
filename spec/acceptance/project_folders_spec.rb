@@ -9,8 +9,10 @@ resource 'ProjectFolder' do
 
     @projects = ['published','published','draft','published','archived','archived','published']
       .map { |ps|  create(:project, publication_status: ps)}
-    @folders = [create(:project_folder, projects: @projects.take(3)), create(:project_folder, projects: [@projects.last])]
-    ProjectHolderService.new.fix_project_holder_orderings!
+    @folders = [
+      create(:project_folder, projects: @projects.take(3), with_admin_publication: true), 
+      create(:project_folder, projects: [@projects.last], with_admin_publication: true)
+    ]
   end
 
   get "web_api/v1/project_folders" do
@@ -118,14 +120,13 @@ resource 'ProjectFolder' do
 
       example "Delete a folder" do
         old_count = ProjectFolder.count
-        old_pho_count = ProjectHolderOrdering.count
-        project_ids = project_folder.projects.published.order(:ordering).ids
+        old_publications_count = AdminPublication.count
         do_request
         expect(response_status).to eq 200
         expect{ProjectFolder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectFolder.count).to eq (old_count - 1)
 
-        expect(ProjectHolderOrdering.count).to eq (old_pho_count - 1)
+        expect(AdminPublication.count).to eq (old_publications_count - 1)
       end
     end
 
