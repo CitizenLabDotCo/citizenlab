@@ -17,7 +17,7 @@ resource "Projects" do
       header 'Authorization', "Bearer #{token}"
 
       @projects = ['published','published','draft','published','archived','archived','published']
-        .map { |ps|  create(:project, publication_status: ps)}
+        .map { |ps|  create(:project, publication_status: ps, with_admin_publication: true)}
     end
 
     get "web_api/v1/projects" do
@@ -62,8 +62,7 @@ resource "Projects" do
       end
 
       example "List all projects from a folder" do
-        folder = create(:project_folder, projects: @projects.take(2))
-        ProjectHolderService.new.fix_project_holder_orderings!
+        folder = create(:project_folder, projects: @projects.take(2), with_admin_publication: true)
 
         do_request folder: folder.id
         json_response = json_parse(response_body)
@@ -72,8 +71,7 @@ resource "Projects" do
       end
 
       example "List all top-level projects" do
-        folder = create(:project_folder, projects: @projects.take(2))
-        ProjectHolderService.new.fix_project_holder_orderings!
+        folder = create(:project_folder, projects: @projects.take(2), with_admin_publication: true)
 
         do_request folder: nil, publication_statuses: Project::PUBLICATION_STATUSES
         json_response = json_parse(response_body)
@@ -416,17 +414,15 @@ resource "Projects" do
       end
 
       example "Add a project to a folder" do
-        folder = create(:project_folder)
-        ProjectHolderService.new.fix_project_holder_orderings!
+        folder = create(:project_folder, with_admin_publication: true)
         do_request(project: {folder_id: folder.id})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
       end
 
       example "Remove a project from a folder" do
-        folder = create(:project_folder)
+        folder = create(:project_folder, with_admin_publication: true)
         @project.update!(folder: folder)
-        ProjectHolderService.new.fix_project_holder_orderings!
         do_request(project: {folder_id: nil})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq nil
@@ -468,30 +464,6 @@ resource "Projects" do
           expect(@project.reload.header_bg_url).to be_present
           do_request project: {header_bg: nil}
           expect(@project.reload.header_bg_url).to be nil
-        end
-      end
-    end
-
-    patch "web_api/v1/projects/:id/reorder" do
-      with_options scope: :project do
-        parameter :ordering, "The position, starting from 0, where the project should be at. Projects after will move down.", required: true
-      end
-
-      before do
-        Project.all.each(&:destroy!)
-      end
-      describe do
-        let!(:id) { create_list(:project, 5).first.id }
-        let(:ordering) { 2 }
-
-        example "Reorder a project" do
-          old_second_project = Project.find_by(ordering: ordering)
-          do_request
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
-          expect(Project.find_by(ordering: 2).id).to eq id
-          expect(old_second_project.reload.ordering).to eq 1 # previous third is now second
         end
       end
     end
