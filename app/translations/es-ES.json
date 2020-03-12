@@ -866,6 +866,7 @@
   "app.containers.AdminPage.FoldersEdit.otherArchivedProjects": "Proyectos archivados",
   "app.containers.AdminPage.FoldersEdit.otherDraftProjects": "Borrador",
   "app.containers.AdminPage.FoldersEdit.otherPublishedProjects": "Proyectos publicados",
+  "app.containers.AdminPage.FoldersEdit.projectFolderImagesInputLabel": "",
   "app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab": "Proyectos de la carpeta",
   "app.containers.AdminPage.FoldersEdit.projectFolderSettingsTab": "Configuración",
   "app.containers.AdminPage.FoldersEdit.projectsAlreadyAdded": "Proyectos añadidos a esta carpeta",
