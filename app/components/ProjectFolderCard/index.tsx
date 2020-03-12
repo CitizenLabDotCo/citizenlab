@@ -31,6 +31,7 @@ import tracks from './tracks';
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -290,119 +291,118 @@ interface Props extends InputProps, DataProps {
   theme?: any;
 }
 
-class ProjectFolderCard extends PureComponent<Props> {
-  handleProjectCardOnClick = (projectFolderId: string) => () => {
+const ProjectFolderCard = ({
+  projectFolder,
+  size,
+  layout,
+  className,
+  theme,
+  publishedAndArchivedProjects,
+  projectFolderId
+}: Props) => {
+  const projectFolderImages = useProjectFolderImages(projectFolderId);
+
+  const handleProjectCardOnClick = (projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
-  }
+  };
 
-  handleProjectTitleOnClick = (projectFolderId: string) => () => {
+  const handleProjectTitleOnClick = (projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectFolderId } });
-  }
+  };
 
-  render() {
-    const {
-      projectFolder,
-      size,
-      layout,
-      className,
-      theme,
-      publishedAndArchivedProjects
-    } = this.props;
+  if (
+    !isNilOrError(projectFolder) &&
+    !isNilOrError(publishedAndArchivedProjects.projectsList)
+  ) {
+    const imageUrl = !isNilOrError(projectFolderImages) ? projectFolderImages.data?.[0].attributes?.versions.medium : null;
+    const folderUrl = getProjectFolderUrl(projectFolder);
+    const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
 
-    if (
-      !isNilOrError(projectFolder) &&
-      !isNilOrError(publishedAndArchivedProjects.projectsList)
-    ) {
-      const imageUrl = projectFolder.attributes.header_bg ?.small;
-      const folderUrl = getProjectFolderUrl(projectFolder);
-      const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
-
-      const contentHeader = (
-        <ContentHeader className={`${size} hasContent`}>
-          <MapIcon
-            name="folder"
-            ariaHidden
-            colorTheme={{
-              clIconPrimary: `${theme.colorSecondary}`,
-              clIconSecondary: `${theme.colorSecondary}`,
-            }}
-          />
-          <MapIconDescription aria-hidden>
-            {numberOfProjects}
-          </MapIconDescription>
-          <ScreenReaderOnly>
-            <FormattedMessage {...messages.numberOfProjects} values={{ numberOfProjects }} />
-          </ScreenReaderOnly>
-        </ContentHeader>
-      );
-
-      const screenReaderContent = (
+    const contentHeader = (
+      <ContentHeader className={`${size} hasContent`}>
+        <MapIcon
+          name="folder"
+          ariaHidden
+          colorTheme={{
+            clIconPrimary: `${theme.colorSecondary}`,
+            clIconSecondary: `${theme.colorSecondary}`,
+          }}
+        />
+        <MapIconDescription aria-hidden>
+          {numberOfProjects}
+        </MapIconDescription>
         <ScreenReaderOnly>
-          <FolderTitle>
-            <FormattedMessage {...messages.a11y_projectTitle} />
-            <T value={projectFolder.attributes.title_multiloc} />
-          </FolderTitle>
-
-          <FolderDescription>
-            <FormattedMessage {...messages.a11y_projectDescription} />
-            <T value={projectFolder.attributes.description_preview_multiloc} />
-          </FolderDescription>
+          <FormattedMessage {...messages.numberOfProjects} values={{ numberOfProjects }} />
         </ScreenReaderOnly>
-      );
+      </ContentHeader>
+    );
 
-      return (
-        <Container
-          className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
-          to={folderUrl}
-          onClick={this.handleProjectCardOnClick(projectFolder.id)}
-        >
-          {screenReaderContent}
-          {size !== 'large' && contentHeader}
+    const screenReaderContent = (
+      <ScreenReaderOnly>
+        <FolderTitle>
+          <FormattedMessage {...messages.a11y_projectTitle} />
+          <T value={projectFolder.attributes.title_multiloc} />
+        </FolderTitle>
 
-          <FolderImageContainer className={size}>
-            <FolderImagePlaceholder>
-              <FolderImagePlaceholderIcon name="project" />
-            </FolderImagePlaceholder>
+        <FolderDescription>
+          <FormattedMessage {...messages.a11y_projectDescription} />
+          <T value={projectFolder.attributes.description_preview_multiloc} />
+        </FolderDescription>
+      </ScreenReaderOnly>
+    );
 
-            {imageUrl &&
-              <FolderImage
-                src={imageUrl}
-                alt=""
-                cover={true}
-              />
-            }
-          </FolderImageContainer>
+    return (
+      <Container
+        className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+        to={folderUrl}
+        onClick={handleProjectCardOnClick(projectFolder.id)}
+      >
+        {screenReaderContent}
+        {size !== 'large' && contentHeader}
 
-          <FolderContent className={size}>
-            {size === 'large' && contentHeader}
+        <FolderImageContainer className={size}>
+          <FolderImagePlaceholder>
+            <FolderImagePlaceholderIcon name="project" />
+          </FolderImagePlaceholder>
 
-            <ContentBody className={size} aria-hidden>
-              <FolderTitle onClick={this.handleProjectTitleOnClick(projectFolder.id)}>
-                <T value={projectFolder.attributes.title_multiloc} />
-              </FolderTitle>
+          {imageUrl &&
+            <FolderImage
+              src={imageUrl}
+              alt=""
+              cover={true}
+            />
+          }
+        </FolderImageContainer>
 
-              <T value={projectFolder.attributes.description_preview_multiloc}>
-                {(description) => {
-                  if (!isEmpty(description)) {
-                    return (
-                      <FolderDescription >
-                        {description}
-                      </FolderDescription>
-                    );
-                  }
+        <FolderContent className={size}>
+          {size === 'large' && contentHeader}
 
-                  return null;
-                }}
-              </T>
-            </ContentBody>
-          </FolderContent>
-        </Container>
-      );
-    }
+          <ContentBody className={size} aria-hidden>
+            <FolderTitle onClick={handleProjectTitleOnClick(projectFolder.id)}>
+              <T value={projectFolder.attributes.title_multiloc} />
+            </FolderTitle>
 
-    return null;
+            <T value={projectFolder.attributes.description_preview_multiloc}>
+              {(description) => {
+                if (!isEmpty(description)) {
+                  return (
+                    <FolderDescription >
+                      {description}
+                    </FolderDescription>
+                  );
+                }
+
+                return null;
+              }}
+            </T>
+          </ContentBody>
+        </FolderContent>
+      </Container>
+    );
   }
-}
+
+  return null;
+};
 
 const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
@@ -418,7 +418,7 @@ const Data = adopt<DataProps, InputProps>({
       );
     }
     return <>{render}</>;
-  }
+  },
 });
 
 const ProjectFolderCardWithHoC = withTheme(ProjectFolderCard);
