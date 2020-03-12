@@ -65,7 +65,7 @@ type DefaultProps = {
 type Props = DefaultProps & {
   checked: boolean;
   indeterminate?: boolean;
-  onChange: (event: React.MouseEvent | React.KeyboardEvent) => void;
+  onChange: () => void;
   className?: string;
   notFocusable?: boolean;
   disabled?: boolean;
@@ -77,10 +77,6 @@ export default class Checkbox extends PureComponent<Props> {
     size: '22px'
   };
 
-  handleOnChange = (event) => {
-    this.props.onChange(event);
-  }
-
   render() {
     const {
       label,
@@ -90,6 +86,7 @@ export default class Checkbox extends PureComponent<Props> {
       notFocusable,
       disabled,
       indeterminate,
+      onChange
     } = this.props;
     const hasLabel = !!label;
 
@@ -100,7 +97,7 @@ export default class Checkbox extends PureComponent<Props> {
       >
         <CheckboxContainer hasLabel={hasLabel}>
           <HiddenCheckbox
-            onChange={this.handleOnChange}
+            onChange={onChange}
             checked={checked}
             disabled={disabled}
             tabIndex={notFocusable ? -1 : 0}
@@ -120,5 +117,6 @@ export default class Checkbox extends PureComponent<Props> {
   }
 }
 
+// label clicking in filterSelector
 // tests
 // storybook
