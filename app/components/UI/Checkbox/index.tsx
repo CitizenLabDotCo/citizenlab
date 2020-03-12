@@ -117,5 +117,6 @@ export default class Checkbox extends PureComponent<Props> {
   }
 }
 
-// label clicking in filterSelector
+// label clicking bump in filterSelector
 // storybook
+// check test
