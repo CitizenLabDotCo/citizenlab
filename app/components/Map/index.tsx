@@ -196,19 +196,26 @@ class CLMap extends React.PureComponent<Props, State> {
         ];
       }
 
+      const baseLayer = Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: ['a', 'b', 'c']
+      });
+
+      const geoJsonLayer = Leaflet.geoJSON(seattleJson, { style });
+
       // Init the map
       this.map = Leaflet.map(element, {
         center: initCenter,
         zoom: get(tenant, 'attributes.settings.maps.zoom_level', 15),
-        maxZoom: 17
+        maxZoom: 17,
+        layers: [baseLayer, geoJsonLayer]
       });
 
-      Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: ['a', 'b', 'c']
-      }).addTo(this.map);
+      const overlayMaps = {
+        Disadvantage: geoJsonLayer
+      };
 
-      Leaflet.geoJSON(seattleJson, { style }).addTo(this.map);
+      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
