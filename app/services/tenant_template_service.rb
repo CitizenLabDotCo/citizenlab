@@ -81,6 +81,7 @@ class TenantTemplateService
       @template['models']['user']                                  = yml_users
       @template['models']['email_campaigns/unsubscription_token']  = yml_unsubscription_tokens
       @template['models']['project_folder']                        = yml_project_folders
+      @template['models']['project_folder_image']                  = yml_project_folder_images
       @template['models']['project']                               = yml_projects
       @template['models']['project_holder_ordering']               = yml_project_holder_orderings
       @template['models']['project_file']                          = yml_project_files
@@ -96,7 +97,7 @@ class TenantTemplateService
       @template['models']['group']                                 = yml_groups
       @template['models']['groups_project']                        = yml_groups_projects
       @template['models']['permission']                            = yml_permissions
-      @template['models']['groups_permission']                     = yml_groups_permissions 
+      @template['models']['groups_permission']                     = yml_groups_permissions
       @template['models']['membership']                            = yml_memberships
       @template['models']['page']                                  = yml_pages
       @template['models']['page_link']                             = yml_page_links
@@ -247,7 +248,7 @@ class TenantTemplateService
       template_name.chomp '.yml'
     end
   end
-  
+
   def resolve_template template_name, external_subfolder: 'release'
     if template_name.kind_of? String
       throw "Unknown template" unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
@@ -315,7 +316,7 @@ class TenantTemplateService
   end
 
   def yml_custom_fields
-    # No custom fields are required anymore because 
+    # No custom fields are required anymore because
     # the user choices cannot be remembered.
     CustomField.all.map do |c|
       yml_custom_field = {
@@ -373,8 +374,8 @@ class TenantTemplateService
 
     # TODO properly copy project moderator roles and domicile
     User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
-      yml_user = { 
-        'email'                     => u.email, 
+      yml_user = {
+        'email'                     => u.email,
         'password_digest'           => u.password_digest,
         'created_at'                => u.created_at.to_s,
         'updated_at'                => u.updated_at.to_s,
@@ -402,7 +403,7 @@ class TenantTemplateService
         'title_multiloc'               => f.title_multiloc,
         'description_multiloc'         => f.description_multiloc,
         'remote_header_bg_url'         => f.header_bg_url,
-        'description_preview_multiloc' => f.description_preview_multiloc, 
+        'description_preview_multiloc' => f.description_preview_multiloc,
         'created_at'                   => f.created_at.to_s,
         'updated_at'                   => f.updated_at.to_s
       }
@@ -421,7 +422,7 @@ class TenantTemplateService
         'updated_at'                   => p.updated_at.to_s,
         'remote_header_bg_url'         => p.header_bg_url,
         'visible_to'                   => p.visible_to,
-        'description_preview_multiloc' => p.description_preview_multiloc, 
+        'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
@@ -466,6 +467,18 @@ class TenantTemplateService
         'ordering'         => p.ordering,
         'created_at'       => p.created_at.to_s,
         'updated_at'       => p.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_project_folder_images
+    ProjectFolderImage.all.map do |p|
+      {
+        'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
+        'remote_image_url'   => p.image_url,
+        'ordering'           => p.ordering,
+        'created_at'         => p.created_at.to_s,
+        'updated_at'         => p.updated_at.to_s
       }
     end
   end
@@ -785,7 +798,7 @@ class TenantTemplateService
       }
     end
   end
-      
+
   def yml_idea_images
     IdeaImage.all.map do |i|
       {
@@ -807,7 +820,7 @@ class TenantTemplateService
         'updated_at' => i.updated_at.to_s
       }
     end
-  end 
+  end
 
   def yml_ideas_topics
     IdeasTopic.all.map do |i|
@@ -886,7 +899,7 @@ class TenantTemplateService
       }
     end
   end
-      
+
   def yml_initiative_images
     InitiativeImage.all.map do |i|
       {
