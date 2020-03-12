@@ -13,16 +13,8 @@ class AdminPublicationPolicy < ApplicationPolicy
     end
   end
 
-  def update?
-    user&.active? && user.admin?
-  end
-
   def reorder?
-    update?
-  end
-
-  def permitted_attributes_for_update
-    [:parent_id]
+    user&.active? && user.admin?
   end
 
   def permitted_attributes_for_reorder

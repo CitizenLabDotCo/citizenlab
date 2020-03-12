@@ -3,7 +3,6 @@ class SideFxProjectFolderService
   include SideFxHelper
 
   def after_create folder, user
-    ProjectHolderService.new.fix_project_holder_orderings!
     LogActivityJob.perform_later(folder, 'created', user, folder.created_at.to_i)
   end
 
@@ -12,7 +11,6 @@ class SideFxProjectFolderService
   end
 
   def after_destroy frozen_folder, user
-    ProjectHolderService.new.fix_project_holder_orderings!
     serialized_folder = clean_time_attributes(frozen_folder.attributes)
     LogActivityJob.perform_later(
       encode_frozen_resource(frozen_folder), 'deleted',
