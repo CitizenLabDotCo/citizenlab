@@ -864,6 +864,7 @@
   "app.containers.AdminPage.FoldersEdit.descriptionInputLabel": "Descripción",
   "app.containers.AdminPage.FoldersEdit.emptyFolder": "No hay proyectos en esta carpeta.",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "Imagen del encabezado",
+  "app.containers.AdminPage.FoldersEdit.multilocError": "",
   "app.containers.AdminPage.FoldersEdit.newFolder": "Nueva carpeta",
   "app.containers.AdminPage.FoldersEdit.noProjectsToAdd": "No hay proyectos que puedas añadir a esta carpeta.",
   "app.containers.AdminPage.FoldersEdit.otherArchivedProjects": "Proyectos archivados",
