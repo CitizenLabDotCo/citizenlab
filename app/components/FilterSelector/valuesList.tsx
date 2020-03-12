@@ -29,10 +29,6 @@ const ListItemText = styled.label`
   word-break: break-word;
 `;
 
-const ListItemCheckbox = styled(Checkbox)`
-  margin-left: 10px;
-`;
-
 const ListItem = styled.li`
   width: 100%;
   display: flex;
@@ -176,16 +172,20 @@ export default class ValuesList extends PureComponent<Props, State> {
                   onMouseDown={this.removeFocus}
                   className={classNames}
                 >
-                  <ListItemText htmlFor={`${index}`}>
-                    {entry.text}
-                  </ListItemText>
-
-                  {multiple &&
-                    <ListItemCheckbox
-                      id={`${index}`}
+                  {multiple ?
+                    <Checkbox
                       checked={checked}
                       onChange={this.handleOnToggle(entry)}
+                      label={
+                        <ListItemText>
+                        {entry.text}
+                      </ListItemText>
+                      }
                     />
+                    :
+                    <ListItemText>
+                      {entry.text}
+                    </ListItemText>
                   }
                 </ListItem>
               );
