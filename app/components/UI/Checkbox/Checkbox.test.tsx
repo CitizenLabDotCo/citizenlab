@@ -10,9 +10,9 @@ describe('Checkbox UI component', () => {
     onChange = jest.fn();
   });
 
-  it('changes when clicked', () => {
+  it('onChange to be called when checkbox is clicked', () => {
     const wrapper = shallow(<Checkbox checked={false} onChange={onChange} />);
-    wrapper.find('Checkbox__Label').simulate('click', { stopPropagation() { } });
-    expect(onChange).toHaveBeenCalled();
+    wrapper.find('Checkbox__HiddenInput').simulate('change');
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 });
