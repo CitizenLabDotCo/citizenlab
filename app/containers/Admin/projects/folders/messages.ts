@@ -62,6 +62,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.saveErrorMessage',
     defaultMessage: 'Something went wrong, please try again later.',
   },
+  multilocError: {
+    id: 'app.containers.AdminPage.FoldersEdit.multilocError',
+    defaultMessage: 'All required fields must be fully filled in.',
+  },
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.FoldersEdit.saveSuccessMessage',
     defaultMessage: 'Your changes have been saved.',

@@ -12,7 +12,7 @@ import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useTenantLocales from 'hooks/useTenantLocales';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { SectionField, Section } from 'components/admin/Section';
@@ -93,7 +93,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   }, []);
 
   // form status
-  const [status, setStatus] = useState<'enabled' | 'error' | 'success' | 'disabled' | 'loading'>('disabled');
+  const [status, setStatus] = useState<'enabled' | 'error' | 'apiError' | 'success' | 'disabled' | 'loading'>('disabled');
 
   // validation
   const tenantLocales = useTenantLocales();
@@ -125,11 +125,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               header_bg: headerBg ?.base64
               });
             if (!isNilOrError(res)) {
+              const imagesToAddPromises = projectFolderImages.map(file => addProjectFolderImage(res.id, file.base64));
+
+              imagesToAddPromises && await Promise.all<any>(imagesToAddPromises);
+
               clHistory.push(`/admin/projects/folders/${res.id}`);
             }
           }
         }
-        finally { setStatus('error'); }
+        finally { setStatus('apiError'); }
       } else {
         try {
           if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc && !isNilOrError(projectFolder)) {
@@ -151,15 +155,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               });
 
               if (isNilOrError(res)) {
-                setStatus('error');
+                setStatus('apiError');
               }
             }
             setStatus('success');
           } else {
-            setStatus('error');
+            setStatus('apiError');
           }
         } catch {
-          setStatus('error');
+          setStatus('apiError');
         }
       }
     }
@@ -231,12 +235,12 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         </SectionField>
         <SubmitWrapper
           loading={status === 'loading'}
-          status={status === 'loading' ? 'disabled' : status}
+          status={status === 'loading' ? 'disabled' : status === 'apiError' ? 'error' : status}
           onClick={onSubmit}
           messages={{
             buttonSave: messages.save,
             buttonSuccess: messages.saveSuccess,
-            messageError: messages.saveErrorMessage,
+            messageError: status === 'apiError' ? messages.saveErrorMessage : messages.multilocError,
             messageSuccess: messages.saveSuccessMessage,
           }}
         />
@@ -245,4 +249,4 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   );
 };
 
-export default ProjectFolderForm;
+export default injectIntl(ProjectFolderForm);
