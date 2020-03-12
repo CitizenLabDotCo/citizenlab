@@ -120,5 +120,5 @@ export default class Checkbox extends PureComponent<Props> {
   }
 }
 
-// valuesList checkbox label: do we need the label to be on the right? If not, we can just use the Checkbox label prop
 // tests
+// storybook
