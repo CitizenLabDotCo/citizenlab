@@ -65,7 +65,7 @@ type DefaultProps = {
 type Props = DefaultProps & {
   checked: boolean;
   indeterminate?: boolean;
-  onChange: () => void;
+  onChange: (event) => void;
   className?: string;
   notFocusable?: boolean;
   disabled?: boolean;
