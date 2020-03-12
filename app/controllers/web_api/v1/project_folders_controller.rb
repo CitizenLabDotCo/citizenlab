@@ -59,6 +59,8 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
   end
 
   def destroy
+    # TODO also delete child projects
+
     project_folder = @project_folder.destroy
     if project_folder.destroyed?
       SideFxProjectFolderService.new.after_destroy(@project_folder, current_user)

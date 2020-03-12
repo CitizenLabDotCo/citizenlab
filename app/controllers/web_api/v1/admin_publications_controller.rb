@@ -2,12 +2,21 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   before_action :set_admin_publication, only: [:update, :reorder]
 
   def index
-    @publications = policy_scope(ProjectHolderOrdering) # .includes(:publication)
+    @publications = policy_scope(AdminPublication) # .includes(:publication)
 
     @publications = @publications.where(publication_type: ProjectFolder.name)
       .or(@publications.where(publication: ProjectsFilteringService.new.apply_common_index_filters(
         Pundit.policy_scope(current_user, Project), 
-        params)))
+        params.except(:folder))))
+
+    if params.key? :folder
+      parent_scope = if params[:folder].present?
+        AdminPublication.where(publication_id: params[:folder], publication_type: ProjectFolder.name)
+      else # top-level projects
+        nil 
+      end
+      @publications = @publications.where(parent_id: parent_scope)
+    end
 
     @publications = @publications
       .order(:ordering)

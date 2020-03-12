@@ -18,6 +18,11 @@ class ProjectFolder < ApplicationRecord
   before_validation :strip_title
 
 
+  def projects
+    Project.where(admin_publication: admin_publication.child_ids)
+  end
+
+
   private
 
   def generate_slug
