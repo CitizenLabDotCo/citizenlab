@@ -866,6 +866,7 @@
   "app.containers.AdminPage.FoldersEdit.otherArchivedProjects": "Projets archivés",
   "app.containers.AdminPage.FoldersEdit.otherDraftProjects": "Brouillons",
   "app.containers.AdminPage.FoldersEdit.otherPublishedProjects": "Projets publiés",
+  "app.containers.AdminPage.FoldersEdit.projectFolderImagesInputLabel": "",
   "app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab": "Projets du dossier",
   "app.containers.AdminPage.FoldersEdit.projectFolderSettingsTab": "Paramètres",
   "app.containers.AdminPage.FoldersEdit.projectsAlreadyAdded": "Projets ajoutés à ce dossier",
