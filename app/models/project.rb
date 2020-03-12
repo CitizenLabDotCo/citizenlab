@@ -127,6 +127,10 @@ class Project < ApplicationRecord
     self
   end
 
+  def folder
+    admin_publication.parent&.publication
+  end
+
   def allocated_budget
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end

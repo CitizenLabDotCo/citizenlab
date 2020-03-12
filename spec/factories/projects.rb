@@ -41,11 +41,15 @@ FactoryBot.define do
 
     transient do
       with_permissions { false }
+      with_admin_publication { false }
     end
 
     after(:create) do |project, evaluator|
       if evaluator.with_permissions && project.is_participation_context?
         PermissionsService.new.update_permissions_for project
+      end
+      if evaluator.with_admin_publication
+        AdminPublication.create!(publication: project)
       end
     end
 

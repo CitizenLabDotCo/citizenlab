@@ -13,5 +13,19 @@ FactoryBot.define do
       "nl-BE" => "<p>Een <i>zwembad</i> is een bad waar mensen kunnen zwemmen. Tenzij ze niet kunnen zwemmen.</p>",
     }}
     sequence(:slug) {|n| "swimming-pools-#{n}"}
+
+    transient do
+      projects { nil }
+      with_admin_publication { false }
+    end
+
+    after(:create) do |folder, evaluator|
+      if evaluator.with_admin_publication || evaluator.projects
+        parent = AdminPublication.create! publication: folder
+        if evaluator.projects
+          AdminPublication.where(publication: evaluator.projects).update_all parent_id: parent.id
+        end
+      end
+    end
   end
 end
