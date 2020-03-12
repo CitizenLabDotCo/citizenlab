@@ -15,6 +15,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
+// typings
 import { Multiloc } from 'typings';
 
 const Container = styled.div`
@@ -28,7 +29,7 @@ const HomeLink = styled(Link)`
 `;
 
 const HomeIcon = styled(Icon)`
-  width: 100%;
+  flex: 0 0 14px;
   height: 14px;
   fill: ${colors.label};
   margin-top: -3px;
@@ -96,8 +97,7 @@ const Breadcrumbs = memo(({ localize, intl, className, links, postType }: Props 
             ) : localize(link.text)}
           </LinkText>
         </StyledLink>
-      ))
-      }
+      ))}
     </Container>
   );
 });

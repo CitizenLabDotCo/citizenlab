@@ -7,12 +7,10 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
-import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import IconTooltip from 'components/UI/IconTooltip';
-
-import { Title } from './styles';
+import Collapse from 'components/UI/Collapse';
+import { FormContainer, Title, Form, FormField, StyledLabel, LabelTextContainer, Footer, SubmitButton, CancelButton, HelpImage } from './styles';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
@@ -23,87 +21,21 @@ import { verifyIDLookup } from 'services/verify';
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// style
-import styled from 'styled-components';
-import { colors, media } from 'utils/styleUtils';
-import { IDLookupMethod } from 'services/verificationMethods';
 import T from 'components/T';
 
-const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Form = styled.form`
-  width: 100%;
-  max-width: 350px;
-
-  ${media.smallerThanMaxTablet`
-    max-width: auto;
-  `}
-`;
-
-const FormField = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-`;
-
-const StyledLabel = styled(Label)`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-`;
-
-const LabelTextContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-`;
-
-const Footer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-const FooterInner = styled.div`
-  width: 100%;
-  max-width: 350px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: flex;
-`;
-
-const SubmitButton = styled(Button)`
-  margin-right: 10px;
-`;
-
-const CancelButton = styled(Button)``;
-
-const HelpImage = styled.img`
-  width: 100%;
-`;
-
-const HelpButton = styled.button`
-   margin: 0;
-   padding: 0;
-   color: ${colors.label};
-   cursor: pointer;
-`;
+// typings
+import { IDLookupMethod } from 'services/verificationMethods';
 
 interface Props {
   onCancel: () => void;
   onVerified: () => void;
+  showHeader?: boolean;
+  inModal: boolean;
   className?: string;
   method: IDLookupMethod;
 }
 
-const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, className, method }) => {
+const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, showHeader, inModal, className, method }) => {
 
   const authUser = useAuthUser();
 
@@ -168,21 +100,19 @@ const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, className, m
     onCancel();
   }, []);
 
-  const onShowHelpButtonClick = useCallback(() => {
+  const onToggleHelpButtonClick = useCallback(() => {
     setShowHelp(showHelp => !showHelp);
   }, []);
 
-  const removeFocus = useCallback((event) => {
-    event.preventDefault();
-  }, []);
-
   return (
-    <Container className={className}>
-      <Title>
-        <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
-      </Title>
+    <FormContainer className={className} inModal={inModal}>
+      {showHeader &&
+        <Title>
+          <strong><FormattedMessage {...messages.verifyYourIdentity} /></strong>
+        </Title>
+      }
 
-      <Form>
+      <Form inModal={inModal}>
         <FormField>
           <StyledLabel htmlFor="cardId">
             <LabelTextContainer>
@@ -198,16 +128,13 @@ const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, className, m
                 error={cardIdError}
               />
           </StyledLabel>
-          <HelpButton onClick={onShowHelpButtonClick} onMouseDown={removeFocus} type="button">
-          {showHelp
-            ? (
-              <HelpImage src={method.attributes.explainer_image_url} alt="help" />
-            )
-            : (
-              <FormattedMessage {...messages.showCOWHelp} />
-            )
-          }
-          </HelpButton>
+          <Collapse
+            opened={showHelp}
+            onToggle={onToggleHelpButtonClick}
+            label={<FormattedMessage {...messages.showCOWHelp} />}
+          >
+            <HelpImage src={method.attributes.explainer_image_url} alt="help" />
+          </Collapse>
         </FormField>
 
         {formError &&
@@ -215,17 +142,15 @@ const VerificationFormLookup = memo<Props>(({ onCancel, onVerified, className, m
         }
 
         <Footer>
-          <FooterInner>
-            <SubmitButton onClick={onSubmit}>
-              <FormattedMessage {...messages.submit} />
-            </SubmitButton>
-            <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
-              <FormattedMessage {...messages.cancel} />
-            </CancelButton>
-          </FooterInner>
+          <SubmitButton onClick={onSubmit}>
+            <FormattedMessage {...messages.submit} />
+          </SubmitButton>
+          <CancelButton onClick={onCancelButtonClicked} buttonStyle="secondary">
+            <FormattedMessage {...messages.cancel} />
+          </CancelButton>
         </Footer>
       </Form>
-    </Container>
+    </FormContainer>
   );
 });
 

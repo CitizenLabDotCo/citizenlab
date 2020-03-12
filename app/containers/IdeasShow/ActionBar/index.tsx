@@ -49,7 +49,9 @@ const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicke
     />
   ) : null;
 
-  const rightContent = !isNilOrError(authUser) && !isNilOrError(idea) ? <IdeaMoreActions idea={idea} /> : null;
+  const rightContent = !isNilOrError(authUser) && !isNilOrError(idea)
+    ? <IdeaMoreActions idea={idea} hasLeftMargin={showTranslateButton} />
+    : null;
 
   return (
     <ActionBarLayout

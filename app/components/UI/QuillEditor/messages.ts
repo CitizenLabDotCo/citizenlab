@@ -57,6 +57,10 @@ export default defineMessages({
     id: 'app.components.QuillEditor.linkPrompt',
     defaultMessage: 'Enter link:',
   },
+  customLinkPrompt: {
+    id: 'app.components.QuillEditor.customLinkPrompt',
+    defaultMessage: 'Enter link:',
+  },
   videoPrompt: {
     id: 'app.components.QuillEditor.videoPrompt',
     defaultMessage: 'Enter video:',
@@ -76,5 +80,13 @@ export default defineMessages({
   remove: {
     id: 'app.components.QuillEditor.remove',
     defaultMessage: 'Remove',
+  },
+  clean: {
+    id: 'app.components.QuillEditor.clean',
+    defaultMessage: 'Remove formatting',
+  },
+  customLink: {
+    id: 'app.components.QuillEditor.customLink',
+    defaultMessage: 'Add button',
   },
 });

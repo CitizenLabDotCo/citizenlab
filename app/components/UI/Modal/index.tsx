@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
-import bowser from 'bowser';
 
 // i18n
 import messages from './messages';
@@ -27,11 +26,17 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalContent = styled.div`
+const ModalContent = styled.div<{ hasHeaderOrFooter: boolean }>`
+  flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '40px'};
+
+  ${media.smallerThanMinTablet`
+    padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '20px'};
+  `}
 `;
 
 const CloseIcon = styled(Icon)`
@@ -72,7 +77,13 @@ const CloseButton = styled.button`
   `}
 `;
 
-const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModal: boolean }>`
+const StyledFocusOn = styled(FocusOn)<{ width: number }>`
+  width: 100%;
+  max-width: ${({ width }) => width}px;
+  display: flex;
+`;
+
+const ModalContainer = styled(clickOutside)`
   width: 100%;
   max-height: 80vh;
   margin-top: 60px;
@@ -82,7 +93,7 @@ const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModa
   flex-direction: column;
   outline: none;
   overflow: hidden;
-  padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '40px'};
+  padding: 0px;
   position: relative;
 
   &.fixedHeight {
@@ -96,7 +107,7 @@ const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModa
 
   ${media.smallerThanMinTablet`
     margin-top: 40px;
-    padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '20px'};
+    padding: 0px;
 
     &.fixedHeight {
       height: auto;
@@ -105,13 +116,7 @@ const ModalContainer = styled(clickOutside)<{ hasHeaderOrFooter: boolean, isModa
   `}
 `;
 
-const StyledFocusOn = styled(FocusOn)<{ width: number }>`
-  width: 100%;
-  max-width: ${({ width }) => width}px;
-  height: 100vh;
-`;
-
-const Overlay: any = styled.div`
+const Overlay = styled.div`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -120,7 +125,7 @@ const Overlay: any = styled.div`
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background: rgba(0, 0, 0, 0.75);
   padding-left: 30px;
@@ -134,8 +139,8 @@ const Overlay: any = styled.div`
   `}
 
   ${media.smallerThanMinTablet`
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 12px;
+    padding-right: 12px;
   `}
 
   &.modal-enter {
@@ -229,10 +234,6 @@ const Skip = styled.div`
   ${media.smallerThanMaxTablet`
     display: none;
   `}
-`;
-
-const Spacer = styled.div`
-  flex: 1;
 `;
 
 export type Props = {
@@ -335,7 +336,8 @@ export default class Modal extends PureComponent<Props, State> {
 
   render() {
     const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
-    const hasFixedHeight = this.props.fixedHeight || bowser.msie;
+    const hasFixedHeight = this.props.fixedHeight;
+    const hasHeaderOrFooter = header !== undefined || footer !== undefined;
     const modalPortalElement = document?.getElementById('modal-portal');
 
     if (modalPortalElement) {
@@ -360,11 +362,9 @@ export default class Modal extends PureComponent<Props, State> {
               <ModalContainer
                 className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
-                hasHeaderOrFooter={header !== undefined || footer !== undefined}
                 ariaLabelledBy="modal-header"
                 aria-modal="true"
                 role="dialog"
-                isModal
               >
                 <CloseButton
                   className="e2e-modal-close-button"
@@ -381,11 +381,9 @@ export default class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 }
 
-                <ModalContent>
+                <ModalContent hasHeaderOrFooter={hasHeaderOrFooter}>
                   {children}
                 </ModalContent>
-
-                <Spacer aria-hidden />
 
                 {footer && <FooterContainer>{footer}</FooterContainer>}
 

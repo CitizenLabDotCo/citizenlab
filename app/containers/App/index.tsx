@@ -3,6 +3,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq, has } from 'lodash-es';
 import { isNilOrError, isPage } from 'utils/helperUtils';
+import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
@@ -34,9 +35,9 @@ import Footer from 'containers/Footer';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
-import VerificationModal from 'components/VerificationModal';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
+const VerificationModal = lazy(() => import('components/Verification/VerificationModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -57,7 +58,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { VerificationModalSteps, ContextShape } from 'components/VerificationModal/VerificationModal';
+import { TVerificationSteps, ContextShape } from 'components/Verification/VerificationSteps';
 
 const Container = styled.div`
   display: flex;
@@ -69,7 +70,7 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
   padding-top: ${props => props.theme.menuHeight}px;
-  min-width: 100vw;
+  width: 100vw;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;
@@ -92,7 +93,7 @@ type Props = {};
 type State = {
   previousPathname: string | null;
   tenant: ITenant | null;
-  authUser: IUser | null;
+  authUser: IUser | null | undefined;
   modalId: string | null;
   modalSlug: string | null;
   modalType: 'idea' | 'initiative' | null;
@@ -100,7 +101,7 @@ type State = {
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
   verificationModalOpened: boolean;
-  verificationModalInitialStep: VerificationModalSteps;
+  verificationModalInitialStep: TVerificationSteps;
   verificationModalContext: ContextShape | null;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
@@ -117,7 +118,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.state = {
       previousPathname: null,
       tenant: null,
-      authUser: null,
+      authUser: undefined,
       modalId: null,
       modalSlug: null,
       modalType: null,
@@ -137,16 +138,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const authUser$ = authUserStream().observable;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
-
-    if (has(this.props.location.query, 'verification_success')) {
-      window.history.replaceState(null, '', window.location.pathname);
-      this.openVerificationModal('success', null);
-    }
-
-    if (this.props.location.query?.verification_error) {
-      window.history.replaceState(null, '', window.location.pathname);
-      this.openVerificationModal('error', { error: this.props.location.query.error || null } as ContextShape);
-    }
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
@@ -243,6 +234,22 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (prevState.authUser === undefined && !isNilOrError(this.state.authUser)) {
+      const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
+
+      if (has(urlSearchParams, 'verification_success')) {
+        window.history.replaceState(null, '', window.location.pathname);
+        this.openVerificationModal('success', null);
+      }
+
+      if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
+        window.history.replaceState(null, '', window.location.pathname);
+        this.openVerificationModal('error', { error: this.props.location.query?.error || null } as ContextShape);
+      }
+    }
+  }
+
   openPostPageModal = (id: string, slug: string, type: 'idea' | 'initiative') => {
     this.setState({
       modalId: id,
@@ -263,7 +270,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  openVerificationModal = (step: VerificationModalSteps, context: ContextShape | null) => {
+  openVerificationModal = (step: TVerificationSteps, context: ContextShape | null) => {
     if (this.state.authUser) {
       this.setState({
         verificationModalOpened: true,
