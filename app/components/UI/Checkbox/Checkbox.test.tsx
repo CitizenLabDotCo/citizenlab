@@ -12,7 +12,7 @@ describe('Checkbox UI component', () => {
 
   it('changes when clicked', () => {
     const wrapper = shallow(<Checkbox checked={false} onChange={onChange} />);
-    wrapper.find('Checkbox__HiddenCheckbox').simulate('click', { preventDefault() { }, stopPropagation() { } });
-    expect(onChange).toBeCalledTimes(1);
+    wrapper.find('Checkbox__Label').simulate('click', { stopPropagation() { } });
+    expect(onChange).toHaveBeenCalled();
   });
 });
