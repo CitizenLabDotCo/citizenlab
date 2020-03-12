@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { projectFolderImagesStream, IProjectFolderImages } from 'services/projectFolderImages';
 
-export default function useProjectFolderImages(projectFolderId: string) {
+export default function useProjectFolderImages(projectFolderId: string | undefined) {
   const [projectFolderImage, setIdeaCustomFields] = useState<IProjectFolderImages | undefined | null | Error>(undefined);
 
   useEffect(() => {
-    const subscription = projectFolderImagesStream(projectFolderId).observable.subscribe((projectFolderImage) => {
+    const subscription = projectFolderId ? projectFolderImagesStream(projectFolderId).observable.subscribe((projectFolderImage) => {
       setIdeaCustomFields(projectFolderImage);
-    });
+    }) : null;
 
-    return () => subscription.unsubscribe();
+    return () => subscription?.unsubscribe();
   }, [projectFolderId]);
 
   return projectFolderImage;
