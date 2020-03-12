@@ -102,6 +102,10 @@ class Project < ApplicationRecord
     where.not(process_type: 'timeline')
   }
 
+  scope :ordered, -> { 
+    includes(:admin_publication).order('admin_publications.ordering') 
+  }
+
 
   def continuous?
     self.process_type == 'continuous'

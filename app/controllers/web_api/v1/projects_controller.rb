@@ -9,11 +9,9 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       policy_scope(Project)
     end
     @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]  
-    @projects = @projects.where(folder_id: params[:folder]) if params.keys.include?('folder')
     @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
-    @projects = @projects
-      .order(:ordering)
+    @projects = @projects.ordered
       .includes(:project_images, :phases, :areas, :topics)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
@@ -54,11 +52,17 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def create
     @project = Project.new(permitted_attributes(Project))
-
     SideFxProjectService.new.before_create(@project, current_user)
-    
+
     authorize @project
-    if @project.save
+
+    saved = nil
+    ActiveRecord::Base.transaction do
+      saved = @project.save
+      AdminPublication.create!(publication: @project) if saved
+    end
+
+    if saved
       SideFxProjectService.new.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project, 
