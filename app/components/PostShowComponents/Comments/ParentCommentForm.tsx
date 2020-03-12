@@ -202,7 +202,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     const projectId: string | null = get(post, 'relationships.project.data.id', null);
     const commentButtonDisabled = (!inputValue || inputValue === '');
     const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
-    const canComment = (authUser && commentingEnabled && !isModerator);
+    const canComment = (authUser && commentingEnabled);
     const placeholder = formatMessage(messages[`${postType}CommentBodyPlaceholder`]);
 
     return (
