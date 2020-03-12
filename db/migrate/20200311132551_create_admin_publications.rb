@@ -9,7 +9,6 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
 
       t.uuid :publication_id
       t.string  :publication_type
-      t.integer :ordering
 
       t.timestamps
     end

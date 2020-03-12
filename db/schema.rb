@@ -38,7 +38,6 @@ ActiveRecord::Schema.define(version: 2020_03_11_132551) do
     t.integer "children_count", default: 0, null: false
     t.uuid "publication_id"
     t.string "publication_type"
-    t.integer "ordering"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["lft"], name: "index_admin_publications_on_lft"
