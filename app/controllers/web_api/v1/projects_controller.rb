@@ -51,7 +51,8 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def create
-    @project = Project.new(permitted_attributes(Project))
+    params = permitted_attributes(Project)
+    @project = Project.new(params.except(:folder_id))
     SideFxProjectService.new.before_create(@project, current_user)
 
     authorize @project
@@ -59,7 +60,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     saved = nil
     ActiveRecord::Base.transaction do
       saved = @project.save
-      AdminPublication.create!(publication: @project) if saved
+      if saved
+        AdminPublication.create!(publication: @project)
+        set_folder! params[:folder_id] if params.key? :folder_id
+      end
     end
 
     if saved
@@ -80,14 +84,20 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     project_params = permitted_attributes(Project)
     
-    @project.assign_attributes project_params
-    if project_params.keys.include?('header_bg') && project_params['header_bg'] == nil
+    @project.assign_attributes project_params.except(:folder_id)
+    if project_params.key?(:header_bg) && project_params[:header_bg].nil?
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
     end
     authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
-    if @project.save
+
+    saved = nil
+    ActiveRecord::Base.transaction do
+      saved = @project.save
+      set_folder! project_params[:folder_id] if saved && project_params.key?(:folder_id)
+    end
+    if saved
       SideFxProjectService.new.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project, 
@@ -119,6 +129,18 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def set_project
     @project = Project.find params[:id]
     authorize @project
+  end
+
+  def set_folder! folder_id
+    parent = if folder_id.present?
+      AdminPublication.find_by!(
+        publication_id: folder_id, 
+        publication_type: ProjectFolder.name
+        )
+    else
+      nil
+    end
+    AdminPublication.where(publication: @project).first.update!(parent_id: parent&.id)
   end
 
 end
