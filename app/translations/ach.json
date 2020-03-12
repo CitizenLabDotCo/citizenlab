@@ -864,6 +864,7 @@
   "app.containers.AdminPage.FoldersEdit.descriptionInputLabel": "",
   "app.containers.AdminPage.FoldersEdit.emptyFolder": "",
   "app.containers.AdminPage.FoldersEdit.headerImageInputLabel": "",
+  "app.containers.AdminPage.FoldersEdit.multilocError": "",
   "app.containers.AdminPage.FoldersEdit.newFolder": "",
   "app.containers.AdminPage.FoldersEdit.noProjectsToAdd": "",
   "app.containers.AdminPage.FoldersEdit.otherArchivedProjects": "",
