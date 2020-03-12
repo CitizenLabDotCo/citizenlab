@@ -19,7 +19,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     end
 
     @publications = @publications
-      .order(:ordering)
+      .order(:lft)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -27,7 +27,8 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   end
 
   def reorder
-    if @publication.insert_at(permitted_attributes(@publication)[:ordering])
+    position = permitted_attributes(@publication)[:ordering]
+    if @publication.move_to_child_with_index @publication.parent, position # .insert_at(permitted_attributes(@publication)[:ordering])
       SideFxAdminPublicationService.new.after_update(@publication, current_user)
       render json: WebApi::V1::AdminPublicationSerializer.new(
         @publication, 

@@ -103,7 +103,7 @@ class Project < ApplicationRecord
   }
 
   scope :ordered, -> { 
-    includes(:admin_publication).order('admin_publications.ordering') 
+    includes(:admin_publication).order('admin_publications.lft') 
   }
 
 

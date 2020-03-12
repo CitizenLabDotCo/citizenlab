@@ -80,8 +80,7 @@ module AdminApi
         'visible_to'                   => @project.visible_to,
         'description_preview_multiloc' => @project.description_preview_multiloc, 
         'process_type'                 => @project.process_type,
-        'publication_status'           => new_publication_status || @project.publication_status,
-        'ordering'                     => @project.ordering
+        'publication_status'           => new_publication_status || @project.publication_status
       })
       yml_project['slug'] = new_slug if new_slug.present?
       store_ref yml_project, @project.id, :project
