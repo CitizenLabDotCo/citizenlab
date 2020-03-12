@@ -104,7 +104,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       core: {
         allowed: true,
         enabled: true,
-        locales: ['en','nl-BE'],
+        locales: ['en','nl-BE', 'fr-BE'],
         organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
         organization_name: {
           "en" => Faker::Address.city,
@@ -358,7 +358,8 @@ admin = {
   password: 'testtest',
   roles: [
     {type: "admin"},
-  ]
+  ],
+  locale: 'en'
 }
 moderator = {
   email: 'moderator@citizenlab.co',
