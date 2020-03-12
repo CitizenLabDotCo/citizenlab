@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
@@ -314,7 +314,10 @@ const ProjectFolderCard = ({
     !isNilOrError(projectFolder) &&
     !isNilOrError(publishedAndArchivedProjects.projectsList)
   ) {
-    const imageUrl = !isNilOrError(projectFolderImages) ? projectFolderImages.data?.[0].attributes?.versions.medium : null;
+    const imageUrl = !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
+      ? projectFolderImages.data ?.[0].attributes ?.versions.medium
+        : projectFolder.attributes.header_bg ?.medium;
+
     const folderUrl = getProjectFolderUrl(projectFolder);
     const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
 
@@ -422,11 +425,6 @@ const Data = adopt<DataProps, InputProps>({
 });
 
 const ProjectFolderCardWithHoC = withTheme(ProjectFolderCard);
-
-// TODO: make accesible
-// TODO: add footer to vertically center the content more
-// TODO: tracks
-// TODO: copy
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
