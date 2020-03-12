@@ -1,9 +1,9 @@
 import eventEmitter from 'utils/eventEmitter';
-import { ContextShape, VerificationModalSteps } from 'components/VerificationModal/VerificationModal';
+import { ContextShape, TVerificationSteps } from 'components/Verification/VerificationSteps';
 import { IParticipationContextType, ICitizenAction } from 'typings';
 
 export interface OpenVerificationModalData {
-  step: VerificationModalSteps;
+  step: TVerificationSteps;
   context: ContextShape | null;
 }
 

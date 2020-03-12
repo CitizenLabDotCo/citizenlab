@@ -67,7 +67,9 @@ class QuillMultiloc extends PureComponent<Props, State> {
       noVideos,
       noAlign,
       limitedTextFormatting,
-      className
+      className,
+      onChange,
+      ...otherProps
     } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
@@ -98,6 +100,7 @@ class QuillMultiloc extends PureComponent<Props, State> {
                   noVideos={noVideos}
                   noAlign={noAlign}
                   limitedTextFormatting={limitedTextFormatting}
+                  {...otherProps}
                 />
               </EditorWrapper>
             );

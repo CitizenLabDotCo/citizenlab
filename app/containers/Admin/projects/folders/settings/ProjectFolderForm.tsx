@@ -194,6 +194,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             valueMultiloc={descriptionMultiloc}
             onChange={getHandler(setDescriptionMultiloc)}
             label={<FormattedMessage {...messages.descriptionInputLabel} />}
+            withCTAButton
           />
         </SectionField>
 

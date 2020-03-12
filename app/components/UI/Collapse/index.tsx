@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import Icon from 'components/UI/Icon';
 import IconTooltip from 'components/UI/IconTooltip';
-
 import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 const timeout = 400;
@@ -11,7 +11,7 @@ const timeout = 400;
 const Container = styled.div``;
 
 const ArrowIcon = styled(Icon) `
-  fill: ${(props) => props.theme.colors.label};
+  fill: ${colors.label};
   flex: 0 0 11px;
   height: 11px;
   width: 11px;
@@ -24,6 +24,7 @@ const ArrowIcon = styled(Icon) `
 `;
 
 const CollapseExpandButton = styled.button`
+  text-align: left;
   display: flex;
   align-items: center;
   padding: 0;
@@ -34,10 +35,10 @@ const CollapseExpandButton = styled.button`
   transition: all 80ms ease-out;
 
   &:hover {
-    color: ${colors.adminTextColor};
+    color: ${darken(0.25, colors.label)};
 
     ${ArrowIcon} {
-      fill: ${colors.adminTextColor};
+      fill: ${darken(0.25, colors.label)};
     }
   }
 `;

@@ -1,5 +1,24 @@
 # Changelog
 
+## 2020-03-10
+
+### Fixed
+
+- Fixed consent banner popping up every time you log in as admin
+- Fixed back-office initiative status change 'Use latest official updates' radio button not working
+- Fixed broken copy in Initiative page right-hand widget
+
+### Added
+
+- Add tooltip explaining what the city will do when the voting threshold is reached for a successful initiative
+- Added verification step to the signup flow
+- New continuous flow from vote button clicked to vote casted for unauthenticated, unverified users (click vote button -> account creation -> verification -> optional/required custom signup fields -> programmatically cast vote -> successfully voted message appears)
+- The rich text editor in the admin now supports buttons
+
+### Changed
+
+- Admin HQ: new and improved list of timezones
+
 ## 2020-03-05
 
 ### Fixed

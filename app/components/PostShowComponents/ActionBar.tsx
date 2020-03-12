@@ -26,9 +26,13 @@ const Inner = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  ${media.smallerThanMaxTablet`
+    max-width: 100vw;
+  `}
+
   ${media.smallerThanMinTablet`
     width: 100%;
-    max-width: auto;
+    max-width: 100vw;
     padding-left: 15px;
     padding-right: 15px;
   `}
@@ -36,8 +40,10 @@ const Inner = styled.div`
 
 const Left = styled.div`
   flex: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
+  margin-right: 20px;
 `;
 
 const Right = styled.div`
