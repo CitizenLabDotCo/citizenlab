@@ -1,25 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { SectionField, Section } from 'components/admin/Section';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
-import { Multiloc, Locale, UploadFile } from 'typings';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import useLocale from 'hooks/useLocale';
-import { isNilOrError } from 'utils/helperUtils';
-import Label from 'components/UI/Label';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
-import { convertUrlToUploadFile } from 'utils/fileTools';
-import Input from 'components/UI/Input';
-import TextArea from 'components/UI/TextArea';
-import QuillEditor from 'components/UI/QuillEditor';
+import { isEmpty, isEqual } from 'lodash-es';
+
+import { Multiloc, UploadFile } from 'typings';
+
+import { isNilOrError } from 'utils/helperUtils';
+import { addProjectFolder, updateProjectFolder } from 'services/projectFolders';
 import { addProjectFolderImage, deleteProjectFolderImage } from 'services/projectFolderImages';
+import { convertUrlToUploadFile } from 'utils/fileTools';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import useProjectFolder from 'hooks/useProjectFolder';
 import useTenantLocales from 'hooks/useTenantLocales';
-import { isEmpty, isEqual } from 'lodash-es';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
+import { SectionField, Section } from 'components/admin/Section';
+import Label from 'components/UI/Label';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import SubmitWrapper from 'components/admin/SubmitWrapper';
+import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -54,17 +56,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     }, [projectFolder, projectFolderImagesRemote]);
   }
 
-  // locale things
-  const locale = useLocale();
-  const safeLocale = isNilOrError(locale) ? null : locale;
-
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(isNilOrError(locale) ? null : locale);
-
-  // if user locale changes, we set the form selectedLocale to it (necessary as locale is initially undefined)
-  useEffect(() => {
-    setSelectedLocale(safeLocale);
-  }, [safeLocale]);
-
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] = useState<Multiloc | null>(null);
@@ -74,55 +65,32 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>([]);
   const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] = useState<string[]>([]);
 
-  const handleHeaderBgOnAdd = (newImage: UploadFile[]) => {
+  const getHandler = useCallback((setter: (value: any) => void) => (value: any) => {
+    setStatus('enabled');
+    setter(value);
+  }, []);
+
+  const handleHeaderBgOnAdd = useCallback((newImage: UploadFile[]) => {
     setStatus('enabled');
 
     setChangedHeaderBg(true);
     setHeaderBg(newImage[0]);
-  };
+  }, []);
 
-  const handleHeaderBgOnRemove = () => {
+  const handleHeaderBgOnRemove = useCallback(() => {
     setStatus('enabled');
 
     setChangedHeaderBg(true);
     setHeaderBg(null);
-  };
-  const handleTitleChange = useCallback((newTitle: string) => {
-    setStatus('enabled');
-    selectedLocale && setTitleMultiloc(titleMultiloc => ({
-      ...titleMultiloc,
-      [selectedLocale]: newTitle
-    }));
-  }, [selectedLocale]);
+  }, []);
 
-  const handleDescriptionChange = useCallback((newDescription: string) => {
-    setStatus('enabled');
-    selectedLocale && setDescriptionMultiloc(descriptionMultiloc => ({
-      ...descriptionMultiloc,
-      [selectedLocale]: newDescription
-    }));
-  }, [selectedLocale]);
-
-  const handleShortDescriptionChange = useCallback((newShortDescription: string) => {
-    setStatus('enabled');
-    selectedLocale && setShortDescriptionMultiloc({
-      ...shortDescriptionMultiloc,
-      [selectedLocale]: newShortDescription
-    });
-  }, [selectedLocale]);
-
-  const handleProjectFolderImageOnAdd = (newImages: UploadFile[]) => {
-    setStatus('enabled');
-    setProjectFolderImages(newImages);
-  };
-
-  const handleProjectFolderImageOnRemove = (imageToRemove: UploadFile) => {
+  const handleProjectFolderImageOnRemove = useCallback((imageToRemove: UploadFile) => {
     setStatus('enabled');
     if (imageToRemove.remote && imageToRemove.id) {
       setProjectFolderImagesToRemove(previous => [...previous, imageToRemove.id as string]);
     }
     setProjectFolderImages(projectFolderImages => projectFolderImages.filter(image => image.base64 !== imageToRemove.base64));
-  };
+  }, []);
 
   // form status
   const [status, setStatus] = useState<'enabled' | 'error' | 'success' | 'disabled' | 'loading'>('disabled');
@@ -198,37 +166,33 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   };
 
   // ---- Rendering
-  if (!selectedLocale) return null;
   if (mode === 'edit' && isNilOrError(projectFolder)) return null;
 
   return (
     <form onSubmit={onSubmit}>
       <Section>
         <SectionField>
-          <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
-        </SectionField>
-        <SectionField>
-          <Input
-            value={titleMultiloc ?.[selectedLocale]}
+          <InputMultilocWithLocaleSwitcher
+            valueMultiloc={titleMultiloc}
             type="text"
-            onChange={handleTitleChange}
+            onChange={getHandler(setTitleMultiloc)}
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
         <SectionField>
-          <TextArea
-            value={shortDescriptionMultiloc ?.[selectedLocale]}
+          <TextAreaMultilocWithLocaleSwitcher
+            valueMultiloc={shortDescriptionMultiloc}
             name="textAreaMultiloc"
-            onChange={handleShortDescriptionChange}
+            onChange={getHandler(setShortDescriptionMultiloc)}
             label={<FormattedMessage {...messages.shortDescriptionInputLabel} />}
             labelTooltipText={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />}
           />
         </SectionField>
         <SectionField>
-          <QuillEditor
+          <QuillMutilocWithLocaleSwitcher
             id="description"
-            value={descriptionMultiloc ?.[selectedLocale]}
-            onChange={handleDescriptionChange}
+            valueMultiloc={descriptionMultiloc}
+            onChange={getHandler(setDescriptionMultiloc)}
             label={<FormattedMessage {...messages.descriptionInputLabel} />}
           />
         </SectionField>
@@ -260,7 +224,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
             maxImageFileSize={5000000}
             maxNumberOfImages={5}
-            onAdd={handleProjectFolderImageOnAdd}
+            onAdd={getHandler(setProjectFolderImages)}
             onRemove={handleProjectFolderImageOnRemove}
           />
         </SectionField>
