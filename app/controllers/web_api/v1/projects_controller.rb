@@ -94,18 +94,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     end
   end
 
-  def reorder
-    if @project.insert_at(permitted_attributes(@project)[:ordering])
-      SideFxProjectService.new.after_update(@project, current_user)
-      render json: WebApi::V1::ProjectSerializer.new(
-        @project, 
-        params: fastjson_params, 
-        ).serialized_json, status: :ok
-    else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
-    end
-  end
-
   def destroy
     SideFxProjectService.new.before_destroy(@project, current_user)
     project = @project.destroy
