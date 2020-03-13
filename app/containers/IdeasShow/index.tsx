@@ -74,14 +74,15 @@ const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const contentFadeInDelay = 150;
 
 const Loading = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  width: 100vw;
+  height: calc(100vh - ${props => props.theme.menuHeight}px);
   display: flex;
   align-items: center;
   justify-content: center;
+
+  ${media.smallerThanMaxTablet`
+    height: calc(100vh - ${props => props.theme.mobileTopBarHeight}px);
+  `}
 `;
 
 const Container = styled.main`
@@ -424,7 +425,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     const { loaded } = this.state;
     const { idea, ideaImages, project, officialFeedbacks } = this.props;
 
-    if (!loaded && !isNilOrError(idea) && !isUndefined(ideaImages) && !isNilOrError(project) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
+    if (
+      !loaded &&
+      !isNilOrError(idea) &&
+      !isUndefined(ideaImages) &&
+      !isNilOrError(project) &&
+      !isUndefined(officialFeedbacks.officialFeedbacksList)
+    ) {
       this.setState({ loaded: true });
     }
   }
