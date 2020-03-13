@@ -12,7 +12,7 @@ describe('Checkbox UI component', () => {
 
   it('onChange to be called when checkbox is clicked', () => {
     const wrapper = shallow(<Checkbox checked={false} onChange={onChange} />);
-    wrapper.find('Checkbox__HiddenInput').simulate('change');
+    wrapper.find('Checkbox__HiddenCheckbox').simulate('change');
     expect(onChange).toHaveBeenCalledTimes(1);
   });
 });
