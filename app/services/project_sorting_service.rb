@@ -3,7 +3,7 @@ class ProjectSortingService
   def sort projects_scope
     if Tenant.current.has_feature? 'manual_project_sorting'
       order_by_publication_status(projects_scope)
-        .order(:ordering)
+        .ordered
     else
       projects_scope
         .joins(:project_sort_score)
