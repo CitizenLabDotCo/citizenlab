@@ -151,7 +151,7 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
         edges {
           node {
             id,
-            cardImage,
+            projectFolderImage,
             titleMultiloc {
               ${graphqlTenantLocales}
             },
@@ -268,12 +268,12 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
       {templates && templates.edges && templates.edges.length > 0 &&
         <>
           <Cards>
-            {templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
+            {templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, projectFolderImage } }) => {
               return (
                 <StyledProjectTemplateCard
                   key={id}
                   projectTemplateId={id}
-                  imageUrl={cardImage}
+                  imageUrl={projectFolderImage}
                   title={localize(titleMultiloc)}
                   body={localize(subtitleMultiloc)}
                 />
