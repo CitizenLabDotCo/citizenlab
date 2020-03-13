@@ -36,11 +36,13 @@ ActiveRecord::Schema.define(version: 2020_03_11_132551) do
     t.integer "lft", null: false
     t.integer "rgt", null: false
     t.integer "children_count", default: 0, null: false
+    t.integer "ordering"
     t.uuid "publication_id"
     t.string "publication_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["lft"], name: "index_admin_publications_on_lft"
+    t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
     t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
