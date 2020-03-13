@@ -33,28 +33,26 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
 
-  if (mode === 'edit') {
-    useEffect(() => {
-      (async function iife() {
-        if (!isNilOrError(projectFolder)) {
-          setTitleMultiloc(projectFolder.attributes.title_multiloc);
-          setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
-          setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
-          if (projectFolder.attributes ?.header_bg ?.large) {
-            const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
-            setHeaderBg(headerFile);
-          }
-          if (!isNilOrError(projectFolderImagesRemote)) {
-            const imagePromises = projectFolderImagesRemote.data.map(img => img.attributes.versions.large ? convertUrlToUploadFile(img.attributes.versions.large, img.id, null) : new Promise<null>(resolve => resolve(null)));
-            const images = await Promise.all(imagePromises);
-            images.filter(img => img);
-            setProjectFolderImages(images as UploadFile[]);
-          }
+  useEffect(() => {
+    (async function iife() {
+      if (mode === 'edit' && !isNilOrError(projectFolder)) {
+        setTitleMultiloc(projectFolder.attributes.title_multiloc);
+        setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
+        setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
+        if (projectFolder.attributes ?.header_bg ?.large) {
+          const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
+          setHeaderBg(headerFile);
+        }
+        if (!isNilOrError(projectFolderImagesRemote)) {
+          const imagePromises = projectFolderImagesRemote.data.map(img => img.attributes.versions.large ? convertUrlToUploadFile(img.attributes.versions.large, img.id, null) : new Promise<null>(resolve => resolve(null)));
+          const images = await Promise.all(imagePromises);
+          images.filter(img => img);
+          setProjectFolderImages(images as UploadFile[]);
         }
       }
-      )();
-    }, [projectFolder, projectFolderImagesRemote]);
-  }
+    }
+    )();
+  }, [projectFolder, projectFolderImagesRemote, mode]);
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);

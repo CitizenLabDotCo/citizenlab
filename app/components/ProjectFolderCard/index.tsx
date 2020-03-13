@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
@@ -291,7 +291,7 @@ interface Props extends InputProps, DataProps {
   theme?: any;
 }
 
-const ProjectFolderCard = ({
+const ProjectFolderCard = memo(({
   projectFolder,
   size,
   layout,
@@ -302,13 +302,13 @@ const ProjectFolderCard = ({
 }: Props) => {
   const projectFolderImages = useProjectFolderImages(projectFolderId);
 
-  const handleProjectCardOnClick = (projectFolderId: string) => () => {
+  const handleProjectCardOnClick = useCallback((projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
-  };
+  }, []);
 
-  const handleProjectTitleOnClick = (projectFolderId: string) => () => {
+  const handleProjectTitleOnClick = useCallback((projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectFolderId } });
-  };
+  }, []);
 
   if (
     !isNilOrError(projectFolder) &&
@@ -405,7 +405,7 @@ const ProjectFolderCard = ({
   }
 
   return null;
-};
+});
 
 const Data = adopt<DataProps, InputProps>({
   projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
