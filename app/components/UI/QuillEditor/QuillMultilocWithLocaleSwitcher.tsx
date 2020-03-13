@@ -48,7 +48,6 @@ export interface Props extends Omit<QuillEditorProps, 'value' | 'onChange' | 'lo
 
 const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
   const { valueMultiloc, onChange, className, label, labelTooltipText, ...quillProps } = props;
-  console.log('he');
 
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
