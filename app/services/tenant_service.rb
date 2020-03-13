@@ -14,6 +14,8 @@ class TenantService
       ProjectImage.all.each(&:destroy!)
       ProjectFile.all.each(&:destroy!)
       Project.in_batches.update_all(header_bg: nil)
+      ProjectFolderImage.all.each(&:destroy!)
+      ProjectFolder.in_batches.update_all(header_bg: nil)
       User.in_batches.update_all(avatar: nil)
     end
   end
