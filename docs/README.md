@@ -11,6 +11,10 @@
 
 - Add images to folders, shown in cards.
 
+### Changed
+
+- Admins can now comment on ideas.
+
 ## 2020-03-10
 
 ### Fixed
