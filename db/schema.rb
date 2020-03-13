@@ -670,6 +670,15 @@ ActiveRecord::Schema.define(version: 2020_03_11_132551) do
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
+  create_table "project_folder_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_folder_id"
+    t.string "image"
+    t.integer "ordering"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_folder_id"], name: "index_project_folder_images_on_project_folder_id"
+  end
+
   create_table "project_folders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.jsonb "title_multiloc"
     t.jsonb "description_multiloc"
@@ -913,6 +922,7 @@ ActiveRecord::Schema.define(version: 2020_03_11_132551) do
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
   add_foreign_key "project_files", "projects"
+  add_foreign_key "project_folder_images", "project_folders"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_topics", "projects"

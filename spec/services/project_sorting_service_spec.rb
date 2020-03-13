@@ -8,15 +8,19 @@ describe ProjectSortingService do
       before do
         tenant = Tenant.current
         tenant.settings['manual_project_sorting'] = {allowed: true, enabled: true}
-        tenant.save
+        tenant.save!
       end
 
       it "respects the saved ordering" do
-        Project.acts_as_list_no_update do
-          p4 = create(:project, ordering: 0, publication_status: 'archived')
-          p1 = create(:project, ordering: 2)
-          p2 = create(:project, ordering: 1)
-          p3 = create(:project, ordering: 3)
+        AdminPublication.acts_as_list_no_update do
+          p4 = create(:project, with_admin_publication: true, publication_status: 'archived')
+          p4.admin_publication.update!(ordering: 0)
+          p1 = create(:project, with_admin_publication: true)
+          p1.admin_publication.update!(ordering: 2)
+          p2 = create(:project, with_admin_publication: true)
+          p2.admin_publication.update!(ordering: 1)
+          p3 = create(:project, with_admin_publication: true)
+          p3.admin_publication.update!(ordering: 3)
           expect(service.sort(Project.all).ids).to eq [p2, p1, p3, p4].map(&:id)
         end
       end
@@ -26,7 +30,7 @@ describe ProjectSortingService do
       before do
         tenant = Tenant.current
         tenant.settings['manual_project_sorting'] = {allowed: true, enabled: false}
-        tenant.save
+        tenant.save!
       end
 
       it "sorts the projects in the specced order" do
