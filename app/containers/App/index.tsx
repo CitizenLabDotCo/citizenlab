@@ -70,7 +70,7 @@ const Container = styled.div`
 
 const InnerContainer = styled.div`
   padding-top: ${props => props.theme.menuHeight}px;
-  min-width: 100vw;
+  width: 100vw;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;

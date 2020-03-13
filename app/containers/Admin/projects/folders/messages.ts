@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
   },
+  projectFolderImagesInputLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectFolderImagesInputLabel',
+    defaultMessage: 'Folder images',
+  },
   save: {
     id: 'app.containers.AdminPage.FoldersEdit.save',
     defaultMessage: 'Save',
@@ -57,6 +61,10 @@ export default defineMessages({
   saveErrorMessage: {
     id: 'app.containers.AdminPage.FoldersEdit.saveErrorMessage',
     defaultMessage: 'Something went wrong, please try again later.',
+  },
+  multilocError: {
+    id: 'app.containers.AdminPage.FoldersEdit.multilocError',
+    defaultMessage: 'All text fields must be fully filled in.',
   },
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.FoldersEdit.saveSuccessMessage',
