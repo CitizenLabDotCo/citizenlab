@@ -33,9 +33,10 @@ interface Props {
     } | 'manage'
   )[];
   hidePublicationStatusLabel?: boolean;
+  className?: string;
 }
 
-export default ({ project, actions, hidePublicationStatusLabel }: Props) => {
+export default ({ project, actions, hidePublicationStatusLabel, className }: Props) => {
   const ManageButton = (
     <RowButton
       className={`
@@ -55,7 +56,7 @@ export default ({ project, actions, hidePublicationStatusLabel }: Props) => {
   const publicationStatus = project.attributes.publication_status;
 
   return (
-    <RowContent className="e2e-admin-projects-list-item">
+    <RowContent className={`e2e-admin-projects-list-item ${className}`}>
       <RowContentInner className="expand primary">
         <RowTitle value={project.attributes.title_multiloc} />
         {project.attributes.visible_to === 'groups' &&
