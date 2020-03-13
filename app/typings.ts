@@ -82,7 +82,7 @@ export type MultilocStringOrJSX = {
 };
 
 export type MultilocFormValues = {
-  [field: string]: Multiloc;
+  [field: string]: Multiloc | null | undefined;
 };
 
 export interface CLError {
