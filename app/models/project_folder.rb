@@ -1,9 +1,4 @@
 class ProjectFolder < ApplicationRecord
-  
-  ### TODELETE
-  # has_many :projects, dependent: :destroy, foreign_key: :folder_id
-  # has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
-  ###
 
   has_one :admin_publication, as: :publication, dependent: :destroy
   has_many :project_folder_images, -> { order(:ordering) }, dependent: :destroy
@@ -20,7 +15,7 @@ class ProjectFolder < ApplicationRecord
 
 
   def projects
-    Project.where(admin_publication: admin_publication.child_ids)
+    Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
   end
 
 

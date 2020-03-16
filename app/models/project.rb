@@ -1,6 +1,5 @@
 class Project < ApplicationRecord
   include ParticipationContext
-  # acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:folder_id]
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
@@ -26,9 +25,6 @@ class Project < ApplicationRecord
   belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
-  # has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
-  # belongs_to :folder, optional: true, class_name: 'ProjectFolder'
-  # counter_culture :folder
 
   has_one :project_sort_score
 
