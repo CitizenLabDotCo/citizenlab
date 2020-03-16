@@ -108,6 +108,42 @@ const MapContainer = styled.div`
       background: ${darken(0.2, '#004949')};
     }
   }
+
+  .info {
+    padding: 10px 12px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+  }
+
+  .info h4 {
+    margin: 0 0 15px;
+    color: #777;
+  }
+
+  .label-values {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .label-value-wrapper {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .legend {
+    line-height: 18px;
+    color: #555;
+  }
+
+  .legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+  }
 `;
 
 const customIcon = Leaflet.icon({
@@ -216,6 +252,46 @@ class CLMap extends React.PureComponent<Props, State> {
       };
 
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+
+      const legend = new Leaflet.Control({ position: 'bottomright' });
+
+      legend.onAdd = function (_map) {
+        const div = Leaflet.DomUtil.create('div', 'legend info');
+        const legendValues = [
+          {
+            label: 'Lowest Disadvantage',
+            color: '#92ABB9'
+          },
+          {
+            label: 'Second Lowest Disadvantage',
+            color: '#ADD0CA'
+          },
+          {
+            label: 'Middle Disadvantage',
+            color: '#F9F9CD'
+          },
+          {
+            label: 'Second Highest Disadvantage',
+            color: '#CEA991'
+          },
+          {
+            label: 'Highest Disadvantage',
+            color: '#B495A4'
+          },
+        ];
+        div.innerHTML += `
+          <h4>Racial and Social Equity Composite Index</h4>
+          <div class='label-values'>
+            ${legendValues.map(value => `<div class='label-value-wrapper'>
+              <i style="background: ${value.color}"></i><span>${value.label}</span>
+            </div>`).join('')}
+          </div>
+        `;
+
+        return div;
+      };
+
+      legend.addTo(this.map);
 
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
