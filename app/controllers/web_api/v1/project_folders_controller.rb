@@ -2,11 +2,10 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
   before_action :set_project_folder, only: [:show, :update, :destroy]
 
   def index
-    @project_folders = policy_scope(ProjectFolder).includes(:admin_publication)
+    @project_folders = policy_scope(ProjectFolder).includes(:admin_publication, :project_folder_images)
     @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
     @project_folders = @project_folders
-      .includes(:project_folder_images)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -70,11 +69,13 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
   end
 
   def destroy
-    # TODO also delete child projects
-
-    project_folder = @project_folder.destroy
-    if project_folder.destroyed?
-      SideFxProjectFolderService.new.after_destroy(@project_folder, current_user)
+    frozen_folder = nil
+    ActiveRecord::Base.transaction do
+      @project_folder.projects.each(&:destroy!)
+      frozen_folder = @project_folder.destroy
+    end
+    if frozen_folder.destroyed?
+      SideFxProjectFolderService.new.after_destroy(frozen_folder, current_user)
       head :ok
     else
       head 500

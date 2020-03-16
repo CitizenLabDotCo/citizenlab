@@ -8,7 +8,7 @@ resource 'ProjectFolder' do
     header "Content-Type", "application/json"
 
     @projects = ['published','published','draft','published','archived','archived','published']
-      .map { |ps|  create(:project, publication_status: ps)}
+      .map { |ps|  create(:project, publication_status: ps, with_admin_publication: true)}
     @folders = [
       create(:project_folder, projects: @projects.take(3), with_admin_publication: true), 
       create(:project_folder, projects: [@projects.last], with_admin_publication: true)
@@ -121,12 +121,14 @@ resource 'ProjectFolder' do
       example "Delete a folder" do
         old_count = ProjectFolder.count
         old_publications_count = AdminPublication.count
+        old_project_count = Project.count
         do_request
+
         expect(response_status).to eq 200
         expect{ProjectFolder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectFolder.count).to eq (old_count - 1)
-
-        expect(AdminPublication.count).to eq (old_publications_count - 1)
+        expect(AdminPublication.count).to eq (old_publications_count - 4)
+        expect(Project.count).to eq (old_project_count - 3)
       end
     end
 
