@@ -1,5 +1,6 @@
 class Project < ApplicationRecord
   include ParticipationContext
+  include Maps::ProjectDecorator
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:folder_id]
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
