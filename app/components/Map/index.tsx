@@ -409,3 +409,4 @@ export default (inputProps: InputProps) => (
 // TODO: add legend toggle
 // TODO: height of dropdown map on mobile
 // TODO: mobile legend
+// TODO: lean up code
