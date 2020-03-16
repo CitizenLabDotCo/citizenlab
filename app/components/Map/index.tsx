@@ -406,7 +406,6 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: add legend toggle
 // TODO: height of dropdown map on mobile
 // TODO: mobile legend
-// TODO: lean up code
+// TODO: clean up code
