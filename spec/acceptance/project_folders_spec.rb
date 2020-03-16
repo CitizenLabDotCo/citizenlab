@@ -89,6 +89,8 @@ resource 'ProjectFolder' do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        # New folders are added to the top
+        expect(ProjectFolder.find(json_response.dig(:data,:id)).admin_publication.ordering).to eq 0
       end
     end
 

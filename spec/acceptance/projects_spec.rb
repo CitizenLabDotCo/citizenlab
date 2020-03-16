@@ -287,7 +287,9 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
           expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
           expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
-          # TODO check if header is set
+          expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
+          # New projects are added to the top
+          expect(Project.find(json_response.dig(:data,:id)).admin_publication.ordering).to eq 0
         end
 
         example "Create a project in a folder" do
@@ -296,7 +298,8 @@ resource "Projects" do
 
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
-          # TODO check if folder set
+          # New folder projects are added to the top
+          expect(Project.find(json_response.dig(:data,:id)).admin_publication.ordering).to eq 0
         end
       end
 
@@ -427,7 +430,10 @@ resource "Projects" do
         folder = create(:project_folder, with_admin_publication: true)
         do_request(project: {folder_id: folder.id})
         json_response = json_parse(response_body)
-        # TODO expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
+        # expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
+        expect(Project.find(json_response.dig(:data,:id)).folder.id).to eq folder.id
+        # Projects moved into folders are added to the top
+        expect(Project.find(json_response.dig(:data,:id)).admin_publication.ordering).to eq 0
       end
 
       example "Remove a project from a folder" do
@@ -435,6 +441,8 @@ resource "Projects" do
         do_request(project: {folder_id: nil})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq nil
+        # Projects moved out of folders are added to the top
+        expect(Project.find(json_response.dig(:data,:id)).admin_publication.ordering).to eq 0
       end
 
       example "[error] Put a project in a non-existing folder" do
