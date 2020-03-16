@@ -293,6 +293,14 @@ class CLMap extends React.PureComponent<Props, State> {
 
       legend.addTo(this.map);
 
+      this.map.on('overlayadd', () => {
+        legend.addTo(this.map);
+      });
+
+      this.map.on('overlayremove', () => {
+        legend.remove();
+      });
+
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
       }
@@ -397,3 +405,7 @@ export default (inputProps: InputProps) => (
     {dataProps => <CLMap {...inputProps} {...dataProps} />}
   </Data>
 );
+
+// TODO: add legend toggle
+// TODO: height of dropdown map on mobile
+// TODO: mobile legend
