@@ -103,7 +103,7 @@ resource "AdminPublication" do
         let(:id) { AdminPublication.find_by(ordering: 2).id }
         let(:ordering) { 1 }
 
-        example "Reorder a admin publication" do
+        example "Reorder an admin publication" do
           old_second_project = AdminPublication.find_by(ordering: ordering)
           do_request
           expect(response_status).to eq 200
