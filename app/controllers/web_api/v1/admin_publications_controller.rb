@@ -2,7 +2,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   before_action :set_admin_publication, only: [:reorder]
 
   def index
-    @publications = policy_scope(AdminPublication) # .includes(:publication)
+    @publications = policy_scope(AdminPublication)
 
     @publications = @publications.where(publication_type: ProjectFolder.name)
       .or(@publications.where(publication: ProjectsFilteringService.new.apply_common_index_filters(
@@ -12,7 +12,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     if params.key? :folder
       parent_scope = if params[:folder].present?
         AdminPublication.where(publication_id: params[:folder], publication_type: ProjectFolder.name)
-      else # top-level projects
+      else # top-level projects and folders
         nil 
       end
       @publications = @publications.where(parent_id: parent_scope)
@@ -23,7 +23,11 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
-    render json: linked_json(@publications, WebApi::V1::AdminPublicationSerializer, params: fastjson_params)
+    render json: linked_json(
+      @publications, 
+      WebApi::V1::AdminPublicationSerializer, 
+      params: fastjson_params
+      )
   end
 
   def reorder
