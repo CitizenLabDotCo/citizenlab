@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -31,9 +31,12 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const FolderRowContent = styled(RowContent)<({ hasProjects: boolean })>`
-  ${({ hasProjects }) => hasProjects && `
+const FolderRowContent = styled(RowContent) <({ expanded: boolean, hasProjects: boolean }) >`
+  ${({ expanded }) => expanded && `
     padding-bottom: 10px;
+  `}
+  ${({ hasProjects }) => hasProjects && `
+    cursor: pointer;
   `}
 `;
 
@@ -63,9 +66,18 @@ interface Props extends InputProps, DataProps { }
 
 const FolderRow = memo<Props>(({ folder, projects }) => {
   const hasProjects = !isNilOrError(projects) && !!projects.projectsList ?.length && projects.projectsList.length > 0;
+  const [folderOpen, setFolderOpen] = useState(false);
+  const toggleExpand = () => setFolderOpen(folderOpen => !folderOpen);
+
   return (
     <Container>
-      <FolderRowContent className="e2e-admin-projects-list-item" hasProjects={hasProjects}>
+      <FolderRowContent
+        className="e2e-admin-projects-list-item"
+        expanded={hasProjects && folderOpen}
+        hasProjects={hasProjects}
+        role="button"
+        onClick={toggleExpand}
+      >
         <RowContentInner className="expand primary">
           <FolderIcon name="simpleFolder" />
           <RowTitle value={folder.attributes.title_multiloc} />
@@ -82,7 +94,7 @@ const FolderRow = memo<Props>(({ folder, projects }) => {
         </ActionsRowContainer>
       </FolderRowContent>
 
-      {hasProjects &&
+      {hasProjects && folderOpen &&
         <ProjectRows>
           {projects ?.projectsList ?.map(project =>
             <InFolderProjectRow project={project} key={project.id} />
