@@ -5,7 +5,7 @@ import Map from 'components/Map';
 import styled from 'styled-components';
 
 const MapWrapper = styled.div`
-  height: 265px;
+  height: 400px;
 `;
 
 export interface Props {
