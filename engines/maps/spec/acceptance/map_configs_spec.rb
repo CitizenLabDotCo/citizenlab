@@ -26,16 +26,17 @@ resource "Map configs" do
 
       example_request "Get the map config of a project" do
         expect(status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response[:data][:attributes][:center_point_geojson]).to eq({
-          :coordinates => [4.3517, 50.8503],
-          :type => "Point"
+        json_response = JSON.parse(response_body, symbolize_names: false)
+        expect(json_response["data"]["attributes"]["center_point_geojson"]).to eq({
+          "coordinates" => [4.3517, 50.8503],
+          "type" => "Point"
         })
-        expect(json_response[:data][:attributes][:tile_provider]).to eq map_config.tile_provider
-        expect(json_response[:data][:attributes][:zoom_level]).to eq map_config.zoom_level.to_s
-        expect(json_response[:data][:attributes][:layers][0][:title_multiloc].stringify_keys).to eq map_config.layers.first.title_multiloc
-        expect(json_response[:data][:attributes][:layers][0][:legend][0][:title_multiloc].stringify_keys).to eq map_config.layers.first.legend_items.first.title_multiloc
-        expect(json_response[:data][:attributes][:layers][0][:legend][0][:color]).to eq map_config.layers.first.legend_items.first.color
+        expect(json_response["data"]["attributes"]["tile_provider"]).to eq map_config.tile_provider
+        expect(json_response["data"]["attributes"]["zoom_level"]).to eq map_config.zoom_level.to_s
+        expect(json_response["data"]["attributes"]["layers"][0]["title_multiloc"]).to eq map_config.layers.first.title_multiloc
+        expect(json_response["data"]["attributes"]["layers"][0]["geojson"]).to eq map_config.layers.first.geojson
+        expect(json_response["data"]["attributes"]["layers"][0]["legend"][0]["title_multiloc"]).to eq map_config.layers.first.legend_items.first.title_multiloc
+        expect(json_response["data"]["attributes"]["layers"][0]["legend"][0]["color"]).to eq map_config.layers.first.legend_items.first.color
       end
     end
 

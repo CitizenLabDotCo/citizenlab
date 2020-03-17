@@ -7,5 +7,4 @@ RSpec.describe Maps::Layer, type: :model do
       expect(build(:layer)).to be_valid
     end
   end
-
 end
