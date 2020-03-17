@@ -10,12 +10,15 @@ import { colors } from 'utils/styleUtils';
 
 const Image = styled.img`
   background: ${colors.placeholderBg};
+
+  /*
   transition: opacity 200ms ease-out;
   opacity: 0;
 
   &.loaded {
     opacity: 1;
   }
+  */
 `;
 
 interface Props {
@@ -28,7 +31,7 @@ interface Props {
 
 interface State {
   visible: boolean;
-  loaded: boolean;
+  // loaded: boolean;
 }
 
 export default class LazyImage extends PureComponent<Props, State> {
@@ -40,7 +43,7 @@ export default class LazyImage extends PureComponent<Props, State> {
     super(props);
     this.state = {
       visible: false,
-      loaded: false,
+      // loaded: false,
     };
   }
 
@@ -51,13 +54,13 @@ export default class LazyImage extends PureComponent<Props, State> {
     }
   }
 
-  handleImageLoaded = () => {
-    this.setState({ loaded: true });
-  }
+  // handleImageLoaded = () => {
+  //   this.setState({ loaded: true });
+  // }
 
   render() {
     const { src, alt, role, cover, className } = this.props;
-    const { visible, loaded } = this.state;
+    const { visible /*, loaded */ } = this.state;
 
     if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
       // Legacy browsers, no lazy-loading for you!
@@ -66,14 +69,18 @@ export default class LazyImage extends PureComponent<Props, State> {
       const style = cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
 
       return (
-        <Observer onChange={this.handleIntersection}>
+        <Observer
+          rootMargin="200px"
+          onChange={this.handleIntersection}
+        >
           <Image
             src={visible ? src : undefined}
             alt={alt}
             role={role}
             style={style}
-            className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${className}`}
-            onLoad={this.handleImageLoaded}
+            className={`${visible ? 'visible' : ''} ${className}`}
+            // className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${className}`}
+            // onLoad={this.handleImageLoaded}
           />
         </Observer>
       );
