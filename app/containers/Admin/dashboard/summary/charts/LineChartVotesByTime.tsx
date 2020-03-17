@@ -35,9 +35,9 @@ type Props = {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
-  currentTopicFilter: string | null;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
 };
 
 class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps, State> {
@@ -122,9 +122,9 @@ class LineChartVotesByTime extends React.PureComponent<Props & InjectedIntlProps
     startAt: string | null | undefined,
     endAt: string | null,
     resolution: IResolution,
-    currentGroupFilter: string | null,
-    currentTopicFilter: string | null,
-    currentProjectFilter: string | null
+    currentGroupFilter: string | undefined,
+    currentTopicFilter: string | undefined,
+    currentProjectFilter: string | undefined
   ) {
     if (this.subscription) {
       this.subscription.unsubscribe();
