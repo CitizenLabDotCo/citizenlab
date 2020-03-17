@@ -75,8 +75,8 @@ export default function useAdminPublications({ pageSize = 1000, areaFilter, publ
   useEffect(() => {
     const subscription = listAdminPublications({
       queryParameters: {
-        folder: folderId,
         areas,
+        folder: folderId,
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize
