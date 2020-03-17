@@ -59,32 +59,51 @@ interface DataProps {
 
 interface Props extends DataProps { }
 
-class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
+interface State {
+  processing: string[];
+}
+
+class AdminFoldersProjectsList extends Component<Props & WithRouterProps, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      processing: []
+    };
+  }
 
   handleReorder = (itemId, newOrder) => {
     reorderAdminPublication(itemId, newOrder);
   }
 
-  addProjectToFolder = (projectId) => () => {
+  addProjectToFolder = (projectId: string) => async () => {
     const projectFolderId = !isNilOrError(this.props.projectFolder) ? this.props.projectFolder.id : null;
-    projectFolderId && updateProjectFolderMembership(projectId, projectFolderId);
+    if (projectFolderId) {
+      this.setState(({ processing }) => ({ processing: [...processing, projectId] }));
+      await updateProjectFolderMembership(projectId, projectFolderId);
+      this.setState(({ processing }) => ({ processing: processing.filter(item => item !== projectId) }));
+    }
   }
 
-  removeProjectFromFolder = (projectId) => () => {
+  removeProjectFromFolder = (projectId: string) => async () => {
     const projectFolderId = !isNilOrError(this.props.projectFolder) ? this.props.projectFolder.id : undefined;
-    updateProjectFolderMembership(projectId, null, projectFolderId);
+    this.setState(({ processing }) => ({ processing: [...processing, projectId] }));
+    await updateProjectFolderMembership(projectId, null, projectFolderId);
+    this.setState(({ processing }) => ({ processing: processing.filter(item => item !== projectId) }));
   }
 
   render() {
     const { topLevelProjects, projectsInFolder } = this.props;
+
+    const { processing } = this.state;
 
     const otherProjects = (!isNilOrError(topLevelProjects) && topLevelProjects.list)
       ? topLevelProjects.list.filter(item => item.adminPublicationType === 'project').map(item => item.adminPublication) as IProjectData[]
       : null;
 
     const inFolderFinalList = (!isNilOrError(projectsInFolder) && projectsInFolder.list && projectsInFolder.list.length > 0)
-    ? projectsInFolder.list.filter(item => item.adminPublicationType === 'project')
-    : null;
+      ? projectsInFolder.list.filter(item => item.adminPublicationType === 'project')
+      : null;
 
     return (
       <Container>
@@ -122,7 +141,8 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                         actions={[{
                           buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
                           handler: this.removeProjectFromFolder,
-                          icon: 'remove'
+                          icon: 'remove',
+                          processing: processing.includes(adminPublication.adminPublication.id)
                         }, 'manage']}
                       />
                     </SortableRow>
@@ -146,12 +166,14 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps> {
                   <Row
                     id={project.id}
                     lastItem={(index === otherProjects.length - 1)}
+                    key={project.id}
                   >
                     <ProjectRow
                       project={project}
                       actions={[{
                         buttonContent: <FormattedMessage {...messages.addToFolder} />,
                         handler: this.addProjectToFolder,
+                        processing: processing.includes(project.id),
                         icon: 'plus-circle'
                       }]}
                     />
@@ -172,7 +194,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'archived', 'publishe
 
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
-  topLevelProjects: <GetAdminPublications publicationStatusFilter={publicationStatuses} folderId={null}/>, // TODO !!
+  topLevelProjects: <GetAdminPublications publicationStatusFilter={publicationStatuses} folderId={null} />, // TODO !!
   projectsInFolder: ({ params, render }) => <GetAdminPublications publicationStatusFilter={publicationStatuses} folderId={params.projectFolderId}>{render}</GetAdminPublications>,
 });
 
