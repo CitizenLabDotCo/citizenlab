@@ -15,6 +15,13 @@ module Maps
             params: fastjson_params
           ).serialized_json
         end
+
+        private
+
+        def secure_controller?
+          false
+        end
+
       end
     end
   end
