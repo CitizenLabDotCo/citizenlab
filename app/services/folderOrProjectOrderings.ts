@@ -1,9 +1,9 @@
 import streams from 'utils/streams';
 
 import { API_PATH } from 'containers/App/constants';
-const apiEndpoint = `${API_PATH}/project_holder_orderings`;
+const apiEndpoint = `${API_PATH}/admin_publications`;
 
-export interface IProjectHolderOrderingData {
+export interface IAdminPublicationData {
   id: string;
   type: 'project_or_folder_ordering';
   attributes: {
@@ -16,12 +16,12 @@ export interface IProjectHolderOrderingData {
   };
 }
 
-export function listProjectHolderOrderings() {
-  return streams.get<{ data: IProjectHolderOrderingData[] }>({ apiEndpoint });
+export function listAdminPublications() {
+  return streams.get<{ data: IAdminPublicationData[] }>({ apiEndpoint });
 }
 
-export async function reorderProjectHolder(orderingId: string, newOrder: number) {
-  return streams.update<{ data: IProjectHolderOrderingData }>(
+export async function reorderadminPublication(orderingId: string, newOrder: number) {
+  return streams.update<{ data: IAdminPublicationData }>(
     `${apiEndpoint}/${orderingId}`,
     orderingId,
     { project_or_folder_ordering: { ordering: newOrder } });

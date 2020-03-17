@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { combineLatest } from 'rxjs';
 import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
-import { listProjectHolderOrderings } from 'services/projectHolderOrderings';
+import { listAdminPublications } from 'services/adminPublications';
 import { projectsStream, IProjectData, PublicationStatus } from 'services/projects';
 import { projectFoldersStream, IProjectFolderData } from 'services/projectFolders';
 import { isNilOrError } from 'utils/helperUtils';
@@ -12,26 +12,27 @@ export interface InputProps {
   areaFilter?: string[];
   publicationStatusFilter: PublicationStatus[];
   noEmptyFolder?: boolean;
+  folderId?: string | null;
 }
 
-export type IProjectHolderOrderingContent = {
+export type IAdminPublicationContent = {
   id: string;
-  projectHolderType: 'project';
+  adminPublicationType: 'project';
   attributes: {
     ordering: number;
   };
-  projectHolder: IProjectData;
+  adminPublication: IProjectData;
 } | {
   id: string;
-  projectHolderType: 'project_folder';
+  adminPublicationType: 'project_folder';
   attributes: {
     ordering: number;
   };
-  projectHolder: IProjectFolderData;
+  adminPublication: IProjectFolderData;
 };
 
 export interface IOutput {
-  list: IProjectHolderOrderingContent[] | undefined | null;
+  list: IAdminPublicationContent[] | undefined | null;
   hasMore: boolean;
   loadingInitial: boolean;
   loadingMore: boolean;
@@ -40,8 +41,8 @@ export interface IOutput {
   onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
 }
 
-export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter, publicationStatusFilter, noEmptyFolder }: InputProps) {
-  const [list, setList] = useState<IProjectHolderOrderingContent[] | undefined | null>(undefined);
+export default function useAdminPublications({ pageSize = 1000, areaFilter, publicationStatusFilter, noEmptyFolder, folderId }: InputProps) {
+  const [list, setList] = useState<IAdminPublicationContent[] | undefined | null>(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -72,8 +73,9 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
   }, [pageSize]);
 
   useEffect(() => {
-    const subscription = listProjectHolderOrderings({
+    const subscription = listAdminPublications({
       queryParameters: {
+        folder: folderId,
         areas,
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
@@ -81,14 +83,14 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
       }
     }).observable.pipe(
       distinctUntilChanged(),
-      switchMap((projectHolderOrderings) => {
-        const projectIds = projectHolderOrderings.data
-          .filter(holder => holder.relationships.project_holder.data.type === 'project')
-          .map(holder => holder.relationships.project_holder.data.id);
+      switchMap((adminPublications) => {
+        const projectIds = adminPublications.data
+          .filter(publication => publication.relationships.publication.data.type === 'project')
+          .map(publication => publication.relationships.publication.data.id);
 
-        const projectFoldersIds = projectHolderOrderings.data
-          .filter(holder => holder.relationships.project_holder.data.type === 'project_folder')
-          .map(holder => holder.relationships.project_holder.data.id);
+        const projectFoldersIds = adminPublications.data
+          .filter(publication => publication.relationships.publication.data.type === 'project_folder')
+          .map(publication => publication.relationships.publication.data.id);
 
         return combineLatest(
           projectsStream({
@@ -102,41 +104,36 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
             }
           }).observable
         ).pipe(
-          map((projects) => ({ projectHolderOrderings, projects: projects[0].data, projectFolders: projects[1].data }))
+          map((projects) => ({ adminPublications, projects: projects[0].data, projectFolders: projects[1].data }))
         );
       })
-    ).subscribe(({ projectHolderOrderings, projects, projectFolders }) => {
-      if (isNilOrError(projectHolderOrderings)) {
+    ).subscribe(({ adminPublications, projects, projectFolders }) => {
+      if (isNilOrError(adminPublications)) {
         setList(null);
         setHasMore(false);
       } else {
-        const selfLink = projectHolderOrderings?.links?.self;
-        const lastLink = projectHolderOrderings?.links?.last;
+        const selfLink = adminPublications ?.links ?.self;
+        const lastLink = adminPublications ?.links ?.last;
 
-        const receivedItems = projectHolderOrderings.data.map(ordering => {
-          const holderType = ordering.relationships.project_holder.data.type;
-          const holderId = ordering.relationships.project_holder.data.id;
-          const holder = holderType === 'project'
-            ? projects.find(project => project.id === holderId)
-            : projectFolders.find(projectFolder => projectFolder.id === holderId);
-
-          if (!holder) {
-            return null;
-          }
-
-          if (noEmptyFolder && holder.type === 'project_folder' && holder.relationships.projects.data.length === 0) {
+        const receivedItems = adminPublications.data.map(ordering => {
+          const publicationType = ordering.relationships.publication.data.type;
+          const publicationId = ordering.relationships.publication.data.id;
+          const publication = publicationType === 'project'
+            ? projects.find(project => project.id === publicationId)
+            : projectFolders.find(projectFolder => projectFolder.id === publicationId);
+          if (!publication) {
             return null;
           }
 
           return {
             id: ordering.id,
-            projectHolderType: holderType,
+            adminPublicationType: publicationType,
             attributes: {
               ordering: ordering.attributes.ordering,
             },
-            projectHolder: holder
+            adminPublication: publication
           };
-        }).filter(item => item) as IProjectHolderOrderingContent[];
+        }).filter(item => item) as IAdminPublicationContent[];
 
         const hasMore = !!(isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
         setHasMore(hasMore);
@@ -149,6 +146,7 @@ export default function useProjectHolderOrderings({ pageSize = 1000, areaFilter,
     return () => subscription.unsubscribe();
   }, [pageNumber, pageSize, areas, publicationStatuses]);
 
+// TODO noEmptyFolder filter
   return {
     list,
     hasMore,
