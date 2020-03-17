@@ -36,7 +36,7 @@ resource "Projects" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
+        expect(json_response[:data].map { |d| Project.find(d.dig(:id)).admin_publication.publication_status }.uniq).to match_array ['published', 'archived', 'draft']
       end
 
       example "List only projects with specified IDs" do
@@ -51,7 +51,7 @@ resource "Projects" do
         do_request(publication_statuses: ['draft','archived'])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).not_to include('published')
+        expect(json_response[:data].map { |d| Project.find(d.dig(:id)).admin_publication.publication_status }).not_to include('published')
       end
 
       example "Get all projects on the second page with fixed page size" do
@@ -73,7 +73,7 @@ resource "Projects" do
       example "List all top-level projects" do
         folder = create(:project_folder, projects: @projects.take(2), with_admin_publication: true)
 
-        do_request folder: nil, publication_statuses: Project::PUBLICATION_STATUSES
+        do_request folder: nil, publication_statuses: AdminPublication::PUBLICATION_STATUSES
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data].map{|d| d[:id]}).to match_array @projects.drop(2).map(&:id)
@@ -257,7 +257,7 @@ resource "Projects" do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
-        parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
@@ -393,7 +393,7 @@ resource "Projects" do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
-        parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas?", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false

@@ -37,9 +37,9 @@ FactoryBot.define do
       "nl-BE" => "Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud."
     }}
     sequence(:slug) {|n| "renew-west-parc-#{n}"}
-    publication_status { 'published' }
 
     transient do
+      publication_status { nil }
       with_permissions { false }
       with_admin_publication { false }
     end
@@ -48,8 +48,9 @@ FactoryBot.define do
       if evaluator.with_permissions && project.is_participation_context?
         PermissionsService.new.update_permissions_for project
       end
-      if evaluator.with_admin_publication
-        AdminPublication.create!(publication: project)
+      if evaluator.with_admin_publication || evaluator.publication_status
+        publication = AdminPublication.create!(publication: project)
+        publication.update!(publication_status: evaluator.publication_status) if evaluator.publication_status
       end
     end
 

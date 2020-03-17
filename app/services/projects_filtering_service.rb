@@ -11,7 +11,8 @@ class ProjectsFilteringService
         .where(admin_publications: {parent_id: parent_scope})
     end
     if params[:publication_statuses].present?
-      projects_scope = projects_scope.where(publication_status: params[:publication_statuses])
+      projects_scope = projects_scope.left_outer_joins(:admin_publication)
+        .where(admin_publications: {publication_status: params[:publication_statuses]})
     end
     if params[:areas].present?
       projects_scope = projects_scope.with_some_areas(params[:areas])

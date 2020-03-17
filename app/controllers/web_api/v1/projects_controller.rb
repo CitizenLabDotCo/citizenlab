@@ -12,7 +12,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
     @projects = @projects.ordered
-      .includes(:project_images, :phases, :areas, :topics)
+      .includes(:admin_publication, :project_images, :phases, :areas, :topics)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
