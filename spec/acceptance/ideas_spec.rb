@@ -143,7 +143,7 @@ resource "Ideas" do
     end
 
     example "List all ideas in published projects" do
-      idea = create(:idea, project: create(:project, publication_status: 'archived'))
+      idea = create(:idea, project: create(:project, admin_publication_attributes: {publication_status: 'archived'}))
       do_request(project_publication_status: 'published')
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5

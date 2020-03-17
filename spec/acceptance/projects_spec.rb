@@ -17,7 +17,7 @@ resource "Projects" do
       header 'Authorization', "Bearer #{token}"
 
       @projects = ['published','published','draft','published','archived','archived','published']
-        .map { |ps|  create(:project, publication_status: ps)}
+        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
     end
 
     get "web_api/v1/projects" do
@@ -516,7 +516,7 @@ resource "Projects" do
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
 
-        @projects = create_list(:project, 10, publication_status: 'published')
+        @projects = create_list(:project, 10, admin_publication_attributes: {publication_status: 'published'})
       end
 
       example "List all projects the current user can moderate" do
@@ -541,7 +541,7 @@ resource "Projects" do
         header 'Authorization', "Bearer #{token}"
 
         @projects = ['published','published','draft','published','archived','published','archived']
-          .map { |ps|  create(:project, publication_status: ps)}
+          .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
       end
 
       example "Admins moderate all projects", document: false do
@@ -569,7 +569,7 @@ resource "Projects" do
 
       example "Normal users cannot moderate any projects", document: false do
         ['published','published','draft','published','archived','published','archived']
-          .map {|ps|  create(:project, publication_status: ps)}
+          .map {|ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
         do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -582,7 +582,7 @@ resource "Projects" do
     get "web_api/v1/projects" do
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
       before do
-        @projects = create_list(:project, 10, publication_status: 'published')
+        @projects = create_list(:project, 10, admin_publication_attributes: {publication_status: 'published'})
       end
       let(:filter_can_moderate) {true}
 
