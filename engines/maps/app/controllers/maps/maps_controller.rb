@@ -1,4 +1,4 @@
-module Polls
+module Maps
 	class MapsController < ::ApplicationController
 	end
 end
