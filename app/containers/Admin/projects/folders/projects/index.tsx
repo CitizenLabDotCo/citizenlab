@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // services
-import { reorderProject, updateProjectFolderMembership, PublicationStatus, IProjectData } from 'services/projects';
+import { updateProjectFolderMembership, PublicationStatus, IProjectData } from 'services/projects';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
