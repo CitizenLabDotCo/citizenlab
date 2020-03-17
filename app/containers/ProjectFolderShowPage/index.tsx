@@ -9,7 +9,6 @@ import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import Header from './Header';
 import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
-import ProjectCards from 'components/ProjectCards';
 import ProjectFolderInfo from './ProjectFolderInfo';
 import ContentContainer from 'components/ContentContainer';
 

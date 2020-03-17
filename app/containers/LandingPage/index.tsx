@@ -188,9 +188,9 @@ class LandingPage extends PureComponent<Props, State> {
             {!isNilOrError(authUser)
               ? <SignedInHeader />
               :
-                <Fragment name="signed-out-header">
-                  <SignedOutHeader />
-                </Fragment>
+              <Fragment name="signed-out-header">
+                <SignedOutHeader />
+              </Fragment>
             }
 
             <Content>
@@ -199,6 +199,7 @@ class LandingPage extends PureComponent<Props, State> {
                   <SectionContainer>
                     <Suspense fallback={null}>
                       <ProjectAndFolderCards
+                        publicationStatusFilter={['published', 'archived']}
                         showTitle={true}
                         layout="dynamic"
                       />
