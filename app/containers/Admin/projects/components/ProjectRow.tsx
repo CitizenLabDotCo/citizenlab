@@ -29,7 +29,8 @@ interface Props {
   actions?: ({
       buttonContent: JSX.Element,
       handler: (projectId: string) => () => void,
-      icon: IconNames
+      icon: IconNames,
+      processing?: boolean
     } | 'manage'
   )[];
   hidePublicationStatusLabel?: boolean;
@@ -109,6 +110,7 @@ export default ({ project, actions, hidePublicationStatusLabel }: Props) => {
               onClick={action.handler(project.id)}
               buttonStyle="secondary"
               icon={action.icon}
+              processing={action.processing}
             >
               {action.buttonContent}
             </RowButton>)
