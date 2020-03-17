@@ -52,7 +52,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def create
     params = permitted_attributes(Project)
-    @project = Project.new(params.except(:folder_id, :publication_status))
+    @project = Project.new(params.except(:folder_id))
     SideFxProjectService.new.before_create(@project, current_user)
 
     authorize @project
@@ -61,9 +61,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     ActiveRecord::Base.transaction do
       saved = @project.save
       if saved
-        admin_publication_attributes = {publication: @project}
-        admin_publication_attributes[:publication_status] = params[:publication_status] if params[:publication_status]
-        AdminPublication.create!(admin_publication_attributes)
         set_folder! params[:folder_id] if params.key? :folder_id
       end
     end

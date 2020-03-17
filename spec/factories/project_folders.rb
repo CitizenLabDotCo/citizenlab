@@ -16,15 +16,12 @@ FactoryBot.define do
 
     transient do
       projects { nil }
-      with_admin_publication { false }
     end
 
     after(:create) do |folder, evaluator|
-      if evaluator.with_admin_publication || evaluator.projects
-        parent = AdminPublication.create! publication: folder
-        if evaluator.projects
-          AdminPublication.where(publication: evaluator.projects).update_all parent_id: parent.id
-        end
+      if evaluator.projects
+        AdminPublication.where(publication: evaluator.projects)
+          .update_all(parent_id: folder.admin_publication.id)
       end
     end
   end

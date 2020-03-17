@@ -17,7 +17,7 @@ resource "Project", admin_api: true do
       parameter :shift_timestamps, "Change the timestamps by the specified number of days", required: false
       parameter :new_slug, "The new slug for the copied project", required: false
       parameter :new_title_multiloc, "The new title for the copied project", required: false
-      parameter :new_publication_status, "The new publication status for the new project. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
+      parameter :new_publication_status, "The new publication status for the new project. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
     end
 
     let(:tenant_id) { Tenant.current.id }

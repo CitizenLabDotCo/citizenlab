@@ -25,6 +25,7 @@ class Project < ApplicationRecord
   belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
+  accepts_nested_attributes_for :admin_publication
 
   has_one :project_sort_score
 
@@ -46,6 +47,7 @@ class Project < ApplicationRecord
   }
   validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
   validates :internal_role, inclusion: {in: INTERNAL_ROLES, allow_nil: true}
+  validates :admin_publication, presence: true
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
@@ -53,6 +55,7 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :strip_title
+  before_validation :set_admin_publication
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -155,6 +158,10 @@ class Project < ApplicationRecord
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
     end
+  end
+
+  def set_admin_publication
+    self.admin_publication_attributes= {} if !self.admin_publication
   end
 
 end
