@@ -157,7 +157,7 @@ export async function addProject(projectData: IUpdatedProjectProperties) {
   const projectId = response.data.id;
   await streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`]
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`]
   });
   return response;
 }
@@ -166,7 +166,7 @@ export async function updateProject(projectId, projectData: IUpdatedProjectPrope
   const response = await streams.update<IProject>(`${apiEndpoint}/${projectId}`, projectId, { project: projectData });
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`]
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`]
   });
 
   // TODO: clear partial cache
@@ -180,7 +180,7 @@ export function reorderProject(projectId: IProjectData['id'], newOrder: number) 
 
 export async function deleteProject(projectId: string) {
   const response = await streams.delete(`${apiEndpoint}/${projectId}`, projectId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`] });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`] });
   return response;
 }
 
@@ -226,7 +226,7 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
 
   await streams.fetchAllWith({
     dataId: [newProjectFolderId, oldProjectFolderId].filter(item => item) as string[],
-    apiEndpoint: [`${API_PATH}/project_holder_orderings`, `${API_PATH}/projects`],
+    apiEndpoint: [`${API_PATH}/admin_publications`, `${API_PATH}/projects`],
   });
 
   return response;

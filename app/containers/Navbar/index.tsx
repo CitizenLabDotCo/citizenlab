@@ -24,8 +24,8 @@ import tracks from './tracks';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
-import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
+import GetAdminPublications, { GetAdminPublicationsChildProps } from 'resources/GetAdminPublications';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
@@ -371,7 +371,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
-  projectHolderOrderings: GetProjectHolderOrderingsChildProps;
+  AdminPublications: GetAdminPublicationsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -427,7 +427,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
       tenant,
       localize,
       intl: { formatMessage },
-      projectHolderOrderings,
+      AdminPublications,
     } = this.props;
     const { projectsDropdownOpened } = this.state;
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
@@ -446,7 +446,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
     const emailSettingsPage = isPage('email-settings', location.pathname);
-    const totalProjectsListLength = (!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list ? projectHolderOrderings.list.length : 0);
+    const totalProjectsListLength = (!isNilOrError(AdminPublications) && AdminPublications.list ? AdminPublications.list.length : 0);
     const showMobileNav = !adminPage &&
       !ideaFormPage &&
       !initiativeFormPage &&
@@ -480,7 +480,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   </NavigationItemText>
                 </NavigationItem>
 
-                {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 &&
+                {!isNilOrError(AdminPublications) && AdminPublications.list && AdminPublications.list.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
@@ -502,27 +502,27 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                       onClickOutside={this.toggleProjectsDropdown}
                       content={(
                         <ProjectsList>
-                          {projectHolderOrderings.list.map(
-                            (item: IProjectHolderOrderingContent) => {
-                              if (item.projectHolderType === 'project') {
+                          {AdminPublications.list.map(
+                            (item: IAdminPublicationContent) => {
+                              if (item.adminPublicationType === 'project') {
                                 return (
 
                                   <ProjectsListItem
-                                    key={item.projectHolder.id}
-                                    to={getProjectUrl(item.projectHolder)}
+                                    key={item.adminPublication.id}
+                                    to={getProjectUrl(item.adminPublication)}
                                   >
-                                    {localize(item.projectHolder.attributes.title_multiloc)}
+                                    {localize(item.adminPublication.attributes.title_multiloc)}
                                   </ProjectsListItem>
                                 );
                               } else {
-                                const projectFolder = item.projectHolder;
+                                const projectFolder = item.adminPublication;
 
                                 return (
                                   <ProjectsListItem
                                     key={projectFolder.id}
                                     to={getProjectFolderUrl(projectFolder)}
                                   >
-                                    {localize(item.projectHolder.attributes.title_multiloc)}
+                                    {localize(item.adminPublication.attributes.title_multiloc)}
                                   </ProjectsListItem>
                                 );
                               }
@@ -641,7 +641,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published']} noEmptyFolder/>,
+  AdminPublications: <GetAdminPublications publicationStatusFilter={['archived', 'published']} noEmptyFolder/>,
 });
 
 const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));

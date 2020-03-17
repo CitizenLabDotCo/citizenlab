@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
+import GetAdminPublications, { GetAdminPublicationsChildProps } from 'resources/GetAdminPublications';
 
 // components
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
@@ -22,8 +22,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // services
-import { reorderProjectHolder } from 'services/projectHolderOrderings';
-import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
+import { reorderAdminPublication } from 'services/adminPublications';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 const StyledListHeader = styled(ListHeader)`
@@ -35,20 +35,20 @@ const Spacer = styled.div`
 `;
 
 interface DataProps {
-  projectHolderOrderings: GetProjectHolderOrderingsChildProps;
+  AdminPublications: GetAdminPublicationsChildProps;
   foldersEnabled: boolean;
 }
 
 interface Props extends DataProps { }
 
-function handleReorderHolders(itemId, newOrder) {
-  reorderProjectHolder(itemId, newOrder);
+function handleReorderAdminPublication(itemId, newOrder) {
+  reorderAdminPublication(itemId, newOrder);
 }
 
-const AdminProjectList = memo<Props>(({ projectHolderOrderings, foldersEnabled }) => {
-  const projectHolderOrderingsList = projectHolderOrderings.list;
+const AdminProjectList = memo<Props>(({ AdminPublications, foldersEnabled }) => {
+  const AdminPublicationsList = AdminPublications.list;
 
-  if (!isNilOrError(projectHolderOrderingsList) && projectHolderOrderingsList.length > 0) {
+  if (!isNilOrError(AdminPublicationsList) && AdminPublicationsList.length > 0) {
     return (
       <>
         <StyledListHeader>
@@ -71,13 +71,13 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings, foldersEnabled }
           }
         </StyledListHeader>
         <SortableList
-          items={projectHolderOrderingsList}
-          onReorder={handleReorderHolders}
+          items={AdminPublicationsList}
+          onReorder={handleReorderAdminPublication}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-published-projects-list"
         >
           {({ itemsList, handleDragRow, handleDropRow }) => (
-            itemsList.map((item: IProjectHolderOrderingContent, index: number) => {
+            itemsList.map((item: IAdminPublicationContent, index: number) => {
               return (
                 <SortableRow
                   key={item.id}
@@ -85,11 +85,11 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings, foldersEnabled }
                   index={index}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
-                  lastItem={(index === projectHolderOrderingsList.length - 1)}
+                  lastItem={(index === AdminPublicationsList.length - 1)}
                 >
-                  {item.projectHolderType === 'project'
-                    ? <ProjectRow project={item.projectHolder} />
-                    : <FolderRow folder={item.projectHolder} />}
+                  {item.adminPublicationType === 'project'
+                    ? <ProjectRow project={item.adminPublication} />
+                    : <FolderRow folder={item.adminPublication} />}
                 </SortableRow>
               );
             }
@@ -103,7 +103,7 @@ const AdminProjectList = memo<Props>(({ projectHolderOrderings, foldersEnabled }
 });
 
 const Data = adopt<DataProps>({
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published', 'draft']} />,
+  AdminPublications: <GetAdminPublications publicationStatusFilter={['archived', 'published', 'draft']} />,
   foldersEnabled: <GetFeatureFlag name="project_folders" />
 });
 

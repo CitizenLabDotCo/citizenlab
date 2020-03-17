@@ -66,7 +66,7 @@ export async function deleteProjectFolder(projectFolderId: string) {
   const response = await streams.delete(`${apiEndpoint}/${projectFolderId}`, projectFolderId);
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/project_holder_orderings`],
+    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
   });
 
   return response;

@@ -25,6 +25,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -128,14 +129,12 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
                     <Content>
                       <StyledContentContainer mode="page">
                         <ProjectFolderInfo projectFolderId={projectFolder.id} />
-                        <ProjectCards
+                        <ProjectAndFolderCards
                           pageSize={50}
-                          publicationStatuses={['published', 'archived']}
-                          sort="new"
+                          publicationStatusFilter={['published', 'archived']}
                           showTitle={false}
-                          showPublicationStatusFilter={true}
                           layout="dynamic"
-                          folderId={projectFolder.id} // TODO behaved unexpectedly
+                          folderId={projectFolder.id}
                         />
                       </StyledContentContainer>
                     </Content>

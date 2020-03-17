@@ -40,7 +40,7 @@ export default ({ project, actions, hidePublicationStatusLabel }: Props) => {
     <RowButton
       className={`
         e2e-admin-edit-project
-        ${project.attributes.title_multiloc['en-GB'] || ''}
+        ${project.attributes.title_multiloc?.['en-GB'] || ''}
         ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}
       `}
       linkTo={`/admin/projects/${project.id}/edit`}
@@ -103,7 +103,7 @@ export default ({ project, actions, hidePublicationStatusLabel }: Props) => {
               type="button"
               className={`
                 e2e-admin-edit-project
-                ${project.attributes.title_multiloc['en-GB'] || ''}
+                ${project.attributes.title_multiloc?.['en-GB'] || ''}
                 ${project.attributes.process_type === 'timeline' ? 'timeline' : 'continuous'}
               `}
               onClick={action.handler(project.id)}
