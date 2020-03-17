@@ -38,9 +38,6 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
         "showTopicFilter": false,
       }
     }
-    currentGroupFilter={null}
-    currentProjectFilter={null}
-    currentTopicFilter={null}
     groupFilterOptions={
       Array [
         Object {
@@ -64,16 +61,13 @@ exports[`<UsersDashboard /> renders correctly 1`] = `
   >
     <dashboard__GraphsContainer>
       <AgeChart
-        currentGroupFilter={null}
         endAt="2010-01-01T04:06:07.000Z"
       />
       <Component
-        currentGroupFilter={null}
         endAt="2010-01-01T04:06:07.000Z"
       />
       <WithTheme(MostActiveUsersList)
         className="dynamicHeight"
-        currentGroupFilter={null}
         endAt="2010-01-01T04:06:07.000Z"
         infoMessage="A user gets 5 points per posted idea, 3 points per posted comment and 1 point per vote."
       />
