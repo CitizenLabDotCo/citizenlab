@@ -29,9 +29,9 @@ interface Props {
     showTopicFilter: boolean;
   };
 
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
-  currentTopicFilter: string | null;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
 
   projectFilterOptions: IOption[] | null;
   groupFilterOptions: IOption[] | null;
