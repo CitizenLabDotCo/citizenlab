@@ -87,6 +87,35 @@ const CloseButton = styled.div`
   `}
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LegendContainer = styled.div`
+  background-color: white;
+  padding: 20px 10px;
+`;
+
+const Title = styled.h4``;
+
+const Legend = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
+
+const Item = styled.li`
+  display: flex;
+`;
+
+const ColorLabel = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: ${props => props.color};
+  margin-right: 10px;
+  margin-bottom: 10px;
+`;
+
 const MapContainer = styled.div`
   flex: 1;
 
@@ -179,6 +208,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
+  showLegend: boolean;
 }
 
 class CLMap extends React.PureComponent<Props, State> {
@@ -201,7 +231,8 @@ class CLMap extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      initiated: false
+      initiated: false,
+      showLegend: false,
     };
   }
 
@@ -295,10 +326,12 @@ class CLMap extends React.PureComponent<Props, State> {
 
       this.map.on('overlayadd', () => {
         legend.addTo(this.map);
+        this.setState({ showLegend: true });
       });
 
       this.map.on('overlayremove', () => {
         legend.remove();
+        this.setState({ showLegend: false });
       });
 
       if (this.props.onMapClick) {
@@ -371,6 +404,30 @@ class CLMap extends React.PureComponent<Props, State> {
 
   render() {
     const { tenant, boxContent, className } = this.props;
+    const { showLegend } = this.state;
+
+    const legendValues = [
+      {
+        label: 'Lowest Disadvantage',
+        color: '#92ABB9'
+      },
+      {
+        label: 'Second Lowest Disadvantage',
+        color: '#ADD0CA'
+      },
+      {
+        label: 'Middle Disadvantage',
+        color: '#F9F9CD'
+      },
+      {
+        label: 'Second Highest Disadvantage',
+        color: '#CEA991'
+      },
+      {
+        label: 'Highest Disadvantage',
+        color: '#B495A4'
+      },
+    ];
 
     if (!isNilOrError(tenant)) {
       return (
@@ -385,9 +442,26 @@ class CLMap extends React.PureComponent<Props, State> {
             </BoxContainer>
           }
 
-          <MapContainer id="e2e-map" ref={this.bindMapContainer}>
-            <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
-          </MapContainer>
+            <Wrapper>
+              <MapContainer id="e2e-map" ref={this.bindMapContainer}>
+                <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+              </MapContainer>
+              {showLegend &&
+                <LegendContainer>
+                  <Title>
+                    {'Racial and Social Equity Composite Index'}
+                  </Title>
+                  <Legend>
+                    {legendValues.map((value, index) => (
+                      <Item key={index}>
+                        <ColorLabel color={value.color} />
+                        {value.label}
+                      </Item>)
+                    )}
+                  </Legend>
+                </LegendContainer>
+              }
+            </Wrapper>
         </Container>
       );
     }
@@ -406,6 +480,8 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
+// TODO: Legend
+// TODO: Extract Legend
+// TODO: mapHeight prop
 // TODO: height of dropdown map on mobile
-// TODO: mobile legend
 // TODO: clean up code
