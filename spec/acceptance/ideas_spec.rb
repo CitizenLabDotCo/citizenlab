@@ -29,7 +29,7 @@ resource "Ideas" do
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'upvotes_count', '-upvotes_count', 'downvotes_count', '-downvotes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'random'", required: false
     parameter :publication_status, "Filter by publication status; returns all published ideas by default", required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
     parameter :feedback_needed, "Filter out ideas that need feedback", required: false
     parameter :filter_trending, "Filter out truly trending ideas", required: false
 
@@ -285,7 +285,7 @@ resource "Ideas" do
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
     parameter :bounding_box, "Given an [x1,y1,x2,y2] array of doubles (x being latitude and y being longitude), the idea markers are filtered to only retain those within the (x1,y1)-(x2,y2) box.", required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
     parameter :feedback_needed, "Filter out ideas that need feedback", required: false
     parameter :filter_trending, "Filter out truly trending ideas", required: false
 
@@ -386,7 +386,7 @@ resource "Ideas" do
     parameter :idea_status, 'Filter by status (idea status id)', required: false
     parameter :search, 'Filter by searching in title, body and author name', required: false
     parameter :publication_status, "Return only ideas with the specified publication status; returns all pusblished ideas by default", required: false
-    parameter :project_publication_status, "Filter by project publication_status. One of #{Project::PUBLICATION_STATUSES.join(", ")}", required: false
+    parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(", ")}", required: false
     parameter :feedback_needed, "Filter out ideas that need feedback", required: false
     parameter :filter_trending, "Filter out truly trending ideas", required: false
 

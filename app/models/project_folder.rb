@@ -1,17 +1,20 @@
 class ProjectFolder < ApplicationRecord
 
   has_one :admin_publication, as: :publication, dependent: :destroy
+  accepts_nested_attributes_for :admin_publication
   has_many :project_folder_images, -> { order(:ordering) }, dependent: :destroy
 
   mount_base64_uploader :header_bg, ProjectFolderHeaderBgUploader
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+  validates :admin_publication, presence: true
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :strip_title
+  before_validation :set_admin_publication
 
 
   def projects
@@ -49,5 +52,9 @@ class ProjectFolder < ApplicationRecord
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
     end
+  end
+
+  def set_admin_publication
+    self.admin_publication_attributes= {} if !self.admin_publication
   end
 end

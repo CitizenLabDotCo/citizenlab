@@ -11,7 +11,8 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       else
-        normal_user_result = scope.where(admin_publications: {publication_status: ['published', 'archived']})
+        normal_user_result = scope.left_outer_joins(:admin_publication)
+          .where(admin_publications: {publication_status: ['published', 'archived']})
         if user&.project_moderator?
           Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
         elsif user
@@ -116,6 +117,7 @@ class ProjectPolicy < ApplicationPolicy
       :location_allowed,
       :poll_anonymous,
       :folder_id,
+      admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES, 
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,
@@ -128,7 +130,7 @@ class ProjectPolicy < ApplicationPolicy
 
   def permitted_attributes_for_create
     attrs = shared_permitted_attributes
-    attrs.unshift(:process_type, :publication_status)
+    attrs.unshift(:process_type)
     attrs
   end
 

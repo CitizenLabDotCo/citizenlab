@@ -36,13 +36,13 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
 
     authorize @project_folder
 
-    saved = nil
-    ActiveRecord::Base.transaction do
-      saved = @project_folder.save
-      AdminPublication.create!(publication: @project_folder) if saved
-    end
+    # saved = nil
+    # ActiveRecord::Base.transaction do
+    #   saved = @project_folder.save
+    #   AdminPublication.create!(publication: @project_folder) if saved
+    # end
 
-    if saved
+    if @project_folder.save # saved
       SideFxProjectFolderService.new.after_create(@project_folder, current_user)
 
       render json: WebApi::V1::ProjectFolderSerializer.new(
