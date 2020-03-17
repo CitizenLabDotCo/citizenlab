@@ -103,7 +103,7 @@ const AdminProjectList = memo<Props>(({ AdminPublications, foldersEnabled }) => 
 });
 
 const Data = adopt<DataProps>({
-  AdminPublications: <GetAdminPublications publicationStatusFilter={['archived', 'published', 'draft']} />,
+  AdminPublications: <GetAdminPublications publicationStatusFilter={['archived', 'published', 'draft']} folderId={null}/>,
   foldersEnabled: <GetFeatureFlag name="project_folders" />
 });
 
