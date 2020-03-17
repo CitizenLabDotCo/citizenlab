@@ -187,7 +187,7 @@ resource "Projects" do
       end
 
       example "Get a project with a basket", document: false do
-        project = create(:continuous_budgeting_project)
+        project = create(:continuous_budgeting_project, with_admin_publication: true)
         basket = create(:basket, participation_context: project, user: @user)
         do_request id: project.id
         expect(status).to eq 200
@@ -196,9 +196,9 @@ resource "Projects" do
       end
 
       example "Get a project on a timeline project includes the current_phase", document: false do
-        project = create(:project_with_current_phase)
+        project = create(:project_with_current_phase, with_admin_publication: true)
         current_phase = project.phases[2]
-        do_request( id: project.id)
+        do_request id: project.id
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
@@ -206,10 +206,10 @@ resource "Projects" do
       end
 
       example "Get a project includes the avatars and avatars_count", document: false do
-        idea = create(:idea)
+        idea = create(:idea, project: create(:project, with_admin_publication: true))
         author = idea.author
         project = idea.project
-        do_request(id: project.id)
+        do_request id: project.id
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
@@ -285,7 +285,7 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-          expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
+          expect(Project.find(json_response.dig(:data,:id)).admin_publication.publication_status).to eq 'draft'
           expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
           expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
           # New projects are added to the top
@@ -393,7 +393,6 @@ resource "Projects" do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
-        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas?", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
@@ -410,7 +409,6 @@ resource "Projects" do
       let(:area_ids) { create_list(:area, 2).map(&:id) }
       let(:visible_to) { 'groups' }
       let(:presentation_mode) { 'card' }
-      let(:publication_status) { 'archived' }
       let(:default_assignee_id) { create(:admin).id }
 
       example_request "Update a project" do
@@ -422,7 +420,6 @@ resource "Projects" do
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'       
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
-        expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
       end
 
@@ -507,12 +504,12 @@ resource "Projects" do
   get "web_api/v1/projects" do
     context "when moderator" do
       before do
-        @project = create(:project)
+        @project = create(:project, with_admin_publication: true)
         @moderator = create(:moderator, project: @project)
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
 
-        @projects = create_list(:project, 10, publication_status: 'published')
+        @projects = create_list(:project, 10, publication_status: 'published', with_admin_publication: true)
       end
 
       example "List all projects the current user can moderate" do
@@ -537,11 +534,11 @@ resource "Projects" do
         header 'Authorization', "Bearer #{token}"
 
         @projects = ['published','published','draft','published','archived','published','archived']
-          .map { |ps|  create(:project, publication_status: ps)}
+          .map { |ps|  create(:project, publication_status: ps, with_admin_publication: true)}
       end
 
       example "Admins moderate all projects", document: false do
-        do_request filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES
+        do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq @projects.size
@@ -556,7 +553,7 @@ resource "Projects" do
       end
 
       example "Get projects with access rights" do
-        project = create(:project)
+        project = create(:project, with_admin_publication: true)
         do_request
         expect(status).to eq(200)
         json_response = json_parse(response_body)
@@ -565,8 +562,8 @@ resource "Projects" do
 
       example "Normal users cannot moderate any projects", document: false do
         ['published','published','draft','published','archived','published','archived']
-          .map {|ps|  create(:project, publication_status: ps)}
-        do_request(filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES)
+          .map {|ps|  create(:project, publication_status: ps, with_admin_publication: true)}
+        do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 0
@@ -578,7 +575,7 @@ resource "Projects" do
     get "web_api/v1/projects" do
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
       before do
-        @projects = create_list(:project, 10, publication_status: 'published')
+        @projects = create_list(:project, 10, publication_status: 'published', with_admin_publication: true)
       end
       let(:filter_can_moderate) {true}
 
