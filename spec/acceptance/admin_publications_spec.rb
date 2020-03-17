@@ -17,8 +17,8 @@ resource "AdminPublication" do
       header 'Authorization', "Bearer #{token}"
 
       @projects = ['published','published','draft','draft','published','archived','archived','published']
-        .map { |ps|  create(:project, publication_status: ps, with_admin_publication: true)}
-      @folder = create(:project_folder, projects: @projects.take(3), with_admin_publication: true)
+        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
+      @folder = create(:project_folder, projects: @projects.take(3))
     end
 
     get "web_api/v1/admin_publications" do

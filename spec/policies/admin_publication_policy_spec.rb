@@ -5,7 +5,7 @@ describe AdminPublicationPolicy do
   let(:scope) { AdminPublicationPolicy::Scope.new(user, AdminPublication) }
 
   context "on a public project" do 
-    let!(:admin_publication) { create(:project, with_admin_publication: true).admin_publication }
+    let!(:admin_publication) { create(:project).admin_publication }
     context "for a visitor" do
       let(:user) { nil }
 
@@ -37,7 +37,7 @@ describe AdminPublicationPolicy do
     end
 
     context "for a moderator of another project" do
-      let(:user) { create(:moderator, project: create(:project, with_admin_publication: true)) }
+      let(:user) { create(:moderator, project: create(:project)) }
 
       it { should_not permit(:reorder) }
 
@@ -48,7 +48,7 @@ describe AdminPublicationPolicy do
   end
 
   context "on a private admins project" do 
-    let!(:project) { create(:private_admins_project, with_admin_publication: true) }
+    let!(:project) { create(:private_admins_project) }
     let!(:admin_publication) { project.admin_publication }
     context "for a visitor" do
       let(:user) { nil }
@@ -94,7 +94,7 @@ describe AdminPublicationPolicy do
 
   context "for a visitor on a private groups project" do
     let!(:user) { nil }
-    let!(:admin_publication) { create(:private_groups_project, with_admin_publication: true).admin_publication }
+    let!(:admin_publication) { create(:private_groups_project).admin_publication }
 
     it { should_not permit(:reorder) }
 
@@ -108,7 +108,7 @@ describe AdminPublicationPolicy do
     let!(:group) { create(:smart_group, rules: [
       {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
     ])}
-    let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group], with_admin_publication: true).admin_publication }
+    let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group]).admin_publication }
 
     it { should_not permit(:reorder) }
 
