@@ -32,7 +32,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects, 
       WebApi::V1::ProjectSerializer, 
       params: fastjson_params(instance_options), 
-      include: [:project_images, :current_phase, :avatars]
+      include: [:admin_publication, :project_images, :current_phase, :avatars]
       )
   end
 
@@ -40,7 +40,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project, 
       params: fastjson_params, 
-      include: [:project_images, :current_phase, :avatars]
+      include: [:admin_publication, :project_images, :current_phase, :avatars]
       ).serialized_json
   end
 
@@ -70,6 +70,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       render json: WebApi::V1::ProjectSerializer.new(
         @project, 
         params: fastjson_params, 
+        include: [:admin_publication],
         ).serialized_json, status: :created
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity
@@ -101,6 +102,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       render json: WebApi::V1::ProjectSerializer.new(
         @project, 
         params: fastjson_params, 
+        include: [:admin_publication],
         ).serialized_json, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
