@@ -4,6 +4,7 @@ class CreateLayers < ActiveRecord::Migration[6.0]
       t.references :map_config, foreign_key: {to_table: :maps_map_configs}, index: true, type: :uuid, null: false
       t.jsonb :title_multiloc, null: false, default: {} 
       t.integer :ordering, null: false
+      t.jsonb :geojson, null: false
       t.timestamps
     end
   end
