@@ -58,7 +58,7 @@ class ParticipationContextService
   end
 
   def get_participation_context project
-    if project.admin_publication.archived? # &.archived?
+    if project.admin_publication.archived?
       nil
     elsif project.continuous?
       project
