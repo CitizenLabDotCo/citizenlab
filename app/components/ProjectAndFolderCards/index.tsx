@@ -486,7 +486,7 @@ const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(Pro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  adminPublications: ({ render, ...props }) => <GetAdminPublications publicationStatusFilter={['archived', 'published']} pageSize={6} noEmptyFolder {...props}>{render}</GetAdminPublications>
+  adminPublications: ({ render, ...props }) => <GetAdminPublications publicationStatusFilter={['published', 'archived']} pageSize={6} noEmptyFolder {...props}>{render}</GetAdminPublications>
 });
 
 export default (inputProps: InputProps) => (
