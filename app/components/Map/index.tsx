@@ -421,6 +421,7 @@ class CLMap extends React.PureComponent<Props, State> {
     } = this.props;
     const { showLegend } = this.state;
 
+    const legendTitle = 'Racial and Social Equity Composite Index';
     const legendValues = [
       {
         label: 'Lowest Disadvantage',
@@ -469,7 +470,7 @@ class CLMap extends React.PureComponent<Props, State> {
           {showLegend &&
             <LegendContainer>
               <Title>
-                {'Racial and Social Equity Composite Index'}
+                {legendTitle}
               </Title>
               <Legend>
                 {legendValues.map((value, index) => (
@@ -500,6 +501,4 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: Legend two items per line
-// TODO: Extract Legend
 // TODO: clean up code
