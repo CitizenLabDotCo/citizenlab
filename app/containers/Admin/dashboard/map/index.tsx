@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // Components
 import Spinner from 'components/UI/Spinner';
-import MapComponent from 'components/Map';
+import Map from 'components/Map';
 import IdeaPane from './IdeaPane';
 import Warning from 'components/UI/Warning';
 
@@ -50,11 +50,9 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
 
-const StyledMap = styled(MapComponent)`
+const StyledMap = styled(Map)`
   width: 100%;
-  height: 600px;
 `;
-
 const Panel = styled.div`
   flex: 0 0 300px;
   height: 600px;
@@ -74,7 +72,7 @@ interface State {
   loadingMessage: JSX.Element | null;
 }
 
-class Map extends PureComponent<Props & InjectedLocalized, State> {
+class DashboardMap extends PureComponent<Props & InjectedLocalized, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -153,6 +151,7 @@ class Map extends PureComponent<Props & InjectedLocalized, State> {
           <StyledMap
             points={this.getPoints(ideas)}
             onMarkerClick={this.handleIdeaClick}
+            mapHeight={600}
           />
           {panelOpened &&
             <Panel>
@@ -170,10 +169,10 @@ class Map extends PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-const MapWithLoc = injectLocalize(Map);
+const DashboardMapMapWithLoc = injectLocalize(DashboardMap);
 
 export default (inputProps: InputProps) => (
   <GetGeotaggedIdeas>
-    {ideas => <MapWithLoc ideas={ideas} {...inputProps} />}
+    {ideas => <DashboardMapMapWithLoc ideas={ideas} {...inputProps} />}
   </GetGeotaggedIdeas>
 );

@@ -28,7 +28,10 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   align-items: stretch;
+  flex-direction: column;
 `;
+
+const MapContainer = styled.div``;
 
 const BoxContainer = styled.div`
   flex: 0 0 400px;
@@ -87,8 +90,43 @@ const CloseButton = styled.div`
   `}
 `;
 
-const MapContainer = styled.div`
+const LegendContainer = styled.div`
+  background-color: white;
+  padding: 30px;
+`;
+
+const Title = styled.h4`
+  margin-bottom 15px;
+`;
+
+const Legend = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const Item = styled.li`
+  display: flex;
+  flex: 1 0 calc(50% - 10px);
+  margin-right: 10px;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+`;
+
+const ColorLabel = styled.div`
+  width: 20px;
+  height: 20px;
+  background-color: ${props => props.color};
+  margin-right: 10px;
+`;
+
+const LeafletMapContainer = styled.div<{mapHeight: number}>`
   flex: 1;
+  height: ${props => props.mapHeight}px;
 
   .leaflet-container {
     height: 100%;
@@ -133,6 +171,7 @@ export interface InputProps {
   onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
   fitBounds?: boolean;
   className?: string;
+  mapHeight: number;
 }
 
 interface DataProps {
@@ -143,6 +182,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
+  showLegend: boolean;
 }
 
 class CLMap extends React.PureComponent<Props, State> {
@@ -165,7 +205,8 @@ class CLMap extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      initiated: false
+      initiated: false,
+      showLegend: false,
     };
   }
 
@@ -216,6 +257,14 @@ class CLMap extends React.PureComponent<Props, State> {
       };
 
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+
+      this.map.on('overlayadd', () => {
+        this.setState({ showLegend: true });
+      });
+
+      this.map.on('overlayremove', () => {
+        this.setState({ showLegend: false });
+      });
 
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
@@ -286,25 +335,77 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { tenant, boxContent, className } = this.props;
+    const {
+      tenant,
+      boxContent,
+      className,
+      mapHeight
+    } = this.props;
+    const { showLegend } = this.state;
+
+    const legendTitle = 'Racial and Social Equity Composite Index';
+    const legendValues = [
+      {
+        label: 'Lowest Disadvantage',
+        color: '#92ABB9'
+      },
+      {
+        label: 'Second Lowest Disadvantage',
+        color: '#ADD0CA'
+      },
+      {
+        label: 'Middle Disadvantage',
+        color: '#F9F9CD'
+      },
+      {
+        label: 'Second Highest Disadvantage',
+        color: '#CEA991'
+      },
+      {
+        label: 'Highest Disadvantage',
+        color: '#B495A4'
+      },
+    ];
 
     if (!isNilOrError(tenant)) {
       return (
         <Container className={className}>
-          {!isNil(boxContent) &&
-            <BoxContainer className={className}>
-              <CloseButton onClick={this.handleBoxOnClose}>
-                <CloseIcon name="close" />
-              </CloseButton>
+          <MapContainer>
+            {!isNil(boxContent) &&
+              <BoxContainer className={className}>
+                <CloseButton onClick={this.handleBoxOnClose}>
+                  <CloseIcon name="close" />
+                </CloseButton>
 
-              {boxContent}
-            </BoxContainer>
-          }
+                {boxContent}
+              </BoxContainer>
+            }
 
-          <MapContainer id="e2e-map" ref={this.bindMapContainer}>
-            <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+            <LeafletMapContainer
+              id="e2e-map"
+              ref={this.bindMapContainer}
+              mapHeight={mapHeight}
+            >
+              <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+            </LeafletMapContainer>
           </MapContainer>
+          {showLegend &&
+            <LegendContainer>
+              <Title>
+                {legendTitle}
+              </Title>
+              <Legend>
+                {legendValues.map((value, index) => (
+                  <Item key={`legend-item-${index}`}>
+                    <ColorLabel color={value.color} />
+                    {value.label}
+                  </Item>)
+                )}
+              </Legend>
+            </LegendContainer>
+          }
         </Container>
+
       );
     }
 
@@ -321,3 +422,6 @@ export default (inputProps: InputProps) => (
     {dataProps => <CLMap {...inputProps} {...dataProps} />}
   </Data>
 );
+
+// TODO: clean up code
+// TODO: extract Legend component
