@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_10_101259) do
+ActiveRecord::Schema.define(version: 2020_03_18_220615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -844,6 +844,27 @@ ActiveRecord::Schema.define(version: 2020_03_10_101259) do
     t.index ["user_id"], name: "index_verification_verifications_on_user_id"
   end
 
+  create_table "volunteering_causes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "participation_context_id", null: false
+    t.string "participation_context_type", null: false
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.jsonb "description_multiloc", default: {}, null: false
+    t.string "image"
+    t.integer "ordering", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["participation_context_type", "participation_context_id"], name: "index_volunteering_causes_on_participation_context"
+  end
+
+  create_table "volunteering_volunteers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "cause_id", null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["cause_id"], name: "index_volunteering_volunteers_on_cause_id"
+    t.index ["user_id"], name: "index_volunteering_volunteers_on_user_id"
+  end
+
   create_table "votes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "votable_id"
     t.string "votable_type"
@@ -926,6 +947,7 @@ ActiveRecord::Schema.define(version: 2020_03_10_101259) do
   add_foreign_key "projects_topics", "topics"
   add_foreign_key "public_api_api_clients", "tenants"
   add_foreign_key "spam_reports", "users"
+  add_foreign_key "volunteering_volunteers", "volunteering_causes", column: "cause_id"
   add_foreign_key "votes", "users"
 
   create_view "idea_trending_infos", sql_definition: <<-SQL
