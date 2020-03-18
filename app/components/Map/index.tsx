@@ -294,53 +294,11 @@ class CLMap extends React.PureComponent<Props, State> {
 
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
-      const legend = new Leaflet.Control({ position: 'bottomright' });
-
-      legend.onAdd = function (_map) {
-        const div = Leaflet.DomUtil.create('div', 'legend info');
-        const legendValues = [
-          {
-            label: 'Lowest Disadvantage',
-            color: '#92ABB9'
-          },
-          {
-            label: 'Second Lowest Disadvantage',
-            color: '#ADD0CA'
-          },
-          {
-            label: 'Middle Disadvantage',
-            color: '#F9F9CD'
-          },
-          {
-            label: 'Second Highest Disadvantage',
-            color: '#CEA991'
-          },
-          {
-            label: 'Highest Disadvantage',
-            color: '#B495A4'
-          },
-        ];
-        div.innerHTML += `
-          <h4>Racial and Social Equity Composite Index</h4>
-          <div class='label-values'>
-            ${legendValues.map(value => `<div class='label-value-wrapper'>
-              <i style="background: ${value.color}"></i><span>${value.label}</span>
-            </div>`).join('')}
-          </div>
-        `;
-
-        return div;
-      };
-
-      legend.addTo(this.map);
-
       this.map.on('overlayadd', () => {
-        legend.addTo(this.map);
         this.setState({ showLegend: true });
       });
 
       this.map.on('overlayremove', () => {
-        legend.remove();
         this.setState({ showLegend: false });
       });
 
