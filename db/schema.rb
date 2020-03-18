@@ -849,6 +849,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.string "participation_context_type", null: false
     t.jsonb "title_multiloc", default: {}, null: false
     t.jsonb "description_multiloc", default: {}, null: false
+    t.integer "volunteers_count", default: 0, null: false
     t.string "image"
     t.integer "ordering", null: false
     t.datetime "created_at", precision: 6, null: false
