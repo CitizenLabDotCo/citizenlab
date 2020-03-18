@@ -146,42 +146,6 @@ const LeafletMapContainer = styled.div<{mapHeight: number}>`
       background: ${darken(0.2, '#004949')};
     }
   }
-
-  .info {
-    padding: 10px 12px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
-    background: rgba(255,255,255,0.95);
-    box-shadow: 0 0 15px rgba(0,0,0,0.2);
-    border-radius: 5px;
-  }
-
-  .info h4 {
-    margin: 0 0 15px;
-    color: #777;
-  }
-
-  .label-values {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .label-value-wrapper {
-    display: flex;
-    margin-bottom: 10px;
-  }
-
-  .legend {
-    line-height: 18px;
-    color: #555;
-  }
-
-  .legend i {
-    width: 18px;
-    height: 18px;
-    float: left;
-    margin-right: 8px;
-    opacity: 0.7;
-  }
 `;
 
 const customIcon = Leaflet.icon({
