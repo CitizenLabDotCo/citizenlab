@@ -5,6 +5,7 @@ class CreateCauses < ActiveRecord::Migration[6.0]
       t.string :participation_context_type, null: false
       t.jsonb :title_multiloc, default: {}, null: false
       t.jsonb :description_multiloc, default: {}, null: false
+      t.integer :volunteers_count, null: false, default: 0
       t.string :image, null: true
       t.integer :ordering, null: false
 
