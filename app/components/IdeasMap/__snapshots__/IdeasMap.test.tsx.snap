@@ -8,9 +8,10 @@ exports[`IdeasMap renders correctly 1`] = `
       id="app.components.IdeasMap.mapTitle"
     />
   </a11y__ScreenReaderOnly>
-  <IdeasMap__StyledMap
+  <Component
     boxContent={null}
     fitBounds={true}
+    mapHeight={500}
     onBoxClose={[Function]}
     onMapClick={[Function]}
     onMarkerClick={[Function]}
