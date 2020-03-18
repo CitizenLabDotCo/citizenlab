@@ -8,6 +8,10 @@ class CreateAdminPublications < ActiveRecord::Migration[6.0]
       t.integer :children_count, null: false, default: 0
 
       t.integer :ordering, index: true
+      # Already adding publication status here
+      # because it will be set during
+      # before_validation.
+      t.string :publication_status, null: false, default: 'published'
       t.uuid :publication_id
       t.string  :publication_type
 
