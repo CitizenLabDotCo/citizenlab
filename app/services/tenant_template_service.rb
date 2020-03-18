@@ -123,6 +123,9 @@ class TenantTemplateService
       @template['models']['polls/option']                          = yml_poll_options
       @template['models']['polls/response']                        = yml_poll_responses
       @template['models']['polls/response_option']                 = yml_poll_response_options
+      @template['models']['maps/map_config']                       = yml_maps_map_configs
+      @template['models']['maps/layer']                            = yml_maps_layers
+      @template['models']['maps/legend_item']                      = yml_maps_legend_items
     end
     @template
   end
@@ -1020,5 +1023,45 @@ class TenantTemplateService
       yml_response_option
     end
   end
+  def yml_maps_map_configs
+    Maps::MapConfig.all.map do |map_config|
+      yml_map_config = {
+        'project_ref'            => lookup_ref(map_config.project_id, :project),
+        'center_geojson'         => map_config.center_geojson,
+        'zoom_level'             => map_config.zoom_level.to_f,
+        'created_at'             => map_config.created_at.to_s,
+        'updated_at'             => map_config.updated_at.to_s
+      }
+      store_ref yml_map_config, map_config.id, :maps_map_config
+      yml_map_config
+    end
+  end
+
+  def yml_maps_layers
+    Maps::Layer.all.map do |layer|
+      yml_layer = {
+        'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
+        'title_multiloc' => layer.title_multiloc,
+        'geojson'        => layer.geojson,
+        'created_at'     => layer.created_at.to_s,
+        'updated_at'     => layer.updated_at.to_s
+      }
+      store_ref yml_layer, layer.id, :maps_layer
+      yml_layer
+    end
+  end
+
+  def yml_maps_legend_items
+    Maps::LegendItem.all.map do |legend_item|
+      {
+        'layer_ref'      => lookup_ref(legend_item.layer_id, :maps_layer),
+        'title_multiloc' => legend_item.title_multiloc,
+        'color'          => legend_item.color,
+        'created_at'     => legend_item.created_at.to_s,
+        'updated_at'     => legend_item.updated_at.to_s
+      }
+    end
+  end
+
 
 end

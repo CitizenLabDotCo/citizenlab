@@ -27,7 +27,7 @@ resource "Map configs" do
       example_request "Get the map config of a project" do
         expect(status).to eq 200
         json_response = JSON.parse(response_body, symbolize_names: false)
-        expect(json_response["data"]["attributes"]["center_point_geojson"]).to eq({
+        expect(json_response["data"]["attributes"]["center_geojson"]).to eq({
           "coordinates" => [4.3517, 50.8503],
           "type" => "Point"
         })

@@ -5,5 +5,13 @@ module Maps
 
     validates :zoom_level, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 20}, allow_nil: true
     validates :tile_provider, format: {with: /\Ahttps:\/\/.+\z/}, allow_nil: true
+
+    def center_geojson
+      RGeo::GeoJSON.encode(center) if center.present?
+    end
+
+    def center_geojson= geojson
+      self.center = RGeo::GeoJSON.decode(geojson)
+    end
   end
 end
