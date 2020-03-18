@@ -460,3 +460,4 @@ export default (inputProps: InputProps) => (
 );
 
 // TODO: clean up code
+// TODO: extract Legend component
