@@ -31,6 +31,9 @@ describe "seedfile", slow_test: true do
       expect(Invite.count).to be > 0
       expect(Verification::IdCard.count).to be 10
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
+      expect(Maps::MapConfig.count).to be 1
+      expect(Maps::Layer.count).to be 2
+      expect(Maps::LegendItem.count).to be 7
     end
     Apartment::Tenant.switch('empty_localhost') do
       load Rails.root.join("db","seeds.rb")

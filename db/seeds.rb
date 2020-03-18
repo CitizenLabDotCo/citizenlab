@@ -786,6 +786,34 @@ if Apartment::Tenant.current == 'localhost'
     end
   end
 
+  map_config = Maps::MapConfig.create!(
+    project: Project.find_by!(internal_role: 'open_idea_box'),
+    center: RGeo::Cartesian.factory.point(4.3517103, 50.8503396),
+    zoom_level: 14
+  )
+
+  layer1 = Maps::Layer.create!(
+    map_config: map_config,
+    title_multiloc: {en: 'Districts', 'nl-BE': 'Districten'},
+    geojson: JSON.parse(File.read(Maps::Engine.root.join("spec","fixtures","brussels-districts.geojson")))
+  )
+  Maps::LegendItem.create!([
+    {layer: layer1, title_multiloc: {'fr-BE': 'Laeken'}, color: '#3b7d6c'},
+    {layer: layer1, title_multiloc: {'fr-BE': 'Neder-Over-Heembeek'}, color: '#2816b8'},
+    {layer: layer1, title_multiloc: {'fr-BE': 'Nord'}, color: '#df2397'},
+    {layer: layer1, title_multiloc: {'fr-BE': 'Louise'}, color: '#06149e'},
+    {layer: layer1, title_multiloc: {'fr-BE': 'Haren'}, color: '#e90303'},
+    {layer: layer1, title_multiloc: {'fr-BE': 'Nord-Est'}, color: '#54b1e4'},
+    {layer: layer1, title_multiloc: {'fr-BE': 'Pentagone'}, color: '#249e0c'},
+  ])
+
+  layer2 = Maps::Layer.create!(
+    map_config: map_config,
+    title_multiloc: {en: 'Public toilets', 'nl-BE': 'Publieke toiletten'},
+    geojson: JSON.parse(File.read(Maps::Engine.root.join("spec","fixtures","bruxelles_toilettes_publiques.geojson")))
+  )
+
+
   User.all.each do |user|
     EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)
   end
