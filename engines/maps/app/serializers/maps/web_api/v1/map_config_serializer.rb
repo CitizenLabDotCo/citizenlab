@@ -1,9 +1,5 @@
 class Maps::WebApi::V1::MapConfigSerializer < ::WebApi::V1::BaseSerializer
-  attributes :zoom_level, :tile_provider
-
-  attribute :center_point_geojson do |map_config, params|
-    RGeo::GeoJSON.encode(map_config.center) if map_config.center.present?
-  end
+  attributes :zoom_level, :tile_provider, :center_geojson
 
   attribute :layers do |map_config, params|
     map_config.layers.map do |layer|

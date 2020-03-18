@@ -182,17 +182,17 @@ describe TenantTemplateService do
       template = service.tenant_to_template Tenant.find_by(host: 'localhost')
       service.apply_template template
 
-      Apartment::Tenant.switch('localhost') do
-        expect(Area.count).to be > 0
-        expect(AreasIdea.count).to be > 0
-        expect(Comment.count).to be > 0
-        expect(CustomFieldOption.count).to be > 0
-        expect(Event.count).to be > 0
-        expect(IdeaStatus.count).to be > 0
-        expect(User.admin.count).to be > 0
-        expect(Vote.count).to be > 0
-        expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
-      end
+      expect(Area.count).to be > 0
+      expect(AreasIdea.count).to be > 0
+      expect(Comment.count).to be > 0
+      expect(CustomFieldOption.count).to be > 0
+      expect(Event.count).to be > 0
+      expect(IdeaStatus.count).to be > 0
+      expect(Vote.count).to be > 0
+      expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
+      expect(Maps::MapConfig.count).to be 1
+      expect(Maps::Layer.count).to be 2
+      expect(Maps::LegendItem.count).to be 7
     end
   end
 
