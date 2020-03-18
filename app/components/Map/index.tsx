@@ -103,10 +103,14 @@ const Legend = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const Item = styled.li`
   display: flex;
+  flex: 1 0 calc(50% - 10px);
+  margin-right: 10px;
 
   &:not(:last-child) {
     margin-bottom: 10px;
