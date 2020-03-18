@@ -567,6 +567,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <StyledDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
+                    projectId={projectId}
                   />
                 }
                 <ScreenReaderOnly>
