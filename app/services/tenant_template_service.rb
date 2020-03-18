@@ -83,7 +83,6 @@ class TenantTemplateService
       @template['models']['project_folder']                        = yml_project_folders
       @template['models']['project_folder_image']                  = yml_project_folder_images
       @template['models']['project']                               = yml_projects
-      @template['models']['project_holder_ordering']               = yml_project_holder_orderings
       @template['models']['project_file']                          = yml_project_files
       @template['models']['project_image']                         = yml_project_images
       @template['models']['projects_topic']                        = yml_projects_topics
@@ -412,6 +411,18 @@ class TenantTemplateService
     end
   end
 
+  def yml_project_folder_images
+    ProjectFolderImage.all.map do |p|
+      {
+        'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
+        'remote_image_url'   => p.image_url,
+        'ordering'           => p.ordering,
+        'created_at'         => p.created_at.to_s,
+        'updated_at'         => p.updated_at.to_s
+      }
+    end
+  end
+
   def yml_projects
     Project.all.map do |p|
       yml_project = yml_participation_context p
@@ -425,24 +436,15 @@ class TenantTemplateService
         'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
-        'publication_status'           => p.publication_status,
-        'ordering'                     => p.ordering,
-        'folder_ref'                   => lookup_ref(p.folder_id, :project_folder),
         'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field)
+        # 'admin_publication_attributes' => { 
+        #   'publication_status'         => p.admin_publication.publication_status,
+        #   'ordering'                   => p.admin_publication.ordering,
+        #   'parent_ref'                 => lookup_ref(p.adminpublication.parent_id, :admin_publication)
+        # }
       })
       store_ref yml_project, p.id, :project
       yml_project
-    end
-  end
-
-  def yml_project_holder_orderings
-    ProjectHolderOrdering.all.map do |p|
-      {
-        'project_holder_ref' => lookup_ref(p.project_holder_id, [:project,:project_folder]),
-        'ordering'           => p.ordering,
-        'created_at'         => p.created_at.to_s,
-        'updated_at'         => p.updated_at.to_s
-      }
     end
   end
 
@@ -467,18 +469,6 @@ class TenantTemplateService
         'ordering'         => p.ordering,
         'created_at'       => p.created_at.to_s,
         'updated_at'       => p.updated_at.to_s
-      }
-    end
-  end
-
-  def yml_project_folder_images
-    ProjectFolderImage.all.map do |p|
-      {
-        'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
-        'remote_image_url'   => p.image_url,
-        'ordering'           => p.ordering,
-        'created_at'         => p.created_at.to_s,
-        'updated_at'         => p.updated_at.to_s
       }
     end
   end
