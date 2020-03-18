@@ -16,36 +16,15 @@ class TenantTemplateService
   end
 
   def apply_template template, validate: true
-    start_of_day = Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
     obj_to_id_and_class = {}
     template['models'].each do |model_name, fields|
       model_class = model_name.classify.constantize
-
       fields.each do |attributes|
         model = model_class.new
         image_assignments = {}
-        attributes.each do |field_name, field_value|
-          if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
-            multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
-              translation = I18n.with_locale(locale) { I18n.t!(field_value) }
-              [locale, translation]
-            end.to_h
-            model.send("#{field_name}=", multiloc_value)
-          elsif field_name.end_with?('_ref')
-            if field_value
-              begin
-                id, ref_class = obj_to_id_and_class[field_value.object_id]
-                model.send("#{field_name.chomp '_ref'}=", ref_class.find(id))
-              rescue Exception => e
-                raise e
-              end
-            end
-          elsif field_name.end_with?('_timediff')
-            if field_value && field_value.kind_of?(Numeric)
-              time = start_of_day + field_value.hours
-              model.send("#{field_name.chomp '_timediff'}=", time)
-            end
-          elsif !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
+        restored_attributes = restore_template_attributes attributes, obj_to_id_and_class
+        restored_attributes.each do |field_name, field_value|
+          if !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
             image_assignments[field_name] = field_value
           else
             model.send("#{field_name}=", field_value)
@@ -58,6 +37,12 @@ class TenantTemplateService
             model.save  # Might fail but runs before_validations
             model.save(validate: false)
           end
+          attributes.each do |field_name, field_value| # taking original attributes to get correct object ID
+            if field_name.end_with?('_attributes') # linking attribute refs
+              submodel = model.send(field_name.chomp '_attributes')
+              obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
+            end
+          end
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
           raise e
@@ -66,6 +51,36 @@ class TenantTemplateService
       end
     end
     nil
+  end
+
+  def restore_template_attributes attributes, obj_to_id_and_class
+    @start_of_day ||= Time.now.in_time_zone(Tenant.settings('core','timezone')).beginning_of_day
+    new_attributes = {}
+    attributes.each do |field_name, field_value|
+      if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
+        multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
+          translation = I18n.with_locale(locale) { I18n.t!(field_value) }
+          [locale, translation]
+        end.to_h
+        new_attributes[field_name] = multiloc_value
+      elsif field_name.end_with?('_attributes')  && (field_value.is_a? Hash)
+        new_attributes[field_name] = restore_template_attributes field_value, obj_to_id_and_class
+      elsif field_name.end_with?('_ref') 
+        ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
+        if field_value
+          id, ref_class = obj_to_id_and_class[field_value.object_id]
+          new_attributes[field_name.chomp(ref_suffix)] = ref_class.find(id)
+        end
+      elsif field_name.end_with?('_timediff')
+        if field_value && field_value.kind_of?(Numeric)
+          time = @start_of_day + field_value.hours
+          new_attributes[field_name.chomp('_timediff')] = time
+        end
+      else
+        new_attributes[field_name] = field_value
+      end
+    end
+    new_attributes
   end
 
   def tenant_to_template tenant
@@ -404,9 +419,14 @@ class TenantTemplateService
         'remote_header_bg_url'         => f.header_bg_url,
         'description_preview_multiloc' => f.description_preview_multiloc,
         'created_at'                   => f.created_at.to_s,
-        'updated_at'                   => f.updated_at.to_s
+        'updated_at'                   => f.updated_at.to_s,
+        'admin_publication_attributes' => { 
+          'publication_status'         => f.admin_publication.publication_status,
+          'ordering'                   => f.admin_publication.ordering
+        }
       }
       store_ref yml_folder, f.id, :project_folder
+      store_ref yml_folder['admin_publication_attributes'], f.admin_publication.id, :admin_publication_attributes
       yml_folder
     end
   end
@@ -436,12 +456,12 @@ class TenantTemplateService
         'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
-        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field)
-        # 'admin_publication_attributes' => { 
-        #   'publication_status'         => p.admin_publication.publication_status,
-        #   'ordering'                   => p.admin_publication.ordering,
-        #   'parent_ref'                 => lookup_ref(p.adminpublication.parent_id, :admin_publication)
-        # }
+        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field),
+        'admin_publication_attributes' => { 
+          'publication_status'         => p.admin_publication.publication_status,
+          'ordering'                   => p.admin_publication.ordering,
+          'parent_ref'                 => lookup_ref(p.admin_publication.parent_id, :admin_publication_attributes)
+        }
       })
       store_ref yml_project, p.id, :project
       yml_project
