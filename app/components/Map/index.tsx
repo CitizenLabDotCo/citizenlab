@@ -92,18 +92,25 @@ const CloseButton = styled.div`
 
 const LegendContainer = styled.div`
   background-color: white;
-  padding: 20px 10px;
+  padding: 30px;
 `;
 
-const Title = styled.h4``;
+const Title = styled.h4`
+  margin-bottom 15px;
+`;
 
 const Legend = styled.ul`
   list-style: none;
   padding: 0;
+  margin: 0;
 `;
 
 const Item = styled.li`
   display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
 `;
 
 const ColorLabel = styled.div`
@@ -111,7 +118,6 @@ const ColorLabel = styled.div`
   height: 20px;
   background-color: ${props => props.color};
   margin-right: 10px;
-  margin-bottom: 10px;
 `;
 
 const LeafletMapContainer = styled.div<{mapHeight: number}>`
@@ -463,7 +469,7 @@ class CLMap extends React.PureComponent<Props, State> {
               </Title>
               <Legend>
                 {legendValues.map((value, index) => (
-                  <Item key={index}>
+                  <Item key={`legend-item-${index}`}>
                     <ColorLabel color={value.color} />
                     {value.label}
                   </Item>)
@@ -490,8 +496,6 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: Legend
+// TODO: Legend two items per line
 // TODO: Extract Legend
-// TODO: mapHeight prop
-// TODO: height of dropdown map on mobile
 // TODO: clean up code
