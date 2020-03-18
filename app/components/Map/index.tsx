@@ -11,6 +11,7 @@ import Icon from 'components/UI/Icon';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
 // Map
 import Leaflet from 'leaflet';
@@ -172,10 +173,12 @@ export interface InputProps {
   fitBounds?: boolean;
   className?: string;
   mapHeight: number;
+  projectId?: string | null;
 }
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  mapConfig: GetMapConfigChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -339,7 +342,8 @@ class CLMap extends React.PureComponent<Props, State> {
       tenant,
       boxContent,
       className,
-      mapHeight
+      mapHeight,
+      mapConfig
     } = this.props;
     const { showLegend } = this.state;
 
@@ -414,7 +418,10 @@ class CLMap extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
+  mapConfig: ({ projectId, render }) => projectId ? (
+    <GetMapConfig projectId={projectId}>{render}</GetMapConfig>
+  ) : null,
 });
 
 export default (inputProps: InputProps) => (
