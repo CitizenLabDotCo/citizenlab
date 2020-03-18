@@ -35,7 +35,7 @@ resource "Project", admin_api: true do
       expect(template['models']['phase'].size).to eq project.phases.count
       expect(template['models']['phase'].map{|h| h['start_at']}).to match project.phases.map(&:start_at).map(&:iso8601)
       expect(template['models']['project_image'].map{|h| h['remote_image_url']}).to match project.project_images.map(&:image_url)
-      expect(template['models']['project'].first.dig('publication_status')).to eq 'draft'
+      expect(template['models']['project'].first.dig('admin_publication_attributes', 'publication_status')).to eq 'draft'
 
     end
   end
