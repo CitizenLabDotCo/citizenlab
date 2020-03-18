@@ -18,6 +18,7 @@ import InitiativePreview from './InitiativePreview';
 
 // Resources
 import GetInitiativeMarkers, { GetInitiativeMarkersChildProps } from 'resources/GetInitiativeMarkers';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -25,7 +26,7 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { viewportWidths } from 'utils/styleUtils';
 
 // Typing
 import { IGeotaggedInitiativeData } from 'services/initiatives';
@@ -40,24 +41,13 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
 `;
 
-const StyledMap = styled(Map)`
-  height: 550px;
-
-  ${media.smallerThanMaxTablet`
-    height: 500px;
-  `}
-
-  ${media.smallerThanMinTablet`
-    height: 400px;
-  `}
-`;
-
 interface InputProps {
   className?: string;
 }
 
 interface DataProps {
   initiativeMarkers: GetInitiativeMarkersChildProps;
+  windowSize: GetWindowSizeChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -153,11 +143,29 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
     }
   }
 
+  getMapHeight = () => {
+    const { windowSize } = this.props;
+    const smallerThanMaxTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
+    const smallerThanMinTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+    let height = 550;
+
+    if (smallerThanMinTablet) {
+      height = 400;
+    }
+
+    if (smallerThanMaxTablet) {
+      height = 500;
+    }
+
+    return height;
+  }
+
   noInitiativesWithLocationMessage = <FormattedMessage {...messages.noInitiativesWithLocation} />;
 
   render() {
     const { initiativeMarkers, className } = this.props;
     const { selectedInitiativeId, points } = this.state;
+    const mapHeight = this.getMapHeight();
 
     return (
       <Container className={className}>
@@ -165,13 +173,14 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
           <StyledWarning text={this.noInitiativesWithLocationMessage} />
         }
 
-        <StyledMap
+        <Map
           points={points}
           onMarkerClick={this.toggleInitiative}
           fitBounds={true}
           boxContent={selectedInitiativeId ? <InitiativePreview initiativeId={selectedInitiativeId} /> : null}
           onBoxClose={this.deselectInitiative}
           onMapClick={this.onMapClick}
+          mapHeight={mapHeight}
         />
 
         <div className="create-initiative-wrapper" ref={this.bindInitiativeCreationButton}>
@@ -188,7 +197,8 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
 }
 
 const Data = adopt<DataProps, InputProps>({
-  initiativeMarkers: <GetInitiativeMarkers />
+  initiativeMarkers: <GetInitiativeMarkers />,
+  windowSize: <GetWindowSize />
 });
 
 const InitiativesMapWithRouter = withRouter(InitiativesMap);
