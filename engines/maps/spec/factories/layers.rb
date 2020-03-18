@@ -4,7 +4,7 @@ FactoryBot.define do
     title_multiloc {{
       "en" => "Social equity regions"
     }}
-    geojson { JSON.parse(File.read("engines/maps/spec/fixtures/seattle.geojson")) }
+    geojson { JSON.parse(File.read(Maps::Engine.root.join("spec","fixtures","seattle.geojson"))) }
 
     trait :with_legend do
       after(:create) do |layer, evaluator|
