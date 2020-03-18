@@ -301,7 +301,7 @@ resource "Projects" do
           expect(response_status).to eq 201
           json_response = json_parse(response_body)
           # New folder projects are added to the top
-          expect(Project.find(json_response.dig(:data,:id)).admin_publication.ordering).to eq 0
+          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
         end
       end
 
