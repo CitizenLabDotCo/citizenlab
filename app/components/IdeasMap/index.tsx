@@ -188,6 +188,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           boxContent={selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null}
           onBoxClose={this.deselectIdea}
           mapHeight={mapHeight}
+          projectId={projectIds && projectIds.length === 1 ? projectIds[0] : null}
         />
 
         {projectIds && projectIds.length === 1 &&
