@@ -28,7 +28,10 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   align-items: stretch;
+  flex-direction: column;
 `;
+
+const MapContainer = styled.div``;
 
 const BoxContainer = styled.div`
   flex: 0 0 400px;
@@ -87,11 +90,6 @@ const CloseButton = styled.div`
   `}
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 const LegendContainer = styled.div`
   background-color: white;
   padding: 20px 10px;
@@ -116,8 +114,9 @@ const ColorLabel = styled.div`
   margin-bottom: 10px;
 `;
 
-const MapContainer = styled.div`
+const LeafletMapContainer = styled.div<{mapHeight: number}>`
   flex: 1;
+  height: ${props => props.mapHeight}px;
 
   .leaflet-container {
     height: 100%;
@@ -198,6 +197,7 @@ export interface InputProps {
   onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
   fitBounds?: boolean;
   className?: string;
+  mapHeight: number;
 }
 
 interface DataProps {
@@ -403,7 +403,12 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { tenant, boxContent, className } = this.props;
+    const {
+      tenant,
+      boxContent,
+      className,
+      mapHeight
+    } = this.props;
     const { showLegend } = this.state;
 
     const legendValues = [
@@ -432,37 +437,42 @@ class CLMap extends React.PureComponent<Props, State> {
     if (!isNilOrError(tenant)) {
       return (
         <Container className={className}>
-          {!isNil(boxContent) &&
-            <BoxContainer className={className}>
-              <CloseButton onClick={this.handleBoxOnClose}>
-                <CloseIcon name="close" />
-              </CloseButton>
+          <MapContainer>
+            {!isNil(boxContent) &&
+              <BoxContainer className={className}>
+                <CloseButton onClick={this.handleBoxOnClose}>
+                  <CloseIcon name="close" />
+                </CloseButton>
 
-              {boxContent}
-            </BoxContainer>
+                {boxContent}
+              </BoxContainer>
+            }
+
+            <LeafletMapContainer
+              id="e2e-map"
+              ref={this.bindMapContainer}
+              mapHeight={mapHeight}
+            >
+              <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+            </LeafletMapContainer>
+          </MapContainer>
+          {showLegend &&
+            <LegendContainer>
+              <Title>
+                {'Racial and Social Equity Composite Index'}
+              </Title>
+              <Legend>
+                {legendValues.map((value, index) => (
+                  <Item key={index}>
+                    <ColorLabel color={value.color} />
+                    {value.label}
+                  </Item>)
+                )}
+              </Legend>
+            </LegendContainer>
           }
-
-            <Wrapper>
-              <MapContainer id="e2e-map" ref={this.bindMapContainer}>
-                <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
-              </MapContainer>
-              {showLegend &&
-                <LegendContainer>
-                  <Title>
-                    {'Racial and Social Equity Composite Index'}
-                  </Title>
-                  <Legend>
-                    {legendValues.map((value, index) => (
-                      <Item key={index}>
-                        <ColorLabel color={value.color} />
-                        {value.label}
-                      </Item>)
-                    )}
-                  </Legend>
-                </LegendContainer>
-              }
-            </Wrapper>
         </Container>
+
       );
     }
 
