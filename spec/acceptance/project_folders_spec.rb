@@ -79,18 +79,25 @@ resource 'ProjectFolder' do
         parameter :description_preview_multiloc, "Text info about the folder", required: false
         parameter :header_bg, "Base64 encoded header image", required: false
       end
+      with_options scope: [:project_folder, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      end
       ValidationErrorHelper.new.error_fields(self, ProjectFolder)
 
       let(:title_multiloc) { {"en" => "Folder title" } }
       let(:description_multiloc) { {"en" => "Folder desc" } }
       let(:description_preview_multiloc) { {"en" => "Folder short desc" } }
+      let(:publication_status) { 'draft' }
 
       example_request "Create a folder" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
         # New folders are added to the top
-        expect(ProjectFolder.find(json_response.dig(:data,:id)).admin_publication.ordering).to eq 0
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
       end
     end
 
@@ -101,18 +108,23 @@ resource 'ProjectFolder' do
         parameter :description_preview_multiloc, "Text info about the folder"
         parameter :header_bg, "Base64 encoded header image"
       end
+      with_options scope: [:project_folder, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
+      end
       ValidationErrorHelper.new.error_fields(self, ProjectFolder)
 
       let(:project_folder) { @folders.last }
       let(:id) { project_folder.id }
       let(:title_multiloc) { {'en' => "The mayor's favourites"} }
       let(:description_multiloc) { {'en' => "An ultimate selection of the mayor's favourite projects!"} }
+      let(:publication_status) { 'archived' }
 
       example_request "Update a folder" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
       end
     end
 

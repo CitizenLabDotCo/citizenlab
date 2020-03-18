@@ -13,6 +13,7 @@ class WebApi::V1::ProjectFolderSerializer < WebApi::V1::BaseSerializer
   # has_many :projects do |object|
   #   object.projects.order(:ordering)
   # end
+  has_one :admin_publication
 
   has_many :project_folder_images, serializer: WebApi::V1::ImageSerializer
 

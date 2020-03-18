@@ -13,7 +13,7 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
       @project_folders, 
       WebApi::V1::ProjectFolderSerializer, 
       params: fastjson_params, 
-      include: [:project_folder_images]
+      include: [:admin_publication, :project_folder_images]
       )
   end
 
@@ -21,7 +21,7 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
     render json: WebApi::V1::ProjectFolderSerializer.new(
       @project_folder,
       params: fastjson_params,
-      include: [:project_folder_images]
+      include: [:admin_publication, :project_folder_images]
       ).serialized_json
   end
 
@@ -36,18 +36,13 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
 
     authorize @project_folder
 
-    # saved = nil
-    # ActiveRecord::Base.transaction do
-    #   saved = @project_folder.save
-    #   AdminPublication.create!(publication: @project_folder) if saved
-    # end
-
-    if @project_folder.save # saved
+    if @project_folder.save
       SideFxProjectFolderService.new.after_create(@project_folder, current_user)
 
       render json: WebApi::V1::ProjectFolderSerializer.new(
         @project_folder,
-        params: fastjson_params
+        params: fastjson_params,
+        include: [:admin_publication]
       ).serialized_json, status: :created
     else
       render json: {errors: @project_folder.errors.details}, status: :unprocessable_entity
@@ -61,7 +56,8 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
       SideFxProjectFolderService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::ProjectFolderSerializer.new(
         @project_folder,
-        params: fastjson_params
+        params: fastjson_params,
+        include: [:admin_publication]
         ).serialized_json, status: :ok
     else
       render json: { errors: @project_folder.errors.details }, status: :unprocessable_entity
@@ -96,6 +92,7 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
   def project_folder_params
     params.require(:project_folder).permit(
       :header_bg,
+      admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES
