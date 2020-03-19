@@ -15,11 +15,11 @@ resource "Volunteering Volunteers" do
   end
 
   context "when normal user" do
-    post "web_api/v1/causes/:cause_id/volunteer" do
+    post "web_api/v1/causes/:cause_id/volunteers" do
 
       ValidationErrorHelper.new.error_fields(self, Volunteering::Volunteer)
 
-      let(:cause) { build(:cause) }
+      let(:cause) { create(:cause) }
       let(:cause_id) { cause.id }
 
       example_request "Create a volunteer with the current user" do
@@ -36,11 +36,11 @@ resource "Volunteering Volunteers" do
       end
     end
 
-    delete "web_api/v1/causes/:cause_id/volunteer" do
+    delete "web_api/v1/causes/:cause_id/volunteers" do
 
       let(:cause) { create(:cause) }
       let(:cause_id) { cause.id }
-      let(:volunteer) { create(:volunteer, user: @user, cause: cause)}
+      let!(:volunteer) { create(:volunteer, user: @user, cause: cause)}
 
       example "Delete the volunteering of the current user" do
         old_count = Volunteering::Volunteer.count

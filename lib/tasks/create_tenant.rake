@@ -179,6 +179,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        volunteering: {
+          enabled: true,
+          allowed: true
+        },
       }
     })
 
