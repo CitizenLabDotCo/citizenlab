@@ -32,14 +32,14 @@ interface InputProps {
 
 const CauseCard = ({ cause }: InputProps) => {
 
-  const isVolunteer = !!cause.relationships.user_volunteer.data;
+  const isVolunteer = !!cause.relationships?.user_volunteer?.data;
 
   const handleOnVolunteerClick = useCallback(() => {
     addVolunteer(cause.id);
   }, [cause]);
 
   const handleOnCancelClick = useCallback(() => {
-    if (cause.relationships.user_volunteer.data) {
+    if (cause.relationships?.user_volunteer?.data) {
       deleteVolunteer(cause.id, cause.relationships.user_volunteer.data.id);
     }
   }, [cause]);
