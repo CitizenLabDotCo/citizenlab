@@ -18,6 +18,13 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       @publications = @publications.where(parent_id: parent_scope)
     end
 
+    if params[:filter_empty_folders].present?
+      visible_folder_publication_ids = Pundit.policy_scope(current_user, Project)
+        .includes(:admin_publication).pluck('admin_publications.parent_id').compact.uniq
+      @publications = @publications.where(publication_type: ProjectFolder.name, id: visible_folder_publication_ids)
+        .or(@publications.where(publication_type: Project.name))
+    end
+
     @publications = @publications
       .order(:ordering)
       .page(params.dig(:page, :number))
