@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_16_155355) do
+ActiveRecord::Schema.define(version: 2020_03_19_101312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,11 +37,11 @@ ActiveRecord::Schema.define(version: 2020_03_16_155355) do
     t.integer "rgt", null: false
     t.integer "children_count", default: 0, null: false
     t.integer "ordering"
+    t.string "publication_status", default: "published", null: false
     t.uuid "publication_id"
     t.string "publication_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "publication_status", default: "published", null: false
     t.index ["lft"], name: "index_admin_publications_on_lft"
     t.index ["ordering"], name: "index_admin_publications_on_ordering"
     t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
@@ -671,6 +671,16 @@ ActiveRecord::Schema.define(version: 2020_03_16_155355) do
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
+  create_table "project_folder_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_folder_id"
+    t.string "file"
+    t.string "name"
+    t.integer "ordering"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_folder_id"], name: "index_project_folder_files_on_project_folder_id"
+  end
+
   create_table "project_folder_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_folder_id"
     t.string "image"
@@ -922,6 +932,7 @@ ActiveRecord::Schema.define(version: 2020_03_16_155355) do
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
   add_foreign_key "project_files", "projects"
+  add_foreign_key "project_folder_files", "project_folders"
   add_foreign_key "project_folder_images", "project_folders"
   add_foreign_key "project_images", "projects"
   add_foreign_key "projects", "users", column: "default_assignee_id"

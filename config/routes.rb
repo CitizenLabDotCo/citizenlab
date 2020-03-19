@@ -146,6 +146,7 @@ Rails.application.routes.draw do
       end
       resources :project_folders do
         resources :images, defaults: {container_type: 'ProjectFolder'}
+        resources :files, defaults: {container_type: 'ProjectFolder'}
         get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
       end
 

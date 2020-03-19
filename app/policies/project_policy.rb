@@ -54,9 +54,9 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft' # &.
+      if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
         scope.all
-      elsif record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft' # &.
+      elsif record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
         scope.in_any_group(record.groups).or(scope.admin).or(scope.project_moderator(record.id))
       else
         scope.admin.or(scope.project_moderator(record.id))
@@ -71,7 +71,7 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     moderate? || (
-      %w(published archived).include?(record.admin_publication.publication_status) && ( # &.
+      %w(published archived).include?(record.admin_publication.publication_status) && (
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&

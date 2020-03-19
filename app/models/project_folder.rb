@@ -3,6 +3,7 @@ class ProjectFolder < ApplicationRecord
   has_one :admin_publication, as: :publication, dependent: :destroy
   accepts_nested_attributes_for :admin_publication
   has_many :project_folder_images, -> { order(:ordering) }, dependent: :destroy
+  has_many :project_folder_files, -> { order(:ordering) }, dependent: :destroy
 
   mount_base64_uploader :header_bg, ProjectFolderHeaderBgUploader
 
