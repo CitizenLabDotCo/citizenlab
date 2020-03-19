@@ -858,7 +858,7 @@ if Apartment::Tenant.current == 'localhost'
     20.times do
       Volunteering::Volunteer.create(
         cause: rand_instance(Volunteering::Cause.all),
-        user: rand_instance(User.all)
+        user: rand_instance(User.active.all)
       )
     end
   end
