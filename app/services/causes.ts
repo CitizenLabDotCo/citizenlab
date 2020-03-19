@@ -60,8 +60,10 @@ export async function addCause(object) {
   return stream;
 }
 
-export function updateCause(causeId: string, object) {
-  return streams.update<ICause>(`${apiEndpoint}/${causeId}`, causeId, { area: object });
+export async function updateCause(causeId: string, object) {
+  const stream = streams.update<ICause>(`${apiEndpoint}/${causeId}`, causeId, { cause: object });
+  await streams.fetchAllWith({ dataId: [causeId] });
+  return stream;
 }
 
 export function deleteCause(causeId: string) {

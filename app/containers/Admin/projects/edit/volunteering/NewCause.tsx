@@ -12,6 +12,8 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
+import Label from 'components/UI/Label';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -23,8 +25,6 @@ import styled from 'styled-components';
 
 // Typing
 import { Multiloc, Locale, UploadFile } from 'typings';
-import Label from 'components/UI/Label';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 const Container = styled.div``;
 

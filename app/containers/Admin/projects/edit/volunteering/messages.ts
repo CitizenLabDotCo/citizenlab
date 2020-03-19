@@ -39,6 +39,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle',
     defaultMessage: 'A cause is an action or activity that citizens can volunteer to.',
   },
+  editCauseTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle',
+    defaultMessage: 'Edit cause',
+  },
+  editCauseSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle',
+    defaultMessage: 'A cause is an action or activity that citizens can volunteer to.',
+  },
   causeTitleLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeTitleLabel',
     defaultMessage: 'Title',

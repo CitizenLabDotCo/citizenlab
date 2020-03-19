@@ -17,9 +17,7 @@ import messages from './messages';
 import T from 'components/T';
 import { InjectedIntlProps } from 'react-intl';
 
-const Container = styled.div`
-
-`;
+const Container = styled.div``;
 
 const Buttons = styled.div`
   display: flex;
