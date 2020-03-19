@@ -93,6 +93,12 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         className: 'ideaform',
       },
       {
+        label: formatMessage(messages.volunteeringTab),
+        url: `${baseTabsUrl}/volunteering`,
+        feature: 'volunteering',
+        className: 'volunteering',
+      },
+      {
         label: formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
         className: 'events',
@@ -116,6 +122,12 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         (processType === 'timeline' && !isNilOrError(phases)
         && phases.filter(phase => phase.attributes.participation_method === 'ideation' || phase.attributes.participation_method === 'budgeting').length === 0)) {
       tabs = reject(tabs, { className: 'ideaform' });
+    }
+
+    if ((processType === 'continuous' && participationMethod !== 'volunteering') ||
+        (processType === 'timeline' && !isNilOrError(phases)
+        && phases.filter(phase => phase.attributes.participation_method === 'volunteering').length === 0)) {
+      tabs = reject(tabs, { className: 'volunteering' });
     }
 
     if (processType === 'continuous' && participationMethod === 'poll' ||
