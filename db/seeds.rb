@@ -449,13 +449,15 @@ if Apartment::Tenant.current == 'localhost'
           "nl-BE" => "Alles met zwembaden."
         },
         header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+        admin_publication_attributes: {
+          publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
+        }
       )
-      AdminPublication.create!(
-        publication: folder,
-        publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
-        )
       [0,1,2,3,4][rand(5)].times do |i|
         folder.project_folder_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+      end
+      (rand(3)+1).times do
+        folder.project_folder_files.create!(generate_file_attributes)
       end
     end
 
@@ -477,7 +479,11 @@ if Apartment::Tenant.current == 'localhost'
         visible_to: %w(admins groups public public public)[rand(5)],
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
-        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first }
+        areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
+        admin_publication_attributes: {
+          parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolder.name).ids.shuffle.first),
+          publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
+        }
       })
 
       if project.continuous?
@@ -493,11 +499,6 @@ if Apartment::Tenant.current == 'localhost'
       end
 
       project.save!
-      AdminPublication.create!(
-        publication: project, 
-        parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolder.name).ids.shuffle.first),
-        publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
-        )
 
       [0,1,2,3,4][rand(5)].times do |i|
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
