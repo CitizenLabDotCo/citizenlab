@@ -264,18 +264,15 @@ class CLMap extends React.PureComponent<Props, State> {
       let initCenter: [number, number] = [0, 0];
 
       if (!isNilOrError(mapConfig) && mapConfig.attributes.center_geojson) {
-        console.log(1);
         const [longitude, latitude] = mapConfig.attributes.center_geojson.coordinates;
         initCenter = [latitude, longitude];
       } else if (center && center !== [0, 0]) {
-        console.log(2);
         initCenter = [center[1], center[0]];
       } else if (
         !isNilOrError(tenant) &&
         tenant.attributes &&
         tenant.attributes.settings.maps
       ) {
-        console.log(3);
         initCenter = [
           parseFloat(tenant.attributes.settings.maps.map_center.lat),
           parseFloat(tenant.attributes.settings.maps.map_center.long),
@@ -392,11 +389,8 @@ class CLMap extends React.PureComponent<Props, State> {
       boxContent,
       className,
       mapHeight,
-      mapConfig
     } = this.props;
     const { showLegend } = this.state;
-
-    console.log('mapConfig render', mapConfig);
 
     const legendTitle = 'Racial and Social Equity Composite Index';
     const legendValues = [
