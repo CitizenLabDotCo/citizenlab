@@ -2,7 +2,6 @@ import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { compact, get, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-const seattleJson = require('./Seattle.json');
 import { style } from './colors';
 
 // components
@@ -227,45 +226,89 @@ class CLMap extends React.PureComponent<Props, State> {
 
   bindMapContainer = (element: HTMLDivElement | null) => {
     const { tenant, center, mapConfig } = this.props;
-    const zoom = !isNilOrError(mapConfig) ?
-      mapConfig?.attributes.zoom_level : get(tenant, 'attributes.settings.maps.zoom_level', 15);
 
-    if (element && !isNilOrError(tenant) && !this.map) {
-      const tileProvider = tenant.attributes.settings.maps?.tile_provider || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    // skips first two blocks for determining initCenter
+
+    function getZoom() {
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.zoom_level
+      ) {
+        return parseFloat(mapConfig.attributes.zoom_level);
+       } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
+        return tenant.attributes.settings.maps.zoom_level;
+      } else {
+        return 15;
+      }
+    }
+
+    function getTileProvider() {
+      if (!isNilOrError(mapConfig) && mapConfig.attributes.tile_provider) {
+        return mapConfig.attributes.tile_provider;
+      } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
+        return tenant.attributes.settings.maps.tile_provider;
+      } else {
+        return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      }
+    }
+
+    function getInitCenter() {
       let initCenter: [number, number] = [0, 0];
 
       if (!isNilOrError(mapConfig) && mapConfig.attributes.center_geojson) {
+        console.log(1);
         const [longitude, latitude] = mapConfig.attributes.center_geojson.coordinates;
         initCenter = [latitude, longitude];
       } else if (center && center !== [0, 0]) {
+        console.log(2);
         initCenter = [center[1], center[0]];
-      } else if (tenant.attributes.settings.maps) {
+      } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
+        console.log(3);
         initCenter = [
           parseFloat(tenant.attributes.settings.maps.map_center.lat),
           parseFloat(tenant.attributes.settings.maps.map_center.long),
         ];
       }
+      return initCenter;
+    }
+
+    if (element && !this.map) {
+      const zoom = getZoom();
+      const tileProvider = getTileProvider();
+      const initCenter = getInitCenter();
 
       const baseLayer = Leaflet.tileLayer(tileProvider, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       });
 
-      const geoJsonLayer = Leaflet.geoJSON(seattleJson, { style });
+      // const geoJsonLayer = Leaflet.geoJSON(seattleJson, { style });
 
       // Init the map
       this.map = Leaflet.map(element, {
         zoom,
         center: initCenter,
         maxZoom: 17,
-        layers: [baseLayer, geoJsonLayer]
+        layers: [baseLayer/*, geoJsonLayer*/]
       });
 
-      const overlayMaps = {
-        Disadvantage: geoJsonLayer
-      };
+      // const overlayMaps = {
+      //   Disadvantage: geoJsonLayer
+      // };
 
-      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+      // Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
       this.map.on('overlayadd', () => {
         this.setState({ showLegend: true });
@@ -349,8 +392,11 @@ class CLMap extends React.PureComponent<Props, State> {
       boxContent,
       className,
       mapHeight,
+      mapConfig
     } = this.props;
     const { showLegend } = this.state;
+
+    console.log('mapConfig render', mapConfig);
 
     const legendTitle = 'Racial and Social Equity Composite Index';
     const legendValues = [
@@ -437,3 +483,4 @@ export default (inputProps: InputProps) => (
 
 // TODO: clean up code
 // TODO: extract Legend component
+// TODO: console error landing page
