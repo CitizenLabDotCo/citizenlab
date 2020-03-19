@@ -70,7 +70,7 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const ProjectNotFoundWrapper = styled.div`
+const NotFoundWrapper = styled.div`
   height: 100%;
   flex: 1 0 auto;
   display: flex;
@@ -100,22 +100,22 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
   render() {
     const { locale, tenant, projectFolder } = this.props;
     const { slug } = this.props.params;
-    const projectNotFound = isError(projectFolder);
+    const folderNotFound = isError(projectFolder);
     const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder));
 
     return (
       <>
         <ProjectFolderShowPageMeta projectFolderSlug={slug} />
         <Container className={`${!loading ? 'loaded' : 'loading'}`}>
-          {projectNotFound ? (
-            <ProjectNotFoundWrapper>
-              <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
+          {folderNotFound ? (
+            <NotFoundWrapper>
+              <p><FormattedMessage {...messages.noFolderFoundHere} /></p>
               <Button
                 linkTo="/projects"
                 text={<FormattedMessage {...messages.goBackToList} />}
                 icon="arrow-back"
               />
-            </ProjectNotFoundWrapper>
+            </NotFoundWrapper>
           ) : (
               loading ? (
                 <Loading>
