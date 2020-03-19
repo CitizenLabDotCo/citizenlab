@@ -225,7 +225,7 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   bindMapContainer = (element: HTMLDivElement | null) => {
-    const { tenant, center, mapConfig } = this.props;
+    const { tenant, mapConfig } = this.props;
 
     // skips first two blocks for determining initCenter
 
@@ -264,6 +264,7 @@ class CLMap extends React.PureComponent<Props, State> {
     }
 
     function getInitCenter() {
+      const { center } = this.props;
       let initCenter: [number, number] = [0, 0];
 
       if (
@@ -348,7 +349,12 @@ class CLMap extends React.PureComponent<Props, State> {
       return Leaflet.marker(latlng, markerOptions);
     });
 
-    if (bounds && bounds.length > 0 && this.props.fitBounds && !this.state.initiated) {
+    if (
+      bounds && bounds.length > 0 &&
+      this.props.fitBounds &&
+      !this.state.initiated &&
+      this.map
+    ) {
       this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
       this.setState({ initiated: true });
     }
@@ -395,6 +401,7 @@ class CLMap extends React.PureComponent<Props, State> {
       boxContent,
       className,
       mapHeight,
+      mapConfig
     } = this.props;
     const { showLegend } = this.state;
 
@@ -422,7 +429,7 @@ class CLMap extends React.PureComponent<Props, State> {
       },
     ];
 
-    if (!isNilOrError(tenant)) {
+    if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
       return (
         <Container className={className}>
           <MapContainer>
