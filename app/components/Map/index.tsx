@@ -247,7 +247,10 @@ class CLMap extends React.PureComponent<Props, State> {
     }
 
     function getTileProvider() {
-      if (!isNilOrError(mapConfig) && mapConfig.attributes.tile_provider) {
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.tile_provider
+      ) {
         return mapConfig.attributes.tile_provider;
       } else if (
         !isNilOrError(tenant) &&
@@ -263,7 +266,10 @@ class CLMap extends React.PureComponent<Props, State> {
     function getInitCenter() {
       let initCenter: [number, number] = [0, 0];
 
-      if (!isNilOrError(mapConfig) && mapConfig.attributes.center_geojson) {
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.center_geojson
+      ) {
         const [longitude, latitude] = mapConfig.attributes.center_geojson.coordinates;
         initCenter = [latitude, longitude];
       } else if (center && center !== [0, 0]) {
@@ -478,3 +484,4 @@ export default (inputProps: InputProps) => (
 // TODO: clean up code
 // TODO: extract Legend component
 // TODO: console error landing page
+// TODO: listen to different layers
