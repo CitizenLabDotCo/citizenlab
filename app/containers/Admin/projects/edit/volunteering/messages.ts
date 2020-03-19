@@ -31,4 +31,32 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDeletionConfirmation',
     defaultMessage: 'Are you sure?',
   },
+  newCauseTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseTitle',
+    defaultMessage: 'New cause',
+  },
+  newCauseSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle',
+    defaultMessage: 'A cause is an action or activity that citizens can volunteer to.',
+  },
+  causeTitleLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeTitleLabel',
+    defaultMessage: 'Title',
+  },
+  causeDescriptionLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDescriptionLabel',
+    defaultMessage: 'Description',
+  },
+  causeDescriptionTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDescriptionTooltip',
+    defaultMessage: 'Use this explain what is required from volunteers and what they can expect.',
+  },
+  saveCause: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause',
+    defaultMessage: 'Save',
+  },
+  causeErrorMessage: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeErrorMessage',
+    defaultMessage: 'Couldn\'t save because the form contains errors.',
+  },
 });
