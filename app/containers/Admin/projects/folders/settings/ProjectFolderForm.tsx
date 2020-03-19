@@ -22,6 +22,10 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import IconTooltip from 'components/UI/IconTooltip';
+import FileUploader from 'components/UI/FileUploader';
+import { addProjectFolderFile, deleteProjectFolderFile } from 'services/projectFolderFiles';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -31,6 +35,7 @@ interface Props {
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const projectFolder = useProjectFolder({ projectFolderId });
+  const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
 
   useEffect(() => {
@@ -49,10 +54,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           images.filter(img => img);
           setProjectFolderImages(images as UploadFile[]);
         }
+        if (!isNilOrError(projectFolderFilesRemote)) {
+          const filePromises = projectFolderFilesRemote.data.map(file => convertUrlToUploadFile(file.attributes.file.url, file.id, file.attributes.name));
+          const files = await Promise.all(filePromises);
+          files.filter(file => file);
+          setProjectFolderFiles(files as UploadFile[]);
+        }
       }
     }
     )();
-  }, [projectFolder, projectFolderImagesRemote, mode]);
+  }, [projectFolder, projectFolderImagesRemote, projectFolderFilesRemote, mode]);
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
@@ -62,6 +73,8 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [changedHeaderBg, setChangedHeaderBg] = useState(false);
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>([]);
   const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] = useState<string[]>([]);
+  const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>([]);
+  const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<string[]>([]);
 
   const getHandler = useCallback((setter: (value: any) => void) => (value: any) => {
     setStatus('enabled');
@@ -88,6 +101,24 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       setProjectFolderImagesToRemove(previous => [...previous, imageToRemove.id as string]);
     }
     setProjectFolderImages(projectFolderImages => projectFolderImages.filter(image => image.base64 !== imageToRemove.base64));
+  }, []);
+
+  const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
+    setStatus('enabled');
+
+    setProjectFolderFiles(previous => {
+      const isDuplicate = previous.some(file => file.base64 === fileToAdd.base64);
+
+      return isDuplicate ? previous : [...previous, fileToAdd];
+    });
+  }, []);
+
+  const handleProjectFolderFileOnRemove = useCallback((fileToRemove: UploadFile) => {
+    setStatus('enabled');
+    if (fileToRemove.remote && fileToRemove.id) {
+      setProjectFolderFilesToRemove(previous => [...previous, fileToRemove.id as string]);
+    }
+    setProjectFolderImages(projectFolderImages => projectFolderImages.filter(image => image.base64 !== fileToRemove.base64));
   }, []);
 
   // form status
@@ -124,8 +155,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               });
             if (!isNilOrError(res)) {
               const imagesToAddPromises = projectFolderImages.map(file => addProjectFolderImage(res.id, file.base64));
+              const filesToAddPromises = projectFolderFiles.map(file => addProjectFolderFile(res.id, file.base64, file.name));
 
-              imagesToAddPromises && await Promise.all<any>(imagesToAddPromises);
+              (imagesToAddPromises || filesToAddPromises) && await Promise.all<any>([...imagesToAddPromises, ...filesToAddPromises]);
 
               clHistory.push(`/admin/projects/folders/${res.id}`);
             }
@@ -137,8 +169,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc && !isNilOrError(projectFolder)) {
             const imagesToAddPromises = projectFolderImages.filter(file => !file.remote).map(file => addProjectFolderImage(projectFolderId as string, file.base64));
             const imagesToRemovePromises = projectFolderImagesToRemove.map(id => deleteProjectFolderImage(projectFolderId as string, id));
+            const filesToAddPromises = projectFolderFiles.filter(file => !file.remote).map(file => addProjectFolderFile(projectFolderId as string, file.base64, file.name));
+            const filesToRemovePromises = projectFolderFilesToRemove.map(id => deleteProjectFolderFile(projectFolderId as string, id));
 
-            imagesToAddPromises && await Promise.all<any>([...imagesToAddPromises, ...imagesToRemovePromises]);
+            imagesToAddPromises && await Promise.all<any>([
+              ...imagesToAddPromises,
+              ...imagesToRemovePromises,
+              ...filesToAddPromises,
+              ...filesToRemovePromises
+            ]);
 
             const changedTitleMultiloc = !isEqual(titleMultiloc, projectFolder.attributes.title_multiloc);
             const changedDescriptionMultiloc = !isEqual(descriptionMultiloc, projectFolder.attributes.description_multiloc);
@@ -229,6 +268,18 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             maxNumberOfImages={5}
             onAdd={getHandler(setProjectFolderImages)}
             onRemove={handleProjectFolderImageOnRemove}
+          />
+        </SectionField>
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.fileUploadLabel} />
+            <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
+          </Label>
+          <FileUploader
+            onFileAdd={handleProjectFolderFileOnAdd}
+            onFileRemove={handleProjectFolderFileOnRemove}
+            files={projectFolderFiles}
+          // errors={TODO}
           />
         </SectionField>
         <SubmitWrapper

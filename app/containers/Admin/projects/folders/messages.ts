@@ -134,4 +134,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.noProjectsToAdd',
     defaultMessage: 'There are no projects that you can add to this folder.',
   },
+  fileUploadLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.fileUploadLabel',
+    defaultMessage: 'Add files to this folder',
+  },
+  fileUploadLabelTooltip: {
+    id: 'app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip',
+    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the folder page.',
+  },
 });
