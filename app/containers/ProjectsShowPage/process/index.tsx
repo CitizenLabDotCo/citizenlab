@@ -109,7 +109,6 @@ const StyledPhaseVolunteering = styled(PhaseVolunteering)`
   `}
 `;
 
-
 const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-top: 95px;
   margin-bottom: 100px;
