@@ -77,12 +77,6 @@ export default ({ publication, actions, hidePublicationStatusLabel }: Props) => 
           }}
         </GetProjectGroups>
 
-        {!hidePublicationStatusLabel &&
-          <PublicationStatusLabel
-            publicationStatus={publicationStatus}
-          />
-        }
-
       </RowContentInner>
       {actions ?
         <ActionsRowContainer>
