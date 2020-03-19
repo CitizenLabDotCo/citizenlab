@@ -225,7 +225,7 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   bindMapContainer = (element: HTMLDivElement | null) => {
-    const { tenant, mapConfig } = this.props;
+    const { tenant, mapConfig, center } = this.props;
 
     // skips first two blocks for determining initCenter
 
@@ -247,24 +247,25 @@ class CLMap extends React.PureComponent<Props, State> {
     }
 
     function getTileProvider() {
-      if (
-        !isNilOrError(mapConfig) &&
-        mapConfig.attributes.tile_provider
-      ) {
-        return mapConfig.attributes.tile_provider;
-      } else if (
-        !isNilOrError(tenant) &&
-        tenant.attributes &&
-        tenant.attributes.settings.maps
-      ) {
-        return tenant.attributes.settings.maps.tile_provider;
-      } else {
-        return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      }
+      return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+      // if (
+      //   !isNilOrError(mapConfig) &&
+      //   mapConfig.attributes.tile_provider
+      // ) {
+      //   return mapConfig.attributes.tile_provider;
+      // } else if (
+      //   !isNilOrError(tenant) &&
+      //   tenant.attributes &&
+      //   tenant.attributes.settings.maps
+      // ) {
+      //   return tenant.attributes.settings.maps.tile_provider;
+      // } else {
+      //   return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      // }
     }
 
     function getInitCenter() {
-      const { center } = this.props;
       let initCenter: [number, number] = [0, 0];
 
       if (
@@ -285,6 +286,7 @@ class CLMap extends React.PureComponent<Props, State> {
           parseFloat(tenant.attributes.settings.maps.map_center.long),
         ];
       }
+
       return initCenter;
     }
 
@@ -488,6 +490,7 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
+// TODO: in ideas map it centers on idea, on idea page it centers on map config center
 // TODO: clean up code
 // TODO: extract Legend component
 // TODO: console error landing page
