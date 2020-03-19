@@ -51,6 +51,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDescriptionTooltip',
     defaultMessage: 'Use this explain what is required from volunteers and what they can expect.',
   },
+  causeImageLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeImageLabel',
+    defaultMessage: 'Image',
+  },
   saveCause: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.saveCause',
     defaultMessage: 'Save',

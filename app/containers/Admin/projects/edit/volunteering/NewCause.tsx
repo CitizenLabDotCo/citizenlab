@@ -22,7 +22,9 @@ import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 
 // Typing
-import { Multiloc, Locale } from 'typings';
+import { Multiloc, Locale, UploadFile } from 'typings';
+import Label from 'components/UI/Label';
+import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 const Container = styled.div``;
 
@@ -37,6 +39,7 @@ interface Props {
 interface IFormValues {
   title_multiloc: Multiloc | null;
   description_multiloc: Multiloc | null;
+  image: UploadFile | null;
 }
 
 const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
@@ -47,7 +50,8 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
   const [formValues, setFormValues] = useState<IFormValues>({
     title_multiloc: null,
-    description_multiloc: null
+    description_multiloc: null,
+    image: null,
   });
 
   const projectId = props.params.projectId;
@@ -72,8 +76,24 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
     }));
   }, []);
 
+  const handleImageOnAdd = useCallback((images: UploadFile[]) => {
+    setTouched(true);
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      image: images[0]
+    }));
+  }, []);
+
+  const handleImageOnRemove = useCallback(() => {
+    setTouched(true);
+    setFormValues((prevFormValues) => ({
+      ...prevFormValues,
+      image: null
+    }));
+  }, []);
+
   const handleOnSubmit = useCallback(() => {
-    const { title_multiloc, description_multiloc } = formValues;
+    const { title_multiloc, description_multiloc, image } = formValues;
 
     if (!processing && title_multiloc && description_multiloc) {
       setProcessing(true);
@@ -93,6 +113,7 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
         title_multiloc,
         participation_context_type: PCType,
         participation_context_id: participationContextId,
+        image: image?.base64,
       }).then(() => {
         setProcessing(false);
         setErrors({});
@@ -136,6 +157,21 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
             withCTAButton
           />
           <Error fieldName="description_multiloc" apiErrors={errors?.description_multiloc} />
+        </SectionField>
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.causeImageLabel} />
+          </Label>
+          <ImagesDropzone
+            acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+            maxNumberOfImages={1}
+            maxImageFileSize={5000000}
+            images={formValues.image ? [formValues.image] : null}
+            imagePreviewRatio={120 / 480}
+            maxImagePreviewWidth="500px"
+            onAdd={handleImageOnAdd}
+            onRemove={handleImageOnRemove}
+          />
         </SectionField>
       </Section>
 
