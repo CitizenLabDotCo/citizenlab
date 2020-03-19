@@ -29,12 +29,12 @@ const Buttons = styled.div`
 interface InputProps {
   participationContextType: 'project' | 'phase';
   participationContextId: string;
+  projectId: string;
 }
 
 interface Props extends InputProps, InjectedIntlProps {}
 
-const AllCauses = ({ participationContextType , participationContextId, intl } : Props) => {
-  const projectId = participationContextType === 'project' ? participationContextId : null;
+const AllCauses = ({ participationContextType , participationContextId, projectId, intl } : Props) => {
   const phaseId = participationContextType === 'phase' ? participationContextId : null;
   const causes = useCauses({ projectId, phaseId });
   const [itemsWhileDragging, setItemsWhileDragging] = useState<ICauseData[] | null>(null);
@@ -80,6 +80,10 @@ const AllCauses = ({ participationContextType , participationContextId, intl } :
     }
   };
 
+  const newCauseLink = phaseId
+    ? `/admin/projects/${projectId}/volunteering/phases/${phaseId}/causes/new`
+    : `/admin/projects/${projectId}/volunteering/causes/new`;
+
   if (isNilOrError(causes)) return null;
 
   return (
@@ -88,7 +92,7 @@ const AllCauses = ({ participationContextType , participationContextId, intl } :
         <Button
           buttonStyle="cl-blue"
           icon="plus-circle"
-          linkTo={`/admin/projects/${projectId}/volunteering/causes/new`}
+          linkTo={newCauseLink}
         >
           <FormattedMessage {...messages.addCauseButton} />
         </Button>
@@ -126,7 +130,7 @@ const AllCauses = ({ participationContextType , participationContextId, intl } :
             </SortableRow>
           );
         })}
-      </List>>
+      </List>
     </Container>
   );
 };

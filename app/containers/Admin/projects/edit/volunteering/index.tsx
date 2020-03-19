@@ -77,6 +77,7 @@ export class AdminProjectVolunteering extends React.PureComponent<Props> {
             />
           </HeaderContainer>
             <AllCauses
+              projectId={project.id}
               participationContextType="project"
               participationContextId={project.id}
             />
@@ -109,6 +110,7 @@ export class AdminProjectVolunteering extends React.PureComponent<Props> {
                 />
               </HeaderContainer>
               <AllCauses
+                projectId={project.id}
                 participationContextType="phase"
                 participationContextId={phase.id}
               />

@@ -54,8 +54,10 @@ export function causesStream(participationContextType: 'project' | 'phase', part
   return streams.get<ICauses>({ apiEndpoint: `${API_PATH}/${participationContextType}s/${participationContextId}/causes`, ...streamParams });
 }
 
-export function addCause(object) {
-  return streams.add<ICause>(apiEndpoint, { cause: object });
+export async function addCause(object) {
+  const stream = await streams.add<ICause>(apiEndpoint, { cause: object });
+  await streams.fetchAllWith({ regexApiEndpoint: [/^.*causes$/] });
+  return stream;
 }
 
 export function updateCause(causeId: string, object) {
