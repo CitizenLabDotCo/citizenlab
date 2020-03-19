@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-03-16
+
+### Fixed
+- The project templates in the admin load again
+
 ## 2020-03-13
 
 ### Fixed
