@@ -12,6 +12,7 @@ export interface ICauseData {
     description_multiloc: Multiloc;
     image: ImageSizes;
     volunteers_count: number;
+    ordering: number;
   };
   relationships: {
     participation_context: {
@@ -63,4 +64,8 @@ export function updateCause(causeId: string, object) {
 
 export function deleteCause(causeId: string) {
   return streams.delete(`${apiEndpoint}/${causeId}`, causeId);
+}
+
+export function reorderCause(causeId: string, ordering: number) {
+  return streams.update<ICause>(`${apiEndpoint}/${causeId}/reorder`, causeId, { cause: { ordering } });
 }
