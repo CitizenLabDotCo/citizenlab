@@ -444,7 +444,7 @@ class TenantTemplateService
     end
   end
 
-  def yml_project_files
+  def yml_project_folder_files
     ProjectFolderFile.all.map do |p|
       {
         'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
