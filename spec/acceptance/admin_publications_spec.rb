@@ -30,6 +30,7 @@ resource "AdminPublication" do
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :folder, "Filter by folder (project folder id)", required: false
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
+      parameter :filter_empty_folders, "Filter out folders with no visible children for the current user", required: false
 
       example_request "List all admin publications" do
         expect(status).to eq(200)
@@ -91,6 +92,15 @@ resource "AdminPublication" do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id, p1.id]
+      end
+
+      example "List all top-level admin publications with visible child projects" do
+        create_list(:project_folder, 2)
+        do_request(folder: nil, filter_empty_folders: true)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 6
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
       end
     end
 
