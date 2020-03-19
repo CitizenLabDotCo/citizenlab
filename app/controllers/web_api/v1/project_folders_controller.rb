@@ -9,10 +9,14 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
+    parent_ids_for_visible_children = Pundit.policy_scope(current_user, Project)
+      .includes(:admin_publication).pluck('admin_publications.parent_id').compact
+    visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
+
     render json: linked_json(
       @project_folders, 
       WebApi::V1::ProjectFolderSerializer, 
-      params: fastjson_params, 
+      params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id), 
       include: [:admin_publication, :project_folder_images]
       )
   end
