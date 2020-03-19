@@ -112,6 +112,14 @@ export default () => ({
           }),
         },
         {
+          path: '/:locale/admin/projects/:projectId/volunteering',
+          name: 'admin projects volunteering',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/volunteering'),
+            loading: () => null
+          }),
+        },
+        {
           path: '/:locale/admin/projects/:projectId/timeline',
           name: 'admin projects timeline',
           component: Loadable({

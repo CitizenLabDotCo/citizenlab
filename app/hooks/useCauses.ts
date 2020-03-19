@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { causesStream, ICauses } from 'services/causes';
 
 interface Input {
-  projectId: string;
+  projectId: string | null;
   phaseId: string | null;
 }
 
