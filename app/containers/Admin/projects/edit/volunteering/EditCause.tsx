@@ -29,7 +29,6 @@ import styled from 'styled-components';
 // Typing
 import { Multiloc, Locale, UploadFile } from 'typings';
 
-
 const Container = styled.div``;
 
 const ButtonContainer = styled.div`
