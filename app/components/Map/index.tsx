@@ -226,12 +226,18 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   bindMapContainer = (element: HTMLDivElement | null) => {
-    const { tenant, center } = this.props;
+    const { tenant, center, mapConfig } = this.props;
+    const zoom = !isNilOrError(mapConfig) ?
+      mapConfig?.attributes.zoom_level : get(tenant, 'attributes.settings.maps.zoom_level', 15);
 
     if (element && !isNilOrError(tenant) && !this.map) {
+      const tileProvider = tenant.attributes.settings.maps?.tile_provider || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
       let initCenter: [number, number] = [0, 0];
 
-      if (center && center !== [0, 0]) {
+      if (!isNilOrError(mapConfig) && mapConfig.attributes.center_geojson) {
+        const [longitude, latitude] = mapConfig.attributes.center_geojson.coordinates;
+        initCenter = [latitude, longitude];
+      } else if (center && center !== [0, 0]) {
         initCenter = [center[1], center[0]];
       } else if (tenant.attributes.settings.maps) {
         initCenter = [
@@ -240,7 +246,7 @@ class CLMap extends React.PureComponent<Props, State> {
         ];
       }
 
-      const baseLayer = Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      const baseLayer = Leaflet.tileLayer(tileProvider, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       });
@@ -249,8 +255,8 @@ class CLMap extends React.PureComponent<Props, State> {
 
       // Init the map
       this.map = Leaflet.map(element, {
+        zoom,
         center: initCenter,
-        zoom: get(tenant, 'attributes.settings.maps.zoom_level', 15),
         maxZoom: 17,
         layers: [baseLayer, geoJsonLayer]
       });
@@ -343,7 +349,6 @@ class CLMap extends React.PureComponent<Props, State> {
       boxContent,
       className,
       mapHeight,
-      mapConfig
     } = this.props;
     const { showLegend } = this.state;
 
