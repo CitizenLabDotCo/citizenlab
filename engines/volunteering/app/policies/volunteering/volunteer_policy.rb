@@ -18,6 +18,10 @@ module Volunteering
       end
     end
 
+    def index_xlsx?
+      user&.active? && (user.admin? || user.project_moderator?)
+    end
+
     def create?
       user&.active? && 
       (record.user_id == user.id) &&

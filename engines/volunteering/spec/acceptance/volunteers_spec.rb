@@ -83,5 +83,33 @@ resource "Volunteering Volunteers" do
       end
     end
 
+    get "web_api/v1/projects/:participation_context_id/volunteers/as_xlsx" do
+      before do
+        @project = create(:continuous_volunteering_project)
+        @cause1 = create(:cause, participation_context: @project)
+        @volunteers1 = create_list(:volunteer, 3, cause: @cause1)
+        @cause2 = create(:cause, participation_context: @project)
+        @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
+        other_cause = create(:cause)
+        other_volunteer = create(:volunteer)
+      end
+
+      let (:participation_context_id) { @project.id }
+
+      example_request "XLSX export all volunteers of a project" do
+        expect(status).to eq 200
+        worksheets = RubyXL::Parser.parse_buffer(response_body).worksheets
+        expect(worksheets.size).to eq 2
+        expect(worksheets[0].sheet_name).to eq @cause1.title_multiloc['en']
+        expect(worksheets[1].sheet_name).to eq @cause2.title_multiloc['en']
+
+        expect(worksheets[0].count).to eq 4
+        expect(worksheets[0][1][0].value).to eq @volunteers1[0].user.first_name
+        expect(worksheets[0][1][1].value).to eq @volunteers1[0].user.last_name
+        expect(worksheets[0][1][2].value).to eq @volunteers1[0].user.email
+        expect(worksheets[0][1][3].value.to_i).to eq @volunteers1[0].created_at.to_i
+      end
+    end
+
   end
 end
