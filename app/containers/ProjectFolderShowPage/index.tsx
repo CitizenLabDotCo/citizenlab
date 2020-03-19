@@ -132,7 +132,7 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
                           pageSize={50}
                           publicationStatusFilter={['published', 'archived']}
                           showTitle={false}
-                          layout="dynamic"
+                          layout="twocolumns"
                           folderId={projectFolder.id}
                         />
                       </StyledContentContainer>
