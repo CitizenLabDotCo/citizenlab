@@ -135,14 +135,14 @@ export default () => ({
             loading: () => null
           }),
         },
-        // {
-        //   path: '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
-        //   name: 'admin projects timeline edit',
-        //   component: Loadable({
-        //     loader: () => import('containers/Admin/projects/edit/volunteering/EditCause'),
-        //     loading: () => null
-        //   }),
-        // },
+        {
+          path: '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
+          name: 'admin projects timeline edit',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/volunteering/EditCause'),
+            loading: () => null
+          }),
+        },
         {
           path: '/:locale/admin/projects/:projectId/timeline',
           name: 'admin projects timeline',
