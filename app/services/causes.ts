@@ -20,7 +20,7 @@ export interface ICauseData {
         id: string;
       }
     }
-    user_volunteer: {
+    user_volunteer?: {
       data: null | {
         id: string;
       }
