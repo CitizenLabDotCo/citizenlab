@@ -309,6 +309,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
           },
         ],
       },
+      volunteering: {
+        enabled: true,
+        allowed: true
+      }
     }
   })
 
