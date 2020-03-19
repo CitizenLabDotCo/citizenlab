@@ -1078,6 +1078,7 @@
   "app.containers.AdminPage.ProjectEdit.viewPublicProject": "View the project",
   "app.containers.AdminPage.ProjectEdit.volunteering": "",
   "app.containers.AdminPage.ProjectEdit.volunteeringDescription": "",
+  "app.containers.AdminPage.ProjectEdit.volunteeringTab": "",
   "app.containers.AdminPage.ProjectEdit.votingEnabled": "Stemmegiving",
   "app.containers.AdminPage.ProjectEdit.votingLimit": "Number of votes",
   "app.containers.AdminPage.ProjectEdit.votingMethod": "Number of votes",
