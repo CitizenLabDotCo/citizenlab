@@ -859,7 +859,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
 
   create_table "volunteering_volunteers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "cause_id", null: false
-    t.bigint "user_id", null: false
+    t.uuid "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["cause_id"], name: "index_volunteering_volunteers_on_cause_id"

@@ -44,7 +44,7 @@ resource "Volunteering Causes" do
     end
 
     let (:participation_context_id) { @phase.id }
-    example_request "List all causes in a poll phase" do
+    example_request "List all causes in a volunteering phase" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 3
@@ -62,7 +62,7 @@ resource "Volunteering Causes" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response.dig(:data, :id)).to eq @cause.id
-      expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq cause.title_multiloc
+      expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq @cause.title_multiloc
       expect(json_response.dig(:data, :attributes, :volunteers_count)).to eq 0
     end
   end
@@ -86,7 +86,7 @@ resource "Volunteering Causes" do
 
       let(:cause) { build(:cause) }
       let(:title_multiloc) { cause.title_multiloc }
-      let(:description_multiloc) { {en: '<b>This is a fine description</b>'} }
+      let(:description_multiloc) { {"en" => '<b>This is a fine description</b>'} }
       let(:participation_context_type) { cause.participation_context_type}
       let(:participation_context_id) { cause.participation_context_id}
 
@@ -125,7 +125,7 @@ resource "Volunteering Causes" do
     end
 
     patch "web_api/v1/causes/:id/reorder" do
-      with_options scope: :question do
+      with_options scope: :cause do
         parameter :ordering, "The position, starting from 0, where the cause should be at. Causes after will move down.", required: true
       end
 
