@@ -21,6 +21,8 @@ import { media, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
+import FileAttachments from 'components/UI/FileAttachments';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 
 const Container = styled.div`
   display: flex;
@@ -98,6 +100,7 @@ interface Props extends InputProps {
 const ProjectFolderInfo = ({ projectFolderId, theme, intl: { formatMessage } }: Props & InjectedIntlProps) => {
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderImages = useProjectFolderImages(projectFolderId);
+  const projectFolderFiles = useProjectFolderFiles(projectFolderId);
   const authUser = useAuthUser();
 
   const folderUrl = location.href;
@@ -122,6 +125,9 @@ const ProjectFolderInfo = ({ projectFolderId, theme, intl: { formatMessage } }: 
               <T value={projectFolder.attributes.description_multiloc} supportHtml={true} />
             </QuillEditedContent>
           </Description>
+          {!isNilOrError(projectFolderFiles) && projectFolderFiles && projectFolderFiles.data.length > 0 &&
+            <FileAttachments files={projectFolderFiles.data} />
+          }
         </Left>
 
         <Right>

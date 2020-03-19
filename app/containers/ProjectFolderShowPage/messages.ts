@@ -7,15 +7,15 @@ export default defineMessages({
   },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
-    defaultMessage: '????: {title}',
+    defaultMessage: 'Folder: {title}',
   },
   invisibleTitleMainContent: {
     id: 'app.containers.ProjectFolderShowPage.invisibleTitleMainContent',
     defaultMessage: 'Information about this ???',
   },
-  noProjectFoundHere: {
-    id: 'app.containers.ProjectFolderShowPage.noProjectFoundHere',
-    defaultMessage: '{tenantName, select, CQC {Log in to view this ????.} other {There is no ??? here.}}',
+  noFolderFoundHere: {
+    id: 'app.containers.ProjectFolderShowPage.noFolderFoundHere',
+    defaultMessage: '{tenantName, select, CQC {Log in to view this folder.} other {There is no folder here.}}',
   },
   goBackToList: {
     id: 'app.containers.ProjectFolderShowPage.goBackToList',
