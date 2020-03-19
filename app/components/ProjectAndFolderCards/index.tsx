@@ -220,7 +220,7 @@ const ShowMoreButton = styled(Button)``;
 
 interface InputProps extends UseAdminPublicationInputProps {
   showTitle: boolean;
-  layout: 'dynamic' | 'threecolumns';
+  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
 }
 
 interface DataProps {
