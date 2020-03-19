@@ -2,8 +2,8 @@ module Volunteering
   module WebApi
     module V1
       class VolunteersController < VolunteeringController
-        before_action :set_cause
-
+        before_action :set_cause, only: [:index, :create, :destroy]
+        before_action :set_participation_context, only: [:index_xlsx]
         def index
           @volunteers = policy_scope(Volunteer)
             .where(cause: @cause)
@@ -17,6 +17,21 @@ module Volunteering
             params: fastjson_params,
             include: [:user]
           )
+        end
+
+        # GET projects/:project_id/volunteers/as_xlsx
+        # GET phases/:phase_id/volunteers/as_xlsx
+        def index_xlsx
+          authorize [:volunteering, :volunteer], :index_xlsx?
+
+          @volunteers = policy_scope(Volunteer)
+            .joins(:cause)
+            .where(volunteering_causes: {participation_context_id: @participation_context})
+            .includes(:user, :cause)
+
+          xlsx = Volunteering::XlsxService.new.generate_xlsx(@participation_context, @volunteers)
+
+          send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'volunteers.xlsx'
         end
 
         def create
@@ -53,6 +68,16 @@ module Volunteering
 
         def set_cause
           @cause = Cause.find(params[:cause_id])
+        end
+
+        def set_participation_context
+          if params[:project_id]
+            @participation_context = Project.find(params[:project_id])
+          elsif params[:phase_id]
+            @participation_context = Phase.find(params[:phase_id])
+          else
+            head 404
+          end
         end
 
         def secure_controller?
