@@ -296,6 +296,18 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   </ProjectNavbarLink>
                 }
 
+                {/* Volunteering link */}
+                {projectType === 'continuous' && projectMethod === 'volunteering' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/volunteering`}
+                    activeClassName="active"
+                    className="e2e-project-volunteering-link"
+                  >
+                    <ProjectNavbarIcon name="survey" />
+                    <FormattedMessage {...messages.navVolunteering} />
+                  </ProjectNavbarLink>
+                }
+
                 {/* Events link */}
                 {hasEvents &&
                   <ProjectNavbarLink

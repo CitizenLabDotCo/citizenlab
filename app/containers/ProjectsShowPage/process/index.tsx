@@ -11,6 +11,7 @@ import PhaseAbout from './PhaseAbout';
 import PBExpenses from '../pb/PBExpenses';
 import PhaseSurvey from './PhaseSurvey';
 import PhasePolling from './PhasePolling';
+import PhaseVolunteering from './PhaseVolunteering';
 import PhaseIdeas from './PhaseIdeas';
 import EventsPreview from '../EventsPreview';
 import ProjectArchivedIndicator from 'components/ProjectArchivedIndicator';
@@ -98,6 +99,17 @@ const StyledPhasePolling = styled(PhasePolling)`
   `}
 `;
 
+const StyledPhaseVolunteering = styled(PhaseVolunteering)`
+  margin-top: 70px;
+  margin-bottom: 50px;
+
+  ${media.smallerThanMinTablet`
+    margin-top: 0px;
+    margin-bottom: 25px;
+  `}
+`;
+
+
 const StyledPhaseIdeas = styled(PhaseIdeas)`
   margin-top: 95px;
   margin-bottom: 100px;
@@ -184,6 +196,10 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
           <SecondRow>
             <SecondRowContentContainer>
               <StyledPhasePolling
+                projectId={project.id}
+                phaseId={selectedPhaseId}
+              />
+              <StyledPhaseVolunteering
                 projectId={project.id}
                 phaseId={selectedPhaseId}
               />
