@@ -97,6 +97,7 @@ class TenantTemplateService
       @template['models']['email_campaigns/unsubscription_token']  = yml_unsubscription_tokens
       @template['models']['project_folder']                        = yml_project_folders
       @template['models']['project_folder_image']                  = yml_project_folder_images
+      @template['models']['project_folder_file']                   = yml_project_folder_files
       @template['models']['project']                               = yml_projects
       @template['models']['project_file']                          = yml_project_files
       @template['models']['project_image']                         = yml_project_images
@@ -437,6 +438,19 @@ class TenantTemplateService
         'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
         'remote_image_url'   => p.image_url,
         'ordering'           => p.ordering,
+        'created_at'         => p.created_at.to_s,
+        'updated_at'         => p.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_project_files
+    ProjectFolderFile.all.map do |p|
+      {
+        'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
+        'name'               => p.name,
+        'ordering'           => p.ordering,
+        'remote_file_url'    => p.file_url,
         'created_at'         => p.created_at.to_s,
         'updated_at'         => p.updated_at.to_s
       }
