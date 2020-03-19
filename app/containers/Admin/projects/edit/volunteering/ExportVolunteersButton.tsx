@@ -11,6 +11,7 @@ import Button from 'components/UI/Button';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { exportVolunteers } from 'services/volunteers';
 
 interface Props {
   participationContextType: IParticipationContextType;
@@ -32,7 +33,7 @@ export default class ExportVolunteersButton extends React.PureComponent<Props, S
 
   handleExportVolunteers = () => {
     this.setState({ exporting: true });
-    // exportPollResponses(this.props.participationContextId, this.props.participationContextType);
+    exportVolunteers(this.props.participationContextId, this.props.participationContextType);
     this.setState({ exporting: false });
   }
 
