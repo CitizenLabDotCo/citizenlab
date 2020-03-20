@@ -112,6 +112,38 @@ export default () => ({
           }),
         },
         {
+          path: '/:locale/admin/projects/:projectId/volunteering',
+          name: 'admin projects volunteering',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/volunteering'),
+            loading: () => null
+          }),
+        },
+        {
+          path: '/:locale/admin/projects/:projectId/volunteering/causes/new',
+          name: 'admin projects make a new cause in a project',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/volunteering/NewCause'),
+            loading: () => null
+          }),
+        },
+        {
+          path: '/:locale/admin/projects/:projectId/volunteering/phases/:phaseId/causes/new',
+          name: 'admin projects make a new cause in a phase',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/volunteering/NewCause'),
+            loading: () => null
+          }),
+        },
+        {
+          path: '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
+          name: 'admin projects timeline edit',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/edit/volunteering/EditCause'),
+            loading: () => null
+          }),
+        },
+        {
           path: '/:locale/admin/projects/:projectId/timeline',
           name: 'admin projects timeline',
           component: Loadable({

@@ -269,6 +269,15 @@ export default function createRoutes() {
                 delay: 500
               })
             },
+            {
+              path: 'volunteering',
+              name: 'Project\'s volunteering page',
+              component: Loadable({
+                loader: () => import('containers/ProjectsShowPage/volunteering'),
+                loading: LoadableLoadingCitizen,
+                delay: 500
+              })
+            },
           ],
         },
         {
