@@ -279,7 +279,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             onFileAdd={handleProjectFolderFileOnAdd}
             onFileRemove={handleProjectFolderFileOnRemove}
             files={projectFolderFiles}
-          // errors={TODO}
           />
         </SectionField>
         <SubmitWrapper

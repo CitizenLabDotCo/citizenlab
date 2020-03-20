@@ -4,10 +4,13 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import ImageZoom from 'react-medium-image-zoom';
 import Sharing from 'components/Sharing';
+import FileAttachments from 'components/UI/FileAttachments';
 
 // services
 import useProjectFolder from 'hooks/useProjectFolder';
 import useAuthUser from 'hooks/useAuthUser';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
 
 // i18n
 import T from 'components/T';
@@ -20,9 +23,6 @@ import styled, { withTheme } from 'styled-components';
 import { media, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import useProjectFolderImages from 'hooks/useProjectFolderImages';
-import FileAttachments from 'components/UI/FileAttachments';
-import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
 
 const Container = styled.div`
   display: flex;

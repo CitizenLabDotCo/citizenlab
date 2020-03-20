@@ -66,14 +66,6 @@ const Container = styled(Link)`
   }
 
   &.medium {
-    &.threecolumns {
-      ${media.smallerThanMaxTablet`
-      `}
-
-      ${media.smallerThanMinTablet`
-      `}
-    }
-
     width: calc(50% - 13px);
     min-height: 580px;
     padding-left: 30px;
