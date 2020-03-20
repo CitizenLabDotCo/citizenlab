@@ -271,7 +271,7 @@ const MapIconDescription = styled.span`
 export interface InputProps {
   publication: IAdminPublicationContent;
   size: 'small' | 'medium' | 'large';
-  layout?: 'dynamic' | 'threecolumns';
+  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
   className?: string;
 }
 
