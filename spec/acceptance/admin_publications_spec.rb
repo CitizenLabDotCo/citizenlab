@@ -106,7 +106,7 @@ resource "AdminPublication" do
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 3
       end
 
-      example "Listing admin publications with visible child projects takes account with applied filters" do
+      example "Listing admin publications with visible child projects takes account with applied filters", document: false do
         t1 = create(:topic)
 
         p1 = @projects[1]
@@ -115,7 +115,7 @@ resource "AdminPublication" do
 
         create(:project_folder, projects: create_list(:project, 2))
 
-        do_request topics: [t1.id]
+        do_request folder: nil, topics: [t1.id], filter_empty_folders: true
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id]
@@ -167,7 +167,7 @@ resource "AdminPublication" do
       parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
       parameter :filter_empty_folders, "Filter out folders with no visible children for the current user", required: false
 
-      example "Listed admin publications have correct visible children count" do
+      example "Listed admin publications have correct visible children count", document: false do
         do_request(folder: nil)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
