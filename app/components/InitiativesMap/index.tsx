@@ -176,7 +176,6 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
         <Map
           points={points}
           onMarkerClick={this.toggleInitiative}
-          fitBounds={true}
           boxContent={selectedInitiativeId ? <InitiativePreview initiativeId={selectedInitiativeId} /> : null}
           onBoxClose={this.deselectInitiative}
           onMapClick={this.onMapClick}
