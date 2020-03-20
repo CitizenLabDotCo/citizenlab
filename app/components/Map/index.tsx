@@ -227,8 +227,6 @@ class CLMap extends React.PureComponent<Props, State> {
   bindMapContainer = (element: HTMLDivElement | null) => {
     const { tenant, mapConfig, center } = this.props;
 
-    // skips first two blocks for determining initCenter
-
     function getZoom() {
       if (
         !isNilOrError(mapConfig) &&
