@@ -6,10 +6,6 @@ class WebApi::V1::ProjectFolderSerializer < WebApi::V1::BaseSerializer
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
   end
 
-  attribute :projects_count do |object|
-    object.admin_publication&.children_count
-  end
-
   attribute :visible_projects_count do |object, params|
     params.dig(:visible_children_count_by_parent_id, object.admin_publication.id) || Pundit.policy_scope(current_user(params), Project).where(id: object.admin_publication.children.map(&:publication_id)).count
   end
