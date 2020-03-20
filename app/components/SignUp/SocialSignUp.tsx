@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent, MouseEvent } from 'react';
 import { adopt } from 'react-adopt';
 import Link from 'utils/cl-router/Link';
 
@@ -121,9 +121,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class Footer extends React.PureComponent<Props & InjectedIntlProps> {
+class SocialSignUp extends PureComponent<Props & InjectedIntlProps> {
 
-  handleLinkClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  handleLinkClick = (event: MouseEvent<HTMLAnchorElement>) => {
     event.stopPropagation();
   }
 
@@ -146,11 +146,9 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps> {
     const { formatMessage } = this.props.intl;
     const externalLoginsCount = this.externalLoginsCount();
 
-    if (isNilOrError(tenant)) return null;
+    if (!isNilOrError(tenant) && externalLoginsCount > 0) {
+      const azureProviderName = tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name;
 
-    const azureProviderName = tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name;
-
-    if (externalLoginsCount > 0) {
       return (
         <>
           {passwordLoginEnabled &&
@@ -220,7 +218,7 @@ class Footer extends React.PureComponent<Props & InjectedIntlProps> {
   }
 }
 
-const FooterWithInjectedIntl = injectIntl<Props>(Footer);
+const SocialSignUpWithHoC = injectIntl<Props>(SocialSignUp);
 
 const Data = adopt<DataProps, {}>({
   tenant: <GetTenant />,
@@ -233,6 +231,6 @@ const Data = adopt<DataProps, {}>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <FooterWithInjectedIntl {...inputProps} {...dataProps} />}
+    {dataProps => <SocialSignUpWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

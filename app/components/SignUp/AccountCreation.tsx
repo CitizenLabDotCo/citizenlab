@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { set, keys, difference, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
@@ -132,7 +132,7 @@ type State = {
   emailInvitationTokenInvalid: boolean;
 };
 
-class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
+class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
   firstNameInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {
@@ -488,10 +488,10 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
 });
 
-const Step1WithHocs = injectIntl<Props>(Step1);
+const AccountCreationWithHoC = injectIntl<Props>(AccountCreation);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <Step1WithHocs {...inputProps} {...dataprops} />}
+    {dataprops => <AccountCreationWithHoC {...inputProps} {...dataprops} />}
   </Data>
 );

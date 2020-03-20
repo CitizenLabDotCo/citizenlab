@@ -8,9 +8,9 @@ import clHistory from 'utils/cl-router/history';
 import { stringify, parse } from 'qs';
 
 // components
-import Step1 from './Step1';
+import AccountCreation from './AccountCreation';
 import VerificationSteps from 'components/Verification/VerificationSteps';
-import Step3 from './Step3';
+import CustomFields from './CustomFields';
 import SocialSignUp from './SocialSignUp';
 import FeatureFlag from 'components/FeatureFlag';
 import Error from 'components/UI/Error';
@@ -169,19 +169,24 @@ export function convertActionToUrlSearchParams(action: IAction) {
   return stringify(action, { addQueryPrefix: true });
 }
 
-export type TSignUpSteps = 'account-creation' | 'verification' | 'custom-fields';
+export type TSignUpSteps = 'provider-selection' | 'password-signup' | 'verification' | 'custom-fields';
 
-interface InputProps {
-  initialActiveStep: TSignUpSteps | null;
+interface DefaultProps {
+  initialActiveStep?: TSignUpSteps | null;
+}
+
+export interface InputProps extends DefaultProps {
   inModal: boolean;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
-  step1Title?: string | JSX.Element;
-  step2Title?: string | JSX.Element;
-  step3Title?: string | JSX.Element;
+  accountCreationTitle?: string | JSX.Element;
+  verificationTitle?: string | JSX.Element;
+  customFieldsTitle?: string | JSX.Element;
   action?: IAction | null;
   error?: boolean;
   onSignUpCompleted: () => void;
+  onGoToSignIn: () => void;
+  className?: string;
 }
 
 interface DataProps {
@@ -200,10 +205,14 @@ interface State {
 class SignUp extends PureComponent<Props, State> {
   subscription: Subscription | undefined;
 
+  static defaultProps: DefaultProps = {
+    initialActiveStep: 'password-signup'
+  };
+
   constructor(props: Props) {
     super(props);
     this.state = {
-      activeStep: props.initialActiveStep,
+      activeStep: props.initialActiveStep as TSignUpSteps,
       userId: null,
       error: false
     };
@@ -218,7 +227,7 @@ class SignUp extends PureComponent<Props, State> {
       const hasVerificationStep = action?.action_requires_verification;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
-      if (activeStep === 'account-creation' && hasVerificationStep) {
+      if (activeStep === 'password-signup' && hasVerificationStep) {
         this.setState({ activeStep: 'verification' });
       } else if (hasCustomFields) {
         this.setState({ activeStep: 'custom-fields' });
@@ -268,11 +277,11 @@ class SignUp extends PureComponent<Props, State> {
 
   render() {
     const { activeStep, error } = this.state;
-    const { isInvitation, inModal, token, step1Title, step2Title, step3Title, action, tenant } = this.props;
+    const { isInvitation, inModal, token, accountCreationTitle, verificationTitle, customFieldsTitle, action, tenant, className } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
-      <Container className="e2e-sign-up-container">
+      <Container className={`e2e-sign-up-container ${className}`}>
         <ContainerInner>
           {error ? (
             <>
@@ -283,14 +292,14 @@ class SignUp extends PureComponent<Props, State> {
             </>
           ) : (
             <TransitionGroup>
-              {activeStep === 'account-creation' &&
+              {activeStep === 'password-signup' &&
                 <CSSTransition
                   timeout={timeout}
                   classNames="step"
                 >
                   <StepContainer>
                     <Title>
-                      {step1Title || <FormattedMessage {...messages.step1Title} />}
+                      {accountCreationTitle || <FormattedMessage {...messages.accountCreationTitle} />}
                     </Title>
 
                     {!isEmpty(signupHelperText) &&
@@ -300,7 +309,7 @@ class SignUp extends PureComponent<Props, State> {
                     }
 
                     <FeatureFlag name="password_login">
-                      <Step1
+                      <AccountCreation
                         isInvitation={isInvitation}
                         token={token}
                         onCompleted={this.handleStep1Completed}
@@ -323,7 +332,7 @@ class SignUp extends PureComponent<Props, State> {
                   classNames="step"
                 >
                   <StepContainer>
-                    <Title>{step2Title || <FormattedMessage {...messages.step2Title} />}</Title>
+                    <Title>{verificationTitle || <FormattedMessage {...messages.verificationTitle} />}</Title>
                     <VerificationSteps
                       context={null}
                       initialActiveStep="method-selection"
@@ -341,8 +350,8 @@ class SignUp extends PureComponent<Props, State> {
                   classNames="step"
                 >
                   <StepContainer>
-                    <Title>{step3Title || <FormattedMessage {...messages.step3Title} />}</Title>
-                    <Step3 onCompleted={this.handleStep3Completed} />
+                    <Title>{customFieldsTitle || <FormattedMessage {...messages.customFieldsTitle} />}</Title>
+                    <CustomFields onCompleted={this.handleStep3Completed} />
                   </StepContainer>
                 </CSSTransition>
               }
@@ -356,7 +365,7 @@ class SignUp extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  customFieldsSchema: <GetCustomFieldsSchema />,
+  customFieldsSchema: <GetCustomFieldsSchema />
 });
 
 export default (inputProps: InputProps) => (

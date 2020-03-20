@@ -161,8 +161,10 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
       const hasVerificationStep = action?.action_requires_verification;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
+      // export type TSignUpSteps = 'provider-selection' | 'password-signup' | 'verification' | 'custom-fields';
+
       if (!authUser) {
-        initialActiveStep = 'account-creation';
+        initialActiveStep = 'password-signup';
       } else if (hasVerificationStep) {
         initialActiveStep = 'verification';
       } else if (hasCustomFields) {
@@ -185,7 +187,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
                 <SignUp
                   initialActiveStep={initialActiveStep}
                   inModal={false}
-                  step1Title={title}
+                  accountCreationTitle={title}
                   isInvitation={isInvitation}
                   token={token}
                   action={action}
