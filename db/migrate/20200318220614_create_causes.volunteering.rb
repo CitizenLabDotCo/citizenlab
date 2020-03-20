@@ -8,7 +8,7 @@ class CreateCauses < ActiveRecord::Migration[6.0]
       t.jsonb :description_multiloc, default: {}, null: false
       t.integer :volunteers_count, null: false, default: 0
       t.string :image, null: true
-      t.integer :ordering, null: false
+      t.integer :ordering, null: false, index: true
 
       t.timestamps
       t.index ["participation_context_type", "participation_context_id"], name: "index_volunteering_causes_on_participation_context"
