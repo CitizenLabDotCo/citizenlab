@@ -13,6 +13,8 @@ import LazyImage from 'components/LazyImage';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import Warning from 'components/UI/Warning';
+import Link from 'utils/cl-router/Link';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
@@ -138,6 +140,8 @@ const CauseCard = memo<Props>(({ cause, className }) => {
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+  const signUpLink = <Link to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></Link>;
+  const signInLink = <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>;
 
   const handleOnVolunteerButtonClick = useCallback(() => {
     if (cause.relationships?.user_volunteer?.data) {
@@ -179,17 +183,23 @@ const CauseCard = memo<Props>(({ cause, className }) => {
         </Content>
 
         <ActionWrapper>
-          <Button
-            onClick={handleOnVolunteerButtonClick}
-            icon={!isVolunteer ? 'volunteer-hand' : 'unvolunteer-hand'}
-            disabled={!authUser}
-            buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
-            fullWidth={smallerThanSmallTablet}
-          >
-            {isVolunteer
-              ? <FormattedMessage {...messages.withdrawVolunteerButton} />
-              : <FormattedMessage {...messages.becomeVolunteerButton} />}
-          </Button>
+          {!authUser ? (
+            <Warning>
+              <FormattedMessage {...messages.notLoggedIn} values={{ signUpLink, signInLink }} />
+            </Warning>
+          ) : (
+            <Button
+              onClick={handleOnVolunteerButtonClick}
+              icon={!isVolunteer ? 'volunteer-hand' : 'unvolunteer-hand'}
+              disabled={!authUser}
+              buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
+              fullWidth={smallerThanSmallTablet}
+            >
+              {isVolunteer
+                ? <FormattedMessage {...messages.withdrawVolunteerButton} />
+                : <FormattedMessage {...messages.becomeVolunteerButton} />}
+            </Button>
+          )}
         </ActionWrapper>
       </Right>
     </Container>
