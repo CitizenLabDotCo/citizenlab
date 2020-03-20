@@ -1,5 +1,10 @@
 # Changelog
 
+## 2020-03-20
+
+### Added
+- Volunteering as a new participation method
+
 ## 2020-03-16
 
 ### Fixed
