@@ -4,8 +4,9 @@ module ParticipationContext
   extend ActiveSupport::Concern
   include Surveys::SurveyParticipationContext
   include Polls::PollParticipationContext
+  include Volunteering::VolunteeringParticipationContext
 
-  PARTICIPATION_METHODS = %w(information ideation survey budgeting poll)
+  PARTICIPATION_METHODS = %w(information ideation survey budgeting poll volunteering)
   VOTING_METHODS = %w(unlimited limited)
   PRESENTATION_MODES = %w(card map)
 
