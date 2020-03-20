@@ -99,7 +99,7 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
         <ActionsRowContainer>
           <RowButton
             className={`e2e-admin-edit-project ${publication.attributes.publication_title_multiloc['en-GB'] || ''}`}
-            linkTo={`/admin/adminPublications/folders/${publication.publicationId}`}
+            linkTo={`/admin/projects/folders/${publication.publicationId}`}
             buttonStyle="secondary"
             icon="edit"
           >
