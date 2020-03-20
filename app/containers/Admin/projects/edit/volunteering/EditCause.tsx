@@ -4,6 +4,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 import { convertUrlToUploadFile } from 'utils/fileTools';
+import eventEmitter from 'utils/eventEmitter';
 
 // Services
 import { updateCause } from 'services/causes';
@@ -28,6 +29,7 @@ import styled from 'styled-components';
 
 // Typing
 import { Multiloc, Locale, UploadFile } from 'typings';
+import { SetBackButtonUrl, setBackButtonUrlEventName } from 'containers/Admin/projects/edit';
 
 const Container = styled.div``;
 
@@ -59,6 +61,21 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
     description_multiloc: null,
     image: null,
   });
+
+  useEffect(() => {
+    eventEmitter.emit<SetBackButtonUrl>(
+      'EditCause',
+      setBackButtonUrlEventName,
+      `/admin/projects/${projectId}/volunteering`
+    );
+    return () => {
+      eventEmitter.emit<SetBackButtonUrl>(
+        'EditCause',
+        setBackButtonUrlEventName,
+        null
+      );
+    };
+  }, []);
 
   // Load the API cause object in the local form values
   useEffect(() => {
