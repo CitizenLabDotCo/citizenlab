@@ -26,6 +26,8 @@ import IconTooltip from 'components/UI/IconTooltip';
 import FileUploader from 'components/UI/FileUploader';
 import { addProjectFolderFile, deleteProjectFolderFile } from 'services/projectFolderFiles';
 import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import Radio from 'components/UI/Radio';
+import useAdminPublication from 'hooks/useAdminPublication';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -37,6 +39,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
+  const adminPublication = useAdminPublication(!isNilOrError(projectFolder) ? projectFolder.relationships.admin_publication.data ?.id || null : null);
 
   useEffect(() => {
     (async function iife() {
@@ -44,6 +47,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
         setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
         setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
+        setPublicationStatus(!isNilOrError(adminPublication) ? adminPublication.attributes.publication_status : 'published');
         if (projectFolder.attributes ?.header_bg ?.large) {
           const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
           setHeaderBg(headerFile);
@@ -63,13 +67,14 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       }
     }
     )();
-  }, [projectFolder, projectFolderImagesRemote, projectFolderFilesRemote, mode]);
+  }, [projectFolder, projectFolderImagesRemote, projectFolderFilesRemote, mode, adminPublication]);
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] = useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] = useState<Multiloc | null>(null);
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
+  const [publicationStatus, setPublicationStatus] = useState<'published' | 'draft' | 'archived'>('published');
   const [changedHeaderBg, setChangedHeaderBg] = useState(false);
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>([]);
   const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] = useState<string[]>([]);
@@ -151,8 +156,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               title_multiloc: titleMultiloc,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
-              header_bg: headerBg ?.base64
-              });
+              header_bg: headerBg ?.base64,
+              admin_publication_attributes: {
+                publication_status: publicationStatus
+              }
+            });
             if (!isNilOrError(res)) {
               const imagesToAddPromises = projectFolderImages.map(file => addProjectFolderImage(res.id, file.base64));
               const filesToAddPromises = projectFolderFiles.map(file => addProjectFolderFile(res.id, file.base64, file.name));
@@ -182,13 +190,17 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const changedTitleMultiloc = !isEqual(titleMultiloc, projectFolder.attributes.title_multiloc);
             const changedDescriptionMultiloc = !isEqual(descriptionMultiloc, projectFolder.attributes.description_multiloc);
             const changedShortDescriptionMultiloc = !isEqual(shortDescriptionMultiloc, projectFolder.attributes.description_preview_multiloc);
+            const changedPublicationStatus = isNilOrError(adminPublication) || !isEqual(publicationStatus, adminPublication.attributes.publication_status);
 
-            if (changedTitleMultiloc || changedDescriptionMultiloc || changedShortDescriptionMultiloc || changedHeaderBg) {
+            if (changedTitleMultiloc || changedDescriptionMultiloc || changedShortDescriptionMultiloc || changedHeaderBg || changedPublicationStatus) {
               const res = await updateProjectFolder(projectFolderId, {
                 title_multiloc: changedTitleMultiloc ? titleMultiloc : undefined,
                 description_multiloc: changedDescriptionMultiloc ? descriptionMultiloc : undefined,
                 description_preview_multiloc: changedShortDescriptionMultiloc ? shortDescriptionMultiloc : undefined,
-                header_bg: changedHeaderBg ? headerBg ?.base64 : undefined
+                header_bg: changedHeaderBg ? headerBg ?.base64 : undefined,
+                admin_publication_attributes: {
+                  publication_status: publicationStatus
+                }
               });
 
               if (isNilOrError(res)) {
@@ -212,6 +224,39 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   return (
     <form onSubmit={onSubmit}>
       <Section>
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.statusLabel} />
+            <IconTooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
+          </Label>
+          <Radio
+            onChange={getHandler(setPublicationStatus)}
+            currentValue={publicationStatus}
+            value="draft"
+            name="projectstatus"
+            id="projecstatus-draft"
+            className="e2e-projecstatus-draft"
+            label={<FormattedMessage {...messages.draftStatus} />}
+          />
+          <Radio
+            onChange={getHandler(setPublicationStatus)}
+            currentValue={publicationStatus}
+            value="published"
+            name="projectstatus"
+            id="projecstatus-published"
+            className="e2e-projecstatus-published"
+            label={<FormattedMessage {...messages.publishedStatus} />}
+          />
+          <Radio
+            onChange={getHandler(setPublicationStatus)}
+            currentValue={publicationStatus}
+            value="archived"
+            name="projectstatus"
+            id="projecstatus-archived"
+            className="e2e-projecstatus-archived"
+            label={<FormattedMessage {...messages.archivedStatus} />}
+          />
+        </SectionField>
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             valueMultiloc={titleMultiloc}

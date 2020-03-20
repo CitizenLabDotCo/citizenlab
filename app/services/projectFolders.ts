@@ -1,9 +1,10 @@
-import { Multiloc, ImageSizes } from 'typings';
+import { Multiloc, ImageSizes, IRelationship } from 'typings';
 
 import streams, { IStreamParams } from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { API_PATH } from 'containers/App/constants';
+import { PublicationStatus } from './projects';
 const apiEndpoint = `${API_PATH}/project_folders`;
 
 export interface IProjectFolderDiff {
@@ -11,6 +12,9 @@ export interface IProjectFolderDiff {
   description_multiloc: Multiloc; // HTML
   description_preview_multiloc: Multiloc; // Text
   header_bg?: string;
+  admin_publication_attributes: {
+    publication_status: PublicationStatus;
+  };
 }
 
 export interface IProjectFolderData {
@@ -22,10 +26,14 @@ export interface IProjectFolderData {
     description_preview_multiloc: Multiloc; // Text
     slug: string;
     header_bg?: ImageSizes;
+    publication_status: PublicationStatus;
   };
   relationships: {
     projects: {
       data: { id: string, type: 'project' }[];
+    },
+    admin_publication: {
+      data: IRelationship | null;
     }
   };
 }

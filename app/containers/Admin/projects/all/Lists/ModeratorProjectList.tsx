@@ -48,7 +48,7 @@ const ModeratorProjectList = memo<Props>(({ projects }) => {
                   id={project.id}
                   lastItem={(index === projectsList.length - 1)}
                 >
-                  <GetAdminPublication adminPublicationId={project.relationships.admin_publication ?.data ?.id}>
+                  <GetAdminPublication adminPublicationId={project.relationships.admin_publication ?.data ?.id || null}>
                     {({ adminPublication }) => !isNilOrError(adminPublication) ? <ProjectRow publication={{ ...adminPublication, publicationId: project.id, publicationType: 'project' }} /> : null}
                   </GetAdminPublication>
                 </Row>

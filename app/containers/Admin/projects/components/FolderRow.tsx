@@ -25,6 +25,7 @@ import { adopt } from 'react-adopt';
 import ProjectRow from './ProjectRow';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
+import PublicationStatusLabel from './PublicationStatusLabel';
 
 const ArrowIcon = styled(Icon) <({ expanded: boolean }) >`
   flex: 0 0 11px;
@@ -95,6 +96,9 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
           {hasProjects && <ArrowIcon expanded={hasProjects && folderOpen} name="chevron-right" />}
           <FolderIcon name="simpleFolder" />
           <RowTitle value={publication.attributes.publication_title_multiloc} />
+          <PublicationStatusLabel
+            publicationStatus={publication.attributes.publication_status}
+          />
         </RowContentInner>
         <ActionsRowContainer>
           <RowButton
