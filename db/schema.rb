@@ -35,7 +35,6 @@ ActiveRecord::Schema.define(version: 2020_03_19_101312) do
     t.uuid "parent_id"
     t.integer "lft", null: false
     t.integer "rgt", null: false
-    t.integer "children_count", default: 0, null: false
     t.integer "ordering"
     t.string "publication_status", default: "published", null: false
     t.uuid "publication_id"
