@@ -96,7 +96,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     saved = nil
     ActiveRecord::Base.transaction do
       saved = @project.save
-      set_folder! project_params[:folder_id] if saved && project_params.key?(:folder_id)
+      @project.set_folder! project_params[:folder_id] if saved && project_params.key?(:folder_id)
     end
     if saved
       SideFxProjectService.new.after_update(@project, current_user)
@@ -131,18 +131,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   def set_project
     @project = Project.find params[:id]
     authorize @project
-  end
-
-  def set_folder! folder_id
-    parent = if folder_id.present?
-      AdminPublication.find_by!(
-        publication_id: folder_id, 
-        publication_type: ProjectFolder.name
-        )
-    else
-      nil
-    end
-    AdminPublication.where(publication: @project).first.update!(parent_id: parent&.id)
   end
 
 end
