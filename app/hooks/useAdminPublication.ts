@@ -3,11 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { adminPublicationByIdStream, IAdminPublicationData } from 'services/adminPublications';
 
-export interface Props {
-  adminPublicationId?: string | null;
-}
-
-export default function useAdminPublication({ adminPublicationId }: Props) {
+export default function useAdminPublication(adminPublicationId: string | null) {
   const [adminPublication, setAdminPublication] = useState<IAdminPublicationData | undefined | null | Error>(undefined);
 
   useEffect(() => {
