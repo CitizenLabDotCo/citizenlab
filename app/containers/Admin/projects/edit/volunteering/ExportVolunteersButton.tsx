@@ -1,20 +1,17 @@
 // Libraries
 import React from 'react';
 
-// analytics
-import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
-
 // typings
 import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
-import { exportPollResponses } from 'services/pollResponses';
+// import { exportPollResponses } from 'services/pollResponses';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+import { exportVolunteers } from 'services/volunteers';
 
 interface Props {
   participationContextType: IParticipationContextType;
@@ -26,7 +23,7 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportPollButton extends React.PureComponent<Props, State> {
+export default class ExportVolunteersButton extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -34,15 +31,9 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
     };
   }
 
-  trackExportPoll = () => {
-    trackEventByName(tracks.clickExportPoll.name, { extra: { ...this.props } });
-  }
-
-  handleExportPollResults = async () => {
-    this.trackExportPoll();
-
+  handleExportVolunteers = async () => {
     this.setState({ exporting: true });
-    await exportPollResponses(this.props.participationContextId, this.props.participationContextType);
+    await exportVolunteers(this.props.participationContextId, this.props.participationContextType);
     this.setState({ exporting: false });
   }
 
@@ -53,11 +44,11 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
       <Button
         buttonStyle="secondary"
         icon="download"
-        onClick={this.handleExportPollResults}
+        onClick={this.handleExportVolunteers}
         processing={exporting}
         className={className}
       >
-        <FormattedMessage {...messages.exportPollResults} />
+        <FormattedMessage {...messages.exportVolunteers} />
       </Button>
     );
   }

@@ -10,7 +10,7 @@ import { colors } from 'utils/styleUtils';
 
 const Image = styled.img`
   background: ${colors.placeholderBg};
-  transition: opacity 200ms ease-out;
+  transition: opacity 150ms ease-out;
   opacity: 0;
 
   &.loaded {
@@ -66,7 +66,10 @@ export default class LazyImage extends PureComponent<Props, State> {
       const style = cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
 
       return (
-        <Observer onChange={this.handleIntersection}>
+        <Observer
+          rootMargin="200px"
+          onChange={this.handleIntersection}
+        >
           <Image
             src={visible ? src : undefined}
             alt={alt}
