@@ -57,7 +57,7 @@ const AllCauses = ({ participationContextType , participationContextId, projectI
 
     if (cause && cause.attributes.ordering !== toIndex) {
       setIsProcessing(true);
-      reorderCause(causeId, toIndex).then(() => setIsProcessing(false));
+      reorderCause(causeId, toIndex).finally(() => setIsProcessing(false));
     } else {
       setItemsWhileDragging(null);
     }
@@ -71,7 +71,7 @@ const AllCauses = ({ participationContextType , participationContextId, projectI
       if (window.confirm(deleteMessage)) {
         setItemsWhileDragging(null);
         setIsProcessing(true);
-        deleteCause(cause.id).then(() => {
+        deleteCause(cause.id).finally(() => {
           setIsProcessing(false);
         });
       }

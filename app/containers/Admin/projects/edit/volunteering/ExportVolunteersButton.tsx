@@ -31,9 +31,9 @@ export default class ExportVolunteersButton extends React.PureComponent<Props, S
     };
   }
 
-  handleExportVolunteers = () => {
+  handleExportVolunteers = async () => {
     this.setState({ exporting: true });
-    exportVolunteers(this.props.participationContextId, this.props.participationContextType);
+    await exportVolunteers(this.props.participationContextId, this.props.participationContextType);
     this.setState({ exporting: false });
   }
 

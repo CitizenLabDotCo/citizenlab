@@ -38,11 +38,11 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
     trackEventByName(tracks.clickExportPoll.name, { extra: { ...this.props } });
   }
 
-  handleExportPollResults = () => {
+  handleExportPollResults = async () => {
     this.trackExportPoll();
 
     this.setState({ exporting: true });
-    exportPollResponses(this.props.participationContextId, this.props.participationContextType);
+    await exportPollResponses(this.props.participationContextId, this.props.participationContextType);
     this.setState({ exporting: false });
   }
 
