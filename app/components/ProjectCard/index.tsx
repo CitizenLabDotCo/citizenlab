@@ -433,7 +433,7 @@ const MetaItemText = styled.div`
 export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
-  layout?: 'dynamic' | 'threecolumns';
+  layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
   className?: string;
 }
 
