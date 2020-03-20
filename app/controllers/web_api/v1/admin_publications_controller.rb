@@ -2,7 +2,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
   before_action :set_admin_publication, only: [:reorder]
 
   def index
-    @publications = policy_scope(AdminPublication).includes(:publication)
+    @publications = policy_scope(AdminPublication).includes(:publication, :children)
 
     @publications = @publications.where(publication_type: ProjectFolder.name)
       .or(@publications.where(publication: ProjectsFilteringService.new.apply_common_index_filters(
