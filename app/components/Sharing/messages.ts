@@ -29,7 +29,7 @@ export default defineMessages({
   },
   shareThisFolder: {
     id: 'app.components.Sharing.shareThisFolder',
-    defaultMessage: 'Share this folder',
+    defaultMessage: 'Share',
   },
   shareThisIdea: {
     id: 'app.components.Sharing.shareThisIdea',
