@@ -27,6 +27,8 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import { IProjectData } from 'services/projects';
+import { Subscription } from 'rxjs';
+import eventEmitter from 'utils/eventEmitter';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -50,6 +52,9 @@ interface ITracks {
   clickNewIdea: ({ extra: object }) => void;
 }
 
+export type SetBackButtonUrl = string | null;
+export const setBackButtonUrlEventName = 'setBackButtonUrl';
+
 export interface InputProps {}
 
 interface DataProps {
@@ -59,11 +64,34 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface State {}
+interface State {
+  backButtonUrl: string | null;
+}
 
 interface Props extends InputProps, DataProps { }
 
 export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps & ITracks, State> {
+  subscriptions: Subscription[];
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      backButtonUrl: null,
+    };
+    this.subscriptions = [];
+  }
+
+  componentDidMount() {
+    this.subscriptions = [
+      eventEmitter.observeEvent<SetBackButtonUrl>(setBackButtonUrlEventName).subscribe(({ eventValue: backButtonUrl }) => {
+        this.setState({ backButtonUrl });
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
 
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
@@ -169,15 +197,21 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
   }
 
   goBack = () => {
-    const currentPath = location.pathname;
-    const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
-    const newPath = currentPath.replace(lastUrlSegment, '').replace(/\/$/, '');
-    const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
-
-    if (newLastUrlSegment === this.props.params.projectId) {
-      clHistory.push('/admin/projects');
+    const { backButtonUrl } = this.state;
+    if (backButtonUrl) {
+      clHistory.push(backButtonUrl);
     } else {
-      clHistory.push(newPath);
+      // Automated fallback where we simply drop the last url segment
+      const currentPath = location.pathname;
+      const lastUrlSegment = currentPath.substr(currentPath.lastIndexOf('/') + 1);
+      const newPath = currentPath.replace(lastUrlSegment, '').replace(/\/$/, '');
+      const newLastUrlSegment = newPath.substr(newPath.lastIndexOf('/') + 1);
+
+      if (newLastUrlSegment === this.props.params.projectId) {
+        clHistory.push('/admin/projects');
+      } else {
+        clHistory.push(newPath);
+      }
     }
   }
 
