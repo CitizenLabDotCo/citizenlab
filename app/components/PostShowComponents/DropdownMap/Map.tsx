@@ -3,9 +3,10 @@ import Map from 'components/Map';
 
 export interface Props {
   position: GeoJSON.Point;
+  projectId?: string | null;
 }
 
-const MapComponent = memo<Props>(({ position }) => {
+const MapComponent = memo<Props>(({ position, projectId }) => {
   const points: any = [{ ...position }];
   const center = position.coordinates;
 
@@ -14,6 +15,7 @@ const MapComponent = memo<Props>(({ position }) => {
       points={points}
       center={center}
       mapHeight={400}
+      projectId={projectId}
     />
   );
 });

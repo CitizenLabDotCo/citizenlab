@@ -184,10 +184,10 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           points={points}
           onMarkerClick={this.toggleIdea}
           onMapClick={this.onMapClick}
-          fitBounds={true}
           boxContent={selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null}
           onBoxClose={this.deselectIdea}
           mapHeight={mapHeight}
+          projectId={projectIds && projectIds.length === 1 ? projectIds[0] : null}
         />
 
         {projectIds && projectIds.length === 1 &&

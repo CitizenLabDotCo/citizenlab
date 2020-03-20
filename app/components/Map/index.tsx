@@ -1,9 +1,8 @@
 import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { compact, get, isNil } from 'lodash-es';
+import { compact, /* get,*/ isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-const seattleJson = require('./Seattle.json');
-import { style } from './colors';
+// import { style } from './colors';
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
@@ -11,6 +10,7 @@ import Icon from 'components/UI/Icon';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
 // Map
 import Leaflet from 'leaflet';
@@ -172,10 +172,12 @@ export interface InputProps {
   fitBounds?: boolean;
   className?: string;
   mapHeight: number;
+  projectId?: string | null;
 }
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  mapConfig: GetMapConfigChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -223,40 +225,94 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   bindMapContainer = (element: HTMLDivElement | null) => {
-    const { tenant, center } = this.props;
+    const { tenant, mapConfig, center } = this.props;
 
-    if (element && !isNilOrError(tenant) && !this.map) {
+    function getZoom() {
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.zoom_level
+      ) {
+        return parseFloat(mapConfig.attributes.zoom_level);
+       } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
+        return tenant.attributes.settings.maps.zoom_level;
+      } else {
+        return 15;
+      }
+    }
+
+    function getTileProvider() {
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.tile_provider
+      ) {
+        return mapConfig.attributes.tile_provider;
+      } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
+        return tenant.attributes.settings.maps.tile_provider;
+      } else {
+        return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      }
+    }
+
+    function getInitCenter() {
       let initCenter: [number, number] = [0, 0];
 
-      if (center && center !== [0, 0]) {
+      if (
+        center && center !== [0, 0]
+      ) {
         initCenter = [center[1], center[0]];
-      } else if (tenant.attributes.settings.maps) {
+      } else if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.center_geojson
+      ) {
+        const [longitude, latitude] = mapConfig.attributes.center_geojson.coordinates;
+        initCenter = [latitude, longitude];
+      } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
         initCenter = [
           parseFloat(tenant.attributes.settings.maps.map_center.lat),
           parseFloat(tenant.attributes.settings.maps.map_center.long),
         ];
       }
 
-      const baseLayer = Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      return initCenter;
+    }
+
+    if (element && !this.map) {
+      const zoom = getZoom();
+      const tileProvider = getTileProvider();
+      const initCenter = getInitCenter();
+
+      const baseLayer = Leaflet.tileLayer(tileProvider, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       });
 
-      const geoJsonLayer = Leaflet.geoJSON(seattleJson, { style });
+      // const geoJsonLayer = Leaflet.geoJSON(seattleJson, { style });
 
       // Init the map
       this.map = Leaflet.map(element, {
+        zoom,
         center: initCenter,
-        zoom: get(tenant, 'attributes.settings.maps.zoom_level', 15),
         maxZoom: 17,
-        layers: [baseLayer, geoJsonLayer]
+        layers: [baseLayer/*, geoJsonLayer*/]
       });
 
-      const overlayMaps = {
-        Disadvantage: geoJsonLayer
-      };
+      // const overlayMaps = {
+      //   Disadvantage: geoJsonLayer
+      // };
 
-      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+      // Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
       this.map.on('overlayadd', () => {
         this.setState({ showLegend: true });
@@ -293,7 +349,12 @@ class CLMap extends React.PureComponent<Props, State> {
       return Leaflet.marker(latlng, markerOptions);
     });
 
-    if (bounds && bounds.length > 0 && this.props.fitBounds && !this.state.initiated) {
+    if (
+      bounds && bounds.length > 0 &&
+      this.props.fitBounds &&
+      !this.state.initiated &&
+      this.map
+    ) {
       this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
       this.setState({ initiated: true });
     }
@@ -339,7 +400,8 @@ class CLMap extends React.PureComponent<Props, State> {
       tenant,
       boxContent,
       className,
-      mapHeight
+      mapHeight,
+      mapConfig
     } = this.props;
     const { showLegend } = this.state;
 
@@ -367,7 +429,7 @@ class CLMap extends React.PureComponent<Props, State> {
       },
     ];
 
-    if (!isNilOrError(tenant)) {
+    if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
       return (
         <Container className={className}>
           <MapContainer>
@@ -414,7 +476,10 @@ class CLMap extends React.PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
+  mapConfig: ({ projectId, render }) => projectId ? (
+    <GetMapConfig projectId={projectId}>{render}</GetMapConfig>
+  ) : null,
 });
 
 export default (inputProps: InputProps) => (
@@ -425,3 +490,5 @@ export default (inputProps: InputProps) => (
 
 // TODO: clean up code
 // TODO: extract Legend component
+// TODO: console error landing page
+// TODO: listen to different layers
