@@ -2,7 +2,7 @@ class WebApi::V1::ProjectFoldersController < ApplicationController
   before_action :set_project_folder, only: [:show, :update, :destroy]
 
   def index
-    @project_folders = policy_scope(ProjectFolder).includes(:admin_publication, :project_folder_images)
+    @project_folders = policy_scope(ProjectFolder).includes(:project_folder_images, admin_publication: [:children])
     @project_folders = @project_folders.where(id: params[:filter_ids]) if params[:filter_ids]
 
     @project_folders = @project_folders

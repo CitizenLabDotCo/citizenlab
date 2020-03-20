@@ -34,6 +34,5 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
   belongs_to :publication, polymorphic: true
   belongs_to :parent, record_type: :admin_publication
 
-  # N+1 query problem
   has_many :children, record_type: :admin_publication
 end
