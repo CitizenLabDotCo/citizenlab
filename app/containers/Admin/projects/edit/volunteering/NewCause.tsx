@@ -1,7 +1,8 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 import { isEmpty } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
+import eventEmitter from 'utils/eventEmitter';
 
 // Services
 import { addCause } from 'services/causes';
@@ -25,6 +26,7 @@ import styled from 'styled-components';
 
 // Typing
 import { Multiloc, Locale, UploadFile } from 'typings';
+import { SetBackButtonUrl, setBackButtonUrlEventName } from 'containers/Admin/projects/edit';
 
 const Container = styled.div``;
 
@@ -59,6 +61,21 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
 
   const participationContextType = phaseId ? 'phase' : 'project';
   const participationContextId = phaseId || projectId;
+
+  useEffect(() => {
+    eventEmitter.emit<SetBackButtonUrl>(
+      'NewCause',
+      setBackButtonUrlEventName,
+      `/admin/projects/${projectId}/volunteering`
+    );
+    return () => {
+      eventEmitter.emit<SetBackButtonUrl>(
+        'NewCause',
+        setBackButtonUrlEventName,
+        null
+      );
+    };
+  }, []);
 
   const handleTitleOnChange = useCallback((title_multiloc: Multiloc) => {
     setTouched(true);
