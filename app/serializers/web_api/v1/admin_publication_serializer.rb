@@ -24,11 +24,16 @@ class WebApi::V1::AdminPublicationSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :visible_children_count do |object, params|
-    params.dig(:visible_children_count_by_parent_id, object.id) || Pundit.policy_scope(current_user(params), Project).where(id: object.children.map(&:publication_id)).count
+    if params.key? :visible_children_count_by_parent_id
+      params.dig(:visible_children_count_by_parent_id, object.id) || 0
+    else
+      Pundit.policy_scope(current_user(params), Project).where(id: object.children.map(&:publication_id)).count
+    end
   end
 
   belongs_to :publication, polymorphic: true
   belongs_to :parent, record_type: :admin_publication
 
+  # N+1 query problem
   has_many :children, record_type: :admin_publication
 end
