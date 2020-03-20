@@ -105,6 +105,21 @@ resource "AdminPublication" do
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 3
       end
+
+      example "Listing admin publications with visible child projects takes account with applied filters" do
+        t1 = create(:topic)
+
+        p1 = @projects[1]
+        p1.topics << t1
+        p1.save!
+
+        create(:project_folder, projects: create_list(:project, 2))
+
+        do_request topics: [t1.id]
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 1
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id]
+      end
     end
 
     patch "web_api/v1/admin_publications/:id/reorder" do

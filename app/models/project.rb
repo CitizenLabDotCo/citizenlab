@@ -115,6 +115,18 @@ class Project < ApplicationRecord
     admin_publication.parent&.publication
   end
 
+  def set_folder! folder_id
+    parent = if folder_id.present?
+      AdminPublication.find_by!(
+        publication_id: folder_id, 
+        publication_type: ProjectFolder.name
+        )
+    else
+      nil
+    end
+    AdminPublication.where(publication: self).first.update!(parent_id: parent&.id)
+  end
+
   def allocated_budget
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
