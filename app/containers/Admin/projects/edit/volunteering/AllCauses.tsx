@@ -111,9 +111,9 @@ const AllCauses = ({ participationContextType , participationContextId, projectI
               <TextCell className="expand">
                 <T value={cause.attributes.title_multiloc} />
               </TextCell>
-              <TextCell>
+              <div>
                 <FormattedMessage {...messages.xVolunteers} values={{ x: cause.attributes.volunteers_count }} />
-              </TextCell>
+              </div>
               <Buttons>
                 <Button
                   onClick={handleOnClickDelete(cause)}
