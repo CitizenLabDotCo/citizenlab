@@ -269,13 +269,15 @@ class CLMap extends React.PureComponent<Props, State> {
       let initCenter: [number, number] = [0, 0];
 
       if (
+        center && center !== [0, 0]
+      ) {
+        initCenter = [center[1], center[0]];
+      } else if (
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.center_geojson
       ) {
         const [longitude, latitude] = mapConfig.attributes.center_geojson.coordinates;
         initCenter = [latitude, longitude];
-      } else if (center && center !== [0, 0]) {
-        initCenter = [center[1], center[0]];
       } else if (
         !isNilOrError(tenant) &&
         tenant.attributes &&
