@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
+  xVolunteers: {
+    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers',
+    defaultMessage: '{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}',
+  },
   causeDeletionConfirmation: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDeletionConfirmation',
     defaultMessage: 'Are you sure?',
