@@ -10,7 +10,7 @@ import { ICauseData, reorderCause, deleteCause } from 'services/causes';
 
 import { List, SortableRow, TextCell } from 'components/admin/ResourceList';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { Button } from 'components/UI/Button';
+import Button from 'components/UI/Button';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
@@ -111,16 +111,21 @@ const AllCauses = ({ participationContextType , participationContextId, projectI
               <TextCell className="expand">
                 <T value={cause.attributes.title_multiloc} />
               </TextCell>
+              <TextCell>
+                <FormattedMessage {...messages.xVolunteers} values={{ x: cause.attributes.volunteers_count }} />
+              </TextCell>
               <Buttons>
                 <Button
                   onClick={handleOnClickDelete(cause)}
                   icon="delete"
+                  buttonStyle="text"
                 >
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
                 <Button
                   linkTo={`/admin/projects/${projectId}/volunteering/causes/${cause.id}`}
                   icon="edit"
+                  buttonStyle="secondary"
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </Button>
