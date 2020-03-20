@@ -36,7 +36,7 @@ resource "Projects" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| Project.find(d.dig(:id)).admin_publication.publication_status }.uniq).to match_array ['published', 'archived', 'draft']
+        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
       end
 
       example "List only projects with specified IDs" do
@@ -51,7 +51,7 @@ resource "Projects" do
         do_request(publication_statuses: ['draft','archived'])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| Project.find(d.dig(:id)).admin_publication.publication_status }).not_to include('published')
+        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }).not_to include('published')
       end
 
       example "Get all projects on the second page with fixed page size" do
@@ -206,7 +206,7 @@ resource "Projects" do
       end
 
       example "Get a project includes the avatars and avatars_count", document: false do
-        idea = create(:idea, project: create(:project))
+        idea = create(:idea)
         author = idea.author
         project = idea.project
         do_request id: project.id
