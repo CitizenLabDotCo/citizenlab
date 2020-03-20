@@ -1,8 +1,8 @@
 import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { compact, get, isNil } from 'lodash-es';
+import { compact,/* get,*/ isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-import { style } from './colors';
+// import { style } from './colors';
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
