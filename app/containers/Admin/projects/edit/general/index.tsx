@@ -321,7 +321,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         if (!this.state.processingDelete) {
           this.setState({
             projectFiles: projectFiles ? projectFiles.filter((file) => !isNilOrError(file)) as UploadFile[] : [],
-            projectImages: projectImages ? projectImages.filter(image => !isNilOrError(image))  as UploadFile[] : [],
+            projectImages: projectImages ? projectImages.filter(image => !isNilOrError(image)) as UploadFile[] : [],
             projectHeaderImage: projectHeaderImage ? [projectHeaderImage] : null
           });
         }
@@ -486,7 +486,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       publicationStatus: value,
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        publication_status: value
+        admin_publication_attributes: {
+          publication_status: value
+        }
       }
     }));
   }
