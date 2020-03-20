@@ -8,7 +8,7 @@ class AdminPublicationPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.where(publication_type: ProjectFolder.name)
+      scope.where(publication: Pundit.policy_scope(user, ProjectFolder))
         .or(scope.where(publication: Pundit.policy_scope(user, Project)))
     end
   end

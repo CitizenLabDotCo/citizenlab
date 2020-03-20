@@ -7,7 +7,9 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     @publications = @publications.where(publication_type: ProjectFolder.name)
       .or(@publications.where(publication: ProjectsFilteringService.new.apply_common_index_filters(
         Pundit.policy_scope(current_user, Project), 
-        params.except(:folder))))
+        params.except(:folder, :publication_statuses))))
+
+    @publications = @publications.where(publication_status: params[:publication_statuses]) if params[:publication_statuses].present?
 
     if params.key? :folder
       parent_scope = if params[:folder].present?

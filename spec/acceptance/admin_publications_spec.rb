@@ -19,6 +19,7 @@ resource "AdminPublication" do
       @projects = ['published','published','draft','draft','published','archived','archived','published']
         .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
       @folder = create(:project_folder, projects: @projects.take(3))
+      @empty_draft_folder = create(:project_folder, admin_publication_attributes: {publication_status: 'draft'})
     end
 
     get "web_api/v1/admin_publications" do
@@ -35,16 +36,16 @@ resource "AdminPublication" do
       example_request "List all admin publications" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 9
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].size).to eq 10
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 2
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 8
       end
 
       example "List all top-level admin publications" do
         do_request(folder: nil)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 6
-        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].size).to eq 7
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 2
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
       end
 
@@ -60,7 +61,8 @@ resource "AdminPublication" do
         do_request(publication_statuses: ['draft','archived'])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id, @projects[2].id, @projects[3].id, @projects[5].id, @projects[6].id]
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @projects[2].id, @projects[3].id, @projects[5].id, @projects[6].id]
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 0
       end
 
       example "List all admin publications with the specified areas (i.e. given an array of areas); always includes folders; returns all publications by default;" do
@@ -77,8 +79,8 @@ resource "AdminPublication" do
 
         do_request areas: [a1.id]
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 8
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id, @projects[0].id, @projects[1].id, @projects[2].id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
+        expect(json_response[:data].size).to eq 9
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, @projects[0].id, @projects[1].id, @projects[2].id, @projects[3].id, @projects[4].id, @projects[5].id, @projects[6].id]
       end
 
       example "List all admin publications with a topic" do
@@ -90,8 +92,8 @@ resource "AdminPublication" do
 
         do_request topics: [t1.id]
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@folder.id, p1.id]
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [@empty_draft_folder.id, @folder.id, p1.id]
       end
 
       example "List all top-level admin publications with visible child projects" do
@@ -101,6 +103,7 @@ resource "AdminPublication" do
         expect(json_response[:data].size).to eq 6
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 5
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 3
       end
     end
 
@@ -122,6 +125,40 @@ resource "AdminPublication" do
           expect(AdminPublication.find_by(ordering: ordering).id).to eq id
           expect(old_second_project.reload.ordering).to eq 2 # previous second is now third
         end
+      end
+    end
+  end
+
+  context 'when citizen' do
+    before do
+      @user = create(:user)
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+
+      @projects = ['published','published','draft','draft','published','archived']
+        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
+      @folder = create(:project_folder, projects: @projects.take(3))
+      @empty_draft_folder = create(:project_folder, admin_publication_attributes: {publication_status: 'draft'})
+    end
+
+    get "web_api/v1/admin_publications" do
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of projects per page"
+      end
+      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :areas, 'Filter by areas (AND)', required: false
+      parameter :folder, "Filter by folder (project folder id)", required: false
+      parameter :publication_statuses, "Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default", required: false
+      parameter :filter_empty_folders, "Filter out folders with no visible children for the current user", required: false
+
+      example "Listed admin publications have correct visible children count" do
+        do_request(folder: nil)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 2
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 2
       end
     end
   end
