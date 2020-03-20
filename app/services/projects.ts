@@ -88,10 +88,10 @@ export interface IProjectData {
       data: IRelationship | null;
     }
     default_assignee?: {
-      data: IRelationship | null
+      data: IRelationship | null;
     }
-    folder?: {
-      data: IRelationship | null
+    admin_publication: {
+      data: IRelationship | null;
     }
   };
 }
@@ -184,7 +184,7 @@ export async function deleteProject(projectId: string) {
   return response;
 }
 
-export function getProjectUrl(project: IProjectData) {
+export function getProjectUrl(project: IProjectData) { // TODO MOVE projects root route
   let lastUrlSegment: string;
   const projectType = project.attributes.process_type;
   const projectMethod = project.attributes.participation_method;
@@ -230,10 +230,4 @@ export async function updateProjectFolderMembership(projectId: string, newProjec
   });
 
   return response;
-}
-
-export function getFilteredProjects(projects: IProjectData[], publicationStatuses: PublicationStatus[]) {
-  return projects.filter((project) => {
-    return publicationStatuses.includes(project.attributes.publication_status);
-  });
 }

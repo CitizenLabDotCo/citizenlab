@@ -15,6 +15,7 @@ import { ListHeader, HeaderTitle } from '../StyledComponents';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
+import GetAdminPublication from 'resources/GetAdminPublication';
 
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -47,7 +48,9 @@ const ModeratorProjectList = memo<Props>(({ projects }) => {
                   id={project.id}
                   lastItem={(index === projectsList.length - 1)}
                 >
-                  <ProjectRow project={project} />
+                  <GetAdminPublication adminPublicationId={project.relationships.admin_publication ?.data ?.id}>
+                    {({ adminPublication }) => !isNilOrError(adminPublication) ? <ProjectRow publication={{ ...adminPublication, publicationId: project.id, publicationType: 'project' }} /> : null}
+                  </GetAdminPublication>
                 </Row>
               );
             }

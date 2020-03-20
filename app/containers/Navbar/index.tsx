@@ -31,8 +31,6 @@ import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 import { isAdmin } from 'services/permissions/roles';
 
 // utils
-import { getProjectUrl } from 'services/projects';
-import { getProjectFolderUrl } from 'services/projectFolders';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
@@ -504,25 +502,24 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                         <ProjectsList>
                           {AdminPublications.list.map(
                             (item: IAdminPublicationContent) => {
-                              if (item.adminPublicationType === 'project') {
+                              if (item.publicationType === 'project') {
                                 return (
 
                                   <ProjectsListItem
-                                    key={item.adminPublication.id}
-                                    to={getProjectUrl(item.adminPublication)}
+                                    key={item.publicationId}
+                                    to={`/projects/${item.attributes.publication_slug}/info`}
                                   >
-                                    {localize(item.adminPublication.attributes.title_multiloc)}
+                                    {localize(item.attributes.publication_title_multiloc)}
                                   </ProjectsListItem>
                                 );
                               } else {
-                                const projectFolder = item.adminPublication;
 
                                 return (
                                   <ProjectsListItem
-                                    key={projectFolder.id}
-                                    to={getProjectFolderUrl(projectFolder)}
+                                    key={item.publicationId}
+                                    to={`/folders/${item.attributes.publication_slug}`}
                                   >
-                                    {localize(item.adminPublication.attributes.title_multiloc)}
+                                    {localize(item.attributes.publication_title_multiloc)}
                                   </ProjectsListItem>
                                 );
                               }
