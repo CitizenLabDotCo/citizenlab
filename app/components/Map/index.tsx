@@ -245,22 +245,20 @@ class CLMap extends React.PureComponent<Props, State> {
     }
 
     function getTileProvider() {
-      return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-
-      // if (
-      //   !isNilOrError(mapConfig) &&
-      //   mapConfig.attributes.tile_provider
-      // ) {
-      //   return mapConfig.attributes.tile_provider;
-      // } else if (
-      //   !isNilOrError(tenant) &&
-      //   tenant.attributes &&
-      //   tenant.attributes.settings.maps
-      // ) {
-      //   return tenant.attributes.settings.maps.tile_provider;
-      // } else {
-      //   return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      // }
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.tile_provider
+      ) {
+        return mapConfig.attributes.tile_provider;
+      } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
+        return tenant.attributes.settings.maps.tile_provider;
+      } else {
+        return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+      }
     }
 
     function getInitCenter() {
