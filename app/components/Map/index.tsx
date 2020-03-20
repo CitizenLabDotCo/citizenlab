@@ -23,6 +23,9 @@ import { darken, lighten } from 'polished';
 import { colors, media } from 'utils/styleUtils';
 import markerIcon from './marker.svg';
 
+// localize
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
+
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -185,9 +188,10 @@ interface Props extends InputProps, DataProps {}
 interface State {
   initiated: boolean;
   showLegend: boolean;
+  currentLayer: string | null;
 }
 
-class CLMap extends React.PureComponent<Props, State> {
+class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   private map: Leaflet.Map;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markers: Leaflet.Marker[];
@@ -209,6 +213,7 @@ class CLMap extends React.PureComponent<Props, State> {
     this.state = {
       initiated: false,
       showLegend: false,
+      currentLayer: null,
     };
   }
 
@@ -225,7 +230,7 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   bindMapContainer = (element: HTMLDivElement | null) => {
-    const { tenant, mapConfig, center } = this.props;
+    const { tenant, mapConfig, center, localize } = this.props;
 
     function getZoom() {
       if (
@@ -288,6 +293,31 @@ class CLMap extends React.PureComponent<Props, State> {
       return initCenter;
     }
 
+    function getGeoJsonLayers() {
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.layers.length > 0
+      ) {
+        const layers = mapConfig.attributes.layers;
+        layers.map(layer => {
+          const geoJson = layer.geojson;
+          return Leaflet.geoJSON(geoJson/*, { style }*/);
+        });
+      }
+
+      return [];
+    }
+
+    function getOverlayMaps(geoJsonLayers) {
+      const overlayMaps = {};
+
+      geoJsonLayers.forEach(layer => {
+        overlayMaps[localize(layer.title_multiloc)] = layer;
+      });
+
+      return overlayMaps;
+    }
+
     if (element && !this.map) {
       const zoom = getZoom();
       const tileProvider = getTileProvider();
@@ -298,28 +328,26 @@ class CLMap extends React.PureComponent<Props, State> {
         subdomains: ['a', 'b', 'c']
       });
 
-      // const geoJsonLayer = Leaflet.geoJSON(seattleJson, { style });
+      const geoJsonLayers = getGeoJsonLayers();
 
       // Init the map
       this.map = Leaflet.map(element, {
         zoom,
         center: initCenter,
         maxZoom: 17,
-        layers: [baseLayer/*, geoJsonLayer*/]
+        layers: [baseLayer, ...geoJsonLayers]
       });
 
-      // const overlayMaps = {
-      //   Disadvantage: geoJsonLayer
-      // };
+      const overlayMaps = getOverlayMaps(geoJsonLayers);
 
-      // Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
-      this.map.on('overlayadd', () => {
-        this.setState({ showLegend: true });
+      this.map.on('overlayadd', (event: Leaflet.LayersControlEvent) => {
+        this.setState({ showLegend: true, currentLayer: event.name });
       });
 
       this.map.on('overlayremove', () => {
-        this.setState({ showLegend: false });
+        this.setState({ showLegend: false, currentLayer: null });
       });
 
       if (this.props.onMapClick) {
@@ -482,12 +510,16 @@ const Data = adopt<DataProps, InputProps>({
   ) : null,
 });
 
+const CLMapWithHOCs = injectLocalize(CLMap);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CLMap {...inputProps} {...dataProps} />}
+    {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
 
+// which legend to show when multiple layers are selected?
+// don't select layer by default
 // TODO: clean up code
 // TODO: extract Legend component
 // TODO: console error landing page
