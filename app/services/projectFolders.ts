@@ -52,6 +52,9 @@ export function projectFolderBySlugStream(projectFolderSlug: string) {
 
 export async function addProjectFolder(object: Partial<IProjectFolderDiff>) {
   const response = await streams.add<{ data: IProjectFolderData }>(apiEndpoint, { project_folder: object });
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/admin_publications`],
+  });
   return (!isNilOrError(response) ? response.data : response as Error);
 }
 
@@ -61,6 +64,9 @@ export async function updateProjectFolder(projectFolderId: string, object: Parti
     projectFolderId,
     { project_folder: object }
   );
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/admin_publications`],
+  });
   return (!isNilOrError(response) ? response.data : response);
 }
 
