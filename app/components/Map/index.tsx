@@ -227,8 +227,6 @@ class CLMap extends React.PureComponent<Props, State> {
   bindMapContainer = (element: HTMLDivElement | null) => {
     const { tenant, mapConfig, center } = this.props;
 
-    // skips first two blocks for determining initCenter
-
     function getZoom() {
       if (
         !isNilOrError(mapConfig) &&
@@ -492,7 +490,6 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: in ideas map it centers on idea, on idea page it centers on map config center
 // TODO: clean up code
 // TODO: extract Legend component
 // TODO: console error landing page
