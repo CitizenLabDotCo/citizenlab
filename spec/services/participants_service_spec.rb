@@ -84,6 +84,15 @@ describe ParticipantsService do
       expect(service.projects_participants([poll]).map(&:id)).to match_array participants.map(&:id)
     end
 
+    it "returns volunteering participants" do
+      project = create(:continuous_volunteering_project)
+      cause = create(:cause, participation_context: project)
+      volunteers = create_list(:volunteer, 2, cause: cause)
+      participants = volunteers.map(&:user)
+      other = create(:volunteer)
+      expect(service.projects_participants([project]).map(&:id)).to match_array participants.map(&:id)
+    end
+
     it "returns participants of a given project since a given date" do
       project = create(:project)
       other_project = create(:project)

@@ -3,7 +3,7 @@ module SmartGroupRules
     include ActiveModel::Validations
     include DescribableRule
 
-    PREDICATE_VALUES = %w(in not_in posted_in not_posted_in commented_in not_commented_in voted_idea_in not_voted_idea_in voted_comment_in not_voted_comment_in budgeted_in not_budgeted_in)
+    PREDICATE_VALUES = %w(in not_in posted_in not_posted_in commented_in not_commented_in voted_idea_in not_voted_idea_in voted_comment_in not_voted_comment_in budgeted_in not_budgeted_in volunteered_in not_volunteered_in)
     VALUELESS_PREDICATES = []
 
     attr_accessor :predicate, :value
@@ -88,6 +88,12 @@ module SmartGroupRules
         users_scope.where(id: participants)
       when 'not_budgeted_in'
         participants = participants_service.projects_participants([Project.find(value)], actions: [:budgeting])
+        users_scope.where.not(id: participants)
+      when 'volunteered_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:volunteering])
+        users_scope.where(id: participants)
+      when 'not_volunteered_in'
+        participants = participants_service.projects_participants([Project.find(value)], actions: [:volunteering])
         users_scope.where.not(id: participants)
       else
         raise "Unsupported predicate #{predicate}"
