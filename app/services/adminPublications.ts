@@ -17,11 +17,12 @@ export interface IAdminPublicationData {
     parent_id?: string;
     ordering: number;
     publication_status: PublicationStatus;
-    children_count: number;
+    children_visible_count: number;
     publication_title_multiloc: Multiloc;
     publication_description_multiloc: Multiloc;
     publication_description_preview_multiloc: Multiloc;
     publication_slug: string;
+    publication_visible_to?: 'public' | 'groups' | 'admins' | null;
   };
   relationships: {
     publication: {

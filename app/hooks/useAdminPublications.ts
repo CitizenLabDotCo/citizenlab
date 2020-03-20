@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { listAdminPublications } from 'services/adminPublications';
+import { listAdminPublications, IAdminPublicationData } from 'services/adminPublications';
 import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
-import { Multiloc } from 'typings';
 
 export interface InputProps {
   pageSize?: number;
@@ -18,16 +17,7 @@ export type IAdminPublicationContent = {
   id: string;
   publicationType: 'project' | 'projectFolder';
   publicationId: string;
-  attributes: {
-    parent_id?: string;
-    ordering: number;
-    publication_status: PublicationStatus;
-    children_count: number;
-    publication_title_multiloc: Multiloc;
-    publication_description_multiloc: Multiloc;
-    publication_description_preview_multiloc: Multiloc;
-    publication_slug: string;
-  };
+  attributes: IAdminPublicationData['attributes'];
 };
 
 export interface IOutput {

@@ -57,25 +57,34 @@ export default ({ publication, actions, hidePublicationStatusLabel }: Props) => 
     <RowContent className="e2e-admin-publications-list-item">
       <RowContentInner className="expand primary">
         <RowTitle value={publication.attributes.publication_title_multiloc} />
-        <GetProjectGroups projectId={publication.publicationId}>
-          {(publicationGroups) => {
-            if (!isNilOrError(publicationGroups)) {
-              return (
-                <StyledStatusLabel
-                  text={publicationGroups.length > 0 ? (
-                    <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: publicationGroups.length }} />
-                  ) : (
-                      <FormattedMessage {...messages.onlyAdminsCanView} />
-                    )}
-                  color="clBlue"
-                  icon="lock"
-                />
-              );
-            }
+        {publication.attributes ?.publication_visible_to === 'groups' &&
+          <GetProjectGroups projectId={publication.publicationId}>
+            {(projectGroups) => {
+              if (!isNilOrError(projectGroups)) {
+                return (
+                  <StyledStatusLabel
+                    text={projectGroups.length > 0 ? (
+                      <FormattedMessage {...messages.xGroupsHaveAccess} values={{ groupCount: projectGroups.length }} />
+                    ) : (
+                        <FormattedMessage {...messages.onlyAdminsCanView} />
+                      )}
+                    color="clBlue"
+                    icon="lock"
+                  />
+                );
+              }
 
-            return null;
-          }}
-        </GetProjectGroups>
+              return null;
+            }}
+          </GetProjectGroups>
+      }
+        {publication.attributes ?.publication_visible_to === 'admins' &&
+          <StyledStatusLabel
+            text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+            color="clBlue"
+            icon="lock"
+          />
+        }
 
         {!hidePublicationStatusLabel &&
           <PublicationStatusLabel
