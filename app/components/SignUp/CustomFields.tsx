@@ -91,7 +91,7 @@ type State = {
   apiErrors: CLErrorsJSON | null;
 };
 
-class Step3 extends PureComponent<Props & InjectedIntlProps, State> {
+class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -185,7 +185,7 @@ class Step3 extends PureComponent<Props & InjectedIntlProps, State> {
   }
 }
 
-const Step3WithHocs = injectIntl<Props>(Step3);
+const CustomFieldsWithHoC = injectIntl<Props>(CustomFields);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
@@ -194,6 +194,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <Step3WithHocs {...inputProps} {...dataprops} />}
+    {dataprops => <CustomFieldsWithHoC {...inputProps} {...dataprops} />}
   </Data>
 );

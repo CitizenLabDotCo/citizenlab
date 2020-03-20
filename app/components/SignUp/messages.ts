@@ -1,16 +1,16 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  step1Title: {
-    id: 'app.containers.SignUp.step1Title',
+  accountCreationTitle: {
+    id: 'app.containers.SignUp.accountCreationTitle',
     defaultMessage: 'Create an account',
   },
-  step2Title: {
-    id: 'app.containers.SignUp.step2Title',
+  verificationTitle: {
+    id: 'app.containers.SignUp.verificationTitle',
     defaultMessage: 'Verify your identity',
   },
-  step3Title: {
-    id: 'app.containers.SignUp.step3Title',
+  customFieldsTitle: {
+    id: 'app.containers.SignUp.customFieldsTitle',
     defaultMessage: 'Complete your profile',
   },
   tokenLabel: {

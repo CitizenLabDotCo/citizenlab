@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { get } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // libraries
@@ -279,9 +278,9 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
     const { className, title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const externalLoginEnabled = (googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled);
-    const azureAdLogo: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.logo_url', null);
-    const tenantLoginMechanismName: string | null = get(tenant, 'data.attributes.settings.azure_ad_login.login_mechanism_name', null);
+    const externalLoginEnabled = googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled;
+    const azureAdLogo = !isNilOrError(tenant) && tenant?.attributes?.settings?.azure_ad_login?.logo_url;
+    const tenantLoginMechanismName = !isNilOrError(tenant) && tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name;
 
     return (
       <Container className={`e2e-sign-in-container ${className}`}>
@@ -428,7 +427,7 @@ const Data = adopt<DataProps, {}>({
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
   azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
-  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />,
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />
 });
 
 export default (inputProps: InputProps) => (
