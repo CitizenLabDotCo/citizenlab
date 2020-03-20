@@ -447,6 +447,8 @@ fr:
       not_voted_comment_in: "N'a voté sur aucun commentaire d'idée du projet %{value}"
       budgeted_in: "A affecté un budget au projet %{value}"
       not_budgeted_in: "N'a pas affecté de budget au projet %{value}"
+      volunteered_in: "Volunteered in the project %{value}"
+      not_volunteered_in: "Didn't volunteer in the project %{value}"
     participated_in_topic:
       in: "Participation à une idée sur le sujet %{value}"
       not_in: "Non-participation à une idée sur le sujet %{value}"
