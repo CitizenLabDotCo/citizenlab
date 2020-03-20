@@ -429,33 +429,10 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       boxContent,
       className,
       mapHeight,
-      mapConfig
+      mapConfig,
+      localize
     } = this.props;
     const { showLegend } = this.state;
-
-    const legendTitle = 'Racial and Social Equity Composite Index';
-    const legendValues = [
-      {
-        label: 'Lowest Disadvantage',
-        color: '#92ABB9'
-      },
-      {
-        label: 'Second Lowest Disadvantage',
-        color: '#ADD0CA'
-      },
-      {
-        label: 'Middle Disadvantage',
-        color: '#F9F9CD'
-      },
-      {
-        label: 'Second Highest Disadvantage',
-        color: '#CEA991'
-      },
-      {
-        label: 'Highest Disadvantage',
-        color: '#B495A4'
-      },
-    ];
 
     if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
       return (
@@ -482,15 +459,18 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
           {showLegend &&
             <LegendContainer>
               <Title>
-                {legendTitle}
+                {localize(layer.title_multiloc)}
               </Title>
               <Legend>
-                {legendValues.map((value, index) => (
-                  <Item key={`legend-item-${index}`}>
-                    <ColorLabel color={value.color} />
-                    {value.label}
-                  </Item>)
-                )}
+                {legend.map((legendItem, index) => {
+                  const color = legendItem.color;
+                  return (
+                    <Item key={`legend-item-${index}`}>
+                      <ColorLabel color={color} />
+                      {localize(legendItem.title_multiloc)}
+                    </Item>
+                  );
+                })}
               </Legend>
             </LegendContainer>
           }
