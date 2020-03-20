@@ -413,7 +413,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
               {list.map((item: IAdminPublicationContent, index: number) => {
                 const projectOrFolderId = item.publicationId;
                 const projectOrFolderType = item.publicationType;
-                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+                const size = (layout === 'dynamic' ? cardSizes[index] : layout === 'threecolumns' ? 'small' : 'medium');
 
                 return (
                   <React.Fragment key={index}>

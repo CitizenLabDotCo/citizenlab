@@ -3,15 +3,15 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   twitterMessage: {
     id: 'app.containers.ProjectFolderShowPage.twitterMessage',
-    defaultMessage: '{title}: Share your ideas on ??',
+    defaultMessage: '{title}',
   },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
-    defaultMessage: 'Folder: {title}',
+    defaultMessage: '{title}',
   },
   invisibleTitleMainContent: {
     id: 'app.containers.ProjectFolderShowPage.invisibleTitleMainContent',
-    defaultMessage: 'Information about this ???',
+    defaultMessage: 'Information about this folder',
   },
   noFolderFoundHere: {
     id: 'app.containers.ProjectFolderShowPage.noFolderFoundHere',
