@@ -411,8 +411,8 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
           {!loadingInitial && hasPublications && list && (
             <ProjectsList id="e2e-projects-list">
               {list.map((item: IAdminPublicationContent, index: number) => {
-                const projectOrFolderId = item.adminPublication.id;
-                const projectOrFolderType = item.adminPublicationType;
+                const projectOrFolderId = item.publicationId;
+                const projectOrFolderType = item.publicationType;
                 const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
 
                 return (
@@ -425,7 +425,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                       />
                     ) : (
                         <ProjectFolderCard
-                          projectFolderId={projectOrFolderId}
+                          publication={item}
                           size={size}
                           layout={layout}
                         />

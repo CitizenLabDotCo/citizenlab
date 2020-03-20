@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // services
-import { updateProjectFolderMembership, PublicationStatus, IProjectData } from 'services/projects';
+import { updateProjectFolderMembership, PublicationStatus } from 'services/projects';
 
 // resources
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
@@ -98,11 +98,11 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps, State>
     const { processing } = this.state;
 
     const otherProjects = (!isNilOrError(topLevelProjects) && topLevelProjects.list)
-      ? topLevelProjects.list.filter(item => item.adminPublicationType === 'project').map(item => item.adminPublication) as IProjectData[]
+      ? topLevelProjects.list.filter(item => item.publicationType === 'project')
       : null;
 
     const inFolderFinalList = (!isNilOrError(projectsInFolder) && projectsInFolder.list && projectsInFolder.list.length > 0)
-      ? projectsInFolder.list.filter(item => item.adminPublicationType === 'project')
+      ? projectsInFolder.list.filter(item => item.publicationType === 'project')
       : null;
 
     return (
@@ -137,12 +137,12 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps, State>
                       lastItem={(index === itemsList.length - 1)}
                     >
                       <ProjectRow
-                        project={adminPublication.adminPublication as IProjectData}
+                        publication={adminPublication}
                         actions={[{
                           buttonContent: <FormattedMessage {...messages.removeFromFolder} />,
                           handler: this.removeProjectFromFolder,
                           icon: 'remove',
-                          processing: processing.includes(adminPublication.adminPublication.id)
+                          processing: processing.includes(adminPublication.publicationId)
                         }, 'manage']}
                       />
                     </SortableRow>
@@ -161,19 +161,19 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps, State>
 
           {otherProjects ?
             <List key={`JUST_LIST${otherProjects.length}`}>
-              {otherProjects.map((project, index: number) => {
+              {otherProjects.map((adminPublication, index: number) => {
                 return (
                   <Row
-                    id={project.id}
+                    id={adminPublication.id}
                     lastItem={(index === otherProjects.length - 1)}
-                    key={project.id}
+                    key={adminPublication.id}
                   >
                     <ProjectRow
-                      project={project}
+                      publication={adminPublication}
                       actions={[{
                         buttonContent: <FormattedMessage {...messages.addToFolder} />,
                         handler: this.addProjectToFolder,
-                        processing: processing.includes(project.id),
+                        processing: processing.includes(adminPublication.publicationId),
                         icon: 'plus-circle'
                       }]}
                     />

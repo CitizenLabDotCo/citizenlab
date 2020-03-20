@@ -11,8 +11,7 @@ import styled from 'styled-components';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// types & services
-import { IProjectFolderData } from 'services/projectFolders';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const FolderIcon = styled(Icon)`
   margin-right: 10px;
@@ -21,20 +20,20 @@ const FolderIcon = styled(Icon)`
 `;
 
 interface Props {
-  folder: IProjectFolderData;
+  publication: IAdminPublicationContent;
 }
 
-const FolderRow = memo<Props>(({ folder }) => {
+const FolderRow = memo<Props>(({ publication }) => {
   return (
     <RowContent className="e2e-admin-projects-list-item">
       <RowContentInner className="expand primary">
         <FolderIcon name="simpleFolder" />
-        <RowTitle value={folder.attributes.title_multiloc} />
+        <RowTitle value={publication.attributes.publication_title_multiloc} />
       </RowContentInner>
       <ActionsRowContainer>
         <RowButton
-          className={`e2e-admin-edit-project ${folder.attributes.title_multiloc['en-GB'] || ''}`}
-          linkTo={`/admin/projects/folders/${folder.id}`}
+          className={`e2e-admin-edit-project ${publication.attributes.publication_title_multiloc?.['en-GB'] || ''}`}
+          linkTo={`/admin/projects/folders/${publication.publicationId}`}
           buttonStyle="secondary"
           icon="edit"
         >

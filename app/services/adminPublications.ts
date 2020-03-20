@@ -1,6 +1,6 @@
 import streams, { IStreamParams } from 'utils/streams';
 import { API_PATH } from 'containers/App/constants';
-import { ILinks } from 'typings';
+import { ILinks, Multiloc } from 'typings';
 import { PublicationStatus } from 'services/projects';
 
 const apiEndpoint = `${API_PATH}/admin_publications`;
@@ -16,6 +16,12 @@ export interface IAdminPublicationData {
   attributes: {
     parent_id?: string;
     ordering: number;
+    publication_status: PublicationStatus;
+    children_count: number;
+    publication_title_multiloc: Multiloc;
+    publication_description_multiloc: Multiloc;
+    publication_description_preview_multiloc: Multiloc;
+    publication_slug: string;
   };
   relationships: {
     publication: {
@@ -27,7 +33,7 @@ export interface IAdminPublicationData {
   };
 }
 
-export interface IAdminPublication {
+export interface IAdminPublications {
   data: IAdminPublicationData[];
   links: ILinks;
 }
@@ -44,12 +50,16 @@ interface StreamParamsForProjects extends IStreamParams {
   queryParameters: IQueryParametersWithPS;
 }
 
+export function adminPublicationByIdStream(id: string) {
+  return streams.get<{ data: IAdminPublicationData }>({ apiEndpoint: `${apiEndpoint}/${id}` });
+}
+
 export function listAdminPublications(streamParams: StreamParamsForProjects) {
-  return streams.get<IAdminPublication>({ apiEndpoint, ...streamParams });
+  return streams.get<IAdminPublications>({ apiEndpoint, ...streamParams });
 }
 
 export async function reorderAdminPublication(orderingId: string, newOrder: number) {
-  return streams.update<IAdminPublication>(
+  return streams.update<IAdminPublications>(
     `${apiEndpoint}/${orderingId}/reorder`,
     orderingId,
     {

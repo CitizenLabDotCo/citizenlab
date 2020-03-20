@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { combineLatest } from 'rxjs';
-import { switchMap, map, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { listAdminPublications } from 'services/adminPublications';
-import { projectsStream, IProjectData, PublicationStatus } from 'services/projects';
-import { projectFoldersStream, IProjectFolderData } from 'services/projectFolders';
+import { PublicationStatus } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
+import { Multiloc } from 'typings';
 
 export interface InputProps {
   pageSize?: number;
@@ -17,18 +16,18 @@ export interface InputProps {
 
 export type IAdminPublicationContent = {
   id: string;
-  adminPublicationType: 'project';
+  publicationType: 'project' | 'projectFolder';
+  publicationId: string;
   attributes: {
+    parent_id?: string;
     ordering: number;
+    publication_status: PublicationStatus;
+    children_count: number;
+    publication_title_multiloc: Multiloc;
+    publication_description_multiloc: Multiloc;
+    publication_description_preview_multiloc: Multiloc;
+    publication_slug: string;
   };
-  adminPublication: IProjectData;
-} | {
-  id: string;
-  adminPublicationType: 'project_folder';
-  attributes: {
-    ordering: number;
-  };
-  adminPublication: IProjectFolderData;
 };
 
 export interface IOutput {
@@ -79,35 +78,12 @@ export default function useAdminPublications({ pageSize = 1000, areaFilter, publ
         folder: folderId,
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
-        'page[size]': pageSize
+        'page[size]': pageSize,
+         filter_empty_folders: noEmptyFolder
       }
     }).observable.pipe(
       distinctUntilChanged(),
-      switchMap((adminPublications) => {
-        const projectIds = adminPublications.data
-          .filter(publication => publication.relationships.publication.data.type === 'project')
-          .map(publication => publication.relationships.publication.data.id);
-
-        const projectFoldersIds = adminPublications.data
-          .filter(publication => publication.relationships.publication.data.type === 'project_folder')
-          .map(publication => publication.relationships.publication.data.id);
-
-        return combineLatest(
-          projectsStream({
-            queryParameters: {
-              filter_ids: projectIds,
-            }
-          }).observable,
-          projectFoldersStream({
-            queryParameters: {
-              filter_ids: projectFoldersIds
-            }
-          }).observable
-        ).pipe(
-          map((projects) => ({ adminPublications, projects: projects[0].data, projectFolders: projects[1].data }))
-        );
-      })
-    ).subscribe(({ adminPublications, projects, projectFolders }) => {
+    ).subscribe((adminPublications) => {
       if (isNilOrError(adminPublications)) {
         setList(null);
         setHasMore(false);
@@ -115,23 +91,17 @@ export default function useAdminPublications({ pageSize = 1000, areaFilter, publ
         const selfLink = adminPublications ?.links ?.self;
         const lastLink = adminPublications ?.links ?.last;
 
-        const receivedItems = adminPublications.data.map(ordering => {
-          const publicationType = ordering.relationships.publication.data.type;
-          const publicationId = ordering.relationships.publication.data.id;
-          const publication = publicationType === 'project'
-            ? projects.find(project => project.id === publicationId)
-            : projectFolders.find(projectFolder => projectFolder.id === publicationId);
-          if (!publication) {
-            return null;
-          }
+        const receivedItems = adminPublications.data.map(adminPublication => {
+          const publicationType = adminPublication.relationships.publication.data.type;
+          const publicationId = adminPublication.relationships.publication.data.id;
 
           return {
-            id: ordering.id,
-            adminPublicationType: publicationType,
+            publicationId,
+            publicationType,
+            id: adminPublication.id,
             attributes: {
-              ordering: ordering.attributes.ordering,
+              ...adminPublication.attributes
             },
-            adminPublication: publication
           };
         }).filter(item => item) as IAdminPublicationContent[];
 
@@ -146,7 +116,7 @@ export default function useAdminPublications({ pageSize = 1000, areaFilter, publ
     return () => subscription.unsubscribe();
   }, [pageNumber, pageSize, areas, publicationStatuses]);
 
-// TODO noEmptyFolder filter
+  // TODO noEmptyFolder filter
   return {
     list,
     hasMore,

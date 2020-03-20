@@ -34,12 +34,6 @@ export function projectFoldersStream(streamParams: IStreamParams | null = null) 
   return streams.get<{ data: IProjectFolderData[] }>({ apiEndpoint, ...streamParams });
 }
 
-export function getProjectFolderUrl(projectFolder: IProjectFolderData) {
-  const slug = projectFolder.attributes.slug;
-
-  return `/folders/${slug}`;
-}
-
 export function projectFolderByIdStream(projectFolderId: string) {
   return streams.get<{ data: IProjectFolderData }>({ apiEndpoint: `${apiEndpoint}/${projectFolderId}` });
 }
