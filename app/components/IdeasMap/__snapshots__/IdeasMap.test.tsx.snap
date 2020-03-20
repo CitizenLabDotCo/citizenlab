@@ -10,12 +10,12 @@ exports[`IdeasMap renders correctly 1`] = `
   </a11y__ScreenReaderOnly>
   <Component
     boxContent={null}
-    fitBounds={true}
     mapHeight={500}
     onBoxClose={[Function]}
     onMapClick={[Function]}
     onMarkerClick={[Function]}
     points={Array []}
+    projectId="379cac45-d26b-505c-9215-b2677a693d37"
   />
   <div
     className="create-idea-wrapper"
