@@ -303,7 +303,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     activeClassName="active"
                     className="e2e-project-volunteering-link"
                   >
-                    <ProjectNavbarIcon name="survey" />
+                    <ProjectNavbarIcon name="volunteer-hand" />
                     <FormattedMessage {...messages.navVolunteering} />
                   </ProjectNavbarLink>
                 }

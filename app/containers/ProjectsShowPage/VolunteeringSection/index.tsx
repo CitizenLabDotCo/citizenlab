@@ -1,15 +1,23 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
-import { IParticipationContextType } from 'typings';
+// resource hooks
+import useCauses from 'hooks/useCauses';
+
+// resource components
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
-import useCauses from 'hooks/useCauses';
 
+// components
 import CauseCard from './CauseCard';
+
+// styling
+import styled from 'styled-components';
+
+// typings
+import { IParticipationContextType } from 'typings';
 
 const Container = styled.div`
   color: ${({ theme }) => theme.colorText};
@@ -19,6 +27,7 @@ interface InputProps {
   type: IParticipationContextType;
   phaseId: string | null;
   projectId: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -27,33 +36,27 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const VolunteeringSection = (props: Props) => {
-
-  const { projectId, phaseId, project, phase, type } = props;
+const VolunteeringSection = memo<Props>(({ projectId, phaseId, project, phase, type, className }) => {
 
   const causes = useCauses({ projectId, phaseId });
 
-  if (isNilOrError(project) || type === 'phase' && isNilOrError(phase)) {
-    return null;
+  if (!isNilOrError(causes) && (!isNilOrError(project) || type === 'phase' && !isNilOrError(phase))) {
+    return (
+      <Container className={className}>
+        {causes.data.map((cause) => (
+          <CauseCard
+            key={cause.id}
+            cause={cause}
+          />
+        ))}
+      </Container>
+    );
   }
 
-  if (isNilOrError(causes)) {
-    return null;
-  }
-
-  return (
-    <Container>
-      {causes.data.map(cause => (
-        <CauseCard
-          key={cause.id}
-          cause={cause}
-        />
-      ))}
-    </Container>
-  );
-};
+  return null;
+});
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
