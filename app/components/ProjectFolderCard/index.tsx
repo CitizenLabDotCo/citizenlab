@@ -301,7 +301,7 @@ const ProjectFolderCard = memo(({
       : null; // !!TODO doesn't support header
 
   const folderUrl = `/folders/${publication.attributes.publication_slug}`;
-  const numberOfProjects = publication.attributes.children_count;
+  const numberOfProjects = publication.attributes.visible_children_count;
 
   const contentHeader = (
     <ContentHeader className={`${size} hasContent`}>
