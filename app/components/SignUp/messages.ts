@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.accountCreationTitle',
     defaultMessage: 'Create an account',
   },
+  invitationTitle: {
+    id: 'app.containers.SignUp.invitationTitle',
+    defaultMessage: 'Redeem your invitation',
+  },
   verificationTitle: {
     id: 'app.containers.SignUp.verificationTitle',
     defaultMessage: 'Verify your identity',

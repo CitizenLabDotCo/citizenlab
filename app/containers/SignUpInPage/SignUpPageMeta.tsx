@@ -33,7 +33,6 @@ const SignUpPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, tenantLoca
     const { location } = window;
     const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
     const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
-
     const signUpPageMetaTitle = formatMessage(messages.metaTitle, { tenantName });
     const signUpPageMetaDescription = formatMessage(messages.metaDescription);
 
@@ -61,7 +60,7 @@ const SignUpPageMetaWithHoc = injectIntl<Props>(SignUpPageMeta);
 const Data = adopt<DataProps>({
   tenantLocales: <GetTenantLocales />,
   tenant: <GetTenant />,
-  locale: <GetLocale />,
+  locale: <GetLocale />
 });
 
 const WrappedSignUpPageMeta = () => (

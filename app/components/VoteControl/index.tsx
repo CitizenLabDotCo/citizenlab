@@ -28,7 +28,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { convertUrlSearchParamsToAction, redirectActionToSignUpPage } from 'components/SignUp';
+import { convertUrlSearchParamsToAction, redirectActionToSignUpInPage } from 'components/SignUpIn';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
@@ -489,7 +489,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     if (!voting) {
       if (isNilOrError(authUser)) {
         if (votingDisabledReason === 'not_verified') {
-          redirectActionToSignUpPage({
+          redirectActionToSignUpInPage({
             action_type: voteMode ? 'upvote' : 'downvote',
             action_context_type: 'idea',
             action_context_id: ideaId,
