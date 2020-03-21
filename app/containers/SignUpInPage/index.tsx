@@ -7,8 +7,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import SignUp, { signUpNextStep$, TSignUpSteps, IAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUp';
-import SignInUpBanner from 'components/SignInUpBanner';
+import { signUpNextStep$, TSignUpSteps } from 'components/SignUp';
+import SignUpIn, { ISignUpInAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUpIn';
 import SignUpPageMeta from './SignUpPageMeta';
 
 // resources
@@ -25,7 +25,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { media, colors } from 'utils/styleUtils';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.main`
   width: 100%;
@@ -57,6 +57,25 @@ const Left = styled(Section)`
   `}
 `;
 
+const Banner = styled.div`
+  width: 100%;
+  height: 100%;
+  padding: 50px;
+  padding-top: 58px;
+  padding-left: 70px;
+  position: relative;
+  background: #fff;
+`;
+
+const Slogan = styled.div`
+  width: 100%;
+  max-width: 400px;
+  color: ${props => props.theme.colorMain || '#333'};
+  font-size: ${fontSizes.xxxxl}px;
+  line-height: 44px;
+  font-weight: 600;
+`;
+
 const Right = styled(Section)``;
 
 const RightInner = styled.div`
@@ -74,19 +93,19 @@ const RightInner = styled.div`
   `}
 `;
 
-interface InputProps {}
+export interface InputProps {}
 
-interface DataProps {
+export interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
   previousPathName: string | null;
 }
 
-interface Props extends InputProps, DataProps {}
+export interface Props extends InputProps, DataProps {}
 
 interface State {
-  action: IAction | null | undefined;
+  action: ISignUpInAction | null | undefined;
   loaded: boolean;
 }
 
@@ -130,7 +149,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     this.subscription?.unsubscribe();
   }
 
-  onSignUpCompleted = () => {
+  onSignUpInCompleted = () => {
     const { action } = this.state;
     const { previousPathName } = this.props;
 
@@ -139,10 +158,8 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
         pathname: action.action_context_pathname,
         search: convertActionToUrlSearchParams(action)
       });
-    } else if (previousPathName && !previousPathName.endsWith('/sign-up') && !previousPathName.endsWith('/sign-in')) {
-      clHistory.push({
-        pathname: previousPathName
-      });
+    } else if (previousPathName && !previousPathName.endsWith('/sign-up') && !previousPathName.endsWith('/sign-in') && !previousPathName.endsWith('/complete-signup')) {
+      clHistory.push(previousPathName);
     } else {
       clHistory.push('/');
     }
@@ -153,46 +170,47 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const { action, loaded } = this.state;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token = isString(location.query.token) ? location.query.token : null;
-    const title = (isInvitation ? <FormattedMessage {...messages.invitationTitle} /> : undefined);
     const authError = includes(location.pathname, 'authentication-error');
-    let initialActiveStep: TSignUpSteps | null = null;
+    let initialActiveSignUpStep: TSignUpSteps | undefined = undefined;
 
     if (!authError && authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
       const hasVerificationStep = action?.action_requires_verification;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
-      // export type TSignUpSteps = 'provider-selection' | 'password-signup' | 'verification' | 'custom-fields';
-
       if (!authUser) {
-        initialActiveStep = 'password-signup';
+        initialActiveSignUpStep = 'password-signup';
       } else if (hasVerificationStep) {
-        initialActiveStep = 'verification';
+        initialActiveSignUpStep = 'verification';
       } else if (hasCustomFields) {
-        initialActiveStep = 'custom-fields';
+        initialActiveSignUpStep = 'custom-fields';
       } else {
-        this.onSignUpCompleted();
+        this.onSignUpInCompleted();
       }
     }
 
     return (
       <>
         <SignUpPageMeta />
-        <Container className="e2e-sign-up-page">
+        <Container className="e2e-sign-up-in-page">
           <Left>
-            <SignInUpBanner />
+            <Banner>
+              <Slogan>
+                <FormattedMessage {...messages.slogan} />
+              </Slogan>
+            </Banner>
           </Left>
           <Right>
             <RightInner>
               {loaded &&
-                <SignUp
-                  initialActiveStep={initialActiveStep}
+                <SignUpIn
+                  initialActiveSignUpInMethod="signup"
+                  initialActiveSignUpStep={initialActiveSignUpStep}
                   inModal={false}
-                  accountCreationTitle={title}
                   isInvitation={isInvitation}
                   token={token}
                   action={action}
                   error={authError}
-                  onSignUpCompleted={this.onSignUpCompleted}
+                  onSignUpInCompleted={this.onSignUpInCompleted}
                 />
               }
             </RightInner>

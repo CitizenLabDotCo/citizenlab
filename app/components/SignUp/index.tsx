@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
-import { isString, isBoolean, isEmpty, isObject } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import clHistory from 'utils/cl-router/history';
-import { stringify, parse } from 'qs';
 
 // components
 import AccountCreation from './AccountCreation';
@@ -35,6 +34,9 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
+
+// typings
+import { ISignUpInAction } from 'components/SignUpIn';
 
 const timeout = 650;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -122,53 +124,6 @@ const SelectedPhaseEventName = 'signUpFlowNextStep';
 export const signUpNextStep$ = eventEmitter.observeEvent(SelectedPhaseEventName);
 export const signUpGoToNextStep = () =>  eventEmitter.emit(SelectedPhaseEventSource, SelectedPhaseEventName, null);
 
-export type IActionType = 'upvote' | 'downvote' | 'comment' | 'post';
-
-export type IActionContextType = 'idea' | 'initiative' | 'project' | 'phase';
-
-export interface IAction {
-  action_type: IActionType;
-  action_context_type: IActionContextType;
-  action_context_id: string;
-  action_context_pathname: string;
-  action_requires_verification: boolean;
-}
-
-export const redirectActionToSignUpPage = (action: IAction) => {
-  clHistory.push({
-    pathname: '/sign-up',
-    search: convertActionToUrlSearchParams(action)
-  });
-};
-
-export function convertUrlSearchParamsToAction(input: string) {
-  const action = parse(input, { ignoreQueryPrefix: true, decoder: (str, defaultEncoder, charset, type) => {
-    if (type === 'value' && str === 'true') { return true; }
-    if (type === 'value' && str === 'false') { return false; }
-    return defaultEncoder(str, defaultEncoder, charset);
-  }}) as IAction;
-
-  if (isObject(action) && !isEmpty(action)) {
-    const { action_type, action_context_id, action_context_type, action_context_pathname, action_requires_verification } = action;
-
-    if (
-      action_type === ('upvote' || 'downvote' || 'comment' || 'post') &&
-      action_context_type === ('idea' || 'initiative' || 'project' || 'phase') &&
-      isString(action_context_id) &&
-      isString(action_context_pathname) &&
-      isBoolean(action_requires_verification)
-    ) {
-      return action;
-    }
-  }
-
-  return;
-}
-
-export function convertActionToUrlSearchParams(action: IAction) {
-  return stringify(action, { addQueryPrefix: true });
-}
-
 export type TSignUpSteps = 'provider-selection' | 'password-signup' | 'verification' | 'custom-fields';
 
 interface DefaultProps {
@@ -179,10 +134,7 @@ export interface InputProps extends DefaultProps {
   inModal: boolean;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
-  accountCreationTitle?: string | JSX.Element;
-  verificationTitle?: string | JSX.Element;
-  customFieldsTitle?: string | JSX.Element;
-  action?: IAction | null;
+  action?: ISignUpInAction | null;
   error?: boolean;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
@@ -249,16 +201,16 @@ class SignUp extends PureComponent<Props, State> {
     this.setState(state => ({ error: this.props.error || state.error }));
   }
 
-  handleStep1Completed = (userId: string) => {
+  handlePasswordSignupCompleted = (userId: string) => {
     this.setState({ userId });
     signUpGoToNextStep();
   }
 
-  handleStep2Completed = () => {
+  handleProviderSelectionCompleted = () => {
     signUpGoToNextStep();
   }
 
-  handleStep3Completed = () => {
+  handleCustomFieldsCompleted = () => {
     this.onSignUpCompleted();
   }
 
@@ -277,7 +229,7 @@ class SignUp extends PureComponent<Props, State> {
 
   render() {
     const { activeStep, error } = this.state;
-    const { isInvitation, inModal, token, accountCreationTitle, verificationTitle, customFieldsTitle, action, tenant, className } = this.props;
+    const { isInvitation, inModal, token, action, tenant, className } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     return (
@@ -299,7 +251,7 @@ class SignUp extends PureComponent<Props, State> {
                 >
                   <StepContainer>
                     <Title>
-                      {accountCreationTitle || <FormattedMessage {...messages.accountCreationTitle} />}
+                      <FormattedMessage {...isInvitation ? messages.invitationTitle : messages.accountCreationTitle} />
                     </Title>
 
                     {!isEmpty(signupHelperText) &&
@@ -312,7 +264,7 @@ class SignUp extends PureComponent<Props, State> {
                       <AccountCreation
                         isInvitation={isInvitation}
                         token={token}
-                        onCompleted={this.handleStep1Completed}
+                        onCompleted={this.handlePasswordSignupCompleted}
                       />
                     </FeatureFlag>
 
@@ -332,12 +284,14 @@ class SignUp extends PureComponent<Props, State> {
                   classNames="step"
                 >
                   <StepContainer>
-                    <Title>{verificationTitle || <FormattedMessage {...messages.verificationTitle} />}</Title>
+                    <Title>
+                      <FormattedMessage {...messages.verificationTitle} />
+                    </Title>
                     <VerificationSteps
                       context={null}
                       initialActiveStep="method-selection"
                       inModal={inModal}
-                      onComplete={this.handleStep2Completed}
+                      onComplete={this.handleProviderSelectionCompleted}
                       onError={this.onVerificationError}
                     />
                   </StepContainer>
@@ -350,8 +304,10 @@ class SignUp extends PureComponent<Props, State> {
                   classNames="step"
                 >
                   <StepContainer>
-                    <Title>{customFieldsTitle || <FormattedMessage {...messages.customFieldsTitle} />}</Title>
-                    <CustomFields onCompleted={this.handleStep3Completed} />
+                    <Title>
+                      <FormattedMessage {...messages.customFieldsTitle} />
+                    </Title>
+                    <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
                   </StepContainer>
                 </CSSTransition>
               }

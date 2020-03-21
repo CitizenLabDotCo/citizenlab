@@ -15,7 +15,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
 
 // utils
-import { redirectActionToSignUpPage } from 'components/SignUp';
+import { redirectActionToSignUpInPage } from 'components/SignUpIn';
 
 // i18n
 import messages from './messages';
@@ -83,7 +83,7 @@ class CommentingDisabled extends PureComponent<Props> {
       const pcType = phaseId ? 'phase' : 'project';
       pcId && openVerificationModalWithContext('ActionComment', pcId, pcType, 'commenting');
     } else {
-      redirectActionToSignUpPage({
+      redirectActionToSignUpInPage({
         action_type: 'comment',
         action_context_type: postType,
         action_context_id: postId,

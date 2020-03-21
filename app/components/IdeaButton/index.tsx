@@ -22,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { redirectActionToSignUpPage } from 'components/SignUp';
+import { redirectActionToSignUpInPage } from 'components/SignUpIn';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
@@ -133,7 +133,7 @@ class IdeaButton extends PureComponent<Props> {
           clHistory.push('/ideas/new');
         }
       } else if (pcType && pcId) {
-        redirectActionToSignUpPage({
+        redirectActionToSignUpInPage({
           action_type: 'post',
           action_context_type: pcType,
           action_context_id: pcId,

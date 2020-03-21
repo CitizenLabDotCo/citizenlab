@@ -163,9 +163,9 @@ const SubSocialButtonLink = styled.a`
   padding-top: 0.2em;
 `;
 
-interface InputProps {
-  onSignedIn: (userId: string) => void;
-  title?: string | JSX.Element;
+export interface InputProps {
+  onSignInCompleted: (userId: string) => void;
+  onGoToSignUp: () => void;
   className?: string;
 }
 
@@ -246,7 +246,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
   handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const { onSignedIn } = this.props;
+    const { onSignInCompleted } = this.props;
     const { formatMessage } = this.props.intl;
     const { email, password } = this.state;
 
@@ -255,7 +255,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
         this.setState({ processing: true });
         const user = await signIn(email, password);
         this.setState({ processing: false });
-        onSignedIn(user.data.id);
+        onSignInCompleted(user.data.id);
       } catch (error) {
         const signInError = formatMessage(messages.signInError);
         this.setState({ signInError, processing: false });
@@ -275,7 +275,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
   render() {
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const { className, title, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
+    const { className, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const externalLoginEnabled = googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled;
@@ -284,7 +284,9 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
     return (
       <Container className={`e2e-sign-in-container ${className}`}>
-        <Title>{title || <FormattedMessage {...messages.title} />}</Title>
+        <Title>
+          <FormattedMessage {...messages.title} />
+        </Title>
 
         <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
           {passwordLoginEnabled &&
@@ -334,7 +336,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                 <ButtonWrapper>
                   <Button
                     onClick={this.handleOnSubmit}
-                    size="1"
                     processing={processing}
                     text={formatMessage(messages.submit)}
                     className="e2e-submit-signin"
@@ -419,7 +420,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
   }
 }
 
-const SignInWithInjectedIntl = withRouter<Props>(injectIntl(SignIn));
+const SignInWithHoC = withRouter<Props>(injectIntl(SignIn));
 
 const Data = adopt<DataProps, {}>({
   tenant: <GetTenant />,
@@ -432,6 +433,6 @@ const Data = adopt<DataProps, {}>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <SignInWithInjectedIntl {...inputProps} {...dataProps} />}
+    {dataProps => <SignInWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

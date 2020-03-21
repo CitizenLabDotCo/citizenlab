@@ -28,7 +28,7 @@ import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.s
 import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
 
 // typings
-import { IAction } from 'components/SignUp';
+import { ISignUpInAction } from 'components/SignUpIn';
 
 const Container = styled.div`
   width: 100%;
@@ -106,7 +106,7 @@ const AlreadyHaveAnAccount = styled(Link)`
 `;
 
 interface InputProps {
-  action?: IAction | null;
+  action?: ISignUpInAction | null;
   goToSignIn: () => void;
 }
 
