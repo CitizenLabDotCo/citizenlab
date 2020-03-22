@@ -3,18 +3,20 @@ import { adopt } from 'react-adopt';
 import { Subscription } from 'rxjs';
 import { isString, includes } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
-import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
 import { signUpNextStep$, TSignUpSteps } from 'components/SignUp';
 import SignUpIn, { ISignUpInAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUpIn';
-import SignUpPageMeta from './SignUpPageMeta';
+import SignUpInPageMeta from './SignUpInPageMeta';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+
+// utils
+import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -106,7 +108,6 @@ export interface Props extends InputProps, DataProps {}
 
 interface State {
   action: ISignUpInAction | null | undefined;
-  loaded: boolean;
 }
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
@@ -115,8 +116,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      action: null,
-      loaded: false
+      action: null
     };
   }
 
@@ -124,25 +124,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const action = convertUrlSearchParamsToAction(this.props.location.search);
     this.setState({ action: action || null });
     action && window.history.replaceState(null, '', this.props.location.pathname);
-
-    this.setLoaded();
-
-    this.subscription = signUpNextStep$.subscribe(() => {
-      window.scrollTo(0, 0);
-    });
-  }
-
-  componentDidUpdate() {
-    this.setLoaded();
-  }
-
-  setLoaded = () => {
-    const { customFieldsSchema, authUser } = this.props;
-    const { action } = this.state;
-
-    if (authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
-      this.setState({ loaded: true });
-    }
+    this.subscription = signUpNextStep$.subscribe(() => window.scrollTo(0, 0));
   }
 
   componentWillUnmount() {
@@ -158,7 +140,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
         pathname: action.action_context_pathname,
         search: convertActionToUrlSearchParams(action)
       });
-    } else if (previousPathName && !previousPathName.endsWith('/sign-up') && !previousPathName.endsWith('/sign-in') && !previousPathName.endsWith('/complete-signup')) {
+    } else if (previousPathName && !endsWith(previousPathName, ['sign-up', 'sign-in', 'complete-signup'])) {
       clHistory.push(previousPathName);
     } else {
       clHistory.push('/');
@@ -167,21 +149,22 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location, customFieldsSchema, authUser } = this.props;
-    const { action, loaded } = this.state;
-    const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
+    const { action } = this.state;
+    const isInvitation = endsWith(location.pathname, 'invite');
     const token = isString(location.query.token) ? location.query.token : null;
     const authError = includes(location.pathname, 'authentication-error');
+    const initialActiveSignUpInMethod = endsWith(location.pathname, 'sign-in') ? 'signin' : 'signup';
     let initialActiveSignUpStep: TSignUpSteps | undefined = undefined;
 
     if (!authError && authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
       const hasVerificationStep = action?.action_requires_verification;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
-      if (!authUser) {
+      if (!authUser) { // not logged in
         initialActiveSignUpStep = 'password-signup';
-      } else if (hasVerificationStep) {
+      } else if (hasVerificationStep) { // logged in but not yet verified and verification required
         initialActiveSignUpStep = 'verification';
-      } else if (hasCustomFields) {
+      } else if (hasCustomFields) { // logged in and verified, but not yet completed custom fields and custom fields enabled
         initialActiveSignUpStep = 'custom-fields';
       } else {
         this.onSignUpInCompleted();
@@ -190,7 +173,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
     return (
       <>
-        <SignUpPageMeta />
+        <SignUpInPageMeta />
         <Container className="e2e-sign-up-in-page">
           <Left>
             <Banner>
@@ -201,18 +184,16 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
           </Left>
           <Right>
             <RightInner>
-              {loaded &&
-                <SignUpIn
-                  initialActiveSignUpInMethod="signup"
-                  initialActiveSignUpStep={initialActiveSignUpStep}
-                  inModal={false}
-                  isInvitation={isInvitation}
-                  token={token}
-                  action={action}
-                  error={authError}
-                  onSignUpInCompleted={this.onSignUpInCompleted}
-                />
-              }
+              <SignUpIn
+                initialActiveSignUpInMethod={initialActiveSignUpInMethod}
+                initialActiveSignUpStep={initialActiveSignUpStep}
+                inModal={false}
+                isInvitation={isInvitation}
+                token={token}
+                action={action}
+                error={authError}
+                onSignUpInCompleted={this.onSignUpInCompleted}
+              />
             </RightInner>
           </Right>
         </Container>
