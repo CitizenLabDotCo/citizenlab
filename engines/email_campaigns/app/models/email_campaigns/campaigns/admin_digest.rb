@@ -1,4 +1,4 @@
-'trial',module EmailCampaigns
+module EmailCampaigns
   class Campaigns::AdminDigest < Campaign
     include Disableable
     include Consentable
