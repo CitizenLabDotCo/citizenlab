@@ -2,7 +2,7 @@ import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq, has } from 'lodash-es';
-import { isNilOrError, isPage } from 'utils/helperUtils';
+import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
 import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
@@ -146,14 +146,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
 
       this.setState((state) => ({
-        previousPathname: !(previousPathname.endsWith('/sign-up') || previousPathname.endsWith('/sign-in')) ? previousPathname : state.previousPathname
+        previousPathname: !endsWith(previousPathname, ['sign-up', 'sign-in', 'complete-signup']) ? previousPathname : state.previousPathname
       }));
 
       trackPage(newLocation.pathname);
 
       // If already created a user (step 1 of sign-up) and there's a required field in step 2,
       // redirect to complete-signup page
-      if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
+      if (isObject(authUser) && !isString(registrationCompletedAt) && !endsWith(nextPathname, 'complete-signup')) {
         clHistory.replace({
           pathname: '/complete-signup',
           search: newLocation.search

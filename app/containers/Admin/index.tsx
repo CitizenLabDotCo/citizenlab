@@ -8,6 +8,9 @@ import Sidebar from './sideBar/';
 import styled from 'styled-components';
 import { colors, media } from 'utils/styleUtils';
 
+// utils
+import { endsWith } from 'utils/helperUtils';
+
 // stlying
 import 'assets/semantic/semantic.min.css';
 
@@ -106,10 +109,10 @@ class AdminPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { children, className, location } = this.props;
+    const { children, className, location: { pathname } } = this.props;
     const { adminNoPadding } = this.state;
-    const adminFullWidth = (this.state.adminFullWidth === true || location.pathname.endsWith('admin/moderation'));
-    const adminWhiteBg = location.pathname.endsWith('admin/moderation');
+    const adminFullWidth = (this.state.adminFullWidth === true || endsWith(pathname, 'admin/moderation'));
+    const adminWhiteBg = endsWith(pathname, 'admin/moderation');
 
     return (
       <>

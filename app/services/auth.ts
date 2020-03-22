@@ -2,6 +2,7 @@ import { IUser, deleteUser } from 'services/users';
 import { IHttpMethod, Locale } from 'typings';
 import { API_PATH, AUTH_PATH } from 'containers/App/constants';
 import { getJwt, setJwt, removeJwt, decode } from 'utils/auth/jwt';
+import { endsWith } from 'utils/helperUtils';
 import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
@@ -93,7 +94,7 @@ export function signOut() {
       const { pathname, urlLocale } = removeLocale(location.pathname);
 
       if (pathname) {
-        if (pathname.endsWith('/sign-up')) {
+        if (endsWith(pathname, '/sign-up')) {
           clHistory.push('/');
         } else if (pathname.startsWith('/admin')) {
           clHistory.push(`/${urlLocale}`);

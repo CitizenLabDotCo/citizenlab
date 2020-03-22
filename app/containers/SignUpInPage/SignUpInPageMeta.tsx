@@ -1,7 +1,8 @@
 // libraries
-import React from 'react';
+import React, { memo } from 'react';
 import Helmet from 'react-helmet';
 import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import messages from './messages';
@@ -14,7 +15,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, endsWith } from 'utils/helperUtils';
 import { getLocalized } from 'utils/i18n';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
@@ -27,47 +28,44 @@ interface DataProps {
 
 interface Props extends DataProps { }
 
-const SignInPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, tenantLocales, tenant, locale }) => {
+const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(({ intl, location: { pathname }, tenantLocales, tenant, locale }) => {
   if (!isNilOrError(tenantLocales) && !isNilOrError(locale) && !isNilOrError(tenant)) {
     const { formatMessage } = intl;
-    const { location } = window;
+    const method = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
     const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
     const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
-
-    const SignInPageMetaTitle = formatMessage(messages.metaTitle, { tenantName });
-    const SignInPageMetaDescription = formatMessage(messages.metaDescription);
+    const pageMetaTitle = formatMessage(method === 'signin' ? messages.signInMetaTitle : messages.signUpMetaTitle, { tenantName });
+    const pageMetaDescription = formatMessage(method === 'signin' ? messages.signInMetaDescription : messages.signUpMetaDescription);
 
     return (
       <Helmet>
         <title>
-          {SignInPageMetaTitle}
+          {pageMetaTitle}
         </title>
         {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
-        <meta name="title" content={SignInPageMetaTitle} />
-        <meta name="description" content={SignInPageMetaDescription} />
-        <meta property="og:title" content={SignInPageMetaTitle} />
-        <meta property="og:description" content={SignInPageMetaDescription} />
-        <meta property="og:url" content={location.href} />
+        <meta name="title" content={pageMetaTitle} />
+        <meta name="description" content={pageMetaDescription} />
+        <meta property="og:title" content={pageMetaTitle} />
+        <meta property="og:description" content={pageMetaDescription} />
+        <meta property="og:url" content={window.location.href} />
       </Helmet>
     );
   }
 
   return null;
-};
+});
 
-const SignInPageMetaWithHoc = injectIntl<Props>(SignInPageMeta);
+const SignUpInPageMetaWithHoC = withRouter(injectIntl(SignUpInPageMeta));
 
 const Data = adopt<DataProps>({
   tenantLocales: <GetTenantLocales />,
   tenant: <GetTenant />,
-  locale: <GetLocale />,
+  locale: <GetLocale />
 });
 
-const WrappedSignInPageMeta = () => (
+export default () => (
   <Data>
-    {dataprops => <SignInPageMetaWithHoc {...dataprops} />}
+    {dataprops => <SignUpInPageMetaWithHoC {...dataprops} />}
   </Data>
 );
-
-export default WrappedSignInPageMeta;
