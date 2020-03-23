@@ -800,6 +800,16 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
+      },
+      "volunteering": {
+        "type": "object",
+        "description": "Participation method to let citizens volunteer",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
       }
     },
   "dependencies": {
