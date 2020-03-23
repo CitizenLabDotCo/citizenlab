@@ -190,7 +190,7 @@ interface Props extends InputProps, DataProps {}
 interface State {
   initiated: boolean;
   showLegend: boolean;
-  currentLayer: string | null;
+  currentLayerTitle: string | null;
 }
 
 class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
@@ -215,7 +215,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     this.state = {
       initiated: false,
       showLegend: false,
-      currentLayer: null,
+      currentLayerTitle: null,
     };
   }
 
@@ -340,11 +340,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
       this.map.on('overlayadd', (event: Leaflet.LayersControlEvent) => {
-        this.setState({ showLegend: true, currentLayer: event.name });
+        this.setState({ showLegend: true, currentLayerTitle: event.name });
       });
 
       this.map.on('overlayremove', () => {
-        this.setState({ showLegend: false, currentLayer: null });
+        this.setState({ showLegend: false, currentLayerTitle: null });
       });
 
       if (this.props.onMapClick) {
@@ -427,12 +427,19 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       className,
       mapHeight,
       mapConfig,
-      localize
+      localize,
     } = this.props;
-    const { showLegend } = this.state;
+    const {
+      showLegend,
+      currentLayerTitle
+    } = this.state;
 
     if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
-      // const legendTitle = localize(mapConfig.attributes.layers);
+      const currentLayer = mapConfig.attributes.layers.find(layer => localize(layer.title_multiloc) === currentLayerTitle);
+      const legendTitle = localize(currentLayer?.title_multiloc);
+
+      // step 1: find layer in mapconfig
+      // step 2: use
 
       console.log(mapConfig);
       return (
@@ -456,12 +463,12 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
             </LeafletMapContainer>
           </MapContainer>
-          {/* {showLegend &&
+          {showLegend &&
             <LegendContainer>
               <Title>
                 {legendTitle}
               </Title>
-              <Legend>
+              {/* <Legend>
                 {legend.map((legendItem, index) => {
                   const color = legendItem.color;
                   return (
@@ -471,9 +478,9 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
                     </Item>
                   );
                 })}
-              </Legend>
+              </Legend> */}
             </LegendContainer>
-          } */}
+          }
         </Container>
 
       );
