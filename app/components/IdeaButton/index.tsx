@@ -125,7 +125,7 @@ class IdeaButton extends PureComponent<Props> {
       if (!isNilOrError(authUser)) {
         if (!isNilOrError(project)) {
           if (postingDisabledReason === 'not_verified' && pcType && pcId) {
-            openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
+            openVerificationModalWithContext(pcId, pcType, 'posting');
           } else if (!postingDisabledReason) {
             clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
           }
@@ -151,7 +151,7 @@ class IdeaButton extends PureComponent<Props> {
     const { participationContextType, projectId, phaseId } = this.props;
     const pcType = participationContextType;
     const pcId = pcType === 'phase' ? phaseId : projectId;
-    pcType && pcId && openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
+    pcType && pcId && openVerificationModalWithContext(pcId, pcType, 'posting');
   }
 
   render() {

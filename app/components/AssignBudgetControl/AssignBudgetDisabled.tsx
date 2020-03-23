@@ -64,7 +64,7 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
     const { participationContextId, participationContextType } = this.props;
-    openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType, 'budgeting');
+    openVerificationModalWithContext(participationContextId, participationContextType, 'budgeting');
   }
 
   removeFocus = (event: React.MouseEvent) => {

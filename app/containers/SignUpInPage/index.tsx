@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import { signUpNextStep$, TSignUpSteps } from 'components/SignUp';
+import { TSignUpSteps } from 'components/SignUp';
 import SignUpIn, { ISignUpInAction, convertUrlSearchParamsToAction, convertActionToUrlSearchParams } from 'components/SignUpIn';
 import SignUpInPageMeta from './SignUpInPageMeta';
 
@@ -124,11 +124,6 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const action = convertUrlSearchParamsToAction(this.props.location.search);
     this.setState({ action: action || null });
     action && window.history.replaceState(null, '', this.props.location.pathname);
-    this.subscription = signUpNextStep$.subscribe(() => window.scrollTo(0, 0));
-  }
-
-  componentWillUnmount() {
-    this.subscription?.unsubscribe();
   }
 
   onSignUpInCompleted = () => {

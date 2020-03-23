@@ -125,7 +125,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
     event.preventDefault();
 
     if (insideModal) {
-      eventEmitter.emit('IdeaShowPageTopBar', 'closeIdeaModal', null);
+      eventEmitter.emit('closeIdeaModal');
     } else {
       clHistory.push('/');
     }
@@ -139,7 +139,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
     if (!isNilOrError(authUser) && !isNilOrError(project) && disabled_reason === 'not_verified') {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = project.relationships?.current_phase?.data?.id || project.id;
-      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
+      pcId && openVerificationModalWithContext(pcId, pcType, 'voting');
     }
   }, [authUser, project]);
 

@@ -81,7 +81,7 @@ class CommentingDisabled extends PureComponent<Props> {
     if (!isNilOrError(authUser)) {
       const pcId = phaseId || projectId || null;
       const pcType = phaseId ? 'phase' : 'project';
-      pcId && openVerificationModalWithContext('ActionComment', pcId, pcType, 'commenting');
+      pcId && openVerificationModalWithContext(pcId, pcType, 'commenting');
     } else {
       redirectActionToSignUpInPage({
         action_type: 'comment',

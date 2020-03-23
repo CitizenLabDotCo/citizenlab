@@ -182,7 +182,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
           await addCommentToInitiative(postId, authUser.id, commentBodyMultiloc);
         }
 
-        eventEmitter.emit('ParentCommentForm', 'CommentAdded', null);
+        eventEmitter.emit('CommentAdded');
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);

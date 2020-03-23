@@ -80,25 +80,13 @@ const TermsAndConditionsWrapper = styled.div`
   }
 `;
 
-const AlreadyHaveAnAccount = styled(Link)`
-  color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.base}px;
-  line-height: 20px;
-  font-weight: 400;
-  text-decoration: none;
-  cursor: pointer;
-  margin-left: 15px;
-
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-    text-decoration: underline;
-  }
-`;
+const GoToSignInButton = styled(Button)``;
 
 type InputProps = {
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   onCompleted: (userId: string) => void;
+  onGoToSignIn: () => void;
 };
 
 interface DataProps {
@@ -135,8 +123,8 @@ type State = {
 class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
   firstNameInputElement: HTMLInputElement | null;
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props: Props & InjectedIntlProps) {
+    super(props);
     this.state = {
       token: props.token,
       firstName: props.invitedUser.user?.attributes.first_name || null,
@@ -216,11 +204,18 @@ class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
   handleTaCAcceptedOnChange = () => {
     this.setState(state => ({ tacAccepted: !state.tacAccepted, tacError: null }));
   }
+
   handleEmailAcceptedOnChange = () => {
     this.setState(state => ({ emailAccepted: !state.emailAccepted, emailError: null }));
   }
+
   handlePrivacyAcceptedOnChange = () => {
     this.setState(state => ({ privacyAccepted: !state.privacyAccepted, privacyError: null }));
+  }
+
+  handleOnGoToSignIn = (event: React.FormEvent) => {
+    event.preventDefault();
+    this.props.onGoToSignIn();
   }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
@@ -446,15 +441,18 @@ class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
               <ButtonWrapper>
                 <Button
                   id="e2e-signup-step1-button"
-                  size="1"
                   processing={processing}
                   text={buttonText}
                   onClick={this.handleOnSubmit}
                 />
                 {!isInvitation &&
-                  <AlreadyHaveAnAccount to="/sign-in">
+                  <GoToSignInButton
+                    buttonStyle="text"
+                    padding="0px"
+                    onClick={this.handleOnGoToSignIn}
+                  >
                     <FormattedMessage {...messages.alreadyHaveAnAccount} />
-                  </AlreadyHaveAnAccount>
+                  </GoToSignInButton>
                 }
               </ButtonWrapper>
             </FormElement>
@@ -484,8 +482,8 @@ class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  invitedUser: ({ token, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>,
   tenant: <GetTenant />,
+  invitedUser: ({ token, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>
 });
 
 const AccountCreationWithHoC = injectIntl<Props>(AccountCreation);

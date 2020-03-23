@@ -103,7 +103,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleOnSubmitButtonClick = (event: FormEvent) => {
     event.preventDefault();
-    eventEmitter.emit('SignUpStep3', 'customFieldsSubmitEvent', null);
+    eventEmitter.emit('customFieldsSubmitEvent');
   }
 
   handleCustomFieldsFormOnSubmit = async (formData) => {

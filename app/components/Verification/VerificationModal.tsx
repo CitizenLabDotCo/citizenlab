@@ -64,7 +64,7 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
   }, [opened, initialActiveStep]);
 
   const onClose = useCallback(() => {
-    closeVerificationModal('VerificationModal');
+    closeVerificationModal();
   }, []);
 
   const onComplete = useCallback(() => {

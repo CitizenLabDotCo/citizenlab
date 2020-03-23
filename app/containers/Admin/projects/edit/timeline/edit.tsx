@@ -265,7 +265,7 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
 
   handleOnSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
-    eventEmitter.emit('AdminProjectTimelineEdit', 'getParticipationContext', null);
+    eventEmitter.emit('getParticipationContext');
   }
 
   getAttributeDiff = (participationContextConfig: IParticipationContextConfig) => {

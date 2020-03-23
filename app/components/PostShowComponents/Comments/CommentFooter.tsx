@@ -158,7 +158,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
       this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
 
-      eventEmitter.emit<string>('CommentFooter', 'commentTranslateButtonClicked', comment.id);
+      eventEmitter.emit<string>('commentTranslateButtonClicked', comment.id);
     }
   }
 
@@ -197,7 +197,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
         authorSlug
       };
 
-      eventEmitter.emit<ICommentReplyClicked>('CommentFooter', 'commentReplyButtonClicked', eventValue);
+      eventEmitter.emit<ICommentReplyClicked>('commentReplyButtonClicked', eventValue);
     } else {
       clHistory.push('/sign-in');
     }

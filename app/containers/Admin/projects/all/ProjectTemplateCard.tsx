@@ -116,7 +116,7 @@ const ProjectTemplateCard = memo<Props>(({ projectTemplateId, imageUrl, title, b
 
   const onMoreDetailsBtnClick = useCallback(() => {
     trackEventByName(tracks.moreDetailsButtonClicked, { projectTemplateId, title });
-    eventEmitter.emit<string>('ProjectTemplateCard', 'ProjectTemplateCardClicked', projectTemplateId);
+    eventEmitter.emit<string>('ProjectTemplateCardClicked', projectTemplateId);
   }, []);
 
   const onOpenModal = useCallback(() => {

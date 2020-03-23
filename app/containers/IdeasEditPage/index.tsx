@@ -196,7 +196,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
   }
 
   handleOnSaveButtonClick = () => {
-    eventEmitter.emit('IdeasEditPage', 'IdeaFormSubmitEvent', null);
+    eventEmitter.emit('IdeaFormSubmitEvent');
   }
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {

@@ -254,7 +254,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           await addCommentToInitiativeComment(postId, authUser.id, parentId, commentBodyMultiloc, waitForChildCommentsRefetch);
         }
 
-        eventEmitter.emit('ChildCommentForm', 'CommentAdded', null);
+        eventEmitter.emit('CommentAdded');
 
         this.setState({
           inputValue: '',

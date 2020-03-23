@@ -151,7 +151,7 @@ export class PostCommentGroup extends PureComponent<Props> {
     const { post, postType } = this.props;
 
     if (!isNilOrError(post)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('PostCommentGroup', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: post.id,
         slug: post.attributes.slug,
         type: postType

@@ -111,7 +111,7 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, insideModal, class
     event.preventDefault();
 
     if (insideModal) {
-      eventEmitter.emit('IdeaShowPageTopBar', 'closeIdeaModal', null);
+      eventEmitter.emit('closeIdeaModal');
     } else {
       clHistory.push('/');
     }

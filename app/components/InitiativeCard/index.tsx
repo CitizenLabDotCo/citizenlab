@@ -92,7 +92,7 @@ class InitiativeCard extends PureComponent<Props & InjectedLocalized, State> {
     const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('InitiativeCard', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: initiative.id,
         slug: initiative.attributes.slug,
         type: 'initiative'

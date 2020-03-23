@@ -127,7 +127,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   closeDeleteModal = (event?: FormEvent) => {
     event && event.preventDefault();
     this.setState({ modalVisible_delete: false });
-    eventEmitter.emit('modal', 'modalClosed', null);
+    eventEmitter.emit('modalClosed');
   }
 
   deleteComment = async (reason) => {
@@ -137,8 +137,8 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     const reasonObj = get(reason, 'reason_code') ? reason : undefined;
     this.setState({ loading_deleteComment: true });
     await markForDeletion(commentId, authorId, projectId, reasonObj);
-    eventEmitter.emit('modal', 'modalClosed', null);
-    eventEmitter.emit('CommentsMoreActions', 'CommentDeleted', null);
+    eventEmitter.emit('modalClosed');
+    eventEmitter.emit('CommentDeleted');
   }
 
   openSpamModal = () => {

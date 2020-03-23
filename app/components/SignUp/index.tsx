@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription } from 'rxjs';
 import { isEmpty } from 'lodash-es';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -19,7 +18,6 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // analytics
@@ -119,10 +117,9 @@ const SignupHelperText = styled.p`
   padding-bottom: 20px;
 `;
 
-const SelectedPhaseEventSource = 'SignUp';
-const SelectedPhaseEventName = 'signUpFlowNextStep';
-export const signUpNextStep$ = eventEmitter.observeEvent(SelectedPhaseEventName);
-export const signUpGoToNextStep = () =>  eventEmitter.emit(SelectedPhaseEventSource, SelectedPhaseEventName, null);
+// const SelectedPhaseEventName = 'signUpFlowNextStep';
+// export const signUpNextStep$ = eventEmitter.observeEvent(SelectedPhaseEventName);
+// export const signUpGoToNextStep = () =>  eventEmitter.emit(SelectedPhaseEventName);
 
 export type TSignUpSteps = 'provider-selection' | 'password-signup' | 'verification' | 'custom-fields';
 
@@ -155,7 +152,7 @@ interface State {
 }
 
 class SignUp extends PureComponent<Props, State> {
-  subscription: Subscription | undefined;
+  // subscription: Subscription | undefined;
 
   static defaultProps: DefaultProps = {
     initialActiveStep: 'password-signup'
@@ -172,42 +169,38 @@ class SignUp extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.mapErrorPropToState();
-
-    this.subscription = signUpNextStep$.subscribe(() => {
-      const { activeStep } = this.state;
-      const { action, customFieldsSchema } = this.props;
-      const hasVerificationStep = action?.action_requires_verification;
-      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
-
-      if (activeStep === 'password-signup' && hasVerificationStep) {
-        this.setState({ activeStep: 'verification' });
-      } else if (hasCustomFields) {
-        this.setState({ activeStep: 'custom-fields' });
-      } else {
-        this.onSignUpCompleted();
-      }
-    });
   }
 
   componentDidUpdate() {
     this.mapErrorPropToState();
   }
 
-  componentWillUnmount() {
-    this.subscription?.unsubscribe();
-  }
-
   mapErrorPropToState = () => {
     this.setState(state => ({ error: this.props.error || state.error }));
   }
 
+  goToNextStep = () => {
+    const { activeStep } = this.state;
+    const { action, customFieldsSchema } = this.props;
+    const hasVerificationStep = action?.action_requires_verification;
+    const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+
+    if (activeStep === 'password-signup' && hasVerificationStep) {
+      this.setState({ activeStep: 'verification' });
+    } else if (hasCustomFields) {
+      this.setState({ activeStep: 'custom-fields' });
+    } else {
+      this.onSignUpCompleted();
+    }
+  }
+
   handlePasswordSignupCompleted = (userId: string) => {
     this.setState({ userId });
-    signUpGoToNextStep();
+    this.goToNextStep();
   }
 
   handleProviderSelectionCompleted = () => {
-    signUpGoToNextStep();
+    this.goToNextStep();
   }
 
   handleCustomFieldsCompleted = () => {
@@ -265,6 +258,7 @@ class SignUp extends PureComponent<Props, State> {
                         isInvitation={isInvitation}
                         token={token}
                         onCompleted={this.handlePasswordSignupCompleted}
+                        onGoToSignIn={this.props.onGoToSignIn}
                       />
                     </FeatureFlag>
 
