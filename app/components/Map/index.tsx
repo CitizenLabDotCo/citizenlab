@@ -318,16 +318,15 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     if (element && !this.map) {
+      // Init the map
       const zoom = getZoom();
       const tileProvider = getTileProvider();
       const initCenter = getInitCenter();
-
       const baseLayer = Leaflet.tileLayer(tileProvider, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       });
 
-      // Init the map
       this.map = Leaflet.map(element, {
         zoom,
         center: initCenter,
@@ -335,10 +334,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         layers: [baseLayer]
       });
 
+      // Add layers
       const overlayMaps = getOverlayMaps();
-
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
+      // Handlers
       this.map.on('overlayadd', (event: Leaflet.LayersControlEvent) => {
         this.setState({ showLegend: true, currentLayerTitle: event.name });
       });
@@ -439,7 +439,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       const legendTitle = localize(currentLayer?.title_multiloc);
       const legend = currentLayer?.legend;
 
-      console.log(mapConfig);
       return (
         <Container className={className}>
           <MapContainer>
@@ -504,11 +503,8 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: add style func/simple style spec to geojson
 // TODO: which legend to show when multiple layers are selected?
 // TODO: type error simple style spec
-// TODO: don't select layer by default
-// TODO: clean up code
 // TODO: extract Legend component
 // TODO: console error landing page
-// TODO: listen to different layers
+// TODO: uncomment getTileProvider
