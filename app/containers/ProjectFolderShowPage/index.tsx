@@ -106,7 +106,7 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
     return (
       <>
         <ProjectFolderShowPageMeta projectFolderSlug={slug} />
-        <Container className={`${!loading ? 'loaded' : 'loading'}`}>
+        <Container className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}>
           {folderNotFound ? (
             <NotFoundWrapper>
               <p><FormattedMessage {...messages.noFolderFoundHere} /></p>

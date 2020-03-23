@@ -482,7 +482,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
-                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
+                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' || secondUrlSegment === 'folders'  ? 'active' : ''}`}
                       aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}

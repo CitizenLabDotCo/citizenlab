@@ -1,4 +1,3 @@
-// defined in e2e template's - &project1
 
 import { randomString } from '../support/commands';
 

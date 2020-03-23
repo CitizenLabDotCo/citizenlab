@@ -121,7 +121,7 @@ const ProjectFolderInfo = ({ projectFolderId, theme, intl: { formatMessage } }: 
         </ScreenReaderOnly>
         <Left>
           <Description>
-            <QuillEditedContent textColor={theme.colorText}>
+            <QuillEditedContent textColor={theme.colorText} className="e2e-folder-description">
               <T value={projectFolder.attributes.description_multiloc} supportHtml={true} />
             </QuillEditedContent>
           </Description>
