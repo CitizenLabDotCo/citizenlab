@@ -7,17 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { unionBy, isString } from 'lodash-es';
 import { IAdminPublicationContent, InputProps } from './useAdminPublications';
 
-export interface IOutput {
-  list: IAdminPublicationContent[] | undefined | null;
-  hasMore: boolean;
-  loadingInitial: boolean;
-  loadingMore: boolean;
-  onLoadMore: () => void;
-  onChangeAreas: (areas: string[] | null) => void;
-  onChangePublicationStatus: (publicationStatuses: PublicationStatus[]) => void;
-}
-
-export default function useAdminPublicationsPrefetchProjects({ pageSize = 1000, areaFilter, publicationStatusFilter, noEmptyFolder }: InputProps) {
+export default function useAdminPublicationsPrefetchProjects({ pageSize = 1000, areaFilter, publicationStatusFilter, noEmptyFolder, folderId }: InputProps) {
   const [list, setList] = useState<IAdminPublicationContent[] | undefined | null>(undefined);
   const [hasMore, setHasMore] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
@@ -55,7 +45,8 @@ export default function useAdminPublicationsPrefetchProjects({ pageSize = 1000, 
         publication_statuses: publicationStatuses,
         'page[number]': pageNumber,
         'page[size]': pageSize,
-        filter_empty_folders: noEmptyFolder
+        filter_empty_folders: noEmptyFolder,
+        folder: folderId,
       }
     }).observable.pipe(
       distinctUntilChanged(),
