@@ -25,9 +25,7 @@ class Project < ApplicationRecord
   belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
-  accepts_nested_attributes_for :admin_publication
-
-  has_one :project_sort_score
+  accepts_nested_attributes_for :admin_publication # , update_only: true
 
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
@@ -47,7 +45,7 @@ class Project < ApplicationRecord
   }
   validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
   validates :internal_role, inclusion: {in: INTERNAL_ROLES, allow_nil: true}
-  validates :admin_publication, presence: true
+  validate :admin_publication_must_exist
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
@@ -133,6 +131,15 @@ class Project < ApplicationRecord
 
 
   private
+
+  def admin_publication_must_exist
+    # Built-in presence validation does not work.
+    # Admin publication must always be present
+    # once the project was created.
+    if id.present? && admin_publication&.id.blank?
+      errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
+    end
+  end
 
   def generate_slug
     slug_service = SlugService.new
