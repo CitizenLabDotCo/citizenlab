@@ -298,11 +298,12 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.layers.length > 0
       ) {
-        const layers = mapConfig.attributes.layers;
-        layers.map(layer => {
+        const layers = mapConfig.attributes.layers.map(layer => {
           const geoJson = layer.geojson;
-          return Leaflet.geoJSON(geoJson/*, { style }*/);
+          return Leaflet.geoJSON(geoJson);
         });
+
+        return layers;
       }
 
       return [];
@@ -435,6 +436,9 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     const { showLegend } = this.state;
 
     if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
+      // const legendTitle = localize(mapConfig.attributes.layers);
+
+      console.log(mapConfig);
       return (
         <Container className={className}>
           <MapContainer>
@@ -456,10 +460,10 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
             </LeafletMapContainer>
           </MapContainer>
-          {showLegend &&
+          {/* {showLegend &&
             <LegendContainer>
               <Title>
-                {localize(layer.title_multiloc)}
+                {legendTitle}
               </Title>
               <Legend>
                 {legend.map((legendItem, index) => {
@@ -473,7 +477,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
                 })}
               </Legend>
             </LegendContainer>
-          }
+          } */}
         </Container>
 
       );
@@ -498,8 +502,9 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// which legend to show when multiple layers are selected?
-// don't select layer by default
+// TODO: add style func/simple style spec to geojson
+// TODO: which legend to show when multiple layers are selected?
+// TODO: don't select layer by default
 // TODO: clean up code
 // TODO: extract Legend component
 // TODO: console error landing page
