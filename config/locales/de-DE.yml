@@ -475,6 +475,8 @@ de:
       not_voted_comment_in: "Keine Bewertung eines Kommentars an einer Idee in dem Projekt %{value}"
       budgeted_in: "Zuweisung eines Budgets in dem Projekt %{value}"
       not_budgeted_in: "Keine Zuweisung eines Budgets in dem Projekt %{value}"
+      volunteered_in: "Volunteered in the project %{value}"
+      not_volunteered_in: "Didn't volunteer in the project %{value}"
     participated_in_topic:
       in: "Beteiligung an einer Idee mit dem Thema %{value}"
       not_in: "Keine Beteiligung an einer Idee mit dem Thema %{value}"

@@ -30,6 +30,7 @@ module AdminApi
       @template['models']['permission']            = yml_permissions shift_timestamps: shift_timestamps
       @template['models']['polls/question']        = yml_poll_questions shift_timestamps: shift_timestamps
       @template['models']['polls/option']          = yml_poll_options shift_timestamps: shift_timestamps
+      @template['models']['volunteering/cause']    = yml_volunteering_causes shift_timestamps: shift_timestamps
 
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
@@ -194,6 +195,23 @@ module AdminApi
         }
         store_ref yml_option, o.id, :poll_option
         yml_option
+      end
+    end
+
+    def yml_volunteering_causes shift_timestamps: 0
+      participation_context_ids = [@project.id] + @project.phases.ids
+      Volunteering::Cause.where(participation_context_id: participation_context_ids).map do |c|
+        yml_cause = {
+          'participation_context_ref' => lookup_ref(c.participation_context_id, [:project, :phase]),
+          'title_multiloc'            => c.title_multiloc,
+          'description_multiloc'      => c.description_multiloc,
+          'remote_image_url'          => c.image_url,
+          'ordering'                  => c.ordering,
+          'created_at'                => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+          'updated_at'                => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_cause, c.id, :volunteering_cause
+        yml_cause
       end
     end
 

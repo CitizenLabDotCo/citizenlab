@@ -99,6 +99,15 @@ describe SmartGroupRules::ParticipatedInProject do
       expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
     end
 
+    it "correctly filters on 'volunteered_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('volunteered_in', @project1.id)
+      expect(rule.filter(User)).to match_array []
+    end
+
+    it "correctly filters on 'not_volunteered_in' predicate" do
+      rule = SmartGroupRules::ParticipatedInProject.new('not_volunteered_in', @project2.id)
+      expect(rule.filter(User)).to match_array [@user1, @user2, @user3]
+    end
   end
 
   describe "description_multiloc" do

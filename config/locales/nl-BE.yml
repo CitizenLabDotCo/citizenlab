@@ -434,6 +434,8 @@ nl-BE:
       not_voted_comment_in: "Heeft niet gestemd voor een reactie op een concept in het project %{value}"
       budgeted_in: "Heeft een budget toegewezen in het project %{value}"
       not_budgeted_in: "Heeft geen budget toegewezen in het project %{value}"
+      volunteered_in: "Vrijwilliger in het project %{value}"
+      not_volunteered_in: "Geen vrijwilliger in het project %{value}"
     participated_in_topic:
       in: "Deelname aan een concept met als onderwerp %{value}"
       not_in: "Geen deelname aan een concept met als onderwerp %{value}"

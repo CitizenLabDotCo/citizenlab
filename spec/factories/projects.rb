@@ -290,5 +290,10 @@ FactoryBot.define do
       participation_method { 'poll' }
     end
 
+    factory :continuous_volunteering_project do
+      process_type { 'continuous' }
+      participation_method { 'volunteering' }
+    end
+
   end
 end
