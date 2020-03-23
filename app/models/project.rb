@@ -123,6 +123,7 @@ class Project < ApplicationRecord
       nil
     end
     AdminPublication.where(publication: self).first.update!(parent_id: parent&.id)
+    reload
   end
 
   def allocated_budget
