@@ -437,9 +437,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
       const currentLayer = mapConfig.attributes.layers.find(layer => localize(layer.title_multiloc) === currentLayerTitle);
       const legendTitle = localize(currentLayer?.title_multiloc);
-
-      // step 1: find layer in mapconfig
-      // step 2: use
+      const legend = currentLayer?.legend;
 
       console.log(mapConfig);
       return (
@@ -463,22 +461,23 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
             </LeafletMapContainer>
           </MapContainer>
-          {showLegend &&
+          {showLegend && legend &&
             <LegendContainer>
               <Title>
                 {legendTitle}
               </Title>
-              {/* <Legend>
+              <Legend>
                 {legend.map((legendItem, index) => {
-                  const color = legendItem.color;
+                  const color: string | undefined = legendItem.color;
+                  const label = localize(legendItem.title_multiloc);
                   return (
                     <Item key={`legend-item-${index}`}>
-                      <ColorLabel color={color} />
-                      {localize(legendItem.title_multiloc)}
+                      {color && <ColorLabel color={color} />}
+                      {label}
                     </Item>
                   );
                 })}
-              </Legend> */}
+              </Legend>
             </LegendContainer>
           }
         </Container>
