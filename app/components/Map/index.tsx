@@ -250,6 +250,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     function getTileProvider() {
+      return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
+
       if (
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.tile_provider
@@ -262,7 +264,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       ) {
         return tenant.attributes.settings.maps.tile_provider;
       } else {
-        return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
       }
     }
 
