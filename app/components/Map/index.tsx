@@ -2,6 +2,8 @@ import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { compact, /* get,*/ isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+require('leaflet-simplestyle');
+
 // import { style } from './colors';
 
 // components
@@ -306,7 +308,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
           const layerTitle = localize(layer.title_multiloc);
           const geoJson = layer.geojson;
 
-          overlayMaps[layerTitle] = Leaflet.geoJSON(geoJson);
+          overlayMaps[layerTitle] = Leaflet.geoJSON(geoJson, { useSimpleStyle: true });
         });
 
         return overlayMaps;
@@ -498,6 +500,7 @@ export default (inputProps: InputProps) => (
 
 // TODO: add style func/simple style spec to geojson
 // TODO: which legend to show when multiple layers are selected?
+// TODO: type error simple style spec
 // TODO: don't select layer by default
 // TODO: clean up code
 // TODO: extract Legend component
