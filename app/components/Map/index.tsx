@@ -252,20 +252,20 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     function getTileProvider() {
       return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
 
-      if (
-        !isNilOrError(mapConfig) &&
-        mapConfig.attributes.tile_provider
-      ) {
-        return mapConfig.attributes.tile_provider;
-      } else if (
-        !isNilOrError(tenant) &&
-        tenant.attributes &&
-        tenant.attributes.settings.maps
-      ) {
-        return tenant.attributes.settings.maps.tile_provider;
-      } else {
-        return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
-      }
+      // if (
+      //   !isNilOrError(mapConfig) &&
+      //   mapConfig.attributes.tile_provider
+      // ) {
+      //   return mapConfig.attributes.tile_provider;
+      // } else if (
+      //   !isNilOrError(tenant) &&
+      //   tenant.attributes &&
+      //   tenant.attributes.settings.maps
+      // ) {
+      //   return tenant.attributes.settings.maps.tile_provider;
+      // } else {
+      //   return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
+      // }
     }
 
     function getInitCenter() {
@@ -295,30 +295,24 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       return initCenter;
     }
 
-    function getGeoJsonLayers() {
+    function getOverlayMaps() {
+      const overlayMaps = {};
+
       if (
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.layers.length > 0
       ) {
-        const layers = mapConfig.attributes.layers.map(layer => {
+        mapConfig.attributes.layers.forEach(layer => {
+          const layerTitle = localize(layer.title_multiloc);
           const geoJson = layer.geojson;
-          return Leaflet.geoJSON(geoJson);
+
+          overlayMaps[layerTitle] = Leaflet.geoJSON(geoJson);
         });
 
-        return layers;
+        return overlayMaps;
       }
 
-      return [];
-    }
-
-    function getOverlayMaps(geoJsonLayers) {
-      const overlayMaps = {};
-
-      geoJsonLayers.forEach(layer => {
-        overlayMaps[localize(layer.title_multiloc)] = layer;
-      });
-
-      return overlayMaps;
+      return undefined;
     }
 
     if (element && !this.map) {
@@ -331,17 +325,15 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         subdomains: ['a', 'b', 'c']
       });
 
-      const geoJsonLayers = getGeoJsonLayers();
-
       // Init the map
       this.map = Leaflet.map(element, {
         zoom,
         center: initCenter,
         maxZoom: 17,
-        layers: [baseLayer, ...geoJsonLayers]
+        layers: [baseLayer]
       });
 
-      const overlayMaps = getOverlayMaps(geoJsonLayers);
+      const overlayMaps = getOverlayMaps();
 
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
