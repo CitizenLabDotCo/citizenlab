@@ -30,7 +30,6 @@ import { isValidEmail } from 'utils/validate';
 import { isNilOrError } from 'utils/helperUtils';
 
 // style
-import { darken } from 'polished';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 
@@ -97,20 +96,7 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const CreateAnAccountLink = styled(Link)`
-  color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.base}px;
-  line-height: 20px;
-  font-weight: 400;
-  text-decoration: none;
-  cursor: pointer;
-  margin-left: 15px;
-
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-    text-decoration: underline;
-  }
-`;
+const GoToSignUpButton = styled(Button)``;
 
 const Separator = styled.div`
   width: 100%;
@@ -273,6 +259,11 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
     this.passwordInputElement = element;
   }
 
+  handleOnGoToSignUp = (event: React.FormEvent) => {
+    event.preventDefault();
+    this.props.onGoToSignUp();
+  }
+
   render() {
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
     const { className, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
@@ -281,6 +272,16 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
     const externalLoginEnabled = googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled;
     const azureAdLogo = !isNilOrError(tenant) && tenant?.attributes?.settings?.azure_ad_login?.logo_url;
     const tenantLoginMechanismName = !isNilOrError(tenant) && tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name;
+
+    const goToSignUpButton = (
+      <GoToSignUpButton
+        buttonStyle="text"
+        padding="0px"
+        onClick={this.handleOnGoToSignUp}
+      >
+        <FormattedMessage {...messages.createAnAccount} />
+      </GoToSignUpButton>
+    );
 
     return (
       <Container className={`e2e-sign-in-container ${className}`}>
@@ -340,9 +341,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     text={formatMessage(messages.submit)}
                     className="e2e-submit-signin"
                   />
-                  <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
-                    <FormattedMessage {...messages.createAnAccount} />
-                  </CreateAnAccountLink>
+                  {goToSignUpButton}
                 </ButtonWrapper>
                 <Error marginTop="10px" text={signInError} />
               </FormElement>
@@ -355,11 +354,12 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
           {externalLoginEnabled &&
             <Footer>
-              {(passwordLoginEnabled &&
+              {passwordLoginEnabled &&
                 <SocialLoginText>
                   {formatMessage(messages.orLogInWith)}
                 </SocialLoginText>
-              )}
+              }
+
               <AuthProviderButtons>
                 <FeatureFlag name="azure_ad_login">
                   {azureAdLogo && tenantLoginMechanismName &&
@@ -407,9 +407,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
               {!passwordLoginEnabled &&
                 <CreateAccount>
-                  <CreateAnAccountLink to="/sign-up" className="e2e-sign-up-link">
-                    <FormattedMessage {...messages.createAnAccount} />
-                  </CreateAnAccountLink>
+                  {goToSignUpButton}
                 </CreateAccount>
               }
             </Footer>

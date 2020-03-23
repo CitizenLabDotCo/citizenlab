@@ -284,13 +284,13 @@ export default class Modal extends PureComponent<Props, State> {
   openModal = () => {
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.handleKeypress);
-    eventEmitter.emit('modal', 'modalOpened', null);
+    eventEmitter.emit('modalOpened');
     this.unlisten = clHistory.listen(() => this.props.close());
   }
 
   manuallyCloseModal = () => {
     this.props.close();
-    eventEmitter.emit('modal', 'modalClosed', null);
+    eventEmitter.emit('modalClosed');
   }
 
   handlePopstateEvent = () => {

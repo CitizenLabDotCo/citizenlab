@@ -38,6 +38,7 @@ import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUser
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
 const VerificationModal = lazy(() => import('components/Verification/VerificationModal'));
+const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -361,6 +362,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     >
                       <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
                     </LoadableModal>
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <SignUpInModal />
+                    </Suspense>
                   </ErrorBoundary>
 
                   <ErrorBoundary>

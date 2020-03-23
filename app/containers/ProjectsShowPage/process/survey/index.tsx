@@ -75,9 +75,9 @@ class Survey extends PureComponent<Props, State> {
   onVerify = () => {
     const { projectId, phaseId } = this.props;
     if (phaseId) {
-      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'taking_survey');
+      openVerificationModalWithContext(phaseId, 'phase', 'taking_survey');
     } else if (projectId) {
-      openVerificationModalWithContext('ActionPost', projectId, 'project', 'taking_survey');
+      openVerificationModalWithContext(projectId, 'project', 'taking_survey');
     }
   }
 

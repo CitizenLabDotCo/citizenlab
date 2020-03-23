@@ -132,7 +132,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   const openConsentManager = () => {
-    eventEmitter.emit('footer', 'openConsentManager', null);
+    eventEmitter.emit('openConsentManager');
   };
 
   return (

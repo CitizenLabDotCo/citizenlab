@@ -276,7 +276,7 @@ class SignedInHeader extends PureComponent<Props, State> {
   }
 
   handleVerify = () => {
-    openVerificationModalWithoutContext('OnboardingCampaign');
+    openVerificationModalWithoutContext();
   }
 
   render() {

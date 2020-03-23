@@ -387,7 +387,6 @@ const PhaseContainer: any = styled.div`
   }
 `;
 
-const SelectedPhaseEventSource = 'Timeline';
 const SelectedPhaseEventName = 'SelectedPhaseChangeEvent';
 type ISelectedPhase = IPhaseData | null;
 export const selectedPhase$ = eventEmitter.observeEvent<ISelectedPhase>(SelectedPhaseEventName).pipe(
@@ -437,7 +436,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
 
-    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventSource, SelectedPhaseEventName, null);
+    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventName);
 
     this.subscriptions = [
       projectId$
@@ -470,12 +469,12 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const newSelectedPhaseId = this.state.selectedPhase ? this.state.selectedPhase.id : null;
 
     if (newSelectedPhaseId !== oldSelectedPhaseId) {
-      eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventSource, SelectedPhaseEventName, this.state.selectedPhase);
+      eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventName, this.state.selectedPhase);
     }
   }
 
   componentWillUnmount() {
-    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventSource, SelectedPhaseEventName, null);
+    eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventName);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 

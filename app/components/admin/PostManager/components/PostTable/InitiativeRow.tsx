@@ -85,7 +85,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const { initiative } = this.props;
     const initiativeId = initiative.id;
 
-    eventEmitter.emit<StatusChangeModalOpen>('initiativeManager', events.statusChangeModalOpen, { initiativeId, newStatusId: statusId });
+    eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, { initiativeId, newStatusId: statusId });
 
     trackEventByName(tracks.initiativeStatusChange, {
       location: 'Initiative overview',

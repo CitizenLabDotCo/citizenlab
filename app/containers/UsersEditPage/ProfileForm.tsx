@@ -189,7 +189,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
     const handleOnSubmit = () => {
       if (hasCustomFields) {
-        eventEmitter.emit('ProfileForm', 'customFieldsSubmitEvent', null);
+        eventEmitter.emit('customFieldsSubmitEvent');
       } else {
         submitForm();
       }

@@ -117,7 +117,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
 
   const openVerificationModal = useCallback(() => {
-    openVerificationModalWithoutContext('VerificationStatus');
+    openVerificationModalWithoutContext();
   }, []);
 
   if (isNilOrError(authUser)) return null;

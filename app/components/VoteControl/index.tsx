@@ -28,7 +28,8 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { convertUrlSearchParamsToAction, redirectActionToSignUpInPage } from 'components/SignUpIn';
+import { convertUrlSearchParamsToAction } from 'components/SignUpIn';
+import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
 
 // style
 import styled, { css, keyframes } from 'styled-components';
@@ -480,7 +481,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
   vote = async (voteMode: 'up' | 'down') => {
     const { authUser, myVoteId, myVoteMode, voting, idea, project, phases } = this.state;
-    const { ideaId, unauthenticatedVoteClick, disabledVoteClick } = this.props;
+    const { ideaId, disabledVoteClick } = this.props;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
     const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
@@ -488,17 +489,24 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
     if (!voting) {
       if (isNilOrError(authUser)) {
-        if (votingDisabledReason === 'not_verified') {
-          redirectActionToSignUpInPage({
-            action_type: voteMode ? 'upvote' : 'downvote',
-            action_context_type: 'idea',
-            action_context_id: ideaId,
-            action_context_pathname: window.location.pathname,
-            action_requires_verification: true
-          });
-        } else {
-          unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
-        }
+        // if (votingDisabledReason === 'not_verified') {
+        //   openSignUpInModal({
+        //     action_type: voteMode ? 'upvote' : 'downvote',
+        //     action_context_type: 'idea',
+        //     action_context_id: ideaId,
+        //     action_context_pathname: window.location.pathname,
+        //     action_requires_verification: true
+        //   });
+        // } else {
+        //   unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
+        // }
+        openSignUpInModal(votingDisabledReason === 'not_verified' ? {
+          action_type: voteMode === 'up' ? 'upvote' : 'downvote',
+          action_context_type: 'idea',
+          action_context_id: ideaId,
+          action_context_pathname: window.location.pathname,
+          action_requires_verification: true
+        } : undefined);
       } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
         try {
           this.voting$.next(voteMode);

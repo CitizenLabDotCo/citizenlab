@@ -161,7 +161,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaCard', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
         type: 'idea'

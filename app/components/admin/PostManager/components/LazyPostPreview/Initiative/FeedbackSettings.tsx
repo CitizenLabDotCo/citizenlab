@@ -128,7 +128,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
-    eventEmitter.emit<StatusChangeModalOpen>('initiativeManager', events.statusChangeModalOpen, { initiativeId, newStatusId: statusOption.value });
+    eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, { initiativeId, newStatusId: statusOption.value });
 
     trackEventByName(tracks.initiativeStatusChange, {
       tenant: tenantId,

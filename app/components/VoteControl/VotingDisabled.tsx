@@ -91,7 +91,7 @@ class VotingDisabled extends PureComponent<Props, State> {
     if (!isNilOrError(project)) {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;
-      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
+      pcId && openVerificationModalWithContext(pcId, pcType, 'voting');
     }
   }
 

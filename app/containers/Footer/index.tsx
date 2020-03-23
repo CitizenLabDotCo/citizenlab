@@ -367,11 +367,11 @@ class Footer extends PureComponent<Props, State> {
   }
 
   shortFeedbackFormOnSubmit = () => {
-    eventEmitter.emit('Footer', 'ShortFeedbackFormSubmitEvent', null);
+    eventEmitter.emit('ShortFeedbackFormSubmitEvent');
   }
 
   openConsentManager = () => {
-    eventEmitter.emit('footer', 'openConsentManager', null);
+    eventEmitter.emit('openConsentManager');
   }
 
   render() {

@@ -96,9 +96,9 @@ export class PollSection extends PureComponent<Props> {
   onVerify = () => {
     const { type, projectId, phaseId } = this.props;
     if (type === 'project' && projectId) {
-      openVerificationModalWithContext('ActionPost', projectId, 'project', 'taking_poll');
+      openVerificationModalWithContext(projectId, 'project', 'taking_poll');
     } else if (type === 'phase' && phaseId) {
-      openVerificationModalWithContext('ActionPost', phaseId, 'phase', 'taking_poll');
+      openVerificationModalWithContext(phaseId, 'phase', 'taking_poll');
     }
   }
 

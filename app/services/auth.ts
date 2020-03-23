@@ -106,7 +106,7 @@ export function signOut() {
 }
 
 export function signOutAndDeleteAccountPart1() {
-  setTimeout(() => eventEmitter.emit('UserProfile', 'tryAndDeleteProfile', null), 500);
+  setTimeout(() => eventEmitter.emit('tryAndDeleteProfile'), 500);
   clHistory.push('/');
 }
 

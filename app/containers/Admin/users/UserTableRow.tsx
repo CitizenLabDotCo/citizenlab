@@ -169,7 +169,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (window.confirm(deleteMessage)) {
       if (authUser && authUser.id === user.id) {
-        eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
+        eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
       } else {
         deleteUser(user.id).then(() => {
           setTimeout(() => {
@@ -179,7 +179,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
             });
           }, 2000);
         }).catch(() => {
-          eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
+          eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
         });
       }
     }
