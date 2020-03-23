@@ -503,7 +503,8 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: which legend to show when multiple layers are selected?
+// TODO: show markers layer
+// TODO: which legend to show when multiple layers are selected?/deal with multiple layers legend
 // TODO: type error simple style spec
 // TODO: extract Legend component
 // TODO: console error landing page
