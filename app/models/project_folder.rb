@@ -1,7 +1,7 @@
 class ProjectFolder < ApplicationRecord
 
   has_one :admin_publication, as: :publication, dependent: :destroy
-  accepts_nested_attributes_for :admin_publication
+  accepts_nested_attributes_for :admin_publication # , update_only: true
   has_many :project_folder_images, -> { order(:ordering) }, dependent: :destroy
   has_many :project_folder_files, -> { order(:ordering) }, dependent: :destroy
 
@@ -9,7 +9,7 @@ class ProjectFolder < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
-  validates :admin_publication, presence: true
+  validate :admin_publication_must_exist
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
@@ -24,6 +24,15 @@ class ProjectFolder < ApplicationRecord
 
 
   private
+
+  def admin_publication_must_exist
+    # Built-in presence validation does not work.
+    # Admin publication must always be present
+    # once the folder was created.
+    if id.present? && admin_publication&.id.blank?
+      errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
+    end
+  end
 
   def generate_slug
     slug_service = SlugService.new

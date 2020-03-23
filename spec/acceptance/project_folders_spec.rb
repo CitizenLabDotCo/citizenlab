@@ -119,8 +119,13 @@ resource 'ProjectFolder' do
       let(:description_multiloc) { {'en' => "An ultimate selection of the mayor's favourite projects!"} }
       let(:publication_status) { 'archived' }
 
-      example_request "Update a folder" do
+      example "Update a folder" do
+        old_publcation_ids = AdminPublication.ids
+        do_request
+        
         expect(response_status).to eq 200
+        # admin publications should not be replaced, but rather should be updated
+        expect(AdminPublication.ids).to match_array old_publcation_ids
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc

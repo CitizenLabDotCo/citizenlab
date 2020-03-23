@@ -417,7 +417,13 @@ resource "Projects" do
       let(:publication_status) { 'archived' }
       let(:default_assignee_id) { create(:admin).id }
 
-      example_request "Update a project" do
+      example "Update a project" do
+        old_publcation_ids = AdminPublication.ids
+        do_request
+
+        expect(response_status).to eq 200
+        # admin publications should not be replaced, but rather should be updated
+        expect(AdminPublication.ids).to match_array old_publcation_ids
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
         expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
