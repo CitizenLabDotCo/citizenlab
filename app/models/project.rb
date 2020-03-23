@@ -25,7 +25,7 @@ class Project < ApplicationRecord
   belongs_to :custom_form, optional: true, dependent: :destroy
 
   has_one :admin_publication, as: :publication, dependent: :destroy
-  accepts_nested_attributes_for :admin_publication # , update_only: true
+  accepts_nested_attributes_for :admin_publication, update_only: true
 
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
