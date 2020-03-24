@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   mount Frontend::Engine => "", as: 'frontend'
   mount Polls::Engine => "", as: 'polls'
   mount Verification::Engine => "", as: 'verification'
+  mount Volunteering::Engine => "", as: 'volunteering'
 
   namespace :web_api, :defaults => {:format => :json} do
     namespace :v1 do
@@ -146,6 +147,7 @@ Rails.application.routes.draw do
         patch 'reorder', on: :member
       end
       resources :project_folders do
+        resources :images, defaults: {container_type: 'ProjectFolder'}
         get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
       end
 

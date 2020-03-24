@@ -22,7 +22,7 @@ class OmniauthCallbackController < ApplicationController
 
     begin
       @user = Knock::AuthToken.new(token: request.env['omniauth.params']['token']).entity_for(User)
-      if @user&.active?
+      if @user&.invite_not_pending?
         begin
           handle_verification(auth, @user)
           update_user!(auth, @user, verification_method)

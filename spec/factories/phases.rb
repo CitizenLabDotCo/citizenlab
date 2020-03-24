@@ -43,6 +43,10 @@ FactoryBot.define do
       participation_method { "poll" }
     end
 
+    factory :volunteering_phase do
+      participation_method { "volunteering" }
+    end
+
   end
 
 end
