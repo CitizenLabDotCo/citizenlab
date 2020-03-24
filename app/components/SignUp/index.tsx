@@ -168,6 +168,8 @@ class SignUp extends PureComponent<Props, State> {
       nextActiveStep = null;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
+      console.log('zolg');
+
       if (!authUser) { // not logged in
         nextActiveStep = 'password-signup';
       } else if (hasCustomFields) { // logged in but not yet completed custom fields and custom fields enabled
@@ -228,6 +230,8 @@ class SignUp extends PureComponent<Props, State> {
     const { activeStep, error } = this.state;
     const { isInvitation, inModal, token, metaData, tenant, className } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
+
+    console.log(activeStep);
 
     if (activeStep) {
       return (
@@ -319,7 +323,7 @@ class SignUp extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authuser: <GetAuthUser />,
+  authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   customFieldsSchema: <GetCustomFieldsSchema />
 });

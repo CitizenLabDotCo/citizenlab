@@ -7,11 +7,11 @@ export type SSOProvider = 'google' | 'facebook' | 'azureactivedirectory' | 'fran
 export function getSignUpInMetaDataFromUrlSearchParams(searchParams: string) {
   const object = parse(searchParams, { ignoreQueryPrefix: true });
 
-  if (object?.sign_up_in_meta_data) {
-    const { verification } = object.sign_up_in_meta_data;
+  if (object?.sign_up_in_metadata) {
+    const { verification } = object.sign_up_in_metadata;
 
     const metaData: ISignUpInMetaData = {
-      ...object.sign_up_in_meta_data,
+      ...object.sign_up_in_metadata,
       verification: verification === 'true'
     };
 
@@ -23,7 +23,7 @@ export function getSignUpInMetaDataFromUrlSearchParams(searchParams: string) {
 
 function convertSignUpInMetaDataToUrlSearchParams(metaData: ISignUpInMetaData) {
   const { action, ...metaDataWithoutAction } = metaData;
-  return stringify({ sign_up_in_meta_data: metaDataWithoutAction }, { addQueryPrefix: true });
+  return stringify({ sign_up_in_metadata: metaDataWithoutAction }, { addQueryPrefix: true });
 }
 
 export const handleOnSSOClick = (provider: SSOProvider, metaData: ISignUpInMetaData) => () => {
