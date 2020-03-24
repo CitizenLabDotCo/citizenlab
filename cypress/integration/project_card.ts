@@ -1,5 +1,6 @@
 
 import { randomString } from '../support/commands';
+import moment = require('moment');
 
 describe('Project card component', () => {
   const projectTitle = randomString();
@@ -8,14 +9,23 @@ describe('Project card component', () => {
 
   before(() => {
     cy.apiCreateProject({
-      type: 'continuous',
+      type: 'timeline',
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: randomString(),
       publicationStatus: 'published',
-      participationMethod: 'poll',
     }).then((project) => {
       projectId = project.body.data.id;
+      cy.apiCreatePhase(
+        projectId,
+        'phaseTitle',
+        moment().subtract(2, 'month').format('DD/MM/YYYY'),
+        moment().add(2, 'days').format('DD/MM/YYYY'),
+        'ideation',
+        true,
+        true,
+        true
+      );
       cy.goToLandingPage();
     });
   });

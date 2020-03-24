@@ -338,7 +338,7 @@ const ProjectFolderCard = memo(({
 
   return (
     <Container
-      className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-folder-card`}
+      className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-folder-card e2e-admin-publication-card`}
       to={folderUrl}
       onClick={handleProjectCardOnClick(publication.publicationId)}
     >
