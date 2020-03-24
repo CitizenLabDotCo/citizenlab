@@ -3,6 +3,7 @@ class User < ApplicationRecord
   include Verification::UserDecorator
   include Onboarding::UserDecorator
   include Polls::UserDecorator
+  include Volunteering::UserDecorator
   include PgSearch
 
   GENDERS = %w(male female unspecified)
@@ -185,6 +186,10 @@ class User < ApplicationRecord
 
   def invite_pending?
     invite_status == 'pending'
+  end
+
+  def invite_not_pending?
+    invite_status != 'pending'
   end
 
   def display_name

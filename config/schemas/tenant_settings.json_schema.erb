@@ -28,8 +28,9 @@
           },
           "timezone": {
             "type": "string",
-            "default": "Europe/Brussels",
-            "enum": [<%= TZInfo::Timezone.all_identifiers.map{|tz| ['"',tz,'"'].join}.join(",") %>]
+            "default": "Brussels",
+            "enum": [<%= ActiveSupport::TimeZone.all.sort_by{|tz| TimezoneService.new.display_timezone(tz)}.map(&:name).map{|l| "\"#{l}\""}.join(",") %>],
+            "enumNames": [<%= ActiveSupport::TimeZone.all.map{|tz| TimezoneService.new.display_timezone(tz)}.sort.map{|l| "\"#{l}\""}.join(",") %>]
           },
           "currency": {
             "type": "string",
@@ -172,7 +173,7 @@
           "phone": {
             "description": "Optionally allows users to register using a phone number if they have no email address. Currently a hack and not advised.",
             "type": "boolean",
-            "default": "false"
+            "default": false
           },
           "phone_email_pattern": {
             "description": "How to store the phone number in the email (e.g. `phone+__PHONE__@test.com` stores phone number as `phone+32478637483@test.com`)",
@@ -809,6 +810,16 @@
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
+        }
+      },
+      "volunteering": {
+        "type": "object",
+        "description": "Participation method to let citizens volunteer",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       }
     },

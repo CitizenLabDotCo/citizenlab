@@ -104,7 +104,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       core: {
         allowed: true,
         enabled: true,
-        locales: ['en','nl-BE'],
+        locales: ['en','nl-BE', 'fr-BE'],
         organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
         organization_name: {
           "en" => Faker::Address.city,
@@ -112,7 +112,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           "fr-FR" => Faker::Address.city
         },
         lifecycle_stage: 'active',
-        timezone: "Europe/Brussels",
+        timezone: "Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
         color_secondary: Faker::Color.hex_color,
@@ -135,14 +135,14 @@ if ['public','example_org'].include? Apartment::Tenant.current
         client_secret: '-Kh_Hx325Pj02t1i50LHsRR6'
       },
       franceconnect_login: {
-        allowed: true, 
+        allowed: true,
         enabled: true,
         environment: 'integration',
         identifier: '0b8ba0f9a23f16bcbd86c783b2a41fd0cef0ea968e253734de71f641e0e66057',
         secret: '60ffb1156c02cda0b6ff0089e6ca4efc5d28dd6174a62c3a413640b899f0e3ae'
       },
       pages: {
-        allowed: true, 
+        allowed: true,
         enabled: true
       },
       groups: {
@@ -309,6 +309,10 @@ if ['public','example_org'].include? Apartment::Tenant.current
           },
         ],
       },
+      volunteering: {
+        enabled: true,
+        allowed: true
+      }
     }
   })
 
@@ -329,7 +333,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
           "nl-BE" => Faker::Address.city,
           "fr-FR" => Faker::Address.city
         },
-        timezone: "Europe/Brussels",
+        timezone: "Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
         color_main: Faker::Color.hex_color,
         color_secondary: Faker::Color.hex_color,
@@ -358,7 +362,8 @@ admin = {
   password: 'testtest',
   roles: [
     {type: "admin"},
-  ]
+  ],
+  locale: 'en'
 }
 moderator = {
   email: 'moderator@citizenlab.co',
@@ -385,7 +390,7 @@ if Apartment::Tenant.current == 'localhost'
     id: '42cb419a-b1f8-4600-8c4e-fd45cca4bfd9',
     secret: "Hx7C27lxV7Qszw-zCg9UT-GFRQuxJNffllTpeU262CGabllbyTYwOmpizCygtPIZSwg",
   )
-  
+
   custom_field = nil
   if SEED_SIZE != 'empty'
     custom_field = CustomField.create!(
@@ -401,7 +406,7 @@ if Apartment::Tenant.current == 'localhost'
     CustomFieldOption.create!(custom_field: custom_field, key: 'retired_politician', title_multiloc: {'en' => 'Retired politician'})
     CustomFieldOption.create!(custom_field: custom_field, key: 'no', title_multiloc: {'en' => 'No'})
 
-    12.times do 
+    12.times do
       Area.create!({
         title_multiloc: {
           "en": Faker::Address.city,
@@ -453,6 +458,9 @@ if Apartment::Tenant.current == 'localhost'
         },
         header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
       )
+      [0,1,2,3,4][rand(5)].times do |i|
+        folder.project_folder_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+      end
     end
 
     num_projects.times do
@@ -475,7 +483,7 @@ if Apartment::Tenant.current == 'localhost'
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
         publication_status: ['published','published','published','published','published','draft','archived'][rand(7)],
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
-        folder_id: rand(3) == 0 ? nil : ProjectFolder.ids.shuffle.first
+        folder_id: rand(2) == 0 ? nil : ProjectFolder.ids.shuffle.first
       })
 
       if project.continuous?
@@ -591,7 +599,7 @@ if Apartment::Tenant.current == 'localhost'
         moderator.save!
        end
 
-      if rand(5) == 0 
+      if rand(5) == 0
         project.default_assignee = rand_instance User.admin.or(User.project_moderator(project.id))
         project.save!
       end
@@ -601,12 +609,12 @@ if Apartment::Tenant.current == 'localhost'
     MAP_CENTER = [50.8503, 4.3517]
     MAP_OFFSET = 0.1
 
-    num_ideas.times do 
+    num_ideas.times do
       created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.now)
       project = rand_instance Project.all
       phases = []
       if project && project.timeline?
-        phases = project.phases.sample(rand(project.phases.size)).select do |phase| 
+        phases = project.phases.sample(rand(project.phases.size)).select do |phase|
           phase.can_contain_ideas?
         end
       end
@@ -648,7 +656,7 @@ if Apartment::Tenant.current == 'localhost'
 
       rand(5).times do
         official_feedback = idea.official_feedbacks.create!(
-          body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
+          body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: rand_instance(User.admin)
           )
@@ -657,7 +665,7 @@ if Apartment::Tenant.current == 'localhost'
       create_comment_tree(idea, nil)
     end
 
-    num_initiatives.times do 
+    num_initiatives.times do
       created_at = Faker::Date.between(from: Tenant.current.created_at, to: Time.now)
       initiative = Initiative.create!(
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
@@ -698,7 +706,7 @@ if Apartment::Tenant.current == 'localhost'
 
       rand(5).times do
         official_feedback = initiative.official_feedbacks.create!(
-          body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}, 
+          body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
           author_multiloc: create_for_some_locales{Faker::FunnyName.name},
           user: User.admin.shuffle.first
           )
@@ -718,7 +726,7 @@ if Apartment::Tenant.current == 'localhost'
       end
     end
 
-    8.times do 
+    8.times do
       Page.create!({
         title_multiloc:create_for_some_locales{Faker::Lorem.sentence},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
@@ -747,6 +755,71 @@ if Apartment::Tenant.current == 'localhost'
         invitee: User.create!(email: Faker::Internet.email, locale: 'en', invite_status: 'pending', first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
       )
     end
+
+    volunteering_project = Project.create!(
+      title_multiloc: {
+        "en": "Help out as a volunteer",
+        "nl-BE": "Help mee als vrijwilliger",
+      },
+      description_multiloc: {
+        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+        "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+      },
+      description_preview_multiloc: {
+        "en" => "Every bit of help counts",
+        "nl-BE" => "Alle beetjes helpen"
+      },
+      header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      process_type: 'continuous',
+      publication_status: 'published',
+      areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
+      participation_method: 'volunteering'
+    )
+
+    Volunteering::Cause.create!([
+      {
+        participation_context: volunteering_project,
+        title_multiloc: {en: 'Video calls'},
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
+      },
+      {
+        participation_context: volunteering_project,
+        title_multiloc: {en: 'Doing groceries'},
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
+      },
+      {
+        participation_context: volunteering_project,
+        title_multiloc: {en: 'Going to the post office'},
+        description_multiloc:{ en: "<p>Many people should stay inside. They are at home and cannot go to the post office to post a letter or to pick up a parcel. Can you help them?</p><h4>Necessary material</h4><ul><li>sport to go to the post office.</li></ul><p>We provide you with the contact details of this person. Arrange by phone or mail what you have to post or pick up. Don’t go inside the house of this person but pick up the mail or drop it at the door.</p><p>Always observe the hygienic precautions.</p><h4>Profile of the volunteer</h4><ul><li>You’re between 16 and 60 years old.</li><li>You’re healthy and show no symptoms.</li><li>You haven’t been in a risk area recently.</li><li>You’ve had no contact with people who have been in a risk area recently.</li></ul>"},
+        image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+      },
+      {
+        participation_context: volunteering_project,
+        title_multiloc: {en: 'Walking the dog'},
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
+      },
+      {
+        participation_context: volunteering_project,
+        title_multiloc: {en: 'Writing letters'},
+        description_multiloc: {
+          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
+          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
+        },
+        image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
+      },
+    ])
 
     ProjectHolderService.new.fix_project_holder_orderings!
 
@@ -780,7 +853,16 @@ if Apartment::Tenant.current == 'localhost'
         custom_field.save!
       end
     end
+
+
+    20.times do
+      Volunteering::Volunteer.create(
+        cause: rand_instance(Volunteering::Cause.all),
+        user: rand_instance(User.active.all)
+      )
+    end
   end
+
 
   User.all.each do |user|
     EmailCampaigns::UnsubscriptionToken.create!(user_id: user.id)

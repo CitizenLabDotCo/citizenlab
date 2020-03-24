@@ -21,7 +21,7 @@ namespace :cl2_back do
             "en-GB" => 'Wonderville',
             "nl-BE" => 'Mirakelgem',
           },
-          timezone: "Europe/Brussels",
+          timezone: "Brussels",
           currency: 'EUR',
           color_main: '#163A7D',
           color_secondary: '#CF4040',
@@ -176,6 +176,10 @@ namespace :cl2_back do
           ]
         },
         project_folders: {
+          enabled: true,
+          allowed: true
+        },
+        volunteering: {
           enabled: true,
           allowed: true
         },

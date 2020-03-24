@@ -81,6 +81,7 @@ class TenantTemplateService
       @template['models']['user']                                  = yml_users
       @template['models']['email_campaigns/unsubscription_token']  = yml_unsubscription_tokens
       @template['models']['project_folder']                        = yml_project_folders
+      @template['models']['project_folder_image']                  = yml_project_folder_images
       @template['models']['project']                               = yml_projects
       @template['models']['project_holder_ordering']               = yml_project_holder_orderings
       @template['models']['project_file']                          = yml_project_files
@@ -96,7 +97,7 @@ class TenantTemplateService
       @template['models']['group']                                 = yml_groups
       @template['models']['groups_project']                        = yml_groups_projects
       @template['models']['permission']                            = yml_permissions
-      @template['models']['groups_permission']                     = yml_groups_permissions 
+      @template['models']['groups_permission']                     = yml_groups_permissions
       @template['models']['membership']                            = yml_memberships
       @template['models']['page']                                  = yml_pages
       @template['models']['page_link']                             = yml_page_links
@@ -123,6 +124,8 @@ class TenantTemplateService
       @template['models']['polls/response']                        = yml_poll_responses
       @template['models']['polls/response_option']                 = yml_poll_response_options
       @template['models']['text_image']                            = yml_text_images
+      @template['models']['volunteering/cause']                    = yml_volunteering_causes
+      @template['models']['volunteering/volunteer']                = yml_volunteering_volunteers
     end
     @template
   end
@@ -248,7 +251,7 @@ class TenantTemplateService
       template_name.chomp '.yml'
     end
   end
-  
+
   def resolve_template template_name, external_subfolder: 'release'
     if template_name.kind_of? String
       throw "Unknown template" unless available_templates(external_subfolder: external_subfolder).values.flatten.uniq.include? template_name
@@ -316,7 +319,7 @@ class TenantTemplateService
   end
 
   def yml_custom_fields
-    # No custom fields are required anymore because 
+    # No custom fields are required anymore because
     # the user choices cannot be remembered.
     CustomField.all.map do |c|
       yml_custom_field = {
@@ -374,8 +377,8 @@ class TenantTemplateService
 
     # TODO properly copy project moderator roles and domicile
     User.where("invite_status IS NULL or invite_status != ?", 'pending').map do |u|
-      yml_user = { 
-        'email'                     => u.email, 
+      yml_user = {
+        'email'                     => u.email,
         'password_digest'           => u.password_digest,
         'created_at'                => u.created_at.to_s,
         'updated_at'                => u.updated_at.to_s,
@@ -403,7 +406,7 @@ class TenantTemplateService
         'title_multiloc'               => f.title_multiloc,
         'description_multiloc'         => f.description_multiloc,
         'remote_header_bg_url'         => f.header_bg_url,
-        'description_preview_multiloc' => f.description_preview_multiloc, 
+        'description_preview_multiloc' => f.description_preview_multiloc,
         'created_at'                   => f.created_at.to_s,
         'updated_at'                   => f.updated_at.to_s
       }
@@ -422,7 +425,7 @@ class TenantTemplateService
         'updated_at'                   => p.updated_at.to_s,
         'remote_header_bg_url'         => p.header_bg_url,
         'visible_to'                   => p.visible_to,
-        'description_preview_multiloc' => p.description_preview_multiloc, 
+        'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
         'publication_status'           => p.publication_status,
@@ -467,6 +470,18 @@ class TenantTemplateService
         'ordering'         => p.ordering,
         'created_at'       => p.created_at.to_s,
         'updated_at'       => p.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_project_folder_images
+    ProjectFolderImage.all.map do |p|
+      {
+        'project_folder_ref' => lookup_ref(p.project_folder_id, :project_folder),
+        'remote_image_url'   => p.image_url,
+        'ordering'           => p.ordering,
+        'created_at'         => p.created_at.to_s,
+        'updated_at'         => p.updated_at.to_s
       }
     end
   end
@@ -788,7 +803,7 @@ class TenantTemplateService
       }
     end
   end
-      
+
   def yml_idea_images
     IdeaImage.all.map do |i|
       {
@@ -810,7 +825,7 @@ class TenantTemplateService
         'updated_at' => i.updated_at.to_s
       }
     end
-  end 
+  end
 
   def yml_ideas_topics
     IdeasTopic.all.map do |i|
@@ -889,7 +904,7 @@ class TenantTemplateService
       }
     end
   end
-      
+
   def yml_initiative_images
     InitiativeImage.all.map do |i|
       {
@@ -985,6 +1000,7 @@ class TenantTemplateService
     end
   end
 
+
   def yml_poll_responses
     Polls::Response.all.map do |r|
       yml_response = {
@@ -1014,14 +1030,42 @@ class TenantTemplateService
   def yml_text_images
     TextImage.all.map do |ti|
       {
-        'imageable_ref'   => lookup_ref(ti.imageable_id, [:page, :phase, :project, :initiaitve, :email_campaign]),
-        'imageable_field' => ti.imageable_field,
-        'image'           => ti.image,
-        'text_reference'  => ti.text_reference,
-        'created_at'      => ti.created_at.to_s,
-        'updated_at'      => ti.updated_at.to_s
+        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :initiaitve, :email_campaign]),
+        'imageable_field'  => ti.imageable_field,
+        'remote_image_url' => ti.image.url,
+        'text_reference'   => ti.text_reference,
+        'created_at'       => ti.created_at.to_s,
+        'updated_at'       => ti.updated_at.to_s
       }
     end
   end
 
+  def yml_volunteering_causes
+    Volunteering::Cause.all.map do |c|
+      yml_cause = {
+        'participation_context_ref' => lookup_ref(c.participation_context_id, [:project, :phase]),
+        'title_multiloc'            => c.title_multiloc,
+        'description_multiloc'      => c.description_multiloc,
+        'remote_image_url'          => c.image_url,
+        'ordering'                  => c.ordering,
+        'created_at'                => c.created_at.to_s,
+        'updated_at'                => c.updated_at.to_s,
+      }
+      store_ref yml_cause, c.id, :volunteering_cause
+      yml_cause
+    end
+  end
+
+  def yml_volunteering_volunteers
+    Volunteering::Volunteer.all.map do |v|
+      yml_volunteer = {
+        'cause_ref'   => lookup_ref(v.cause_id, [:volunteering_cause]),
+        'user_ref'    => lookup_ref(v.user_id, :user),
+        'created_at'  => v.created_at.to_s,
+        'updated_at'  => v.updated_at.to_s
+      }
+      store_ref yml_volunteer, v.id, :volunteering_volunteer
+      yml_volunteer
+    end
+  end
 end
