@@ -91,17 +91,12 @@ export function signOut() {
       window.location.href = url;
     } else {
       streams.reset(null);
-      const { pathname, urlLocale } = removeLocale(location.pathname);
+      const { pathname } = removeLocale(location.pathname);
 
-      if (pathname) {
-        if (endsWith(pathname, '/sign-up')) {
-          clHistory.push('/');
-        } else if (pathname.startsWith('/admin')) {
-          clHistory.push(`/${urlLocale}`);
-        }
+      if (pathname && (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))) {
+        clHistory.push('/');
       }
     }
-
   }
 }
 

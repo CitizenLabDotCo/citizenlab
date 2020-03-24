@@ -28,7 +28,7 @@ import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.s
 import { handleOnSSOClick, SSOProvider } from 'services/singleSignOn';
 
 // typings
-import { ISignUpInAction } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'components/SignUpIn';
 
 const Container = styled.div`
   width: 100%;
@@ -106,8 +106,7 @@ const AlreadyHaveAnAccount = styled(Link)`
 `;
 
 interface InputProps {
-  action?: ISignUpInAction | null;
-  goToSignIn: () => void;
+  metaData: ISignUpInMetaData;
 }
 
 interface DataProps {
@@ -127,12 +126,8 @@ class SocialSignUp extends PureComponent<Props & InjectedIntlProps> {
     event.stopPropagation();
   }
 
-  handleOnClick = () => {
-    this.props.goToSignIn();
-  }
-
   handleOnAccept = (provider: SSOProvider) => () => {
-    setTimeout(() => handleOnSSOClick(provider, this.props.action)(), 200);
+    handleOnSSOClick(provider, this.props.metaData);
   }
 
   externalLoginsCount = () => {

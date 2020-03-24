@@ -4,7 +4,6 @@ import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rx
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -14,8 +13,6 @@ import { LiveMessage } from 'react-aria-live';
 
 // components
 import Icon from 'components/UI/Icon';
-import VotingSuccessModal from './VotingSuccessModal';
-import VotingErrorModal from './VotingErrorModal';
 
 // services
 import { authUserStream } from 'services/auth';
@@ -28,7 +25,6 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { convertUrlSearchParamsToAction } from 'components/SignUpIn';
 import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
 
 // style
@@ -251,8 +247,6 @@ interface State {
   idea: IIdea | null;
   project: IProject | null;
   phases: IPhase[] | null | undefined;
-  votingSuccessModalOpened: boolean;
-  votingErrorModalOpened: boolean;
   loaded: boolean;
 }
 
@@ -281,8 +275,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       idea: null,
       project: null,
       phases: undefined,
-      votingSuccessModalOpened: false,
-      votingErrorModalOpened: false,
       loaded: false
     };
     this.voting$ = new BehaviorSubject(null);
@@ -423,44 +415,13 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   }
 
   async componentDidUpdate() {
-    const { ideaId, location } = this.props;
-    const { authUser, myVoteId, voting, loaded } = this.state;
-    const action = convertUrlSearchParamsToAction(location.search);
-
-    this.id$.next(ideaId);
-
-    if (
-      loaded &&
-      authUser &&
-      voting === null &&
-      myVoteId !== undefined &&
-      action &&
-      action.action_type === ('upvote' || 'downvote') &&
-      action.action_context_type === 'idea' &&
-      action.action_context_id === ideaId
-    ) {
-      clHistory.replace(location.pathname);
-      this.programmaticalyCastVote(action.action_type === 'upvote' ? 'up' : 'down');
-    }
+    this.id$.next(this.props.ideaId);
   }
 
   componentWillUnmount() {
     this.upvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
     this.downvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  // Programmatically trigger vote when the page url contains the vote action parameters.
-  programmaticalyCastVote = async (voteMode: 'up' | 'down') => {
-    try {
-      const repsonse = await this.vote(voteMode);
-
-      if (repsonse === 'success') {
-        this.setState({ votingSuccessModalOpened: true });
-      }
-    } catch {
-      this.setState({ votingErrorModalOpened: true });
-    }
   }
 
   votingAnimationDone = () => {
@@ -489,24 +450,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
     if (!voting) {
       if (isNilOrError(authUser)) {
-        // if (votingDisabledReason === 'not_verified') {
-        //   openSignUpInModal({
-        //     action_type: voteMode ? 'upvote' : 'downvote',
-        //     action_context_type: 'idea',
-        //     action_context_id: ideaId,
-        //     action_context_pathname: window.location.pathname,
-        //     action_requires_verification: true
-        //   });
-        // } else {
-        //   unauthenticatedVoteClick && unauthenticatedVoteClick(voteMode);
-        // }
-        openSignUpInModal(votingDisabledReason === 'not_verified' ? {
-          action_type: voteMode === 'up' ? 'upvote' : 'downvote',
-          action_context_type: 'idea',
-          action_context_id: ideaId,
-          action_context_pathname: window.location.pathname,
-          action_requires_verification: true
-        } : undefined);
+        openSignUpInModal({
+          method: 'signup',
+          pathname: window.location.pathname,
+          verification: votingDisabledReason === 'not_verified',
+          action: () => this.vote(voteMode)
+        });
       } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
         try {
           this.voting$.next(voteMode);
@@ -575,14 +524,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     event.preventDefault();
   }
 
-  closeVotingSuccessModal = () => {
-    this.setState({ votingSuccessModalOpened: false });
-  }
-
-  closeVotingErrorModal = () => {
-    this.setState({ votingErrorModalOpened: false });
-  }
-
   render() {
     const { size, className, intl: { formatMessage }, ariaHidden, showDownvote } = this.props;
     const {
@@ -591,9 +532,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       myVoteMode,
       votingAnimation,
       upvotesCount,
-      downvotesCount,
-      votingSuccessModalOpened,
-      votingErrorModalOpened
+      downvotesCount
     } = this.state;
     const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
@@ -677,16 +616,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             </Downvote>
           }
         </Container>
-
-        <VotingSuccessModal
-          opened={votingSuccessModalOpened}
-          onClose={this.closeVotingSuccessModal}
-        />
-
-        <VotingErrorModal
-          opened={votingErrorModalOpened}
-          onClose={this.closeVotingErrorModal}
-        />
       </>
     );
   }

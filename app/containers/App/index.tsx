@@ -3,6 +3,8 @@ import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
 import { isString, isObject, uniq, has } from 'lodash-es';
 import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
@@ -20,9 +22,9 @@ import { ApolloProvider } from 'react-apollo';
 // context
 import { PreviousPathnameContext } from 'context';
 
-// libraries
-import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
+// signup/in
+import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
+import { getSignUpInMetaDataFromUrlSearchParams } from 'services/singleSignOn';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
@@ -112,7 +114,7 @@ const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
-  unlisten: Function;
+  unlisten: () => void;
 
   constructor(props) {
     super(props);
@@ -140,6 +142,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
 
+    this.processUrlParams();
+
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
       const previousPathname = location.pathname;
@@ -147,7 +151,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
 
       this.setState((state) => ({
-        previousPathname: !endsWith(previousPathname, ['sign-up', 'sign-in', 'complete-signup']) ? previousPathname : state.previousPathname
+        previousPathname: !endsWith(previousPathname, ['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error']) ? previousPathname : state.previousPathname
       }));
 
       trackPage(newLocation.pathname);
@@ -155,10 +159,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       // If already created a user (step 1 of sign-up) and there's a required field in step 2,
       // redirect to complete-signup page
       if (isObject(authUser) && !isString(registrationCompletedAt) && !endsWith(nextPathname, 'complete-signup')) {
-        clHistory.replace({
-          pathname: '/complete-signup',
-          search: newLocation.search
-        });
+        clHistory.replace('/complete-signup');
       }
     });
 
@@ -230,12 +231,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     ];
   }
 
-  componentWillUnmount() {
-    this.unlisten();
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   componentDidUpdate(_prevProps: Props, prevState: State) {
+    this.processUrlParams();
+
     if (prevState.authUser === undefined && !isNilOrError(this.state.authUser)) {
       const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
 
@@ -247,6 +245,26 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
         window.history.replaceState(null, '', window.location.pathname);
         this.openVerificationModal('error', { error: this.props.location.query?.error || null } as ContextShape);
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.unlisten();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  processUrlParams = () => {
+    const signUpInMetaData = getSignUpInMetaDataFromUrlSearchParams(this.props.location?.search);
+
+    if (signUpInMetaData) {
+      const urlSegments = signUpInMetaData.pathname.replace(/^\/+/g, '').split('/');
+      const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+      clHistory.replace(signUpInMetaData.pathname);
+
+      if (!['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'].includes(lastUrlSegment)) {
+        openSignUpInModal(signUpInMetaData);
       }
     }
   }

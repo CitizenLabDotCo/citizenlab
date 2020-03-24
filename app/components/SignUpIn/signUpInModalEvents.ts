@@ -1,19 +1,19 @@
 import eventEmitter from 'utils/eventEmitter';
-import { ISignUpInAction } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'components/SignUpIn';
 
 enum SignUpInModalEvents {
   open = 'openSignUpInModal',
   close = 'closeSignUpInModal'
 }
 
-export function openSignUpInModal(action?: ISignUpInAction) {
-  eventEmitter.emit(SignUpInModalEvents.open, action);
+export function openSignUpInModal(metaData: ISignUpInMetaData) {
+  eventEmitter.emit(SignUpInModalEvents.open, metaData);
 }
 
 export function closeSignUpInModal() {
   eventEmitter.emit(SignUpInModalEvents.close);
 }
 
-export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInAction | undefined>(SignUpInModalEvents.open);
+export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInMetaData>(SignUpInModalEvents.open);
 
 export const closeSignUpInModal$ = eventEmitter.observeEvent(SignUpInModalEvents.close);

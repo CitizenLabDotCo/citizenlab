@@ -37,6 +37,9 @@ import { colors, fontSizes } from 'utils/styleUtils';
 import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
+// typings
+import { ISignUpInMetaData } from 'components/SignUpIn';
+
 const Container = styled.div`
   flex: 1 1 auto;
   display: flex;
@@ -150,6 +153,7 @@ const SubSocialButtonLink = styled.a`
 `;
 
 export interface InputProps {
+  metaData: ISignUpInMetaData;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;
@@ -266,7 +270,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
 
   render() {
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const { className, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
+    const { metaData, className, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const externalLoginEnabled = googleLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled || franceconnectLoginEnabled;
@@ -366,14 +370,14 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                     <AuthProviderButton
                       provider="azureactivedirectory"
                       providerName={tenantLoginMechanismName}
-                      onAccept={handleOnSSOClick('azureactivedirectory')}
+                      onAccept={handleOnSSOClick('azureactivedirectory', metaData)}
                       mode="signIn"
                     />
                   }
                 </FeatureFlag>
 
                 <FeatureFlag name="franceconnect_login">
-                  <FranceConnectButton onClick={handleOnSSOClick('franceconnect')}>
+                  <FranceConnectButton onClick={handleOnSSOClick('franceconnect', metaData)}>
                     <img
                       src={franceconnectLogo}
                       alt={this.props.intl.formatMessage(messages.signInButtonAltText, { loginMechanismName: 'FranceConnect' })}
@@ -391,7 +395,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   <AuthProviderButton
                     provider="google"
                     providerName="Google"
-                    onAccept={handleOnSSOClick('google')}
+                    onAccept={handleOnSSOClick('google', metaData)}
                     mode="signIn"
                   />
                 </FeatureFlag>
@@ -399,7 +403,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   <AuthProviderButton
                     provider="facebook"
                     providerName="Facebook"
-                    onAccept={handleOnSSOClick('facebook')}
+                    onAccept={handleOnSSOClick('facebook', metaData)}
                     mode="signIn"
                   />
                 </FeatureFlag>

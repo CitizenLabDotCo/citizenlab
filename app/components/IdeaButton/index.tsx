@@ -22,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { redirectActionToSignUpInPage } from 'components/SignUpIn';
+import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
@@ -133,12 +133,10 @@ class IdeaButton extends PureComponent<Props> {
           clHistory.push('/ideas/new');
         }
       } else if (pcType && pcId) {
-        redirectActionToSignUpInPage({
-          action_type: 'post',
-          action_context_type: pcType,
-          action_context_id: pcId,
-          action_context_pathname: window.location.pathname,
-          action_requires_verification: postingDisabledReason === 'not_verified'
+        openSignUpInModal({
+          method: 'signup',
+          pathname: window.location.pathname,
+          verification: postingDisabledReason === 'not_verified'
         });
       }
     } else {

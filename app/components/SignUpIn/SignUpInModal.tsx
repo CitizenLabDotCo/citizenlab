@@ -2,7 +2,7 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 
 // components
 import Modal from 'components/UI/Modal';
-import SignUpIn from 'components/SignUpIn';
+import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 
 // events
 import { openSignUpInModal$, closeSignUpInModal$ } from 'components/SignUpIn/signUpInModalEvents';
@@ -18,15 +18,15 @@ interface Props {
 
 const SignUpInModal = memo<Props>(({ className }) => {
 
-  const [opened, setOpened] = useState(false);
+  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(undefined);
 
   useEffect(() => {
     const subscriptions = [
-      openSignUpInModal$.subscribe(() => {
-        setOpened(true);
+      openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
+        setMetaData(metaData);
       }),
       closeSignUpInModal$.subscribe(() => {
-        setOpened(false);
+        setMetaData(undefined);
       })
     ];
 
@@ -34,20 +34,25 @@ const SignUpInModal = memo<Props>(({ className }) => {
   }, []);
 
   const onClose = useCallback(() => {
-    setOpened(false);
+    setMetaData(undefined);
+  }, []);
+
+  const onSignUpInCompleted = useCallback(() => {
+    metaData?.action?.();
+    setMetaData(undefined);
   }, []);
 
   return (
     <Modal
       width={820}
-      opened={opened}
+      opened={!!metaData}
       close={onClose}
     >
       <Container className={className}>
         <SignUpIn
-          initialActiveSignUpInMethod="signup"
           inModal={true}
-          onSignUpInCompleted={onClose}
+          metaData={metaData as ISignUpInMetaData}
+          onSignUpInCompleted={onSignUpInCompleted}
         />
       </Container>
     </Modal>
