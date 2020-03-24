@@ -795,7 +795,8 @@ if Apartment::Tenant.current == 'localhost'
   layer1 = Maps::Layer.create!(
     map_config: map_config,
     title_multiloc: {en: 'Districts', 'nl-BE': 'Districten'},
-    geojson: JSON.parse(File.read(Maps::Engine.root.join("spec","fixtures","brussels-districts.geojson")))
+    geojson: JSON.parse(File.read(Maps::Engine.root.join("spec","fixtures","brussels-districts.geojson"))),
+    default_enabled: true
   )
   Maps::LegendItem.create!([
     {layer: layer1, title_multiloc: {'fr-BE': 'Laeken'}, color: '#3b7d6c'},
@@ -810,7 +811,8 @@ if Apartment::Tenant.current == 'localhost'
   layer2 = Maps::Layer.create!(
     map_config: map_config,
     title_multiloc: {en: 'Public toilets', 'nl-BE': 'Publieke toiletten'},
-    geojson: JSON.parse(File.read(Maps::Engine.root.join("spec","fixtures","bruxelles_toilettes_publiques.geojson")))
+    geojson: JSON.parse(File.read(Maps::Engine.root.join("spec","fixtures","bruxelles_toilettes_publiques.geojson"))),
+    default_enabled: false
   )
 
 

@@ -462,6 +462,7 @@ ActiveRecord::Schema.define(version: 2020_03_16_142822) do
     t.jsonb "title_multiloc", default: {}, null: false
     t.integer "ordering", null: false
     t.jsonb "geojson", null: false
+    t.boolean "default_enabled", default: true, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["map_config_id"], name: "index_maps_layers_on_map_config_id"
