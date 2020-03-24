@@ -854,6 +854,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.integer "ordering", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["ordering"], name: "index_volunteering_causes_on_ordering"
     t.index ["participation_context_type", "participation_context_id"], name: "index_volunteering_causes_on_participation_context"
   end
 
