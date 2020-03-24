@@ -275,7 +275,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
           const layerTitle = localize(layer.title_multiloc);
           const geoJson = layer.geojson;
 
-          overlayMaps[layerTitle] = Leaflet.geoJSON(geoJson, { useSimpleStyle: true });
+          overlayMaps[layerTitle] = Leaflet.geoJSON(geoJson, { useSimpleStyle: true } as any);
         });
 
         return overlayMaps;
@@ -454,7 +454,5 @@ export default (inputProps: InputProps) => (
 
 // TODO: show markers layer
 // TODO: which legend to show when multiple layers are selected?/deal with multiple layers legend
-// TODO: type error simple style spec
-// TODO: extract Legend component
 // TODO: uncomment getTileProvider
 // TODO: initiatives have no legends (no mapconfig)?
