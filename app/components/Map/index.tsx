@@ -198,6 +198,27 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
   }
 
+  enableDefaultLayers = () => {
+    const { mapConfig } = this.props;
+
+    if (
+      !isNilOrError(mapConfig) &&
+      mapConfig.attributes.layers.length > 0
+    ) {
+      mapConfig.attributes.layers.forEach(layer => {
+        const geoJson = layer.geojson;
+        const leafletGeoJsonLayer = Leaflet.geoJSON(geoJson, { useSimpleStyle: true } as any);
+
+        const DEFAULT_ENABLED = true;
+
+        if (DEFAULT_ENABLED) {
+          console.log(1);
+          this.map.addLayer(leafletGeoJsonLayer);
+        }
+      });
+    }
+  }
+
   bindMapContainer = (element: HTMLDivElement | null) => {
     const { tenant, mapConfig, center, localize } = this.props;
 
@@ -264,24 +285,88 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       return initCenter;
     }
 
-    function getOverlayMaps() {
+    function getGeoJsonOverlays() {
+      const layers: Leaflet.GeoJSON[] = [];
+
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.layers.length > 0
+      ) {
+        const layers = mapConfig.attributes.layers.map(layer => {
+          return Leaflet.geoJSON(layer.geojson, { useSimpleStyle: true } as any);
+        });
+
+        return layers;
+      }
+
+      return [];
+    }
+
+    function xyz() {
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.layers.length > 0
+      ) {
+        const layers = mapConfig.attributes.layers.map((layer, i) => {
+          return {
+            leafletGeoJson: Leaflet.geoJSON(layer.geojson, { useSimpleStyle: true } as any),
+            enabledByDefault: i % 2 === 0
+          };
+        });
+
+        return layers;
+      }
+
+      return [];
+    }
+
+    function getOverlayMaps(geoJsonOverlays: Leaflet.GeoJSON[]) {
       const overlayMaps = {};
+
+      geoJsonOverlays.forEach(((overlay, index) => {
+        overlayMaps[index] = overlay;
+      }));
+
+      return overlayMaps;
+      // const overlayMaps = {};
+
+      // if (
+      //   !isNilOrError(mapConfig) &&
+      //   mapConfig.attributes.layers.length > 0
+      // ) {
+      //   mapConfig.attributes.layers.forEach(layer => {
+      //     const layerTitle = localize(layer.title_multiloc);
+      //     const geoJson = layer.geojson;
+
+      //     overlayMaps[layerTitle] = Leaflet.geoJSON(geoJson, { useSimpleStyle: true } as any);
+      //   });
+
+      //   return overlayMaps;
+      // }
+
+      // return undefined;
+    }
+
+    function getEnableDefaultLayers(geoJsonOverlays: Leaflet.GeoJSON[]) {
+      const layers: Leaflet.GeoJSON[] = [];
 
       if (
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.layers.length > 0
       ) {
         mapConfig.attributes.layers.forEach(layer => {
-          const layerTitle = localize(layer.title_multiloc);
           const geoJson = layer.geojson;
+          const leafletGeoJsonLayer = Leaflet.geoJSON(geoJson, { useSimpleStyle: true } as any);
 
-          overlayMaps[layerTitle] = Leaflet.geoJSON(geoJson, { useSimpleStyle: true } as any);
+          const DEFAULT_ENABLED = true;
+
+          if (DEFAULT_ENABLED) {
+            layers.push(leafletGeoJsonLayer);
+          }
         });
-
-        return overlayMaps;
       }
 
-      return undefined;
+      return layers;
     }
 
     if (element && !this.map) {
@@ -289,20 +374,30 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       const zoom = getZoom();
       const tileProvider = getTileProvider();
       const initCenter = getInitCenter();
+      const abc = xyz();
+      const overlays = abc.map(a => a.leafletGeoJson);
+      const overlaysEnabledByDefault = abc.filter(a => a.enabledByDefault === true).map(a => a.leafletGeoJson);
+      const geoJsonOverlays = getGeoJsonOverlays();
       const baseLayer = Leaflet.tileLayer(tileProvider, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
+      });
+
+      // const overlaysEnabledByDefault = getEnableDefaultLayers(geoJsonOverlays);
+      const filteredGeoJsonOverlays = geoJsonOverlays.filter((_overlay, index) => {
+        if (index % 2 === 0) return true;
+        return false;
       });
 
       this.map = Leaflet.map(element, {
         zoom,
         center: initCenter,
         maxZoom: 17,
-        layers: [baseLayer]
+        layers: [baseLayer, ...overlaysEnabledByDefault]
       });
 
       // Add layers
-      const overlayMaps = getOverlayMaps();
+      const overlayMaps = getOverlayMaps(overlays);
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
       // Handlers
@@ -452,7 +547,8 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
+// TODO: defaultEnabled for layer
+// TODO: legend => always show when there's a legend
 // TODO: show markers layer
-// TODO: which legend to show when multiple layers are selected?/deal with multiple layers legend
 // TODO: uncomment getTileProvider
 // TODO: initiatives have no legends (no mapconfig)?
