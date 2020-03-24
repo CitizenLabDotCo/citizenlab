@@ -635,6 +635,23 @@ models:
       user_ref: *77
     - token: eWx6b1kAKBJsBY8F0FYGgKCXpLaGbVjTTvuJiGoRqxiLUyRSlQwz1F06agHXJd1D
       user_ref: *67
+  project_folder:
+  - &folder1
+    # hard dependance of folder_page test case
+    title_multiloc:
+      en-GB: Some folder
+      nl-BE: Some folder
+    description_multiloc:
+      en-GB: "<p>That's a folder alright.</p>"
+      nl-BE: "<p>That's a folder alright.</p>"
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    created_at: '2018-03-28 13:35:04'
+    updated_at: '2018-03-28 13:35:04'
+    description_preview_multiloc:
+      en-GB: That's a folder alright
+      nl-BE: That's a folder alright
+    admin_publication_attributes: &a1
+      publication_status: published
   project:
   - &project1
     # hard dependence of project_card test case
@@ -798,6 +815,7 @@ models:
     internal_role:
     admin_publication_attributes:
       publication_status: published
+      parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -894,6 +912,7 @@ models:
     internal_role:
     admin_publication_attributes:
       publication_status: published
+      parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
