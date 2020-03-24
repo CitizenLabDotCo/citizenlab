@@ -15,7 +15,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { IIdeaData } from 'services/ideas';
 
 // utils
-import { redirectActionToSignUpInPage } from 'components/SignUpIn';
+import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
 
 // i18n
 import messages from './messages';
@@ -76,19 +76,17 @@ class CommentingDisabled extends PureComponent<Props> {
   }
 
   onVerify = () => {
-    const { projectId, phaseId, postId, postType, authUser } = this.props;
+    const { projectId, phaseId, authUser } = this.props;
 
     if (!isNilOrError(authUser)) {
       const pcId = phaseId || projectId || null;
       const pcType = phaseId ? 'phase' : 'project';
       pcId && openVerificationModalWithContext(pcId, pcType, 'commenting');
     } else {
-      redirectActionToSignUpInPage({
-        action_type: 'comment',
-        action_context_type: postType,
-        action_context_id: postId,
-        action_context_pathname: window.location.pathname,
-        action_requires_verification: true
+      openSignUpInModal({
+        method: 'signup',
+        pathname: window.location.pathname,
+        verification: true
       });
     }
   }

@@ -11,11 +11,12 @@ import VerificationSteps from 'components/Verification/VerificationSteps';
 import CustomFields from './CustomFields';
 import SocialSignUp from './SocialSignUp';
 import FeatureFlag from 'components/FeatureFlag';
-import Error from 'components/UI/Error';
+import { default as ErrorComponent } from 'components/UI/Error';
 
 // resources
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -34,7 +35,7 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // typings
-import { ISignUpInAction } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'components/SignUpIn';
 
 const timeout = 650;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -123,15 +124,11 @@ const SignupHelperText = styled.p`
 
 export type TSignUpSteps = 'provider-selection' | 'password-signup' | 'verification' | 'custom-fields';
 
-interface DefaultProps {
-  initialActiveStep?: TSignUpSteps | null;
-}
-
-export interface InputProps extends DefaultProps {
+export interface InputProps {
   inModal: boolean;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
-  action?: ISignUpInAction | null;
+  metaData: ISignUpInMetaData;
   error?: boolean;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
@@ -139,6 +136,7 @@ export interface InputProps extends DefaultProps {
 }
 
 interface DataProps {
+  authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
   customFieldsSchema: GetCustomFieldsSchemaChildProps;
 }
@@ -146,43 +144,49 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  activeStep: TSignUpSteps | null;
+  activeStep: TSignUpSteps | null | undefined;
   userId: string | null;
   error: boolean;
 }
 
 class SignUp extends PureComponent<Props, State> {
-  // subscription: Subscription | undefined;
-
-  static defaultProps: DefaultProps = {
-    initialActiveStep: 'password-signup'
-  };
-
   constructor(props: Props) {
     super(props);
     this.state = {
-      activeStep: props.initialActiveStep as TSignUpSteps,
+      activeStep: undefined,
       userId: null,
       error: false
     };
   }
 
-  componentDidMount() {
-    this.mapErrorPropToState();
-  }
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const { activeStep, error } = state;
+    const { authUser, customFieldsSchema, onSignUpCompleted } = props;
+    let nextActiveStep = activeStep;
 
-  componentDidUpdate() {
-    this.mapErrorPropToState();
-  }
+    if (activeStep === undefined && authUser !== undefined && customFieldsSchema !== undefined) {
+      nextActiveStep = null;
+      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
-  mapErrorPropToState = () => {
-    this.setState(state => ({ error: this.props.error || state.error }));
+      if (!authUser) { // not logged in
+        nextActiveStep = 'password-signup';
+      } else if (hasCustomFields) { // logged in but not yet completed custom fields and custom fields enabled
+        nextActiveStep = 'custom-fields';
+      } else {
+        onSignUpCompleted();
+      }
+    }
+
+    return {
+      activeStep: nextActiveStep,
+      error: props.error || error
+    };
   }
 
   goToNextStep = () => {
     const { activeStep } = this.state;
-    const { action, customFieldsSchema } = this.props;
-    const hasVerificationStep = action?.action_requires_verification;
+    const { metaData, customFieldsSchema } = this.props;
+    const hasVerificationStep = metaData?.verification;
     const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
     if (activeStep === 'password-signup' && hasVerificationStep) {
@@ -222,98 +226,100 @@ class SignUp extends PureComponent<Props, State> {
 
   render() {
     const { activeStep, error } = this.state;
-    const { isInvitation, inModal, token, action, tenant, className } = this.props;
+    const { isInvitation, inModal, token, metaData, tenant, className } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
-    return (
-      <Container className={`e2e-sign-up-container ${className}`}>
-        <ContainerInner>
-          {error ? (
-            <>
-              <Title>
-                <FormattedMessage {...messages.somethingWentWrongTitle} />
-              </Title>
-              <Error text={<FormattedMessage {...messages.somethingWentWrongText} />} />
-            </>
-          ) : (
-            <TransitionGroup>
-              {activeStep === 'password-signup' &&
-                <CSSTransition
-                  timeout={timeout}
-                  classNames="step"
-                >
-                  <StepContainer>
-                    <Title>
-                      <FormattedMessage {...isInvitation ? messages.invitationTitle : messages.accountCreationTitle} />
-                    </Title>
+    if (activeStep) {
+      return (
+        <Container className={`e2e-sign-up-container ${className}`}>
+          <ContainerInner>
+            {error ? (
+              <>
+                <Title>
+                  <FormattedMessage {...messages.somethingWentWrongTitle} />
+                </Title>
+                <ErrorComponent text={<FormattedMessage {...messages.somethingWentWrongText} />} />
+              </>
+            ) : (
+              <TransitionGroup>
+                {activeStep === 'password-signup' &&
+                  <CSSTransition
+                    timeout={timeout}
+                    classNames="step"
+                  >
+                    <StepContainer>
+                      <Title>
+                        <FormattedMessage {...isInvitation ? messages.invitationTitle : messages.accountCreationTitle} />
+                      </Title>
 
-                    {!isEmpty(signupHelperText) &&
-                      <SignupHelperText>
-                        <T value={signupHelperText} supportHtml />
-                      </SignupHelperText>
-                    }
+                      {!isEmpty(signupHelperText) &&
+                        <SignupHelperText>
+                          <T value={signupHelperText} supportHtml />
+                        </SignupHelperText>
+                      }
 
-                    <FeatureFlag name="password_login">
-                      <AccountCreation
-                        isInvitation={isInvitation}
-                        token={token}
-                        onCompleted={this.handlePasswordSignupCompleted}
-                        onGoToSignIn={this.props.onGoToSignIn}
+                      <FeatureFlag name="password_login">
+                        <AccountCreation
+                          isInvitation={isInvitation}
+                          token={token}
+                          onCompleted={this.handlePasswordSignupCompleted}
+                          onGoToSignIn={this.props.onGoToSignIn}
+                        />
+                      </FeatureFlag>
+
+                      {!isInvitation &&
+                        <SocialSignUp metaData={metaData} />
+                      }
+                    </StepContainer>
+                  </CSSTransition>
+                }
+
+                {activeStep === 'verification' &&
+                  <CSSTransition
+                    timeout={timeout}
+                    classNames="step"
+                  >
+                    <StepContainer>
+                      <Title>
+                        <FormattedMessage {...messages.verificationTitle} />
+                      </Title>
+                      <VerificationSteps
+                        context={null}
+                        initialActiveStep="method-selection"
+                        inModal={inModal}
+                        onComplete={this.handleProviderSelectionCompleted}
+                        onError={this.onVerificationError}
                       />
-                    </FeatureFlag>
+                    </StepContainer>
+                  </CSSTransition>
+                }
 
-                    {!isInvitation &&
-                      <SocialSignUp
-                        action={action}
-                        goToSignIn={this.goToSignIn}
-                      />
-                    }
-                  </StepContainer>
-                </CSSTransition>
-              }
+                {activeStep === 'custom-fields' &&
+                  <CSSTransition
+                    timeout={timeout}
+                    classNames="step"
+                  >
+                    <StepContainer>
+                      <Title>
+                        <FormattedMessage {...messages.customFieldsTitle} />
+                      </Title>
+                      <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
+                    </StepContainer>
+                  </CSSTransition>
+                }
+              </TransitionGroup>
+            )}
+          </ContainerInner>
+        </Container>
+      );
+    }
 
-              {activeStep === 'verification' &&
-                <CSSTransition
-                  timeout={timeout}
-                  classNames="step"
-                >
-                  <StepContainer>
-                    <Title>
-                      <FormattedMessage {...messages.verificationTitle} />
-                    </Title>
-                    <VerificationSteps
-                      context={null}
-                      initialActiveStep="method-selection"
-                      inModal={inModal}
-                      onComplete={this.handleProviderSelectionCompleted}
-                      onError={this.onVerificationError}
-                    />
-                  </StepContainer>
-                </CSSTransition>
-              }
-
-              {activeStep === 'custom-fields' &&
-                <CSSTransition
-                  timeout={timeout}
-                  classNames="step"
-                >
-                  <StepContainer>
-                    <Title>
-                      <FormattedMessage {...messages.customFieldsTitle} />
-                    </Title>
-                    <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
-                  </StepContainer>
-                </CSSTransition>
-              }
-            </TransitionGroup>
-          )}
-        </ContainerInner>
-      </Container>
-    );
+    return null;
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authuser: <GetAuthUser />,
   tenant: <GetTenant />,
   customFieldsSchema: <GetCustomFieldsSchema />
 });
