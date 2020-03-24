@@ -750,7 +750,7 @@ export function apiRemoveFolder(folderId: string) {
         Authorization: `Bearer ${adminJwt}`
       },
       method: 'DELETE',
-      url: `web_api/v1/folders/${folderId}`,
+      url: `web_api/v1/project_folders/${folderId}`,
     });
   });
 }
@@ -923,6 +923,7 @@ Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
 Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
+Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
 Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
