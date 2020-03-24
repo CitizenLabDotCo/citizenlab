@@ -313,7 +313,7 @@ const ProjectFolderCard = memo(({
           clIconSecondary: `${theme.colorSecondary}`,
         }}
       />
-      <MapIconDescription aria-hidden>
+      <MapIconDescription aria-hidden className="e2e-folder-card-numberofprojects">
         {numberOfProjects}
       </MapIconDescription>
       <ScreenReaderOnly>
@@ -338,7 +338,7 @@ const ProjectFolderCard = memo(({
 
   return (
     <Container
-      className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+      className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-folder-card`}
       to={folderUrl}
       onClick={handleProjectCardOnClick(publication.publicationId)}
     >
@@ -363,7 +363,7 @@ const ProjectFolderCard = memo(({
         {size === 'large' && contentHeader}
 
         <ContentBody className={size} aria-hidden>
-          <FolderTitle onClick={handleProjectTitleOnClick(publication.publicationId)}>
+          <FolderTitle onClick={handleProjectTitleOnClick(publication.publicationId)} className="e2e-folder-card-folder-title">
             <T value={publication.attributes.publication_title_multiloc} />
           </FolderTitle>
 
@@ -371,7 +371,7 @@ const ProjectFolderCard = memo(({
             {(description) => {
               if (!isEmpty(description)) {
                 return (
-                  <FolderDescription >
+                  <FolderDescription className="e2e-folder-card-folder-description-preview">
                     {description}
                   </FolderDescription>
                 );
