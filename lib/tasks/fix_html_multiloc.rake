@@ -165,13 +165,12 @@ def convert_html html
 end
 
 def imageable_html_multilocs
-  {
-    Area       => [:description_multiloc],
-    Event      => [:description_multiloc],
-    Idea       => [:body_multiloc],
-    Initiative => [:body_multiloc],
-    Page       => [:body_multiloc],
-    Phase      => [:description_multiloc],
-    Project    => [:description_multiloc]
+  {    
+    Event                    => [:description_multiloc],
+    Initiative               => [:body_multiloc],
+    Page                     => [:body_multiloc],
+    Phase                    => [:description_multiloc],
+    Project                  => [:description_multiloc],
+    EmailCampaigns::Campaign => [:body_multiloc]
   }
 end
