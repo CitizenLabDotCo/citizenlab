@@ -7,6 +7,7 @@ class Maps::WebApi::V1::MapConfigSerializer < ::WebApi::V1::BaseSerializer
       {
         title_multiloc: layer.title_multiloc,
         geojson: layer.geojson,
+        default_enabled: layer.default_enabled,
         legend: layer.legend_items.map do |legend_item|
           {
             title_multiloc: legend_item.title_multiloc,

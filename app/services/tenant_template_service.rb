@@ -1041,11 +1041,12 @@ class TenantTemplateService
   def yml_maps_layers
     Maps::Layer.all.map do |layer|
       yml_layer = {
-        'map_config_ref' => lookup_ref(layer.map_config_id, :maps_map_config),
-        'title_multiloc' => layer.title_multiloc,
-        'geojson'        => layer.geojson,
-        'created_at'     => layer.created_at.to_s,
-        'updated_at'     => layer.updated_at.to_s
+        'map_config_ref'  => lookup_ref(layer.map_config_id, :maps_map_config),
+        'title_multiloc'  => layer.title_multiloc,
+        'geojson'         => layer.geojson,
+        'default_enabled' => layer.default_enabled,
+        'created_at'      => layer.created_at.to_s,
+        'updated_at'      => layer.updated_at.to_s
       }
       store_ref yml_layer, layer.id, :maps_layer
       yml_layer
