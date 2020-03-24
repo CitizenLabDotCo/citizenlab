@@ -9,6 +9,7 @@ require('leaflet-simplestyle');
 // components
 import ReactResizeDetector from 'react-resize-detector';
 import Icon from 'components/UI/Icon';
+import Legend from './Legend';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -93,40 +94,6 @@ const CloseButton = styled.div`
     top: 8px;
     right: 8px;
   `}
-`;
-
-const LegendContainer = styled.div`
-  background-color: white;
-  padding: 30px;
-`;
-
-const Title = styled.h4`
-  margin-bottom 15px;
-`;
-
-const Legend = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const Item = styled.li`
-  display: flex;
-  flex: 1 0 calc(50% - 10px);
-  margin-right: 10px;
-
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
-`;
-
-const ColorLabel = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: ${props => props.color};
-  margin-right: 10px;
 `;
 
 const LeafletMapContainer = styled.div<{mapHeight: number}>`
@@ -427,7 +394,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       className,
       mapHeight,
       mapConfig,
-      localize,
     } = this.props;
     const {
       showLegend,
@@ -435,10 +401,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     } = this.state;
 
     if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
-      const currentLayer = mapConfig.attributes.layers.find(layer => localize(layer.title_multiloc) === currentLayerTitle);
-      const legendTitle = localize(currentLayer?.title_multiloc);
-      const legend = currentLayer?.legend;
-
       return (
         <Container className={className}>
           <MapContainer>
@@ -460,24 +422,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
             </LeafletMapContainer>
           </MapContainer>
-          {showLegend && legend &&
-            <LegendContainer>
-              <Title>
-                {legendTitle}
-              </Title>
-              <Legend>
-                {legend.map((legendItem, index) => {
-                  const color: string | undefined = legendItem.color;
-                  const label = localize(legendItem.title_multiloc);
-                  return (
-                    <Item key={`legend-item-${index}`}>
-                      {color && <ColorLabel color={color} />}
-                      {label}
-                    </Item>
-                  );
-                })}
-              </Legend>
-            </LegendContainer>
+          {showLegend && currentLayerTitle &&
+            <Legend
+              currentLayerTitle={currentLayerTitle}
+              mapConfig={mapConfig}
+            />
           }
         </Container>
 
@@ -507,5 +456,5 @@ export default (inputProps: InputProps) => (
 // TODO: which legend to show when multiple layers are selected?/deal with multiple layers legend
 // TODO: type error simple style spec
 // TODO: extract Legend component
-// TODO: console error landing page
 // TODO: uncomment getTileProvider
+// TODO: initiatives have no legends (no mapconfig)?
