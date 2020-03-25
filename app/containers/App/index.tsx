@@ -23,8 +23,8 @@ import { ApolloProvider } from 'react-apollo';
 import { PreviousPathnameContext } from 'context';
 
 // signup/in
+import { ISignUpInMetaData } from 'components/SignUpIn';
 import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
-import { getSignUpInMetaDataFromUrlSearchParams } from 'services/singleSignOn';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
@@ -142,8 +142,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
 
-    this.processUrlParams();
-
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const { authUser } = this.state;
       const previousPathname = location.pathname;
@@ -232,8 +230,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    this.processUrlParams();
-
     if (prevState.authUser === undefined && !isNilOrError(this.state.authUser)) {
       const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
 
@@ -246,27 +242,28 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         window.history.replaceState(null, '', window.location.pathname);
         this.openVerificationModal('error', { error: this.props.location.query?.error || null } as ContextShape);
       }
+
+      if (has(urlSearchParams, 'sign_up_in_metadata')) {
+        const signUpInMetaData: ISignUpInMetaData = {
+          ...urlSearchParams.sign_up_in_metadata,
+          verification: urlSearchParams.verification === 'true'
+        };
+
+        const urlSegments = signUpInMetaData.pathname.replace(/^\/+/g, '').split('/');
+        const lastUrlSegment = urlSegments[urlSegments.length - 1];
+
+        clHistory.replace(signUpInMetaData.pathname);
+
+        if (!['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'].includes(lastUrlSegment)) {
+          openSignUpInModal(signUpInMetaData);
+        }
+      }
     }
   }
 
   componentWillUnmount() {
     this.unlisten();
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  processUrlParams = () => {
-    const signUpInMetaData = getSignUpInMetaDataFromUrlSearchParams(this.props.location?.search);
-
-    if (signUpInMetaData) {
-      const urlSegments = signUpInMetaData.pathname.replace(/^\/+/g, '').split('/');
-      const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-      clHistory.replace(signUpInMetaData.pathname);
-
-      if (!['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'].includes(lastUrlSegment)) {
-        openSignUpInModal(signUpInMetaData);
-      }
-    }
   }
 
   openPostPageModal = (id: string, slug: string, type: 'idea' | 'initiative') => {
