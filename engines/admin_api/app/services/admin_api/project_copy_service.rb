@@ -10,7 +10,6 @@ module AdminApi
       end
       Project.where.not(id: project_ids_before).each do |project|
         project.update!(slug: SlugService.new.generate_slug(project, project.slug))
-        fix_project_text_images! project
       end
       # Projects from a folder are imported to the top level.
       ProjectHolderService.new.fix_project_holder_orderings!
@@ -46,6 +45,9 @@ module AdminApi
         @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
         @template['models']['vote']                = yml_votes shift_timestamps: shift_timestamps
       end
+
+      @template['models']['text_images']           = yml_text_images shift_timestamps: shift_timestamps
+
       @template
     end
 
@@ -437,23 +439,22 @@ module AdminApi
       end
     end
 
-    def shift_timestamp value, shift_timestamps
-      value && (value + shift_timestamps.days)
+    def yml_text_images shift_timestamps: 0
+      imageable_ids = [@project.id] + @project.phase_ids + @project.event_ids
+      TextImage.where(imageable_id: imageable_ids).map do |ti|
+        {
+          'imageable_ref'    => lookup_ref(ti.imageable_id, [:phase, :project, :event]),
+          'imageable_field'  => ti.imageable_field,
+          'remote_image_url' => ti.image_url,
+          'text_reference'   => ti.text_reference,
+          'created_at'       => shift_timestamp(ti.created_at, shift_timestamps)&.iso8601,
+          'updated_at'       => shift_timestamp(ti.updated_at, shift_timestamps)&.iso8601
+        }
+      end
     end
 
-    def fix_project_text_images! project
-      # In order to not accumulate text images as
-      # demo content is reused for new demo
-      # content, we add the src in the project
-      # export template and generate the text 
-      # images on import instead.
-      project.update! description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc)
-      project.phases.each do |phase|
-        phase.update! description_multiloc: TextImageService.new.swap_data_images(phase, :description_multiloc)
-      end
-      project.events.each do |event|
-        event.update! description_multiloc: TextImageService.new.swap_data_images(event, :description_multiloc)
-      end
+    def shift_timestamp value, shift_timestamps
+      value && (value + shift_timestamps.days)
     end
 
   end
