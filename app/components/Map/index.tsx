@@ -279,7 +279,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         mapConfig.attributes.layers.length > 0
       ) {
         const layers = mapConfig.attributes.layers.map((layer) => {
-          const customLegendMarker = require('layer.marker_svg_url');
+          const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
           const geoJsonOptions = {
             useSimpleStyle: true,
             pointToLayer: (_feature, latlng) => {
@@ -316,7 +316,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       const tileProvider = getTileProvider();
       const initCenter = getInitCenter();
       const layers = formatLayers();
-      const leafletGeoJsonOverlaysEnabledByDefault = layers
+      const overlaysEnabledByDefault = layers
         .filter(layer => layer.enabledByDefault === true)
         .map(layer => layer.leafletGeoJson);
       const baseLayer = Leaflet.tileLayer(tileProvider, {
@@ -328,7 +328,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         zoom,
         center: initCenter,
         maxZoom: 17,
-        layers: [baseLayer, ...leafletGeoJsonOverlaysEnabledByDefault]
+        layers: [baseLayer, ...overlaysEnabledByDefault]
       });
 
       // Add layers
@@ -469,5 +469,3 @@ export default (inputProps: InputProps) => (
     {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
-
-// TODO: custom icon for markers
