@@ -2,7 +2,9 @@ module BaseImageUploader
   extend ActiveSupport::Concern
 
   included do
-    if !Rails.env.test? && !Rails.env.development?
+    if Rails.env.test?
+      storage :file
+    elsif !Rails.env.development?
       storage :fog
     end
   end
@@ -13,18 +15,20 @@ module BaseImageUploader
   end
 
   def asset_host
-    begin
-      Tenant.current.base_backend_uri
-    rescue ActiveRecord::RecordNotFound # There is no Tenant.current
+    unless Rails.env.test?
+      begin
+        Tenant.current.base_backend_uri
+      rescue ActiveRecord::RecordNotFound # There is no Tenant.current
 
-      # Maybe the model we're operating on is a Tenant itself?
-      if model.kind_of? Tenant
-        model.base_backend_uri
+        # Maybe the model we're operating on is a Tenant itself?
+        if model.kind_of? Tenant
+          model.base_backend_uri
 
-      # Nope, so let's fall back to default carrierwave behavior (s3 bucket
-      # in production)
-      else
-        super
+        # Nope, so let's fall back to default carrierwave behavior (s3 bucket
+        # in production)
+        else
+          super
+        end
       end
     end
   end
