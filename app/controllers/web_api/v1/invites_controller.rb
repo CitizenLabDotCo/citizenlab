@@ -65,7 +65,7 @@ class WebApi::V1::InvitesController < ApplicationController
   def bulk_create
     authorize :invite
     InvitesService.new.bulk_create(
-      bulk_create_params[:emails], 
+      bulk_create_params[:emails].map{|e| {"email" => e}}, 
       bulk_create_params.except(:emails).stringify_keys, 
       current_user
     )
