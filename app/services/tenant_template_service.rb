@@ -24,6 +24,18 @@ class TenantTemplateService
       fields.each do |attributes|
         model = model_class.new
         image_assignments = {}
+
+        # Required to make templates tests work in which case file storage is used
+        if Rails.env.test?
+          attributes.keys.select do |key|
+            key.start_with?('remote_') && key.end_with?('_url') && attributes[key]&.start_with?('/')
+          end.each do |key|
+            new_key = key.gsub('remote_', '').gsub('_url', '')
+            attributes[new_key] = File.open "public#{attributes[key]}"
+            attributes.delete key
+          end
+        end
+
         attributes.each do |field_name, field_value|
           if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
             multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
