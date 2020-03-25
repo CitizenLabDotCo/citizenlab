@@ -22,7 +22,8 @@ import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import { darken, lighten } from 'polished';
 import { colors, media } from 'utils/styleUtils';
-import markerIcon from './marker.svg';
+import ideaMarkerIcon from './idea-marker.svg';
+import legendMarkerIcon from './legend-marker.svg';
 
 // localize
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -118,8 +119,14 @@ const LeafletMapContainer = styled.div<{mapHeight: number}>`
   }
 `;
 
-const customIcon = Leaflet.icon({
-  iconUrl: markerIcon,
+const ideaMarker = Leaflet.icon({
+  iconUrl: ideaMarkerIcon,
+  iconSize: [29, 41],
+  iconAnchor: [14, 41],
+});
+
+const fallbackLegendMarker = Leaflet.icon({
+  iconUrl: legendMarkerIcon,
   iconSize: [29, 41],
   iconAnchor: [14, 41],
 });
@@ -154,14 +161,13 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
-  currentLayerTitle: string | null;
 }
 
 class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   private map: Leaflet.Map;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markers: Leaflet.Marker[];
-  private markerOptions = { icon: customIcon };
+  private markerOptions = { icon: ideaMarker };
   private clusterOptions = {
     showCoverageOnHover: false,
     spiderfyDistanceMultiplier: 2,
@@ -178,7 +184,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     super(props);
     this.state = {
       initiated: false,
-      currentLayerTitle: null,
     };
   }
 
@@ -269,17 +274,19 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       operations (that require the default_enabled value)
       + create overlay maps (that require the geoJson title)
       */
-      const geoJsonOptions = {
-        useSimpleStyle: true,
-        pointToLayer: (_feature, latlng) => {
-          return Leaflet.marker(latlng, { icon: customIcon });
-        }
-      };
       if (
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.layers.length > 0
       ) {
         const layers = mapConfig.attributes.layers.map((layer) => {
+          const customLegendMarker = require('layer.marker_svg_url');
+          const geoJsonOptions = {
+            useSimpleStyle: true,
+            pointToLayer: (_feature, latlng) => {
+              return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
+            }
+          };
+
           return {
             title_multiloc: layer.title_multiloc,
             leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
