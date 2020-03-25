@@ -279,7 +279,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.layers.length > 0
       ) {
-        const layers = mapConfig.attributes.layers.map((layer, i) => {
+        const layers = mapConfig.attributes.layers.map((layer) => {
           return {
             title_multiloc: layer.title_multiloc,
             leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
