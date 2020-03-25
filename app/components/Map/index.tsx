@@ -4,8 +4,6 @@ import { compact, /* get,*/ isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 require('leaflet-simplestyle');
 
-// import { style } from './colors';
-
 // components
 import ReactResizeDetector from 'react-resize-detector';
 import Icon from 'components/UI/Icon';
@@ -277,8 +275,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
           return {
             title_multiloc: layer.title_multiloc,
             leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
-            // enabledByDefault: layer.default_enabled,
-            enabledByDefault: i % 2 === 0,
+            enabledByDefault: layer.default_enabled,
           };
         });
 
@@ -311,8 +308,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       });
-
-      // const overlaysEnabledByDefault = getEnableDefaultLayers(geoJsonOverlays);
 
       this.map = Leaflet.map(element, {
         zoom,
