@@ -1059,7 +1059,7 @@ class TenantTemplateService
   def yml_text_images
     TextImage.all.map do |ti|
       {
-        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :event, :initiaitve, :email_campaign]),
+        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :event, :initiative, :email_campaign]),
         'imageable_field'  => ti.imageable_field,
         'remote_image_url' => ti.image_url,
         'text_reference'   => ti.text_reference,
