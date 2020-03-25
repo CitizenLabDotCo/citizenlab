@@ -21,6 +21,7 @@ resource "Map configs" do
         :with_positioning,
         :with_tile_provider,
         :with_layers,
+        :with_legend,
         project: project
       ) }
 
@@ -36,8 +37,8 @@ resource "Map configs" do
         expect(json_response["data"]["attributes"]["layers"][0]["title_multiloc"]).to eq map_config.layers.first.title_multiloc
         expect(json_response["data"]["attributes"]["layers"][0]["geojson"]).to eq map_config.layers.first.geojson
         expect(json_response["data"]["attributes"]["layers"][0]["default_enabled"]).to eq map_config.layers.first.default_enabled
-        expect(json_response["data"]["attributes"]["layers"][0]["legend"][0]["title_multiloc"]).to eq map_config.layers.first.legend_items.first.title_multiloc
-        expect(json_response["data"]["attributes"]["layers"][0]["legend"][0]["color"]).to eq map_config.layers.first.legend_items.first.color
+        expect(json_response["data"]["attributes"]["legend"][0]["title_multiloc"]).to eq map_config.legend_items.first.title_multiloc
+        expect(json_response["data"]["attributes"]["legend"][0]["color"]).to eq map_config.legend_items.first.color
       end
     end
 

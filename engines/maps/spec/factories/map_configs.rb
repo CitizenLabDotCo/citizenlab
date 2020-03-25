@@ -13,7 +13,16 @@ FactoryBot.define do
 
     trait :with_layers do
       after(:create) do |map_config, evaluator|
-        map_config.layers = [create(:layer, :with_legend, map_config: map_config)]
+        map_config.layers = [create(:layer, map_config: map_config)]
+      end
+    end
+
+    trait :with_legend do
+      after(:create) do |map_config, evaluator|
+        map_config.legend_items = [
+          create(:legend_item, map_config: map_config),
+          create(:legend_item, map_config: map_config),
+        ]
       end
     end
   end

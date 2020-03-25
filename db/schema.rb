@@ -469,13 +469,13 @@ ActiveRecord::Schema.define(version: 2020_03_16_142822) do
   end
 
   create_table "maps_legend_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "layer_id", null: false
+    t.uuid "map_config_id", null: false
     t.jsonb "title_multiloc", default: {}, null: false
     t.string "color"
     t.integer "ordering", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["layer_id"], name: "index_maps_legend_items_on_layer_id"
+    t.index ["map_config_id"], name: "index_maps_legend_items_on_map_config_id"
   end
 
   create_table "maps_map_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -929,7 +929,7 @@ ActiveRecord::Schema.define(version: 2020_03_16_142822) do
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
   add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"
-  add_foreign_key "maps_legend_items", "maps_layers", column: "layer_id"
+  add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
