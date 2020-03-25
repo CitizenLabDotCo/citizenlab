@@ -19,7 +19,7 @@ import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resource
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // utils
-import { isNilOrError } from 'utils/helperUtils';
+import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -161,17 +161,17 @@ class SignUp extends PureComponent<Props, State> {
 
   static getDerivedStateFromProps(props: Props, state: State) {
     const { activeStep, error } = state;
-    const { authUser, customFieldsSchema, onSignUpCompleted } = props;
+    const { authUser, customFieldsSchema, onSignUpCompleted, metaData } = props;
     let nextActiveStep = activeStep;
 
-    if (activeStep === undefined && authUser !== undefined && customFieldsSchema !== undefined) {
+    if (activeStep === undefined && !isUndefinedOrError(authUser) && !isUndefinedOrError(customFieldsSchema)) {
       nextActiveStep = null;
       const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
-      console.log('zolg');
-
-      if (!authUser) { // not logged in
-        nextActiveStep = 'password-signup';
+      if (authUser === null) { // not logged in
+        nextActiveStep = 'provider-selection';
+      } else if (!authUser.attributes.verified && metaData.verification) { // logged in but not verified and verification required
+        nextActiveStep = 'verification';
       } else if (hasCustomFields) { // logged in but not yet completed custom fields and custom fields enabled
         nextActiveStep = 'custom-fields';
       } else {
@@ -231,8 +231,6 @@ class SignUp extends PureComponent<Props, State> {
     const { isInvitation, inModal, token, metaData, tenant, className } = this.props;
     const signupHelperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
-    console.log(activeStep);
-
     if (activeStep) {
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
@@ -246,6 +244,21 @@ class SignUp extends PureComponent<Props, State> {
               </>
             ) : (
               <TransitionGroup>
+                {activeStep === 'provider-selection' &&
+                  <CSSTransition
+                    timeout={timeout}
+                    classNames="step"
+                  >
+                    <StepContainer>
+                      <Title>
+                        <FormattedMessage {...isInvitation ? messages.invitationTitle : messages.accountCreationTitle} />
+                      </Title>
+
+                      Provider selection
+                    </StepContainer>
+                  </CSSTransition>
+                }
+
                 {activeStep === 'password-signup' &&
                   <CSSTransition
                     timeout={timeout}

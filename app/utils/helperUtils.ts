@@ -15,6 +15,10 @@ export function isNilOrError(obj: any): obj is undefined | null | Error {
   return (obj === undefined || obj === null || obj instanceof Error);
 }
 
+export function isUndefinedOrError(obj: any): obj is undefined | Error {
+  return (obj === undefined || obj instanceof Error);
+}
+
 export function isEmptyMultiloc(multiloc: Multiloc) {
   let validTranslation = false;
 
