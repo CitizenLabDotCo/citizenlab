@@ -12,10 +12,11 @@ export interface IMapConfigData {
     layers: {
       title_multiloc: Multiloc;
       geojson: GeoJSON.GeoJsonObject;
-      legend: {
-        title_multiloc: Multiloc;
-        color?: string;
-      }[];
+      default_enabled: boolean;
+    }[];
+    legend: {
+      title_multiloc: Multiloc;
+      color?: string;
     }[];
   };
 }
