@@ -13,6 +13,7 @@ export interface IMapConfigData {
       title_multiloc: Multiloc;
       geojson: GeoJSON.GeoJsonObject;
       default_enabled: boolean;
+      marker_svg_url?: string;
     }[];
     legend: {
       title_multiloc: Multiloc;
