@@ -62,7 +62,7 @@ class TextImageService
           .each do |img|
             text_reference = img.attr('data-cl2-text-image-text-reference')
             text_image = prefetched_text_images[text_reference]
-            raise "Text image not found for #{imageable.class}[#{imageable.id}]->#{field}" if !text_image
+            raise "Text image with reference #{text_reference} not found for #{imageable.class}[#{imageable.id}]->#{field}" if !text_image
             img.set_attribute('src', text_image.image.url)
           end
 

@@ -186,7 +186,7 @@ models:
       linked_page_ref: *3
       ordering: 3
   project:
-    - &1
+    - &open_idea_project
       title_multiloc: projects.open_idea_project_title
       description_multiloc: projects.open_idea_project_description
       description_preview_multiloc: projects.open_idea_project_description_preview
@@ -200,27 +200,27 @@ models:
       voting_method: unlimited
       remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
   project_holder_ordering:
-    - project_holder_ref: *1
+    - project_holder_ref: *open_idea_project
   project_image:
     - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
-      project_ref: *1
+      project_ref: *open_idea_project
   event:
-    - project_ref: *1
+    - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title
       description_multiloc: events.council_meeting_description
       start_at: 2019-03-26T18:00:00.1Z
       end_at: 2019-03-26T20:00:00.1Z
-    - project_ref: *1
+    - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title
       description_multiloc: events.council_meeting_description
       start_at: 2019-06-25T17:00:00.1Z
       end_at: 2019-06-25T19:00:00.1Z
-    - project_ref: *1
+    - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title
       description_multiloc: events.council_meeting_description
       start_at: 2019-09-24T17:00:00.1Z
       end_at: 2019-09-24T19:00:00.1Z
-    - project_ref: *1
+    - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title
       description_multiloc: events.council_meeting_description
       start_at: 2019-12-24T18:00:00.1Z
