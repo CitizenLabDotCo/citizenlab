@@ -2,11 +2,12 @@ import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { compact, /* get,*/ isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
-// import { style } from './colors';
+require('leaflet-simplestyle');
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
 import Icon from 'components/UI/Icon';
+import Legend from './Legend';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -21,7 +22,11 @@ import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import { darken, lighten } from 'polished';
 import { colors, media } from 'utils/styleUtils';
-import markerIcon from './marker.svg';
+import ideaMarkerIcon from './idea-marker.svg';
+import legendMarkerIcon from './legend-marker.svg';
+
+// localize
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
   width: 100%;
@@ -90,40 +95,6 @@ const CloseButton = styled.div`
   `}
 `;
 
-const LegendContainer = styled.div`
-  background-color: white;
-  padding: 30px;
-`;
-
-const Title = styled.h4`
-  margin-bottom 15px;
-`;
-
-const Legend = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const Item = styled.li`
-  display: flex;
-  flex: 1 0 calc(50% - 10px);
-  margin-right: 10px;
-
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
-`;
-
-const ColorLabel = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: ${props => props.color};
-  margin-right: 10px;
-`;
-
 const LeafletMapContainer = styled.div<{mapHeight: number}>`
   flex: 1;
   height: ${props => props.mapHeight}px;
@@ -148,8 +119,14 @@ const LeafletMapContainer = styled.div<{mapHeight: number}>`
   }
 `;
 
-const customIcon = Leaflet.icon({
-  iconUrl: markerIcon,
+const ideaMarker = Leaflet.icon({
+  iconUrl: ideaMarkerIcon,
+  iconSize: [29, 41],
+  iconAnchor: [14, 41],
+});
+
+const fallbackLegendMarker = Leaflet.icon({
+  iconUrl: legendMarkerIcon,
   iconSize: [29, 41],
   iconAnchor: [14, 41],
 });
@@ -184,14 +161,13 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
-  showLegend: boolean;
 }
 
-class CLMap extends React.PureComponent<Props, State> {
+class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   private map: Leaflet.Map;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markers: Leaflet.Marker[];
-  private markerOptions = { icon: customIcon };
+  private markerOptions = { icon: ideaMarker };
   private clusterOptions = {
     showCoverageOnHover: false,
     spiderfyDistanceMultiplier: 2,
@@ -208,7 +184,6 @@ class CLMap extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       initiated: false,
-      showLegend: false,
     };
   }
 
@@ -225,7 +200,7 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   bindMapContainer = (element: HTMLDivElement | null) => {
-    const { tenant, mapConfig, center } = this.props;
+    const { tenant, mapConfig, center, localize } = this.props;
 
     function getZoom() {
       if (
@@ -257,7 +232,7 @@ class CLMap extends React.PureComponent<Props, State> {
       ) {
         return tenant.attributes.settings.maps.tile_provider;
       } else {
-        return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
       }
     }
 
@@ -288,40 +263,79 @@ class CLMap extends React.PureComponent<Props, State> {
       return initCenter;
     }
 
+    function formatLayers() {
+      /*
+      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
+      This is how it keeps the toggles in sync.
+      Because we need two different arrays of Leaflet geoJSON overlays,
+      one for the layers that need to be enabled by default,
+      and one for creating the overlay maps,
+      we need to reformat the data we get from the back-end, so we can do filter
+      operations (that require the default_enabled value)
+      + create overlay maps (that require the geoJson title)
+      */
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.layers.length > 0
+      ) {
+        const layers = mapConfig.attributes.layers.map((layer) => {
+          const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
+          const geoJsonOptions = {
+            useSimpleStyle: true,
+            pointToLayer: (_feature, latlng) => {
+              return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
+            }
+          };
+
+          return {
+            title_multiloc: layer.title_multiloc,
+            leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
+            enabledByDefault: layer.default_enabled,
+          };
+        });
+
+        return layers;
+      }
+
+      return [];
+    }
+
+    function getOverlayMaps(layers) {
+      const overlayMaps = {};
+
+      layers.forEach(((layer) => {
+        overlayMaps[localize(layer.title_multiloc)] = layer.leafletGeoJson;
+      }));
+
+      return overlayMaps;
+    }
+
     if (element && !this.map) {
+      // Init the map
       const zoom = getZoom();
       const tileProvider = getTileProvider();
       const initCenter = getInitCenter();
-
+      const layers = formatLayers();
+      const overlaysEnabledByDefault = layers
+        .filter(layer => layer.enabledByDefault === true)
+        .map(layer => layer.leafletGeoJson);
       const baseLayer = Leaflet.tileLayer(tileProvider, {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         subdomains: ['a', 'b', 'c']
       });
 
-      // const geoJsonLayer = Leaflet.geoJSON(seattleJson, { style });
-
-      // Init the map
       this.map = Leaflet.map(element, {
         zoom,
         center: initCenter,
         maxZoom: 17,
-        layers: [baseLayer/*, geoJsonLayer*/]
+        layers: [baseLayer, ...overlaysEnabledByDefault]
       });
 
-      // const overlayMaps = {
-      //   Disadvantage: geoJsonLayer
-      // };
+      // Add layers
+      const overlayMaps = getOverlayMaps(layers);
+      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
-      // Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
-
-      this.map.on('overlayadd', () => {
-        this.setState({ showLegend: true });
-      });
-
-      this.map.on('overlayremove', () => {
-        this.setState({ showLegend: false });
-      });
-
+      // Handlers
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
       }
@@ -401,33 +415,9 @@ class CLMap extends React.PureComponent<Props, State> {
       boxContent,
       className,
       mapHeight,
-      mapConfig
+      mapConfig,
+      projectId
     } = this.props;
-    const { showLegend } = this.state;
-
-    const legendTitle = 'Racial and Social Equity Composite Index';
-    const legendValues = [
-      {
-        label: 'Lowest Disadvantage',
-        color: '#92ABB9'
-      },
-      {
-        label: 'Second Lowest Disadvantage',
-        color: '#ADD0CA'
-      },
-      {
-        label: 'Middle Disadvantage',
-        color: '#F9F9CD'
-      },
-      {
-        label: 'Second Highest Disadvantage',
-        color: '#CEA991'
-      },
-      {
-        label: 'Highest Disadvantage',
-        color: '#B495A4'
-      },
-    ];
 
     if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
       return (
@@ -451,20 +441,10 @@ class CLMap extends React.PureComponent<Props, State> {
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
             </LeafletMapContainer>
           </MapContainer>
-          {showLegend &&
-            <LegendContainer>
-              <Title>
-                {legendTitle}
-              </Title>
-              <Legend>
-                {legendValues.map((value, index) => (
-                  <Item key={`legend-item-${index}`}>
-                    <ColorLabel color={value.color} />
-                    {value.label}
-                  </Item>)
-                )}
-              </Legend>
-            </LegendContainer>
+          {projectId &&
+            <Legend
+              projectId={projectId}
+            />
           }
         </Container>
 
@@ -482,13 +462,10 @@ const Data = adopt<DataProps, InputProps>({
   ) : null,
 });
 
+const CLMapWithHOCs = injectLocalize(CLMap);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CLMap {...inputProps} {...dataProps} />}
+    {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
-
-// TODO: clean up code
-// TODO: extract Legend component
-// TODO: console error landing page
-// TODO: listen to different layers
