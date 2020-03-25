@@ -53,11 +53,12 @@ const Legend = memo(({ projectId }: Props) => {
         <LegendContainer>
           <LegendItems>
             {legend.map((legendItem, index) => {
-              const color: string | undefined = legendItem.color;
+              const color = legendItem.color;
               const label = localize(legendItem.title_multiloc);
+
               return (
                 <Item key={`legend-item-${index}`}>
-                  {color && <ColorLabel color={color} />}
+                  <ColorLabel color={color} />
                   {label}
                 </Item>
               );

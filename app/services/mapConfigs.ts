@@ -16,7 +16,7 @@ export interface IMapConfigData {
     }[];
     legend: {
       title_multiloc: Multiloc;
-      color?: string;
+      color: string;
     }[];
   };
 }
