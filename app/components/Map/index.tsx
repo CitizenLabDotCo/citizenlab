@@ -460,8 +460,5 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: legend => always show when there's a legend
-// TODO: show markers layer
 // TODO: add comments
 // TODO: uncomment getTileProvider
-// TODO: initiatives have no legends (no mapconfig)?
