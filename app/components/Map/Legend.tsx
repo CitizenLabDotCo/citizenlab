@@ -1,15 +1,12 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
-import { IMapConfigData } from 'services/mapConfigs';
 import useLocalize from 'hooks/useLocalize';
+import useMapConfig from 'hooks/useMapConfig';
+import { isNilOrError } from 'utils/helperUtils';
 
 const LegendContainer = styled.div`
   background-color: white;
   padding: 30px;
-`;
-
-const Title = styled.h4`
-  margin-bottom 15px;
 `;
 
 const LegendItems = styled.ul`
@@ -38,38 +35,32 @@ const ColorLabel = styled.div`
 `;
 
 interface Props {
-  currentLayerTitle: string;
-  mapConfig: IMapConfigData;
+  projectId: string;
 }
 
-const Legend = memo(({ currentLayerTitle, mapConfig }: Props) => {
-  const localize = useLocalize();
-  const currentLayer = mapConfig.attributes.layers.find(layer => localize(layer.title_multiloc) === currentLayerTitle);
+const Legend = memo(({ projectId }: Props) => {
+    const mapConfig = useMapConfig({ projectId });
+    const legend = !isNilOrError(mapConfig) && mapConfig.attributes.legend;
+    const localize = useLocalize();
 
-  if (currentLayer) {
-    const legend = currentLayer.legend;
-    const legendTitle = localize(currentLayer.title_multiloc);
-
-    return (
-      <LegendContainer>
-      <Title>
-        {legendTitle}
-      </Title>
-      <LegendItems>
-        {legend.map((legendItem, index) => {
-          const color: string | undefined = legendItem.color;
-          const label = localize(legendItem.title_multiloc);
-          return (
-            <Item key={`legend-item-${index}`}>
-              {color && <ColorLabel color={color} />}
-              {label}
-            </Item>
-          );
-        })}
-      </LegendItems>
-    </LegendContainer>
-    );
-  }
+    if (legend) {
+      return (
+        <LegendContainer>
+          <LegendItems>
+            {legend.map((legendItem, index) => {
+              const color: string | undefined = legendItem.color;
+              const label = localize(legendItem.title_multiloc);
+              return (
+                <Item key={`legend-item-${index}`}>
+                  {color && <ColorLabel color={color} />}
+                  {label}
+                </Item>
+              );
+            })}
+          </LegendItems>
+        </LegendContainer>
+      );
+    }
 
   return null;
 });
