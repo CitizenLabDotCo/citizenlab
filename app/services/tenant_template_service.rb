@@ -1027,19 +1027,6 @@ class TenantTemplateService
     end
   end
 
-  def yml_text_images
-    TextImage.all.map do |ti|
-      {
-        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :initiaitve, :email_campaign]),
-        'imageable_field'  => ti.imageable_field,
-        'remote_image_url' => ti.image.url,
-        'text_reference'   => ti.text_reference,
-        'created_at'       => ti.created_at.to_s,
-        'updated_at'       => ti.updated_at.to_s
-      }
-    end
-  end
-
   def yml_volunteering_causes
     Volunteering::Cause.all.map do |c|
       yml_cause = {
@@ -1066,6 +1053,19 @@ class TenantTemplateService
       }
       store_ref yml_volunteer, v.id, :volunteering_volunteer
       yml_volunteer
+    end
+  end
+
+  def yml_text_images
+    TextImage.all.map do |ti|
+      {
+        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :event, :initiaitve, :email_campaign]),
+        'imageable_field'  => ti.imageable_field,
+        'remote_image_url' => ti.image_url,
+        'text_reference'   => ti.text_reference,
+        'created_at'       => ti.created_at.to_s,
+        'updated_at'       => ti.updated_at.to_s
+      }
     end
   end
 end
