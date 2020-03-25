@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import useLocalize from 'hooks/useLocalize';
 import useMapConfig from 'hooks/useMapConfig';
 import { isNilOrError } from 'utils/helperUtils';
+import { media } from 'utils/styleUtils';
 
 const LegendContainer = styled.div`
   background-color: white;
@@ -25,6 +26,10 @@ const Item = styled.li`
   &:not(:last-child) {
     margin-bottom: 10px;
   }
+
+  ${media.smallerThanMinTablet`
+    flex: 1 0 calc(100% - 10px);
+  `}
 `;
 
 const ColorLabel = styled.div`
