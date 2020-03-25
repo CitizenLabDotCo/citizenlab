@@ -1056,7 +1056,7 @@ class TenantTemplateService
   def yml_maps_legend_items
     Maps::LegendItem.all.map do |legend_item|
       {
-        'layer_ref'      => lookup_ref(legend_item.layer_id, :maps_layer),
+        'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
         'title_multiloc' => legend_item.title_multiloc,
         'color'          => legend_item.color,
         'created_at'     => legend_item.created_at.to_s,

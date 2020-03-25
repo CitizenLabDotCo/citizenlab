@@ -14687,43 +14687,43 @@ models:
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
   maps/legend_item:
-  - layer_ref: *layer1
+  - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Laeken
     color: "#3b7d6c"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  - layer_ref: *layer1
+  - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Neder-Over-Heembeek
     color: "#2816b8"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  - layer_ref: *layer1
+  - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Nord
     color: "#df2397"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  - layer_ref: *layer1
+  - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Louise
     color: "#06149e"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  - layer_ref: *layer1
+  - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Haren
     color: "#e90303"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  - layer_ref: *layer1
+  - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Nord-Est
     color: "#54b1e4"
     created_at: 2020-03-18 13:32:07 UTC
     updated_at: 2020-03-18 13:32:07 UTC
-  - layer_ref: *layer1
+  - map_config_ref: *map_config1
     title_multiloc:
       fr-BE: Pentagone
     color: "#249e0c"

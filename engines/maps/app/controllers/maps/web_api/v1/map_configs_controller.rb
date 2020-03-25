@@ -5,7 +5,7 @@ module Maps
 
         def show
           @map_config = MapConfig
-            .includes(layers: [:legend_items])
+            .includes(:layers, :legend_items)
             .find_by!(project_id: params[:project_id])
 
           authorize(@map_config.project, :show?)

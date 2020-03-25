@@ -799,13 +799,13 @@ if Apartment::Tenant.current == 'localhost'
     default_enabled: true
   )
   Maps::LegendItem.create!([
-    {layer: layer1, title_multiloc: {'fr-BE': 'Laeken'}, color: '#3b7d6c'},
-    {layer: layer1, title_multiloc: {'fr-BE': 'Neder-Over-Heembeek'}, color: '#2816b8'},
-    {layer: layer1, title_multiloc: {'fr-BE': 'Nord'}, color: '#df2397'},
-    {layer: layer1, title_multiloc: {'fr-BE': 'Louise'}, color: '#06149e'},
-    {layer: layer1, title_multiloc: {'fr-BE': 'Haren'}, color: '#e90303'},
-    {layer: layer1, title_multiloc: {'fr-BE': 'Nord-Est'}, color: '#54b1e4'},
-    {layer: layer1, title_multiloc: {'fr-BE': 'Pentagone'}, color: '#249e0c'},
+    {map_config: map_config, title_multiloc: {'fr-BE': 'Laeken'}, color: '#3b7d6c'},
+    {map_config: map_config, title_multiloc: {'fr-BE': 'Neder-Over-Heembeek'}, color: '#2816b8'},
+    {map_config: map_config, title_multiloc: {'fr-BE': 'Nord'}, color: '#df2397'},
+    {map_config: map_config, title_multiloc: {'fr-BE': 'Louise'}, color: '#06149e'},
+    {map_config: map_config, title_multiloc: {'fr-BE': 'Haren'}, color: '#e90303'},
+    {map_config: map_config, title_multiloc: {'fr-BE': 'Nord-Est'}, color: '#54b1e4'},
+    {map_config: map_config, title_multiloc: {'fr-BE': 'Pentagone'}, color: '#249e0c'},
   ])
 
   layer2 = Maps::Layer.create!(
