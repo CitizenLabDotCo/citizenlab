@@ -180,27 +180,16 @@ const Footer = styled.div`
 `;
 
 const FiltersArea = styled.div`
-display: flex;
-flex-direction: row;
-align-items: center;
-
-&.fullWidth {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
 
   ${media.smallerThanMinTablet`
-    justify-content: flex-start;
-    `};
-  }
-
-  &.alignRight {
-    justify-content: flex-end;
-
-    ${media.smallerThanMinTablet`
-      display: none;
-      `};
-    }
-    `;
+    display: none;
+  `};
+`;
 
 const FilterArea = styled.div`
     height: 60px;
@@ -381,7 +370,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                   }
                 </ScreenReaderOnly>
               )}
-            <FiltersArea className={showTitle ? 'alignRight' : 'fullWidth'}>
+            <FiltersArea>
               <FilterArea>
                 <SelectAreas selectedAreas={areas} onChange={this.handleAreasOnChange} />
               </FilterArea>
