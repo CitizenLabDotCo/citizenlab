@@ -261,6 +261,16 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     function formatLayers() {
+      /*
+      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
+      This is how it keeps the toggles in sync.
+      Because we need two different arrays of Leaflet geoJSON overlays,
+      one for the layers that need to be enabled by default,
+      and one for creating the overlay maps,
+      we need to reformat the data we get from the back-end, so we can do filter
+      operations (that require the default_enabled value)
+      + create overlay maps (that require the geoJson title)
+      */
       const geoJsonOptions = {
         useSimpleStyle: true,
         pointToLayer: (_feature, latlng) => {
@@ -455,5 +465,5 @@ export default (inputProps: InputProps) => (
   </Data>
 );
 
-// TODO: add comments
+// TODO: custom icon for markers
 // TODO: uncomment getTileProvider
