@@ -215,22 +215,20 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     function getTileProvider() {
-      return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
-
-      // if (
-      //   !isNilOrError(mapConfig) &&
-      //   mapConfig.attributes.tile_provider
-      // ) {
-      //   return mapConfig.attributes.tile_provider;
-      // } else if (
-      //   !isNilOrError(tenant) &&
-      //   tenant.attributes &&
-      //   tenant.attributes.settings.maps
-      // ) {
-      //   return tenant.attributes.settings.maps.tile_provider;
-      // } else {
-      //   return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
-      // }
+      if (
+        !isNilOrError(mapConfig) &&
+        mapConfig.attributes.tile_provider
+      ) {
+        return mapConfig.attributes.tile_provider;
+      } else if (
+        !isNilOrError(tenant) &&
+        tenant.attributes &&
+        tenant.attributes.settings.maps
+      ) {
+        return tenant.attributes.settings.maps.tile_provider;
+      } else {
+        return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
+      }
     }
 
     function getInitCenter() {
@@ -466,4 +464,3 @@ export default (inputProps: InputProps) => (
 );
 
 // TODO: custom icon for markers
-// TODO: uncomment getTileProvider
