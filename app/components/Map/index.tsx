@@ -156,7 +156,6 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
-  showLegend: boolean;
   currentLayerTitle: string | null;
 }
 
@@ -181,7 +180,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     super(props);
     this.state = {
       initiated: false,
-      showLegend: false,
       currentLayerTitle: null,
     };
   }
@@ -322,14 +320,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
       // Handlers
-      this.map.on('overlayadd', (event: Leaflet.LayersControlEvent) => {
-        this.setState({ showLegend: true, currentLayerTitle: event.name });
-      });
-
-      this.map.on('overlayremove', () => {
-        this.setState({ showLegend: false, currentLayerTitle: null });
-      });
-
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
       }
@@ -410,11 +400,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       className,
       mapHeight,
       mapConfig,
+      projectId
     } = this.props;
-    const {
-      showLegend,
-      currentLayerTitle
-    } = this.state;
 
     if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
       return (
@@ -438,10 +425,9 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
             </LeafletMapContainer>
           </MapContainer>
-          {showLegend && currentLayerTitle &&
+          {projectId &&
             <Legend
-              currentLayerTitle={currentLayerTitle}
-              mapConfig={mapConfig}
+              projectId={projectId}
             />
           }
         </Container>
