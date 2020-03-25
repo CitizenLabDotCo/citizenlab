@@ -263,6 +263,12 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     function formatLayers() {
+      const geoJsonOptions = {
+        useSimpleStyle: true,
+        pointToLayer: (_feature, latlng) => {
+          return Leaflet.marker(latlng, { icon: customIcon });
+        }
+      };
       if (
         !isNilOrError(mapConfig) &&
         mapConfig.attributes.layers.length > 0
@@ -270,7 +276,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         const layers = mapConfig.attributes.layers.map((layer, i) => {
           return {
             title_multiloc: layer.title_multiloc,
-            leafletGeoJson: Leaflet.geoJSON(layer.geojson, { useSimpleStyle: true } as any),
+            leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
             // enabledByDefault: layer.default_enabled,
             enabledByDefault: i % 2 === 0,
           };
