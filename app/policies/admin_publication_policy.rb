@@ -18,7 +18,12 @@ class AdminPublicationPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.active? && user.admin?
+    case record.publication.class.name
+    when 'Project'
+      ProjectPolicy.new(user, record.publication).show?
+    when 'ProjectFolder'
+      ProjectFolderPolicy.new(user, record.publication).show?
+    end
   end
 
   def permitted_attributes_for_reorder
