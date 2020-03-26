@@ -1,13 +1,16 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-// import Sharing from 'components/Sharing';
+import ImageZoom from 'react-medium-image-zoom';
+import Sharing from 'components/Sharing';
+import FileAttachments from 'components/UI/FileAttachments';
 
-// resources
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+// services
+import useProjectFolder from 'hooks/useProjectFolder';
+import useAuthUser from 'hooks/useAuthUser';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
 
 // i18n
 import T from 'components/T';
@@ -17,7 +20,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media } from 'utils/styleUtils';
+import { media, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
@@ -62,30 +65,53 @@ const Description = styled.div`
   `}
 `;
 
+const ProjectFolderImages = styled.div`
+  align-items: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -5px;
+  margin-top: -5px;
+  margin-bottom: 30px;
+  width: calc(100% + 10px);
+
+  img {
+    margin: 5px;
+    border-radius: ${(props: any) => props.theme.borderRadius};
+    border: solid 1px ${colors.separation};
+
+    &:first-child {
+      width: calc(100% - 10px);
+    }
+
+    &:not(:first-child) {
+      width: calc(33% - 9px);
+    }
+  }
+`;
+
 interface InputProps {
   projectFolderId: string;
 }
 
-interface DataProps {
-  projectFolder: GetProjectFolderChildProps;
-  authUser: GetAuthUserChildProps;
-}
-
-interface Props extends InputProps, DataProps {
+interface Props extends InputProps {
   theme: any;
 }
 
-const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
-  const { projectFolder, theme, /* intl: { formatMessage }, authUser */  } = props;
-  // const folderUrl = location.href;
-  // const utmParams = authUser ? {
-  //   source:'share_folder',
-  //   campaign:'share_content',
-  //   content: authUser.id
-  // } : {
-  //   source:'share_folder',
-  //   campaign:'share_content'
-  // };
+const ProjectFolderInfo = ({ projectFolderId, theme, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+  const projectFolder = useProjectFolder({ projectFolderId });
+  const projectFolderImages = useProjectFolderImages(projectFolderId);
+  const projectFolderFiles = useProjectFolderFiles(projectFolderId);
+  const authUser = useAuthUser();
+
+  const folderUrl = location.href;
+  const utmParams = !isNilOrError(authUser) ? {
+    source: 'share_folder',
+    campaign: 'share_content',
+    content: authUser.data.id
+  } : {
+      source: 'share_folder',
+      campaign: 'share_content'
+    };
 
   if (!isNilOrError(projectFolder)) {
     return (
@@ -95,25 +121,45 @@ const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
         </ScreenReaderOnly>
         <Left>
           <Description>
-            <QuillEditedContent textColor={theme.colorText}>
-              <T value={projectFolder.attributes.description_multiloc} supportHtml={true}/>
+            <QuillEditedContent textColor={theme.colorText} className="e2e-folder-description">
+              <T value={projectFolder.attributes.description_multiloc} supportHtml={true} />
             </QuillEditedContent>
           </Description>
+          {!isNilOrError(projectFolderFiles) && projectFolderFiles && projectFolderFiles.data.length > 0 &&
+            <FileAttachments files={projectFolderFiles.data} />
+          }
         </Left>
 
         <Right>
-          {/* <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
+          {!isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0 &&
+            <ProjectFolderImages className="e2e-projectFolder-images">
+              {projectFolderImages.data.filter(projectFolderImage => projectFolderImage).map((projectFolderImage) => (
+                <ImageZoom
+                  key={projectFolderImage.id}
+                  image={{
+                    src: projectFolderImage.attributes.versions.large,
+                    alt: ''
+                  }}
+                  zoomImage={{
+                    src: projectFolderImage.attributes.versions.large,
+                    alt: ''
+                  }}
+                />
+              ))}
+            </ProjectFolderImages>
+          }
+          <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
             {(title) => {
               return (
                 <Sharing
-                  context="project"
+                  context="folder"
                   url={folderUrl}
                   titleLevel="h2"
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   utmParams={utmParams}
                 />);
             }}
-          </T> */}
+          </T>
         </Right>
       </Container>
     );
@@ -122,26 +168,4 @@ const ProjectFolderInfo = (props: Props & InjectedIntlProps) => {
   return null;
 };
 
-const ProjectFolderInfoWhithHoc = withTheme(injectIntl<Props>(ProjectFolderInfo));
-
-const Data = adopt<DataProps, InputProps>({
-  projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
-  authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => {
-      if (!isNilOrError(dataProps.projectFolder)) {
-        return (
-          <ProjectFolderInfoWhithHoc
-            {...inputProps}
-            {...dataProps}
-          />
-        );
-      }
-
-      return null;
-    }}
-  </Data>
-);
+export default withTheme(injectIntl<Props>(ProjectFolderInfo));

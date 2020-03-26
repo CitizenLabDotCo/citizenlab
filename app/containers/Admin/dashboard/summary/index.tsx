@@ -59,9 +59,9 @@ interface State {
   resolution: IResolution;
   startAtMoment?: Moment | null | undefined;
   endAtMoment: Moment | null;
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
-  currentTopicFilter: string | null;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
   currentResourceByTopic: IResource;
   currentResourceByProject: IResource;
   projectFilterOptions: IOption[];
@@ -92,10 +92,10 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       startAtMoment: undefined,
       endAtMoment: moment(),
       currentProjectFilter: onlyModerator
-        ? (projectsList && projectsList.length > 0 ? projectsList[0].id : null)
-        : null,
-      currentGroupFilter: null,
-      currentTopicFilter: null,
+        ? (projectsList && projectsList.length > 0 ? projectsList[0].id : undefined)
+        : undefined,
+      currentGroupFilter: undefined,
+      currentTopicFilter: undefined,
       currentResourceByTopic: 'ideas',
       currentResourceByProject: 'ideas',
       projectFilterOptions: this.generateProjectOptions(),
@@ -116,7 +116,7 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     if (projectsList !== prevProps.projects.projectsList) {
       this.setState({ projectFilterOptions: this.generateProjectOptions() });
       if (onlyModerator && this.state.currentProjectFilter === null) {
-        this.setState({ currentProjectFilter: (projectsList && projectsList.length > 0 ? projectsList[0].id : null) });
+        this.setState({ currentProjectFilter: (projectsList && projectsList.length > 0 ? projectsList[0].id : undefined) });
       }
     }
 

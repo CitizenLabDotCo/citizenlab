@@ -8,17 +8,17 @@ import { stringify } from 'qs';
 // components
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
-import SelectAreas from 'components/ProjectCards/SelectAreas';
+import SelectAreas from './SelectAreas';
 import Spinner from 'components/UI/Spinner';
 import Button from 'components/UI/Button';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
+import GetAdminPublications, { GetAdminPublicationsChildProps } from 'resources/GetAdminPublications';
 
 // services
-import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
+import { IAdminPublicationContent, InputProps as UseAdminPublicationInputProps } from 'hooks/useAdminPublications';
 
 // routing
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
@@ -218,15 +218,15 @@ const FilterArea = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
-interface InputProps {
+interface InputProps extends UseAdminPublicationInputProps {
   showTitle: boolean;
-  layout: 'dynamic' | 'threecolumns';
+  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
 }
 
 interface DataProps {
   tenant: GetTenantChildProps;
   windowSize: GetWindowSizeChildProps;
-  projectHolderOrderings: GetProjectHolderOrderingsChildProps;
+  adminPublications: GetAdminPublicationsChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -262,28 +262,28 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
       this.setState({ areas });
     }
 
-    const { projectHolderOrderings } = this.props;
-    if (!isEqual(prevState.areas, this.state.areas) && !isNilOrError(projectHolderOrderings)) {
-      projectHolderOrderings.onChangeAreas(this.state.areas);
+    const { adminPublications } = this.props;
+    if (!isEqual(prevState.areas, this.state.areas) && !isNilOrError(adminPublications)) {
+      adminPublications.onChangeAreas(this.state.areas);
     }
   }
 
   calculateCardsLayout = () => {
-    const { projectHolderOrderings, windowSize, layout } = this.props;
+    const { adminPublications, windowSize, layout } = this.props;
 
     if (
-      !isNilOrError(projectHolderOrderings) &&
-      projectHolderOrderings.list &&
-      projectHolderOrderings.list.length > 0 &&
+      !isNilOrError(adminPublications) &&
+      adminPublications.list &&
+      adminPublications.list.length > 0 &&
       windowSize &&
       layout === 'dynamic'
     ) {
-      const initialCount = size(projectHolderOrderings.list.slice(0, 6));
+      const initialCount = size(adminPublications.list.slice(0, 6));
       const isOdd = (number: number) => number % 2 === 1;
       const biggerThanSmallTablet = (windowSize >= viewportWidths.smallTablet);
       const biggerThanLargeTablet = (windowSize >= viewportWidths.largeTablet);
 
-      const cardSizes = projectHolderOrderings.list.map((_project, index) => {
+      const cardSizes = adminPublications.list.map((_project, index) => {
         let cardSize: 'small' | 'medium' | 'large' = (biggerThanSmallTablet && !biggerThanLargeTablet ? 'medium' : 'small');
 
         if (index < 6) {
@@ -340,12 +340,12 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
 
   showMore = () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    this.props.projectHolderOrderings.onLoadMore();
+    this.props.adminPublications.onLoadMore();
   }
 
   handleAreasOnChange = (areas: string[]) => {
     if (!isEqual(this.state.areas, areas)) {
-      // TODO trackEventByName(tracks.clickOnProjectsAreaFilter);
+      trackEventByName(tracks.clickOnProjectsAreaFilter);
       const { pathname } = removeLocale(this.props.location.pathname);
       const query = { ...this.props.location.query, areas };
       const search = `?${stringify(query, { indices: false, encode: false })}`;
@@ -355,9 +355,9 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
 
   render() {
     const { cardSizes, areas } = this.state;
-    const { tenant, showTitle, layout, theme, projectHolderOrderings } = this.props;
-    const { loadingInitial, loadingMore, hasMore } = projectHolderOrderings;
-    const hasProjects = !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0;
+    const { tenant, showTitle, layout, theme, adminPublications } = this.props;
+    const { loadingInitial, loadingMore, hasMore, list } = adminPublications;
+    const hasPublications = list && list.length > 0;
     const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
 
     if (!isNilOrError(tenant)) {
@@ -394,7 +394,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             </Loading>
           }
 
-          {!loadingInitial && !hasProjects &&
+          {!loadingInitial && !hasPublications &&
             <EmptyContainer id="projects-empty">
               <EmptyProjectsImage src={EmptyProjectsImageSrc} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />
               <EmptyMessage>
@@ -408,12 +408,12 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             </EmptyContainer>
           }
 
-          {!loadingInitial && !isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 && (
+          {!loadingInitial && hasPublications && list && (
             <ProjectsList id="e2e-projects-list">
-              {projectHolderOrderings.list.map((item: IProjectHolderOrderingContent, index: number) => {
-                const projectOrFolderId = item.projectHolder.id;
-                const projectOrFolderType = item.projectHolderType;
-                const size = (layout === 'dynamic' ? cardSizes[index] : 'small');
+              {list.map((item: IAdminPublicationContent, index: number) => {
+                const projectOrFolderId = item.publicationId;
+                const projectOrFolderType = item.publicationType;
+                const size = (layout === 'dynamic' ? cardSizes[index] : layout === 'threecolumns' ? 'small' : 'medium');
 
                 return (
                   <React.Fragment key={index}>
@@ -424,12 +424,12 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                         layout={layout}
                       />
                     ) : (
-                      <ProjectFolderCard
-                        projectFolderId={projectOrFolderId}
-                        size={size}
-                        layout={layout}
-                      />
-                    )}
+                        <ProjectFolderCard
+                          publication={item}
+                          size={size}
+                          layout={layout}
+                        />
+                      )}
                   </React.Fragment>
                 );
               }
@@ -441,11 +441,11 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
               // the total amount of projects is not divisible by 3 and therefore doesn't take up the full row width.
               // Ideally would have been solved with CSS grid, but... IE11
               */}
-              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.list.length > 6) && (projectHolderOrderings.list.length + 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || list.length > 6) && (list.length + 1) % 3 === 0 &&
                 <MockProjectCard className={layout} />
               }
 
-              {!hasMore && (layout === 'threecolumns' || projectHolderOrderings.list.length > 6) && (projectHolderOrderings.list.length - 1) % 3 === 0 &&
+              {!hasMore && (layout === 'threecolumns' || list.length > 6) && (list.length - 1) % 3 === 0 &&
                 <>
                   <MockProjectCard className={layout} />
                   <MockProjectCard className={layout} />
@@ -455,7 +455,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
           )}
 
           <Footer>
-            {!loadingInitial && hasProjects && hasMore &&
+            {!loadingInitial && hasPublications && hasMore &&
               <ShowMoreButton
                 onClick={this.showMore}
                 size="1"
@@ -486,10 +486,8 @@ const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(Pro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published']} pageSize={6} noEmptyFolder />
+  adminPublications: ({ render, ...props }) => <GetAdminPublications publicationStatusFilter={['published', 'archived']} pageSize={6} noEmptyFolder prefetchProjects {...props}>{render}</GetAdminPublications>
 });
-
-// TODO: tracks
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

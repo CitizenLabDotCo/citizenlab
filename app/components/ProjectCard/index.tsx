@@ -433,7 +433,7 @@ const MetaItemText = styled.div`
 export interface InputProps {
   projectId: string;
   size: 'small' | 'medium' | 'large';
-  layout?: 'dynamic' | 'threecolumns';
+  layout?: 'dynamic' | 'threecolumns' | 'twocolumns';
   className?: string;
 }
 
@@ -589,7 +589,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container
-          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-project-card`}
+          className={`${className} ${layout} ${size} ${isArchived ? 'archived' : ''} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-project-card e2e-admin-publication-card`}
           to={projectUrl}
           onClick={this.handleProjectCardOnClick(project.id)}
         >
