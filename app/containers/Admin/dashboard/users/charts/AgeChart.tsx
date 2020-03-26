@@ -20,7 +20,7 @@ import { isNilOrError } from 'utils/helperUtils';
 interface Props {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentGroupFilter: string | null;
+  currentGroupFilter: string | undefined;
   className?: string;
 }
 

@@ -299,9 +299,6 @@ const SiteMap = ({ projects, tenant, authUser }: Props) => {
 
               <ProjectsSection
                 projectsSectionRef={projectsSection}
-                currentSectionRef={currentSection}
-                archivedSectionRef={archivedSection}
-                draftSectionRef={draftSection}
               />
               <FeatureFlag name="initiatives">
                 <H2 ref={initiativesSection} tabIndex={-1}>
