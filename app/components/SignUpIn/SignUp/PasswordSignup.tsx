@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { set, keys, difference, get } from 'lodash-es';
+import { set, keys, difference, get, isEmpty } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
 // libraries
@@ -26,6 +26,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import T from 'components/T';
 import messages from './messages';
 
 // style
@@ -35,6 +36,17 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
+import { ISignUpInMetaData } from 'components/SignUpIn';
+
+const Container = styled.div``;
+
+const SignUpHelperText = styled.p`
+  color: ${(props) => props.theme.colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: 20px;
+  padding-bottom: 20px;
+`;
 
 const Form = styled.form`
   width: 100%;
@@ -83,10 +95,12 @@ const TermsAndConditionsWrapper = styled.div`
 const GoToSignInButton = styled(Button)``;
 
 type InputProps = {
+  metaData: ISignUpInMetaData;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   onCompleted: (userId: string) => void;
   onGoToSignIn: () => void;
+  className?: string;
 };
 
 interface DataProps {
@@ -120,7 +134,7 @@ type State = {
   emailInvitationTokenInvalid: boolean;
 };
 
-class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
+class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   firstNameInputElement: HTMLInputElement | null;
 
   constructor(props: Props & InjectedIntlProps) {
@@ -272,7 +286,7 @@ class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { isInvitation, tenant } = this.props;
+    const { isInvitation, tenant, className } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       token,
@@ -291,6 +305,7 @@ class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
     } = this.state;
     const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp));
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
 
     let unknownApiError: string | null = null;
 
@@ -308,7 +323,13 @@ class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     return (
-      <>
+      <Container className={className}>
+        {!isEmpty(helperText) &&
+          <SignUpHelperText>
+            <T value={helperText} supportHtml />
+          </SignUpHelperText>
+        }
+
         {!emailInvitationTokenInvalid ?
           <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
             {isInvitation && !this.props.token &&
@@ -475,7 +496,7 @@ class AccountCreation extends PureComponent<Props & InjectedIntlProps, State> {
             />}
           />
         }
-      </>
+      </Container>
     );
   }
 }
@@ -486,10 +507,10 @@ const Data = adopt<DataProps, InputProps>({
   invitedUser: ({ token, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>
 });
 
-const AccountCreationWithHoC = injectIntl<Props>(AccountCreation);
+const PasswordSignupWithHoC = injectIntl<Props>(PasswordSignup);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <AccountCreationWithHoC {...inputProps} {...dataprops} />}
+    {dataprops => <PasswordSignupWithHoC {...inputProps} {...dataprops} />}
   </Data>
 );

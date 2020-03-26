@@ -146,9 +146,8 @@ class SocialSignUp extends PureComponent<Props & InjectedIntlProps> {
 
       return (
         <>
-          {passwordLoginEnabled &&
-            <Separator />
-          }
+          {passwordLoginEnabled && <Separator />}
+
           <Container>
             <FooterContent>
               {passwordLoginEnabled &&
