@@ -3,7 +3,7 @@ module AdminApi
     description "A city defined scope to constrain the citizen input received"
 
     class ProjectPublicationStatus < GraphQL::Schema::Enum
-      Project::PUBLICATION_STATUSES.each do |ps|
+      AdminPublication::PUBLICATION_STATUSES.each do |ps|
         value ps
       end
     end

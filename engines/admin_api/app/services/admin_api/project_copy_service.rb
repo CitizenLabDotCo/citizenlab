@@ -9,10 +9,9 @@ module AdminApi
         service.resolve_and_apply_template same_template, validate: false
       end
       Project.where.not(id: project_ids_before).each do |project|
+        AdminPublication.create!(publication: project)
         project.update!(slug: SlugService.new.generate_slug(project, project.slug))
       end
-      # Projects from a folder are imported to the top level.
-      ProjectHolderService.new.fix_project_holder_orderings!
     end
 
     def export project, include_ideas: false, anonymize_users: true, shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, timeline_start_at: nil, new_publication_status: nil
@@ -84,8 +83,7 @@ module AdminApi
         'visible_to'                   => @project.visible_to,
         'description_preview_multiloc' => @project.description_preview_multiloc, 
         'process_type'                 => @project.process_type,
-        'publication_status'           => new_publication_status || @project.publication_status,
-        'ordering'                     => @project.ordering
+        'admin_publication_attributes'  => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status }
       })
       yml_project['slug'] = new_slug if new_slug.present?
       store_ref yml_project, @project.id, :project

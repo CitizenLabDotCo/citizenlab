@@ -9,12 +9,10 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       policy_scope(Project)
     end
     @projects = @projects.where(id: params[:filter_ids]) if params[:filter_ids]  
-    @projects = @projects.where(folder_id: params[:folder]) if params.keys.include?('folder')
     @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
-    @projects = @projects
-      .order(:ordering)
-      .includes(:project_images, :phases, :areas, :topics)
+    @projects = @projects.ordered
+      .includes(:project_images, :phases, :areas, :topics, admin_publication: [:children])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -27,14 +25,15 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     instance_options = {
       user_baskets: user_baskets,
       allocated_budgets: ParticipationContextService.new.allocated_budgets(@projects),
-      timeline_active: TimelineService.new.timeline_active_on_collection(@projects)
+      timeline_active: TimelineService.new.timeline_active_on_collection(@projects),
+      visible_children_count_by_parent_id: {} # projects don't have children
     }
 
     render json: linked_json(
       @projects, 
       WebApi::V1::ProjectSerializer, 
       params: fastjson_params(instance_options), 
-      include: [:project_images, :current_phase, :avatars]
+      include: [:admin_publication, :project_images, :current_phase, :avatars]
       )
   end
 
@@ -42,7 +41,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project, 
       params: fastjson_params, 
-      include: [:project_images, :current_phase, :avatars]
+      include: [:admin_publication, :project_images, :current_phase, :avatars]
       ).serialized_json
   end
 
@@ -53,16 +52,26 @@ class WebApi::V1::ProjectsController < ::ApplicationController
   end
 
   def create
-    @project = Project.new(permitted_attributes(Project))
-
+    params = permitted_attributes(Project)
+    @project = Project.new(params.except(:folder_id))
     SideFxProjectService.new.before_create(@project, current_user)
-    
+
     authorize @project
-    if @project.save
+
+    saved = nil
+    ActiveRecord::Base.transaction do
+      saved = @project.save
+      if saved
+        set_folder! params[:folder_id] if params.key? :folder_id
+      end
+    end
+
+    if saved
       SideFxProjectService.new.after_create(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project, 
         params: fastjson_params, 
+        include: [:admin_publication],
         ).serialized_json, status: :created
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity
@@ -76,30 +85,25 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
     project_params = permitted_attributes(Project)
     
-    @project.assign_attributes project_params
-    if project_params.keys.include?('header_bg') && project_params['header_bg'] == nil
+    @project.assign_attributes project_params.except(:folder_id)
+    if project_params.key?(:header_bg) && project_params[:header_bg].nil?
       # setting the header image attribute to nil will not remove the header image
       @project.remove_header_bg!
     end
     authorize @project
     SideFxProjectService.new.before_update(@project, current_user)
-    if @project.save
-      SideFxProjectService.new.after_update(@project, current_user)
-      render json: WebApi::V1::ProjectSerializer.new(
-        @project, 
-        params: fastjson_params, 
-        ).serialized_json, status: :ok
-    else
-      render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
-    end
-  end
 
-  def reorder
-    if @project.insert_at(permitted_attributes(@project)[:ordering])
+    saved = nil
+    ActiveRecord::Base.transaction do
+      saved = @project.save
+      @project.set_folder! project_params[:folder_id] if saved && project_params.key?(:folder_id)
+    end
+    if saved
       SideFxProjectService.new.after_update(@project, current_user)
       render json: WebApi::V1::ProjectSerializer.new(
         @project, 
         params: fastjson_params, 
+        include: [:admin_publication],
         ).serialized_json, status: :ok
     else
       render json: {errors: @project.errors.details}, status: :unprocessable_entity, include: ['project_images']
