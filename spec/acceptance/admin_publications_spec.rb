@@ -142,6 +142,20 @@ resource "AdminPublication" do
         end
       end
     end
+
+    get "web_api/v1/admin_publications/:id" do
+      let(:id) { @projects.first.admin_publication.id }
+
+      example_request "Get one admin publication by id" do
+        expect(status).to eq 200
+        json_response = json_parse(response_body)
+
+        expect(json_response.dig(:data, :id)).to eq @projects.first.admin_publication.id
+        expect(json_response.dig(:data, :relationships, :publication, :data, :type)).to eq 'project'
+        expect(json_response.dig(:data, :relationships, :publication, :data, :id)).to eq @projects.first.id
+        expect(json_response.dig(:data, :attributes, :publication_slug)).to eq @projects.first.slug
+      end
+    end
   end
 
   context 'when citizen' do
