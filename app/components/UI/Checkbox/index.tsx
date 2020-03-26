@@ -16,6 +16,7 @@ const Label = styled.label<{ disabled: boolean }>`
   display: flex;
   align-items: center;
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
+  width: 100%;
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
@@ -111,7 +112,7 @@ export default class Checkbox extends PureComponent<Props> {
             {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}
           </StyledCheckbox>
         </CheckboxContainer>
-        {hasLabel && <span>{label}</span>}
+        {label}
       </Label>
     );
   }
