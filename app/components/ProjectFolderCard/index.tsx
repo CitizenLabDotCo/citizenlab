@@ -298,7 +298,7 @@ const ProjectFolderCard = memo(({
 
   const imageUrl = !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
     ? projectFolderImages.data ?.[0].attributes ?.versions.medium
-      : null; // !!TODO doesn't support header
+      : null;
 
   const folderUrl = `/folders/${publication.attributes.publication_slug}`;
   const numberOfProjects = publication.attributes.visible_children_count;

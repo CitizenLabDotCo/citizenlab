@@ -106,7 +106,6 @@ export default function useAdminPublications({ pageSize = 1000, areaFilter, publ
     return () => subscription.unsubscribe();
   }, [pageNumber, pageSize, areas, publicationStatuses]);
 
-  // TODO noEmptyFolder filter
   return {
     list,
     hasMore,

@@ -254,7 +254,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    this.calculateCardsLayout(); // TODO
+    this.calculateCardsLayout();
 
     const areas = this.getAreasFromQueryParams();
 
