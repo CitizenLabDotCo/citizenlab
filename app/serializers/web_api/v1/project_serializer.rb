@@ -1,10 +1,13 @@
 class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :visible_to, :process_type, :ideas_count, :comments_count, :internal_role, :created_at, :updated_at, :location_allowed
+  attributes :title_multiloc, :description_preview_multiloc, :slug, :visible_to, :process_type, :ideas_count, :comments_count, :internal_role, :created_at, :updated_at, :location_allowed
 
   attribute :publication_status do |object|
     object.admin_publication.publication_status
+
+  attribute :description_multiloc do |object|
+    TextImageService.new.render_data_images object, :description_multiloc
   end
 
   attribute :header_bg do |object|

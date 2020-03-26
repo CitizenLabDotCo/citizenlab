@@ -60,19 +60,30 @@ namespace :fix_existing_tenants do
 
   desc "Runs the TextImageService on all HTML multilocs that can have images"
   task :swap_all_html_images => [:environment] do |t, args|
+    errors = []
     Tenant.all.map do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         imageable_html_multilocs.map do |claz, attributes|
           claz.all.map do |instance|
             attributes.each do |attribute|
               multiloc = instance.send attribute
-              multiloc = TextImageService.new.swap_data_images instance, attribute
-              instance.send "#{attribute}=", multiloc
-              instance.save!
+              begin
+                multiloc = TextImageService.new.swap_data_images instance, attribute
+                instance.send "#{attribute}=", multiloc
+                instance.save!
+              rescue Exception => e
+                errors += [e.message]
+              end
             end
           end
         end
       end
+    end
+    if errors.blank?
+      puts "Success!"
+    else
+      puts "Some issues occured."
+      errors.each{|err| puts err}
     end
   end
 
@@ -165,13 +176,12 @@ def convert_html html
 end
 
 def imageable_html_multilocs
-  {
-    Area       => [:description_multiloc],
-    Event      => [:description_multiloc],
-    Idea       => [:body_multiloc],
-    Initiative => [:body_multiloc],
-    Page       => [:body_multiloc],
-    Phase      => [:description_multiloc],
-    Project    => [:description_multiloc]
+  {    
+    Event                    => [:description_multiloc],
+    Initiative               => [:body_multiloc],
+    Page                     => [:body_multiloc],
+    Phase                    => [:description_multiloc],
+    Project                  => [:description_multiloc],
+    EmailCampaigns::Campaign => [:body_multiloc]
   }
 end

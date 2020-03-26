@@ -50,21 +50,24 @@ module EmailCampaigns
     def update
       params[:campaign][:group_ids] ||= [] if params[:campaign].has_key?(:group_ids)
 
+      saved = nil
       ActiveRecord::Base.transaction do
         @campaign.assign_attributes(campaign_params)
         authorize @campaign
 
         SideFxCampaignService.new.before_update(@campaign, current_user)
 
-        if @campaign.save
-          SideFxCampaignService.new.after_update(@campaign, current_user)
-          render json: WebApi::V1::CampaignSerializer.new(
-            @campaign, 
-            params: fastjson_params
-            ).serialized_json, status: :ok
-        else
-          render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
-        end
+        saved = @campaign.save
+      end
+
+      if saved
+        SideFxCampaignService.new.after_update(@campaign, current_user)
+        render json: WebApi::V1::CampaignSerializer.new(
+          @campaign, 
+          params: fastjson_params
+          ).serialized_json, status: :ok
+      else
+        render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
       end
     end
 
