@@ -161,6 +161,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
+  mapElement: HTMLDivElement | null;
 }
 
 class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
@@ -184,22 +185,41 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     super(props);
     this.state = {
       initiated: false,
+      mapElement: null
     };
   }
 
   componentDidMount() {
+    const { mapElement } = this.state;
+    const { tenant, mapConfig } = this.props;
+
     if (this.props.points && this.props.points.length > 0) {
       this.convertPoints(this.props.points);
+    }
+
+    if (!this.map && mapElement && mapConfig !== undefined && !isNilOrError(tenant)) {
+      this.initMap(mapElement);
     }
   }
 
   componentDidUpdate(_prevProps) {
+    const { mapElement } = this.state;
+    const { tenant, mapConfig } = this.props;
+
     if (this.props.points && this.props.points.length > 0) {
       this.convertPoints(this.props.points);
+    }
+
+    if (!this.map && mapElement && mapConfig !== undefined && !isNilOrError(tenant)) {
+      this.initMap(mapElement);
     }
   }
 
   bindMapContainer = (element: HTMLDivElement | null) => {
+    this.setState({ mapElement: element });
+  }
+
+  initMap = (mapElement: HTMLDivElement) => {
     const { tenant, mapConfig, center, localize } = this.props;
 
     function getZoom() {
@@ -310,35 +330,33 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       return overlayMaps;
     }
 
-    if (element && !this.map) {
-      // Init the map
-      const zoom = getZoom();
-      const tileProvider = getTileProvider();
-      const initCenter = getInitCenter();
-      const layers = formatLayers();
-      const overlaysEnabledByDefault = layers
-        .filter(layer => layer.enabledByDefault === true)
-        .map(layer => layer.leafletGeoJson);
-      const baseLayer = Leaflet.tileLayer(tileProvider, {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: ['a', 'b', 'c']
-      });
+    // Init the map
+    const zoom = getZoom();
+    const tileProvider = getTileProvider();
+    const initCenter = getInitCenter();
+    const layers = formatLayers();
+    const overlaysEnabledByDefault = layers
+      .filter(layer => layer.enabledByDefault === true)
+      .map(layer => layer.leafletGeoJson);
+    const baseLayer = Leaflet.tileLayer(tileProvider, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: ['a', 'b', 'c']
+    });
 
-      this.map = Leaflet.map(element, {
-        zoom,
-        center: initCenter,
-        maxZoom: 17,
-        layers: [baseLayer, ...overlaysEnabledByDefault]
-      });
+    this.map = Leaflet.map(mapElement, {
+      zoom,
+      center: initCenter,
+      maxZoom: 17,
+      layers: [baseLayer, ...overlaysEnabledByDefault]
+    });
 
-      // Add layers
-      const overlayMaps = getOverlayMaps(layers);
-      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+    // Add layers
+    const overlayMaps = getOverlayMaps(layers);
+    Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
-      // Handlers
-      if (this.props.onMapClick) {
-        this.map.on('click', this.handleMapClick);
-      }
+    // Handlers
+    if (this.props.onMapClick) {
+      this.map.on('click', this.handleMapClick);
     }
   }
 
@@ -401,7 +419,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   onMapElementResize = () => {
-    this.map.invalidateSize();
+    this.map && this.map.invalidateSize();
   }
 
   handleBoxOnClose = (event: FormEvent) => {
@@ -419,7 +437,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       projectId
     } = this.props;
 
-    if (!isNilOrError(tenant) && !isNilOrError(mapConfig)) {
+    if (!isNilOrError(tenant)) {
       return (
         <Container className={className}>
           <MapContainer>
