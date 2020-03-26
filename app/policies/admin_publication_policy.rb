@@ -13,11 +13,18 @@ class AdminPublicationPolicy < ApplicationPolicy
     end
   end
 
-  def reorder?
-    user&.active? && user.admin?
+  def show?
+    case record.publication_type
+    when 'Project'
+      ProjectPolicy.new(user, record.publication).show?
+    when 'ProjectFolder'
+      ProjectFolderPolicy.new(user, record.publication).show?
+    else
+      raise "No policy for #{record.publication_type}"
+    end
   end
 
-  def show?
+  def reorder?
     user&.active? && user.admin?
   end
 
