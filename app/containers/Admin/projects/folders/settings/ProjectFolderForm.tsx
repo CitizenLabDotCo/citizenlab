@@ -40,14 +40,15 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
   const adminPublication = useAdminPublication(!isNilOrError(projectFolder) ? projectFolder.relationships.admin_publication.data ?.id || null : null);
-
   useEffect(() => {
     (async function iife() {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
         setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
         setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
-        setPublicationStatus(!isNilOrError(adminPublication) ? adminPublication.attributes.publication_status : 'published');
+        if (!isNilOrError(adminPublication)) {
+          setPublicationStatus(adminPublication.attributes.publication_status);
+        }
         if (projectFolder.attributes ?.header_bg ?.large) {
           const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
           setHeaderBg(headerFile);
@@ -201,7 +202,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 admin_publication_attributes: {
                   publication_status: publicationStatus
                 }
-              });
+              }, !isNilOrError(projectFolder) ? projectFolder.relationships.admin_publication.data ?.id : undefined);
 
               if (isNilOrError(res)) {
                 setStatus('apiError');

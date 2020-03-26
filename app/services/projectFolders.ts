@@ -58,7 +58,7 @@ export async function addProjectFolder(object: Partial<IProjectFolderDiff>) {
   return (!isNilOrError(response) ? response.data : response as Error);
 }
 
-export async function updateProjectFolder(projectFolderId: string, object: Partial<IProjectFolderDiff>) {
+export async function updateProjectFolder(projectFolderId: string, object: Partial<IProjectFolderDiff>, adminPublicationId?: string) {
   const response = await streams.update<{ data: IProjectFolderData }>(
     `${apiEndpoint}/${projectFolderId}`,
     projectFolderId,
@@ -66,7 +66,9 @@ export async function updateProjectFolder(projectFolderId: string, object: Parti
   );
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/admin_publications`],
+    dataId: adminPublicationId ? [adminPublicationId] : []
   });
+
   return (!isNilOrError(response) ? response.data : response);
 }
 
@@ -74,7 +76,7 @@ export async function deleteProjectFolder(projectFolderId: string) {
   const response = await streams.delete(`${apiEndpoint}/${projectFolderId}`, projectFolderId);
 
   await streams.fetchAllWith({
-    apiEndpoint: [`${API_PATH}/projects`, `${API_PATH}/admin_publications`],
+    apiEndpoint: [`${API_PATH}/admin_publications`],
   });
 
   return response;
