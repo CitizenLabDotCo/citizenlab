@@ -472,7 +472,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
   create_table "maps_legend_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "map_config_id", null: false
     t.jsonb "title_multiloc", default: {}, null: false
-    t.string "color"
+    t.string "color", null: false
     t.integer "ordering", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

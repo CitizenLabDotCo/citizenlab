@@ -5,6 +5,6 @@ module Maps
     belongs_to :map_config, class_name: 'Maps::MapConfig'
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
-    validates :color, format: {with: /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/}, allow_nil: true
+    validates :color, format: {with: /\A#[0-9a-f]{3}([0-9a-f]{3})?\z/}
   end
 end
