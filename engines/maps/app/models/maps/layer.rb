@@ -6,6 +6,7 @@ module Maps
 
     validates :title_multiloc, presence: true, multiloc: {presence: true}
     validates :default_enabled, inclusion: {in: [true, false]}
+    validates :marker_svg_url, format: {with: /\Ahttps:\/\/.*\z/, message: 'should start with https://'}, allow_nil: true
     GEOJSON_SCHEMA = Maps::Engine.root.join('config','schemas','geojson.json_schema').to_s
     validates :geojson, presence: true, json: {schema: GEOJSON_SCHEMA, message: ->(errors) { errors }}
 

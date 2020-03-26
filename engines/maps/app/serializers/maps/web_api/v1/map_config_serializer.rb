@@ -8,6 +8,7 @@ class Maps::WebApi::V1::MapConfigSerializer < ::WebApi::V1::BaseSerializer
         title_multiloc: layer.title_multiloc,
         geojson: layer.geojson,
         default_enabled: layer.default_enabled,
+        marker_svg_url: layer.marker_svg_url,
       }
     end
   end

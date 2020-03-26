@@ -14593,6 +14593,7 @@ models:
     title_multiloc:
       en: Public toilets
       nl-BE: Publieke toiletten
+    default_enabled: false
     geojson:
       type: FeatureCollection
       features:

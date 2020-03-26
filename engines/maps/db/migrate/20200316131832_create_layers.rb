@@ -6,6 +6,7 @@ class CreateLayers < ActiveRecord::Migration[6.0]
       t.integer :ordering, null: false
       t.jsonb :geojson, null: false
       t.boolean :default_enabled, null: false, default: true
+      t.string :marker_svg_url, null: true
       t.timestamps
     end
   end

@@ -13,7 +13,7 @@ FactoryBot.define do
 
     trait :with_layers do
       after(:create) do |map_config, evaluator|
-        map_config.layers = [create(:layer, map_config: map_config)]
+        map_config.layers = [create(:layer, :with_marker_svg, map_config: map_config)]
       end
     end
 
