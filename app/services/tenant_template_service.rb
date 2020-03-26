@@ -1045,6 +1045,7 @@ class TenantTemplateService
         'title_multiloc'  => layer.title_multiloc,
         'geojson'         => layer.geojson,
         'default_enabled' => layer.default_enabled,
+        'marker_svg_url'  => layer.marker_svg_url,
         'created_at'      => layer.created_at.to_s,
         'updated_at'      => layer.updated_at.to_s
       }
