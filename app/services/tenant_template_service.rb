@@ -123,9 +123,11 @@ class TenantTemplateService
       @template['models']['polls/option']                          = yml_poll_options
       @template['models']['polls/response']                        = yml_poll_responses
       @template['models']['polls/response_option']                 = yml_poll_response_options
+      @template['models']['volunteering/cause']                    = yml_volunteering_causes
+      @template['models']['volunteering/volunteer']                = yml_volunteering_volunteers
       @template['models']['maps/map_config']                       = yml_maps_map_configs
       @template['models']['maps/layer']                            = yml_maps_layers
-      @template['models']['maps/legend_item']                      = yml_maps_legend_items
+      @template['models']['maps/legend_item']                      = yml_maps_legend_items    
     end
     @template
   end
@@ -1023,6 +1025,36 @@ class TenantTemplateService
       yml_response_option
     end
   end
+
+  def yml_volunteering_causes
+    Volunteering::Cause.all.map do |c|
+      yml_cause = {
+        'participation_context_ref' => lookup_ref(c.participation_context_id, [:project, :phase]),
+        'title_multiloc'            => c.title_multiloc,
+        'description_multiloc'      => c.description_multiloc,
+        'remote_image_url'          => c.image_url,
+        'ordering'                  => c.ordering,
+        'created_at'                => c.created_at.to_s,
+        'updated_at'                => c.updated_at.to_s,
+      }
+      store_ref yml_cause, c.id, :volunteering_cause
+      yml_cause
+    end
+  end
+
+  def yml_volunteering_volunteers
+    Volunteering::Volunteer.all.map do |v|
+      yml_volunteer = {
+        'cause_ref'   => lookup_ref(v.cause_id, [:volunteering_cause]),
+        'user_ref'    => lookup_ref(v.user_id, :user),
+        'created_at'  => v.created_at.to_s,
+        'updated_at'  => v.updated_at.to_s
+      }
+      store_ref yml_volunteer, v.id, :volunteering_volunteer
+      yml_volunteer
+    end
+  end
+
   def yml_maps_map_configs
     Maps::MapConfig.all.map do |map_config|
       yml_map_config = {
@@ -1065,6 +1097,4 @@ class TenantTemplateService
       }
     end
   end
-
-
 end

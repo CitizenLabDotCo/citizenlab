@@ -181,7 +181,6 @@ describe TenantTemplateService do
       TenantService.new.clear_images_and_files!(Tenant.find_by(host: 'localhost'))
       template = service.tenant_to_template Tenant.find_by(host: 'localhost')
       service.apply_template template
-
       expect(Area.count).to be > 0
       expect(AreasIdea.count).to be > 0
       expect(Comment.count).to be > 0
@@ -190,6 +189,8 @@ describe TenantTemplateService do
       expect(IdeaStatus.count).to be > 0
       expect(Vote.count).to be > 0
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
+      expect(Volunteering::Cause.count).to be 5
+      expect(Volunteering::Volunteer.count).to be > 0
       expect(Maps::MapConfig.count).to be 1
       expect(Maps::Layer.count).to be 2
       expect(Maps::LegendItem.count).to be 7

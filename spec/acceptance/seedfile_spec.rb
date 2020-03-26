@@ -34,6 +34,8 @@ describe "seedfile", slow_test: true do
       expect(Maps::MapConfig.count).to be 1
       expect(Maps::Layer.count).to be 2
       expect(Maps::LegendItem.count).to be 7
+      expect(Volunteering::Cause.count).to be 5
+      expect(Volunteering::Volunteer.count).to be > 10
     end
     Apartment::Tenant.switch('empty_localhost') do
       load Rails.root.join("db","seeds.rb")

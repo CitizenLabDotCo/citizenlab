@@ -9,9 +9,10 @@ class ParticipantsService
     {item_type: 'Vote', action: 'comment_downvoted', score: 1},
     {item_type: 'Basket', action: 'created', score: 3},
     {item_type: 'Polls::Response', action: 'created', score: 1},
+    {item_type: 'Volunteering::Volunteer', action: 'created', score: 3},
   ]
 
-  PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting, :polling]
+  PARTICIPANT_ACTIONS = [:posting, :commenting, :idea_voting, :comment_voting, :budgeting, :polling, :volunteering]
 
 
   def participants options={}
@@ -88,6 +89,14 @@ class ParticipantsService
       poll_responses = Polls::Response.where(participation_context_id: participation_context_ids)
       poll_responses = poll_responses.where('created_at::date >= (?)::date', since) if since
       participants = participants.or(User.where(id: poll_responses.select(:user_id)))
+    end
+    # Volunteering
+    if actions.include? :volunteering
+      participation_context_ids = projects.map(&:id) + Phase.where(project: projects).ids
+      volunteering_users = User
+        .joins(volunteers: [:cause])
+        .where(volunteering_causes: {participation_context_id: participation_context_ids})
+      participants = participants.or(User.where(id: volunteering_users))
     end
     participants
   end

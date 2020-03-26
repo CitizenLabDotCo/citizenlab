@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   mount Frontend::Engine => "", as: 'frontend'
   mount Polls::Engine => "", as: 'polls'
   mount Verification::Engine => "", as: 'verification'
+  mount Volunteering::Engine => "", as: 'volunteering'
   mount Maps::Engine => "", as: 'maps'
 
   namespace :web_api, :defaults => {:format => :json} do
