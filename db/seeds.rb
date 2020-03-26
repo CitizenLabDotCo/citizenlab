@@ -18,6 +18,8 @@ end
 # Possible values: large, medium, small, generic, empty
 SEED_SIZE = ENV.fetch('SEED_SIZE','medium')
 
+SEED_LOCALES = ['en','nl-BE', 'fr-BE']
+
 num_users = 10
 num_projects = 4
 num_ideas = 5
@@ -75,6 +77,12 @@ def create_for_some_locales
   translations
 end
 
+def create_for_tenant_locales
+  translations = {}
+  SEED_LOCALES.each { |locale| translations[locale] = yield }
+  translations
+end
+
 def generate_avatar gender
   i = rand(8) + 2
   if !%w(male female).include? gender
@@ -104,13 +112,9 @@ if ['public','example_org'].include? Apartment::Tenant.current
       core: {
         allowed: true,
         enabled: true,
-        locales: ['en','nl-BE', 'fr-BE'],
+        locales: SEED_LOCALES,
         organization_type: %w(small medium large).include?(SEED_SIZE) ? "#{SEED_SIZE}_city" : "generic",
-        organization_name: {
-          "en" => Faker::Address.city,
-          "nl-BE" => Faker::Address.city,
-          "fr-FR" => Faker::Address.city
-        },
+        organization_name: create_for_tenant_locales{Faker::Address.city},
         lifecycle_stage: 'active',
         timezone: "Brussels",
         currency: CL2_SUPPORTED_CURRENCIES.shuffle.first,
@@ -150,10 +154,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed:true
       },
       ideas_overview: {
-        enabled: true,
-        allowed: true
-      },
-      manual_project_sorting: {
         enabled: true,
         allowed: true
       },
@@ -408,14 +408,8 @@ if Apartment::Tenant.current == 'localhost'
 
     12.times do
       Area.create!({
-        title_multiloc: {
-          "en": Faker::Address.city,
-          "nl-BE": Faker::Address.city
-        },
-        description_multiloc: {
-          "en": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-          "nl-BE": Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-        }
+        title_multiloc: create_for_tenant_locales{Faker::Address.city},
+        description_multiloc: create_for_tenant_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join}
       });
     end
   end
@@ -432,58 +426,42 @@ if Apartment::Tenant.current == 'localhost'
     end
 
     Area.create!({
-      title_multiloc: {
-        "en": "Westbrook",
-        "nl-BE": "Westbroek"
-      },
-      description_multiloc: {
-        "en": "<p>The place to be these days</p>",
-        "nl-BE": "<p>Moet je geweest zijn</p>"
-      }
+      title_multiloc: create_for_tenant_locales{"Westbrook"},
+      description_multiloc: create_for_tenant_locales{"<p>The place to be these days</p>"}
     })
 
     2.times do
       folder = ProjectFolder.create!(
-        title_multiloc: {
-          "en": Faker::Lorem.sentence,
-          "nl-BE": Faker::Lorem.sentence
-        },
-        description_multiloc: {
-          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-        },
-        description_preview_multiloc: {
-          "en" => "All things swimming pool.",
-          "nl-BE" => "Alles met zwembaden."
-        },
+        title_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
+        description_multiloc: create_for_tenant_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
+        description_preview_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
         header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
+        admin_publication_attributes: {
+          publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
+        }
       )
       [0,1,2,3,4][rand(5)].times do |i|
         folder.project_folder_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
+      end
+      (rand(3)+1).times do
+        folder.project_folder_files.create!(generate_file_attributes)
       end
     end
 
     num_projects.times do
       project = Project.new({
-        title_multiloc: {
-          "en": Faker::Lorem.sentence,
-          "nl-BE": Faker::Lorem.sentence
-        },
-        description_multiloc: {
-          "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-          "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-        },
-        description_preview_multiloc: {
-          "en" => "Let's renew the parc at the city border.",
-          "nl-BE" => "Laten we het park op de grend van de stad vernieuwen."
-        },
+        title_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
+        description_multiloc: create_for_tenant_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
+        description_preview_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
         header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
         visible_to: %w(admins groups public public public)[rand(5)],
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
-        publication_status: ['published','published','published','published','published','draft','archived'][rand(7)],
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
-        folder_id: rand(2) == 0 ? nil : ProjectFolder.ids.shuffle.first
+        admin_publication_attributes: {
+          parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolder.name).ids.shuffle.first),
+          publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
+        }
       })
 
       if project.continuous?
@@ -497,7 +475,9 @@ if Apartment::Tenant.current == 'localhost'
           location_allowed: rand(4) != 0,
         })
       end
+
       project.save!
+
       [0,1,2,3,4][rand(5)].times do |i|
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.png").open)
       end
@@ -513,14 +493,8 @@ if Apartment::Tenant.current == 'localhost'
         rand(8).times do
           start_at += 1.days
           phase = project.phases.new({
-            title_multiloc: {
-              "en": Faker::Lorem.sentence,
-              "nl-BE": Faker::Lorem.sentence
-            },
-            description_multiloc: {
-              "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-              "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-            },
+            title_multiloc: create_for_tenant_locales{Faker::Lorem.sentence},
+            description_multiloc: create_for_tenant_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
             start_at: start_at,
             end_at: (start_at += rand(150).days),
             participation_method: ['ideation','budgeting','poll','information', 'ideation', 'ideation'][rand(6)]
@@ -760,20 +734,21 @@ if Apartment::Tenant.current == 'localhost'
       title_multiloc: {
         "en": "Help out as a volunteer",
         "nl-BE": "Help mee als vrijwilliger",
+        "fr-BE": "Aider en tant que bénévole"
       },
-      description_multiloc: {
-        "en" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join,
-        "nl-BE" => Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join
-      },
+      description_multiloc: create_for_tenant_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
       description_preview_multiloc: {
         "en" => "Every bit of help counts",
-        "nl-BE" => "Alle beetjes helpen"
+        "nl-BE" => "Alle beetjes helpen",
+        "fr-BE" => "Chaque petit geste compte"
       },
       header_bg: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open,
       process_type: 'continuous',
-      publication_status: 'published',
       areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
-      participation_method: 'volunteering'
+      participation_method: 'volunteering',
+      admin_publication_attributes: {
+        publication_status: 'published'
+      }
     )
 
     Volunteering::Cause.create!([
@@ -820,8 +795,6 @@ if Apartment::Tenant.current == 'localhost'
         image: rand(5) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.png").open
       },
     ])
-
-    ProjectHolderService.new.fix_project_holder_orderings!
 
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
       permitted_by = ['groups', 'admins_moderators'].shuffle.first

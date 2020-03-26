@@ -34,6 +34,14 @@ RSpec.describe Project, type: :model do
     end
   end
 
+  describe "Project without admin publication" do
+    it "is invalid" do
+      project = create(:project)
+      AdminPublication.where(publication: project).first.destroy!
+      expect(project.reload).to be_invalid
+    end
+  end
+
   describe "comments_count" do
     it "remains up to date when an idea changes project" do
       p1 = create(:project)

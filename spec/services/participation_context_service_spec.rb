@@ -6,7 +6,7 @@ describe ParticipationContextService do
   describe "get_participation_context" do
 
     it "returns the project for a continuous project" do
-      project = build(:continuous_project)
+      project = create(:continuous_project)
       expect(service.get_participation_context(project)).to eq project
     end
 
@@ -24,12 +24,12 @@ describe ParticipationContextService do
     end
 
     it "returns nil for a timeline project that's archived" do
-      project = create(:project_with_current_phase, publication_status: 'archived')
+      project = create(:project_with_current_phase, admin_publication_attributes: {publication_status: 'archived'})
       expect(service.get_participation_context(project)).to eq nil
     end
 
     it "returns nil for a continuous project that's archived" do
-      project = create(:continuous_project, publication_status: 'archived')
+      project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
       expect(service.get_participation_context(project)).to eq nil
     end
   end
@@ -83,7 +83,7 @@ describe ParticipationContextService do
     end
 
     it "returns 'project_inactive' when the project is archived" do
-      project = create(:continuous_project, publication_status: 'archived')
+      project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
       expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
@@ -134,7 +134,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:project_with_current_phase, with_permissions: true, publication_status: 'archived')
+        project = create(:project_with_current_phase, with_permissions: true, admin_publication_attributes: {publication_status: 'archived'})
         expect(service.commenting_disabled_reason_for_project(project, user)).to eq 'project_inactive'
         idea = create(:idea, project: project, phases: [project.phases[2]])
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
@@ -190,7 +190,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_project, publication_status: 'archived')
+        project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
         expect(service.commenting_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
         idea = create(:idea, project: project)
         expect(service.commenting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
@@ -309,7 +309,7 @@ describe ParticipationContextService do
         end
 
         it "returns 'project_inactive' when the project is archived" do
-          project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
+          project = create(:continuous_project, with_permissions: true, admin_publication_attributes: {publication_status: 'archived'})
           expect(service.voting_disabled_reason_for_project(project, user)).to eq 'project_inactive'
           idea = create(:idea, project: project)
           expect(service.voting_disabled_reason_for_idea(idea, user)).to eq 'project_inactive'
@@ -405,7 +405,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_project, publication_status: 'archived')
+        project = create(:continuous_project, admin_publication_attributes: {publication_status: 'archived'})
         idea = create(:idea, project: project, phases: project.phases)
         expect(service.cancelling_votes_disabled_reason_for_idea(idea, idea.author)).to eq reasons[:project_inactive]
       end
@@ -448,7 +448,7 @@ describe ParticipationContextService do
     end
 
     it "returns `project_inactive` when the continuous project is archived" do
-      project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
+      project = create(:continuous_project, with_permissions: true, admin_publication_attributes: {publication_status: 'archived'})
       expect(service.taking_survey_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
@@ -493,7 +493,7 @@ describe ParticipationContextService do
     end
 
     it "returns `project_inactive` when the continuous project is archived" do
-      project = create(:continuous_project, with_permissions: true, publication_status: 'archived')
+      project = create(:continuous_project, with_permissions: true, admin_publication_attributes: {publication_status: 'archived'})
       expect(service.taking_poll_disabled_reason_for_project(project, create(:user))).to eq 'project_inactive'
     end
   end
@@ -567,7 +567,7 @@ describe ParticipationContextService do
       end
 
       it "returns 'project_inactive' when the project is archived" do
-        project = create(:continuous_budgeting_project, publication_status: 'archived')
+        project = create(:continuous_budgeting_project, admin_publication_attributes: {publication_status: 'archived'})
         idea = create(:idea, project: project)
         expect(service.budgeting_disabled_reason_for_idea(idea, create(:user))).to eq 'project_inactive'
       end

@@ -8,7 +8,12 @@ class ProjectFolderPolicy < ApplicationPolicy
     end
 
     def resolve
-      scope.all
+      if user&.admin?
+        scope.all
+      else
+        scope.left_outer_joins(:admin_publication)
+          .where(admin_publications: {publication_status: ['published', 'archived']})
+      end
     end
   end
 

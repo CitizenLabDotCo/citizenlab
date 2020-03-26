@@ -11,7 +11,8 @@ class ProjectPolicy < ApplicationPolicy
       if user&.admin?
         scope.all
       else
-        normal_user_result = scope.where(publication_status: ['published', 'archived'])
+        normal_user_result = scope.left_outer_joins(:admin_publication)
+          .where(admin_publications: {publication_status: ['published', 'archived']})
         if user&.project_moderator?
           Project.where(id: user.moderatable_project_ids + filter_for_normal_user(normal_user_result, user))
         elsif user
@@ -53,9 +54,9 @@ class ProjectPolicy < ApplicationPolicy
     end
 
     def resolve
-      if record.visible_to == 'public' && record.publication_status != 'draft'
+      if record.visible_to == 'public' && record.admin_publication.publication_status != 'draft'
         scope.all
-      elsif record.visible_to == 'groups' && record.publication_status != 'draft'
+      elsif record.visible_to == 'groups' && record.admin_publication.publication_status != 'draft'
         scope.in_any_group(record.groups).or(scope.admin).or(scope.project_moderator(record.id))
       else
         scope.admin.or(scope.project_moderator(record.id))
@@ -70,7 +71,7 @@ class ProjectPolicy < ApplicationPolicy
 
   def show?
     moderate? || (
-      %w(published archived).include?(record.publication_status) && (
+      %w(published archived).include?(record.admin_publication.publication_status) && (
         record.visible_to == 'public' || (
           user &&
           record.visible_to == 'groups' &&
@@ -112,11 +113,11 @@ class ProjectPolicy < ApplicationPolicy
       :survey_service,
       :max_budget,
       :presentation_mode,
-      :publication_status,
       :default_assignee_id,
       :location_allowed,
       :poll_anonymous,
       :folder_id,
+      admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES, 
       description_multiloc: CL2_SUPPORTED_LOCALES,
       description_preview_multiloc: CL2_SUPPORTED_LOCALES,

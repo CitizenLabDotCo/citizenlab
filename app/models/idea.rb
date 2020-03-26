@@ -72,8 +72,8 @@ class Idea < ApplicationRecord
   end)
 
   scope :with_project_publication_status, (Proc.new do |publication_status|
-    joins(:project)
-      .where(projects: {publication_status: publication_status})
+    joins(project: [:admin_publication])
+      .where(projects: {admin_publications: {publication_status: publication_status}})
   end)
 
   scope :order_popular, -> (direction=:desc) {order(Arel.sql("(upvotes_count - downvotes_count) #{direction}, ideas.id"))}
