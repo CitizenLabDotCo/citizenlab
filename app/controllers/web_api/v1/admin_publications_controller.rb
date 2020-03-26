@@ -1,12 +1,12 @@
 class WebApi::V1::AdminPublicationsController < ::ApplicationController
-  before_action :set_admin_publication, only: [:reorder]
+  before_action :set_admin_publication, only: [:reorder, :show]
 
   def index
     @publications = policy_scope(AdminPublication).includes(:publication, :children)
 
     @publications = @publications.where(publication_type: ProjectFolder.name)
       .or(@publications.where(publication: ProjectsFilteringService.new.apply_common_index_filters(
-        Pundit.policy_scope(current_user, Project), 
+        Pundit.policy_scope(current_user, Project),
         params.except(:folder, :publication_statuses))))
 
     @publications = @publications.where(publication_status: params[:publication_statuses]) if params[:publication_statuses].present?
@@ -15,12 +15,12 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       parent_scope = if params[:folder].present?
         AdminPublication.where(publication_id: params[:folder], publication_type: ProjectFolder.name)
       else # top-level projects and folders
-        nil 
+        nil
       end
       @publications = @publications.where(parent_id: parent_scope)
     end
 
-    # Leave out folders which would have no 
+    # Leave out folders which would have no
     # children left if the same filters were
     # applied to its projects.
     if params[:filter_empty_folders].present?
@@ -50,8 +50,8 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }
 
     render json: linked_json(
-      @publications, 
-      WebApi::V1::AdminPublicationSerializer, 
+      @publications,
+      WebApi::V1::AdminPublicationSerializer,
       params: fastjson_params(visible_children_count_by_parent_id: visible_children_count_by_parent_id)
       )
   end
@@ -60,12 +60,19 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
     if @publication.insert_at(permitted_attributes(@publication)[:ordering])
       SideFxAdminPublicationService.new.after_update(@publication, current_user)
       render json: WebApi::V1::AdminPublicationSerializer.new(
-        @publication, 
-        params: fastjson_params, 
+        @publication,
+        params: fastjson_params,
         ).serialized_json, status: :ok
     else
       render json: {errors: @publication.errors.details}, status: :unprocessable_entity
     end
+  end
+
+  def show
+    render json: WebApi::V1::AdminPublicationSerializer.new(
+      @publication,
+      params: fastjson_params,
+      ).serialized_json, status: :ok
   end
 
 
