@@ -794,6 +794,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.string "image"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "text_reference", null: false
   end
 
   create_table "topics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -854,6 +855,7 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.integer "ordering", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["ordering"], name: "index_volunteering_causes_on_ordering"
     t.index ["participation_context_type", "participation_context_id"], name: "index_volunteering_causes_on_participation_context"
   end
 

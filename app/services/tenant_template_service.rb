@@ -24,6 +24,18 @@ class TenantTemplateService
       fields.each do |attributes|
         model = model_class.new
         image_assignments = {}
+
+        # Required to make templates tests work in which case file storage is used
+        if Rails.env.test?
+          attributes.keys.select do |key|
+            key.start_with?('remote_') && key.end_with?('_url') && attributes[key]&.start_with?('/')
+          end.each do |key|
+            new_key = key.gsub('remote_', '').gsub('_url', '')
+            attributes[new_key] = File.open "public#{attributes[key]}"
+            attributes.delete key
+          end
+        end
+
         attributes.each do |field_name, field_value|
           if (field_name =~ /_multiloc$/) && (field_value.is_a? String)
             multiloc_value = CL2_SUPPORTED_LOCALES.map do |locale|
@@ -123,6 +135,7 @@ class TenantTemplateService
       @template['models']['polls/option']                          = yml_poll_options
       @template['models']['polls/response']                        = yml_poll_responses
       @template['models']['polls/response_option']                 = yml_poll_response_options
+      @template['models']['text_image']                            = yml_text_images
       @template['models']['volunteering/cause']                    = yml_volunteering_causes
       @template['models']['volunteering/volunteer']                = yml_volunteering_volunteers
     end
@@ -557,7 +570,7 @@ class TenantTemplateService
 
   def yml_campaigns
     EmailCampaigns::Campaign.where(type: "EmailCampaigns::Campaigns::Manual").map do |c|
-      {
+      yml_campaign = {
         'type'             => c.type,
         'author_ref'       => lookup_ref(c.author_id, :user),
         'enabled'          => c.enabled,
@@ -567,6 +580,8 @@ class TenantTemplateService
         'created_at'       => c.created_at.to_s,
         'updated_at'       => c.updated_at.to_s,
       }
+      store_ref yml_campaign, c.id, :email_campaign
+      yml_campaign
     end
   end
 
@@ -1050,6 +1065,19 @@ class TenantTemplateService
       }
       store_ref yml_volunteer, v.id, :volunteering_volunteer
       yml_volunteer
+    end
+  end
+
+  def yml_text_images
+    TextImage.all.map do |ti|
+      {
+        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :event, :initiative, :email_campaign]),
+        'imageable_field'  => ti.imageable_field,
+        'remote_image_url' => ti.image_url,
+        'text_reference'   => ti.text_reference,
+        'created_at'       => ti.created_at.to_s,
+        'updated_at'       => ti.updated_at.to_s
+      }
     end
   end
 end
