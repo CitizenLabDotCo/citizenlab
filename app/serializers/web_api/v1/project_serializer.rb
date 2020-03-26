@@ -5,6 +5,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :publication_status do |object|
     object.admin_publication.publication_status
+  end
 
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images object, :description_multiloc
