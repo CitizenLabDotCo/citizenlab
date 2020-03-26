@@ -20,19 +20,20 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       @publications = @publications.where(parent_id: parent_scope)
     end
 
+    # Array of publication IDs for folders that
+    # still have children left.
+    parent_ids_for_visible_children = ProjectsFilteringService.new.apply_common_index_filters(
+        Pundit.policy_scope(current_user, Project),
+        params.except(:folder)
+      ).includes(:admin_publication).pluck('admin_publications.parent_id').compact
+
     # Leave out folders which would have no
     # children left if the same filters were
     # applied to its projects.
-    if params[:filter_empty_folders].present?
-      # Array of publication IDs for folders that
-      # still have children left.
-      parent_ids_for_filtered_visible_children = ProjectsFilteringService.new.apply_common_index_filters(
-          Pundit.policy_scope(current_user, Project),
-          params.except(:folder)
-        ).includes(:admin_publication).pluck('admin_publications.parent_id').compact
+    if params[:filter_empty_folders].present?    
       # Only keep folders that have children
       # left.
-      @publications = @publications.where(publication_type: ProjectFolder.name, id: parent_ids_for_filtered_visible_children.uniq)
+      @publications = @publications.where(publication_type: ProjectFolder.name, id: parent_ids_for_visible_children.uniq)
         .or(@publications.where(publication_type: Project.name))
     end
 
@@ -40,11 +41,7 @@ class WebApi::V1::AdminPublicationsController < ::ApplicationController
       .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
-
-    # Array of publication IDs for folders that
-    # still have visible children left.
-    parent_ids_for_visible_children = Pundit.policy_scope(current_user, Project)
-      .includes(:admin_publication).pluck('admin_publications.parent_id').compact
+    
     # Caches the counts of visible children for
     # the current user.
     visible_children_count_by_parent_id = Hash.new(0).tap { |h| parent_ids_for_visible_children.each { |id| h[id] += 1 } }

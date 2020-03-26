@@ -189,6 +189,16 @@ resource "AdminPublication" do
         expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 2
         expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 2
       end
+
+      example "Visible children count should take account with applied filters", document: false do
+        @projects.first.admin_publication.update! publication_status: 'archived'
+        do_request(folder: nil, publication_statuses: ['published'])
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 2
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project_folder')).to eq 1
+        expect(json_response[:data].map{|d| d.dig(:relationships, :publication, :data, :type)}.count('project')).to eq 1
+        expect(json_response[:data].select{|d| d.dig(:relationships, :publication, :data, :type) == 'project_folder'}.first.dig(:attributes, :visible_children_count)).to eq 1
+      end
     end
   end
 end
