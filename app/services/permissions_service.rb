@@ -5,7 +5,8 @@ class PermissionsService
     'ideation' => %w(posting voting commenting),
     'survey' => %w(taking_survey),
     'poll' => %w(taking_poll),
-    'budgeting' => %w(commenting budgeting)
+    'budgeting' => %w(commenting budgeting),
+    'volunteering' => %w()
   }
 
 

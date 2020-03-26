@@ -164,6 +164,16 @@ PATH
       rails (~> 6.0.0)
       savon (~> 2.12.0)
 
+PATH
+  remote: engines/volunteering
+  specs:
+    volunteering (0.1.0)
+      acts_as_list (~> 0.9.17)
+      apartment (~> 2.2.1)
+      kaminari (~> 1.1.1)
+      pundit (~> 2.0)
+      rails (~> 6.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -733,6 +743,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   surveys!
   verification!
+  volunteering!
   webmock (~> 3.4)
 
 BUNDLED WITH
