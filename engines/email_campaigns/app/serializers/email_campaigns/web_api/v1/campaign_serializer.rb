@@ -43,7 +43,9 @@ module EmailCampaigns
     }
     attribute :body_multiloc, if: Proc.new { |object|
       content_configurable? object
-    }
+    } do |object|
+      TextImageService.new.render_data_images object, :body_multiloc
+    end
     attribute :deliveries_count, if: Proc.new { |object|
       trackable? object
     }

@@ -208,7 +208,6 @@ describe TenantTemplateService do
       Apartment::Tenant.switch('localhost') do
         load Rails.root.join("db","seeds.rb")
       end
-      TenantService.new.clear_images_and_files!(Tenant.find_by(host: 'localhost'))
       template = service.tenant_to_template Tenant.find_by(host: 'localhost')
       service.apply_template template
       expect(Area.count).to be > 0

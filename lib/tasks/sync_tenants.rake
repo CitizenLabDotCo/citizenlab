@@ -116,9 +116,7 @@ def object_from_template classname, attributes
   when 'Topic'  
     nil
   when 'Page'
-    # Problem is that text image urls change
-    # Page.where(slug: attributes['slug']).first
-    nil
+    Page.where(slug: attributes['slug']).first
   when 'Project'
     nil
   when 'Event'
