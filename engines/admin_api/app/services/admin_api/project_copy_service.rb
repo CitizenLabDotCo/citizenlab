@@ -45,6 +45,9 @@ module AdminApi
         @template['models']['official_feedback']   = yml_official_feedback shift_timestamps: shift_timestamps
         @template['models']['vote']                = yml_votes shift_timestamps: shift_timestamps
       end
+
+      @template['models']['text_images']           = yml_text_images shift_timestamps: shift_timestamps
+
       @template
     end
 
@@ -74,7 +77,7 @@ module AdminApi
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
         'title_multiloc'               => new_title_multiloc || @project.title_multiloc,
-        'description_multiloc'         => @project.description_multiloc,
+        'description_multiloc'         => TextImageService.new.render_data_images(@project, :description_multiloc),
         'created_at'                   => shift_timestamp(@project.created_at, shift_timestamps)&.iso8601,
         'updated_at'                   => shift_timestamp(@project.updated_at, shift_timestamps)&.iso8601,
         'remote_header_bg_url'         => @project.header_bg_url,
@@ -124,7 +127,7 @@ module AdminApi
         yml_phase.merge!({
           'project_ref'          => lookup_ref(p.project_id, :project),
           'title_multiloc'       => p.title_multiloc,
-          'description_multiloc' => p.description_multiloc,
+          'description_multiloc' => TextImageService.new.render_data_images(p, :description_multiloc),
           'start_at'             => shift_timestamp(p.start_at, shift_timestamps)&.iso8601,
           'end_at'               => shift_timestamp(p.end_at, shift_timestamps)&.iso8601,
           'created_at'           => shift_timestamp(p.created_at, shift_timestamps)&.iso8601,
@@ -281,7 +284,7 @@ module AdminApi
         yml_event = {
           'project_ref'          => lookup_ref(e.project_id, :project),
           'title_multiloc'       => e.title_multiloc,
-          'description_multiloc' => e.description_multiloc,
+          'description_multiloc' => TextImageService.new.render_data_images(e, :description_multiloc),
           'location_multiloc'    => e.location_multiloc,
           'start_at'             => shift_timestamp(e.start_at, shift_timestamps)&.iso8601,
           'end_at'               => shift_timestamp(e.end_at, shift_timestamps)&.iso8601,
@@ -433,6 +436,20 @@ module AdminApi
         }
         store_ref yml_vote, v.id, :vote
         yml_vote
+      end
+    end
+
+    def yml_text_images shift_timestamps: 0
+      imageable_ids = [@project.id] + @project.phase_ids + @project.event_ids
+      TextImage.where(imageable_id: imageable_ids).map do |ti|
+        {
+          'imageable_ref'    => lookup_ref(ti.imageable_id, [:phase, :project, :event]),
+          'imageable_field'  => ti.imageable_field,
+          'remote_image_url' => ti.image_url,
+          'text_reference'   => ti.text_reference,
+          'created_at'       => shift_timestamp(ti.created_at, shift_timestamps)&.iso8601,
+          'updated_at'       => shift_timestamp(ti.updated_at, shift_timestamps)&.iso8601
+        }
       end
     end
 
