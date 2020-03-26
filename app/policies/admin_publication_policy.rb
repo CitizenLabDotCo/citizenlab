@@ -17,6 +17,10 @@ class AdminPublicationPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
+  def show?
+    user&.active? && user.admin?
+  end
+
   def permitted_attributes_for_reorder
     [:ordering]
   end
