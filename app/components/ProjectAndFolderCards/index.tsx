@@ -64,7 +64,6 @@ const Header = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 30px;
   border-bottom: 1px solid #d1d1d1;
 
@@ -82,8 +81,8 @@ const Title = styled.h2`
   display: flex;
   align-items: center;
   padding: 0;
-  padding-bottom: 15px;
   margin-right: 45px;
+  width: 100%;
 
   ${media.smallerThanMinTablet`
     text-align: center;
@@ -192,18 +191,18 @@ const FiltersArea = styled.div`
 `;
 
 const FilterArea = styled.div`
-    height: 60px;
-    display: flex;
-    align-items: center;
+  height: 60px;
+  display: flex;
+  align-items: center;
 
-    &.publicationstatus {
-      margin-right: 30px;
-    }
+  &.publicationstatus {
+    margin-right: 30px;
+  }
 
-    ${media.smallerThanMinTablet`
-      height: auto;
-      `};
-      `;
+  ${media.smallerThanMinTablet`
+    height: auto;
+  `};
+`;
 
 const ShowMoreButton = styled(Button)``;
 
