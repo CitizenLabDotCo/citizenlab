@@ -8,7 +8,9 @@ module Volunteering
       wb = pa.workbook
       pc.causes.order(:ordering).each do |cause|
         wb.styles do |s|
-          wb.add_worksheet(name: @@multiloc_service.t(cause.title_multiloc)) do |sheet|
+          # Sheet names can only be 31 characters long
+          sheet_name = @@multiloc_service.t(cause.title_multiloc)[0..30]
+          wb.add_worksheet(name: sheet_name) do |sheet|
             sheet.add_row [
               "first_name",
               "last_name",

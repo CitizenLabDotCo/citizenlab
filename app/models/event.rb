@@ -1,6 +1,7 @@
 class Event < ApplicationRecord
   belongs_to :project
   has_many :event_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :text_images, as: :imageable, dependent: :destroy
 
   validates :project, presence: true
   validates :title_multiloc, presence: true, multiloc: {presence: true}
