@@ -194,7 +194,7 @@ const publicationStatuses: PublicationStatus[] = ['draft', 'archived', 'publishe
 
 const Data = adopt<DataProps, WithRouterProps>({
   projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
-  topLevelProjects: <GetAdminPublications publicationStatusFilter={publicationStatuses} folderId={null} />, // TODO !!
+  topLevelProjects: <GetAdminPublications publicationStatusFilter={publicationStatuses} folderId={null} />,
   projectsInFolder: ({ params, render }) => <GetAdminPublications publicationStatusFilter={publicationStatuses} folderId={params.projectFolderId}>{render}</GetAdminPublications>,
 });
 
