@@ -54,7 +54,7 @@ interface Props extends DefaultProps {
   name: string;
   values: IFilterSelectorValue[];
   onChange?: (value: any) => void;
-  multiple: boolean;
+  multipleSelectionAllowed: boolean;
   selected: string[];
 }
 
@@ -85,10 +85,10 @@ export default class FilterSelector extends PureComponent<Props, State> {
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
 
-  getTitle = (selection, values, multiple, title) => {
+  getTitle = (selection, values, multipleSelectionAllowed, title) => {
     let newTitle: any = '';
 
-    if (!multiple && isArray(selection) && !isEmpty(selection)) {
+    if (!multipleSelectionAllowed && isArray(selection) && !isEmpty(selection)) {
       const selected = find(values, { value: selection[0] });
       newTitle = selected ? selected['text'] : '';
     } else if (isArray(selection) && !isEmpty(selection)) {
@@ -119,7 +119,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
   selectionChange = (value: string) => {
     let newSelection = cloneDeep(this.props.selected);
 
-    if (!this.props.multiple) {
+    if (!this.props.multipleSelectionAllowed) {
       newSelection = [value];
     } else if (includes(newSelection, value)) {
       newSelection = without(newSelection, value);
@@ -131,7 +131,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
       this.props.onChange(newSelection);
     }
 
-    if (!this.props.multiple) {
+    if (!this.props.multipleSelectionAllowed) {
       this.closeExpanded();
     }
   }
@@ -143,8 +143,24 @@ export default class FilterSelector extends PureComponent<Props, State> {
   render() {
     const className = this.props['className'];
     const { opened } = this.state;
-    const { id, values, multiple, selected, title, width, mobileWidth, maxHeight, mobileMaxHeight, top, left, mobileLeft, right, mobileRight, last } = this.props;
-    const currentTitle = this.getTitle(selected, values, multiple, title);
+    const {
+      id,
+      values,
+      multipleSelectionAllowed,
+      selected,
+      title,
+      width,
+      mobileWidth,
+      maxHeight,
+      mobileMaxHeight,
+      top,
+      left,
+      mobileLeft,
+      right,
+      mobileRight,
+      last
+    } = this.props;
+    const currentTitle = this.getTitle(selected, values, multipleSelectionAllowed, title);
 
     return (
       <Container
@@ -165,7 +181,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
           selected={selected}
           onChange={this.selectionChange}
           onClickOutside={this.handleClickOutside}
-          multiple={multiple}
+          multipleSelectionAllowed={multipleSelectionAllowed}
           baseID={this.baseID}
           width={width}
           mobileWidth={mobileWidth}
