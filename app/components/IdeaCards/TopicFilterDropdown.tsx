@@ -91,7 +91,7 @@ export default class TopicFilterDropdown extends PureComponent<Props, State> {
             selected={selectedValues}
             values={options}
             onChange={this.handleOnChange}
-            multiple={true}
+            multipleSelectionAllowed={true}
             last={true}
             left={alignment === 'left' ? '-5px' : undefined}
             mobileLeft={alignment === 'left' ? '-5px' : undefined}

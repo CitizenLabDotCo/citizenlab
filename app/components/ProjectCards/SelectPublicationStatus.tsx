@@ -50,7 +50,7 @@ class SelectPublicationStatus extends PureComponent<Props, State> {
         selected={selectedValue}
         values={options}
         onChange={this.handleOnChange}
-        multiple={false}
+        multipleSelectionAllowed={false}
         left="-5px"
         mobileLeft="-5px"
       />
