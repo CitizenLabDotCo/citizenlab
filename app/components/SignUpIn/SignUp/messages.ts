@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  accountCreationTitle: {
-    id: 'app.containers.SignUp.accountCreationTitle',
+  passwordSignupTitle: {
+    id: 'app.containers.SignUp.passwordSignupTitle',
     defaultMessage: 'Create an account',
   },
   invitationTitle: {
@@ -125,6 +125,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
+  or: {
+    id: 'app.containers.SignUp.or',
+    defaultMessage: 'Or',
+  },
   orSignUpWith: {
     id: 'app.containers.SignUp.orSignUpWith',
     defaultMessage: 'Or sign up with',
@@ -201,4 +205,20 @@ export default defineMessages({
     id: 'app.containers.SignUp.somethingWentWrongText',
     defaultMessage: 'Something went wrong while trying to create your account. Please try again in a few minutes.',
   },
+  continueWithEmail: {
+    id: 'app.containers.SignUp.continueWithEmail',
+    defaultMessage: 'Continue with email',
+  },
+  continueWithGoogle: {
+    id: 'app.containers.SignUp.continueWithGoogle',
+    defaultMessage: 'Continue with Google',
+  },
+  continueWithFacebook: {
+    id: 'app.containers.SignUp.continueWithFacebook',
+    defaultMessage: 'Continue with Facebook',
+  },
+  continueWithAzure: {
+    id: 'app.containers.SignUp.continueWithAzure',
+    defaultMessage: 'Continue with {azureProviderName}',
+  }
 });

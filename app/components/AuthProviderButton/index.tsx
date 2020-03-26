@@ -178,6 +178,7 @@ class AuthProviderButton extends PureComponent<Props, State> {
     event.preventDefault();
     this.toggleStatus();
   }
+
   handleOnKeyDown = (event) => {
     if (event['key'] === 'Enter') {
       this.toggleStatus();

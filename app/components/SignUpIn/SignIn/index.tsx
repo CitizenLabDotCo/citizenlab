@@ -32,6 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { Title } from 'components/SignUpIn/styles';
 
 // logos
 import franceconnectLogo from 'components/AuthProviderButton/svg/franceconnect.svg';
@@ -44,16 +45,6 @@ const Container = styled.div`
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-`;
-
-const Title = styled.h1`
-  width: 100%;
-  color: #333;
-  font-size: ${fontSizes.xxxxl}px;
-  line-height: 42px;
-  font-weight: 500;
-  text-align: left;
-  margin-bottom: 35px;
 `;
 
 const Form = styled.form`

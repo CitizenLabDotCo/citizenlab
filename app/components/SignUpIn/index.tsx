@@ -5,8 +5,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import useTenant from 'hooks/useTenant';
 
 // component
-import SignUp, { InputProps as SignUpProps } from 'components/SignUp';
-import SignIn, { InputProps as SignInProps } from 'components/SignIn';
+import SignUp, { InputProps as SignUpProps } from 'components/SignUpIn/SignUp';
+import SignIn, { InputProps as SignInProps } from 'components/SignUpIn/SignIn';
 
 // styling
 import styled from 'styled-components';
