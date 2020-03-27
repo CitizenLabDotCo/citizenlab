@@ -13,7 +13,7 @@ import GetFeatureFlag from 'resources/GetFeatureFlag';
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
-import messages from './messages';
+import messages from './SignUp/messages';
 
 // styling
 import styled from 'styled-components';
@@ -60,7 +60,7 @@ const SubSocialButtonLink = styled.a`
 
 interface InputProps {
   className?: string;
-  onMethodSelected: (selectedMethod: TSignUpMethods) => void;
+  onMethodSelected: (selectedMethod: TSignUpInMethods) => void;
 }
 
 interface DataProps {
@@ -74,7 +74,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-export type TSignUpMethods = 'email' | SSOProvider;
+export type TSignUpInMethods = 'email' | SSOProvider;
 
 const MethodSelection = memo<Props & InjectedIntlProps>(({
   className,
@@ -90,7 +90,7 @@ const MethodSelection = memo<Props & InjectedIntlProps>(({
 
   const azureProviderName = !isNilOrError(tenant) ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name : null;
 
-  const handleMethodSelected = useCallback((method: TSignUpMethods) => (event: React.FormEvent) => {
+  const handleMethodSelected = useCallback((method: TSignUpInMethods) => (event: React.FormEvent) => {
     event.preventDefault();
     onMethodSelected(method);
   }, [onMethodSelected]);

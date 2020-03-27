@@ -142,9 +142,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const tenant$ = currentTenantStream().observable;
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      const previousPathname = location.pathname;
+      const newPreviousPathname = location.pathname;
       const pathsToIgnore = ['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'];
-      this.setState((state) => ({ previousPathname: !endsWith(previousPathname, pathsToIgnore) ? previousPathname : state.previousPathname }));
+      this.setState((state) => ({ previousPathname: !endsWith(newPreviousPathname, pathsToIgnore) ? newPreviousPathname : state.previousPathname }));
       trackPage(newLocation.pathname);
     });
 
