@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
-import { compact, /* get,*/ isNil } from 'lodash-es';
+import { compact, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 require('leaflet-simplestyle');
 
