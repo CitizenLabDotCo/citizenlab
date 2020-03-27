@@ -164,7 +164,6 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
-  mapElement: HTMLDivElement | null;
 }
 
 class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
@@ -189,7 +188,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     super(props);
     this.state = {
       initiated: false,
-      mapElement: null
     };
   }
 
@@ -201,20 +199,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
   }
 
-  componentDidUpdate(_prevProps, prevState) {
+  componentDidUpdate() {
     const { mapConfig, points } = this.props;
-    const { mapElement } = this.state;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
-    }
-
-    if (
-      prevState.mapElement !== mapElement &&
-      mapElement &&
-      !this.map
-    ) {
-      this.initMap(mapElement);
     }
 
     if (
@@ -293,32 +282,30 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     });
   }
 
-  bindMapContainer = (element: HTMLDivElement) => {
-    this.setState({ mapElement: element });
-  }
-
-  initMap = (mapElement: HTMLDivElement) => {
+  initMap = (mapContainer: HTMLDivElement) => {
     const { tenant, center } = this.props;
 
-    // Init the map
-    const zoom = getZoom();
-    const tileProvider = getTileProvider();
-    const initCenter = getInitCenter();
+    if (!this.map) {
+      const zoom = getZoom();
+      const tileProvider = getTileProvider();
+      const initCenter = getInitCenter();
 
-    this.baseLayer = Leaflet.tileLayer(tileProvider, {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: ['a', 'b', 'c']
-    });
-    this.map = Leaflet.map(mapElement, {
-      zoom,
-      center: initCenter,
-      maxZoom: 17,
-      layers: [this.baseLayer]
-    });
+      this.baseLayer = Leaflet.tileLayer(tileProvider, {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: ['a', 'b', 'c']
+      });
 
-    // Handlers
-    if (this.props.onMapClick) {
-      this.map.on('click', this.handleMapClick);
+      this.map = Leaflet.map(mapContainer, {
+        zoom,
+        center: initCenter,
+        maxZoom: 17,
+        layers: [this.baseLayer]
+      });
+
+      // Handlers
+      if (this.props.onMapClick) {
+        this.map.on('click', this.handleMapClick);
+      }
     }
 
     function getZoom() {
@@ -459,7 +446,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
             <LeafletMapContainer
               id="e2e-map"
-              ref={this.bindMapContainer}
+              ref={this.initMap}
               mapHeight={mapHeight}
             >
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
