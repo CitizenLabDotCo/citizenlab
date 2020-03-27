@@ -103,6 +103,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
       width={820}
       opened={opened}
       close={onClose}
+      closeOnClickOutside={false}
     >
       <Container className={`e2e-verification-steps ${className || ''}`}>
         {activeStep && activeStep !== 'success' && activeStep !== 'error' &&

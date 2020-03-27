@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import MethodSelection, { TSignUpMethods } from './MethodSelection';
+import MethodSelection, { TSignUpInMethods } from '../MethodSelection';
 import PasswordSignup from './PasswordSignup';
 import VerificationSteps from 'components/Verification/VerificationSteps';
 import CustomFields from './CustomFields';
@@ -32,10 +32,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-// const SelectedPhaseEventName = 'signUpFlowNextStep';
-// export const signUpNextStep$ = eventEmitter.observeEvent(SelectedPhaseEventName);
-// export const signUpGoToNextStep = () =>  eventEmitter.emit(SelectedPhaseEventName);
 
 export type TSignUpSteps = 'method-selection' | 'password-signup' | 'verification' | 'custom-fields';
 
@@ -105,7 +101,7 @@ class SignUp extends PureComponent<Props, State> {
 
     if (activeStep === 'method-selection') {
       this.setState({ activeStep: 'password-signup' });
-    } else if (activeStep === 'password-signup' && hasVerificationStep) {
+    } else if (activeStep === 'password-signup' && !isNilOrError(authUser) && !authUser.attributes.verified && hasVerificationStep) {
       this.setState({ activeStep: 'verification' });
     } else if (!isNilOrError(authUser) && !authUser.attributes.registration_completed_at) {
       this.setState({ activeStep: 'custom-fields' });
@@ -114,7 +110,7 @@ class SignUp extends PureComponent<Props, State> {
     }
   }
 
-  handleMethodSelectionCompleted = (selectedMethod: TSignUpMethods) => {
+  handleMethodSelectionCompleted = (selectedMethod: TSignUpInMethods) => {
     if (selectedMethod === 'email') {
       this.goToNextStep();
     } else {
