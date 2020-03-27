@@ -304,7 +304,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       subdomains: ['a', 'b', 'c']
     });
 
-    if (mapElement && !this.map) {
+    if (!this.map) {
       this.map = Leaflet.map(mapElement, {
         zoom,
         center: initCenter,
