@@ -289,15 +289,11 @@ en-GB:
     default_threshold_reached_message: >
       <p>The initiators are invited to present their proposal on the next council meeting. We will provide an official update.</p>
     default_eligibility_criteria: >
-      <p>The initiative should</p>
       <ul>
-      <li>Be within the competences of our local government</li>
-      <li>Serve the common interest, not a personal one</li>
-      <li>Not discriminate on gender, race, age,…</li>
-      <li>Not harm others</li>
-      <li>Be viable in terms of budget</li>
-      <li>Be viable in terms of timing</li>
-      <li>Be different from other initiatives already on the platform</li>
+      <li>It must fall within the policy areas and competencies of local policy</li>
+      <li>It serves the public interest rather than your individual interest</li>
+      <li>It does not discriminate based on gender, race, age, or background</li>
+      <li>It does not harm others</li>
       </ul>
   smart_group_rules:
     is_empty: "%{property} has no value"
