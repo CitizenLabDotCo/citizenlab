@@ -299,7 +299,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     const zoom = getZoom();
     const tileProvider = getTileProvider();
     const initCenter = getInitCenter();
-    const baseLayer = Leaflet.tileLayer(tileProvider, {
+    this.baseLayer = Leaflet.tileLayer(tileProvider, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: ['a', 'b', 'c']
     });
@@ -309,7 +309,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         zoom,
         center: initCenter,
         maxZoom: 17,
-        layers: [baseLayer]
+        layers: [this.baseLayer]
       });
 
       // Handlers
