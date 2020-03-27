@@ -245,7 +245,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     if (hasLayers) {
       // add default enabled layers to map
-      const layers = this.formatLayers(mapConfig);
+      const layers = this.createLeafletLayers(mapConfig);
       const overlaysEnabledByDefault = layers
         .filter(layer => layer.enabledByDefault === true)
         .map(layer => layer.leafletGeoJson);
@@ -262,7 +262,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
   }
 
-  formatLayers = (mapConfig: IMapConfigData) => {
+  createLeafletLayers = (mapConfig: IMapConfigData) => {
     /*
       Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
       This is how it keeps the toggles in sync.
@@ -271,7 +271,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       and one for creating the overlay maps,
       we need to reformat the data we get from the back-end, so we can do filter
       operations (that require the default_enabled value)
-      + create overlay maps (that require the geoJson title)
+      + create overlay maps (that require the geoJson title) coming from the same
+      "starting" array, so Leaflet can keep in sync
     */
     const layers = mapConfig.attributes.layers;
 
