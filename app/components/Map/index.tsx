@@ -203,16 +203,12 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
   componentDidUpdate(prevProps) {
     const { mapConfig, points } = this.props;
-    const { mapElement } = this.state;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
     }
 
-    mapElement && this.initMap(mapElement);
-
     if (
-      (prevProps.mapConfig !== mapConfig) &&
       !isNilOrError(mapConfig) &&
       this.map
     ) {
@@ -299,12 +295,12 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     const zoom = getZoom();
     const tileProvider = getTileProvider();
     const initCenter = getInitCenter();
-    this.baseLayer = Leaflet.tileLayer(tileProvider, {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: ['a', 'b', 'c']
-    });
 
     if (!this.map) {
+      this.baseLayer = Leaflet.tileLayer(tileProvider, {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        subdomains: ['a', 'b', 'c']
+      });
       this.map = Leaflet.map(mapElement, {
         zoom,
         center: initCenter,
@@ -490,3 +486,6 @@ export default (inputProps: InputProps) => (
     {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
+
+// TODO: when toggling map, on re-open mapConfig isn't used anymore
+// TODO: go over code
