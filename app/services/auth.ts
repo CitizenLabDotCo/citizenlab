@@ -31,6 +31,8 @@ export function lockedFieldsStream() {
 }
 
 export async function signIn(email: string, password: string) {
+  const delay = (ms: number) => new Promise(r => setTimeout(r, ms));
+
   try {
     const bodyData = { auth: { email, password } };
     const httpMethod: IHttpMethod = { method: 'POST' };
@@ -38,6 +40,7 @@ export async function signIn(email: string, password: string) {
     setJwt(jwt);
     const authenticatedUser = await getAuthUserAsync();
     streams.reset(authenticatedUser);
+    await delay(100);
     return authenticatedUser;
   } catch (error) {
     signOut();

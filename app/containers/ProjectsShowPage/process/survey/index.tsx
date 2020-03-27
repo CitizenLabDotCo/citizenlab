@@ -18,7 +18,7 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // events
-import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';
@@ -74,10 +74,17 @@ interface State { }
 class Survey extends PureComponent<Props, State> {
   onVerify = () => {
     const { projectId, phaseId } = this.props;
-    if (phaseId) {
-      openVerificationModalWithContext(phaseId, 'phase', 'taking_survey');
-    } else if (projectId) {
-      openVerificationModalWithContext(projectId, 'project', 'taking_survey');
+    const pcId = phaseId || projectId;
+    const pcType = phaseId ? 'phase' : 'project';
+
+    if (pcId && pcType) {
+      openVerificationModal({
+        context: {
+          action: 'taking_survey',
+          id: pcId,
+          type: pcType
+        }
+      });
     }
   }
 

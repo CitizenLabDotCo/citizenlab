@@ -22,7 +22,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // events
-import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';
@@ -81,7 +81,16 @@ class CommentingDisabled extends PureComponent<Props> {
     if (!isNilOrError(authUser)) {
       const pcId = phaseId || projectId || null;
       const pcType = phaseId ? 'phase' : 'project';
-      pcId && openVerificationModalWithContext(pcId, pcType, 'commenting');
+
+      if (pcId && pcType) {
+        openVerificationModal({
+          context: {
+            action: 'commenting',
+            id: pcId,
+            type: pcType
+          }
+        });
+      }
     } else {
       openSignUpInModal({
         method: 'signup',

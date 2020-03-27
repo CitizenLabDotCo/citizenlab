@@ -20,7 +20,7 @@ import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resour
 
 // utils
 import CSSTransition from 'react-transition-group/CSSTransition';
-import { openVerificationModalWithoutContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
@@ -276,7 +276,7 @@ class SignedInHeader extends PureComponent<Props, State> {
   }
 
   handleVerify = () => {
-    openVerificationModalWithoutContext();
+    openVerificationModal();
   }
 
   render() {

@@ -21,7 +21,7 @@ import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // events
-import { openVerificationModalWithoutContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 const Container = styled(FormSection)`
   display: flex;
@@ -116,8 +116,8 @@ const ReverifyButton = styled.button`
 const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
 
-  const openVerificationModal = useCallback(() => {
-    openVerificationModalWithoutContext();
+  const onVerify = useCallback(() => {
+    openVerificationModal();
   }, []);
 
   if (isNilOrError(authUser)) return null;
@@ -125,7 +125,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authIsVerified = authUser.data.attributes.verified;
 
   const reverifyButton = (
-    <ReverifyButton onClick={openVerificationModal}>
+    <ReverifyButton onClick={onVerify}>
       <FormattedMessage {...messages.clickHereToUpdateVerification} />
     </ReverifyButton>
   );
@@ -174,7 +174,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 <FormattedMessage {...messages.becomeVerifiedSubtitle} />
               </StyledText>
             </Content>
-            <VerifyButton onClick={openVerificationModal} id="e2e-verify-user-button">
+            <VerifyButton onClick={onVerify} id="e2e-verify-user-button">
               <FormattedMessage {...messages.verifyNow} />
             </VerifyButton>
           </>

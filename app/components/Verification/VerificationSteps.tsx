@@ -70,14 +70,15 @@ export interface Props {
 
 const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, showHeader, inModal, onComplete, onError }) => {
 
-  const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep);
+  const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep || 'method-selection');
   const [method, setMethod] = useState<IDLookupMethod | null>(null);
 
   const verificationMethods = useVerificationMethods();
 
   useEffect(() => {
+    // set the method immediatly on mount if only 1 method is present in data returned by the API
     if (!isNilOrError(verificationMethods) && verificationMethods.data.length === 1) {
-      setMethod(verificationMethods.data[0] as IDLookupMethod);
+      setMethod(verificationMethods.data[0] as any);
       setActiveStep(verificationMethods.data[0].attributes.name);
     }
   }, [verificationMethods]);

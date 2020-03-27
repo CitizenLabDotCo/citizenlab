@@ -1,7 +1,7 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { isString, isObject, uniq, has } from 'lodash-es';
+import { uniq, has } from 'lodash-es';
 import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -26,6 +26,9 @@ import { PreviousPathnameContext } from 'context';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
 
+// verification
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+
 // analytics
 import ConsentManager from 'components/ConsentManager';
 import { trackPage } from 'utils/analytics';
@@ -41,6 +44,7 @@ import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
 const VerificationModal = lazy(() => import('components/Verification/VerificationModal'));
 const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
+const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -53,7 +57,6 @@ import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { openVerificationModal$, closeVerificationModal$ } from 'containers/App/verificationModalEvents';
 import { getJwt } from 'utils/auth/jwt';
 
 // style
@@ -61,7 +64,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { TVerificationSteps, ContextShape } from 'components/Verification/VerificationSteps';
+import { ContextShape } from 'components/Verification/VerificationSteps';
 
 const Container = styled.div`
   display: flex;
@@ -103,14 +106,11 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
-  verificationModalOpened: boolean;
-  verificationModalInitialStep: TVerificationSteps;
-  verificationModalContext: ContextShape | null;
+  signUpInModalMounted: boolean;
+  verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
 };
-
-const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
@@ -128,9 +128,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false,
-      verificationModalOpened: false,
-      verificationModalContext: null,
-      verificationModalInitialStep: null,
+      signUpInModalMounted: false,
+      verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null
     };
@@ -143,22 +142,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const tenant$ = currentTenantStream().observable;
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      const { authUser } = this.state;
       const previousPathname = location.pathname;
-      const nextPathname = newLocation.pathname;
-      const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
-
-      this.setState((state) => ({
-        previousPathname: !endsWith(previousPathname, ['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error']) ? previousPathname : state.previousPathname
-      }));
-
+      const pathsToIgnore = ['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'];
+      this.setState((state) => ({ previousPathname: !endsWith(previousPathname, pathsToIgnore) ? previousPathname : state.previousPathname }));
       trackPage(newLocation.pathname);
-
-      // If already created a user (step 1 of sign-up) and there's a required field in step 2,
-      // redirect to complete-signup page
-      if (isObject(authUser) && !isString(registrationCompletedAt) && !endsWith(nextPathname, 'complete-signup')) {
-        clHistory.replace('/complete-signup');
-      }
     });
 
     this.subscriptions = [
@@ -205,14 +192,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openPostPageModal(id, slug, type);
       }),
 
-      openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
-        this.openVerificationModal(step, context);
-      }),
-
-      closeVerificationModal$.subscribe(() => {
-        this.closeVerificationModal();
-      }),
-
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
         this.closePostPageModal();
       }),
@@ -230,23 +209,17 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.authUser === undefined && !isNilOrError(this.state.authUser)) {
+    const { authUser, signUpInModalMounted, verificationModalMounted } = this.state;
+
+    if (!isNilOrError(authUser) && signUpInModalMounted && (prevState.authUser === undefined || !prevState.signUpInModalMounted)) {
       const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
+      const { sign_up_in_method, sign_up_in_pathname, sign_up_in_verification } = urlSearchParams;
 
-      if (has(urlSearchParams, 'verification_success')) {
-        window.history.replaceState(null, '', window.location.pathname);
-        this.openVerificationModal('success', null);
-      }
-
-      if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
-        window.history.replaceState(null, '', window.location.pathname);
-        this.openVerificationModal('error', { error: this.props.location.query?.error || null } as ContextShape);
-      }
-
-      if (has(urlSearchParams, 'sign_up_in_metadata')) {
+      if (sign_up_in_method && sign_up_in_pathname && sign_up_in_verification) {
         const signUpInMetaData: ISignUpInMetaData = {
-          ...urlSearchParams.sign_up_in_metadata,
-          verification: urlSearchParams.verification === 'true'
+          method: sign_up_in_method,
+          pathname: sign_up_in_pathname,
+          verification: sign_up_in_verification === 'true'
         };
 
         const urlSegments = signUpInMetaData.pathname.replace(/^\/+/g, '').split('/');
@@ -254,9 +227,30 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
         clHistory.replace(signUpInMetaData.pathname);
 
-        if (!['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'].includes(lastUrlSegment)) {
-          openSignUpInModal(signUpInMetaData);
+        if ((!authUser.data.attributes.verified && signUpInMetaData.verification) || !authUser.data.attributes.registration_completed_at) {
+          if (!['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'].includes(lastUrlSegment)) {
+            openSignUpInModal(signUpInMetaData);
+          }
         }
+      }
+    }
+
+    if (!isNilOrError(authUser) && verificationModalMounted && (prevState.authUser === undefined || !prevState.verificationModalMounted)) {
+      const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
+
+      if (has(urlSearchParams, 'verification_success')) {
+        window.history.replaceState(null, '', window.location.pathname);
+        openVerificationModal({ step: 'success' });
+      }
+
+      if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
+        window.history.replaceState(null, '', window.location.pathname);
+        openVerificationModal({
+          step: 'error',
+          context: {
+            error: this.props.location.query?.error || null
+          } as ContextShape
+        });
       }
     }
   }
@@ -286,32 +280,20 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  openVerificationModal = (step: TVerificationSteps, context: ContextShape | null) => {
-    if (this.state.authUser) {
-      this.setState({
-        verificationModalOpened: true,
-        verificationModalInitialStep: step,
-        verificationModalContext: context
-      });
-    } else {
-      console.log('verification modal not opened because user is not authenticated');
-    }
-  }
-
-  closeVerificationModal = () => {
-    this.setState({
-      verificationModalOpened: false,
-      verificationModalInitialStep: null,
-      verificationModalContext: null
-    });
-  }
-
   setNavbarRef = (navbarRef: HTMLElement) => {
     this.setState({ navbarRef });
   }
 
   setMobileNavigationRef = (mobileNavbarRef: HTMLElement) => {
     this.setState({ mobileNavbarRef });
+  }
+
+  singUpInModalMounted = () => {
+    this.setState({ signUpInModalMounted: true });
+  }
+
+  verificationModalMounted = () => {
+    this.setState({ verificationModalMounted: true });
   }
 
   render() {
@@ -325,9 +307,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible,
       userDeletedModalOpened,
       userActuallyDeleted,
-      verificationModalOpened,
-      verificationModalInitialStep,
-      verificationModalContext,
       navbarRef,
       mobileNavbarRef
     } = this.state;
@@ -381,17 +360,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <SignUpInModal />
+                      <SignUpInModal onMounted={this.singUpInModalMounted} />
                     </Suspense>
                   </ErrorBoundary>
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <VerificationModal
-                        opened={verificationModalOpened}
-                        initialActiveStep={verificationModalInitialStep}
-                        context={verificationModalContext}
-                      />
+                      <VerificationModal onMounted={this.verificationModalMounted} />
                     </Suspense>
                   </ErrorBoundary>
 

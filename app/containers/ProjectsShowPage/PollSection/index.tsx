@@ -19,7 +19,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // events
-import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
@@ -95,10 +95,17 @@ const disabledMessages: { [key in Partial<DisabledReasons>]: ReactIntl.Formatted
 export class PollSection extends PureComponent<Props> {
   onVerify = () => {
     const { type, projectId, phaseId } = this.props;
-    if (type === 'project' && projectId) {
-      openVerificationModalWithContext(projectId, 'project', 'taking_poll');
-    } else if (type === 'phase' && phaseId) {
-      openVerificationModalWithContext(phaseId, 'phase', 'taking_poll');
+    const pcId = type === 'phase' ? phaseId : projectId;
+    const pcType = type;
+
+    if (pcId && pcType) {
+      openVerificationModal({
+        context: {
+          action: 'taking_poll',
+          id: pcId,
+          type: pcType
+        }
+      });
     }
   }
 

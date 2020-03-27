@@ -75,18 +75,17 @@ class SignUp extends PureComponent<Props, State> {
 
   static getDerivedStateFromProps(props: Props, state: State) {
     const { activeStep, error } = state;
-    const { authUser, customFieldsSchema, onSignUpCompleted, metaData } = props;
+    const { authUser, onSignUpCompleted, metaData } = props;
     let nextActiveStep = activeStep;
 
-    if (activeStep === undefined && !isUndefinedOrError(authUser) && !isUndefinedOrError(customFieldsSchema)) {
+    if (activeStep === undefined && !isUndefinedOrError(authUser)) {
       nextActiveStep = null;
-      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
       if (authUser === null) { // not logged in
         nextActiveStep = 'method-selection';
       } else if (!authUser.attributes.verified && metaData.verification) { // logged in but not verified and verification required
         nextActiveStep = 'verification';
-      } else if (hasCustomFields) { // logged in but not yet completed custom fields and custom fields enabled
+      } else if (!authUser.attributes.registration_completed_at) { // logged in but not yet completed custom fields and custom fields enabled
         nextActiveStep = 'custom-fields';
       } else {
         onSignUpCompleted();
@@ -101,15 +100,14 @@ class SignUp extends PureComponent<Props, State> {
 
   goToNextStep = () => {
     const { activeStep } = this.state;
-    const { metaData, customFieldsSchema } = this.props;
+    const { authUser, metaData } = this.props;
     const hasVerificationStep = metaData?.verification;
-    const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
 
     if (activeStep === 'method-selection') {
       this.setState({ activeStep: 'password-signup' });
     } else if (activeStep === 'password-signup' && hasVerificationStep) {
       this.setState({ activeStep: 'verification' });
-    } else if (hasCustomFields) {
+    } else if (!isNilOrError(authUser) && !authUser.attributes.registration_completed_at) {
       this.setState({ activeStep: 'custom-fields' });
     } else {
       this.onSignUpCompleted();
