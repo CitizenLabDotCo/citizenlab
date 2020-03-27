@@ -9,6 +9,8 @@ export type IOutput = IMapConfigData | undefined | null | Error;
 
 export default ({ projectId } : Props) : IOutput => {
 
+  // Doing this if statement for a hack in the data loading
+  // of the components/Map/index file
   if (projectId) {
     const [mapConfig, setMapConfig] = useState<IMapConfigData | undefined | null | Error>(undefined);
 
