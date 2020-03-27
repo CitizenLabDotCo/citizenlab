@@ -493,6 +493,3 @@ export default (inputProps: InputProps) => (
     {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
-
-// TODO: when toggling map, on re-open mapConfig isn't used anymore
-// TODO: go over code
