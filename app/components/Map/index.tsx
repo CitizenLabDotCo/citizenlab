@@ -201,7 +201,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(_prevProps) {
     const { mapConfig, points } = this.props;
 
     if (points && points.length > 0) {
