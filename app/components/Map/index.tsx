@@ -216,15 +216,75 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       !isNilOrError(mapConfig) &&
       this.map
     ) {
-      this.updateMap(mapConfig);
+      this.updateMapWithMapConfig(mapConfig);
     }
   }
 
-  updateMap = (mapConfig: IMapConfigData) => {
-    const { zoom_level, tile_provider } = mapConfig.attributes;
+  updateMapWithMapConfig = (mapConfig: IMapConfigData) => {
+    const { localize } = this.props;
+    const {
+      zoom_level,
+      tile_provider,
+      center_geojson,
+      layers
+    } = mapConfig.attributes;
+    const hasLayers = layers.length > 0;
 
+    // update basic values
     if (zoom_level) this.map.setZoom(parseFloat(zoom_level));
     if (tile_provider) this.baseLayer.setUrl(tile_provider);
+    if (center_geojson) {
+      const [longitude, latitude] = center_geojson.coordinates;
+      this.map.panTo([latitude, longitude]);
+    }
+
+    if (hasLayers) {
+      // add default enabled layers to map
+      const layers = this.formatLayers(mapConfig);
+      const overlaysEnabledByDefault = layers
+        .filter(layer => layer.enabledByDefault === true)
+        .map(layer => layer.leafletGeoJson);
+      overlaysEnabledByDefault.forEach(overlay => overlay.addTo(this.map));
+
+      // add layers control to map
+      const overlayMaps = layers.reduce((accOverlayMaps, layer) => {
+        return {
+          ...accOverlayMaps,
+          [localize(layer.title_multiloc)]: layer.leafletGeoJson,
+        };
+      }, {});
+      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+    }
+  }
+
+  formatLayers = (mapConfig: IMapConfigData) => {
+    /*
+      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
+      This is how it keeps the toggles in sync.
+      Because we need two different arrays of Leaflet geoJSON overlays,
+      one for the layers that need to be enabled by default,
+      and one for creating the overlay maps,
+      we need to reformat the data we get from the back-end, so we can do filter
+      operations (that require the default_enabled value)
+      + create overlay maps (that require the geoJson title)
+    */
+    const layers = mapConfig.attributes.layers;
+
+    return layers.map((layer) => {
+      const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
+      const geoJsonOptions = {
+        useSimpleStyle: true,
+        pointToLayer: (_feature, latlng) => {
+          return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
+        }
+      };
+
+      return {
+        title_multiloc: layer.title_multiloc,
+        leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
+        enabledByDefault: layer.default_enabled,
+      };
+    });
   }
 
   bindMapContainer = (element: HTMLDivElement) => {
@@ -233,15 +293,33 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   initMap = (mapElement: HTMLDivElement) => {
-    const { tenant, mapConfig, center, localize } = this.props;
+    const { tenant, center } = this.props;
+
+    // Init the map
+    const zoom = getZoom();
+    const tileProvider = getTileProvider();
+    const initCenter = getInitCenter();
+    const baseLayer = Leaflet.tileLayer(tileProvider, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: ['a', 'b', 'c']
+    });
+
+    if (mapElement && !this.map) {
+      this.map = Leaflet.map(mapElement, {
+        zoom,
+        center: initCenter,
+        maxZoom: 17,
+        layers: [baseLayer]
+      });
+
+      // Handlers
+      if (this.props.onMapClick) {
+        this.map.on('click', this.handleMapClick);
+      }
+    }
 
     function getZoom() {
       if (
-        !isNilOrError(mapConfig) &&
-        mapConfig.attributes.zoom_level
-      ) {
-        return parseFloat(mapConfig.attributes.zoom_level);
-       } else if (
         !isNilOrError(tenant) &&
         tenant.attributes &&
         tenant.attributes.settings.maps
@@ -254,11 +332,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     function getTileProvider() {
       if (
-        !isNilOrError(mapConfig) &&
-        mapConfig.attributes.tile_provider
-      ) {
-        return mapConfig.attributes.tile_provider;
-      } else if (
         !isNilOrError(tenant) &&
         tenant.attributes &&
         tenant.attributes.settings.maps
@@ -277,12 +350,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       ) {
         initCenter = [center[1], center[0]];
       } else if (
-        !isNilOrError(mapConfig) &&
-        mapConfig.attributes.center_geojson
-      ) {
-        const [longitude, latitude] = mapConfig.attributes.center_geojson.coordinates;
-        initCenter = [latitude, longitude];
-      } else if (
         !isNilOrError(tenant) &&
         tenant.attributes &&
         tenant.attributes.settings.maps
@@ -294,83 +361,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       }
 
       return initCenter;
-    }
-
-    function formatLayers() {
-      /*
-      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
-      This is how it keeps the toggles in sync.
-      Because we need two different arrays of Leaflet geoJSON overlays,
-      one for the layers that need to be enabled by default,
-      and one for creating the overlay maps,
-      we need to reformat the data we get from the back-end, so we can do filter
-      operations (that require the default_enabled value)
-      + create overlay maps (that require the geoJson title)
-      */
-      if (
-        !isNilOrError(mapConfig) &&
-        mapConfig.attributes.layers.length > 0
-      ) {
-        const layers = mapConfig.attributes.layers.map((layer) => {
-          const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
-          const geoJsonOptions = {
-            useSimpleStyle: true,
-            pointToLayer: (_feature, latlng) => {
-              return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
-            }
-          };
-
-          return {
-            title_multiloc: layer.title_multiloc,
-            leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
-            enabledByDefault: layer.default_enabled,
-          };
-        });
-
-        return layers;
-      }
-
-      return [];
-    }
-
-    function getOverlayMaps(layers) {
-      const overlayMaps = {};
-
-      layers.forEach((layer) => {
-        overlayMaps[localize(layer.title_multiloc)] = layer.leafletGeoJson;
-      });
-
-      return overlayMaps;
-    }
-
-    // Init the map
-    const zoom = getZoom();
-    const tileProvider = getTileProvider();
-    const initCenter = getInitCenter();
-    const layers = formatLayers();
-    const overlaysEnabledByDefault = layers
-      .filter(layer => layer.enabledByDefault === true)
-      .map(layer => layer.leafletGeoJson);
-    const baseLayer = Leaflet.tileLayer(tileProvider, {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: ['a', 'b', 'c']
-    });
-    if (mapElement && !this.map) {
-      this.map = Leaflet.map(mapElement, {
-        zoom,
-        center: initCenter,
-        maxZoom: 17,
-        layers: [baseLayer, ...overlaysEnabledByDefault]
-      });
-
-      // Add layers
-      const overlayMaps = getOverlayMaps(layers);
-      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
-
-      // Handlers
-      if (this.props.onMapClick) {
-        this.map.on('click', this.handleMapClick);
-      }
     }
   }
 
@@ -447,7 +437,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       boxContent,
       className,
       mapHeight,
-      mapConfig,
       projectId
     } = this.props;
 
