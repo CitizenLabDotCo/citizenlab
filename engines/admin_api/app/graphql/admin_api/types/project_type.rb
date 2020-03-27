@@ -24,6 +24,9 @@ module AdminApi
     field :title_multiloc, Types::MultilocType, null: false
     field :slug, String, null: false
     field :publication_status, ProjectPublicationStatus, null: false
+    def publication_status
+      object.admin_publication.publication_status
+    end
     field :visible_to, ProjectVisibleTo, null: false
     field :process_type, ProjectProcessType, null: false
     field :updated_at, String, null: false

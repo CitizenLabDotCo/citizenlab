@@ -3,6 +3,9 @@ class WebApi::V1::External::ProjectSerializer < ActiveModel::Serializer
 
   has_many :project_images, serializer: WebApi::V1::External::ImageSerializer
 
+  def publication_status
+    object.admin_publication.publication_status
+  end
 
   def header_bg
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
