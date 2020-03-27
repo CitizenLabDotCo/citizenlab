@@ -676,11 +676,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     phaseId={queryParameters.phase}
                   />
                 }
-
-                <IdeasMap
-                  projectIds={queryParameters.projects}
-                  phaseId={queryParameters.phase}
-                />
               </ContentLeft>
 
               {biggerThanLargeTablet &&
