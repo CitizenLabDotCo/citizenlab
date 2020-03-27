@@ -74,27 +74,27 @@ en-CA:
       "new_comment_on_voted_idea": New comment on an idea you voted for - all users
       "new_comment_on_voted_initiative": New comment on a proposal you voted for - all users
       "new_idea_for_admin": New idea - admins and project moderators
-      "new_initiative_for_admin": New initiative - admins
+      "new_initiative_for_admin": New proposal - admins
       "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on an initiative you commented on - all users
+      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
       "official_feedback_on_voted_idea": Update on an idea you voted on - all users
-      "official_feedback_on_voted_initiative": Update on an initiative you voted on - all users
+      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
       "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your initiative - all users
+      "official_feedback_on_your_initiative": Update on your proposal - all users
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project moderators
       "project_phase_started": New project phase - all users
       "project_phase_upcoming": Upcoming new project phase - admins and project moderators
       "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of an initiative you commented on - all users
+      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
       "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of an initiative you voted on - all users
+      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
       "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your initiative - all users
-      "threshold_reached_for_admin": Initiative reached the voting threshold - admins
+      "status_change_of_your_initiative": Status change of your proposal - all users
+      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
       "welcome": New user - admins
       "admin_digest": Weekly overview - admins
       "moderator_digest": Weekly overview - project moderators
       "assignee_digest": Weekly overview of assigned ideas - admins and project moderators
       "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own initiatives - all users
+      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
