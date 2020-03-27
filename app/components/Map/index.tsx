@@ -483,7 +483,7 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   mapConfig: ({ projectId, render }) => projectId ? (
     <GetMapConfig projectId={projectId}>{render}</GetMapConfig>
-  ) : null,
+  ) : <GetMapConfig projectId={null}>{render}</GetMapConfig>,
 });
 
 const CLMapWithHOCs = injectLocalize(CLMap);
