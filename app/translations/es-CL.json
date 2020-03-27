@@ -1747,7 +1747,6 @@
   "app.containers.SignIn.noPasswordError": "Esto no puede estar vacío",
   "app.containers.SignIn.noValidEmailError": "Esto no parece un correo electrónico válido",
   "app.containers.SignIn.or": "O",
-  "app.containers.SignIn.orLogInWith": "O ingresa con",
   "app.containers.SignIn.passwordLabel": "Contraseña",
   "app.containers.SignIn.signInButtonAltText": "Iniciar sesión con {loginMechanismName}",
   "app.containers.SignIn.signInError": "La información proporcionada no es correcta. Haga clic en \"Olvidaste tu contraseña\" arriba para restablecer tu contraseña.",
