@@ -201,11 +201,20 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
   }
 
-  componentDidUpdate(_prevProps) {
+  componentDidUpdate(_prevProps, prevState) {
     const { mapConfig, points } = this.props;
+    const { mapElement } = this.state;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
+    }
+
+    if (
+      prevState.mapElement !== mapElement &&
+      mapElement &&
+      !this.map
+    ) {
+      this.initMap(mapElement);
     }
 
     if (
@@ -285,7 +294,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
   bindMapContainer = (element: HTMLDivElement) => {
     this.setState({ mapElement: element });
-    this.initMap(element);
   }
 
   initMap = (mapElement: HTMLDivElement) => {
@@ -296,22 +304,20 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     const tileProvider = getTileProvider();
     const initCenter = getInitCenter();
 
-    if (!this.map) {
-      this.baseLayer = Leaflet.tileLayer(tileProvider, {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: ['a', 'b', 'c']
-      });
-      this.map = Leaflet.map(mapElement, {
-        zoom,
-        center: initCenter,
-        maxZoom: 17,
-        layers: [this.baseLayer]
-      });
+    this.baseLayer = Leaflet.tileLayer(tileProvider, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: ['a', 'b', 'c']
+    });
+    this.map = Leaflet.map(mapElement, {
+      zoom,
+      center: initCenter,
+      maxZoom: 17,
+      layers: [this.baseLayer]
+    });
 
-      // Handlers
-      if (this.props.onMapClick) {
-        this.map.on('click', this.handleMapClick);
-      }
+    // Handlers
+    if (this.props.onMapClick) {
+      this.map.on('click', this.handleMapClick);
     }
 
     function getZoom() {
