@@ -16,7 +16,7 @@ import Icon from 'components/UI/Icon';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -139,7 +139,16 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
     if (!isNilOrError(authUser) && !isNilOrError(project) && disabled_reason === 'not_verified') {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = project.relationships?.current_phase?.data?.id || project.id;
-      pcId && openVerificationModalWithContext(pcId, pcType, 'voting');
+
+      if (pcId && pcType) {
+        openVerificationModal({
+          context: {
+            action: 'voting',
+            id: pcId,
+            type: pcType
+          }
+        });
+      }
     }
   }, [authUser, project]);
 

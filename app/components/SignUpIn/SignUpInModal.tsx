@@ -4,6 +4,9 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import Modal from 'components/UI/Modal';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
 
+// hooks
+import useIsMounted from 'hooks/useIsMounted';
+
 // events
 import { openSignUpInModal$, closeSignUpInModal$ } from 'components/SignUpIn/signUpInModalEvents';
 
@@ -14,11 +17,20 @@ const Container = styled.div``;
 
 interface Props {
   className?: string;
+  onMounted?: () => void;
 }
 
-const SignUpInModal = memo<Props>(({ className }) => {
+const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
+  const isMounted = useIsMounted();
   const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(undefined);
+  const opened = !!metaData;
+
+  useEffect(() => {
+    if (isMounted() && onMounted) {
+      onMounted();
+    }
+  }, [onMounted]);
 
   useEffect(() => {
     const subscriptions = [
@@ -45,15 +57,17 @@ const SignUpInModal = memo<Props>(({ className }) => {
   return (
     <Modal
       width={820}
-      opened={!!metaData}
+      opened={opened}
       close={onClose}
     >
       <Container className={className}>
-        <SignUpIn
-          inModal={true}
-          metaData={metaData as ISignUpInMetaData}
-          onSignUpInCompleted={onSignUpInCompleted}
-        />
+        {opened &&
+          <SignUpIn
+            inModal={true}
+            metaData={metaData as ISignUpInMetaData}
+            onSignUpInCompleted={onSignUpInCompleted}
+          />
+        }
       </Container>
     </Modal>
   );

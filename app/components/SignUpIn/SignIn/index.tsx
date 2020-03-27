@@ -355,6 +355,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                 </SocialLoginText>
               }
 
+              {/*
               <AuthProviderButtons>
                 <FeatureFlag name="azure_ad_login">
                   {azureAdLogo && tenantLoginMechanismName &&
@@ -399,6 +400,7 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                   />
                 </FeatureFlag>
               </AuthProviderButtons>
+              */}
 
               {!passwordLoginEnabled &&
                 <CreateAccount>

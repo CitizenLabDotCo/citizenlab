@@ -1,6 +1,5 @@
 import eventEmitter from 'utils/eventEmitter';
 import { ContextShape, TVerificationSteps } from 'components/Verification/VerificationSteps';
-import { IParticipationContextType, ICitizenAction } from 'typings';
 
 export interface OpenVerificationModalData {
   step: TVerificationSteps;
@@ -12,21 +11,15 @@ enum VerificationModalEvents {
   close = 'closeVerificationModal'
 }
 
-export function openVerificationModalWithContext(participationContextId: string, participationContextType: IParticipationContextType, action: ICitizenAction) {
-  eventEmitter.emit<OpenVerificationModalData>(VerificationModalEvents.open, {
-    step: 'method-selection',
-    context: {
-      action,
-      id: participationContextId,
-      type: participationContextType
-    }
-  });
+interface IOpenVerificationModalParams {
+  context?: ContextShape;
+  step?: TVerificationSteps;
 }
 
-export function openVerificationModalWithoutContext() {
+export function openVerificationModal(params?: IOpenVerificationModalParams) {
   eventEmitter.emit<OpenVerificationModalData>(VerificationModalEvents.open, {
-    step: 'method-selection',
-    context: null
+    step: params?.step || null,
+    context: params?.context || null
   });
 }
 

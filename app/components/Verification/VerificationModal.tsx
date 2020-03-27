@@ -6,8 +6,11 @@ import VerificationSuccess from './VerificationSuccess';
 import VerificationError from './VerificationError';
 import VerificationSteps from './VerificationSteps';
 
+// hooks
+import useIsMounted from 'hooks/useIsMounted';
+
 // events
-import { closeVerificationModal } from 'containers/App/verificationModalEvents';
+import { openVerificationModal$, closeVerificationModal$, closeVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // style
 import styled from 'styled-components';
@@ -45,23 +48,41 @@ export function isProjectOrErrorContext(obj: ContextShape) {
     return 'ErrorContext';
   }
 }
+
 export type VerificationModalSteps = 'method-selection' | 'success' | 'error' | null | IVerificationMethod['attributes']['name'];
 
 export interface Props {
-  opened: boolean;
-  initialActiveStep?: VerificationModalSteps;
   className?: string;
-  context: ContextShape; // TODO change to pass in additionnal rules info
+  onMounted: () => void;
 }
 
-const VerificationModal = memo<Props>(({ opened, className, context, initialActiveStep }) => {
+const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
-  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(initialActiveStep || 'method-selection');
+  const isMounted = useIsMounted();
+  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(null);
+  const [context, setContext] = useState<ContextShape>(null);
+  const opened = !!activeStep;
 
   useEffect(() => {
-    // reset active step when modal opens or closes
-    setActiveStep(initialActiveStep || 'method-selection');
-  }, [opened, initialActiveStep]);
+    if (isMounted() && onMounted) {
+      onMounted();
+    }
+  }, [onMounted]);
+
+  useEffect(() => {
+    const subscriptions = [
+      openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
+        setActiveStep(step);
+        setContext(context);
+      }),
+      closeVerificationModal$.subscribe(() => {
+        setActiveStep(null);
+        setContext(null);
+      })
+    ];
+
+    return () => subscriptions.forEach(subscription => subscription.unsubscribe());
+  }, []);
 
   const onClose = useCallback(() => {
     closeVerificationModal();
@@ -69,10 +90,12 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
 
   const onComplete = useCallback(() => {
     setActiveStep('success');
+    setContext(null);
   }, []);
 
   const onError = useCallback(() => {
     setActiveStep('error');
+    setContext(null);
   }, []);
 
   return (
@@ -82,12 +105,12 @@ const VerificationModal = memo<Props>(({ opened, className, context, initialActi
       close={onClose}
     >
       <Container className={`e2e-verification-steps ${className || ''}`}>
-        {initialActiveStep !== 'success' && initialActiveStep !== 'error' &&
+        {activeStep && activeStep !== 'success' && activeStep !== 'error' &&
           <VerificationSteps
             context={context}
             inModal={true}
             showHeader={true}
-            initialActiveStep={initialActiveStep || 'method-selection'}
+            initialActiveStep={activeStep}
             onComplete={onComplete}
             onError={onError}
           />
