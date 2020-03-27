@@ -13,6 +13,9 @@ import Legend from './Legend';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
+// services
+import { IMapConfigData } from 'services/mapConfigs';
+
 // Map
 import Leaflet from 'leaflet';
 import 'leaflet.markercluster';
@@ -166,6 +169,7 @@ interface State {
 
 class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   private map: Leaflet.Map;
+  private baseLayer: Leaflet.TileLayer;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markers: Leaflet.Marker[];
   private markerOptions = { icon: ideaMarker };
@@ -190,33 +194,42 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   componentDidMount() {
-    const { mapElement } = this.state;
-    const { tenant, mapConfig } = this.props;
+    const { points } = this.props;
 
-    if (this.props.points && this.props.points.length > 0) {
-      this.convertPoints(this.props.points);
-    }
-
-    if (!this.map && mapElement && mapConfig !== undefined && !isNilOrError(tenant)) {
-      this.initMap(mapElement);
+    if (points && points.length > 0) {
+      this.convertPoints(points);
     }
   }
 
-  componentDidUpdate(_prevProps) {
+  componentDidUpdate(prevProps) {
+    const { mapConfig, points } = this.props;
     const { mapElement } = this.state;
-    const { tenant, mapConfig } = this.props;
 
-    if (this.props.points && this.props.points.length > 0) {
-      this.convertPoints(this.props.points);
+    if (points && points.length > 0) {
+      this.convertPoints(points);
     }
 
-    if (!this.map && mapElement && mapConfig !== undefined && !isNilOrError(tenant)) {
-      this.initMap(mapElement);
+    mapElement && this.initMap(mapElement);
+
+    if (
+      (prevProps.mapConfig !== mapConfig) &&
+      !isNilOrError(mapConfig) &&
+      this.map
+    ) {
+      this.updateMap(mapConfig);
     }
   }
 
-  bindMapContainer = (element: HTMLDivElement | null) => {
+  updateMap = (mapConfig: IMapConfigData) => {
+    const { zoom_level, tile_provider } = mapConfig.attributes;
+
+    if (zoom_level) this.map.setZoom(parseFloat(zoom_level));
+    if (tile_provider) this.baseLayer.setUrl(tile_provider);
+  }
+
+  bindMapContainer = (element: HTMLDivElement) => {
     this.setState({ mapElement: element });
+    this.initMap(element);
   }
 
   initMap = (mapElement: HTMLDivElement) => {
@@ -323,9 +336,9 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     function getOverlayMaps(layers) {
       const overlayMaps = {};
 
-      layers.forEach(((layer) => {
+      layers.forEach((layer) => {
         overlayMaps[localize(layer.title_multiloc)] = layer.leafletGeoJson;
-      }));
+      });
 
       return overlayMaps;
     }
@@ -342,21 +355,22 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       subdomains: ['a', 'b', 'c']
     });
+    if (mapElement && !this.map) {
+      this.map = Leaflet.map(mapElement, {
+        zoom,
+        center: initCenter,
+        maxZoom: 17,
+        layers: [baseLayer, ...overlaysEnabledByDefault]
+      });
 
-    this.map = Leaflet.map(mapElement, {
-      zoom,
-      center: initCenter,
-      maxZoom: 17,
-      layers: [baseLayer, ...overlaysEnabledByDefault]
-    });
+      // Add layers
+      const overlayMaps = getOverlayMaps(layers);
+      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
 
-    // Add layers
-    const overlayMaps = getOverlayMaps(layers);
-    Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
-
-    // Handlers
-    if (this.props.onMapClick) {
-      this.map.on('click', this.handleMapClick);
+      // Handlers
+      if (this.props.onMapClick) {
+        this.map.on('click', this.handleMapClick);
+      }
     }
   }
 
