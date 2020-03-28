@@ -1747,7 +1747,6 @@
   "app.containers.SignIn.noPasswordError": "Cela ne peut pas être vide",
   "app.containers.SignIn.noValidEmailError": "Cela ne ressemble pas à un courriel valide",
   "app.containers.SignIn.or": "Ou",
-  "app.containers.SignIn.orLogInWith": "Ou connectez-vous avec",
   "app.containers.SignIn.passwordLabel": "Mot de passe",
   "app.containers.SignIn.signInButtonAltText": "Connectez-vous avec {loginMechanismName}",
   "app.containers.SignIn.signInError": "Les informations fournies ne sont pas correctes. Cliquez sur « Mot de passe oublié » ci-dessus pour réinitialiser votre mot de passe.",

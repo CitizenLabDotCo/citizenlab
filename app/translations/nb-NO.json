@@ -1747,7 +1747,6 @@
   "app.containers.SignIn.noPasswordError": "Dette kan ikke være tomt",
   "app.containers.SignIn.noValidEmailError": "This doesn't look like a valid email",
   "app.containers.SignIn.or": "Eller",
-  "app.containers.SignIn.orLogInWith": "Eller logg inn med",
   "app.containers.SignIn.passwordLabel": "Passord",
   "app.containers.SignIn.signInButtonAltText": "Logg inn med {loginMechanismName}",
   "app.containers.SignIn.signInError": "The provided information is not correct. Click 'Password forgotten' above to reset your password.",

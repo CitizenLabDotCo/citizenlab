@@ -1747,7 +1747,6 @@
   "app.containers.SignIn.noPasswordError": "Dies kann nicht leer sein",
   "app.containers.SignIn.noValidEmailError": "Dies sieht nicht nach einer gültigen E-Mail-Adresse aus",
   "app.containers.SignIn.or": "Oder",
-  "app.containers.SignIn.orLogInWith": "Oder anmelden mit",
   "app.containers.SignIn.passwordLabel": "Passwort",
   "app.containers.SignIn.signInButtonAltText": "Mit {loginMechanismName} einloggen",
   "app.containers.SignIn.signInError": "Die angegebenen Informationen sind nicht korrekt. Klicken Sie oben auf 'Passwort vergessen', um Ihr Passwort zurückzusetzen.",
