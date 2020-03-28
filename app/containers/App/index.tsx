@@ -216,21 +216,22 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       const { sign_up_in_method, sign_up_in_pathname, sign_up_in_verification } = urlSearchParams;
 
       if (sign_up_in_method && sign_up_in_pathname && sign_up_in_verification) {
+        const urlSegments = sign_up_in_pathname.replace(/^\/+/g, '').split('/');
+        const lastUrlSegment = urlSegments[urlSegments.length - 1];
         const signUpInMetaData: ISignUpInMetaData = {
           method: sign_up_in_method,
           pathname: sign_up_in_pathname,
           verification: sign_up_in_verification === 'true'
         };
 
-        const urlSegments = signUpInMetaData.pathname.replace(/^\/+/g, '').split('/');
-        const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-        clHistory.replace(signUpInMetaData.pathname);
-
         if ((!authUser.data.attributes.verified && signUpInMetaData.verification) || !authUser.data.attributes.registration_completed_at) {
+          clHistory.replace(signUpInMetaData.pathname);
+
           if (!['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'].includes(lastUrlSegment)) {
             openSignUpInModal(signUpInMetaData);
           }
+        } else {
+          window.history.replaceState(null, '', window.location.pathname);
         }
       }
     }

@@ -6,7 +6,7 @@ import useTenant from 'hooks/useTenant';
 
 // component
 import SignUp, { InputProps as SignUpProps } from 'components/SignUpIn/SignUp';
-import SignIn, { InputProps as SignInProps } from 'components/SignUpIn/SignIn';
+import SignIn, { Props as SignInProps } from 'components/SignUpIn/SignIn';
 
 // styling
 import styled from 'styled-components';
@@ -68,11 +68,7 @@ const SignUpIn = memo<Props>(({
             onGoToSignIn={onToggleSelectedMethod}
           />
         ) : (
-          <SignIn
-            metaData={{ ...metaData, method: activeMethod }}
-            onSignInCompleted={onSignInCompleted}
-            onGoToSignUp={onToggleSelectedMethod}
-          />
+          <SignIn onSignInCompleted={onSignInCompleted} />
         )}
       </Container>
     );

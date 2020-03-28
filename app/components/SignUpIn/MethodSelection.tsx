@@ -28,7 +28,7 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const SignUpMethodButton = styled(Button)`
+const SignUpInButton = styled(Button)`
   margin-bottom: 20px;
 `;
 
@@ -89,88 +89,99 @@ const MethodSelection = memo<Props & InjectedIntlProps>(({
 }) => {
 
   const azureProviderName = !isNilOrError(tenant) ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name : null;
+  const enabledMethodsCount = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, franceconnectLoginEnabled, azureAdLoginEnabled].filter(method => method === true).length;
+
+  if (enabledMethodsCount === 1) {
+    if (passwordLoginEnabled) {
+      onMethodSelected('email');
+    }
+  }
 
   const handleMethodSelected = useCallback((method: TSignUpInMethods) => (event: React.FormEvent) => {
     event.preventDefault();
     onMethodSelected(method);
   }, [onMethodSelected]);
 
-  return (
-    <Container className={className}>
-      {passwordLoginEnabled &&
-        <SignUpMethodButton
-          icon="email"
-          iconSize="22px"
-          buttonStyle="white"
-          fullWidth={true}
-          justify="left"
-          whiteSpace="wrap"
-          onClick={handleMethodSelected('email')}
-        >
-          <FormattedMessage {...messages.continueWithEmail} />
-        </SignUpMethodButton>
-      }
-
-      {googleLoginEnabled &&
-        <SignUpMethodButton
-          icon="google"
-          iconSize="22px"
-          buttonStyle="white"
-          fullWidth={true}
-          justify="left"
-          whiteSpace="wrap"
-          onClick={handleMethodSelected('google')}
-        >
-          <FormattedMessage {...messages.continueWithGoogle} />
-        </SignUpMethodButton>
-      }
-
-      {facebookLoginEnabled &&
-        <SignUpMethodButton
-          icon="facebook"
-          iconSize="22px"
-          buttonStyle="white"
-          fullWidth={true}
-          justify="left"
-          whiteSpace="wrap"
-          onClick={handleMethodSelected('facebook')}
-        >
-          <FormattedMessage {...messages.continueWithFacebook} />
-        </SignUpMethodButton>
-      }
-
-      {azureAdLoginEnabled &&
-        <SignUpMethodButton
-          icon="windows"
-          iconSize="22px"
-          buttonStyle="white"
-          fullWidth={true}
-          justify="left"
-          whiteSpace="wrap"
-          onClick={handleMethodSelected('azureactivedirectory')}
-        >
-          <FormattedMessage {...messages.continueWithAzure} values={{ azureProviderName }} />
-        </SignUpMethodButton>
-      }
-
-      {franceconnectLoginEnabled &&
-        <>
-          <FranceConnectButton onClick={handleMethodSelected('franceconnect')}>
-            <img
-              src={franceConnectLogo}
-              alt={formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
-            />
-          </FranceConnectButton>
-          <SubSocialButtonLink
-            href="https://app.franceconnect.gouv.fr/en-savoir-plus"
-            target="_blank"
+  if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && passwordLoginEnabled)) {
+    return (
+      <Container className={className}>
+        {passwordLoginEnabled &&
+          <SignUpInButton
+            icon="email"
+            iconSize="22px"
+            buttonStyle="white"
+            fullWidth={true}
+            justify="left"
+            whiteSpace="wrap"
+            onClick={handleMethodSelected('email')}
           >
-            <FormattedMessage {...messages.whatIsFranceConnect} />
-          </SubSocialButtonLink>
+            <FormattedMessage {...messages.continueWithEmail} />
+          </SignUpInButton>
+        }
+
+        {googleLoginEnabled &&
+          <SignUpInButton
+            icon="google"
+            iconSize="22px"
+            buttonStyle="white"
+            fullWidth={true}
+            justify="left"
+            whiteSpace="wrap"
+            onClick={handleMethodSelected('google')}
+          >
+            <FormattedMessage {...messages.continueWithGoogle} />
+          </SignUpInButton>
+        }
+
+        {facebookLoginEnabled &&
+          <SignUpInButton
+            icon="facebook"
+            iconSize="22px"
+            buttonStyle="white"
+            fullWidth={true}
+            justify="left"
+            whiteSpace="wrap"
+            onClick={handleMethodSelected('facebook')}
+          >
+            <FormattedMessage {...messages.continueWithFacebook} />
+          </SignUpInButton>
+        }
+
+        {azureAdLoginEnabled &&
+          <SignUpInButton
+            icon="windows"
+            iconSize="22px"
+            buttonStyle="white"
+            fullWidth={true}
+            justify="left"
+            whiteSpace="wrap"
+            onClick={handleMethodSelected('azureactivedirectory')}
+          >
+            <FormattedMessage {...messages.continueWithAzure} values={{ azureProviderName }} />
+          </SignUpInButton>
+        }
+
+        {franceconnectLoginEnabled &&
+          <>
+            <FranceConnectButton onClick={handleMethodSelected('franceconnect')}>
+              <img
+                src={franceConnectLogo}
+                alt={formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
+              />
+            </FranceConnectButton>
+            <SubSocialButtonLink
+              href="https://app.franceconnect.gouv.fr/en-savoir-plus"
+              target="_blank"
+            >
+              <FormattedMessage {...messages.whatIsFranceConnect} />
+            </SubSocialButtonLink>
           </>
-      }
-    </Container>
-  );
+        }
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 const MethodSelectionWithHoC = injectIntl(MethodSelection);
