@@ -1747,7 +1747,6 @@
   "app.containers.SignIn.noPasswordError": "",
   "app.containers.SignIn.noValidEmailError": "",
   "app.containers.SignIn.or": "",
-  "app.containers.SignIn.orLogInWith": "",
   "app.containers.SignIn.passwordLabel": "",
   "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "",
