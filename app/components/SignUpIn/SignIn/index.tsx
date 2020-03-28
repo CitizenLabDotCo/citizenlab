@@ -14,7 +14,7 @@ const Container = styled.div``;
 
 export type TSignInSteps = 'method-selection' | 'password-signin';
 
-interface Props {
+export interface Props {
   onSignInCompleted: (userId: string) => void;
   className?: string;
 }
