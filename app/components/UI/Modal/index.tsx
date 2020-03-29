@@ -26,16 +26,16 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalContent = styled.div<{ hasHeaderOrFooter: boolean }>`
+const ModalContent = styled.div<{ noPadding: boolean | undefined }>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '40px'};
+  padding: ${({ noPadding }) => noPadding ? 0 : '40px'};
 
   ${media.smallerThanMinTablet`
-    padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '20px'};
+    padding: ${({ noPadding }) => noPadding ? 0 : '20px'};
   `}
 `;
 
@@ -250,6 +250,7 @@ export type Props = {
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
+  noPadding?: boolean;
   children?: any;
   closeOnClickOutside?: boolean;
 };
@@ -337,7 +338,7 @@ export default class Modal extends PureComponent<Props, State> {
   render() {
     const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
-    const hasHeaderOrFooter = header !== undefined || footer !== undefined;
+    const noPadding = header !== undefined || footer !== undefined || this.props.noPadding;
     const modalPortalElement = document?.getElementById('modal-portal');
 
     if (modalPortalElement) {
@@ -381,7 +382,7 @@ export default class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 }
 
-                <ModalContent hasHeaderOrFooter={hasHeaderOrFooter}>
+                <ModalContent noPadding={noPadding}>
                   {children}
                 </ModalContent>
 

@@ -57,6 +57,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   return (
     <Modal
       width={820}
+      noPadding={true}
       opened={opened}
       close={onClose}
     >
