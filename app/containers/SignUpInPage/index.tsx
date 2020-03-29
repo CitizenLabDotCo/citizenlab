@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { Subscription } from 'rxjs';
 import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
@@ -104,8 +103,6 @@ export interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
-  subscription: Subscription | undefined;
-
   onSignUpInCompleted = () => {
     clHistory.push(this.props.previousPathName || '/');
   }
@@ -158,8 +155,8 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
+export default (inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {dataProps => <SignUpPageWithHoC {...inputProps} {...dataProps} />}
   </Data>
-));
+);

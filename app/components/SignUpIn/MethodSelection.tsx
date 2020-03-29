@@ -93,6 +93,7 @@ const MethodSelection = memo<Props & InjectedIntlProps>(({
 
   if (enabledMethodsCount === 1) {
     if (passwordLoginEnabled) {
+      // automatically select password login when it's the only method that is enabled
       onMethodSelected('email');
     }
   }
@@ -102,7 +103,8 @@ const MethodSelection = memo<Props & InjectedIntlProps>(({
     onMethodSelected(method);
   }, [onMethodSelected]);
 
-  if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && passwordLoginEnabled)) {
+  // show this step only when more than 1 method enabled or when only 1 method is enabled and that method isn't passwordLogin
+  if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && !passwordLoginEnabled)) {
     return (
       <Container className={className}>
         {passwordLoginEnabled &&

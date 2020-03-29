@@ -19,7 +19,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
@@ -187,7 +187,6 @@ interface Props {
   showHeader?: boolean;
   inModal: boolean;
   className?: string;
-  theme: any;
 }
 
 const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader, inModal, className }) => {
@@ -239,6 +238,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
             </Title>
           </Header>
         }
+
         <Content className={`${inModal ? 'inModal' : ''}`}>
           {withContext && !isNilOrError(participationConditions) && participationConditions.length > 0 &&
             <Context>
@@ -267,6 +267,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
               })}
             </Context>
           }
+
           <ButtonsContainer className={`${withContext ? 'withContext' : 'withoutContext'} ${inModal ? 'inModal' : ''}`}>
             {filteredVerificationMethods.map((method, index) => (
               <MethodButton
@@ -301,4 +302,4 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
   return null;
 });
 
-export default withTheme(VerificationMethods);
+export default VerificationMethods;

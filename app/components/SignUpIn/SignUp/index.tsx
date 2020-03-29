@@ -23,6 +23,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
+import { media, colors, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
@@ -31,6 +32,50 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const HeaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid 1px ${colors.separation};
+  background: #fff;
+
+  ${media.smallerThanMinTablet`
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+  `}
+`;
+
+const HeaderTitle = styled.h1`
+  width: 100%;
+  color: ${colors.text};
+  font-size: ${fontSizes.xxl}px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  margin-right: 45px;
+  padding: 0;
+
+  ${media.smallerThanMinTablet`
+    font-size: ${fontSizes.large}px;
+    margin-right: 35px;
+  `}
+`;
+
+const Content = styled.div`
+  max-height: 200px;
+  overflow-y: auto;
+  border: solid 1px red;
+  padding: 40px;
 `;
 
 export type TSignUpSteps = 'method-selection' | 'password-signup' | 'verification' | 'custom-fields';
@@ -154,35 +199,42 @@ class SignUp extends PureComponent<Props, State> {
     if (activeStep) {
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
-          {error && <SignUpError />}
+          <HeaderContainer>
+            <HeaderTitle id="modal-header">Zolg</HeaderTitle>
+          </HeaderContainer>
 
-          {activeStep === 'method-selection' &&
-            <MethodSelection onMethodSelected={this.handleMethodSelectionCompleted} />
-          }
+          <Content>
+            {error && <SignUpError />}
 
-          {activeStep === 'password-signup' &&
-            <PasswordSignup
-              metaData={metaData}
-              isInvitation={isInvitation}
-              token={token}
-              onCompleted={this.handlePasswordSignupCompleted}
-              onGoToSignIn={this.props.onGoToSignIn}
-            />
-          }
+            {activeStep === 'method-selection' &&
+              <MethodSelection onMethodSelected={this.handleMethodSelectionCompleted} />
+            }
 
-          {activeStep === 'verification' &&
-            <VerificationSteps
-              context={null}
-              initialActiveStep="method-selection"
-              inModal={inModal}
-              onComplete={this.handleVerificationCompleted}
-              onError={this.onVerificationError}
-            />
-          }
+            {activeStep === 'password-signup' &&
+              <PasswordSignup
+                metaData={metaData}
+                isInvitation={isInvitation}
+                token={token}
+                onCompleted={this.handlePasswordSignupCompleted}
+                onGoToSignIn={this.props.onGoToSignIn}
+              />
+            }
 
-          {activeStep === 'custom-fields' &&
-            <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
-          }
+            {activeStep === 'verification' &&
+              <VerificationSteps
+                context={null}
+                initialActiveStep="method-selection"
+                inModal={inModal}
+                showHeader={false}
+                onComplete={this.handleVerificationCompleted}
+                onError={this.onVerificationError}
+              />
+            }
+
+            {activeStep === 'custom-fields' &&
+              <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
+            }
+          </Content>
         </Container>
       );
     }
