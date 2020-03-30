@@ -29,7 +29,7 @@ type State = {
 interface QueryProps {
   startAt: string | undefined | null;
   endAt: string | null;
-  currentGroupFilter: string | null;
+  currentGroupFilter: string | undefined;
 }
 
 interface Props extends QueryProps {

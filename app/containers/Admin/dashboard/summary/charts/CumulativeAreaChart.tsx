@@ -53,9 +53,9 @@ type Props = {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
-  currentTopicFilter: string | null;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
 };
 
@@ -139,9 +139,9 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
     startAt: string | null | undefined,
     endAt: string | null,
     resolution: IResolution,
-    currentGroupFilter: string | null,
-    currentTopicFilter: string | null,
-    currentProjectFilter: string | null,
+    currentGroupFilter: string | undefined,
+    currentTopicFilter: string | undefined,
+    currentProjectFilter: string | undefined,
   ) {
     const { stream } = this.props;
 

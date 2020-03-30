@@ -1,5 +1,4 @@
-import React, { PureComponent } from 'react';
-import { adopt } from 'react-adopt';
+import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isEmpty } from 'lodash-es';
 import bowser from 'bowser';
@@ -10,13 +9,6 @@ import Link from 'utils/cl-router/Link';
 // components
 import Icon from 'components/UI/Icon';
 import LazyImage from 'components/LazyImage';
-
-// services
-import { getProjectFolderUrl } from 'services/projectFolders';
-
-// resources
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 
 // i18n
 import T from 'components/T';
@@ -31,6 +23,8 @@ import tracks from './tracks';
 import styled, { withTheme } from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
+import useProjectFolderImages from 'hooks/useProjectFolderImages';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const Container = styled(Link)`
   width: calc(33% - 12px);
@@ -275,164 +269,121 @@ const MapIconDescription = styled.span`
 `;
 
 export interface InputProps {
-  projectFolderId: string;
+  publication: IAdminPublicationContent;
   size: 'small' | 'medium' | 'large';
-  layout?: 'dynamic' | 'threecolumns';
+  layout: 'dynamic' | 'threecolumns' | 'twocolumns';
   className?: string;
 }
 
-interface DataProps {
-  projectFolder: GetProjectFolderChildProps;
-  publishedAndArchivedProjects: GetProjectsChildProps;
-}
-
-interface Props extends InputProps, DataProps {
+interface Props extends InputProps {
   theme?: any;
 }
 
-class ProjectFolderCard extends PureComponent<Props> {
-  handleProjectCardOnClick = (projectFolderId: string) => () => {
+const ProjectFolderCard = memo(({
+  publication,
+  size,
+  layout,
+  className,
+  theme,
+}: Props) => {
+  const projectFolderImages = useProjectFolderImages(publication.publicationId);
+
+  const handleProjectCardOnClick = useCallback((projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectCard, { extra: { projectFolderId } });
-  }
+  }, []);
 
-  handleProjectTitleOnClick = (projectFolderId: string) => () => {
+  const handleProjectTitleOnClick = useCallback((projectFolderId: string) => () => {
     trackEventByName(tracks.clickOnProjectTitle, { extra: { projectFolderId } });
-  }
+  }, []);
 
-  render() {
-    const {
-      projectFolder,
-      size,
-      layout,
-      className,
-      theme,
-      publishedAndArchivedProjects
-    } = this.props;
+  const imageUrl = !isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0
+    ? projectFolderImages.data ?.[0].attributes ?.versions.medium
+      : null;
 
-    if (
-      !isNilOrError(projectFolder) &&
-      !isNilOrError(publishedAndArchivedProjects.projectsList)
-    ) {
-      const imageUrl = projectFolder.attributes.header_bg ?.medium;
-      const folderUrl = getProjectFolderUrl(projectFolder);
-      const numberOfProjects = publishedAndArchivedProjects.projectsList.length;
+  const folderUrl = `/folders/${publication.attributes.publication_slug}`;
+  const numberOfProjects = publication.attributes.visible_children_count;
 
-      const contentHeader = (
-        <ContentHeader className={`${size} hasContent`}>
-          <MapIcon
-            name="folder"
-            ariaHidden
-            colorTheme={{
-              clIconPrimary: `${theme.colorSecondary}`,
-              clIconSecondary: `${theme.colorSecondary}`,
-            }}
+  const contentHeader = (
+    <ContentHeader className={`${size} hasContent`}>
+      <MapIcon
+        name="folder"
+        ariaHidden
+        colorTheme={{
+          clIconPrimary: `${theme.colorSecondary}`,
+          clIconSecondary: `${theme.colorSecondary}`,
+        }}
+      />
+      <MapIconDescription aria-hidden className="e2e-folder-card-numberofprojects">
+        {numberOfProjects}
+      </MapIconDescription>
+      <ScreenReaderOnly>
+        <FormattedMessage {...messages.numberOfFolders} values={{ numberOfProjects }} />
+      </ScreenReaderOnly>
+    </ContentHeader>
+  );
+
+  const screenReaderContent = (
+    <ScreenReaderOnly>
+      <FolderTitle>
+        <FormattedMessage {...messages.a11y_folderTitle} />
+        <T value={publication.attributes.publication_title_multiloc} />
+      </FolderTitle>
+
+      <FolderDescription>
+        <FormattedMessage {...messages.a11y_folderDescription} />
+        <T value={publication.attributes.publication_description_preview_multiloc} />
+      </FolderDescription>
+    </ScreenReaderOnly>
+  );
+
+  return (
+    <Container
+      className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'} e2e-folder-card e2e-admin-publication-card`}
+      to={folderUrl}
+      onClick={handleProjectCardOnClick(publication.publicationId)}
+    >
+      {screenReaderContent}
+      {size !== 'large' && contentHeader}
+
+      <FolderImageContainer className={size}>
+        <FolderImagePlaceholder>
+          <FolderImagePlaceholderIcon name="project" />
+        </FolderImagePlaceholder>
+
+        {imageUrl &&
+          <FolderImage
+            src={imageUrl}
+            alt=""
+            cover={true}
           />
-          <MapIconDescription aria-hidden>
-            {numberOfProjects}
-          </MapIconDescription>
-          <ScreenReaderOnly>
-            <FormattedMessage {...messages.numberOfProjects} values={{ numberOfProjects }} />
-          </ScreenReaderOnly>
-        </ContentHeader>
-      );
+        }
+      </FolderImageContainer>
 
-      const screenReaderContent = (
-        <ScreenReaderOnly>
-          <FolderTitle>
-            <FormattedMessage {...messages.a11y_projectTitle} />
-            <T value={projectFolder.attributes.title_multiloc} />
+      <FolderContent className={size}>
+        {size === 'large' && contentHeader}
+
+        <ContentBody className={size} aria-hidden>
+          <FolderTitle onClick={handleProjectTitleOnClick(publication.publicationId)} className="e2e-folder-card-folder-title">
+            <T value={publication.attributes.publication_title_multiloc} />
           </FolderTitle>
 
-          <FolderDescription>
-            <FormattedMessage {...messages.a11y_projectDescription} />
-            <T value={projectFolder.attributes.description_preview_multiloc} />
-          </FolderDescription>
-        </ScreenReaderOnly>
-      );
+          <T value={publication.attributes.publication_description_preview_multiloc}>
+            {(description) => {
+              if (!isEmpty(description)) {
+                return (
+                  <FolderDescription className="e2e-folder-card-folder-description-preview">
+                    {description}
+                  </FolderDescription>
+                );
+              }
 
-      return (
-        <Container
-          className={`${className} ${layout} ${size} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
-          to={folderUrl}
-          onClick={this.handleProjectCardOnClick(projectFolder.id)}
-        >
-          {screenReaderContent}
-          {size !== 'large' && contentHeader}
-
-          <FolderImageContainer className={size}>
-            <FolderImagePlaceholder>
-              <FolderImagePlaceholderIcon name="project" />
-            </FolderImagePlaceholder>
-
-            {imageUrl &&
-              <FolderImage
-                src={imageUrl}
-                alt=""
-                cover={true}
-              />
-            }
-          </FolderImageContainer>
-
-          <FolderContent className={size}>
-            {size === 'large' && contentHeader}
-
-            <ContentBody className={size} aria-hidden>
-              <FolderTitle onClick={this.handleProjectTitleOnClick(projectFolder.id)}>
-                <T value={projectFolder.attributes.title_multiloc} />
-              </FolderTitle>
-
-              <T value={projectFolder.attributes.description_preview_multiloc}>
-                {(description) => {
-                  if (!isEmpty(description)) {
-                    return (
-                      <FolderDescription >
-                        {description}
-                      </FolderDescription>
-                    );
-                  }
-
-                  return null;
-                }}
-              </T>
-            </ContentBody>
-          </FolderContent>
-        </Container>
-      );
-    }
-
-    return null;
-  }
-}
-
-const Data = adopt<DataProps, InputProps>({
-  projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
-  publishedAndArchivedProjects: ({ projectFolder, render }) => {
-    if (!isNilOrError(projectFolder)) {
-      return (
-        <GetProjects
-          publicationStatuses={['published', 'archived']}
-          folderId={projectFolder.id}
-        >
-          {render}
-        </GetProjects>
-      );
-    }
-    return <>{render}</>;
-  }
+              return null;
+            }}
+          </T>
+        </ContentBody>
+      </FolderContent>
+    </Container>
+  );
 });
 
-const ProjectFolderCardWithHoC = withTheme(ProjectFolderCard);
-
-// TODO: make accesible
-// TODO: add footer to vertically center the content more
-// TODO: tracks
-// TODO: copy
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {(dataProps) => {
-      const props = { ...inputProps, ...dataProps };
-      return <ProjectFolderCardWithHoC {...props} />;
-    }}
-  </Data>
-);
+export default withTheme(ProjectFolderCard);

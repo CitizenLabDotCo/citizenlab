@@ -109,6 +109,7 @@ export interface ITenantSettings {
   verification?: TenantFeature;
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
+  volunteering?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {

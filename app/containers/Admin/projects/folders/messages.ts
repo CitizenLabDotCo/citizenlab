@@ -46,6 +46,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
   },
+  projectFolderImagesInputLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.projectFolderImagesInputLabel',
+    defaultMessage: 'Folder images',
+  },
   save: {
     id: 'app.containers.AdminPage.FoldersEdit.save',
     defaultMessage: 'Save',
@@ -57,6 +61,10 @@ export default defineMessages({
   saveErrorMessage: {
     id: 'app.containers.AdminPage.FoldersEdit.saveErrorMessage',
     defaultMessage: 'Something went wrong, please try again later.',
+  },
+  multilocError: {
+    id: 'app.containers.AdminPage.FoldersEdit.multilocError',
+    defaultMessage: 'All text fields must be fully filled in.',
   },
   saveSuccessMessage: {
     id: 'app.containers.AdminPage.FoldersEdit.saveSuccessMessage',
@@ -125,5 +133,33 @@ export default defineMessages({
   noProjectsToAdd: {
     id: 'app.containers.AdminPage.FoldersEdit.noProjectsToAdd',
     defaultMessage: 'There are no projects that you can add to this folder.',
+  },
+  fileUploadLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.fileUploadLabel',
+    defaultMessage: 'Add files to this folder',
+  },
+  fileUploadLabelTooltip: {
+    id: 'app.containers.AdminPage.FoldersEdit.fileUploadLabelTooltip',
+    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the folder page.',
+  },
+  statusLabel: {
+    id: 'app.containers.AdminPage.FoldersEdit.statusLabel',
+    defaultMessage: 'Publication status',
+  },
+  publicationStatusTooltip: {
+    id: 'app.containers.AdminPage.FoldersEdit.publicationStatusTooltip',
+    defaultMessage: 'Choose whether this folder is "draft", "published" or "archived".',
+  },
+  draftStatus: {
+    id: 'app.containers.AdminPage.FoldersEdit.draftStatus',
+    defaultMessage: 'Draft',
+  },
+  publishedStatus: {
+    id: 'app.containers.AdminPage.FoldersEdit.publishedStatus',
+    defaultMessage: 'Published',
+  },
+  archivedStatus: {
+    id: 'app.containers.AdminPage.FoldersEdit.archivedStatus',
+    defaultMessage: 'Archived',
   },
 });

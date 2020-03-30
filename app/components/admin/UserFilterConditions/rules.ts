@@ -188,6 +188,9 @@ export type TRule = (
         | 'not_voted_comment_in'
         | 'budgeted_in'
         | 'not_budgeted_in'
+        | 'volunteered_in'
+        | 'not_volunteered_in'
+
       /**
        * The id of a project
        */
@@ -320,6 +323,8 @@ export const ruleTypeConstraints = {
     not_voted_comment_in: ProjectValueSelector,
     budgeted_in: ProjectValueSelector,
     not_budgeted_in: ProjectValueSelector,
+    volunteered_in: ProjectValueSelector,
+    not_volunteered_in: ProjectValueSelector,
   },
   participated_in_topic: {
     in: TopicValueSelector,

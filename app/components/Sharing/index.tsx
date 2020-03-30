@@ -161,7 +161,7 @@ export type UtmParams = {
 };
 
 interface InputProps {
-  context: 'idea' | 'project' | 'initiative';
+  context: 'idea' | 'project' | 'initiative' | 'folder';
   location?: 'modal';
   className?: string;
   url: string;
@@ -295,6 +295,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
             {context === 'idea' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisIdea} />}
             {context === 'project' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisProject} />}
             {context === 'initiative' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisInitiative} />}
+            {context === 'folder' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisFolder} />}
           </Title>
           <Buttons>
             {facebook}

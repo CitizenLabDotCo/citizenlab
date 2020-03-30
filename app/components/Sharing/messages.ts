@@ -27,6 +27,10 @@ export default defineMessages({
     id: 'app.components.Sharing.shareThisProject',
     defaultMessage: 'Share this project',
   },
+  shareThisFolder: {
+    id: 'app.components.Sharing.shareThisFolder',
+    defaultMessage: 'Share',
+  },
   shareThisIdea: {
     id: 'app.components.Sharing.shareThisIdea',
     defaultMessage: 'Share this idea',

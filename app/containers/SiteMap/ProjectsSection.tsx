@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
-import { H2, H3 } from './';
+import { H2 } from './';
 import Project from './Project';
 import Link from 'utils/cl-router/Link';
 
@@ -11,7 +11,8 @@ import Link from 'utils/cl-router/Link';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import GetAdminPublications, { GetAdminPublicationsChildProps } from 'resources/GetAdminPublications';
+import ProjectFolder from './ProjectFolder';
 
 const AllProjectsLink = styled(Link)`
   display: block;
@@ -20,32 +21,16 @@ const AllProjectsLink = styled(Link)`
 
 interface InputProps {
   projectsSectionRef: any;
-  archivedSectionRef: any;
-  currentSectionRef: any;
-  draftSectionRef: any;
 }
 
 interface DataProps {
-  projects: GetProjectsChildProps;
+  adminPublications: GetAdminPublicationsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, currentSectionRef, draftSectionRef }: Props) => {
-  if (!isNilOrError(projects) && !isNilOrError(projects.projectsList)) {
-    const publishedProjects = projects.projectsList.filter((project) => {
-      return project.attributes.publication_status === 'published';
-    });
-    const draftProjects = projects.projectsList.filter((project) => {
-      return project.attributes.publication_status === 'draft';
-    });
-    const archivedProjects = projects.projectsList.filter((project) => {
-      return project.attributes.publication_status === 'archived';
-    });
-
-    // true if there is more than one project type, false if there is only one project type
-    const severalProjectTypes = (publishedProjects.length > 0 && (archivedProjects.length > 0 || draftProjects.length > 0))
-      || (archivedProjects.length > 0 && (publishedProjects.length > 0 || draftProjects.length > 0));
+const ProjectsSection = ({ adminPublications, projectsSectionRef }: Props) => {
+  if (!isNilOrError(adminPublications) && !isNilOrError(adminPublications.list)) {
 
     return (
       <>
@@ -55,54 +40,19 @@ const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, cur
         <AllProjectsLink to="/projects" id="projects-section">
           <FormattedMessage {...messages.allProjects} />
         </AllProjectsLink>
-        {publishedProjects.length > 0 && (
-          <>
-            {severalProjectTypes && (
-              <H3 ref={currentSectionRef} tabIndex={-1}>
-                <FormattedMessage {...messages.projectsCurrent} />
-              </H3>
-            )}
-            {publishedProjects.map(project => (
-              <Project
-                key={project.id}
-                project={project}
-                hightestTitle={severalProjectTypes ? 'h4' : 'h3'}
-              />
-            ))}
-          </>
-        )}
-        {archivedProjects.length > 0 && (
-          <>
-            {severalProjectTypes && (
-              <H3 ref={archivedSectionRef} tabIndex={-1}>
-                <FormattedMessage {...messages.projectsArchived} />
-              </H3>
-            )}
-            {archivedProjects.map(project => (
-              <Project
-                key={project.id}
-                project={project}
-                hightestTitle={severalProjectTypes ? 'h4' : 'h3'}
-              />
-            ))}
-          </>
-        )}
-        {draftProjects.length > 0 && (
-          <>
-            {severalProjectTypes && (
-              <H3 ref={draftSectionRef} tabIndex={-1}>
-                <FormattedMessage {...messages.projectsDraft} />
-              </H3>
-            )}
-            {draftProjects.map(project => (
-              <Project
-                key={project.id}
-                project={project}
-                hightestTitle={severalProjectTypes ? 'h4' : 'h3'}
-              />
-            ))}
-          </>
-        )}
+        {adminPublications.list.map(adminPublication => adminPublication.publicationType === 'project' ? (
+          <Project
+            key={adminPublication.id}
+            adminPublication={adminPublication}
+            hightestTitle="h3"
+          />
+        ) : (
+            <ProjectFolder
+              key={adminPublication.id}
+              adminPublication={adminPublication}
+              hightestTitle="h3"
+            />
+          ))}
       </>
     );
   }
@@ -110,7 +60,7 @@ const ProjectsSection = ({ projects, projectsSectionRef, archivedSectionRef, cur
 };
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['draft', 'published', 'archived']} />,
+  adminPublications: <GetAdminPublications publicationStatusFilter={['draft', 'published', 'archived']} folderId={null} noEmptyFolder />,
 });
 
 export default (inputProps: InputProps) => (

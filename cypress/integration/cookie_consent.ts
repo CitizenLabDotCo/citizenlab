@@ -30,9 +30,6 @@ describe('Cookie consent form', () => {
     cy.visit('/');
     cy.get('#e2e-cookie-banner').find('.integration-open-modal').click();
     cy.get('#e2e-preference-dialog').contains('Google Analytics');
-    if (!location.origin.includes('localhost')) {
-      cy.get('#e2e-preference-dialog').contains('SatisMeter');
-    }
   });
   it('Lets you pick your categories and save', () => {
     cy.visit('/');

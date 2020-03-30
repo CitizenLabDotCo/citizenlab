@@ -204,7 +204,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         edges {
           node {
             id,
-            cardImage,
+            projectFolderImage,
             titleMultiloc {
               ${graphqlTenantLocales}
             },

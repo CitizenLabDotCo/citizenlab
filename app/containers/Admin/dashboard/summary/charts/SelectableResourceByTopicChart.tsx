@@ -26,12 +26,12 @@ import { IGraphFormat, IOption } from 'typings';
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
 }
 
 interface InputProps {
-  currentTopicFilter: string | null;
+  currentTopicFilter: string | undefined;
   className: string;
   onResourceByTopicChange: (option: IOption) => void;
   currentResourceByTopic: IResource;
