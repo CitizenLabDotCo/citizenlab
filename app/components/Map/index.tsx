@@ -192,17 +192,10 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   componentDidMount() {
-    const { mapConfig, points } = this.props;
+    const { points } = this.props;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
-    }
-
-    if (
-      !isNilOrError(mapConfig) &&
-      this.map
-    ) {
-      this.updateMapWithMapConfig(mapConfig);
     }
   }
 
@@ -290,7 +283,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   initMap = (mapContainer: HTMLDivElement) => {
-    const { tenant, center, mapConfig } = this.props;
+    const { tenant, center } = this.props;
 
     if (!this.map) {
       const zoom = getZoom();
@@ -312,14 +305,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       // Handlers
       if (this.props.onMapClick) {
         this.map.on('click', this.handleMapClick);
-      }
-
-      // Update map config if it already loaded
-      if (
-        !isNilOrError(mapConfig) &&
-        this.map
-      ) {
-        this.updateMapWithMapConfig(mapConfig);
       }
     }
 
