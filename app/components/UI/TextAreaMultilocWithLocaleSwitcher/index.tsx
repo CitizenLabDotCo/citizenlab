@@ -84,7 +84,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
           <StyledFormLocaleSwitcher
             onLocaleChange={handleOnSelectedLocaleChange}
             selectedLocale={selectedLocale}
-            values={{ valueMultiloc: valueMultiloc as Multiloc }}
+            values={{ valueMultiloc }}
           />
         </LabelContainer>
 

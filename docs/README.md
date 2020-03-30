@@ -1,5 +1,30 @@
 # Changelog
 
+## 2020-03-20
+
+### Added
+- Volunteering as a new participation method
+
+## 2020-03-16
+
+### Fixed
+- The project templates in the admin load again
+
+## 2020-03-13
+
+### Fixed
+
+- The folder header image is not overly compressed when making changes to the folder settings
+- The loading spinner on the idea page is centered
+
+### Added
+
+- Add images to folders, shown in cards.
+
+### Changed
+
+- Admins can now comment on ideas.
+
 ## 2020-03-10
 
 ### Fixed

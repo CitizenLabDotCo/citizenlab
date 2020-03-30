@@ -22,13 +22,13 @@ describe('Landing page - not signed in', () => {
     cy.get('.e2e-signed-out-header-subtitle');
 
     // shows 6 project cards in the correct layout configuration
-    cy.get('.e2e-project-card').should('have.length', 6);
-    cy.get('.e2e-project-card').eq(0).should('have.class', 'large');
-    cy.get('.e2e-project-card').eq(1).should('have.class', 'medium');
-    cy.get('.e2e-project-card').eq(2).should('have.class', 'medium');
-    cy.get('.e2e-project-card').eq(3).should('have.class', 'small');
-    cy.get('.e2e-project-card').eq(4).should('have.class', 'small');
-    cy.get('.e2e-project-card').eq(5).should('have.class', 'small');
+    cy.get('.e2e-admin-publication-card').should('have.length', 6);
+    cy.get('.e2e-admin-publication-card').eq(0).should('have.class', 'large');
+    cy.get('.e2e-admin-publication-card').eq(1).should('have.class', 'medium');
+    cy.get('.e2e-admin-publication-card').eq(2).should('have.class', 'medium');
+    cy.get('.e2e-admin-publication-card').eq(3).should('have.class', 'small');
+    cy.get('.e2e-admin-publication-card').eq(4).should('have.class', 'small');
+    cy.get('.e2e-admin-publication-card').eq(5).should('have.class', 'small');
 
     // shows a "show more" button underneath the project cards
     cy.get('.e2e-project-cards-show-more-button');

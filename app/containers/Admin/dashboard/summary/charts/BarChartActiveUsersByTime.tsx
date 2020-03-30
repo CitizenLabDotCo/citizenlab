@@ -59,9 +59,9 @@ type Props = {
   startAt: string | null | undefined;
   endAt: string | null;
   resolution: IResolution;
-  currentProjectFilter: string | null;
-  currentGroupFilter: string | null;
-  currentTopicFilter: string | null;
+  currentProjectFilter: string | undefined;
+  currentGroupFilter: string | undefined;
+  currentTopicFilter: string | undefined;
   stream: (streamParams?: IStreamParams | null) => IStream<IUsersByTime>;
   infoMessage?: string;
 };
@@ -131,9 +131,9 @@ class BarChartActiveUsersByTime extends React.PureComponent<Props & InjectedIntl
     startAt: string | null | undefined,
     endAt: string | null,
     resolution: IResolution,
-    currentProjectFilter: string | null,
-    currentGroupFilter: string | null,
-    currentTopicFilter: string | null
+    currentProjectFilter: string | undefined,
+    currentGroupFilter: string | undefined,
+    currentTopicFilter: string | undefined
   ) {
     const { stream } = this.props;
 

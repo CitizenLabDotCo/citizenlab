@@ -1,29 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
-import { SectionTitle, SectionSubtitle, SectionField, Section } from 'components/admin/Section';
+import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
-import { Multiloc, Locale, UploadFile } from 'typings';
 import Error from 'components/UI/Error';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import useLocale from 'hooks/useLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import Label from 'components/UI/Label';
-import ImagesDropzone from 'components/UI/ImagesDropzone';
-import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { addProjectFolder, updateProjectFolder, deleteProjectFolder } from 'services/projectFolders';
+import { deleteProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
-import { convertUrlToUploadFile } from 'utils/fileTools';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 import GoBackButton from 'components/UI/GoBackButton';
-import Input from 'components/UI/Input';
-import TextArea from 'components/UI/TextArea';
-import QuillEditor from 'components/UI/QuillEditor';
 import IconTooltip from 'components/UI/IconTooltip';
+import ProjectFolderForm from './ProjectFolderForm';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
   display: flex;
@@ -71,99 +63,6 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
   const { projectFolderId } = params;
   const mode = projectFolderId ? 'edit' : 'new';
 
-  if (mode === 'edit') {
-    useEffect(() => {
-      (async function iife() {
-        if (!isNilOrError(projectFolder)) {
-          setTitleMultiloc(projectFolder.attributes.title_multiloc);
-          setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
-          setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
-          if (projectFolder.attributes ?.header_bg ?.large) {
-            const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
-            setHeaderBg(headerFile);
-          }
-        }
-      }
-      )();
-    }, [projectFolder]);
-  }
-
-  // locale things
-  const locale = useLocale();
-  const safeLocale = isNilOrError(locale) ? null : locale;
-
-  const [selectedLocale, setSelectedLocale] = useState<Locale | null>(isNilOrError(locale) ? null : locale);
-
-  // if user locale changes, we set the form selectedLocale to it (necessary as locale is initially undefined)
-  useEffect(() => {
-    setSelectedLocale(safeLocale);
-  }, [safeLocale]);
-
-  // input handling
-  const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
-  const [shortDescriptionMultiloc, setShortDescriptionMultiloc] = useState<Multiloc | null>(null);
-  const [descriptionMultiloc, setDescriptionMultiloc] = useState<Multiloc | null>(null);
-  const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
-
-  const handleHeaderBgOnAdd = (newImage: UploadFile[]) => {
-    setHeaderBg(newImage[0]);
-  };
-
-  const handleHeaderBgOnRemove = () => {
-    setHeaderBg(null);
-  };
-
-  // form status
-  const [loading, setLoading] = useState<boolean>(false);
-  const [status, setStatus] = useState<'enabled' | 'error' | 'success'>('enabled');
-
-  // form submission
-  const onSubmit = async () => {
-    setLoading(true);
-    if (mode === 'new') {
-      try {
-        if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
-          const res = await addProjectFolder({
-            title_multiloc: titleMultiloc,
-            description_multiloc: descriptionMultiloc,
-            description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg ?.base64
-          });
-          if (isNilOrError(res)) {
-            setStatus('error');
-          } else {
-            clHistory.push(`/admin/projects/folders/${res.id}`);
-          }
-        } else {
-          setStatus('error');
-        }
-      } catch {
-        setStatus('error');
-      }
-    } else {
-      try {
-        if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc) {
-          const res = await updateProjectFolder(projectFolderId, {
-            title_multiloc: titleMultiloc,
-            description_multiloc: descriptionMultiloc,
-            description_preview_multiloc: shortDescriptionMultiloc,
-            header_bg: headerBg ?.base64
-          });
-          if (isNilOrError(res)) {
-            setStatus('error');
-          } else {
-            setStatus('success');
-          }
-        } else {
-          setStatus('error');
-        }
-      } catch {
-        setStatus('error');
-      }
-    }
-    setLoading(false);
-  };
-
   // deleting
   const [processingDelete, setProcessingDelete] = useState(false);
   const [deletionError, setDeletionError] = useState(false);
@@ -181,28 +80,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
     }
   };
 
-  // handlers
-  const handleTitleChange = (newTitle) => {
-    selectedLocale && setTitleMultiloc({
-      ...titleMultiloc,
-      [selectedLocale]: newTitle
-    });
-  };
-  const handleDescriptionChange = (newDescription) => {
-    selectedLocale && setDescriptionMultiloc({
-      ...descriptionMultiloc,
-      [selectedLocale]: newDescription
-    });
-  };
-  const handleShortDescriptionChange = (newShortDescription) => {
-    selectedLocale && setShortDescriptionMultiloc({
-      ...shortDescriptionMultiloc,
-      [selectedLocale]: newShortDescription
-    });
-  };
-
   // ---- Rendering
-  if (!selectedLocale) return null;
   if (mode === 'edit' && isNilOrError(projectFolder)) return null;
 
   return (
@@ -228,66 +106,10 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             </SectionSubtitle>
           </Header>
         }
-        <form onSubmit={onSubmit}>
-          <Section>
-            <SectionField>
-              <FormLocaleSwitcher selectedLocale={selectedLocale} onLocaleChange={setSelectedLocale} />
-            </SectionField>
-            <SectionField>
-              <Input
-                value={titleMultiloc ?.[selectedLocale]}
-                type="text"
-                onChange={handleTitleChange}
-                label={<FormattedMessage {...messages.titleInputLabel} />}
-              />
-            </SectionField>
-            <SectionField>
-              <TextArea
-                value={shortDescriptionMultiloc ?.[selectedLocale]}
-                name="textAreaMultiloc"
-                onChange={handleShortDescriptionChange}
-                label={<FormattedMessage {...messages.shortDescriptionInputLabel} />}
-                labelTooltipText={<FormattedMessage {...messages.shortDescriptionInputLabelTooltip} />}
-              />
-            </SectionField>
-            <SectionField>
-              <QuillEditor
-                id="description"
-                value={descriptionMultiloc ?.[selectedLocale]}
-                onChange={handleDescriptionChange}
-                label={<FormattedMessage {...messages.descriptionInputLabel} />}
-                withCTAButton
-              />
-            </SectionField>
-
-            <SectionField key={'header_bg'}>
-              <Label>
-                <FormattedMessage {...messages.headerImageInputLabel} />
-              </Label>
-              <ImagesDropzone
-                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-                maxNumberOfImages={1}
-                maxImageFileSize={5000000}
-                images={headerBg ? [headerBg] : null}
-                imagePreviewRatio={480 / 1440}
-                maxImagePreviewWidth="500px"
-                onAdd={handleHeaderBgOnAdd}
-                onRemove={handleHeaderBgOnRemove}
-              />
-            </SectionField>
-            <SubmitWrapper
-              loading={loading}
-              status={status}
-              onClick={onSubmit}
-              messages={{
-                buttonSave: messages.save,
-                buttonSuccess: messages.saveSuccess,
-                messageError: messages.saveErrorMessage,
-                messageSuccess: messages.saveSuccessMessage,
-              }}
-            />
-          </Section>
-        </form>
+        <ProjectFolderForm
+          mode={mode}
+          projectFolderId={projectFolderId}
+        />
         {(mode === 'edit' && !isNilOrError(projectFolder)) &&
           <DeleteFolderSectionField>
             <Label>

@@ -32,7 +32,7 @@ interface InputProps {
   convertToGraphFormat: (ISupportedDataType) => IGraphFormat | null;
   startAt: string | null | undefined;
   endAt: string | null;
-  currentGroupFilter: string | null;
+  currentGroupFilter: string | undefined;
   graphTitleString: string;
   graphUnit: IGraphUnit;
   className?: string;
