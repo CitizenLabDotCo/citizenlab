@@ -39,23 +39,19 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const MapContainer = styled.div``;
+const MapContainer = styled.div`
+  position: relative;
+`;
 
 const BoxContainer = styled.div`
-  flex: 0 0 400px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  position: relative;
+  position: absolute;
+  top: 0;
+  z-index: 1001;
   background: #fff;
-
-  ${media.smallerThanMaxTablet`
-    flex: 0 0 40%;
-  `}
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 70%;
-  `}
+  height: 80%;
 `;
 
 const CloseIcon = styled(Icon)`
