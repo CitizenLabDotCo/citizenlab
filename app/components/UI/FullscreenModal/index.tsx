@@ -30,7 +30,7 @@ const Container = styled.div`
   display: flex;
   overflow: hidden;
   background: #fff;
-  z-index: 997;
+  z-index: 1003;
 
   &.modal-enter {
     transform: translateY(100vh);
