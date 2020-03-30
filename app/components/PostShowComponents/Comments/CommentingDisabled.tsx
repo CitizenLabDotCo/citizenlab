@@ -93,7 +93,7 @@ class CommentingDisabled extends PureComponent<Props> {
       }
     } else {
       openSignUpInModal({
-        method: 'signup',
+        flow: 'signup',
         pathname: window.location.pathname,
         verification: true
       });

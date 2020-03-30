@@ -52,7 +52,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const onSignUpInCompleted = useCallback(() => {
     metaData?.action?.();
     setMetaData(undefined);
-  }, []);
+  }, [metaData]);
 
   return (
     <Modal
