@@ -7,48 +7,48 @@ de:
       "comment_marked_as_spam": Spamreport  zu Kommentaren
       "comment_on_your_comment": Eine Antwort auf meinen Kommentar
       "comment_on_your_idea": Ein Kommentar zu meiner Idee
-      "comment_on_your_initiative": Ein Kommentar zu meiner Initiative
+      "comment_on_your_initiative": Ein Kommentar zu meiner Vorschlag
       "first_idea_published": Veröffentlichung meiner ersten Idee
       "idea_assigned_to_you": Zuweisung einer Idee an mich
       "idea_marked_as_spam": Spamreport zu Ideen
       "idea_published": Veröffentlichung meiner Idee
-      "initiative_assigned_to_you": Zuweisung einer Initiative an mich
-      "initiative_marked_as_spam": Spamreport zu Initiativen
-      "initiative_published": Veröffentlichung meiner Initiative
+      "initiative_assigned_to_you": Zuweisung einer Vorschlag an mich
+      "initiative_marked_as_spam": Spamreport zu Vorschläge
+      "initiative_published": Veröffentlichung meiner Vorschlag
       "invite_received": Einladung
       "invite_reminder": Erinnerung an Einladungen
       "mention_in_comment": Erwähnung in einem Kommentar
       "mention_in_official_feedback": Erwähnung bei einem Update
       "new_comment_for_admin": Neuer Kommentar bei einem Projekt, das ich moderiere
       "new_comment_on_commented_idea": Neuer Kommentar zu einer Idee, bei der ich kommentiert habe
-      "new_comment_on_commented_initiative": Neuer Kommentar zu einer Initiative, bei der ich kommentiert habe
+      "new_comment_on_commented_initiative": Neuer Kommentar zu einer Vorschlag, bei der ich kommentiert habe
       "new_comment_on_voted_idea": Neuer Kommentar zu einer Idee, für die ich gestimmt habe
-      "new_comment_on_voted_initiative": Neuer Kommentar zu einer Initiative, für die ich gestimmt habe
+      "new_comment_on_voted_initiative": Neuer Kommentar zu einer Vorschlag, für die ich gestimmt habe
       "new_idea_for_admin": Neue Idee bei einem Projekt, das ich moderiere
-      "new_initiative_for_admin": Neue Initiative
+      "new_initiative_for_admin": Neue Vorschlag
       "official_feedback_on_commented_idea": Aktualisierung zu einer Idee, bei der ich kommentiert habe
-      "official_feedback_on_commented_initiative": Aktualisierung zu einer Initiative, bei der ich kommentiert habe
+      "official_feedback_on_commented_initiative": Aktualisierung zu einer Vorschlag, bei der ich kommentiert habe
       "official_feedback_on_voted_idea": Aktualisierung zu einer Idee, für die ich gestimmt habe
-      "official_feedback_on_voted_initiative": Aktualisierung zu einer Initiative, für die ich gestimmt habe
+      "official_feedback_on_voted_initiative": Aktualisierung zu einer Vorschlag, für die ich gestimmt habe
       "official_feedback_on_your_idea": Aktualisierung zu meiner Idee
-      "official_feedback_on_your_initiative": Aktualisierung zu meiner Initiative
+      "official_feedback_on_your_initiative": Aktualisierung zu meiner Vorschlag
       "password_reset": Passwort zurücksetzen
       "project_moderation_rights_received": Rechte zur Projektmoderation erhalten
       "project_phase_started": Neue Projektphase
       "project_phase_upcoming": Neue Projektphase steht bevor
       "status_change_of_commented_idea": Statusänderung einer Idee, zu der ich einen Kommentar abgegeben habe
-      "status_change_of_commented_initiative": Statusänderung einer Initiative, zu der ich einen Kommentar abgegeben habe
+      "status_change_of_commented_initiative": Statusänderung einer Vorschlag, zu der ich einen Kommentar abgegeben habe
       "status_change_of_voted_idea": Statusänderung einer Idee, für die ich gestimmt habe
-      "status_change_of_voted_initiative": Statusänderung einer Initiative, für die ich gestimmt habe
+      "status_change_of_voted_initiative": Statusänderung einer Vorschlag, für die ich gestimmt habe
       "status_change_of_your_idea": Statusänderung meiner Idee
-      "status_change_of_your_initiative": Statusänderung meiner Initiative
-      "threshold_reached_for_admin": Die Initiative hat die Grenze für Stimmabgaben erreicht
+      "status_change_of_your_initiative": Statusänderung meiner Vorschlag
+      "threshold_reached_for_admin": Die Vorschlag hat die Grenze für Stimmabgaben erreicht
       "welcome": Nach der Registrierung
       "admin_digest": Wöchentlicher Überblick für Administratoren
       "moderator_digest": Wöchentlicher Überblick für Projektmoderatoren
       "assignee_digest": Wöchentlicher Überblick zu den zugewiesenen Ideen
       "user_digest": Wöchentlicher Überblick
-      "your_proposed_initiatives_digest": Wöchentlicher Überblick zu deinen Initiativen
+      "your_proposed_initiatives_digest": Wöchentlicher Überblick zu deinen Vorschläge
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
