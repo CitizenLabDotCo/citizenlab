@@ -194,9 +194,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
 
-  const handleOnSelectAll = useCallback((event: React.MouseEvent | React.KeyboardEvent) => {
+  const handleOnSelectAll = useCallback((_event: React.MouseEvent | React.KeyboardEvent) => {
     if (!isNilOrError(moderationItems) && !processing) {
-      event.preventDefault();
       const newSelectedRows = selectedRows.length < moderationItems.length ? moderationItems.map(item => item.id) : [];
       setSelectedRows(newSelectedRows);
     }
@@ -292,7 +291,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="checkbox">
                 <StyledCheckbox
                   checked={moderationItems.length > 0 && selectedRows.length === moderationItems.length}
-                  indeterminate={selectedRows.length > 0 && selectedRows.length !== moderationItems.length}
+                  indeterminate={selectedRows.length > 0 && selectedRows.length < moderationItems.length}
                   disabled={moderationItems.length === 0}
                   onChange={handleOnSelectAll}
                 />

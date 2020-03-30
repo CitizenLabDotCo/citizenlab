@@ -66,7 +66,6 @@ const PollMultipleChoice = ({ question, index, options, value, disabled, onChang
               onChange={onChange(question.id, option.id)}
               checked={!!value?.includes(option.id)}
               disabled={(disabled === true) || (!value?.includes(option.id) && value?.length === question.attributes.max_options)}
-              id={option.id}
               label={<T value={option.attributes.title_multiloc} />}
             />
           ))}

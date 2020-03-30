@@ -51,7 +51,7 @@ class SortFilterDropdown extends PureComponent<Props, State> {
         selected={selectedValue}
         values={options}
         onChange={this.handleOnChange}
-        multiple={false}
+        multipleSelectionAllowed={false}
         width="180px"
         left={alignment === 'left' ? '-5px' : undefined}
         mobileLeft={alignment === 'left' ? '-5px' : undefined}
