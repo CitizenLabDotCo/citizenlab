@@ -112,9 +112,9 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const isInvitation = endsWith(pathname, 'invite');
     const token = isString(query?.token) ? query.token : null;
     const authError = endsWith(pathname, 'authentication-error');
-    const method = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
+    const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
     const metaData: ISignUpInMetaData = {
-      method,
+      flow,
       pathname,
       verification: false
     };

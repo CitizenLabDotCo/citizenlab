@@ -17,17 +17,17 @@ export type ISignUpInActionType = 'upvote' | 'downvote' | 'comment' | 'post';
 
 export type ISignUpInActionContextType = 'idea' | 'initiative' | 'project' | 'phase';
 
+export type TSignUpInFlow = 'signup' | 'signin';
+
 export interface ISignUpInMetaData {
-  method: TSignUpInMethods;
+  flow: TSignUpInFlow;
   pathname: string;
   verification: boolean;
   action?: () => void;
 }
 
-export type TSignUpInMethods = 'signup' | 'signin';
-
 interface Props extends Omit<SignUpProps, 'onGoToSignIn' | 'onSignUpCompleted' | 'initialActiveStep'>,  Omit<SignInProps, 'onGoToSignUp' | 'onSignInCompleted'> {
-  onSignUpInCompleted: (method: TSignUpInMethods) => void;
+  onSignUpInCompleted: (flow: TSignUpInFlow) => void;
 }
 
 const SignUpIn = memo<Props>(({
@@ -40,7 +40,9 @@ const SignUpIn = memo<Props>(({
 }) => {
   const tenant = useTenant();
 
-  const [activeMethod, setActiveMethod] = useState(metaData.method || 'signup');
+  const [selectedFlow, setSelectedFlow] = useState(metaData.flow || 'signup');
+
+  const metaDataWithCurrentFlow = { ...metaData, flow: selectedFlow };
 
   const onSignUpCompleted = useCallback(() => {
     onSignUpInCompleted('signup');
@@ -51,24 +53,27 @@ const SignUpIn = memo<Props>(({
   }, [onSignUpInCompleted]);
 
   const onToggleSelectedMethod = useCallback(() => {
-    setActiveMethod(activeMethod => activeMethod === 'signup' ? 'signin' : 'signup');
+    setSelectedFlow(prevSelectedFlow => prevSelectedFlow === 'signup' ? 'signin' : 'signup');
   }, []);
 
   if (!isNilOrError(tenant)) {
     return (
       <Container className={className}>
-        {activeMethod === 'signup' ? (
+        {selectedFlow === 'signup' ? (
           <SignUp
             inModal={false}
             isInvitation={isInvitation}
             token={token}
-            metaData={{ ...metaData, method: activeMethod }}
+            metaData={metaDataWithCurrentFlow}
             error={error}
             onSignUpCompleted={onSignUpCompleted}
             onGoToSignIn={onToggleSelectedMethod}
           />
         ) : (
-          <SignIn onSignInCompleted={onSignInCompleted} />
+          <SignIn
+            metaData={metaDataWithCurrentFlow}
+            onSignInCompleted={onSignInCompleted}
+          />
         )}
       </Container>
     );

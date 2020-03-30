@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState } from 'react';
 
 // components
 import PasswordSignin from './PasswordSignin';
-import MethodSelection, { TSignUpInMethods } from '../MethodSelection';
+import AuthProviders, { AuthProvider } from '../AuthProviders';
 
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -10,20 +10,24 @@ import { handleOnSSOClick } from 'services/singleSignOn';
 // style
 import styled from 'styled-components';
 
+// typings
+import { ISignUpInMetaData } from 'components/SignUpIn';
+
 const Container = styled.div``;
 
-export type TSignInSteps = 'method-selection' | 'password-signin';
+export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
+  metaData: ISignUpInMetaData;
   onSignInCompleted: (userId: string) => void;
   className?: string;
 }
 
-const SignIn = memo<Props>(({ onSignInCompleted, className }) => {
+const SignIn = memo<Props>(({ metaData, onSignInCompleted, className }) => {
 
-  const [activeStep, setActiveStep] = useState<TSignInSteps>('method-selection');
+  const [activeStep, setActiveStep] = useState<TSignInSteps>('auth-providers');
 
-  const handleOnMethodSelected = useCallback((selectedMethod: TSignUpInMethods) => {
+  const handleOnMethodSelected = useCallback((selectedMethod: AuthProvider) => {
     if (selectedMethod === 'email') {
       setActiveStep('password-signin');
     } else {
@@ -37,8 +41,11 @@ const SignIn = memo<Props>(({ onSignInCompleted, className }) => {
 
   return (
     <Container className={`e2e-sign-in-container ${className}`}>
-      {activeStep === 'method-selection' &&
-        <MethodSelection onMethodSelected={handleOnMethodSelected} />
+      {activeStep === 'auth-providers' &&
+        <AuthProviders
+          flow={metaData.flow}
+          onMethodSelected={handleOnMethodSelected}
+        />
       }
 
       {activeStep === 'password-signin' &&

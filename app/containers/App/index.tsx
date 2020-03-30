@@ -213,13 +213,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
     if (!isNilOrError(authUser) && signUpInModalMounted && (prevState.authUser === undefined || !prevState.signUpInModalMounted)) {
       const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
-      const { sign_up_in_method, sign_up_in_pathname, sign_up_in_verification } = urlSearchParams;
+      const { sign_up_in_flow, sign_up_in_pathname, sign_up_in_verification } = urlSearchParams;
 
-      if (sign_up_in_method && sign_up_in_pathname && sign_up_in_verification) {
+      if (sign_up_in_flow && sign_up_in_pathname && sign_up_in_verification) {
         const urlSegments = sign_up_in_pathname.replace(/^\/+/g, '').split('/');
         const lastUrlSegment = urlSegments[urlSegments.length - 1];
         const signUpInMetaData: ISignUpInMetaData = {
-          method: sign_up_in_method,
+          flow: sign_up_in_flow,
           pathname: sign_up_in_pathname,
           verification: sign_up_in_verification === 'true'
         };

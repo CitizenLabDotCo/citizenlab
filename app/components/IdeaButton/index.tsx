@@ -136,7 +136,7 @@ class IdeaButton extends PureComponent<Props> {
         }
       } else if (pcType && pcId) {
         openSignUpInModal({
-          method: 'signup',
+          flow: 'signup',
           pathname: window.location.pathname,
           verification: postingDisabledReason === 'not_verified'
         });

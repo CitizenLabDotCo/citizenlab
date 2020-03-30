@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import MethodSelection, { TSignUpInMethods } from '../MethodSelection';
+import AuthProviders, { AuthProvider } from '../AuthProviders';
 import PasswordSignup from './PasswordSignup';
 import VerificationSteps from 'components/Verification/VerificationSteps';
 import CustomFields from './CustomFields';
@@ -78,7 +78,7 @@ const Content = styled.div`
   padding: 40px;
 `;
 
-export type TSignUpSteps = 'method-selection' | 'password-signup' | 'verification' | 'custom-fields';
+export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification' | 'custom-fields';
 
 export interface InputProps {
   inModal: boolean;
@@ -123,7 +123,7 @@ class SignUp extends PureComponent<Props, State> {
       nextActiveStep = null;
 
       if (authUser === null) { // not logged in
-        nextActiveStep = 'method-selection';
+        nextActiveStep = 'auth-providers';
       } else if (!authUser.attributes.verified && metaData.verification) { // logged in but not verified and verification required
         nextActiveStep = 'verification';
       } else if (!authUser.attributes.registration_completed_at) { // logged in but not yet completed custom fields and custom fields enabled
@@ -144,7 +144,7 @@ class SignUp extends PureComponent<Props, State> {
     const { authUser, metaData } = this.props;
     const hasVerificationStep = metaData?.verification;
 
-    if (activeStep === 'method-selection') {
+    if (activeStep === 'auth-providers') {
       this.setState({ activeStep: 'password-signup' });
     } else if (activeStep === 'password-signup' && !isNilOrError(authUser) && !authUser.attributes.verified && hasVerificationStep) {
       this.setState({ activeStep: 'verification' });
@@ -155,7 +155,7 @@ class SignUp extends PureComponent<Props, State> {
     }
   }
 
-  handleMethodSelectionCompleted = (selectedMethod: TSignUpInMethods) => {
+  handleAuthProviderSelected = (selectedMethod: AuthProvider) => {
     if (selectedMethod === 'email') {
       this.goToNextStep();
     } else {
@@ -206,8 +206,11 @@ class SignUp extends PureComponent<Props, State> {
           <Content>
             {error && <SignUpError />}
 
-            {activeStep === 'method-selection' &&
-              <MethodSelection onMethodSelected={this.handleMethodSelectionCompleted} />
+            {activeStep === 'auth-providers' &&
+              <AuthProviders
+                flow={metaData.flow}
+                onMethodSelected={this.handleAuthProviderSelected}
+              />
             }
 
             {activeStep === 'password-signup' &&

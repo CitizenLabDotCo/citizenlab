@@ -3,7 +3,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Button from 'components/UI/Button';
+import AuthProviderButton from './AuthProviderButton';
 import franceConnectLogo from 'components/SignUpIn/svg/franceconnect.svg';
 
 // resources
@@ -21,6 +21,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
+import { TSignUpInFlow } from 'components/SignUpIn';
 
 const Container = styled.div`
   display: flex;
@@ -28,7 +29,7 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const SignUpInButton = styled(Button)`
+const StyledAuthProviderButton = styled(AuthProviderButton)`
   margin-bottom: 20px;
 `;
 
@@ -59,8 +60,9 @@ const SubSocialButtonLink = styled.a`
 `;
 
 interface InputProps {
+  flow: TSignUpInFlow;
   className?: string;
-  onMethodSelected: (selectedMethod: TSignUpInMethods) => void;
+  onAuthProviderSelected: (selectedMethod: AuthProvider) => void;
 }
 
 interface DataProps {
@@ -74,11 +76,12 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-export type TSignUpInMethods = 'email' | SSOProvider;
+export type AuthProvider = 'email' | SSOProvider;
 
-const MethodSelection = memo<Props & InjectedIntlProps>(({
+const AuthProviders = memo<Props & InjectedIntlProps>(({
+  flow,
   className,
-  onMethodSelected,
+  onAuthProviderSelected,
   tenant,
   passwordLoginEnabled,
   googleLoginEnabled,
@@ -94,78 +97,67 @@ const MethodSelection = memo<Props & InjectedIntlProps>(({
   if (enabledMethodsCount === 1) {
     if (passwordLoginEnabled) {
       // automatically select password login when it's the only method that is enabled
-      onMethodSelected('email');
+      onAuthProviderSelected('email');
     }
   }
 
-  const handleMethodSelected = useCallback((method: TSignUpInMethods) => (event: React.FormEvent) => {
+  const handleOnAuthProviderSelected = useCallback((authprovider: AuthProvider) => {
+    onAuthProviderSelected(authprovider);
+  }, [onAuthProviderSelected]);
+
+  const handleOnFranceConnectSelected = useCallback((event: React.FormEvent) => {
     event.preventDefault();
-    onMethodSelected(method);
-  }, [onMethodSelected]);
+    onAuthProviderSelected('franceconnect');
+  }, [onAuthProviderSelected]);
 
   // show this step only when more than 1 method enabled or when only 1 method is enabled and that method isn't passwordLogin
   if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && !passwordLoginEnabled)) {
     return (
       <Container className={className}>
+
         {passwordLoginEnabled &&
-          <SignUpInButton
-            icon="email"
-            iconSize="22px"
-            buttonStyle="white"
-            fullWidth={true}
-            justify="left"
-            whiteSpace="wrap"
-            onClick={handleMethodSelected('email')}
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="email"
+            onContinue={handleOnAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithEmail} />
-          </SignUpInButton>
+          </StyledAuthProviderButton>
         }
 
         {googleLoginEnabled &&
-          <SignUpInButton
-            icon="google"
-            iconSize="22px"
-            buttonStyle="white"
-            fullWidth={true}
-            justify="left"
-            whiteSpace="wrap"
-            onClick={handleMethodSelected('google')}
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="google"
+            onContinue={handleOnAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithGoogle} />
-          </SignUpInButton>
+          </StyledAuthProviderButton>
         }
 
         {facebookLoginEnabled &&
-          <SignUpInButton
-            icon="facebook"
-            iconSize="22px"
-            buttonStyle="white"
-            fullWidth={true}
-            justify="left"
-            whiteSpace="wrap"
-            onClick={handleMethodSelected('facebook')}
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="facebook"
+            onContinue={handleOnAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithFacebook} />
-          </SignUpInButton>
+          </StyledAuthProviderButton>
         }
 
         {azureAdLoginEnabled &&
-          <SignUpInButton
-            icon="windows"
-            iconSize="22px"
-            buttonStyle="white"
-            fullWidth={true}
-            justify="left"
-            whiteSpace="wrap"
-            onClick={handleMethodSelected('azureactivedirectory')}
+          <StyledAuthProviderButton
+            flow={flow}
+            authProvider="azureactivedirectory"
+            onContinue={handleOnAuthProviderSelected}
           >
             <FormattedMessage {...messages.continueWithAzure} values={{ azureProviderName }} />
-          </SignUpInButton>
+          </StyledAuthProviderButton>
         }
 
         {franceconnectLoginEnabled &&
           <>
-            <FranceConnectButton onClick={handleMethodSelected('franceconnect')}>
+            <FranceConnectButton onClick={handleOnFranceConnectSelected}>
               <img
                 src={franceConnectLogo}
                 alt={formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
@@ -186,7 +178,7 @@ const MethodSelection = memo<Props & InjectedIntlProps>(({
   return null;
 });
 
-const MethodSelectionWithHoC = injectIntl(MethodSelection);
+const AuthProvidersWithHoC = injectIntl(AuthProviders);
 
 const Data = adopt<DataProps, {}>({
   tenant: <GetTenant />,
@@ -199,6 +191,6 @@ const Data = adopt<DataProps, {}>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <MethodSelectionWithHoC {...inputProps} {...dataProps} />}
+    {dataProps => <AuthProvidersWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -5,9 +5,9 @@ import { stringify } from 'qs';
 export type SSOProvider = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
 
 export const handleOnSSOClick = (provider: SSOProvider, metaData: ISignUpInMetaData) => {
-  const { method, pathname, verification } = metaData;
+  const { flow, pathname, verification } = metaData;
   const urlSearchParams = stringify({
-    sign_up_in_method: method,
+    sign_up_in_flow: flow,
     sign_up_in_pathname: pathname,
     sign_up_in_verification: verification
   });
