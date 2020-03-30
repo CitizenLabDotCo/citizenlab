@@ -10,6 +10,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Checkbox from 'components/UI/Checkbox';
+
 import { FormLabel } from 'components/UI/FormComponents';
 
 // utils
@@ -394,7 +395,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
             <FormElement>
               <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
                 <Checkbox
-                  id="terms-and-conditions-checkbox"
                   className="e2e-terms-and-conditions"
                   checked={this.state.tacAccepted}
                   onChange={this.handleTaCAcceptedOnChange}
@@ -410,7 +410,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               </TermsAndConditionsWrapper>
               <TermsAndConditionsWrapper className={`${this.state.privacyError && 'error'}`}>
                 <Checkbox
-                  id="privacy-checkbox"
                   className="e2e-privacy-checkbox"
                   checked={this.state.privacyAccepted}
                   onChange={this.handlePrivacyAcceptedOnChange}
@@ -426,7 +425,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               </TermsAndConditionsWrapper>
               <TermsAndConditionsWrapper className={`${this.state.emailConsentError && 'error'}`}>
                 <Checkbox
-                  id="privacy-checkbox"
                   className="e2e-email-checkbox"
                   checked={this.state.emailAccepted}
                   onChange={this.handleEmailAcceptedOnChange}
