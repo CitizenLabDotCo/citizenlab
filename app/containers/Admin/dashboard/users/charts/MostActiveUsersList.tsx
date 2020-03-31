@@ -106,7 +106,7 @@ interface Props {
   infoMessage?: string;
   startAt: string | null | undefined;
   endAt: string | null;
-  currentGroupFilter: string | null;
+  currentGroupFilter: string | undefined;
 }
 
 interface State {

@@ -84,27 +84,25 @@ interface DataProps {
   projectFolder: GetProjectFolderChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 class ProjectsShowPage extends PureComponent<Props> {
   render() {
     const { projectFolder } = this.props;
 
     if (!isNilOrError(projectFolder)) {
-      const projectHeaderImageLarge = projectFolder?.attributes?.header_bg?.large;
+      const projectHeaderImageLarge = projectFolder ?.attributes ?.header_bg ?.large;
 
       return (
-        <>
-          <Container>
-            <HeaderImage src={projectHeaderImageLarge || null} />
-            <HeaderOverlay />
-            <HeaderContent>
-              <HeaderTitle>
-                <T value={projectFolder.attributes.title_multiloc} />
-              </HeaderTitle>
-            </HeaderContent>
-          </Container>
-        </>
+        <Container className="e2e-header-folder">
+          <HeaderImage src={projectHeaderImageLarge || null} />
+          <HeaderOverlay />
+          <HeaderContent>
+            <HeaderTitle>
+              <T value={projectFolder.attributes.title_multiloc} />
+            </HeaderTitle>
+          </HeaderContent>
+        </Container>
       );
     }
 

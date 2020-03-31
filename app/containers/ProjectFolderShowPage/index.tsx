@@ -9,7 +9,6 @@ import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 import Header from './Header';
 import Button from 'components/UI/Button';
 import Spinner from 'components/UI/Spinner';
-import ProjectCards from 'components/ProjectCards';
 import ProjectFolderInfo from './ProjectFolderInfo';
 import ContentContainer from 'components/ContentContainer';
 
@@ -25,6 +24,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // style
 import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
+import ProjectAndFolderCards from 'components/ProjectAndFolderCards';
 
 const Container = styled.main`
   flex: 1 0 auto;
@@ -70,7 +70,7 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const ProjectNotFoundWrapper = styled.div`
+const NotFoundWrapper = styled.div`
   height: 100%;
   flex: 1 0 auto;
   display: flex;
@@ -100,22 +100,22 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
   render() {
     const { locale, tenant, projectFolder } = this.props;
     const { slug } = this.props.params;
-    const projectNotFound = isError(projectFolder);
+    const folderNotFound = isError(projectFolder);
     const loading = (isUndefined(locale) || isUndefined(tenant) || isUndefined(projectFolder));
 
     return (
       <>
         <ProjectFolderShowPageMeta projectFolderSlug={slug} />
-        <Container className={`${!loading ? 'loaded' : 'loading'}`}>
-          {projectNotFound ? (
-            <ProjectNotFoundWrapper>
-              <p><FormattedMessage {...messages.noProjectFoundHere} /></p>
+        <Container className={`${!loading ? 'loaded' : 'loading'} e2e-folder-page`}>
+          {folderNotFound ? (
+            <NotFoundWrapper>
+              <p><FormattedMessage {...messages.noFolderFoundHere} /></p>
               <Button
                 linkTo="/projects"
                 text={<FormattedMessage {...messages.goBackToList} />}
                 icon="arrow-back"
               />
-            </ProjectNotFoundWrapper>
+            </NotFoundWrapper>
           ) : (
               loading ? (
                 <Loading>
@@ -128,14 +128,12 @@ class ProjectFolderShowPage extends PureComponent<Props & WithRouterProps, State
                     <Content>
                       <StyledContentContainer mode="page">
                         <ProjectFolderInfo projectFolderId={projectFolder.id} />
-                        <ProjectCards
+                        <ProjectAndFolderCards
                           pageSize={50}
-                          publicationStatuses={['published', 'archived']}
-                          sort="new"
+                          publicationStatusFilter={['published', 'archived']}
                           showTitle={false}
-                          showPublicationStatusFilter={true}
-                          layout="dynamic"
-                          folderId={projectFolder.id} // TODO behaved unexpectedly
+                          layout="twocolumns"
+                          folderId={projectFolder.id}
                         />
                       </StyledContentContainer>
                     </Content>

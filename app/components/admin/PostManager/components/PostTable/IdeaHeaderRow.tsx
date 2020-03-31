@@ -25,7 +25,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
   <Table.Header>
     <Table.Row>
       <Table.HeaderCell width={1}>
-        <Checkbox checked={!!allSelected} onChange={toggleSelectAll} size="17px"/>
+        <Checkbox checked={!!allSelected} onChange={toggleSelectAll} size="21px"/>
       </Table.HeaderCell>
       <Table.HeaderCell width={4}>
         <TableHeaderCellText>

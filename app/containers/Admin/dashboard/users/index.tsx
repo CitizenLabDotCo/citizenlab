@@ -38,7 +38,7 @@ import { isNilOrError } from 'utils/helperUtils';
 interface State {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
-  currentGroupFilter: string | null;
+  currentGroupFilter: string | undefined;
 }
 
 interface DataProps {
@@ -57,7 +57,7 @@ export class UsersDashboard extends PureComponent<Props & InjectedIntlProps & In
     this.state = {
       startAtMoment: undefined,
       endAtMoment: moment(),
-      currentGroupFilter: null
+      currentGroupFilter: undefined
     };
   }
 
@@ -118,9 +118,9 @@ export class UsersDashboard extends PureComponent<Props & InjectedIntlProps & In
             showTopicFilter: false
           }}
 
-          currentProjectFilter={null}
+          currentProjectFilter={undefined}
           currentGroupFilter={currentGroupFilter}
-          currentTopicFilter={null}
+          currentTopicFilter={undefined}
 
           projectFilterOptions={null}
           groupFilterOptions={this.generateGroupFilterOptions()}

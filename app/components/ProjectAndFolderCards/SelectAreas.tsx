@@ -73,7 +73,7 @@ class SelectAreas extends PureComponent<Props> {
         selected={selectedAreas}
         values={options}
         onChange={this.handleOnChange}
-        multiple={true}
+        multipleSelectionAllowed={true}
         right="-5px"
         mobileLeft="-5px"
       />

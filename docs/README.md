@@ -1,5 +1,24 @@
 # Changelog
 
+## 2020-03-31
+
+### FIXED
+- Signing up with keyboard keys (Firefox)
+- Composing manual emails with text images
+- Exporting sheet of volunteers with long cause titles
+
+### ADDED
+- Folder attachments
+- Publication status for folders
+
+### CHANGED
+- Show folder projects within admin project page
+
+## 2020-03-20
+
+### Added
+- Volunteering as a new participation method
+
 ## 2020-03-16
 
 ### Fixed
