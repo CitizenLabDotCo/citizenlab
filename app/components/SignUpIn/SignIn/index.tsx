@@ -27,7 +27,7 @@ const SignIn = memo<Props>(({ metaData, onSignInCompleted, className }) => {
 
   const [activeStep, setActiveStep] = useState<TSignInSteps>('auth-providers');
 
-  const handleOnMethodSelected = useCallback((selectedMethod: AuthProvider) => {
+  const handleOnAuthProviderSelected = useCallback((selectedMethod: AuthProvider) => {
     if (selectedMethod === 'email') {
       setActiveStep('password-signin');
     } else {
@@ -44,7 +44,7 @@ const SignIn = memo<Props>(({ metaData, onSignInCompleted, className }) => {
       {activeStep === 'auth-providers' &&
         <AuthProviders
           flow={metaData.flow}
-          onMethodSelected={handleOnMethodSelected}
+          onAuthProviderSelected={handleOnAuthProviderSelected}
         />
       }
 

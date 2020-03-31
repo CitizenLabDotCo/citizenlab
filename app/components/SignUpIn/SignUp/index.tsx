@@ -72,7 +72,7 @@ const HeaderTitle = styled.h1`
 `;
 
 const Content = styled.div`
-  max-height: 200px;
+  max-height: 500px;
   overflow-y: auto;
   border: solid 1px red;
   padding: 40px;
@@ -155,11 +155,11 @@ class SignUp extends PureComponent<Props, State> {
     }
   }
 
-  handleAuthProviderSelected = (selectedMethod: AuthProvider) => {
-    if (selectedMethod === 'email') {
+  handleOnAuthProviderSelected = (selectedAuthProvider: AuthProvider) => {
+    if (selectedAuthProvider === 'email') {
       this.goToNextStep();
     } else {
-      handleOnSSOClick(selectedMethod, this.props.metaData);
+      handleOnSSOClick(selectedAuthProvider, this.props.metaData);
     }
   }
 
@@ -209,7 +209,7 @@ class SignUp extends PureComponent<Props, State> {
             {activeStep === 'auth-providers' &&
               <AuthProviders
                 flow={metaData.flow}
-                onMethodSelected={this.handleAuthProviderSelected}
+                onAuthProviderSelected={this.handleOnAuthProviderSelected}
               />
             }
 

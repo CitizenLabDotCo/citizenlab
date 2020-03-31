@@ -101,8 +101,9 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
     }
   }
 
-  const handleOnAuthProviderSelected = useCallback((authprovider: AuthProvider) => {
-    onAuthProviderSelected(authprovider);
+  const handleOnAuthProviderSelected = useCallback((authProvider: AuthProvider) => {
+    console.log(authProvider);
+    onAuthProviderSelected(authProvider);
   }, [onAuthProviderSelected]);
 
   const handleOnFranceConnectSelected = useCallback((event: React.FormEvent) => {
