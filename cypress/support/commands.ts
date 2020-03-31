@@ -33,7 +33,10 @@ declare global {
       apiAddComment: typeof apiAddComment;
       apiRemoveComment: typeof apiRemoveComment;
       apiCreateProject: typeof apiCreateProject;
+      apiCreateFolder: typeof apiCreateFolder;
+      apiRemoveFolder: typeof apiRemoveFolder;
       apiRemoveProject: typeof apiRemoveProject;
+      apiAddProjectsToFolder: typeof apiAddProjectsToFolder;
       apiCreatePhase: typeof apiCreatePhase;
       apiCreateCustomField: typeof apiCreateCustomField;
       apiRemoveCustomField: typeof apiRemoveCustomField;
@@ -393,15 +396,15 @@ export function apiCreateInitiative({
   locationDescription,
   jwt,
   topicIds
-} : {
-  initiativeTitle: string,
-  initiativeContent: string,
-  assigneeId?: string,
-  locationGeoJSON?: { 'type': string, 'coordinates': number[] },
-  locationDescription?: string,
-  jwt?: string,
-  topicIds?: string[]
-}) {
+}: {
+    initiativeTitle: string,
+    initiativeContent: string,
+    assigneeId?: string,
+    locationGeoJSON?: { 'type': string, 'coordinates': number[] },
+    locationDescription?: string,
+    jwt?: string,
+    topicIds?: string[]
+  }) {
   let adminJwt: string;
   let headers: { 'Content-Type': string; Authorization: string; } | null = null;
 
@@ -610,18 +613,18 @@ export function apiCreateProject({
   surveyUrl,
   surveyService,
   locationAllowed
-} : {
-  type: 'timeline' | 'continuous',
-  title: string,
-  descriptionPreview: string,
-  description: string,
-  publicationStatus?: 'draft' | 'published' | 'archived',
-  participationMethod?: 'ideation' | 'information' | 'survey' | 'budgeting' | 'poll',
-  assigneeId?: string,
-  surveyUrl?: string,
-  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-  locationAllowed?: boolean
-}) {
+}: {
+    type: 'timeline' | 'continuous',
+    title: string,
+    descriptionPreview: string,
+    description: string,
+    publicationStatus?: 'draft' | 'published' | 'archived',
+    participationMethod?: 'ideation' | 'information' | 'survey' | 'budgeting' | 'poll',
+    assigneeId?: string,
+    surveyUrl?: string,
+    surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
+    locationAllowed?: boolean
+  }) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -659,6 +662,69 @@ export function apiCreateProject({
   });
 }
 
+export function apiCreateFolder({
+  type,
+  title,
+  descriptionPreview,
+  description,
+  publicationStatus = 'published'
+}: {
+    type: 'timeline' | 'continuous',
+    title: string,
+    descriptionPreview: string,
+    description: string,
+    publicationStatus?: 'draft' | 'published' | 'archived',
+    projectIds?: string[]
+  }) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'POST',
+      url: 'web_api/v1/project_folders',
+      body: {
+        project_folder: {
+          process_type: type,
+          publication_status: publicationStatus,
+          title_multiloc: {
+            'en-GB': title,
+            'nl-BE': title
+          },
+          description_preview_multiloc: {
+            'en-GB': descriptionPreview,
+            'nl-BE': descriptionPreview
+          },
+          description_multiloc: {
+            'en-GB': description,
+            'nl-BE': description
+          },
+        }
+      }
+    });
+  });
+}
+
+export function apiAddProjectsToFolder(projectIds: string[], folderId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    projectIds.map(projectId => {
+      cy.request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`
+        },
+        method: 'PATCH',
+        url: `web_api/v1/projects/${projectId}`,
+        body: { project: { folder_id: folderId } }
+      });
+    });
+  });
+}
 export function apiRemoveProject(projectId: string) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -670,6 +736,21 @@ export function apiRemoveProject(projectId: string) {
       },
       method: 'DELETE',
       url: `web_api/v1/projects/${projectId}`,
+    });
+  });
+}
+
+export function apiRemoveFolder(folderId: string) {
+  return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`
+      },
+      method: 'DELETE',
+      url: `web_api/v1/project_folders/${folderId}`,
     });
   });
 }
@@ -777,7 +858,7 @@ export function apiCreateCustomField(fieldName: string, enabled: boolean, requir
             'nl-BE': fieldName
           }
         }
-        }
+      }
     });
   });
 }
@@ -841,7 +922,10 @@ Cypress.Commands.add('apiCreateOfficialFeedbackForInitiative', apiCreateOfficial
 Cypress.Commands.add('apiAddComment', apiAddComment);
 Cypress.Commands.add('apiRemoveComment', apiRemoveComment);
 Cypress.Commands.add('apiCreateProject', apiCreateProject);
+Cypress.Commands.add('apiCreateFolder', apiCreateFolder);
+Cypress.Commands.add('apiRemoveFolder', apiRemoveFolder);
 Cypress.Commands.add('apiRemoveProject', apiRemoveProject);
+Cypress.Commands.add('apiAddProjectsToFolder', apiAddProjectsToFolder);
 Cypress.Commands.add('apiCreatePhase', apiCreatePhase);
 Cypress.Commands.add('apiCreateCustomField', apiCreateCustomField);
 Cypress.Commands.add('apiRemoveCustomField', apiRemoveCustomField);

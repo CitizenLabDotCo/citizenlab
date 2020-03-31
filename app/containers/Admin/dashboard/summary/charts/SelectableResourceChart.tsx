@@ -57,12 +57,12 @@ type ISupportedData = IIdeasByTopic | IVotesByTopic | ICommentsByTopic | IIdeasB
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentProjectFilter?: string | null;
-  currentGroupFilter?: string | null;
-  currentTopicFilter?: string | null;
+  currentProjectFilter?: string;
+  currentGroupFilter?: string;
+  currentTopicFilter?: string;
   stream: (streamParams?: IStreamParams | null) => IStream<ISupportedData>;
   convertToGraphFormat: (resource: ISupportedData) => IGraphFormat | null;
-  currentFilter: string | null;
+  currentFilter: string | undefined;
   byWhat: 'Topic' | 'Project';
 }
 

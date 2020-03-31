@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.ProjectFolderCards.currentlyWorkingOn',
     defaultMessage: '{orgName} is currently working on',
   },
+  areasTitle: {
+    id: 'app.containers.ProjectCards.areasTitle',
+    defaultMessage: 'Areas',
+  },
 });

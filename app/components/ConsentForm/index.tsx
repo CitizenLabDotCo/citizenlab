@@ -261,7 +261,6 @@ export default class ConsentForm extends PureComponent<Props, State> {
                   {consents.length > 1 && consents.map(consent => (
                     <CheckboxContainer key={consent.id}>
                       <Checkbox
-                        id={consent.attributes.campaign_name}
                         checked={this.isConsented(consent.id)}
                         onChange={this.handleOnChange(consent)}
                         label={<T value={consent.attributes.campaign_type_description_multiloc} />}

@@ -8,6 +8,8 @@ import { Icon } from 'semantic-ui-react';
 const DragHandle = styled.div`
   cursor: move;
   padding: 1rem;
+  height: 100%;
+  align-self: flex-start;
 `;
 
 type Props = {

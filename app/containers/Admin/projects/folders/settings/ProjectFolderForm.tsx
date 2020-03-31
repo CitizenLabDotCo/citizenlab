@@ -22,6 +22,12 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
+import IconTooltip from 'components/UI/IconTooltip';
+import FileUploader from 'components/UI/FileUploader';
+import { addProjectFolderFile, deleteProjectFolderFile } from 'services/projectFolderFiles';
+import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
+import Radio from 'components/UI/Radio';
+import useAdminPublication from 'hooks/useAdminPublication';
 
 interface Props {
   mode: 'edit' | 'new';
@@ -31,14 +37,18 @@ interface Props {
 const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
 
   const projectFolder = useProjectFolder({ projectFolderId });
+  const projectFolderFilesRemote = useProjectFolderFiles(projectFolderId);
   const projectFolderImagesRemote = useProjectFolderImages(projectFolderId);
-
+  const adminPublication = useAdminPublication(!isNilOrError(projectFolder) ? projectFolder.relationships.admin_publication.data ?.id || null : null);
   useEffect(() => {
     (async function iife() {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.attributes.title_multiloc);
         setDescriptionMultiloc(projectFolder.attributes.description_multiloc);
         setShortDescriptionMultiloc(projectFolder.attributes.description_preview_multiloc);
+        if (!isNilOrError(adminPublication)) {
+          setPublicationStatus(adminPublication.attributes.publication_status);
+        }
         if (projectFolder.attributes ?.header_bg ?.large) {
           const headerFile = await convertUrlToUploadFile(projectFolder.attributes ?.header_bg ?.large, null, null);
           setHeaderBg(headerFile);
@@ -49,19 +59,28 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           images.filter(img => img);
           setProjectFolderImages(images as UploadFile[]);
         }
+        if (!isNilOrError(projectFolderFilesRemote)) {
+          const filePromises = projectFolderFilesRemote.data.map(file => convertUrlToUploadFile(file.attributes.file.url, file.id, file.attributes.name));
+          const files = await Promise.all(filePromises);
+          files.filter(file => file);
+          setProjectFolderFiles(files as UploadFile[]);
+        }
       }
     }
     )();
-  }, [projectFolder, projectFolderImagesRemote, mode]);
+  }, [projectFolder, projectFolderImagesRemote, projectFolderFilesRemote, mode, adminPublication]);
 
   // input handling
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] = useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] = useState<Multiloc | null>(null);
   const [headerBg, setHeaderBg] = useState<UploadFile | null>(null);
+  const [publicationStatus, setPublicationStatus] = useState<'published' | 'draft' | 'archived'>('published');
   const [changedHeaderBg, setChangedHeaderBg] = useState(false);
   const [projectFolderImages, setProjectFolderImages] = useState<UploadFile[]>([]);
   const [projectFolderImagesToRemove, setProjectFolderImagesToRemove] = useState<string[]>([]);
+  const [projectFolderFiles, setProjectFolderFiles] = useState<UploadFile[]>([]);
+  const [projectFolderFilesToRemove, setProjectFolderFilesToRemove] = useState<string[]>([]);
 
   const getHandler = useCallback((setter: (value: any) => void) => (value: any) => {
     setStatus('enabled');
@@ -88,6 +107,24 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       setProjectFolderImagesToRemove(previous => [...previous, imageToRemove.id as string]);
     }
     setProjectFolderImages(projectFolderImages => projectFolderImages.filter(image => image.base64 !== imageToRemove.base64));
+  }, []);
+
+  const handleProjectFolderFileOnAdd = useCallback((fileToAdd: UploadFile) => {
+    setStatus('enabled');
+
+    setProjectFolderFiles(previous => {
+      const isDuplicate = previous.some(file => file.base64 === fileToAdd.base64);
+
+      return isDuplicate ? previous : [...previous, fileToAdd];
+    });
+  }, []);
+
+  const handleProjectFolderFileOnRemove = useCallback((fileToRemove: UploadFile) => {
+    setStatus('enabled');
+    if (fileToRemove.remote && fileToRemove.id) {
+      setProjectFolderFilesToRemove(previous => [...previous, fileToRemove.id as string]);
+    }
+    setProjectFolderImages(projectFolderImages => projectFolderImages.filter(image => image.base64 !== fileToRemove.base64));
   }, []);
 
   // form status
@@ -120,12 +157,16 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               title_multiloc: titleMultiloc,
               description_multiloc: descriptionMultiloc,
               description_preview_multiloc: shortDescriptionMultiloc,
-              header_bg: headerBg ?.base64
-              });
+              header_bg: headerBg ?.base64,
+              admin_publication_attributes: {
+                publication_status: publicationStatus
+              }
+            });
             if (!isNilOrError(res)) {
               const imagesToAddPromises = projectFolderImages.map(file => addProjectFolderImage(res.id, file.base64));
+              const filesToAddPromises = projectFolderFiles.map(file => addProjectFolderFile(res.id, file.base64, file.name));
 
-              imagesToAddPromises && await Promise.all<any>(imagesToAddPromises);
+              (imagesToAddPromises || filesToAddPromises) && await Promise.all<any>([...imagesToAddPromises, ...filesToAddPromises]);
 
               clHistory.push(`/admin/projects/folders/${res.id}`);
             }
@@ -137,20 +178,31 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           if (titleMultiloc && descriptionMultiloc && shortDescriptionMultiloc && !isNilOrError(projectFolder)) {
             const imagesToAddPromises = projectFolderImages.filter(file => !file.remote).map(file => addProjectFolderImage(projectFolderId as string, file.base64));
             const imagesToRemovePromises = projectFolderImagesToRemove.map(id => deleteProjectFolderImage(projectFolderId as string, id));
+            const filesToAddPromises = projectFolderFiles.filter(file => !file.remote).map(file => addProjectFolderFile(projectFolderId as string, file.base64, file.name));
+            const filesToRemovePromises = projectFolderFilesToRemove.map(id => deleteProjectFolderFile(projectFolderId as string, id));
 
-            imagesToAddPromises && await Promise.all<any>([...imagesToAddPromises, ...imagesToRemovePromises]);
+            imagesToAddPromises && await Promise.all<any>([
+              ...imagesToAddPromises,
+              ...imagesToRemovePromises,
+              ...filesToAddPromises,
+              ...filesToRemovePromises
+            ]);
 
             const changedTitleMultiloc = !isEqual(titleMultiloc, projectFolder.attributes.title_multiloc);
             const changedDescriptionMultiloc = !isEqual(descriptionMultiloc, projectFolder.attributes.description_multiloc);
             const changedShortDescriptionMultiloc = !isEqual(shortDescriptionMultiloc, projectFolder.attributes.description_preview_multiloc);
+            const changedPublicationStatus = isNilOrError(adminPublication) || !isEqual(publicationStatus, adminPublication.attributes.publication_status);
 
-            if (changedTitleMultiloc || changedDescriptionMultiloc || changedShortDescriptionMultiloc || changedHeaderBg) {
+            if (changedTitleMultiloc || changedDescriptionMultiloc || changedShortDescriptionMultiloc || changedHeaderBg || changedPublicationStatus) {
               const res = await updateProjectFolder(projectFolderId, {
                 title_multiloc: changedTitleMultiloc ? titleMultiloc : undefined,
                 description_multiloc: changedDescriptionMultiloc ? descriptionMultiloc : undefined,
                 description_preview_multiloc: changedShortDescriptionMultiloc ? shortDescriptionMultiloc : undefined,
-                header_bg: changedHeaderBg ? headerBg ?.base64 : undefined
-              });
+                header_bg: changedHeaderBg ? headerBg ?.base64 : undefined,
+                admin_publication_attributes: {
+                  publication_status: publicationStatus
+                }
+              }, !isNilOrError(projectFolder) ? projectFolder.relationships.admin_publication.data ?.id : undefined);
 
               if (isNilOrError(res)) {
                 setStatus('apiError');
@@ -173,6 +225,39 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   return (
     <form onSubmit={onSubmit}>
       <Section>
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.statusLabel} />
+            <IconTooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
+          </Label>
+          <Radio
+            onChange={getHandler(setPublicationStatus)}
+            currentValue={publicationStatus}
+            value="draft"
+            name="projectstatus"
+            id="projecstatus-draft"
+            className="e2e-projecstatus-draft"
+            label={<FormattedMessage {...messages.draftStatus} />}
+          />
+          <Radio
+            onChange={getHandler(setPublicationStatus)}
+            currentValue={publicationStatus}
+            value="published"
+            name="projectstatus"
+            id="projecstatus-published"
+            className="e2e-projecstatus-published"
+            label={<FormattedMessage {...messages.publishedStatus} />}
+          />
+          <Radio
+            onChange={getHandler(setPublicationStatus)}
+            currentValue={publicationStatus}
+            value="archived"
+            name="projectstatus"
+            id="projecstatus-archived"
+            className="e2e-projecstatus-archived"
+            label={<FormattedMessage {...messages.archivedStatus} />}
+          />
+        </SectionField>
         <SectionField>
           <InputMultilocWithLocaleSwitcher
             valueMultiloc={titleMultiloc}
@@ -229,6 +314,17 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             maxNumberOfImages={5}
             onAdd={getHandler(setProjectFolderImages)}
             onRemove={handleProjectFolderImageOnRemove}
+          />
+        </SectionField>
+        <SectionField>
+          <Label>
+            <FormattedMessage {...messages.fileUploadLabel} />
+            <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
+          </Label>
+          <FileUploader
+            onFileAdd={handleProjectFolderFileOnAdd}
+            onFileRemove={handleProjectFolderFileOnRemove}
+            files={projectFolderFiles}
           />
         </SectionField>
         <SubmitWrapper

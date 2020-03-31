@@ -15,7 +15,7 @@ const List = styled.ul`
   list-style: none;
 `;
 
-const ListItemText = styled.div`
+const CheckboxLabel = styled.span`
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
@@ -27,10 +27,22 @@ const ListItemText = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
+  display: block;
+  padding: 10px 0;
 `;
 
-const ListItemCheckbox = styled(Checkbox)`
-  margin-left: 10px;
+const ListItemText = styled.span`
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const ListItem = styled.li`
@@ -45,6 +57,35 @@ const ListItem = styled.li`
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
   transition: all 80ms ease-out;
+
+  &.last {
+    margin-bottom: 0px;
+  }
+
+  &:hover,
+  &:focus,
+  &.selected {
+    background: ${colors.clDropdownHoverBackground};
+
+    ${ListItemText} {
+      color: #000;
+    }
+  }
+`;
+
+const CheckboxListItem = styled.li`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0px;
+  margin-bottom: 4px;
+  padding: 10px;
+  list-style: none;
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  cursor: pointer;
+  transition: all 80ms ease-out;
+  padding: 0 10px;
 
   &.last {
     margin-bottom: 0px;
@@ -86,7 +127,7 @@ interface Props extends DefaultProps {
   selected: any[];
   right?: string;
   mobileRight?: string;
-  multiple?: boolean;
+  multipleSelectionAllowed?: boolean;
   opened: boolean;
   baseID: string;
 }
@@ -110,7 +151,11 @@ export default class ValuesList extends PureComponent<Props, State> {
     event.preventDefault();
   }
 
-  handleOnToggle = (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
+  handleOnToggleCheckbox = (entry) => (_event: React.MouseEvent | React.KeyboardEvent) => {
+    this.props.onChange(entry.value);
+  }
+
+  handleOnSelectSingleValue = (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
     if (event.type === 'click' || (event.type === 'keydown' && event['key'] === 'Enter')) {
       event.preventDefault();
       this.props.onChange(entry.value);
@@ -125,7 +170,7 @@ export default class ValuesList extends PureComponent<Props, State> {
     const {
       values,
       selected,
-      multiple,
+      multipleSelectionAllowed,
       opened,
       baseID,
       width,
@@ -158,18 +203,38 @@ export default class ValuesList extends PureComponent<Props, State> {
             className="e2e-sort-items"
             tabIndex={-1}
             role="listbox"
-            aria-multiselectable={multiple}
+            aria-multiselectable={multipleSelectionAllowed}
           >
             {values && values.map((entry, index) => {
               const checked = includes(selected, entry.value);
               const last = (index === values.length - 1);
               const classNames = [
                 `e2e-sort-item-${entry.value !== '-new' ? entry.value : 'old'}`,
-                !multiple && checked ? 'selected' : '',
+                !multipleSelectionAllowed && checked ? 'selected' : '',
                 last ? 'last' : '',
               ].filter(item => !isNil(item)).join(' ');
 
-              return (
+              return multipleSelectionAllowed ? (
+                <CheckboxListItem
+                  id={`${baseID}-${index}`}
+                  role="option"
+                  aria-posinset={index + 1}
+                  aria-selected={checked}
+                  key={entry.value}
+                  onMouseDown={this.removeFocus}
+                  className={classNames}
+                >
+                  <Checkbox
+                    checked={checked}
+                    onChange={this.handleOnToggleCheckbox(entry)}
+                    label={
+                      <CheckboxLabel>
+                        {entry.text}
+                      </CheckboxLabel>
+                    }
+                  />
+                </CheckboxListItem>
+              ) : (
                 <ListItem
                   id={`${baseID}-${index}`}
                   role="option"
@@ -177,29 +242,22 @@ export default class ValuesList extends PureComponent<Props, State> {
                   aria-selected={checked}
                   key={entry.value}
                   onMouseDown={this.removeFocus}
-                  onKeyDown={this.handleOnToggle(entry)}
-                  onClick={this.handleOnToggle(entry)}
-                  tabIndex={0}
                   className={classNames}
+                  onClick={this.handleOnSelectSingleValue(entry)}
+                  onKeyDown={this.handleOnSelectSingleValue(entry)}
+                  tabIndex={0}
                 >
                   <ListItemText>
                     {entry.text}
                   </ListItemText>
-
-                  {multiple &&
-                    <ListItemCheckbox
-                      notFocusable
-                      checked={checked}
-                      onChange={this.handleOnToggle(entry)}
-                    />
-                  }
                 </ListItem>
               );
-            }
-            )}
+            })}
           </List>
         )}
       />
     );
   }
 }
+
+// TODO: page jump on landing page (doesn't happen on projects page)

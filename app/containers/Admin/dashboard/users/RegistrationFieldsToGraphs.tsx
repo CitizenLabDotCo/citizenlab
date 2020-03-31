@@ -22,7 +22,7 @@ import AreaChart from './charts/AreaChart';
 import GenderChart from './charts/GenderChart';
 
 interface InputProps {
-  currentGroupFilter: string | null;
+  currentGroupFilter: string | undefined;
   startAt: string | null | undefined;
   endAt: string | null;
 }
