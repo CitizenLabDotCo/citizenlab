@@ -213,7 +213,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       center: initCenter,
       zoom_level: 15,
       tile_provider: 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D',
-      layers: null
     };
 
     const tenantMapConfig = {};
@@ -229,7 +228,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       tenantMapConfig['center'] = initCenter;
       tenantMapConfig['zoom_level'] = tenant.attributes.settings.maps.zoom_level;
       tenantMapConfig['tile_provider'] = tenant.attributes.settings.maps.tile_provider;
-      tenantMapConfig['layers'] = null;
     }
 
     const dataPropsMapConfig = {};
@@ -241,7 +239,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         zoom_level,
         tile_provider,
         center_geojson,
-        layers
       } = mapConfig.attributes;
 
       if (center_geojson?.coordinates) {
@@ -252,7 +249,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
       dataPropsMapConfig['zoom_level'] = zoom_level;
       dataPropsMapConfig['tile_provider'] = tile_provider;
-      dataPropsMapConfig['layers'] = layers;
     }
 
     const inputPropsMapConfig = {};
@@ -271,9 +267,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   initMap = () => {
-    const { localize } = this.props;
-    const { zoom_level, tile_provider, center, layers } = this.calculateMapConfig();
-    const hasLayers = layers && layers.length > 0;
+    const { localize, mapConfig } = this.props;
+    const { zoom_level, tile_provider, center } = this.calculateMapConfig();
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -293,9 +288,15 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     // Create layers
-    if (hasLayers) {
+    if (
+      !isNilOrError(mapConfig) &&
+      mapConfig.attributes.layers &&
+      mapConfig.attributes.layers.length > 0
+    ) {
+      const layers = mapConfig.attributes.layers;
+
       // add default enabled layers to map
-      const leafletLayers = createLeafletLayers();
+      const leafletLayers = createLeafletLayers(layers);
       const overlaysEnabledByDefault = leafletLayers
         .filter(layer => layer.enabledByDefault === true)
         .map(layer => layer.leafletGeoJson);
@@ -311,7 +312,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
     }
 
-    function createLeafletLayers() {
+    function createLeafletLayers(layers) {
       /*
         Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
         This is how it keeps the toggles in sync.
