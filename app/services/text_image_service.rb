@@ -62,8 +62,19 @@ class TextImageService
           .each do |img|
             text_reference = img.attr('data-cl2-text-image-text-reference')
             text_image = prefetched_text_images[text_reference]
-            raise "Text image with reference #{text_reference} not found for #{imageable.class}[#{imageable.id}]->#{field}" if !text_image
-            img.set_attribute('src', text_image.image.url)
+            if text_image
+              img.set_attribute('src', text_image.image.url)
+            else
+              Raven.capture_exception(
+                Exception.new('No text image found with reference'),
+                extra: {
+                  text_reference: text_reference,
+                  imageable_type: imageable.class,
+                  imageable_id: imageable.id,
+                  imageable_field: field,
+                  tenant_created_at: Tenant.current.created_at
+                })
+            end
           end
 
         output[locale] = doc.to_s

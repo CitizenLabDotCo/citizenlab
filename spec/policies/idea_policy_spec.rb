@@ -256,7 +256,7 @@ describe IdeaPolicy do
   end
 
   context "on idea in a draft project" do 
-    let(:project) { create(:project, publication_status: 'draft', with_permissions: true)}
+    let(:project) { create(:project, admin_publication_attributes: {publication_status: 'draft'}, with_permissions: true)}
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
