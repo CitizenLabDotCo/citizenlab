@@ -160,6 +160,7 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
+  mapConfigApplied: boolean;
 }
 
 class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
@@ -184,6 +185,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     super(props);
     this.state = {
       initiated: false,
+      mapConfigApplied: false
     };
   }
 
@@ -197,6 +199,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
   componentDidUpdate() {
     const { mapConfig, points } = this.props;
+    const { mapConfigApplied } = this.state;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
@@ -204,9 +207,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     if (
       !isNilOrError(mapConfig) &&
+      !mapConfigApplied &&
       this.map
     ) {
       this.updateMapWithMapConfig(mapConfig);
+      this.setState({ mapConfigApplied: true });
     }
   }
 
