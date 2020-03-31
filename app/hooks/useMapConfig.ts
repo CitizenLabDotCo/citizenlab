@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { mapConfigByProjectStream, IMapConfigData } from 'services/mapConfigs';
+import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {
   projectId: string | null;
@@ -16,7 +17,7 @@ export default ({ projectId } : Props) : IOutput => {
 
     useEffect(() => {
       const subscription = mapConfigByProjectStream(projectId).observable.subscribe((mapConfig) => {
-        setMapConfig(mapConfig.data);
+        setMapConfig(!isNilOrError(mapConfig) ? mapConfig.data : mapConfig);
       });
 
       return () => subscription.unsubscribe();
