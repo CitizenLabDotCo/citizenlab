@@ -1,16 +1,16 @@
-import React, { memo,  useCallback, useState } from 'react';
+import React, { memo,  useCallback, useState, useEffect } from 'react';
 
 // components
 import Button from 'components/UI/Button';
+import Consent from 'components/SignUpIn/SignUp/Consent';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
-import { InjectedIntlProps } from 'react-intl';
-import messages from './SignUp/messages';
+import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { TSignUpInFlow } from 'components/SignUpIn';
@@ -28,7 +28,7 @@ const Container = styled.div`
   }
 `;
 
-const ToC = styled.div`
+const ConsentWrapper = styled.div`
   padding: 40px;
 `;
 
@@ -43,8 +43,20 @@ interface Props {
 const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onContinue, children }) => {
 
   const [expanded, setExpanded] = useState(false);
+  const [tacAccepted, setTacAccepted] = useState(false);
+  const [tacError, setTacError] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+  const [privacyError, setPrivacyError] = useState(false);
 
-  const handleOnClick = useCallback((event: React.FormEvent) => {
+  useEffect(() => {
+    // reset
+    setTacAccepted(false);
+    setTacError(false);
+    setPrivacyAccepted(false);
+    setPrivacyError(false);
+  }, [expanded]);
+
+  const handleExpandButtonClicked = useCallback((event: React.FormEvent) => {
     event.preventDefault();
 
     if (flow === 'signup' && authProvider !== 'email') {
@@ -52,34 +64,34 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
     } else {
       onContinue(authProvider);
     }
-  }, [flow, onContinue]);
+  }, [flow, authProvider, onContinue]);
 
-  const handleOnContinue = useCallback((event: React.FormEvent) => {
-    event.preventDefault();
-    onContinue(authProvider);
-  }, [authProvider, onContinue]);
+  const handleContinueClicked = useCallback(() => {
+    if (!tacAccepted) {
+      setTacError(true);
+    }
+
+    if (!privacyAccepted) {
+      setPrivacyError(true);
+    }
+
+    if (tacAccepted && privacyAccepted) {
+      onContinue(authProvider);
+    }
+  }, [authProvider, onContinue, tacAccepted, privacyAccepted]);
+
+  const handleTacAcceptedChange = useCallback((tacAccepted: boolean) => {
+    setTacAccepted(tacAccepted);
+    setTacError(false);
+  }, []);
+
+  const handlePrivacyAcceptedChange = useCallback((privacyAccepted: boolean) => {
+    setPrivacyAccepted(privacyAccepted);
+    setPrivacyError(false);
+  }, []);
 
   return (
-    <Container
-      className={className}
-      // tabIndex={status === 'image' ? 0 : -1}
-      // onClick={status === 'image' ? this.handleOnClick : undefined}
-      // onKeyDown={status === 'image' ? this.handleOnKeyDown : undefined}
-      // role={status === 'image' ? 'button' : ''}
-    >
-
-      {/*
-      <Button>
-        <StyledIcon name={authProvider as any} />
-        <Text>
-          {authProvider === 'email' && <FormattedMessage {...messages.continueWithEmail} />}
-          {authProvider === 'google' && <FormattedMessage {...messages.continueWithGoogle} />}
-          {authProvider === 'facebook' && <FormattedMessage {...messages.continueWithFacebook} />}
-          {authProvider === 'azureactivedirectory' && <FormattedMessage {...messages.continueWithAzure} />}
-        </Text>
-      </Button>
-      */}
-
+    <Container className={className}>
       <Button
         icon={authProvider as any}
         iconSize="22px"
@@ -89,15 +101,26 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
         whiteSpace="wrap"
         borderColor="transparent"
         borderHoverColor="transparent"
-        onClick={handleOnClick}
+        onClick={handleExpandButtonClicked}
       >
         {children}
       </Button>
+
       {expanded &&
-        <ToC>
-          dsafdsdsfdsdfdsf
-          <Button onClick={handleOnContinue}>Continue</Button>
-        </ToC>
+        <ConsentWrapper>
+          <Consent
+            tacError={tacError}
+            privacyError={privacyError}
+            onTacAcceptedChange={handleTacAcceptedChange}
+            onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
+          />
+          <Button
+            onClick={handleContinueClicked}
+            disabled={!(tacAccepted && privacyAccepted)}
+          >
+            <FormattedMessage {...messages.continue} />
+          </Button>
+        </ConsentWrapper>
       }
     </Container>
   );

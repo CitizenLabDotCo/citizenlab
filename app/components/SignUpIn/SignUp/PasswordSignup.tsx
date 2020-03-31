@@ -9,8 +9,8 @@ import Link from 'utils/cl-router/Link';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Checkbox from 'components/UI/Checkbox';
 import { FormLabel } from 'components/UI/FormComponents';
+import Consent from 'components/SignUpIn/SignUp/Consent';
 
 // utils
 import { isValidEmail } from 'utils/validate';
@@ -30,9 +30,8 @@ import T from 'components/T';
 import messages from './messages';
 
 // style
-import { darken } from 'polished';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
@@ -65,33 +64,6 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const TermsAndConditionsWrapper = styled.div`
-  padding: 15px 20px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${darken(0.04, colors.background)};
-
-  &.error {
-    border-color: ${(props: any) => props.theme.colors.clRedError};
-  }
-
-  span {
-    color: ${colors.text} !important;
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 21px;
-  }
-
-  a > span {
-    color: ${colors.text} !important;
-    text-decoration: underline;
-  }
-
-  a:hover > span {
-    color: #000 !important;
-    text-decoration: underline;
-  }
-`;
-
 const GoToSignInButton = styled(Button)``;
 
 type InputProps = {
@@ -118,17 +90,15 @@ type State = {
   email: string | null | undefined;
   password: string | null;
   tacAccepted: boolean;
-  emailAccepted: boolean;
   privacyAccepted: boolean;
   processing: boolean;
   tokenError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
   emailError: string | null;
-  emailConsentError: string | null;
-  privacyError: string | null;
+  privacyError: boolean;
   passwordError: string | null;
-  tacError: string | null;
+  tacError: boolean;
   unknownError: string | null;
   apiErrors: CLErrorsJSON | null | Error;
   emailInvitationTokenInvalid: boolean;
@@ -146,17 +116,15 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       email: props.invitedUser.user?.attributes.email || null,
       password: null,
       tacAccepted: false,
-      emailAccepted: false,
       privacyAccepted: false,
       processing: false,
       tokenError: null,
       firstNameError: null,
       lastNameError: null,
       emailError: null,
-      emailConsentError: null,
       passwordError: null,
-      tacError: null,
-      privacyError: null,
+      tacError: false,
+      privacyError: false,
       unknownError: null,
       apiErrors: null,
       emailInvitationTokenInvalid: props.invitedUser?.isInvalidToken
@@ -215,21 +183,23 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }));
   }
 
-  handleTaCAcceptedOnChange = () => {
-    this.setState(state => ({ tacAccepted: !state.tacAccepted, tacError: null }));
-  }
-
-  handleEmailAcceptedOnChange = () => {
-    this.setState(state => ({ emailAccepted: !state.emailAccepted, emailError: null }));
-  }
-
-  handlePrivacyAcceptedOnChange = () => {
-    this.setState(state => ({ privacyAccepted: !state.privacyAccepted, privacyError: null }));
-  }
-
   handleOnGoToSignIn = (event: React.FormEvent) => {
     event.preventDefault();
     this.props.onGoToSignIn();
+  }
+
+  handleTacAcceptedChange = (tacAccepted: boolean) => {
+    this.setState({
+      tacAccepted,
+      tacError: false
+    });
+  }
+
+  handlePrivacyAcceptedChange = (privacyAccepted: boolean) => {
+    this.setState({
+      privacyAccepted,
+      privacyError: false
+    });
   }
 
   handleOnSubmit = async (event: React.FormEvent<any>) => {
@@ -238,16 +208,15 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const { isInvitation, tenant } = this.props;
     const { formatMessage } = this.props.intl;
     const { locale } = this.props;
-    const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted, emailAccepted } = this.state;
+    const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted } = this.state;
     let tokenError = ((isInvitation && !token) ? formatMessage(messages.noTokenError) : null);
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
     const firstNameError = (!firstName ? formatMessage(messages.noFirstNameError) : null);
     const lastNameError = (!lastName ? formatMessage(messages.noLastNameError) : null);
-    const tacError = (!tacAccepted ? formatMessage(messages.tacError) : null);
-    const privacyError = (!privacyAccepted ? formatMessage(messages.privacyError) : null);
-    const emailConsentError = (!emailAccepted ? formatMessage(messages.emailConsentError) : null);
+    const tacError = !tacAccepted;
+    const privacyError = !privacyAccepted;
     let passwordError: string | null = null;
 
     if (!password) {
@@ -256,9 +225,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError, emailConsentError].some(error => error !== null);
+    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError].some(error => error !== null);
 
-    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError, emailConsentError });
+    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError });
 
     if (!hasErrors && firstName && lastName && email && password && locale) {
       try {
@@ -306,6 +275,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp));
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
+    const signUpPageLink = <Link to={'/sign-up'}>{formatMessage(messages.signUpPage)}</Link>;
 
     let unknownApiError: string | null = null;
 
@@ -330,11 +300,19 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
           </SignUpHelperText>
         }
 
-        {!emailInvitationTokenInvalid ?
-          <Form id="e2e-signup-step1" onSubmit={this.handleOnSubmit} noValidate={true}>
+        {!emailInvitationTokenInvalid &&
+          <Form
+            id="e2e-signup-step1"
+            onSubmit={this.handleOnSubmit}
+            noValidate={true}
+          >
             {isInvitation && !this.props.token &&
               <FormElement>
-                <FormLabel labelMessage={messages.tokenLabel} htmlFor="token" thin />
+                <FormLabel
+                  labelMessage={messages.tokenLabel}
+                  htmlFor="token"
+                  thin={true}
+                />
                 <Input
                   id="token"
                   type="text"
@@ -347,7 +325,11 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             }
 
             <FormElement>
-              <FormLabel labelMessage={messages.firstNamesLabel} htmlFor="firstName" thin />
+              <FormLabel
+                labelMessage={messages.firstNamesLabel}
+                htmlFor="firstName"
+                thin={true}
+              />
               <Input
                 id="firstName"
                 type="text"
@@ -359,11 +341,18 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 autocomplete="given-name"
                 onGreyBackground
               />
-              <Error fieldName={'first_name'} apiErrors={get(apiErrors, 'json.errors.first_name')} />
+              <Error
+                fieldName={'first_name'}
+                apiErrors={get(apiErrors, 'json.errors.first_name')}
+              />
             </FormElement>
 
             <FormElement>
-              <FormLabel labelMessage={messages.lastNameLabel} htmlFor="lastName" thin />
+              <FormLabel
+                labelMessage={messages.lastNameLabel}
+                htmlFor="lastName"
+                thin={true}
+              />
               <Input
                 id="lastName"
                 type="text"
@@ -374,11 +363,18 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 autocomplete="family-name"
                 onGreyBackground
               />
-              <Error fieldName={'last_name'} apiErrors={get(apiErrors, 'json.errors.last_name')} />
+              <Error
+                fieldName={'last_name'}
+                apiErrors={get(apiErrors, 'json.errors.last_name')}
+              />
             </FormElement>
 
             <FormElement>
-              <FormLabel labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel} htmlFor="email" thin />
+              <FormLabel
+                labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
+                htmlFor="email"
+                thin={true}
+              />
               <Input
                 type="email"
                 id="email"
@@ -389,11 +385,18 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 autocomplete="email"
                 onGreyBackground
               />
-              <Error fieldName={'email'} apiErrors={get(apiErrors, 'json.errors.email')} />
+              <Error
+                fieldName={'email'}
+                apiErrors={get(apiErrors, 'json.errors.email')}
+              />
             </FormElement>
 
             <FormElement>
-              <FormLabel labelMessage={messages.passwordLabel} htmlFor="password" thin />
+              <FormLabel
+                labelMessage={messages.passwordLabel}
+                htmlFor="password"
+                thin={true}
+              />
               <Input
                 type="password"
                 id="password"
@@ -404,58 +407,19 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 autocomplete="new-password"
                 onGreyBackground
               />
-              <Error fieldName={'password'} apiErrors={get(apiErrors, 'json.errors.password')} />
+              <Error
+                fieldName={'password'}
+                apiErrors={get(apiErrors, 'json.errors.password')}
+              />
             </FormElement>
 
             <FormElement>
-              <TermsAndConditionsWrapper className={`${this.state.tacError && 'error'}`}>
-                <Checkbox
-                  id="terms-and-conditions-checkbox"
-                  className="e2e-terms-and-conditions"
-                  checked={this.state.tacAccepted}
-                  onChange={this.handleTaCAcceptedOnChange}
-                  label={
-                    <FormattedMessage
-                      {...messages.tacApproval}
-                      values={{
-                        tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>,
-                      }}
-                    />
-                  }
-                />
-              </TermsAndConditionsWrapper>
-              <TermsAndConditionsWrapper className={`${this.state.privacyError && 'error'}`}>
-                <Checkbox
-                  id="privacy-checkbox"
-                  className="e2e-privacy-checkbox"
-                  checked={this.state.privacyAccepted}
-                  onChange={this.handlePrivacyAcceptedOnChange}
-                  label={
-                    <FormattedMessage
-                      {...messages.privacyApproval}
-                      values={{
-                        ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>,
-                      }}
-                    />
-                  }
-                />
-              </TermsAndConditionsWrapper>
-              <TermsAndConditionsWrapper className={`${this.state.emailConsentError && 'error'}`}>
-                <Checkbox
-                  id="privacy-checkbox"
-                  className="e2e-email-checkbox"
-                  checked={this.state.emailAccepted}
-                  onChange={this.handleEmailAcceptedOnChange}
-                  label={
-                    <FormattedMessage
-                      {...messages.emailApproval}
-                    />
-                  }
-                />
-              </TermsAndConditionsWrapper>
-              <Error text={this.state.tacError} />
-              <Error text={this.state.privacyError} />
-              <Error text={this.state.emailConsentError} />
+              <Consent
+                tacError={this.state.tacError}
+                privacyError={this.state.privacyError}
+                onTacAcceptedChange={this.handleTacAcceptedChange}
+                onPrivacyAcceptedChange={this.handlePrivacyAcceptedChange}
+              />
             </FormElement>
 
             <FormElement>
@@ -479,22 +443,12 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
 
             <Error text={unknownApiError} />
-            <Error text={((isInvitation && this.props.token && tokenError) ? tokenError : null)} />
+            <Error text={(isInvitation && this.props.token && tokenError) ? tokenError : null} />
           </Form>
-          :
-          <Error
-            text={<FormattedMessage
-              {...messages.emailInvitationTokenInvalid}
-              values={{
-                signUpPageLink: (
-                  <Link
-                    to={'/sign-up'}
-                  >
-                    {formatMessage(messages.signUpPage)}
-                  </Link>)
-              }}
-            />}
-          />
+        }
+
+        {emailInvitationTokenInvalid &&
+          <Error text={<FormattedMessage {...messages.emailInvitationTokenInvalid} values={{ signUpPageLink }} />} />
         }
       </Container>
     );
