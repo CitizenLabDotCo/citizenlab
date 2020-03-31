@@ -200,7 +200,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     /*
       Deal with dropdown map, for which componentDidUpdate
       doesn't get called if the map is toggled, because mapConfig
-      has already been loaded. The map gets re-rendered, so the
+      has already been loaded. The map gets re-rendered, however, so the
       mapConfig wouldn't get applied
     */
     if (
@@ -222,7 +222,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     /*
       As the mapConfig is loaded with a delay,
-      we need to call the updateMapConfig here.
+      we need to configure the mapconfig here.
     */
     if (
       !isNilOrError(mapConfig) &&
