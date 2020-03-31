@@ -8,9 +8,11 @@ resource 'ProjectFolder' do
     header "Content-Type", "application/json"
 
     @projects = ['published','published','draft','published','archived','archived','published']
-      .map { |ps|  create(:project, publication_status: ps)}
-    @folders = [create(:project_folder, projects: @projects.take(3)), create(:project_folder, projects: [@projects.last])]
-    ProjectHolderService.new.fix_project_holder_orderings!
+      .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
+    @folders = [
+      create(:project_folder, projects: @projects.take(3)), 
+      create(:project_folder, projects: [@projects.last])
+    ]
   end
 
   get "web_api/v1/project_folders" do
@@ -77,16 +79,25 @@ resource 'ProjectFolder' do
         parameter :description_preview_multiloc, "Text info about the folder", required: false
         parameter :header_bg, "Base64 encoded header image", required: false
       end
+      with_options scope: [:project_folder, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
+      end
       ValidationErrorHelper.new.error_fields(self, ProjectFolder)
 
       let(:title_multiloc) { {"en" => "Folder title" } }
       let(:description_multiloc) { {"en" => "Folder desc" } }
       let(:description_preview_multiloc) { {"en" => "Folder short desc" } }
+      let(:publication_status) { 'draft' }
 
       example_request "Create a folder" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
+        expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
+        # New folders are added to the top
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
       end
     end
 
@@ -97,18 +108,28 @@ resource 'ProjectFolder' do
         parameter :description_preview_multiloc, "Text info about the folder"
         parameter :header_bg, "Base64 encoded header image"
       end
+      with_options scope: [:project_folder, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the folder, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
+      end
       ValidationErrorHelper.new.error_fields(self, ProjectFolder)
 
       let(:project_folder) { @folders.last }
       let(:id) { project_folder.id }
       let(:title_multiloc) { {'en' => "The mayor's favourites"} }
       let(:description_multiloc) { {'en' => "An ultimate selection of the mayor's favourite projects!"} }
+      let(:publication_status) { 'archived' }
 
-      example_request "Update a folder" do
+      example "Update a folder" do
+        old_publcation_ids = AdminPublication.ids
+        do_request
+        
         expect(response_status).to eq 200
+        # admin publications should not be replaced, but rather should be updated
+        expect(AdminPublication.ids).to match_array old_publcation_ids
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
       end
     end
 
@@ -118,14 +139,15 @@ resource 'ProjectFolder' do
 
       example "Delete a folder" do
         old_count = ProjectFolder.count
-        old_pho_count = ProjectHolderOrdering.count
-        project_ids = project_folder.projects.published.order(:ordering).ids
+        old_publications_count = AdminPublication.count
+        old_project_count = Project.count
         do_request
+
         expect(response_status).to eq 200
         expect{ProjectFolder.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectFolder.count).to eq (old_count - 1)
-
-        expect(ProjectHolderOrdering.count).to eq (old_pho_count - 1)
+        expect(AdminPublication.count).to eq (old_publications_count - 4)
+        expect(Project.count).to eq (old_project_count - 3)
       end
     end
 

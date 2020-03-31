@@ -17,7 +17,7 @@ resource "Projects" do
       header 'Authorization', "Bearer #{token}"
 
       @projects = ['published','published','draft','published','archived','archived','published']
-        .map { |ps|  create(:project, publication_status: ps)}
+        .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
     end
 
     get "web_api/v1/projects" do
@@ -36,7 +36,7 @@ resource "Projects" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 7
-        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
+        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }.uniq).to match_array ['published', 'archived', 'draft']
       end
 
       example "List only projects with specified IDs" do
@@ -51,7 +51,7 @@ resource "Projects" do
         do_request(publication_statuses: ['draft','archived'])
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| d.dig(:attributes,:publication_status) }).not_to include('published')
+        expect(json_response[:data].map { |d| json_response[:included].select{|x| x[:id] == d.dig(:relationships, :admin_publication, :data, :id)}.first.dig(:attributes, :publication_status) }).not_to include('published')
       end
 
       example "Get all projects on the second page with fixed page size" do
@@ -63,7 +63,6 @@ resource "Projects" do
 
       example "List all projects from a folder" do
         folder = create(:project_folder, projects: @projects.take(2))
-        ProjectHolderService.new.fix_project_holder_orderings!
 
         do_request folder: folder.id
         json_response = json_parse(response_body)
@@ -73,9 +72,8 @@ resource "Projects" do
 
       example "List all top-level projects" do
         folder = create(:project_folder, projects: @projects.take(2))
-        ProjectHolderService.new.fix_project_holder_orderings!
 
-        do_request folder: nil, publication_statuses: Project::PUBLICATION_STATUSES
+        do_request folder: nil, publication_statuses: AdminPublication::PUBLICATION_STATUSES
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 5
         expect(json_response[:data].map{|d| d[:id]}).to match_array @projects.drop(2).map(&:id)
@@ -200,7 +198,7 @@ resource "Projects" do
       example "Get a project on a timeline project includes the current_phase", document: false do
         project = create(:project_with_current_phase)
         current_phase = project.phases[2]
-        do_request( id: project.id)
+        do_request id: project.id
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
@@ -211,7 +209,7 @@ resource "Projects" do
         idea = create(:idea)
         author = idea.author
         project = idea.project
-        do_request(id: project.id)
+        do_request id: project.id
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :avatars_count)).to eq 1
@@ -259,11 +257,13 @@ resource "Projects" do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
-        parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
+      end
+      with_options scope: [:project, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}. Defaults to published.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -287,8 +287,21 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
           expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'admins'
-          expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'draft'
+          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'draft'
           expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
+          expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
+          # New projects are added to the top
+          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example "Create a project in a folder" do
+          folder = create(:project_folder)
+          do_request folder_id: folder.id
+
+          expect(response_status).to eq 201
+          json_response = json_parse(response_body)
+          # New folder projects are added to the top
+          expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
         end
       end
 
@@ -382,11 +395,13 @@ resource "Projects" do
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyParticipationContext::SURVEY_SERVICES.join(",")}", required: false
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
-        parameter :publication_status, "Describes the publication status of the project, either #{Project::PUBLICATION_STATUSES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
         parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas?", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)"
+      end
+      with_options scope: [:project, :admin_publication_attributes] do
+        parameter :publication_status, "Describes the publication status of the project, either #{AdminPublication::PUBLICATION_STATUSES.join(",")}.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Project)
 
@@ -402,7 +417,13 @@ resource "Projects" do
       let(:publication_status) { 'archived' }
       let(:default_assignee_id) { create(:admin).id }
 
-      example_request "Update a project" do
+      example "Update a project" do
+        old_publcation_ids = AdminPublication.ids
+        do_request
+
+        expect(response_status).to eq 200
+        # admin publications should not be replaced, but rather should be updated
+        expect(AdminPublication.ids).to match_array old_publcation_ids
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc,:en)).to eq "Changed title"
         expect(json_response.dig(:data,:attributes,:description_multiloc,:en)).to eq "Changed body"
@@ -411,25 +432,32 @@ resource "Projects" do
         expect(json_response.dig(:data,:relationships,:areas,:data).map{|d| d[:id]}).to match_array area_ids
         expect(json_response.dig(:data,:attributes,:visible_to)).to eq 'groups'       
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq 'card'
-        expect(json_response.dig(:data,:attributes,:publication_status)).to eq 'archived'
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :publication_status)).to eq 'archived'
         expect(json_response.dig(:data,:relationships,:default_assignee,:data,:id)).to eq default_assignee_id
       end
 
       example "Add a project to a folder" do
         folder = create(:project_folder)
-        ProjectHolderService.new.fix_project_holder_orderings!
         do_request(project: {folder_id: folder.id})
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
+        # expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq folder.id
+        expect(Project.find(json_response.dig(:data,:id)).folder.id).to eq folder.id
+        # Projects moved into folders are added to the top
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
       end
 
       example "Remove a project from a folder" do
-        folder = create(:project_folder)
-        @project.update!(folder: folder)
-        ProjectHolderService.new.fix_project_holder_orderings!
+        folder = create(:project_folder, projects: [@project])
         do_request(project: {folder_id: nil})
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:relationships,:folder,:data,:id)).to eq nil
+        # Projects moved out of folders are added to the top
+        expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+      end
+
+      example "[error] Put a project in a non-existing folder" do
+        do_request(project: {folder_id: 'dinosaur'})
+        expect(response_status).to eq 404
       end
 
       example "Clear all areas", document: false do
@@ -472,30 +500,6 @@ resource "Projects" do
       end
     end
 
-    patch "web_api/v1/projects/:id/reorder" do
-      with_options scope: :project do
-        parameter :ordering, "The position, starting from 0, where the project should be at. Projects after will move down.", required: true
-      end
-
-      before do
-        Project.all.each(&:destroy!)
-      end
-      describe do
-        let!(:id) { create_list(:project, 5).first.id }
-        let(:ordering) { 2 }
-
-        example "Reorder a project" do
-          old_second_project = Project.find_by(ordering: ordering)
-          do_request
-          expect(response_status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
-          expect(Project.find_by(ordering: 2).id).to eq id
-          expect(old_second_project.reload.ordering).to eq 1 # previous third is now second
-        end
-      end
-    end
-
     delete "web_api/v1/projects/:id" do
       let(:project) { create(:project) }
       let(:id) { project.id }
@@ -518,7 +522,7 @@ resource "Projects" do
         token = Knock::AuthToken.new(payload: @moderator.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
 
-        @projects = create_list(:project, 10, publication_status: 'published')
+        @projects = create_list(:project, 10, admin_publication_attributes: {publication_status: 'published'})
       end
 
       example "List all projects the current user can moderate" do
@@ -543,11 +547,11 @@ resource "Projects" do
         header 'Authorization', "Bearer #{token}"
 
         @projects = ['published','published','draft','published','archived','published','archived']
-          .map { |ps|  create(:project, publication_status: ps)}
+          .map { |ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
       end
 
       example "Admins moderate all projects", document: false do
-        do_request filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES
+        do_request filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq @projects.size
@@ -571,8 +575,8 @@ resource "Projects" do
 
       example "Normal users cannot moderate any projects", document: false do
         ['published','published','draft','published','archived','published','archived']
-          .map {|ps|  create(:project, publication_status: ps)}
-        do_request(filter_can_moderate: true, publication_statuses: Project::PUBLICATION_STATUSES)
+          .map {|ps|  create(:project, admin_publication_attributes: {publication_status: ps})}
+        do_request(filter_can_moderate: true, publication_statuses: AdminPublication::PUBLICATION_STATUSES)
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 0
@@ -584,7 +588,7 @@ resource "Projects" do
     get "web_api/v1/projects" do
       parameter :filter_can_moderate, "Filter out the projects the user is allowed to moderate. False by default", required: false
       before do
-        @projects = create_list(:project, 10, publication_status: 'published')
+        @projects = create_list(:project, 10, admin_publication_attributes: {publication_status: 'published'})
       end
       let(:filter_can_moderate) {true}
 

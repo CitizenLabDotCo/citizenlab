@@ -1,6 +1,5 @@
 class Project < ApplicationRecord
   include ParticipationContext
-  acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:folder_id]
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
   DESCRIPTION_PREVIEW_JSON_SCHEMA = ERB.new(File.read(Rails.root.join('config', 'schemas', 'project_description_preview.json_schema.erb'))).result(binding)
@@ -25,16 +24,12 @@ class Project < ApplicationRecord
   belongs_to :default_assignee, class_name: 'User', optional: true
   belongs_to :custom_form, optional: true, dependent: :destroy
 
-  has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
-  belongs_to :folder, optional: true, class_name: 'ProjectFolder'
-  counter_culture :folder
-
-  has_one :project_sort_score
+  has_one :admin_publication, as: :publication, dependent: :destroy
+  accepts_nested_attributes_for :admin_publication, update_only: true
 
   VISIBLE_TOS = %w(public groups admins)
   PROCESS_TYPES = %w(timeline continuous)
   INTERNAL_ROLES = %w(open_idea_box)
-  PUBLICATION_STATUSES = %w(draft published archived)
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :description_multiloc, multiloc: {presence: false}
@@ -50,15 +45,15 @@ class Project < ApplicationRecord
   }
   validates :process_type, presence: true, inclusion: {in: PROCESS_TYPES}
   validates :internal_role, inclusion: {in: INTERNAL_ROLES, allow_nil: true}
-  validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
+  validate :admin_publication_must_exist
 
   before_validation :set_process_type, on: :create
   before_validation :generate_slug, on: :create
   before_validation :set_visible_to, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
-  before_validation :set_publication_status, on: :create
   before_validation :strip_title
+  before_validation :set_admin_publication
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -93,12 +88,12 @@ class Project < ApplicationRecord
     where(id: subquery)
   end)
 
-  scope :published, -> {
-    where(publication_status: 'published')
-  }
-
   scope :is_participation_context, -> {
     where.not(process_type: 'timeline')
+  }
+
+  scope :ordered, -> { 
+    includes(:admin_publication).order('admin_publications.ordering') 
   }
 
 
@@ -110,20 +105,25 @@ class Project < ApplicationRecord
     self.process_type == 'timeline'
   end
 
-  def archived?
-    publication_status == 'archived'
-  end
-
-  def published?
-    publication_status == 'published'
-  end
-
-  def draft?
-    publication_status == 'draft'
-  end
-
   def project
     self
+  end
+
+  def folder
+    admin_publication.parent&.publication
+  end
+
+  def set_folder! folder_id
+    parent = if folder_id.present?
+      AdminPublication.find_by!(
+        publication_id: folder_id, 
+        publication_type: ProjectFolder.name
+        )
+    else
+      nil
+    end
+    AdminPublication.where(publication: self).first.update!(parent_id: parent&.id)
+    reload
   end
 
   def allocated_budget
@@ -132,6 +132,15 @@ class Project < ApplicationRecord
 
 
   private
+
+  def admin_publication_must_exist
+    # Built-in presence validation does not work.
+    # Admin publication must always be present
+    # once the project was created.
+    if id.present? && admin_publication&.id.blank?
+      errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
+    end
+  end
 
   def generate_slug
     slug_service = SlugService.new
@@ -165,14 +174,14 @@ class Project < ApplicationRecord
     self.process_type ||= 'timeline'
   end
 
-  def set_publication_status
-    self.publication_status ||= 'published'
-  end
-
   def strip_title
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
     end
+  end
+
+  def set_admin_publication
+    self.admin_publication_attributes= {} if !self.admin_publication
   end
 
 end
