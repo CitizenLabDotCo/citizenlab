@@ -1,6 +1,7 @@
 import React, { FormEvent } from 'react';
 import { adopt } from 'react-adopt';
 import { compact, isNil } from 'lodash-es';
+import { isError } from 'util';
 import { isNilOrError } from 'utils/helperUtils';
 require('leaflet-simplestyle');
 
@@ -455,17 +456,38 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />,
-  mapConfig: ({ projectId, render }) => projectId ? (
-    <GetMapConfig projectId={projectId}>{render}</GetMapConfig>
-  ) : <GetMapConfig projectId={null}>{render}</GetMapConfig>,
-});
+// const Data = adopt<DataProps, InputProps>({
+//   tenant: <GetTenant />,
+//   mapConfig: ({ projectId, render }) => projectId ? (
+//     <GetMapConfig projectId={projectId}>{render}</GetMapConfig>
+//   ) : <GetMapConfig projectId={null}>{render}</GetMapConfig>,
+// });
 
 const CLMapWithHOCs = injectLocalize(CLMap);
 
+// export default (inputProps: InputProps) => (
+//   <Data {...inputProps}>
+//     {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
+//   </Data>
+// );
+
 export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
+  <GetMapConfig projectId={inputProps.projectId || null}>
+    {(mapConfig: GetMapConfigChildProps) => {
+      if (!isError(mapConfig) || !mapConfig) return null;
+      return (
+        <GetTenant>
+          {(tenant: GetTenantChildProps) => {
+            return (
+              <CLMapWithHOCs
+                tenant={tenant}
+                mapConfig={mapConfig}
+                {...inputProps}
+              />
+            );
+          }}
+        </GetTenant>
+      );
+    }}
+  </GetMapConfig>
 );
