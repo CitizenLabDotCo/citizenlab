@@ -13,9 +13,6 @@ import Legend from './Legend';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
-// services
-import { IMapConfigData } from 'services/mapConfigs';
-
 // Map
 import Leaflet from 'leaflet';
 import 'leaflet.markercluster';
@@ -160,12 +157,11 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
-  mapConfigApplied: boolean;
 }
 
 class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
+  private mapElement: HTMLDivElement;
   private map: Leaflet.Map;
-  private baseLayer: Leaflet.TileLayer;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markers: Leaflet.Marker[];
   private markerOptions = { icon: ideaMarker };
@@ -185,83 +181,128 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     super(props);
     this.state = {
       initiated: false,
-      mapConfigApplied: false
     };
   }
 
   componentDidMount() {
-    const { points, mapConfig } = this.props;
-    const { mapConfigApplied } = this.state;
+    const { points } = this.props;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
     }
 
-    /*
-      Deal with dropdown map, for which componentDidUpdate
-      doesn't get called if the map is toggled, because mapConfig
-      has already been loaded. The map gets re-rendered, however, so the
-      mapConfig wouldn't get applied
-    */
-    if (
-      this.map &&
-      !mapConfigApplied &&
-      !isNilOrError(mapConfig)
-      ) {
-      this.updateMapWithMapConfig(mapConfig);
-    }
+    this.initMap();
   }
 
   componentDidUpdate() {
-    const { mapConfig, points } = this.props;
-    const { mapConfigApplied } = this.state;
+    const { points } = this.props;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
     }
-
-    /*
-      As the mapConfig is loaded with a delay,
-      we need to configure the mapconfig here.
-    */
-    if (
-      !isNilOrError(mapConfig) &&
-      !mapConfigApplied &&
-      this.map
-    ) {
-      this.updateMapWithMapConfig(mapConfig);
-      this.setState({ mapConfigApplied: true });
-    }
   }
 
-  updateMapWithMapConfig = (mapConfig: IMapConfigData) => {
-    const { localize } = this.props;
-    const {
-      zoom_level,
-      tile_provider,
-      center_geojson,
-      layers
-    } = mapConfig.attributes;
-    const hasLayers = layers.length > 0;
+  bindMapContainer = (mapContainer: HTMLDivElement) => {
+    this.mapElement = mapContainer;
+  }
 
-    // update basic values
-    if (zoom_level) this.map.setZoom(parseFloat(zoom_level));
-    if (tile_provider) this.baseLayer.setUrl(tile_provider);
-    if (center_geojson) {
-      const [longitude, latitude] = center_geojson.coordinates;
-      this.map.panTo([latitude, longitude]);
+  calculateMapConfig = () => {
+    const { tenant, center, mapConfig, zoom } = this.props;
+    let initCenter: [number, number] = [0, 0];
+    const defaultMapConfig = {
+      center: initCenter,
+      zoom_level: 15,
+      tile_provider: 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D',
+      layers: null
+    };
+
+    const tenantMapConfig = {};
+    if (
+      !isNilOrError(tenant) &&
+      tenant.attributes &&
+      tenant.attributes.settings.maps
+    ) {
+      initCenter = [
+        parseFloat(tenant.attributes.settings.maps.map_center.lat),
+        parseFloat(tenant.attributes.settings.maps.map_center.long),
+      ];
+      tenantMapConfig['center'] = initCenter;
+      tenantMapConfig['zoom_level'] = tenant.attributes.settings.maps.zoom_level;
+      tenantMapConfig['tile_provider'] = tenant.attributes.settings.maps.tile_provider;
+      tenantMapConfig['layers'] = null;
     }
 
+    const dataPropsMapConfig = {};
+    if (
+      !isNilOrError(mapConfig) &&
+      mapConfig.attributes
+    ) {
+      const {
+        zoom_level,
+        tile_provider,
+        center_geojson,
+        layers
+      } = mapConfig.attributes;
+
+      if (center_geojson?.coordinates) {
+        const [longitude, latitude] = center_geojson.coordinates;
+        initCenter = [latitude, longitude];
+        dataPropsMapConfig['center'] = initCenter;
+      }
+
+      dataPropsMapConfig['zoom_level'] = zoom_level;
+      dataPropsMapConfig['tile_provider'] = tile_provider;
+      dataPropsMapConfig['layers'] = layers;
+    }
+
+    const inputPropsMapConfig = {};
+    if (center) {
+      initCenter = [center[1], center[0]];
+      inputPropsMapConfig['center'] = initCenter;
+    }
+    if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
+
+    return {
+      ...defaultMapConfig,
+      ...tenantMapConfig,
+      ...dataPropsMapConfig,
+      ...inputPropsMapConfig
+    };
+  }
+
+  initMap = () => {
+    const { localize } = this.props;
+    const { zoom_level, tile_provider, center, layers } = this.calculateMapConfig();
+    const hasLayers = layers && layers.length > 0;
+
+    const baseLayer = Leaflet.tileLayer(tile_provider, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: ['a', 'b', 'c']
+    });
+
+    this.map = Leaflet.map(this.mapElement, {
+      center,
+      zoom: zoom_level,
+      maxZoom: 17,
+      layers: [baseLayer]
+    });
+
+    // Handlers
+    if (this.props.onMapClick) {
+      this.map.on('click', this.handleMapClick);
+    }
+
+    // Create layers
     if (hasLayers) {
       // add default enabled layers to map
-      const layers = this.createLeafletLayers(mapConfig);
-      const overlaysEnabledByDefault = layers
+      const leafletLayers = createLeafletLayers();
+      const overlaysEnabledByDefault = leafletLayers
         .filter(layer => layer.enabledByDefault === true)
         .map(layer => layer.leafletGeoJson);
       overlaysEnabledByDefault.forEach(overlay => overlay.addTo(this.map));
 
       // add layers control to map
-      const overlayMaps = layers.reduce((accOverlayMaps, layer) => {
+      const overlayMaps = leafletLayers.reduce((accOverlayMaps, layer) => {
         return {
           ...accOverlayMaps,
           [localize(layer.title_multiloc)]: layer.leafletGeoJson,
@@ -269,108 +310,35 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       }, {});
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
     }
-  }
 
-  createLeafletLayers = (mapConfig: IMapConfigData) => {
-    /*
-      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
-      This is how it keeps the toggles in sync.
-      Because we need two different arrays of Leaflet geoJSON overlays,
-      one for the layers that need to be enabled by default,
-      and one for creating the overlay maps,
-      we need to reformat the data we get from the back-end, so we can do filter
-      operations (that require the default_enabled value)
-      + create overlay maps (that require the geoJson title) coming from the same
-      "starting" array, so Leaflet can keep in sync
-    */
-    const layers = mapConfig.attributes.layers;
+    function createLeafletLayers() {
+      /*
+        Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
+        This is how it keeps the toggles in sync.
+        Because we need two different arrays of Leaflet geoJSON overlays,
+        one for the layers that need to be enabled by default,
+        and one for creating the overlay maps,
+        we need to reformat the data we get from the back-end, so we can do filter
+        operations (that require the default_enabled value)
+        + create overlay maps (that require the geoJson title) coming from the same
+        "starting" array, so Leaflet can keep in sync
+      */
 
-    return layers.map((layer) => {
-      const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
-      const geoJsonOptions = {
-        useSimpleStyle: true,
-        pointToLayer: (_feature, latlng) => {
-          return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
-        }
-      };
+      return layers.map((layer) => {
+        const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
+        const geoJsonOptions = {
+          useSimpleStyle: true,
+          pointToLayer: (_feature, latlng) => {
+            return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
+          }
+        };
 
-      return {
-        title_multiloc: layer.title_multiloc,
-        leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
-        enabledByDefault: layer.default_enabled,
-      };
-    });
-  }
-
-  initMap = (mapContainer: HTMLDivElement) => {
-    const { tenant, center } = this.props;
-
-    if (!this.map) {
-      const zoom = getZoom();
-      const tileProvider = getTileProvider();
-      const initCenter = getInitCenter();
-
-      this.baseLayer = Leaflet.tileLayer(tileProvider, {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: ['a', 'b', 'c']
+        return {
+          title_multiloc: layer.title_multiloc,
+          leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
+          enabledByDefault: layer.default_enabled,
+        };
       });
-
-      this.map = Leaflet.map(mapContainer, {
-        zoom,
-        center: initCenter,
-        maxZoom: 17,
-        layers: [this.baseLayer]
-      });
-
-      // Handlers
-      if (this.props.onMapClick) {
-        this.map.on('click', this.handleMapClick);
-      }
-    }
-
-    function getZoom() {
-      if (
-        !isNilOrError(tenant) &&
-        tenant.attributes &&
-        tenant.attributes.settings.maps
-      ) {
-        return tenant.attributes.settings.maps.zoom_level;
-      } else {
-        return 15;
-      }
-    }
-
-    function getTileProvider() {
-      if (
-        !isNilOrError(tenant) &&
-        tenant.attributes &&
-        tenant.attributes.settings.maps
-      ) {
-        return tenant.attributes.settings.maps.tile_provider;
-      } else {
-        return 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D';
-      }
-    }
-
-    function getInitCenter() {
-      let initCenter: [number, number] = [0, 0];
-
-      if (
-        center && center !== [0, 0]
-      ) {
-        initCenter = [center[1], center[0]];
-      } else if (
-        !isNilOrError(tenant) &&
-        tenant.attributes &&
-        tenant.attributes.settings.maps
-      ) {
-        initCenter = [
-          parseFloat(tenant.attributes.settings.maps.map_center.lat),
-          parseFloat(tenant.attributes.settings.maps.map_center.long),
-        ];
-      }
-
-      return initCenter;
     }
   }
 
@@ -466,7 +434,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
             <LeafletMapContainer
               id="e2e-map"
-              ref={this.initMap}
+              ref={this.bindMapContainer}
               mapHeight={mapHeight}
             >
               <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
