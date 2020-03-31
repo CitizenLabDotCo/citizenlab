@@ -190,10 +190,25 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   componentDidMount() {
-    const { points } = this.props;
+    const { points, mapConfig } = this.props;
+    const { mapConfigApplied } = this.state;
 
     if (points && points.length > 0) {
       this.convertPoints(points);
+    }
+
+    /*
+      Deal with dropdown map, for which componentDidUpdate
+      doesn't get called if the map is toggled, because mapConfig
+      has already been loaded. The map gets re-rendered, so the
+      mapConfig wouldn't get applied
+    */
+    if (
+      this.map &&
+      !mapConfigApplied &&
+      !isNilOrError(mapConfig)
+      ) {
+      this.updateMapWithMapConfig(mapConfig);
     }
   }
 
@@ -205,6 +220,10 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       this.convertPoints(points);
     }
 
+    /*
+      As the mapConfig is loaded with a delay,
+      we need to call the updateMapConfig here.
+    */
     if (
       !isNilOrError(mapConfig) &&
       !mapConfigApplied &&
