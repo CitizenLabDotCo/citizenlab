@@ -12,7 +12,7 @@ import Toggle from 'components/UI/Toggle';
 import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, PageTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
+import { Section, PageTitle, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
@@ -563,21 +563,21 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
             {selectedView === 'import' &&
               <>
                 <SectionField>
-                  <Label>
+                  <SectionTitle>
+                    Download the template
+                  </SectionTitle>
+                  <FormattedMessage
+                    {...messages.importInfo}
+                    values={{
+                      emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
+                      downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
+                      supportPageLink: <a href={this.props.intl.formatMessage(messages.invitesSupportPageURL)} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
+                    }}
+                  />
+
+                  <SectionTitle>
                     <FormattedMessage {...messages.importLabel} />
-                    <IconTooltip
-                      content={
-                        <FormattedMessage
-                          {...messages.importInfo}
-                          values={{
-                            emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
-                            downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                            supportPageLink: <a href={this.props.intl.formatMessage(messages.invitesSupportPageURL)} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                          }}
-                        />
-                      }
-                    />
-                  </Label>
+                  </SectionTitle>
 
                   <FileInputWrapper>
                     <input
@@ -590,6 +590,9 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                   <Error text={filetypeError} />
                 </SectionField>
 
+                <SectionTitle>
+                  Specify your invitation options
+                </SectionTitle>
                 {invitationOptions}
               </>
             }
