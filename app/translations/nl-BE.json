@@ -351,6 +351,7 @@
   "app.components.Sharing.shareThisProject": "Deel dit project",
   "app.components.Sharing.shareViaMessenger": "Deel via Messenger",
   "app.components.SideModal.closeButtonAria": "Sluiten",
+  "app.components.SignUpIn.continue": "",
   "app.components.TopBar.goBack": "Ga terug",
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural,=0 {Geen thema's} one {Eén thema} other {# thema's}} geselecteerd. {selectedTopicNames}",
   "app.components.UI.Card.a11y_unauthenticatedPopup": "Log in of registreer om deze actie te nemen",

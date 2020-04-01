@@ -351,6 +351,7 @@
   "app.components.Sharing.shareThisProject": "Share this project",
   "app.components.Sharing.shareViaMessenger": "Share via Messenger",
   "app.components.SideModal.closeButtonAria": "Close",
+  "app.components.SignUpIn.continue": "Continue",
   "app.components.TopBar.goBack": "Go back",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selected {numberOfSelectedTopics, plural, =0 {zero topics} one {one topic} other {# topics}}. {selectedTopicNames}",
   "app.components.UI.Card.a11y_unauthenticatedPopup": "Log in or sign up to take this action",
