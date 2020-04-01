@@ -15,6 +15,14 @@ const Container = styled.div`
   padding: 20px;
 `;
 
+const TipsList = styled.ul`
+  padding: 0;
+`;
+
+const Tip = styled.li`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   theme: any;
 }
@@ -22,9 +30,23 @@ interface Props {
 const TipsContent = memo<Props>((_props) => {
   return (
     <Container>
-      <p>
-        <FormattedMessage {...messages.tipsExplanation} />
-      </p>
+      <TipsList>
+        <Tip>
+          <FormattedMessage {...messages.elaborate} />
+        </Tip>
+        <Tip>
+          <FormattedMessage {...messages.meaningfulTitle} />
+        </Tip>
+        <Tip>
+          <FormattedMessage {...messages.visualise} />
+        </Tip>
+        <Tip>
+          <FormattedMessage {...messages.relevantAttachments} />
+        </Tip>
+        <Tip>
+          <FormattedMessage {...messages.shareSocialMedia} />
+        </Tip>
+      </TipsList>
     </Container>
   );
 });
