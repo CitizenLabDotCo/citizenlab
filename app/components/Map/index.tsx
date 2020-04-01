@@ -48,6 +48,7 @@ const BoxContainer = styled.div`
   top: 0;
   z-index: 1001;
   background: #fff;
+  width: 100%;
   height: 80%;
 `;
 
