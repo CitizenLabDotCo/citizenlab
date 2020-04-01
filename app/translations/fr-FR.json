@@ -633,6 +633,8 @@
   "app.containers.Admin.Invitations.saveSuccess": "Envoyé !",
   "app.containers.Admin.Invitations.saveSuccessMessage": "Les invitations ont été envoyées avec succès.",
   "app.containers.Admin.Invitations.supportPage": "page d'aide",
+  "app.containers.Admin.Invitations.tabAllInvitations": "",
+  "app.containers.Admin.Invitations.tabInviteUsers": "",
   "app.containers.Admin.Invitations.textTab": "Entrez les adresses e-mail",
   "app.containers.Admin.Invitations.unknownError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.Admin.Moderation.all": "Tous",

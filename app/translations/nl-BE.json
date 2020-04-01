@@ -633,6 +633,8 @@
   "app.containers.Admin.Invitations.saveSuccess": "Opgeslagen!",
   "app.containers.Admin.Invitations.saveSuccessMessage": "Uitnodiging succesvol verstuurd.",
   "app.containers.Admin.Invitations.supportPage": "support-pagina",
+  "app.containers.Admin.Invitations.tabAllInvitations": "",
+  "app.containers.Admin.Invitations.tabInviteUsers": "",
   "app.containers.Admin.Invitations.textTab": "Voer de e-mailadressen in",
   "app.containers.Admin.Invitations.unknownError": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.Admin.Moderation.all": "Alle",
