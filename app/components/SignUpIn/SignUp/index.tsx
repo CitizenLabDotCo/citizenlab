@@ -7,7 +7,7 @@ import AuthProviders, { AuthProvider } from '../AuthProviders';
 import PasswordSignup from './PasswordSignup';
 import VerificationSteps from 'components/Verification/VerificationSteps';
 import CustomFields from './CustomFields';
-import SignUpError from './SignUpError';
+import Error from 'components/UI/Error';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -17,13 +17,18 @@ import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resource
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
+// i18n
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import messages from './messages';
+
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { HeaderContainer, HeaderTitle, HeaderSubtitle, Content } from 'components/SignUpIn/styles';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
@@ -32,50 +37,6 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const HeaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-bottom: solid 1px ${colors.separation};
-  background: #fff;
-
-  ${media.smallerThanMinTablet`
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 20px;
-    padding-right: 20px;
-  `}
-`;
-
-const HeaderTitle = styled.h1`
-  width: 100%;
-  color: ${colors.text};
-  font-size: ${fontSizes.xxl}px;
-  font-weight: 600;
-  line-height: normal;
-  margin: 0;
-  margin-right: 45px;
-  padding: 0;
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.large}px;
-    margin-right: 35px;
-  `}
-`;
-
-const Content = styled.div`
-  max-height: 500px;
-  overflow-y: auto;
-  border: solid 1px red;
-  padding: 40px;
 `;
 
 export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification' | 'custom-fields';
@@ -100,15 +61,17 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   activeStep: TSignUpSteps | null | undefined;
+  isPasswordSignup: boolean;
   userId: string | null;
   error: boolean;
 }
 
-class SignUp extends PureComponent<Props, State> {
-  constructor(props: Props) {
+class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
+  constructor(props) {
     super(props);
     this.state = {
       activeStep: undefined,
+      isPasswordSignup: false,
       userId: null,
       error: false
     };
@@ -145,7 +108,10 @@ class SignUp extends PureComponent<Props, State> {
     const hasVerificationStep = metaData?.verification;
 
     if (activeStep === 'auth-providers') {
-      this.setState({ activeStep: 'password-signup' });
+      this.setState({
+        activeStep: 'password-signup',
+        isPasswordSignup: true
+      });
     } else if (activeStep === 'password-signup' && !isNilOrError(authUser) && !authUser.attributes.verified && hasVerificationStep) {
       this.setState({ activeStep: 'verification' });
     } else if (!isNilOrError(authUser) && !authUser.attributes.registration_completed_at) {
@@ -193,18 +159,57 @@ class SignUp extends PureComponent<Props, State> {
   }
 
   render() {
-    const { activeStep, error } = this.state;
-    const { isInvitation, inModal, token, metaData, className } = this.props;
+    const { activeStep, error, isPasswordSignup } = this.state;
+    const { isInvitation, inModal, token, metaData, customFieldsSchema, className, intl: { formatMessage } } = this.props;
+    const steps: TSignUpSteps[] = [];
+
+    if (isPasswordSignup) {
+      const hasVerificationStep = metaData?.verification;
+      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+
+      steps.push('password-signup');
+
+      if (hasVerificationStep) {
+        steps.push('verification');
+      }
+
+      if (hasCustomFields) {
+        steps.push('custom-fields');
+      }
+    }
 
     if (activeStep) {
+      const totalStepsCount = steps.length;
+      const activeStepNumber = steps.indexOf(activeStep) + 1;
+      let stepName: string | null = null;
+
+      if (activeStep === 'password-signup') {
+        stepName = formatMessage(messages.createYourAccount);
+      } else if (activeStep === 'verification') {
+        stepName = formatMessage(messages.verifyYourIdentity);
+      } else if (activeStep === 'custom-fields') {
+        stepName = formatMessage(messages.completeYourProfile);
+      }
+
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
           <HeaderContainer>
-            <HeaderTitle id="modal-header">Zolg</HeaderTitle>
+            <HeaderTitle>
+              {!error && <FormattedMessage {...messages.signUp} />}
+              {error && <FormattedMessage {...messages.somethingWentWrongTitle} />}
+            </HeaderTitle>
+
+            {!error && totalStepsCount > 1 && activeStepNumber > 0 && stepName &&
+              <HeaderSubtitle>
+                <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
+              </HeaderSubtitle>
+            }
           </HeaderContainer>
 
           <Content>
-            {error && <SignUpError />}
+            {error &&
+              <Error text={formatMessage(messages.somethingWentWrongText)} />
+            }
 
             {activeStep === 'auth-providers' &&
               <AuthProviders
@@ -251,8 +256,10 @@ const Data = adopt<DataProps, InputProps>({
   customFieldsSchema: <GetCustomFieldsSchema />
 });
 
+const SignUpWithHoC = injectIntl(SignUp);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignUp {...inputProps} {...dataProps} />}
+    {dataProps => <SignUpWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

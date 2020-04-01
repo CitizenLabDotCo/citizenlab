@@ -1,4 +1,5 @@
 import React, { memo,  useCallback, useState, useEffect } from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
 
 // components
 import Button from 'components/UI/Button';
@@ -16,6 +17,8 @@ import { colors } from 'utils/styleUtils';
 import { TSignUpInFlow } from 'components/SignUpIn';
 import { AuthProvider } from './AuthProviders';
 
+const timeout = 300;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -29,7 +32,47 @@ const Container = styled.div`
 `;
 
 const ConsentWrapper = styled.div`
-  padding: 40px;
+  opacity: 0;
+  display: none;
+  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &.consent-enter {
+    opacity: 0;
+    max-height: 0px;
+    overflow: hidden;
+    display: block;
+
+    &.consent-enter-active {
+      opacity: 1;
+      max-height: 200px;
+      overflow: hidden;
+      display: block;
+    }
+  }
+
+  &.consent-enter-done {
+    opacity: 1;
+    overflow: visible;
+    display: block;
+  }
+
+  &.consent-exit {
+    opacity: 1;
+    max-height: 200px;
+    overflow: hidden;
+    display: block;
+
+    &.consent-exit-active {
+      opacity: 0;
+      max-height: 0px;
+      overflow: hidden;
+      display: block;
+    }
+  }
+
+  &.consent-exit-done {
+    display: none;
+  }
 `;
 
 interface Props {
@@ -106,21 +149,31 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
         {children}
       </Button>
 
-      {expanded &&
-        <ConsentWrapper>
-          <Consent
-            tacError={tacError}
-            privacyError={privacyError}
-            onTacAcceptedChange={handleTacAcceptedChange}
-            onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
-          />
-          <Button
-            onClick={handleContinueClicked}
-            disabled={!(tacAccepted && privacyAccepted)}
-          >
-            <FormattedMessage {...messages.continue} />
-          </Button>
-        </ConsentWrapper>
+      {flow === 'signup' &&
+        <CSSTransition
+          classNames="consent"
+          in={expanded}
+          timeout={timeout}
+          mounOnEnter={false}
+          unmountOnExit={false}
+          enter={true}
+          exit={true}
+        >
+          <ConsentWrapper>
+            <Consent
+              tacError={tacError}
+              privacyError={privacyError}
+              onTacAcceptedChange={handleTacAcceptedChange}
+              onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
+            />
+            <Button
+              onClick={handleContinueClicked}
+              disabled={!(tacAccepted && privacyAccepted)}
+            >
+              <FormattedMessage {...messages.continue} />
+            </Button>
+          </ConsentWrapper>
+        </CSSTransition>
       }
     </Container>
   );

@@ -1,21 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  passwordSignupTitle: {
-    id: 'app.containers.SignUp.passwordSignupTitle',
-    defaultMessage: 'Create an account',
-  },
   invitationTitle: {
     id: 'app.containers.SignUp.invitationTitle',
     defaultMessage: 'Redeem your invitation',
-  },
-  verificationTitle: {
-    id: 'app.containers.SignUp.verificationTitle',
-    defaultMessage: 'Verify your identity',
-  },
-  customFieldsTitle: {
-    id: 'app.containers.SignUp.customFieldsTitle',
-    defaultMessage: 'Complete your profile',
   },
   tokenLabel: {
     id: 'app.containers.SignUp.tokenLabel',
@@ -133,9 +121,13 @@ export default defineMessages({
     id: 'app.containers.SignUp.orSignUpWith',
     defaultMessage: 'Or sign up with',
   },
-  alreadyHaveAnAccount: {
-    id: 'app.containers.SignUp.alreadyHaveAnAccount',
-    defaultMessage: 'Already have an account?',
+  goToLogIn: {
+    id: 'app.containers.SignUp.goToLogIn',
+    defaultMessage: 'Already have an account? {goToOtherFlowLink}',
+  },
+  goToSignUp: {
+    id: 'app.containers.SignUp.goToSignUp',
+    defaultMessage: "Don't have an account? {goToOtherFlowLink}",
   },
   logIn: {
     id: 'app.containers.SignUp.logIn',
@@ -220,5 +212,25 @@ export default defineMessages({
   continueWithAzure: {
     id: 'app.containers.SignUp.continueWithAzure',
     defaultMessage: 'Continue with {azureProviderName}',
-  }
+  },
+  emailConsent: {
+    id: 'app.containers.SignUp.emailConsent',
+    defaultMessage: 'By clicking ‘Continue’, you agree to receive emails from this platform. You can select which emails you wish to receive from your user settings.',
+  },
+  headerSubtitle: {
+    id: 'app.containers.SignUp.headerSubtitle',
+    defaultMessage: 'Step {activeStepNumber} of {totalStepsCount}: {stepName}',
+  },
+  createYourAccount: {
+    id: 'app.containers.SignUp.createYourAccount',
+    defaultMessage: 'Create your account',
+  },
+  verifyYourIdentity: {
+    id: 'app.containers.SignUp.verifyYourIdentity',
+    defaultMessage: 'Verify your identity',
+  },
+  completeYourProfile: {
+    id: 'app.containers.SignUp.completeYourProfile',
+    defaultMessage: 'Complete your profile',
+  },
 });

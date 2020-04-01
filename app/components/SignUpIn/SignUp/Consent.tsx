@@ -12,7 +12,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -20,7 +20,15 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-const CheckboxWrapper = styled.div``;
+const CheckboxWrapper = styled.div`
+  margin-bottom: 15px;
+`;
+
+const EmailConsent = styled.div`
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+`;
 
 interface Props {
   tacError: boolean;
@@ -53,7 +61,7 @@ const Consent = memo<Props & InjectedIntlProps>(({
 
   return (
     <Container className={className}>
-      <CheckboxWrapper className={`${tacError && 'error'}`}>
+      <CheckboxWrapper>
         <Checkbox
           id="terms-and-conditions-checkbox"
           className="e2e-terms-and-conditions"
@@ -68,10 +76,10 @@ const Consent = memo<Props & InjectedIntlProps>(({
             />
           }
         />
+        <Error text={tacError ? formatMessage(messages.tacError) : null} />
       </CheckboxWrapper>
-      <Error text={tacError ? formatMessage(messages.tacError) : null} />
 
-      <CheckboxWrapper className={`${privacyError && 'error'}`}>
+      <CheckboxWrapper>
         <Checkbox
           id="privacy-checkbox"
           className="e2e-privacy-checkbox"
@@ -86,8 +94,12 @@ const Consent = memo<Props & InjectedIntlProps>(({
             />
           }
         />
+        <Error text={privacyError ? formatMessage(messages.privacyError) : null} />
       </CheckboxWrapper>
-      <Error text={privacyError ? formatMessage(messages.privacyError) : null} />
+
+      <EmailConsent>
+        <FormattedMessage {...messages.emailConsent} />
+      </EmailConsent>
     </Container>
   );
 });

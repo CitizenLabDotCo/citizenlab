@@ -18,6 +18,7 @@ import messages from './SignUp/messages';
 // styling
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
@@ -102,7 +103,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
   }
 
   const handleOnAuthProviderSelected = useCallback((authProvider: AuthProvider) => {
-    console.log(authProvider);
     onAuthProviderSelected(authProvider);
   }, [onAuthProviderSelected]);
 
@@ -110,6 +110,16 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
     event.preventDefault();
     onAuthProviderSelected('franceconnect');
   }, [onAuthProviderSelected]);
+
+  const goToOtherFlow = useCallback((event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (flow === 'signup') {
+      // go to sign in
+    } else {
+      // to to sign up
+    }
+  }, [flow]);
 
   // show this step only when more than 1 method enabled or when only 1 method is enabled and that method isn't passwordLogin
   if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && !passwordLoginEnabled)) {
@@ -172,6 +182,21 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
             </SubSocialButtonLink>
           </>
         }
+
+        <Options>
+          <Option>
+            <FormattedMessage
+              {...flow === 'signup' ? messages.goToLogIn : messages.goToSignUp}
+              values={{
+                goToOtherFlowLink: (
+                <button onClick={goToOtherFlow}>
+                  {formatMessage(flow === 'signup' ? messages.logIn : messages.signUp)}
+                </button>
+                )
+              }}
+            />
+          </Option>
+        </Options>
       </Container>
     );
   }
