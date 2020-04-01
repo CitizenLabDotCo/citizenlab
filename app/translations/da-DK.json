@@ -351,6 +351,7 @@
   "app.components.Sharing.shareThisProject": "{tenantName, select, DeloitteDK {Del dette} other {Del dette projekt}}",
   "app.components.Sharing.shareViaMessenger": "Del via Messenger",
   "app.components.SideModal.closeButtonAria": "Luk",
+  "app.components.SignUpIn.continue": "",
   "app.components.TopBar.goBack": "Gå tilbage",
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgt {numberOfSelectedTopics, plural, =0 {zero topics} et {zero topics} andet {# topics}}.{selectedTopicNames}",
   "app.components.UI.Card.a11y_unauthenticatedPopup": "Log ind eller registrer dig for at foretage denne handling",
