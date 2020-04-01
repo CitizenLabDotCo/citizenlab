@@ -186,5 +186,13 @@ export default defineMessages({
   invitesSupportPageURL: {
     id: 'app.containers.Admin.Invitations.invitesSupportPageURL',
     defaultMessage: 'http://support.citizenlab.co/en/articles/1771605-invite-people-to-the-platform',
-  }
+  },
+  tabInviteUsers: {
+    id: 'app.containers.Admin.Invitations.tabInviteUsers',
+    defaultMessage: 'Invite users',
+  },
+  tabAllInvitations: {
+    id: 'app.containers.Admin.Invitations.tabAllInvitations',
+    defaultMessage: 'All users',
+  },
 });
