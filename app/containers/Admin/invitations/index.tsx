@@ -13,7 +13,6 @@ import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, PageTitle, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import InvitesTable from './all';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import IconTooltip from 'components/UI/IconTooltip';
@@ -117,11 +116,6 @@ const ButtonWrapper = styled.div`
 const Processing = styled.div`
   color: ${(props) => props.theme.colors.label};
   margin-left: 15px;
-`;
-
-const SInvitesTable = styled(InvitesTable)`
-  margin-top: 80px;
-  margin-bottom: 80px;
 `;
 
 export interface InputProps { }
@@ -645,8 +639,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
             </SectionField>
           </Section>
         </form>
-
-        <SInvitesTable />
       </>
     );
   }
