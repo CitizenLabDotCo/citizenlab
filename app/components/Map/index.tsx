@@ -453,20 +453,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 }
 
-// const Data = adopt<DataProps, InputProps>({
-//   tenant: <GetTenant />,
-//   mapConfig: ({ projectId, render }) => projectId ? (
-//     <GetMapConfig projectId={projectId}>{render}</GetMapConfig>
-//   ) : <GetMapConfig projectId={null}>{render}</GetMapConfig>,
-// });
-
 const CLMapWithHOCs = injectLocalize(CLMap);
-
-// export default (inputProps: InputProps) => (
-//   <Data {...inputProps}>
-//     {dataProps => <CLMapWithHOCs {...inputProps} {...dataProps} />}
-//   </Data>
-// );
 
 export default (inputProps: InputProps) => (
   <GetMapConfig projectId={inputProps.projectId || null}>
