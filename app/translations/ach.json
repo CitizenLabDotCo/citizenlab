@@ -633,6 +633,8 @@
   "app.containers.Admin.Invitations.saveSuccess": "",
   "app.containers.Admin.Invitations.saveSuccessMessage": "",
   "app.containers.Admin.Invitations.supportPage": "",
+  "app.containers.Admin.Invitations.tabAllInvitations": "",
+  "app.containers.Admin.Invitations.tabInviteUsers": "",
   "app.containers.Admin.Invitations.textTab": "",
   "app.containers.Admin.Invitations.unknownError": "",
   "app.containers.Admin.Moderation.all": "",

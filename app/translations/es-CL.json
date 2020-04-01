@@ -633,6 +633,8 @@
   "app.containers.Admin.Invitations.saveSuccess": "¡Perfecto!",
   "app.containers.Admin.Invitations.saveSuccessMessage": "Invitación enviada con éxito.",
   "app.containers.Admin.Invitations.supportPage": "página de soporte",
+  "app.containers.Admin.Invitations.tabAllInvitations": "",
+  "app.containers.Admin.Invitations.tabInviteUsers": "",
   "app.containers.Admin.Invitations.textTab": "Introducir los correos electrónicos",
   "app.containers.Admin.Invitations.unknownError": "Algo salió mal. Por favor Inténtalo más tarde.",
   "app.containers.Admin.Moderation.all": "Todos",
