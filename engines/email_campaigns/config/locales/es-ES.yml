@@ -7,48 +7,48 @@ es:
       "comment_marked_as_spam": Informar de comentarios de spam
       "comment_on_your_comment": Una respuesta a mi comentario
       "comment_on_your_idea": Un comentario sobre mi idea.
-      "comment_on_your_initiative": Un comentario sobre mi iniciativa
+      "comment_on_your_initiative": Un comentario sobre mi propuesta
       "first_idea_published": Publicación de mi primera idea
       "idea_assigned_to_you": Asignación de una idea para mí
       "idea_marked_as_spam": Informar de spam de ideas
       "idea_published": Publicación de mi idea
-      "initiative_assigned_to_you": Asignación de una iniciativa para mí
-      "initiative_marked_as_spam": Informar de spam de iniciativa
-      "initiative_published": Publicación de mi iniciativa
+      "initiative_assigned_to_you": Asignación de una propuesta para mí
+      "initiative_marked_as_spam": Informar de spam de propuesta
+      "initiative_published": Publicación de mi propuesta
       "invite_received": Invitación
       "invite_reminder": Recordatorio de invitación
       "mention_in_comment": Mención en un comentario
       "mention_in_official_feedback": Mención en una actualización
       "new_comment_for_admin": Nuevo comentario en un proyecto moderado por mí
       "new_comment_on_commented_idea": Nuevo comentario sobre una idea que comenté
-      "new_comment_on_commented_initiative": Nuevo comentario sobre una iniciativa que comenté
+      "new_comment_on_commented_initiative": Nuevo comentario sobre una propuesta que comenté
       "new_comment_on_voted_idea": Nuevo comentario sobre una idea por la que voté
-      "new_comment_on_voted_initiative": Nuevo comentario sobre una iniciativa por la que voté
+      "new_comment_on_voted_initiative": Nuevo comentario sobre una propuesta por la que voté
       "new_idea_for_admin": Nueva idea en un proyecto moderado por mí
-      "new_initiative_for_admin": Nueva iniciativa
+      "new_initiative_for_admin": Nueva propuesta
       "official_feedback_on_commented_idea": Actualización sobre una idea que comenté
-      "official_feedback_on_commented_initiative": Actualización sobre una iniciativa que comenté
+      "official_feedback_on_commented_initiative": Actualización sobre una propuesta que comenté
       "official_feedback_on_voted_idea": Actualización sobre una idea que voté
-      "official_feedback_on_voted_initiative": Actualización sobre una iniciativa que voté
+      "official_feedback_on_voted_initiative": Actualización sobre una propuesta que voté
       "official_feedback_on_your_idea": Actualización sobre mi idea
-      "official_feedback_on_your_initiative": Actualización sobre mi iniciativa
+      "official_feedback_on_your_initiative": Actualización sobre mi propuesta
       "password_reset": Restablecimiento de contraseña
       "project_moderation_rights_received": Derechos de moderación del proyecto recibidos
       "project_phase_started": Nueva fase del proyecto
       "project_phase_upcoming": Próxima nueva fase del proyecto
       "status_change_of_commented_idea": Cambio de estado de una idea que comenté
-      "status_change_of_commented_initiative": Cambio de estado de una iniciativa que comenté
+      "status_change_of_commented_initiative": Cambio de estado de una propuesta que comenté
       "status_change_of_voted_idea": Cambio de estado de una idea por la que voté
-      "status_change_of_voted_initiative": Cambio de estado de una iniciativa por la que voté
+      "status_change_of_voted_initiative": Cambio de estado de una propuesta por la que voté
       "status_change_of_your_idea": Cambio de estado de mi idea
-      "status_change_of_your_initiative": Cambio de estado de mi iniciativa
-      "threshold_reached_for_admin": La iniciativa ha alcanzado el umbral de votación
+      "status_change_of_your_initiative": Cambio de estado de mi propuesta
+      "threshold_reached_for_admin": La propuesta ha alcanzado el umbral de votación
       "welcome": Después del registro
       "admin_digest": Resumen semanal para administradores
       "moderator_digest": Resumen semanal para moderadores de proyectos
       "assignee_digest": Resumen semanal de ideas asignadas
       "user_digest": Resumen semanal
-      "your_proposed_initiatives_digest": Resumen semanal de tus iniciativas
+      "your_proposed_initiatives_digest": Resumen semanal de tus propuestas
     admin_campaign_type_description:
       "manual": 'Mensaje oficial: todos los usuarios'
       "admin_rights_received": 'Derechos de administrador recibidos: administradores'
