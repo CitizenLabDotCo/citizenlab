@@ -35,7 +35,7 @@ const ProjectNavbarWrapper = styled.div`
   position: fixed; /* IE11 fallback */
   position: sticky;
   top: ${({ theme }) => theme.menuHeight}px;
-  z-index: 1001;
+  z-index: 1002;
   background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#171717'};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
