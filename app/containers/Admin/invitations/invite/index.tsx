@@ -12,7 +12,7 @@ import Toggle from 'components/UI/Toggle';
 import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, PageTitle, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import IconTooltip from 'components/UI/IconTooltip';
@@ -29,7 +29,7 @@ import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
+import messages from '../messages';
 import { API_PATH, appLocalePairs } from 'containers/App/constants';
 import { getLocalized } from 'utils/i18n';
 
@@ -537,14 +537,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
         />
         <form onSubmit={this.handleOnSubmit} id="e2e-invitations">
           <Section>
-            <PageTitle>
-              <FormattedMessage {...messages.invitePeople} />
-            </PageTitle>
-
-            <SectionSubtitle>
-              <FormattedMessage {...messages.invitationSubtitle} />
-            </SectionSubtitle>
-
             <ViewButtons>
               <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
                 <FormattedMessage {...messages.importTab} />
