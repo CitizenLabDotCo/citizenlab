@@ -45,32 +45,9 @@ const TipsContent = memo<Props>((props) => {
         <p>
           <FormattedMessage {...messages.tipsExplanation} />
         </p>
-        <p>
-          <FormattedMessage {...messages.requirmentsListTitle} />
-        </p>
-        <ul>
-          <li>
-            <FormattedMessage
-              {...messages.requirmentVoteTreshold}
-              values={{
-                voteThreshold: get(tenant, 'data.attributes.settings.initiatives.voting_threshold'),
-              }}
-            />
-          </li>
-          <li>
-            <FormattedMessage
-              {...messages.requirmentDaysLimit}
-              values={{
-                daysLimit: get(tenant, 'data.attributes.settings.initiatives.days_limit'),
-              }}
-            />
-          </li>
-        </ul>
         {eligibilityCriteriaMultiloc &&
           <>
-            <p>
-              <FormattedMessage {...messages.eligibility} />
-            </p>
+
             <StyledQuillEditedContent textColor={props.theme.colorText}>
               <T value={eligibilityCriteriaMultiloc}  supportHtml={true}/>
             </StyledQuillEditedContent>
