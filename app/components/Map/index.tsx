@@ -186,12 +186,6 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   componentDidMount() {
-    const { points } = this.props;
-
-    if (points && points.length > 0) {
-      this.convertPoints(points);
-    }
-
     this.initMap();
   }
 
@@ -267,7 +261,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   initMap = () => {
-    const { localize, mapConfig } = this.props;
+    const { localize, mapConfig, points } = this.props;
     const { zoom_level, tile_provider, center } = this.calculateMapConfig();
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
@@ -285,6 +279,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     // Handlers
     if (this.props.onMapClick) {
       this.map.on('click', this.handleMapClick);
+    }
+
+    // Add marker(s)
+    if (points && points.length > 0) {
+      this.convertPoints(points);
     }
 
     // Create layers
