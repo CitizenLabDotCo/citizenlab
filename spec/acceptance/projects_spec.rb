@@ -367,6 +367,19 @@ resource "Projects" do
           end
         end
 
+        describe do
+          let(:description_multiloc) {{
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }}
+
+          example "Create a project with text image", document: false do
+            ti_count = TextImage.count
+            do_request
+            expect(response_status).to eq 201
+            expect(TextImage.count).to eq (ti_count + 1)
+          end
+        end
+
       end
     end
 
