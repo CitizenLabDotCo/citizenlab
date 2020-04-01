@@ -64,8 +64,6 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
-const GoToSignInButton = styled(Button)``;
-
 type InputProps = {
   metaData: ISignUpInMetaData;
   isInvitation?: boolean | undefined;
@@ -430,15 +428,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   text={buttonText}
                   onClick={this.handleOnSubmit}
                 />
-                {!isInvitation &&
-                  <GoToSignInButton
-                    buttonStyle="text"
-                    padding="0px"
-                    onClick={this.handleOnGoToSignIn}
-                  >
-                    <FormattedMessage {...messages.alreadyHaveAnAccount} />
-                  </GoToSignInButton>
-                }
               </ButtonWrapper>
             </FormElement>
 

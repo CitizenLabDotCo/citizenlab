@@ -60,6 +60,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       noPadding={true}
       opened={opened}
       close={onClose}
+      closeOnClickOutside={false}
     >
       <Container className={className}>
         {opened &&
