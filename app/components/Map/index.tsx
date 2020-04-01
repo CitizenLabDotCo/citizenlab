@@ -247,9 +247,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         initCenter = [latitude, longitude];
         dataPropsMapConfig['center'] = initCenter;
       }
-
-      dataPropsMapConfig['zoom_level'] = zoom_level;
-      dataPropsMapConfig['tile_provider'] = tile_provider;
+      if (zoom_level) dataPropsMapConfig['zoom_level'] = zoom_level;
+      if (tile_provider) dataPropsMapConfig['tile_provider'] = tile_provider;
     }
 
     const inputPropsMapConfig = {};
@@ -474,20 +473,23 @@ const CLMapWithHOCs = injectLocalize(CLMap);
 export default (inputProps: InputProps) => (
   <GetMapConfig projectId={inputProps.projectId || null}>
     {(mapConfig: GetMapConfigChildProps) => {
-      if (!isError(mapConfig) || !mapConfig) return null;
-      return (
-        <GetTenant>
-          {(tenant: GetTenantChildProps) => {
-            return (
-              <CLMapWithHOCs
-                tenant={tenant}
-                mapConfig={mapConfig}
-                {...inputProps}
-              />
-            );
-          }}
-        </GetTenant>
-      );
+      if (isError(mapConfig) || mapConfig) {
+        return (
+          <GetTenant>
+            {(tenant: GetTenantChildProps) => {
+              return (
+                <CLMapWithHOCs
+                  tenant={tenant}
+                  mapConfig={mapConfig}
+                  {...inputProps}
+                />
+              );
+            }}
+          </GetTenant>
+        );
+      }
+
+      return null;
     }}
   </GetMapConfig>
 );
