@@ -472,7 +472,7 @@ const CLMapWithHOCs = injectLocalize(CLMap);
 export default (inputProps: InputProps) => (
   <GetMapConfig projectId={inputProps.projectId || null}>
     {(mapConfig: GetMapConfigChildProps) => {
-      if (isError(mapConfig) || mapConfig) {
+      if (isError(mapConfig) || mapConfig || mapConfig === null) {
         return (
           <GetTenant>
             {(tenant: GetTenantChildProps) => {
