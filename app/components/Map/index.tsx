@@ -1,5 +1,4 @@
 import React, { FormEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { compact, isNil } from 'lodash-es';
 import { isError } from 'util';
 import { isNilOrError } from 'utils/helperUtils';
