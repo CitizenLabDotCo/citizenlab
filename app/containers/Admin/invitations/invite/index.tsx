@@ -16,6 +16,7 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import IconTooltip from 'components/UI/IconTooltip';
+import Button from 'components/UI/Button';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
@@ -116,6 +117,29 @@ const ButtonWrapper = styled.div`
 const Processing = styled.div`
   color: ${(props) => props.theme.colors.label};
   margin-left: 15px;
+`;
+
+const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 15px;
+  font-size: ${fontSizes.large}px;
+  font-weight: bold;
+`;
+
+const SectionDescription = styled.div`
+  font-size: ${fontSizes.base}px;
+`;
+
+const SectionParagraph = styled.p``;
+
+const DownloadButton = styled(Button)`
+  margin: 20px 0;
+  max-width: 300px;
+`;
+
+const StyledLink = styled.a`
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export interface InputProps { }
@@ -549,21 +573,50 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
             {selectedView === 'import' &&
               <>
                 <SectionField>
-                  <SectionTitle>
-                    Download the template
-                  </SectionTitle>
-                  <FormattedMessage
-                    {...messages.importInfo}
-                    values={{
-                      emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
-                      downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                      supportPageLink: <a href={this.props.intl.formatMessage(messages.invitesSupportPageURL)} target="_blank"><FormattedMessage {...messages.supportPage} /></a>
-                    }}
-                  />
+                  <StyledSectionTitle>
+                    <FormattedMessage {...messages.downloadFillOutTemplate} />
+                  </StyledSectionTitle>
+                  <SectionDescription>
+                    <SectionParagraph>
+                      <FormattedMessage
+                        {...messages.fileRequirements}
+                        values={{
+                          emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
+                          downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
+                          // supportPageLink: <a href={this.props.intl.formatMessage(messages.invitesSupportPageURL)} target="_blank"><FormattedMessage {...messages.supportPageLinkText} /></a>
+                        }}
+                      />
+                    </SectionParagraph>
+                    <DownloadButton
+                      buttonStyle="white"
+                      icon="download"
+                      iconColor={colors.adminTextColor}
+                      textColor={colors.adminTextColor}
+                      borderColor={colors.adminTextColor}
+                      onClick={this.downloadExampleFile}
+                    >
+                      <FormattedMessage {...messages.downloadTemplate} />
+                    </DownloadButton>
+                    <SectionParagraph>
+                      <FormattedMessage
+                        {...messages.visitSupportPage}
+                        values={{ // tslint:disable-next-line
+                          supportPageLink: (
+                            <StyledLink
+                              href={this.props.intl.formatMessage(messages.invitesSupportPageURL)}
+                              target="_blank"
+                            >
+                              <FormattedMessage {...messages.supportPageLinkText} />
+                            </StyledLink>
+                          )
+                        }}
+                      />
+                    </SectionParagraph>
+                  </SectionDescription>
 
-                  <SectionTitle>
-                    <FormattedMessage {...messages.importLabel} />
-                  </SectionTitle>
+                  <StyledSectionTitle>
+                    <FormattedMessage {...messages.uploadCompletedFile} />
+                  </StyledSectionTitle>
 
                   <FileInputWrapper>
                     <input
@@ -576,9 +629,9 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                   <Error text={filetypeError} />
                 </SectionField>
 
-                <SectionTitle>
-                  Specify your invitation options
-                </SectionTitle>
+                <StyledSectionTitle>
+                  <FormattedMessage {...messages.configureInvitations} />
+                </StyledSectionTitle>
                 {invitationOptions}
               </>
             }
