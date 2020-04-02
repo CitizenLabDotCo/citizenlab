@@ -43,11 +43,6 @@ describe TextImageService do
       expect(service.swap_data_images(imageable, :description_multiloc)['en']).to eq input
     end
 
-    # it "does not modify multilocs without HTML" do
-    #   imageable = create(:event)
-    #   expect(service.swap_data_images(imageable, :description_multiloc)['en']).to be_present
-    # end
-
     it "does not modify invalid HTML" do
       input = <<~HTML
         <dif>
