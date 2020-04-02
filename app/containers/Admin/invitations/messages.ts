@@ -198,7 +198,7 @@ export default defineMessages({
   },
   tabAllInvitations: {
     id: 'app.containers.Admin.Invitations.tabAllInvitations',
-    defaultMessage: 'All users',
+    defaultMessage: 'All invitations',
   },
   downloadFillOutTemplate: {
     id: 'app.containers.Admin.Invitations.downloadFillOutTemplate',
