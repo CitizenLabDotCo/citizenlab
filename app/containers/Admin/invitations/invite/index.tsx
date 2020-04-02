@@ -69,23 +69,21 @@ const ViewButton = styled.button`
   cursor: pointer;
   background: ${colors.adminContentBackground};
   border: solid 1px ${colors.separation};
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.medium}px;
+  font-weight: 400;
+  line-height: 24px;
+  padding-left: 15px;
+  padding-right: 15px;
 
   &:hover,
   &:focus {
-    background: ${rgba(colors.adminTextColor, .2)};
+    border-color: ${colors.adminTextColor};
     outline: none;
   }
   &.active {
-    background: ${rgba(colors.adminTextColor, .1)};
-  }
-
-  > span {
-    color: ${colors.adminTextColor};
-    font-size: ${fontSizes.medium}px;
-    font-weight: 400;
-    line-height: 24px;
-    padding-left: 15px;
-    padding-right: 15px;
+    color: white;
+    background: ${colors.adminTextColor};
   }
 `;
 
