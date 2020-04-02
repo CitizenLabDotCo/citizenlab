@@ -577,11 +577,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     <SectionParagraph>
                       <FormattedMessage
                         {...messages.fileRequirements}
-                        values={{
-                          emailColumnName: <strong><FormattedMessage {...messages.emailColumnName} /></strong>, // tslint:disable-next-line
-                          downloadLink: <a href="#" onClick={this.downloadExampleFile}><FormattedMessage {...messages.exampleFile} /></a>, // tslint:disable-next-line
-                          // supportPageLink: <a href={this.props.intl.formatMessage(messages.invitesSupportPageURL)} target="_blank"><FormattedMessage {...messages.supportPageLinkText} /></a>
-                        }}
                       />
                     </SectionParagraph>
                     <DownloadButton
