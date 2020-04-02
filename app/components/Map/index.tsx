@@ -247,7 +247,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     const inputPropsMapConfig = {};
     if (center) {
-      initCenter = [center[1], center[0]];
+      const [longitude, latitude] = center;
+      initCenter = [latitude, longitude];
       inputPropsMapConfig['center'] = initCenter;
     }
     if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
