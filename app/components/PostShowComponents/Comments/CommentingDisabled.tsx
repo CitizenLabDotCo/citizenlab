@@ -92,11 +92,7 @@ class CommentingDisabled extends PureComponent<Props> {
         });
       }
     } else {
-      openSignUpInModal({
-        flow: 'signup',
-        pathname: window.location.pathname,
-        verification: true
-      });
+      openSignUpInModal({ verification: true });
     }
   }
 

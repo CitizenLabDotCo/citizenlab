@@ -135,11 +135,7 @@ class IdeaButton extends PureComponent<Props> {
           clHistory.push('/ideas/new');
         }
       } else if (pcType && pcId) {
-        openSignUpInModal({
-          flow: 'signup',
-          pathname: window.location.pathname,
-          verification: postingDisabledReason === 'not_verified'
-        });
+        openSignUpInModal({ verification: postingDisabledReason === 'not_verified' });
       }
     } else {
       this.props.onClick(event);
