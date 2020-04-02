@@ -19,4 +19,17 @@ import { action } from '@storybook/addon-actions';
   </Story>
 </Preview>
 
+<Preview>
+  <Story name="with label">
+    <Radio
+      value={true}
+      currentValue={boolean('Selected', true)}
+      disabled={boolean('Disabled', false)}
+      onChange={action('radio changed')}
+      name={text('name 1')}
+      label={text('Label', 'A radio with label')}
+    />
+  </Story>
+</Preview>
+
 <Props of={Radio} />
