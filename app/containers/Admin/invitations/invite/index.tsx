@@ -42,7 +42,6 @@ import { requestBlob } from 'utils/request';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { rgba } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
