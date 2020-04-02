@@ -1,6 +1,6 @@
 {
   "EmailSettingsPage.initialUnsubscribeError": "Hubo un problema al cancelar su suscripción a esta campaña. Vuelva a intentarlo.",
-  "EmailSettingsPage.initialUnsubscribeLoading": "Su solicitud se está procesando, espere por favor...",
+  "EmailSettingsPage.initialUnsubscribeLoading": "Su solicitud está siendo procesada, por favor espere...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Ha cancelado correctamente su suscripción a {Títulodecampaña}.",
   "UI.FormComponents.buttonDisabled": "Botón de envío desactivado",
   "UI.FormComponents.buttonEnabled": "Botón de envío activo",
