@@ -31,7 +31,7 @@ RSpec.describe LogToSegmentJob, type: :job do
     it "generates an event with the desired content for activities about notifications" do
       user = create(:user)
       notification = create(:comment_on_your_comment, recipient: user)
-      activity = create(:activity, item: notification, item_type: notification.type, action: 'created', user: user)
+      activity = create(:activity, item_id: notification.id, item_type: notification.type, action: 'created', user: user)
 
       expect(Analytics).to receive(:track) do |event|
         expect(event[:event]).to eq("Notification for Comment on your comment created")
