@@ -7,11 +7,11 @@ class SideFxPhaseService
   end
 
   def before_create phase, user
-    phase.description_multiloc = TextImageService.new.swap_data_images(phase, :description_multiloc)
     @sfx_pc.before_create phase, user
   end
 
   def after_create phase, user
+    phase.update!(description_multiloc: TextImageService.new.swap_data_images(phase, :description_multiloc))
     LogActivityJob.perform_later(phase, 'created', user, phase.created_at.to_i)
     @sfx_pc.after_create phase, user
   end
