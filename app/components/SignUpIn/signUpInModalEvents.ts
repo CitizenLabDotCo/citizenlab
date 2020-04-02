@@ -6,8 +6,13 @@ enum SignUpInModalEvents {
   close = 'closeSignUpInModal'
 }
 
-export function openSignUpInModal(metaData: ISignUpInMetaData) {
-  eventEmitter.emit(SignUpInModalEvents.open, metaData);
+export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
+  eventEmitter.emit<ISignUpInMetaData>(SignUpInModalEvents.open, {
+    flow: metaData?.flow || 'signup',
+    pathname: metaData?.pathname || window.location.pathname,
+    verification: metaData?.verification ?? false,
+    action: metaData?.action || undefined
+  });
 }
 
 export function closeSignUpInModal() {

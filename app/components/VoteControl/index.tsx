@@ -451,8 +451,6 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     if (!voting) {
       if (isNilOrError(authUser)) {
         openSignUpInModal({
-          flow: 'signup',
-          pathname: window.location.pathname,
           verification: votingDisabledReason === 'not_verified',
           action: () => this.vote(voteMode)
         });

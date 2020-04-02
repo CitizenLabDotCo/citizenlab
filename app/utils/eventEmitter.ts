@@ -15,7 +15,7 @@ class EventEmitter {
     this.stream = {};
   }
 
-  emit<T>(eventName: string, eventValue?: T) {
+  emit<T>(eventName: string, eventValue: T = null as any) {
     this.subject.next({ eventName, eventValue });
   }
 
