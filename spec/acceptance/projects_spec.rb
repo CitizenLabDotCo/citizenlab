@@ -378,8 +378,17 @@ resource "Projects" do
             expect(response_status).to eq 201
             expect(TextImage.count).to eq (ti_count + 1)
           end
-        end
 
+          example "[error] Create a project with text image without title", document: false do
+            ti_count = TextImage.count
+            do_request project: {title_multiloc: nil}
+
+            expect(response_status).to eq 422
+            json_response = json_parse(response_body)
+            expect(json_response[:errors][:title_multiloc]).to be_present
+            expect(TextImage.count).to eq ti_count
+          end
+        end
       end
     end
 

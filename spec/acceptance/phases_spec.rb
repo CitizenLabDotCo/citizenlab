@@ -181,29 +181,15 @@ resource "Phases" do
           expect(response_status).to eq 201
           expect(TextImage.count).to eq (ti_count + 1)
         end
-      end
 
-      describe do
-        let(:title_multiloc) {{"en" => "rdghg", "nl-BE" => "rgdhf","fr-BE" => "drghf"}}
-        let(:description_multiloc) {{
-          "en" => "<p>ertrhyrhrh</p><p><img src=\"data:image/png;base64,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\"></p><p>sdgfdghf</p>",
-          "nl-BE" => "<p>dwefrg</p>",
-          "fr-BE" => "<p>ewfrg</p>"
-        }}
-        let(:participation_method) {'ideation'}
-        let(:posting_enabled) {true}
-        let(:commenting_enabled) {true}
-        let(:voting_enabled) {true}
-        let(:location_allowed) {true}
-        let(:presentation_mode) {'card'}
-        let(:voting_method) {'unlimited'}
-        let(:downvoting_enabled) {true}
-
-        example "Create a phase with text image exactly the same", document: false do
+        example "[error] Create a phase with text image without start and end date", document: false do
           ti_count = TextImage.count
-          do_request
-          expect(response_status).to eq 201
-          expect(TextImage.count).to eq (ti_count + 1)
+          do_request phase: {start_at: nil, end_at: nil}
+
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors].keys & [:start_at, :end_at]).to be_present
+          expect(TextImage.count).to eq ti_count
         end
       end
     end
