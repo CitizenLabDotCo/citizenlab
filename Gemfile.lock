@@ -456,7 +456,7 @@ GEM
       omniauth (~> 1.9)
       openid_connect (~> 1.1)
     parallel (1.19.0)
-    pg (1.1.3)
+    pg (1.2.3)
     pg_search (2.1.7)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
