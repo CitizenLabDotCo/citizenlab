@@ -10,21 +10,15 @@ export type IOutput = IMapConfigData | undefined | null | Error;
 
 export default ({ projectId } : Props) : IOutput => {
 
-  // Doing this if statement for a hack in the data loading
-  // of the components/Map/index file
-  if (projectId) {
-    const [mapConfig, setMapConfig] = useState<IMapConfigData | undefined | null | Error>(undefined);
+  const [mapConfig, setMapConfig] = useState<IMapConfigData | undefined | null | Error>(undefined);
 
-    useEffect(() => {
-      const subscription = mapConfigByProjectStream(projectId).observable.subscribe((mapConfig) => {
-        setMapConfig(!isNilOrError(mapConfig) ? mapConfig.data : mapConfig);
-      });
+  useEffect(() => {
+    const subscription = mapConfigByProjectStream(projectId).observable.subscribe((mapConfig) => {
+      setMapConfig(!isNilOrError(mapConfig) ? mapConfig.data : mapConfig);
+    });
 
-      return () => subscription.unsubscribe();
-    }, []);
+    return () => subscription.unsubscribe();
+  }, []);
 
-    return mapConfig;
-  }
-
-  return null;
+  return mapConfig;
 };
