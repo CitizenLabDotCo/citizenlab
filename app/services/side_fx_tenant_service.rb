@@ -15,17 +15,6 @@ class SideFxTenantService
       EmailCampaigns::AssureCampaignsService.new.assure_campaigns
       # fix permissions
       PermissionsService.new.update_permissions_for_current_tenant
-      # fix text images
-      txt_img_srv = TextImageService.new
-      Project.all.each do |project|
-        project.update! description_multiloc: txt_img_srv.swap_data_images(project, :description_multiloc)
-      end
-      Page.all.each do |page|
-        page.update! body_multiloc: txt_img_srv.swap_data_images(page, :body_multiloc)
-      end
-      Phase.all.each do |phase|
-        phase.update! description_multiloc: txt_img_srv.swap_data_images(phase, :description_multiloc)
-      end
       update_group_by_identify
     end
   ensure

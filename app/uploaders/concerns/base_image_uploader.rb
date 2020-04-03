@@ -2,7 +2,9 @@ module BaseImageUploader
   extend ActiveSupport::Concern
 
   included do
-    if !Rails.env.test? && !Rails.env.development?
+    if Rails.env.test?
+      storage :file
+    elsif !Rails.env.development?
       storage :fog
     end
   end

@@ -56,6 +56,34 @@ namespace :setup_and_support do
     logs.each{|l| puts l} && true
   end
 
+  desc "Add the three default success stories to the specified tenant"
+  task :add_default_success_stories, [:host] => [:environment] do |t, args|
+    success_stories = [
+      {
+        "page_slug": "initiatives-success-1",
+        "location": "Liège (BE)",
+        "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg"
+      },
+      {
+        "page_slug": "initiatives-success-2",
+        "location": "Schaerbeek (BE)",
+        "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg"
+      },
+      {
+        "page_slug": "initiatives-success-3",
+        "location": "Wortegem-Petegem (BE)",
+        "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg"
+      }
+    ]
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      raise 'Some success story pages are missing!' if Page.where(slug: success_stories.map{|s| s[:page_slug]}).count != 3
+    end
+    tn = Tenant.find_by! host: args[:host]
+    tn.settings['initiatives']['success_stories'] = success_stories
+    tn.save!
+    puts 'Success!'
+  end
+
   desc "Delete inactive non-participating users"
   task :delete_inactive_nonparticipating_users, [:host] => [:environment] do |t, args|
     Apartment::Tenant.switch(args[:host].gsub '.', '_') do

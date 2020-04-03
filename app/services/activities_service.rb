@@ -16,7 +16,7 @@ class ActivitiesService
   def create_phase_started_activities now, last_time
     if now.to_date != last_time.to_date
       Phase.where(start_at: now.to_date)
-        .includes(:project).where(projects: {publication_status: 'published'}).each do |phase|
+        .includes(project: [:admin_publication]).where(projects: {admin_publications: {publication_status: 'published'}}).each do |phase|
         if phase.end_at.iso8601 < (now+1.day).to_date.iso8601
           raise "Invalid phase started event would have been generated for phase #{phase.id} with now=#{now} and last_time=#{last_time}"
         end
@@ -28,7 +28,7 @@ class ActivitiesService
   def create_phase_upcoming_activities now, last_time
     if now.to_date != last_time.to_date
       Phase.where(start_at: now.to_date + 1.week)
-        .includes(:project).where(projects: {publication_status: 'published'}).each do |phase|
+        .includes(project: [:admin_publication]).where(projects: {admin_publications: {publication_status: 'published'}}).each do |phase|
         if phase.end_at.iso8601 < (now+1.day).to_date.iso8601
           raise "Invalid phase upcoming event would have been generated for phase #{phase.id} with now=#{now} and last_time=#{last_time}"
         end

@@ -3,4 +3,12 @@ class TextImage < ApplicationRecord
   belongs_to :imageable, polymorphic: true
 
   validates :imageable, :image, presence: true
+
+  before_validation :generate_text_reference, on: :create
+
+  private
+
+  def generate_text_reference
+    self.text_reference ||= SecureRandom.uuid
+  end
 end
