@@ -17,6 +17,8 @@ AdminApi::Engine.routes.draw do
 
   resources :areas, only: [:index]
 
+  resources :invites, only: [:create]
+
   post "/graphql", to: "graphql#execute"
 
 end
