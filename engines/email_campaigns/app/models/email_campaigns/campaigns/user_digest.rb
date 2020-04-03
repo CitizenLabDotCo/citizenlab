@@ -83,7 +83,8 @@ module EmailCampaigns
     def discover_projects recipient
       ProjectPolicy::Scope.new(recipient, Project)
         .resolve
-        .where(publication_status: 'published')
+        .left_outer_joins(:admin_publication)
+        .where(admin_publications: {publication_status: 'published'})
         .order(created_at: :desc)
         .limit(N_DISCOVER_PROJECTS)
     end

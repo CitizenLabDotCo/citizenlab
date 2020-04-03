@@ -1,7 +1,15 @@
 class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :title_multiloc, :description_multiloc, :description_preview_multiloc, :slug, :visible_to, :process_type, :ideas_count, :comments_count, :internal_role, :publication_status, :created_at, :updated_at, :ordering, :location_allowed
+  attributes :title_multiloc, :description_preview_multiloc, :slug, :visible_to, :process_type, :ideas_count, :comments_count, :internal_role, :created_at, :updated_at, :location_allowed
+
+  attribute :publication_status do |object|
+    object.admin_publication.publication_status
+  end
+
+  attribute :description_multiloc do |object|
+    TextImageService.new.render_data_images object, :description_multiloc
+  end
 
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.map{|k, v| [k.to_s, v.url]}.to_h
@@ -67,7 +75,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  belongs_to :folder, serializer: WebApi::V1::ProjectFolderSerializer
+  # belongs_to :folder, serializer: WebApi::V1::ProjectFolderSerializer
+  has_one :admin_publication
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas

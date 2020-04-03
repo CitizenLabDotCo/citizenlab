@@ -23,6 +23,8 @@ module Surveys::TypeformParser
         answer[:date]
       when 'payment' 
         answer[:payment] 
+      when 'phone_number' 
+        answer[:phone_number] 
       else
         raise "Unsupported typeform answer type #{answer[:type]}"
       end

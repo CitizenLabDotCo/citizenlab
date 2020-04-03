@@ -86,7 +86,7 @@ resource "Volunteering Volunteers" do
     get "web_api/v1/projects/:participation_context_id/volunteers/as_xlsx" do
       before do
         @project = create(:continuous_volunteering_project)
-        @cause1 = create(:cause, participation_context: @project)
+        @cause1 = create(:cause, title_multiloc: {en: 'For sure works with very long titles too!!!'}, participation_context: @project)
         @volunteers1 = create_list(:volunteer, 3, cause: @cause1)
         @cause2 = create(:cause, participation_context: @project)
         @volunteers2 = create_list(:volunteer, 3, cause: @cause2)
@@ -100,7 +100,8 @@ resource "Volunteering Volunteers" do
         expect(status).to eq 200
         worksheets = RubyXL::Parser.parse_buffer(response_body).worksheets
         expect(worksheets.size).to eq 2
-        expect(worksheets[0].sheet_name).to eq @cause1.title_multiloc['en']
+        # sheet names can only be 31 characters long
+        expect(worksheets[0].sheet_name).to eq 'For sure works with very long t'
         expect(worksheets[1].sheet_name).to eq @cause2.title_multiloc['en']
 
         expect(worksheets[0].count).to eq 4
