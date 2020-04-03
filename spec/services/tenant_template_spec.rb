@@ -166,10 +166,40 @@ describe TenantTemplateService do
         expect(CustomField.count).to eq 2
         expect(CustomField.all.map(&:resource)).to match_array CustomForm.all
     end
+
+    it "associates attribute refs correctly" do
+      yml = <<~YAML
+        ---
+        models:
+          project_folder:
+          - title_multiloc:
+              en: Folder title
+            admin_publication_attributes: &1
+              publication_status: published
+          project:
+            - title_multiloc:
+                en: Project 1 title
+              admin_publication_attributes:
+                publication_status: published
+                parent_attributes_ref: *1
+            - title_multiloc:
+                en: Project 2 title
+              admin_publication_attributes:
+                publication_status: published
+                parent_attributes_ref: *1
+        YAML
+        template = YAML.load(yml)
+
+        service.apply_template(template)
+
+        expect(ProjectFolder.count).to eq 1
+        expect(Project.count).to eq 2
+        expect(Project.all.map{|pj| pj.folder&.id}.uniq).to eq [ProjectFolder.first.id]
+    end
   end
 
   describe "tenant_to_template", slow_test: true do
-    it "Successfully generates a tenant template from a given tenant" do
+    it "successfully generates a tenant template from a given tenant" do
       load Rails.root.join("db","seeds.rb")
       localhost = Tenant.find_by(host: 'localhost')
       settings = localhost.settings
@@ -193,6 +223,17 @@ describe TenantTemplateService do
       expect(Maps::MapConfig.count).to be 1
       expect(Maps::Layer.count).to be 2
       expect(Maps::LegendItem.count).to be 7
+    end
+
+    it "correctly generates and links attributes references" do
+      create(:project_folder, projects: create_list(:project, 2))
+      template = service.tenant_to_template Tenant.current
+
+      admin_publication_attributes = template.dig('models', 'project_folder').first['admin_publication_attributes']
+      expect(admin_publication_attributes).to be_present
+      template.dig('models', 'project').each do |pj|
+        expect(pj.dig('admin_publication_attributes', 'parent_ref')).to eq admin_publication_attributes
+      end
     end
   end
 

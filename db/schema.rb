@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_18_220615) do
+ActiveRecord::Schema.define(version: 2020_03_19_101312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -29,6 +29,22 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.index ["acted_at"], name: "index_activities_on_acted_at"
     t.index ["item_type", "item_id"], name: "index_activities_on_item_type_and_item_id"
     t.index ["user_id"], name: "index_activities_on_user_id"
+  end
+
+  create_table "admin_publications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "parent_id"
+    t.integer "lft", null: false
+    t.integer "rgt", null: false
+    t.integer "ordering"
+    t.string "publication_status", default: "published", null: false
+    t.uuid "publication_id"
+    t.string "publication_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["lft"], name: "index_admin_publications_on_lft"
+    t.index ["ordering"], name: "index_admin_publications_on_ordering"
+    t.index ["parent_id"], name: "index_admin_publications_on_parent_id"
+    t.index ["rgt"], name: "index_admin_publications_on_rgt"
   end
 
   create_table "areas", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -686,6 +702,16 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.index ["project_id"], name: "index_project_files_on_project_id"
   end
 
+  create_table "project_folder_files", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_folder_id"
+    t.string "file"
+    t.string "name"
+    t.integer "ordering"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_folder_id"], name: "index_project_folder_files_on_project_folder_id"
+  end
+
   create_table "project_folder_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_folder_id"
     t.string "image"
@@ -701,18 +727,9 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.jsonb "description_preview_multiloc"
     t.string "header_bg"
     t.string "slug"
-    t.integer "projects_count", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["slug"], name: "index_project_folders_on_slug"
-  end
-
-  create_table "project_holder_orderings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.integer "ordering"
-    t.uuid "project_holder_id"
-    t.string "project_holder_type"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "project_images", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -743,20 +760,16 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
     t.integer "voting_limited_max", default: 10
     t.string "process_type", default: "timeline", null: false
     t.string "internal_role"
-    t.string "publication_status", default: "published", null: false
     t.string "survey_embed_url"
     t.string "survey_service"
-    t.integer "ordering"
     t.integer "max_budget"
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
     t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
-    t.uuid "folder_id"
     t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false
     t.index ["custom_form_id"], name: "index_projects_on_custom_form_id"
-    t.index ["folder_id"], name: "index_projects_on_folder_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -976,9 +989,9 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
   add_foreign_key "polls_response_options", "polls_options", column: "option_id"
   add_foreign_key "polls_response_options", "polls_responses", column: "response_id"
   add_foreign_key "project_files", "projects"
+  add_foreign_key "project_folder_files", "project_folders"
   add_foreign_key "project_folder_images", "project_folders"
   add_foreign_key "project_images", "projects"
-  add_foreign_key "projects", "project_folders", column: "folder_id"
   add_foreign_key "projects", "users", column: "default_assignee_id"
   add_foreign_key "projects_topics", "projects"
   add_foreign_key "projects_topics", "topics"
@@ -1005,115 +1018,6 @@ ActiveRecord::Schema.define(version: 2020_03_18_220615) do
              FROM votes
             WHERE (((votes.mode)::text = 'up'::text) AND ((votes.votable_type)::text = 'Idea'::text))
             GROUP BY votes.votable_id) upvotes_at ON ((ideas.id = upvotes_at.votable_id)));
-  SQL
-  create_view "project_sort_scores", sql_definition: <<-SQL
-      SELECT sub.id AS project_id,
-      concat(sub.status_score, sub.active_score, sub.hot_score, sub.recency_score, sub.action_score) AS score
-     FROM ( SELECT projects.id,
-                  CASE projects.publication_status
-                      WHEN 'draft'::text THEN 1
-                      WHEN 'published'::text THEN 2
-                      WHEN 'archived'::text THEN 3
-                      ELSE 4
-                  END AS status_score,
-                  CASE projects.publication_status
-                      WHEN 'archived'::text THEN 3
-                      ELSE
-                      CASE projects.process_type
-                          WHEN 'continuous'::text THEN 2
-                          WHEN 'timeline'::text THEN
-                          CASE
-                              WHEN (EXISTS ( SELECT 1
-                                 FROM phases
-                                WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date) AND (phases.project_id = projects.id)))) THEN 1
-                              ELSE 3
-                          END
-                          ELSE NULL::integer
-                      END
-                  END AS active_score,
-                  CASE projects.process_type
-                      WHEN 'timeline'::text THEN
-                      CASE
-                          WHEN (EXISTS ( SELECT 1
-                             FROM phases
-                            WHERE (((abs((phases.start_at - (now())::date)) <= 7) OR (abs((phases.end_at - (now())::date)) <= 7)) AND (phases.project_id = projects.id)))) THEN 1
-                          ELSE 2
-                      END
-                      WHEN 'continuous'::text THEN
-                      CASE
-                          WHEN (((now())::date - (projects.created_at)::date) <= 7) THEN 1
-                          ELSE 2
-                      END
-                      ELSE NULL::integer
-                  END AS hot_score,
-              lpad((
-                  CASE projects.process_type
-                      WHEN 'timeline'::text THEN COALESCE(min(joined_phases.recency_diff), ((now())::date - (projects.created_at)::date))
-                      WHEN 'continuous'::text THEN ((now())::date - (projects.created_at)::date)
-                      ELSE NULL::integer
-                  END)::text, 5, '0'::text) AS recency_score,
-                  CASE projects.publication_status
-                      WHEN 'archived'::text THEN 9
-                      ELSE
-                      CASE projects.process_type
-                          WHEN 'continuous'::text THEN
-                          CASE projects.participation_method
-                              WHEN 'ideation'::text THEN
-                              CASE
-                                  WHEN projects.posting_enabled THEN 1
-                                  WHEN projects.commenting_enabled THEN 4
-                                  WHEN projects.voting_enabled THEN 5
-                                  ELSE 6
-                              END
-                              WHEN 'budgeting'::text THEN 2
-                              WHEN 'survey'::text THEN 3
-                              WHEN 'information'::text THEN 7
-                              ELSE 8
-                          END
-                          WHEN 'timeline'::text THEN
-                          CASE COALESCE(max((active_phases.participation_method)::text), 'no_active_pc'::text)
-                              WHEN 'no_active_pc'::text THEN 9
-                              WHEN 'ideation'::text THEN
-                              CASE
-                                  WHEN bool_or(active_phases.posting_enabled) THEN 1
-                                  WHEN bool_or(active_phases.commenting_enabled) THEN 4
-                                  WHEN bool_or(active_phases.voting_enabled) THEN 5
-                                  ELSE 6
-                              END
-                              WHEN 'budgeting'::text THEN 2
-                              WHEN 'survey'::text THEN 3
-                              WHEN 'information'::text THEN 7
-                              ELSE 8
-                          END
-                          ELSE NULL::integer
-                      END
-                  END AS action_score
-             FROM ((projects
-               LEFT JOIN ( SELECT phases.id,
-                      phases.project_id,
-                      LEAST(abs(((now())::date - phases.start_at)), abs(((now())::date - phases.end_at))) AS recency_diff
-                     FROM phases) joined_phases ON ((joined_phases.project_id = projects.id)))
-               LEFT JOIN ( SELECT phases.id,
-                      phases.project_id,
-                      phases.title_multiloc,
-                      phases.description_multiloc,
-                      phases.start_at,
-                      phases.end_at,
-                      phases.created_at,
-                      phases.updated_at,
-                      phases.participation_method,
-                      phases.posting_enabled,
-                      phases.commenting_enabled,
-                      phases.voting_enabled,
-                      phases.voting_method,
-                      phases.voting_limited_max,
-                      phases.survey_embed_url,
-                      phases.survey_service,
-                      phases.presentation_mode,
-                      phases.max_budget
-                     FROM phases
-                    WHERE ((phases.start_at <= (now())::date) AND (phases.end_at >= (now())::date))) active_phases ON ((active_phases.id = joined_phases.id)))
-            GROUP BY projects.id) sub;
   SQL
   create_view "union_posts", sql_definition: <<-SQL
       SELECT ideas.id,

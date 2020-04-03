@@ -341,17 +341,6 @@
         }
       },
 
-      "manual_project_sorting": {
-        "type": "object",
-        "description":  "When active, projects are shown in the order that they've been manually drag&dropped in the admin. Otherwise the ordering is automated",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "projects_phases": {
         "type": "object",
         "description":	"",
@@ -691,23 +680,7 @@
           },
           "success_stories": {
             "type": "array",
-            "default": [
-              {
-                "page_slug": "initiatives-success-1",
-                "location": "Liège (BE)",
-                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228019/8a1ebc8b-ab5e-40e2-9cfb-872f8ef28f3e_kxh3fv.jpg"
-              },
-              {
-                "page_slug": "initiatives-success-2",
-                "location": "Schaerbeek (BE)",
-                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1565686767/63697e81-23de-4a84-b885-7418ebc92d2e_su6wxr.jpg"
-              },
-              {
-                "page_slug": "initiatives-success-3",
-                "location": "Wortegem-Petegem (BE)",
-                "image_url": "https://res.cloudinary.com/citizenlabco/image/upload/v1566228445/934e4e02-0d5e-4767-b9aa-3690a940d023_f6ljbd.jpg"
-              }
-            ],
+            "default": [],
             "items": {
               "type": "object",
               "additionalProperties": false,

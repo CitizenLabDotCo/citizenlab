@@ -635,6 +635,23 @@ models:
       user_ref: *77
     - token: eWx6b1kAKBJsBY8F0FYGgKCXpLaGbVjTTvuJiGoRqxiLUyRSlQwz1F06agHXJd1D
       user_ref: *67
+  project_folder:
+  - &folder1
+    # hard dependance of folder_page test case
+    title_multiloc:
+      en-GB: Some folder
+      nl-BE: Some folder
+    description_multiloc:
+      en-GB: "<p>That's a folder alright.</p>"
+      nl-BE: "<p>That's a folder alright.</p>"
+    remote_header_bg_url: https://res.cloudinary.com/citizenlabco/image/upload/v1540214247/carrying-casual-cheerful-1162964_dxubq6.jpg
+    created_at: '2018-03-28 13:35:04'
+    updated_at: '2018-03-28 13:35:04'
+    description_preview_multiloc:
+      en-GB: That's a folder alright
+      nl-BE: That's a folder alright
+    admin_publication_attributes: &a1
+      publication_status: published
   project:
   - &project1
     # hard dependence of project_card test case
@@ -654,7 +671,8 @@ models:
     participation_method: ideation
     process_type: timeline
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: true
@@ -678,7 +696,8 @@ models:
     presentation_mode: card
     participation_method: budgeting
     process_type: continuous
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: false
@@ -703,7 +722,8 @@ models:
     presentation_mode: card
     participation_method: budgeting
     process_type: continuous
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: false
@@ -728,7 +748,8 @@ models:
     presentation_mode: card
     participation_method: budgeting
     process_type: continuous
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: false
@@ -754,7 +775,8 @@ models:
     participation_method: ideation
     process_type: timeline
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
     posting_enabled: true
@@ -791,7 +813,9 @@ models:
     participation_method: ideation
     process_type: continuous
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
+      parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -815,7 +839,8 @@ models:
     participation_method: ideation
     process_type: continuous
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -838,7 +863,8 @@ models:
     presentation_mode: card
     participation_method: ideation
     process_type: continuous
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -860,7 +886,8 @@ models:
     presentation_mode: card
     participation_method: ideation
     process_type: continuous
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -883,7 +910,9 @@ models:
     participation_method: survey
     process_type: continuous
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
+      parent_attributes_ref: *a1
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -909,7 +938,8 @@ models:
     participation_method: survey
     process_type: continuous
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -934,7 +964,8 @@ models:
     presentation_mode: map
     participation_method: poll
     process_type: continuous
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
   - &verifiedPoll
@@ -952,7 +983,8 @@ models:
     presentation_mode: map
     participation_method: poll
     process_type: continuous
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
   - &charliesSurvey
@@ -971,7 +1003,8 @@ models:
     participation_method: survey
     process_type: continuous
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -997,7 +1030,8 @@ models:
     participation_method: poll
     process_type: continuous
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:06'
     updated_at: '2018-03-28 13:35:06'
     posting_enabled: true
@@ -1020,7 +1054,8 @@ models:
     participation_method: ideation
     process_type: timeline
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:07'
     updated_at: '2018-03-28 13:35:07'
     posting_enabled: true
@@ -1044,7 +1079,8 @@ models:
     participation_method: ideation
     process_type: timeline
     internal_role:
-    publication_status: published
+    admin_publication_attributes:
+      publication_status: published
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -1068,7 +1104,8 @@ models:
     participation_method: ideation
     process_type: timeline
     internal_role:
-    publication_status: archived
+    admin_publication_attributes:
+      publication_status: archived
     created_at: '2018-03-28 13:35:08'
     updated_at: '2018-03-28 13:35:08'
     posting_enabled: true
@@ -1076,26 +1113,6 @@ models:
     voting_enabled: true
     voting_method: unlimited
     voting_limited_max: 10
-  project_holder_ordering:
-    - project_holder_ref: *project1
-    - project_holder_ref: *Pb
-    - project_holder_ref: *charliesPb
-    - project_holder_ref: *verifiedPb
-    - project_holder_ref: *project2
-    - project_holder_ref: *76
-    - project_holder_ref: *121
-    - project_holder_ref: *charliesVerifiedPPlproject
-    - project_holder_ref: *verifiedIdeation
-    - project_holder_ref: *charliesIdeation
-    - project_holder_ref: *contsurv
-    - project_holder_ref: *verifiedSurvey
-    - project_holder_ref: *polling
-    - project_holder_ref: *verifiedPoll
-    - project_holder_ref: *charliesSurvey
-    - project_holder_ref: *charliesPoll
-    - project_holder_ref: *90
-    - project_holder_ref: *85
-    - project_holder_ref: *66
   project_file:
   - project_ref: *project1
     created_at: 2019-01-14 13:46:54 UTC
