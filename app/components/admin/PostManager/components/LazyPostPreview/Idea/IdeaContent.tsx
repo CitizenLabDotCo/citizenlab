@@ -244,10 +244,11 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
                   body={localize(idea.attributes.body_multiloc)}
                 />
 
-                {ideaGeoPosition && ideaAddress &&
+                {!isNilOrError(project) && ideaGeoPosition && ideaAddress &&
                   <StyledMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
+                    projectId={project.id}
                   />
                 }
 
