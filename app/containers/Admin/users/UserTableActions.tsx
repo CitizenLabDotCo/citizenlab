@@ -3,7 +3,6 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { isArray, isNil, omitBy, includes } from 'lodash-es';
 import { saveAs } from 'file-saver';
-import bowser from 'bowser';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
@@ -62,6 +61,7 @@ const UserCount = styled.span`
 `;
 
 const SelectAllCheckbox = styled(Checkbox)`
+  flex: 0 1 auto;
   position: relative;
   padding-left: 4px;
   padding-right: 4px;
@@ -77,30 +77,31 @@ const SelectAllCheckbox = styled(Checkbox)`
 `;
 
 const SelectAllCheckboxLabel = styled.span`
-  display: inline-block;
-  /* align-items: center;
-  white-space: wrap; */
+  flex: 0 1 auto;
+  display: flex;
+  align-items: center;
   padding: 10px;
+  padding-left: 0px;
 `;
 
 const ActionButtons = styled.div`
   display: flex;
-  margin-left: auto;
+  align-items: center;
+  margin-left: 30px;
 `;
 
 const ActionButton = styled.button`
-  max-width: 250px;
-  min-height: 38px;
-  margin-right: 40px;
-  position: relative;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  margin: 0px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 4px;
   padding-right: 4px;
+  position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
-  display: flex;
-  align-items: center;
 
   span {
     white-space: normal;
@@ -111,12 +112,8 @@ const ActionButton = styled.button`
     hyphens: auto;
   }
 
-  &.noRightMargin {
-    margin-right: 0px;
-  }
-
-  .cl-icon {
-    margin-right: 8px;
+  &.hasLeftMargin {
+    margin-left: 30px;
   }
 
   &:hover,
@@ -128,27 +125,21 @@ const ActionButton = styled.button`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 20px;
-  height: 20px;
+  flex: 0 0 22px;
+  height: 22px;
+  margin-right: 10px;
 `;
 
 const ActionButtonWrapper = styled.div`
-  position: relative;
-  margin-right: 40px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-`;
-
-const DropdownWrapper = styled.div`
-  width: 100%;
-  flex: 0 0 0px;
+  align-items: stretch;
   position: relative;
-  display: flex;
-  justify-content: center;
 `;
 
 const DropdownListItemText = styled.div`
+  width: 80%;
+  flex: 1 1 auto;
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -386,7 +377,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
               <FormattedMessage {...messages.select} />
               {selectedCount > 0 &&
                 <UserCount className="e2e-selected-count">
-                  (<FormattedMessage {...messages.userCount} values={{ count: selectedCount }} />)
+                  ({selectedCount})
                 </UserCount>
               }
             </SelectAllCheckboxLabel>
@@ -397,63 +388,62 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         <ActionButtons>
           {selectedUsers !== 'none' && !isNilOrError(groupsList) &&
             <ActionButtonWrapper>
-              <ActionButton className="e2e-move-users noRightMargin" onClick={this.toggleDropdown}>
+              <ActionButton className="e2e-move-users" onClick={this.toggleDropdown}>
                 <StyledIcon name="moveFolder" />
                 <FormattedMessage {...messages.moveUsers} />
               </ActionButton>
 
-              <DropdownWrapper>
-                <Dropdown
-                  top="10px"
-                  left={bowser.msie ? '-5px' : 'auto'}
-                  opened={dropdownOpened}
-                  onClickOutside={this.toggleDropdown}
-                  content={(
-                    <DropdownList>
-                      {groupsList.map((group) => (
-                        <DropdownListItem
-                          key={group.id}
-                          onClick={this.toggleGroup(group.id)}
-                          className="e2e-dropdown-item"
-                        >
-                          <DropdownListItemText>
-                            <T value={group.attributes.title_multiloc} />
-                          </DropdownListItemText>
-                          <Checkbox
-                            checked={includes(selectedGroupIds, group.id)}
-                            onChange={this.toggleGroup(group.id)}
-                          />
-                        </DropdownListItem>
-                      ))}
-                    </DropdownList>
-                  )}
-                  footer={(
-                    <DropdownFooterButton
-                      className="e2e-dropdown-submit"
-                      buttonStyle="cl-blue"
-                      onClick={this.addUsersToGroups}
-                      processing={processing}
-                      fullWidth={true}
-                      padding="12px"
-                      whiteSpace="normal"
-                      disabled={!selectedGroupIds || selectedGroupIds.length === 0}
-                    >
-                      <FormattedMessage {...messages.moveUsers} />
-                    </DropdownFooterButton>
-                  )}
-                />
-              </DropdownWrapper>
+              <Dropdown
+                width="300px"
+                top="45px"
+                left="0px"
+                opened={dropdownOpened}
+                onClickOutside={this.toggleDropdown}
+                content={(
+                  <DropdownList>
+                    {groupsList.map((group) => (
+                      <DropdownListItem
+                        key={group.id}
+                        onClick={this.toggleGroup(group.id)}
+                        className="e2e-dropdown-item"
+                      >
+                        <DropdownListItemText>
+                          <T value={group.attributes.title_multiloc} />
+                        </DropdownListItemText>
+                        <Checkbox
+                          checked={includes(selectedGroupIds, group.id)}
+                          onChange={this.toggleGroup(group.id)}
+                        />
+                      </DropdownListItem>
+                    ))}
+                  </DropdownList>
+                )}
+                footer={(
+                  <DropdownFooterButton
+                    className="e2e-dropdown-submit"
+                    buttonStyle="cl-blue"
+                    onClick={this.addUsersToGroups}
+                    processing={processing}
+                    fullWidth={true}
+                    padding="12px"
+                    whiteSpace="normal"
+                    disabled={!selectedGroupIds || selectedGroupIds.length === 0}
+                  >
+                    <FormattedMessage {...messages.moveUsers} />
+                  </DropdownFooterButton>
+                )}
+              />
             </ActionButtonWrapper>
           }
 
           {groupType === 'manual' && selectedUsers !== 'none' &&
-            <ActionButton onClick={this.handleGroupsDeleteClick}>
+            <ActionButton onClick={this.handleGroupsDeleteClick} className="hasLeftMargin">
               <StyledIcon name="trash" />
               <FormattedMessage {...messages.membershipDelete} />
             </ActionButton>
           }
 
-          <ActionButton onClick={this.exportUsers} className={`export e2e-${exportType}`}>
+          <ActionButton onClick={this.exportUsers} className={`export e2e-${exportType} hasLeftMargin`}>
             <StyledIcon name="userExport" />
             <FormattedMessage {...messages[exportType]} />
           </ActionButton>

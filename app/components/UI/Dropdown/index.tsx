@@ -38,11 +38,11 @@ const Container: any = styled(clickOutside)`
   }
 `;
 
-const ContainerInner: any = styled.div`
-  width: ${(props: Props) => props.width};
+const ContainerInner = styled.div<{ width: string, mobileWidth: string, maxHeight: string, mobileMaxHeight: string }>`
+  width: ${(props) => props.width};
 
   ${media.smallerThanMaxTablet`
-    width: ${(props: Props) => props.mobileWidth};
+    width: ${(props) => props.mobileWidth};
   `}
 `;
 
@@ -196,10 +196,10 @@ export default class Dropdown extends PureComponent<Props, State> {
           className={className}
         >
           <ContainerInner
-            width={width}
-            mobileWidth={mobileWidth}
-            maxHeight={maxHeight}
-            mobileMaxHeight={mobileMaxHeight}
+            width={width as string}
+            mobileWidth={mobileWidth as string}
+            maxHeight={maxHeight as string}
+            mobileMaxHeight={mobileMaxHeight as string}
           >
             <Content
               width={width as string}
