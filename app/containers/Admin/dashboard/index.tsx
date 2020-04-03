@@ -226,7 +226,13 @@ export const chartTheme = (theme) => {
   };
 };
 
-export const DashboardsPage = memo(({ insightsEnabled, geographicDashboardEnabled, authUser, children, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+export const DashboardsPage = memo(({
+  insightsEnabled,
+  geographicDashboardEnabled,
+  authUser,
+  children,
+  intl: { formatMessage }
+}: Props & InjectedIntlProps) => {
   const staticTabs = [
     { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
     { label: formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
