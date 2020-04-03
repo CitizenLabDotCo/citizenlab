@@ -142,13 +142,13 @@ Rails.application.routes.draw do
           patch 'by_code/:code', action: 'upsert_by_code', on: :collection
         end
         get 'by_slug/:slug', on: :collection, to: 'projects#by_slug'
-        patch 'reorder', on: :member
       end
-      resources :project_holder_orderings, only: [:index] do
+      resources :admin_publications, only: [:index, :show] do
         patch 'reorder', on: :member
       end
       resources :project_folders do
         resources :images, defaults: {container_type: 'ProjectFolder'}
+        resources :files, defaults: {container_type: 'ProjectFolder'}
         get 'by_slug/:slug', on: :collection, to: 'project_folders#by_slug'
       end
 

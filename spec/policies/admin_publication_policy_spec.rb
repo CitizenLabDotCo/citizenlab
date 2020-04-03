@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-describe ProjectHolderOrderingPolicy do
-  subject { ProjectHolderOrderingPolicy.new(user, project_holder_ordering) }
-  let(:scope) { ProjectHolderOrderingPolicy::Scope.new(user, ProjectHolderOrdering) }
+describe AdminPublicationPolicy do
+  subject { AdminPublicationPolicy.new(user, admin_publication) }
+  let(:scope) { AdminPublicationPolicy::Scope.new(user, AdminPublication) }
 
   context "on a public project" do 
-    let!(:project_holder_ordering) { create(:project) ; ProjectHolderService.new.fix_project_holder_orderings! ; ProjectHolderOrdering.first }
+    let!(:admin_publication) { create(:project).admin_publication }
     context "for a visitor" do
       let(:user) { nil }
 
@@ -37,7 +37,7 @@ describe ProjectHolderOrderingPolicy do
     end
 
     context "for a moderator of another project" do
-      let(:user) { u = create(:moderator, project: create(:project)) ; ProjectHolderService.new.fix_project_holder_orderings! ; u }
+      let(:user) { create(:moderator, project: create(:project)) }
 
       it { should_not permit(:reorder) }
 
@@ -48,8 +48,8 @@ describe ProjectHolderOrderingPolicy do
   end
 
   context "on a private admins project" do 
-    let!(:project) { p = create(:private_admins_project) ; ProjectHolderService.new.fix_project_holder_orderings! ; p }
-    let!(:project_holder_ordering) { ProjectHolderOrdering.first }
+    let!(:project) { create(:private_admins_project) }
+    let!(:admin_publication) { project.admin_publication }
     context "for a visitor" do
       let(:user) { nil }
 
@@ -94,7 +94,7 @@ describe ProjectHolderOrderingPolicy do
 
   context "for a visitor on a private groups project" do
     let!(:user) { nil }
-    let!(:project_holder_ordering) { create(:private_groups_project) ; ProjectHolderService.new.fix_project_holder_orderings! ; ProjectHolderOrdering.first }
+    let!(:admin_publication) { create(:private_groups_project).admin_publication }
 
     it { should_not permit(:reorder) }
 
@@ -108,7 +108,7 @@ describe ProjectHolderOrderingPolicy do
     let!(:group) { create(:smart_group, rules: [
       {ruleType: 'email', predicate: 'is', value: 'user@test.com'}
     ])}
-    let!(:project_holder_ordering) { create(:project, visible_to: 'groups', groups: [group]) ; ProjectHolderService.new.fix_project_holder_orderings! ; ProjectHolderOrdering.first }
+    let!(:admin_publication) { create(:project, visible_to: 'groups', groups: [group]).admin_publication }
 
     it { should_not permit(:reorder) }
 

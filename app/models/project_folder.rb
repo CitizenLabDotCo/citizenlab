@@ -1,21 +1,38 @@
 class ProjectFolder < ApplicationRecord
 
-  has_many :projects, dependent: :destroy, foreign_key: :folder_id
-  has_one :project_holder_ordering, as: :project_holder, dependent: :destroy
+  has_one :admin_publication, as: :publication, dependent: :destroy
+  accepts_nested_attributes_for :admin_publication, update_only: true
   has_many :project_folder_images, -> { order(:ordering) }, dependent: :destroy
+  has_many :project_folder_files, -> { order(:ordering) }, dependent: :destroy
 
   mount_base64_uploader :header_bg, ProjectFolderHeaderBgUploader
 
   validates :title_multiloc, presence: true, multiloc: {presence: true}
   validates :slug, uniqueness: true, format: {with: SlugService.new.regex }
+  validate :admin_publication_must_exist
 
   before_validation :generate_slug, on: :create
   before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :strip_title
+  before_validation :set_admin_publication
+
+
+  def projects
+    Project.joins(:admin_publication).where(admin_publication: admin_publication.children)
+  end
 
 
   private
+
+  def admin_publication_must_exist
+    # Built-in presence validation does not work.
+    # Admin publication must always be present
+    # once the folder was created.
+    if id.present? && admin_publication&.id.blank?
+      errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
+    end
+  end
 
   def generate_slug
     slug_service = SlugService.new
@@ -45,5 +62,9 @@ class ProjectFolder < ApplicationRecord
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
     end
+  end
+
+  def set_admin_publication
+    self.admin_publication_attributes= {} if !self.admin_publication
   end
 end
