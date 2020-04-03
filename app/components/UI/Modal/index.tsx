@@ -85,8 +85,8 @@ const StyledFocusOn = styled(FocusOn)<{ width: number }>`
 
 const ModalContainer = styled(clickOutside)`
   width: 100%;
-  max-height: 80vh;
-  margin-top: 60px;
+  max-height: 85vh;
+  margin-top: 55px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;

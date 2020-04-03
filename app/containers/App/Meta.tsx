@@ -51,7 +51,7 @@ const Meta: React.SFC<Props & InjectedIntlProps> = ({ locale, tenant, authUser, 
     metaDescription = (metaDescription || formatMessage(messages.metaDescription));
 
     const lifecycleStage = tenant.attributes.settings.core.lifecycle_stage;
-    const blockIndexing = lifecycleStage === 'demo' || lifecycleStage === 'not_applicable';
+    const blockIndexing = !['active', 'churned'].includes(lifecycleStage);
 
     return (
       <Helmet>

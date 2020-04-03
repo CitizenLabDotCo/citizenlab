@@ -24,7 +24,7 @@ export interface ITenantSettings {
     organization_name: Multiloc;
     organization_site?: string;
     organization_type: 'small_city' | 'medium_city' | 'large_city' | 'generic';
-    lifecycle_stage?: 'demo' | 'active' | 'churned' | 'not_applicable';
+    lifecycle_stage: 'trial' | 'expired_trial' | 'demo' | 'active' | 'churned' | 'not_applicable';
     header_title?: Multiloc | null;
     header_slogan?: Multiloc | null;
     meta_title?: Multiloc | null;
