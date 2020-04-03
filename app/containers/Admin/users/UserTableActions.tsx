@@ -97,8 +97,8 @@ const ActionButton = styled.button`
   margin: 0px;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-left: 4px;
-  padding-right: 4px;
+  padding-left: 10px;
+  padding-right: 10px;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
   cursor: pointer;
@@ -390,7 +390,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
             <ActionButtonWrapper>
               <ActionButton className="e2e-move-users" onClick={this.toggleDropdown}>
                 <StyledIcon name="moveFolder" />
-                <FormattedMessage {...messages.moveUsers} />
+                <FormattedMessage {...messages.moveUsersTableAction} />
               </ActionButton>
 
               <Dropdown
@@ -429,7 +429,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                     whiteSpace="normal"
                     disabled={!selectedGroupIds || selectedGroupIds.length === 0}
                   >
-                    <FormattedMessage {...messages.moveUsers} />
+                    <FormattedMessage {...messages.moveUsersButton} />
                   </DropdownFooterButton>
                 )}
               />

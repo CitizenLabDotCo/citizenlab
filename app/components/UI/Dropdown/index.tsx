@@ -6,15 +6,15 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const timeout = 200;
 
-const Container: any = styled(clickOutside)`
+const Container = styled(clickOutside)<{ top: string, left: string, right: string, mobileLeft: string, mobileRight: string }>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
   z-index: 5;
   position: absolute;
-  top: ${(props: Props) => props.top};
-  left: ${(props: Props) => props.left};
-  right: ${(props: Props) => props.right};
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
+  right: ${(props) => props.right};
   transition: none;
 
   * {
@@ -22,8 +22,8 @@ const Container: any = styled(clickOutside)`
   }
 
   ${media.smallerThanMaxTablet`
-    left: ${(props: Props) => props.mobileLeft};
-    right: ${(props: Props) => props.mobileRight};
+    left: ${(props) => props.mobileLeft};
+    right: ${(props) => props.mobileRight};
   `}
 
   &.dropdown-enter {
@@ -38,7 +38,7 @@ const Container: any = styled(clickOutside)`
   }
 `;
 
-const ContainerInner = styled.div<{ width: string, mobileWidth: string, maxHeight: string, mobileMaxHeight: string }>`
+const ContainerInner = styled.div<{ width: string, mobileWidth: string }>`
   width: ${(props) => props.width};
 
   ${media.smallerThanMaxTablet`
@@ -46,7 +46,7 @@ const ContainerInner = styled.div<{ width: string, mobileWidth: string, maxHeigh
   `}
 `;
 
-const Content = styled.div<{ width: string, mobileWidth: string, maxHeight: string, mobileMaxHeight: string }>`
+const Content = styled.div<{ maxHeight: string, mobileMaxHeight: string }>`
   max-height: ${(props) => props.maxHeight};
   display: flex;
   flex-direction: column;
@@ -142,10 +142,7 @@ export default class Dropdown extends PureComponent<Props, State> {
   setRef = (element: HTMLDivElement | null) => {
     if (element) {
       this.dropdownElement = element;
-
-      if (this.dropdownElement) {
-        this.dropdownElement.addEventListener('wheel', this.scrolling);
-      }
+      this.dropdownElement.addEventListener('wheel', this.scrolling);
     }
   }
 
@@ -175,50 +172,60 @@ export default class Dropdown extends PureComponent<Props, State> {
       className
     } = this.props;
 
-    return (
-      <CSSTransition
-        in={opened}
-        timeout={timeout}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        exit={false}
-        classNames={`${this.props['className']} dropdown`}
-      >
-        <Container
-          id={id}
-          top={top}
-          left={left}
-          mobileLeft={mobileLeft}
-          right={right}
-          mobileRight={mobileRight}
-          closeOnClickOutsideEnabled={opened}
-          onClickOutside={this.close}
-          className={className}
+    if (
+      top &&
+      left &&
+      right &&
+      mobileLeft &&
+      mobileRight &&
+      maxHeight &&
+      mobileMaxHeight &&
+      width &&
+      mobileWidth
+    ) {
+      return (
+        <CSSTransition
+          in={opened}
+          timeout={timeout}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          exit={false}
+          classNames={`${className} dropdown`}
         >
-          <ContainerInner
-            width={width as string}
-            mobileWidth={mobileWidth as string}
-            maxHeight={maxHeight as string}
-            mobileMaxHeight={mobileMaxHeight as string}
+          <Container
+            id={id}
+            top={top}
+            left={left}
+            mobileLeft={mobileLeft}
+            right={right}
+            mobileRight={mobileRight}
+            closeOnClickOutsideEnabled={opened}
+            onClickOutside={this.close}
+            className={className}
           >
-            <Content
-              width={width as string}
-              mobileWidth={mobileWidth as string}
-              maxHeight={maxHeight as string}
-              mobileMaxHeight={mobileMaxHeight as string}
-              ref={this.setRef}
+            <ContainerInner
+              width={width}
+              mobileWidth={mobileWidth}
             >
-              {content}
-            </Content>
+              <Content
+                maxHeight={maxHeight}
+                mobileMaxHeight={mobileMaxHeight}
+                ref={this.setRef}
+              >
+                {content}
+              </Content>
 
-            {footer &&
-              <Footer>
-                {footer}
-              </Footer>
-            }
-          </ContainerInner>
-        </Container>
-      </CSSTransition>
-    );
+              {footer &&
+                <Footer>
+                  {footer}
+                </Footer>
+              }
+            </ContainerInner>
+          </Container>
+        </CSSTransition>
+      );
+    }
+
+    return null;
   }
 }

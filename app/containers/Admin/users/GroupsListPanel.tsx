@@ -74,13 +74,7 @@ const ButtonWrapper = styled.div`
   margin-right: 0px;
 `;
 
-const StyledButton = styled(Button)`
-  &:hover {
-    circle {
-      fill: ${colors.clBlueLightest} !important;
-    }
-  }
-`;
+const AddGroupButton = styled(Button)``;
 
 const GroupsList = styled.div`
   max-height: 500px;
@@ -230,15 +224,19 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
         <MenuTitle>
           <FormattedMessage tagName="h2" {...messages.groupsTitle} />
           <ButtonWrapper>
-            <StyledButton
+            <AddGroupButton
               className="e2e-create-group-button"
               hiddenText={<FormattedMessage {...messages.createGroupButton} />}
-              icon="create"
+              icon="plus"
               iconTitle={<FormattedMessage {...messages.createGroupButton} />}
-              iconSize="26px"
+              iconSize="12px"
+              iconColor={colors.adminTextColor}
               onClick={this.handleCreateGroup}
-              padding="0"
-              buttonStyle="text"
+              padding="8px"
+              borderRadius="50%"
+              buttonStyle="secondary"
+              bgColor={rgba(colors.adminTextColor, .09)}
+              bgHoverColor={rgba(colors.adminTextColor, .2)}
             />
           </ButtonWrapper>
         </MenuTitle>

@@ -296,10 +296,6 @@ const PhaseArrow = styled(Icon)`
   top: 0px;
   right: -9px;
   z-index: 2;
-
-  ${media.smallerThanMaxTablet`
-    fill: ${colors.background};
-  `}
 `;
 
 const PhaseText: any = styled.div`
