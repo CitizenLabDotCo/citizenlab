@@ -24,23 +24,21 @@ export interface NormalFormValues {
 
 // Style
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
 
 export const Fill = styled.div`
-  height: 452px;
   padding-top: 40px;
+  padding-bottom: 20px;
   padding-left: 40px;
   overflow-y: auto;
 `;
 
 export const FooterContainer = styled.div`
   width: 100%;
-  height: 74px;
-  border-top: 2px solid ${colors.separation};
   display: flex;
   flex-direction: row;
   align-items: center;
   padding-left: 40px;
+  padding-bottom: 25px;
 `;
 
 export default class NormalGroupForm extends React.Component<InjectedFormikProps<Props, NormalFormValues>> {
@@ -77,6 +75,7 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
         <FooterContainer>
           <FormikSubmitWrapper
             {...{ isValid, isSubmitting, status, touched }}
+            buttonStyle="admin-dark"
           />
         </FooterContainer>
       </Form>

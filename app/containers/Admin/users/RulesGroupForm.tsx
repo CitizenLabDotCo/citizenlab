@@ -18,10 +18,6 @@ import messages from './messages';
 // Styling
 import styled from 'styled-components';
 
-const StyledFill = styled(Fill)`
-  padding-bottom: 20px;
-`;
-
 const SSectionField = styled(SectionField)`
   max-width: 570px;
 `;
@@ -43,7 +39,7 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
 
     return (
       <Form>
-        <StyledFill id="rules-group-inner-form">
+        <Fill id="rules-group-inner-form">
           <SSectionField>
             <Field
               id="group-title-field"
@@ -69,11 +65,12 @@ export class RulesGroupForm extends React.PureComponent<InjectedFormikProps<Prop
               }
             />}
           </SSectionField>
-        </StyledFill>
+        </Fill>
 
         <FooterContainer>
           <FormikSubmitWrapper
             {...{ isValid, isSubmitting, status, touched }}
+            buttonStyle="admin-dark"
           />
         </FooterContainer>
       </Form>

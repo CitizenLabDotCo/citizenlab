@@ -19,10 +19,11 @@ const Container = styled.div`
 `;
 
 const IconCell = styled.div`
-  flex: 0 0 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-left: 5px;
+  padding-right: 5px;
 
   &.showLabels {
     margin-top: 15px;
@@ -37,11 +38,7 @@ const SelectorCell = styled.div`
   flex-direction: column;
 `;
 
-const StyledRemoveButton = styled(Button)`
-  button {
-    padding: 0;
-  }
-`;
+const StyledRemoveButton = styled(Button)``;
 
 type Props = {
   rule: TRule;
@@ -95,6 +92,7 @@ class Rule extends PureComponent<Props, State> {
             onClick={onRemove}
             icon="minus-circle"
             buttonStyle="text"
+            padding="0"
           />
         </IconCell>
         <SelectorCell>
