@@ -9,6 +9,7 @@ import Label from 'components/UI/Label';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
+import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
@@ -42,6 +43,7 @@ import { requestBlob } from 'utils/request';
 // styling
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // typings
 import { Locale, IOption } from 'typings';
@@ -54,46 +56,8 @@ const InvitationOptions = styled.div`
   background: #fff;
 `;
 
-const ViewButtons = styled.div`
-  display: flex;
-  margin-bottom: 40px;
-`;
-
-const ViewButton = styled.button`
-  min-width: 85px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  background: ${colors.adminContentBackground};
-  border: solid 1px ${colors.separation};
-  color: ${colors.adminTextColor};
-  font-size: ${fontSizes.medium}px;
-  font-weight: 400;
-  line-height: 24px;
-  padding-left: 15px;
-  padding-right: 15px;
-
-  &:hover,
-  &:focus {
-    border-color: ${colors.adminTextColor};
-    outline: none;
-  }
-  &.active {
-    color: white;
-    background: ${colors.adminTextColor};
-  }
-`;
-
-const LeftButton = styled(ViewButton)`
-  border-top-left-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-left-radius: ${(props: any) => props.theme.borderRadius};
-`;
-
-const RightButton = styled(ViewButton)`
-  border-top-right-radius: ${(props: any) => props.theme.borderRadius};
-  border-bottom-right-radius: ${(props: any) => props.theme.borderRadius};
+const StyledTabs = styled(Tabs)`
+  margin-bottom: 35px;
 `;
 
 const FileInputWrapper = styled.div`
@@ -126,17 +90,24 @@ const SectionDescription = styled.div`
   font-size: ${fontSizes.base}px;
 `;
 
-const SectionParagraph = styled.p``;
+const SectionParagraph = styled.p`
+  a {
+    color: ${colors.clBlue};
+    text-decoration: underline;
 
-const DownloadButton = styled(Button)`
-  margin: 20px 0;
-  max-width: 300px;
+    &:hover {
+      color: ${darken(0.2, colors.clBlue)};
+      text-decoration: underline;
+    }
+  }
 `;
 
-const StyledLink = styled.a`
-  &:hover {
-    text-decoration: underline;
-  }
+const DownloadButtonContainer = styled.div`
+  display: flex;
+`;
+
+const DownloadButton = styled(Button)`
+  margin-bottom: 15px;
 `;
 
 export interface InputProps { }
@@ -302,7 +273,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.setState(state => ({ invitationOptionsOpened: !state.invitationOptionsOpened }));
   }
 
-  resetWithView = (selectedView: 'import' | 'text') => () => {
+  resetWithView = (selectedView: 'import' | 'text') => {
     this.setState({
       selectedView,
       selectedEmails: null,
@@ -444,6 +415,16 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     const projectOptions = this.getProjectOptions(projects, locale, tenantLocales);
     const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
     const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
+    const invitationTabs = [
+      {
+        value: 'import',
+        label: this.props.intl.formatMessage(messages.importTab)
+      },
+      {
+        value: 'text',
+        label: this.props.intl.formatMessage(messages.textTab)
+      }
+    ];
 
     const invitationOptions = (
       <Collapse
@@ -558,14 +539,11 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
         />
         <form onSubmit={this.handleOnSubmit} id="e2e-invitations">
           <Section>
-            <ViewButtons>
-              <LeftButton onClick={this.resetWithView('import')} className={`${selectedView === 'import' && 'active'}`}>
-                <FormattedMessage {...messages.importTab} />
-              </LeftButton>
-              <RightButton onClick={this.resetWithView('text')} className={`${selectedView === 'text' && 'active'} e2e-manual-invite`}>
-                <FormattedMessage {...messages.textTab} />
-              </RightButton>
-            </ViewButtons>
+            <StyledTabs
+              items={invitationTabs}
+              selectedValue={selectedView || 'import'}
+              onClick={this.resetWithView}
+            />
 
             {selectedView === 'import' &&
               <>
@@ -574,32 +552,32 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     <FormattedMessage {...messages.downloadFillOutTemplate} />
                   </StyledSectionTitle>
                   <SectionDescription>
+                    <DownloadButtonContainer>
+                      <DownloadButton
+                        buttonStyle="secondary"
+                        icon="download"
+                        onClick={this.downloadExampleFile}
+                      >
+                        <FormattedMessage {...messages.downloadTemplate} />
+                      </DownloadButton>
+                    </DownloadButtonContainer>
                     <SectionParagraph>
                       <FormattedMessage
                         {...messages.fileRequirements}
                       />
                     </SectionParagraph>
-                    <DownloadButton
-                      buttonStyle="white"
-                      icon="download"
-                      iconColor={colors.adminTextColor}
-                      textColor={colors.adminTextColor}
-                      borderColor={colors.adminTextColor}
-                      onClick={this.downloadExampleFile}
-                    >
-                      <FormattedMessage {...messages.downloadTemplate} />
-                    </DownloadButton>
                     <SectionParagraph>
                       <FormattedMessage
                         {...messages.visitSupportPage}
-                        values={{ // tslint:disable-next-line
+                        values={{
                           supportPageLink: (
-                            <StyledLink
+                            // tslint:disable-next-line
+                            <a
                               href={this.props.intl.formatMessage(messages.invitesSupportPageURL)}
                               target="_blank"
                             >
                               <FormattedMessage {...messages.supportPageLinkText} />
-                            </StyledLink>
+                            </a>
                           )
                         }}
                       />

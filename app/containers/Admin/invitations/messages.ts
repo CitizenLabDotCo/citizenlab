@@ -210,7 +210,7 @@ export default defineMessages({
   },
   uploadCompletedFile: {
     id: 'app.containers.Admin.Invitations.uploadCompletedFile',
-    defaultMessage: '2. Upload your completed file',
+    defaultMessage: '2. Upload your completed template file',
   },
   configureInvitations: {
     id: 'app.containers.Admin.Invitations.configureInvitations',
