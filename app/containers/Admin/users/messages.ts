@@ -153,9 +153,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this group?',
   },
-  moveUsers: {
-    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsers',
-    defaultMessage: 'Add to group',
+  moveUsersTableAction: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersTableAction',
+    defaultMessage: 'Add selected users to a group',
+  },
+  moveUsersButton: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.moveUsersButton',
+    defaultMessage: 'Add',
   },
   membershipAddFailed: {
     id: 'app.containers.AdminPage.Users.UsersGroup.membershipAddFailed',

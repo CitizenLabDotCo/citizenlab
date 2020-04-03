@@ -23,13 +23,14 @@ import messages from './messages';
 
 // utils
 import { redirectActionToSignUpPage } from 'components/SignUp';
+import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 
 // events
 import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
 
 // tracks
-// import { injectTracks } from 'utils/analytics';
-// import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
@@ -116,6 +117,8 @@ class IdeaButton extends PureComponent<Props> {
   onClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
+    trackEventByName(tracks.clickPostYourIdeaButton);
+
     if (!this.props.onClick) {
       const { project, authUser, participationContextType, phaseId, projectId } = this.props;
       const pcType = participationContextType;
@@ -124,15 +127,21 @@ class IdeaButton extends PureComponent<Props> {
 
       if (!isNilOrError(authUser)) {
         if (!isNilOrError(project)) {
-          if (postingDisabledReason === 'not_verified' && pcType && pcId) {
-            openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
-          } else if (!postingDisabledReason) {
+          const isPrivilegedUser = isSuperAdmin({ data: authUser }) || isAdmin({ data: authUser }) || isModerator({ data: authUser });
+
+          if (isPrivilegedUser || !postingDisabledReason) {
+            trackEventByName(tracks.redirectToIdeaFrom);
             clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
+          } else if (postingDisabledReason === 'not_verified' && pcType && pcId) {
+            trackEventByName(tracks.verificationModalOpened);
+            openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
           }
         } else if (project === null) {
+          trackEventByName(tracks.redirectToIdeaFrom);
           clHistory.push('/ideas/new');
         }
       } else if (pcType && pcId) {
+        trackEventByName(tracks.redirectToSignUpForm);
         redirectActionToSignUpPage({
           action_type: 'post',
           action_context_type: pcType,
@@ -142,6 +151,7 @@ class IdeaButton extends PureComponent<Props> {
         });
       }
     } else {
+      trackEventByName(tracks.externalHandling);
       this.props.onClick(event);
     }
   }

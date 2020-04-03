@@ -199,7 +199,6 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
         <AddGroupButton
           text={formatMessage(messages.add)}
           buttonStyle="cl-blue"
-          size="1"
           icon="plus-circle"
           onClick={this.handleOnAddGroupClick}
           disabled={!selectedGroups || selectedGroups.length === 0}
