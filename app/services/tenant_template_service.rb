@@ -153,6 +153,9 @@ class TenantTemplateService
       @template['models']['text_image']                            = yml_text_images
       @template['models']['volunteering/cause']                    = yml_volunteering_causes
       @template['models']['volunteering/volunteer']                = yml_volunteering_volunteers
+      @template['models']['maps/map_config']                       = yml_maps_map_configs
+      @template['models']['maps/layer']                            = yml_maps_layers
+      @template['models']['maps/legend_item']                      = yml_maps_legend_items    
     end
     @template
   end
@@ -1036,7 +1039,6 @@ class TenantTemplateService
     end
   end
 
-
   def yml_poll_responses
     Polls::Response.all.map do |r|
       yml_response = {
@@ -1095,12 +1097,55 @@ class TenantTemplateService
   def yml_text_images
     TextImage.all.map do |ti|
       {
-        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :event, :initiative, :email_campaign]),
+        'imageable_ref'    => lookup_ref(ti.imageable_id, [:page, :phase, :project, :event, :initiaitve, :email_campaign]),
         'imageable_field'  => ti.imageable_field,
         'remote_image_url' => ti.image_url,
         'text_reference'   => ti.text_reference,
         'created_at'       => ti.created_at.to_s,
         'updated_at'       => ti.updated_at.to_s
+      }
+    end
+  end
+
+  def yml_maps_map_configs
+    Maps::MapConfig.all.map do |map_config|
+      yml_map_config = {
+        'project_ref'            => lookup_ref(map_config.project_id, :project),
+        'center_geojson'         => map_config.center_geojson,
+        'zoom_level'             => map_config.zoom_level.to_f,
+        'tile_provider'          => map_config.tile_provider,
+        'created_at'             => map_config.created_at.to_s,
+        'updated_at'             => map_config.updated_at.to_s
+      }
+      store_ref yml_map_config, map_config.id, :maps_map_config
+      yml_map_config
+    end
+  end
+
+  def yml_maps_layers
+    Maps::Layer.all.map do |layer|
+      yml_layer = {
+        'map_config_ref'  => lookup_ref(layer.map_config_id, :maps_map_config),
+        'title_multiloc'  => layer.title_multiloc,
+        'geojson'         => layer.geojson,
+        'default_enabled' => layer.default_enabled,
+        'marker_svg_url'  => layer.marker_svg_url,
+        'created_at'      => layer.created_at.to_s,
+        'updated_at'      => layer.updated_at.to_s
+      }
+      store_ref yml_layer, layer.id, :maps_layer
+      yml_layer
+    end
+  end
+
+  def yml_maps_legend_items
+    Maps::LegendItem.all.map do |legend_item|
+      {
+        'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
+        'title_multiloc' => legend_item.title_multiloc,
+        'color'          => legend_item.color,
+        'created_at'     => legend_item.created_at.to_s,
+        'updated_at'     => legend_item.updated_at.to_s
       }
     end
   end
