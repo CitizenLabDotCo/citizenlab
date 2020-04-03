@@ -88,8 +88,7 @@ class InvitesService
     raise e
   end
 
-  def bulk_create emails, default_params={}, inviter=nil
-    hash_array = emails.map{|e| {"email" => e}}
+  def bulk_create hash_array, default_params={}, inviter=nil
     invites = build_invites(hash_array, default_params, inviter)
     pre_check_invites(invites)
     if @errors.reject(&:ignore).empty?
@@ -193,7 +192,12 @@ class InvitesService
       roles: params["roles"] || default_params["roles"] || [],
       invite_status: 'pending'
     })
-    Invite.new(invitee: invitee, inviter: inviter, invite_text: params["invite_text"] || default_params["invite_text"])
+    Invite.new(
+      invitee: invitee,
+      inviter: inviter,
+      invite_text: params["invite_text"] || default_params["invite_text"],
+      send_invite_email: params[:send_invite_email].nil? ? true : params[:send_invite_email]
+    )
   end
 
   def pre_check_invites invites
