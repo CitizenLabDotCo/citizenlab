@@ -456,10 +456,10 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
 const CLMapWithHOCs = injectLocalize(CLMap);
 
-export default (inputProps: InputProps) => (
-  <GetMapConfig projectId={inputProps.projectId || null}>
+ export default ({ projectId, ...inputProps }: InputProps) => projectId ? (
+  <GetMapConfig projectId={projectId}>
     {(mapConfig: GetMapConfigChildProps) => {
-      if (isError(mapConfig) || mapConfig || mapConfig === null) {
+      if (isError(mapConfig) || mapConfig) {
         return (
           <GetTenant>
             {(tenant: GetTenantChildProps) => {
@@ -478,4 +478,16 @@ export default (inputProps: InputProps) => (
       return null;
     }}
   </GetMapConfig>
+) : (
+  <GetTenant>
+    {(tenant: GetTenantChildProps) => {
+      return (
+        <CLMapWithHOCs
+          tenant={tenant}
+          mapConfig={null}
+          {...inputProps}
+        />
+      );
+    }}
+  </GetTenant>
 );
