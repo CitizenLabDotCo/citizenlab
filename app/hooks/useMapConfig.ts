@@ -3,7 +3,7 @@ import { mapConfigByProjectStream, IMapConfigData } from 'services/mapConfigs';
 import { isNilOrError } from 'utils/helperUtils';
 
 export interface Props {
-  projectId: string | null;
+  projectId: string;
 }
 
 export type IOutput = IMapConfigData | undefined | null | Error;
