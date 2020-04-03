@@ -191,7 +191,7 @@ export class Input extends React.PureComponent<Props> {
           </>
         }
 
-        <Error className="e2e-input-error" text={error} size="1" />
+        <Error className="e2e-input-error" text={error} />
 
       </Container>
     );

@@ -444,7 +444,6 @@ class Step1 extends React.PureComponent<Props & InjectedIntlProps, State> {
               <ButtonWrapper>
                 <Button
                   id="e2e-signup-step1-button"
-                  size="1"
                   processing={processing}
                   text={buttonText}
                   onClick={this.handleOnSubmit}
