@@ -312,19 +312,18 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
     }
 
+    /**
+      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
+      This is how it keeps the toggles in sync.
+      Because we need two different arrays of Leaflet geoJSON overlays,
+      one for the layers that need to be enabled by default,
+      and one for creating the overlay maps,
+      we need to reformat the data we get from the back-end, so we can do filter
+      operations (that require the default_enabled value)
+      and create overlay maps (that require the geoJson title) coming from the same
+      "starting" array, so Leaflet can keep in sync
+    */
     function createLeafletLayers(layers) {
-      /*
-        Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
-        This is how it keeps the toggles in sync.
-        Because we need two different arrays of Leaflet geoJSON overlays,
-        one for the layers that need to be enabled by default,
-        and one for creating the overlay maps,
-        we need to reformat the data we get from the back-end, so we can do filter
-        operations (that require the default_enabled value)
-        + create overlay maps (that require the geoJson title) coming from the same
-        "starting" array, so Leaflet can keep in sync
-      */
-
       return layers.map((layer) => {
         const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
         const geoJsonOptions = {
