@@ -25,7 +25,7 @@ const Container = styled.div`
 `;
 
 const TipsTitle = styled.h2`
-  margin-bottom: 12px;
+  margin-bottom: 0;
   font-size: ${fontSizes.large}px;
   line-height: 24px;
   font-weight: 600;
