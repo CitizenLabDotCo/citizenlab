@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_19_101312) do
+ActiveRecord::Schema.define(version: 2020_03_25_160114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -456,6 +456,7 @@ ActiveRecord::Schema.define(version: 2020_03_19_101312) do
     t.datetime "accepted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "send_invite_email", default: true, null: false
     t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["inviter_id"], name: "index_invites_on_inviter_id"
     t.index ["token"], name: "index_invites_on_token"
