@@ -335,7 +335,6 @@ class SignIn extends PureComponent<Props & InjectedIntlProps & WithRouterProps, 
                 <ButtonWrapper>
                   <Button
                     onClick={this.handleOnSubmit}
-                    size="1"
                     processing={processing}
                     text={formatMessage(messages.submit)}
                     className="e2e-submit-signin"

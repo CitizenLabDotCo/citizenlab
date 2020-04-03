@@ -380,7 +380,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
             <ShowMoreButton
               id="e2e-idea-cards-show-more-button"
               onClick={this.loadMore}
-              size="1"
               buttonStyle="secondary"
               text={<FormattedMessage {...messages.showMore} />}
               processing={loadingMore}

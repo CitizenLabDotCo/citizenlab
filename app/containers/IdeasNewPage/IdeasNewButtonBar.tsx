@@ -99,7 +99,6 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
           <Button
             form={form}
             className="e2e-submit-idea-form"
-            size="1"
             processing={processing}
             text={<FormattedMessage {...messages.submit} />}
             onClick={this.handleOnSubmitButtonClick}
