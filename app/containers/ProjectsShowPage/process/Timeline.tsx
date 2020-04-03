@@ -346,11 +346,9 @@ const currentSelectedPhaseBar = css`
   ${PhaseText} { color: ${greenOpaque}; }
 `;
 
-const PhaseContainer: any = styled.div`
+const PhaseContainer = styled.div<{ width: number }>`
+  width: ${(props) => props.width}%;
   min-width: 80px;
-  flex-shrink: 1;
-  flex-grow: ${(props: any) => props.numberOfDays};
-  flex-basis: auto;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -515,7 +513,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return selectedPhase;
   }
 
-  handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (event: FormEvent<MouseEvent>) => {
+  handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (event: FormEvent) => {
     event.preventDefault();
     this.setState({ selectedPhase });
   }
@@ -573,9 +571,18 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
       const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
       const isSelected = (selectedPhaseId !== null);
-      const phaseStatus = (selectedPhase
-        && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
+      const phaseStatus = (selectedPhase && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
       const lastPhaseIndex = phases.data.length - 1;
+      const totalNumberOfDays = phases.data.map((phaseData) => {
+        const startIsoDate = getIsoDate(phaseData.attributes.start_at);
+        const endIsoDate = getIsoDate(phaseData.attributes.end_at);
+        const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+        const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+        const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+        return numberOfDays;
+      }).reduce((accumulator, numberOfDays) => {
+        return accumulator + numberOfDays;
+      });
 
       return (
         <Container className={className}>
@@ -697,16 +704,19 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 const isCurrentPhase = (phase.id === currentPhaseId);
                 const isSelectedPhase = (phase.id === selectedPhaseId);
                 const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+                const width = Math.round(numberOfDays / totalNumberOfDays * 100);
+                const classNames = [
+                  isFirst ? 'first' : null,
+                  isLast ? 'last' : null,
+                  isCurrentPhase ? 'currentPhase' : null,
+                  isSelectedPhase ? 'selectedPhase' : null
+                ].filter(className => className).join(' ');
 
                 return (
                   <PhaseContainer
-                    className={`
-                      ${isFirst ? 'first' : ''}
-                      ${isLast ? 'last' : ''}
-                      ${isCurrentPhase ? 'currentPhase' : ''}
-                      ${isSelectedPhase ? 'selectedPhase' : ''}`}
+                    className={classNames}
                     key={index}
-                    numberOfDays={numberOfDays}
+                    width={width}
                     onMouseDown={this.removeFocus}
                     onClick={this.handleOnPhaseSelection(phase)}
                   >
