@@ -209,7 +209,7 @@ export default defineMessages({
     defaultMessage: 'Download template',
   },
   uploadCompletedFile: {
-    id: 'app.containers.Admin.Invitations.downloadTemplate',
+    id: 'app.containers.Admin.Invitations.uploadCompletedFile',
     defaultMessage: '2. Upload your completed file',
   },
   configureInvitations: {
