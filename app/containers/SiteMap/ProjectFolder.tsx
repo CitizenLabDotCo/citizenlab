@@ -24,7 +24,7 @@ interface Props extends InputProps, DataProps { }
 
 const ProjectFolder = ({ adminPublication, hightestTitle, childProjects }: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
-  console.log('hi');
+
   return (
     <>
       <TitleComponent>
