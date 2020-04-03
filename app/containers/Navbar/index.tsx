@@ -55,7 +55,7 @@ const Container = styled.header`
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   border-bottom: solid 1px ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
-  z-index: 998;
+  z-index: 1004;
 
   &.hideNavbar {
     ${media.smallerThanMaxTablet`
