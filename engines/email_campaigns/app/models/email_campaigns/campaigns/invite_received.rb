@@ -35,7 +35,7 @@ module EmailCampaigns
     end
 
     def check_send_invite_email_toggle activity:, time: nil
-      !!activity.item.send_invite_email
+      !!activity.item&.send_invite_email
     end
   end
 end
