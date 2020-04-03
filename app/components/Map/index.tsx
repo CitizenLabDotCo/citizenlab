@@ -1,14 +1,17 @@
 import React, { FormEvent } from 'react';
-import { adopt } from 'react-adopt';
-import { compact, get, isNil } from 'lodash-es';
+import { compact, isNil } from 'lodash-es';
+import { isError } from 'util';
 import { isNilOrError } from 'utils/helperUtils';
+require('leaflet-simplestyle');
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
 import Icon from 'components/UI/Icon';
+import Legend from './Legend';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetMapConfig, { GetMapConfigChildProps } from 'resources/GetMapConfig';
 
 // Map
 import Leaflet from 'leaflet';
@@ -19,30 +22,34 @@ import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
 import { darken, lighten } from 'polished';
 import { colors, media } from 'utils/styleUtils';
-import markerIcon from './marker.svg';
+import ideaMarkerIcon from './idea-marker.svg';
+import legendMarkerIcon from './legend-marker.svg';
+
+// localize
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const Container = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
   align-items: stretch;
+  flex-direction: column;
+`;
+
+const MapContainer = styled.div`
+  position: relative;
 `;
 
 const BoxContainer = styled.div`
-  flex: 0 0 400px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  position: relative;
+  position: absolute;
+  top: 0;
+  z-index: 1001;
   background: #fff;
-
-  ${media.smallerThanMaxTablet`
-    flex: 0 0 40%;
-  `}
-
-  ${media.smallerThanMinTablet`
-    flex: 0 0 70%;
-  `}
+  width: 100%;
+  height: 80%;
 `;
 
 const CloseIcon = styled(Icon)`
@@ -85,8 +92,9 @@ const CloseButton = styled.div`
   `}
 `;
 
-const MapContainer = styled.div`
+const LeafletMapContainer = styled.div<{mapHeight: number}>`
   flex: 1;
+  height: ${props => props.mapHeight}px;
 
   .leaflet-container {
     height: 100%;
@@ -108,8 +116,14 @@ const MapContainer = styled.div`
   }
 `;
 
-const customIcon = Leaflet.icon({
-  iconUrl: markerIcon,
+const ideaMarker = Leaflet.icon({
+  iconUrl: ideaMarkerIcon,
+  iconSize: [29, 41],
+  iconAnchor: [14, 41],
+});
+
+const fallbackLegendMarker = Leaflet.icon({
+  iconUrl: legendMarkerIcon,
   iconSize: [29, 41],
   iconAnchor: [14, 41],
 });
@@ -131,10 +145,13 @@ export interface InputProps {
   onMapClick?: (map: Leaflet.Map, position: Leaflet.LatLng) => void;
   fitBounds?: boolean;
   className?: string;
+  mapHeight: number;
+  projectId?: string | null;
 }
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  mapConfig: GetMapConfigChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -143,11 +160,12 @@ interface State {
   initiated: boolean;
 }
 
-class CLMap extends React.PureComponent<Props, State> {
+class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
+  private mapElement: HTMLDivElement;
   private map: Leaflet.Map;
   private clusterLayer: Leaflet.MarkerClusterGroup;
   private markers: Leaflet.Marker[];
-  private markerOptions = { icon: customIcon };
+  private markerOptions = { icon: ideaMarker };
   private clusterOptions = {
     showCoverageOnHover: false,
     spiderfyDistanceMultiplier: 2,
@@ -163,52 +181,164 @@ class CLMap extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      initiated: false
+      initiated: false,
     };
   }
 
   componentDidMount() {
-    if (this.props.points && this.props.points.length > 0) {
-      this.convertPoints(this.props.points);
+    this.initMap();
+  }
+
+  componentDidUpdate() {
+    const { points } = this.props;
+
+    if (points && points.length > 0) {
+      this.convertPoints(points);
     }
   }
 
-  componentDidUpdate(_prevProps) {
-    if (this.props.points && this.props.points.length > 0) {
-      this.convertPoints(this.props.points);
-    }
+  bindMapContainer = (mapContainer: HTMLDivElement) => {
+    this.mapElement = mapContainer;
   }
 
-  bindMapContainer = (element: HTMLDivElement | null) => {
-    const { tenant, center } = this.props;
+  calculateMapConfig = () => {
+    const { tenant, center, mapConfig, zoom } = this.props;
+    let initCenter: [number, number] = [0, 0];
+    const defaultMapConfig = {
+      center: initCenter,
+      zoom_level: 15,
+      tile_provider: 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D',
+    };
 
-    if (element && !isNilOrError(tenant) && !this.map) {
-      let initCenter: [number, number] = [0, 0];
+    const tenantMapConfig = {};
+    if (
+      !isNilOrError(tenant) &&
+      tenant.attributes &&
+      tenant.attributes.settings.maps
+    ) {
+      initCenter = [
+        parseFloat(tenant.attributes.settings.maps.map_center.lat),
+        parseFloat(tenant.attributes.settings.maps.map_center.long),
+      ];
+      tenantMapConfig['center'] = initCenter;
+      tenantMapConfig['zoom_level'] = tenant.attributes.settings.maps.zoom_level;
+      tenantMapConfig['tile_provider'] = tenant.attributes.settings.maps.tile_provider;
+    }
 
-      if (center && center !== [0, 0]) {
-        initCenter = [center[1], center[0]];
-      } else if (tenant.attributes.settings.maps) {
-        initCenter = [
-          parseFloat(tenant.attributes.settings.maps.map_center.lat),
-          parseFloat(tenant.attributes.settings.maps.map_center.long),
-        ];
+    const dataPropsMapConfig = {};
+    if (
+      !isNilOrError(mapConfig) &&
+      mapConfig.attributes
+    ) {
+      const {
+        zoom_level,
+        tile_provider,
+        center_geojson,
+      } = mapConfig.attributes;
+
+      if (center_geojson?.coordinates) {
+        const [longitude, latitude] = center_geojson.coordinates;
+        initCenter = [latitude, longitude];
+        dataPropsMapConfig['center'] = initCenter;
       }
+      if (zoom_level) dataPropsMapConfig['zoom_level'] = zoom_level;
+      if (tile_provider) dataPropsMapConfig['tile_provider'] = tile_provider;
+    }
 
-      // Init the map
-      this.map = Leaflet.map(element, {
-        center: initCenter,
-        zoom: get(tenant, 'attributes.settings.maps.zoom_level', 15),
-        maxZoom: 17
+    const inputPropsMapConfig = {};
+    if (center) {
+      const [longitude, latitude] = center;
+      initCenter = [latitude, longitude];
+      inputPropsMapConfig['center'] = initCenter;
+    }
+    if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
+
+    return {
+      ...defaultMapConfig,
+      ...tenantMapConfig,
+      ...dataPropsMapConfig,
+      ...inputPropsMapConfig
+    };
+  }
+
+  initMap = () => {
+    const { localize, mapConfig, points } = this.props;
+    const { zoom_level, tile_provider, center } = this.calculateMapConfig();
+
+    const baseLayer = Leaflet.tileLayer(tile_provider, {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: ['a', 'b', 'c']
+    });
+
+    this.map = Leaflet.map(this.mapElement, {
+      center,
+      zoom: zoom_level,
+      maxZoom: 17,
+      layers: [baseLayer]
+    });
+
+    // Handlers
+    if (this.props.onMapClick) {
+      this.map.on('click', this.handleMapClick);
+    }
+
+    // Add marker(s)
+    if (points && points.length > 0) {
+      this.convertPoints(points);
+    }
+
+    // Create layers
+    if (
+      !isNilOrError(mapConfig) &&
+      mapConfig.attributes.layers &&
+      mapConfig.attributes.layers.length > 0
+    ) {
+      const layers = mapConfig.attributes.layers;
+
+      // add default enabled layers to map
+      const leafletLayers = createLeafletLayers(layers);
+      const overlaysEnabledByDefault = leafletLayers
+        .filter(layer => layer.enabledByDefault === true)
+        .map(layer => layer.leafletGeoJson);
+      overlaysEnabledByDefault.forEach(overlay => overlay.addTo(this.map));
+
+      // add layers control to map
+      const overlayMaps = leafletLayers.reduce((accOverlayMaps, layer) => {
+        return {
+          ...accOverlayMaps,
+          [localize(layer.title_multiloc)]: layer.leafletGeoJson,
+        };
+      }, {});
+      Leaflet.control.layers(undefined, overlayMaps).addTo(this.map);
+    }
+
+    /**
+      Leaflet creates a geoJSON object with an id when calling Leaflet.geoJSON.
+      This is how it keeps the toggles in sync.
+      Because we need two different arrays of Leaflet geoJSON overlays,
+      one for the layers that need to be enabled by default,
+      and one for creating the overlay maps,
+      we need to reformat the data we get from the back-end, so we can do filter
+      operations (that require the default_enabled value)
+      and create overlay maps (that require the geoJson title) coming from the same
+      "starting" array, so Leaflet can keep in sync
+    */
+    function createLeafletLayers(layers) {
+      return layers.map((layer) => {
+        const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
+        const geoJsonOptions = {
+          useSimpleStyle: true,
+          pointToLayer: (_feature, latlng) => {
+            return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
+          }
+        };
+
+        return {
+          title_multiloc: layer.title_multiloc,
+          leafletGeoJson: Leaflet.geoJSON(layer.geojson, geoJsonOptions as any),
+          enabledByDefault: layer.default_enabled,
+        };
       });
-
-      Leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-        subdomains: ['a', 'b', 'c']
-      }).addTo(this.map);
-
-      if (this.props.onMapClick) {
-        this.map.on('click', this.handleMapClick);
-      }
     }
   }
 
@@ -233,7 +363,12 @@ class CLMap extends React.PureComponent<Props, State> {
       return Leaflet.marker(latlng, markerOptions);
     });
 
-    if (bounds && bounds.length > 0 && this.props.fitBounds && !this.state.initiated) {
+    if (
+      bounds && bounds.length > 0 &&
+      this.props.fitBounds &&
+      !this.state.initiated &&
+      this.map
+    ) {
       this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
       this.setState({ initiated: true });
     }
@@ -266,7 +401,7 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   onMapElementResize = () => {
-    this.map.invalidateSize();
+    this.map && this.map.invalidateSize();
   }
 
   handleBoxOnClose = (event: FormEvent) => {
@@ -275,25 +410,43 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { tenant, boxContent, className } = this.props;
+    const {
+      tenant,
+      boxContent,
+      className,
+      mapHeight,
+      projectId
+    } = this.props;
 
     if (!isNilOrError(tenant)) {
       return (
         <Container className={className}>
-          {!isNil(boxContent) &&
-            <BoxContainer className={className}>
-              <CloseButton onClick={this.handleBoxOnClose}>
-                <CloseIcon name="close" />
-              </CloseButton>
+          <MapContainer>
+            {!isNil(boxContent) &&
+              <BoxContainer className={className}>
+                <CloseButton onClick={this.handleBoxOnClose}>
+                  <CloseIcon name="close" />
+                </CloseButton>
 
-              {boxContent}
-            </BoxContainer>
-          }
+                {boxContent}
+              </BoxContainer>
+            }
 
-          <MapContainer id="e2e-map" ref={this.bindMapContainer}>
-            <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+            <LeafletMapContainer
+              id="e2e-map"
+              ref={this.bindMapContainer}
+              mapHeight={mapHeight}
+            >
+              <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+            </LeafletMapContainer>
           </MapContainer>
+          {projectId &&
+            <Legend
+              projectId={projectId}
+            />
+          }
         </Container>
+
       );
     }
 
@@ -301,12 +454,40 @@ class CLMap extends React.PureComponent<Props, State> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  tenant: <GetTenant />
-});
+const CLMapWithHOCs = injectLocalize(CLMap);
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <CLMap {...inputProps} {...dataProps} />}
-  </Data>
+ export default ({ projectId, ...inputProps }: InputProps) => projectId ? (
+  <GetMapConfig projectId={projectId}>
+    {(mapConfig: GetMapConfigChildProps) => {
+      if (isError(mapConfig) || mapConfig) {
+        return (
+          <GetTenant>
+            {(tenant: GetTenantChildProps) => {
+              return (
+                <CLMapWithHOCs
+                  tenant={tenant}
+                  mapConfig={mapConfig}
+                  {...inputProps}
+                />
+              );
+            }}
+          </GetTenant>
+        );
+      }
+
+      return null;
+    }}
+  </GetMapConfig>
+) : (
+  <GetTenant>
+    {(tenant: GetTenantChildProps) => {
+      return (
+        <CLMapWithHOCs
+          tenant={tenant}
+          mapConfig={null}
+          {...inputProps}
+        />
+      );
+    }}
+  </GetTenant>
 );

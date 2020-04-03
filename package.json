@@ -69,6 +69,7 @@
     "json-stable-stringify": "1.0.1",
     "jwt-decode": "2.2.0",
     "leaflet": "1.5.1",
+    "leaflet-simplestyle": "1.0.1",
     "leaflet.markercluster": "1.4.1",
     "lodash-es": "4.17.15",
     "moment": "2.24.0",

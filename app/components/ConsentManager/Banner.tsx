@@ -16,7 +16,7 @@ const Container = styled.div`
   color: white;
   background: ${colors.adminTextColor};
   font-size: ${fontSizes.base};
-  z-index: 10;
+  z-index: 1001;
   width: 100%;
   display: flex;
   align-items: center;
