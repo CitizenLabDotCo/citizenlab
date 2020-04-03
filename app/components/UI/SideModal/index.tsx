@@ -59,6 +59,7 @@ const CloseButton = styled.button`
   justify-content: center;
   cursor: pointer;
   opacity: 0;
+  z-index: 1001;
 
   &:hover,
   &:focus {
