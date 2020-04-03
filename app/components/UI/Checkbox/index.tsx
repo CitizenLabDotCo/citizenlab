@@ -12,11 +12,12 @@ const IndeterminateIcon = styled(Icon)`
   fill: #fff;
   width: 12px;
 `;
+
 const Label = styled.label<{ disabled: boolean }>`
+  flex: 1;
   display: flex;
   align-items: center;
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
-  width: 100%;
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`

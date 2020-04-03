@@ -15,22 +15,6 @@ const List = styled.ul`
   list-style: none;
 `;
 
-const CheckboxLabel = styled.span`
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 21px;
-  text-align: left;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-word;
-  display: block;
-  padding: 10px 0;
-`;
-
 const ListItemText = styled.span`
   flex-grow: 1;
   flex-shrink: 1;
@@ -100,6 +84,20 @@ const CheckboxListItem = styled.li`
       color: #000;
     }
   }
+`;
+
+const CheckboxLabel = styled.span`
+  flex: 1;
+  color: ${colors.label};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: 21px;
+  text-align: left;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+  display: block;
+  padding: 10px 0;
 `;
 
 interface Value {

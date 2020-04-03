@@ -147,24 +147,7 @@ const StyledPBNavbarButton = styled(PBNavbarButton)`
   `}
 `;
 
-// TODO support different tooltip positions, this includes a quickfix to show
-// tooltip content on smaller than max tablets
 const StyledIdeaButton = styled(IdeaButton)`
-  ${media.smallerThanMaxTablet`
-    .tooltip-container {
-      left: 0;
-    }
-    .tooltip-content {
-      right: 100%;
-      ::after {
-        left: 50%;
-      }
-      ::before {
-        left: 50%;
-      }
-    }
-  `}
-
   ${media.smallerThanMinTablet`
     display: none;
   `}

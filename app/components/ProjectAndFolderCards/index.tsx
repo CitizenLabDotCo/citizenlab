@@ -446,7 +446,6 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
             {!loadingInitial && hasPublications && hasMore &&
               <ShowMoreButton
                 onClick={this.showMore}
-                size="1"
                 buttonStyle="secondary"
                 text={<FormattedMessage {...messages.showMore} />}
                 processing={loadingMore}
