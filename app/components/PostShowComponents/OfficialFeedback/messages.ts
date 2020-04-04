@@ -73,6 +73,10 @@ export default defineMessages({
     id: 'app.components.PostComponents.OfficialFeedback.showMoreActions',
     defaultMessage: 'Show more actions',
   },
+  postedOn: {
+    id: 'app.components.PostComponents.OfficialFeedback.postedOn',
+    defaultMessage: 'Posted on {date}',
+  },
   lastEdition: {
     id: 'app.components.PostComponents.OfficialFeedback.lastEdition',
     defaultMessage: 'Last edited on {date}',

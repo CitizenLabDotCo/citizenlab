@@ -25,8 +25,6 @@ const Container = styled.div`
 `;
 
 const FeedbackHeader = styled.div`
-  color: ${colors.clRedError};
-  font-weight: 400;
   margin-bottom: 20px;
   display: flex;
   align-items: flex-end;
@@ -40,15 +38,23 @@ const FeedbackHeader = styled.div`
 `;
 
 const FeedbackTitle = styled.h2`
-  font-size: ${fontSizes.medium}px;
+  color: ${colors.clRedError};
+  font-size: ${fontSizes.large}px;
   line-height: normal;
   font-weight: 600;
   padding: 0;
   margin: 0;
 `;
 
+const FeedbackSubtitle = styled.div`
+  color: ${colors.clRedError};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
+`;
+
 const StyledOfficialFeedbackPost = styled(OfficialFeedbackPost)`
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 
   &:last {
     margin-bottom: 0;
@@ -103,10 +109,12 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
               <FeedbackTitle>
                 <FormattedMessage {...messages.officialUpdates} />
               </FeedbackTitle>
-              <FormattedMessage
-                {...messages.lastUpdate}
-                values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
-              />
+              <FeedbackSubtitle>
+                <FormattedMessage
+                  {...messages.lastUpdate}
+                  values={{ lastUpdateDate: (<StyledSpan>{formattedDate}</StyledSpan>) }}
+                />
+              </FeedbackSubtitle>
             </FeedbackHeader>
 
             {officialFeedbacksList.data.map((officialFeedbackPost, i) => {
