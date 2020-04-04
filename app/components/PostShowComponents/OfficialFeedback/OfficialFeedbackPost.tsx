@@ -36,6 +36,7 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
+  font-weight: 300;
   padding: 30px;
   padding-top: 35px;
   margin-bottom: 15px;
@@ -48,12 +49,11 @@ const Container = styled.div`
 
 const PostContainer = styled(Container)`
   white-space: pre-line;
-  background: ${transparentize(0.93, colors.clRedError)};
+  background: ${transparentize(0.94, colors.clRedError)};
   position: relative;
 `;
 
 const EditFormContainer = styled(Container)`
-  background: ${transparentize(0.93, colors.clRedError)};
   background: ${colors.background};
 `;
 
@@ -61,10 +61,10 @@ const Body = styled.div`
   margin-bottom: 30px;
 
   a {
-    color: inherit;
+    color: ${colors.clBlueDark};
 
     &:hover {
-      color: #000;
+      color: ${colors.clBlueDarker};
     }
   }
 `;
@@ -80,24 +80,39 @@ const Author = styled.span`
   font-weight: 500;
 `;
 
-const DatePosted = styled.span`
+const DatesPostedEdited = styled.span`
   color: ${colors.text};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
-  margin-top: -2px;
+  display: flex;
+  align-items: center;
+
+  ${media.smallerThanMinTablet`
+    flex-direction: column;
+    align-items: flex-start;
+  `}
+`;
+
+const DatePosted = styled.span``
+
+const DatesSpacer = styled.span`
+  margin-left: 4px;
+  margin-right: 4px;
+
+  ${media.smallerThanMinTablet`
+    display: none;
+  `}
 `;
 
 const DateEdited = styled.span`
-  color: ${colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  font-style: italic;
-  margin-top: -2px;
+  ${media.smallerThanMinTablet`
+    font-style: italic;
+  `}
 `;
 
 const StyledMoreActionsMenu = styled(MoreActionsMenu)`
   position: absolute;
-  top: 15px;
+  top: 12px;
   right: 15px;
 
   ${media.smallerThanMinTablet`
@@ -196,9 +211,18 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
     }
 
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
-      const formattedDate = (
+      const formattedPostedOnDate = (
         <FormattedDate
           value={created_at}
+          year="numeric"
+          month="long"
+          day="numeric"
+        />
+      );
+
+      const formattedUpdatedAtDate = (
+        <FormattedDate
+          value={updated_at}
           year="numeric"
           month="long"
           day="numeric"
@@ -218,7 +242,7 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
             {a11y_pronounceLatestOfficialFeedbackPost && this.getPostBodyText(body_multiloc, locale, tenantLocales)}
           </ScreenReaderOnly>
 
-          <QuillEditedContent>
+          <QuillEditedContent fontWeight={300}>
             <Body className="e2e-official-feedback-post-body">
               <div dangerouslySetInnerHTML={{ __html: this.getPostBodyText(body_multiloc, locale, tenantLocales) }} />
             </Body>
@@ -227,19 +251,19 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
                 <T value={author_multiloc} />
               </Author>
 
-              <DatePosted>
-                {formattedDate}
-              </DatePosted>
-
-              {updated_at && updated_at !== created_at && (
-                <DateEdited>
-                  <FormattedMessage
-                    {...messages.lastEdition}
-                    values={{ date: formattedDate }}
-                  />
-                </DateEdited>
-              )
-            }
+              <DatesPostedEdited>
+                <DatePosted>
+                  <FormattedMessage {...messages.postedOn} values={{ date: formattedPostedOnDate }} />
+                </DatePosted>
+                {updated_at && updated_at !== created_at &&
+                  <>
+                    <DatesSpacer>-</DatesSpacer>
+                    <DateEdited>
+                      <FormattedMessage {...messages.lastEdition} values={{ date: formattedUpdatedAtDate }} />
+                    </DateEdited>
+                  </>
+                }
+              </DatesPostedEdited>
             </Footer>
           </QuillEditedContent>
         </PostContainer>
