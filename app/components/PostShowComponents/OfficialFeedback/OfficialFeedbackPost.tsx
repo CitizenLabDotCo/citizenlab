@@ -93,7 +93,7 @@ const DatesPostedEdited = styled.span`
   `}
 `;
 
-const DatePosted = styled.span``
+const DatePosted = styled.span``;
 
 const DatesSpacer = styled.span`
   margin-left: 4px;
