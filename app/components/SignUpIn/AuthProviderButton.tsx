@@ -27,7 +27,7 @@ const Container = styled.div`
   border: solid 1px ${colors.separation};
 
   &:hover {
-    border-color: red;
+    border-color: #000;
   }
 `;
 
@@ -44,7 +44,7 @@ const ConsentWrapper = styled.div`
 
     &.consent-enter-active {
       opacity: 1;
-      max-height: 200px;
+      max-height: 250px;
       overflow: hidden;
       display: block;
     }
@@ -58,7 +58,7 @@ const ConsentWrapper = styled.div`
 
   &.consent-exit {
     opacity: 1;
-    max-height: 200px;
+    max-height: 250px;
     overflow: hidden;
     display: block;
 
@@ -74,6 +74,19 @@ const ConsentWrapper = styled.div`
     display: none;
   }
 `;
+
+const ConsentWrapperInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  padding-top: 20px;
+`;
+
+const ContinueButton = styled(Button)``;
 
 interface Props {
   flow: TSignUpInFlow;
@@ -160,18 +173,22 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
           exit={true}
         >
           <ConsentWrapper>
-            <Consent
-              tacError={tacError}
-              privacyError={privacyError}
-              onTacAcceptedChange={handleTacAcceptedChange}
-              onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
-            />
-            <Button
-              onClick={handleContinueClicked}
-              disabled={!(tacAccepted && privacyAccepted)}
-            >
-              <FormattedMessage {...messages.continue} />
-            </Button>
+            <ConsentWrapperInner>
+              <Consent
+                tacError={tacError}
+                privacyError={privacyError}
+                onTacAcceptedChange={handleTacAcceptedChange}
+                onPrivacyAcceptedChange={handlePrivacyAcceptedChange}
+              />
+              <ButtonWrapper>
+                <ContinueButton
+                  onClick={handleContinueClicked}
+                  disabled={!(tacAccepted && privacyAccepted)}
+                >
+                  <FormattedMessage {...messages.continue} />
+                </ContinueButton>
+              </ButtonWrapper>
+            </ConsentWrapperInner>
           </ConsentWrapper>
         </CSSTransition>
       }

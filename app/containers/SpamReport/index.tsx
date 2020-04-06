@@ -6,17 +6,13 @@ import { sendSpamReport, Report } from 'services/spamReports';
 
 // Components
 import ReportForm from './SpamReportForm';
+import { ModalContent } from 'components/UI/Modal';
 
 // Typings
 import { CRUDParams, CLErrorsJSON } from 'typings';
 
-// style
-import styled from 'styled-components';
+// Utils
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-const Container = styled.div`
-  padding: 30px;
-`;
 
 interface Props {
   resourceType: 'comments' | 'ideas' | 'initiatives';
@@ -84,7 +80,7 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
 
   render () {
     return (
-      <Container className={this.props.className}>
+      <ModalContent>
         <ReportForm
           reasonCodes={this.reasonCodes}
           diff={this.state.diff}
@@ -95,7 +91,7 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
           saved={this.state.saved}
           errors={this.state.errors}
         />
-      </Container>
+      </ModalContent>
     );
   }
 }

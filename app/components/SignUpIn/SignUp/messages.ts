@@ -93,8 +93,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
   },
-  signUp: {
-    id: 'app.containers.SignUp.signUp',
+  signUp2: {
+    id: 'app.containers.SignUp.signUp2',
     defaultMessage: 'Sign up',
   },
   redeem: {
@@ -129,8 +129,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.goToSignUp',
     defaultMessage: "Don't have an account? {goToOtherFlowLink}",
   },
-  logIn: {
-    id: 'app.containers.SignUp.logIn',
+  logIn2: {
+    id: 'app.containers.SignUp.logIn2',
     defaultMessage: 'Log in',
   },
   tacApproval: {

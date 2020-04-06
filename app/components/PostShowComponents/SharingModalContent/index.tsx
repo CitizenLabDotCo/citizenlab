@@ -98,11 +98,6 @@ const SharingWrapper = styled.div`
   max-width: 300px;
   display: flex;
   flex-direction: column;
-  padding-bottom: 40px;
-
-  ${media.smallerThanMaxTablet`
-    padding-bottom: 20px;
-  `}
 `;
 
 interface InputProps {

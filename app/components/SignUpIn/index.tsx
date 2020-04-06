@@ -33,6 +33,7 @@ interface Props extends Omit<SignUpProps, 'onGoToSignIn' | 'onSignUpCompleted' |
 const SignUpIn = memo<Props>(({
   isInvitation,
   token,
+  inModal,
   metaData,
   error,
   onSignUpInCompleted,
@@ -61,7 +62,7 @@ const SignUpIn = memo<Props>(({
       <Container className={className}>
         {selectedFlow === 'signup' ? (
           <SignUp
-            inModal={false}
+            inModal={inModal}
             isInvitation={isInvitation}
             token={token}
             metaData={metaDataWithCurrentFlow}
@@ -71,8 +72,10 @@ const SignUpIn = memo<Props>(({
           />
         ) : (
           <SignIn
+            inModal={inModal}
             metaData={metaDataWithCurrentFlow}
             onSignInCompleted={onSignInCompleted}
+            onGoToSignUp={onToggleSelectedMethod}
           />
         )}
       </Container>
