@@ -164,5 +164,13 @@ export default defineMessages({
   selectGroups: {
     id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
     defaultMessage: 'Select group(s)',
+  },
+  userAccessRightsTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.userAccessRightsTitle',
+    defaultMessage: 'Users',
+  },
+  userAccessRightsSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.userAccessRightsSubtitle',
+    defaultMessage: 'User access',
   }
 });
