@@ -165,16 +165,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.userAccessRightsTitle',
     defaultMessage: 'Users',
   },
-  userAccessRightsSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.userAccessRightsSubtitle',
-    defaultMessage: 'Define who can see the project and what each user is allowed to do.',
-  },
   adminRightsTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.AdminRightsTitle',
     defaultMessage: 'Admin',
   },
-  adminRightsSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.AdminRightsSubtitle',
-    defaultMessage: 'Define the project moderators and who is responsible for the ideas.',
-  }
 });
