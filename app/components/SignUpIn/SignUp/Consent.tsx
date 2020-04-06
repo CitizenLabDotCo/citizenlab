@@ -63,7 +63,6 @@ const Consent = memo<Props & InjectedIntlProps>(({
     <Container className={className}>
       <CheckboxWrapper>
         <Checkbox
-          id="terms-and-conditions-checkbox"
           className="e2e-terms-and-conditions"
           checked={tacAccepted}
           onChange={toggleTacAccepted}
@@ -81,7 +80,6 @@ const Consent = memo<Props & InjectedIntlProps>(({
 
       <CheckboxWrapper>
         <Checkbox
-          id="privacy-checkbox"
           className="e2e-privacy-checkbox"
           checked={privacyAccepted}
           onChange={togglePrivacyAccepted}

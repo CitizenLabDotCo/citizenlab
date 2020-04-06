@@ -63,17 +63,10 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
   });
 
   useEffect(() => {
-    eventEmitter.emit<SetBackButtonUrl>(
-      'EditCause',
-      setBackButtonUrlEventName,
-      `/admin/projects/${projectId}/volunteering`
-    );
+    eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName, `/admin/projects/${projectId}/volunteering`);
+
     return () => {
-      eventEmitter.emit<SetBackButtonUrl>(
-        'EditCause',
-        setBackButtonUrlEventName,
-        null
-      );
+      eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName);
     };
   }, []);
 
