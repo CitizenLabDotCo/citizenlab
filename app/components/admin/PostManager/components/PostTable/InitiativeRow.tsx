@@ -58,7 +58,6 @@ interface InputProps {
   selection: Set<string>;
   activeFilterMenu: TFilterMenu;
   className?: string;
-  onClickRow: (event) => void;
   onClickCheckbox: (event) => void;
   onClickTitle: (event) => void;
   nothingHappens: (event) => void;
@@ -142,7 +141,6 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
       activeFilterMenu,
       statuses,
       className,
-      onClickRow,
       onClickCheckbox,
       onClickTitle,
       nothingHappens,
@@ -161,12 +159,11 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           className={`e2e-initiative-row ${className}`}
           as={StyledRow}
           active={active}
-          onClick={onClickRow}
           undraggable={activeFilterMenu === 'statuses'}
           ref={(instance) => { instance && activeFilterMenu !== 'statuses' && connectDragSource(findDOMNode(instance)); }}
         >
           <Table.Cell collapsing={true}>
-            <Checkbox checked={!!active} onChange={onClickCheckbox} size="17px" />
+            <Checkbox checked={!!active} onChange={onClickCheckbox} size="21px" />
           </Table.Cell>
           <Table.Cell>
             <TitleLink className="e2e-initiative-manager-initiative-title" onClick={onClickTitle}>
@@ -193,7 +190,6 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
         <SubRow
           {...{
             active,
-            onClickRow,
             className,
             activeFilterMenu,
             selectedTopics,

@@ -29,6 +29,8 @@ const Root = () => {
       {tenant => {
         if (isError(tenant) && tenant.message === 'Not Found') {
           window.location.href = 'https://www.citizenlab.co/gone';
+        } else if (!isError(tenant) && tenant?.attributes.settings.core.lifecycle_stage === 'expired_trial') {
+          window.location.href = 'https://www.citizenlab.co/expired-trial';
         }
         return (
           <LanguageProvider>

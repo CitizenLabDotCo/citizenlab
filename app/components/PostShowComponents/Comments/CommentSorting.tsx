@@ -43,7 +43,7 @@ export default class CommentSorting extends PureComponent<Props, State> {
           selected={selectedValue}
           values={this.sortOptions}
           onChange={this.handleOnChange}
-          multiple={false}
+          multipleSelectionAllowed={false}
           width="180px"
           right="-10px"
           mobileLeft="-5px"

@@ -168,10 +168,10 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
           </Left>
           <Right>
             <VoteControl
+              size="1"
               ideaId={ideaId}
               unauthenticatedVoteClick={onUnauthenticatedVoteClick}
               disabledVoteClick={onDisabledVoteClick}
-              size="1"
               showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
             />
           </Right>

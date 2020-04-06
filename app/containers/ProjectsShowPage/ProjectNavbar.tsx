@@ -35,7 +35,7 @@ const ProjectNavbarWrapper = styled.div`
   position: fixed; /* IE11 fallback */
   position: sticky;
   top: ${({ theme }) => theme.menuHeight}px;
-  z-index: 10;
+  z-index: 1002;
   background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#171717'};
   box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 
@@ -147,24 +147,7 @@ const StyledPBNavbarButton = styled(PBNavbarButton)`
   `}
 `;
 
-// TODO support different tooltip positions, this includes a quickfix to show
-// tooltip content on smaller than max tablets
 const StyledIdeaButton = styled(IdeaButton)`
-  ${media.smallerThanMaxTablet`
-    .tooltip-container {
-      left: 0;
-    }
-    .tooltip-content {
-      right: 100%;
-      ::after {
-        left: 50%;
-      }
-      ::before {
-        left: 50%;
-      }
-    }
-  `}
-
   ${media.smallerThanMinTablet`
     display: none;
   `}
@@ -293,6 +276,18 @@ class ProjectNavbar extends PureComponent<Props, State> {
                   >
                     <ProjectNavbarIcon name="survey" />
                     <FormattedMessage {...messages.navPoll} />
+                  </ProjectNavbarLink>
+                }
+
+                {/* Volunteering link */}
+                {projectType === 'continuous' && projectMethod === 'volunteering' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/volunteering`}
+                    activeClassName="active"
+                    className="e2e-project-volunteering-link"
+                  >
+                    <ProjectNavbarIcon name="volunteer-hand" />
+                    <FormattedMessage {...messages.navVolunteering} />
                   </ProjectNavbarLink>
                 }
 

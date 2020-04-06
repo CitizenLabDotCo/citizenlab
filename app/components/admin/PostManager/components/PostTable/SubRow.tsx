@@ -16,7 +16,6 @@ import { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiati
 
 interface Props {
   active: boolean;
-  onClickRow: (event) => void;
   className?: string;
   activeFilterMenu: TFilterMenu;
   selectedPhases?: string[];
@@ -35,7 +34,6 @@ interface Props {
 
 export default ({
   active,
-  onClickRow,
   className,
   activeFilterMenu,
   selectedPhases,
@@ -51,7 +49,7 @@ export default ({
   postType
 }: Props) => {
   return (
-    <Table.Row active={active} onClick={onClickRow} className={className}>
+    <Table.Row active={active} className={className}>
        <Table.Cell as={FilterCell} collapsing={true} />
        <Table.Cell colSpan={6} as={FilterCell}>
          {activeFilterMenu === 'phases' && phases &&

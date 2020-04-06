@@ -62,7 +62,7 @@ const InfoIcon = styled(Icon)`
   }
 `;
 
-interface InputProps { }
+export interface InputProps { }
 
 interface Props extends InputProps, GetInvitesChildProps { }
 

@@ -280,6 +280,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         participation_method,
         poll_anonymous
       };
+    } else if (participation_method === 'volunteering') {
+      output = {
+        participation_method,
+      };
     } else if (participation_method === 'budgeting') {
       output = omitBy({
         participation_method,
@@ -488,6 +492,25 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     </LabelText>)}
                 />
               </FeatureFlag>
+              <FeatureFlag name="volunteering">
+                <StyledRadio
+                  onChange={this.handleParticipationMethodOnChange}
+                  currentValue={participation_method}
+                  value="volunteering"
+                  name="participationmethod"
+                  id={'participationmethod-volunteering'}
+                  label={(
+                    <LabelText>
+                      <h3>
+                        <FormattedMessage {...messages.volunteering} />
+                      </h3>
+                      <p>
+                        <FormattedMessage {...messages.volunteeringDescription} />
+                      </p>
+                    </LabelText>)}
+                />
+              </FeatureFlag>
+
               {surveys_enabled &&
                 (google_forms_enabled || survey_monkey_enabled || typeform_enabled) &&
                 <StyledRadio

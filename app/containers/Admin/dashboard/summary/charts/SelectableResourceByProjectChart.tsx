@@ -26,12 +26,12 @@ import { IResource } from '..';
 interface QueryProps {
   startAt: string | null | undefined;
   endAt: string | null;
-  currentTopicFilter: string | null;
-  currentGroupFilter: string | null;
+  currentTopicFilter: string | undefined;
+  currentGroupFilter: string | undefined;
 }
 
 interface InputProps {
-  currentProjectFilter: string | null;
+  currentProjectFilter: string | undefined;
   className: string;
   onResourceByProjectChange: (option: IOption) => void;
   currentResourceByProject: IResource;

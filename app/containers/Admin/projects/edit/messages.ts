@@ -20,6 +20,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideaFormTab',
     defaultMessage: 'Idea form',
   },
+  volunteeringTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',
+    defaultMessage: 'Volunteering',
+  },
   pollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.pollTab',
     defaultMessage: 'Poll',
@@ -104,6 +108,14 @@ export default defineMessages({
   pollDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.pollDescription',
     defaultMessage: 'Users can answer a short multiple-choice questionnaire.',
+  },
+  volunteering: {
+    id: 'app.containers.AdminPage.ProjectEdit.volunteering',
+    defaultMessage: 'Volunteering',
+  },
+  volunteeringDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.volunteeringDescription',
+    defaultMessage: 'Users can volunteer for the causes you define.',
   },
   amountPerCitizen: {
     id: 'app.containers.AdminPage.ProjectEdit.amountPerCitizen',

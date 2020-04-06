@@ -1,6 +1,6 @@
 import { Observer, Observable, Subscription, from, of } from 'rxjs';
 import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
-import { includes, flatten, forOwn, isError, isNil, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union, uniq } from 'lodash-es';
+import { includes, flatten, forOwn, isError, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union, uniq, isUndefined } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
@@ -156,7 +156,7 @@ class Streams {
     const sanitizedQueryParameters = cloneDeep(queryParameters);
 
     forOwn(queryParameters, (value, key) => {
-      if (isNil(value) || (isString(value) && isEmpty(value)) || (isArray(value) && isEmpty(value)) || (isObject(value) && isEmpty(value))) {
+      if (isUndefined(value) || (isString(value) && isEmpty(value)) || (isArray(value) && isEmpty(value)) || (isObject(value) && isEmpty(value))) {
         delete (sanitizedQueryParameters as IObject)[key];
       }
     });

@@ -15,6 +15,8 @@ const timeout = 350;
 const ErrorMessageText = styled.div`
   flex: 1 1 100%;
   color: ${colors.clRedError};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   font-weight: 400;
 
   a {
@@ -33,84 +35,33 @@ const ErrorMessageText = styled.div`
   }
 `;
 
-const IconWrapper = styled.div`
-  margin-right: 8px;
-
-  svg {
-    fill: ${colors.clRedError};
-  }
+const ErrorIcon = styled(Icon)`
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  fill: ${colors.clRedError};
+  padding: 0px;
+  margin: 0px;
+  margin-right: 10px;
 `;
 
 const ContainerInner = styled.div<{ showBackground: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 10px 13px;
   border-radius: ${(props) => props.theme.borderRadius};
   background: ${colors.clRedErrorBackground};
   background: ${(props) => (props.showBackground ? colors.clRedErrorBackground : 'transparent')};
 `;
 
-const Container = styled.div<{ size: string; marginTop: string; marginBottom: string; }>`
+const Container = styled.div<{ marginTop: string; marginBottom: string; }>`
   position: relative;
   overflow: hidden;
 
   ${ContainerInner} {
     margin-top: ${(props) => props.marginTop};
     margin-bottom: ${(props) => props.marginBottom};
-    padding: ${(props) => {
-      switch (props.size) {
-        case '2':
-          return '11px';
-        case '3':
-          return '12px';
-        case '4':
-          return '13px';
-        default:
-          return '10px 13px';
-      }
-    }};
-  }
-
-  ${ErrorMessageText} {
-    font-size: ${(props) => {
-      switch (props.size) {
-        case '2':
-          return '17px';
-        case '3':
-          return '18px';
-        case '4':
-          return '19px';
-        default:
-          return '16px';
-      }
-    }};
-  }
-
-  ${IconWrapper} {
-    width: ${(props) => {
-      switch (props.size) {
-        case '2':
-          return '23px';
-        case '3':
-          return '24px';
-        case '4':
-          return '25px';
-        default:
-          return '22px';
-      }
-    }};
-    height: ${(props) => {
-      switch (props.size) {
-        case '2':
-          return '23px';
-        case '3':
-          return '24px';
-        case '4':
-          return '25px';
-        default:
-          return '22px';
-      }
-    }};
   }
 
   &.error-enter {
@@ -159,7 +110,6 @@ const Bullet = styled.span`
 `;
 
 interface DefaultProps {
-  size: string;
   marginTop: string;
   marginBottom: string;
   showIcon: boolean;
@@ -182,7 +132,6 @@ interface State {
 
 export default class Error extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {
-    size: '1',
     marginTop: '3px',
     marginBottom: '0px',
     showIcon: true,
@@ -220,7 +169,7 @@ export default class Error extends PureComponent<Props, State> {
 
   render() {
     const { mounted } = this.state;
-    const { text, errors, apiErrors, fieldName, size, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
+    const { text, errors, apiErrors, fieldName, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
     const dedupApiErrors = apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) ? uniqBy(apiErrors, 'error') : undefined;
 
     return (
@@ -235,7 +184,6 @@ export default class Error extends PureComponent<Props, State> {
       >
         <Container
           className={`e2e-error-message ${className}`}
-          size={size}
           marginTop={marginTop}
           marginBottom={marginBottom}
           role="alert"
@@ -245,9 +193,7 @@ export default class Error extends PureComponent<Props, State> {
             className={`${apiErrors && apiErrors.length > 1 && 'isList'}`}
           >
             {showIcon &&
-              <IconWrapper>
-                <Icon title={<FormattedMessage {...messages.error} />} name="error" ariaHidden />
-              </IconWrapper>
+              <ErrorIcon title={<FormattedMessage {...messages.error} />} name="error" ariaHidden />
             }
 
             <ErrorMessageText>

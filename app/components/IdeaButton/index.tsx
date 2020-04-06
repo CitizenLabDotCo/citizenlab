@@ -27,6 +27,10 @@ import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
 // events
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // styling
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
@@ -112,6 +116,8 @@ class IdeaButton extends PureComponent<Props> {
   onClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
+    trackEventByName(tracks.clickPostYourIdeaButton);
+
     if (!this.props.onClick) {
       const { project, authUser, participationContextType, phaseId, projectId } = this.props;
       const pcType = participationContextType;
@@ -130,14 +136,19 @@ class IdeaButton extends PureComponent<Props> {
             });
           } else if (!postingDisabledReason) {
             clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
+          } else if (postingDisabledReason === 'not_verified' && pcType && pcId) {
+            trackEventByName(tracks.verificationModalOpened);
+            openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
           }
         } else if (project === null) {
+          trackEventByName(tracks.redirectToIdeaFrom);
           clHistory.push('/ideas/new');
         }
       } else if (pcType && pcId) {
         openSignUpInModal({ verification: postingDisabledReason === 'not_verified' });
       }
     } else {
+      trackEventByName(tracks.externalHandling);
       this.props.onClick(event);
     }
   }
