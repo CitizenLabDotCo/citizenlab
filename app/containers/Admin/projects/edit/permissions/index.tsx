@@ -35,7 +35,11 @@ export const StyledSection = styled(Section)`
 `;
 
 export const SubSection = styled(Section)`
-  margin-bottom: 30px;
+  margin-bottom: 40px;
+`;
+
+const ModeratorSubSection = styled(SubSection)`
+  margin-bottom: 20px;
 `;
 
 export const StyledSectionTitle = styled(SectionTitle)`
@@ -280,11 +284,11 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
               <FormattedMessage {...messages.adminRightsTitle} />
             </StyledSectionTitle>
 
-            <SubSection>
+            <ModeratorSubSection>
               <GetModerators projectId={projectId}>
                 {moderators => <Moderators moderators={moderators} projectId={projectId} />}
               </GetModerators>
-            </SubSection>
+            </ModeratorSubSection>
 
             <SubSection>
               <StyledSubSectionTitle>
