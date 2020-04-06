@@ -116,36 +116,37 @@ class IdeaButton extends PureComponent<Props> {
   onClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    trackEventByName(tracks.clickPostYourIdeaButton);
+    trackEventByName(tracks.postYourIdeaButtonClicked);
 
+    // if no external onClick handler is defined through the props
     if (!this.props.onClick) {
       const { project, authUser, participationContextType, phaseId, projectId } = this.props;
       const pcType = participationContextType;
       const pcId = pcType === 'phase' ? phaseId : projectId;
       const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
 
-      if (!isNilOrError(authUser)) {
-        if (!isNilOrError(project)) {
-          if (postingDisabledReason === 'not_verified' && pcType && pcId) {
-            openVerificationModal({
-              context: {
-                action: 'posting',
-                id: pcId,
-                type: pcType
-              }
-            });
-          } else if (!postingDisabledReason) {
-            clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
-          } else if (postingDisabledReason === 'not_verified' && pcType && pcId) {
-            trackEventByName(tracks.verificationModalOpened);
-            openVerificationModalWithContext('ActionPost', pcId, pcType, 'posting');
-          }
-        } else if (project === null) {
-          trackEventByName(tracks.redirectToIdeaFrom);
-          clHistory.push('/ideas/new');
-        }
-      } else if (pcType && pcId) {
+      // if not logged in
+      if (isNilOrError(authUser)) {
+        trackEventByName(tracks.signUpInModalOpened);
         openSignUpInModal({ verification: postingDisabledReason === 'not_verified' });
+      }
+
+      // if logged in but not verified and verification required
+      if (!isNilOrError(authUser) && postingDisabledReason === 'not_verified' && pcType && pcId) {
+        trackEventByName(tracks.verificationModalOpened);
+        openVerificationModal({
+          context: {
+            action: 'posting',
+            id: pcId,
+            type: pcType
+          }
+        });
+      }
+
+      // if logegd in and posting allowed
+      if (!isNilOrError(authUser) && !isNilOrError(project) && !postingDisabledReason) {
+        trackEventByName(tracks.redirectedToIdeaFrom);
+        clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
       }
     } else {
       trackEventByName(tracks.externalHandling);
@@ -160,6 +161,7 @@ class IdeaButton extends PureComponent<Props> {
     const pcId = pcType === 'phase' ? phaseId : projectId;
 
     if (pcId && pcType) {
+      trackEventByName(tracks.verificationModalOpened);
       openVerificationModal({
         context: {
           action: 'posting',
