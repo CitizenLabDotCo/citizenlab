@@ -3,19 +3,19 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   twitterMessage: {
     id: 'app.containers.ProjectFolderShowPage.twitterMessage',
-    defaultMessage: '{title}: Share your ideas on',
+    defaultMessage: '{title}',
   },
   metaTitle: {
     id: 'app.containers.ProjectFolderShowPage.metaTitle',
-    defaultMessage: 'Project: {title}',
+    defaultMessage: '{title}',
   },
   invisibleTitleMainContent: {
     id: 'app.containers.ProjectFolderShowPage.invisibleTitleMainContent',
-    defaultMessage: 'Information about this project',
+    defaultMessage: 'Information about this folder',
   },
-  noProjectFoundHere: {
-    id: 'app.containers.ProjectFolderShowPage.noProjectFoundHere',
-    defaultMessage: '{tenantName, select, CQC {Log in to view this project.} other {There is no project here.}}',
+  noFolderFoundHere: {
+    id: 'app.containers.ProjectFolderShowPage.noFolderFoundHere',
+    defaultMessage: '{tenantName, select, CQC {Log in to view this folder.} other {There is no folder here.}}',
   },
   goBackToList: {
     id: 'app.containers.ProjectFolderShowPage.goBackToList',

@@ -15,25 +15,25 @@ export default defineMessages({
     id: 'app.containers.InitiativesNewPage.tipsTitle',
     defaultMessage: 'Tips and tricks for a successful initiative'
   },
-  tipsExplanation: {
-    id: 'app.containers.InitiativesNewPage.tipsExplanation',
-    defaultMessage: 'An initiative is a project that you, as a citizen, can start anytime. Posting it on the platform enables you to gather support from others and, at the end, being heard by {orgName}.'
+  elaborate: {
+    id: 'app.containers.InitiativesNewPage.elaborate',
+    defaultMessage: 'Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.'
   },
-  requirmentsListTitle: {
-    id: 'app.containers.InitiativesNewPage.requirmentsListTitle',
-    defaultMessage: 'To get there, you need to:'
+  meaningfulTitle: {
+    id: 'app.containers.InitiativesNewPage.meaningfulTitle',
+    defaultMessage: 'Choose a meaningful title that explains clearly what your proposal entails.'
   },
-  requirmentVoteTreshold: {
-    id: 'app.containers.InitiativesNewPage.requirmentVoteTreshold',
-    defaultMessage: 'Gather {voteThreshold} votes'
+  visualise: {
+    id: 'app.containers.InitiativesNewPage.visualise',
+    defaultMessage: 'Make sure to visualise your proposal with a fitting image, so that it stands out more.'
   },
-  requirmentDaysLimit: {
-    id: 'app.containers.InitiativesNewPage.requirmentDaysLimit',
-    defaultMessage: 'Within {daysLimit} days'
+  relevantAttachments: {
+    id: 'app.containers.InitiativesNewPage.relevantAttachments',
+    defaultMessage: 'Add relevant attachments, such as videos, inspiring examples, technical details or plans.'
   },
-  eligibility: {
-    id: 'app.containers.InitiativesNewPage.eligibility',
-    defaultMessage: 'To be eligible, {orgName} requires your initiative to respect the following:'
+  shareSocialMedia: {
+    id: 'app.containers.InitiativesNewPage.shareSocialMedia',
+    defaultMessage: 'Share your idea on social media and other channels to gather support from others.'
   },
   // Form Messages
   formGeneralSectionTitle: {

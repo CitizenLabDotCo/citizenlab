@@ -117,4 +117,8 @@ export default defineMessages({
     id: 'containers.SiteMap.allProjects',
     defaultMessage: 'All projects',
   },
+  folderInfo: {
+    id: 'containers.SiteMap.folderInfo',
+    defaultMessage: 'More info',
+  },
 });

@@ -24,15 +24,13 @@ import tracks from './tracks';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetProjectHolderOrderings, { GetProjectHolderOrderingsChildProps } from 'resources/GetProjectHolderOrderings';
-import { IProjectHolderOrderingContent } from 'hooks/useProjectHolderOrderings';
+import GetAdminPublications, { GetAdminPublicationsChildProps } from 'resources/GetAdminPublications';
+import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
 import { isAdmin } from 'services/permissions/roles';
 
 // utils
-import { getProjectUrl } from 'services/projects';
-import { getProjectFolderUrl } from 'services/projectFolders';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
 // i18n
@@ -57,7 +55,7 @@ const Container = styled.header`
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   border-bottom: solid 1px ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
-  z-index: 998;
+  z-index: 1004;
 
   &.hideNavbar {
     ${media.smallerThanMaxTablet`
@@ -371,7 +369,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
   locale: GetLocaleChildProps;
-  projectHolderOrderings: GetProjectHolderOrderingsChildProps;
+  adminPublications: GetAdminPublicationsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -427,7 +425,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
       tenant,
       localize,
       intl: { formatMessage },
-      projectHolderOrderings,
+      adminPublications,
     } = this.props;
     const { projectsDropdownOpened } = this.state;
     const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
@@ -446,7 +444,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
     const emailSettingsPage = isPage('email-settings', location.pathname);
-    const totalProjectsListLength = (!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list ? projectHolderOrderings.list.length : 0);
+    const totalProjectsListLength = (!isNilOrError(adminPublications) && adminPublications.list ? adminPublications.list.length : 0);
     const showMobileNav = !adminPage &&
       !ideaFormPage &&
       !initiativeFormPage &&
@@ -480,11 +478,11 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   </NavigationItemText>
                 </NavigationItem>
 
-                {!isNilOrError(projectHolderOrderings) && projectHolderOrderings.list && projectHolderOrderings.list.length > 0 &&
+                {!isNilOrError(adminPublications) && adminPublications.list && adminPublications.list.length > 0 &&
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
-                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' ? 'active' : ''}`}
+                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' || secondUrlSegment === 'folders'  ? 'active' : ''}`}
                       aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}
@@ -502,27 +500,26 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                       onClickOutside={this.toggleProjectsDropdown}
                       content={(
                         <ProjectsList>
-                          {projectHolderOrderings.list.map(
-                            (item: IProjectHolderOrderingContent) => {
-                              if (item.projectHolderType === 'project') {
+                          {adminPublications.list.map(
+                            (item: IAdminPublicationContent) => {
+                              if (item.publicationType === 'project') {
                                 return (
 
                                   <ProjectsListItem
-                                    key={item.projectHolder.id}
-                                    to={getProjectUrl(item.projectHolder)}
+                                    key={item.publicationId}
+                                    to={`/projects/${item.attributes.publication_slug}/info`}
                                   >
-                                    {localize(item.projectHolder.attributes.title_multiloc)}
+                                    {localize(item.attributes.publication_title_multiloc)}
                                   </ProjectsListItem>
                                 );
                               } else {
-                                const projectFolder = item.projectHolder;
 
                                 return (
                                   <ProjectsListItem
-                                    key={projectFolder.id}
-                                    to={getProjectFolderUrl(projectFolder)}
+                                    key={item.publicationId}
+                                    to={`/folders/${item.attributes.publication_slug}`}
                                   >
-                                    {localize(item.projectHolder.attributes.title_multiloc)}
+                                    {localize(item.attributes.publication_title_multiloc)}
                                   </ProjectsListItem>
                                 );
                               }
@@ -641,7 +638,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  projectHolderOrderings: <GetProjectHolderOrderings publicationStatusFilter={['archived', 'published']} noEmptyFolder/>,
+  adminPublications: <GetAdminPublications publicationStatusFilter={['published', 'archived']} noEmptyFolder folderId={null}/>,
 });
 
 const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));

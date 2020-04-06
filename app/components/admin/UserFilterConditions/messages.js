@@ -202,6 +202,14 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_budgeted_in',
     defaultMessage: 'didn\'t spend budget',
   },
+  predicate_volunteered_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_volunteered_in',
+    defaultMessage: 'volunteered',
+  },
+  predicate_not_volunteered_in: {
+    id: 'app.components.admin.UserFilterConditions.predicate_not_volunteered_in',
+    defaultMessage: 'didn\'t volunteer',
+  },
   predicate_is_verified: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_verified',
     defaultMessage: 'is verified',

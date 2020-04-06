@@ -62,7 +62,7 @@ class ProjectFilterDropdown extends PureComponent<Props & InjectedLocalized, Sta
             selected={selectedValues}
             values={options}
             onChange={this.handleOnChange}
-            multiple={true}
+            multipleSelectionAllowed={true}
             right="-10px"
             mobileLeft="-5px"
           />

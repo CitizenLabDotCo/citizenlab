@@ -32,7 +32,7 @@ export const Top = styled.div`
   width: 100%;
   padding-left: 15px;
   padding-right: 50px;
-  z-index: 1;
+  z-index: 1001;
 `;
 
 export const Content = styled.div`

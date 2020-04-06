@@ -8,9 +8,10 @@ export interface Props {
   address: string;
   position: GeoJSON.Point;
   className?: string;
+  projectId?: string | null;
 }
 
-const DropdownMap = memo(({ address, position, className }: Props) => {
+const DropdownMap = memo(({ address, position, className, projectId }: Props) => {
   return (
     <CollapsibleBox
       e2eId="e2e-map-toggle"
@@ -18,7 +19,10 @@ const DropdownMap = memo(({ address, position, className }: Props) => {
       titleIconName="position"
       title={address}
     >
-      <Map position={position} />
+      <Map
+        position={position}
+        projectId={projectId}
+      />
     </CollapsibleBox>
   );
 });

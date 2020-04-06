@@ -41,12 +41,13 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.importLabel',
     defaultMessage: 'Select an Excel file (.xlsx)',
   },
-  importInfo: {
-    id: 'app.containers.Admin.Invitations.importInfo',
-    defaultMessage: `
-      Note: The column in your Excel file that contains the email addresses should be named {emailColumnName}.
-      Download this {downloadLink} and visit this {supportPageLink} for more information about all the supported columns.
-    `,
+  fileRequirements: {
+    id: 'app.containers.Admin.Invitations.fileRequirements',
+    defaultMessage: 'Important: In order to send the invitations correctly, no column can be removed from the import template. Leave unused columns empty.'
+  },
+  visitSupportPage: {
+    id: 'app.containers.Admin.Invitations.visitSupportPage',
+    defaultMessage: '{supportPageLink} if you want more info about all supported columns in the import template.'
   },
   emailColumnName: {
     id: 'app.containers.Admin.Invitations.emailColumnName',
@@ -55,6 +56,10 @@ export default defineMessages({
   exampleFile: {
     id: 'app.containers.Admin.Invitations.exampleFile',
     defaultMessage: 'example file',
+  },
+  supportPageLinkText: {
+    id: 'app.containers.Admin.Invitations.supportPageLinkText',
+    defaultMessage: 'Visit the support page',
   },
   supportPage: {
     id: 'app.containers.Admin.Invitations.supportPage',
@@ -186,5 +191,29 @@ export default defineMessages({
   invitesSupportPageURL: {
     id: 'app.containers.Admin.Invitations.invitesSupportPageURL',
     defaultMessage: 'http://support.citizenlab.co/en/articles/1771605-invite-people-to-the-platform',
-  }
+  },
+  tabInviteUsers: {
+    id: 'app.containers.Admin.Invitations.tabInviteUsers',
+    defaultMessage: 'Invite users',
+  },
+  tabAllInvitations: {
+    id: 'app.containers.Admin.Invitations.tabAllInvitations',
+    defaultMessage: 'All invitations',
+  },
+  downloadFillOutTemplate: {
+    id: 'app.containers.Admin.Invitations.downloadFillOutTemplate',
+    defaultMessage: '1. Download and fill out the template',
+  },
+  downloadTemplate: {
+    id: 'app.containers.Admin.Invitations.downloadTemplate',
+    defaultMessage: 'Download template',
+  },
+  uploadCompletedFile: {
+    id: 'app.containers.Admin.Invitations.uploadCompletedFile',
+    defaultMessage: '2. Upload your completed template file',
+  },
+  configureInvitations: {
+    id: 'app.containers.Admin.Invitations.configureInvitations',
+    defaultMessage: '3. Configure the invitations',
+  },
 });

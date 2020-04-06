@@ -153,7 +153,7 @@ export const colors = {
   lightGreyishBlue: '#EBEDEF',
   clBlue: '#008292',
   clBlueDark: '#147985',
-  clBlueDarkBg: '#d3ecf0',
+  clBlueDarkBg: 'rgba(0, 128, 160, 0.13)',
   clBlueDarker: '#0A5159',
   clBlueDarkest: '#02282D',
   clBlueLightest: '#BEE7EB',

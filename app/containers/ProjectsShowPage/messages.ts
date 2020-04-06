@@ -53,6 +53,10 @@ export default defineMessages({
     id: 'app.containers.Projects.navPoll',
     defaultMessage: 'Poll',
   },
+  navVolunteering: {
+    id: 'app.containers.Projects.navVolunteering',
+    defaultMessage: 'Volunteering',
+  },
   navEvents: {
     id: 'app.containers.Projects.navEvents',
     defaultMessage: 'Events',

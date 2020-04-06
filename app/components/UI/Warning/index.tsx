@@ -8,7 +8,7 @@ import { isPage } from 'utils/helperUtils';
 const Container = styled.div`
   display: flex;
   align-items: center;
-  padding: 16px;
+  padding: 14px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   background: ${colors.clBlueDarkBg};
 
@@ -18,13 +18,13 @@ const Container = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  flex: 0 0 22px;
-  width: 22px;
-  height: 22px;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
   fill: ${colors.clBlueDarker};
   padding: 0px;
   margin: 0px;
-  margin-right: 12px;
+  margin-right: 10px;
 `;
 
 const Text = styled.div`
