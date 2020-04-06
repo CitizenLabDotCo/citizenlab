@@ -25,7 +25,7 @@ RSpec.describe "Graphql folder" do
 
     it "returns all folders" do
       response = result
-      expect(response.dig("data", "folder")).to match ({
+      expect(response.dig("data", "project_folder")).to match ({
         "id" => folder.id,
         "slug" => folder.slug,
         "publicationStatus" => folder.admin_publication.publication_status
