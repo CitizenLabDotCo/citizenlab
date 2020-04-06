@@ -207,8 +207,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
 
             <SectionField>
               <SubSectionTitle>
-                <FormattedMessage {...messages.permissionTypeLabel} />
-                <IconTooltip content={<FormattedMessage {...messages.permissionsTypeTooltip} />} />
+                <FormattedMessage {...messages.viewingRightsTitle} />
               </SubSectionTitle>
 
               <RadioButtonsWrapper>
@@ -264,14 +263,12 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
 
           <StyledSection>
             <SectionTitle>
-              <FormattedMessage {...messages.titlePermissions} />
+              <FormattedMessage {...messages.adminRightsTitle} />
             </SectionTitle>
             <SectionSubtitle>
-              <FormattedMessage {...messages.subtitlePermissions} />
+              <FormattedMessage {...messages.adminRightsSubtitle} />
             </SectionSubtitle>
           </StyledSection>
-
-
 
           <StyledSection>
             <GetModerators projectId={projectId}>
