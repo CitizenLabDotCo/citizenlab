@@ -226,10 +226,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     const dataPropsMapConfig = {};
-    if (
-      !isNilOrError(mapConfig) &&
-      mapConfig.attributes
-    ) {
+
+    if (!isNilOrError(mapConfig) && mapConfig.attributes) {
       const {
         zoom_level,
         tile_provider,
@@ -246,11 +244,13 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     const inputPropsMapConfig = {};
+
     if (center) {
       const [longitude, latitude] = center;
       initCenter = [latitude, longitude];
       inputPropsMapConfig['center'] = initCenter;
     }
+
     if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
 
     return {
@@ -325,7 +325,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     */
     function createLeafletLayers(layers) {
       return layers.map((layer) => {
-        const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
+        const customLegendMarker = layer.marker_svg_url && require(`${layer.marker_svg_url}`);
         const geoJsonOptions = {
           useSimpleStyle: true,
           pointToLayer: (_feature, latlng) => {
