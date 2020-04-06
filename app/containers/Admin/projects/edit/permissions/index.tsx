@@ -31,7 +31,11 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 export const StyledSection = styled(Section)`
-  margin-bottom: 30px;
+  margin-bottom: 50px;
+`;
+
+export const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 15px;
 `;
 
 export const StyledSubSectionTitle = styled(SubSectionTitle)`
@@ -202,9 +206,9 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
       return (
         <>
           <StyledSection>
-            <SectionTitle>
+            <StyledSectionTitle>
               <FormattedMessage {...messages.userAccessRightsTitle} />
-            </SectionTitle>
+            </StyledSectionTitle>
 
             <SectionField>
               <StyledSubSectionTitle>
@@ -263,9 +267,9 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
           </StyledSection>
 
           <StyledSection>
-            <SectionTitle>
+            <StyledSectionTitle>
               <FormattedMessage {...messages.adminRightsTitle} />
-            </SectionTitle>
+            </StyledSectionTitle>
 
             <GetModerators projectId={projectId}>
               {moderators => <Moderators moderators={moderators} projectId={projectId} />}
