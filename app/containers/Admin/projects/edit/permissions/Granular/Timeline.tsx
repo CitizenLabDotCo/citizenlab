@@ -91,7 +91,6 @@ class Timeline extends PureComponent<Props, State> {
               <Permissions>
                 <GetPhasePermissions phaseId={phase.id}>
                   {(permissions) => {
-                    console.log(2, permissions);
 
                     return isNilOrError(permissions) ? null :
                     <ActionsForm
