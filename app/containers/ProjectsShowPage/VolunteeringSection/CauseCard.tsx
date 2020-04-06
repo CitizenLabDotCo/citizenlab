@@ -87,9 +87,24 @@ const Description = styled.div`
 
 const ImageWrapper = styled.div`
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   border-radius: ${(props: any) => props.theme.borderRadius};
   overflow: hidden;
+
+  &.fillBackground {
+    height: 225px;
+    background: ${colors.placeholderBg};
+  }
+`;
+
+const PlaceholderIcon = styled(Icon)`
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  fill: #fff;
 `;
 
 const StyledLazyImage = styled(LazyImage)`
@@ -154,7 +169,7 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   return (
     <Container className={className}>
       <Left>
-        {cause.attributes.image.medium &&
+        {cause.attributes.image.medium ? (
           <ImageWrapper>
             <StyledLazyImage src={cause.attributes.image.medium} alt="" />
             <VolunteersCount>
@@ -164,7 +179,17 @@ const CauseCard = memo<Props>(({ cause, className }) => {
               </VolunteersCountText>
             </VolunteersCount>
           </ImageWrapper>
-        }
+        ) : (
+          <ImageWrapper className="fillBackground">
+            <PlaceholderIcon name="volunteer-hand" />
+            <VolunteersCount>
+              <VolunteersCountIcon name="volunteer-hand" />
+              <VolunteersCountText>
+                <FormattedMessage {...messages.xVolunteers} values={{ x: cause.attributes.volunteers_count }}/>
+              </VolunteersCountText>
+            </VolunteersCount>
+          </ImageWrapper>
+        )}
       </Left>
 
       <Right>
