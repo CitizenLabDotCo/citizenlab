@@ -9,13 +9,9 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.subtitlePermissions',
     defaultMessage: 'Define who can view the project and who can manage it as a project moderator. Also, granular participation rights can be assigned. Contact support@citizenlab.co if you require this.',
   },
-  permissionTypeLabel: {
-    id: 'app.containers.admin.project.permissions.permissionTypeLabel',
-    defaultMessage: 'Who can view this project?',
-  },
-  permissionsTypeTooltip: {
-    id: 'app.containers.admin.project.permissions.permissionsTypeTooltip',
-    defaultMessage: 'Choose for whom this project will be visible: all, users with admin rights only or a specific selection of users. All other users simply won’t see the project nor its content.',
+  viewingRightsTitle: {
+    id: 'app.containers.admin.project.permissions.viewingRightsTitle',
+    defaultMessage: 'Who can see this project?',
   },
   permissionsEveryoneLabel: {
     id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
@@ -71,7 +67,7 @@ export default defineMessages({
   },
   granularPermissionsTitle: {
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
-    defaultMessage: 'Who can take which action?',
+    defaultMessage: 'What can different users do?',
   },
   granularPermissionsTooltip: {
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTooltip',
@@ -147,7 +143,7 @@ export default defineMessages({
   },
   ideaAssignmentSectionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle',
-    defaultMessage: 'Who is the main responsible for this project?',
+    defaultMessage: 'Who is responsible for processing the ideas?',
   },
   ideaAssignmentTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltip',
@@ -171,6 +167,14 @@ export default defineMessages({
   },
   userAccessRightsSubtitle: {
     id: 'app.containers.AdminPage.ProjectEdit.userAccessRightsSubtitle',
-    defaultMessage: 'User access',
+    defaultMessage: 'Define who can see the project and what each user is allowed to do.',
+  },
+  adminRightsTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.AdminRightsTitle',
+    defaultMessage: 'Admin',
+  },
+  adminRightsSubtitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.AdminRightsSubtitle',
+    defaultMessage: 'Define the project moderators and who is responsible for the ideas.',
   }
 });
