@@ -28,7 +28,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { HeaderContainer, HeaderTitle, HeaderSubtitle, Content } from 'components/SignUpIn/styles';
+import { HeaderContainer, HeaderTitle, HeaderSubtitle, ModalContent } from 'components/UI/Modal';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
@@ -37,6 +37,19 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
+  ${props => !props.inModal && `
+    background: transparent;
+    border: none;
+  `}
+`;
+
+const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
+  ${props => props.inModal && `
+    max-height: calc(85vh - 150px);
+  `}
 `;
 
 export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification' | 'custom-fields';
@@ -129,6 +142,10 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
+  handleGoToSignInFlow = () => {
+    this.props.onGoToSignIn();
+  }
+
   handlePasswordSignupCompleted = (userId: string) => {
     this.setState({ userId });
     this.goToNextStep();
@@ -193,9 +210,9 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
-          <HeaderContainer>
-            <HeaderTitle>
-              {!error && <FormattedMessage {...messages.signUp} />}
+          <StyledHeaderContainer inModal={inModal}>
+            <HeaderTitle className={inModal ? 'inModal' : 'notInModal'}>
+              {!error && <FormattedMessage {...messages.signUp2} />}
               {error && <FormattedMessage {...messages.somethingWentWrongTitle} />}
             </HeaderTitle>
 
@@ -204,9 +221,9 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
               </HeaderSubtitle>
             }
-          </HeaderContainer>
+          </StyledHeaderContainer>
 
-          <Content>
+          <StyledModalContent inModal={inModal}>
             {error &&
               <Error text={formatMessage(messages.somethingWentWrongText)} />
             }
@@ -215,6 +232,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
               <AuthProviders
                 flow={metaData.flow}
                 onAuthProviderSelected={this.handleOnAuthProviderSelected}
+                goToOtherFlow={this.handleGoToSignInFlow}
               />
             }
 
@@ -242,7 +260,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             {activeStep === 'custom-fields' &&
               <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
             }
-          </Content>
+          </StyledModalContent>
         </Container>
       );
     }

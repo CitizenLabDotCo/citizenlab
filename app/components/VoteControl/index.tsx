@@ -449,12 +449,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
 
     if (!voting) {
-      if (isNilOrError(authUser)) {
+      if (isNilOrError(authUser) && (votingEnabled || votingDisabledReason === 'not_verified')) {
         openSignUpInModal({
           verification: votingDisabledReason === 'not_verified',
           action: () => this.vote(voteMode)
         });
-      } else if (votingEnabled || (cancellingEnabled && isTryingToUndoVote)) {
+      } else if (!isNilOrError(authUser) && (votingEnabled || (cancellingEnabled && isTryingToUndoVote))) {
         try {
           this.voting$.next(voteMode);
 

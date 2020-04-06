@@ -64,6 +64,7 @@ interface InputProps {
   flow: TSignUpInFlow;
   className?: string;
   onAuthProviderSelected: (selectedMethod: AuthProvider) => void;
+  goToOtherFlow: () => void;
 }
 
 interface DataProps {
@@ -83,6 +84,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
   flow,
   className,
   onAuthProviderSelected,
+  goToOtherFlow,
   tenant,
   passwordLoginEnabled,
   googleLoginEnabled,
@@ -111,15 +113,10 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
     onAuthProviderSelected('franceconnect');
   }, [onAuthProviderSelected]);
 
-  const goToOtherFlow = useCallback((event: React.FormEvent) => {
+  const handleGoToOtherFlow = useCallback((event: React.FormEvent) => {
     event.preventDefault();
-
-    if (flow === 'signup') {
-      // go to sign in
-    } else {
-      // to to sign up
-    }
-  }, [flow]);
+    goToOtherFlow();
+  }, [goToOtherFlow]);
 
   // show this step only when more than 1 method enabled or when only 1 method is enabled and that method isn't passwordLogin
   if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && !passwordLoginEnabled)) {
@@ -189,8 +186,8 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
               {...flow === 'signup' ? messages.goToLogIn : messages.goToSignUp}
               values={{
                 goToOtherFlowLink: (
-                <button onClick={goToOtherFlow}>
-                  {formatMessage(flow === 'signup' ? messages.logIn : messages.signUp)}
+                <button onClick={handleGoToOtherFlow}>
+                  {formatMessage(flow === 'signup' ? messages.logIn2 : messages.signUp2)}
                 </button>
                 )
               }}

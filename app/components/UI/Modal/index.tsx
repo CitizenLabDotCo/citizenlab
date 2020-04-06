@@ -26,37 +26,25 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
 
-const ModalContent = styled.div<{ noPadding: boolean | undefined }>`
+export const ModalContent = styled.div<{ noPadding?: boolean | undefined }>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: ${({ noPadding }) => noPadding ? 0 : '40px'};
+  padding: ${({ noPadding }) => noPadding ? 0 : '30px'};
 
   ${media.smallerThanMinTablet`
     padding: ${({ noPadding }) => noPadding ? 0 : '20px'};
   `}
 `;
 
-const CloseIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
-  fill: ${colors.label};
-  transition: all 100ms ease-out;
-
-  ${media.smallerThanMinTablet`
-    width: 15px;
-    height: 15px;
-  `}
-`;
-
 const CloseButton = styled.button`
-  width: 31px;
-  height: 31px;
+  width: 29px;
+  height: 29px;
   position: absolute;
-  top: 21px;
-  right: 27px;
+  top: 20px;
+  right: 25px;
   cursor: pointer;
   margin: 0;
   padding: 0;
@@ -64,17 +52,24 @@ const CloseButton = styled.button`
   justify-content: center;
   align-items: center;
   z-index: 2;
+  border-radius: 50%;
+  background: #fff;
+  transition: all 100ms ease-out;
 
   &:hover {
-    ${CloseIcon} {
-      fill: #000;
-    }
+    background: #f0f0f0;
   }
 
   ${media.smallerThanMinTablet`
-    top: 12px;
-    right: 11px;
+    top: 13px;
+    right: 15px;
   `}
+`;
+
+const CloseIcon = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  fill: #000;
 `;
 
 const StyledFocusOn = styled(FocusOn)<{ width: number }>`
@@ -165,16 +160,16 @@ const Overlay = styled.div`
   }
 `;
 
-const HeaderContainer = styled.div`
+export const HeaderContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-shrink: 0;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 20px;
   padding-bottom: 20px;
+  margin-right: 45px;
   border-bottom: solid 1px ${colors.separation};
   background: #fff;
 
@@ -186,20 +181,28 @@ const HeaderContainer = styled.div`
   `}
 `;
 
-const HeaderTitle = styled.h1`
+export const HeaderTitle = styled.h1`
   width: 100%;
   color: ${colors.text};
-  font-size: ${fontSizes.xxl}px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
   margin: 0;
-  margin-right: 45px;
   padding: 0;
 
   ${media.smallerThanMinTablet`
     font-size: ${fontSizes.large}px;
-    margin-right: 35px;
   `}
+`;
+
+export const HeaderSubtitle = styled.h2`
+  width: 100%;
+  color: ${colors.text};
+  font-size: ${fontSizes.xl}px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
 `;
 
 const FooterContainer = styled.div`
@@ -341,7 +344,7 @@ export default class Modal extends PureComponent<Props, State> {
     const noPadding = header !== undefined || footer !== undefined || this.props.noPadding;
     const modalPortalElement = document?.getElementById('modal-portal');
 
-    if (modalPortalElement) {
+    if (modalPortalElement && width) {
       return ReactDOM.createPortal((
         <CSSTransition
           classNames="modal"
@@ -357,7 +360,7 @@ export default class Modal extends PureComponent<Props, State> {
             className={this.props.className}
           >
             <StyledFocusOn
-              width={width as number}
+              width={width}
               autoFocus={true}
             >
               <ModalContainer

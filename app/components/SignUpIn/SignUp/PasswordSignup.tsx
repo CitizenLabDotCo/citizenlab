@@ -270,7 +270,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       apiErrors,
       emailInvitationTokenInvalid
     } = this.state;
-    const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp));
+    const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp2));
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
     const signUpPageLink = <Link to={'/sign-up'}>{formatMessage(messages.signUpPage)}</Link>;

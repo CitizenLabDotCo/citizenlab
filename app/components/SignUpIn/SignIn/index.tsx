@@ -18,12 +18,14 @@ const Container = styled.div``;
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
+  inModal: boolean;
   metaData: ISignUpInMetaData;
   onSignInCompleted: (userId: string) => void;
+  onGoToSignUp: () => void;
   className?: string;
 }
 
-const SignIn = memo<Props>(({ metaData, onSignInCompleted, className }) => {
+const SignIn = memo<Props>(({ metaData, onSignInCompleted, onGoToSignUp, className }) => {
 
   const [activeStep, setActiveStep] = useState<TSignInSteps>('auth-providers');
 
@@ -35,6 +37,10 @@ const SignIn = memo<Props>(({ metaData, onSignInCompleted, className }) => {
     }
   }, []);
 
+  const handleGoToSignUpFlow = useCallback(() => {
+    onGoToSignUp();
+  }, [onGoToSignUp]);
+
   const handleOnSignInCompleted = useCallback((userId: string) => {
     onSignInCompleted(userId);
   }, [onSignInCompleted]);
@@ -45,6 +51,7 @@ const SignIn = memo<Props>(({ metaData, onSignInCompleted, className }) => {
         <AuthProviders
           flow={metaData.flow}
           onAuthProviderSelected={handleOnAuthProviderSelected}
+          goToOtherFlow={handleGoToSignUpFlow}
         />
       }
 
