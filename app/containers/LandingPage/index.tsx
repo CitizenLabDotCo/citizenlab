@@ -1,6 +1,5 @@
 import React, { PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import ContentContainer from 'components/ContentContainer';
