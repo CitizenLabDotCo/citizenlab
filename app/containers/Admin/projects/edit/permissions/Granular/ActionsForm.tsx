@@ -8,20 +8,7 @@ import ActionForm from './ActionForm';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
-const ActionPermissionWrapper = styled.div`
-  flex: 1 1 0;
-  width: calc((100% - 40px) * (1/3));
-  margin-left: 20px;
-  margin-right: 20px;
-
-  &.first {
-    margin-left: 0px;
-  }
-
-  &.last {
-    margin-right: 0px;
-  }
-`;
+const ActionPermissionWrapper = styled.div``;
 
 interface Props {
   permissions: IPermissionData[];
