@@ -151,18 +151,6 @@ interface State { }
 
 class LandingPage extends PureComponent<Props, State> {
 
-  goToIdeasPage = () => {
-    clHistory.push('/ideas');
-  }
-
-  goToProjectsPage = () => {
-    clHistory.push('/projects');
-  }
-
-  goToAddIdeaPage = () => {
-    clHistory.push('/ideas/new');
-  }
-
   clickCreateAccountCTAFooter = () => {
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
   }
