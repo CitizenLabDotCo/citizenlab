@@ -199,14 +199,12 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
         <>
           <StyledSection>
             <SectionTitle>
-              <FormattedMessage {...messages.titlePermissions} />
+              <FormattedMessage {...messages.userAccessRightsTitle} />
             </SectionTitle>
             <SectionSubtitle>
-              <FormattedMessage {...messages.subtitlePermissions} />
+              <FormattedMessage {...messages.userAccessRightsSubtitle} />
             </SectionSubtitle>
-          </StyledSection>
 
-          <StyledSection>
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.permissionTypeLabel} />
@@ -258,7 +256,22 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
                 }}
               />
             }
+
+            <FeatureFlag name="granular_permissions">
+              <Granular project={project.data} />
+            </FeatureFlag>
           </StyledSection>
+
+          <StyledSection>
+            <SectionTitle>
+              <FormattedMessage {...messages.titlePermissions} />
+            </SectionTitle>
+            <SectionSubtitle>
+              <FormattedMessage {...messages.subtitlePermissions} />
+            </SectionSubtitle>
+          </StyledSection>
+
+
 
           <StyledSection>
             <GetModerators projectId={projectId}>
@@ -286,10 +299,6 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             </SubSectionTitle>
             <IdeaAssignment projectId={projectId} />
           </StyledSection>
-
-          <FeatureFlag name="granular_permissions">
-            <Granular project={project.data} />
-          </FeatureFlag>
         </>
       );
     }
