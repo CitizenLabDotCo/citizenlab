@@ -15,6 +15,10 @@ const StyledFieldset = styled.fieldset`
   border: none;
 `;
 
+const StyledMultipleSelect = styled(MultipleSelect)`
+  width: 300px;
+`;
+
 interface InputProps {
   permissionId: string;
   permittedBy: 'everyone' | 'groups' | 'admins_moderators';
@@ -83,7 +87,7 @@ class ActionForm extends PureComponent<Props> {
             id={`participation-permission-certain-groups-${permissionId}`}
           />
           {permittedBy === 'groups' &&
-            <MultipleSelect
+            <StyledMultipleSelect
               value={groupIds || []}
               options={groupsOptions}
               onChange={this.handleGroupIdsUpdate}
