@@ -1,6 +1,7 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { isString, get } from 'lodash-es';
+import styled from 'styled-components';
 
 // typings
 import { IOption } from 'typings';
@@ -22,6 +23,10 @@ import Select from 'components/UI/Select';
 import messages from './messages';
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
+
+const StyledSelect = styled(Select)`
+  width: 300px;
+`;
 
 interface InputProps {
   projectId: string;
@@ -73,7 +78,7 @@ class IdeaAssignment extends React.PureComponent<Props & InjectedIntlProps> {
       const defaultAssigneeValue = isString(defaultAssigneeId) ? defaultAssigneeId : 'unassigned';
 
       return (
-        <Select
+        <StyledSelect
           options={this.getOptions()}
           value={defaultAssigneeValue}
           onChange={this.onAssigneeChange}
