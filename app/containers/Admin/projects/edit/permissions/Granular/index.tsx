@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { IProjectData } from 'services/projects';
 
-import { SubSectionTitle } from 'components/admin/Section';
-import Timeline from './Timeline';
-import Continuous from './Continuous';
-import Warning from 'components/UI/Warning';
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
-import { StyledSection } from '../';
+
+// components
+import { StyledSubSectionTitle } from '../.';
 import IconTooltip from 'components/UI/IconTooltip';
+import Warning from 'components/UI/Warning';
+import Timeline from './Timeline';
+import Continuous from './Continuous';
+import { StyledSection } from '../';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
@@ -25,10 +28,10 @@ class Granular extends Component<Props> {
     const { project } = this.props;
     return (
       <StyledSection>
-        <SubSectionTitle>
+        <StyledSubSectionTitle>
           <FormattedMessage {...messages.granularPermissionsTitle} />
           <IconTooltip content={<FormattedMessage {...messages.granularPermissionsTooltip} />} />
-        </SubSectionTitle>
+        </StyledSubSectionTitle>
         <StyledWarning>
           <FormattedMessage {...messages.engagementWarning} />
         </StyledWarning>

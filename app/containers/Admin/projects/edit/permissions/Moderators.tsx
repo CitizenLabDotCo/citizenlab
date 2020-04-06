@@ -5,7 +5,7 @@ import messages from './messages';
 import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
 import { GetModeratorsChildProps } from 'resources/GetModerators';
-import { SubSectionTitle } from 'components/admin/Section';
+import { StyledSubSectionTitle } from './';
 import IconTooltip from 'components/UI/IconTooltip';
 
 import { InjectedIntlProps } from 'react-intl';
@@ -35,7 +35,7 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
 
     return (
       <Container>
-        <SubSectionTitle>
+        <StyledSubSectionTitle>
           <FormattedMessage {...messages.moderatorsSectionTitle} />
           <IconTooltip
             content={
@@ -51,7 +51,7 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
               />
             }
           />
-        </SubSectionTitle>
+        </StyledSubSectionTitle>
         <UserSearch projectId={projectId} moderators={moderators} />
         <ModeratorList moderators={moderators} projectId={projectId} />
       </Container>

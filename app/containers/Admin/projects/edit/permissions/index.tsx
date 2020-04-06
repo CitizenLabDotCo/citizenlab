@@ -12,7 +12,7 @@ import messages from './messages';
 import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SubSectionTitle, SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+import { Section, SubSectionTitle, SectionTitle, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
@@ -31,7 +31,11 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 export const StyledSection = styled(Section)`
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+`;
+
+export const StyledSubSectionTitle = styled(SubSectionTitle)`
+  font-size: ${fontSizes.large}px;
 `;
 
 const RadioButtonsWrapper = styled.fieldset`
@@ -201,14 +205,11 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             <SectionTitle>
               <FormattedMessage {...messages.userAccessRightsTitle} />
             </SectionTitle>
-            <SectionSubtitle>
-              <FormattedMessage {...messages.userAccessRightsSubtitle} />
-            </SectionSubtitle>
 
             <SectionField>
-              <SubSectionTitle>
+              <StyledSubSectionTitle>
                 <FormattedMessage {...messages.viewingRightsTitle} />
-              </SubSectionTitle>
+              </StyledSubSectionTitle>
 
               <RadioButtonsWrapper>
                 <StyledRadio
@@ -265,19 +266,12 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             <SectionTitle>
               <FormattedMessage {...messages.adminRightsTitle} />
             </SectionTitle>
-            <SectionSubtitle>
-              <FormattedMessage {...messages.adminRightsSubtitle} />
-            </SectionSubtitle>
-          </StyledSection>
 
-          <StyledSection>
             <GetModerators projectId={projectId}>
               {moderators => <Moderators moderators={moderators} projectId={projectId} />}
             </GetModerators>
-          </StyledSection>
 
-          <StyledSection>
-            <SubSectionTitle>
+            <StyledSubSectionTitle>
               <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
               <IconTooltip
                 content={
@@ -293,7 +287,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
                   />
                 }
               />
-            </SubSectionTitle>
+            </StyledSubSectionTitle>
             <IdeaAssignment projectId={projectId} />
           </StyledSection>
         </>
