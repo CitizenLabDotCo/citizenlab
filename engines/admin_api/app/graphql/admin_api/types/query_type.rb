@@ -110,6 +110,20 @@ module AdminApi
       ::ProjectPolicy::Scope.new(nil, Project).resolve
     end
 
+    field :project_folder, Types::ProjectFolderType, null: false do
+      argument :id, ID, required: true
+    end
+
+    def project_folder args
+      ProjectFolder.find(args[:id])
+    end
+
+    field :public_project_folders , Types::ProjectFolderType.connection_type, null:false
+
+    def public_project_folders
+      ::ProjectFolderPolicy::Scope.new(nil, ProjectFolder).resolve
+    end
+
     field :idea, Types::IdeaType, null: false do
       argument :id, ID, required: true
       description "Find an idea by ID"
