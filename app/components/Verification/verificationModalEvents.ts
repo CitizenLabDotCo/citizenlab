@@ -18,7 +18,7 @@ interface IOpenVerificationModalParams {
 
 export function openVerificationModal(params?: IOpenVerificationModalParams) {
   eventEmitter.emit<OpenVerificationModalData>(VerificationModalEvents.open, {
-    step: params?.step || null,
+    step: params?.step || 'method-selection',
     context: params?.context || null
   });
 }

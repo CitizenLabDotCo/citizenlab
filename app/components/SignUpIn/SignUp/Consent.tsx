@@ -26,8 +26,9 @@ const CheckboxWrapper = styled.div`
 
 const EmailConsent = styled.div`
   color: ${colors.label};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.small}px;
   line-height: normal;
+  font-weight: 300;
 `;
 
 interface Props {

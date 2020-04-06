@@ -79,7 +79,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-interface State { }
+interface State {}
 
 class VotingDisabled extends PureComponent<Props, State> {
   onVerify = (event) => {

@@ -11,7 +11,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 // typings
 import { TSignUpInFlow } from 'components/SignUpIn';
@@ -24,54 +24,57 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px ${colors.separation};
+  border: solid 1px #ddd;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+  transition: all 100ms ease-out;
 
   &:hover {
-    border-color: #000;
+    border-color: ${darken(0.3, '#ddd')};
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
   }
 `;
 
 const ConsentWrapper = styled.div`
   opacity: 0;
-  display: none;
+  max-height: 0px;
+  overflow: hidden;
+  background: #fff;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
   &.consent-enter {
     opacity: 0;
     max-height: 0px;
     overflow: hidden;
-    display: block;
 
     &.consent-enter-active {
       opacity: 1;
-      max-height: 250px;
+      max-height: 300px;
       overflow: hidden;
-      display: block;
     }
   }
 
   &.consent-enter-done {
     opacity: 1;
+    max-height: none;
     overflow: visible;
-    display: block;
   }
 
   &.consent-exit {
     opacity: 1;
-    max-height: 250px;
+    max-height: 300px;
     overflow: hidden;
-    display: block;
 
     &.consent-exit-active {
       opacity: 0;
       max-height: 0px;
       overflow: hidden;
-      display: block;
     }
   }
 
   &.consent-exit-done {
-    display: none;
+    opacity: 0;
+    max-height: 0px;
+    overflow: hidden;
   }
 `;
 
@@ -167,10 +170,10 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
           classNames="consent"
           in={expanded}
           timeout={timeout}
-          mounOnEnter={false}
-          unmountOnExit={false}
-          enter={true}
-          exit={true}
+          // mounOnEnter={false}
+          // unmountOnExit={false}
+          // enter={true}
+          // exit={true}
         >
           <ConsentWrapper>
             <ConsentWrapperInner>
