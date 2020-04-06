@@ -32,9 +32,6 @@ class Granular extends Component<Props> {
           <FormattedMessage {...messages.granularPermissionsTitle} />
           <IconTooltip content={<FormattedMessage {...messages.granularPermissionsTooltip} />} />
         </StyledSubSectionTitle>
-        <StyledWarning>
-          <FormattedMessage {...messages.engagementWarning} />
-        </StyledWarning>
         {project && project.attributes.process_type === 'timeline' &&
           <Timeline
             projectId={project.id}
