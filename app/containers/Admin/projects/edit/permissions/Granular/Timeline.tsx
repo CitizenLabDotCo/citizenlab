@@ -21,7 +21,7 @@ import styled from 'styled-components';
 const Permissions = styled.div`
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 25px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ddd;
@@ -70,23 +70,24 @@ class Timeline extends PureComponent<Props, State> {
     return (
       <div>
         {phases && phases.map((phase) => (
-          <Collapse
-            key={phase.id}
-            opened={openedPhase === phase.id}
-            onToggle={this.handleCollapseToggle(phase.id)}
-            label={<T value={phase.attributes.title_multiloc} />}
-          >
-            <Permissions>
-              <GetPhasePermissions phaseId={phase.id}>
-                {(permissions) => isNilOrError(permissions) ? null :
-                  <ActionsForm
-                    permissions={permissions}
-                    onChange={this.handlePermissionChange}
-                  />
-                }
-              </GetPhasePermissions>
-            </Permissions>
-          </Collapse>
+          <div style={{ marginBottom: '20px' }} key={phase.id}>
+            <Collapse
+              opened={openedPhase === phase.id}
+              onToggle={this.handleCollapseToggle(phase.id)}
+              label={<T value={phase.attributes.title_multiloc} />}
+            >
+              <Permissions>
+                <GetPhasePermissions phaseId={phase.id}>
+                  {(permissions) => isNilOrError(permissions) ? null :
+                    <ActionsForm
+                      permissions={permissions}
+                      onChange={this.handlePermissionChange}
+                    />
+                  }
+                </GetPhasePermissions>
+              </Permissions>
+            </Collapse>
+          </div>
         ))}
       </div>
     );
