@@ -45,8 +45,6 @@ class Continuous extends PureComponent<Props> {
   render() {
     const { permissions } = this.props;
 
-    console.log(permissions);
-
     if (isNilOrError(permissions)) return null;
 
     return (
