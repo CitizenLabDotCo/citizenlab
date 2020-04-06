@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe "Graphql folder" do
   let(:context) { {} }
   let(:result) {
