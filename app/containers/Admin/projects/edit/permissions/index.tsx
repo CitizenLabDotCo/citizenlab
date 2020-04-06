@@ -42,9 +42,11 @@ export const StyledSubSectionTitle = styled(SubSectionTitle)`
   font-size: ${fontSizes.large}px;
 `;
 
+const StyledSectionField = styled(SectionField)`
+  margin-bottom: 5px;
+`;
+
 const RadioButtonsWrapper = styled.fieldset`
-  margin-top: 15px;
-  margin-bottom: 30px;
   border: none;
 `;
 
@@ -210,7 +212,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
               <FormattedMessage {...messages.userAccessRightsTitle} />
             </StyledSectionTitle>
 
-            <SectionField>
+            <StyledSectionField>
               <StyledSubSectionTitle>
                 <FormattedMessage {...messages.viewingRightsTitle} />
               </StyledSubSectionTitle>
@@ -241,7 +243,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
                   id="permissions-selection"
                 />
               </RadioButtonsWrapper>
-            </SectionField>
+            </StyledSectionField>
 
             {unsavedVisibleTo === 'groups' &&
               <ProjectGroupsList projectId={projectId} onAddButtonClicked={this.handleGroupsAdded} />
