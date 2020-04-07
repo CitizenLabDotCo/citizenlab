@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 
 // components
-import { StyledSubSectionTitle } from '../.';
+import { SubSectionTitle } from 'components/admin/Section';
 import Timeline from './Timeline';
 import Continuous from './Continuous';
 import { StyledSection } from '../';
@@ -21,9 +21,9 @@ class Granular extends Component<Props> {
     const { project } = this.props;
     return (
       <StyledSection>
-        <StyledSubSectionTitle>
+        <SubSectionTitle>
           <FormattedMessage {...messages.granularPermissionsTitle} />
-        </StyledSubSectionTitle>
+        </SubSectionTitle>
         {project && project.attributes.process_type === 'timeline' &&
           <Timeline
             projectId={project.id}
