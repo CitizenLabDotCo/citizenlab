@@ -151,6 +151,10 @@ const StyledFileUploader = styled(FileUploader)`
   width: 500px;
 `;
 
+const StyledMultipleSelect = styled(MultipleSelect)`
+  width: 500px;
+`;
+
 type Props = {
   params?: {
     projectId: string
@@ -800,7 +804,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               />
 
               {areaType === 'selection' &&
-                <MultipleSelect
+                <StyledMultipleSelect
                   id="e2e-area-selector"
                   options={areasOptions}
                   value={areasValues}
