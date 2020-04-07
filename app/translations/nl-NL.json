@@ -1081,6 +1081,7 @@
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Ideeën posten",
   "app.containers.AdminPage.ProjectEdit.projectImageLabel": "Projectafbeeldingen (max. 5)",
   "app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip": "De eerst toegevoegde projectafbeelding wordt weergegeven op de projectkaart op de homepagina. Alle afbeeldingen worden weergegeven op de projectpagina. De optimale afmetingen zijn 800x800.",
+  "app.containers.AdminPage.ProjectEdit.projectName": "",
   "app.containers.AdminPage.ProjectEdit.projectType": "Type project (opgelet: je keuze kan niet worden gewijzigd)",
   "app.containers.AdminPage.ProjectEdit.projectTypeEdit": "Projecttype",
   "app.containers.AdminPage.ProjectEdit.projectTypeEditTooltip": "Dit kan niet meer worden veranderd als het project eenmaal is gemaakt. Projecten met een tijdslijn hebben een duidelijk begin en einde en kunnen verschillende fasen hebben. Projecten zonder tijdslijn zijn doorlopend.",

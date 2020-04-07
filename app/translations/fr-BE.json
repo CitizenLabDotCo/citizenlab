@@ -1081,6 +1081,7 @@
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Poster des idées",
   "app.containers.AdminPage.ProjectEdit.projectImageLabel": "Images du projet (5 maximum)",
   "app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip": "La première image que vous ajoutetée sera l'image de la vignette visible sur la page d'accueil. Toutes les images sont visibles sur la page du projet. Les dimensions idéales sont 800x800.",
+  "app.containers.AdminPage.ProjectEdit.projectName": "",
   "app.containers.AdminPage.ProjectEdit.projectType": "Type de projet (attention : votre choix ne peut pas être modifié)",
   "app.containers.AdminPage.ProjectEdit.projectTypeEdit": "Type de projet",
   "app.containers.AdminPage.ProjectEdit.projectTypeEditTooltip": "Ceci ne peut pas être modifié une fois le projet est créé. Les projets avec une ligne de temps ont un début et une fin clairs et peuvent avoir différentes phases. Les projets sans ligne du temps sont continus.",

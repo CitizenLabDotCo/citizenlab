@@ -1081,6 +1081,7 @@
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "",
   "app.containers.AdminPage.ProjectEdit.projectImageLabel": "",
   "app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip": "",
+  "app.containers.AdminPage.ProjectEdit.projectName": "",
   "app.containers.AdminPage.ProjectEdit.projectType": "",
   "app.containers.AdminPage.ProjectEdit.projectTypeEdit": "",
   "app.containers.AdminPage.ProjectEdit.projectTypeEditTooltip": "",
