@@ -137,13 +137,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle',
     defaultMessage: 'Who is responsible for processing the ideas?',
   },
-  ideaAssignmentTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltip',
-    defaultMessage: 'Every new idea within this project will be assigned to this person by default. The main responsible will get notified when a new idea gets added. Idea assignment can be easily changed in the {linkToIdeasOverview}.',
+  ideaAssignmentTooltipText: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltipText',
+    defaultMessage: 'The person responsible for the ideas will get all new ideas in this project assigned to him/her. The assignee can always be changed manually in the {ideaManagerLink}.',
   },
-  ideasOverview: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideasOverview',
-    defaultMessage: 'Ideas overview',
+  ideaManagerLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideaManagerLinkText',
+    defaultMessage: 'idea manager',
   },
   unassigned: {
     id: 'app.containers.AdminPage.ProjectEdit.unassigned',
