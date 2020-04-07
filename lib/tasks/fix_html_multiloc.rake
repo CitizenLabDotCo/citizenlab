@@ -156,6 +156,62 @@ namespace :fix_existing_tenants do
     end
     puts JSON.pretty_generate(results)
   end
+
+  desc "Lists all bad URLs across all multilocs that can contain images for all tenants"
+  task :bad_multiloc_urls => :environment do
+    results = {}
+    regex = /https?:\/\/[^ "']+[^a-zA-Z0-9\-._\/][^ "']*\.[a-zA-Z0-9]+/
+    Tenant.all.map do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        imageable_html_multilocs.map do |claz, attributes|
+          claz.all.map do |instance|
+            attributes.each do |attribute|
+              multiloc = instance.send attribute
+              multiloc.values.each do |value|
+                value.scan(regex).each do |match|
+                  results[tenant.host] ||= {}
+                  results[tenant.host][claz.name] ||= {}
+                  results[tenant.host][claz.name][instance.id] ||= {}
+                  results[tenant.host][claz.name][instance.id][attribute] ||= []
+                  results[tenant.host][claz.name][instance.id][attribute] += [match]
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+    puts JSON.pretty_generate(results)
+  end
+
+  desc "Replace all bad URLs according to the given mapping across all multilocs that can contain images for all tenants"
+  task :replace_multiloc_urls, [:url] => [:environment] do |t, args|
+    mapping = JSON.parse open(args[:url]).read
+    results = {}
+    Tenant.all.map do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        count = 0
+        imageable_html_multilocs.map do |claz, attributes|
+          claz.all.map do |instance|
+            attributes.each do |attribute|
+              changed = false
+              multiloc = instance.send attribute
+              multiloc.values.each do |value|
+                mapping.each do |url_from, url_to|
+                  value.gsub!(url_from){|_| changed=true; count+=1; url_to}
+                end
+              end
+              instance.update_column(attribute, multiloc) if changed
+            end
+          end
+        end
+        results[tenant.host] = count
+      end
+    end
+    puts JSON.pretty_generate(results)
+  end
+
+
 end
 
 def convert_multiloc multiloc
