@@ -69,10 +69,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
     defaultMessage: 'What can different users do?',
   },
-  granularPermissionsTooltip: {
-    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTooltip',
-    defaultMessage: 'The users that aren’t part of the selection will see an information message when trying to access the respective action, explaining them that they don’t have access to the action.',
-  },
   permissionAction_commenting: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
     defaultMessage: 'Commenting',
