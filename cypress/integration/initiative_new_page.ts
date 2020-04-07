@@ -32,13 +32,13 @@ describe('Initiative new page', () => {
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#e2e-initiative-title-input').type(randomString(9)).blur();
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.get('#e2e-initiative-form-title-section .e2e-error-message').contains('The initiative title must be at least 10 characters long');
+    cy.get('#e2e-initiative-form-title-section .e2e-error-message').contains('The proposal title must be at least 10 characters long');
   });
 
   it('shows an error when the description is less than 300 characters long ()', () => {
     cy.get('#e2e-initiative-form-description-section .ql-editor').type(randomString(9)).blur().wait(200);
     cy.get('.e2e-initiative-publish-button').find('.e2e-submit-form').click();
-    cy.get('#e2e-initiative-form-description-section .e2e-error-message').contains('The initiative description must be at least 500 characters long');
+    cy.get('#e2e-initiative-form-description-section .e2e-error-message').contains('The proposal description must be at least 500 characters long');
   });
 
   it('has a working initiative form', () => {
