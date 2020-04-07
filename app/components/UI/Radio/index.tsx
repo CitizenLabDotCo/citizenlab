@@ -52,13 +52,19 @@ const Label = styled.label`
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
+  margin-bottom: 12px;
 
   & > :not(last-child) {
     margin-right: 7px;
   }
-
   &.enabled {
     cursor: pointer;
+
+    &:hover {
+      ${CustomRadio} {
+        border-color: #000;
+      }
+    }
   }
 `;
 
@@ -71,20 +77,6 @@ const Input = styled.input`
     overflow: hidden;
     clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
     clip: rect(1px, 1px, 1px, 1px);
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-
-  &.enabled {
-    &:hover {
-      ${CustomRadio} {
-        border-color: #000;
-      }
-    }
   }
 `;
 
@@ -169,34 +161,39 @@ export default class Radio extends PureComponent<Props, State> {
     const checked = (value === currentValue);
 
     return (
-      <Container className={`${className} ${disabled ? 'disabled' : 'enabled'}`}>
-        <Label htmlFor={id} className={`text ${disabled ? 'disabled' : 'enabled'}`}>
-          <Input
-            id={id}
-            type="radio"
-            name={name}
-            value={value}
-            checked={checked}
-            aria-checked={checked}
-            onFocus={this.handleOnFocus}
-            onBlur={this.handleOnBlur}
-            onChange={this.handleOnChange}
-            required={isRequired}
-          />
+      <Label
+        htmlFor={id}
+        className={`
+          ${className || ''}
+          text
+          ${disabled ? 'disabled' : 'enabled'}`
+        }
+      >
+        <Input
+          id={id}
+          type="radio"
+          name={name}
+          value={value}
+          checked={checked}
+          aria-checked={checked}
+          onFocus={this.handleOnFocus}
+          onBlur={this.handleOnBlur}
+          onChange={this.handleOnChange}
+          required={isRequired}
+        />
 
-          <CustomRadio
-            className={
-              `${inputFocused ? 'focused' : ''}
-              ${checked ? 'checked' : ''}
-              ${disabled ? 'disabled' : 'enabled'}
-              circle`
-            }
-          >
-            {checked && <Checked aria-hidden color={buttonColor || colors.clGreen} />}
-          </CustomRadio>
-          {label}
-        </Label>
-      </Container>
+        <CustomRadio
+          className={
+            `${inputFocused ? 'focused' : ''}
+            ${checked ? 'checked' : ''}
+            ${disabled ? 'disabled' : 'enabled'}
+            circle`
+          }
+        >
+          {checked && <Checked aria-hidden color={buttonColor || colors.clGreen} />}
+        </CustomRadio>
+        {label}
+      </Label>
     );
   }
 }

@@ -94,7 +94,7 @@ export default class Checkbox extends PureComponent<Props> {
 
     return (
       <Label
-        className={`${className ? className : ''}`}
+        className={className || ''}
         disabled={disabled as boolean}
       >
         <CheckboxContainer hasLabel={hasLabel}>
