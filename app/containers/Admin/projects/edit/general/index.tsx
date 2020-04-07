@@ -147,6 +147,10 @@ const ButtonWrapper = styled.div`
   display: flex;
 `;
 
+const StyledFileUploader = styled(FileUploader)`
+  width: 500px;
+`;
+
 type Props = {
   params?: {
     projectId: string
@@ -874,7 +878,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <FormattedMessage {...messages.fileUploadLabel} />
                 <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
               </SubSectionTitle>
-              <FileUploader
+              <StyledFileUploader
                 onFileAdd={this.handleProjectFileOnAdd}
                 onFileRemove={this.handleProjectFileOnRemove}
                 files={projectFiles}
