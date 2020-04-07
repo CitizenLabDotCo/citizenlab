@@ -77,6 +77,7 @@ const ProjectType = styled.div`
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
+  margin-bottom: 40px;
 `;
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
@@ -642,7 +643,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               </>
             }
 
-            <SectionField>
+            <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.statusLabel} />
                 <IconTooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
@@ -674,9 +675,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 className="e2e-projecstatus-archived"
                 label={<FormattedMessage {...messages.archivedStatus} />}
               />
-            </SectionField>
+            </StyledSectionField>
 
-            <SectionField>
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectName} />
+              </SubSectionTitle>
               <StyledInputMultiloc
                 id="project-title"
                 type="text"
@@ -687,9 +691,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 errorMultiloc={noTitleError}
               />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
-            </SectionField>
+            </StyledSectionField>
 
-            <SectionField>
+            <StyledSectionField>
               {!project ? (
                 <>
                   <SubSectionTitle>
@@ -744,7 +748,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   </ParticipationContextWrapper>
                 </CSSTransition>
               }
-            </SectionField>
+            </StyledSectionField>
 
             {project && projectType === 'continuous' &&
               <ParticipationContext
@@ -755,7 +759,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               />
             }
 
-            <SectionField>
+            <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.areasLabel} />
                 <IconTooltip
@@ -801,7 +805,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   disabled={areaType !== 'selection'}
                 />
               }
-            </SectionField>
+            </StyledSectionField>
 
             <StyledSectionField>
               <SubSectionTitle>
@@ -865,7 +869,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               />
             </StyledSectionField>
 
-            <SectionField>
+            <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.fileUploadLabel} />
                 <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
@@ -876,7 +880,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 files={projectFiles}
                 errors={apiErrors}
               />
-            </SectionField>
+            </StyledSectionField>
 
             {project &&
               <HasPermission item={project.data} action="delete">
