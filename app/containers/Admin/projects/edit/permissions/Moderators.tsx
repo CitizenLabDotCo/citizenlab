@@ -1,14 +1,17 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { GetModeratorsChildProps } from 'resources/GetModerators';
+
+// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
+
+// components
+import { SubSectionTitle } from 'components/admin/Section';
+import IconTooltip from 'components/UI/IconTooltip';
 import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
-import { GetModeratorsChildProps } from 'resources/GetModerators';
-import { StyledSubSectionTitle } from './';
-import IconTooltip from 'components/UI/IconTooltip';
-
-import { InjectedIntlProps } from 'react-intl';
 
 interface InputProps {
   projectId: string;
@@ -35,7 +38,7 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
 
     return (
       <Container>
-        <StyledSubSectionTitle>
+        <SubSectionTitle>
           <FormattedMessage {...messages.moderatorsSectionTitle} />
           <IconTooltip
             content={
@@ -51,7 +54,7 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
               />
             }
           />
-        </StyledSubSectionTitle>
+        </SubSectionTitle>
         <UserSearch projectId={projectId} moderators={moderators} />
         <ModeratorList moderators={moderators} projectId={projectId} />
       </Container>
