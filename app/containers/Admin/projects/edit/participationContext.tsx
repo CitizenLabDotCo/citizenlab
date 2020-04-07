@@ -92,19 +92,24 @@ const StyledRadio = styled(Radio)`
 `;
 
 const LabelText = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: -2px;
+
   &.disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
 
-  h3 {
+  .header {
     padding: 0;
     margin: 0;
     margin-bottom: 3px;
     font-weight: 600;
+    font-size: ${fontSizes.base}px;
   }
 
-  p {
+  .description {
     color: ${colors.adminSecondaryTextColor};
   }
 `;
@@ -448,12 +453,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 id="participationmethod-ideation"
                 label={(
                   <LabelText>
-                    <h3>
+                    <span className="header">
                       <FormattedMessage {...messages.ideation} />
-                    </h3>
-                    <p>
+                    </span>
+                    <span className="description">
                       <FormattedMessage {...messages.ideationDescription} />
-                    </p>
+                    </span>
                   </LabelText>)}
               />
               <FeatureFlag name="participatory_budgeting">
@@ -465,12 +470,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-budgeting'}
                   label={(
                     <LabelText>
-                      <h3>
+                      <span className="header">
                         <FormattedMessage {...messages.participatoryBudgeting} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.participatoryBudgetingDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               </FeatureFlag>
@@ -483,12 +488,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-poll'}
                   label={(
                     <LabelText>
-                      <h3>
+                      <span className="header">
                         <FormattedMessage {...messages.poll} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.pollDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               </FeatureFlag>
@@ -501,12 +506,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-volunteering'}
                   label={(
                     <LabelText>
-                      <h3>
+                                          <span className="header">
                         <FormattedMessage {...messages.volunteering} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.volunteeringDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               </FeatureFlag>
@@ -521,12 +526,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-survey'}
                   label={(
                     <LabelText>
-                      <h3>
+                      <span className="header">
                         <FormattedMessage {...messages.survey} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.surveyDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               }
@@ -538,8 +543,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 id="participationmethod-information"
                 label={(
                   <LabelText>
-                    <FormattedMessage tagName="h3" {...messages.information} />
-                    <FormattedMessage tagName="p" {...messages.informationDescription} />
+                    <span className="header">
+                      <FormattedMessage {...messages.information} />
+                    </span>
+                    <span className="description">
+                      <FormattedMessage {...messages.informationDescription} />
+                    </span>
                   </LabelText>)}
               />
               <Error apiErrors={apiErrors && apiErrors.participation_method} />
