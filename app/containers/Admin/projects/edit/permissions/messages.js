@@ -121,17 +121,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
     defaultMessage: 'Who can moderate this project?',
   },
-  moderatorsSectionTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTooltip',
-    defaultMessage: 'Select those users who will be given moderator rights, allowing them to work on this project, process its ideas, email its participants, etc.. They will receive a personal message to inform them. More on the role of project moderator can be found {moreInfoModeratorLink}.',
+  moderatorsTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsTooltip',
+    defaultMessage: 'Moderators can edit the project, manage its ideas and email people who participated. You can {moderationInfoCenterLink} to find more information on moderation rights.',
+  },
+  moderationInfoCenterLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText',
+    defaultMessage: 'visit our Help Center',
   },
   moreInfoModeratorLink: {
     id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink',
     defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
-  },
-  moreInfoModeratorLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLinkText',
-    defaultMessage: 'here',
   },
   ideaAssignmentSectionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle',

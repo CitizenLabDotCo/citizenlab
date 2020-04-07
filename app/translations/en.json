@@ -1053,7 +1053,6 @@
   "app.containers.AdminPage.ProjectEdit.mapDisplay": "On a map",
   "app.containers.AdminPage.ProjectEdit.moderationRightsTitle": "Moderation",
   "app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle": "Who can moderate this project?",
-  "app.containers.AdminPage.ProjectEdit.moderatorsSectionTooltip": "The selected users can edit the project, manage its ideas and email the people who participated. Selecting a user will notify them that they became a project moderator. You can find more on moderation rights {moreInfoModeratorLink}.",
   "app.containers.AdminPage.ProjectEdit.moreDetails": "More details",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink": "http://support.citizenlab.co/articles/1948422-appoint-the-right-project-moderators",
   "app.containers.AdminPage.ProjectEdit.moreInfoModeratorLinkText": "here",

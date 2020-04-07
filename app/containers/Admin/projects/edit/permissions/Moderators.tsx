@@ -43,11 +43,11 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
           <IconTooltip
             content={
               <FormattedMessage
-                {...messages.moderatorsSectionTooltip}
+                {...messages.moderatorsTooltip}
                 values={{
-                  moreInfoModeratorLink: (
+                  moderationInfoCenterLink: (
                     <StyledA href={this.props.intl.formatMessage(messages.moreInfoModeratorLink)} target="_blank">
-                      <FormattedMessage {...messages.moreInfoModeratorLinkText} />
+                      <FormattedMessage {...messages.moderationInfoCenterLinkText} />
                     </StyledA>
                   )
                 }}
