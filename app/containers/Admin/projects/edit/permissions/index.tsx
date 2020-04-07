@@ -217,7 +217,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
         <>
           <StyledSection>
             <StyledSectionTitle>
-              <FormattedMessage {...messages.userAccessRightsTitle} />
+              <FormattedMessage {...messages.participationAccessRightsTitle} />
             </StyledSectionTitle>
 
             <SubSection>
@@ -281,7 +281,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
 
           <StyledSection>
             <StyledSectionTitle>
-              <FormattedMessage {...messages.adminRightsTitle} />
+              <FormattedMessage {...messages.moderationRightsTitle} />
             </StyledSectionTitle>
 
             <ModeratorSubSection>

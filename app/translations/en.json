@@ -944,7 +944,6 @@
   "app.containers.AdminPage.ProjectDescription.saved": "Saved!",
   "app.containers.AdminPage.ProjectDescription.subtitleDescription": "Tell your users what the project is about and convince them to participate.",
   "app.containers.AdminPage.ProjectDescription.titleDescription": "Project description",
-  "app.containers.AdminPage.ProjectEdit.AdminRightsTitle": "Admin",
   "app.containers.AdminPage.ProjectEdit.PollTab.addOption": "Add an option",
   "app.containers.AdminPage.ProjectEdit.PollTab.addQuestion": "Add a question",
   "app.containers.AdminPage.ProjectEdit.PollTab.cancelFormQuestion": "Cancel",

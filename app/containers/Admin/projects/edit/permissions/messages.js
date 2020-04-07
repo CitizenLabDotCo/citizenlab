@@ -157,12 +157,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
     defaultMessage: 'Select group(s)',
   },
-  userAccessRightsTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.userAccessRightsTitle',
-    defaultMessage: 'Users',
+  participationAccessRightsTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle',
+    defaultMessage: 'Participation',
   },
-  adminRightsTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.AdminRightsTitle',
-    defaultMessage: 'Admin',
+  moderationRightsTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderationRightsTitle',
+    defaultMessage: 'Moderation',
   },
 });
