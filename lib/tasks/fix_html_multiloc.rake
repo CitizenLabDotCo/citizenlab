@@ -188,6 +188,7 @@ namespace :fix_existing_tenants do
   task :replace_multiloc_urls, [:url] => [:environment] do |t, args|
     mapping = JSON.parse open(args[:url]).read
     results = {}
+    errors = []
     Tenant.all.map do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         count = 0
@@ -201,7 +202,16 @@ namespace :fix_existing_tenants do
                   value.gsub!(url_from){|_| changed=true; count+=1; url_to}
                 end
               end
-              instance.update_column(attribute, multiloc) if changed
+              if changed
+                instance.update_column(attribute, multiloc) 
+                begin
+                  multiloc = TextImageService.new.swap_data_images instance, attribute
+                  instance.send "#{attribute}=", multiloc
+                  instance.save!
+                rescue Exception => e
+                  errors += [e.message]
+                end
+              end
             end
           end
         end
@@ -209,6 +219,12 @@ namespace :fix_existing_tenants do
       end
     end
     puts JSON.pretty_generate(results)
+    if errors.blank?
+      puts "Success!"
+    else
+      puts "Some issues occured."
+      errors.each{|err| puts err}
+    end
   end
 
 
