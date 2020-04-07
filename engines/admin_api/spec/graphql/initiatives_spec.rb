@@ -1,3 +1,5 @@
+require 'rails_helper'
+
 RSpec.describe "Graphql initiatives" do
   let(:context) { {} }
   let(:variables) { {} }
