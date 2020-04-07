@@ -46,10 +46,6 @@ export const StyledSectionTitle = styled(SectionTitle)`
   margin-bottom: 30px;
 `;
 
-export const StyledSubSectionTitle = styled(SubSectionTitle)`
-  font-size: ${fontSizes.large}px;
-`;
-
 const StyledSectionField = styled(SectionField)`
   margin-bottom: 5px;
 `;
@@ -222,9 +218,9 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
 
             <SubSection>
               <StyledSectionField>
-                <StyledSubSectionTitle>
+                <SubSectionTitle>
                   <FormattedMessage {...messages.viewingRightsTitle} />
-                </StyledSubSectionTitle>
+                </SubSectionTitle>
 
                 <RadioButtonsWrapper>
                   <StyledRadio
@@ -291,7 +287,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             </ModeratorSubSection>
 
             <SubSection>
-              <StyledSubSectionTitle>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
                 <IconTooltip
                   content={
@@ -307,7 +303,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
                     />
                   }
                 />
-              </StyledSubSectionTitle>
+              </SubSectionTitle>
               <IdeaAssignment projectId={projectId} />
             </SubSection>
           </StyledSection>
