@@ -52,6 +52,7 @@ const StyledSectionField = styled(SectionField)`
 
 const RadioButtonsWrapper = styled.fieldset`
   border: none;
+  padding: 0;
 `;
 
 const StyledRadio = styled(Radio)`
