@@ -13,6 +13,7 @@ import messages from '../messages';
 
 const StyledFieldset = styled.fieldset`
   border: none;
+  padding: 0;
 `;
 
 const StyledMultipleSelect = styled(MultipleSelect)`
