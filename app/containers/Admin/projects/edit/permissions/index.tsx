@@ -294,11 +294,11 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
                 <IconTooltip
                   content={
                     <FormattedMessage
-                      {...messages.ideaAssignmentTooltip}
+                      {...messages.ideaAssignmentTooltipText}
                       values={{
-                        linkToIdeasOverview: (
+                        ideaManagerLink: (
                           <StyledLink to={`/admin/projects/${projectId}/ideas`}>
-                            <FormattedMessage {...messages.ideasOverview} />
+                            <FormattedMessage {...messages.ideaManagerLinkText} />
                           </StyledLink>
                         )
                       }}
