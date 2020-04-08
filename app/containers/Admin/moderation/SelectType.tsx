@@ -21,7 +21,7 @@ const SelectType = memo(({ onChange }: Props) => {
 
   return (
     <FilterSelector
-      title={'Type'}
+      title={<FormattedMessage {...messages.type} />}
       name="type"
       selected={selectedTypes}
       values={[{

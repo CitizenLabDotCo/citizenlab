@@ -200,11 +200,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onModerationStatusChange,
     onPageNumberChange,
     onPageSizeChange,
-    onModeratableTypesChange
+    onModeratableTypesChange,
+    onProjectIdsChange
   } = useModerations({
     pageSize: pageSizes[1].value,
     moderationStatus: 'unread',
-    moderatableTypes: []
+    moderatableTypes: [],
+    projectIds: []
   });
 
   const [moderationItems, setModerationItems] = useState(list);
@@ -234,6 +236,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const handleModeratableTypesChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
     onModeratableTypesChange(newSelectedTypes);
+  }, [onModeratableTypesChange]);
+
+  const handleProjectIdsChange = useCallback((newProjectIds: string[]) => {
+    onProjectIdsChange(newProjectIds);
   }, [onModeratableTypesChange]);
 
   const handleRowOnSelect = useCallback((selectedModerationId: string) => {
@@ -318,7 +324,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <SelectType
             onChange={handleModeratableTypesChange}
           />
-          <SelectProject />
+          <SelectProject
+            onChange={handleProjectIdsChange}
+          />
         </FilterSelectors>
 
         <StyledTable>

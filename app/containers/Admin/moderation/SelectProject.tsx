@@ -1,38 +1,70 @@
 import React, { memo, useState, useCallback } from 'react';
+import { adopt } from 'react-adopt';
 import FilterSelector from 'components/FilterSelector';
+import useLocalize from 'hooks/useLocalize';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const SelectProject = memo(() => {
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+// resources
+import GetProjects, { GetProjectsChildProps } from 'resources/GetProjects';
+import { isNilOrError } from 'utils/helperUtils';
 
-  const handleOnChange = useCallback((selectedProjects: string[]) => {
-    setSelectedProjects((selectedProjects || []));
+interface InputProps {
+  onChange: (projectIds: string[]) => void;
+}
+interface DataProps {
+  projects: GetProjectsChildProps;
+}
+
+interface Props extends DataProps, InputProps {}
+
+const SelectProject = memo(({ onChange, projects }: Props) => {
+  const localize = useLocalize();
+  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  const handleOnChange = useCallback((newProjectIds: string[]) => {
+    setSelectedProjects(newProjectIds);
+    onChange(newProjectIds);
   }, []);
 
-  return (
-    <FilterSelector
-      title={'Project'}
-      name="project"
-      selected={selectedProjects}
-      values={[{
-        text: 'Project 1',
-        value: 'project-1'
-      },
-      {
-        text: 'Project 2',
-        value: 'project-2'
-      },
-      {
-        text: 'Project 3',
-        value: 'project-3'
-      }]}
-      onChange={handleOnChange}
-      multipleSelectionAllowed={true}
-    />
-  );
+  if (
+    !isNilOrError(projects) &&
+    projects.projectsList &&
+    projects.projectsList.length > 0
+  ) {
+    const projectList = projects.projectsList;
+    const values = projectList.map(project => {
+      return {
+        text: localize(project.attributes.title_multiloc),
+        value: project.id
+      };
+    });
+
+    return (
+      <FilterSelector
+        title={<FormattedMessage {...messages.project} />}
+        name="project"
+        selected={selectedProjects}
+        values={values}
+        onChange={handleOnChange}
+        multipleSelectionAllowed={true}
+      />
+    );
+  }
+
+  return null;
+
 });
 
-export default SelectProject;
+const Data = adopt<DataProps, InputProps>({
+  projects: <GetProjects publicationStatuses={['published', 'archived', 'draft']} />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <SelectProject {...inputProps} {...dataProps} />}
+  </Data>
+);
+
+// TODO: useProjects hook
