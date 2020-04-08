@@ -20,7 +20,7 @@ import SelectProject from './SelectProject';
 import useModerations from 'hooks/useModerations';
 
 // services
-import { updateModerationStatus, IModerationData, TModerationStatuses } from 'services/moderations';
+import { updateModerationStatus, IModerationData, TModerationStatuses, TModeratableTypes } from 'services/moderations';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -199,10 +199,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     lastPage,
     onModerationStatusChange,
     onPageNumberChange,
-    onPageSizeChange
+    onPageSizeChange,
+    onModeratableTypesChange
   } = useModerations({
     pageSize: pageSizes[1].value,
-    moderationStatus: 'unread'
+    moderationStatus: 'unread',
+    moderatableTypes: []
   });
 
   const [moderationItems, setModerationItems] = useState(list);
@@ -229,6 +231,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const handleOnPageSizeChange = useCallback((option: IOption) => {
     onPageSizeChange(option.value);
   }, [onPageSizeChange]);
+
+  const handleModeratableTypesChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
+    onModeratableTypesChange(newSelectedTypes);
+  }, [onModeratableTypesChange]);
 
   const handleRowOnSelect = useCallback((selectedModerationId: string) => {
     if (!processing) {
@@ -309,7 +315,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </Filters>
 
         <FilterSelectors>
-          <SelectType />
+          <SelectType
+            onChange={handleModeratableTypesChange}
+          />
           <SelectProject />
         </FilterSelectors>
 
