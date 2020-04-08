@@ -45,6 +45,9 @@ resource "Moderations" do
     end
 
     parameter :moderation_status, "Filter by moderation status. One of #{ModerationStatus::MODERATION_STATUSES.join(", ")}.", required: false
+    parameter :moderatable_types, "Filter by a given array of moderatable types. One (or more) of Idea, Initiative, Comment.", required: false
+    parameter :project_ids, "Filter by a given array of project IDs.", required: false
+    parameter :search, "Filter by searching in content title, and content body", required: false
 
     example_request "List all moderations" do
       expect(status).to eq(200)
@@ -84,6 +87,51 @@ resource "Moderations" do
         expect(json_response[:data].size).to eq 2
         expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m3.id, @m4.id]
         expect(json_response[:data].map { |d| d.dig(:attributes, :moderation_status)}).to eq ['read', 'read']
+      end
+    end
+
+    describe "" do
+      let(:moderatable_types) { ['Idea', 'Comment'] }
+
+      example_request "List only moderations for ideas or comments" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m2.id, @m3.id, @m4.id]
+        expect(json_response[:data].map { |d| d.dig(:attributes, :moderatable_type)}.uniq).to match_array moderatable_types
+      end
+    end
+
+    describe "" do
+      before do
+        @m5 = create(:idea, project: @m2.project)
+      end
+
+      let(:project_ids) { [@m2.project.id, @m4.project.id] }
+
+      example_request "List only moderations for ideas or comments" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m2.id, @m4.id, @m5.id]
+      end
+    end
+
+    describe "" do
+      before do
+        @m5 = create(:initiative, 
+          title_multiloc: {'en' => 'Create a new superhero: Democracyman'}, 
+          body_multiloc: {'en' => 'That person could be called upon whenever democracy is at risk. Alternative soltution: Democracywoman.'}
+          )
+      end
+
+      let(:search) { 'hero' }
+
+      example_request "Search for moderations" do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq 3
+        expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m2.id, @m3.id, @m5.id]
       end
     end
   end
