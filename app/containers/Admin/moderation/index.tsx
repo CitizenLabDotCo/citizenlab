@@ -13,9 +13,9 @@ import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
-import SearchInput from 'components/UI/SearchInput';
 import SelectType from './SelectType';
 import SelectProject from './SelectProject';
+import Search from './Search';
 
 // hooks
 import useModerations from 'hooks/useModerations';
@@ -156,8 +156,8 @@ const EmptyMessage = styled.div`
   text-align: center;
 `;
 
-const StyledSearchInput = styled(SearchInput)`
-  margin-bottom: 30px;
+const StyledSearch = styled(Search)`
+  margin-bottom: 50px;
 `;
 
 interface Props {
@@ -206,12 +206,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onPageNumberChange,
     onPageSizeChange,
     onModeratableTypesChange,
-    onProjectIdsChange
+    onProjectIdsChange,
+    onSearchTermChange
   } = useModerations({
     pageSize: pageSizes[1].value,
     moderationStatus: 'unread',
     moderatableTypes: [],
-    projectIds: []
+    projectIds: [],
+    searchTerm: ''
   });
 
   const [moderationItems, setModerationItems] = useState(list);
@@ -246,6 +248,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const handleProjectIdsChange = useCallback((newProjectIds: string[]) => {
     onProjectIdsChange(newProjectIds);
   }, [onModeratableTypesChange]);
+
+  const handleSearchTermChange = useCallback((searchTerm: string) => {
+    onSearchTermChange(searchTerm);
+  }, [onSearchTermChange]);
 
   const handleRowOnSelect = useCallback((selectedModerationId: string) => {
     if (!processing) {
@@ -334,7 +340,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           }
         </Filters>
 
-        <StyledSearchInput />
+        <StyledSearch
+          onChange={handleSearchTermChange}
+        />
 
         <StyledTable>
           <thead>

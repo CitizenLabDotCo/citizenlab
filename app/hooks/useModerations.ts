@@ -9,6 +9,7 @@ interface InputProps {
   moderationStatus?: TModerationStatuses;
   moderatableTypes: TModeratableTypes[];
   projectIds: string[];
+  searchTerm: string;
 }
 
 export default function useModerations(props: InputProps) {
@@ -20,6 +21,7 @@ export default function useModerations(props: InputProps) {
   const [lastPage, setLastPage] = useState(1);
   const [moderatableTypes, setModeratableTypes] = useState(props.moderatableTypes);
   const [projectIds, setProjectIds] = useState(props.projectIds);
+  const [searchTerm, setSearchTerm] = useState(props.searchTerm);
 
   const onPageNumberChange = useCallback((newPageNumber: number) => {
     setPageNumber(newPageNumber);
@@ -42,6 +44,10 @@ export default function useModerations(props: InputProps) {
     setProjectIds([...projectIds]);
   }, []);
 
+  const onSearchTermChange = useCallback((searchTerm: string) => {
+    setSearchTerm(searchTerm);
+  }, []);
+
   useEffect(() => {
     setPageNumber(props.pageNumber);
     setPageSize(props.pageSize);
@@ -55,7 +61,8 @@ export default function useModerations(props: InputProps) {
         'page[size]': pageSize,
         moderation_status: moderationStatus,
         moderatable_types: moderatableTypes,
-        project_ids: projectIds
+        project_ids: projectIds,
+        search: searchTerm
       }
     }).observable.subscribe((response) => {
       const list = !isNilOrError(response) ? response.data : response;
@@ -67,18 +74,19 @@ export default function useModerations(props: InputProps) {
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, moderationStatus, moderatableTypes, projectIds]);
+  }, [pageNumber, pageSize, moderationStatus, moderatableTypes, projectIds, searchTerm]);
 
   return {
     list,
     currentPage,
     lastPage,
+    pageSize,
+    moderationStatus,
     onPageNumberChange,
     onPageSizeChange,
     onModerationStatusChange,
     onModeratableTypesChange,
     onProjectIdsChange,
-    pageSize,
-    moderationStatus
+    onSearchTermChange,
   };
 }
