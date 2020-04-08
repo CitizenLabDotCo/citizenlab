@@ -121,7 +121,7 @@ resource "Moderations" do
     describe "" do
       before do
         @m5 = create(:initiative, 
-          title_multiloc: {'en' => 'Create a new superhero: Democracyman'}, 
+          title_multiloc: {'en' => 'Create a new super hero: Democracyman'}, 
           body_multiloc: {'en' => 'That person could be called upon whenever democracy is at risk. Alternative soltution: Democracywoman.'}
           )
       end
@@ -132,7 +132,7 @@ resource "Moderations" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m2.id, @m3.id, @m5.id]
+        expect(json_response[:data].map { |d| d.dig(:id) }).to match_array [@m2.id, @m3.id, @m5.id]
       end
     end
   end
