@@ -194,7 +194,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   ];
 
-  const { list, pageSize, moderationStatus, currentPage, lastPage, onModerationStatusChange, onPageNumberChange, onPageSizeChange } = useModerations({
+  const {
+    list,
+    pageSize,
+    moderationStatus,
+    currentPage,
+    lastPage,
+    onModerationStatusChange,
+    onPageNumberChange,
+    onPageSizeChange
+  } = useModerations({
     pageSize: pageSizes[1].value,
     moderationStatus: 'unread'
   });
@@ -226,7 +235,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const handleRowOnSelect = useCallback((selectedModerationId: string) => {
     if (!processing) {
-      const newSelectedRows = includes(selectedRows, selectedModerationId) ? selectedRows.filter(id => id !== selectedModerationId) : [...selectedRows, selectedModerationId];
+      const newSelectedRows = includes(selectedRows, selectedModerationId) ?
+        selectedRows.filter(id => id !== selectedModerationId)
+        :
+        [...selectedRows, selectedModerationId];
       setSelectedRows(newSelectedRows);
     }
   }, [selectedRows, processing]);
@@ -234,11 +246,16 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const markAs = useCallback(async (event: React.FormEvent) => {
     if (selectedRows.length > 0 && !isNilOrError(moderationItems) && moderationStatus && !processing) {
       event.preventDefault();
-      trackEventByName(moderationStatus === 'read' ? tracks.markedAsNotViewedButtonClicked : tracks.markedAsNotViewedButtonClicked, { selectedItemsCount: selectedRows.length });
+      trackEventByName(moderationStatus === 'read' ?
+        tracks.markedAsNotViewedButtonClicked
+        :
+        tracks.markedAsNotViewedButtonClicked, { selectedItemsCount: selectedRows.length });
       setProcessing(true);
       const moderations = selectedRows.map((moderationId) => moderationItems.find(item => item.id === moderationId)) as IModerationData[];
       const updatedModerationStatus = (moderationStatus === 'read' ? 'unread' : 'read');
-      const promises = moderations.map((moderation) => updateModerationStatus(moderation.id, moderation.attributes.moderatable_type, updatedModerationStatus));
+      const promises = moderations.map((moderation) => updateModerationStatus(
+        moderation.id, moderation.attributes.moderatable_type, updatedModerationStatus)
+      );
       await Promise.all(promises);
       setProcessing(false);
       setSelectedRows([]);
@@ -409,7 +426,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           <Empty>
             <EmptyIcon name="inbox" />
             <EmptyMessage>
-              {moderationStatus === 'read' ? <FormattedMessage {...messages.noViewedItems} /> : <FormattedMessage {...messages.noUnviewedItems} />}
+              {moderationStatus === 'read' ?
+                <FormattedMessage {...messages.noViewedItems} />
+                :
+                <FormattedMessage {...messages.noUnviewedItems} />
+              }
             </EmptyMessage>
           </Empty>
         }
