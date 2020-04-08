@@ -8,6 +8,7 @@ interface InputProps {
   pageSize?: number;
   moderationStatus?: TModerationStatuses;
   moderatableTypes: TModeratableTypes[];
+  projectIds: string[];
 }
 
 export default function useModerations(props: InputProps) {
@@ -18,6 +19,7 @@ export default function useModerations(props: InputProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [moderatableTypes, setModeratableTypes] = useState(props.moderatableTypes);
+  const [projectIds, setProjectIds] = useState(props.projectIds);
 
   const onPageNumberChange = useCallback((newPageNumber: number) => {
     setPageNumber(newPageNumber);
@@ -33,7 +35,11 @@ export default function useModerations(props: InputProps) {
   }, []);
 
   const onModeratableTypesChange = useCallback((newModeratableTypes: TModeratableTypes[]) => {
-    setModeratableTypes([...moderatableTypes, ...newModeratableTypes]);
+    setModeratableTypes([...newModeratableTypes]);
+  }, []);
+
+  const onProjectIdsChange = useCallback((projectIds: string[]) => {
+    setProjectIds([...projectIds]);
   }, []);
 
   useEffect(() => {
@@ -48,7 +54,8 @@ export default function useModerations(props: InputProps) {
         'page[number]': pageNumber || 1,
         'page[size]': pageSize,
         moderation_status: moderationStatus,
-        moderatable_types: moderatableTypes
+        moderatable_types: moderatableTypes,
+        project_ids: projectIds
       }
     }).observable.subscribe((response) => {
       const list = !isNilOrError(response) ? response.data : response;
@@ -60,7 +67,7 @@ export default function useModerations(props: InputProps) {
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, moderationStatus, moderatableTypes]);
+  }, [pageNumber, pageSize, moderationStatus, moderatableTypes, projectIds]);
 
   return {
     list,
@@ -70,6 +77,7 @@ export default function useModerations(props: InputProps) {
     onPageSizeChange,
     onModerationStatusChange,
     onModeratableTypesChange,
+    onProjectIdsChange,
     pageSize,
     moderationStatus
   };
