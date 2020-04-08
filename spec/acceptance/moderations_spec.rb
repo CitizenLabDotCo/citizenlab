@@ -104,16 +104,17 @@ resource "Moderations" do
 
     describe "" do
       before do
-        @m5 = create(:idea, project: @m2.post.project)
+        @m5 = create(:idea, project: @m3.project)
+        @m6 = create(:comment)
       end
 
-      let(:project_ids) { [@m2.post.project.id, @m4.project.id] }
+      let(:project_ids) { [@m3.project.id, @m4.project.id] }
 
       example_request "List only moderations in one of the given projects" do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].map { |d| d.dig(:id) }).to eq [@m2.id, @m4.id, @m5.id]
+        expect(json_response[:data].size).to eq 4
+        expect(json_response[:data].map { |d| d.dig(:id) }).to match_array [@m2.id, @m3.id, @m4.id, @m5.id]
       end
     end
 
