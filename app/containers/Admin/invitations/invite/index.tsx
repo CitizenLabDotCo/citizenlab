@@ -502,7 +502,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
 
           <SectionField>
             <Label>
-              <FormattedMessage {...messages.groupsLabel} />
+              <FormattedMessage {...messages.addToGroupLabel} />
             </Label>
             <MultipleSelect
               value={selectedGroups}
