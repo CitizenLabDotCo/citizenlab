@@ -13,6 +13,7 @@ import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
+import SearchInput from 'components/UI/SearchInput';
 
 // hooks
 import useModerations from 'hooks/useModerations';
@@ -147,6 +148,10 @@ const EmptyMessage = styled.div`
   line-height: normal;
   font-weight: 500;
   text-align: center;
+`;
+
+const StyledSearchInput = styled(SearchInput)`
+  margin-bottom: 30px;
 `;
 
 interface Props {
@@ -284,6 +289,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             />
           }
         </Filters>
+
+        <StyledSearchInput />
 
         <StyledTable>
           <thead>
