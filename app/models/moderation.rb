@@ -3,6 +3,10 @@ class Moderation < ActiveRecord::Base
 
   has_one :moderation_status, foreign_key: :moderatable_id, foreign_type: :moderatable_type
 
+  # pg_search_scope :search_by_all, 
+  #     :against => [:content_title_multiloc, :content_body_multiloc],
+  #     :using => { :tsearch => {:prefix => true} }
+
   scope :with_moderation_status, (Proc.new do |status|
     moderations = joins("LEFT JOIN moderation_statuses \
         ON moderation_statuses.moderatable_id = moderations.id AND \
