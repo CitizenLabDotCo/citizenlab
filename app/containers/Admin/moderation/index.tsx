@@ -70,6 +70,10 @@ const Filters = styled.div`
 
 const MarkAsButton = styled(Button)``;
 
+const StyledTabs = styled(Tabs)`
+  margin-right: 20px;
+`;
+
 const StyledTable = styled(Table)`
   th,
   td {
@@ -149,10 +153,6 @@ const EmptyMessage = styled.div`
   line-height: normal;
   font-weight: 500;
   text-align: center;
-`;
-
-const FilterSelectors = styled.div`
-  display: flex;
 `;
 
 interface Props {
@@ -312,22 +312,22 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
           }
 
           {selectedRows.length === 0 &&
-            <Tabs
-              items={moderationStatuses}
-              selectedValue={moderationStatus || 'unread'}
-              onClick={handleOnModerationStatusChange}
-            />
+            <>
+              <StyledTabs
+                items={moderationStatuses}
+                selectedValue={moderationStatus || 'unread'}
+                onClick={handleOnModerationStatusChange}
+              />
+              <SelectType
+                onChange={handleModeratableTypesChange}
+              />
+              <SelectProject
+                onChange={handleProjectIdsChange}
+              />
+            </>
+
           }
         </Filters>
-
-        <FilterSelectors>
-          <SelectType
-            onChange={handleModeratableTypesChange}
-          />
-          <SelectProject
-            onChange={handleProjectIdsChange}
-          />
-        </FilterSelectors>
 
         <StyledTable>
           <thead>
