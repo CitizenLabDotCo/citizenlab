@@ -16,7 +16,11 @@ import { darken } from 'polished';
 // typings
 import { Multiloc, Locale } from 'typings';
 
-const Container = styled.div``;
+const Container = styled.div`
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+`;
 
 const Content = styled.div``;
 
