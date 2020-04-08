@@ -13,7 +13,8 @@ import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
 import { PageTitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
-import FilterSelector from 'components/FilterSelector';
+import SelectType from './SelectType';
+import SelectProject from './SelectProject';
 
 // hooks
 import useModerations from 'hooks/useModerations';
@@ -150,10 +151,6 @@ const EmptyMessage = styled.div`
   text-align: center;
 `;
 
-const StyledFilterSelector = styled(FilterSelector)`
-  margin-bottom: 50px;
-`;
-
 const FilterSelectors = styled.div`
   display: flex;
 `;
@@ -262,10 +259,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     }
   }, [selectedRows, moderationItems, moderationStatus]);
 
-  const handleOnChange = () => {
-
-  };
-
   useEffect(() => {
     if (!processing) {
       setSelectedRows([]);
@@ -316,45 +309,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </Filters>
 
         <FilterSelectors>
-          <StyledFilterSelector
-            title={'Type'}
-            name="type"
-            selected={[]}
-            values={[{
-              text: 'Comment',
-              value: 'comment'
-            },
-            {
-              text: 'Idea',
-              value: 'idea'
-            },
-            {
-              text: 'Initiative',
-              value: 'initiative'
-            }]}
-            onChange={handleOnChange}
-            multipleSelectionAllowed={true}
-          />
-
-          <StyledFilterSelector
-            title={'Project'}
-            name="project"
-            selected={[]}
-            values={[{
-              text: 'Project 1',
-              value: 'project-1'
-            },
-            {
-              text: 'Project 2',
-              value: 'project-2'
-            },
-            {
-              text: 'Project 3',
-              value: 'project-3'
-            }]}
-            onChange={handleOnChange}
-            multipleSelectionAllowed={true}
-          />
+          <SelectType />
+          <SelectProject />
         </FilterSelectors>
 
         <StyledTable>
