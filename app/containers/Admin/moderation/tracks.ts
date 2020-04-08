@@ -6,4 +6,7 @@ export default {
   goToLinkClicked: "'Go to' link clicked",
   belongsToLinkClicked: "'Belongs to' link clicked",
   pageNumberClicked: 'Page number clicked',
+  typeFilterUsed: 'Filtered on moderation type',
+  projectFilterUsed: 'Filtered on project',
+  searchUsed: 'Used search'
 };
