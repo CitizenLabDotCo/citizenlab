@@ -243,14 +243,19 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
   const handleModeratableTypesChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
     onModeratableTypesChange(newSelectedTypes);
+    trackEventByName(tracks.typeFilterUsed);
   }, [onModeratableTypesChange]);
 
   const handleProjectIdsChange = useCallback((newProjectIds: string[]) => {
     onProjectIdsChange(newProjectIds);
+    trackEventByName(tracks.projectFilterUsed);
   }, [onModeratableTypesChange]);
 
   const handleSearchTermChange = useCallback((searchTerm: string) => {
     onSearchTermChange(searchTerm);
+    trackEventByName(tracks.searchUsed, {
+      searchTerm
+    });
   }, [onSearchTermChange]);
 
   const handleRowOnSelect = useCallback((selectedModerationId: string) => {
