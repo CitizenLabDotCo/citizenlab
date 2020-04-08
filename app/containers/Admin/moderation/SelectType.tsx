@@ -5,11 +5,18 @@ import FilterSelector from 'components/FilterSelector';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-const SelectType = memo(() => {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
+// services
+import { TModeratableTypes } from 'services/moderations';
 
-  const handleOnChange = useCallback((selectedTypes: string[]) => {
-    setSelectedTypes((selectedTypes || []));
+interface Props {
+  onChange: (newModeratableType: TModeratableTypes[]) => void;
+}
+
+const SelectType = memo(({ onChange }: Props) => {
+  const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
+  const handleOnChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
+    setSelectedTypes(newSelectedTypes);
+    onChange(newSelectedTypes);
   }, []);
 
   return (
