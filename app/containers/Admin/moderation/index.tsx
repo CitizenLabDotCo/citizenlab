@@ -219,6 +219,8 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [moderationItems, setModerationItems] = useState(list);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
+  const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
+  const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
   const handleOnSelectAll = useCallback((_event: React.MouseEvent | React.KeyboardEvent) => {
     if (!isNilOrError(moderationItems) && !processing) {
@@ -242,11 +244,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   }, [onPageSizeChange]);
 
   const handleModeratableTypesChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
+    setSelectedTypes(newSelectedTypes);
     onModeratableTypesChange(newSelectedTypes);
     trackEventByName(tracks.typeFilterUsed);
   }, [onModeratableTypesChange]);
 
   const handleProjectIdsChange = useCallback((newProjectIds: string[]) => {
+    setSelectedProjectIds(newProjectIds);
     onProjectIdsChange(newProjectIds);
     trackEventByName(tracks.projectFilterUsed);
   }, [onModeratableTypesChange]);
@@ -335,9 +339,11 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 onClick={handleOnModerationStatusChange}
               />
               <SelectType
+                selectedTypes={selectedTypes}
                 onChange={handleModeratableTypesChange}
               />
               <SelectProject
+                selectedProjectIds={selectedProjectIds}
                 onChange={handleProjectIdsChange}
               />
             </>
