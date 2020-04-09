@@ -372,9 +372,6 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="content">
                 <FormattedMessage {...messages.content} />
               </th>
-              <th className="options">
-                <FormattedMessage {...messages.goTo} />
-              </th>
             </tr>
           </thead>
           {moderationItems.length > 0 &&
