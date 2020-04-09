@@ -23,9 +23,7 @@ interface Props extends DataProps, InputProps {}
 
 const SelectProject = memo(({ onChange, projects, selectedProjectIds }: Props) => {
   const localize = useLocalize();
-  // const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const handleOnChange = useCallback((newProjectIds: string[]) => {
-    // setSelectedProjects(newProjectIds);
     onChange(newProjectIds);
   }, []);
 
