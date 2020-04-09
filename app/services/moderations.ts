@@ -18,7 +18,7 @@ export interface IModerationData {
     moderation_status?: TModerationStatuses,
     belongs_to: {
       [key: string]: {
-        id:string,
+        id: string,
         slug: string,
         title_multiloc: Multiloc
       }
