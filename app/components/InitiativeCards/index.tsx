@@ -498,7 +498,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
         <StyledSearchInput
           placeholder={this.searchPlaceholder}
           ariaLabel={this.searchAriaLabel}
-          value={selectedInitiativeFilters.search || null}
           onChange={this.handleSearchOnChange}
         />
         <StyledInitiativesStatusFilter
@@ -559,7 +558,6 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                 <MobileSearchFilter
                   placeholder={this.searchPlaceholder}
                   ariaLabel={this.searchAriaLabel}
-                  value={selectedInitiativeFilters.search || null}
                   onChange={this.handleSearchOnChange}
                 />
 

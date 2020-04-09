@@ -256,7 +256,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   handleSearchOnChange = (search: string) => {
-    // track
     this.props.ideas.onChangeSearchTerm(search);
   }
 
@@ -323,7 +322,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
               className="e2e-search-ideas-input"
               placeholder={this.searchPlaceholder}
               ariaLabel={this.searchAriaLabel}
-              value={queryParameters.search || null}
               onChange={this.handleSearchOnChange}
             />
           </LeftFilterArea>
