@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import FilterSelector from 'components/FilterSelector';
 
 // i18n
@@ -10,12 +10,11 @@ import { TModeratableTypes } from 'services/moderations';
 
 interface Props {
   onChange: (newModeratableType: TModeratableTypes[]) => void;
+  selectedTypes: TModeratableTypes[];
 }
 
-const SelectType = memo(({ onChange }: Props) => {
-  const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
+const SelectType = memo(({ onChange, selectedTypes }: Props) => {
   const handleOnChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
-    setSelectedTypes(newSelectedTypes);
     onChange(newSelectedTypes);
   }, []);
 

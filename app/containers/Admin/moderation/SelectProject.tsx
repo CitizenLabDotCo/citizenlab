@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useCallback } from 'react';
 import { adopt } from 'react-adopt';
 import FilterSelector from 'components/FilterSelector';
 import useLocalize from 'hooks/useLocalize';
@@ -13,6 +13,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   onChange: (projectIds: string[]) => void;
+  selectedProjectIds: string[];
 }
 interface DataProps {
   projects: GetProjectsChildProps;
@@ -20,11 +21,11 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps {}
 
-const SelectProject = memo(({ onChange, projects }: Props) => {
+const SelectProject = memo(({ onChange, projects, selectedProjectIds }: Props) => {
   const localize = useLocalize();
-  const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
+  // const [selectedProjects, setSelectedProjects] = useState<string[]>([]);
   const handleOnChange = useCallback((newProjectIds: string[]) => {
-    setSelectedProjects(newProjectIds);
+    // setSelectedProjects(newProjectIds);
     onChange(newProjectIds);
   }, []);
 
@@ -45,7 +46,7 @@ const SelectProject = memo(({ onChange, projects }: Props) => {
       <FilterSelector
         title={<FormattedMessage {...messages.project} />}
         name="project"
-        selected={selectedProjects}
+        selected={selectedProjectIds}
         values={values}
         onChange={handleOnChange}
         multipleSelectionAllowed={true}
