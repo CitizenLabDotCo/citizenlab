@@ -15,7 +15,7 @@ import { PageTitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
 import SelectType from './SelectType';
 import SelectProject from './SelectProject';
-import Search from './Search';
+import SearchInput from 'components/UI/SearchInput';
 
 // hooks
 import useModerations from 'hooks/useModerations';
@@ -156,7 +156,7 @@ const EmptyMessage = styled.div`
   text-align: center;
 `;
 
-const StyledSearch = styled(Search)`
+const StyledSearch = styled(SearchInput)`
   margin-bottom: 50px;
 `;
 
