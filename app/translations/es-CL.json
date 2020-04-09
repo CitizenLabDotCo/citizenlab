@@ -650,7 +650,6 @@
   "app.containers.Admin.Moderation.comment": "Comentario",
   "app.containers.Admin.Moderation.content": "Contenido",
   "app.containers.Admin.Moderation.date": "Fecha",
-  "app.containers.Admin.Moderation.goTo": "Ir a",
   "app.containers.Admin.Moderation.goToThisContentType": "Abrir este {contentType} en una nueva pestaña",
   "app.containers.Admin.Moderation.helpTooltipText": "Esta página le permite comprobar todas las nuevas contribuciones que se han subido en su plataforma: ideas, comentarios e propuestas. Todo lo que has revisado, puede ser marcado como \"Visto\". Esto les permite mantener una visión general de lo que ha sido revisado por ti o por tus colegas y lo que no.",
   "app.containers.Admin.Moderation.idea": "Idea",
