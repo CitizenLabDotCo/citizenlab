@@ -33,10 +33,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Moderation.content',
     defaultMessage: 'Content',
   },
-  goTo: {
-    id: 'app.containers.Admin.Moderation.goTo',
-    defaultMessage: 'Go to',
-  },
   date: {
     id: 'app.containers.Admin.Moderation.date',
     defaultMessage: 'Date',
