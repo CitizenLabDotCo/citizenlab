@@ -157,7 +157,8 @@ const EmptyMessage = styled.div`
 `;
 
 const StyledSearch = styled(SearchInput)`
-  margin-bottom: 50px;
+  margin-left: auto;
+  width: 500px;
 `;
 
 interface Props {
@@ -346,14 +347,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 selectedProjectIds={selectedProjectIds}
                 onChange={handleProjectIdsChange}
               />
+
             </>
-
           }
+          <StyledSearch
+            onChange={handleSearchTermChange}
+          />
         </Filters>
-
-        <StyledSearch
-          onChange={handleSearchTermChange}
-        />
 
         <StyledTable>
           <thead>
