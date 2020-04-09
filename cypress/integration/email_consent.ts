@@ -26,6 +26,9 @@ describe('email consent', () => {
         cy.get('#e2e-consent-form');
         cy.get('.e2e-unsubscribe-status').contains('success').contains('Official');
       });
+
+      // gets official category, turn it back on and save
+      cy.get('#e2e-consent-checkbox').contains('Official messages').click();
     });
 
   });
