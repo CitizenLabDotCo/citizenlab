@@ -650,7 +650,6 @@
   "app.containers.Admin.Moderation.comment": "Reactie",
   "app.containers.Admin.Moderation.content": "Inhoud",
   "app.containers.Admin.Moderation.date": "Datum",
-  "app.containers.Admin.Moderation.goTo": "Ga naar",
   "app.containers.Admin.Moderation.goToThisContentType": "Open dit {contentType} in een nieuw tabblad",
   "app.containers.Admin.Moderation.helpTooltipText": "Op deze pagina heb je een duidelijk overzicht van alle nieuwe input die op je platform werd geplaatst: ideeën, reacties en initiatieven. Alles wat je hebt nagekeken, kan je aanduiden als 'Gezien'. Op die manier krijg je steeds enkel die items te zien die nog niet door jou of een collega werden nagekeken.",
   "app.containers.Admin.Moderation.idea": "Idee",
