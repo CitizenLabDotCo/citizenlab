@@ -11,12 +11,11 @@ import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import Radio from 'components/UI/Radio';
-import Label from 'components/UI/Label';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
@@ -78,6 +77,7 @@ const ProjectType = styled.div`
 
 const StyledSectionField = styled(SectionField)`
   max-width: 100%;
+  margin-bottom: 40px;
 `;
 
 const StyledImagesDropzone = styled(ImagesDropzone)`
@@ -145,6 +145,14 @@ const DeleteProjectSectionField = styled(SectionField)`
 
 const ButtonWrapper = styled.div`
   display: flex;
+`;
+
+const StyledFileUploader = styled(FileUploader)`
+  width: 500px;
+`;
+
+const StyledMultipleSelect = styled(MultipleSelect)`
+  width: 500px;
 `;
 
 type Props = {
@@ -643,11 +651,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               </>
             }
 
-            <SectionField>
-              <Label>
+            <StyledSectionField>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.statusLabel} />
                 <IconTooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
-              </Label>
+              </SubSectionTitle>
               <Radio
                 onChange={this.handleStatusChange}
                 currentValue={publicationStatus}
@@ -675,9 +683,12 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 className="e2e-projecstatus-archived"
                 label={<FormattedMessage {...messages.archivedStatus} />}
               />
-            </SectionField>
+            </StyledSectionField>
 
-            <SectionField>
+            <StyledSectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.projectName} />
+              </SubSectionTitle>
               <StyledInputMultiloc
                 id="project-title"
                 type="text"
@@ -688,15 +699,15 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 errorMultiloc={noTitleError}
               />
               <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
-            </SectionField>
+            </StyledSectionField>
 
-            <SectionField>
+            <StyledSectionField>
               {!project ? (
                 <>
-                  <Label htmlFor="projectype-timeline">
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.projectType} />
                     <IconTooltip content={<FormattedMessage {...messages.projectTypeTooltip} />} />
-                  </Label>
+                  </SubSectionTitle>
                   <Radio
                     className="e2e-project-type-timeline"
                     onChange={this.handeProjectTypeOnChange}
@@ -718,10 +729,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 </>
               ) : (
                   <>
-                    <Label>
+                    <SubSectionTitle>
                       <FormattedMessage {...messages.projectTypeEdit} />
                       <IconTooltip content={<FormattedMessage {...messages.projectTypeEditTooltip} />} />
-                    </Label>
+                    </SubSectionTitle>
                     <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
                 )}
@@ -745,7 +756,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   </ParticipationContextWrapper>
                 </CSSTransition>
               }
-            </SectionField>
+            </StyledSectionField>
 
             {project && projectType === 'continuous' &&
               <ParticipationContext
@@ -756,8 +767,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               />
             }
 
-            <SectionField>
-              <Label htmlFor="project-area">
+            <StyledSectionField>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.areasLabel} />
                 <IconTooltip
                   content={
@@ -773,7 +784,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     />
                   }
                 />
-              </Label>
+              </SubSectionTitle>
               <Radio
                 onChange={this.handleAreaTypeChange}
                 currentValue={areaType}
@@ -793,7 +804,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               />
 
               {areaType === 'selection' &&
-                <MultipleSelect
+                <StyledMultipleSelect
                   id="e2e-area-selector"
                   options={areasOptions}
                   value={areasValues}
@@ -802,10 +813,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   disabled={areaType !== 'selection'}
                 />
               }
-            </SectionField>
+            </StyledSectionField>
 
             <StyledSectionField>
-              <Label>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.headerImageLabel} />
                 <IconTooltip
                   content={
@@ -822,7 +833,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     />
                   }
                 />
-              </Label>
+              </SubSectionTitle>
               <StyledImagesDropzone
                 images={projectHeaderImage}
                 imagePreviewRatio={120 / 480}
@@ -836,7 +847,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             </StyledSectionField>
 
             <StyledSectionField>
-              <Label>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.projectImageLabel} />
                 <IconTooltip
                   content={
@@ -853,7 +864,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     />
                   }
                 />
-              </Label>
+              </SubSectionTitle>
               <StyledImagesDropzone
                 images={projectImages}
                 imagePreviewRatio={1}
@@ -866,26 +877,26 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               />
             </StyledSectionField>
 
-            <SectionField>
-              <Label>
+            <StyledSectionField>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.fileUploadLabel} />
                 <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
-              </Label>
-              <FileUploader
+              </SubSectionTitle>
+              <StyledFileUploader
                 onFileAdd={this.handleProjectFileOnAdd}
                 onFileRemove={this.handleProjectFileOnRemove}
                 files={projectFiles}
                 errors={apiErrors}
               />
-            </SectionField>
+            </StyledSectionField>
 
             {project &&
               <HasPermission item={project.data} action="delete">
                 <DeleteProjectSectionField>
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.deleteProjectLabel} />
                     <IconTooltip content={<FormattedMessage {...messages.deleteProjectLabelTooltip} />} />
-                  </Label>
+                  </SubSectionTitle>
                   <ButtonWrapper>
                     <Button
                       type="button"

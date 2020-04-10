@@ -13,6 +13,11 @@ import messages from '../messages';
 
 const StyledFieldset = styled.fieldset`
   border: none;
+  padding: 0;
+`;
+
+const StyledMultipleSelect = styled(MultipleSelect)`
+  width: 300px;
 `;
 
 interface InputProps {
@@ -83,7 +88,7 @@ class ActionForm extends PureComponent<Props> {
             id={`participation-permission-certain-groups-${permissionId}`}
           />
           {permittedBy === 'groups' &&
-            <MultipleSelect
+            <StyledMultipleSelect
               value={groupIds || []}
               options={groupsOptions}
               onChange={this.handleGroupIdsUpdate}
