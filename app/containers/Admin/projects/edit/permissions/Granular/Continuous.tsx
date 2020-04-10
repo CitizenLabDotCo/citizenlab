@@ -8,12 +8,18 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IPermissionData, updateProjectPermission } from 'services/participationContextPermissions';
 import { IProjectData } from 'services/projects';
 
+import { fontSizes } from 'utils/styleUtils';
+
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  margin: 20px 0;
   padding-bottom: 20px;
-  justify-content: space-around;
+
+  p {
+    font-size: ${fontSizes.base}px;
+    font-style: italic;
+  }
 `;
 
 interface InputProps {

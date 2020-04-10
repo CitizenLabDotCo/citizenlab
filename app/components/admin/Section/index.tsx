@@ -11,7 +11,7 @@ export const SubSection = styled.section`
 `;
 
 export const SubSectionTitle = styled.h3`
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.large}px;
   font-weight: 400;
   line-height: ${remCalc(30)};
   display: flex;
