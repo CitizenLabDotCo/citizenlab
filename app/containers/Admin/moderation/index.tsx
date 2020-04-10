@@ -158,7 +158,7 @@ const EmptyMessage = styled.div`
 
 const StyledSearch = styled(SearchInput)`
   margin-left: auto;
-  width: 500px;
+  width: 400px;
 `;
 
 interface Props {
