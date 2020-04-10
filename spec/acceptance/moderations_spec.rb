@@ -66,7 +66,7 @@ resource "Moderations" do
       ]
     end
 
-    describe "" do
+    describe do
       let(:moderation_status) { 'unread' }
 
       example_request "List only unread moderations" do
@@ -78,7 +78,7 @@ resource "Moderations" do
       end
     end
 
-    describe "" do
+    describe do
       let(:moderation_status) { 'read' }
 
       example_request "List only read moderations" do
@@ -90,7 +90,7 @@ resource "Moderations" do
       end
     end
 
-    describe "" do
+    describe do
       let(:moderatable_types) { ['Idea', 'Comment'] }
 
       example_request "List only moderations for ideas or comments" do
@@ -102,7 +102,7 @@ resource "Moderations" do
       end
     end
 
-    describe "" do
+    describe do
       before do
         @m5 = create(:idea, project: @m3.project)
         @m6 = create(:comment)
@@ -118,7 +118,7 @@ resource "Moderations" do
       end
     end
 
-    describe "" do
+    describe do
       before do
         @m5 = create(:initiative, 
           title_multiloc: {'en' => 'Create a new super hero: Democracyman'}, 
