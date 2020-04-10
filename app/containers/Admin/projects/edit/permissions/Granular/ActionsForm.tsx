@@ -32,7 +32,7 @@ export default class ActionsForm extends PureComponent<Props> {
     const { permissions } = this.props;
 
     if (isEmpty(permissions)) {
-      return <p><FormattedMessage {...messages.noActionsCanBeTaken} /></p>;
+      return <p><FormattedMessage {...messages.noActionsCanBeTakenInThisProject} /></p>;
     } else {
       return permissions.map((permission, index) => (
         <ActionPermissionWrapper

@@ -104,7 +104,7 @@ class Timeline extends PureComponent<Props, State> {
             </Collapse>
           </div>
         ))}
-        {!phases || phases.length < 1 && <p><FormattedMessage {...messages.noActionsCanBeTaken} /></p>}
+        {!phases || phases.length < 1 && <p><FormattedMessage {...messages.noActionsCanBeTakenInThisProject} /></p>}
       </Container>
     );
   }
