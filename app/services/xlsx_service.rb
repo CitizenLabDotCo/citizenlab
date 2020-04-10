@@ -78,9 +78,7 @@ class XlsxService
         ], style: header_style(s)
         ideas.each do |idea|
           lat, lon = [nil, nil]
-          if idea.location_point.present?
-            lon, lat = RGeo::GeoJSON.encode(idea.location_point)['coordinates']
-          end
+          lon, lat = idea.location_point.coordinates if idea.location_point.present?
           sheet.add_row [
             idea.id,
             @@multiloc_service.t(idea.title_multiloc),
