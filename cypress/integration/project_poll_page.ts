@@ -18,7 +18,7 @@ describe('Continuous project with poll', () => {
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
-      cy.apiAddPoll('Project', projectId, [{ title: 'What is your favourite ice cream flavour ?', type: 'multiple_options' }, { title: 'Are you in favour of car-free sundays ?', type: 'single_option' }], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
+      cy.apiAddPoll('Project', projectId, [{ title: 'What is your favourite ice cream flavour?', type: 'multiple_options' }, { title: 'Are you in favour of car-free sundays ?', type: 'single_option' }], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
     });
   });
 
@@ -36,7 +36,7 @@ describe('Continuous project with poll', () => {
 
   it('lets user answer it', () => {
     cy.get('.e2e-continuous-project-poll-container').get('.e2e-poll-question').each(question =>
-      question.find('.e2e-poll-option').first().find('label').click()
+      question.find('.e2e-poll-option').first().click()
     );
     cy.get('.e2e-send-poll').click();
     cy.get('.e2e-form-completed');
@@ -80,7 +80,7 @@ describe('Timeline project with poll phase', () => {
       );
     }).then((phase) => {
       phaseId = phase.body.data.id;
-      cy.apiAddPoll('Phase', phaseId, [{ title: 'What is your favourite ice cream flavour ?', type: 'multiple_options' }, { title: 'Are you in favour of car-free sundays ?', type: 'single_option' }], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
+      cy.apiAddPoll('Phase', phaseId, [{ title: 'What is your favourite ice cream flavour?', type: 'multiple_options' }, { title: 'Are you in favour of car-free sundays ?', type: 'single_option' }], [['Vanilla', 'Chocolate', 'Pistachio'], ['Yes', 'No', 'I decline to answer']]);
     });
   });
 
@@ -99,7 +99,7 @@ describe('Timeline project with poll phase', () => {
   it('lets user answer it', () => {
     cy.wait(100);
     cy.get('.e2e-timeline-project-poll-container').get('.e2e-poll-question').each(question =>
-      question.find('.e2e-poll-option').first().find('label').click()
+      question.find('.e2e-poll-option').first().click()
     );
     cy.wait(500);
     cy.get('.e2e-send-poll').click();

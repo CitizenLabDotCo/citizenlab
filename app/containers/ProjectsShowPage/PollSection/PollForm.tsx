@@ -33,6 +33,8 @@ export const QuestionContainer = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
+export const Question = styled.h3``;
+
 export const QuestionNumber = styled.span`
   font-size: ${fontSizes.medium}px;
   line-height: ${fontSizes.medium}px;
