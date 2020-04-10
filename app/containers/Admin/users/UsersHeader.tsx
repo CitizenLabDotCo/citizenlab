@@ -1,7 +1,6 @@
 // Libraries
 import React, { PureComponent } from 'react';
 import { Multiloc } from 'typings';
-import { throttle } from 'lodash-es';
 
 // Components
 import Icon from 'components/UI/Icon';
@@ -98,29 +97,15 @@ interface Props {
   onDelete?: () => void;
   onSearch: (newValue: string) => void;
 }
-interface State {
-  searchValue: string;
-}
+interface State {}
 
 interface Tracks {
   trackSearchInput: Function;
 }
 
 class UsersHeader extends PureComponent<Props & Tracks, State> {
-  debounceSearch: (newValue: string) => void;
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchValue: '',
-    };
-
-    this.debounceSearch = throttle(this.props.onSearch, 500);
-  }
-
   handleSearchChange = (newValue: string) => {
-    this.setState({ searchValue: newValue });
-    this.debounceSearch(newValue);
+    this.props.onSearch(newValue);
   }
 
   render() {
@@ -136,7 +121,7 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
             </Buttons>
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput value={this.state.searchValue} onChange={this.handleSearchChange} />
+          <StyledSearchInput onChange={this.handleSearchChange} />
         </OnlyRow>
       );
     }
@@ -148,7 +133,7 @@ class UsersHeader extends PureComponent<Props & Tracks, State> {
             <FormattedMessage tagName="h1" {...messages.allUsers} />
           </TextAndButtons>
           <Spacer />
-          <StyledSearchInput value={this.state.searchValue} onChange={this.handleSearchChange} />
+          <StyledSearchInput onChange={this.handleSearchChange} />
         </FirstRow>
         <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
       </TitleWrapper>

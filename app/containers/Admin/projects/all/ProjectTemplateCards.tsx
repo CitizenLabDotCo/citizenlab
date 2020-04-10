@@ -253,7 +253,6 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
           <StyledSearchInput
             placeholder={searchPlaceholder}
             ariaLabel={searchAriaLabel}
-            value={search}
             onChange={handleSearchOnChange}
           />
         </Right>
