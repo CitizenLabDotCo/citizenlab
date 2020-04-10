@@ -106,7 +106,7 @@ resource "Baskets" do
 
       let(:basket_id) { @basket.id }
 
-      describe '' do
+      describe do
         let(:idea_ids) { create_list(:idea, 3).map(&:id) }
 
         example_request "Update a basket" do
