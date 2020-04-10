@@ -93,9 +93,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
     defaultMessage: 'Spending budget',
   },
-  noActionsCanBeTaken: {
-    id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTaken',
-    defaultMessage: 'No permissions to configure, since the user can\'t do anything here'
+  noActionsCanBeTakenInThisProject: {
+    id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject',
+    defaultMessage: 'Nothing is shown, because there are no actions the user can take in this project.'
   },
   pendingInvitation: {
     id: 'app.containers.AdminPage.groups.permissions.pendingInvitation',
