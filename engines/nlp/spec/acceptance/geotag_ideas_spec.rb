@@ -22,7 +22,7 @@ resource "GeotagIdeas" do
       parameter :size, "Number of campaigns per page"
     end
 
-    describe '' do
+    describe do
 
       example "List all ideas geotagged" do
         allow_any_instance_of(NLP::GeotagService).to receive(:geotag).and_return({
