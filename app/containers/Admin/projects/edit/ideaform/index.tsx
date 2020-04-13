@@ -48,7 +48,14 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin: 0;
 `;
 
-const CollapseExpandAllButton = styled(Button)``;
+const StyledSubSectionTitle = styled(SubSectionTitle)`
+  font-weight: 500;
+  margin-bottom: 30px;
+`;
+
+const CollapseExpandAllButton = styled(Button)`
+  margin-left: auto;
+`;
 
 const Content = styled.div`
   width: 100%;
@@ -168,12 +175,6 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
             <StyledSectionTitle>
               <FormattedMessage {...messages.title} />
             </StyledSectionTitle>
-            <CollapseExpandAllButton
-              buttonStyle="secondary"
-              padding="7px 10px"
-              onClick={handleCollapseExpandAll}
-              text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
-            />
           </TitleContainer>
           <SectionSubtitle>
             <FormattedMessage {...messages.subtitle} />
@@ -182,6 +183,15 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
 
         <Content>
           <Section>
+            <StyledSubSectionTitle>
+              Field descriptions
+              <CollapseExpandAllButton
+                buttonStyle="secondary"
+                padding="7px 10px"
+                onClick={handleCollapseExpandAll}
+                text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
+              />
+            </StyledSubSectionTitle>
             {ideaCustomFields.data.map((ideaCustomField, index) => {
               return (
                 <IdeaCustomField

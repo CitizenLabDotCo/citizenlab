@@ -38,7 +38,6 @@ const CustomFieldTitle = styled.div`
   flex: 1;
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
-  font-weight: 500;
   line-height: normal;
 `;
 
