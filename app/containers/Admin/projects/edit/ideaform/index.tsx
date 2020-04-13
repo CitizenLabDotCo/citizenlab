@@ -184,7 +184,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
         <Content>
           <Section>
             <StyledSubSectionTitle>
-              Field descriptions
+              <FormattedMessage {...messages.fieldDescriptionsTitle} />
               <CollapseExpandAllButton
                 buttonStyle="secondary"
                 padding="7px 10px"

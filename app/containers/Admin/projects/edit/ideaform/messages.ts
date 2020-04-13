@@ -47,4 +47,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.disabled',
     defaultMessage: 'Disabled',
   },
+  fieldDescriptionsTitle: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle',
+    defaultMessage: 'Field descriptions',
+  },
 });
