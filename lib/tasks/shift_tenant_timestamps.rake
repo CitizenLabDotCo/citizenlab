@@ -15,7 +15,7 @@ namespace :cl2back do
     tenants.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
         data_listing.cl2_tenant_models.each do |claz|
-          claz.all.find_each do |object|
+          claz.find_each do |object|
             timestamp_attrs = data_listing.timestamp_attributes claz
             timestamp_attrs.delete('created_at') if claz.name == Activity.name
             changes = {}
@@ -25,8 +25,7 @@ namespace :cl2back do
                 changes[ts] = value + args[:days].to_i.days
               end
             end
-            # byebug if claz.name == PageLink.name
-            object.update_columns changes
+            object.update_columns changes if changes.present?
           end
         end
         LogActivityJob.perform_later(tenant, 'timestamps_shifted', nil, Time.now.to_i, payload: {days_shifted: args[:days]})
