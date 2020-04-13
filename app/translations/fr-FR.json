@@ -1148,6 +1148,8 @@
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "Élargir tous les champs",
   "app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle": "",
+  "app.containers.AdminPage.ProjectIdeaForm.optional": "",
+  "app.containers.AdminPage.ProjectIdeaForm.required": "",
   "app.containers.AdminPage.ProjectIdeaForm.save": "Enregistrer",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Vos modifications ont été enregistrées avec succès.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Enregistré !",

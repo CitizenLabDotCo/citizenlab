@@ -1148,6 +1148,8 @@
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Er ging iets mis. Probeer het opnieuw.",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "Alle velden uitvouwen",
   "app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle": "",
+  "app.containers.AdminPage.ProjectIdeaForm.optional": "",
+  "app.containers.AdminPage.ProjectIdeaForm.required": "",
   "app.containers.AdminPage.ProjectIdeaForm.save": "Opslaan",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Je wijzigingen zijn met succes opgeslagen.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Opgeslagen!",

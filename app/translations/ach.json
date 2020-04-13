@@ -1148,6 +1148,8 @@
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "",
   "app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle": "",
+  "app.containers.AdminPage.ProjectIdeaForm.optional": "",
+  "app.containers.AdminPage.ProjectIdeaForm.required": "",
   "app.containers.AdminPage.ProjectIdeaForm.save": "",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "",
