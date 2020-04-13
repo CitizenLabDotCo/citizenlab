@@ -1148,6 +1148,8 @@
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Algo salió mal, por favor inténtalo más tarde.",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "Expandir todos los campos",
   "app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle": "",
+  "app.containers.AdminPage.ProjectIdeaForm.optional": "",
+  "app.containers.AdminPage.ProjectIdeaForm.required": "",
   "app.containers.AdminPage.ProjectIdeaForm.save": "Guardar",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Los cambios han sido guardados con éxito.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Guardado!",
