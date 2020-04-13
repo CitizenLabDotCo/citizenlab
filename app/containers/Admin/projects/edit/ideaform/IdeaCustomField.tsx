@@ -3,11 +3,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
-import { IIdeaCustomFieldData } from 'services/ideaCustomFields';
+import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties } from 'services/ideaCustomFields';
 
 // components
 import Icon from 'components/UI/Icon';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+import Radio from 'components/UI/Radio';
 
 // i18n
 import T from 'components/T';
@@ -39,6 +40,7 @@ const CustomFieldTitle = styled.div`
   color: ${colors.adminTextColor};
   font-size: ${fontSizes.base}px;
   line-height: normal;
+  font-weight: 500;
 `;
 
 const ChevronIcon = styled(Icon)`
@@ -126,17 +128,23 @@ interface Props {
   collapsed: boolean;
   first?: boolean;
   onCollapseExpand: (ideaCustomFieldId: string) => void;
-  onChange: (ideaCustomFieldId: string, { description_multiloc: Multiloc }) => void;
+  onChange: (ideaCustomFieldId: string, updatedProperties: IUpdatedIdeaCustomFieldProperties) => void;
   className?: string;
 }
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
+const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
 
-  const handleOnChange = useCallback((description_multiloc: Multiloc) => {
+  const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
     onChange(ideaCustomField.id, { description_multiloc });
+  }, [ideaCustomField, onChange]);
+
+  const handleEnabledOnChange = useCallback((enabled: boolean) => {
+    setFieldEnabled(enabled);
+    onChange(ideaCustomField.id, { enabled });
   }, [ideaCustomField, onChange]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
@@ -148,6 +156,8 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   }, [ideaCustomField]);
 
   if (!isNilOrError(ideaCustomField)) {
+    const key = ideaCustomField.attributes.key;
+
     return (
       <Container className={`${className || ''} ${first ? 'first' : ''}`}>
         <CollapsedContent
@@ -172,10 +182,29 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         >
           <CollapseContainer>
             <CollapseContainerInner>
+              <Radio
+                onChange={handleEnabledOnChange}
+                currentValue={fieldEnabled}
+                value={true}
+                name={`${key}-field-enabled`}
+                id={`${key}-field-enabled`}
+                className={`e2e-location-enabled ${fieldEnabled ? 'selected' : ''}`}
+                label={<FormattedMessage {...messages.enabled} />}
+              />
+              <Radio
+                onChange={handleEnabledOnChange}
+                currentValue={fieldEnabled}
+                value={false}
+                name={`${key}-field-enabled`}
+                id={`${key}-field-disabled`}
+                className={`e2e-location-disabled ${!fieldEnabled ? 'selected' : ''}`}
+                label={<FormattedMessage {...messages.disabled} />}
+              />
+              {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
               <TextAreaMultilocWithLocaleSwitcher
                 label={<FormattedMessage {...messages.descriptionLabel} />}
                 valueMultiloc={descriptionMultiloc}
-                onChange={handleOnChange}
+                onChange={handleDescriptionOnChange}
                 rows={3}
               />
             </CollapseContainerInner>
@@ -189,3 +218,6 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
 });
 
 export default IdeaCustomField;
+
+// .selected class of enabled radios
+// e2e test of enabled field toggle

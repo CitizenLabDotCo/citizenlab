@@ -83,7 +83,8 @@ interface Props {
 
 interface IChanges {
   [key: string]: {
-    description_multiloc: Multiloc;
+    description_multiloc?: Multiloc;
+    enabled?: boolean;
   };
 }
 

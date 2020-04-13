@@ -12,7 +12,7 @@ export interface IIdeaCustomFieldData {
     description_multiloc: Multiloc,
     required: boolean;
     ordering: null;
-    enabled: true;
+    enabled: boolean;
     code: string;
     created_at: null;
     updated_at: null
@@ -28,7 +28,8 @@ export interface IIdeaCustomFields {
 }
 
 export interface IUpdatedIdeaCustomFieldProperties {
-  description_multiloc: Multiloc;
+  description_multiloc?: Multiloc;
+  enabled?: boolean;
 }
 
 export interface JSONSchemaObject {
