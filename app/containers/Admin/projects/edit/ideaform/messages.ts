@@ -51,4 +51,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle',
     defaultMessage: 'Field descriptions',
   },
+  required: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.required',
+    defaultMessage: 'Required',
+  },
+  optional: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.optional',
+    defaultMessage: 'Optional',
+  },
 });

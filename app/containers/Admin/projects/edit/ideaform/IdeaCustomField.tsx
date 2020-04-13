@@ -133,11 +133,15 @@ interface Props {
 }
 
 const disablableFields = ['topic_ids', 'location', 'attachments'];
+const requiredFields = ['title', 'body'];
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
+  const canSetOptional = !requiredFields.includes(ideaCustomField.attributes.key);
+
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
   const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
+  const [fieldRequired, setFieldRequired] = useState(ideaCustomField.attributes.required);
 
   const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
@@ -147,6 +151,11 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   const handleEnabledOnChange = useCallback((enabled: boolean) => {
     setFieldEnabled(enabled);
     onChange(ideaCustomField.id, { enabled });
+  }, [ideaCustomField, onChange]);
+
+  const handleRequiredOnChange = useCallback((required: boolean) => {
+    setFieldRequired(required);
+    onChange(ideaCustomField.id, { required });
   }, [ideaCustomField, onChange]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
@@ -205,6 +214,30 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                 />
                 {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
               </>}
+
+              {canSetOptional &&
+              <>
+                <Radio
+                  onChange={handleRequiredOnChange}
+                  currentValue={fieldRequired}
+                  value={false}
+                  name={`${key}-field-enabled`}
+                  id={`${key}-field-disabled`}
+                  className={`e2e-location-disabled ${!fieldRequired ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.optional} />}
+                />
+                <Radio
+                  onChange={handleRequiredOnChange}
+                  currentValue={fieldRequired}
+                  value={true}
+                  name={`${key}-field-enabled`}
+                  id={`${key}-field-enabled`}
+                  className={`e2e-location-enabled ${fieldRequired ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.required} />}
+                />
+                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+              </>
+              }
 
               <TextAreaMultilocWithLocaleSwitcher
                 label={<FormattedMessage {...messages.descriptionLabel} />}
