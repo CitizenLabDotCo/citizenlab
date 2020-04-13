@@ -2,6 +2,8 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
+export type Visibility = 'admins' | 'public';
+
 export interface IIdeaCustomFieldData {
   id: string;
   type: 'custom_field';
@@ -16,6 +18,7 @@ export interface IIdeaCustomFieldData {
     code: string;
     created_at: null;
     updated_at: null
+    visible_to: Visibility;
   };
 }
 
@@ -31,6 +34,7 @@ export interface IUpdatedIdeaCustomFieldProperties {
   description_multiloc?: Multiloc;
   enabled?: boolean;
   required?: boolean;
+  visible_to?: Visibility;
 }
 
 export interface JSONSchemaObject {
