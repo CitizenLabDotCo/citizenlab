@@ -132,10 +132,12 @@ interface Props {
   className?: string;
 }
 
-const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
+const disablableFields = ['topic_ids', 'location', 'attachments'];
 
+const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
+  const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
-const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
+  const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
 
   const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
@@ -182,25 +184,28 @@ const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enab
         >
           <CollapseContainer>
             <CollapseContainerInner>
-              <Radio
-                onChange={handleEnabledOnChange}
-                currentValue={fieldEnabled}
-                value={true}
-                name={`${key}-field-enabled`}
-                id={`${key}-field-enabled`}
-                className={`e2e-location-enabled ${fieldEnabled ? 'selected' : ''}`}
-                label={<FormattedMessage {...messages.enabled} />}
-              />
-              <Radio
-                onChange={handleEnabledOnChange}
-                currentValue={fieldEnabled}
-                value={false}
-                name={`${key}-field-enabled`}
-                id={`${key}-field-disabled`}
-                className={`e2e-location-disabled ${!fieldEnabled ? 'selected' : ''}`}
-                label={<FormattedMessage {...messages.disabled} />}
-              />
-              {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+              {canSetEnabled && <>
+                <Radio
+                  onChange={handleEnabledOnChange}
+                  currentValue={fieldEnabled}
+                  value={true}
+                  name={`${key}-field-enabled`}
+                  id={`${key}-field-enabled`}
+                  className={`e2e-location-enabled ${fieldEnabled ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.enabled} />}
+                />
+                <Radio
+                  onChange={handleEnabledOnChange}
+                  currentValue={fieldEnabled}
+                  value={false}
+                  name={`${key}-field-enabled`}
+                  id={`${key}-field-disabled`}
+                  className={`e2e-location-disabled ${!fieldEnabled ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.disabled} />}
+                />
+                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+              </>}
+
               <TextAreaMultilocWithLocaleSwitcher
                 label={<FormattedMessage {...messages.descriptionLabel} />}
                 valueMultiloc={descriptionMultiloc}
