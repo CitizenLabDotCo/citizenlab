@@ -13,8 +13,9 @@ import { updateIdeaCustomField } from 'services/ideaCustomFields';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
+import Radio from 'components/UI/Radio';
 import IdeaCustomField from './IdeaCustomField';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -130,6 +131,10 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
     }));
   }, []);
 
+  const handleLocationAllowedOnChange = () => {
+    console.log(1);
+  };
+
   const handleOnSubmit = useCallback(async () => {
     if (!isNilOrError(ideaCustomFields)) {
       setProcessing(true);
@@ -176,18 +181,48 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
         </Header>
 
         <Content>
-          {ideaCustomFields.data.map((ideaCustomField, index) => {
-            return (
-              <IdeaCustomField
-                key={ideaCustomField.id}
-                collapsed={collapsed[ideaCustomField.id]}
-                first={index === 0}
-                ideaCustomField={ideaCustomField}
-                onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
-                onChange={handleIdeaCustomFieldOnChange}
+          <Section>
+            {ideaCustomFields.data.map((ideaCustomField, index) => {
+              return (
+                <IdeaCustomField
+                  key={ideaCustomField.id}
+                  collapsed={collapsed[ideaCustomField.id]}
+                  first={index === 0}
+                  ideaCustomField={ideaCustomField}
+                  onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
+                  onChange={handleIdeaCustomFieldOnChange}
+                />
+              );
+            })}
+          </Section>
+          <Section>
+           <SectionField className="e2e-participation-context-location-allowed">
+              <SubSectionTitle>
+                Allow location
+                {/* <FormattedMessage {...messages.allowLocation} /> */}
+                {/* <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} /> */}
+              </SubSectionTitle>
+              <Radio
+                onChange={handleLocationAllowedOnChange}
+                currentValue={true}
+                value={true}
+                name="location_allowed"
+                id="locationd-enabled"
+                className={`e2e-location-enabled ${true ? 'selected' : ''}`}
+                label={<FormattedMessage {...messages.enabled} />}
               />
-            );
-          })}
+              <Radio
+                onChange={handleLocationAllowedOnChange}
+                currentValue={false}
+                value={false}
+                name="location_allowed"
+                id="location-disabled"
+                className={`e2e-location-disabled ${false ? 'selected' : ''}`}
+                label={<FormattedMessage {...messages.disabled} />}
+              />
+              {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+            </SectionField>
+          </Section>
         </Content>
 
         <Footer>
