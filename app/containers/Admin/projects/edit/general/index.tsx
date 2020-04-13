@@ -714,10 +714,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               {!project ? (
                 <>
                   <SubSectionTitle>
-                    <FormattedMessage {...messages.projectType} />
+                    <FormattedMessage {...messages.projectTypeTitle} />
                     <IconTooltip content={<FormattedMessage {...messages.projectTypeTooltip} />} />
                   </SubSectionTitle>
-                  <StyledWarning text={'Your choice can not be changed'} />
+                  <StyledWarning text={<FormattedMessage {...messages.projectTypeWarning} />} />
                   <Radio
                     className="e2e-project-type-timeline"
                     onChange={this.handeProjectTypeOnChange}
