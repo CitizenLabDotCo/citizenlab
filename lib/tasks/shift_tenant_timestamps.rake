@@ -1,7 +1,8 @@
 
 namespace :cl2back do
-  desc "Shift all timestamps (except created_at for activities) of the given list of tenants (;-separated) or all demo tenants if not provided."
-  task :shift_tenant_timestamps, [:hours,:hosts] => [:environment] do |t, args|
+
+  desc "Shift all timestamps (except created_at for activities) by the given number of days of the given list of tenants (;-separated) or all demo tenants if not provided."
+  task :shift_tenant_timestamps, [:days,:hosts] => [:environment] do |t, args|
     data_listing = Cl2DataListingService.new
 
     tenants = if args[:hosts].present?
@@ -21,13 +22,16 @@ namespace :cl2back do
             timestamp_attrs.each do |ts| 
               value = object.send ts
               if value
-                changes[ts] = value + args[:hours].to_i.hours
+                changes[ts] = value + args[:days].to_i.days
               end
             end
+            # byebug if claz.name == PageLink.name
             object.update_columns changes
           end
         end
-        LogActivityJob.perform_later(tenant, 'timestamps_shifted', nil, Time.now.to_i, payload: {hours_shifted: args[:hours]})
+        LogActivityJob.perform_later(tenant, 'timestamps_shifted', nil, Time.now.to_i, payload: {days_shifted: args[:days]})
       end
     end
   end
+
+end
