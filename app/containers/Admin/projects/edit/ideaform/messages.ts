@@ -39,4 +39,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.expandAll',
     defaultMessage: 'Expand all fields',
   },
+  enabled: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.enabled',
+    defaultMessage: 'Enabled',
+  },
+  disabled: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.disabled',
+    defaultMessage: 'Disabled',
+  },
 });
