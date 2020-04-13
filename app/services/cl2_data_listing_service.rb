@@ -5,6 +5,9 @@ class Cl2DataListingService
     # It seems that we need to use Zeitwerk::Loader.eager_load_all
     # instead of Rails.application.eager_load!.
     Zeitwerk::Loader.eager_load_all if Rails.env.development?
+    views = ActiveRecord::Base.connection.execute(
+      "SELECT table_name FROM information_schema.tables WHERE table_type = 'VIEW'"
+      ).map{|r| r['table_name']}
     ActiveRecord::Base.descendants.select do |claz|
       ![
         *ActiveRecord::Base.subclasses.map(&:name),
@@ -12,7 +15,7 @@ class Cl2DataListingService
         Tenant.name
       ].include? claz.name
     end.select do |claz|
-      claz.descendants.empty?
+      claz.descendants.empty? && !views.include?(claz.table_name)
     end
   end
 
