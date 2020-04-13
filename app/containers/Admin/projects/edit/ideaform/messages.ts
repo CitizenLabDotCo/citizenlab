@@ -59,4 +59,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.optional',
     defaultMessage: 'Optional',
   },
+  everyone: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.everyone',
+    defaultMessage: 'Everyone',
+  },
+  admin: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.admin',
+    defaultMessage: 'Admin',
+  },
 });

@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
-import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties } from 'services/ideaCustomFields';
+import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, Visibility } from 'services/ideaCustomFields';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -134,14 +134,17 @@ interface Props {
 
 const disablableFields = ['topic_ids', 'location', 'attachments'];
 const requiredFields = ['title', 'body'];
+const hidableFields = ['topic_ids', 'location', 'attachments'];
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
   const canSetOptional = !requiredFields.includes(ideaCustomField.attributes.key);
+  const canSetHidden = hidableFields.find(field => field === ideaCustomField.attributes.key);
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
   const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
   const [fieldRequired, setFieldRequired] = useState(ideaCustomField.attributes.required);
+  const [fieldVisibleTo, setFieldVisibleTo] = useState(ideaCustomField.attributes.visible_to);
 
   const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
@@ -156,6 +159,11 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   const handleRequiredOnChange = useCallback((required: boolean) => {
     setFieldRequired(required);
     onChange(ideaCustomField.id, { required });
+  }, [ideaCustomField, onChange]);
+
+  const handleVisibleToOnChange = useCallback((visibleTo: Visibility) => {
+    setFieldVisibleTo(visibleTo);
+    onChange(ideaCustomField.id, { visible_to: visibleTo });
   }, [ideaCustomField, onChange]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
@@ -234,6 +242,30 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                   id={`${key}-field-enabled`}
                   className={`e2e-location-enabled ${fieldRequired ? 'selected' : ''}`}
                   label={<FormattedMessage {...messages.required} />}
+                />
+                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+              </>
+              }
+
+            {canSetHidden &&
+              <>
+                <Radio
+                  onChange={handleVisibleToOnChange}
+                  currentValue={fieldVisibleTo}
+                  value={'public'}
+                  name={`${key}-field-enabled`}
+                  id={`${key}-field-disabled`}
+                  // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.everyone} />}
+                />
+                <Radio
+                  onChange={handleVisibleToOnChange}
+                  currentValue={fieldVisibleTo}
+                  value={'admin'}
+                  name={`${key}-field-enabled`}
+                  id={`${key}-field-enabled`}
+                  // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.admin} />}
                 />
                 {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
               </>
