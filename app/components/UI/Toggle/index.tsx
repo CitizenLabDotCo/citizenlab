@@ -1,12 +1,18 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 const size = 21;
 const padding = 4;
 
-const Container = styled.div`
+const Label = styled.label`
   display: inline-block;
+  color: #333;
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: 20px;
+  padding-left: 10px;
+  cursor: pointer;
 
   &.hasLabel {
     display: flex;
@@ -14,10 +20,29 @@ const Container = styled.div`
   }
 `;
 
+const HiddenInput = styled.input`
+  // Hide checkbox visually but remain accessible to screen readers.
+  // Source: https://polished.js.org/docs/#hidevisually
+  border: 0;
+  clip: rect(0 0 0 0);
+  clippath: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+`;
+
 const ToggleContainer: any = styled.div`
   height: ${size + padding * 2}px;
   display: flex;
   align-items: center;
+
+  ${HiddenInput}:focus + & {
+    outline: ${customOutline};
+  }
 
   ${(props: any) => props.disabled && css`
     opacity: 0.25;
@@ -61,15 +86,6 @@ const ToggleContainer: any = styled.div`
   }
 `;
 
-const Text = styled.div`
-  color: #333;
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 20px;
-  padding-left: 10px;
-  cursor: pointer;
-`;
-
 export type Props = {
   value: boolean;
   disabled?: boolean | undefined;
@@ -93,19 +109,23 @@ export default class Toggle extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, disabled, label, className, id } = this.props;
+    const { value, disabled, label, className, id, onChange } = this.props;
 
     return (
-      <Container id={id} className={`${className} ${label && 'hasLabel'}`}>
-        <ToggleContainer onClick={this.handleOnClick} checked={value} disabled={disabled}>
-          <input type="checkbox" role="checkbox" aria-checked={value} />
+      <Label id={id} className={`${className} ${label && 'hasLabel'}`}>
+        <HiddenInput
+          type="checkbox"
+          checked={value}
+          onChange={onChange}
+        />
+        <ToggleContainer
+          checked={value}
+          disabled={disabled}
+        >
           <i />
         </ToggleContainer>
-
-        {label &&
-          <Text onClick={this.handleOnClick}>{label}</Text>
-        }
-      </Container>
+        {label}
+      </Label>
     );
   }
 }
