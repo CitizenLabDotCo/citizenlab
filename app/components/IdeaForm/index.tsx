@@ -637,3 +637,5 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 }
 
 export default withRouter<Props>(injectIntl(IdeaForm));
+
+// TODO: error messages for required fields
