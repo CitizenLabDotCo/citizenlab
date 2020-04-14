@@ -249,7 +249,7 @@ const ControlWrapper = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;

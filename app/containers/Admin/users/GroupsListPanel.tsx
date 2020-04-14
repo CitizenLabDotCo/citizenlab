@@ -32,14 +32,14 @@ import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
-const Panel = styled.div`
-  align-items: stretch;
-  background: ${colors.background};
+const Container = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  justify-content: flex-start;
+  align-items: stretch;
   padding: 55px 20px;
+  padding-bottom: 10px;
+  background: ${colors.background};
 `;
 
 const Separator = styled.hr`
@@ -77,11 +77,11 @@ const ButtonWrapper = styled.div`
 const AddGroupButton = styled(Button)``;
 
 const GroupsList = styled.div`
-  max-height: 500px;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 const MenuLink = styled(Link)`
@@ -94,6 +94,7 @@ const MenuLink = styled(Link)`
   padding-right: 0px;
   margin-bottom: 6px;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  transition: all 80ms ease-out;
 
   &.highlight {
     animation-name: highlight;
@@ -101,13 +102,13 @@ const MenuLink = styled(Link)`
   }
 
   &.active {
-    background: ${rgba(colors.adminTextColor, .09)};
+    background: ${rgba(colors.adminTextColor, 0.08)};
   }
 
   &:hover,
   &:focus {
-    background: ${rgba(colors.adminTextColor, .2)};
     color: ${colors.adminTextColor};
+    background: ${rgba(colors.adminTextColor, 0.15)};
   }
 
   @keyframes highlight {
@@ -215,7 +216,7 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
     const { highlightedGroups } = this.state;
 
     return (
-      <Panel className={this.props.className}>
+      <Container className={this.props.className}>
         <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>
           <GroupName><FormattedMessage {...messages.allUsers} /></GroupName>
           {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
@@ -229,14 +230,14 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
               hiddenText={<FormattedMessage {...messages.createGroupButton} />}
               icon="plus"
               iconTitle={<FormattedMessage {...messages.createGroupButton} />}
-              iconSize="12px"
+              iconSize="11px"
               iconColor={colors.adminTextColor}
               onClick={this.handleCreateGroup}
               padding="8px"
               borderRadius="50%"
               buttonStyle="secondary"
-              bgColor={rgba(colors.adminTextColor, .09)}
-              bgHoverColor={rgba(colors.adminTextColor, .2)}
+              bgColor={rgba(colors.adminTextColor, 0.08)}
+              bgHoverColor={rgba(colors.adminTextColor, 0.15)}
             />
           </ButtonWrapper>
         </MenuTitle>
@@ -249,7 +250,7 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
             </MenuLink>
           ))}
         </GroupsList>
-      </Panel>
+      </Container>
     );
   }
 }
