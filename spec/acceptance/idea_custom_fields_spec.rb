@@ -79,7 +79,7 @@ resource "Idea Custom Fields" do
       end
 
       let(:project_id) { project.id }
-      let(:code) { 'title' }
+      let(:code) { 'location' }
       let(:visible_to) { 'admins' }
       let(:description_multiloc) { {"en" => "New description"} }
 

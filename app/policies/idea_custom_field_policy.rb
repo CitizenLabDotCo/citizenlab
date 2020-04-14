@@ -41,7 +41,7 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if record.code
+    if %w(title body).include? record.code
       [
         description_multiloc: CL2_SUPPORTED_LOCALES
       ]
