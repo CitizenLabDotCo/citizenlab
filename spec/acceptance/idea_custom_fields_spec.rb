@@ -137,6 +137,20 @@ resource "Idea Custom Fields" do
             expect(CustomField.count).to eq 1
           end
         end
+
+        context "for title custom fields" do
+          let(:code) { 'title' }
+          let(:required) { false }
+          let(:enabled) { false }
+          let(:visible_to) { 'admins' }
+
+          example_request "Update the visibile_to required and enbled is not allowed" do
+            cf = CustomField.find_by code: code
+            expect(cf.visible_to).to eq 'public'
+            expect(cf.required).to eq true
+            expect(cf.enabled).to eq true
+          end
+        end
       end
 
     end
