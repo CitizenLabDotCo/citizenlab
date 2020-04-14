@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'UI.FormComponents.optional',
     defaultMessage: 'optional'
   },
+  required: {
+    id: 'UI.FormComponents.required',
+    defaultMessage: 'required'
+  },
   buttonDisabled: {
     id: 'UI.FormComponents.buttonDisabled',
     defaultMessage: 'Submit button disabled'
