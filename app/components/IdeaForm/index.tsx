@@ -438,6 +438,22 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return true;
   }
 
+  isFieldRequired = (
+    ideaCustomFields: IIdeaCustomFields | null,
+    fieldKey: CustomFieldKeys
+  ) => {
+    if (
+      !isNilOrError(ideaCustomFields) &&
+      ideaCustomFields.data.length > 0
+    ) {
+      const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
+
+      if (field) return field.attributes.required;
+    }
+
+    return true;
+  }
+
   render() {
     const className = this.props['className'];
     const { projectId } = this.props;
@@ -465,6 +481,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
     const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
     const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
+    const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
+    const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
+    const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
+    const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
 
     return (
       <Form id="idea-form" className={className}>
@@ -545,7 +565,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormLabel
                 htmlFor="topics"
                 labelMessage={messages.topicsTitle}
-                optionality="optional"
+                optionality={topicsRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
               />
               <TopicsPicker
@@ -560,7 +580,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             <FormElement>
               <FormLabel
                 labelMessage={messages.locationTitle}
-                optionality="optional"
+                optionality={locationRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
               >
                 <LocationInput
@@ -580,7 +600,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             <FormLabel
               htmlFor="idea-image-dropzone"
               labelMessage={messages.imageUploadTitle}
-              optionality="optional"
+              optionality={imagesRequired ? 'required' : 'optional'}
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
             />
             <ImagesDropzone
@@ -599,7 +619,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             <FormElement id="e2e-idea-file-upload">
               <FormLabel
                 labelMessage={messages.attachmentsTitle}
-                optionality="optional"
+                optionality={attachmentsRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
               >
                 <FileUploader
