@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -9,6 +9,7 @@ import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, Visibility } f
 import Icon from 'components/UI/Icon';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Radio from 'components/UI/Radio';
+import Toggle from 'components/UI/Toggle';
 
 // i18n
 import T from 'components/T';
@@ -161,10 +162,15 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
     onChange(ideaCustomField.id, { description_multiloc });
   }, [ideaCustomField, onChange]);
 
-  const handleEnabledOnChange = useCallback((enabled: boolean) => {
-    setFieldEnabled(enabled);
-    onChange(ideaCustomField.id, { enabled });
-  }, [ideaCustomField, onChange]);
+  const handleEnabledOnChange = () => {
+    console.log(1);
+    console.log(fieldEnabled);
+    setFieldEnabled(fieldEnabled => !fieldEnabled);
+  };
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { enabled: fieldEnabled });
+  }, [fieldEnabled]);
 
   const handleRequiredOnChange = useCallback((required: boolean) => {
     setFieldRequired(required);
@@ -215,6 +221,10 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                 <Setting>
                   <label>
                     <LabelText>Should this field be enabled or disabled in the idea form?</LabelText>
+                    <Toggle
+                      value={fieldEnabled}
+                      onChange={handleEnabledOnChange}
+                    />
                     <Radio
                       onChange={handleEnabledOnChange}
                       currentValue={fieldEnabled}
