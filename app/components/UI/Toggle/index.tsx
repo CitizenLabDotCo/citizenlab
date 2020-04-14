@@ -84,7 +84,10 @@ type State = {};
 
 export default class Toggle extends React.PureComponent<Props, State> {
   handleOnClick = (event) => {
+    event.preventDefault();
+
     if (!this.props.disabled) {
+      console.log(2);
       this.props.onChange(event);
     }
   }
