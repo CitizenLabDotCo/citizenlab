@@ -38,7 +38,7 @@ const Container = styled.div`
 const CustomFieldTitle = styled.div`
   flex: 1;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.large}px;
   line-height: normal;
   font-weight: 500;
 `;
@@ -123,6 +123,16 @@ const CollapseContainerInner = styled.div`
   padding-bottom: 25px;
 `;
 
+const LabelText = styled.span`
+  font-size: ${fontSizes.base}px;
+  display: block;
+  margin-bottom: 20px;
+`;
+
+const Setting = styled.div`
+  margin-bottom: 40px;
+`;
+
 interface Props {
   ideaCustomField: IIdeaCustomFieldData;
   collapsed: boolean;
@@ -201,74 +211,85 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         >
           <CollapseContainer>
             <CollapseContainerInner>
-              {canSetEnabled && <>
-                <Radio
-                  onChange={handleEnabledOnChange}
-                  currentValue={fieldEnabled}
-                  value={true}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-enabled`}
-                  className={`e2e-location-enabled ${fieldEnabled ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.enabled} />}
-                />
-                <Radio
-                  onChange={handleEnabledOnChange}
-                  currentValue={fieldEnabled}
-                  value={false}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-disabled`}
-                  className={`e2e-location-disabled ${!fieldEnabled ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.disabled} />}
-                />
-                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-              </>}
-
-              {canSetOptional &&
-              <>
-                <Radio
-                  onChange={handleRequiredOnChange}
-                  currentValue={fieldRequired}
-                  value={false}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-disabled`}
-                  className={`e2e-location-disabled ${!fieldRequired ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.optional} />}
-                />
-                <Radio
-                  onChange={handleRequiredOnChange}
-                  currentValue={fieldRequired}
-                  value={true}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-enabled`}
-                  className={`e2e-location-enabled ${fieldRequired ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.required} />}
-                />
-                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-              </>
+              {canSetEnabled &&
+                <Setting>
+                  <label>
+                    <LabelText>Should this field be enabled or disabled in the idea form?</LabelText>
+                    <Radio
+                      onChange={handleEnabledOnChange}
+                      currentValue={fieldEnabled}
+                      value={true}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-enabled`}
+                      className={`e2e-location-enabled ${fieldEnabled ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.enabled} />}
+                    />
+                    <Radio
+                      onChange={handleEnabledOnChange}
+                      currentValue={fieldEnabled}
+                      value={false}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-disabled`}
+                      className={`e2e-location-disabled ${!fieldEnabled ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.disabled} />}
+                    />
+                    {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+                  </label>
+                </Setting>
               }
 
-            {canSetHidden &&
-              <>
-                <Radio
-                  onChange={handleVisibleToOnChange}
-                  currentValue={fieldVisibleTo}
-                  value={'public'}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-disabled`}
-                  // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.everyone} />}
-                />
-                <Radio
-                  onChange={handleVisibleToOnChange}
-                  currentValue={fieldVisibleTo}
-                  value={'admin'}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-enabled`}
-                  // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.admin} />}
-                />
-                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-              </>
+              {canSetOptional &&
+                <Setting>
+                  <label>
+                    <LabelText>Should this field be optional or required in the idea form?</LabelText>
+                    <Radio
+                      onChange={handleRequiredOnChange}
+                      currentValue={fieldRequired}
+                      value={false}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-disabled`}
+                      className={`e2e-location-disabled ${!fieldRequired ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.optional} />}
+                    />
+                    <Radio
+                      onChange={handleRequiredOnChange}
+                      currentValue={fieldRequired}
+                      value={true}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-enabled`}
+                      className={`e2e-location-enabled ${fieldRequired ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.required} />}
+                    />
+                    {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+                  </label>
+                </Setting>
+              }
+
+              {canSetHidden &&
+                <Setting>
+                  <label>
+                    <LabelText>To whom should this field be visible on the public idea page?</LabelText>
+                    <Radio
+                      onChange={handleVisibleToOnChange}
+                      currentValue={fieldVisibleTo}
+                      value={'public'}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-disabled`}
+                      // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.everyone} />}
+                    />
+                    <Radio
+                      onChange={handleVisibleToOnChange}
+                      currentValue={fieldVisibleTo}
+                      value={'admin'}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-enabled`}
+                      // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.admin} />}
+                    />
+                    {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+                  </label>
+                </Setting>
               }
 
               <TextAreaMultilocWithLocaleSwitcher
