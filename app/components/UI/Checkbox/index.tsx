@@ -2,21 +2,31 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
+import { isBoolean } from 'lodash-es';
+import { darken } from 'polished';
 
-const CheckMarkIcon = styled(Icon)`
-  fill: #fff;
-  width: 15px;
+const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
+  margin-right: ${({ hasLabel }) => hasLabel ? '10px' : '0px'};
 `;
 
-const IndeterminateIcon = styled(Icon)`
+const CheckMarkIcon = styled(Icon)<{ size: string }>`
   fill: #fff;
-  width: 12px;
+  flex: 0 0 ${({ size }) => Math.round(parseInt(size, 10) / 100 * 70)}px;
+  width: ${({ size }) => Math.round(parseInt(size, 10) / 100 * 70)}px;
+  height: ${({ size }) => Math.round(parseInt(size, 10) / 100 * 70)}px;
+`;
+
+const IndeterminateIcon = styled(Icon)<{ size: string }>`
+  fill: #fff;
+  flex: 0 0 ${({ size }) => Math.round(parseInt(size, 10) / 100 * 60)}px;
+  width: ${({ size }) => Math.round(parseInt(size, 10) / 100 * 60)}px;
+  height: ${({ size }) => Math.round(parseInt(size, 10) / 100 * 60)}px;
 `;
 
 const Label = styled.label<{ disabled: boolean }>`
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   cursor: ${({ disabled }) => disabled ? 'not-allowed' : 'pointer'};
 `;
 
@@ -36,47 +46,49 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 `;
 
 const StyledCheckbox = styled.div<{checkedOrIndeterminate: boolean, size: string}>`
+  width: ${({ size }) => parseInt(size, 10)}px;
+  height: ${({ size }) => parseInt(size, 10)}px;
+  flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
-  width: ${({ size }) => parseInt(size, 10)}px;
-  height: ${({ size }) => parseInt(size, 10)}px;
-  background: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#fff'};
   border-radius: ${(props) => props.theme.borderRadius};
-  transition: all 150ms;
-  border: solid 1px ${colors.separationDark};
+  border: solid 1px ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : colors.separationDark};
+  background: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#fff'};
+  transition: background-color 100ms ease-out, border-color 100ms ease-out;
 
   ${HiddenCheckbox}:focus + & {
-    outline: ${customOutline};
+    /* outline: ${customOutline}; */
+    box-shadow: 0 0 0 2px rgb(59, 153, 252);
   }
 
-  &:hover {
-    border-color: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#000'};
+  &.enabled {
+    &:hover {
+      background: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? darken(0.05, colors.clGreen) : '#fff'};
+      border-color: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? darken(0.05, colors.clGreen) : '#000'};
+    }
   }
-`;
-
-const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
-  margin-right: ${({ hasLabel }) => hasLabel ? '10px' : '0px'};
 `;
 
 type DefaultProps = {
   size?: string;
+  disabled?: boolean;
+  indeterminate?: boolean;
 };
 
 type Props = DefaultProps & {
   checked: boolean;
-  indeterminate?: boolean;
-  onChange: (event) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   notFocusable?: boolean;
-  disabled?: boolean;
   label?: string | JSX.Element | null;
 };
 
 export default class Checkbox extends PureComponent<Props> {
   static defaultProps: DefaultProps = {
-    size: '22px'
+    size: '22px',
+    disabled: false,
+    indeterminate: false
   };
 
   render() {
@@ -92,30 +104,34 @@ export default class Checkbox extends PureComponent<Props> {
     } = this.props;
     const hasLabel = !!label;
 
-    return (
-      <Label
-        className={`${className ? className : ''}`}
-        disabled={disabled as boolean}
-      >
-        <CheckboxContainer hasLabel={hasLabel}>
-          <HiddenCheckbox
-            onChange={onChange}
-            checked={checked}
-            disabled={disabled}
-            tabIndex={notFocusable ? -1 : 0}
-          />
-          <StyledCheckbox
-            checkedOrIndeterminate={(checked || indeterminate) as boolean}
-            size={size as string}
-            className={`${checked ? 'checked' : ''} e2e-checkbox`}
-          >
-            {checked && <CheckMarkIcon ariaHidden name="checkmark" />}
-            {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" />}
-          </StyledCheckbox>
-        </CheckboxContainer>
-        {label}
-      </Label>
-    );
+    if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
+      return (
+        <Label
+          className={`${className ? className : ''}`}
+          disabled={disabled}
+        >
+          <CheckboxContainer hasLabel={hasLabel}>
+            <HiddenCheckbox
+              onChange={onChange}
+              checked={checked}
+              disabled={disabled}
+              tabIndex={notFocusable ? -1 : 0}
+            />
+            <StyledCheckbox
+              checkedOrIndeterminate={checked || indeterminate}
+              size={size}
+              className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : 'enabled'} e2e-checkbox`}
+            >
+              {checked && <CheckMarkIcon ariaHidden name="checkmark" size={size} />}
+              {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" size={size} />}
+            </StyledCheckbox>
+          </CheckboxContainer>
+          {label}
+        </Label>
+      );
+    }
+
+    return null;
   }
 }
 

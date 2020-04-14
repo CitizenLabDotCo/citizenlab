@@ -13,6 +13,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
+import { darken } from 'polished';
 
 const Container = styled.div`
   display: flex;
@@ -21,14 +22,31 @@ const Container = styled.div`
 `;
 
 const CheckboxWrapper = styled.div`
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 `;
 
-const EmailConsent = styled.div`
+const ConsentText = styled.div`
   color: ${colors.label};
   font-size: ${fontSizes.small}px;
-  line-height: normal;
+  line-height: 20px;
   font-weight: 300;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
+
+  a {
+    color: ${colors.label};
+    font-weight: 300;
+    text-decoration: underline;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+
+    &:hover {
+      color: #000;
+      text-decoration: underline;
+    }
+  }
 `;
 
 interface Props {
@@ -65,15 +83,18 @@ const Consent = memo<Props & InjectedIntlProps>(({
       <CheckboxWrapper>
         <Checkbox
           className="e2e-terms-and-conditions"
+          size="20px"
           checked={tacAccepted}
           onChange={toggleTacAccepted}
           label={
-            <FormattedMessage
-              {...messages.tacApproval}
-              values={{
-                tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
-              }}
-            />
+            <ConsentText>
+              <FormattedMessage
+                {...messages.tacApproval}
+                values={{
+                  tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
+                }}
+              />
+            </ConsentText>
           }
         />
         <Error text={tacError ? formatMessage(messages.tacError) : null} />
@@ -82,23 +103,26 @@ const Consent = memo<Props & InjectedIntlProps>(({
       <CheckboxWrapper>
         <Checkbox
           className="e2e-privacy-checkbox"
+          size="20px"
           checked={privacyAccepted}
           onChange={togglePrivacyAccepted}
           label={
-            <FormattedMessage
-              {...messages.privacyApproval}
-              values={{
-                ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>
-              }}
-            />
+            <ConsentText>
+              <FormattedMessage
+                {...messages.privacyApproval}
+                values={{
+                  ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>
+                }}
+              />
+            </ConsentText>
           }
         />
         <Error text={privacyError ? formatMessage(messages.privacyError) : null} />
       </CheckboxWrapper>
 
-      <EmailConsent>
+      <ConsentText>
         <FormattedMessage {...messages.emailConsent} />
-      </EmailConsent>
+      </ConsentText>
     </Container>
   );
 });

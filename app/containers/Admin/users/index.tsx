@@ -22,7 +22,7 @@ import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
   display: flex;
   background: #fff;
 `;
@@ -41,6 +41,8 @@ const ChildWrapper = styled.div`
   flex: 1;
   padding: 50px;
   background: white;
+  overflow-x: auto;
+  overflow-y: auto;
 `;
 
 // i18n

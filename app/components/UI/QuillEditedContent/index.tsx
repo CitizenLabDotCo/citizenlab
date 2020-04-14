@@ -10,7 +10,7 @@ interface Props {
   linkColor?: string;
   textColor?: string;
   mentionColor?: string;
-  fontSize?: 'base' | 'large';
+  fontSize?: 'small' | 'base' | 'medium' | 'large';
   fontWeight?: 300 | 400;
   children: JSX.Element | JSX.Element[] | string;
   className?: string;

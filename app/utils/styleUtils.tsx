@@ -227,7 +227,7 @@ export function quillEditedContent(
   linkColor = colors.clBlueDark,
   textColor = colors.text,
   mentionColor = colors.text,
-  fontSize: 'base' | 'medium' | 'large' = 'base',
+  fontSize: 'small' | 'base' | 'medium' | 'large' = 'base',
   fontWeight: 300 | 400 = 400,
 ) {
   let lineHeight = 25;
