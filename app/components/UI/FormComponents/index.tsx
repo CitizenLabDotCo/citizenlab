@@ -80,7 +80,7 @@ export const Spacer = styled.div`
   height: 10px;
 `;
 
-const OptionalText = styled.span<{ thin: boolean | undefined }>`
+const OptionalityText = styled.span<{ thin: boolean | undefined }>`
   font-weight: ${props => props.thin ? 300 : 400};
 `;
 
@@ -92,7 +92,7 @@ interface FormLabelGenericProps {
   className?: string;
   thin?: boolean;
   noSpace?: boolean;
-  optional?: boolean;
+  optionality?: 'optional' | 'required';
 }
 
 export interface FormLabelProps extends FormLabelGenericProps {
@@ -116,7 +116,7 @@ export const FormLabel = memo<FormLabelProps>(({
   hidden,
   thin,
   noSpace,
-  optional
+  optionality
 }) => (
   <FormLabelStyled
     thin={thin}
@@ -125,12 +125,12 @@ export const FormLabel = memo<FormLabelProps>(({
     htmlFor={htmlFor}
   >
     <FormattedMessage {...labelMessage} values={labelMessageValues} />
-    {optional &&
-      <OptionalText thin={thin}>
+    {optionality &&
+      <OptionalityText thin={thin}>
         {' ('}
-        <FormattedMessage {...messages.optional} />
+        <FormattedMessage {...messages[optionality]} />
         {')'}
-      </OptionalText>
+      </OptionalityText>
     }
     {(subtextMessage || subtext) &&
       <>
@@ -159,16 +159,16 @@ export const FormLabelValue = memo(({
   hidden,
   thin,
   noSpace,
-  optional
+  optionality
 }: FormLabelValueProps) => (
     <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
       {labelValue}
-      {optional &&
-        <OptionalText thin={thin}>
+      {optionality &&
+        <OptionalityText thin={thin}>
           {' ('}
-          <FormattedMessage {...messages.optional} />
+          <FormattedMessage {...messages[optionality]} />
           {')'}
-        </OptionalText>
+        </OptionalityText>
       }
       {subtextValue &&
         <>

@@ -372,7 +372,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.locationLabel}
               subtextMessage={messages.locationLabelSubtext}
-              optional
+              optionality="optional"
             >
               <LocationInput
                 className="e2e-initiative-location-input"
@@ -391,7 +391,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
-              optional
+              optionality="optional"
               htmlFor="initiative-banner-dropzone"
             />
             <ImagesDropzone
@@ -409,7 +409,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
-              optional
+              optionality="optional"
               htmlFor="initiative-image-dropzone"
             />
             <ImagesDropzone
@@ -429,7 +429,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.fileUploadLabel}
               subtextMessage={messages.fileUploadLabelSubtext}
-              optional
+              optionality="optional"
             >
               <FileUploader
                 id="e2e-initiative-file-upload"
