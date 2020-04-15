@@ -43,10 +43,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.enabled',
     defaultMessage: 'Enabled',
   },
-  disabled: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.disabled',
-    defaultMessage: 'Disabled',
-  },
+
   fieldDescriptionsTitle: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle',
     defaultMessage: 'Field descriptions',
@@ -54,10 +51,6 @@ export default defineMessages({
   required: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.required',
     defaultMessage: 'Required',
-  },
-  optional: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.optional',
-    defaultMessage: 'Optional',
   },
   everyone: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.everyone',
