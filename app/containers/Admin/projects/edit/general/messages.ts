@@ -51,9 +51,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.titleLabelTooltip',
     defaultMessage: 'Choose a title that is short, engaging and clear. It will be shown in the dropdown overview and on the project cards on the home page.',
   },
-  projectType: {
+  projectTypeTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.projectType',
     defaultMessage: 'Project type',
+  },
+  projectTypeWarning: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectTypeWarning',
+    defaultMessage: 'The project type can not be changed later.',
   },
   projectTypeTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.projectTypeTooltip',

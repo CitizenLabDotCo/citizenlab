@@ -13,8 +13,9 @@ import { updateIdeaCustomField } from 'services/ideaCustomFields';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
+import Radio from 'components/UI/Radio';
 import IdeaCustomField from './IdeaCustomField';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SubSection, SectionField, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -47,7 +48,18 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin: 0;
 `;
 
-const CollapseExpandAllButton = styled(Button)``;
+const StyledSubSection = styled(SubSection)`
+  margin-left: 0;
+`;
+
+const StyledSubSectionTitle = styled(SubSectionTitle)`
+  font-weight: 500;
+  margin-bottom: 20px;
+`;
+
+const CollapseExpandAllButton = styled(Button)`
+  margin-left: auto;
+`;
 
 const Content = styled.div`
   width: 100%;
@@ -71,7 +83,8 @@ interface Props {
 
 interface IChanges {
   [key: string]: {
-    description_multiloc: Multiloc;
+    description_multiloc?: Multiloc;
+    enabled?: boolean;
   };
 }
 
@@ -130,6 +143,10 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
     }));
   }, []);
 
+  const handleLocationAllowedOnChange = () => {
+    console.log(1);
+  };
+
   const handleOnSubmit = useCallback(async () => {
     if (!isNilOrError(ideaCustomFields)) {
       setProcessing(true);
@@ -163,12 +180,6 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
             <StyledSectionTitle>
               <FormattedMessage {...messages.title} />
             </StyledSectionTitle>
-            <CollapseExpandAllButton
-              buttonStyle="secondary"
-              padding="7px 10px"
-              onClick={handleCollapseExpandAll}
-              text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
-            />
           </TitleContainer>
           <SectionSubtitle>
             <FormattedMessage {...messages.subtitle} />
@@ -176,18 +187,62 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
         </Header>
 
         <Content>
-          {ideaCustomFields.data.map((ideaCustomField, index) => {
-            return (
-              <IdeaCustomField
-                key={ideaCustomField.id}
-                collapsed={collapsed[ideaCustomField.id]}
-                first={index === 0}
-                ideaCustomField={ideaCustomField}
-                onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
-                onChange={handleIdeaCustomFieldOnChange}
+          <Section>
+           <SectionField className="e2e-participation-context-location-allowed">
+              <StyledSubSectionTitle>
+                Enabled fields
+                {/* <FormattedMessage {...messages.allowLocation} /> */}
+                {/* <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} /> */}
+              </StyledSubSectionTitle>
+              <StyledSubSection>
+                <SubSectionTitle>
+                  Location
+                </SubSectionTitle>
+                <Radio
+                  onChange={handleLocationAllowedOnChange}
+                  currentValue={true}
+                  value={true}
+                  name="location_allowed"
+                  id="locationd-enabled"
+                  className={`e2e-location-enabled ${true ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.enabled} />}
+                />
+                <Radio
+                  onChange={handleLocationAllowedOnChange}
+                  currentValue={false}
+                  value={false}
+                  name="location_allowed"
+                  id="location-disabled"
+                  className={`e2e-location-disabled ${false ? 'selected' : ''}`}
+                  label={<FormattedMessage {...messages.disabled} />}
+                />
+                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+              </StyledSubSection>
+            </SectionField>
+          </Section>
+          <Section>
+            <StyledSubSectionTitle>
+              <FormattedMessage {...messages.fieldDescriptionsTitle} />
+              <CollapseExpandAllButton
+                buttonStyle="secondary"
+                padding="7px 10px"
+                onClick={handleCollapseExpandAll}
+                text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
               />
-            );
-          })}
+            </StyledSubSectionTitle>
+            {ideaCustomFields.data.map((ideaCustomField, index) => {
+              return (
+                <IdeaCustomField
+                  key={ideaCustomField.id}
+                  collapsed={collapsed[ideaCustomField.id]}
+                  first={index === 0}
+                  ideaCustomField={ideaCustomField}
+                  onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
+                  onChange={handleIdeaCustomFieldOnChange}
+                />
+              );
+            })}
+          </Section>
         </Content>
 
         <Footer>
