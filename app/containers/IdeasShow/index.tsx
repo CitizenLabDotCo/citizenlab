@@ -52,6 +52,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetIdeaCustomFields, { GetIdeaCustomFieldsChildProps } from 'resources/GetIdeaCustomFields';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -312,10 +313,12 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
+  ideaCustomFields: GetIdeaCustomFieldsChildProps;
 }
 
 interface InputProps {
   ideaId: string | null;
+  projectId: string;
   insideModal?: boolean;
   className?: string;
 }
@@ -465,7 +468,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       authUser,
       windowSize,
       className,
-      postOfficialFeedbackPermission
+      postOfficialFeedbackPermission,
+      projectId
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
@@ -482,7 +486,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
       const ideaGeoPosition = idea?.attributes?.location_point_geojson || null;
       const ideaAddress = idea?.attributes?.location_description || null;
-      const projectId = idea?.relationships?.project.data?.id;
       const topicIds = idea?.relationships?.topics?.data?.map(item => item.id) || [];
       const ideaUrl = location.href;
       const ideaId = idea.id;
@@ -755,13 +758,14 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  project: ({ idea, render }) => <GetProject projectId={!isNilOrError(idea) ? idea?.relationships?.project?.data?.id : null}>{render}</GetProject>,
-  phases: ({ idea, render }) => <GetPhases projectId={!isNilOrError(idea) ? idea?.relationships?.project?.data?.id : null}>{render}</GetPhases>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
+  phases: ({ projectId, render }) => <GetPhases projectId={projectId}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
-  postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>
+  postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>,
+  ideaCustomFields: ({ projectId, render }) => <GetIdeaCustomFields projectId={projectId}>{render}</GetIdeaCustomFields>
 });
 
 export default (inputProps: InputProps) => (
