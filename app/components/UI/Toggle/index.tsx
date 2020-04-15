@@ -5,13 +5,12 @@ import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 const size = 21;
 const padding = 4;
 
-const Label = styled.label`
+const Label = styled.label<{ labelTextColor?: string }>`
   display: inline-block;
-  color: #333;
+  color: ${({ labelTextColor }) => labelTextColor || '#333'};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: 20px;
-  padding-left: 10px;
   cursor: pointer;
 
   &.hasLabel {
@@ -39,6 +38,7 @@ const ToggleContainer: any = styled.div`
   height: ${size + padding * 2}px;
   display: flex;
   align-items: center;
+  margin-right: 10px;
 
   ${HiddenInput}:focus + & {
     outline: ${customOutline};
@@ -94,6 +94,7 @@ export type Props = {
   onChange: (event: React.FormEvent<any>) => void;
   className?: string;
   id?: string;
+  labelTextColor?: string;
 };
 
 type State = {};
@@ -108,10 +109,26 @@ export default class Toggle extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { checked, disabled, label, className, id, onChange } = this.props;
+    const {
+      checked,
+      disabled,
+      label,
+      className,
+      id,
+      onChange,
+      labelTextColor
+    } = this.props;
+    const hasLabel = !!(label);
 
     return (
-      <Label id={id} className={`${className} ${label && 'hasLabel'}`}>
+      <Label
+        id={id}
+        className={`
+          ${className}
+          ${hasLabel && 'hasLabel'}
+        `}
+        labelTextColor={labelTextColor}
+      >
         <HiddenInput
           type="checkbox"
           checked={checked}
