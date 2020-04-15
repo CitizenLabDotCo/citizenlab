@@ -32,6 +32,7 @@ export interface IIdeaCustomFields {
 export interface IUpdatedIdeaCustomFieldProperties {
   description_multiloc?: Multiloc;
   enabled?: boolean;
+  required?: boolean;
 }
 
 export interface JSONSchemaObject {
