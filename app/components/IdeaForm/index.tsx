@@ -26,12 +26,19 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData, getCurrentPhase } from 'services/phases';
-import { ideaCustomFieldsSchemasStream, IIdeaCustomFieldsSchemas } from 'services/ideaCustomFields';
+import {
+  ideaCustomFieldsSchemasStream,
+  ideaCustomFieldsStream,
+  IIdeaCustomFieldsSchemas,
+  IIdeaCustomFields,
+  CustomFieldKeys,
+} from 'services/ideaCustomFields';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -115,6 +122,7 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas | null;
+  ideaCustomFields: IIdeaCustomFields | null;
 }
 
 class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -142,7 +150,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: [],
-      ideaCustomFieldsSchemas: null
+      ideaCustomFieldsSchemas: null,
+      ideaCustomFields: null
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -156,6 +165,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topics$ = topicsStream().observable;
     const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
     const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(projectId as string).observable;
+    const ideaCustomFields$ = ideaCustomFieldsStream(projectId as string).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
       switchMap((project) => {
         if (project) {
@@ -220,6 +230,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       locationAllowed$.subscribe(locationAllowed => this.setState({ locationAllowed })),
 
       ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas => this.setState({ ideaCustomFieldsSchemas })),
+      ideaCustomFields$.subscribe(ideaCustomFields => this.setState({ ideaCustomFields })),
 
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
@@ -411,6 +422,38 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     }
   }
 
+  isFieldEnabled = (
+    ideaCustomFields: IIdeaCustomFields | null,
+    fieldKey: CustomFieldKeys
+  ) => {
+    if (
+      !isNilOrError(ideaCustomFields) &&
+      ideaCustomFields.data.length > 0
+    ) {
+      const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
+
+      if (field) return field.attributes.enabled;
+    }
+
+    return true;
+  }
+
+  isFieldRequired = (
+    ideaCustomFields: IIdeaCustomFields | null,
+    fieldKey: CustomFieldKeys
+  ) => {
+    if (
+      !isNilOrError(ideaCustomFields) &&
+      ideaCustomFields.data.length > 0
+    ) {
+      const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
+
+      if (field) return field.attributes.required;
+    }
+
+    return true;
+  }
+
   render() {
     const className = this.props['className'];
     const { projectId } = this.props;
@@ -431,9 +474,17 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budgetError,
       ideaFiles,
       locationAllowed,
-      ideaCustomFieldsSchemas
+      ideaCustomFieldsSchemas,
+      ideaCustomFields
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
+    const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
+    const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
+    const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
+    const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
+    const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
+    const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
+    const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
 
     return (
       <Form id="idea-form" className={className}>
@@ -442,7 +493,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <FormElement id="e2e-idea-title-input">
             <FormLabel
               htmlFor="title"
-              labelMessage={messages.titleLabel}
+              labelMessage={messages.title}
+              optionality="required"
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
             />
             <Input
@@ -462,7 +514,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             <FormLabel
               id="editor-label"
               htmlFor="editor"
-              labelMessage={messages.descriptionLabel}
+              labelMessage={messages.descriptionTitle}
+              optionality="required"
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
             />
             <QuillEditor
@@ -507,11 +560,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             </FeatureFlag>
           )}
 
-          {topics && topics.length > 0 && (
+          {topicsEnabled && topics && topics.length > 0 && (
             <FormElement>
               <FormLabel
                 htmlFor="topics"
-                labelMessage={messages.topicsLabel}
+                labelMessage={messages.topicsTitle}
+                optionality={topicsRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
               />
               <TopicsPicker
@@ -522,10 +576,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             </FormElement>
           )}
 
-          {locationAllowed &&
+          {locationEnabled &&
             <FormElement>
               <FormLabel
-                labelMessage={messages.locationLabel}
+                labelMessage={messages.locationTitle}
+                optionality={locationRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
               >
                 <LocationInput
@@ -544,7 +599,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <FormElement id="e2e-idea-image-upload">
             <FormLabel
               htmlFor="idea-image-dropzone"
-              labelMessage={messages.imageUploadLabel}
+              labelMessage={messages.imageUploadTitle}
+              optionality={imagesRequired ? 'required' : 'optional'}
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
             />
             <ImagesDropzone
@@ -559,18 +615,21 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
           </FormElement>
 
-          <FormElement id="e2e-idea-file-upload">
-            <FormLabel
-              labelMessage={messages.fileUploadLabel}
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
-            >
-              <FileUploader
-                onFileAdd={this.handleIdeaFileOnAdd}
-                onFileRemove={this.handleIdeaFileOnRemove}
-                files={ideaFiles}
-              />
-            </FormLabel>
-          </FormElement>
+          {attachmentsEnabled &&
+            <FormElement id="e2e-idea-file-upload">
+              <FormLabel
+                labelMessage={messages.attachmentsTitle}
+                optionality={attachmentsRequired ? 'required' : 'optional'}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
+              >
+                <FileUploader
+                  onFileAdd={this.handleIdeaFileOnAdd}
+                  onFileRemove={this.handleIdeaFileOnRemove}
+                  files={ideaFiles}
+                />
+              </FormLabel>
+            </FormElement>
+          }
         </StyledFormSection>
       </Form>
     );
@@ -578,3 +637,5 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 }
 
 export default withRouter<Props>(injectIntl(IdeaForm));
+
+// TODO: error messages for required fields

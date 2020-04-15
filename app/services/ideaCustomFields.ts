@@ -3,12 +3,13 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
 export type Visibility = 'admins' | 'public';
+export type CustomFieldKeys = 'title' | 'body' | 'topic_ids' | 'location' | 'images' | 'attachments';
 
 export interface IIdeaCustomFieldData {
   id: string;
   type: 'custom_field';
   attributes: {
-    key: string;
+    key: CustomFieldKeys;
     input_type: 'text' | 'multiselect' | 'custom';
     title_multiloc: Multiloc,
     description_multiloc: Multiloc,
