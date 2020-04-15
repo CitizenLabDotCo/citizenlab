@@ -254,7 +254,7 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 <FormattedMessage {...messages.fieldEnable} />
               </Label>
               <Toggle
-                value={formValues.enabled}
+                checked={formValues.enabled}
                 onChange={this.handleEnabledOnChange}
               />
             </SectionField>

@@ -87,7 +87,7 @@ const ToggleContainer: any = styled.div`
 `;
 
 export type Props = {
-  value: boolean;
+  checked: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
   size?: 'small' | 'normal' | 'large';
@@ -103,23 +103,22 @@ export default class Toggle extends React.PureComponent<Props, State> {
     event.preventDefault();
 
     if (!this.props.disabled) {
-      console.log(2);
       this.props.onChange(event);
     }
   }
 
   render() {
-    const { value, disabled, label, className, id, onChange } = this.props;
+    const { checked, disabled, label, className, id, onChange } = this.props;
 
     return (
       <Label id={id} className={`${className} ${label && 'hasLabel'}`}>
         <HiddenInput
           type="checkbox"
-          checked={value}
+          checked={checked}
           onChange={onChange}
         />
         <ToggleContainer
-          checked={value}
+          checked={checked}
           disabled={disabled}
         >
           <i />
