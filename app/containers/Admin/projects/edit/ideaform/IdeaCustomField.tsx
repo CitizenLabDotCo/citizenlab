@@ -1,14 +1,15 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
-import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties } from 'services/ideaCustomFields';
+import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, Visibility } from 'services/ideaCustomFields';
 
 // components
 import Icon from 'components/UI/Icon';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Radio from 'components/UI/Radio';
+import Toggle from 'components/UI/Toggle';
 
 // i18n
 import T from 'components/T';
@@ -38,7 +39,7 @@ const Container = styled.div`
 const CustomFieldTitle = styled.div`
   flex: 1;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.large}px;
   line-height: normal;
   font-weight: 500;
 `;
@@ -123,6 +124,16 @@ const CollapseContainerInner = styled.div`
   padding-bottom: 25px;
 `;
 
+const LabelText = styled.span`
+  font-size: ${fontSizes.base}px;
+  display: block;
+  margin-bottom: 20px;
+`;
+
+const Setting = styled.div`
+  margin-bottom: 20px;
+`;
+
 interface Props {
   ideaCustomField: IIdeaCustomFieldData;
   collapsed: boolean;
@@ -134,28 +145,42 @@ interface Props {
 
 const disablableFields = ['topic_ids', 'location', 'attachments'];
 const requiredFields = ['title', 'body'];
+const hidableFields = ['topic_ids', 'location', 'attachments'];
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
   const canSetOptional = !requiredFields.includes(ideaCustomField.attributes.key);
+  const canSetHidden = hidableFields.find(field => field === ideaCustomField.attributes.key);
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
   const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
   const [fieldRequired, setFieldRequired] = useState(ideaCustomField.attributes.required);
+  const [fieldVisibleTo, setFieldVisibleTo] = useState(ideaCustomField.attributes.visible_to);
 
   const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
     onChange(ideaCustomField.id, { description_multiloc });
   }, [ideaCustomField, onChange]);
 
-  const handleEnabledOnChange = useCallback((enabled: boolean) => {
-    setFieldEnabled(enabled);
-    onChange(ideaCustomField.id, { enabled });
-  }, [ideaCustomField, onChange]);
+  const handleEnabledOnChange = useCallback(() => {
+    setFieldEnabled(fieldEnabled => !fieldEnabled);
+  }, []);
 
-  const handleRequiredOnChange = useCallback((required: boolean) => {
-    setFieldRequired(required);
-    onChange(ideaCustomField.id, { required });
+  useEffect(() => {
+    onChange(ideaCustomField.id, { enabled: fieldEnabled });
+  }, [fieldEnabled]);
+
+  const handleRequiredOnChange = useCallback(() => {
+    setFieldRequired(fieldRequired => !fieldRequired);
+  }, []);
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { required: fieldRequired });
+  }, [fieldRequired]);
+
+  const handleVisibleToOnChange = useCallback((visibleTo: Visibility) => {
+    setFieldVisibleTo(visibleTo);
+    onChange(ideaCustomField.id, { visible_to: visibleTo });
   }, [ideaCustomField, onChange]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
@@ -193,50 +218,55 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         >
           <CollapseContainer>
             <CollapseContainerInner>
-              {canSetEnabled && <>
-                <Radio
-                  onChange={handleEnabledOnChange}
-                  currentValue={fieldEnabled}
-                  value={true}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-enabled`}
-                  className={`e2e-location-enabled ${fieldEnabled ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.enabled} />}
-                />
-                <Radio
-                  onChange={handleEnabledOnChange}
-                  currentValue={fieldEnabled}
-                  value={false}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-disabled`}
-                  className={`e2e-location-disabled ${!fieldEnabled ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.disabled} />}
-                />
-                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-              </>}
+              {canSetEnabled &&
+                <Setting>
+                  <Toggle
+                    checked={fieldEnabled}
+                    onChange={handleEnabledOnChange}
+                    label={<FormattedMessage {...messages.enabled} />}
+                    labelTextColor={colors.adminTextColor}
+                    size={16}
+                  />
+                </Setting>
+              }
 
               {canSetOptional &&
-              <>
-                <Radio
-                  onChange={handleRequiredOnChange}
-                  currentValue={fieldRequired}
-                  value={false}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-disabled`}
-                  className={`e2e-location-disabled ${!fieldRequired ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.optional} />}
-                />
-                <Radio
-                  onChange={handleRequiredOnChange}
-                  currentValue={fieldRequired}
-                  value={true}
-                  name={`${key}-field-enabled`}
-                  id={`${key}-field-enabled`}
-                  className={`e2e-location-enabled ${fieldRequired ? 'selected' : ''}`}
-                  label={<FormattedMessage {...messages.required} />}
-                />
-                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-              </>
+                <Setting>
+                  <Toggle
+                    checked={fieldRequired}
+                    onChange={handleRequiredOnChange}
+                    label={<FormattedMessage {...messages.required} />}
+                    labelTextColor={colors.adminTextColor}
+                    size={16}
+                  />
+                </Setting>
+              }
+
+              {canSetHidden &&
+                <Setting>
+                  <label>
+                    <LabelText>To whom should this field be visible on the public idea page?</LabelText>
+                    <Radio
+                      onChange={handleVisibleToOnChange}
+                      currentValue={fieldVisibleTo}
+                      value={'public'}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-disabled`}
+                      // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.everyone} />}
+                    />
+                    <Radio
+                      onChange={handleVisibleToOnChange}
+                      currentValue={fieldVisibleTo}
+                      value={'admin'}
+                      name={`${key}-field-enabled`}
+                      id={`${key}-field-enabled`}
+                      // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
+                      label={<FormattedMessage {...messages.admin} />}
+                    />
+                    {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+                  </label>
+                </Setting>
               }
 
               <TextAreaMultilocWithLocaleSwitcher

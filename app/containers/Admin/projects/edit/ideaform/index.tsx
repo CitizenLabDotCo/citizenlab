@@ -58,7 +58,7 @@ const StyledSubSectionTitle = styled(SubSectionTitle)`
 `;
 
 const CollapseExpandAllButton = styled(Button)`
-  margin-left: auto;
+  // margin-left: auto;
 `;
 
 const Content = styled.div`
@@ -188,11 +188,11 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
 
         <Content>
           <Section>
-           <SectionField className="e2e-participation-context-location-allowed">
+           {/* <SectionField className="e2e-participation-context-location-allowed">
               <StyledSubSectionTitle>
                 Enabled fields
-                {/* <FormattedMessage {...messages.allowLocation} /> */}
-                {/* <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} /> */}
+                <FormattedMessage {...messages.allowLocation} />
+                <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} />
               </StyledSubSectionTitle>
               <StyledSubSection>
                 <SubSectionTitle>
@@ -216,13 +216,13 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
                   className={`e2e-location-disabled ${false ? 'selected' : ''}`}
                   label={<FormattedMessage {...messages.disabled} />}
                 />
-                {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+                <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
               </StyledSubSection>
-            </SectionField>
+            </SectionField> */}
           </Section>
           <Section>
             <StyledSubSectionTitle>
-              <FormattedMessage {...messages.fieldDescriptionsTitle} />
+              {/* <FormattedMessage {...messages.fieldDescriptionsTitle} /> */}
               <CollapseExpandAllButton
                 buttonStyle="secondary"
                 padding="7px 10px"
