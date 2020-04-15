@@ -224,6 +224,9 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                     <Toggle
                       checked={fieldEnabled}
                       onChange={handleEnabledOnChange}
+                      label={<FormattedMessage {...messages.enabled} />}
+                      labelTextColor={colors.adminTextColor}
+                      size={16}
                     />
                     <Radio
                       onChange={handleEnabledOnChange}
