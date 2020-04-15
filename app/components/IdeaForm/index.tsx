@@ -438,6 +438,22 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return true;
   }
 
+  isFieldRequired = (
+    ideaCustomFields: IIdeaCustomFields | null,
+    fieldKey: CustomFieldKeys
+  ) => {
+    if (
+      !isNilOrError(ideaCustomFields) &&
+      ideaCustomFields.data.length > 0
+    ) {
+      const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
+
+      if (field) return field.attributes.required;
+    }
+
+    return true;
+  }
+
   render() {
     const className = this.props['className'];
     const { projectId } = this.props;
@@ -465,6 +481,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
     const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
     const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
+    const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
+    const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
+    const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
+    const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
 
     return (
       <Form id="idea-form" className={className}>
@@ -473,7 +493,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <FormElement id="e2e-idea-title-input">
             <FormLabel
               htmlFor="title"
-              labelMessage={messages.titleLabel}
+              labelMessage={messages.title}
+              optionality="required"
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
             />
             <Input
@@ -493,7 +514,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             <FormLabel
               id="editor-label"
               htmlFor="editor"
-              labelMessage={messages.descriptionLabel}
+              labelMessage={messages.descriptionTitle}
+              optionality="required"
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
             />
             <QuillEditor
@@ -542,7 +564,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             <FormElement>
               <FormLabel
                 htmlFor="topics"
-                labelMessage={messages.topicsLabel}
+                labelMessage={messages.topicsTitle}
+                optionality={topicsRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
               />
               <TopicsPicker
@@ -556,7 +579,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           {locationEnabled &&
             <FormElement>
               <FormLabel
-                labelMessage={messages.locationLabel}
+                labelMessage={messages.locationTitle}
+                optionality={locationRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
               >
                 <LocationInput
@@ -575,7 +599,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           <FormElement id="e2e-idea-image-upload">
             <FormLabel
               htmlFor="idea-image-dropzone"
-              labelMessage={messages.imageUploadLabel}
+              labelMessage={messages.imageUploadTitle}
+              optionality={imagesRequired ? 'required' : 'optional'}
               subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
             />
             <ImagesDropzone
@@ -593,7 +618,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           {attachmentsEnabled &&
             <FormElement id="e2e-idea-file-upload">
               <FormLabel
-                labelMessage={messages.fileUploadLabel}
+                labelMessage={messages.attachmentsTitle}
+                optionality={attachmentsRequired ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
               >
                 <FileUploader
@@ -611,3 +637,5 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 }
 
 export default withRouter<Props>(injectIntl(IdeaForm));
+
+// TODO: error messages for required fields
