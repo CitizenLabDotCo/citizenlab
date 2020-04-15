@@ -345,7 +345,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     <Suspense fallback={null}>
                       <PostPageFullscreenModal
                         type={modalType}
-                        id={modalId}
+                        postId={modalId}
                         slug={modalSlug}
                         close={this.closePostPageModal}
                         navbarRef={navbarRef}

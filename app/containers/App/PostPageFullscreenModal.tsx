@@ -28,6 +28,11 @@ const PostPageFullscreenModal = memo<Props>(({ postId, slug, type, navbarRef, mo
     close();
   }, [close]);
 
+  // Far from ideal to always try to load the idea, but
+  // has to happen for hooks to work.
+  // It shows that we're putting 2 components in 1
+  const idea = useIdea({ ideaId: postId });
+
   const topBar = useMemo(() => {
     if (postId && type === 'idea') {
       return <IdeaShowPageTopBar ideaId={postId} insideModal={true} />;
@@ -41,21 +46,20 @@ const PostPageFullscreenModal = memo<Props>(({ postId, slug, type, navbarRef, mo
   }, [postId, type]);
 
   const content = useMemo(() => {
-    if (postId && type) {
+    if (postId) {
+      if (type === 'idea' && !isNilOrError(idea)) {
+        const projectId = idea.relationships.project.data.id;
 
-      if (type === 'idea') {
-        const idea = useIdea({ ideaId: postId });
-
-        if (!isNilOrError(idea)) {
-          const projectId = idea.relationships.project.data.id;
-
-          return (
-            <>
-              <IdeasShow ideaId={postId} projectId={projectId} insideModal={true} />
-              <Footer />
-            </>
-          );
-        }
+        return (
+          <>
+            <IdeasShow
+              ideaId={postId}
+              projectId={projectId}
+              insideModal={true}
+            />
+            <Footer />
+          </>
+        );
       }
 
       if (type === 'initiative') {
@@ -69,7 +73,7 @@ const PostPageFullscreenModal = memo<Props>(({ postId, slug, type, navbarRef, mo
     }
 
     return null;
-  }, [postId, type]);
+  }, [postId, idea]);
 
   return (
     <FullscreenModal
