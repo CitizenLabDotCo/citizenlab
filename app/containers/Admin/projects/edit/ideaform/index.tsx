@@ -143,10 +143,6 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
     }));
   }, []);
 
-  const handleLocationAllowedOnChange = () => {
-    console.log(1);
-  };
-
   const handleOnSubmit = useCallback(async () => {
     if (!isNilOrError(ideaCustomFields)) {
       setProcessing(true);
