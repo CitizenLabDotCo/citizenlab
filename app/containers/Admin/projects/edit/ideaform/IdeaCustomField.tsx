@@ -162,20 +162,21 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
     onChange(ideaCustomField.id, { description_multiloc });
   }, [ideaCustomField, onChange]);
 
-  const handleEnabledOnChange = () => {
-    console.log(1);
-    console.log(fieldEnabled);
+  const handleEnabledOnChange = useCallback(() => {
     setFieldEnabled(fieldEnabled => !fieldEnabled);
-  };
+  }, []);
 
   useEffect(() => {
     onChange(ideaCustomField.id, { enabled: fieldEnabled });
   }, [fieldEnabled]);
 
-  const handleRequiredOnChange = useCallback((required: boolean) => {
-    setFieldRequired(required);
-    onChange(ideaCustomField.id, { required });
-  }, [ideaCustomField, onChange]);
+  const handleRequiredOnChange = useCallback(() => {
+    setFieldRequired(fieldRequired => !fieldRequired);
+  }, []);
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { required: fieldRequired });
+  }, [fieldRequired]);
 
   const handleVisibleToOnChange = useCallback((visibleTo: Visibility) => {
     setFieldVisibleTo(visibleTo);
@@ -255,6 +256,13 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                 <Setting>
                   <label>
                     <LabelText>Should this field be optional or required in the idea form?</LabelText>
+                    <Toggle
+                      checked={fieldRequired}
+                      onChange={handleRequiredOnChange}
+                      label={<FormattedMessage {...messages.required} />}
+                      labelTextColor={colors.adminTextColor}
+                      size={16}
+                    />
                     <Radio
                       onChange={handleRequiredOnChange}
                       currentValue={fieldRequired}
