@@ -1328,7 +1328,7 @@
   "app.containers.AdminPage.groups.permissions.members": "",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTaken": "",
+  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "",
