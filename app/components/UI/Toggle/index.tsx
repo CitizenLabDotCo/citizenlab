@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
-const size = 21;
 const padding = 4;
 
 const Label = styled.label<{ labelTextColor?: string }>`
@@ -34,8 +33,8 @@ const HiddenInput = styled.input`
   width: 1px;
 `;
 
-const ToggleContainer: any = styled.div`
-  height: ${size + padding * 2}px;
+const ToggleContainer: any = styled.div<{ size: number }>`
+  height: ${({ size }) => size + padding * 2}px;
   display: flex;
   align-items: center;
   margin-right: 10px;
@@ -56,7 +55,7 @@ const ToggleContainer: any = styled.div`
   ${(props: any) => props.checked && css`
     i {
       padding-right: ${padding}px !important;
-      padding-left: ${size}px !important;
+      padding-left: ${props.size}px !important;
       background: ${colors.clGreen} !important;
     }
   `};
@@ -69,18 +68,18 @@ const ToggleContainer: any = styled.div`
     display: inline-block;
     cursor: pointer;
     padding: ${padding}px;
-    padding-right: ${size}px;
+    padding-right: ${({ size }) => size}px;
     transition: all ease 0.15s;
-    border-radius: ${size + padding}px;
+    border-radius: ${({ size }) => size + padding}px;
     background: #ccc;
     transform: translate3d(0, 0, 0);
 
     &:before {
       display: block;
       content: '';
-      width: ${size}px;
-      height: ${size}px;
-      border-radius: ${size}px;
+      width: ${({ size }) => size}px;
+      height: ${({ size }) => size}px;
+      border-radius: ${({ size }) => size}px;
       background: #fff;
     }
   }
@@ -90,7 +89,7 @@ export type Props = {
   checked: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
-  size?: 'small' | 'normal' | 'large';
+  size?: number;
   onChange: (event: React.FormEvent<any>) => void;
   className?: string;
   id?: string;
@@ -100,6 +99,10 @@ export type Props = {
 type State = {};
 
 export default class Toggle extends React.PureComponent<Props, State> {
+  static defaultProps = {
+    size: 21
+  };
+
   handleOnClick = (event) => {
     event.preventDefault();
 
@@ -116,7 +119,8 @@ export default class Toggle extends React.PureComponent<Props, State> {
       className,
       id,
       onChange,
-      labelTextColor
+      labelTextColor,
+      size
     } = this.props;
     const hasLabel = !!(label);
 
@@ -137,6 +141,7 @@ export default class Toggle extends React.PureComponent<Props, State> {
         <ToggleContainer
           checked={checked}
           disabled={disabled}
+          size={size}
         >
           <i />
         </ToggleContainer>
