@@ -1328,7 +1328,7 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {Geen leden} one {één lid} other {{count} leden}}",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Zeker weten?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Geen moderators gevonden",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTaken": "Er wordt niets getoond omdat de gebruiker in dit project geen acties kan nemen",
+  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Uitnodiging in behandeling",
   "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "Geld toewijzen",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "Reageren",
