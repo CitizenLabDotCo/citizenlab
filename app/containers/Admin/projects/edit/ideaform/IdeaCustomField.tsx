@@ -131,7 +131,7 @@ const LabelText = styled.span`
 `;
 
 const Setting = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 interface Props {
@@ -220,69 +220,25 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
             <CollapseContainerInner>
               {canSetEnabled &&
                 <Setting>
-                  <label>
-                    <LabelText>Should this field be enabled or disabled in the idea form?</LabelText>
-                    <Toggle
-                      checked={fieldEnabled}
-                      onChange={handleEnabledOnChange}
-                      label={<FormattedMessage {...messages.enabled} />}
-                      labelTextColor={colors.adminTextColor}
-                      size={16}
-                    />
-                    <Radio
-                      onChange={handleEnabledOnChange}
-                      currentValue={fieldEnabled}
-                      value={true}
-                      name={`${key}-field-enabled`}
-                      id={`${key}-field-enabled`}
-                      className={`e2e-location-enabled ${fieldEnabled ? 'selected' : ''}`}
-                      label={<FormattedMessage {...messages.enabled} />}
-                    />
-                    <Radio
-                      onChange={handleEnabledOnChange}
-                      currentValue={fieldEnabled}
-                      value={false}
-                      name={`${key}-field-enabled`}
-                      id={`${key}-field-disabled`}
-                      className={`e2e-location-disabled ${!fieldEnabled ? 'selected' : ''}`}
-                      label={<FormattedMessage {...messages.disabled} />}
-                    />
-                    {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-                  </label>
+                  <Toggle
+                    checked={fieldEnabled}
+                    onChange={handleEnabledOnChange}
+                    label={<FormattedMessage {...messages.enabled} />}
+                    labelTextColor={colors.adminTextColor}
+                    size={16}
+                  />
                 </Setting>
               }
 
               {canSetOptional &&
                 <Setting>
-                  <label>
-                    <LabelText>Should this field be optional or required in the idea form?</LabelText>
-                    <Toggle
-                      checked={fieldRequired}
-                      onChange={handleRequiredOnChange}
-                      label={<FormattedMessage {...messages.required} />}
-                      labelTextColor={colors.adminTextColor}
-                      size={16}
-                    />
-                    <Radio
-                      onChange={handleRequiredOnChange}
-                      currentValue={fieldRequired}
-                      value={false}
-                      name={`${key}-field-enabled`}
-                      id={`${key}-field-disabled`}
-                      className={`e2e-location-disabled ${!fieldRequired ? 'selected' : ''}`}
-                      label={<FormattedMessage {...messages.optional} />}
-                    />
-                    <Radio
-                      onChange={handleRequiredOnChange}
-                      currentValue={fieldRequired}
-                      value={true}
-                      name={`${key}-field-enabled`}
-                      id={`${key}-field-enabled`}
-                      className={`e2e-location-enabled ${fieldRequired ? 'selected' : ''}`}
-                      label={<FormattedMessage {...messages.required} />}
-                    />
-                    {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-                  </label>
+                  <Toggle
+                    checked={fieldRequired}
+                    onChange={handleRequiredOnChange}
+                    label={<FormattedMessage {...messages.required} />}
+                    labelTextColor={colors.adminTextColor}
+                    size={16}
+                  />
                 </Setting>
               }
 
