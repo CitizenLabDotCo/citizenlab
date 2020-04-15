@@ -70,6 +70,10 @@ import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } fro
 import { ScreenReaderOnly } from 'utils/a11y';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
+// services
+import { CustomFieldKeys } from 'services/ideaCustomFields';
+import { isAdmin, isModerator } from 'services/permissions/roles';
+
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const contentFadeInDelay = 150;
@@ -458,6 +462,37 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     });
   }
 
+  getCustomFieldData = (
+    fieldKey: CustomFieldKeys
+  ) => {
+    const { ideaCustomFields } = this.props;
+
+    if (
+      !isNilOrError(ideaCustomFields) &&
+      ideaCustomFields.data.length > 0
+    ) {
+      const fieldData = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
+
+      return fieldData;
+    }
+
+    return null;
+  }
+
+  calculateShowCustomField = (
+    fieldKey: CustomFieldKeys,
+    authUser: GetAuthUserChildProps
+  ) => {
+    const customFieldData = this.getCustomFieldData(fieldKey);
+    const visibleTo = customFieldData?.attributes.visible_to;
+    const isPrivilegedUser = !isNilOrError(authUser) &&
+      (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
+
+    if (visibleTo === 'admins' && !isPrivilegedUser) return false;
+
+    return true;
+  }
+
   render() {
     const {
       ideaFiles,
@@ -469,7 +504,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       windowSize,
       className,
       postOfficialFeedbackPermission,
-      projectId
+      projectId,
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
@@ -498,6 +533,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+
+      const showTopics = this.calculateShowCustomField('topic_ids', authUser);
+      const showLocation = this.calculateShowCustomField('location', authUser);
+      const showAttachments = this.calculateShowCustomField('attachments', authUser);
+
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
         campaign: 'share_content',
@@ -534,10 +574,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                <Topics
-                  postType="idea"
-                  topicIds={topicIds}
-                />
+                {showTopics &&
+                  <Topics
+                    postType="idea"
+                    topicIds={topicIds}
+                  />
+                }
 
                 <IdeaHeader>
                   <Title
@@ -573,7 +615,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                {ideaGeoPosition && ideaAddress &&
+                {showLocation && ideaGeoPosition && ideaAddress &&
                   <StyledDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
@@ -591,7 +633,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
+                {showAttachments && !isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
                 }
 
