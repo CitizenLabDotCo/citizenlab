@@ -26,12 +26,19 @@ import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData, getCurrentPhase } from 'services/phases';
-import { ideaCustomFieldsSchemasStream, IIdeaCustomFieldsSchemas } from 'services/ideaCustomFields';
+import {
+  ideaCustomFieldsSchemasStream,
+  ideaCustomFieldsStream,
+  IIdeaCustomFieldsSchemas,
+  IIdeaCustomFields,
+  CustomFieldKeys,
+} from 'services/ideaCustomFields';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -115,6 +122,7 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas | null;
+  ideaCustomFields: IIdeaCustomFields | null;
 }
 
 class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -142,7 +150,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: [],
-      ideaCustomFieldsSchemas: null
+      ideaCustomFieldsSchemas: null,
+      ideaCustomFields: null
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -156,6 +165,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topics$ = topicsStream().observable;
     const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
     const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(projectId as string).observable;
+    const ideaCustomFields$ = ideaCustomFieldsStream(projectId as string).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
       switchMap((project) => {
         if (project) {
@@ -220,6 +230,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       locationAllowed$.subscribe(locationAllowed => this.setState({ locationAllowed })),
 
       ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas => this.setState({ ideaCustomFieldsSchemas })),
+      ideaCustomFields$.subscribe(ideaCustomFields => this.setState({ ideaCustomFields })),
 
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
@@ -411,6 +422,22 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     }
   }
 
+  isFieldEnabled = (
+    ideaCustomFields: IIdeaCustomFields | null,
+    fieldKey: CustomFieldKeys
+  ) => {
+    if (
+      !isNilOrError(ideaCustomFields) &&
+      ideaCustomFields.data.length > 0
+    ) {
+      const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
+
+      if (field) return field.attributes.enabled;
+    }
+
+    return true;
+  }
+
   render() {
     const className = this.props['className'];
     const { projectId } = this.props;
@@ -431,9 +458,13 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budgetError,
       ideaFiles,
       locationAllowed,
-      ideaCustomFieldsSchemas
+      ideaCustomFieldsSchemas,
+      ideaCustomFields
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
+    const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
+    const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
+    const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
 
     return (
       <Form id="idea-form" className={className}>
@@ -507,7 +538,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             </FeatureFlag>
           )}
 
-          {topics && topics.length > 0 && (
+          {topicsEnabled && topics && topics.length > 0 && (
             <FormElement>
               <FormLabel
                 htmlFor="topics"
@@ -522,7 +553,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             </FormElement>
           )}
 
-          {locationAllowed &&
+          {locationEnabled &&
             <FormElement>
               <FormLabel
                 labelMessage={messages.locationLabel}
@@ -559,18 +590,20 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             />
           </FormElement>
 
-          <FormElement id="e2e-idea-file-upload">
-            <FormLabel
-              labelMessage={messages.fileUploadLabel}
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
-            >
-              <FileUploader
-                onFileAdd={this.handleIdeaFileOnAdd}
-                onFileRemove={this.handleIdeaFileOnRemove}
-                files={ideaFiles}
-              />
-            </FormLabel>
-          </FormElement>
+          {attachmentsEnabled &&
+            <FormElement id="e2e-idea-file-upload">
+              <FormLabel
+                labelMessage={messages.fileUploadLabel}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
+              >
+                <FileUploader
+                  onFileAdd={this.handleIdeaFileOnAdd}
+                  onFileRemove={this.handleIdeaFileOnRemove}
+                  files={ideaFiles}
+                />
+              </FormLabel>
+            </FormElement>
+          }
         </StyledFormSection>
       </Form>
     );
