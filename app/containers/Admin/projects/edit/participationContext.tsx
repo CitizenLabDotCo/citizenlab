@@ -581,7 +581,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.commentingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
+                    <Toggle checked={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
                   </ToggleRow>
                   <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
                 </SectionField>
@@ -600,7 +600,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.postingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={posting_enabled as boolean} onChange={this.togglePostingEnabled} />
+                    <Toggle checked={posting_enabled as boolean} onChange={this.togglePostingEnabled} />
                     <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
                   </ToggleRow>
 
@@ -608,7 +608,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.commentingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
+                    <Toggle checked={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
                     <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
                   </ToggleRow>
 
@@ -616,7 +616,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.votingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={voting_enabled as boolean} onChange={this.toggleVotingEnabled} />
+                    <Toggle checked={voting_enabled as boolean} onChange={this.toggleVotingEnabled} />
                     <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
                   </ToggleRow>
                 </StyledSectionField>
@@ -748,7 +748,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <IconTooltip content={<FormattedMessage {...messages.anonymousPollingTooltip} />} />
                   </SubSectionTitle>
 
-                  <Toggle value={poll_anonymous as boolean} onChange={this.togglePollAnonymous} />
+                  <Toggle checked={poll_anonymous as boolean} onChange={this.togglePollAnonymous} />
 
                   <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />
                 </SectionField>

@@ -222,7 +222,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                   <label>
                     <LabelText>Should this field be enabled or disabled in the idea form?</LabelText>
                     <Toggle
-                      value={fieldEnabled}
+                      checked={fieldEnabled}
                       onChange={handleEnabledOnChange}
                     />
                     <Radio
