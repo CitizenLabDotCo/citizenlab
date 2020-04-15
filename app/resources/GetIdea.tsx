@@ -18,11 +18,11 @@ interface Props extends InputProps {
   children?: children;
 }
 
-interface State {
-  idea: IIdeaData | undefined | null | Error;
-}
-
 export type GetIdeaChildProps = IIdeaData | undefined | null | Error;
+
+interface State {
+  idea: GetIdeaChildProps;
+}
 
 export default class GetIdea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
