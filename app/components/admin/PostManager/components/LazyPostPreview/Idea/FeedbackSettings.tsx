@@ -184,7 +184,7 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   statuses: <GetIdeaStatuses/>,
   prospectAssignees: ({ idea, render }) => <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>{render}</GetUsers>
 });

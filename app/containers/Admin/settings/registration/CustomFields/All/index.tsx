@@ -166,7 +166,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                 >
                   <Toggle
                     className={`e2e-custom-registration-field-toggle ${field.attributes.enabled ? 'enabled' : 'disabled'}`}
-                    value={field.attributes.enabled}
+                    checked={field.attributes.enabled}
                     onChange={this.handleOnEnabledToggle(field)}
                   />
                   <TextCell className="expand">

@@ -7,8 +7,8 @@ import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
 
 interface InputProps {
-  id?: string | null;
-  slug?: string | null;
+  ideaId?: string | null;
+  ideaSlug?: string | null;
   resetOnChange?: boolean;
 }
 
@@ -18,11 +18,11 @@ interface Props extends InputProps {
   children?: children;
 }
 
-interface State {
-  idea: IIdeaData | undefined | null | Error;
-}
-
 export type GetIdeaChildProps = IIdeaData | undefined | null | Error;
+
+interface State {
+  idea: GetIdeaChildProps;
+}
 
 export default class GetIdea extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -40,19 +40,19 @@ export default class GetIdea extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id, slug, resetOnChange } = this.props;
+    const { ideaId, ideaSlug, resetOnChange } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ id, slug });
+    this.inputProps$ = new BehaviorSubject({ ideaId, ideaSlug });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
         tap(() => resetOnChange && this.setState({ idea: undefined })),
-        switchMap(({ id, slug }) => {
-          if (isString(id)) {
-            return ideaByIdStream(id).observable;
-          } else if (isString(slug)) {
-            return ideaBySlugStream(slug).observable;
+        switchMap(({ ideaId, ideaSlug }) => {
+          if (isString(ideaId)) {
+            return ideaByIdStream(ideaId).observable;
+          } else if (isString(ideaSlug)) {
+            return ideaBySlugStream(ideaSlug).observable;
           }
 
           return of(null);
@@ -65,8 +65,8 @@ export default class GetIdea extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { id, slug } = this.props;
-    this.inputProps$.next({ id, slug });
+    const { ideaId, ideaSlug } = this.props;
+    this.inputProps$.next({ ideaId, ideaSlug });
   }
 
   componentWillUnmount() {

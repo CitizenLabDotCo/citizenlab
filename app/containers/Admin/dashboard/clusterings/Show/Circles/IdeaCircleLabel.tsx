@@ -98,7 +98,7 @@ class IdeaCircleLabel extends PureComponent<Props & InjectedIntlProps, State> {
 const IdeaLabelWithIntl = injectIntl(IdeaCircleLabel);
 
 export default (inputProps: InputProps) => (
-  <GetIdea id={inputProps.ideaId}>
+  <GetIdea ideaId={inputProps.ideaId}>
     {(idea) => <IdeaLabelWithIntl {...inputProps} idea={idea} />}
   </GetIdea>
 );

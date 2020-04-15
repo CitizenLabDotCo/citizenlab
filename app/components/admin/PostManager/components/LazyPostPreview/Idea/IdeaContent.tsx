@@ -302,7 +302,7 @@ export class IdeaContent extends PureComponent<Props & InjectedLocalized & Injec
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
