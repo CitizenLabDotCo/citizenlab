@@ -130,6 +130,7 @@
   "app.components.IdeaForm.imageUploadTitle": "Image",
   "app.components.IdeaForm.locationPlaceholder": "Type to find a location",
   "app.components.IdeaForm.locationTitle": "Location",
+  "app.components.IdeaForm.noAttachmentsError": "Please add an attachment",
   "app.components.IdeaForm.noImageError": "Please add an image",
   "app.components.IdeaForm.noLocationError": "Please enter a location",
   "app.components.IdeaForm.noTopicsError": "Please select a topic",
