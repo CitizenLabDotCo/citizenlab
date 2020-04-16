@@ -230,51 +230,56 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                 </Setting>
               }
 
-              {canSetOptional &&
-                <Setting>
-                  <Toggle
-                    checked={fieldRequired}
-                    onChange={handleRequiredOnChange}
-                    label={<FormattedMessage {...messages.required} />}
-                    labelTextColor={colors.adminTextColor}
-                    size={16}
+              {fieldEnabled &&
+                <>
+                  {canSetOptional &&
+                    <Setting>
+                      <Toggle
+                        checked={fieldRequired}
+                        onChange={handleRequiredOnChange}
+                        label={<FormattedMessage {...messages.required} />}
+                        labelTextColor={colors.adminTextColor}
+                        size={16}
+                      />
+                    </Setting>
+                  }
+
+                  {canSetHidden &&
+                    <Setting>
+                      <label>
+                        <LabelText>To whom should this field be visible on the public idea page?</LabelText>
+                        <Radio
+                          onChange={handleVisibleToOnChange}
+                          currentValue={fieldVisibleTo}
+                          value={'public'}
+                          name={`${key}-field-enabled`}
+                          id={`${key}-field-disabled`}
+                          // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
+                          label={<FormattedMessage {...messages.everyone} />}
+                        />
+                        <Radio
+                          onChange={handleVisibleToOnChange}
+                          currentValue={fieldVisibleTo}
+                          value={'admin'}
+                          name={`${key}-field-enabled`}
+                          id={`${key}-field-enabled`}
+                          // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
+                          label={<FormattedMessage {...messages.admin} />}
+                        />
+                        {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
+                      </label>
+                    </Setting>
+                  }
+
+                  <TextAreaMultilocWithLocaleSwitcher
+                    label={<FormattedMessage {...messages.descriptionLabel} />}
+                    valueMultiloc={descriptionMultiloc}
+                    onChange={handleDescriptionOnChange}
+                    rows={3}
                   />
-                </Setting>
+                </>
               }
 
-              {canSetHidden &&
-                <Setting>
-                  <label>
-                    <LabelText>To whom should this field be visible on the public idea page?</LabelText>
-                    <Radio
-                      onChange={handleVisibleToOnChange}
-                      currentValue={fieldVisibleTo}
-                      value={'public'}
-                      name={`${key}-field-enabled`}
-                      id={`${key}-field-disabled`}
-                      // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
-                      label={<FormattedMessage {...messages.everyone} />}
-                    />
-                    <Radio
-                      onChange={handleVisibleToOnChange}
-                      currentValue={fieldVisibleTo}
-                      value={'admin'}
-                      name={`${key}-field-enabled`}
-                      id={`${key}-field-enabled`}
-                      // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
-                      label={<FormattedMessage {...messages.admin} />}
-                    />
-                    {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
-                  </label>
-                </Setting>
-              }
-
-              <TextAreaMultilocWithLocaleSwitcher
-                label={<FormattedMessage {...messages.descriptionLabel} />}
-                valueMultiloc={descriptionMultiloc}
-                onChange={handleDescriptionOnChange}
-                rows={3}
-              />
             </CollapseContainerInner>
           </CollapseContainer>
         </CSSTransition>
