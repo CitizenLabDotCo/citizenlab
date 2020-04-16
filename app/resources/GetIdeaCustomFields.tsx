@@ -1,5 +1,5 @@
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
-import { IIdeaCustomFields, IIdeaCustomFieldData } from 'services/ideaCustomFields';
+import { IIdeaCustomFields } from 'services/ideaCustomFields';
 
 export type GetIdeaCustomFieldsChildProps = IIdeaCustomFields | undefined | null | Error;
 
