@@ -118,6 +118,7 @@ interface State {
   topicsError: string | JSX.Element | null;
   locationError: string | JSX.Element | null;
   imageError: string | JSX.Element | null;
+  attachmentsError: string | JSX.Element | null;
   budget: number | null;
   budgetError: string | JSX.Element | null;
   address: string;
@@ -157,7 +158,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaCustomFieldsSchemas: null,
       ideaCustomFields: null,
       locationError: null,
-      imageError: null
+      imageError: null,
+      attachmentsError: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -396,13 +398,25 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return null;
   }
 
+  validateAttachments = (ideaFiles: UploadFile[]) => {
+    const { ideaCustomFields } = this.state;
+    const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
+
+    if (attachmentsRequired && ideaFiles.length === 0) {
+      return <FormattedMessage {...messages.noAttachmentsError} />;
+    }
+
+    return null;
+  }
+
   validate = (
     title: string | null,
     description: string | null,
     budget: number | null,
     selectedTopics: string[],
     address: string,
-    imageFiles: UploadFile[]
+    imageFiles: UploadFile[],
+    ideaFiles: UploadFile[]
   ) => {
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
@@ -410,6 +424,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topicsError = this.validateTopics(selectedTopics);
     const locationError = this.validateLocation(address);
     const imageError = this.validateImage(imageFiles);
+    const attachmentsError = this.validateAttachments(ideaFiles);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 
@@ -429,7 +444,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budgetError,
       topicsError,
       locationError,
-      imageError
+      imageError,
+      attachmentsError
     });
 
     if (titleError && this.titleInputElement) {
@@ -450,7 +466,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       !budgetError &&
       !topicsError &&
       !locationError &&
-      !imageError
+      !imageError &&
+      !attachmentsError
     );
   }
 
@@ -490,7 +507,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budget,
       selectedTopics,
       address,
-      imageFile
+      imageFile,
+      ideaFiles
     );
 
     if (formIsValid) {
@@ -565,7 +583,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaCustomFields,
       topicsError,
       locationError,
-      imageError
+      imageError,
+      attachmentsError
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
     const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
@@ -721,6 +740,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                   files={ideaFiles}
                 />
               </FormLabel>
+              {attachmentsError && <Error text={attachmentsError} />}
             </FormElement>
           }
         </StyledFormSection>

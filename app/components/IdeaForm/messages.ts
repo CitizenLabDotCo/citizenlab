@@ -96,5 +96,9 @@ export default defineMessages({
   noImageError: {
     id: 'app.components.IdeaForm.noImageError',
     defaultMessage: 'Please add an image',
+  },
+  noAttachmentsError: {
+    id: 'app.components.IdeaForm.noAttachmentsError',
+    defaultMessage: 'Please add an attachment',
   }
 });
