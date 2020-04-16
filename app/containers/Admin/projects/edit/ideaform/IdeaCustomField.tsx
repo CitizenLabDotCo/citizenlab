@@ -159,8 +159,11 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
 
   const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
-    onChange(ideaCustomField.id, { description_multiloc });
-  }, [ideaCustomField, onChange]);
+  }, []);
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { description_multiloc: descriptionMultiloc });
+  }, [descriptionMultiloc]);
 
   const handleEnabledOnChange = useCallback(() => {
     setFieldEnabled(fieldEnabled => !fieldEnabled);
@@ -180,8 +183,11 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
 
   const handleVisibleToOnChange = useCallback((visibleTo: Visibility) => {
     setFieldVisibleTo(visibleTo);
-    onChange(ideaCustomField.id, { visible_to: visibleTo });
-  }, [ideaCustomField, onChange]);
+  }, []);
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { visible_to: fieldVisibleTo });
+  }, [fieldVisibleTo]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
@@ -260,7 +266,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                         <Radio
                           onChange={handleVisibleToOnChange}
                           currentValue={fieldVisibleTo}
-                          value={'admin'}
+                          value={'admins'}
                           name={`${key}-field-enabled`}
                           id={`${key}-field-enabled`}
                           // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
