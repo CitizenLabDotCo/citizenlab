@@ -115,6 +115,7 @@ interface State {
   description: string;
   descriptionError: string | JSX.Element | null;
   selectedTopics: string[];
+  topicsError: string | JSX.Element | null;
   budget: number | null;
   budgetError: string | JSX.Element | null;
   address: string;
@@ -144,6 +145,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       description: '',
       descriptionError: null,
       selectedTopics: [],
+      topicsError: null,
       address: '',
       imageFile: [],
       budget: null,
@@ -151,7 +153,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaFiles: [],
       ideaFilesToRemove: [],
       ideaCustomFieldsSchemas: null,
-      ideaCustomFields: null
+      ideaCustomFields: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -251,7 +253,16 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   mapPropsToState = () => {
-    const { title, description, selectedTopics, address, budget, imageFile, remoteIdeaFiles } = this.props;
+    const {
+      title,
+      description,
+      selectedTopics,
+      address,
+      budget,
+      imageFile,
+      remoteIdeaFiles,
+    } = this.props;
+    const { ideaCustomFields } = this.state;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
     this.setState({
@@ -261,7 +272,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaFiles,
       address,
       title: (title || ''),
-      description: (description || '')
+      description: (description || ''),
     });
   }
 
@@ -349,10 +360,27 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return null;
   }
 
-  validate = (title: string | null, description: string | null, budget: number | null) => {
+  validateTopics = (selectedTopics: string[]) => {
+    const { ideaCustomFields } = this.state;
+    const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
+
+    if (topicsRequired && selectedTopics.length === 0) {
+      return <FormattedMessage {...messages.noTopicsError} />;
+    }
+
+    return null;
+  }
+
+  validate = (
+    title: string | null,
+    description: string | null,
+    budget: number | null,
+    selectedTopics: string[]
+  ) => {
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
+    const topicsError = this.validateTopics(selectedTopics);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 
@@ -366,7 +394,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       }
     }
 
-    this.setState({ titleError, descriptionError, budgetError });
+    this.setState({ titleError, descriptionError, budgetError, topicsError });
 
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
@@ -380,7 +408,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       return (!titleError && !descriptionError);
     }
 
-    return (!titleError && !descriptionError && !budgetError);
+    return (!titleError && !descriptionError && !budgetError && !topicsError);
   }
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
@@ -404,7 +432,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   handleOnSubmit = () => {
     const { title, description, selectedTopics, address, budget, imageFile, ideaFiles, ideaFilesToRemove } = this.state;
-    const formIsValid = this.validate(title, description, budget);
+    const formIsValid = this.validate(title, description, budget, selectedTopics);
 
     if (formIsValid) {
       const output: IIdeaFormOutput = {
@@ -475,7 +503,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaFiles,
       locationAllowed,
       ideaCustomFieldsSchemas,
-      ideaCustomFields
+      ideaCustomFields,
+      topicsError
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
     const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
@@ -573,6 +602,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 onChange={this.handleTopicsOnChange}
                 max={2}
               />
+              {topicsError && <Error text={topicsError} />}
             </FormElement>
           )}
 
