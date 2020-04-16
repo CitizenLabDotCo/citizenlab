@@ -117,6 +117,7 @@ interface State {
   selectedTopics: string[];
   topicsError: string | JSX.Element | null;
   locationError: string | JSX.Element | null;
+  imageError: string | JSX.Element | null;
   budget: number | null;
   budgetError: string | JSX.Element | null;
   address: string;
@@ -155,7 +156,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaFilesToRemove: [],
       ideaCustomFieldsSchemas: null,
       ideaCustomFields: null,
-      locationError: null
+      locationError: null,
+      imageError: null
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -383,18 +385,31 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return null;
   }
 
+  validateImage = (imageFiles: UploadFile[]) => {
+    const { ideaCustomFields } = this.state;
+    const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
+
+    if (imagesRequired && imageFiles.length === 0) {
+      return <FormattedMessage {...messages.noImageError} />;
+    }
+
+    return null;
+  }
+
   validate = (
     title: string | null,
     description: string | null,
     budget: number | null,
     selectedTopics: string[],
-    address: string
+    address: string,
+    imageFiles: UploadFile[]
   ) => {
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
     const topicsError = this.validateTopics(selectedTopics);
     const locationError = this.validateLocation(address);
+    const imageError = this.validateImage(imageFiles);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 
@@ -413,7 +428,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       descriptionError,
       budgetError,
       topicsError,
-      locationError
+      locationError,
+      imageError
     });
 
     if (titleError && this.titleInputElement) {
@@ -433,7 +449,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       !descriptionError &&
       !budgetError &&
       !topicsError &&
-      !locationError
+      !locationError &&
+      !imageError
     );
   }
 
@@ -472,7 +489,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       description,
       budget,
       selectedTopics,
-      address
+      address,
+      imageFile
     );
 
     if (formIsValid) {
@@ -546,7 +564,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaCustomFieldsSchemas,
       ideaCustomFields,
       topicsError,
-      locationError
+      locationError,
+      imageError
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
     const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
@@ -686,6 +705,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               onAdd={this.handleUploadOnAdd}
               onRemove={this.handleUploadOnRemove}
             />
+            {imageError && <Error text={imageError} />}
           </FormElement>
 
           {attachmentsEnabled &&

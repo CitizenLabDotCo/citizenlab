@@ -92,5 +92,9 @@ export default defineMessages({
   noLocationError: {
     id: 'app.components.IdeaForm.noLocationError',
     defaultMessage: 'Please enter a location',
+  },
+  noImageError: {
+    id: 'app.components.IdeaForm.noImageError',
+    defaultMessage: 'Please add an image',
   }
 });
