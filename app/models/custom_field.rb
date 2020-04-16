@@ -36,6 +36,17 @@ class CustomField < ApplicationRecord
     %w(select multiselect).include?(input_type)
   end
 
+  def visible_for? user
+    case visible_to
+    when 'public'
+      true
+    when 'admins'
+      user&.admin? || (resource_type == 'Project' && user.project_moderator?(resource_id))
+    else
+      raise "Method does not support #{visible_to}"
+    end
+  end
+
   private
 
   def set_default_enabled
