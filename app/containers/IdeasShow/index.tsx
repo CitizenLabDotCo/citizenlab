@@ -71,7 +71,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 // services
-import { CustomFieldKeys } from 'services/ideaCustomFields';
+import { CustomFieldKeys, IIdeaCustomFieldData } from 'services/ideaCustomFields';
 import { isAdmin, isModerator } from 'services/permissions/roles';
 
 const contentFadeInDuration = 250;
@@ -463,27 +463,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   getCustomFieldData = (
+    ideaCustomFields: IIdeaCustomFieldData[],
     fieldKey: CustomFieldKeys
   ) => {
-    const { ideaCustomFields } = this.props;
+    const fieldData = ideaCustomFields.find(field => field.attributes.key === fieldKey);
 
-    if (
-      !isNilOrError(ideaCustomFields) &&
-      ideaCustomFields.data.length > 0
-    ) {
-      const fieldData = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
-
-      return fieldData;
-    }
+    if (fieldData) return fieldData;
 
     return null;
   }
 
   calculateShowCustomField = (
-    fieldKey: CustomFieldKeys,
+    customFieldData: any,
     authUser: GetAuthUserChildProps
   ) => {
-    const customFieldData = this.getCustomFieldData(fieldKey);
     const visibleTo = customFieldData?.attributes.visible_to;
     const isPrivilegedUser = !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
@@ -505,12 +498,13 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       className,
       postOfficialFeedbackPermission,
       projectId,
+      ideaCustomFields
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
+    if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(ideaCustomFields) && loaded) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea?.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
@@ -534,9 +528,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
-      const showTopics = this.calculateShowCustomField('topic_ids', authUser);
-      const showLocation = this.calculateShowCustomField('location', authUser);
-      const showAttachments = this.calculateShowCustomField('attachments', authUser);
+      console.log(ideaCustomFields);
+
+      // const showTopics = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'topic_ids'), authUser);
+      // const showLocation = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'location'), authUser);
+      const showAttachments = this.calculateShowCustomField(
+        this.getCustomFieldData(
+          ideaCustomFields.data,
+          'attachments'
+        ),
+        authUser
+      );
 
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
@@ -574,7 +576,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                {showTopics &&
+                {/* {showTopics &&
                   <Topics
                     postType="idea"
                     topicIds={topicIds}
@@ -631,7 +633,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   locale={locale}
                   body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
-                />
+                /> */}
 
                 {showAttachments && !isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
