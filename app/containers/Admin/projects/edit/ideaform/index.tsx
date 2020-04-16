@@ -134,16 +134,25 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
 
   const handleIdeaCustomFieldOnChange = useCallback((
     ideaCustomFieldId: string,
-    updatedProperties: IUpdatedIdeaCustomFieldProperties
+    updatedProperties: IUpdatedIdeaCustomFieldProperties,
   ) => {
     setSuccess(false);
     setError(false);
-    setChanges((changes) => ({
-      ...changes,
-      [ideaCustomFieldId]: {
+    setChanges((changes) => {
+      const fieldChanges = changes[ideaCustomFieldId] ? ({
+        ...changes[ideaCustomFieldId],
         ...updatedProperties
-      }
-    }));
+      }) : ({
+        ...updatedProperties
+      });
+
+      return ({
+        ...changes,
+        [ideaCustomFieldId]: {
+          ...fieldChanges
+        }
+      });
+    });
   }, []);
 
   const handleOnSubmit = useCallback(async () => {
