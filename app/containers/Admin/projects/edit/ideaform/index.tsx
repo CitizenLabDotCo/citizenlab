@@ -7,7 +7,7 @@ import { isEmpty } from 'lodash-es';
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
 
 // services
-import { updateIdeaCustomField } from 'services/ideaCustomFields';
+import { updateIdeaCustomField, IUpdatedIdeaCustomFieldProperties } from 'services/ideaCustomFields';
 
 // components
 import Button from 'components/UI/Button';
@@ -132,13 +132,16 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
     setCollapsed(newCollapsed);
   }, [collapsed, allExpanded]);
 
-  const handleIdeaCustomFieldOnChange = useCallback((ideaCustomFieldId: string, { description_multiloc }: { description_multiloc: Multiloc }) => {
+  const handleIdeaCustomFieldOnChange = useCallback((
+    ideaCustomFieldId: string,
+    updatedProperties: IUpdatedIdeaCustomFieldProperties
+  ) => {
     setSuccess(false);
     setError(false);
     setChanges((changes) => ({
       ...changes,
       [ideaCustomFieldId]: {
-        description_multiloc
+        ...updatedProperties
       }
     }));
   }, []);
