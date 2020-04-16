@@ -84,5 +84,9 @@ export default defineMessages({
   formAttachmentsSectionTitle: {
     id: 'app.components.IdeaForm.formAttachmentsSectionTitle',
     defaultMessage: 'Images and attachments',
+  },
+  noTopicsError: {
+    id: 'app.components.IdeaForm.noTopicsError',
+    defaultMessage: 'Please select a topic',
   }
 });
