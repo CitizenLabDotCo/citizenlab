@@ -88,5 +88,9 @@ export default defineMessages({
   noTopicsError: {
     id: 'app.components.IdeaForm.noTopicsError',
     defaultMessage: 'Please select a topic',
+  },
+  noLocationError: {
+    id: 'app.components.IdeaForm.noLocationError',
+    defaultMessage: 'Please enter a location',
   }
 });

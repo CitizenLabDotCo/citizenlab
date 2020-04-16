@@ -116,6 +116,7 @@ interface State {
   descriptionError: string | JSX.Element | null;
   selectedTopics: string[];
   topicsError: string | JSX.Element | null;
+  locationError: string | JSX.Element | null;
   budget: number | null;
   budgetError: string | JSX.Element | null;
   address: string;
@@ -154,6 +155,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaFilesToRemove: [],
       ideaCustomFieldsSchemas: null,
       ideaCustomFields: null,
+      locationError: null
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -262,7 +264,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       imageFile,
       remoteIdeaFiles,
     } = this.props;
-    const { ideaCustomFields } = this.state;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
     this.setState({
@@ -371,16 +372,29 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return null;
   }
 
+  validateLocation = (address: string) => {
+    const { ideaCustomFields } = this.state;
+    const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
+
+    if (locationRequired && !address) {
+      return <FormattedMessage {...messages.noLocationError} />;
+    }
+
+    return null;
+  }
+
   validate = (
     title: string | null,
     description: string | null,
     budget: number | null,
-    selectedTopics: string[]
+    selectedTopics: string[],
+    address: string
   ) => {
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
     const topicsError = this.validateTopics(selectedTopics);
+    const locationError = this.validateLocation(address);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 
@@ -394,7 +408,13 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       }
     }
 
-    this.setState({ titleError, descriptionError, budgetError, topicsError });
+    this.setState({
+      titleError,
+      descriptionError,
+      budgetError,
+      topicsError,
+      locationError
+    });
 
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
@@ -408,7 +428,13 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       return (!titleError && !descriptionError);
     }
 
-    return (!titleError && !descriptionError && !budgetError && !topicsError);
+    return (
+      !titleError &&
+      !descriptionError &&
+      !budgetError &&
+      !topicsError &&
+      !locationError
+    );
   }
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
@@ -431,8 +457,23 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, address, budget, imageFile, ideaFiles, ideaFilesToRemove } = this.state;
-    const formIsValid = this.validate(title, description, budget, selectedTopics);
+    const {
+      title,
+      description,
+      selectedTopics,
+      address,
+      budget,
+      imageFile,
+      ideaFiles,
+      ideaFilesToRemove
+    } = this.state;
+    const formIsValid = this.validate(
+      title,
+      description,
+      budget,
+      selectedTopics,
+      address
+    );
 
     if (formIsValid) {
       const output: IIdeaFormOutput = {
@@ -504,7 +545,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       locationAllowed,
       ideaCustomFieldsSchemas,
       ideaCustomFields,
-      topicsError
+      topicsError,
+      locationError
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
     const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
@@ -620,6 +662,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                   onChange={this.handleLocationOnChange}
                 />
               </FormLabel>
+              {locationError && <Error text={locationError} />}
             </FormElement>
           }
         </StyledFormSection>
