@@ -93,6 +93,7 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
           value={valueMultiloc?.[selectedLocale] || null}
           locale={selectedLocale}
           onChange={handleValueOnChange}
+          id={id}
         />
       </Container>
     );
