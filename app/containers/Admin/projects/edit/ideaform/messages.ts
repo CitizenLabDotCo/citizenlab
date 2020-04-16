@@ -52,12 +52,16 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.required',
     defaultMessage: 'Required',
   },
-  everyone: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.everyone',
-    defaultMessage: 'Everyone',
+  visibleToEveryone: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.visibleToEveryone',
+    defaultMessage: 'Visible to everyone',
   },
-  admin: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.admin',
-    defaultMessage: 'Admin',
+  visibleToAdmin: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.visibleToAdmin',
+    defaultMessage: 'Only visible to admins and project moderators',
+  },
+  visibility: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.visibility',
+    defaultMessage: 'Visibility on idea page',
   },
 });

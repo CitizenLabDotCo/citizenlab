@@ -39,7 +39,7 @@ const Container = styled.div`
 const CustomFieldTitle = styled.div`
   flex: 1;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.large}px;
+  font-size: ${fontSizes.xl}px;
   line-height: normal;
   font-weight: 500;
 `;
@@ -125,13 +125,26 @@ const CollapseContainerInner = styled.div`
 `;
 
 const LabelText = styled.span`
-  font-size: ${fontSizes.base}px;
+  font-size: ${fontSizes.medium}px;
   display: block;
   margin-bottom: 20px;
+  font-weight: 500;
 `;
 
 const Setting = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+`;
+
+const LocaleSwitcherLabelText = styled.span`
+  font-weight: 500;
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.medium}px;
+`;
+
+const Toggles = styled.div``;
+
+const EnabledToggle = styled(Toggle)`
+  margin-bottom: 10px;
 `;
 
 interface Props {
@@ -224,36 +237,40 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         >
           <CollapseContainer>
             <CollapseContainerInner>
-              {canSetEnabled &&
-                <Setting>
-                  <Toggle
+            <Toggles>
+              <Setting>
+                <LabelText>
+                  General
+                </LabelText>
+                {canSetEnabled &&
+                  <EnabledToggle
                     checked={fieldEnabled}
                     onChange={handleEnabledOnChange}
                     label={<FormattedMessage {...messages.enabled} />}
                     labelTextColor={colors.adminTextColor}
                     size={16}
                   />
-                </Setting>
-              }
+                }
+                {fieldEnabled && canSetOptional &&
+                  <Toggle
+                    checked={fieldRequired}
+                    onChange={handleRequiredOnChange}
+                    label={<FormattedMessage {...messages.required} />}
+                    labelTextColor={colors.adminTextColor}
+                    size={16}
+                  />
+                }
+              </Setting>
+            </Toggles>
 
               {fieldEnabled &&
                 <>
-                  {canSetOptional &&
-                    <Setting>
-                      <Toggle
-                        checked={fieldRequired}
-                        onChange={handleRequiredOnChange}
-                        label={<FormattedMessage {...messages.required} />}
-                        labelTextColor={colors.adminTextColor}
-                        size={16}
-                      />
-                    </Setting>
-                  }
-
                   {canSetHidden &&
                     <Setting>
                       <label>
-                        <LabelText>To whom should this field be visible on the public idea page?</LabelText>
+                        <LabelText>
+                          <FormattedMessage {...messages.visibility} />
+                        </LabelText>
                         <Radio
                           onChange={handleVisibleToOnChange}
                           currentValue={fieldVisibleTo}
@@ -261,7 +278,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                           name={`${key}-field-enabled`}
                           id={`${key}-field-disabled`}
                           // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
-                          label={<FormattedMessage {...messages.everyone} />}
+                          label={<FormattedMessage {...messages.visibleToEveryone} />}
                         />
                         <Radio
                           onChange={handleVisibleToOnChange}
@@ -270,7 +287,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                           name={`${key}-field-enabled`}
                           id={`${key}-field-enabled`}
                           // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
-                          label={<FormattedMessage {...messages.admin} />}
+                          label={<FormattedMessage {...messages.visibleToAdmin} />}
                         />
                         {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
                       </label>
@@ -282,6 +299,10 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                     valueMultiloc={descriptionMultiloc}
                     onChange={handleDescriptionOnChange}
                     rows={3}
+                    labelTextColor={colors.adminTextColor}
+                    labelTextElement={<LocaleSwitcherLabelText>
+                      <FormattedMessage {...messages.descriptionLabel} />
+                    </LocaleSwitcherLabelText>}
                   />
                 </>
               }
