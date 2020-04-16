@@ -553,10 +553,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     ) {
       const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
 
-      if (field) return field.attributes.required;
+      if (field) {
+        return field.attributes.required;
+      }
     }
 
-    return true;
+    return false;
   }
 
   render() {
@@ -587,165 +589,170 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       attachmentsError
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
-    const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
-    const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
-    const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
-    const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
-    const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
-    const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
-    const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
 
-    return (
-      <Form id="idea-form" className={className}>
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formGeneralSectionTitle} />
-          <FormElement id="e2e-idea-title-input">
-            <FormLabel
-              htmlFor="title"
-              labelMessage={messages.title}
-              optionality="required"
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
-            />
-            <Input
-              id="title"
-              type="text"
-              value={title}
-              placeholder={formatMessage(messages.titlePlaceholder)}
-              error={titleError}
-              onChange={this.handleTitleOnChange}
-              setRef={this.handleTitleInputSetRef}
-              maxCharCount={80}
-              autocomplete="off"
-            />
-          </FormElement>
+    if (!isNilOrError(ideaCustomFields)) {
+      const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
+      const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
+      const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
+      const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
+      const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
+      const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
+      const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
 
-          <FormElement id="e2e-idea-description-input">
-            <FormLabel
-              id="editor-label"
-              htmlFor="editor"
-              labelMessage={messages.descriptionTitle}
-              optionality="required"
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
-            />
-            <QuillEditor
-              id="editor"
-              noImages={true}
-              value={description}
-              placeholder={formatMessage(messages.descriptionPlaceholder)}
-              onChange={this.handleDescriptionOnChange}
-              setRef={this.handleDescriptionSetRef}
-              hasError={descriptionError !== null}
-            />
-            {descriptionError && <Error text={descriptionError} />}
-          </FormElement>
-        </StyledFormSection>
-
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formDetailsSectionTitle} />
-          {pbContext && (
-            <FeatureFlag name="participatory_budgeting">
-              <HasPermission
-                item="idea"
-                action="assignBudget"
-                context={{ projectId }}
-              >
-                <FormElement>
-                  <FormLabelWithIcon
-                    labelMessage={messages.budgetLabel}
-                    labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
-                    htmlFor="budget"
-                    iconName="admin"
-                    iconAriaHidden
-                  />
-                  <Input
-                    id="budget"
-                    error={budgetError}
-                    value={String(budget)}
-                    type="number"
-                    onChange={this.handleBudgetOnChange}
-                  />
-                </FormElement>
-              </HasPermission>
-            </FeatureFlag>
-          )}
-
-          {topicsEnabled && topics && topics.length > 0 && (
-            <FormElement>
+      return (
+        <Form id="idea-form" className={className}>
+          <StyledFormSection>
+            <FormSectionTitle message={messages.formGeneralSectionTitle} />
+            <FormElement id="e2e-idea-title-input">
               <FormLabel
-                htmlFor="topics"
-                labelMessage={messages.topicsTitle}
-                optionality={topicsRequired ? 'required' : 'optional'}
-                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
+                htmlFor="title"
+                labelMessage={messages.title}
+                optionality="required"
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
               />
-              <TopicsPicker
-                value={selectedTopics}
-                onChange={this.handleTopicsOnChange}
-                max={2}
+              <Input
+                id="title"
+                type="text"
+                value={title}
+                placeholder={formatMessage(messages.titlePlaceholder)}
+                error={titleError}
+                onChange={this.handleTitleOnChange}
+                setRef={this.handleTitleInputSetRef}
+                maxCharCount={80}
+                autocomplete="off"
               />
-              {topicsError && <Error text={topicsError} />}
             </FormElement>
-          )}
 
-          {locationEnabled &&
-            <FormElement>
+            <FormElement id="e2e-idea-description-input">
               <FormLabel
-                labelMessage={messages.locationTitle}
-                optionality={locationRequired ? 'required' : 'optional'}
-                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
-              >
-                <LocationInput
-                  className="e2e-idea-form-location-input-field"
-                  value={address}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
-                  onChange={this.handleLocationOnChange}
-                />
-              </FormLabel>
-              {locationError && <Error text={locationError} />}
+                id="editor-label"
+                htmlFor="editor"
+                labelMessage={messages.descriptionTitle}
+                optionality="required"
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
+              />
+              <QuillEditor
+                id="editor"
+                noImages={true}
+                value={description}
+                placeholder={formatMessage(messages.descriptionPlaceholder)}
+                onChange={this.handleDescriptionOnChange}
+                setRef={this.handleDescriptionSetRef}
+                hasError={descriptionError !== null}
+              />
+              {descriptionError && <Error text={descriptionError} />}
             </FormElement>
-          }
-        </StyledFormSection>
+          </StyledFormSection>
 
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-          <FormElement id="e2e-idea-image-upload">
-            <FormLabel
-              htmlFor="idea-image-dropzone"
-              labelMessage={messages.imageUploadTitle}
-              optionality={imagesRequired ? 'required' : 'optional'}
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
-            />
-            <ImagesDropzone
-              id="idea-image-dropzone"
-              images={imageFile}
-              imagePreviewRatio={135 / 298}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={1}
-              onAdd={this.handleUploadOnAdd}
-              onRemove={this.handleUploadOnRemove}
-            />
-            {imageError && <Error text={imageError} />}
-          </FormElement>
+          <StyledFormSection>
+            <FormSectionTitle message={messages.formDetailsSectionTitle} />
+            {pbContext && (
+              <FeatureFlag name="participatory_budgeting">
+                <HasPermission
+                  item="idea"
+                  action="assignBudget"
+                  context={{ projectId }}
+                >
+                  <FormElement>
+                    <FormLabelWithIcon
+                      labelMessage={messages.budgetLabel}
+                      labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
+                      htmlFor="budget"
+                      iconName="admin"
+                      iconAriaHidden
+                    />
+                    <Input
+                      id="budget"
+                      error={budgetError}
+                      value={String(budget)}
+                      type="number"
+                      onChange={this.handleBudgetOnChange}
+                    />
+                  </FormElement>
+                </HasPermission>
+              </FeatureFlag>
+            )}
 
-          {attachmentsEnabled &&
-            <FormElement id="e2e-idea-file-upload">
+            {topicsEnabled && topics && topics.length > 0 && (
+              <FormElement>
+                <FormLabel
+                  htmlFor="topics"
+                  labelMessage={messages.topicsTitle}
+                  optionality={topicsRequired ? 'required' : 'optional'}
+                  subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
+                />
+                <TopicsPicker
+                  value={selectedTopics}
+                  onChange={this.handleTopicsOnChange}
+                  max={2}
+                />
+                {topicsError && <Error text={topicsError} />}
+              </FormElement>
+            )}
+
+            {locationEnabled &&
+              <FormElement>
+                <FormLabel
+                  labelMessage={messages.locationTitle}
+                  optionality={locationRequired ? 'required' : 'optional'}
+                  subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
+                >
+                  <LocationInput
+                    className="e2e-idea-form-location-input-field"
+                    value={address}
+                    placeholder={formatMessage(messages.locationPlaceholder)}
+                    onChange={this.handleLocationOnChange}
+                  />
+                </FormLabel>
+                {locationError && <Error text={locationError} />}
+              </FormElement>
+            }
+          </StyledFormSection>
+
+          <StyledFormSection>
+            <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+            <FormElement id="e2e-idea-image-upload">
               <FormLabel
-                labelMessage={messages.attachmentsTitle}
-                optionality={attachmentsRequired ? 'required' : 'optional'}
-                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
-              >
-                <FileUploader
-                  onFileAdd={this.handleIdeaFileOnAdd}
-                  onFileRemove={this.handleIdeaFileOnRemove}
-                  files={ideaFiles}
-                />
-              </FormLabel>
-              {attachmentsError && <Error text={attachmentsError} />}
+                htmlFor="idea-image-dropzone"
+                labelMessage={messages.imageUploadTitle}
+                optionality={imagesRequired ? 'required' : 'optional'}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
+              />
+              <ImagesDropzone
+                id="idea-image-dropzone"
+                images={imageFile}
+                imagePreviewRatio={135 / 298}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={1}
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+              />
+              {imageError && <Error text={imageError} />}
             </FormElement>
-          }
-        </StyledFormSection>
-      </Form>
-    );
+
+            {attachmentsEnabled &&
+              <FormElement id="e2e-idea-file-upload">
+                <FormLabel
+                  labelMessage={messages.attachmentsTitle}
+                  optionality={attachmentsRequired ? 'required' : 'optional'}
+                  subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
+                >
+                  <FileUploader
+                    onFileAdd={this.handleIdeaFileOnAdd}
+                    onFileRemove={this.handleIdeaFileOnRemove}
+                    files={ideaFiles}
+                  />
+                </FormLabel>
+                {attachmentsError && <Error text={attachmentsError} />}
+              </FormElement>
+            }
+          </StyledFormSection>
+        </Form>
+      );
+    }
+
+    return null;
   }
 }
 
