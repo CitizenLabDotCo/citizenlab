@@ -130,6 +130,7 @@
   "app.components.IdeaForm.imageUploadTitle": "",
   "app.components.IdeaForm.locationPlaceholder": "Escriba para encontrar una ubicación",
   "app.components.IdeaForm.locationTitle": "",
+  "app.components.IdeaForm.noAttachmentsError": "",
   "app.components.IdeaForm.noImageError": "",
   "app.components.IdeaForm.noLocationError": "",
   "app.components.IdeaForm.noTopicsError": "",
