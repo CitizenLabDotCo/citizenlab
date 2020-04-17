@@ -158,7 +158,7 @@ interface Props {
 
 const disablableFields = ['topic_ids', 'location', 'attachments'];
 const requiredFields = ['title', 'body'];
-const hidableFields = ['topic_ids', 'location', 'attachments'];
+const hidableFields = ['topic_ids', 'location'];
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
