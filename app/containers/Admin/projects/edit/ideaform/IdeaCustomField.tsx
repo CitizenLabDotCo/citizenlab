@@ -40,7 +40,7 @@ const Container = styled.div`
 const CustomFieldTitle = styled.div`
   flex: 1;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.xl}px;
+  font-size: ${fontSizes.large}px;
   line-height: normal;
   font-weight: 500;
 `;
