@@ -10,6 +10,7 @@ import Icon from 'components/UI/Icon';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
+import IconToolTip from 'components/UI/IconTooltip';
 
 // i18n
 import T from 'components/T';
@@ -143,8 +144,14 @@ const LocaleSwitcherLabelText = styled.span`
 
 const Toggles = styled.div``;
 
-const EnabledToggle = styled(Toggle)`
+const ToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
   margin-bottom: 10px;
+`;
+
+const StyledToggle = styled(Toggle)`
+  margin-right: 10px;
 `;
 
 interface Props {
@@ -239,27 +246,35 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
             <CollapseContainerInner>
             <Toggles>
               <Setting>
-                {canSetEnabled && <LabelText>
-                  General
-                </LabelText>}
-                {canSetEnabled &&
-                  <EnabledToggle
-                    checked={fieldEnabled}
-                    onChange={handleEnabledOnChange}
-                    label={<FormattedMessage {...messages.enabled} />}
-                    labelTextColor={colors.adminTextColor}
-                    size={16}
-                  />
-                }
-                {fieldEnabled && canSetOptional &&
-                  <Toggle
-                    checked={fieldRequired}
-                    onChange={handleRequiredOnChange}
-                    label={<FormattedMessage {...messages.required} />}
-                    labelTextColor={colors.adminTextColor}
-                    size={16}
-                  />
-                }
+                {canSetEnabled && (
+                  <LabelText>
+                    <FormattedMessage {...messages.options} />
+                  </LabelText>
+                )}
+                {canSetEnabled && (
+                  <ToggleContainer>
+                    <StyledToggle
+                      checked={fieldEnabled}
+                      onChange={handleEnabledOnChange}
+                      label={<FormattedMessage {...messages.enabled} />}
+                      labelTextColor={colors.adminTextColor}
+                      size={16}
+                    />
+                    <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
+                  </ToggleContainer>
+                )}
+                {fieldEnabled && canSetOptional && (
+                  <ToggleContainer>
+                    <StyledToggle
+                      checked={fieldRequired}
+                      onChange={handleRequiredOnChange}
+                      label={<FormattedMessage {...messages.required} />}
+                      labelTextColor={colors.adminTextColor}
+                      size={16}
+                    />
+                    <IconToolTip content={<FormattedMessage {...messages.requiredTooltip} />} />
+                  </ToggleContainer>
+                )}
               </Setting>
             </Toggles>
 
