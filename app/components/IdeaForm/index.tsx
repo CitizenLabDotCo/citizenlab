@@ -690,7 +690,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               </FormElement>
             )}
 
-            {locationEnabled &&
+            {(locationEnabled || locationAllowed) &&
               <FormElement>
                 <FormLabel
                   labelMessage={messages.locationTitle}
@@ -758,4 +758,5 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
 export default withRouter<Props>(injectIntl(IdeaForm));
 
-// TODO: error messages for required fields
+// TODO: remove locationAllowed over time. As of 17/4/2020 it's left here for backwards compatibility
+// but this setting will move to the project idea form settings.
