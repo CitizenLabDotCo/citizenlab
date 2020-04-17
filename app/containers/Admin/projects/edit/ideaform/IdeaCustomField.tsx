@@ -310,14 +310,14 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                   }
 
                   <TextAreaMultilocWithLocaleSwitcher
-                    label={<FormattedMessage {...messages.descriptionLabel} />}
                     valueMultiloc={descriptionMultiloc}
                     onChange={handleDescriptionOnChange}
                     rows={3}
-                    labelTextColor={colors.adminTextColor}
-                    labelTextElement={<LocaleSwitcherLabelText>
-                      <FormattedMessage {...messages.descriptionLabel} />
-                    </LocaleSwitcherLabelText>}
+                    labelTextElement={
+                      <LocaleSwitcherLabelText>
+                        <FormattedMessage {...messages.descriptionLabel} />
+                      </LocaleSwitcherLabelText>
+                    }
                   />
                 </>
               }

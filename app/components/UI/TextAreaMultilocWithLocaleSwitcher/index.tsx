@@ -40,14 +40,13 @@ const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
   width: auto;
 `;
 
-const LabelText = styled.span<{ labelTextColor?: string }>`
-  color: ${({ labelTextColor }) => labelTextColor || colors.label}
+const LabelText = styled.span`
+  color: ${colors.adminTextColor};
 `;
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {
   valueMultiloc: Multiloc | null | undefined;
   onChange: (value: Multiloc, locale: Locale) => void;
-  labelTextColor?: string;
   labelTextElement?: JSX.Element;
 }
 
@@ -58,7 +57,6 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     className,
     label,
     labelTooltipText,
-    labelTextColor,
     labelTextElement,
     ...textAreaProps
   } = props;
@@ -90,9 +88,9 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     return (
       <Container className={className}>
         <LabelContainer>
-          {label ? (
+          {(label || labelTextElement) ? (
             <StyledLabel htmlFor={id}>
-              {labelTextElement || <LabelText labelTextColor={labelTextColor}>{label}</LabelText>}
+              {labelTextElement || <LabelText>{label}</LabelText>}
               {labelTooltipText && <IconTooltip content={labelTooltipText} />}
             </StyledLabel>
           ) : <Spacer />}
