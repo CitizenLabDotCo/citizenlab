@@ -474,9 +474,11 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
   }
 
   calculateShowCustomField = (
-    customFieldData: any,
-    authUser: GetAuthUserChildProps
+    ideaCustomFields: IIdeaCustomFieldData[],
+    fieldKey: CustomFieldKeys
   ) => {
+    const { authUser } = this.props;
+    const customFieldData = this.getCustomFieldData(ideaCustomFields, fieldKey);
     const visibleTo = customFieldData?.attributes.visible_to;
     const isPrivilegedUser = !isNilOrError(authUser) &&
       (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
@@ -527,9 +529,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
-
-      const showTopics = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'topic_ids'), authUser);
-      const showLocation = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'location'), authUser);
+      const ideaCustomFieldsData = ideaCustomFields.data;
+      const showTopics = this.calculateShowCustomField(ideaCustomFieldsData, 'topic_ids');
+      const showLocation = this.calculateShowCustomField(ideaCustomFieldsData, 'location');
 
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
