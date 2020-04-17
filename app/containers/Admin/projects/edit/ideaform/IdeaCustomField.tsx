@@ -120,8 +120,8 @@ const CollapseContainer = styled.div`
 `;
 
 const CollapseContainerInner = styled.div`
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding-top: 10px;
+  margin-bottom: 25px;
 `;
 
 const LabelText = styled.span`
@@ -239,9 +239,9 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
             <CollapseContainerInner>
             <Toggles>
               <Setting>
-                <LabelText>
+                {canSetEnabled && <LabelText>
                   General
-                </LabelText>
+                </LabelText>}
                 {canSetEnabled &&
                   <EnabledToggle
                     checked={fieldEnabled}
