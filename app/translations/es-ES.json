@@ -1152,7 +1152,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltip": "",
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Algo salió mal, por favor inténtalo más tarde.",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "Expandir todos los campos",
-  "app.containers.AdminPage.ProjectIdeaForm.fieldDescriptionsTitle": "",
   "app.containers.AdminPage.ProjectIdeaForm.options": "",
   "app.containers.AdminPage.ProjectIdeaForm.required": "",
   "app.containers.AdminPage.ProjectIdeaForm.requiredTooltip": "",
