@@ -142,8 +142,6 @@ const LocaleSwitcherLabelText = styled.span`
   font-size: ${fontSizes.medium}px;
 `;
 
-const Toggles = styled.div``;
-
 const ToggleContainer = styled.div`
   display: flex;
   align-items: center;
@@ -244,24 +242,23 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         >
           <CollapseContainer>
             <CollapseContainerInner>
-            <Toggles>
               <Setting>
                 {canSetEnabled && (
-                  <LabelText>
-                    <FormattedMessage {...messages.options} />
-                  </LabelText>
-                )}
-                {canSetEnabled && (
-                  <ToggleContainer>
-                    <StyledToggle
-                      checked={fieldEnabled}
-                      onChange={handleEnabledOnChange}
-                      label={<FormattedMessage {...messages.enabled} />}
-                      labelTextColor={colors.adminTextColor}
-                      size={16}
-                    />
-                    <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
-                  </ToggleContainer>
+                  <>
+                    <LabelText>
+                      <FormattedMessage {...messages.options} />
+                    </LabelText>
+                    <ToggleContainer>
+                      <StyledToggle
+                        checked={fieldEnabled}
+                        onChange={handleEnabledOnChange}
+                        label={<FormattedMessage {...messages.enabled} />}
+                        labelTextColor={colors.adminTextColor}
+                        size={16}
+                      />
+                      <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
+                    </ToggleContainer>
+                  </>
                 )}
                 {fieldEnabled && canSetOptional && (
                   <ToggleContainer>
@@ -276,7 +273,6 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                   </ToggleContainer>
                 )}
               </Setting>
-            </Toggles>
 
               {fieldEnabled &&
                 <>
@@ -304,7 +300,6 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                           // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
                           label={<FormattedMessage {...messages.visibleToAdmin} />}
                         />
-                        {/* <Error apiErrors={apiErrors && apiErrors.presentation_mode} /> */}
                       </label>
                     </Setting>
                   }
