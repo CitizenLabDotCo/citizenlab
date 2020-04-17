@@ -528,17 +528,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
 
-      console.log(ideaCustomFields);
-
-      // const showTopics = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'topic_ids'), authUser);
-      // const showLocation = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'location'), authUser);
-      const showAttachments = this.calculateShowCustomField(
-        this.getCustomFieldData(
-          ideaCustomFields.data,
-          'attachments'
-        ),
-        authUser
-      );
+      const showTopics = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'topic_ids'), authUser);
+      const showLocation = this.calculateShowCustomField(this.getCustomFieldData(ideaCustomFields.data, 'location'), authUser);
 
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
@@ -576,7 +567,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                {/* {showTopics &&
+                {showTopics &&
                   <Topics
                     postType="idea"
                     topicIds={topicIds}
@@ -633,9 +624,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   locale={locale}
                   body={ideaBody}
                   translateButtonClicked={translateButtonClicked}
-                /> */}
+                />
 
-                {showAttachments && !isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
+                {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
                 }
 
