@@ -150,5 +150,3 @@ export default class Toggle extends React.PureComponent<Props, State> {
     );
   }
 }
-
-// TODO: check labels in other places
