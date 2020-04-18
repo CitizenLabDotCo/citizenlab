@@ -94,7 +94,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
     viewLink = `/${parentType.toLowerCase()}s/${parentSlug}`;
   }
 
-  const handleOnChecked = useCallback((_event: React.MouseEvent | React.KeyboardEvent) => {
+  const handleOnChecked = useCallback((_event: React.ChangeEvent) => {
     onSelect(moderation.id);
   }, [onSelect]);
 

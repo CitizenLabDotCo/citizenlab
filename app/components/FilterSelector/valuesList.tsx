@@ -149,7 +149,7 @@ export default class ValuesList extends PureComponent<Props, State> {
     event.preventDefault();
   }
 
-  handleOnToggleCheckbox = (entry) => (_event: React.MouseEvent | React.KeyboardEvent) => {
+  handleOnToggleCheckbox = (entry) => (_event: React.ChangeEvent) => {
     this.props.onChange(entry.value);
   }
 

@@ -9,6 +9,7 @@ import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
+import 'focus-visible';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
