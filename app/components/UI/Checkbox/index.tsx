@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { colors, customOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { isBoolean } from 'lodash-es';
-import { darken } from 'polished';
+import { darken, hideVisually } from 'polished';
 
 const CheckboxContainer = styled.div<{ hasLabel: boolean }>`
   margin-right: ${({ hasLabel }) => hasLabel ? '10px' : '0px'};
@@ -31,21 +31,10 @@ const Label = styled.label<{ disabled: boolean }>`
 `;
 
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
-  // Hide checkbox visually but remain accessible to screen readers.
-  // Source: https://polished.js.org/docs/#hidevisually
-  border: 0;
-  clip: rect(0 0 0 0);
-  clippath: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+  ${hideVisually()};
 `;
 
-const StyledCheckbox = styled.div<{checkedOrIndeterminate: boolean, size: string}>`
+const StyledCheckbox = styled.div<{ checkedOrIndeterminate: boolean, size: string }>`
   width: ${({ size }) => parseInt(size, 10)}px;
   height: ${({ size }) => parseInt(size, 10)}px;
   flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
@@ -55,11 +44,9 @@ const StyledCheckbox = styled.div<{checkedOrIndeterminate: boolean, size: string
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : colors.separationDark};
   background: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#fff'};
-  transition: background-color 100ms ease-out, border-color 100ms ease-out;
 
-  ${HiddenCheckbox}:focus + & {
-    /* outline: ${customOutline}; */
-    box-shadow: 0 0 0 2px rgb(59, 153, 252);
+  ${HiddenCheckbox}.focus-visible + & {
+    outline: ${customOutline};
   }
 
   &.enabled {
@@ -134,7 +121,3 @@ export default class Checkbox extends PureComponent<Props> {
     return null;
   }
 }
-
-// label clicking bump in filterSelector
-// storybook
-// check test

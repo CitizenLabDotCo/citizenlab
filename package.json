@@ -61,6 +61,7 @@
     "d3-hierarchy": "1.1.9",
     "file-saver": "2.0.2",
     "formik": "1.x",
+    "focus-visible": "5.1.0",
     "graphql": "14.6.0",
     "identity-obj-proxy": "3.0.0",
     "intersection-observer": "0.7.0",
