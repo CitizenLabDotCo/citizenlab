@@ -368,13 +368,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
     this.setState({ downvoting_enabled });
   }
 
-  handleLocationAllowedOnChange = (location_allowed: boolean) => {
-    this.setState({
-      location_allowed,
-      presentation_mode: 'card'
-    });
-  }
-
   handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
     this.setState({ presentation_mode });
   }
@@ -424,8 +417,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method,
       voting_limited_max,
       downvoting_enabled,
-      location_allowed,
-      presentation_mode,
       max_budget,
       survey_embed_url,
       survey_service,
@@ -689,53 +680,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                       </SectionField>
                     </FeatureFlag>
                   </>
-                }
-
-                <SectionField className="e2e-participation-context-location-allowed">
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.allowLocation} />
-                    <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} />
-                  </SubSectionTitle>
-                  <Radio
-                    onChange={this.handleLocationAllowedOnChange}
-                    currentValue={location_allowed}
-                    value={true}
-                    name="location_allowed"
-                    id="locationd-enabled"
-                    className={`e2e-location-enabled ${location_allowed ? 'selected' : ''}`}
-                    label={<FormattedMessage {...messages.enabled} />}
-                  />
-                  <Radio
-                    onChange={this.handleLocationAllowedOnChange}
-                    currentValue={location_allowed}
-                    value={false}
-                    name="location_allowed"
-                    id="location-disabled"
-                    className={`e2e-location-disabled ${!location_allowed ? 'selected' : ''}`}
-                    label={<FormattedMessage {...messages.disabled} />}
-                  />
-                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-                </SectionField>
-
-                {location_allowed &&
-                  <SectionField>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.defaultDisplay} />
-                      <IconTooltip content={<FormattedMessage {...messages.defaultDisplayTooltip} />} />
-                    </SubSectionTitle>
-                    {['card', 'map'].map((key) => (
-                      <Radio
-                        key={key}
-                        onChange={this.handleIdeasDisplayChange}
-                        currentValue={presentation_mode}
-                        value={key}
-                        name="presentation_mode"
-                        id={`presentation_mode-${key}`}
-                        label={<FormattedMessage {...messages[`${key}Display`]} />}
-                      />
-                    ))}
-                    <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-                  </SectionField>
                 }
               </>
             }

@@ -73,48 +73,7 @@ describe('Admin: add project', () => {
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-archived-projects-list').contains(projectTitleEN);
       });
-
-      it('creates a continous project with location disabled', () => {
-        const projectTitleEN = randomString();
-        const projectTitleNL = randomString();
-
-        // Select 'Archived' publication status
-        cy.get('.e2e-projecstatus-published').click();
-
-        // Type random project titles for these required fields
-        cy.get('#project-title-en-GB').type(projectTitleEN);
-        cy.get('#project-title-nl-BE').type(projectTitleNL);
-
-        // Set project type to continuous
-        cy.get('.e2e-project-type-continuous').click();
-
-        // Set idea locations to disabled
-        cy.get('.e2e-participation-context-location-allowed');
-        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled');
-        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled').click();
-
-        // Submit project
-        cy.get('.e2e-submit-wrapper-button');
-        cy.get('.e2e-submit-wrapper-button').click();
-
-        cy.wait(2000);
-
-        // Click the 'Manage' button for the newly created project
-        cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
-        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`);
-        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`).click();
-
-        cy.wait(2000);
-
-        // Check that page navigation occured
-        cy.get('.e2e-project-general-form');
-
-        // Check that location is set to disabled
-        cy.get('.e2e-participation-context-location-allowed');
-        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled');
-        cy.get('.e2e-participation-context-location-allowed .e2e-location-disabled').should('have.class', 'selected');
-      });
-    });
+  });
 
     context('Areas: Selection', () => {
       it('creates a published project with the correct area', () => {
