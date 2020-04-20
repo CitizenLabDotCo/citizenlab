@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
-import { ideaCustomFieldStream, IIdeaCustomField } from 'services/ideaCustomFields';
+import { ideaCustomFieldStream, IIdeaCustomField, IIdeaCustomFieldData } from 'services/ideaCustomFields';
+import { Observable, of } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
-  projectId: string;
+  projectId: string | null;
   customFieldCode: string; // TODO: add types
 }
 
 export default function useIdeaCustomFields({ projectId, customFieldCode }: Props) {
-  const [ideaCustomField, setIdeaCustomField] = useState<IIdeaCustomField | undefined | null | Error>(undefined);
+  const [ideaCustomField, setIdeaCustomField] = useState<IIdeaCustomFieldData | undefined | null | Error>(undefined);
 
   useEffect(() => {
-    const subscription = ideaCustomFieldStream(projectId, customFieldCode).observable.subscribe((ideaCustomField) => {
+    let observable: Observable<IIdeaCustomField | null> = of(null);
+
+    if (projectId) {
+      observable = ideaCustomFieldStream(projectId, customFieldCode).observable;
+    }
+
+    const subscription = observable.subscribe((response) => {
+      const ideaCustomField = !isNilOrError(response) ? response.data : response;
       setIdeaCustomField(ideaCustomField);
     });
 
