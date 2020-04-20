@@ -21,11 +21,11 @@ const Container = styled.div`
 `;
 
 const CheckboxWrapper = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const ConsentText = styled.div`
-  color: ${colors.label};
+  color: ${colors.text};
   font-size: ${fontSizes.small}px;
   line-height: 20px;
   font-weight: 300;
@@ -34,7 +34,7 @@ const ConsentText = styled.div`
   word-break: break-word;
 
   a {
-    color: ${colors.label};
+    color: ${colors.text};
     font-weight: 300;
     text-decoration: underline;
     overflow-wrap: break-word;
@@ -88,9 +88,9 @@ const Consent = memo<Props & InjectedIntlProps>(({
           label={
             <ConsentText>
               <FormattedMessage
-                {...messages.tacApproval}
+                {...messages.readAgreeTo}
                 values={{
-                  tacLink: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
+                  link: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.termsAndConditions} /></Link>
                 }}
               />
             </ConsentText>
@@ -108,9 +108,9 @@ const Consent = memo<Props & InjectedIntlProps>(({
           label={
             <ConsentText>
               <FormattedMessage
-                {...messages.privacyApproval}
+                {...messages.readAgreeTo}
                 values={{
-                  ppLink: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>
+                  link: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.privacyPolicy} /></Link>
                 }}
               />
             </ConsentText>

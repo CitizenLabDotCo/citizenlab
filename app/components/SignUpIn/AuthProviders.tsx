@@ -31,33 +31,59 @@ const Container = styled.div`
 `;
 
 const StyledAuthProviderButton = styled(AuthProviderButton)`
+  margin-bottom: 18px;
+`;
+
+const Or = styled.div`
+   width: 100%;
+   text-align: center;
+   border-bottom: 1px solid #e0e0e0;
+   line-height: 0.1em;
+   margin-top: 15px;
+   margin-bottom: 25px;
+
+   & > span {
+    color: ${colors.text};
+    font-size: ${fontSizes.small}px;
+    font-weight: 300;
+    text-transform: lowercase;
+    background: #fff;
+    padding: 0 10px;
+   }
+`;
+
+const FranceConnectButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 20px;
 `;
 
 const FranceConnectButton = styled.button`
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: 0;
   text-align: left;
   cursor: pointer;
   padding: 0;
   margin: 0;
-  margin-top: 10px;
+  margin-bottom: 2px;
 
   &:disabled {
     cursor: not-allowed;
   }
-
-  &:not(:disabled) {
-    &:hover {
-      border-color: #0e4fa1;
-    }
-  }
 `;
 
 const SubSocialButtonLink = styled.a`
-  color: ${colors.label};
+  color: ${colors.text};
   font-size: ${fontSizes.small}px;
   font-weight: 300;
-  text-decoration: none;
-  padding-top: 0.2em;
+  text-decoration: underline;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+  }
 `;
 
 interface InputProps {
@@ -163,8 +189,14 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
           </StyledAuthProviderButton>
         }
 
+        {(passwordLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled) && franceconnectLoginEnabled &&
+          <Or>
+            <FormattedMessage {...messages.or} />
+          </Or>
+        }
+
         {franceconnectLoginEnabled &&
-          <>
+          <FranceConnectButtonWrapper>
             <FranceConnectButton onClick={handleOnFranceConnectSelected}>
               <img
                 src={franceConnectLogo}
@@ -177,7 +209,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
             >
               <FormattedMessage {...messages.whatIsFranceConnect} />
             </SubSocialButtonLink>
-          </>
+          </FranceConnectButtonWrapper>
         }
 
         <Options>

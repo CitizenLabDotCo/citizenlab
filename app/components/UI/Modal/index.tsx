@@ -40,8 +40,8 @@ export const ModalContent = styled.div<{ noPadding?: boolean | undefined }>`
 `;
 
 const CloseButton = styled.button`
-  width: 29px;
-  height: 29px;
+  width: 28px;
+  height: 28px;
   position: absolute;
   top: 20px;
   right: 25px;
@@ -57,7 +57,7 @@ const CloseButton = styled.button`
   transition: all 100ms ease-out;
 
   &:hover {
-    background: #f0f0f0;
+    background: #ececec;
   }
 
   ${media.smallerThanMinTablet`
@@ -170,7 +170,7 @@ export const HeaderContainer = styled.div`
   padding-top: 20px;
   padding-bottom: 20px;
   margin-right: 45px;
-  border-bottom: solid 1px ${colors.separation};
+  border-bottom: solid 1px #e0e0e0;
   background: #fff;
 
   ${media.smallerThanMinTablet`
@@ -189,19 +189,16 @@ export const HeaderTitle = styled.h1`
   line-height: normal;
   margin: 0;
   padding: 0;
-
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.large}px;
-  `}
 `;
 
 export const HeaderSubtitle = styled.h2`
   width: 100%;
   color: ${colors.text};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 600;
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
   line-height: normal;
   margin: 0;
+  margin-top: 5px;
   padding: 0;
 `;
 

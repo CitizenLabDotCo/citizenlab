@@ -12,6 +12,7 @@ import messages from './messages';
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
+import { colors } from 'utils/styleUtils';
 
 // typings
 import { TSignUpInFlow } from 'components/SignUpIn';
@@ -24,12 +25,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #ddd;
+  border: solid 1px #ccc;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
   transition: all 100ms ease-out;
 
   &:hover {
-    border-color: ${darken(0.3, '#ddd')};
+    border-color: ${darken(0.3, '#ccc')};
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
   }
 `;
@@ -38,7 +39,7 @@ const ConsentWrapper = styled.div`
   opacity: 0;
   max-height: 0px;
   overflow: hidden;
-  background: #fff;
+  background: transparent;
   transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
 
   &.consent-enter {
@@ -154,10 +155,12 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
       <Button
         icon={authProvider as any}
         iconSize="22px"
+        iconColor={authProvider === 'facebook' ? colors.facebook : colors.text}
         buttonStyle="white"
         fullWidth={true}
         justify="left"
         whiteSpace="wrap"
+        textColor={colors.text}
         borderColor="transparent"
         borderHoverColor="transparent"
         onClick={handleExpandButtonClicked}
@@ -170,10 +173,10 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
           classNames="consent"
           in={expanded}
           timeout={timeout}
-          // mounOnEnter={false}
-          // unmountOnExit={false}
-          // enter={true}
-          // exit={true}
+          mounOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
         >
           <ConsentWrapper>
             <ConsentWrapperInner>

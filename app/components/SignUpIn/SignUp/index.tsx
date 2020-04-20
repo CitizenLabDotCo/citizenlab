@@ -47,6 +47,8 @@ const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
 `;
 
 const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
+  padding-top: 20px;
+
   ${props => props.inModal && `
     max-height: calc(85vh - 150px);
   `}
@@ -208,15 +210,24 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
         stepName = formatMessage(messages.completeYourProfile);
       }
 
+      const showSubtitle = !!(!error && totalStepsCount > 1 && activeStepNumber > 0 && stepName);
+
+      let headerTitle = messages.signUp2;
+
+      if (error) {
+        headerTitle = messages.somethingWentWrongTitle;
+      } else if (activeStep === 'custom-fields' && !showSubtitle) {
+        headerTitle = messages.completeYourProfile;
+      }
+
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
           <StyledHeaderContainer inModal={inModal}>
             <HeaderTitle className={inModal ? 'inModal' : 'notInModal'}>
-              {!error && <FormattedMessage {...messages.signUp2} />}
-              {error && <FormattedMessage {...messages.somethingWentWrongTitle} />}
+              <FormattedMessage {...headerTitle} />
             </HeaderTitle>
 
-            {!error && totalStepsCount > 1 && activeStepNumber > 0 && stepName &&
+            {showSubtitle &&
               <HeaderSubtitle>
                 <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
               </HeaderSubtitle>

@@ -15,7 +15,7 @@ export const Option = styled.div`
   margin-top: 20px;
 
   & button {
-    color: ${colors.text};
+    color: #000;
     font-size: ${fontSizes.base}px;
     font-weight: 500;
     line-height: normal;
