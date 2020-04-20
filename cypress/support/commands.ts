@@ -612,7 +612,6 @@ export function apiCreateProject({
   assigneeId,
   surveyUrl,
   surveyService,
-  locationAllowed
 }: {
     type: 'timeline' | 'continuous',
     title: string,
@@ -623,7 +622,6 @@ export function apiCreateProject({
     assigneeId?: string,
     surveyUrl?: string,
     surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-    locationAllowed?: boolean
   }) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
@@ -655,7 +653,6 @@ export function apiCreateProject({
           participation_method: (type === 'continuous' && !participationMethod ? 'ideation' : participationMethod),
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
-          location_allowed: locationAllowed
         }
       }
     });

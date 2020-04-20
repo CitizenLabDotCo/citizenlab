@@ -304,15 +304,10 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const showListView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
-    let locationAllowed: boolean | undefined = true;
+    // TODO
+    const locationEnabled = true;
 
-    if (participationContextType === 'phase' && !isNilOrError(phase)) {
-      locationAllowed =  phase?.attributes?.location_allowed;
-    } else if (participationContextType === 'project' && !isNilOrError(project)) {
-      locationAllowed =  project?.attributes?.location_allowed;
-    }
-
-    const showViewButtons = !!(locationAllowed && showViewToggle);
+    const showViewButtons = !!(locationEnabled && showViewToggle);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
