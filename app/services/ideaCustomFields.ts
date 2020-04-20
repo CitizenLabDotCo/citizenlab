@@ -88,6 +88,15 @@ export function ideaCustomFieldsStream(projectId: string, streamParams: IStreamP
   return streams.get<IIdeaCustomFields>({ apiEndpoint, ...streamParams });
 }
 
+export function ideaCustomFieldByCodeStream(
+  projectId: string,
+  customFieldCode: string,
+  streamParams: IStreamParams | null = null
+) {
+  const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/by_code/${customFieldCode}`;
+  return streams.get<IIdeaCustomField>({ apiEndpoint, ...streamParams });
+}
+
 export function ideaCustomFieldsSchemasStream(projectId: string, streamParams: IStreamParams | null = null) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/schema`;
   return streams.get<IIdeaCustomFieldsSchemas>({ apiEndpoint, ...streamParams });
