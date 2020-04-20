@@ -17,6 +17,8 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 // resources
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import GetIdeaCustomField, { GetIdeaCustomFieldChildProps } from 'resources/GetIdeaCustomField';
 
 // i18n
 import messages from './messages';
@@ -31,6 +33,7 @@ import { rgba } from 'polished';
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
+import { withRouter, WithRouterProps } from 'react-router';
 
 const Container = styled.div`
   width: 100%;
@@ -219,6 +222,8 @@ interface InputProps extends GetIdeasInputProps  {
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
+  project: GetProjectChildProps;
+  locationCustomField: GetIdeaCustomFieldChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -285,7 +290,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       className,
       theme,
       allowProjectsFilter,
-      showViewToggle
+      showViewToggle,
+      locationCustomField
     } = this.props;
     const {
       queryParameters,
@@ -298,8 +304,12 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const showListView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
-    // TODO
-    const locationEnabled = true;
+
+    /*
+      If IdeaCards are used in a location that's not inside a project,
+      the location and map view are enabled by default.
+    */
+    const locationEnabled = !isNilOrError(locationCustomField) ? locationCustomField.attributes.enabled : true;
 
     const showViewButtons = !!(locationEnabled && showViewToggle);
 
@@ -389,15 +399,26 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
   windowSize: <GetWindowSize />,
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
+  ideas: ({ render, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
+  project: ({ params, render }) => <GetProject projectId={params.slug}>{render}</GetProject>,
+  locationCustomField: ({ project, render }) => {
+    return (
+      <GetIdeaCustomField
+        projectId={!isNilOrError(project) ? project.id : null}
+        customFieldCode="location"
+      >
+        {render}
+      </GetIdeaCustomField>
+    );
+  }
 });
 
 const WithoutFiltersSidebarWithHoCs = withTheme(injectIntl(WithoutFiltersSidebar));
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {dataProps => <WithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />}
   </Data>
-);
+));
