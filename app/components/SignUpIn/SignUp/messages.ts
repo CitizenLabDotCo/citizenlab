@@ -115,7 +115,7 @@ export default defineMessages({
   },
   or: {
     id: 'app.containers.SignUp.or',
-    defaultMessage: 'Or',
+    defaultMessage: 'or',
   },
   orSignUpWith: {
     id: 'app.containers.SignUp.orSignUpWith',
@@ -133,13 +133,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.logIn2',
     defaultMessage: 'Log in',
   },
-  tacApproval: {
-    id: 'app.containers.SignUp.tacApproval',
-    defaultMessage: 'Check here to confirm that you have read and agree to our {tacLink}',
-  },
-  privacyApproval: {
-    id: 'app.containers.SignUp.privacyApproval',
-    defaultMessage: 'Check here to confirm that you have read and agree to our {ppLink}',
+  readAgreeTo: {
+    id: 'app.containers.SignUp.readAgreeTo',
+    defaultMessage: 'I have read and agree to the {link}',
   },
   emailApproval: {
     id: 'app.containers.SignUp.emailApproval',
