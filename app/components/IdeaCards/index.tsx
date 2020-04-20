@@ -44,3 +44,5 @@ const IdeaCards = memo<Props>(({ className, invisibleTitleMessage, ...props }) =
 });
 
 export default IdeaCards;
+
+// TODO: add lazy loading for With/WithourFilterSidebar
