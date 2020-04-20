@@ -122,7 +122,6 @@ export interface IParticipationContextConfig {
   voting_method?: 'unlimited' | 'limited' | null;
   voting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
-  location_allowed?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
@@ -167,7 +166,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method: 'unlimited',
       voting_limited_max: 5,
       downvoting_enabled: true,
-      location_allowed: true,
       presentation_mode: 'card',
       max_budget: null,
       survey_service: null,
@@ -201,7 +199,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             voting_method,
             voting_limited_max,
             downvoting_enabled,
-            location_allowed,
             presentation_mode,
             max_budget,
             survey_embed_url,
@@ -217,7 +214,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             voting_method,
             voting_limited_max,
             downvoting_enabled,
-            location_allowed,
             presentation_mode,
             max_budget,
             survey_embed_url,
@@ -249,7 +245,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method,
       voting_limited_max,
       downvoting_enabled,
-      location_allowed,
       presentation_mode,
       max_budget,
       survey_embed_url,
@@ -268,7 +263,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         posting_enabled,
         commenting_enabled,
         voting_enabled,
-        location_allowed,
         presentation_mode,
         voting_method: (voting_enabled ? voting_method : null),
         voting_limited_max: (voting_enabled && voting_method === 'limited' ? voting_limited_max : null),
@@ -294,7 +288,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         participation_method,
         max_budget,
         commenting_enabled,
-        location_allowed,
         presentation_mode
       }, isNil) as IParticipationContextConfig;
     }
@@ -325,7 +318,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method: (participation_method === 'ideation' ? 'unlimited' : null),
       voting_limited_max: null,
       downvoting_enabled: (participation_method === 'ideation' ? true : null),
-      location_allowed: ((participation_method === 'ideation' || participation_method === 'budgeting') ? true : null),
       presentation_mode: (participation_method === 'ideation' ? 'card' : null),
       survey_embed_url: null,
       survey_service: (participation_method === 'survey' ? 'typeform' : null),

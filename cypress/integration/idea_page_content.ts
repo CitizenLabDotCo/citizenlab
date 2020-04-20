@@ -146,7 +146,6 @@ describe('Idea Page', () => {
         description: projectDescription,
         publicationStatus: 'published',
         participationMethod: 'ideation',
-        locationAllowed: true
       }).then((project) => {
         projectId = project.body.data.id;
         return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);

@@ -107,7 +107,6 @@ interface State {
   locale: Locale | null;
   tenant: ITenant | null;
   topics: IOption[] | null;
-  locationAllowed: boolean;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
@@ -142,7 +141,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       topics: null,
       pbContext: null,
       projects: null,
-      locationAllowed: true,
       title: '',
       titleError: null,
       description: '',
@@ -194,27 +192,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         return of(null) as Observable<any>;
       })
     );
-    const locationAllowed$ = project$.pipe(
-      switchMap((project) => {
-        if (project) {
-          if (project.data.attributes.process_type === 'continuous' && isBoolean(project.data.attributes.location_allowed)) {
-            return of(project.data.attributes.location_allowed);
-          }
-
-          if (project.data.attributes.process_type === 'timeline') {
-            return phasesStream(project.data.id).observable.pipe(
-              map((phases) => {
-                const currentPhase = getCurrentPhase(phases.data);
-                const locationAllowed = currentPhase?.attributes?.location_allowed;
-                return isBoolean(locationAllowed) ? locationAllowed : true;
-              })
-            );
-          }
-        }
-
-        return of(true);
-      })
-    );
 
     this.mapPropsToState();
 
@@ -234,8 +211,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       }),
 
       pbContext$.subscribe(pbContext => this.setState({ pbContext })),
-
-      locationAllowed$.subscribe(locationAllowed => this.setState({ locationAllowed })),
 
       ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas => this.setState({ ideaCustomFieldsSchemas })),
       ideaCustomFields$.subscribe(ideaCustomFields => this.setState({ ideaCustomFields })),
@@ -580,7 +555,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       descriptionError,
       budgetError,
       ideaFiles,
-      locationAllowed,
       ideaCustomFieldsSchemas,
       ideaCustomFields,
       topicsError,
@@ -690,7 +664,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               </FormElement>
             )}
 
-            {(locationEnabled || locationAllowed) &&
+            {locationEnabled &&
               <FormElement>
                 <FormLabel
                   labelMessage={messages.locationTitle}
@@ -757,6 +731,3 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 }
 
 export default withRouter<Props>(injectIntl(IdeaForm));
-
-// TODO: remove locationAllowed over time. As of 17/4/2020 it's left here for backwards compatibility
-// but this setting will move to the project idea form settings.

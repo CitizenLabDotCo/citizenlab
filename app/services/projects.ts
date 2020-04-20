@@ -45,7 +45,6 @@ export interface IProjectData {
     survey_service?: SurveyServices;
     survey_embed_url?: string;
     ordering: number;
-    location_allowed?: boolean;
     poll_anonymous?: boolean;
     action_descriptor: {
       posting: {
