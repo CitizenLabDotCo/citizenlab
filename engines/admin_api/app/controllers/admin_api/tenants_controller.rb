@@ -26,10 +26,7 @@ module AdminApi
       SideFxTenantService.new.before_create @tenant, nil
       if @tenant.save
         SideFxTenantService.new.after_create @tenant, nil
-        Apartment::Tenant.switch(@tenant.schema_name) do
-          TenantTemplateService.new.resolve_and_apply_template template, external_subfolder: 'release'
-        end
-        SideFxTenantService.new.after_apply_template @tenant, nil
+        ApplyTenantTemplateJob.perform_later template, @tenant
         # This uses default model serialization
         render json: @tenant, status: :created
       else
