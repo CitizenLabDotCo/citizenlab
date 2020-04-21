@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { ideaCustomFieldStream, IIdeaCustomField, IIdeaCustomFieldData } from 'services/ideaCustomFields';
+import { ideaCustomFieldStream, IIdeaCustomField, IIdeaCustomFieldData, CustomFieldCodes } from 'services/ideaCustomFields';
 import { Observable, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   projectId: string | null;
-  customFieldCode: string; // TODO: add types
+  customFieldCode: CustomFieldCodes;
 }
 
 export default function useIdeaCustomFields({ projectId, customFieldCode }: Props) {

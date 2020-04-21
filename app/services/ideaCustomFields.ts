@@ -3,7 +3,8 @@ import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
 export type Visibility = 'admins' | 'public';
-export type CustomFieldKeys = 'title' | 'body' | 'topic_ids' | 'location' | 'images' | 'attachments';
+export type CustomFieldCodes = 'title' | 'body' | 'topic_ids' | 'location' | 'images' | 'attachments';
+type CustomFieldKeys = CustomFieldCodes;
 
 export interface IIdeaCustomFieldData {
   id: string;
@@ -16,7 +17,7 @@ export interface IIdeaCustomFieldData {
     required: boolean;
     ordering: null;
     enabled: boolean;
-    code: string;
+    code: CustomFieldCodes;
     created_at: null;
     updated_at: null
     visible_to: Visibility;
@@ -90,7 +91,7 @@ export function ideaCustomFieldsStream(projectId: string, streamParams: IStreamP
 
 export function ideaCustomFieldByCodeStream(
   projectId: string,
-  customFieldCode: string,
+  customFieldCode: CustomFieldCodes,
   streamParams: IStreamParams | null = null
 ) {
   const apiEndpoint = `${API_PATH}/projects/${projectId}/custom_fields/by_code/${customFieldCode}`;
