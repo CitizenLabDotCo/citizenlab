@@ -1,8 +1,6 @@
 import React, { lazy, Suspense, memo } from 'react';
 
 // components
-// import WithFiltersSidebar from './WithFiltersSidebar';
-// import WithoutFiltersSidebar from './WithoutFiltersSidebar';
 const WithFiltersSidebar = lazy(() => import('./WithFiltersSidebar'));
 const WithoutFiltersSidebar = lazy(() => import('./WithoutFiltersSidebar'));
 
