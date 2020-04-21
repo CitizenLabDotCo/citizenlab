@@ -43,12 +43,14 @@ const Count = styled.span`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   transition: all 80ms ease-out;
+  margin-left: auto;
 `;
 
 const CloseIcon = styled(Icon)`
   width: 12px;
   height: 12px;
   fill: #fff;
+  margin-left: auto;
 `;
 
 const StatusesContainer = styled.div``;
@@ -90,6 +92,10 @@ const Status = styled.button`
       color: #fff;
     }
   }
+`;
+
+const Right = styled.div`
+  margin-left: auto;
 `;
 
 const AllStatus = styled(Status)``;
@@ -178,6 +184,7 @@ const StatusFilter = memo<Props>(({ type, statuses, filterCounts, selectedStatus
                     name="close"
                   />
                 )}
+
                 <ScreenReaderOnly>
                   {/* Pronounce number of ideas per status when focus/hover it */}
                   {type === 'idea' && <FormattedMessage {...messages.a11y_numberOfIdeas} values={{ ideaCount: filterPostCount }} />}
