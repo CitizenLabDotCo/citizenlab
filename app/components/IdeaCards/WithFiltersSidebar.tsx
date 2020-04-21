@@ -56,21 +56,6 @@ const Container = styled.div`
   }
 `;
 
-const InitialLoading = styled.div`
-  width: 100%;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
-
-  ${media.smallerThanMinTablet`
-    height: 150px;
-  `}
-`;
-
 const MobileSearchFilter = styled(SearchInput)`
   margin-bottom: 20px;
 `;
@@ -544,12 +529,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container id="e2e-ideas-container" className={className}>
-        {list === undefined &&
-          <InitialLoading id="ideas-loading">
-            <Spinner />
-          </InitialLoading>
-        }
-
         {list !== undefined &&
           <>
             {!biggerThanLargeTablet &&
@@ -627,6 +606,12 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
+                {showListView && querying &&
+                  <Loading id="ideas-loading">
+                    <Spinner />
+                  </Loading>
+                }
+
                 {showListView && !querying && hasIdeas && list &&
                   <IdeasList id="e2e-ideas-list">
                     {list.map((idea) => (
@@ -658,12 +643,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                       fontWeight="500"
                     />
                   </Footer>
-                }
-
-                {showListView && querying &&
-                  <Loading id="ideas-loading">
-                    <Spinner />
-                  </Loading>
                 }
 
                 {!querying && !hasIdeas &&
