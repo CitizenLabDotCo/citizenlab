@@ -1,17 +1,35 @@
 # Changelog
 
+## 2020-04-21
+
+### Fixed
+- Fixed overlapping issue with idea vote bar on mobile
+- Fixed an issue where images were used for which the filename contained special characters
+- 
+### Added
+- The overview (moderation) in the admin now has filters
+  - Seen/not seen
+  - Type: Comment/Idea/Proposal
+  - Project
+  - Search
+- The idea xlsx export contains extra columns on location, number of comments and number of attachments
+
+### Changed
+- The permissions tab in the project settings has reordered content, to be more logical
+- In German, the formal 'Sie' form has been replaced with the informal 'Du' form
+
 ## 2020-03-31
 
-### FIXED
+### Fixed
 - Signing up with keyboard keys (Firefox)
 - Composing manual emails with text images
 - Exporting sheet of volunteers with long cause titles
 
-### ADDED
+### Added
 - Folder attachments
 - Publication status for folders
 
-### CHANGED
+### Changed
 - Show folder projects within admin project page
 
 ## 2020-03-20
