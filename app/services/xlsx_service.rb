@@ -69,9 +69,16 @@ class XlsxService
           "areas",
           "idea_status",
           "assignee",
-          "assignee_email"
+          "assignee_email",
+          "latitude",
+          "longitude",
+          "location_description",
+          "comments_count",
+          "attachments_count"
         ], style: header_style(s)
         ideas.each do |idea|
+          lat, lon = [nil, nil]
+          lon, lat = idea.location_point.coordinates if idea.location_point.present?
           sheet.add_row [
             idea.id,
             @@multiloc_service.t(idea.title_multiloc),
@@ -89,7 +96,12 @@ class XlsxService
             idea.areas.map{|a| @@multiloc_service.t(a.title_multiloc)}.join(','),
             @@multiloc_service.t(idea&.idea_status&.title_multiloc),
             idea.assignee&.display_name,
-            idea.assignee&.email
+            idea.assignee&.email,
+            lat,
+            lon,
+            idea.location_description,
+            idea.comments_count,
+            idea.idea_files.size
           ]
         end
         sheet.column_info[2].width = 65
