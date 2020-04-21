@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import { IProjectData } from 'services/projects';
 
+// i18n
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
+
+// components
 import { SubSectionTitle } from 'components/admin/Section';
 import Timeline from './Timeline';
 import Continuous from './Continuous';
-import Warning from 'components/UI/Warning';
-import { FormattedMessage } from 'utils/cl-intl';
-import messages from '../messages';
 import { StyledSection } from '../';
-import IconTooltip from 'components/UI/IconTooltip';
-
-const StyledWarning = styled(Warning)`
-  margin-bottom: 30px;
-`;
 
 interface Props {
   project: IProjectData;
@@ -27,11 +23,7 @@ class Granular extends Component<Props> {
       <StyledSection>
         <SubSectionTitle>
           <FormattedMessage {...messages.granularPermissionsTitle} />
-          <IconTooltip content={<FormattedMessage {...messages.granularPermissionsTooltip} />} />
         </SubSectionTitle>
-        <StyledWarning>
-          <FormattedMessage {...messages.engagementWarning} />
-        </StyledWarning>
         {project && project.attributes.process_type === 'timeline' &&
           <Timeline
             projectId={project.id}

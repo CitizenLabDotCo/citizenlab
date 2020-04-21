@@ -1,14 +1,17 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { GetModeratorsChildProps } from 'resources/GetModerators';
+
+// i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import ModeratorList from './ModeratorList';
-import UserSearch from 'components/UserSearch';
-import { GetModeratorsChildProps } from 'resources/GetModerators';
+import { InjectedIntlProps } from 'react-intl';
+
+// components
 import { SubSectionTitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
-
-import { InjectedIntlProps } from 'react-intl';
+import ModeratorList from './ModeratorList';
+import UserSearch from 'components/UserSearch';
 
 interface InputProps {
   projectId: string;
@@ -40,11 +43,11 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
           <IconTooltip
             content={
               <FormattedMessage
-                {...messages.moderatorsSectionTooltip}
+                {...messages.moderatorsTooltip}
                 values={{
-                  moreInfoModeratorLink: (
+                  moderationInfoCenterLink: (
                     <StyledA href={this.props.intl.formatMessage(messages.moreInfoModeratorLink)} target="_blank">
-                      <FormattedMessage {...messages.moreInfoModeratorLinkText} />
+                      <FormattedMessage {...messages.moderationInfoCenterLinkText} />
                     </StyledA>
                   )
                 }}

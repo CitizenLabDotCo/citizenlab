@@ -10,7 +10,7 @@ import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
-import { Section, SectionField } from 'components/admin/Section';
+import { Section, SectionField, SubSectionTitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
 
 // services
@@ -92,19 +92,24 @@ const StyledRadio = styled(Radio)`
 `;
 
 const LabelText = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: -2px;
+
   &.disabled {
     opacity: 0.4;
     cursor: not-allowed;
   }
 
-  h3 {
+  .header {
     padding: 0;
     margin: 0;
     margin-bottom: 3px;
     font-weight: 600;
+    font-size: ${fontSizes.base}px;
   }
 
-  p {
+  .description {
     color: ${colors.adminSecondaryTextColor};
   }
 `;
@@ -436,10 +441,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         <Container className={className}>
           <StyledSection>
             <SectionField>
-              <Label>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.participationMethod} />
                 <IconTooltip content={<FormattedMessage {...messages.participationMethodTooltip} />} />
-              </Label>
+              </SubSectionTitle>
               <StyledRadio
                 onChange={this.handleParticipationMethodOnChange}
                 currentValue={participation_method}
@@ -448,12 +453,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 id="participationmethod-ideation"
                 label={(
                   <LabelText>
-                    <h3>
+                    <span className="header">
                       <FormattedMessage {...messages.ideation} />
-                    </h3>
-                    <p>
+                    </span>
+                    <span className="description">
                       <FormattedMessage {...messages.ideationDescription} />
-                    </p>
+                    </span>
                   </LabelText>)}
               />
               <FeatureFlag name="participatory_budgeting">
@@ -465,12 +470,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-budgeting'}
                   label={(
                     <LabelText>
-                      <h3>
+                      <span className="header">
                         <FormattedMessage {...messages.participatoryBudgeting} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.participatoryBudgetingDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               </FeatureFlag>
@@ -483,12 +488,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-poll'}
                   label={(
                     <LabelText>
-                      <h3>
+                      <span className="header">
                         <FormattedMessage {...messages.poll} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.pollDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               </FeatureFlag>
@@ -501,12 +506,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-volunteering'}
                   label={(
                     <LabelText>
-                      <h3>
+                                          <span className="header">
                         <FormattedMessage {...messages.volunteering} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.volunteeringDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               </FeatureFlag>
@@ -521,12 +526,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   id={'participationmethod-survey'}
                   label={(
                     <LabelText>
-                      <h3>
+                      <span className="header">
                         <FormattedMessage {...messages.survey} />
-                      </h3>
-                      <p>
+                      </span>
+                      <span className="description">
                         <FormattedMessage {...messages.surveyDescription} />
-                      </p>
+                      </span>
                     </LabelText>)}
                 />
               }
@@ -538,8 +543,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 id="participationmethod-information"
                 label={(
                   <LabelText>
-                    <FormattedMessage tagName="h3" {...messages.information} />
-                    <FormattedMessage tagName="p" {...messages.informationDescription} />
+                    <span className="header">
+                      <FormattedMessage {...messages.information} />
+                    </span>
+                    <span className="description">
+                      <FormattedMessage {...messages.informationDescription} />
+                    </span>
                   </LabelText>)}
               />
               <Error apiErrors={apiErrors && apiErrors.participation_method} />
@@ -548,12 +557,12 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             {participation_method === 'budgeting' &&
               <>
                 <SectionField>
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage
                       {...messages.amountPerCitizen}
                       values={{ currency: tenantCurrency }}
                     />
-                  </Label>
+                  </SubSectionTitle>
                   <BudgetingAmountInput
                     onChange={this.handleBudgetingAmountChange}
                     type="number"
@@ -564,9 +573,9 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   <Error text={noBudgetingAmount} apiErrors={apiErrors && apiErrors.max_budget} />
                 </SectionField>
                 <SectionField>
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.phasePermissions} />
-                  </Label>
+                  </SubSectionTitle>
 
                   <ToggleRow>
                     <ToggleLabel>
@@ -582,10 +591,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             {participation_method === 'ideation' &&
               <>
                 <StyledSectionField>
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.phasePermissions} />
                     <IconTooltip content={<FormattedMessage {...messages.phasePermissionsTooltip} />} />
-                  </Label>
+                  </SubSectionTitle>
 
                   <ToggleRow>
                     <ToggleLabel>
@@ -614,10 +623,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 {voting_enabled &&
                   <>
                     <SectionField>
-                      <Label>
+                      <SubSectionTitle>
                         <FormattedMessage {...messages.votingMethod} />
                         <IconTooltip content={<FormattedMessage {...messages.votingMethodTooltip} />} />
-                      </Label>
+                      </SubSectionTitle>
                       <Radio
                         onChange={this.handeVotingMethodOnChange}
                         currentValue={voting_method}
@@ -638,9 +647,9 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
 
                       {participation_method === 'ideation' && voting_method === 'limited' &&
                         <>
-                          <Label htmlFor="voting-title">
+                          <SubSectionTitle>
                             <FormattedMessage {...messages.votingLimit} />
-                          </Label>
+                          </SubSectionTitle>
                           <VotingLimitInput
                             id="voting-limit"
                             type="number"
@@ -656,10 +665,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
 
                     <FeatureFlag name="disable_downvoting">
                       <SectionField>
-                        <Label>
+                        <SubSectionTitle>
                           <FormattedMessage {...messages.downvoting} />
                           <IconTooltip content={<FormattedMessage {...messages.downvotingTooltip} />} />
-                        </Label>
+                        </SubSectionTitle>
                         <Radio
                           onChange={this.handleDownvotingEnabledOnChange}
                           currentValue={downvoting_enabled}
@@ -683,10 +692,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 }
 
                 <SectionField className="e2e-participation-context-location-allowed">
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.allowLocation} />
                     <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} />
-                  </Label>
+                  </SubSectionTitle>
                   <Radio
                     onChange={this.handleLocationAllowedOnChange}
                     currentValue={location_allowed}
@@ -710,10 +719,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
 
                 {location_allowed &&
                   <SectionField>
-                    <Label>
+                    <SubSectionTitle>
                       <FormattedMessage {...messages.defaultDisplay} />
                       <IconTooltip content={<FormattedMessage {...messages.defaultDisplayTooltip} />} />
-                    </Label>
+                    </SubSectionTitle>
                     {['card', 'map'].map((key) => (
                       <Radio
                         key={key}
@@ -734,10 +743,10 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             {participation_method === 'poll' &&
               <>
                 <SectionField>
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.anonymousPolling} />
                     <IconTooltip content={<FormattedMessage {...messages.anonymousPollingTooltip} />} />
-                  </Label>
+                  </SubSectionTitle>
 
                   <Toggle value={poll_anonymous as boolean} onChange={this.togglePollAnonymous} />
 
@@ -749,7 +758,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             {participation_method === 'survey' &&
               <>
                 <SectionField>
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.surveyService} />
                     <IconTooltip
                       content={
@@ -764,7 +773,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                         />
                       }
                     />
-                  </Label>
+                  </SubSectionTitle>
                   {['typeform', 'survey_monkey', 'google_forms'].map((provider) => {
                     if (this.props[`${provider}_enabled`]) {
                       return (
@@ -784,9 +793,9 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                   <Error apiErrors={apiErrors && apiErrors.survey_service} />
                 </SectionField>
                 <SectionField>
-                  <Label>
+                  <SubSectionTitle>
                     <FormattedMessage {...messages.surveyEmbedUrl} />
-                  </Label>
+                  </SubSectionTitle>
                   <Input
                     onChange={this.handleSurveyEmbedUrlChange}
                     type="text"
