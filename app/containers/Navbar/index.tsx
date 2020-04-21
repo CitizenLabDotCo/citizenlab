@@ -507,7 +507,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
                                   <ProjectsListItem
                                     key={item.publicationId}
-                                    to={`/projects/${item.attributes.publication_slug}/info`}
+                                    to={`/projects/${item.attributes.publication_slug}/process`}
                                   >
                                     {localize(item.attributes.publication_title_multiloc)}
                                   </ProjectsListItem>
