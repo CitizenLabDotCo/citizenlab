@@ -71,7 +71,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 // services
-import { CustomFieldKeys, IIdeaCustomFieldData } from 'services/ideaCustomFields';
+import { CustomFieldCodes, IIdeaCustomFieldData } from 'services/ideaCustomFields';
 import { isAdmin, isModerator } from 'services/permissions/roles';
 
 const contentFadeInDuration = 250;
@@ -464,7 +464,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   getCustomFieldData = (
     ideaCustomFields: IIdeaCustomFieldData[],
-    fieldKey: CustomFieldKeys
+    fieldKey: CustomFieldCodes
   ) => {
     const fieldData = ideaCustomFields.find(field => field.attributes.key === fieldKey);
 
@@ -475,7 +475,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
   calculateShowCustomField = (
     ideaCustomFields: IIdeaCustomFieldData[],
-    fieldKey: CustomFieldKeys
+    fieldKey: CustomFieldCodes
   ) => {
     const { authUser } = this.props;
     const customFieldData = this.getCustomFieldData(ideaCustomFields, fieldKey);

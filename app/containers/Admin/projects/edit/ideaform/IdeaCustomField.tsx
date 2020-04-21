@@ -328,6 +328,3 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
 });
 
 export default IdeaCustomField;
-
-// .selected class of enabled radios
-// e2e test of enabled field toggle

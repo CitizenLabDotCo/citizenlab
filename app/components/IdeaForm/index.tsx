@@ -30,7 +30,7 @@ import {
   ideaCustomFieldsStream,
   IIdeaCustomFieldsSchemas,
   IIdeaCustomFields,
-  CustomFieldKeys,
+  CustomFieldCodes,
 } from 'services/ideaCustomFields';
 
 // utils
@@ -506,7 +506,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   isFieldEnabled = (
     ideaCustomFields: IIdeaCustomFields | null,
-    fieldKey: CustomFieldKeys
+    fieldKey: CustomFieldCodes
   ) => {
     if (
       !isNilOrError(ideaCustomFields) &&
@@ -522,7 +522,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   isFieldRequired = (
     ideaCustomFields: IIdeaCustomFields | null,
-    fieldKey: CustomFieldKeys
+    fieldKey: CustomFieldCodes
   ) => {
     if (
       !isNilOrError(ideaCustomFields) &&
