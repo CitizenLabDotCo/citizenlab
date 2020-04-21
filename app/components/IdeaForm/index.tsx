@@ -373,11 +373,12 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return null;
   }
 
-  validateAttachments = (ideaFiles: UploadFile[]) => {
+  validateAttachments = (ideaFiles: UploadFile[], ideaFilesToRemove: UploadFile[]) => {
     const { ideaCustomFields } = this.state;
     const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
+    const numberOfRemainingFiles = ideaFiles.length - ideaFilesToRemove.length;
 
-    if (attachmentsRequired && ideaFiles.length === 0) {
+    if (attachmentsRequired && numberOfRemainingFiles === 0) {
       return <FormattedMessage {...messages.noAttachmentsError} />;
     }
 
@@ -391,7 +392,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     selectedTopics: string[],
     address: string,
     imageFiles: UploadFile[],
-    ideaFiles: UploadFile[]
+    ideaFiles: UploadFile[],
+    ideaFilesToRemove: UploadFile[],
   ) => {
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
@@ -399,7 +401,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topicsError = this.validateTopics(selectedTopics);
     const locationError = this.validateLocation(address);
     const imageError = this.validateImage(imageFiles);
-    const attachmentsError = this.validateAttachments(ideaFiles);
+    const attachmentsError = this.validateAttachments(ideaFiles, ideaFilesToRemove);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 
@@ -483,7 +485,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       selectedTopics,
       address,
       imageFile,
-      ideaFiles
+      ideaFiles,
+      ideaFilesToRemove
     );
 
     if (formIsValid) {
