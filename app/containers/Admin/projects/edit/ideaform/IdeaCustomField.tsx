@@ -288,7 +288,6 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                           value={'public'}
                           name={`${key}-field-enabled`}
                           id={`${key}-field-disabled`}
-                          // className={`e2e-location-disabled ${!visibleTo ? 'selected' : ''}`}
                           label={<FormattedMessage {...messages.visibleToEveryone} />}
                         />
                         <Radio
@@ -297,7 +296,6 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                           value={'admins'}
                           name={`${key}-field-enabled`}
                           id={`${key}-field-enabled`}
-                          // className={`e2e-location-enabled ${visibleTo ? 'selected' : ''}`}
                           label={<FormattedMessage {...messages.visibleToAdmin} />}
                         />
                       </label>
