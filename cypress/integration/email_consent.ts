@@ -4,7 +4,7 @@ describe('email consent', () => {
     cy.visit('/admin/emails/custom/new');
     cy.acceptCookies();
   });
-  it('lets admins create a custom email, this email contains a link to unsubscribe', () => {
+  it('lets admins create a custom email, this email contains a link to unsubscribe and turns off subscription', () => {
     // creates a custom email
     cy.get('.e2e-multiloc-input').find('input').first().type('Test subject');
     cy.get('.e2e-multiloc-editor').find('.ql-editor').first().type('Test content');
@@ -21,16 +21,14 @@ describe('email consent', () => {
         cy.visit(link.prop('href'));
 
         cy.wait(700);
-        // check users has been unsubscribed
+        // check user has been unsubscribed
         cy.get('#e2e-email-settings-page');
         cy.get('#e2e-consent-form');
         cy.get('.e2e-unsubscribe-status').contains('success').contains('Official');
-
-        // gets official category, turn it back on and save
-        cy.get('input#manual').parent().click();
-        cy.get('.e2e-submit-wrapper-button').click();
-        cy.contains('saved');
       });
+
+      // gets official category, turn it back on and save
+      cy.get('#e2e-consent-checkbox').contains('Official messages').click();
     });
 
   });

@@ -155,4 +155,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText',
     defaultMessage: 'this article',
   },
+  projectName: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectName',
+    defaultMessage: 'Project name',
+  },
 });

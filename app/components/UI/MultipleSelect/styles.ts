@@ -24,7 +24,7 @@ export function getSelectStyles(borderColor = colors.separationDark) {
     }),
     placeholder: (base) => ({
       ...base,
-      color: colors.placeholder
+      color: '#000'
     }),
     option: (base, { isFocused }) => ({
       ...base,

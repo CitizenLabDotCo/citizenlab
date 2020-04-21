@@ -216,13 +216,25 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       tenant.attributes &&
       tenant.attributes.settings.maps
     ) {
-      initCenter = [
-        parseFloat(tenant.attributes.settings.maps.map_center.lat),
-        parseFloat(tenant.attributes.settings.maps.map_center.long),
-      ];
-      tenantMapConfig['center'] = initCenter;
-      tenantMapConfig['zoom_level'] = tenant.attributes.settings.maps.zoom_level;
-      tenantMapConfig['tile_provider'] = tenant.attributes.settings.maps.tile_provider;
+      const {
+        map_center: {
+          lat,
+          long
+        },
+        zoom_level,
+        tile_provider,
+      } = tenant.attributes.settings.maps;
+
+      if (lat && long) {
+        initCenter = [
+          parseFloat(lat),
+          parseFloat(long),
+        ];
+
+        tenantMapConfig['center'] = initCenter;
+      }
+      if (zoom_level) tenantMapConfig['zoom_level'] = zoom_level;
+      if (tile_provider) tenantMapConfig['tile_provider'] = tile_provider;
     }
 
     const dataPropsMapConfig = {};
