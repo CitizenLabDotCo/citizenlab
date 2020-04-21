@@ -148,6 +148,10 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onGoToSignIn();
   }
 
+  handleGoBackToSignUpOptions = () => {
+    this.setState({ activeStep: 'auth-providers' });
+  }
+
   handlePasswordSignupCompleted = (userId: string) => {
     this.setState({ userId });
     this.goToNextStep();
@@ -254,6 +258,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 token={token}
                 onCompleted={this.handlePasswordSignupCompleted}
                 onGoToSignIn={this.props.onGoToSignIn}
+                onGoBack={this.handleGoBackToSignUpOptions}
               />
             }
 

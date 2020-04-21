@@ -21,7 +21,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -55,9 +55,14 @@ const CloseButton = styled.button`
   border-radius: 50%;
   background: #fff;
   transition: all 100ms ease-out;
+  outline: none;
 
   &:hover {
     background: #ececec;
+  }
+
+  &.focus-visible {
+    outline: ${customOutline};
   }
 
   ${media.smallerThanMinTablet`
@@ -242,16 +247,11 @@ export type Props = {
   width?: number;
   close: () => void;
   className?: string;
-  /*
-    If you don't provide a header, you can give the header/title
-    an id="modal-header". See VerificationMethods component for an example
-  */
   header?: JSX.Element | string;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
   noPadding?: boolean;
-  children?: any;
   closeOnClickOutside?: boolean;
 };
 
@@ -291,7 +291,6 @@ export default class Modal extends PureComponent<Props, State> {
 
   manuallyCloseModal = () => {
     this.props.close();
-    eventEmitter.emit('modalClosed');
   }
 
   handlePopstateEvent = () => {
@@ -308,6 +307,7 @@ export default class Modal extends PureComponent<Props, State> {
   cleanup = () => {
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.handleKeypress);
+    eventEmitter.emit('modalClosed');
     this.unlisten && this.unlisten();
     this.unlisten = null;
   }
@@ -324,11 +324,6 @@ export default class Modal extends PureComponent<Props, State> {
     event.stopPropagation();
     trackEventByName(tracks.clickCloseButton);
     this.manuallyCloseModal();
-  }
-
-  setCloseButtonRef = (element: HTMLButtonElement) => {
-    // remove focus on close button after modal has opened
-    setTimeout(() => element && element.blur(), 80);
   }
 
   removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -356,10 +351,7 @@ export default class Modal extends PureComponent<Props, State> {
             id="e2e-modal-container"
             className={this.props.className}
           >
-            <StyledFocusOn
-              width={width}
-              autoFocus={true}
-            >
+            <StyledFocusOn width={width}>
               <ModalContainer
                 className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
@@ -371,7 +363,6 @@ export default class Modal extends PureComponent<Props, State> {
                   className="e2e-modal-close-button"
                   onMouseDown={this.removeFocus}
                   onClick={this.clickCloseButton}
-                  ref={this.setCloseButtonRef}
                 >
                   <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
                 </CloseButton >

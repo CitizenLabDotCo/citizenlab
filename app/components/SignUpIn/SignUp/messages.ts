@@ -193,9 +193,13 @@ export default defineMessages({
     id: 'app.containers.SignUp.somethingWentWrongText',
     defaultMessage: 'Something went wrong while trying to create your account. Please try again in a few minutes.',
   },
-  continueWithEmail: {
-    id: 'app.containers.SignUp.continueWithEmail',
-    defaultMessage: 'Continue with email',
+  signUpWithEmail: {
+    id: 'app.containers.SignUp.signUpWithEmail',
+    defaultMessage: 'Sign up with Email',
+  },
+  logInWithEmail: {
+    id: 'app.containers.SignUp.signUpWithEmail',
+    defaultMessage: 'Log in with Email',
   },
   continueWithGoogle: {
     id: 'app.containers.SignUp.continueWithGoogle',
@@ -229,4 +233,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.completeYourProfile',
     defaultMessage: 'Complete your profile',
   },
+  goBackToSignUpOptions: {
+    id: 'app.containers.SignUp.goBackToSignUpOptions',
+    defaultMessage: 'Go back to sign up options',
+  }
 });

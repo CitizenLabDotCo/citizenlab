@@ -35,21 +35,25 @@ const StyledAuthProviderButton = styled(AuthProviderButton)`
 `;
 
 const Or = styled.div`
-   width: 100%;
-   text-align: center;
-   border-bottom: 1px solid #e0e0e0;
-   line-height: 0.1em;
-   margin-top: 15px;
-   margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 25px;
+`;
 
-   & > span {
-    color: ${colors.text};
-    font-size: ${fontSizes.small}px;
-    font-weight: 300;
-    text-transform: lowercase;
-    background: #fff;
-    padding: 0 10px;
-   }
+const Line = styled.span`
+  flex: 1;
+  height: 1px;
+  background: #e0e0e0;
+`;
+
+const OrText = styled.div`
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  text-transform: lowercase;
+  padding-left: 10px;
+  padding-right: 10px;
 `;
 
 const FranceConnectButtonWrapper = styled.div`
@@ -121,14 +125,14 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
 }) => {
 
   const azureProviderName = !isNilOrError(tenant) ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name : null;
-  const enabledMethodsCount = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, franceconnectLoginEnabled, azureAdLoginEnabled].filter(method => method === true).length;
+  // const enabledMethodsCount = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, franceconnectLoginEnabled, azureAdLoginEnabled].filter(method => method === true).length;
 
-  if (enabledMethodsCount === 1) {
-    if (passwordLoginEnabled) {
-      // automatically select password login when it's the only method that is enabled
-      onAuthProviderSelected('email');
-    }
-  }
+  // if (enabledMethodsCount === 1) {
+  //   if (passwordLoginEnabled) {
+  //     // automatically select password login when it's the only method that is enabled
+  //     onAuthProviderSelected('email');
+  //   }
+  // }
 
   const handleOnAuthProviderSelected = useCallback((authProvider: AuthProvider) => {
     onAuthProviderSelected(authProvider);
@@ -145,92 +149,94 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
   }, [goToOtherFlow]);
 
   // show this step only when more than 1 method enabled or when only 1 method is enabled and that method isn't passwordLogin
-  if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && !passwordLoginEnabled)) {
-    return (
-      <Container className={className}>
+  // if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && !passwordLoginEnabled)) {
+  return (
+    <Container className={className}>
 
-        {passwordLoginEnabled &&
-          <StyledAuthProviderButton
-            flow={flow}
-            authProvider="email"
-            onContinue={handleOnAuthProviderSelected}
-          >
-            <FormattedMessage {...messages.continueWithEmail} />
-          </StyledAuthProviderButton>
-        }
+      {passwordLoginEnabled &&
+        <StyledAuthProviderButton
+          flow={flow}
+          authProvider="email"
+          onContinue={handleOnAuthProviderSelected}
+        >
+          {flow === 'signup'
+            ? <FormattedMessage {...messages.signUpWithEmail} />
+            : <FormattedMessage {...messages.logInWithEmail} />
+          }
+        </StyledAuthProviderButton>
+      }
 
-        {googleLoginEnabled &&
-          <StyledAuthProviderButton
-            flow={flow}
-            authProvider="google"
-            onContinue={handleOnAuthProviderSelected}
-          >
-            <FormattedMessage {...messages.continueWithGoogle} />
-          </StyledAuthProviderButton>
-        }
+      {googleLoginEnabled &&
+        <StyledAuthProviderButton
+          flow={flow}
+          authProvider="google"
+          onContinue={handleOnAuthProviderSelected}
+        >
+          <FormattedMessage {...messages.continueWithGoogle} />
+        </StyledAuthProviderButton>
+      }
 
-        {facebookLoginEnabled &&
-          <StyledAuthProviderButton
-            flow={flow}
-            authProvider="facebook"
-            onContinue={handleOnAuthProviderSelected}
-          >
-            <FormattedMessage {...messages.continueWithFacebook} />
-          </StyledAuthProviderButton>
-        }
+      {facebookLoginEnabled &&
+        <StyledAuthProviderButton
+          flow={flow}
+          authProvider="facebook"
+          onContinue={handleOnAuthProviderSelected}
+        >
+          <FormattedMessage {...messages.continueWithFacebook} />
+        </StyledAuthProviderButton>
+      }
 
-        {azureAdLoginEnabled &&
-          <StyledAuthProviderButton
-            flow={flow}
-            authProvider="azureactivedirectory"
-            onContinue={handleOnAuthProviderSelected}
-          >
-            <FormattedMessage {...messages.continueWithAzure} values={{ azureProviderName }} />
-          </StyledAuthProviderButton>
-        }
+      {azureAdLoginEnabled &&
+        <StyledAuthProviderButton
+          flow={flow}
+          authProvider="azureactivedirectory"
+          onContinue={handleOnAuthProviderSelected}
+        >
+          <FormattedMessage {...messages.continueWithAzure} values={{ azureProviderName }} />
+        </StyledAuthProviderButton>
+      }
 
-        {(passwordLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled) && franceconnectLoginEnabled &&
-          <Or>
-            <FormattedMessage {...messages.or} />
-          </Or>
-        }
+      {(passwordLoginEnabled || facebookLoginEnabled || azureAdLoginEnabled) && franceconnectLoginEnabled &&
+        <Or aria-hidden>
+          <Line />
+          <OrText><FormattedMessage {...messages.or} /></OrText>
+          <Line />
+        </Or>
+      }
 
-        {franceconnectLoginEnabled &&
-          <FranceConnectButtonWrapper>
-            <FranceConnectButton onClick={handleOnFranceConnectSelected}>
-              <img
-                src={franceConnectLogo}
-                alt={formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
-              />
-            </FranceConnectButton>
-            <SubSocialButtonLink
-              href="https://app.franceconnect.gouv.fr/en-savoir-plus"
-              target="_blank"
-            >
-              <FormattedMessage {...messages.whatIsFranceConnect} />
-            </SubSocialButtonLink>
-          </FranceConnectButtonWrapper>
-        }
-
-        <Options>
-          <Option>
-            <FormattedMessage
-              {...flow === 'signup' ? messages.goToLogIn : messages.goToSignUp}
-              values={{
-                goToOtherFlowLink: (
-                <button onClick={handleGoToOtherFlow}>
-                  {formatMessage(flow === 'signup' ? messages.logIn2 : messages.signUp2)}
-                </button>
-                )
-              }}
+      {franceconnectLoginEnabled &&
+        <FranceConnectButtonWrapper>
+          <FranceConnectButton onClick={handleOnFranceConnectSelected}>
+            <img
+              src={franceConnectLogo}
+              alt={formatMessage(messages.signUpButtonAltText, { loginMechanismName: 'FranceConnect' })}
             />
-          </Option>
-        </Options>
-      </Container>
-    );
-  }
+          </FranceConnectButton>
+          <SubSocialButtonLink
+            href="https://app.franceconnect.gouv.fr/en-savoir-plus"
+            target="_blank"
+          >
+            <FormattedMessage {...messages.whatIsFranceConnect} />
+          </SubSocialButtonLink>
+        </FranceConnectButtonWrapper>
+      }
 
-  return null;
+      <Options>
+        <Option>
+          <FormattedMessage
+            {...flow === 'signup' ? messages.goToLogIn : messages.goToSignUp}
+            values={{
+              goToOtherFlowLink: (
+              <button onClick={handleGoToOtherFlow} className="link">
+                {formatMessage(flow === 'signup' ? messages.logIn2 : messages.signUp2)}
+              </button>
+              )
+            }}
+          />
+        </Option>
+      </Options>
+    </Container>
+  );
 });
 
 const AuthProvidersWithHoC = injectIntl(AuthProviders);
