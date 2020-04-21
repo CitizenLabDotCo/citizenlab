@@ -372,12 +372,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return null;
   }
 
-  validateAttachments = (ideaFiles: UploadFile[], ideaFilesToRemove: UploadFile[]) => {
+  validateAttachments = (ideaFiles: UploadFile[]) => {
     const { ideaCustomFields } = this.state;
     const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
-    const numberOfRemainingFiles = ideaFiles.length - ideaFilesToRemove.length;
 
-    if (attachmentsRequired && numberOfRemainingFiles === 0) {
+    if (attachmentsRequired && ideaFiles.length === 0) {
       return <FormattedMessage {...messages.noAttachmentsError} />;
     }
 

@@ -94,10 +94,6 @@ const Status = styled.button`
   }
 `;
 
-const Right = styled.div`
-  margin-left: auto;
-`;
-
 const AllStatus = styled(Status)``;
 
 interface Props {
