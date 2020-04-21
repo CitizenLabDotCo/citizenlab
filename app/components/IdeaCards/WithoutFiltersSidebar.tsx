@@ -306,7 +306,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
 
     /*
-      If IdeaCards are used in a location that's not inside a project,
+      If IdeaCards are used in a location that's not inside a project (and has no locationCustomfield as such),
       the location and map view are enabled by default.
     */
     const locationEnabled = !isNilOrError(locationCustomField) ? locationCustomField.attributes.enabled : true;
