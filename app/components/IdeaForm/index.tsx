@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { isBoolean } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
 
 // libraries
@@ -25,7 +24,7 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
-import { phasesStream, IPhaseData, getCurrentPhase } from 'services/phases';
+import { phasesStream, IPhaseData } from 'services/phases';
 import {
   ideaCustomFieldsSchemasStream,
   ideaCustomFieldsStream,
