@@ -53,7 +53,9 @@ const Container = styled.div`
   ${media.smallerThanMaxTablet`
     top: 0;
     bottom: ${props => props.theme.mobileMenuHeight}px;
-    z-index: 999;
+    // there is no top navbar at this screen size, so okay
+    // that it is higher than the z-index of NavBar here
+    z-index: 1005;
 
     &.hasBottomBar {
       bottom: 0;
