@@ -31,20 +31,25 @@ const Container = styled.div`
     border: solid 1px ${colors.separationDark};
     background: #fff;
     overflow: hidden;
+    box-shadow: none;
+    outline: none;
+    appearance: none;
+    -moz-appearance: none;
     -webkit-appearance: none;
 
-    &:focus {
-      border-color: #666;
+    &:not(.error):focus {
+      /* box-shadow: inset 0px 0px 0px 1px #000; */
+      border-color: '#000';
     }
 
     &:disabled {
       background-color: #f9f9f9;
+      border-color: #ccc;
     }
 
     &.error {
       border-color: ${colors.clRedError} !important;
 
-      &:hover,
       &:focus {
         border-color: ${colors.clRedError} !important;
       }

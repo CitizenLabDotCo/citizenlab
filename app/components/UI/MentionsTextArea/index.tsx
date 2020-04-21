@@ -23,12 +23,9 @@ const Container = styled.div<{ placeholderFontWeight: string }>`
   position: relative;
 
   textarea {
-    &:hover {
-      border-color: ${(props: any) => props.error && props.theme.colors.clRedError} !important;
-    }
-
     &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'} !important;
+      /* box-shadow: ${(props: any) => props.error ? 'none' : 'inset 0px 0px 0px 1px rgba(0,0,0, 0.2)'} !important; */
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#000'} !important;
     }
 
     &::placeholder {

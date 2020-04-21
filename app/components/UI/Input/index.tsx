@@ -31,11 +31,12 @@ const Container: any = styled.div`
     font-weight: 400;
     padding: 12px;
     border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px;
-    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
     background: #fff;
+    box-shadow: none;
     outline: none;
+    appearance: none;
+    -moz-appearance: none;
     -webkit-appearance: none;
 
     &.onGreyBackground {
@@ -47,11 +48,13 @@ const Container: any = styled.div`
     }
 
     &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
+      /* box-shadow: ${(props: any) => props.error ? 'none' : 'inset 0px 0px 0px 1px #000'}; */
+      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#000'};
     }
 
     &:disabled {
       background-color: #f9f9f9;
+      border-color: #ccc;
     }
 
     ${media.biggerThanPhone`
@@ -127,17 +130,14 @@ export class Input extends React.PureComponent<Props> {
 
   render() {
     const { label, labelTooltipText, ariaLabel, className, onGreyBackground } = this.props;
-    let { value, placeholder, error } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
-    const hasError = (!isNil(error) && !isEmpty(error));
+    const hasError = !isNil(this.props.error) && !isEmpty(this.props.error);
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
-
-    value = (value || '');
-    placeholder = (placeholder || '');
-    error = (error || null);
-
-    const currentCharCount = (maxCharCount && size(value));
-    const tooManyChars = (maxCharCount && currentCharCount && currentCharCount > maxCharCount);
+    const value = this.props.value || '';
+    const placeholder = this.props.placeholder || '';
+    const error = this.props.error || null;
+    const currentCharCount = maxCharCount && size(value);
+    const tooManyChars = !!(maxCharCount && currentCharCount && currentCharCount > maxCharCount);
 
     return (
       <Container error={hasError} className={className || ''}>

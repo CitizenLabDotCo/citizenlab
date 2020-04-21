@@ -127,22 +127,25 @@ const Buttons = styled.div`
 const FeedbackButton = styled.button`
   color: ${({ theme }) => theme.colorText};
   font-weight: 500;
+  text-align: left;
   text-transform: uppercase;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 12px;
+  padding: 0;
+  margin: 0;
+  margin-left: 12px;
+  margin-right: 12px;
   margin-bottom: -3px;
   z-index: 1;
+  cursor: pointer;
 
   ${media.smallerThanMinTablet`
-    padding: 0 8px;
+    margin-left: 8px;
+    margin-right: 8px;
   `}
 
-  &:focus,
   &:hover {
-    outline: none;
-    cursor: pointer;
     text-decoration: underline;
   }
 `;

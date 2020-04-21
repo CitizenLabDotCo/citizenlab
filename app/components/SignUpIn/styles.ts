@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, customOutline } from 'utils/styleUtils';
 
 export const Options = styled.div`
   display: flex;
@@ -14,20 +14,42 @@ export const Option = styled.div`
   line-height: normal;
   margin-top: 20px;
 
-  & button {
-    color: #000;
-    font-size: ${fontSizes.base}px;
-    font-weight: 500;
+  & .link {
+    color: ${colors.text};
+    font-weight: 400;
     line-height: normal;
-    text-align: right;
     text-decoration: underline;
-    padding: 0;
-    margin: 0;
     cursor: pointer;
 
     &:hover {
       color: #000;
       text-decoration: underline;
     }
+  }
+
+  & .button {
+    display: flex;
+    align-items: center;
+    color: ${colors.text};
+    font-size: ${fontSizes.base}px;
+    font-weight: 300;
+    line-height: normal;
+    outline: none;
+
+    &.focus-visible {
+      outline: ${customOutline};
+    }
+
+    &:hover {
+      color: #000;
+    }
+  }
+
+  & button {
+    text-align: right;
+    padding: 0;
+    margin: 0;
+    border: none;
+    cursor: pointer;
   }
 `;

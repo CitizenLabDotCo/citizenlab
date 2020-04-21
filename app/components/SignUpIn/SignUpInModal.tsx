@@ -63,10 +63,10 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       closeOnClickOutside={false}
     >
       <Container className={className}>
-        {opened &&
+        {opened && metaData &&
           <SignUpIn
             inModal={true}
-            metaData={metaData as ISignUpInMetaData}
+            metaData={metaData}
             onSignUpInCompleted={onSignUpInCompleted}
           />
         }

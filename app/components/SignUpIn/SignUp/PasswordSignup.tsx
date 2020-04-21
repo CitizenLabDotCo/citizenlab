@@ -7,6 +7,7 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import Input from 'components/UI/Input';
+import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
@@ -31,7 +32,8 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
+import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
 import { CLErrorsJSON } from 'typings';
@@ -64,12 +66,21 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
+const GoBackIcon = styled(Icon)`
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  fill: ${colors.text};
+  margin-right: 8px;
+`;
+
 type InputProps = {
   metaData: ISignUpInMetaData;
   isInvitation?: boolean | undefined;
   token?: string | null | undefined;
   onCompleted: (userId: string) => void;
   onGoToSignIn: () => void;
+  onGoBack?: () => void;
   className?: string;
 };
 
@@ -250,6 +261,11 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         });
       }
     }
+  }
+
+  goBackToSignUpOptions = (event: React.MouseEvent) => {
+    event.preventDefault();
+    this.props.onGoBack && this.props.onGoBack();
   }
 
   render() {
@@ -439,6 +455,15 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         {emailInvitationTokenInvalid &&
           <Error text={<FormattedMessage {...messages.emailInvitationTokenInvalid} values={{ signUpPageLink }} />} />
         }
+
+        <Options>
+          <Option>
+            <button onClick={this.goBackToSignUpOptions} className="button">
+              <GoBackIcon name="arrow-back" />
+              <FormattedMessage {...messages.goBackToSignUpOptions} />
+            </button>
+          </Option>
+        </Options>
       </Container>
     );
   }

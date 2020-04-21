@@ -66,7 +66,7 @@ const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boo
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.35, colors.label)};
+  border: solid 1px ${lighten(0.2, colors.label)};
   background: #fff;
   transition: all 60ms ease-out;
   will-change: transform;
@@ -86,8 +86,8 @@ const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boo
   ` : css``}
 
   ${(props) => props.size === '3' && props.votingEnabled ? css`
-    width: 52px;
-    height: 52px;
+    width: 50px;
+    height: 50px;
   ` : css``}
 `;
 
