@@ -484,7 +484,17 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedView, selectedIdeaFilters, filtersModalOpened } = this.state;
-    const { participationMethod, participationContextId, participationContextType, ideas, ideasFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
+    const {
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      ideas,
+      ideasFilterCounts,
+      windowSize,
+      className,
+      theme,
+      showViewToggle
+    } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
     const showListView = (selectedView === 'card');
