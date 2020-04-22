@@ -12,7 +12,7 @@ import messages from './messages';
 import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SubSectionTitle, SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+import { Section, SubSectionTitle, SectionTitle, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
@@ -31,13 +31,29 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 export const StyledSection = styled(Section)`
-  margin-bottom: 60px;
+  margin-bottom: 50px;
+`;
+
+export const SubSection = styled(Section)`
+  margin-bottom: 40px;
+`;
+
+const ModeratorSubSection = styled(SubSection)`
+  margin-bottom: 20px;
+`;
+
+export const StyledSectionTitle = styled(SectionTitle)`
+  margin-bottom: 30px;
+`;
+
+const StyledSectionField = styled(SectionField)`
+  margin-bottom: 5px;
 `;
 
 const RadioButtonsWrapper = styled.fieldset`
-  margin-top: 15px;
-  margin-bottom: 30px;
   border: none;
+  padding: 0;
+  margin-bottom: 10px;
 `;
 
 const StyledRadio = styled(Radio)`
@@ -198,98 +214,101 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
       return (
         <>
           <StyledSection>
-            <SectionTitle>
-              <FormattedMessage {...messages.titlePermissions} />
-            </SectionTitle>
-            <SectionSubtitle>
-              <FormattedMessage {...messages.subtitlePermissions} />
-            </SectionSubtitle>
-          </StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.participationAccessRightsTitle} />
+            </StyledSectionTitle>
 
-          <StyledSection>
-            <SectionField>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.permissionTypeLabel} />
-                <IconTooltip content={<FormattedMessage {...messages.permissionsTypeTooltip} />} />
-              </SubSectionTitle>
+            <SubSection>
+              <StyledSectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.viewingRightsTitle} />
+                </SubSectionTitle>
 
-              <RadioButtonsWrapper>
-                <StyledRadio
-                  onChange={this.handlePermissionTypeChange}
-                  currentValue={unsavedVisibleTo}
-                  name="permissionsType"
-                  label={formatMessage(messages.permissionsEveryoneLabel)}
-                  value="public"
-                  id="permissions-all"
-                />
-                <StyledRadio
-                  onChange={this.handlePermissionTypeChange}
-                  currentValue={unsavedVisibleTo}
-                  name="permissionsType"
-                  label={formatMessage(messages.permissionsAdministrators)}
-                  value="admins"
-                  id="permissions-administrators"
-                />
-                <StyledRadio
-                  onChange={this.handlePermissionTypeChange}
-                  currentValue={unsavedVisibleTo}
-                  name="permissionsType"
-                  label={formatMessage(messages.permissionsSelectionLabel)}
-                  value="groups"
-                  id="permissions-selection"
-                />
-              </RadioButtonsWrapper>
-            </SectionField>
-
-            {unsavedVisibleTo === 'groups' &&
-              <ProjectGroupsList projectId={projectId} onAddButtonClicked={this.handleGroupsAdded} />
-            }
-
-            {unsavedVisibleTo !== 'groups' &&
-              <SubmitWrapper
-                loading={saving}
-                status={status}
-                onClick={this.saveChanges}
-                messages={{
-                  buttonSave: messages.save,
-                  buttonSuccess: messages.saveSuccess,
-                  messageError: messages.saveErrorMessage,
-                  messageSuccess: messages.saveSuccessMessage,
-                }}
-              />
-            }
-          </StyledSection>
-
-          <StyledSection>
-            <GetModerators projectId={projectId}>
-              {moderators => <Moderators moderators={moderators} projectId={projectId} />}
-            </GetModerators>
-          </StyledSection>
-
-          <StyledSection>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.ideaAssignmentTooltip}
-                    values={{
-                      linkToIdeasOverview: (
-                        <StyledLink to={`/admin/projects/${projectId}/ideas`}>
-                          <FormattedMessage {...messages.ideasOverview} />
-                        </StyledLink>
-                      )
-                    }}
+                <RadioButtonsWrapper>
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsEveryoneLabel)}
+                    value="public"
+                    id="permissions-all"
                   />
-                }
-              />
-            </SubSectionTitle>
-            <IdeaAssignment projectId={projectId} />
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsAdministrators)}
+                    value="admins"
+                    id="permissions-administrators"
+                  />
+                  <StyledRadio
+                    onChange={this.handlePermissionTypeChange}
+                    currentValue={unsavedVisibleTo}
+                    name="permissionsType"
+                    label={formatMessage(messages.permissionsSelectionLabel)}
+                    value="groups"
+                    id="permissions-selection"
+                  />
+                </RadioButtonsWrapper>
+              </StyledSectionField>
+
+              {unsavedVisibleTo === 'groups' &&
+                <ProjectGroupsList projectId={projectId} onAddButtonClicked={this.handleGroupsAdded} />
+              }
+
+              {unsavedVisibleTo !== 'groups' &&
+                <SubmitWrapper
+                  loading={saving}
+                  status={status}
+                  onClick={this.saveChanges}
+                  messages={{
+                    buttonSave: messages.save,
+                    buttonSuccess: messages.saveSuccess,
+                    messageError: messages.saveErrorMessage,
+                    messageSuccess: messages.saveSuccessMessage,
+                  }}
+                />
+              }
+            </SubSection>
+            <SubSection>
+              <FeatureFlag name="granular_permissions">
+                <Granular project={project.data} />
+              </FeatureFlag>
+            </SubSection>
           </StyledSection>
 
-          <FeatureFlag name="granular_permissions">
-            <Granular project={project.data} />
-          </FeatureFlag>
+          <StyledSection>
+            <StyledSectionTitle>
+              <FormattedMessage {...messages.moderationRightsTitle} />
+            </StyledSectionTitle>
+
+            <ModeratorSubSection>
+              <GetModerators projectId={projectId}>
+                {moderators => <Moderators moderators={moderators} projectId={projectId} />}
+              </GetModerators>
+            </ModeratorSubSection>
+
+            <SubSection>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.ideaAssignmentTooltipText}
+                      values={{
+                        ideaManagerLink: (
+                          <StyledLink to={`/admin/projects/${projectId}/ideas`}>
+                            <FormattedMessage {...messages.ideaManagerLinkText} />
+                          </StyledLink>
+                        )
+                      }}
+                    />
+                  }
+                />
+              </SubSectionTitle>
+              <IdeaAssignment projectId={projectId} />
+            </SubSection>
+          </StyledSection>
         </>
       );
     }

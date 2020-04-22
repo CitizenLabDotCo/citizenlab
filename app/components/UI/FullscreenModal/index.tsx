@@ -53,7 +53,7 @@ const Container = styled.div`
   ${media.smallerThanMaxTablet`
     top: 0;
     bottom: ${props => props.theme.mobileMenuHeight}px;
-    z-index: 999;
+    z-index: 1005;
 
     &.hasBottomBar {
       bottom: 0;

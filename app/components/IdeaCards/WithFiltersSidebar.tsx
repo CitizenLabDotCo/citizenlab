@@ -518,7 +518,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         <StyledSearchInput
           placeholder={this.searchPlaceholder}
           ariaLabel={this.searchAriaLabel}
-          value={selectedIdeaFilters.search || null}
           onChange={this.handleSearchOnChange}
         />
         <StyledIdeasStatusFilter
@@ -575,7 +574,6 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                 <MobileSearchFilter
                   placeholder={this.searchPlaceholder}
                   ariaLabel={this.searchAriaLabel}
-                  value={selectedIdeaFilters.search || null}
                   onChange={this.handleSearchOnChange}
                 />
 

@@ -70,6 +70,7 @@ type Props = DefaultProps & {
   className?: string;
   notFocusable?: boolean;
   label?: string | JSX.Element | null;
+  id?: string;
 };
 
 export default class Checkbox extends PureComponent<Props> {

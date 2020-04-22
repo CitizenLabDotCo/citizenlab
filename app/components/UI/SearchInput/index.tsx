@@ -59,8 +59,17 @@ const Input = styled.input`
     display: none;
   }
 
-  &::placeholder {
-    font-weight: 400;
+  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: ${colors.label};
+    opacity: 1; /* Firefox */
+  }
+
+  :-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: ${colors.label};
+  }
+
+  ::-ms-input-placeholder { /* Microsoft Edge */
+    color: ${colors.label};
   }
 `;
 
@@ -101,19 +110,18 @@ const SearchFieldButton = styled.button`
 `;
 
 interface Props {
-  value: string | null;
   onChange: (arg: string | null) => void;
   placeholder?: string;
   ariaLabel?: string;
   className?: string;
 }
 
-const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placeholder, ariaLabel, className, intl }) => {
+const SearchInput = memo<Props & InjectedIntlProps>(({ onChange, placeholder, ariaLabel, className, intl }) => {
 
   const adminPage = isPage('admin', location.pathname);
 
   const [focused, setFocused] = useState(false);
-  const [searchTerm, setSearchTerm] = useState<string | null>(value || null);
+  const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
   const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -145,17 +153,9 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ value, onChange, placehol
   }, []);
 
   useEffect(() => {
-    if (value !== searchTerm) {
-      setSearchTerm(value);
-    }
-  }, [value]);
-
-  useEffect(() => {
     // debounce input
     const handler = setTimeout(() => {
-      if (searchTerm !== value) {
-        onChange(searchTerm);
-      }
+      onChange(searchTerm);
     }, 500);
 
     return () => clearTimeout(handler);

@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
 import styled from 'styled-components';
 import Checkbox from 'components/UI/Checkbox';
-import { QuestionContainer, Label, QuestionNumber, QuestionText } from './PollForm';
+import { QuestionContainer, Question, QuestionNumber, QuestionText } from './PollForm';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -46,7 +46,7 @@ const PollMultipleChoice = ({ question, index, options, value, disabled, onChang
     <StyledFieldSet key={question.id}>
       {isNilOrError(options) || options.length === 0 ? null : (
         <QuestionContainer className="e2e-poll-question">
-          <Label>
+          <Question>
             <QuestionNumber>
               {index + 1}
             </QuestionNumber>
@@ -58,7 +58,7 @@ const PollMultipleChoice = ({ question, index, options, value, disabled, onChang
                 {')'}
               </MaxText>
             </QuestionText>
-          </Label>
+          </Question>
           {options.map((option) => (
             <StyledCheckbox
               className="e2e-poll-option"

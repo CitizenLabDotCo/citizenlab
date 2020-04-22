@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
 import styled from 'styled-components';
 import Radio from 'components/UI/Radio';
-import { QuestionContainer, Label, QuestionNumber, QuestionText } from './PollForm';
+import { QuestionContainer, Question, QuestionNumber, QuestionText } from './PollForm';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 
@@ -39,14 +39,14 @@ const PollSingleChoice = ({ question, index, options, value, disabled, onChange 
     <StyledFieldSet key={question.id}>
       {isNilOrError(options) || options.length === 0 ? null : (
         <QuestionContainer className="e2e-poll-question">
-          <Label>
+          <Question>
             <QuestionNumber>
               {index + 1}
             </QuestionNumber>
             <QuestionText>
               <T value={question.attributes.title_multiloc} />
             </QuestionText>
-          </Label>
+          </Question>
           {options.map((option) => (
             <StyledRadio
               className="e2e-poll-option"

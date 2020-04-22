@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // components
 import Collapse from 'components/UI/Collapse';
@@ -14,14 +15,25 @@ import GetPhasePermissions from 'resources/GetPhasePermissions';
 
 // i18n
 import T from 'components/T';
+import { FormattedMessage } from 'utils/cl-intl';
+import messages from '../messages';
 
 // styling
 import styled from 'styled-components';
 
+const Container = styled.div`
+  margin-bottom: 20px;
+
+  p {
+    font-size: ${fontSizes.base}px;
+    font-style: italic;
+  }
+`;
+
 const Permissions = styled.div`
   flex: 1;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 25px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ddd;
@@ -68,27 +80,32 @@ class Timeline extends PureComponent<Props, State> {
     const { openedPhase } = this.state;
 
     return (
-      <div>
-        {phases && phases.map((phase) => (
-          <Collapse
-            key={phase.id}
-            opened={openedPhase === phase.id}
-            onToggle={this.handleCollapseToggle(phase.id)}
-            label={<T value={phase.attributes.title_multiloc} />}
-          >
-            <Permissions>
-              <GetPhasePermissions phaseId={phase.id}>
-                {(permissions) => isNilOrError(permissions) ? null :
-                  <ActionsForm
-                    permissions={permissions}
-                    onChange={this.handlePermissionChange}
-                  />
-                }
-              </GetPhasePermissions>
-            </Permissions>
-          </Collapse>
+      <Container>
+        {phases && phases.length > 0 && phases.map((phase) => (
+          <div style={{ marginBottom: '20px' }} key={phase.id}>
+            <Collapse
+              opened={openedPhase === phase.id}
+              onToggle={this.handleCollapseToggle(phase.id)}
+              label={<T value={phase.attributes.title_multiloc} />}
+            >
+              <Permissions>
+                <GetPhasePermissions phaseId={phase.id}>
+                  {(permissions) => {
+
+                    return isNilOrError(permissions) ? null :
+                    <ActionsForm
+                      permissions={permissions}
+                      onChange={this.handlePermissionChange}
+                    />;
+                  }
+                  }
+                </GetPhasePermissions>
+              </Permissions>
+            </Collapse>
+          </div>
         ))}
-      </div>
+        {!phases || phases.length < 1 && <p><FormattedMessage {...messages.noActionsCanBeTakenInThisProject} /></p>}
+      </Container>
     );
   }
 }
