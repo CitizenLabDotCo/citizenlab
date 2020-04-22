@@ -267,7 +267,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     }));
   }
 
-  toggleGroup = (groupId: string) => () => {
+  toggleGroup = (groupId: string) => (event: React.ChangeEvent | React.MouseEvent) => {
+    event.preventDefault();
+
     const { selectedGroupIds } = this.state;
 
     if (!includes(selectedGroupIds, groupId)) {

@@ -23,6 +23,16 @@ export function getSelectStyles(borderColor = colors.border) {
         borderColor: isFocused ? colors.focussedBorder : colors.hoveredBorder
       }
     }),
+    indicatorSeparator: () => ({
+      display: 'none'
+    }),
+    dropdownIndicator: (base, { isFocused }) => ({
+      ...base,
+      color: isFocused ? colors.focussedBorder : `${borderColor}`,
+      '&:hover': {
+        color: isFocused ? colors.focussedBorder : colors.hoveredBorder
+      }
+    }),
     placeholder: (base) => ({
       ...base,
       color: colors.placeholder
