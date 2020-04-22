@@ -13,6 +13,8 @@ namespace :cl2back do
       end
     end
     tenants.each do |tenant|
+      raise 'Attempted to shift timestamps of active tenant!' if tenant.settings.dig('core', 'lifecycle_stage') == 'active'
+      raise 'Attempted to shift timestamps of churned tenant!' if tenant.settings.dig('core', 'lifecycle_stage') == 'churned'
       Apartment::Tenant.switch(tenant.schema_name) do
         data_listing.cl2_tenant_models.each do |claz|
           claz.find_each do |object|
