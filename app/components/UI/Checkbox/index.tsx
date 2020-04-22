@@ -34,13 +34,13 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   ${hideVisually()};
 `;
 
-const StyledCheckbox = styled.div<{ checkedOrIndeterminate: boolean, size: string, alignItems?: string }>`
+const StyledCheckbox = styled.div<{ checkedOrIndeterminate: boolean, size: string }>`
   width: ${({ size }) => parseInt(size, 10)}px;
   height: ${({ size }) => parseInt(size, 10)}px;
   flex: 0 0 ${({ size }) => parseInt(size, 10)}px;
   display: flex;
-  justify-content: 'center';
-  align-items:  ${props => props.alignItems || 'center'};
+  justify-content: center;
+  align-items: center;
   border-radius: ${(props) => props.theme.borderRadius};
   border: solid 1px ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : colors.separationDark};
   background: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#fff'};
@@ -61,7 +61,6 @@ type DefaultProps = {
   size?: string;
   disabled?: boolean;
   indeterminate?: boolean;
-  alignItems?: 'flex-start' | 'center';
 };
 
 type Props = DefaultProps & {
@@ -77,8 +76,7 @@ export default class Checkbox extends PureComponent<Props> {
   static defaultProps: DefaultProps = {
     size: '22px',
     disabled: false,
-    indeterminate: false,
-    alignItems: 'center'
+    indeterminate: false
   };
 
   render() {
@@ -90,7 +88,6 @@ export default class Checkbox extends PureComponent<Props> {
       notFocusable,
       disabled,
       indeterminate,
-      alignItems,
       onChange
     } = this.props;
     const hasLabel = !!label;
@@ -112,7 +109,6 @@ export default class Checkbox extends PureComponent<Props> {
               checkedOrIndeterminate={checked || indeterminate}
               size={size}
               className={`${checked ? 'checked' : ''} ${disabled ? 'disabled' : 'enabled'} e2e-checkbox`}
-              alignItems={alignItems}
             >
               {checked && <CheckMarkIcon ariaHidden name="checkmark" size={size} />}
               {indeterminate && <IndeterminateIcon ariaHidden name="indeterminate" size={size} />}
