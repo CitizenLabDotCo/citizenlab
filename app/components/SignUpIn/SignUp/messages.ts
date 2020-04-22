@@ -198,7 +198,7 @@ export default defineMessages({
     defaultMessage: 'Sign up with Email',
   },
   logInWithEmail: {
-    id: 'app.containers.SignUp.signUpWithEmail',
+    id: 'app.containers.SignUp.logInWithEmail',
     defaultMessage: 'Log in with Email',
   },
   continueWithGoogle: {
