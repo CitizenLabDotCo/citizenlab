@@ -30,7 +30,7 @@ pl:
     waste_description: Cleanliness and waste
     mobility: Mobility
     mobility_description: Mobility
-    technology: Technology
+    technology: Technologia
     technology_description: Technology
     economy: Work, economy and commerce
     economy_description: Work, economy and commerce
@@ -42,7 +42,7 @@ pl:
     housing_description: Housing
     culture: Arts, culture and events
     culture_description: Arts, culture and events
-    citizenship: Citizenship
+    citizenship: Obywatelstwo
     citizenship_description: Citizenship
     social: Social inclusion
     social_description: Social inclusion
