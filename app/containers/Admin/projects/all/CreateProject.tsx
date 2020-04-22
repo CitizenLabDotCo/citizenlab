@@ -245,7 +245,7 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         clHistory.push({
           pathname: `/admin/projects/${projectId}/edit`
         });
-      }, 4000);
+      }, 1000);
     });
 
     return () => subscription.unsubscribe();
