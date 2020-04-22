@@ -108,9 +108,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.invitationOptions',
     defaultMessage: 'Invitation options',
   },
-  groupsLabel: {
-    id: 'app.containers.Admin.Invitations.groupsLabel',
-    defaultMessage: 'Optionally select one or more groups that will be assigned to the invited people upon registration',
+  addToGroupLabel: {
+    id: 'app.containers.Admin.Invitations.addToGroupLabel',
+    defaultMessage: 'Add these people to specific manual user groups',
   },
   inviteTextLabel: {
     id: 'app.containers.Admin.Invitations.inviteTextLabel',

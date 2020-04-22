@@ -9,13 +9,9 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.subtitlePermissions',
     defaultMessage: 'Define who can view the project and who can manage it as a project moderator. Also, granular participation rights can be assigned. Contact support@citizenlab.co if you require this.',
   },
-  permissionTypeLabel: {
-    id: 'app.containers.admin.project.permissions.permissionTypeLabel',
-    defaultMessage: 'Who can view this project?',
-  },
-  permissionsTypeTooltip: {
-    id: 'app.containers.admin.project.permissions.permissionsTypeTooltip',
-    defaultMessage: 'Choose for whom this project will be visible: all, users with admin rights only or a specific selection of users. All other users simply won’t see the project nor its content.',
+  viewingRightsTitle: {
+    id: 'app.containers.admin.project.permissions.viewingRightsTitle',
+    defaultMessage: 'Who can see this project?',
   },
   permissionsEveryoneLabel: {
     id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
@@ -71,11 +67,7 @@ export default defineMessages({
   },
   granularPermissionsTitle: {
     id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTitle',
-    defaultMessage: 'Who can take which action?',
-  },
-  granularPermissionsTooltip: {
-    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsTooltip',
-    defaultMessage: 'The users that aren’t part of the selection will see an information message when trying to access the respective action, explaining them that they don’t have access to the action.',
+    defaultMessage: 'What can different users do?',
   },
   permissionAction_commenting: {
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
@@ -101,13 +93,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
     defaultMessage: 'Spending budget',
   },
-  noActionsCanBeTaken: {
-    id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTaken',
-    defaultMessage: 'No permissions to configure, since the user can\'t do anything here',
-  },
-  engagementWarning: {
-    id: 'app.containers.AdminPage.groups.permissions.engagementWarning',
-    defaultMessage: 'Apply these restrictions carefully, as higher barriers lead to lower engagement.',
+  noActionsCanBeTakenInThisProject: {
+    id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject',
+    defaultMessage: 'Nothing is shown, because there are no actions the user can take in this project.'
   },
   pendingInvitation: {
     id: 'app.containers.AdminPage.groups.permissions.pendingInvitation',
@@ -133,29 +121,29 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTitle',
     defaultMessage: 'Who can moderate this project?',
   },
-  moderatorsSectionTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.moderatorsSectionTooltip',
-    defaultMessage: 'Select those users who will be given moderator rights, allowing them to work on this project, process its ideas, email its participants, etc.. They will receive a personal message to inform them. More on the role of project moderator can be found {moreInfoModeratorLink}.',
+  moderatorsTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderatorsTooltip',
+    defaultMessage: 'Moderators can edit the project, manage its ideas and email people who participated. You can {moderationInfoCenterLink} to find more information on moderation rights.',
+  },
+  moderationInfoCenterLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText',
+    defaultMessage: 'visit our Help Center',
   },
   moreInfoModeratorLink: {
     id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink',
     defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
-  moreInfoModeratorLinkText: {
-    id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLinkText',
-    defaultMessage: 'here',
-  },
   ideaAssignmentSectionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle',
-    defaultMessage: 'Who is the main responsible for this project?',
+    defaultMessage: 'Who is responsible for processing the ideas?',
   },
-  ideaAssignmentTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltip',
-    defaultMessage: 'Every new idea within this project will be assigned to this person by default. The main responsible will get notified when a new idea gets added. Idea assignment can be easily changed in the {linkToIdeasOverview}.',
+  ideaAssignmentTooltipText: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltipText',
+    defaultMessage: 'The person responsible for the ideas will get all new ideas in this project assigned to him/her. The assignee can always be changed manually in the {ideaManagerLink}.',
   },
-  ideasOverview: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideasOverview',
-    defaultMessage: 'Ideas overview',
+  ideaManagerLinkText: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideaManagerLinkText',
+    defaultMessage: 'idea manager',
   },
   unassigned: {
     id: 'app.containers.AdminPage.ProjectEdit.unassigned',
@@ -164,5 +152,13 @@ export default defineMessages({
   selectGroups: {
     id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
     defaultMessage: 'Select group(s)',
-  }
+  },
+  participationAccessRightsTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.participationAccessRightsTitle',
+    defaultMessage: 'Participation',
+  },
+  moderationRightsTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.moderationRightsTitle',
+    defaultMessage: 'Moderation',
+  },
 });
