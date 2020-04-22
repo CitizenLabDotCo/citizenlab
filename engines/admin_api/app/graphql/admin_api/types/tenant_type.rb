@@ -84,6 +84,16 @@ module AdminApi
       def ideas_overview_enabled
         object.dig('ideas_overview','enabled')
       end
+
+      field :project_folders_allowed, Boolean, null: false
+      def project_folders_allowed
+        object.dig('project_folders','allowed')
+      end
+
+      field :project_folders_enabled, Boolean, null: false
+      def project_folders_enabled
+        object.dig('project_folders','enabled')
+      end
     end
 
     field :id, ID, null: false

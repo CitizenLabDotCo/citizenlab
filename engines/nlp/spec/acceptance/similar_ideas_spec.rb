@@ -23,7 +23,7 @@ resource "SimilarIdeas" do
       parameter :size, "Number of campaigns per page"
     end
 
-    describe '' do
+    describe do
       let(:idea_id) { @idea.id }
 
       example "List all similar ideas" do

@@ -48,7 +48,7 @@ resource "MachineTranslations" do
       end
     end
 
-    describe '' do
+    describe do
       let(:translation) { nil }
       let(:idea_id) { create(:idea).id }
       let(:attribute_name) { 'title_multiloc' }
@@ -98,7 +98,7 @@ resource "MachineTranslations" do
       end
     end
 
-    describe '' do
+    describe do
       let(:translation) { nil }
       let(:initiative_id) { create(:initiative).id }
       let(:attribute_name) { 'title_multiloc' }

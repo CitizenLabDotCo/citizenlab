@@ -42,7 +42,7 @@ resource "Tenants", admin_api: true do
     end
     ValidationErrorHelper.new.error_fields(self, Tenant)
 
-    describe "" do
+    describe do
       before do
         @tenant = create(:tenant)
         
