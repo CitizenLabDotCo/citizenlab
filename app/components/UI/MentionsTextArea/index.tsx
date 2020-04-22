@@ -19,18 +19,12 @@ import { transparentize } from 'polished';
 // typings
 import { Locale } from 'typings';
 
-const Container = styled.div<{ placeholderFontWeight: string }>`
+const Container = styled.div`
   position: relative;
 
-  textarea {
-    &:focus {
-      border-color: ${colors.focussedBorder} !important;
-      box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.focussedBorder)} !important;
-    }
-
-    &::placeholder {
-      font-weight: ${props => props.placeholderFontWeight} !important;
-    }
+  & .hasBorder textarea:focus {
+    border-color: ${colors.focussedBorder} !important;
+    box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.focussedBorder)} !important;
   }
 
   .textareaWrapper__suggestions__list li:last-child {
@@ -62,7 +56,6 @@ export interface InputProps {
   borderRadius?: string;
   boxShadow?: string;
   background?: string;
-  placeholderFontWeight?: string;
   ariaLabel?: string;
 }
 
@@ -88,7 +81,6 @@ class MentionsTextArea extends PureComponent<Props, State> {
     borderRadius: '3px',
     boxShadow: 'none',
     background: '#fff',
-    placeholderFontWeight: '300'
   };
 
   constructor(props) {
@@ -217,18 +209,15 @@ class MentionsTextArea extends PureComponent<Props, State> {
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows, id, className, placeholderFontWeight, ariaLabel } = this.props;
+    const { name, placeholder, value, error, children, rows, id, className, ariaLabel } = this.props;
 
     if (style) {
       return (
-        <Container
-          className={className}
-          placeholderFontWeight={placeholderFontWeight as string}
-        >
+        <Container className={className}>
           <MentionsInput
             id={id}
             style={style}
-            className="textareaWrapper"
+            className={`textareaWrapper ${this.props.border !== 'none' ? 'hasBorder' : 'noBorder'}`}
             name={name || ''}
             rows={rows}
             value={value || ''}

@@ -312,7 +312,6 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
               value={formValues.bodyMultiloc?.[selectedLocale] || ''}
               onChange={this.handleBodyOnChange}
               placeholder={formatMessage(messages.textAreaPlaceholder)}
-              placeholderFontWeight="400"
               rows={8}
               padding="12px"
               fontSize={`${fontSizes.base}px`}

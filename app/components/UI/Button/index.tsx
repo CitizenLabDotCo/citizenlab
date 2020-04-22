@@ -64,7 +64,7 @@ function getPadding(props: ButtonContainerProps & { theme: any }) {
         return '15px 26px';
       default:
         // return '.65em 1.45em';
-        return '9px 16px';
+        return '9px 18px';
     }
   }
 }
@@ -108,7 +108,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     primary: {
       bgColor: get(props.theme, 'colorMain'),
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     },
     'primary-outlined': {
       bgColor: 'transparent',

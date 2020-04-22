@@ -260,6 +260,7 @@ export const defaultInputStyle = css`
 
   &:disabled,
   &.disabled {
+    opacity: 1;
     color: #666;
     background-color: #f9f9f9;
     border-color: #ccc;
