@@ -4,7 +4,7 @@ namespace :checks do
   task :invalid_data => :environment do
     issues = {}
 
-    cl2_root_models.each do |claz|
+    Cl2DataListingService.new.cl2_root_models.each do |claz|
       claz.all.find_each do |object|
         errors = validation_errors object
         if errors
@@ -21,7 +21,7 @@ namespace :checks do
       tenant.settings.dig('core', 'lifecycle_stage') == 'active' || tenant.host.ends_with?(ENV.fetch('TEMPLATE_URL_SUFFIX','.localhost'))
     end.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
-        cl2_tenant_models.each do |claz|
+        Cl2DataListingService.new.cl2_tenant_models.each do |claz|
           claz.all.find_each do |object|
             errors = validation_errors object
             if errors
@@ -74,24 +74,6 @@ namespace :checks do
       puts ''
     end
     nil
-  end
-
-  def cl2_tenant_models
-    ActiveRecord::Base.descendants.select do |claz|
-      ![
-        'PgSearch::Document', 
-        'Apartment::Adapters::AbstractAdapter::SeparateDbConnectionHandler', 
-        'ApplicationRecord', 
-        'PublicApi::ApiClient', 
-        'Tenant'
-      ].include? claz.name
-    end.select do |claz|
-      claz.descendants.empty?
-    end
-  end
-
-  def cl2_root_models
-    [PublicApi::ApiClient, Tenant]
   end
 
   def validation_errors object

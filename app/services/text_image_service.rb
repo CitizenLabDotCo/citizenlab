@@ -71,6 +71,7 @@ class TextImageService
                   text_reference: text_reference,
                   imageable_type: imageable.class,
                   imageable_id: imageable.id,
+                  imageable_created_at: imageable.created_at,
                   imageable_field: field,
                   tenant_created_at: Tenant.current.created_at
                 })

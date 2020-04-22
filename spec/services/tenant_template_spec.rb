@@ -220,6 +220,9 @@ describe TenantTemplateService do
       expect(EmailCampaigns::UnsubscriptionToken.count).to be > 0
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 0
+      expect(Maps::MapConfig.count).to be 1
+      expect(Maps::Layer.count).to be 2
+      expect(Maps::LegendItem.count).to be 7
     end
 
     it "correctly generates and links attributes references" do

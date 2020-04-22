@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_19_101312) do
+ActiveRecord::Schema.define(version: 2020_03_25_160114) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -456,6 +456,7 @@ ActiveRecord::Schema.define(version: 2020_03_19_101312) do
     t.datetime "accepted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "send_invite_email", default: true, null: false
     t.index ["invitee_id"], name: "index_invites_on_invitee_id"
     t.index ["inviter_id"], name: "index_invites_on_inviter_id"
     t.index ["token"], name: "index_invites_on_token"
@@ -471,6 +472,38 @@ ActiveRecord::Schema.define(version: 2020_03_19_101312) do
     t.datetime "updated_at", null: false
     t.index ["translatable_id", "translatable_type", "attribute_name", "locale_to"], name: "machine_translations_lookup", unique: true
     t.index ["translatable_id", "translatable_type"], name: "machine_translations_translatable"
+  end
+
+  create_table "maps_layers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "map_config_id", null: false
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.integer "ordering", null: false
+    t.jsonb "geojson", null: false
+    t.boolean "default_enabled", default: true, null: false
+    t.string "marker_svg_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["map_config_id"], name: "index_maps_layers_on_map_config_id"
+  end
+
+  create_table "maps_legend_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "map_config_id", null: false
+    t.jsonb "title_multiloc", default: {}, null: false
+    t.string "color", null: false
+    t.integer "ordering", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["map_config_id"], name: "index_maps_legend_items_on_map_config_id"
+  end
+
+  create_table "maps_map_configs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id", null: false
+    t.geography "center", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
+    t.decimal "zoom_level", precision: 4, scale: 2
+    t.string "tile_provider"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["project_id"], name: "index_maps_map_configs_on_project_id"
   end
 
   create_table "memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -934,6 +967,8 @@ ActiveRecord::Schema.define(version: 2020_03_19_101312) do
   add_foreign_key "initiatives_topics", "topics"
   add_foreign_key "invites", "users", column: "invitee_id"
   add_foreign_key "invites", "users", column: "inviter_id"
+  add_foreign_key "maps_layers", "maps_map_configs", column: "map_config_id"
+  add_foreign_key "maps_legend_items", "maps_map_configs", column: "map_config_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "users"
   add_foreign_key "notifications", "comments"
