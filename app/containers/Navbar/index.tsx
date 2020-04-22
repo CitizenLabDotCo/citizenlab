@@ -504,16 +504,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                             (item: IAdminPublicationContent) => {
                               if (item.publicationType === 'project') {
                                 return (
-
                                   <ProjectsListItem
                                     key={item.publicationId}
-                                    to={`/projects/${item.attributes.publication_slug}/process`}
+                                    to={`/projects/${item.attributes.publication_slug}`}
                                   >
                                     {localize(item.attributes.publication_title_multiloc)}
                                   </ProjectsListItem>
                                 );
-                              } else {
-
+                              } else if (item.publicationType === 'projectFolder') {
                                 return (
                                   <ProjectsListItem
                                     key={item.publicationId}
@@ -522,6 +520,8 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                                     {localize(item.attributes.publication_title_multiloc)}
                                   </ProjectsListItem>
                                 );
+                              } else {
+                                return null;
                               }
                             }
                           )}
