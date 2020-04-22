@@ -2,6 +2,10 @@
 
 ## 2020-04-22
 
+### Fixed
+
+- Long timeline phase names show properly
+
 ### Changed
 
 - Redirect to project settings after creating the project
