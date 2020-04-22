@@ -82,10 +82,8 @@ const Consent = memo<Props & InjectedIntlProps>(({
       <CheckboxWrapper>
         <Checkbox
           className="e2e-terms-and-conditions"
-          size="20px"
           checked={tacAccepted}
           onChange={toggleTacAccepted}
-          alignItems="flex-start"
           label={
             <ConsentText>
               <FormattedMessage
@@ -106,7 +104,6 @@ const Consent = memo<Props & InjectedIntlProps>(({
           size="20px"
           checked={privacyAccepted}
           onChange={togglePrivacyAccepted}
-          alignItems="flex-start"
           label={
             <ConsentText>
               <FormattedMessage
