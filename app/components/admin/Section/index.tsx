@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { remCalc, colors, fontSizes, media } from 'utils/styleUtils';
+import { remCalc, colors, fontSizes } from 'utils/styleUtils';
 
 export const Section = styled.div`
   margin-bottom: 0;
@@ -62,28 +62,5 @@ export const SectionField = styled.div`
 
   .editor {
     width: 120%;
-  }
-
-  .CLInputComponent,
-  .CLTextareaComponent {
-    width: 100%;
-    -webkit-appearance: none;
-    background: #fff;
-    border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
-    font-size: ${fontSizes.base}px;
-    font-weight: 400;
-    line-height: 24px;
-    outline: none;
-    padding: 12px;
-
-    &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
-    }
-
-    ${media.biggerThanPhone`
-      padding-right: ${props => props.error && '40px'};
-    `}
   }
 `;

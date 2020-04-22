@@ -189,7 +189,6 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
                 placeholder={passwordPlaceholder}
                 onChange={this.handlePasswordOnChange}
                 setRef={this.handlePasswordInputSetRef}
-                onGreyBackground
               />
 
               <StyledButton

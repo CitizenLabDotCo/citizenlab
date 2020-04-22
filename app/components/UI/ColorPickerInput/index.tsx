@@ -11,32 +11,29 @@ const Container = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  display: flex;
-  width: 100%;
-
-  input {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
+  position: relative;
 `;
 
-const Color: any = styled.div`
-  width: 50px;
-  height: 50px;
+const Color = styled.div`
+  width: 46px;
+  height: 46px;
   border: 1px solid ${colors.separationDark};
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border-radius: ${({ theme }) => theme.borderRadius};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  background: ${(props: any) => props.color };
+  background: ${props => props.color};
   cursor: pointer;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 1;
+  pointer-events: none;
 `;
 
 const StyledInput = styled(Input)`
   input {
     cursor: pointer;
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
-    border-left: none !important;
+    padding-left: 62px !important;
   }
 `;
 
@@ -85,12 +82,12 @@ class ColorPickerInput extends PureComponent<Props, State> {
     }
   }
 
-  open = (event: React.FormEvent<any>) => {
+  open = (event: React.FormEvent) => {
     event.preventDefault();
     this.setState({ opened: true });
   }
 
-  close = (event: React.FormEvent<any>) => {
+  close = (event: React.FormEvent) => {
     event.preventDefault();
     this.setState({ opened: false });
     this.props.onChange(this.state.value);
@@ -118,16 +115,16 @@ class ColorPickerInput extends PureComponent<Props, State> {
           </Popover>
         }
         <InputWrapper>
-          <Color
-            onClick={this.open}
-            color={value}
-          />
           <StyledInput
             readOnly
             type="text"
             value={value}
             onFocus={this.open}
             spellCheck={false}
+          />
+          <Color
+            onClick={this.open}
+            color={value}
           />
         </InputWrapper>
       </Container>

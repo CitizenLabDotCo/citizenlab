@@ -204,7 +204,6 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
               autocomplete="email"
-              onGreyBackground
             />
           </FormElement>
 
@@ -227,7 +226,6 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
               onChange={this.handlePasswordOnChange}
               setRef={this.handlePasswordInputSetRef}
               autocomplete="current-password"
-              onGreyBackground
             />
           </FormElement>
 

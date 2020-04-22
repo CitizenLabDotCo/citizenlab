@@ -103,8 +103,6 @@ export const media = {
   `,
 };
 
-export const customOutline = 'rgb(59,153,252) solid 2px';
-
 export const colors = {
   background: '#f4f4f5',
   text: '#333',
@@ -112,6 +110,12 @@ export const colors = {
   label: '#596B7A',
   placeholder: '#aaa',
   separation: '#e0e0e0',
+
+  // default input element border colors
+  border: '#999',
+  hoveredBorder: '#333',
+  focussedBorder: '#333',
+
   /**
   * this is the first grey to get 3.0 contrast ratio on a white background, needed for non-text contrast such as button/label borders
   */
@@ -208,6 +212,60 @@ export const fontSizes = {
   xxxxl: 34,
   xxxxxl: 42
 };
+
+export const customOutline = 'rgb(59,153,252) solid 2px';
+
+export const defaultInputStyle = css`
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
+  padding: 12px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px ${colors.border};
+  background: #fff;
+  box-shadow: none;
+  cursor: text;
+  outline: none;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  transition: box-shadow 80ms ease-out, border-color 80ms ease-out;
+
+  &::placeholder {
+    font-weight: 400;
+  }
+
+  &:not(:disabled):not(.disabled) {
+    &:not(.error):hover,
+    &:not(.error).hover {
+      border-color: ${colors.hoveredBorder};
+    }
+
+    &:not(.error):focus,
+    &:not(.error).focus {
+      border-color: ${colors.focussedBorder};
+      box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.focussedBorder)};
+    }
+
+    &.error {
+      border-color: ${colors.clRedError};
+
+      &:focus,
+      &.focus {
+        box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.clRedError)};
+      }
+    }
+  }
+
+  &:disabled,
+  &.disabled {
+    color: #666;
+    background-color: #f9f9f9;
+    border-color: #ccc;
+    cursor: not-allowed;
+  }
+`;
 
 export const stylingConsts = {
   menuHeight: 78,

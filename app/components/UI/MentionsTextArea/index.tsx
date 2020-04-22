@@ -24,8 +24,8 @@ const Container = styled.div<{ placeholderFontWeight: string }>`
 
   textarea {
     &:focus {
-      /* box-shadow: ${(props: any) => props.error ? 'none' : 'inset 0px 0px 0px 1px rgba(0,0,0, 0.2)'} !important; */
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#000'} !important;
+      border-color: ${colors.focussedBorder} !important;
+      box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.focussedBorder)} !important;
     }
 
     &::placeholder {
@@ -84,10 +84,10 @@ class MentionsTextArea extends PureComponent<Props, State> {
     fontWeight: '400',
     lineHeight: '24px',
     padding: '24px',
-    border: `solid 1px ${colors.separationDark}`,
-    borderRadius: '5px',
-    boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
-    background: 'transparent',
+    border: `solid 1px ${colors.border}`,
+    borderRadius: '3px',
+    boxShadow: 'none',
+    background: '#fff',
     placeholderFontWeight: '300'
   };
 
