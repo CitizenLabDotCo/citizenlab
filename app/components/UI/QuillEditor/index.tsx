@@ -22,6 +22,7 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
+import { transparentize } from 'polished';
 import { colors, quillEditedContent, media, fontSizes } from 'utils/styleUtils';
 
 // typings
@@ -112,16 +113,21 @@ const Container = styled.div<{
     background: #f8f8f8;
     border-radius: ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius} 0 0;
     box-shadow: none;
-    border: 1px solid ${colors.separationDark};
+    border: 1px solid ${colors.border};
     border-bottom: 0;
   }
 
-  &.focussed:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: #000;
+  &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    border-color: ${colors.focussedBorder};
+    box-shadow: 0px 0px 0px 1px ${transparentize(0.4, colors.focussedBorder)};
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: ${colors.clRedError};
+  }
+
+  &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    box-shadow: 0px 0px 0px 1px ${colors.clRedError};
   }
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -130,8 +136,7 @@ const Container = styled.div<{
     max-height: ${({ theme: { menuHeight } }) => `calc(80vh - ${menuHeight}px)`};
     cursor: text;
     border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius};
-    border: 1px solid ${colors.separationDark};
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+    border: 1px solid ${colors.border};
     overflow-y: auto;
     ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
@@ -472,7 +477,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   const classNames = [
     className,
-    focussed ? 'focussed' : null,
+    focussed ? 'focus' : null,
     hasError ? 'error' : null
   ].filter(className => className).join(' ');
 

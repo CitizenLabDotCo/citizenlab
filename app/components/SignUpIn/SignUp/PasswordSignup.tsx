@@ -353,7 +353,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 onChange={this.handleFirstNameOnChange}
                 setRef={this.handleFirstNameInputSetRef}
                 autocomplete="given-name"
-                onGreyBackground
               />
               <Error
                 fieldName={'first_name'}
@@ -375,7 +374,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={lastNameError}
                 onChange={this.handleLastNameOnChange}
                 autocomplete="family-name"
-                onGreyBackground
               />
               <Error
                 fieldName={'last_name'}
@@ -397,7 +395,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={emailError}
                 onChange={this.handleEmailOnChange}
                 autocomplete="email"
-                onGreyBackground
               />
               <Error
                 fieldName={'email'}
@@ -419,7 +416,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 error={passwordError}
                 onChange={this.handlePasswordOnChange}
                 autocomplete="new-password"
-                onGreyBackground
               />
               <Error
                 fieldName={'password'}

@@ -9,7 +9,7 @@ import IconTooltip from 'components/UI/IconTooltip';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, defaultInputStyle } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -18,42 +18,12 @@ const Container = styled.div`
   position: relative;
 
   .textarea {
+    ${defaultInputStyle};
     width: 100%;
-    color: ${colors.text};
-    font-size: ${fontSizes.base}px;
-    line-height: 24px;
-    font-weight: 400;
-    padding: 12px;
     resize: none;
-    outline: none;
     position: relative;
-    border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${colors.separationDark};
-    background: #fff;
     overflow: hidden;
-    box-shadow: none;
-    outline: none;
-    appearance: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-
-    &:not(.error):focus {
-      /* box-shadow: inset 0px 0px 0px 1px #000; */
-      border-color: '#000';
-    }
-
-    &:disabled {
-      background-color: #f9f9f9;
-      border-color: #ccc;
-    }
-
-    &.error {
-      border-color: ${colors.clRedError} !important;
-
-      &:focus {
-        border-color: ${colors.clRedError} !important;
-      }
-    }
+    line-height: 24px;
   }
 `;
 
@@ -70,7 +40,7 @@ const CharacterCount = styled.p`
   }
 `;
 
-const TextAreaContainer: any = styled.div`
+const TextAreaContainer = styled.div`
   width: 100%;
   position: relative;
   padding: 0;
@@ -151,10 +121,10 @@ export default class TextArea extends React.PureComponent<Props, State> {
           </Label>
         }
 
-        <TextAreaContainer className="TextArea CLTextareaComponentContainer">
+        <TextAreaContainer className="TextArea">
           <TextareaAutosize
             id={id}
-            className={`textarea CLTextareaComponent ${!isEmpty(error) ? 'error' : ''}`}
+            className={`textarea ${!isEmpty(error) ? 'error' : ''}`}
             name={name || ''}
             rows={rows || 5}
             value={value || ''}

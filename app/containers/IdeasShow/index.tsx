@@ -625,7 +625,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
-                    titleLevel="h2"
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                     emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}

@@ -63,7 +63,8 @@ function getPadding(props: ButtonContainerProps & { theme: any }) {
       case '4':
         return '15px 26px';
       default:
-        return '.65em 1.45em';
+        // return '.65em 1.45em';
+        return '9px 16px';
     }
   }
 }
@@ -151,7 +152,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     'cl-blue': {
       bgColor: colors.clBlueDark,
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     },
     'cl-blue-outlined': {
       bgColor: 'transparent',
@@ -162,7 +165,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     'admin-dark': {
       bgColor: colors.adminTextColor,
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     },
     'admin-dark-outlined': {
       bgColor: 'transparent',
@@ -177,7 +182,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     delete: {
       bgColor: colors.clRedError,
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     }
   };
 

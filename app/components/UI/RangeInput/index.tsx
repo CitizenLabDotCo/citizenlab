@@ -92,6 +92,7 @@ class RangeInput extends PureComponent<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: '50%',
+          outline: 'none',
           backgroundColor: isDragged ? colors.clBlue : activeColor
         }}
       >
