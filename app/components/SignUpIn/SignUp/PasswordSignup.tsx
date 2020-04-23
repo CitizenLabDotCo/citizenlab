@@ -32,7 +32,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';

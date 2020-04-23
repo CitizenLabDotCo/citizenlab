@@ -25,7 +25,7 @@ import { PreviousPathnameContext } from 'context';
 
 // signup/in
 import { ISignUpInMetaData } from 'components/SignUpIn';
-import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // verification
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';

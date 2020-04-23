@@ -17,6 +17,9 @@ import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resource
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
 import { handleOnSSOClick } from 'services/singleSignOn';
 
+// events
+import { signUpActiveStepChange } from 'components/SignUpIn/events';
+
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -126,6 +129,20 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       activeStep: nextActiveStep,
       error: props.error || error
     };
+  }
+
+  componentDidMount() {
+    signUpActiveStepChange(undefined);
+  }
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    if (this.state.activeStep !== prevState.activeStep) {
+      signUpActiveStepChange(this.state.activeStep);
+    }
+  }
+
+  componentWillUnmount() {
+    signUpActiveStepChange(undefined);
   }
 
   goToNextStep = () => {
