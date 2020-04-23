@@ -252,6 +252,7 @@ export type Props = {
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
   noPadding?: boolean;
+  noClose?: boolean;
   closeOnClickOutside?: boolean;
 };
 
@@ -286,21 +287,23 @@ export default class Modal extends PureComponent<Props, State> {
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.handleKeypress);
     eventEmitter.emit('modalOpened');
-    this.unlisten = clHistory.listen(() => this.props.close());
+    this.unlisten = clHistory.listen(() => this.closeModal());
   }
 
-  manuallyCloseModal = () => {
-    this.props.close();
+  closeModal = () => {
+    if (!this.props.noClose) {
+      this.props.close();
+    }
   }
 
   handlePopstateEvent = () => {
-    this.props.close();
+    this.closeModal();
   }
 
   handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
-      this.props.close();
+      this.closeModal();
     }
   }
 
@@ -315,7 +318,7 @@ export default class Modal extends PureComponent<Props, State> {
   clickOutsideModal = () => {
     if (this.props.closeOnClickOutside !== false) {
       trackEventByName(tracks.clickOutsideModal);
-      this.manuallyCloseModal();
+      this.closeModal();
     }
   }
 
@@ -323,7 +326,7 @@ export default class Modal extends PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
     trackEventByName(tracks.clickCloseButton);
-    this.manuallyCloseModal();
+    this.closeModal();
   }
 
   removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -331,7 +334,7 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
+    const { width, children, opened, header, footer, hasSkipButton, skipText, noClose } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const noPadding = header !== undefined || footer !== undefined || this.props.noPadding;
     const modalPortalElement = document?.getElementById('modal-portal');
@@ -359,13 +362,15 @@ export default class Modal extends PureComponent<Props, State> {
                 aria-modal="true"
                 role="dialog"
               >
-                <CloseButton
-                  className="e2e-modal-close-button"
-                  onMouseDown={this.removeFocus}
-                  onClick={this.clickCloseButton}
-                >
-                  <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
-                </CloseButton >
+                {!noClose &&
+                  <CloseButton
+                    className="e2e-modal-close-button"
+                    onMouseDown={this.removeFocus}
+                    onClick={this.clickCloseButton}
+                  >
+                    <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
+                  </CloseButton >
+                }
 
                 {header &&
                   <HeaderContainer>

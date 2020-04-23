@@ -25,7 +25,7 @@ import { phaseStream, IPhase, getCurrentPhase } from 'services/phases';
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // style
 import styled, { css, keyframes } from 'styled-components';

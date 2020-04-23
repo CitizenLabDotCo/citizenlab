@@ -3,12 +3,13 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 // components
 import Modal from 'components/UI/Modal';
 import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
+import { TSignUpSteps } from 'components/SignUpIn/SignUp';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
 
 // events
-import { openSignUpInModal$, closeSignUpInModal$ } from 'components/SignUpIn/signUpInModalEvents';
+import { openSignUpInModal$, closeSignUpInModal$, signUpActiveStepChange$ } from 'components/SignUpIn/events';
 
 // style
 import styled from 'styled-components';
@@ -24,6 +25,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
   const isMounted = useIsMounted();
   const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(undefined);
+  const [signUpActiveStep, setSignUpActiveStep] = useState<TSignUpSteps | null| undefined>(undefined);
   const opened = !!metaData;
 
   useEffect(() => {
@@ -39,6 +41,9 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       }),
       closeSignUpInModal$.subscribe(() => {
         setMetaData(undefined);
+      }),
+      signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
+        setSignUpActiveStep(activeStep);
       })
     ];
 
@@ -61,6 +66,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       opened={opened}
       close={onClose}
       closeOnClickOutside={false}
+      noClose={signUpActiveStep === 'custom-fields'}
     >
       <Container className={className}>
         {opened && metaData &&

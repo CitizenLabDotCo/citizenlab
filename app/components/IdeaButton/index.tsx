@@ -22,7 +22,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { openSignUpInModal } from 'components/SignUpIn/signUpInModalEvents';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // events
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
