@@ -1,7 +1,7 @@
 class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   include WebApi::V1::ParticipationContextSerializer
 
-  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at, :location_allowed
+  attributes :title_multiloc, :start_at, :end_at, :created_at, :updated_at
   
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images object, :description_multiloc
