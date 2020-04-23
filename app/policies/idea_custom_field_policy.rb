@@ -26,10 +26,7 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.active? && (
-      user.admin? ||
-      (record&.resource&.project && user.project_moderator?(record.resource.project.id))
-    )
+    can_view_custom_fields_for_project? record&.resource&.project
   end
 
   def upsert_by_code?
@@ -38,6 +35,13 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
 
   def destroy?
     show?
+  end
+
+  def can_view_custom_fields_for_project? project
+    user&.active? && (
+      user.admin? ||
+      (project && user.project_moderator?(project.id))
+    )
   end
 
   def permitted_attributes
