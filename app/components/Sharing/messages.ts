@@ -31,8 +31,8 @@ export default defineMessages({
     id: 'app.components.Sharing.shareThisFolder',
     defaultMessage: 'Share',
   },
-  shareThisIdea: {
-    id: 'app.components.Sharing.shareThisIdea',
+  shareIdea: {
+    id: 'app.components.Sharing.shareIdea',
     defaultMessage: 'Share this idea',
   },
 });
