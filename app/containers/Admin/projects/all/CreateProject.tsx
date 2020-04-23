@@ -1,6 +1,7 @@
 import React, { memo, useState, useCallback, useEffect, useRef, MouseEvent } from 'react';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // graphql
 import { gql } from 'apollo-boost';
@@ -151,6 +152,10 @@ const StyledTabs = styled(Tabs)`
   margin-bottom: 25px;
 `;
 
+export interface INewProjectCreatedEvent {
+  projectId?: string;
+}
+
 interface Props {
   className?: string;
 }
@@ -176,7 +181,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const projectTemplatesEnabled: boolean = get(tenant, 'data.attributes.settings.admin_project_templates.enabled', false);
 
   const [expanded, setExpanded] = useState(false);
-  const [hasCollapseAnimation, setHasCollapseAnimation] = useState(true);
   const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
 
   const isFirstRun = useRef(true);
@@ -236,11 +240,12 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   useEffect(() => {
-    const subscription = eventEmitter.observeEvent('NewProjectCreated').subscribe(() => {
-      setHasCollapseAnimation(false);
-      setTimeout(() => setExpanded(false), 100);
-      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 200);
-      setTimeout(() => setHasCollapseAnimation(true), 500);
+    const subscription = eventEmitter.observeEvent<INewProjectCreatedEvent>('NewProjectCreated').subscribe(({ eventValue: { projectId } }) => {
+      setTimeout(() => {
+        clHistory.push({
+          pathname: `/admin/projects/${projectId}/edit`
+        });
+      }, 1000);
     });
 
     return () => subscription.unsubscribe();
@@ -301,7 +306,6 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         mounOnEnter={true}
         unmountOnExit={true}
         enter={true}
-        exit={hasCollapseAnimation}
       >
         <CreateProjectContent className={`${expanded ? 'expanded' : 'collapsed'}`}>
           <CreateProjectContentInner>
