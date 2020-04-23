@@ -385,6 +385,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
             </SelectAllCheckboxLabel>
           }
           checked={(selectedUsers === 'all')}
+          indeterminate={isArray(selectedUsers) && selectedUsers.length > 0}
           onChange={this.toggleAllUsers}
         />
         <ActionButtons>

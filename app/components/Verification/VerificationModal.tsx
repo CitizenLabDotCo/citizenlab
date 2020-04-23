@@ -63,8 +63,6 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   const [context, setContext] = useState<ContextShape>(null);
   const opened = !!activeStep;
 
-  console.log('opened: ' + opened);
-
   useEffect(() => {
     if (isMounted() && onMounted) {
       onMounted();
@@ -74,7 +72,6 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   useEffect(() => {
     const subscriptions = [
       openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
-        console.log(step);
         setActiveStep(step);
         setContext(context);
       }),
