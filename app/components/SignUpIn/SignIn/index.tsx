@@ -38,7 +38,7 @@ const SignIn = memo<Props>(({ inModal, metaData, onSignInCompleted, onGoToSignUp
     if (selectedMethod === 'email') {
       setActiveStep('password-signin');
     } else {
-      handleOnSSOClick(selectedMethod, this.props.metaData);
+      handleOnSSOClick(selectedMethod, metaData);
     }
   }, []);
 
