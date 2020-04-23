@@ -92,11 +92,16 @@ describe('Idea voting permissions', () => {
     const email = randomEmail();
     const password = randomString();
 
-    it('sends unsigned user to log-in and not to verify', () => {
+    it('sends signed out user to log in and doesn\'t ask for verification', () => {
+      // Try to vote
       cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
       cy.acceptCookies();
       cy.get('.e2e-ideacard-upvote-button').first().click();
+
+      // Go to sign up page
       cy.get('.e2e-register-button').click();
+
+      // Sign up
       cy.get('.e2e-sign-up-container');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
@@ -106,9 +111,13 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('#e2e-signup-step1-button').click();
+
+      // Check if we're redirected to the project's idea overview page
       cy.location('pathname').should('eq', '/en-GB/projects/an-idea-bring-it-to-your-council/ideas');
       cy.get('#e2e-project-ideas-page');
       cy.get('#e2e-ideas-container');
+
+      // Should there be an automatic vote here or do we try to vote after logging in?
       cy.get('.e2e-ideacard-upvote-button');
       cy.get('.e2e-verification-steps').should('not.exist');
     });
