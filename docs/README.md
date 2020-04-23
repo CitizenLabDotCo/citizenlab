@@ -1,6 +1,6 @@
 # Changelog
 
-## 2020-04-22
+## 2020-04-23
 
 ### Fixed
 
@@ -17,7 +17,6 @@
 
 - Fixed overlapping issue with idea vote bar on mobile
 - Fixed an issue where images were used for which the filename contained special characters
--
 
 ### Added
 
