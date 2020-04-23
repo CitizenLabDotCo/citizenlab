@@ -475,8 +475,7 @@ if Apartment::Tenant.current == 'localhost'
           downvoting_enabled: rand(3) != 0,
           commenting_enabled: rand(4) != 0,
           voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-          voting_limited_max: rand(15)+1,
-          location_allowed: rand(4) != 0,
+          voting_limited_max: rand(15)+1
         })
       end
 
@@ -517,8 +516,7 @@ if Apartment::Tenant.current == 'localhost'
               downvoting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
               voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-              voting_limited_max: rand(15)+1,
-              location_allowed: rand(4) != 0,
+              voting_limited_max: rand(15)+1
             })
           end
           if phase.budgeting?

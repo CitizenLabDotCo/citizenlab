@@ -648,7 +648,6 @@ ActiveRecord::Schema.define(version: 2020_04_23_123927) do
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
-    t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
