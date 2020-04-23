@@ -4,12 +4,13 @@ import { isEmpty } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import AuthProviders, { AuthProvider } from '../AuthProviders';
-import PasswordSignup from './PasswordSignup';
+import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import VerificationSteps from 'components/Verification/VerificationSteps';
-import CustomFields from './CustomFields';
+import CustomFields from 'components/SignUpIn/SignUp/CustomFields';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContent } from 'components/SignUpIn/styles';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -34,9 +35,9 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { css } from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
-import { HeaderContainer, HeaderTitle, HeaderSubtitle, ModalContent } from 'components/UI/Modal';
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+import { HeaderSubtitle } from 'components/UI/Modal';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
@@ -47,33 +48,8 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
-  ${props => !props.inModal && css`
-    padding-top: 0px;
-    background: transparent;
-    border: none;
-  `}
-`;
-
-const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
-  ${props => !props.inModal && css`
-    font-size: ${fontSizes.xxxl}px;
-  `}
-`;
-
 const SignUpHelperText = styled(QuillEditedContent)`
   padding-bottom: 25px;
-`;
-
-const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
-  ${props => props.inModal && css`
-    padding-top: 20px;
-    max-height: calc(85vh - 150px);
-  `}
-
-  ${props => !props.inModal && css`
-    padding-top: 10px;
-  `}
 `;
 
 export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification' | 'custom-fields';

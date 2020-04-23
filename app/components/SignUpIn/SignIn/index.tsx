@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 
 // components
-import PasswordSignin from './PasswordSignin';
-import AuthProviders, { AuthProvider } from '../AuthProviders';
+import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
+import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
+import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContent } from 'components/SignUpIn/styles';
 
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -12,36 +13,12 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled, { css } from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
-import { HeaderContainer, HeaderTitle, ModalContent } from 'components/UI/Modal';
+import styled from 'styled-components';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
 const Container = styled.div``;
-
-const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
-  ${props => !props.inModal && css`
-    padding-top: 0px;
-    background: transparent;
-    border: none;
-  `}
-`;
-
-const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
-  ${props => !props.inModal && css`
-    font-size: ${fontSizes.xxxl}px;
-  `}
-`;
-
-const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
-  padding-top: 20px;
-
-  ${props => props.inModal && `
-    max-height: calc(85vh - 150px);
-  `}
-`;
 
 export type TSignInSteps = 'auth-providers' | 'password-signin';
 

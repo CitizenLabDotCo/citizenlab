@@ -123,6 +123,7 @@ const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onConti
     if (flow === 'signup' && authProvider !== 'email') {
       setExpanded(prevExpanded => !prevExpanded);
     } else {
+      console.log('zolg');
       onContinue(authProvider);
     }
   }, [flow, authProvider, onContinue]);
