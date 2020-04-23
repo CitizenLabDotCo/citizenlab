@@ -77,7 +77,7 @@ export const FormSubtextStyled = styled.span`
 `;
 
 export const Spacer = styled.div`
-  height: 10px;
+  height: 8px;
 `;
 
 const OptionalText = styled.span<{ thin: boolean | undefined }>`

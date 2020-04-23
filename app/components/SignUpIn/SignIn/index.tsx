@@ -12,7 +12,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 import { HeaderContainer, HeaderTitle, ModalContent } from 'components/UI/Modal';
 
 // typings
@@ -21,9 +22,16 @@ import { ISignUpInMetaData } from 'components/SignUpIn';
 const Container = styled.div``;
 
 const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
-  ${props => !props.inModal && `
+  ${props => !props.inModal && css`
+    padding-top: 0px;
     background: transparent;
     border: none;
+  `}
+`;
+
+const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
+  ${props => !props.inModal && css`
+    font-size: ${fontSizes.xxxl}px;
   `}
 `;
 
@@ -65,12 +73,16 @@ const SignIn = memo<Props>(({ inModal, metaData, onSignInCompleted, onGoToSignUp
     onSignInCompleted(userId);
   }, [onSignInCompleted]);
 
+  const handleGoToLogInOptions = useCallback(() => {
+    setActiveStep('auth-providers');
+  }, []);
+
   return (
     <Container className={`e2e-sign-in-container ${className}`}>
       <StyledHeaderContainer inModal={inModal}>
-        <HeaderTitle className={inModal ? 'inModal' : 'notInModal'}>
+        <StyledHeaderTitle inModal={inModal}>
           <FormattedMessage {...messages.logIn} />
-        </HeaderTitle>
+        </StyledHeaderTitle>
       </StyledHeaderContainer>
 
       <StyledModalContent inModal={inModal}>
@@ -83,7 +95,11 @@ const SignIn = memo<Props>(({ inModal, metaData, onSignInCompleted, onGoToSignUp
         }
 
         {activeStep === 'password-signin' &&
-          <PasswordSignin onSignInCompleted={handleOnSignInCompleted} />
+          <PasswordSignin
+            onSignInCompleted={handleOnSignInCompleted}
+            onGoToLogInOptions={handleGoToLogInOptions}
+            onGoToSignUp={onGoToSignUp}
+          />
         }
       </StyledModalContent>
     </Container>

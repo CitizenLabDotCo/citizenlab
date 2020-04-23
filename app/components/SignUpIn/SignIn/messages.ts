@@ -37,9 +37,17 @@ export default defineMessages({
     id: 'app.containers.SignIn.submit',
     defaultMessage: 'Log in',
   },
-  forgotPassword: {
-    id: 'app.containers.SignIn.forgotPassword',
+  forgotPassword2: {
+    id: 'app.containers.SignIn.forgotPassword2',
     defaultMessage: 'Forgot password?',
+  },
+  backToLoginOptions: {
+    id: 'app.containers.SignIn.backToLoginOptions',
+    defaultMessage: 'Go back to login options',
+  },
+  goToSignUp: {
+    id: 'app.containers.SignUp.goToSignUp',
+    defaultMessage: "Don't have an account? {goToOtherFlowLink}",
   },
   or: {
     id: 'app.containers.SignIn.or',

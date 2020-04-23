@@ -233,8 +233,8 @@ export default defineMessages({
     id: 'app.containers.SignUp.completeYourProfile',
     defaultMessage: 'Complete your profile',
   },
-  goBackToSignUpOptions: {
-    id: 'app.containers.SignUp.goBackToSignUpOptions',
+  backToSignUpOptions: {
+    id: 'app.containers.SignUp.backToSignUpOptions',
     defaultMessage: 'Go back to sign up options',
   }
 });

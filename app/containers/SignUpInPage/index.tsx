@@ -78,7 +78,7 @@ const Right = styled(Section)``;
 
 const RightInner = styled.div`
   width: 100%;
-  max-width: 420px;
+  max-width: 500px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 60px;

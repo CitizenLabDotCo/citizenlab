@@ -10,6 +10,7 @@ import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
+import { Options, Option } from 'components/SignUpIn/styles';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
@@ -28,7 +29,6 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -42,31 +42,8 @@ const Form = styled.form`
 
 const FormElement = styled.div`
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
   position: relative;
-`;
-
-const PasswordLabelContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const StyledInput = styled(Input)``;
-
-const PasswordInput = styled(StyledInput)``;
-
-const ForgotPassword = styled(Link)`
-  color: ${colors.label};
-  font-size: ${fontSizes.small}px;
-  line-height: 18px;
-  font-weight: 300;
-  text-decoration: none;
-  cursor: pointer;
-
-  &:hover {
-    color: #000;
-  }
 `;
 
 const ButtonWrapper = styled.div`
@@ -79,6 +56,8 @@ const ButtonWrapper = styled.div`
 
 export interface InputProps {
   onSignInCompleted: (userId: string) => void;
+  onGoToSignUp: () => void;
+  onGoToLogInOptions: () => void;
   className?: string;
 }
 
@@ -129,6 +108,16 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
       passwordError: null,
       signInError: null
     });
+  }
+
+  handleGoToLogInOptions = (event: React.FormEvent) => {
+    event.preventDefault();
+    this.props.onGoToLogInOptions();
+  }
+
+  handleGoToSignUp = (event: React.FormEvent) => {
+    event.preventDefault();
+    this.props.onGoToSignUp();
   }
 
   validate(email: string | null, password: string | null) {
@@ -196,7 +185,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
               labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
               thin
             />
-            <StyledInput
+            <Input
               type="email"
               id="email"
               value={email}
@@ -204,21 +193,17 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
               autocomplete="email"
+              autoFocus={true}
             />
           </FormElement>
 
           <FormElement>
-            <PasswordLabelContainer>
-              <FormLabel
-                htmlFor="password"
-                labelMessage={messages.passwordLabel}
-                thin
-              />
-              <ForgotPassword to="/password-recovery" className="e2e-password-recovery-link">
-                <FormattedMessage {...messages.forgotPassword} />
-              </ForgotPassword>
-            </PasswordLabelContainer>
-            <PasswordInput
+            <FormLabel
+              htmlFor="password"
+              labelMessage={messages.passwordLabel}
+              thin
+            />
+            <Input
               type="password"
               id="password"
               value={password}
@@ -241,6 +226,31 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
             <Error marginTop="10px" text={signInError} />
           </FormElement>
         </Form>
+
+        <Options>
+          <Option>
+            <Link to="/password-recovery" className="link e2e-password-recovery-link">
+              <FormattedMessage {...messages.forgotPassword2} />
+            </Link>
+          </Option>
+          <Option>
+            <button onClick={this.handleGoToLogInOptions} className="link">
+              <FormattedMessage {...messages.backToLoginOptions} />
+            </button>
+          </Option>
+          <Option>
+            <FormattedMessage
+              {...messages.goToSignUp}
+              values={{
+                goToOtherFlowLink: (
+                <button onClick={this.handleGoToSignUp} className="link">
+                  {formatMessage(messages.signUp)}
+                </button>
+                )
+              }}
+            />
+          </Option>
+        </Options>
       </Container>
     );
   }
