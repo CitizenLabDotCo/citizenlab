@@ -27,6 +27,7 @@ const Container = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ccc;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.05);
+  background: #fff;
   transition: all 100ms ease-out;
 
   &:hover {

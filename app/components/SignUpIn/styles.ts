@@ -5,6 +5,7 @@ export const Options = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-bottom: 10px;
 `;
 
 export const Option = styled.div`

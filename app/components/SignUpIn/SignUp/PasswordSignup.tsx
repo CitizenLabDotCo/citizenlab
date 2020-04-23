@@ -7,11 +7,11 @@ import Link from 'utils/cl-router/Link';
 
 // components
 import Input from 'components/UI/Input';
-import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import { FormLabel } from 'components/UI/FormComponents';
 import Consent from 'components/SignUpIn/SignUp/Consent';
+import { Options, Option } from 'components/SignUpIn/styles';
 
 // utils
 import { isValidEmail } from 'utils/validate';
@@ -33,7 +33,6 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
 import { CLErrorsJSON } from 'typings';
@@ -58,20 +57,16 @@ const FormElement = styled.div`
   margin-bottom: 20px;
 `;
 
+const StyledConsent = styled(Consent)`
+  padding-top: 10px;
+`;
+
 const ButtonWrapper = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-top: 10px;
-`;
-
-const GoBackIcon = styled(Icon)`
-  flex: 0 0 18px;
-  width: 18px;
-  height: 18px;
-  fill: ${colors.text};
-  margin-right: 8px;
 `;
 
 type InputProps = {
@@ -114,8 +109,6 @@ type State = {
 };
 
 class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
-  firstNameInputElement: HTMLInputElement | null;
-
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -138,14 +131,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       apiErrors: null,
       emailInvitationTokenInvalid: props.invitedUser?.isInvalidToken
     };
-    this.firstNameInputElement = null;
-  }
-
-  handleFirstNameInputSetRef = (element: HTMLInputElement) => {
-    if (!(this.props.isInvitation && !this.props.token) && element) {
-      this.firstNameInputElement = element;
-      this.firstNameInputElement.focus();
-    }
   }
 
   handleTokenOnChange = (token: string) => {
@@ -334,6 +319,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   placeholder={formatMessage(messages.tokenPlaceholder)}
                   error={tokenError}
                   onChange={this.handleTokenOnChange}
+                  autoFocus={!!(isInvitation && !this.props.token)}
                 />
               </FormElement>
             }
@@ -351,8 +337,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 placeholder={formatMessage(messages.firstNamesPlaceholder)}
                 error={firstNameError}
                 onChange={this.handleFirstNameOnChange}
-                setRef={this.handleFirstNameInputSetRef}
                 autocomplete="given-name"
+                autoFocus={!isInvitation || !!(isInvitation && this.props.token)}
               />
               <Error
                 fieldName={'first_name'}
@@ -424,7 +410,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
             </FormElement>
 
             <FormElement>
-              <Consent
+              <StyledConsent
                 tacError={this.state.tacError}
                 privacyError={this.state.privacyError}
                 onTacAcceptedChange={this.handleTacAcceptedChange}
@@ -454,9 +440,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
         <Options>
           <Option>
-            <button onClick={this.goBackToSignUpOptions} className="button">
-              <GoBackIcon name="arrow-back" />
-              <FormattedMessage {...messages.goBackToSignUpOptions} />
+            <button onClick={this.goBackToSignUpOptions} className="link">
+              <FormattedMessage {...messages.backToSignUpOptions} />
             </button>
           </Option>
         </Options>

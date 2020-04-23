@@ -27,7 +27,7 @@ const CheckboxWrapper = styled.div`
 const ConsentText = styled.div`
   color: ${colors.text};
   font-size: ${fontSizes.small}px;
-  line-height: 20px;
+  line-height: 21px;
   font-weight: 300;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -35,7 +35,7 @@ const ConsentText = styled.div`
 
   a {
     color: ${colors.text};
-    font-weight: 300;
+    font-weight: 400;
     text-decoration: underline;
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -82,6 +82,7 @@ const Consent = memo<Props & InjectedIntlProps>(({
       <CheckboxWrapper>
         <Checkbox
           className="e2e-terms-and-conditions"
+          size="20px"
           checked={tacAccepted}
           onChange={toggleTacAccepted}
           label={

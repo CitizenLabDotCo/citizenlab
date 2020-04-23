@@ -27,7 +27,8 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { fontSizes } from 'utils/styleUtils';
 import { HeaderContainer, HeaderTitle, HeaderSubtitle, ModalContent } from 'components/UI/Modal';
 
 // typings
@@ -40,17 +41,27 @@ const Container = styled.div`
 `;
 
 const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
-  ${props => !props.inModal && `
+  ${props => !props.inModal && css`
+    padding-top: 0px;
     background: transparent;
     border: none;
   `}
 `;
 
-const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
-  padding-top: 20px;
+const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
+  ${props => !props.inModal && css`
+    font-size: ${fontSizes.xxxl}px;
+  `}
+`;
 
-  ${props => props.inModal && `
+const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
+  ${props => props.inModal && css`
+    padding-top: 20px;
     max-height: calc(85vh - 150px);
+  `}
+
+  ${props => !props.inModal && css`
+    padding-top: 10px;
   `}
 `;
 
@@ -227,9 +238,9 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
           <StyledHeaderContainer inModal={inModal}>
-            <HeaderTitle className={inModal ? 'inModal' : 'notInModal'}>
+            <StyledHeaderTitle inModal={inModal}>
               <FormattedMessage {...headerTitle} />
-            </HeaderTitle>
+            </StyledHeaderTitle>
 
             {showSubtitle &&
               <HeaderSubtitle>
