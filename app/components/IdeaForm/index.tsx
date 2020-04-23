@@ -391,7 +391,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     address: string,
     imageFiles: UploadFile[],
     ideaFiles: UploadFile[],
-    ideaFilesToRemove: UploadFile[],
   ) => {
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
@@ -399,7 +398,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topicsError = this.validateTopics(selectedTopics);
     const locationError = this.validateLocation(address);
     const imageError = this.validateImage(imageFiles);
-    const attachmentsError = this.validateAttachments(ideaFiles, ideaFilesToRemove);
+    const attachmentsError = this.validateAttachments(ideaFiles);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 
@@ -484,7 +483,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       address,
       imageFile,
       ideaFiles,
-      ideaFilesToRemove
     );
 
     if (formIsValid) {
