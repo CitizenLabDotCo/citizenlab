@@ -121,7 +121,10 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
     return (
       <>
-        <SignUpInPageMeta />
+        {!isInvitation && !authError &&
+          <SignUpInPageMeta />
+        }
+
         <Container className="e2e-sign-up-in-page">
           <Left>
             <Banner>
