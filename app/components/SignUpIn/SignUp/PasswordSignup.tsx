@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { set, keys, difference, get, isEmpty } from 'lodash-es';
+import { set, keys, difference, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 
 // libraries
@@ -27,26 +27,16 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import T from 'components/T';
 import messages from './messages';
 
 // style
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 
 const Container = styled.div``;
-
-const SignUpHelperText = styled.p`
-  color: ${(props) => props.theme.colors.label};
-  font-size: ${fontSizes.base}px;
-  font-weight: 300;
-  line-height: 20px;
-  padding-bottom: 20px;
-`;
 
 const Form = styled.form`
   width: 100%;
@@ -131,6 +121,12 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       apiErrors: null,
       emailInvitationTokenInvalid: props.invitedUser?.isInvalidToken
     };
+  }
+
+  componentDidUpdate(prevprops: Props) {
+    if (prevprops.invitedUser !== this.props.invitedUser) {
+      this.setState({ emailInvitationTokenInvalid: this.props.invitedUser?.isInvalidToken });
+    }
   }
 
   handleTokenOnChange = (token: string) => {
@@ -271,9 +267,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       apiErrors,
       emailInvitationTokenInvalid
     } = this.state;
-    const buttonText = (isInvitation ? formatMessage(messages.redeem) : formatMessage(messages.signUp2));
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
-    const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
     const signUpPageLink = <Link to={'/sign-up'}>{formatMessage(messages.signUpPage)}</Link>;
 
     let unknownApiError: string | null = null;
@@ -293,153 +287,152 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container className={className}>
-        {!isEmpty(helperText) &&
-          <SignUpHelperText>
-            <T value={helperText} supportHtml />
-          </SignUpHelperText>
-        }
-
         {!emailInvitationTokenInvalid &&
-          <Form
-            id="e2e-signup-step1"
-            onSubmit={this.handleOnSubmit}
-            noValidate={true}
-          >
-            {isInvitation && !this.props.token &&
+          <>
+            <Form
+              id="e2e-signup-step1"
+              onSubmit={this.handleOnSubmit}
+              noValidate={true}
+            >
+              {isInvitation && !this.props.token &&
+                <FormElement>
+                  <FormLabel
+                    labelMessage={messages.tokenLabel}
+                    htmlFor="token"
+                  />
+                  <Input
+                    id="token"
+                    type="text"
+                    value={token}
+                    placeholder={formatMessage(messages.tokenPlaceholder)}
+                    error={tokenError}
+                    onChange={this.handleTokenOnChange}
+                    autoFocus={!!(isInvitation && !this.props.token)}
+                  />
+                </FormElement>
+              }
+
               <FormElement>
                 <FormLabel
-                  labelMessage={messages.tokenLabel}
-                  htmlFor="token"
+                  labelMessage={messages.firstNamesLabel}
+                  htmlFor="firstName"
                 />
                 <Input
-                  id="token"
+                  id="firstName"
                   type="text"
-                  value={token}
-                  placeholder={formatMessage(messages.tokenPlaceholder)}
-                  error={tokenError}
-                  onChange={this.handleTokenOnChange}
-                  autoFocus={!!(isInvitation && !this.props.token)}
+                  value={firstName}
+                  placeholder={formatMessage(messages.firstNamesPlaceholder)}
+                  error={firstNameError}
+                  onChange={this.handleFirstNameOnChange}
+                  autocomplete="given-name"
+                  autoFocus={!isInvitation || !!(isInvitation && this.props.token)}
+                />
+                <Error
+                  fieldName={'first_name'}
+                  apiErrors={get(apiErrors, 'json.errors.first_name')}
                 />
               </FormElement>
-            }
 
-            <FormElement>
-              <FormLabel
-                labelMessage={messages.firstNamesLabel}
-                htmlFor="firstName"
-              />
-              <Input
-                id="firstName"
-                type="text"
-                value={firstName}
-                placeholder={formatMessage(messages.firstNamesPlaceholder)}
-                error={firstNameError}
-                onChange={this.handleFirstNameOnChange}
-                autocomplete="given-name"
-                autoFocus={!isInvitation || !!(isInvitation && this.props.token)}
-              />
-              <Error
-                fieldName={'first_name'}
-                apiErrors={get(apiErrors, 'json.errors.first_name')}
-              />
-            </FormElement>
-
-            <FormElement>
-              <FormLabel
-                labelMessage={messages.lastNameLabel}
-                htmlFor="lastName"
-              />
-              <Input
-                id="lastName"
-                type="text"
-                value={lastName}
-                placeholder={formatMessage(messages.lastNamePlaceholder)}
-                error={lastNameError}
-                onChange={this.handleLastNameOnChange}
-                autocomplete="family-name"
-              />
-              <Error
-                fieldName={'last_name'}
-                apiErrors={get(apiErrors, 'json.errors.last_name')}
-              />
-            </FormElement>
-
-            <FormElement>
-              <FormLabel
-                labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
-                htmlFor="email"
-              />
-              <Input
-                type="email"
-                id="email"
-                value={email}
-                placeholder={formatMessage(messages.emailPlaceholder)}
-                error={emailError}
-                onChange={this.handleEmailOnChange}
-                autocomplete="email"
-              />
-              <Error
-                fieldName={'email'}
-                apiErrors={get(apiErrors, 'json.errors.email')}
-              />
-            </FormElement>
-
-            <FormElement>
-              <FormLabel
-                labelMessage={messages.passwordLabel}
-                htmlFor="password"
-              />
-              <Input
-                type="password"
-                id="password"
-                value={password}
-                placeholder={formatMessage(messages.passwordPlaceholder)}
-                error={passwordError}
-                onChange={this.handlePasswordOnChange}
-                autocomplete="new-password"
-              />
-              <Error
-                fieldName={'password'}
-                apiErrors={get(apiErrors, 'json.errors.password')}
-              />
-            </FormElement>
-
-            <FormElement>
-              <StyledConsent
-                tacError={this.state.tacError}
-                privacyError={this.state.privacyError}
-                onTacAcceptedChange={this.handleTacAcceptedChange}
-                onPrivacyAcceptedChange={this.handlePrivacyAcceptedChange}
-              />
-            </FormElement>
-
-            <FormElement>
-              <ButtonWrapper>
-                <Button
-                  id="e2e-signup-step1-button"
-                  processing={processing}
-                  text={buttonText}
-                  onClick={this.handleOnSubmit}
+              <FormElement>
+                <FormLabel
+                  labelMessage={messages.lastNameLabel}
+                  htmlFor="lastName"
                 />
-              </ButtonWrapper>
-            </FormElement>
+                <Input
+                  id="lastName"
+                  type="text"
+                  value={lastName}
+                  placeholder={formatMessage(messages.lastNamePlaceholder)}
+                  error={lastNameError}
+                  onChange={this.handleLastNameOnChange}
+                  autocomplete="family-name"
+                />
+                <Error
+                  fieldName={'last_name'}
+                  apiErrors={get(apiErrors, 'json.errors.last_name')}
+                />
+              </FormElement>
 
-            <Error text={unknownApiError} />
-            <Error text={(isInvitation && this.props.token && tokenError) ? tokenError : null} />
-          </Form>
+              <FormElement>
+                <FormLabel
+                  labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
+                  htmlFor="email"
+                />
+                <Input
+                  type="email"
+                  id="email"
+                  value={email}
+                  placeholder={formatMessage(messages.emailPlaceholder)}
+                  error={emailError}
+                  onChange={this.handleEmailOnChange}
+                  autocomplete="email"
+                />
+                <Error
+                  fieldName={'email'}
+                  apiErrors={get(apiErrors, 'json.errors.email')}
+                />
+              </FormElement>
+
+              <FormElement>
+                <FormLabel
+                  labelMessage={messages.passwordLabel}
+                  htmlFor="password"
+                />
+                <Input
+                  type="password"
+                  id="password"
+                  value={password}
+                  placeholder={formatMessage(messages.passwordPlaceholder)}
+                  error={passwordError}
+                  onChange={this.handlePasswordOnChange}
+                  autocomplete="new-password"
+                />
+                <Error
+                  fieldName={'password'}
+                  apiErrors={get(apiErrors, 'json.errors.password')}
+                />
+              </FormElement>
+
+              <FormElement>
+                <StyledConsent
+                  tacError={this.state.tacError}
+                  privacyError={this.state.privacyError}
+                  onTacAcceptedChange={this.handleTacAcceptedChange}
+                  onPrivacyAcceptedChange={this.handlePrivacyAcceptedChange}
+                />
+              </FormElement>
+
+              <FormElement>
+                <ButtonWrapper>
+                  <Button
+                    id="e2e-signup-step1-button"
+                    processing={processing}
+                    text={formatMessage(messages.signUp2)}
+                    onClick={this.handleOnSubmit}
+                  />
+                </ButtonWrapper>
+              </FormElement>
+
+              <Error text={unknownApiError} />
+              <Error text={(isInvitation && this.props.token && tokenError) ? tokenError : null} />
+            </Form>
+
+            <Options>
+              <Option>
+                <button onClick={this.goBackToSignUpOptions} className="link">
+                  <FormattedMessage {...messages.backToSignUpOptions} />
+                </button>
+              </Option>
+            </Options>
+          </>
         }
 
         {emailInvitationTokenInvalid &&
-          <Error text={<FormattedMessage {...messages.emailInvitationTokenInvalid} values={{ signUpPageLink }} />} />
+          <Error
+            animate={false}
+            text={<FormattedMessage {...messages.emailInvitationTokenInvalid} values={{ signUpPageLink }} />}
+          />
         }
-
-        <Options>
-          <Option>
-            <button onClick={this.goBackToSignUpOptions} className="link">
-              <FormattedMessage {...messages.backToSignUpOptions} />
-            </button>
-          </Option>
-        </Options>
       </Container>
     );
   }
