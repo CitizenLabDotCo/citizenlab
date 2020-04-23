@@ -35,9 +35,7 @@ const Loading = styled.div`
   padding-top: 15px;
 `;
 
-const Container = styled.div`
-  margin-bottom: 170px;
-`;
+const Container = styled.div``;
 
 const FormElement = styled.div`
   margin-bottom: 20px;

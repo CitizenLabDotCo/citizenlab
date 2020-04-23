@@ -211,7 +211,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     });
   }
 
-  handleOnSubmit = async (event: React.FormEvent<any>) => {
+  handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const { isInvitation, tenant } = this.props;
@@ -234,7 +234,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError].some(error => error !== null);
+    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError].some(error => error);
 
     this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError });
 
