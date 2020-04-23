@@ -36,8 +36,11 @@ exports.locales = [
     'da-DK',
     'nb-NO',
     'es-ES',
-    'es-CL'
-];
+    'es-CL',
+    'pl-PL',
+    'kl-GL',
+    'hu-HU',
+  ];
 exports.graphqlLocales = [
     'en',
     'fr',
@@ -57,7 +60,10 @@ exports.graphqlLocales = [
     'daDk',
     'nbNo',
     'esEs',
-    'esCl'
+    'esCl',
+    'plPl',
+    'klGl',
+    'huHu',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -73,8 +79,11 @@ exports.appLocalePairs = {
     'nb-NO': 'Norsk (Bokmål)',
     'es-ES': 'Español (España)',
     'es-CL': 'Español (Chile)',
-    ach: 'Acholi'
-};
+    'pl-PL': 'Polski',
+    'kl-GL': 'Kalaallisut',
+    'hu-HU': 'Magyar',
+    ach: 'Acholi',
+  };
 exports.appGraphqlLocalePairs = {
     en: 'en',
     fr: 'fr',
@@ -94,8 +103,11 @@ exports.appGraphqlLocalePairs = {
     daDk: 'da-DK',
     nbNo: 'nb-NO',
     esEs: 'es-ES',
-    esCl: 'es-CL'
-};
+    esCl: 'es-CL',
+    plPl: 'pl-PL',
+    klGl: 'kl-GL',
+    huHu: 'hu-HU',
+  };
 exports.shortenedAppLocalePairs = {
     en: 'English',
     'en-GB': 'English',
@@ -109,8 +121,11 @@ exports.shortenedAppLocalePairs = {
     'nb-NO': 'Norsk',
     'es-ES': 'Español',
     'es-CL': 'Español',
-    ach: 'Acholi'
-};
+    'pl-PL': 'Polski',
+    'kl-GL': 'Kalaallisut',
+    'hu-HU': 'Magyar',
+    ach: 'Acholi',
+  };
 exports.appLocalesMomentPairs = {
     'en-GB': 'en-gb',
     'en-CA': 'en-ca',
@@ -122,5 +137,8 @@ exports.appLocalesMomentPairs = {
     'da-DK': 'da',
     'nb-NO': 'nb',
     'es-ES': 'es',
-    'es-CL': 'es'
+    'es-CL': 'es',
+    'pl-PL': 'pl',
+    'kl-GL': 'da',
+    'hu-HU': 'hu',
 };
