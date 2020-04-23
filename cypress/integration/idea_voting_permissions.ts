@@ -34,12 +34,15 @@ describe('Idea voting permissions', () => {
     const email = randomEmail();
     const password = randomString();
 
-    it('sends unsigned user to log-in then verify', () => {
+    it('sends signed out user to log in, verifies the user and votes successfully', () => {
+      // try to vote while not signed in
       cy.visit('projects/verified-ideation/ideas');
       cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
       cy.get('#e2e-project-ideas-page');
       cy.get('#e2e-ideas-container');
       cy.get('.e2e-ideacard-upvote-button').click();
+
+      // check if we're redirected to sign-up page and sign up
       cy.get('.e2e-sign-up-page');
       cy.get('.e2e-sign-up-container');
       cy.get('#firstName').type(firstName);
@@ -50,10 +53,14 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('#e2e-signup-step1-button').click();
+
+      // get verified
       cy.get('#e2e-verification-methods');
       cy.get('#e2e-verification-methods #e2e-bogus-button').click();
       cy.get('#e2e-verification-bogus-form');
       cy.get('#e2e-verification-bogus-submit-button').click();
+
+      // check if we're redirected to project's idea page and see the vote success modal
       cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
       cy.get('#e2e-project-ideas-page');
       cy.get('#e2e-ideas-container');
