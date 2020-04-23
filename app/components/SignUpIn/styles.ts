@@ -1,5 +1,6 @@
-import styled from 'styled-components';
-import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import styled, { css } from 'styled-components';
+import { colors, fontSizes, customOutline, media } from 'utils/styleUtils';
+import { HeaderContainer, HeaderTitle, ModalContent } from 'components/UI/Modal';
 
 export const Options = styled.div`
   display: flex;
@@ -53,4 +54,41 @@ export const Option = styled.div`
     border: none;
     cursor: pointer;
   }
+`;
+
+export const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean }>`
+  ${props => !props.inModal && css`
+    padding-top: 0px;
+    background: transparent;
+    border: none;
+
+    ${media.smallerThanMinTablet`
+      padding-top: 0px;
+      padding-left: 0px;
+      padding-right: 0px;
+    `}
+  `}
+`;
+
+export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
+  ${props => !props.inModal && css`
+    font-size: ${fontSizes.xxxl}px;
+  `}
+`;
+
+export const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
+  ${props => props.inModal && css`
+    padding-top: 20px;
+    max-height: calc(85vh - 150px);
+  `}
+
+  ${props => !props.inModal && css`
+    padding-bottom: 0px;
+    padding-top: 10px;
+
+    ${media.smallerThanMinTablet`
+      padding: 0px;
+      padding-top: 10px;
+    `}
+  `}
 `;
