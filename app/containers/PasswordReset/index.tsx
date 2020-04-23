@@ -179,7 +179,6 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
               <FormLabel
                 htmlFor="password"
                 labelMessage={messages.passwordLabel}
-                thin
               />
               <StyledInput
                 type="password"

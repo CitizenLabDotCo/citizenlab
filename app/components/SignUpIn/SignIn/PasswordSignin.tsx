@@ -183,7 +183,6 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
             <FormLabel
               htmlFor="email"
               labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
-              thin
             />
             <Input
               type="email"
@@ -201,7 +200,6 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
             <FormLabel
               htmlFor="password"
               labelMessage={messages.passwordLabel}
-              thin
             />
             <Input
               type="password"

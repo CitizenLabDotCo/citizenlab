@@ -310,7 +310,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 <FormLabel
                   labelMessage={messages.tokenLabel}
                   htmlFor="token"
-                  thin={true}
                 />
                 <Input
                   id="token"
@@ -328,7 +327,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <FormLabel
                 labelMessage={messages.firstNamesLabel}
                 htmlFor="firstName"
-                thin={true}
               />
               <Input
                 id="firstName"
@@ -350,7 +348,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <FormLabel
                 labelMessage={messages.lastNameLabel}
                 htmlFor="lastName"
-                thin={true}
               />
               <Input
                 id="lastName"
@@ -371,7 +368,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <FormLabel
                 labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
                 htmlFor="email"
-                thin={true}
               />
               <Input
                 type="email"
@@ -392,7 +388,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <FormLabel
                 labelMessage={messages.passwordLabel}
                 htmlFor="password"
-                thin={true}
               />
               <Input
                 type="password"

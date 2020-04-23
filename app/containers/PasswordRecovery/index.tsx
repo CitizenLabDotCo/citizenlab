@@ -187,7 +187,6 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
               <FormLabel
                 htmlFor="email"
                 labelMessage={messages.emailLabel}
-                thin
               />
               <StyledInput
                 id="email"

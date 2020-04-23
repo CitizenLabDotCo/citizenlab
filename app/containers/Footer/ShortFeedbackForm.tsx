@@ -174,7 +174,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
         ) : (
           <Form>
             <SectionField className="fullWidth">
-              <FormLabel labelMessage={messages.feedback} htmlFor="short-feedback-textarea" thin />
+              <FormLabel labelMessage={messages.feedback} htmlFor="short-feedback-textarea" />
               <TextArea
                 autofocus={true}
                 name="feedback"
@@ -187,7 +187,7 @@ class ShortFeedbackForm extends PureComponent<Props, State>{
             </SectionField>
 
             <SectionField className="fullWidth">
-              <FormLabel labelMessage={messages.email} htmlFor="short-feedback-email" thin />
+              <FormLabel labelMessage={messages.email} htmlFor="short-feedback-email" />
               <Input
                 type="text"
                 value={emailValue}

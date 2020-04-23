@@ -300,7 +300,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
     if (isString(id)) {
       return (
         <>
-          {title && <StyledFormLabelValue noSpace htmlFor={id} thin labelValue={title} />}
+          {title && <StyledFormLabelValue noSpace htmlFor={id} labelValue={title} />}
           <InputContainer>
             <Checkbox
               checked={(isBoolean(props.value) ? props.value : false)}
@@ -430,7 +430,7 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
     return (
-      <FormLabelValue thin htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX} />
+      <FormLabelValue htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX} />
     );
   }
   return;
