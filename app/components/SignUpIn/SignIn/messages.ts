@@ -46,7 +46,7 @@ export default defineMessages({
     defaultMessage: 'Go back to login options',
   },
   goToSignUp: {
-    id: 'app.containers.SignUp.goToSignUp',
+    id: 'app.containers.SignIn.goToSignUp',
     defaultMessage: "Don't have an account? {goToOtherFlowLink}",
   },
   or: {
