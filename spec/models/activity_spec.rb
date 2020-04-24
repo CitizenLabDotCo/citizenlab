@@ -6,6 +6,12 @@ RSpec.describe Activity, type: :model do
     it "is valid" do
       expect(build(:activity)).to be_valid
     end
+
+    describe 'without item' do
+      it 'is invalid' do
+        expect(build(:activity, item: nil)).to be_invalid
+      end
+    end
   end
 
 end

@@ -1,6 +1,7 @@
 class SlugService
 
   def generate_slug record, title
+    return nil if !title
     slug = slugify(title)
     indexedSlug = nil
     i=0
