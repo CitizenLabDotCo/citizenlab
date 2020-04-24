@@ -361,7 +361,7 @@ class ProfileForm extends PureComponent<Props, State> {
         </form>
 
         {hasCustomFields &&
-          <CustomFieldsForm
+          <UserCustomFieldsForm
             formData={customFieldsValues}
             onChange={handleCustomFieldsFormOnChange}
             onSubmit={handleCustomFieldsFormOnSubmit}
