@@ -1,4 +1,4 @@
-import useCustomFieldsSchema, { CustomFieldsSchema } from 'hooks/useCustomFieldsSchema';
+import useUserCustomFieldsSchema, { CustomFieldsSchema } from 'hooks/useUserCustomFieldsSchema';
 
 interface InputProps {}
 
@@ -11,6 +11,6 @@ interface Props extends InputProps {
 export type GetCustomFieldsSchemaChildProps = CustomFieldsSchema;
 
 export default ({ children }: Props) => {
-  const customFieldsSchema = useCustomFieldsSchema();
-  return (children as children)(customFieldsSchema);
+  const userCustomFieldsSchema = useUserCustomFieldsSchema();
+  return (children as children)(userCustomFieldsSchema);
 };
