@@ -7,6 +7,6 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const customFieldsSchema = useIdeaCustomFieldsSchemas({ projectId: props.projectId });
-  return props.children(customFieldsSchema);
+  const ideaCustomFieldsSchema = useIdeaCustomFieldsSchemas({ projectId: props.projectId });
+  return props.children(ideaCustomFieldsSchema);
 };
