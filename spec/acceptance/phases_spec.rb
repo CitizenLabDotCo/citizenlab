@@ -168,6 +168,29 @@ resource "Phases" do
           expect(json_response.dig(:errors, :base)).to eq [{error: 'has_other_budgeting_phases'}]
         end
       end
+
+      describe do
+        let(:description_multiloc) {{
+          'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+        }}
+
+        example "Create a phase with text image", document: false do
+          ti_count = TextImage.count
+          do_request
+          expect(response_status).to eq 201
+          expect(TextImage.count).to eq (ti_count + 1)
+        end
+
+        example "[error] Create a phase with text image without start and end date", document: false do
+          ti_count = TextImage.count
+          do_request phase: {start_at: nil, end_at: nil}
+
+          expect(response_status).to eq 422
+          json_response = json_parse(response_body)
+          expect(json_response[:errors].keys & [:start_at, :end_at]).to be_present
+          expect(TextImage.count).to eq ti_count
+        end
+      end
     end
 
     patch "web_api/v1/phases/:id" do

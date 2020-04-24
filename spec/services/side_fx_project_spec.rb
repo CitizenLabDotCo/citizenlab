@@ -7,11 +7,6 @@ describe SideFxProjectService do
   let(:project) { create(:project) }
 
   describe "before_create" do
-    it "runs the description through the text image service" do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc)
-      service.before_create(project, user)
-    end
-
     it "sets the default_assignee to the user that creates the project if it's not a super admin" do
       super_admin = create(:super_admin)
       admin1 = create(:admin)
@@ -52,11 +47,16 @@ describe SideFxProjectService do
     it "doesn't call after_create on SideFxParticipationContextService for a timeline project" do
       service.after_create(project, user)
     end
+
+    it "runs the description through the text image service" do
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
+      service.after_create(project, user)
+    end
   end
 
   describe "before_update" do
     it "runs the description through the text image service" do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc)
+      expect_any_instance_of(TextImageService).to receive(:swap_data_images).with(project, :description_multiloc).and_return(project.description_multiloc)
       service.before_update(project, user)
     end
   end
