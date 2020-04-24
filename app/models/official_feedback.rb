@@ -8,6 +8,7 @@ class OfficialFeedback < ApplicationRecord
 
   validates :body_multiloc, presence: true, multiloc: {presence: true}
   validates :author_multiloc, presence: true, multiloc: {presence: true}
+  validates :post, presence: true
 
   before_validation :sanitize_body_multiloc
 
