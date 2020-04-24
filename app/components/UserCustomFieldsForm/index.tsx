@@ -79,7 +79,7 @@ export interface InputProps {
 }
 
 interface DataProps {
-  customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
+  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -143,10 +143,10 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   }
 
   validate = (formData, errors) => {
-    const { customFieldsSchema } = this.props;
+    const { userCustomFieldsSchema } = this.props;
 
-    if (!isNilOrError(customFieldsSchema)) {
-      const { schema, uiSchema } = customFieldsSchema;
+    if (!isNilOrError(userCustomFieldsSchema)) {
+      const { schema, uiSchema } = userCustomFieldsSchema;
       const requiredFieldNames = get(schema, 'required', []);
       const disabledFieldNames = get(uiSchema, 'ui:disabled', []);
       const fieldNames = get(schema, 'properties', null) as object;
@@ -384,10 +384,10 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { customFieldsSchema } = this.props;
+    const { userCustomFieldsSchema } = this.props;
 
-    if (!isNilOrError(customFieldsSchema)) {
-      const { schema, uiSchema } = customFieldsSchema;
+    if (!isNilOrError(userCustomFieldsSchema)) {
+      const { schema, uiSchema } = userCustomFieldsSchema;
       const { id } = this.props;
       const widgets: any = {
         TextWidget: this.CustomInput,

@@ -14,7 +14,7 @@ import SignUpPageMeta from './SignUpPageMeta';
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -79,7 +79,7 @@ interface InputProps {}
 interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
   previousPathName: string | null;
 }
 
@@ -118,10 +118,10 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   setLoaded = () => {
-    const { customFieldsSchema, authUser } = this.props;
+    const { userCustomFieldsSchema, authUser } = this.props;
     const { action } = this.state;
 
-    if (authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
+    if (authUser !== undefined && action !== undefined && userCustomFieldsSchema !== undefined) {
       this.setState({ loaded: true });
     }
   }
@@ -149,7 +149,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { location, customFieldsSchema, authUser } = this.props;
+    const { location, userCustomFieldsSchema, authUser } = this.props;
     const { action, loaded } = this.state;
     const isInvitation = location.pathname.replace(/\/$/, '').endsWith('invite');
     const token = isString(location.query.token) ? location.query.token : null;
@@ -157,9 +157,9 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const authError = includes(location.pathname, 'authentication-error');
     let initialActiveStep: TSignUpSteps | null = null;
 
-    if (!authError && authUser !== undefined && action !== undefined && customFieldsSchema !== undefined) {
+    if (!authError && authUser !== undefined && action !== undefined && userCustomFieldsSchema !== undefined) {
       const hasVerificationStep = action?.action_requires_verification;
-      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+      const hasCustomFields = !isNilOrError(userCustomFieldsSchema) && userCustomFieldsSchema.hasCustomFields;
 
       if (!authUser) {
         initialActiveStep = 'account-creation';
@@ -206,7 +206,7 @@ const SignUpPageWithHoC = withRouter(SignUpPage);
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  customFieldsSchema: <GetCustomFieldsSchema />,
+  userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
