@@ -98,7 +98,12 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 }
 
 export async function deleteUser(userId: string) {
-  return streams.delete(`${apiEndpoint}/${userId}`, userId);
+  const response = await streams.delete(`${apiEndpoint}/${userId}`, userId);
+  await streams.fetchAllWith({
+    dataId: [userId],
+    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`]
+  });
+  return response;
 }
 
 export async function completeRegistration(customFieldValues: object) {

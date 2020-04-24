@@ -126,9 +126,12 @@ class IdeaButton extends PureComponent<Props> {
       const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
 
       // if not logged in
-      if (isNilOrError(authUser)) {
+      if (isNilOrError(authUser) && !isNilOrError(project)) {
         trackEventByName(tracks.signUpInModalOpened);
-        openSignUpInModal({ verification: postingDisabledReason === 'not_verified' });
+        openSignUpInModal({
+          verification: postingDisabledReason === 'not_verified',
+          action: () => clHistory.push(`/projects/${project.attributes.slug}/ideas/new`)
+        });
       }
 
       // if logged in but not verified and verification required
