@@ -367,6 +367,28 @@ resource "Projects" do
           end
         end
 
+        describe do
+          let(:description_multiloc) {{
+            'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
+          }}
+
+          example "Create a project with text image", document: false do
+            ti_count = TextImage.count
+            do_request
+            expect(response_status).to eq 201
+            expect(TextImage.count).to eq (ti_count + 1)
+          end
+
+          example "[error] Create a project with text image without title", document: false do
+            ti_count = TextImage.count
+            do_request project: {title_multiloc: nil}
+
+            expect(response_status).to eq 422
+            json_response = json_parse(response_body)
+            expect(json_response[:errors][:title_multiloc]).to be_present
+            expect(TextImage.count).to eq ti_count
+          end
+        end
       end
     end
 

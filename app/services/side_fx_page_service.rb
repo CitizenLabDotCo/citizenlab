@@ -1,11 +1,10 @@
 class SideFxPageService
   include SideFxHelper
 
-  def before_create page, user
-    page.body_multiloc = TextImageService.new.swap_data_images(page, :body_multiloc)
-  end
+  def before_create page, user; end
 
   def after_create page, user
+    page.update!(body_multiloc: TextImageService.new.swap_data_images(page, :body_multiloc))
     LogActivityJob.perform_later(page, 'created', user, page.created_at.to_i)
   end
 
