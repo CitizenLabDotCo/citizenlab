@@ -105,6 +105,11 @@ const Container = styled.div<{
     content: '${props => props.remove}' !important;
   }
 
+  .ql-tooltip.ql-editing input {
+    font-size: 16px !important;
+    font-weight: 400 !important;
+  }
+
   span.ql-formats:last-child {
     margin-right: 0;
   }
@@ -119,7 +124,7 @@ const Container = styled.div<{
 
   &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: ${colors.focussedBorder};
-    box-shadow: 0px 0px 0px 1px ${transparentize(0.4, colors.focussedBorder)};
+    box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.focussedBorder)};
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -127,7 +132,8 @@ const Container = styled.div<{
   }
 
   &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    box-shadow: 0px 0px 0px 1px ${colors.clRedError};
+    border-color: ${colors.clRedError};
+    box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.clRedError)};
   }
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {

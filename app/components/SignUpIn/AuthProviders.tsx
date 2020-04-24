@@ -125,14 +125,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
 }) => {
 
   const azureProviderName = !isNilOrError(tenant) ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name : null;
-  // const enabledMethodsCount = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, franceconnectLoginEnabled, azureAdLoginEnabled].filter(method => method === true).length;
-
-  // if (enabledMethodsCount === 1) {
-  //   if (passwordLoginEnabled) {
-  //     // automatically select password login when it's the only method that is enabled
-  //     onAuthProviderSelected('email');
-  //   }
-  // }
 
   const handleOnAuthProviderSelected = useCallback((authProvider: AuthProvider) => {
     onAuthProviderSelected(authProvider);
@@ -148,8 +140,6 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
     goToOtherFlow();
   }, [goToOtherFlow]);
 
-  // show this step only when more than 1 method enabled or when only 1 method is enabled and that method isn't passwordLogin
-  // if (enabledMethodsCount > 1 || (enabledMethodsCount === 1 && !passwordLoginEnabled)) {
   return (
     <Container className={className}>
 

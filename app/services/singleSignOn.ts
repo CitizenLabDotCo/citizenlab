@@ -11,6 +11,5 @@ export const handleOnSSOClick = (provider: SSOProvider, metaData: ISignUpInMetaD
     sign_up_in_pathname: pathname,
     sign_up_in_verification: verification
   });
-  const fullUrl = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
-  window.location.href = fullUrl;
+  window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;;
 };

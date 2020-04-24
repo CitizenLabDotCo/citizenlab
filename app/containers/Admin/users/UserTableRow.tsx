@@ -16,10 +16,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
-// Utils
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
-
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
 import events from './events';
@@ -171,14 +167,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
       if (authUser && authUser.id === user.id) {
         eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
       } else {
-        deleteUser(user.id).then(() => {
-          setTimeout(() => {
-            streams.fetchAllWith({
-              dataId: [user.id],
-              apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`]
-            });
-          }, 2000);
-        }).catch(() => {
+        deleteUser(user.id).catch(() => {
           eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
         });
       }
