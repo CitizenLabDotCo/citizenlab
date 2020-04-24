@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { map } from 'lodash-es';
 
 // resources
-import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
+import GetUserCustomFields, { GetUserCustomFieldsChildProps } from 'resources/GetUserCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
@@ -28,7 +28,7 @@ interface InputProps {
 }
 
 interface DataProps {
-  customFields: GetCustomFieldsChildProps;
+  customFields: GetUserCustomFieldsChildProps;
 }
 
 export interface Props extends InputProps, DataProps { }
@@ -133,7 +133,7 @@ export class RegistrationFieldsToGraphs extends PureComponent<Props & InjectedIn
 const RegistrationFieldsToGraphsWithHoCs = localize<Props>(injectIntl<Props & InjectedLocalized>(RegistrationFieldsToGraphs as any)) as any;
 
 export default (inputProps: InputProps) => (
-  <GetCustomFields inputTypes={['select', 'multiselect', 'checkbox']}>
+  <GetUserCustomFields inputTypes={['select', 'multiselect', 'checkbox']}>
     {customFields => <RegistrationFieldsToGraphsWithHoCs {...inputProps} customFields={customFields} />}
-  </GetCustomFields>
+  </GetUserCustomFields>
 );

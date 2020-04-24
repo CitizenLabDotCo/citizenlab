@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
-import { customFieldsSchemaForUsersStream, CustomFieldsInfos } from 'services/userCustomFields';
+import { customFieldsSchemaForUsersStream, UserCustomFieldsInfos } from 'services/userCustomFields';
 import { localeStream } from 'services/locale';
 import { combineLatest } from 'rxjs';
 import { isEmpty, get } from 'lodash-es';
 import { hasCustomFields } from 'utils/customFields';
 
-export type CustomFieldsSchema = CustomFieldsInfos | undefined | null | Error;
+export type UserCustomFieldsSchema = UserCustomFieldsInfos | undefined | null | Error;
 
-export default function useCustomFieldsSchema() {
-  const [customFields, setCustomFields] = useState<CustomFieldsSchema>(undefined);
+export default function useUserCustomFieldsSchema() {
+  const [customFields, setCustomFields] = useState<UserCustomFieldsSchema>(undefined);
 
   useEffect(() => {
     const locale$ = localeStream().observable;

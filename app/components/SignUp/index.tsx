@@ -17,7 +17,7 @@ import Error from 'components/UI/Error';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -186,7 +186,7 @@ interface InputProps {
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}

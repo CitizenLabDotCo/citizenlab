@@ -1,4 +1,4 @@
-import { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
+import { GetUserCustomFieldsChildProps } from 'resources/GetUserCustomFields';
 
 export const mockGetCustomFields = [
   {
@@ -97,4 +97,4 @@ export const mockGetCustomFields = [
       updated_at: '2018-12-03T11:18:06.161Z'
     }
   }
-] as GetCustomFieldsChildProps;
+] as GetUserCustomFieldsChildProps;

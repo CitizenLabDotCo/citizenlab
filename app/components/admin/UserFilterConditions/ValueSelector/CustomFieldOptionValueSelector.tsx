@@ -1,5 +1,5 @@
 import React from 'react';
-import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'resources/GetCustomFieldOptions';
+import GetUserCustomFieldOptions, { GetUserCustomFieldOptionsChildProps } from 'resources/GetUserCustomFieldOptions';
 import { TRule } from '../rules';
 import { IOption } from 'typings';
 import Select from 'components/UI/Select';
@@ -10,7 +10,7 @@ type Props = {
   rule: TRule;
   value: string;
   onChange: (string) => void;
-  options: GetCustomFieldOptionsChildProps;
+  options: GetUserCustomFieldOptionsChildProps;
   tFunc: any;
 };
 
@@ -52,7 +52,7 @@ class CustomFieldOptionValueSelector extends React.PureComponent<Props & Injecte
 const CustomFieldOptionValueSelectorWithHOC = localize(CustomFieldOptionValueSelector);
 
 export default (inputProps) => (
-  <GetCustomFieldOptions customFieldId={inputProps.rule.customFieldId}>
+  <GetUserCustomFieldOptions customFieldId={inputProps.rule.customFieldId}>
     {(options) => <CustomFieldOptionValueSelectorWithHOC {...inputProps} options={options} />}
-  </GetCustomFieldOptions>
+  </GetUserCustomFieldOptions>
 );
