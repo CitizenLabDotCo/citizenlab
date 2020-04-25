@@ -55,11 +55,7 @@ const SignUpHelperText = styled(QuillEditedContent)`
 export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification' | 'custom-fields';
 
 export interface InputProps {
-  inModal: boolean;
-  isInvitation?: boolean | undefined;
-  token?: string | null | undefined;
   metaData: ISignUpInMetaData;
-  error?: boolean;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
@@ -93,14 +89,14 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
   static getDerivedStateFromProps(props: Props, state: State) {
     const { activeStep, error } = state;
-    const { authUser, onSignUpCompleted, metaData, isInvitation } = props;
+    const { authUser, onSignUpCompleted, metaData } = props;
     let nextActiveStep = activeStep;
 
     if (activeStep === undefined && !isUndefinedOrError(authUser)) {
       nextActiveStep = null;
 
       if (authUser === null) { // not logged in
-        nextActiveStep = isInvitation ? 'password-signup' : 'auth-providers';
+        nextActiveStep = metaData.isInvitation ? 'password-signup' : 'auth-providers';
       } else if (!authUser.attributes.verified && metaData.verification) { // logged in but not verified and verification required
         nextActiveStep = 'verification';
       } else if (!authUser.attributes.registration_completed_at) { // logged in but not yet completed custom fields and custom fields enabled
@@ -112,7 +108,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
     return {
       activeStep: nextActiveStep,
-      error: props.error || error
+      error: metaData.error || error
     };
   }
 
@@ -188,15 +184,12 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onVerificationError = () => {
-    this.setState({
-      error: true,
-      activeStep: undefined
-    });
+    this.setState({ error: true });
   }
 
   render() {
     const { activeStep, error, isPasswordSignup } = this.state;
-    const { tenant, isInvitation, inModal, token, metaData, customFieldsSchema, className, intl: { formatMessage } } = this.props;
+    const { tenant, metaData, customFieldsSchema, className, intl: { formatMessage } } = this.props;
     const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
     const steps: TSignUpSteps[] = [];
 
@@ -240,8 +233,8 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
-          <StyledHeaderContainer inModal={inModal}>
-            <StyledHeaderTitle inModal={inModal}>
+          <StyledHeaderContainer inModal={!!metaData.inModal}>
+            <StyledHeaderTitle inModal={!!metaData.inModal}>
               <FormattedMessage {...headerTitle} />
             </StyledHeaderTitle>
 
@@ -252,57 +245,57 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             }
           </StyledHeaderContainer>
 
-          <StyledModalContent inModal={inModal}>
-            {activeStep === 'auth-providers' && !isEmpty(helperText) &&
-              <SignUpHelperText
-                textColor={colors.text}
-                fontSize="base"
-                fontWeight={300}
-              >
-                <T value={helperText} supportHtml />
-              </SignUpHelperText>
-            }
-
-            {error &&
+          <StyledModalContent inModal={!!metaData.inModal}>
+            {error ? (
               <Error
                 text={formatMessage(messages.somethingWentWrongText)}
                 animate={false}
               />
-            }
+            ) : (
+              <>
+                {activeStep === 'auth-providers' && !isEmpty(helperText) &&
+                  <SignUpHelperText
+                    textColor={colors.text}
+                    fontSize="base"
+                    fontWeight={300}
+                  >
+                    <T value={helperText} supportHtml />
+                  </SignUpHelperText>
+                }
 
-            {activeStep === 'auth-providers' &&
-              <AuthProviders
-                flow={metaData.flow}
-                onAuthProviderSelected={this.handleOnAuthProviderSelected}
-                goToOtherFlow={this.handleGoToSignInFlow}
-              />
-            }
+                {activeStep === 'auth-providers' &&
+                  <AuthProviders
+                    flow={metaData.flow}
+                    onAuthProviderSelected={this.handleOnAuthProviderSelected}
+                    goToOtherFlow={this.handleGoToSignInFlow}
+                  />
+                }
 
-            {activeStep === 'password-signup' &&
-              <PasswordSignup
-                metaData={metaData}
-                isInvitation={isInvitation}
-                token={token}
-                onCompleted={this.handlePasswordSignupCompleted}
-                onGoToSignIn={this.props.onGoToSignIn}
-                onGoBack={this.handleGoBackToSignUpOptions}
-              />
-            }
+                {activeStep === 'password-signup' &&
+                  <PasswordSignup
+                    metaData={metaData}
+                    onCompleted={this.handlePasswordSignupCompleted}
+                    onGoToSignIn={this.props.onGoToSignIn}
+                    onGoBack={this.handleGoBackToSignUpOptions}
+                  />
+                }
 
-            {activeStep === 'verification' &&
-              <VerificationSteps
-                context={null}
-                initialActiveStep="method-selection"
-                inModal={inModal}
-                showHeader={false}
-                onComplete={this.handleVerificationCompleted}
-                onError={this.onVerificationError}
-              />
-            }
+                {activeStep === 'verification' &&
+                  <VerificationSteps
+                    context={null}
+                    initialActiveStep="method-selection"
+                    inModal={!!metaData.inModal}
+                    showHeader={false}
+                    onComplete={this.handleVerificationCompleted}
+                    onError={this.onVerificationError}
+                  />
+                }
 
-            {activeStep === 'custom-fields' &&
-              <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
-            }
+                {activeStep === 'custom-fields' &&
+                  <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
+                }
+              </>
+            )}
           </StyledModalContent>
         </Container>
       );

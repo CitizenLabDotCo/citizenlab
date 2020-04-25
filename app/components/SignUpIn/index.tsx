@@ -5,8 +5,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import useTenant from 'hooks/useTenant';
 
 // component
-import SignUp, { InputProps as SignUpProps } from 'components/SignUpIn/SignUp';
-import SignIn, { Props as SignInProps } from 'components/SignUpIn/SignIn';
+import SignUp from 'components/SignUpIn/SignUp';
+import SignIn from 'components/SignUpIn/SignIn';
 
 // styling
 import styled from 'styled-components';
@@ -23,19 +23,21 @@ export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
   verification: boolean;
+  error?: boolean;
+  isInvitation?: boolean;
+  token?: string;
+  inModal?: boolean;
   action?: () => void;
 }
 
-interface Props extends Omit<SignUpProps, 'onGoToSignIn' | 'onSignUpCompleted' | 'initialActiveStep'>,  Omit<SignInProps, 'onGoToSignUp' | 'onSignInCompleted'> {
+interface Props {
+  metaData: ISignUpInMetaData;
   onSignUpInCompleted: (flow: TSignUpInFlow) => void;
+  className?: string;
 }
 
 const SignUpIn = memo<Props>(({
-  isInvitation,
-  token,
-  inModal,
   metaData,
-  error,
   onSignUpInCompleted,
   className
 }) => {
@@ -62,17 +64,12 @@ const SignUpIn = memo<Props>(({
       <Container className={className}>
         {selectedFlow === 'signup' ? (
           <SignUp
-            inModal={inModal}
-            isInvitation={isInvitation}
-            token={token}
             metaData={metaDataWithCurrentFlow}
-            error={error}
             onSignUpCompleted={onSignUpCompleted}
             onGoToSignIn={onToggleSelectedMethod}
           />
         ) : (
           <SignIn
-            inModal={inModal}
             metaData={metaDataWithCurrentFlow}
             onSignInCompleted={onSignInCompleted}
             onGoToSignUp={onToggleSelectedMethod}
