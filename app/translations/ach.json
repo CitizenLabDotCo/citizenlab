@@ -1785,6 +1785,7 @@
   "app.containers.SignIn.signInButtonAltText": "",
   "app.containers.SignIn.signInError": "",
   "app.containers.SignIn.signUp": "",
+  "app.containers.SignIn.somethingWentWrong": "",
   "app.containers.SignIn.submit": "",
   "app.containers.SignIn.whatIsFranceConnect": "",
   "app.containers.SignUp.acceptTermsAndConditions": "",

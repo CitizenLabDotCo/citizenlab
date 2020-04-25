@@ -1785,6 +1785,7 @@
   "app.containers.SignIn.signInButtonAltText": "Connectez-vous avec {loginMechanismName}",
   "app.containers.SignIn.signInError": "Les informations fournies ne sont pas correctes. Cliquez sur « Mot de passe oublié » ci-dessus pour réinitialiser votre mot de passe.",
   "app.containers.SignIn.signUp": "S'inscrire",
+  "app.containers.SignIn.somethingWentWrong": "",
   "app.containers.SignIn.submit": "Se connecter",
   "app.containers.SignIn.whatIsFranceConnect": "Qu'est ce que France Connect ?",
   "app.containers.SignUp.acceptTermsAndConditions": "Acceptez nos {tacLink} pour s’inscrire avec {loginMechanismName}",
