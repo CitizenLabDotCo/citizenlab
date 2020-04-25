@@ -71,7 +71,6 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       <Container className={className}>
         {opened && metaData &&
           <SignUpIn
-            inModal={true}
             metaData={metaData}
             onSignUpInCompleted={onSignUpInCompleted}
           />

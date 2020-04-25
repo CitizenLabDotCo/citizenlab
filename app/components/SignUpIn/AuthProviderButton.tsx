@@ -101,8 +101,13 @@ interface Props {
   children: React.ReactNode;
 }
 
-const AuthProviderButton = memo<Props>(({ flow, authProvider, className, onContinue, children }) => {
-
+const AuthProviderButton = memo<Props>(({
+  flow,
+  authProvider,
+  className,
+  onContinue,
+  children
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [tacAccepted, setTacAccepted] = useState(false);
   const [tacError, setTacError] = useState(false);

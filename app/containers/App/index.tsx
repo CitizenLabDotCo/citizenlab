@@ -24,7 +24,6 @@ import { ApolloProvider } from 'react-apollo';
 import { PreviousPathnameContext } from 'context';
 
 // signup/in
-import { ISignUpInMetaData } from 'components/SignUpIn';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // verification
@@ -66,6 +65,7 @@ import { media, getTheme } from 'utils/styleUtils';
 
 // typings
 import { ContextShape } from 'components/Verification/VerificationSteps';
+import { SSOParams } from 'services/singleSignOn';
 
 const Container = styled.div`
   display: flex;
@@ -211,34 +211,34 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const { authUser, signUpInModalMounted, verificationModalMounted } = this.state;
+    const { pathname, search } = this.props.location;
 
     if (!isNilOrError(authUser) && signUpInModalMounted && (prevState.authUser === undefined || !prevState.signUpInModalMounted)) {
-      const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
-      const { sign_up_in_flow, sign_up_in_pathname, sign_up_in_verification } = urlSearchParams;
+      const authError = endsWith(pathname, 'authentication-error');
+      const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as SSOParams;
+      const shouldComplete = !authUser?.data?.attributes?.registration_completed_at;
+      const { sso_response, sso_flow, sso_pathname, sso_verify } = urlSearchParams; // see services/singleSignOn.ts
 
-      if (sign_up_in_flow && sign_up_in_pathname && sign_up_in_verification) {
-        const urlSegments = sign_up_in_pathname.replace(/^\/+/g, '').split('/');
-        const lastUrlSegment = urlSegments[urlSegments.length - 1];
-        const signUpInMetaData: ISignUpInMetaData = {
-          flow: sign_up_in_flow,
-          pathname: sign_up_in_pathname,
-          verification: sign_up_in_verification === 'true'
-        };
+      if (sso_response || shouldComplete) {
+        const shouldVerify = !authUser?.data?.attributes?.verified && sso_verify === 'true';
 
-        if ((!authUser.data.attributes.verified && signUpInMetaData.verification) || !authUser.data.attributes.registration_completed_at) {
-          clHistory.replace(signUpInMetaData.pathname);
+        if (sso_response) {
+          const redirectUrl = (!sso_pathname || endsWith(sso_pathname, ['complete-signup', 'authentication-error'])) ? '/' : sso_pathname;
+          clHistory.replace(redirectUrl);
+        }
 
-          if (!['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'].includes(lastUrlSegment)) {
-            openSignUpInModal(signUpInMetaData);
-          }
-        } else {
-          window.history.replaceState(null, '', window.location.pathname);
+        if (authError || shouldVerify || shouldComplete) {
+          openSignUpInModal({
+            flow: authError && sso_flow ? sso_flow : 'signup',
+            error: authError,
+            verification: shouldVerify
+          });
         }
       }
     }
 
     if (!isNilOrError(authUser) && verificationModalMounted && (prevState.authUser === undefined || !prevState.verificationModalMounted)) {
-      const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
+      const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
 
       if (has(urlSearchParams, 'verification_success')) {
         window.history.replaceState(null, '', window.location.pathname);

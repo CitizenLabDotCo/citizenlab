@@ -61,8 +61,6 @@ const ButtonWrapper = styled.div`
 
 type InputProps = {
   metaData: ISignUpInMetaData;
-  isInvitation?: boolean | undefined;
-  token?: string | null | undefined;
   onCompleted: (userId: string) => void;
   onGoToSignIn: () => void;
   onGoBack?: () => void;
@@ -102,7 +100,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      token: props.token,
+      token: props.metaData.token,
       firstName: props.invitedUser.user?.attributes.first_name || null,
       lastName: props.invitedUser.user?.attributes.last_name || null,
       email: props.invitedUser.user?.attributes.email || null,
@@ -195,7 +193,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   handleOnSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const { isInvitation, tenant } = this.props;
+    const { tenant } = this.props;
+    const { isInvitation } = this.props.metaData;
     const { formatMessage } = this.props.intl;
     const { locale } = this.props;
     const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted } = this.state;
@@ -250,7 +249,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { isInvitation, tenant, className } = this.props;
+    const { tenant, className } = this.props;
+    const { isInvitation } = this.props.metaData;
     const { formatMessage } = this.props.intl;
     const {
       token,
@@ -294,7 +294,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               onSubmit={this.handleOnSubmit}
               noValidate={true}
             >
-              {isInvitation && !this.props.token &&
+              {isInvitation && !this.props.metaData.token &&
                 <FormElement>
                   <FormLabel
                     labelMessage={messages.tokenLabel}
@@ -307,7 +307,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                     placeholder={formatMessage(messages.tokenPlaceholder)}
                     error={tokenError}
                     onChange={this.handleTokenOnChange}
-                    autoFocus={!!(isInvitation && !this.props.token)}
+                    autoFocus={!!(isInvitation && !this.props.metaData.token)}
                   />
                 </FormElement>
               }
@@ -325,7 +325,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   error={firstNameError}
                   onChange={this.handleFirstNameOnChange}
                   autocomplete="given-name"
-                  autoFocus={!isInvitation || !!(isInvitation && this.props.token)}
+                  autoFocus={!isInvitation || !!(isInvitation && this.props.metaData.token)}
                 />
                 <Error
                   fieldName={'first_name'}
@@ -414,7 +414,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               </FormElement>
 
               <Error text={unknownApiError} />
-              <Error text={(isInvitation && this.props.token && tokenError) ? tokenError : null} />
+              <Error text={(isInvitation && this.props.metaData.token && tokenError) ? tokenError : null} />
             </Form>
 
             <Options>
@@ -441,7 +441,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  invitedUser: ({ token, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>
+  invitedUser: ({ metaData: { token }, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>
 });
 
 const PasswordSignupWithHoC = injectIntl<Props>(PasswordSignup);

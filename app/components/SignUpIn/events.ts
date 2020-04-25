@@ -11,12 +11,18 @@ enum events {
 // ---------
 
 export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
-  eventEmitter.emit<ISignUpInMetaData>(events.openSignUpInModal, {
+  const emittedMetaData: ISignUpInMetaData = {
     flow: metaData?.flow || 'signup',
     pathname: metaData?.pathname || window.location.pathname,
-    verification: metaData?.verification ?? false,
+    verification: !!metaData?.verification,
+    error: !!metaData?.error,
+    isInvitation: !!metaData?.isInvitation,
+    token: metaData?.token,
+    inModal: true,
     action: metaData?.action || undefined
-  });
+  };
+
+  eventEmitter.emit<ISignUpInMetaData>(events.openSignUpInModal, emittedMetaData);
 }
 
 export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInMetaData>(events.openSignUpInModal);

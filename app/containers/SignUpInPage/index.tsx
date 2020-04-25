@@ -5,7 +5,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import SignUpIn, { ISignUpInMetaData } from 'components/SignUpIn';
+import SignUpIn from 'components/SignUpIn';
 import SignUpInPageMeta from './SignUpInPageMeta';
 
 // resources
@@ -109,19 +109,16 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location: { pathname, query } } = this.props;
-    const isInvitation = endsWith(pathname, 'invite');
-    const token = isString(query?.token) ? query.token : null;
-    const authError = endsWith(pathname, 'authentication-error');
     const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
-    const metaData: ISignUpInMetaData = {
-      flow,
-      pathname,
-      verification: false
-    };
+    const error = endsWith(pathname, 'authentication-error');
+    const isInvitation = endsWith(pathname, 'invite');
+    const token = isString(query?.token) ? query.token : undefined;
+    const inModal = false;
+    const verification = false;
 
     return (
       <>
-        {!isInvitation && !authError &&
+        {!isInvitation && !error &&
           <SignUpInPageMeta />
         }
 
@@ -136,11 +133,15 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
           <Right>
             <RightInner>
               <SignUpIn
-                inModal={false}
-                metaData={metaData}
-                isInvitation={isInvitation}
-                token={token}
-                error={authError}
+                metaData={{
+                  flow,
+                  pathname,
+                  error,
+                  isInvitation,
+                  token,
+                  inModal,
+                  verification
+                }}
                 onSignUpInCompleted={this.onSignUpInCompleted}
               />
             </RightInner>

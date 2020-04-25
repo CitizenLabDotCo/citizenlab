@@ -68,5 +68,9 @@ export default defineMessages({
   whatIsFranceConnect: {
     id: 'app.containers.SignIn.whatIsFranceConnect',
     defaultMessage: 'What is France Connect?',
-  }
+  },
+  somethingWentWrongText: {
+    id: 'app.containers.SignIn.somethingWentWrong',
+    defaultMessage: "Something went wrong and we can't sign you in right now. Please try again later."
+  },
 });
