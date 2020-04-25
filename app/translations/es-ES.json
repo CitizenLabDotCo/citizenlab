@@ -1785,6 +1785,7 @@
   "app.containers.SignIn.signInButtonAltText": "Iniciar sesión con {loginMechanismName}",
   "app.containers.SignIn.signInError": "La información proporcionada no es correcta. Haga clic en \"Olvidaste tu contraseña\" arriba para restablecer tu contraseña.",
   "app.containers.SignIn.signUp": "Inscríbete",
+  "app.containers.SignIn.somethingWentWrong": "",
   "app.containers.SignIn.submit": "Inicia sesión",
   "app.containers.SignIn.whatIsFranceConnect": "¿Qué es France Connect?",
   "app.containers.SignUp.acceptTermsAndConditions": "Acepta nuestra {tacLink} para registrarse con {loginMechanismName}",

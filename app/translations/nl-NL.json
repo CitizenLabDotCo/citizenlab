@@ -1785,6 +1785,7 @@
   "app.containers.SignIn.signInButtonAltText": "Log in met {loginMechanismName}",
   "app.containers.SignIn.signInError": "De ingevoerde informatie is niet correct. Klik bovenaan op 'Wachtwoord vergeten' om je wachtwoord opnieuw in te stellen.",
   "app.containers.SignIn.signUp": "Registreren",
+  "app.containers.SignIn.somethingWentWrong": "",
   "app.containers.SignIn.submit": "Inloggen",
   "app.containers.SignIn.whatIsFranceConnect": "Wat is France Connect?",
   "app.containers.SignUp.acceptTermsAndConditions": "Keur onze {tacLink} goed om te registreren met {loginMechanismName}",
