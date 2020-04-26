@@ -1785,6 +1785,7 @@
   "app.containers.SignIn.signInButtonAltText": "Mit {loginMechanismName} einloggen",
   "app.containers.SignIn.signInError": "Die angegebenen Informationen sind nicht korrekt. Klicke bitte oben auf 'Passwort vergessen', um das Passwort zurückzusetzen.",
   "app.containers.SignIn.signUp": "Fortfahren",
+  "app.containers.SignIn.somethingWentWrong": "",
   "app.containers.SignIn.submit": "Willkommen zurück",
   "app.containers.SignIn.whatIsFranceConnect": "Was ist France Connect?",
   "app.containers.SignUp.acceptTermsAndConditions": "Unsere {tacLink} akzeptieren, um sich mit {loginMechanismName} einzuloggen",
