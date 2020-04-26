@@ -1785,6 +1785,7 @@
   "app.containers.SignIn.signInButtonAltText": "Logg inn med {loginMechanismName}",
   "app.containers.SignIn.signInError": "The provided information is not correct. Click 'Password forgotten' above to reset your password.",
   "app.containers.SignIn.signUp": "Registrer deg",
+  "app.containers.SignIn.somethingWentWrong": "",
   "app.containers.SignIn.submit": "Logg inn",
   "app.containers.SignIn.whatIsFranceConnect": "Hva er France Connect?",
   "app.containers.SignUp.acceptTermsAndConditions": "Godta våre {tacLink} for å melde deg på med {loginMechanismName}",

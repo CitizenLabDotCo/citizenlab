@@ -1785,6 +1785,7 @@
   "app.containers.SignIn.signInButtonAltText": "Log ind med {loginMechanismName}",
   "app.containers.SignIn.signInError": "De angivne oplysninger er ikke korrekte. Klik \"Glemt dit password\" ovenfor for at nulstille dit password.",
   "app.containers.SignIn.signUp": "Registrer dig",
+  "app.containers.SignIn.somethingWentWrong": "",
   "app.containers.SignIn.submit": "Log ind",
   "app.containers.SignIn.whatIsFranceConnect": "Hvad er France Connect?",
   "app.containers.SignUp.acceptTermsAndConditions": "Accepter vores {tacLink} for at tilmelde dig med {loginMechanismName}",
