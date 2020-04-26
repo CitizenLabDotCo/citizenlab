@@ -113,7 +113,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
-    signUpActiveStepChange(undefined);
+    signUpActiveStepChange(this.state.activeStep);
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {

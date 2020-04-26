@@ -215,8 +215,8 @@ export const fontSizes = {
 
 export const customOutline = 'rgb(59,153,252) solid 2px';
 
-export const blueBoxShadowOutline = css`
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, .5);
+export const boxShadowOutline = css`
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.95);
 `;
 
 export const defaultInputStyle = css`

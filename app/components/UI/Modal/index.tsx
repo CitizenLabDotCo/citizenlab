@@ -21,7 +21,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, customOutline } from 'utils/styleUtils';
+import { media, colors, fontSizes, customOutline, boxShadowOutline } from 'utils/styleUtils';
 
 const timeout = 400;
 const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
@@ -62,7 +62,7 @@ const CloseButton = styled.button`
   }
 
   &.focus-visible {
-    outline: ${customOutline};
+    ${boxShadowOutline};
   }
 
   ${media.smallerThanMinTablet`

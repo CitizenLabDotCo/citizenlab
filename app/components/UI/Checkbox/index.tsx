@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, blueBoxShadowOutline } from 'utils/styleUtils';
+import { colors, boxShadowOutline } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { isBoolean } from 'lodash-es';
 import { darken, hideVisually } from 'polished';
@@ -48,7 +48,10 @@ const StyledCheckbox = styled.div<{ checkedOrIndeterminate: boolean, size: strin
 
   ${HiddenCheckbox}:focus + & {
     border-color: ${colors.focussedBorder};
-    ${blueBoxShadowOutline};
+  }
+
+  ${HiddenCheckbox}.focus-visible + & {
+    ${boxShadowOutline};
   }
 
   &.enabled {
