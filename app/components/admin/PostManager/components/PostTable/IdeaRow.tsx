@@ -110,11 +110,12 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
 
     const selectedStatus: string | undefined = get(idea, 'relationships.idea_status.data.id');
     const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
-    const selectedTopics = idea.relationships.topics.data.map((p) => p.id);
+    const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
     const attrs = idea.attributes;
     const active = selection.has(idea.id);
     const projectId = get(idea, 'relationships.project.data.id');
     const assigneeId = get(idea, 'relationships.assignee.data.id');
+
     return (
       <>
         <WrappedRow
@@ -215,8 +216,8 @@ const ideaSource = {
       if (dropResult.type === 'topic') {
         combineLatest(observables).pipe(take(1)).subscribe((ideas) => {
           ideas.map((idea) => {
-            const currentTopics = idea.data.relationships.topics.data.map((d) => d.id);
-            const newTopics = uniq(currentTopics.concat(dropResult.id));
+            const currentTopics = idea.data.relationships.topics?.data.map((d) => d.id);
+            const newTopics = uniq(currentTopics?.concat(dropResult.id));
             updateIdea(idea.data.id, {
               topic_ids: newTopics,
             });
