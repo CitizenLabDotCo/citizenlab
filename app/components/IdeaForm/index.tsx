@@ -541,28 +541,20 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     }
   }
 
-  isFieldEnabled = (
-    ideaCustomFields: IIdeaCustomFields | null,
-    fieldKey: CustomFieldCodes
-  ) => {
-    if (
-      !isNilOrError(ideaCustomFields) &&
-      ideaCustomFields.data.length > 0
-    ) {
-      const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
-
-      if (field) return field.attributes.enabled;
-    }
-
-    return true;
-  }
-
   isFieldRequired = (
     fieldCode: CustomFieldCodes,
     ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
     locale: Locale
   ) => {
     return ideaCustomFieldsSchemas.json_schema_multiloc[locale].required.includes(fieldCode);
+  }
+
+  isFieldEnabled = (
+    fieldCode: CustomFieldCodes,
+    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    locale: Locale
+  ) => {
+    return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] === 'hidden';
   }
 
   render() {
@@ -598,9 +590,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale)
     ) {
-      const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
-      const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
-      const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
+      const topicsEnabled = this.isFieldEnabled('topic_ids', ideaCustomFieldsSchemas, locale);
+      const locationEnabled = this.isFieldEnabled('location', ideaCustomFieldsSchemas, locale);
+      const attachmentsEnabled = this.isFieldEnabled('attachments', ideaCustomFieldsSchemas, locale);
 
       return (
         <Form id="idea-form" className={className}>
