@@ -52,7 +52,6 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
-import GetIdeaCustomFields, { GetIdeaCustomFieldsChildProps } from 'resources/GetIdeaCustomFields';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -69,10 +68,6 @@ import styled from 'styled-components';
 import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
-
-// services
-import { CustomFieldCodes, IIdeaCustomFieldData } from 'services/ideaCustomFields';
-import { isAdmin, isModerator } from 'services/permissions/roles';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -317,7 +312,6 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
-  ideaCustomFields: GetIdeaCustomFieldsChildProps;
 }
 
 interface InputProps {
@@ -462,32 +456,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     });
   }
 
-  getCustomFieldData = (
-    ideaCustomFields: IIdeaCustomFieldData[],
-    fieldKey: CustomFieldCodes
-  ) => {
-    const fieldData = ideaCustomFields.find(field => field.attributes.key === fieldKey);
-
-    if (fieldData) return fieldData;
-
-    return null;
-  }
-
-  calculateShowCustomField = (
-    ideaCustomFields: IIdeaCustomFieldData[],
-    fieldKey: CustomFieldCodes
-  ) => {
-    const { authUser } = this.props;
-    const customFieldData = this.getCustomFieldData(ideaCustomFields, fieldKey);
-    const visibleTo = customFieldData?.attributes.visible_to;
-    const isPrivilegedUser = !isNilOrError(authUser) &&
-      (isAdmin({ data: authUser }) || isModerator({ data: authUser }));
-
-    if (visibleTo === 'admins' && !isPrivilegedUser) return false;
-
-    return true;
-  }
-
   render() {
     const {
       ideaFiles,
@@ -500,13 +468,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       className,
       postOfficialFeedbackPermission,
       projectId,
-      ideaCustomFields
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && !isNilOrError(ideaCustomFields) && loaded) {
+    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea?.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
@@ -529,9 +496,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
-      const ideaCustomFieldsData = ideaCustomFields.data;
-      const showTopics = this.calculateShowCustomField(ideaCustomFieldsData, 'topic_ids');
-      const showLocation = this.calculateShowCustomField(ideaCustomFieldsData, 'location');
 
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
@@ -569,7 +533,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                {showTopics &&
+                {topicIds.length > 0 &&
                   <Topics
                     postType="idea"
                     topicIds={topicIds}
@@ -610,7 +574,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                {showLocation && ideaGeoPosition && ideaAddress &&
+                {ideaGeoPosition && ideaAddress &&
                   <StyledDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
@@ -802,7 +766,6 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => <GetPhases projectId={projectId}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
   postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>,
-  ideaCustomFields: ({ projectId, render }) => <GetIdeaCustomFields projectId={projectId}>{render}</GetIdeaCustomFields>
 });
 
 export default (inputProps: InputProps) => (
