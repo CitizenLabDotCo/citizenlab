@@ -3,6 +3,7 @@ import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
 import shallowCompare from 'utils/shallowCompare';
+import { adopt } from 'react-adopt';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -16,7 +17,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
-import FeatureFlag from 'components/FeatureFlag';
 import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComponents';
 
 // services
@@ -32,6 +32,9 @@ import {
   IIdeaCustomFields,
   CustomFieldCodes,
 } from 'services/ideaCustomFields';
+
+// resources
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -90,7 +93,7 @@ export interface IIdeaFormOutput {
   ideaFilesToRemove: UploadFile[];
 }
 
-interface Props {
+interface InputProps {
   projectId: string | null;
   title: string | null;
   description: string | null;
@@ -101,6 +104,12 @@ interface Props {
   onSubmit: (arg: IIdeaFormOutput) => void;
   remoteIdeaFiles?: UploadFile[] | null;
 }
+
+interface DataProps {
+  pbEnabled: GetFeatureFlagChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   locale: Locale | null;
@@ -125,6 +134,7 @@ interface State {
   ideaFilesToRemove: UploadFile[];
   ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas | null;
   ideaCustomFields: IIdeaCustomFields | null;
+  pbEnabled: boolean;
 }
 
 class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -157,6 +167,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       locationError: null,
       imageError: null,
       attachmentsError: null,
+      pbEnabled: false,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -581,7 +592,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       topicsError,
       locationError,
       imageError,
-      attachmentsError
+      attachmentsError,
+      pbEnabled
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
@@ -593,6 +605,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       const topicsEnabled = this.isFieldEnabled('topic_ids', ideaCustomFieldsSchemas, locale);
       const locationEnabled = this.isFieldEnabled('location', ideaCustomFieldsSchemas, locale);
       const attachmentsEnabled = this.isFieldEnabled('attachments', ideaCustomFieldsSchemas, locale);
+      const showPBBudget = pbContext && pbEnabled;
+      const showTopics = topicsEnabled && topics && topics.length > 0;
+      const showLocation = locationEnabled;
 
       return (
         <Form id="idea-form" className={className}>
@@ -639,10 +654,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             </FormElement>
           </StyledFormSection>
 
-          <StyledFormSection>
-            <FormSectionTitle message={messages.formDetailsSectionTitle} />
-            {pbContext && (
-              <FeatureFlag name="participatory_budgeting">
+          {(showPBBudget || showTopics || showLocation) &&
+            <StyledFormSection>
+              <FormSectionTitle message={messages.formDetailsSectionTitle} />
+              {showPBBudget && (
                 <HasPermission
                   item="idea"
                   action="assignBudget"
@@ -651,7 +666,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                   <FormElement>
                     <FormLabelWithIcon
                       labelMessage={messages.budgetLabel}
-                      labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
+                      labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext?.attributes.max_budget }}
                       htmlFor="budget"
                       iconName="admin"
                       iconAriaHidden
@@ -665,44 +680,44 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     />
                   </FormElement>
                 </HasPermission>
-              </FeatureFlag>
-            )}
+              )}
 
-            {topicsEnabled && topics && topics.length > 0 && (
-              <FormElement>
-                <FormLabel
-                  htmlFor="topics"
-                  labelMessage={messages.topicsTitle}
-                  optionality={this.isFieldRequired('topic_ids', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
-                  subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
-                />
-                <TopicsPicker
-                  value={selectedTopics}
-                  onChange={this.handleTopicsOnChange}
-                  max={2}
-                />
-                {topicsError && <Error text={topicsError} />}
-              </FormElement>
-            )}
-
-            {locationEnabled &&
-              <FormElement>
-                <FormLabel
-                  labelMessage={messages.locationTitle}
-                  optionality={this.isFieldRequired('location', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
-                  subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
-                >
-                  <LocationInput
-                    className="e2e-idea-form-location-input-field"
-                    value={address}
-                    placeholder={formatMessage(messages.locationPlaceholder)}
-                    onChange={this.handleLocationOnChange}
+              {showTopics && (
+                <FormElement>
+                  <FormLabel
+                    htmlFor="topics"
+                    labelMessage={messages.topicsTitle}
+                    optionality={this.isFieldRequired('topic_ids', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                    subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
                   />
-                </FormLabel>
-                {locationError && <Error text={locationError} />}
-              </FormElement>
-            }
-          </StyledFormSection>
+                  <TopicsPicker
+                    value={selectedTopics}
+                    onChange={this.handleTopicsOnChange}
+                    max={2}
+                  />
+                  {topicsError && <Error text={topicsError} />}
+                </FormElement>
+              )}
+
+              {showLocation &&
+                <FormElement>
+                  <FormLabel
+                    labelMessage={messages.locationTitle}
+                    optionality={this.isFieldRequired('location', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                    subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
+                  >
+                    <LocationInput
+                      className="e2e-idea-form-location-input-field"
+                      value={address}
+                      placeholder={formatMessage(messages.locationPlaceholder)}
+                      onChange={this.handleLocationOnChange}
+                    />
+                  </FormLabel>
+                  {locationError && <Error text={locationError} />}
+                </FormElement>
+              }
+            </StyledFormSection>
+          }
 
           <StyledFormSection>
             <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
@@ -751,4 +766,14 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 }
 
-export default withRouter<Props>(injectIntl(IdeaForm));
+const Data = adopt<DataProps, InputProps>({
+  pbEnabled: <GetFeatureFlag name="participatory_budgeting" />
+});
+
+const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaFormWitHOCs {...dataProps} {...inputProps} />}
+  </Data>
+);
