@@ -159,8 +159,8 @@ const ButtonsContainer = styled.div`
     padding-right: 40px;
     padding-top: 32px;
     padding-bottom: 32px;
-    background: ${colors.background};
-    border-radius: ${(props: any) => props.theme.borderRadius};
+    /* background: ${colors.background}; */
+    /* border-radius: ${(props: any) => props.theme.borderRadius}; */
 
     &.withoutContext {
       width: 100%;
@@ -174,7 +174,7 @@ const ButtonsContainer = styled.div`
 `;
 
 const MethodButton = styled(Button)`
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 
   &.last {
     margin-bottom: 0px;
@@ -275,15 +275,16 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
                 id={`e2e-${method.attributes.name}-button`}
                 className={index + 1 === filteredVerificationMethods.length ? 'last' : ''}
                 icon="shieldVerified"
-                iconColor={colors.clGreen}
-                iconHoverColor={colors.clGreen}
+                // iconColor={colors.clGreen}
+                // iconHoverColor={colors.clGreen}
                 iconSize="22px"
                 onClick={onSelectMethodButtonClick(method)}
                 buttonStyle="white"
                 fullWidth={true}
                 justify="left"
-                padding="14px 20px"
+                // padding="14px 20px"
                 whiteSpace="wrap"
+                borderColor="#ccc"
                 boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
                 boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
               >

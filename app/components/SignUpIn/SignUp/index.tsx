@@ -71,7 +71,6 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   activeStep: TSignUpSteps | null | undefined;
-  isPasswordSignup: boolean;
   userId: string | null;
   error: boolean;
 }
@@ -81,7 +80,6 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       activeStep: undefined,
-      isPasswordSignup: false,
       userId: null,
       error: false
     };
@@ -132,10 +130,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     const hasVerificationStep = metaData?.verification;
 
     if (activeStep === 'auth-providers') {
-      this.setState({
-        activeStep: 'password-signup',
-        isPasswordSignup: true
-      });
+      this.setState({ activeStep: 'password-signup' });
     } else if (activeStep === 'password-signup' && !isNilOrError(authUser) && !authUser.attributes.verified && hasVerificationStep) {
       this.setState({ activeStep: 'verification' });
     } else if (!isNilOrError(authUser) && !authUser.attributes.registration_completed_at) {
@@ -188,32 +183,22 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { activeStep, error, isPasswordSignup } = this.state;
+    const { activeStep, error } = this.state;
     const { tenant, metaData, customFieldsSchema, className, intl: { formatMessage } } = this.props;
     const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
+    const hasVerificationStep = metaData?.verification;
+    const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+    let stepName: string | null = null;
     const steps: TSignUpSteps[] = [];
 
-    if (isPasswordSignup) {
-      const hasVerificationStep = metaData?.verification;
-      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
-
-      steps.push('password-signup');
-
-      if (hasVerificationStep) {
-        steps.push('verification');
-      }
-
-      if (hasCustomFields) {
-        steps.push('custom-fields');
-      }
-    }
+    hasVerificationStep && steps.push('verification');
+    hasCustomFields && steps.push('custom-fields');
 
     if (activeStep) {
-      const totalStepsCount = steps.length;
-      const activeStepNumber = steps.indexOf(activeStep) + 1;
-      let stepName: string | null = null;
+      const totalStepsCount = steps.length + 1;
+      const activeStepNumber = steps.indexOf(activeStep) > -1 ?  steps.indexOf(activeStep) + 2 : 1;
 
-      if (activeStep === 'password-signup') {
+      if (activeStep === 'auth-providers' || activeStep === 'password-signup') {
         stepName = formatMessage(messages.createYourAccount);
       } else if (activeStep === 'verification') {
         stepName = formatMessage(messages.verifyYourIdentity);
@@ -221,26 +206,21 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
         stepName = formatMessage(messages.completeYourProfile);
       }
 
-      const showSubtitle = !!(!error && totalStepsCount > 1 && activeStepNumber > 0 && stepName);
-
-      let headerTitle = messages.signUp2;
-
-      if (error) {
-        headerTitle = messages.somethingWentWrongTitle;
-      } else if (activeStep === 'custom-fields' && !showSubtitle) {
-        headerTitle = messages.completeYourProfile;
-      }
+      const showStepsCount = !!(!error && totalStepsCount > 1 && activeStepNumber > 0 && stepName);
 
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
           <StyledHeaderContainer inModal={!!metaData.inModal}>
             <StyledHeaderTitle inModal={!!metaData.inModal}>
-              <FormattedMessage {...headerTitle} />
+              <FormattedMessage {...messages.signUp2} />
             </StyledHeaderTitle>
 
-            {showSubtitle &&
+            {!error && stepName &&
               <HeaderSubtitle>
-                <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
+                {showStepsCount
+                  ? <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
+                  : stepName
+                }
               </HeaderSubtitle>
             }
           </StyledHeaderContainer>
