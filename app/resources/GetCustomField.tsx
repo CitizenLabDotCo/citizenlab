@@ -2,7 +2,7 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { customFieldForUsersStream, ICustomFieldData } from 'services/userCustomFields';
+import { customFieldForUsersStream, IUserCustomFieldData } from 'services/userCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -16,10 +16,10 @@ interface Props extends InputProps {
 }
 
 interface State {
-  customField: ICustomFieldData | undefined | null | Error;
+  customField: IUserCustomFieldData | undefined | null | Error;
 }
 
-export type GetCustomFieldChildProps = ICustomFieldData | undefined | null | Error;
+export type GetCustomFieldChildProps = IUserCustomFieldData | undefined | null | Error;
 
 export default class GetCustomField extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
