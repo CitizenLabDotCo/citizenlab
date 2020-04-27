@@ -219,7 +219,7 @@ module AdminApi
       end
     end
 
-    def yml_custom_forms
+    def yml_custom_forms shift_timestamps: 0
       yml_custom_form = {
         'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
         'updated_at' => shift_timestamp(@project.custom_form.updated_at, shift_timestamps)&.iso8601
@@ -228,7 +228,7 @@ module AdminApi
       [yml_custom_form]
     end
 
-    def yml_custom_fields
+    def yml_custom_fields shift_timestamps: 0
       CustomField.where(resource: @project.custom_form).map do |c|
         yml_custom_field = {
           'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
@@ -249,7 +249,7 @@ module AdminApi
       end
     end
 
-    def yml_custom_field_options
+    def yml_custom_field_options shift_timestamps: 0
       CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
         yml_custom_field_option = {
           'custom_field_ref'     => lookup_ref(c.custom_field_id, :custom_field),
