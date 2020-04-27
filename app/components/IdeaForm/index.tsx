@@ -565,7 +565,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
     locale: Locale
   ) => {
-    return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] === 'hidden';
+    return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] !== 'hidden';
   }
 
   render() {
