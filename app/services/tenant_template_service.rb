@@ -349,11 +349,9 @@ class TenantTemplateService
   end
 
   def yml_custom_fields
-    # No custom fields are required anymore because
-    # the user choices cannot be remembered.
+    
     CustomField.all.map do |c|
       yml_custom_field = {
-        'resource_type'        => c.resource_type,
         'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
         'key'                  => c.key,
         'input_type'           => c.input_type,
@@ -363,8 +361,12 @@ class TenantTemplateService
         'created_at'           => c.created_at.to_s,
         'updated_at'           => c.updated_at.to_s,
         'enabled'              => c.enabled,
+        'visible_to'           => c.visible_to,
         'code'                 => c.code
       }
+      # No user custom fields are required anymore because
+      # the user choices cannot be remembered.
+      yml_custom_field['required'] = c.required if c.resource_type != User.name
       store_ref yml_custom_field, c.id, :custom_field
       yml_custom_field
     end

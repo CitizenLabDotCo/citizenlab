@@ -30,6 +30,9 @@ module AdminApi
       @template['models']['polls/question']        = yml_poll_questions shift_timestamps: shift_timestamps
       @template['models']['polls/option']          = yml_poll_options shift_timestamps: shift_timestamps
       @template['models']['volunteering/cause']    = yml_volunteering_causes shift_timestamps: shift_timestamps
+      @template['models']['custom_form']           = yml_custom_forms shift_timestamps: shift_timestamps
+      @template['models']['custom_field']          = yml_custom_fields shift_timestamps: shift_timestamps
+      @template['models']['custom_field_option']   = yml_custom_field_options shift_timestamps: shift_timestamps
 
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
@@ -213,6 +216,51 @@ module AdminApi
         }
         store_ref yml_cause, c.id, :volunteering_cause
         yml_cause
+      end
+    end
+
+    def yml_custom_forms
+      yml_custom_form = {
+        'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(@project.custom_form.updated_at, shift_timestamps)&.iso8601
+      }
+      store_ref yml_custom_form, @project.custom_form.id, :custom_form
+      [yml_custom_form]
+    end
+
+    def yml_custom_fields
+      CustomField.where(resource: @project.custom_form).map do |c|
+        yml_custom_field = {
+          'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
+          'key'                  => c.key,
+          'input_type'           => c.input_type,
+          'title_multiloc'       => c.title_multiloc,
+          'description_multiloc' => c.description_multiloc,
+          'ordering'             => c.ordering,
+          'created_at'           => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+          'updated_at'           => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
+          'enabled'              => c.enabled,
+          'required'             => c.required,
+          'visible_to'           => c.visible_to,
+          'code'                 => c.code
+        }
+        store_ref yml_custom_field, c.id, :custom_field
+        yml_custom_field
+      end
+    end
+
+    def yml_custom_field_options
+      CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
+        yml_custom_field_option = {
+          'custom_field_ref'     => lookup_ref(c.custom_field_id, :custom_field),
+          'key'                  => c.key,
+          'title_multiloc'       => c.title_multiloc,
+          'ordering'             => c.ordering,
+          'created_at'           => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+          'updated_at'           => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_custom_field_option, c.id, :custom_field_option
+        yml_custom_field_option
       end
     end
 
