@@ -68,7 +68,15 @@ export interface Props {
   className?: string;
 }
 
-const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, showHeader, inModal, onComplete, onError }) => {
+const VerificationSteps = memo<Props>(({
+  className,
+  context,
+  initialActiveStep,
+  showHeader,
+  inModal,
+  onComplete,
+  onError
+}) => {
 
   const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep || 'method-selection');
   const [method, setMethod] = useState<IDLookupMethod | null>(null);

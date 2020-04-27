@@ -56,11 +56,12 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 10px;
+  padding-top: 8px;
 `;
 
 type InputProps = {
   metaData: ISignUpInMetaData;
+  hasNextStep?: boolean;
   onCompleted: (userId: string) => void;
   onGoToSignIn: () => void;
   onGoBack?: () => void;
@@ -249,7 +250,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { tenant, className } = this.props;
+    const { tenant, className, hasNextStep } = this.props;
     const { isInvitation } = this.props.metaData;
     const { formatMessage } = this.props.intl;
     const {
@@ -407,7 +408,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   <Button
                     id="e2e-signup-step1-button"
                     processing={processing}
-                    text={formatMessage(messages.signUp2)}
+                    text={formatMessage(hasNextStep ? messages.nextStep : messages.signUp2)}
                     onClick={this.handleOnSubmit}
                   />
                 </ButtonWrapper>

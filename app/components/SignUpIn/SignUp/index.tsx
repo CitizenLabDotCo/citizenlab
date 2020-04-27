@@ -161,7 +161,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     this.goToNextStep();
   }
 
-  handleVerificationCompleted = () => {
+  handleVerificationCompleted = async () => {
     this.goToNextStep();
   }
 
@@ -254,6 +254,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 {activeStep === 'password-signup' &&
                   <PasswordSignup
                     metaData={metaData}
+                    hasNextStep={steps.length > 0}
                     onCompleted={this.handlePasswordSignupCompleted}
                     onGoToSignIn={this.props.onGoToSignIn}
                     onGoBack={this.handleGoBackToSignUpOptions}
@@ -262,7 +263,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
                 {activeStep === 'verification' &&
                   <VerificationSteps
-                    context={null}
+                    context={metaData?.verificationContext || null}
                     initialActiveStep="method-selection"
                     inModal={!!metaData.inModal}
                     showHeader={false}
@@ -272,7 +273,9 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 }
 
                 {activeStep === 'custom-fields' &&
-                  <CustomFields onCompleted={this.handleCustomFieldsCompleted} />
+                  <CustomFields
+                    onCompleted={this.handleCustomFieldsCompleted}
+                  />
                 }
               </>
             )}

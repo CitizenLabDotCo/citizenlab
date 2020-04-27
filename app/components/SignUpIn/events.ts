@@ -14,7 +14,8 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
   const emittedMetaData: ISignUpInMetaData = {
     flow: metaData?.flow || 'signup',
     pathname: metaData?.pathname || window.location.pathname,
-    verification: !!metaData?.verification,
+    verification: metaData?.verification,
+    verificationContext: metaData?.verificationContext,
     error: !!metaData?.error,
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,

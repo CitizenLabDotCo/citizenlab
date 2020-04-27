@@ -93,6 +93,10 @@ export default defineMessages({
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
   },
+  nextStep: {
+    id: 'app.containers.SignUp.nextStep',
+    defaultMessage: 'Next step',
+  },
   signUp2: {
     id: 'app.containers.SignUp.signUp2',
     defaultMessage: 'Sign up',
@@ -135,7 +139,7 @@ export default defineMessages({
   },
   readAgreeTo: {
     id: 'app.containers.SignUp.readAgreeTo',
-    defaultMessage: 'I have read and agree to the {link}',
+    defaultMessage: 'I have read and agree to the {link}.',
   },
   emailApproval: {
     id: 'app.containers.SignUp.emailApproval',
@@ -215,7 +219,7 @@ export default defineMessages({
   },
   emailConsent: {
     id: 'app.containers.SignUp.emailConsent',
-    defaultMessage: 'By clicking ‘Continue’, you agree to receive emails from this platform. You can select which emails you wish to receive from your user settings.',
+    defaultMessage: 'By signing up, you agree to receive emails from this platform. You can select which emails you wish to receive from your user settings.',
   },
   headerSubtitle: {
     id: 'app.containers.SignUp.headerSubtitle',
@@ -236,5 +240,9 @@ export default defineMessages({
   backToSignUpOptions: {
     id: 'app.containers.SignUp.backToSignUpOptions',
     defaultMessage: 'Go back to sign up options',
+  },
+  completeSignUp: {
+    id: 'app.containers.SignUp.completeSignUp',
+    defaultMessage: 'Complete sign up',
   }
 });

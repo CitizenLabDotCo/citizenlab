@@ -114,7 +114,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     const isInvitation = endsWith(pathname, 'invite');
     const token = isString(query?.token) ? query.token : undefined;
     const inModal = false;
-    const verification = false;
+    const verification = undefined;
 
     return (
       <>

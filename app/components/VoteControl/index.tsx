@@ -450,8 +450,17 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
     if (!voting) {
       if (isNilOrError(authUser) && (votingEnabled || votingDisabledReason === 'not_verified')) {
+        const currentPhase = getCurrentPhase(phases ? phases.map(phase => phase.data) : null);
+        const pcType = phases ? 'phase' : 'project';
+        const pcId = phases ? currentPhase?.id : project?.data?.id;
+
         openSignUpInModal({
           verification: votingDisabledReason === 'not_verified',
+          verificationContext: !!(votingDisabledReason === 'not_verified' && pcId && pcType) ? {
+            action: 'voting',
+            id: pcId,
+            type: pcType
+          } : undefined,
           action: () => this.vote(voteMode)
         });
       } else if (!isNilOrError(authUser) && (votingEnabled || (cancellingEnabled && isTryingToUndoVote))) {

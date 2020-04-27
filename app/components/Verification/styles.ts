@@ -36,7 +36,7 @@ export const Title = styled.h1`
 export const Subtitle = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.large}px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: normal;
 `;
 

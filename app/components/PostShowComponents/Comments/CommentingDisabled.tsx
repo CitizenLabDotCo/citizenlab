@@ -14,9 +14,6 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 // services
 import { IIdeaData } from 'services/ideas';
 
-// utils
-import { openSignUpInModal } from 'components/SignUpIn/events';
-
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -91,8 +88,6 @@ class CommentingDisabled extends PureComponent<Props> {
           }
         });
       }
-    } else {
-      openSignUpInModal({ verification: true });
     }
   }
 
