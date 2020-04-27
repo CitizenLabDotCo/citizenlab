@@ -93,19 +93,18 @@ const Content = styled.div`
 `;
 
 const Context = styled.div`
-  flex: 1 1 auto;
+  width:100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-right: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
-    margin: 20px 0 30px;
+    margin-bottom: 25px;
   `}
 `;
 
@@ -150,28 +149,24 @@ const Or = styled.span`
 `;
 
 const ButtonsContainer = styled.div`
-  flex: 1 1 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
   &.inModal {
     &.withContext {
-      padding-left: 40px;
-      padding-right: 40px;
-      padding-top: 32px;
-      padding-bottom: 32px;
+      padding-left: 30px;
+      padding-right: 30px;
+      padding-top: 30px;
+      padding-bottom: 30px;
       background: ${colors.background};
       border-radius: ${(props: any) => props.theme.borderRadius};
-    }
 
-    &.withoutContext {
-      width: 100%;
+      ${media.smallerThanMinTablet`
+        padding: 15px;
+      `}
     }
-
-    ${media.smallerThanMinTablet`
-      padding: 20px;
-    `}
   }
 `;
 

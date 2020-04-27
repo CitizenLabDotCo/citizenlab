@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import VerificationMethods from './VerificationMethods';
@@ -82,14 +81,6 @@ const VerificationSteps = memo<Props>(({
   const [method, setMethod] = useState<IDLookupMethod | null>(null);
 
   const verificationMethods = useVerificationMethods();
-
-  useEffect(() => {
-    // set the method immediatly on mount if only 1 method is present in data returned by the API
-    if (!isNilOrError(verificationMethods) && verificationMethods.data.length === 1) {
-      setMethod(verificationMethods.data[0] as any);
-      setActiveStep(verificationMethods.data[0].attributes.name);
-    }
-  }, [verificationMethods]);
 
   useEffect(() => {
     if (activeStep === 'success' && onComplete) {
