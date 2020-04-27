@@ -564,6 +564,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
     if (!isNilOrError(ideaCustomFields)) {
+      console.log(ideaCustomFieldsSchemas);
       const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
       const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
       const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
