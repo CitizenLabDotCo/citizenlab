@@ -349,7 +349,6 @@ class TenantTemplateService
   end
 
   def yml_custom_fields
-    
     CustomField.all.map do |c|
       yml_custom_field = {
         'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
@@ -490,7 +489,7 @@ class TenantTemplateService
         'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
-        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field),
+        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_form),
         'admin_publication_attributes' => { 
           'publication_status'         => p.admin_publication.publication_status,
           'ordering'                   => p.admin_publication.ordering,
