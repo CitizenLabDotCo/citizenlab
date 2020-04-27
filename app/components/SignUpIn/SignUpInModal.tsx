@@ -7,6 +7,11 @@ import { TSignUpSteps } from 'components/SignUpIn/SignUp';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
+import useParticipationConditions from 'hooks/useParticipationConditions';
+
+// utils
+import { isNilOrError } from 'utils/helperUtils';
+import { isProjectContext } from 'components/Verification/VerificationSteps';
 
 // events
 import { openSignUpInModal$, closeSignUpInModal$, signUpActiveStepChange$ } from 'components/SignUpIn/events';
@@ -26,7 +31,13 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const isMounted = useIsMounted();
   const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(undefined);
   const [signUpActiveStep, setSignUpActiveStep] = useState<TSignUpSteps | null| undefined>(undefined);
+
+  const participationConditions = useParticipationConditions(metaData?.verificationContext && isProjectContext(metaData?.verificationContext) ? metaData?.verificationContext : null);
+
   const opened = !!metaData;
+  const hasParticipationConditions = !isNilOrError(participationConditions) && participationConditions.length > 0;
+  const modalWidth = !!(signUpActiveStep === 'verification' && hasParticipationConditions) ? 820 : 550;
+  const modalNoClose = !!(signUpActiveStep === 'custom-fields' || signUpActiveStep === 'verification');
 
   useEffect(() => {
     if (isMounted() && onMounted) {
@@ -61,12 +72,12 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
   return (
     <Modal
-      width={550}
+      width={modalWidth}
       noPadding={true}
       opened={opened}
       close={onClose}
       closeOnClickOutside={false}
-      noClose={signUpActiveStep === 'custom-fields'}
+      noClose={modalNoClose}
     >
       <Container className={className}>
         {opened && metaData &&
