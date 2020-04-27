@@ -11,6 +11,6 @@ interface Props {
 }
 
 export default (props: Props) => {
-  const customFields = useIdeaCustomFields({ projectId: props.projectId });
-  return (props.children as children)(customFields);
+  const ideaCustomFields = useIdeaCustomFields({ projectId: props.projectId });
+  return (props.children as children)(ideaCustomFields);
 };
