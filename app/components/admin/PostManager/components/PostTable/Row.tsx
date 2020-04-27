@@ -79,6 +79,7 @@ export default class Row extends React.PureComponent<Props> {
 
   render() {
     const { type, post, selection, activeFilterMenu, phases, statuses, className } = this.props;
+
     if (type === 'AllIdeas' || type === 'ProjectIdeas') {
       return (
         <Suspense fallback={null}>
