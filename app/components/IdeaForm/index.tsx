@@ -340,44 +340,84 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   validateTopics = (selectedTopics: string[]) => {
-    const { ideaCustomFields } = this.state;
-    const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
+    const { ideaCustomFieldsSchemas, locale } = this.state;
 
-    if (topicsRequired && selectedTopics.length === 0) {
-      return <FormattedMessage {...messages.noTopicsError} />;
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const topicsRequired = this.isFieldRequired(
+        'topic_ids',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (topicsRequired && selectedTopics.length === 0) {
+        return <FormattedMessage {...messages.noTopicsError} />;
+      }
     }
 
     return null;
   }
 
   validateLocation = (address: string) => {
-    const { ideaCustomFields } = this.state;
-    const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
+    const { ideaCustomFieldsSchemas, locale } = this.state;
 
-    if (locationRequired && !address) {
-      return <FormattedMessage {...messages.noLocationError} />;
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const locationRequired = this.isFieldRequired(
+        'location',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (locationRequired && !address) {
+        return <FormattedMessage {...messages.noLocationError} />;
+      }
     }
 
     return null;
   }
 
   validateImage = (imageFiles: UploadFile[]) => {
-    const { ideaCustomFields } = this.state;
-    const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
+    const { ideaCustomFieldsSchemas, locale } = this.state;
 
-    if (imagesRequired && imageFiles.length === 0) {
-      return <FormattedMessage {...messages.noImageError} />;
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const imagesRequired = this.isFieldRequired(
+        'images',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (imagesRequired && imageFiles.length === 0) {
+        return <FormattedMessage {...messages.noImageError} />;
+      }
     }
 
     return null;
   }
 
   validateAttachments = (ideaFiles: UploadFile[]) => {
-    const { ideaCustomFields } = this.state;
-    const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
+    const { ideaCustomFieldsSchemas, locale } = this.state;
 
-    if (attachmentsRequired && ideaFiles.length === 0) {
-      return <FormattedMessage {...messages.noAttachmentsError} />;
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const attachmentsRequired = this.isFieldRequired(
+        'attachments',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (attachmentsRequired && ideaFiles.length === 0) {
+        return <FormattedMessage {...messages.noAttachmentsError} />;
+      }
     }
 
     return null;
@@ -518,21 +558,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   isFieldRequired = (
-    ideaCustomFields: IIdeaCustomFields | null,
-    fieldKey: CustomFieldCodes
+    fieldCode: CustomFieldCodes,
+    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    locale: Locale
   ) => {
-    if (
-      !isNilOrError(ideaCustomFields) &&
-      ideaCustomFields.data.length > 0
-    ) {
-      const field = ideaCustomFields.data.find(field => field.attributes.key === fieldKey);
-
-      if (field) {
-        return field.attributes.required;
-      }
-    }
-
-    return false;
+    return ideaCustomFieldsSchemas.json_schema_multiloc[locale].required.includes(fieldCode);
   }
 
   render() {
@@ -563,15 +593,14 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
-    if (!isNilOrError(ideaCustomFields)) {
-      console.log(ideaCustomFieldsSchemas);
+    if (
+      !isNilOrError(ideaCustomFields) &&
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
       const topicsEnabled = this.isFieldEnabled(ideaCustomFields, 'topic_ids');
       const locationEnabled = this.isFieldEnabled(ideaCustomFields, 'location');
       const attachmentsEnabled = this.isFieldEnabled(ideaCustomFields, 'attachments');
-      const topicsRequired = this.isFieldRequired(ideaCustomFields, 'topic_ids');
-      const locationRequired = this.isFieldRequired(ideaCustomFields, 'location');
-      const attachmentsRequired = this.isFieldRequired(ideaCustomFields, 'attachments');
-      const imagesRequired = this.isFieldRequired(ideaCustomFields, 'images');
 
       return (
         <Form id="idea-form" className={className}>
@@ -581,7 +610,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormLabel
                 htmlFor="title"
                 labelMessage={messages.title}
-                optionality="required"
+                optionality={this.isFieldRequired('title', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
               />
               <Input
@@ -602,7 +631,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 id="editor-label"
                 htmlFor="editor"
                 labelMessage={messages.descriptionTitle}
-                optionality="required"
+                optionality={this.isFieldRequired('body', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
               />
               <QuillEditor
@@ -652,7 +681,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 <FormLabel
                   htmlFor="topics"
                   labelMessage={messages.topicsTitle}
-                  optionality={topicsRequired ? 'required' : 'optional'}
+                  optionality={this.isFieldRequired('topic_ids', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
                   subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
                 />
                 <TopicsPicker
@@ -668,7 +697,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormElement>
                 <FormLabel
                   labelMessage={messages.locationTitle}
-                  optionality={locationRequired ? 'required' : 'optional'}
+                  optionality={this.isFieldRequired('location', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
                   subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
                 >
                   <LocationInput
@@ -689,7 +718,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormLabel
                 htmlFor="idea-image-dropzone"
                 labelMessage={messages.imageUploadTitle}
-                optionality={imagesRequired ? 'required' : 'optional'}
+                optionality={this.isFieldRequired('images', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
               />
               <ImagesDropzone
@@ -709,7 +738,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormElement id="e2e-idea-file-upload">
                 <FormLabel
                   labelMessage={messages.attachmentsTitle}
-                  optionality={attachmentsRequired ? 'required' : 'optional'}
+                  optionality={this.isFieldRequired('attachments', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
                   subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
                 >
                   <FileUploader
