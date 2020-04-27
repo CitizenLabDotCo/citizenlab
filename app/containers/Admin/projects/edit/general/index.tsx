@@ -58,6 +58,7 @@ import { fontSizes } from 'utils/styleUtils';
 // typings
 import { CLError, IOption, Locale, Multiloc, UploadFile } from 'typings';
 import { isNilOrError } from 'utils/helperUtils';
+import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 const timeout = 350;
 
@@ -585,8 +586,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
         this.processing$.next(false);
 
-        if (isNewProject) {
-          eventEmitter.emit('AdminProjectEditGeneral', 'NewProjectCreated', null);
+        if (isNewProject && projectId) {
+          eventEmitter.emit<INewProjectCreatedEvent>('AdminProjectEditGeneral', 'NewProjectCreated', {
+            projectId
+          });
         }
       } catch (errors) {
         // const cannotContainIdeasError = get(errors, 'json.errors.base', []).some((item) => get(item, 'error') === 'cannot_contain_ideas');
