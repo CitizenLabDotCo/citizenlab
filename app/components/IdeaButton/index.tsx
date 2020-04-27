@@ -130,6 +130,11 @@ class IdeaButton extends PureComponent<Props> {
         trackEventByName(tracks.signUpInModalOpened);
         openSignUpInModal({
           verification: postingDisabledReason === 'not_verified',
+          verificationContext: !!(postingDisabledReason === 'not_verified' && pcId && pcType) ? {
+            action: 'posting',
+            id: pcId,
+            type: pcType
+          } : undefined,
           action: () => clHistory.push(`/projects/${project.attributes.slug}/ideas/new`)
         });
       }

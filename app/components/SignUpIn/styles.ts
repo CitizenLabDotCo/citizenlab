@@ -79,7 +79,11 @@ export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
 export const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
   ${props => props.inModal && css`
     padding-top: 20px;
-    max-height: calc(85vh - 150px);
+    max-height: calc(90vh - 150px);
+
+    ${media.smallerThanMinTablet`
+      max-height: calc(85vh - 150px);
+    `}
   `}
 
   ${props => !props.inModal && css`

@@ -11,6 +11,9 @@ import SignIn from 'components/SignUpIn/SignIn';
 // styling
 import styled from 'styled-components';
 
+// typings
+import { ProjectContext } from 'components/Verification/VerificationSteps';
+
 const Container = styled.div``;
 
 export type ISignUpInActionType = 'upvote' | 'downvote' | 'comment' | 'post';
@@ -22,7 +25,8 @@ export type TSignUpInFlow = 'signup' | 'signin';
 export interface ISignUpInMetaData {
   flow: TSignUpInFlow;
   pathname: string;
-  verification: boolean;
+  verification?: boolean;
+  verificationContext?: ProjectContext;
   error?: boolean;
   isInvitation?: boolean;
   token?: string;

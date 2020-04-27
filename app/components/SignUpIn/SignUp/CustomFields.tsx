@@ -45,6 +45,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: -15px;
 
   ${media.smallerThanMinTablet`
     flex-direction: column;
@@ -161,7 +162,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
               <Button
                 id="e2e-signup-step3-button"
                 processing={processing}
-                text={formatMessage(messages.submit)}
+                text={formatMessage(messages.completeSignUp)}
                 onClick={this.handleOnSubmitButtonClick}
               />
               {!customFieldsSchema.hasRequiredFields &&

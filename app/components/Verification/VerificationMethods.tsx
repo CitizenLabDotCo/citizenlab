@@ -110,8 +110,9 @@ const Context = styled.div`
 `;
 
 const ContextLabel = styled.div`
-  color: ${colors.label};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
+  font-weight: 400;
   line-height: normal;
   margin-bottom: 17px;
 `;
@@ -155,16 +156,17 @@ const ButtonsContainer = styled.div`
   align-items: stretch;
 
   &.inModal {
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 32px;
-    padding-bottom: 32px;
-    /* background: ${colors.background}; */
-    /* border-radius: ${(props: any) => props.theme.borderRadius}; */
+    &.withContext {
+      padding-left: 40px;
+      padding-right: 40px;
+      padding-top: 32px;
+      padding-bottom: 32px;
+      background: ${colors.background};
+      border-radius: ${(props: any) => props.theme.borderRadius};
+    }
 
     &.withoutContext {
       width: 100%;
-      max-width: 480px;
     }
 
     ${media.smallerThanMinTablet`
@@ -275,14 +277,11 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
                 id={`e2e-${method.attributes.name}-button`}
                 className={index + 1 === filteredVerificationMethods.length ? 'last' : ''}
                 icon="shieldVerified"
-                // iconColor={colors.clGreen}
-                // iconHoverColor={colors.clGreen}
                 iconSize="22px"
                 onClick={onSelectMethodButtonClick(method)}
                 buttonStyle="white"
                 fullWidth={true}
                 justify="left"
-                // padding="14px 20px"
                 whiteSpace="wrap"
                 borderColor="#ccc"
                 boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"

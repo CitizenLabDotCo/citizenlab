@@ -217,10 +217,20 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       const authError = endsWith(pathname, 'authentication-error');
       const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as SSOParams;
       const shouldComplete = !authUser?.data?.attributes?.registration_completed_at;
-      const { sso_response, sso_flow, sso_pathname, sso_verify } = urlSearchParams; // see services/singleSignOn.ts
+
+      // see services/singleSignOn.ts
+      const {
+        sso_response,
+        sso_flow,
+        sso_pathname,
+        sso_verification,
+        sso_verification_action,
+        sso_verification_id,
+        sso_verification_type
+      } = urlSearchParams;
 
       if (sso_response || shouldComplete) {
-        const shouldVerify = !authUser?.data?.attributes?.verified && sso_verify === 'true';
+        const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
 
         if (sso_response) {
           const redirectUrl = (!sso_pathname || endsWith(sso_pathname, ['complete-signup', 'authentication-error'])) ? '/' : sso_pathname;
@@ -231,7 +241,12 @@ class App extends PureComponent<Props & WithRouterProps, State> {
           openSignUpInModal({
             flow: authError && sso_flow ? sso_flow : 'signup',
             error: authError,
-            verification: shouldVerify
+            verification: !!sso_verification,
+            verificationContext: !!(sso_verification && sso_verification_action && sso_verification_id && sso_verification_type) ? {
+              action: sso_verification_action as any,
+              id: sso_verification_id as any,
+              type: sso_verification_type as any
+            } : undefined
           });
         }
       }
