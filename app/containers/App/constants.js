@@ -40,7 +40,7 @@ exports.locales = [
     'pl-PL',
     'kl-GL',
     'hu-HU',
-  ];
+];
 exports.graphqlLocales = [
     'en',
     'fr',
@@ -82,8 +82,8 @@ exports.appLocalePairs = {
     'pl-PL': 'Polski',
     'kl-GL': 'Kalaallisut',
     'hu-HU': 'Magyar',
-    ach: 'Acholi',
-  };
+    ach: 'Acholi'
+};
 exports.appGraphqlLocalePairs = {
     en: 'en',
     fr: 'fr',
@@ -106,8 +106,8 @@ exports.appGraphqlLocalePairs = {
     esCl: 'es-CL',
     plPl: 'pl-PL',
     klGl: 'kl-GL',
-    huHu: 'hu-HU',
-  };
+    huHu: 'hu-HU'
+};
 exports.shortenedAppLocalePairs = {
     en: 'English',
     'en-GB': 'English',
@@ -124,8 +124,8 @@ exports.shortenedAppLocalePairs = {
     'pl-PL': 'Polski',
     'kl-GL': 'Kalaallisut',
     'hu-HU': 'Magyar',
-    ach: 'Acholi',
-  };
+    ach: 'Acholi'
+};
 exports.appLocalesMomentPairs = {
     'en-GB': 'en-gb',
     'en-CA': 'en-ca',
@@ -140,5 +140,5 @@ exports.appLocalesMomentPairs = {
     'es-CL': 'es',
     'pl-PL': 'pl',
     'kl-GL': 'da',
-    'hu-HU': 'hu',
+    'hu-HU': 'hu'
 };
