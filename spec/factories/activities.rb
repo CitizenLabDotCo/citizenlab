@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :activity do
-    association :item, factory: :idea
+    item_type { "Idea" }
+    item_id { SecureRandom.uuid }
     action { "published" }
     acted_at {Time.now}
     user
