@@ -6,7 +6,7 @@ export type GetIdeaCustomFieldsSchemasChildProps = IIdeaCustomFieldsSchemas | un
 type children = (renderProps: GetIdeaCustomFieldsSchemasChildProps) => JSX.Element | null;
 
 interface Props {
-  projectId: string;
+  projectId: string | null;
   children?: children;
 }
 
