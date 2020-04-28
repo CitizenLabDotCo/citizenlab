@@ -68,7 +68,7 @@ pl:
     homepage_info_body: ""
     initiatives_title: Propozycje
     initiatives_body: >
-      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>What's a citizen's proposal?</h2> <p>As a resident of $|orgName| you can place your proposal on the agenda via this platform. These proposals are preferably concrete ideas that are linked to local policy and arise from a need, desire or dream. It can be your own proposal or a collaborative one. Maybe you'd like to change or improve an existing situation or start a new project.</p> <p>The involvement of $|orgName| in the implementation of your proposal must be both necessary and possible. In an ideal scenario, you're also available for further reflection or cooperation, but that is not an obligation. "Reducing the speed limit on the highway to 80 km/h" is therefore not a strong proposal, while "Turning the main street into a pedestrian area" is. So bring on your proposals! If more information is needed, you'll receive an update or reaction.</p><h2>Why post a proposal on this platform?</h2> <p>This is the official participation platform of $|orgName|, which offers the following benefits:</p> <ul> <li>$|orgName| is officially involved as this platform's owner, and actively monitors what happens here. When you post a proposal, the person in charge automatically receives a message. You don't have to contact them to make sure your proposal is taken into account.</li> <li>This platform has been developed specifically for official participatory actions, like citizens' proposals. Every element, from the user experience to the step-by-step approach, is built precisely for this purpose. When using traditional social media, your proposal could disappear into the overload of stimuli, and an ordinary e-mail quickly disappears into a full inbox.</li> <li>Your fellow citizens are also present on this platform. They can support and refine your proposal. The more creative your proposal is and the more support it manages to gather, the more chance it will be implemented!</li> </ul> <h2>How do you get started?</h2> <p>First, check whether your proposal meets the following criteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>What can you expect when your proposal reaches $|initiativesVotingThreshold| votes within $|initiativesDaysLimit| days?</h2> <p>$|initiativesThresholdReachedMessage|</p> <h2>What happens to the proposals that do not receive $|initiativesVotingThreshold| votes on time? </h2> <p>That happens, but don't worry. Your proposal will remain on the platform. The status of your proposal will automatically change to 'Expired'. As a result, voting will no longer be possible. If you wish, you can choose to delete your own proposal at any time.</p>
+      <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="b4e659ab-2830-48fd-b3ce-96e16856262f" height="374.3745928338762" width="819" alt=""> <h2>Co to jest propozycja obywatelska?</h2> <p>Jako mieszkaniec $|orgName|możesz umieścić swoją propozycję w agendzie za pośrednictwem tej platformy. Najlepiej, jeśli te propozycje są najlepiej pomysłami, które związanymi z lokalną polityką i wynikają z potrzeby, pragnienia lub marzenia. Może to być Twoja własna propozycja lub propozycja wspólna. Być może chciałbyś coś zmienić, poprawić lub rozpocząć nowy projekt.</p> <p>Zaangażowanie $|orgName|w realizację Twojej propozycji musi być zarówno potrzebne, jak i możliwe. Dobrze jeśli będziesz dostępny przy współpracy lub na dalszych etapach<li>, ale nie jest to obowiązkowe. "Zmniejszenie ograniczenia prędkości na autostradzie do 80 km/h" nie jest więc mocną propozycją, natomiast "Zamiana głównej ulicy w deptak" jest. Tak więc przedstawiaj śmiało swoje propozycje! Jeśli potrzebujesz więcej informacji, otrzymasz aktualizację i reakcję.</p><h2>Dlaczego warto publikować propozycje na tej platformie?</h2> <p>Jest to oficjalna platforma uczestnictwa $|orgName|, która oferuje następujące korzyści:</p> <ul> <li>$|orgName|jest oficjalnie zaangażowany jako właściciel tej platformy i aktywnie monitoruje to, co się tutaj dzieje. Kiedy publikujesz propozycję, osoba odpowiedzialna za nią automatycznie otrzymuje wiadomość. Nie musisz się z nią kontaktować, aby upewnić się, że Twoja propozycja jest rozpatrywana.</li> <li>Ta platforma została opracowana specjalnie z myślą o oddolnych wnioskach obywateli. Każdy jej element, począwszy od doświadczeń użytkownika po podejście "krok po kroku", jest budowany właśnie w tym celu. Podczas korzystania z tradycyjnych mediów społecznościowych, Twoja propozycja może zniknąć w napływie pojawiających się postów, a zwykły e-mail szybko znika w zapełnionej skrzynce odbiorczej.</li> <li>Twoi współobywatele są również obecni na tej platformie. Mogą wesprzeć i udoskonalić Twoją propozycję. Im bardziej kreatywna jest Twoja propozycja i im więcej wsparcia zdoła zebrać, tym większa szansa, że zostanie wdrożona!</li> </ul> <h2>Jak zacząć?</h2> <p>Po pierwsze, sprawdź, czy Twoja propozycja spełnia następujące kryteria:</p> <p>$|initiativesEligibilityCriteria|</p> <h2>Czego możesz oczekiwać, gdy Twoja propozycja osiągnie $|initiativesVotingThreshold|głosy w ciągu $|initiativesDaysLimit|dni?</h2> <p>$|initiativesThresholdReachedWiadomość|</p> <h2>Co stanie się z propozycjami, które nie otrzymają $|initiativesVotingThreshold|głosów na czas? </h2> <p>To się zdarza, ale nie martw się. Twoja propozycja pozostanie na platformie. Status Twojej propozycji automatycznie zmieni się na "Wygasła". W związku z tym głosowanie nie będzie już możliwe. Jeśli chcesz, możesz w każdej chwili zdecydować się na usunięcie swojej własnej propozycji.</p>
     initiatives_success_1_title: River Shuttle
     initiatives_success_1_body: >
       <p><em>Liège (BE)</em></p> <p><strong>Topic: Mobility</strong></p> <img style="margin-bottom: 30px" data-cl2-text-image-text-reference="3302395e-0a1b-4be8-8ab2-9fc0dff61d4d" alt=""> <h2>How it started</h2> <p>Liège, one of Belgium's biggest cities, opened up their participation platform to crowdsource input for their 'City Plan', a multi-annual strategic plan containing policy priorities for the city.</p> <p>After an open call for ideas, the city regrouped these ideas in bigger thematic clusters. The 'River Shuttle' proposal started from one of these clusters and was opened up for voting to all inhabitants.</p> <p>Over 15% of Liège's 200,000 inhabitants browsed the platform and casted their votes.</p> <h2>The project</h2> <p>Liège successfully already used a river shuttle service for touristic purposes during 2 summer seasons, allowing tourists to discover the city from the Meuse river. This inspired at least 9 citizens to give input on how they thought this service could be improved and expanded. What they had in common was:</p> <ul> <li>the desire to start focusing this shuttle service on commuters too,</li> <li>to expand the service from summer only to year-round, and</li> <li>to add several stops to the shuttle's trajectory.</li> </ul> <p>Their combined input collected a total of 1336 votes and was regrouped in 1 cluster, further shaped through comments of other citizens.</p> <p>The city of Liège listened to this proposal and decided to act upon it. Today, an in-depth study is being done on how the shuttle service can indeed be expanded. The results of this study will be used for future implementation.</p> <h2>Succes factors</h2> <ul> <li>Basis infrastructure present: The implementation of this proposal doesn't need to start from zero. The infrastructure, in this case the biggest cost, is already there, as is the experience with the exploitation and the legal framework.</li> <li>Part of wider process: Because this proposal originated in Liège's 'City Plan' process, the citizens behind the proposal benefited from the city-wide communication actions. Also, given the buy-in of decision-makers and the involvement of the city administration, a proper and structured follow-up was guaranteed.</li> <li>Linked to widely shared problem: Although the shuttle service suggested in this proposal will never be used by all Liégeois, it does aim to solve a bigger problem that does impact all people living in the city, namely traffic congestion.</li> </ul> <p><em>More context: </em><a href="https://www.citizenlab.co/case-studies-en/liege" target="_blank"><em>CitizenLab case Liège</em></a></p> <p>Do you know an inspiring citizen proposal that should be added to this list? <a href="mailto:support@citizenlab.co" target="_blank">Add your own inspiring citizen proposal to the list</a>!</p>
@@ -137,39 +137,39 @@ pl:
     default_eligibility_criteria: >
       <ul> <li>It must fall within the policy areas and competencies of local policy</li> <li>It serves the public interest rather than your individual interest</li> <li>It does not discriminate based on gender, race, age, or background</li> <li>It does not harm others</li> </ul>
   smart_group_rules:
-    is_empty: "%{property} has no value"
-    not_is_empty: "%{property} has any value"
+    is_empty: "%{property} nie ma żadnej wartości"
+    not_is_empty: "%{property} ma jakąkolwiek wartość"
     custom_field_checkbox:
-      is_checked: "%{property} checked"
-      not_is_checked: "%{property} not checked"
+      is_checked: "%{property} sprawdzona"
+      not_is_checked: "%{property} nie sprawdzona"
     custom_field_date:
-      is_before: "%{property} is before %{value}"
-      is_exactly: "%{property} is %{value}"
-      is_after: "%{property} is after %{value}"
+      is_before: "%{property} jest przed %{value}"
+      is_exactly: "%{property} jest %{value}"
+      is_after: "%{property} jest po %{value}"
     custom_field_number:
-      is_equal: "%{property} equals %{value}"
-      not_is_equal: "%{property} doesn't equal %{value}"
-      is_larger_than: "%{property} is larger than %{value}"
-      is_larger_than_or_equal: "%{property} is larger than or equals %{value}"
-      is_smaller_than: "%{property} is smaller than %{value}"
-      is_smaller_than_or_equal: "%{property} is smaller than or equals %{value}"
+      is_equal: "%{property} równa się %{value}"
+      not_is_equal: "%{property} nie równa się %{value}"
+      is_larger_than: "%{property} jest większy niż %{value}"
+      is_larger_than_or_equal: "%{property} jest większy lub równy %{value}"
+      is_smaller_than: "%{property} jest mniejsza niż %{value}"
+      is_smaller_than_or_equal: "%{property} jest mniejsza lub równa %{value}"
     custom_field_select:
-      has_value: "%{property} is %{value}"
-      not_has_value: "%{property} isn't %{value}"
+      has_value: "%{property} jest %{value}"
+      not_has_value: "%{property} nie jest %{value}"
     custom_field_text:
-      is: "%{property} is %{value}"
-      not_is: "%{property} is not %{value}"
-      contains: "%{property} contains %{value}"
-      not_contains: "%{property} doesn't contain %{value}"
-      begins_with: "%{property} begins with %{value}"
-      not_begins_with: "%{property} doesn't begin with %{value}"
-      ends_on: "%{property} ends on %{value}"
-      not_ends_on: "%{property} doesn't end on %{value}"
+      is: "%{property} jest %{value}"
+      not_is: "%{property} nie jest %{value}"
+      contains: "%{property} zaczyna się od %{value}"
+      not_contains: "%{property} nie zawiera %{value}"
+      begins_with: "%{property} zaczyna się od %{value}"
+      not_begins_with: "%{property} nie zaczyna się od %{value}"
+      ends_on: "%{property} kończy się na %{value}"
+      not_ends_on: "%{property} nie kończy się na %{value}"
     email:
       property: "e-mail"
     lives_in:
-      has_value_outside: "%{property} is somewhere else"
-      not_has_value_outside: "%{property} is not somewhere else"
+      has_value_outside: "%{property} jest gdzieś indziej"
+      not_has_value_outside: "%{property} nie jest gdzieś indziej"
     participated_in_idea_status:
       in: "Participation in an idea with status %{value}"
       not_in: "No participation in an idea with status %{value}"
