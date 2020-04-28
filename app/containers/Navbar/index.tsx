@@ -451,8 +451,6 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
       !ideaEditPage &&
       !initiativeEditPage;
 
-    console.log(adminPublications);
-
     return (
       <>
         {showMobileNav &&
