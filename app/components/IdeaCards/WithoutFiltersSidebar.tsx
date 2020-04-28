@@ -18,7 +18,8 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdeaCustomField, { GetIdeaCustomFieldChildProps } from 'resources/GetIdeaCustomField';
+import GetIdeaCustomFieldsSchemas, { GetIdeaCustomFieldsSchemasChildProps } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
 import messages from './messages';
@@ -34,6 +35,9 @@ import { rgba } from 'polished';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
+import {
+  CustomFieldCodes,
+} from 'services/ideaCustomFields';
 
 const Container = styled.div`
   width: 100%;
@@ -220,10 +224,11 @@ interface InputProps extends GetIdeasInputProps  {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   project: GetProjectChildProps;
-  locationCustomField: GetIdeaCustomFieldChildProps;
+  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -276,6 +281,24 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     this.setState({ selectedView });
   }
 
+  isFieldEnabled = (
+    fieldCode: CustomFieldCodes,
+  ) => {
+    /*
+      If IdeaCards are used in a location that's not inside a project,
+      and has no ideaCustomFields settings as such,
+      we fall back to true
+    */
+
+    const { ideaCustomFieldsSchemas, locale } = this.props;
+
+    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
+      return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] !== 'hidden';
+    }
+
+    return true;
+  }
+
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
 
@@ -291,7 +314,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       theme,
       allowProjectsFilter,
       showViewToggle,
-      locationCustomField
     } = this.props;
     const {
       queryParameters,
@@ -304,14 +326,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const showListView = (selectedView === 'card');
     const showMapView = (selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
-
-    /*
-      If IdeaCards are used in a location that's not inside a project,
-      and has no locationCustomfield settings as such,
-      we fall back to true so locationEnabled is not a blocker when we want to show the map view
-    */
-    const locationEnabled = !isNilOrError(locationCustomField) ? locationCustomField.attributes.enabled : true;
-
+    const locationEnabled = this.isFieldEnabled('location');
+    const topicsEnabled = this.isFieldEnabled('topic_ids');
     const showViewButtons = !!(locationEnabled && showViewToggle);
 
     return (
@@ -330,7 +346,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
             <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'} ${showViewButtons ? 'hasViewButtons' : ''}`}>
               <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
               {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
-              <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
+              {topicsEnabled && <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />}
             </DropdownFilters>
 
             {showViewButtons &&
@@ -401,17 +417,17 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
   windowSize: <GetWindowSize />,
   ideas: ({ render, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
-  project: ({ params, render }) => <GetProject projectId={params.slug}>{render}</GetProject>,
-  locationCustomField: ({ project, render }) => {
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
+  ideaCustomFieldsSchemas: ({ project, render }) => {
     return (
-      <GetIdeaCustomField
+      <GetIdeaCustomFieldsSchemas
         projectId={!isNilOrError(project) ? project.id : null}
-        customFieldCode="location"
       >
         {render}
-      </GetIdeaCustomField>
+      </GetIdeaCustomFieldsSchemas>
     );
   }
 });
