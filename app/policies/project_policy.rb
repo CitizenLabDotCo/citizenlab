@@ -146,6 +146,6 @@ class ProjectPolicy < ApplicationPolicy
   # Helper method that is not part of the pundit conventions but is used
   # publicly
   def moderate?
-    user&.active? && (user.admin? || user.project_moderator?(record.id))
+    user&.active? && (user.admin? || (record.id && user.project_moderator?(record.id)))
   end
 end

@@ -11,6 +11,8 @@ class Notification < ApplicationRecord
   belongs_to :spam_report, optional: true
   belongs_to :invite, optional: true
 
+  has_many :activities, as: :item
+
   scope :unread,  -> {where(read_at: nil)}
 
 
