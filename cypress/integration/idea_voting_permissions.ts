@@ -75,7 +75,7 @@ describe('Idea voting permissions', () => {
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
-      cy.get('.e2e-voting-disabled').click();
+      cy.get('.e2e-verify-button').click();
       cy.get('.e2e-verification-steps');
     });
 
