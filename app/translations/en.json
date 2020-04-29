@@ -1147,6 +1147,7 @@
   "app.containers.AdminPage.ProjectEvents.titleEvents": "Project events",
   "app.containers.AdminPage.ProjectEvents.titleLabel": "Event name",
   "app.containers.AdminPage.ProjectIdeaForm.collapseAll": "Collapse all fields",
+  "app.containers.AdminPage.ProjectIdeaForm.description": "Define the structure of an idea for this project.",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Field description",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Enabled",
   "app.containers.AdminPage.ProjectIdeaForm.enabledTooltip": "Makes this field visible in the idea form.",
