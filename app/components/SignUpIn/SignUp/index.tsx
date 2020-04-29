@@ -8,6 +8,7 @@ import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import PasswordSignup from 'components/SignUpIn/SignUp/PasswordSignup';
 import VerificationSteps from 'components/Verification/VerificationSteps';
 import CustomFields from 'components/SignUpIn/SignUp/CustomFields';
+import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContent } from 'components/SignUpIn/styles';
@@ -52,7 +53,7 @@ const SignUpHelperText = styled(QuillEditedContent)`
   padding-bottom: 25px;
 `;
 
-export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification' | 'custom-fields';
+export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification' | 'custom-fields' | 'success';
 
 export interface InputProps {
   metaData: ISignUpInMetaData;
@@ -99,6 +100,8 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
         nextActiveStep = 'verification';
       } else if (!authUser.attributes.registration_completed_at) { // logged in but not yet completed custom fields and custom fields enabled
         nextActiveStep = 'custom-fields';
+      } else if (authUser.attributes.registration_completed_at && props.metaData.inModal) {
+        nextActiveStep = 'success';
       } else {
         onSignUpCompleted();
       }
@@ -135,6 +138,8 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       this.setState({ activeStep: 'verification' });
     } else if (!isNilOrError(authUser) && !authUser.attributes.registration_completed_at) {
       this.setState({ activeStep: 'custom-fields' });
+    } else if (!isNilOrError(authUser) && authUser.attributes.registration_completed_at && this.props.metaData.inModal) {
+      this.setState({ activeStep: 'success' });
     } else {
       this.onSignUpCompleted();
     }
@@ -166,6 +171,10 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleCustomFieldsCompleted = () => {
+    this.goToNextStep();
+  }
+
+  handleSuccessOnClose = () => {
     this.onSignUpCompleted();
   }
 
@@ -210,20 +219,22 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
-          <StyledHeaderContainer inModal={!!metaData.inModal}>
-            <StyledHeaderTitle inModal={!!metaData.inModal}>
-              <FormattedMessage {...messages.signUp2} />
-            </StyledHeaderTitle>
+          {activeStep !== 'success' &&
+            <StyledHeaderContainer inModal={!!metaData.inModal}>
+              <StyledHeaderTitle inModal={!!metaData.inModal}>
+                <FormattedMessage {...messages.signUp2} />
+              </StyledHeaderTitle>
 
-            {!error && stepName &&
-              <HeaderSubtitle>
-                {showStepsCount
-                  ? <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
-                  : stepName
-                }
-              </HeaderSubtitle>
-            }
-          </StyledHeaderContainer>
+              {!error && stepName &&
+                <HeaderSubtitle>
+                  {showStepsCount
+                    ? <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
+                    : stepName
+                  }
+                </HeaderSubtitle>
+              }
+            </StyledHeaderContainer>
+          }
 
           <StyledModalContent inModal={!!metaData.inModal}>
             {error ? (
@@ -275,6 +286,12 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 {activeStep === 'custom-fields' &&
                   <CustomFields
                     onCompleted={this.handleCustomFieldsCompleted}
+                  />
+                }
+
+                {activeStep === 'success' &&
+                  <Success
+                    onClose={this.handleSuccessOnClose}
                   />
                 }
               </>

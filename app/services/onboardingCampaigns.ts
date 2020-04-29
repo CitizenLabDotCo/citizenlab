@@ -25,6 +25,6 @@ export function currentOnboardingCampaignsStream(streamParams: IStreamParams | n
 
 export async function dismissOnboardingCampaign(name: IOnboardingCampaignNames) {
   const response = await streams.add<IOnboardingCampaignsData>(`${API_PATH}/onboarding_campaigns/${name}/dismissal`, {});
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`] });
+  await streams.fetchAllWith({ apiEndpoint: [currentOnboardingCampaignsApiEndpoint] });
   return response;
 }

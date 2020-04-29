@@ -18,7 +18,8 @@ import Tippy from '@tippy.js/react';
 import Icon from 'components/UI/Icon';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
 
 // utils
@@ -40,43 +41,50 @@ const Container = styled.div``;
 
 const ButtonWrapper = styled.div``;
 
-const LockIcon = styled(Icon)`
+const TooltipContent = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 15px;
+`;
+
+const TooltipContentIcon = styled(Icon)`
   flex: 0 0 25px;
   width: 20px;
   height: 25px;
   margin-right: 1rem;
 `;
 
-const StyledA = styled.a`
-  padding: 0;
-  transition: all 100ms ease-out;
-
-  &:hover,
-  &:focus {
-    text-decoration: underline;
-  }
-`;
-
-const TooltipWrapper = styled.div`
+const TooltipContentText = styled.div`
+  flex: 1 1 auto;
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
-  display: flex;
-  align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  padding: 15px;
+  text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
-  a {
+  a, button {
     color: ${colors.clBlueDark};
+    font-size: ${fontSizes.base}px;
+    line-height: normal;
+    font-weight: 400;
+    text-align: left;
     text-decoration: underline;
+    white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
     word-break: break-all;
     word-break: break-word;
     hyphens: auto;
+    display: inline;
+    padding: 0px;
+    margin: 0px;
+    cursor: pointer;
+    transition: all 100ms ease-out;
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDark)};
@@ -98,9 +106,11 @@ interface InputProps extends ButtonContainerProps {
   participationContextType: IParticipationContextType | null;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-class IdeaButton extends PureComponent<Props> {
+interface State {}
+
+class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
   locationRef = window.location.href;
 
   disabledMessages: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
@@ -127,28 +137,12 @@ class IdeaButton extends PureComponent<Props> {
 
       // if not logged in
       if (isNilOrError(authUser) && !isNilOrError(project)) {
-        trackEventByName(tracks.signUpInModalOpened);
-        openSignUpInModal({
-          verification: postingDisabledReason === 'not_verified',
-          verificationContext: !!(postingDisabledReason === 'not_verified' && pcId && pcType) ? {
-            action: 'posting',
-            id: pcId,
-            type: pcType
-          } : undefined,
-          action: () => clHistory.push(`/projects/${project.attributes.slug}/ideas/new`)
-        });
+        this.signUp();
       }
 
       // if logged in but not verified and verification required
       if (!isNilOrError(authUser) && postingDisabledReason === 'not_verified' && pcType && pcId) {
-        trackEventByName(tracks.verificationModalOpened);
-        openVerificationModal({
-          context: {
-            action: 'posting',
-            id: pcId,
-            type: pcType
-          }
-        });
+        this.verify();
       }
 
       // if logegd in and posting allowed
@@ -162,8 +156,40 @@ class IdeaButton extends PureComponent<Props> {
     }
   }
 
-  onVerify = (event?: React.MouseEvent) => {
-    event && event.preventDefault();
+  signIn = (event?: React.MouseEvent) => {
+    this.signUpIn('signin')(event);
+  }
+
+  signUp = (event?: React.MouseEvent) => {
+    this.signUpIn('signup')(event);
+  }
+
+  signUpIn = (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
+    event?.preventDefault();
+
+    const { project, authUser, participationContextType, phaseId, projectId } = this.props;
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phaseId : projectId;
+    const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
+
+    if (isNilOrError(authUser) && !isNilOrError(project)) {
+      trackEventByName(tracks.signUpInModalOpened);
+      openSignUpInModal({
+        flow,
+        verification: postingDisabledReason === 'not_verified',
+        verificationContext: !!(postingDisabledReason === 'not_verified' && pcId && pcType) ? {
+          action: 'posting',
+          id: pcId,
+          type: pcType
+        } : undefined,
+        action: () => clHistory.push(`/projects/${project.attributes.slug}/ideas/new`)
+      });
+    }
+  }
+
+  verify = (event?: React.MouseEvent) => {
+    event?.preventDefault();
+
     const { participationContextType, projectId, phaseId } = this.props;
     const pcType = participationContextType;
     const pcId = pcType === 'phase' ? phaseId : projectId;
@@ -181,32 +207,36 @@ class IdeaButton extends PureComponent<Props> {
   }
 
   render() {
-    const { project, phase, authUser, className } = this.props;
+    const { project, phase, authUser, className, intl: { formatMessage } } = this.props;
     const { show, enabled, disabledReason } = getPostingPermission({ project, phase, authUser });
+
+    const verificationLink = (
+      <a href="" role="button" onClick={this.verify}>
+        {formatMessage(messages.verificationLinkText)}
+      </a>
+    );
+
+    const signUpLink = (
+      <a href="" role="button" onClick={this.signUp}>
+        {formatMessage(messages.signUpLinkText)}
+      </a>
+    );
+
+    const signInLink = (
+      <a href="" role="button" onClick={this.signIn}>
+        {formatMessage(messages.signInLinkText)}
+      </a>
+    );
 
     if (show) {
       const isPostingDisabled = (!enabled && !!disabledReason);
       const tippyContent = (!enabled && !!disabledReason) ? (
-        <TooltipWrapper id="tooltip-content" className="e2e-disabled-tooltip">
-          <LockIcon name="lock-outlined" ariaHidden />
-          <FormattedMessage
-            {...this.disabledMessages[disabledReason]}
-            values={{
-              verificationLink:
-                <StyledA href="" onClick={this.onVerify} className="tooltipLink">
-                  <FormattedMessage {...messages.verificationLinkText} />
-                </StyledA>,
-              signUpLink:
-                <StyledA href="/sign-up" className="tooltipLink">
-                  <FormattedMessage {...messages.signUpLinkText} />
-                </StyledA>,
-              signInLink:
-                <StyledA href="/sign-in" className="tooltipLink">
-                  <FormattedMessage {...messages.signInLinkText} />
-                </StyledA>,
-            }}
-          />
-        </TooltipWrapper>
+        <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
+          <TooltipContentIcon name="lock-outlined" ariaHidden />
+          <TooltipContentText>
+            <FormattedMessage {...this.disabledMessages[disabledReason]} values={{ verificationLink, signUpLink, signInLink }} />
+          </TooltipContentText>
+        </TooltipContent>
       ) : <></>;
 
       return (
@@ -248,8 +278,10 @@ const Data = adopt<DataProps, InputProps>({
   phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
 });
 
+const IdeaButtonWithHoC = injectIntl(IdeaButton);
+
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {(dataProps) => <IdeaButton {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaButtonWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

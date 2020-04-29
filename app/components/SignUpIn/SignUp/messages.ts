@@ -244,5 +244,13 @@ export default defineMessages({
   completeSignUp: {
     id: 'app.containers.SignUp.completeSignUp',
     defaultMessage: 'Complete sign up',
+  },
+  signUpSuccess: {
+    id: 'app.containers.SignUp.signUpSuccess',
+    defaultMessage: 'You have signed up successfully!',
+  },
+  close: {
+    id: 'app.containers.SignUp.close',
+    defaultMessage: 'Close',
   }
 });
