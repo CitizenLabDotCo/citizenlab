@@ -1158,7 +1158,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.save": "Save",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Your changes have been saved successfully.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
-  "app.containers.AdminPage.ProjectIdeaForm.subtitle": "Optionally, give your users some extra explanation about the different parts of an idea.",
   "app.containers.AdminPage.ProjectIdeaForm.title": "Idea form",
   "app.containers.AdminPage.ProjectIdeaForm.visibility": "Visibility on idea page",
   "app.containers.AdminPage.ProjectIdeaForm.visibleToAdmin": "Only visible to admins and project moderators",

@@ -7,9 +7,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.title',
     defaultMessage: 'Idea form',
   },
-  subtitle: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.subtitle',
-    defaultMessage: 'Configure what users see when they post an idea.',
+  description: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.description',
+    defaultMessage: 'Define the structure of an idea for this project.',
   },
   save: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.save',
