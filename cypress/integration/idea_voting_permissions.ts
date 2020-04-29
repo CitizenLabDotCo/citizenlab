@@ -28,44 +28,44 @@ describe('Idea voting permissions', () => {
     });
   });
 
-  describe('a project that requires verification on votes', () => {
+  describe('a project that requires verification to vote', () => {
     const firstName = randomString();
     const lastName = randomString();
     const email = randomEmail();
     const password = randomString();
 
-    // it('sends signed out user to log in, verifies the user and votes successfully', () => {
-    //   // try to vote while not signed in
-    //   cy.visit('projects/verified-ideation/ideas');
-    //   cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
-    //   cy.get('#e2e-project-ideas-page');
-    //   cy.get('#e2e-ideas-container');
-    //   cy.get('.e2e-ideacard-upvote-button').click();
+    it('sends non-registred user to sign up, verifies the user and votes successfully', () => {
+      // try to vote while not signed in
+      cy.visit('projects/verified-ideation/ideas');
+      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
+      cy.get('#e2e-project-ideas-page');
+      cy.get('#e2e-ideas-container');
+      cy.get('.e2e-ideacard-upvote-button').click();
 
-    //   // check if we're redirected to sign-up page and sign up
-    //   cy.get('.e2e-sign-up-page');
-    //   cy.get('.e2e-sign-up-container');
-    //   cy.get('#firstName').type(firstName);
-    //   cy.get('#lastName').type(lastName);
-    //   cy.get('#email').type(email);
-    //   cy.get('#password').type(password);
-    //   cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-    //   cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-    //   cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-    //   cy.get('#e2e-signup-step1-button').click();
+      // check if we're redirected to sign-up page and sign up
+      cy.get('.e2e-sign-up-page');
+      cy.get('.e2e-sign-up-container');
+      cy.get('#firstName').type(firstName);
+      cy.get('#lastName').type(lastName);
+      cy.get('#email').type(email);
+      cy.get('#password').type(password);
+      cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('#e2e-signup-step1-button').click();
 
-    //   // get verified
-    //   cy.get('#e2e-verification-methods');
-    //   cy.get('#e2e-verification-methods #e2e-bogus-button').click();
-    //   cy.get('#e2e-verification-bogus-form');
-    //   cy.get('#e2e-verification-bogus-submit-button').click();
+      // get verified
+      cy.get('#e2e-verification-methods');
+      cy.get('#e2e-verification-methods #e2e-bogus-button').click();
+      cy.get('#e2e-verification-bogus-form');
+      cy.get('#e2e-verification-bogus-submit-button').click();
 
-    //   // check if we're redirected to project's idea page and see the vote success modal
-    //   cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
-    //   cy.get('#e2e-project-ideas-page');
-    //   cy.get('#e2e-ideas-container');
-    //   cy.get('.e2e-programmtic-vote-success-modal');
-    // });
+      // check if we're redirected to project's idea page and see the vote success modal
+      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
+      cy.get('#e2e-project-ideas-page');
+      cy.get('#e2e-ideas-container');
+      cy.get('.e2e-programmtic-vote-success-modal');
+    });
 
     it('sends unverified users to the verification flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
@@ -75,50 +75,50 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-verification-steps');
     });
 
-  //   it('lets verified users vote', () => {
-  //     cy.setLoginCookie(verifiedEmail, verifiedPassword);
-  //     cy.visit('projects/verified-ideation/ideas');
-  //     cy.get('.e2e-ideacard-upvote-button');
-  //     cy.get('.e2e-ideacard-upvote-button').click();
-  //     cy.get('.e2e-vote-controls.up');
-  //   });
-  // });
+    it('lets verified users vote', () => {
+      cy.setLoginCookie(verifiedEmail, verifiedPassword);
+      cy.visit('projects/verified-ideation/ideas');
+      cy.get('.e2e-ideacard-upvote-button');
+      cy.get('.e2e-ideacard-upvote-button').click();
+      cy.get('.e2e-vote-controls.up');
+    });
+  });
 
-  // describe('a project that does not require verification', () => {
-  //   const firstName = randomString();
-  //   const lastName = randomString();
-  //   const email = randomEmail();
-  //   const password = randomString();
+  describe('a project that does not require verification', () => {
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
 
-  //   it('sends signed out user to log in and doesn\'t ask for verification', () => {
-  //     // Try to vote
-  //     cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
-  //     cy.acceptCookies();
-  //     cy.get('.e2e-ideacard-upvote-button').first().click();
+    it('sends signed out user to log in and doesn\'t ask for verification', () => {
+      // Try to vote
+      cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
+      cy.acceptCookies();
+      cy.get('.e2e-ideacard-upvote-button').first().click();
 
-  //     // Go to sign up page
-  //     cy.get('.e2e-register-button').click();
+      // Go to sign up page
+      cy.get('.e2e-register-button').click();
 
-  //     // Sign up
-  //     cy.get('.e2e-sign-up-container');
-  //     cy.get('#firstName').type(firstName);
-  //     cy.get('#lastName').type(lastName);
-  //     cy.get('#email').type(email);
-  //     cy.get('#password').type(password);
-  //     cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-  //     cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-  //     cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-  //     cy.get('#e2e-signup-step1-button').click();
+      // Sign up
+      cy.get('.e2e-sign-up-container');
+      cy.get('#firstName').type(firstName);
+      cy.get('#lastName').type(lastName);
+      cy.get('#email').type(email);
+      cy.get('#password').type(password);
+      cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('#e2e-signup-step1-button').click();
 
-  //     // Check if we're redirected to the project's idea overview page
-  //     cy.location('pathname').should('eq', '/en-GB/projects/an-idea-bring-it-to-your-council/ideas');
-  //     cy.get('#e2e-project-ideas-page');
-  //     cy.get('#e2e-ideas-container');
+      // Check if we're redirected to the project's idea overview page
+      cy.location('pathname').should('eq', '/en-GB/projects/an-idea-bring-it-to-your-council/ideas');
+      cy.get('#e2e-project-ideas-page');
+      cy.get('#e2e-ideas-container');
 
-  //     // Should there be an automatic vote here or do we try to vote after logging in?
-  //     cy.get('.e2e-ideacard-upvote-button');
-  //     cy.get('.e2e-verification-steps').should('not.exist');
-  //   });
+      // Should there be an automatic vote here or do we try to vote after logging in?
+      cy.get('.e2e-ideacard-upvote-button');
+      cy.get('.e2e-verification-steps').should('not.exist');
+    });
   });
 
   after(() => {
