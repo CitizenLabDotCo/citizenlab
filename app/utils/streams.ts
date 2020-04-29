@@ -61,10 +61,6 @@ class Streams {
 
   reset(authUser: IUser | null) {
     this.resourcesByDataId = {};
-    this.streamIdsByApiEndPointWithQuery = {};
-    this.streamIdsByApiEndPointWithoutQuery = {};
-    this.streamIdsByDataIdWithoutQuery = {};
-    this.streamIdsByDataIdWithQuery = {};
 
     this.streams[authApiEndpoint].observer.next(authUser);
 

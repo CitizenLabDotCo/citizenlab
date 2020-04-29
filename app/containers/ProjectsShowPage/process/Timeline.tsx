@@ -86,6 +86,12 @@ const HeaderFirstRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  ${media.smallerThanMinTablet`
+    align-items: flex-start;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  `}
 `;
 
 const HeaderSecondRow = styled.div`
@@ -106,6 +112,11 @@ const HeaderLeftSection = styled.div`
   align-items: center;
   padding-top: 8px;
   padding-bottom: 8px;
+
+  ${media.smallerThanMinTablet`
+    align-items: flex-start;
+    padding: 0px;
+  `}
 `;
 
 const HeaderRightSection = styled.div`
@@ -160,10 +171,10 @@ const HeaderTitleWrapper = styled.div`
   }
 
   ${media.smallerThanMinTablet`
-    min-height: 80px;
+    min-height: unset;
     flex-direction: column;
     align-items: stretch;
-    justify-content: center;
+    justify-content: flex-start;
     margin-right: 0px;
   `}
 `;
@@ -187,11 +198,11 @@ const HeaderTitle = styled.h2`
 `;
 
 const MobileDate = styled.div`
-  color: #999;
+   color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
-  margin-top: 1px;
+  margin-top: 3px;
   display: none;
 
   ${media.smallerThanMinTablet`
@@ -208,11 +219,12 @@ const HeaderSubtitle = styled.div`
 `;
 
 const HeaderDate = styled.div`
-  color: #000;
+  color: ${colors.label};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
   line-height: 16px;
   white-space: nowrap;
+  margin-right: 15px;
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -220,7 +232,9 @@ const HeaderDate = styled.div`
 `;
 
 const IdeaButtonDesktop = styled(IdeaButton)`
-  margin-left: 20px;
+  & > div {
+    margin-right: 15px;
+  }
 
   ${media.smallerThanMinTablet`
     display: none;
@@ -230,13 +244,12 @@ const IdeaButtonDesktop = styled(IdeaButton)`
 const IdeaButtonMobile = styled(IdeaButton)`
   flex: 1;
   width: 100%;
-  padding-top: 12px;
+  padding-top: 10px;
   padding-bottom: 10px;
 `;
 
 const PhaseNavigation = styled.div`
   display: flex;
-  margin-left: 20px;
 `;
 
 const PhaseButton = styled(Button)``;
@@ -654,7 +667,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                         icon="chevron-left"
                         iconSize="15px"
                         buttonStyle="secondary"
-                        padding="8px 8px"
+                        padding="10px"
                         disabled={selectedPhaseId === phases.data[0].id}
                         ariaLabel={this.props.intl.formatMessage(messages.goToPreviousPhase)}
                         className="e2e-previous-phase"
@@ -664,7 +677,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                         icon="chevron-right"
                         iconSize="15px"
                         buttonStyle="secondary"
-                        padding="8px 8px"
+                        padding="10px"
                         disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
                         ariaLabel={this.props.intl.formatMessage(messages.goToNextPhase)}
                       />

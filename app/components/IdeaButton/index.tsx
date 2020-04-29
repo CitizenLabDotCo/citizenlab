@@ -240,7 +240,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
       ) : <></>;
 
       return (
-        <Container className={className}>
+        <Container className={className || ''}>
           <Tippy
             enabled={isPostingDisabled}
             interactive={true}

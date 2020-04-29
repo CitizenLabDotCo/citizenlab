@@ -1,6 +1,7 @@
 import React, { memo,  useCallback } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
+import clHistory from 'utils/cl-router/history';
 
 // components
 import AuthProviderButton from './AuthProviderButton';
@@ -22,7 +23,7 @@ import { Options, Option } from 'components/SignUpIn/styles';
 
 // typings
 import { SSOProvider } from 'services/singleSignOn';
-import { TSignUpInFlow } from 'components/SignUpIn';
+import { ISignUpInMetaData } from 'components/SignUpIn';
 
 const Container = styled.div`
   display: flex;
@@ -91,7 +92,7 @@ const SubSocialButtonLink = styled.a`
 `;
 
 interface InputProps {
-  flow: TSignUpInFlow;
+  metaData: ISignUpInMetaData;
   className?: string;
   onAuthProviderSelected: (selectedMethod: AuthProvider) => void;
   goToOtherFlow: () => void;
@@ -111,7 +112,7 @@ interface Props extends InputProps, DataProps { }
 export type AuthProvider = 'email' | SSOProvider;
 
 const AuthProviders = memo<Props & InjectedIntlProps>(({
-  flow,
+  metaData,
   className,
   onAuthProviderSelected,
   goToOtherFlow,
@@ -126,6 +127,8 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
 
   const azureProviderName = !isNilOrError(tenant) ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name : null;
 
+  const { flow, inModal } = metaData;
+
   const handleOnAuthProviderSelected = useCallback((authProvider: AuthProvider) => {
     onAuthProviderSelected(authProvider);
   }, [onAuthProviderSelected]);
@@ -137,7 +140,12 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
 
   const handleGoToOtherFlow = useCallback((event: React.FormEvent) => {
     event.preventDefault();
-    goToOtherFlow();
+
+    if (inModal) {
+      goToOtherFlow();
+    } else {
+      clHistory.push(flow === 'signin' ? '/sign-up' : '/sign-in')
+    }
   }, [goToOtherFlow]);
 
   return (

@@ -256,7 +256,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
                 {activeStep === 'auth-providers' &&
                   <AuthProviders
-                    flow={metaData.flow}
+                    metaData={metaData}
                     onAuthProviderSelected={this.handleOnAuthProviderSelected}
                     goToOtherFlow={this.handleGoToSignInFlow}
                   />
