@@ -473,6 +473,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       attachmentsError
     });
 
+    // scroll to erroneous title/description fields
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
@@ -481,11 +482,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       setTimeout(() => this.descriptionElement && this.descriptionElement.focus(), 300);
     }
 
-    if (!pbContext) {
-      return (!titleError && !descriptionError);
-    }
-
-    return (
+    const hasError = (
       !titleError &&
       !descriptionError &&
       !budgetError &&
@@ -494,6 +491,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       !imageError &&
       !attachmentsError
     );
+
+    return hasError;
   }
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
