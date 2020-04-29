@@ -36,12 +36,15 @@ class CustomField < ApplicationRecord
     %w(select multiselect).include?(input_type)
   end
 
-  def visible_for? user
+  def visible_for? user, project=nil
+    # For efficiency reasons, the project should
+    # be passed explicitely for idea custom 
+    # fields.
     case visible_to
     when 'public'
       true
     when 'admins'
-      user&.admin? || (resource_type == 'Project' && user.project_moderator?(resource_id))
+      user&.admin? || (project && user.project_moderator?(project.id))
     else
       raise "Method does not support #{visible_to}"
     end

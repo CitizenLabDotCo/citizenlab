@@ -81,7 +81,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     # Some projects don't have a custom form yet.
     # Show the built-in custom fields by default
     # in this case.
-    !object.project.custom_form || find_custom_field(object, code)&.visible_for?(current_user(params))
+    !object.project.custom_form || find_custom_field(object, code)&.visible_for?(current_user(params), object.project)
   end
 
   def self.find_custom_field object, code
