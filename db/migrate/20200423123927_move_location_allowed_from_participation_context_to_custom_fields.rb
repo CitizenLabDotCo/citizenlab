@@ -6,7 +6,9 @@ class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::
       # enabled by default, and so only when
       # disabled changes are required.
       custom_form = project.custom_form || CustomForm.create(project: project)
-      if !custom_form.custom_fields.find_by(code: 'location')
+      if custom_form.custom_fields.find_by(code: 'location')
+        custom_form.custom_fields.find_by(code: 'location').update!(enabled: false)
+      else
         CustomField.create(
           resource: custom_form,
           key: 'location',
@@ -35,7 +37,9 @@ class MoveLocationAllowedFromParticipationContextToCustomFields < ActiveRecord::
       # disabled changes are required.
       if project.phases.where(participation_method: 'ideation').present? && project.phases.where(participation_method: 'ideation').pluck(:location_allowed).none?
         custom_form = project.custom_form || CustomForm.create(project: project)
-        if !custom_form.custom_fields.find_by(code: 'location')
+        if custom_form.custom_fields.find_by(code: 'location')
+          custom_form.custom_fields.find_by(code: 'location').update!(enabled: false)
+        else
           CustomField.create(
             resource: custom_form,
             key: 'location',
