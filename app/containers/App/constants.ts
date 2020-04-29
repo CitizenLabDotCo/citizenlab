@@ -35,7 +35,10 @@ export const locales = [
   'da-DK',
   'nb-NO',
   'es-ES',
-  'es-CL'
+  'es-CL',
+  'pl-PL',
+  'kl-GL',
+  'hu-HU',
 ];
 
 export const graphqlLocales = [
@@ -57,7 +60,10 @@ export const graphqlLocales = [
   'daDk',
   'nbNo',
   'esEs',
-  'esCl'
+  'esCl',
+  'plPl',
+  'klGl',
+  'huHu',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -74,6 +80,9 @@ export const appLocalePairs = {
   'nb-NO': 'Norsk (Bokmål)',
   'es-ES': 'Español (España)',
   'es-CL': 'Español (Chile)',
+  'pl-PL': 'Polski',
+  'kl-GL': 'Kalaallisut',
+  'hu-HU': 'Magyar',
   ach: 'Acholi',
 };
 
@@ -96,7 +105,10 @@ export const appGraphqlLocalePairs = {
   daDk: 'da-DK',
   nbNo: 'nb-NO',
   esEs: 'es-ES',
-  esCl: 'es-CL'
+  esCl: 'es-CL',
+  plPl: 'pl-PL',
+  klGl: 'kl-GL',
+  huHu: 'hu-HU',
 };
 
 export const shortenedAppLocalePairs = {
@@ -112,6 +124,9 @@ export const shortenedAppLocalePairs = {
   'nb-NO': 'Norsk',
   'es-ES': 'Español',
   'es-CL': 'Español',
+  'pl-PL': 'Polski',
+  'kl-GL': 'Kalaallisut',
+  'hu-HU': 'Magyar',
   ach: 'Acholi',
 };
 
@@ -127,4 +142,7 @@ export const appLocalesMomentPairs = {
     'nb-NO': 'nb',
     'es-ES': 'es',
     'es-CL': 'es',
+    'pl-PL': 'pl',
+    'kl-GL': 'da',
+    'hu-HU': 'hu',
 };
