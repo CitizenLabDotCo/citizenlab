@@ -1328,7 +1328,7 @@
   "app.containers.AdminPage.groups.permissions.members": "{count, plural, =0 {No members} one {1 member} other {{count} members}}",
   "app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation": "Are you sure?",
   "app.containers.AdminPage.groups.permissions.moderatorsNotFound": "Moderators not found",
-  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Her vises ikke noget, fordi der ikke er nogen handlinger, som brugeren kan udføre i dette projekt.",
+  "app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject": "Nothing is shown, because there are no actions the user can take in this project.",
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pending invitation",
   "app.containers.AdminPage.groups.permissions.permissionAction_budgeting": "Spending budget",
   "app.containers.AdminPage.groups.permissions.permissionAction_commenting": "Commenting",
