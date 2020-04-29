@@ -60,6 +60,7 @@ module AdminApi
     end
 
     def lookup_ref id, model_name
+      return nil if !id
       if model_name.kind_of?(Array)
         model_name.each do |n|
           return @refs[n][id] if @refs[n][id]
