@@ -4,7 +4,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // typings
-import { IParticipationContextType } from 'typings';
+import { IParticipationContextType, Locale } from 'typings';
+import {
+  IIdeaCustomFieldsSchemas,
+  CustomFieldCodes,
+} from 'services/ideaCustomFields';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
@@ -52,6 +56,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetIdeaCustomFieldsSchemas, { GetIdeaCustomFieldsSchemasChildProps } from 'resources/GetIdeaCustomFieldsSchemas';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -312,6 +317,7 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
+  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface InputProps {
@@ -456,6 +462,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     });
   }
 
+  isFieldEnabled = (
+    fieldCode: CustomFieldCodes,
+    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    locale: Locale
+  ) => {
+    return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] !== 'hidden';
+  }
+
   render() {
     const {
       ideaFiles,
@@ -468,12 +482,17 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       className,
       postOfficialFeedbackPermission,
       projectId,
+      ideaCustomFieldsSchemas
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
+    if (
+      !isNilOrError(idea) &&
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale) && loaded
+    ) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea?.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
@@ -496,6 +515,9 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+      const topicsEnabled = this.isFieldEnabled('topic_ids', ideaCustomFieldsSchemas, locale);
+      const locationEnabled = this.isFieldEnabled('location', ideaCustomFieldsSchemas, locale);
+      const attachmentsEnabled = this.isFieldEnabled('attachments', ideaCustomFieldsSchemas, locale);
 
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
@@ -533,7 +555,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                {topicIds.length > 0 &&
+                {topicsEnabled && topicIds.length > 0 &&
                   <Topics
                     postType="idea"
                     topicIds={topicIds}
@@ -574,7 +596,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                {ideaGeoPosition && ideaAddress &&
+                {locationEnabled && ideaGeoPosition && ideaAddress &&
                   <StyledDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
@@ -592,7 +614,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
+                {attachmentsEnabled && !isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
                 }
 
@@ -766,6 +788,11 @@ const Data = adopt<DataProps, InputProps>({
   phases: ({ projectId, render }) => <GetPhases projectId={projectId}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
   postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>,
+  ideaCustomFieldsSchemas: ({ projectId, render }) => (
+    <GetIdeaCustomFieldsSchemas projectId={projectId}>
+      {render}
+    </GetIdeaCustomFieldsSchemas>
+  )
 });
 
 export default (inputProps: InputProps) => (
