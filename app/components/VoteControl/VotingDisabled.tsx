@@ -165,13 +165,17 @@ class VotingDisabled extends PureComponent<Props, State> {
     ) : null);
     const projectName = this.getProjectLink();
     const verificationLink = (
-      <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
+      <StyledButton
+        className="e2e-verify-button"
+        onClick={this.onVerify}
+        onMouseDown={this.removeFocus}
+      >
         <FormattedMessage {...messages.verificationLinkText} />
       </StyledButton>
     );
 
     return (
-      <Container className="e2e-voting-disabled">
+      <Container>
         <FormattedMessage
           {...message}
           values={{
