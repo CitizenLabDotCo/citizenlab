@@ -135,4 +135,17 @@ namespace :setup_and_support do
       end
     end
   end
+
+  desc "Adds an ordered list of custom field options to the specified custom field"
+  task :add_custom_field_options, [:host,:url,:id,:locale] => [:environment] do |t, args|
+    locale = args[:locale] || Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
+    options = open(args[:url]).readlines.map(&:strip)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      cf = CustomField.find args[:id]
+      options.each do |option|
+        cfo = cf.custom_field_options.create!(title_multiloc: {locale => option})
+        cfo.move_to_bottom
+      end
+    end
+  end
 end
