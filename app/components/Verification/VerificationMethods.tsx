@@ -163,6 +163,10 @@ const ButtonsContainer = styled.div`
       padding: 15px;
     `}
   }
+
+  &.inModal.withoutContext {
+    max-width: 473px;
+  }
 `;
 
 const MethodButton = styled(Button)`
