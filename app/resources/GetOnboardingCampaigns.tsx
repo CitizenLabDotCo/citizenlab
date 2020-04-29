@@ -32,7 +32,6 @@ export default class GetOnboardingCampaigns extends Component<Props, State> {
 
     this.subscriptions = [
       onboardingCampaigns$.subscribe((onboardingCampaigns) => {
-        console.log(onboardingCampaigns);
         this.setState({ onboardingCampaigns: (!isNilOrError(onboardingCampaigns) ? onboardingCampaigns.data.attributes : null) });
       })
     ];
