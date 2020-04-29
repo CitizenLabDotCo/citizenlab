@@ -3,6 +3,9 @@ import { randomString } from '../support/commands';
 describe('Project ideas page', () => {
   beforeEach(() => {
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+    cy.get('#e2e-project-ideas-page');
+    cy.get('#e2e-ideas-container');
+    cy.wait(1000);
   });
 
   it('shows where you are', () => {

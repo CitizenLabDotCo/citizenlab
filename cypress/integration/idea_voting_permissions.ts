@@ -40,6 +40,7 @@ describe('Idea voting permissions', () => {
       cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
       cy.get('#e2e-project-ideas-page');
       cy.get('#e2e-ideas-container');
+      cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
 
       // check if we're redirected to sign-up page and sign up
@@ -60,16 +61,19 @@ describe('Idea voting permissions', () => {
       cy.get('#e2e-verification-bogus-form');
       cy.get('#e2e-verification-bogus-submit-button').click();
 
-      // check if we're redirected to project's idea page and see the vote success modal
+      // check if we're redirected to project's idea page and the upvote should be registered in the idea card
       cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
       cy.get('#e2e-project-ideas-page');
       cy.get('#e2e-ideas-container');
-      cy.get('.e2e-programmtic-vote-success-modal');
+      cy.wait(1000);
+      cy.get('.e2e-ideacard-upvote-button').first().should('have.class', 'active');
     });
 
     it('sends unverified users to the verification flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-ideation/ideas');
+      cy.get('#e2e-ideas-container');
+      cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
       cy.get('.e2e-voting-disabled').click();
       cy.get('.e2e-verification-steps');
@@ -78,6 +82,8 @@ describe('Idea voting permissions', () => {
     it('lets verified users vote', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('projects/verified-ideation/ideas');
+      cy.get('#e2e-ideas-container');
+      cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button');
       cy.get('.e2e-ideacard-upvote-button').click();
       cy.get('.e2e-vote-controls.up');
@@ -93,7 +99,8 @@ describe('Idea voting permissions', () => {
     it('sends signed out user to log in and doesn\'t ask for verification', () => {
       // Try to vote
       cy.visit('projects/an-idea-bring-it-to-your-council/ideas');
-      cy.acceptCookies();
+      cy.get('#e2e-ideas-container');
+      cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').first().click();
 
       // Go to sign up page
