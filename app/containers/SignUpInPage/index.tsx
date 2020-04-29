@@ -3,6 +3,7 @@ import { adopt } from 'react-adopt';
 import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
+import { Subscription } from 'rxjs';
 
 // components
 import SignUpIn from 'components/SignUpIn';
@@ -13,6 +14,9 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
 import { endsWith } from 'utils/helperUtils';
+
+// events
+import { signUpActiveStepChange$ } from 'components/SignUpIn/events';
 
 // context
 import { PreviousPathnameContext } from 'context';
@@ -103,6 +107,20 @@ export interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
+  subscriptions: Subscription[] = [];
+
+  componentDidMount() {
+    this.subscriptions = [
+      signUpActiveStepChange$.subscribe(() => {
+        window.scrollTo(0, 0);
+      })
+    ];
+  }
+
+  componentWillUnmount() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
   onSignUpInCompleted = () => {
     clHistory.push(this.props.previousPathName || '/');
   }

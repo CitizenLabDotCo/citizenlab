@@ -56,20 +56,22 @@ interface Props {
 export default memo<Props>(({ className }) => {
   const authUser = useAuthUser();
 
-  if (isNilOrError(authUser)) return null;
+  if (!isNilOrError(authUser)) {
+    return (
+      <Container id="e2e-verification-success" className={className}>
+        <ImageAvatarContainer aria-hidden>
+          <img src={illustration} alt="" role="presentation"/>
+          <StyledAvatar userId={authUser.data.id} size="96px" verified/>
+        </ImageAvatarContainer>
+        <Title className="e2e-user-verified-success-modal-content">
+          <strong><FormattedMessage {...messages.userVerifiedTitle} /></strong>
+        </Title>
+        <Subtitle>
+          <FormattedMessage {...messages.userVerifiedSubtitle} />
+        </Subtitle>
+      </Container>
+    );
+  }
 
-  return (
-    <Container id="e2e-verification-success" className={className}>
-      <ImageAvatarContainer aria-hidden>
-        <img src={illustration} alt="" role="presentation"/>
-        <StyledAvatar userId={authUser.data.id} size="96px" verified/>
-      </ImageAvatarContainer>
-      <Title className="e2e-user-verified-success-modal-content">
-        <strong><FormattedMessage {...messages.userVerifiedTitle} /></strong>
-      </Title>
-      <Subtitle>
-        <FormattedMessage {...messages.userVerifiedSubtitle} />
-      </Subtitle>
-    </Container>
-  );
+  return null;
 });

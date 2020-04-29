@@ -66,7 +66,7 @@ const FranceConnectButtonWrapper = styled.div`
 const FranceConnectButton = styled.button`
   flex-grow: 0;
   flex-shrink: 1;
-  flex-basis: 0;
+  flex-basis: auto;
   text-align: left;
   cursor: pointer;
   padding: 0;

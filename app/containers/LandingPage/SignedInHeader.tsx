@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isEmpty } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -265,10 +264,6 @@ interface Props extends InputProps, DataProps {
 interface State { }
 
 class SignedInHeader extends PureComponent<Props, State> {
-  goToSignUpPage = () => {
-    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-in header' } });
-    clHistory.push('/sign-up');
-  }
 
   handleSkipButtonClick = (name: IOnboardingCampaignNames) => () => {
     trackEventByName(tracks.clickSkipButton, { extra: { location: 'signed-in header', context: name } });
@@ -281,6 +276,7 @@ class SignedInHeader extends PureComponent<Props, State> {
 
   render() {
     const { locale, tenant, authUser, className, theme, onboardingCampaigns } = this.props;
+
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingCampaigns)) {
       const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
       const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;

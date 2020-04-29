@@ -154,19 +154,14 @@ const ButtonsContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  &.inModal {
-    &.withContext {
-      padding-left: 30px;
-      padding-right: 30px;
-      padding-top: 30px;
-      padding-bottom: 30px;
-      background: ${colors.background};
-      border-radius: ${(props: any) => props.theme.borderRadius};
+  &.inModal.withContext {
+    padding: 30px;
+    background: ${colors.background};
+    border-radius: ${(props: any) => props.theme.borderRadius};
 
-      ${media.smallerThanMinTablet`
-        padding: 15px;
-      `}
-    }
+    ${media.smallerThanMinTablet`
+      padding: 15px;
+    `}
   }
 `;
 

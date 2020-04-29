@@ -109,6 +109,7 @@ export async function deleteUser(userId: string) {
 export async function completeRegistration(customFieldValues: object) {
   const response = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
   await authUserStream().fetch();
+  await new Promise(res => setTimeout(res, 100));
   return response;
 }
 

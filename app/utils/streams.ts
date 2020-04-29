@@ -8,7 +8,6 @@ import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
 import { isUUID } from 'utils/helperUtils';
-import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
@@ -70,9 +69,7 @@ class Streams {
     this.streams[authApiEndpoint].observer.next(authUser);
 
     Object.keys(this.streams).forEach((streamId) => {
-      if (streamId === currentOnboardingCampaignsApiEndpoint) {
-        this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
-      } else if (streamId === authApiEndpoint || streamId === currentTenantApiEndpoint || this.isActiveStream(streamId)) {
+      if (streamId === authApiEndpoint || streamId === currentTenantApiEndpoint || this.isActiveStream(streamId)) {
         this.streams[streamId].fetch();
       } else {
         this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
