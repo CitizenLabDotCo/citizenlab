@@ -1,5 +1,16 @@
 # Changelog
 
+## 2019-04-29
+
+### Fixed
+
+- Folders are again shown in the navbar
+- Adding an image to the description text now works when creating a project or a phase
+
+### Added
+
+- Support for Polish, Hungarian and Greenlandic
+
 ## 2020-04-23
 
 ### Fixed
