@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 
 // libraries
 import Link from 'utils/cl-router/Link';
@@ -14,6 +15,7 @@ import { Options, Option } from 'components/SignUpIn/styles';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // services
 import { signIn } from 'services/auth';
@@ -29,6 +31,9 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
+
+// typings
+import { ISignUpInMetaData } from 'components/SignUpIn';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -55,6 +60,7 @@ const ButtonWrapper = styled.div`
 `;
 
 export interface InputProps {
+  metaData: ISignUpInMetaData;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   onGoToLogInOptions: () => void;
@@ -63,6 +69,11 @@ export interface InputProps {
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  passwordLoginEnabled: boolean | null;
+  googleLoginEnabled: boolean | null;
+  facebookLoginEnabled: boolean | null;
+  azureAdLoginEnabled: boolean | null;
+  franceconnectLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -117,7 +128,12 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
 
   handleGoToSignUp = (event: React.FormEvent) => {
     event.preventDefault();
-    this.props.onGoToSignUp();
+
+    if (this.props.metaData?.inModal) {
+      this.props.onGoToSignUp();
+    } else {
+      clHistory.push('/sign-up');
+    }
   }
 
   validate(email: string | null, password: string | null) {
@@ -172,9 +188,10 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
 
   render() {
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const { className, tenant } = this.props;
+    const { className, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
+    const enabledProviders = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled].filter(provider => provider === true);
 
     return (
       <Container className={`e2e-sign-in-container ${className}`}>
@@ -232,21 +249,22 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
             </Link>
           </Option>
           <Option>
-            <button onClick={this.handleGoToLogInOptions} className="link">
-              <FormattedMessage {...messages.backToLoginOptions} />
-            </button>
-          </Option>
-          <Option>
-            <FormattedMessage
-              {...messages.goToSignUp}
-              values={{
-                goToOtherFlowLink: (
-                <button onClick={this.handleGoToSignUp} className="link">
-                  {formatMessage(messages.signUp)}
-                </button>
-                )
-              }}
-            />
+            {enabledProviders.length > 1 ? (
+              <button onClick={this.handleGoToLogInOptions} className="link">
+                <FormattedMessage {...messages.backToLoginOptions} />
+              </button>
+            ) : (
+              <FormattedMessage
+                {...messages.goToSignUp}
+                values={{
+                  goToOtherFlowLink: (
+                  <button onClick={this.handleGoToSignUp} className="link">
+                    {formatMessage(messages.signUp)}
+                  </button>
+                  )
+                }}
+              />
+            )}
           </Option>
         </Options>
       </Container>
@@ -257,7 +275,12 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
 const PasswordSigninWithHoC = withRouter<Props>(injectIntl(PasswordSignin));
 
 const Data = adopt<DataProps, {}>({
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
+  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
+  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
+  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
+  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />
 });
 
 export default (inputProps: InputProps) => (

@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { set, keys, difference, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
+import clHistory from 'utils/cl-router/history';
 
 // libraries
 import Link from 'utils/cl-router/Link';
@@ -20,9 +21,12 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // services
 import { signUp } from 'services/auth';
+
+// resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInvitedUser, { GetInvitedUserChildProps } from 'resources/GetInvitedUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -70,8 +74,13 @@ type InputProps = {
 
 interface DataProps {
   locale: GetLocaleChildProps;
-  invitedUser: GetInvitedUserChildProps;
   tenant: GetTenantChildProps;
+  invitedUser: GetInvitedUserChildProps;
+  passwordLoginEnabled: boolean | null;
+  googleLoginEnabled: boolean | null;
+  facebookLoginEnabled: boolean | null;
+  azureAdLoginEnabled: boolean | null;
+  franceconnectLoginEnabled: boolean | null;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -174,7 +183,12 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleOnGoToSignIn = (event: React.FormEvent) => {
     event.preventDefault();
-    this.props.onGoToSignIn();
+
+    if (this.props.metaData?.inModal) {
+      this.props.onGoToSignIn();
+    } else {
+      clHistory.push('/sign-in');
+    }
   }
 
   handleTacAcceptedChange = (tacAccepted: boolean) => {
@@ -250,9 +264,18 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { tenant, className, hasNextStep } = this.props;
-    const { isInvitation } = this.props.metaData;
-    const { formatMessage } = this.props.intl;
+    const {
+      tenant,
+      className,
+      hasNextStep,
+      passwordLoginEnabled,
+      googleLoginEnabled,
+      facebookLoginEnabled,
+      azureAdLoginEnabled,
+      franceconnectLoginEnabled,
+      metaData: { isInvitation },
+      intl: { formatMessage }
+    } = this.props;
     const {
       token,
       firstName,
@@ -270,6 +293,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     } = this.state;
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const signUpPageLink = <Link to={'/sign-up'}>{formatMessage(messages.signUpPage)}</Link>;
+    const enabledProviders = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled].filter(provider => provider === true);
 
     let unknownApiError: string | null = null;
 
@@ -420,9 +444,22 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Options>
               <Option>
-                <button onClick={this.goBackToSignUpOptions} className="link">
-                  <FormattedMessage {...messages.backToSignUpOptions} />
-                </button>
+                {enabledProviders.length > 1 ? (
+                  <button onClick={this.goBackToSignUpOptions} className="link">
+                    <FormattedMessage {...messages.backToSignUpOptions} />
+                  </button>
+                ) : (
+                  <FormattedMessage
+                    {...messages.goToSignUp}
+                    values={{
+                      goToOtherFlowLink: (
+                        <button onClick={this.handleOnGoToSignIn} className="link">
+                          {formatMessage(messages.logIn2)}
+                        </button>
+                      )
+                    }}
+                  />
+                )}
               </Option>
             </Options>
           </>
@@ -442,7 +479,12 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  invitedUser: ({ metaData: { token }, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>
+  invitedUser: ({ metaData: { token }, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>,
+  passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
+  googleLoginEnabled: <GetFeatureFlag name="google_login" />,
+  facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,
+  azureAdLoginEnabled: <GetFeatureFlag name="azure_ad_login" />,
+  franceconnectLoginEnabled: <GetFeatureFlag name="franceconnect_login" />
 });
 
 const PasswordSignupWithHoC = injectIntl<Props>(PasswordSignup);

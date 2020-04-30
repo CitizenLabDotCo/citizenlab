@@ -12,6 +12,10 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
   }
 
+  * {
+    outline-color: #000;
+  }
+
   html,
   body {
     background-color: #fff;

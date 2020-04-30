@@ -82,6 +82,7 @@ const ShieldIcon = styled(Icon)`
 
 const Content = styled.div`
   display: flex;
+  margin-bottom: 10px;
 
   &.inModal {
     justify-content: center;
@@ -154,7 +155,7 @@ const ButtonsContainer = styled.div`
   flex-direction: column;
   align-items: stretch;
 
-  &.inModal.withContext {
+  &.inModal {
     padding: 30px;
     background: ${colors.background};
     border-radius: ${(props: any) => props.theme.borderRadius};
@@ -162,10 +163,10 @@ const ButtonsContainer = styled.div`
     ${media.smallerThanMinTablet`
       padding: 15px;
     `}
-  }
 
-  &.inModal.withoutContext {
-    max-width: 473px;
+    &.withoutContext {
+      max-width: 473px;
+    }
   }
 `;
 

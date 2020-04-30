@@ -213,10 +213,11 @@ export const fontSizes = {
   xxxxxl: 42
 };
 
-export const customOutline = 'rgb(59,153,252) solid 2px';
+export const customOutline = 'solid 2px #000';
 
 export const boxShadowOutline = css`
-  box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.95);
+  border-color: #000;
+  box-shadow: 0px 0px 0px 1px #000;
 `;
 
 export const defaultInputStyle = css`
@@ -224,7 +225,7 @@ export const defaultInputStyle = css`
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
-  padding: 12px;
+  padding: 11px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.border};
   background: #fff;
@@ -234,7 +235,7 @@ export const defaultInputStyle = css`
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
-  transition: box-shadow 80ms ease-out, border-color 80ms ease-out;
+  transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
 
   &::placeholder {
     font-weight: 400;
@@ -248,8 +249,8 @@ export const defaultInputStyle = css`
 
     &:not(.error):focus,
     &:not(.error).focus {
-      border-color: ${colors.focussedBorder};
-      box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.focussedBorder)};
+      border-color: #000;
+      box-shadow: 0px 0px 0px 0.5px #000;
     }
 
     &.error {
@@ -257,7 +258,7 @@ export const defaultInputStyle = css`
 
       &:focus,
       &.focus {
-        box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.clRedError)};
+        box-shadow: 0px 0px 0px 0.5px ${colors.clRedError};
       }
     }
   }

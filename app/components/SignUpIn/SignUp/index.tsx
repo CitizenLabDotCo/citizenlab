@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, cloneDeep, indexOf } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
 
 // components
@@ -71,6 +71,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
+  steps: ('create-account' | Extract<TSignUpSteps, 'verification' | 'custom-fields'>)[];
   activeStep: TSignUpSteps | null | undefined;
   userId: string | null;
   error: boolean;
@@ -80,6 +81,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
+      steps: [],
       activeStep: undefined,
       userId: null,
       error: false
@@ -114,10 +116,36 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidMount() {
+    const { metaData, customFieldsSchema } = this.props;
+    const { activeStep } = this.state;
+    const steps = cloneDeep(this.state.steps);
+
     signUpActiveStepChange(this.state.activeStep);
+
+    if (activeStep === 'auth-providers' || activeStep === 'password-signup') {
+      steps.push('create-account');
+    }
+
+    if (metaData.verification) {
+      steps.push('verification');
+    }
+
+    if (!isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
+      steps.push('custom-fields');
+    }
+
+    if (steps.length !== this.state.steps.length) {
+      this.setState({ steps });
+    }
   }
 
-  componentDidUpdate(_prevProps: Props, prevState: State) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const { customFieldsSchema } = this.props;
+
+    if (isNilOrError(prevProps.customFieldsSchema) && !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
+      this.setState(({ steps }) => ({ steps: [...steps, 'custom-fields'] }));
+    }
+
     if (this.state.activeStep !== prevState.activeStep) {
       signUpActiveStepChange(this.state.activeStep);
     }
@@ -192,20 +220,14 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { activeStep, error } = this.state;
-    const { tenant, metaData, customFieldsSchema, className, intl: { formatMessage } } = this.props;
+    const { activeStep, error, steps } = this.state;
+    const { tenant, metaData, className, intl: { formatMessage } } = this.props;
     const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
-    const hasVerificationStep = metaData?.verification;
-    const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
     let stepName: string | null = null;
-    const steps: TSignUpSteps[] = [];
-
-    hasVerificationStep && steps.push('verification');
-    hasCustomFields && steps.push('custom-fields');
 
     if (activeStep) {
-      const totalStepsCount = steps.length + 1;
-      const activeStepNumber = steps.indexOf(activeStep) > -1 ?  steps.indexOf(activeStep) + 2 : 1;
+      const totalStepsCount = steps.length;
+      const activeStepNumber = indexOf(steps, activeStep) > -1 ?  indexOf(steps, activeStep) + 1 : 1;
 
       if (activeStep === 'auth-providers' || activeStep === 'password-signup') {
         stepName = formatMessage(messages.createYourAccount);
@@ -227,10 +249,16 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
               {!error && stepName &&
                 <HeaderSubtitle>
-                  {showStepsCount
-                    ? <FormattedMessage {...messages.headerSubtitle} values={{ activeStepNumber, totalStepsCount, stepName }} />
-                    : stepName
-                  }
+                  {showStepsCount ? (
+                    <FormattedMessage
+                      {...messages.headerSubtitle}
+                      values={{
+                        activeStepNumber,
+                        stepName,
+                        totalStepsCount
+                      }}
+                    />
+                  ) : stepName}
                 </HeaderSubtitle>
               }
             </StyledHeaderContainer>
@@ -265,7 +293,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 {activeStep === 'password-signup' &&
                   <PasswordSignup
                     metaData={metaData}
-                    hasNextStep={steps.length > 0}
+                    hasNextStep={steps.length > 1}
                     onCompleted={this.handlePasswordSignupCompleted}
                     onGoToSignIn={this.props.onGoToSignIn}
                     onGoBack={this.handleGoBackToSignUpOptions}

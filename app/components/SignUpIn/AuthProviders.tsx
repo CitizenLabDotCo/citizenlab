@@ -1,5 +1,6 @@
-import React, { memo,  useCallback } from 'react';
+import React, { memo,  useCallback, useEffect } from 'react';
 import { adopt } from 'react-adopt';
+import { isBoolean } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
@@ -125,9 +126,24 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
   intl: { formatMessage }
 }) => {
 
+  const { flow, inModal } = metaData;
   const azureProviderName = !isNilOrError(tenant) ? tenant?.attributes?.settings?.azure_ad_login?.login_mechanism_name : null;
 
-  const { flow, inModal } = metaData;
+  useEffect(() => {
+    if (
+      isBoolean(passwordLoginEnabled) &&
+      isBoolean(googleLoginEnabled) &&
+      isBoolean(facebookLoginEnabled) &&
+      isBoolean(azureAdLoginEnabled) &&
+      isBoolean(franceconnectLoginEnabled)
+    ) {
+      const enabledProviders = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled].filter(provider => provider === true);
+
+      if (enabledProviders.length === 1 && passwordLoginEnabled) {
+        onAuthProviderSelected('email');
+      }
+    }
+  }, [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled, onAuthProviderSelected]);
 
   const handleOnAuthProviderSelected = useCallback((authProvider: AuthProvider) => {
     onAuthProviderSelected(authProvider);
@@ -144,7 +160,7 @@ const AuthProviders = memo<Props & InjectedIntlProps>(({
     if (inModal) {
       goToOtherFlow();
     } else {
-      clHistory.push(flow === 'signin' ? '/sign-up' : '/sign-in')
+      clHistory.push(flow === 'signin' ? '/sign-up' : '/sign-in');
     }
   }, [goToOtherFlow]);
 
