@@ -24,10 +24,6 @@ export const CustomRadio = styled.div`
   border: solid 1px ${colors.separationDarkOnGreyBackground};
   transition: all 120ms ease-out;
 
-  ${HiddenRadio}:focus + & {
-    border-color: ${colors.focussedBorder};
-  }
-
   ${HiddenRadio}.focus-visible + & {
     ${boxShadowOutline};
   }

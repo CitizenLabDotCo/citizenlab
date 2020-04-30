@@ -80,6 +80,7 @@ const SignIn = memo<Props>(({ metaData, onSignInCompleted, onGoToSignUp, classNa
 
             {activeStep === 'password-signin' &&
               <PasswordSignin
+                metaData={metaData}
                 onSignInCompleted={handleOnSignInCompleted}
                 onGoToLogInOptions={handleGoToLogInOptions}
                 onGoToSignUp={onGoToSignUp}

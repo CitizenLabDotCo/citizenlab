@@ -46,10 +46,6 @@ const StyledCheckbox = styled.div<{ checkedOrIndeterminate: boolean, size: strin
   background: ${({ checkedOrIndeterminate }) => checkedOrIndeterminate ? colors.clGreen : '#fff'};
   transition: all 120ms ease-out;
 
-  ${HiddenCheckbox}:focus + & {
-    border-color: ${colors.focussedBorder};
-  }
-
   ${HiddenCheckbox}.focus-visible + & {
     ${boxShadowOutline};
   }

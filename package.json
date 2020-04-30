@@ -164,7 +164,7 @@
     "@types/react-aria-live": "2.0.0",
     "@types/react-color": "3.0.1",
     "@types/react-dates": "17.1.10",
-    "@types/react-dom": "16.9.6",
+    "@types/react-dom": "16.9.7",
     "@types/react-intl": "2.3.18",
     "@types/react-jsonschema-form": "1.7.2",
     "@types/react-loadable": "5.5.3",

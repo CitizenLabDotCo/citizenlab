@@ -85,8 +85,8 @@ const StyledFocusOn = styled(FocusOn)<{ width: number }>`
 
 const ModalContainer = styled(clickOutside)`
   width: 100%;
-  max-height: 90vh;
-  margin-top: 55px;
+  max-height: 85vh;
+  margin-top: 50px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;
@@ -101,6 +101,12 @@ const ModalContainer = styled(clickOutside)`
     max-height: 600px;
   }
 
+  /* big landscape tablets, laptops, and desktops */
+  @media (min-width: 1025px) {
+    max-height: 90vh;
+  }
+
+  /* tall desktops screens */
   @media (min-height: 1200px) {
     margin-top: 120px;
   }
