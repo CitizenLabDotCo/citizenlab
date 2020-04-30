@@ -222,7 +222,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
         idea?.relationships?.user_vote?.data ? 'voted' : 'not-voted',
         commentingDescriptor && commentingDescriptor.enabled ? 'e2e-comments-enabled' : 'e2e-comments-disabled',
         idea.attributes.comments_count > 0 ? 'e2e-has-comments' : null,
-        votingDescriptor && votingDescriptor.enabled ? 'e2e-voting-enabled' : 'e2e-voting-disabled',
         votingDescriptor && votingDescriptor.downvoting_enabled ? 'e2e-downvoting-enabled' : 'e2e-downvoting-disabled'
       ].filter(item => isString(item) && item !== '').join(' ');
       const commentsCount = idea.attributes.comments_count;
