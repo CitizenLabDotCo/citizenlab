@@ -3,12 +3,12 @@ import {
 } from 'react-intl';
 
 export default defineMessages({
-  title: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.title',
-    defaultMessage: 'Idea form',
+  ideaSettingsTitle: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.ideaSettingsTitle',
+    defaultMessage: 'Idea settings',
   },
-  description: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.description',
+  ideaSettingsDescription: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.ideaSettingsDescription',
     defaultMessage: 'Define the structure of an idea for this project.',
   },
   save: {

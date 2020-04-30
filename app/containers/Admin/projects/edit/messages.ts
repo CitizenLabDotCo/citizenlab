@@ -16,9 +16,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.ideasTab',
     defaultMessage: 'Ideas',
   },
-  ideaFormTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.ideaFormTab',
-    defaultMessage: 'Idea form',
+  ideaSettingsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.ideaSettingsTab',
+    defaultMessage: 'Idea settings',
   },
   volunteeringTab: {
     id: 'app.containers.AdminPage.ProjectEdit.volunteeringTab',

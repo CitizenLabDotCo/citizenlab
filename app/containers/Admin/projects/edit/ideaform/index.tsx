@@ -179,11 +179,11 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
         <Header>
           <TitleContainer>
             <StyledSectionTitle>
-              <FormattedMessage {...messages.title} />
+              <FormattedMessage {...messages.ideaSettingsTitle} />
             </StyledSectionTitle>
           </TitleContainer>
           <SectionSubtitle>
-            <FormattedMessage {...messages.description} />
+            <FormattedMessage {...messages.ideaSettingsDescription} />
           </SectionSubtitle>
         </Header>
 
