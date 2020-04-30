@@ -115,7 +115,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         className: 'ideas',
       },
       {
-        label: formatMessage(messages.ideaSettingsTab),
+        label: formatMessage(messages.ideaFormTab),
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
         className: 'ideaform',
