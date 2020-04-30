@@ -1,6 +1,6 @@
 class Permission < ApplicationRecord
 	ACTIONS = %w(posting voting commenting budgeting taking_survey taking_poll)
-	PERMITTED_BIES = %w(everyone groups admins_moderators)
+	PERMITTED_BIES = %w(everyone users groups admins_moderators)
 
   belongs_to :permittable, polymorphic: true
 	has_many :groups_permissions, dependent: :destroy
@@ -18,7 +18,7 @@ class Permission < ApplicationRecord
     if user&.admin? 
       all
     elsif user
-      permissions_for_everyone_ids = where(permitted_by: 'everyone').ids
+      permissions_for_everyone_ids = where(permitted_by: ['everyone', 'users']).ids
       moderating_context_ids = ParticipationContextService.new.moderating_participation_context_ids(user)
       moderating_permissions_ids = where(permittable_id: moderating_context_ids).ids
       group_permission_ids = joins(:groups_permissions)
@@ -35,6 +35,8 @@ class Permission < ApplicationRecord
   	case permitted_by
   	when 'everyone'
   		true
+    when 'users'
+      !!user
   	when 'groups'
   		user && (group_ids & user.group_ids).present?
   	when 'admins_moderators'
@@ -57,7 +59,7 @@ class Permission < ApplicationRecord
   private
 
   def set_permitted_by
-  	self.permitted_by ||= 'everyone'
+  	self.permitted_by ||= 'users'
   end
 
 end
