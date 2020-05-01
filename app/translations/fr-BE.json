@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "Conditions de participation",
   "app.components.VerificationModal.peopleMatchingConditions": "Les personnes qui remplissent les conditions suivantes :",
   "app.components.VerificationModal.showCOWHelp": "Où puis-je trouver mon numéro de série d'identité ?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "Nous ne pouvons pas vous vérifier parce que quelque chose s'est mal passé.",
   "app.components.VerificationModal.submit": "Soumettre",
   "app.components.VerificationModal.takenFormError": "Déjà pris.",

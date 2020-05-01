@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "Warunki uczestnictwa",
   "app.components.VerificationModal.peopleMatchingConditions": "Osoby spełniające następujące warunki:",
   "app.components.VerificationModal.showCOWHelp": "Gdzie mogę znaleźć numer i serię dowodu osobistego?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "Nie mogliśmy cię zweryfikować, bo coś poszło nie tak",
   "app.components.VerificationModal.submit": "Prześlij",
   "app.components.VerificationModal.takenFormError": "Już zajęte.",
