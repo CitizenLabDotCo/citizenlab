@@ -178,15 +178,32 @@ const MethodButton = styled(Button)`
   }
 `;
 
+const SkipButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+`;
+
 interface Props {
   context: ContextShape | null;
-  onMethodSelected: (selectedMethod: IVerificationMethod) => void;
   showHeader?: boolean;
+  skippable?: boolean;
   inModal: boolean;
+  onMethodSelected: (selectedMethod: IVerificationMethod) => void;
+  onSkipped?: () => void;
   className?: string;
 }
 
-const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader, inModal, className }) => {
+const VerificationMethods = memo<Props>(({
+  context,
+  showHeader,
+  skippable,
+  inModal,
+  onMethodSelected,
+  onSkipped,
+  className
+}) => {
 
   const participationConditions = useParticipationConditions(isProjectContext(context) ? context : null);
 
@@ -208,6 +225,10 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
       onMethodSelected(method);
     }
   }, []);
+
+  const onSkipButtonClicked = useCallback(() => {
+    onSkipped?.();
+  }, [onSkipped]);
 
   if (verificationMethods === undefined || participationConditions === undefined) {
     return (
@@ -290,6 +311,14 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
             ))}
           </ButtonsContainer>
         </Content>
+
+        {skippable &&
+          <SkipButtonContainer>
+            <Button buttonStyle="text" padding="0px" onClick={onSkipButtonClicked}>
+              <FormattedMessage {...messages.skipThisStep} />
+            </Button>
+          </SkipButtonContainer>
+        }
       </Container>
     );
   }

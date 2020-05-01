@@ -1,4 +1,5 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
+import { isFunction } from 'lodash-es';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -10,6 +11,7 @@ import { completeRegistration } from 'services/users';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
+import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
 import useCustomFieldsSchema from 'hooks/useCustomFieldsSchema';
 
@@ -36,6 +38,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(undefined);
   const [signUpActiveStep, setSignUpActiveStep] = useState<TSignUpSteps | null| undefined>(undefined);
 
+  const authUser = useAuthUser();
   const participationConditions = useParticipationConditions(metaData?.verificationContext && isProjectContext(metaData?.verificationContext) ? metaData?.verificationContext : null);
   const customFieldsSchema = useCustomFieldsSchema();
 
@@ -79,9 +82,16 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   }, [signUpActiveStep, customFieldsSchema]);
 
   const onSignUpInCompleted = useCallback(() => {
-    metaData?.action?.();
+    const hasAction = isFunction(metaData?.action);
+    const requiresVerification = !!metaData?.verification;
+    const authUserIsVerified = !isNilOrError(authUser) && authUser.data.attributes.verified;
+
+    if (hasAction && (!requiresVerification || authUserIsVerified)) {
+      metaData?.action?.();
+    }
+
     setMetaData(undefined);
-  }, [metaData]);
+  }, [metaData, authUser]);
 
   return (
     <Modal

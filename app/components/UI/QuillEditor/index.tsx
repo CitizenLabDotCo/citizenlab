@@ -22,7 +22,6 @@ import tracks from './tracks';
 
 // styling
 import styled from 'styled-components';
-import { transparentize } from 'polished';
 import { colors, quillEditedContent, media, fontSizes } from 'utils/styleUtils';
 
 // typings
@@ -123,8 +122,8 @@ const Container = styled.div<{
   }
 
   &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
-    border-color: ${colors.focussedBorder};
-    box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.focussedBorder)};
+    border-color: #000;
+    box-shadow: 0px 0px 0px 0.5px #000;
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -133,7 +132,7 @@ const Container = styled.div<{
 
   &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: ${colors.clRedError};
-    box-shadow: 0px 0px 1px 1px ${transparentize(0.4, colors.clRedError)};
+    box-shadow: 0px 0px 0px 0.5px ${colors.clRedError};
   }
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {

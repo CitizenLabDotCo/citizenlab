@@ -194,7 +194,11 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     this.goToNextStep();
   }
 
-  handleVerificationCompleted = async () => {
+  handleVerificationCompleted = () => {
+    this.goToNextStep();
+  }
+
+  handleVerificationSkipped = () => {
     this.goToNextStep();
   }
 
@@ -306,7 +310,9 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                     initialActiveStep="method-selection"
                     inModal={!!metaData.inModal}
                     showHeader={false}
+                    skippable={true}
                     onComplete={this.handleVerificationCompleted}
+                    onSkipped={this.handleVerificationSkipped}
                     onError={this.onVerificationError}
                   />
                 }

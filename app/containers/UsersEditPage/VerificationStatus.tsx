@@ -122,7 +122,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
 
   if (isNilOrError(authUser)) return null;
 
-  const authIsVerified = authUser.data.attributes.verified;
+  const authUserIsVerified = authUser.data.attributes.verified;
 
   const reverifyButton = (
     <ReverifyButton onClick={onVerify}>
@@ -132,8 +132,8 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
 
   return (
     <FeatureFlag name="verification">
-      <Container className={`${className} e2e${authIsVerified ? '' : '-not'}-verified`}>
-        {authIsVerified ?
+      <Container className={`${className} e2e${authUserIsVerified ? '' : '-not'}-verified`}>
+        {authUserIsVerified ?
           <>
             <StyledAvatar
               userId={authUser.data.id}
