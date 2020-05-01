@@ -205,9 +205,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
     defaultMessage: 'Ideas displayed by default as:',
   },
-  defaultDisplayTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip',
-    defaultMessage: 'Choose whether ideas on the project page are shown as idea cards or as pins on a map. Either way, users can switch to the other view themselves.',
+  presentationModeTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.presentationModeTooltip',
+    defaultMessage: 'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.Note that this setting will only be applied if idea locations are enabled for this project. This location setting can be changed in the Idea form settings.',
   },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',
