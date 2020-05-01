@@ -323,12 +323,12 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       loadingMore
     } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
-    const showListView = (selectedView === 'card');
-    const showMapView = (selectedView === 'map');
-    const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
     const locationEnabled = this.isFieldEnabled('location');
     const topicsEnabled = this.isFieldEnabled('topic_ids');
+    const showListView = !locationEnabled || selectedView === 'card';
+    const showMapView = (locationEnabled && selectedView === 'map');
     const showViewButtons = !!(locationEnabled && showViewToggle);
+    const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
