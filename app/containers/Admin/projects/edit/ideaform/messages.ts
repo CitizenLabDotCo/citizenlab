@@ -53,7 +53,7 @@ export default defineMessages({
   },
   visibleToAdmin: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.visibleToAdmin',
-    defaultMessage: 'Only visible to admins and project moderators',
+    defaultMessage: 'Visible to admins and project moderators only',
   },
   visibility: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.visibility',
