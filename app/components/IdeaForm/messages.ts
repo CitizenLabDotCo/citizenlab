@@ -69,9 +69,9 @@ export default defineMessages({
     id: 'app.container.IdeaForm.budgetIsTooBig',
     defaultMessage: 'The provided budget is too big',
   },
-  attachmentsTitle: {
-    id: 'app.container.IdeaForm.attachmentsTitle',
-    defaultMessage: 'Attachments',
+  fileAttachmentsTitle: {
+    id: 'app.container.IdeaForm.fileAttachmentsTitle',
+    defaultMessage: 'File attachments',
   },
   formGeneralSectionTitle: {
     id: 'app.components.IdeaForm.formGeneralSectionTitle',
@@ -80,10 +80,6 @@ export default defineMessages({
   formDetailsSectionTitle: {
     id: 'app.components.IdeaForm.formDetailsSectionTitle',
     defaultMessage: 'Details',
-  },
-  formAttachmentsSectionTitle: {
-    id: 'app.components.IdeaForm.formAttachmentsSectionTitle',
-    defaultMessage: 'Images and attachments',
   },
   noTopicsError: {
     id: 'app.components.IdeaForm.noTopicsError',
@@ -100,5 +96,9 @@ export default defineMessages({
   noAttachmentsError: {
     id: 'app.components.IdeaForm.noAttachmentsError',
     defaultMessage: 'Please add an attachment',
+  },
+  otherFilesTitle: {
+    id: 'app.components.IdeaForm.otherFilesTitle',
+    defaultMessage: 'Other files',
   }
 });

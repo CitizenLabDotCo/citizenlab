@@ -719,7 +719,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
           }
 
           <StyledFormSection>
-            <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+            <FormSectionTitle message={messages.fileAttachmentsTitle} />
             <FormElement id="e2e-idea-image-upload">
               <FormLabel
                 htmlFor="idea-image-dropzone"
@@ -743,7 +743,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
             {attachmentsEnabled &&
               <FormElement id="e2e-idea-file-upload">
                 <FormLabel
-                  labelMessage={messages.attachmentsTitle}
+                  labelMessage={messages.otherFilesTitle}
                   optionality={this.isFieldRequired('attachments', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
                   subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
                 >
