@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState, lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -7,10 +7,11 @@ import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, /*Visibility*/
 
 // components
 import Icon from 'components/UI/Icon';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
 // import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import IconToolTip from 'components/UI/IconTooltip';
+import Spinner from 'components/UI/Spinner';
 
 // i18n
 import T from 'components/T';
@@ -125,12 +126,12 @@ const CollapseContainerInner = styled.div`
   margin-bottom: 25px;
 `;
 
-const LabelText = styled.span`
-  font-size: ${fontSizes.medium}px;
-  display: block;
-  margin-bottom: 20px;
-  font-weight: 500;
-`;
+// const LabelText = styled.span`
+//   font-size: ${fontSizes.medium}px;
+//   display: block;
+//   margin-bottom: 20px;
+//   font-weight: 500;
+// `;
 
 const Setting = styled.div`
   margin-bottom: 30px;
@@ -244,21 +245,16 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
             <CollapseContainerInner>
               <Setting>
                 {canSetEnabled && (
-                  <>
-                    <LabelText>
-                      <FormattedMessage {...messages.options} />
-                    </LabelText>
-                    <ToggleContainer>
-                      <StyledToggle
-                        checked={fieldEnabled}
-                        onChange={handleEnabledOnChange}
-                        label={<FormattedMessage {...messages.enabled} />}
-                        labelTextColor={colors.adminTextColor}
-                        size={16}
-                      />
-                      <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
-                    </ToggleContainer>
-                  </>
+                  <ToggleContainer>
+                    <StyledToggle
+                      checked={fieldEnabled}
+                      onChange={handleEnabledOnChange}
+                      label={<FormattedMessage {...messages.enabled} />}
+                      labelTextColor={colors.adminTextColor}
+                      size={16}
+                    />
+                    <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
+                  </ToggleContainer>
                 )}
                 {fieldEnabled && canSetOptional && (
                   <ToggleContainer>
@@ -302,16 +298,18 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                     </Setting>
                   } */}
 
-                  <TextAreaMultilocWithLocaleSwitcher
-                    valueMultiloc={descriptionMultiloc}
-                    onChange={handleDescriptionOnChange}
-                    rows={3}
-                    labelTextElement={
-                      <LocaleSwitcherLabelText>
-                        <FormattedMessage {...messages.descriptionLabel} />
-                      </LocaleSwitcherLabelText>
-                    }
-                  />
+                  <Suspense fallback={<Spinner />}>
+                    <TextAreaMultilocWithLocaleSwitcher
+                      valueMultiloc={descriptionMultiloc}
+                      onChange={handleDescriptionOnChange}
+                      rows={3}
+                      labelTextElement={
+                        <LocaleSwitcherLabelText>
+                          <FormattedMessage {...messages.descriptionLabel} />
+                        </LocaleSwitcherLabelText>
+                      }
+                    />
+                  </Suspense>
                 </>
               }
 
