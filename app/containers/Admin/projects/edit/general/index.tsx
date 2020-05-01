@@ -743,8 +743,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               ) : (
                   <>
                     <SubSectionTitle>
-                      <FormattedMessage {...messages.projectTypeEdit} />
-                      <IconTooltip content={<FormattedMessage {...messages.projectTypeEditTooltip} />} />
+                      <FormattedMessage {...messages.projectTypeTitle} />
                     </SubSectionTitle>
                     <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
