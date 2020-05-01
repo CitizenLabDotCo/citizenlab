@@ -168,7 +168,7 @@ const requiredFields = ['title', 'body'];
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
-  const canSetOptional = !requiredFields.includes(ideaCustomField.attributes.key);
+  const canSetRequired = !requiredFields.includes(ideaCustomField.attributes.key);
   // const canSetHidden = hidableFields.find(field => field === ideaCustomField.attributes.key);
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
@@ -256,7 +256,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                     <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
                   </ToggleContainer>
                 )}
-                {fieldEnabled && canSetOptional && (
+                {fieldEnabled && canSetRequired && (
                   <ToggleContainer>
                     <StyledToggle
                       checked={fieldRequired}
