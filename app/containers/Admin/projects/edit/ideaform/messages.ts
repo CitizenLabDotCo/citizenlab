@@ -65,6 +65,6 @@ export default defineMessages({
   },
   requiredTooltip: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltip',
-    defaultMessage: 'Makes this field required when creating or editing an idea.',
+    defaultMessage: 'Require people to complete this field when creating an idea.',
   },
 });
