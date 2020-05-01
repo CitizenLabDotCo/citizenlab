@@ -62,7 +62,9 @@ export interface Props {
   initialActiveStep: TVerificationSteps;
   showHeader?: boolean;
   inModal: boolean;
+  skippable?: boolean;
   onComplete?: () => void;
+  onSkipped?: () => void;
   onError?: () => void;
   className?: string;
 }
@@ -73,7 +75,9 @@ const VerificationSteps = memo<Props>(({
   initialActiveStep,
   showHeader,
   inModal,
+  skippable,
   onComplete,
+  onSkipped,
   onError
 }) => {
 
@@ -127,6 +131,10 @@ const VerificationSteps = memo<Props>(({
     setMethod(null);
   }, []);
 
+  const onVerificationSkipped = useCallback(() => {
+    onSkipped?.();
+  }, [onSkipped]);
+
   if (verificationMethods === undefined) {
     return (
       <Loading>
@@ -143,6 +151,8 @@ const VerificationSteps = memo<Props>(({
             context={context}
             showHeader={showHeader}
             inModal={inModal}
+            skippable={skippable}
+            onSkipped={onVerificationSkipped}
             onMethodSelected={onMethodSelected}
           />
         }
