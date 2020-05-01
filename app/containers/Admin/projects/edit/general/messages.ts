@@ -52,7 +52,7 @@ export default defineMessages({
     defaultMessage: 'Choose a title that is short, engaging and clear. It will be shown in the dropdown overview and on the project cards on the home page.',
   },
   projectTypeTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectType',
+    id: 'app.containers.AdminPage.ProjectEdit.projectTypeTitle',
     defaultMessage: 'Project type',
   },
   projectTypeWarning: {
@@ -61,15 +61,7 @@ export default defineMessages({
   },
   projectTypeTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.projectTypeTooltip',
-    defaultMessage: 'Choose whether or not the project has a timeline. Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
-  },
-  projectTypeEdit: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectTypeEdit',
-    defaultMessage: 'Project type',
-  },
-  projectTypeEditTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectTypeEditTooltip',
-    defaultMessage: 'You cannot change the project type after its creation. Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
+    defaultMessage: 'Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
   },
   continuous: {
     id: 'app.containers.AdminPage.ProjectEdit.continuous',
