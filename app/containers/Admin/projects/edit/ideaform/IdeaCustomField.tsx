@@ -3,12 +3,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
-import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, Visibility } from 'services/ideaCustomFields';
+import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, /*Visibility*/ } from 'services/ideaCustomFields';
 
 // components
 import Icon from 'components/UI/Icon';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
-import Radio from 'components/UI/Radio';
+// import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import IconToolTip from 'components/UI/IconTooltip';
 
@@ -163,17 +163,17 @@ interface Props {
 
 const disablableFields = ['topic_ids', 'location', 'attachments'];
 const requiredFields = ['title', 'body'];
-const hidableFields = ['topic_ids', 'location'];
+// const hidableFields = ['topic_ids', 'location'];
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
   const canSetOptional = !requiredFields.includes(ideaCustomField.attributes.key);
-  const canSetHidden = hidableFields.find(field => field === ideaCustomField.attributes.key);
+  // const canSetHidden = hidableFields.find(field => field === ideaCustomField.attributes.key);
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
   const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
   const [fieldRequired, setFieldRequired] = useState(ideaCustomField.attributes.required);
-  const [fieldVisibleTo, setFieldVisibleTo] = useState(ideaCustomField.attributes.visible_to);
+  // const [fieldVisibleTo, setFieldVisibleTo] = useState(ideaCustomField.attributes.visible_to);
 
   const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
@@ -199,13 +199,13 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
     onChange(ideaCustomField.id, { required: fieldRequired });
   }, [fieldRequired]);
 
-  const handleVisibleToOnChange = useCallback((visibleTo: Visibility) => {
-    setFieldVisibleTo(visibleTo);
-  }, []);
+  // const handleVisibleToOnChange = useCallback((visibleTo: Visibility) => {
+  //   setFieldVisibleTo(visibleTo);
+  // }, []);
 
-  useEffect(() => {
-    onChange(ideaCustomField.id, { visible_to: fieldVisibleTo });
-  }, [fieldVisibleTo]);
+  // useEffect(() => {
+  //   onChange(ideaCustomField.id, { visible_to: fieldVisibleTo });
+  // }, [fieldVisibleTo]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
@@ -216,7 +216,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   }, [ideaCustomField]);
 
   if (!isNilOrError(ideaCustomField)) {
-    const key = ideaCustomField.attributes.key;
+    // const key = ideaCustomField.attributes.key;
 
     return (
       <Container className={`${className || ''} ${first ? 'first' : ''}`}>
@@ -276,7 +276,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
 
               {fieldEnabled &&
                 <>
-                  {canSetHidden &&
+                  {/* {canSetHidden &&
                     <Setting>
                       <label>
                         <LabelText>
@@ -300,7 +300,7 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
                         />
                       </label>
                     </Setting>
-                  }
+                  } */}
 
                   <TextAreaMultilocWithLocaleSwitcher
                     valueMultiloc={descriptionMultiloc}
