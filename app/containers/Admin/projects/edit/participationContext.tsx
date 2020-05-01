@@ -416,6 +416,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       noVotingLimit,
       noBudgetingAmount,
       poll_anonymous,
+      presentation_mode,
     } = this.state;
     const tenantCurrency = (!isNilOrError(tenant) ? tenant.attributes.settings.core.currency : '');
 
@@ -675,6 +676,25 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                 }
               </>
             }
+
+            <SectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.defaultDisplay} />
+                <IconTooltip content={<FormattedMessage {...messages.defaultDisplayTooltip} />} />
+              </SubSectionTitle>
+              {['card', 'map'].map((key) => (
+                <Radio
+                  key={key}
+                  onChange={this.handleIdeasDisplayChange}
+                  currentValue={presentation_mode}
+                  value={key}
+                  name="presentation_mode"
+                  id={`presentation_mode-${key}`}
+                  label={<FormattedMessage {...messages[`${key}Display`]} />}
+                />
+              ))}
+              <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+            </SectionField>
 
             {participation_method === 'poll' &&
               <>
