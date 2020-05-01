@@ -61,7 +61,7 @@ export default defineMessages({
   },
   enabledTooltip: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.enabledTooltip',
-    defaultMessage: 'Makes this field visible in the idea form.',
+    defaultMessage: 'Show this field to people when creating an idea.',
   },
   requiredTooltip: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltip',
