@@ -1147,7 +1147,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Something went wrong, please try again later",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "Expand all fields",
   "app.containers.AdminPage.ProjectIdeaForm.required": "Required",
-  "app.containers.AdminPage.ProjectIdeaForm.requiredTooltip": "Makes this field required when creating or editing an idea.",
   "app.containers.AdminPage.ProjectIdeaForm.save": "Save",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Your changes have been saved successfully.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
