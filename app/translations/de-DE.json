@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "Teilnahmebedingungen",
   "app.components.VerificationModal.peopleMatchingConditions": "Personen, die den folgenden Bedingungen entsprechen:",
   "app.components.VerificationModal.showCOWHelp": "Wo finde ich meine ID-Seriennummer?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "Wir können dich derzeit nicht verifizieren, weil etwas schief gelaufen ist",
   "app.components.VerificationModal.submit": "Senden",
   "app.components.VerificationModal.takenFormError": "Schon vergeben.",
