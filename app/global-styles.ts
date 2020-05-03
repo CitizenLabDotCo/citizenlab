@@ -13,7 +13,14 @@ const GlobalStyle = createGlobalStyle`
   }
 
   * {
-    outline-color: #000;
+    outline: none;
+
+    &.focus-visible {
+      outline-color: #000;
+      outline-style: solid;
+      outline-width: 2px;
+      outline-offset: 0px;
+    }
   }
 
   html,

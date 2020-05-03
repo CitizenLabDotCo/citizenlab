@@ -3,7 +3,7 @@ import { IPhaseData } from './phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { get } from 'lodash-es';
 
-export type DisabledReasons = 'notPermitted' | 'maybeNotPermitted' | 'projectInactive' | 'notActivePhase' | 'alreadyResponded' | 'notVerified';
+export type DisabledReasons =  'notPermitted' | 'maybeNotPermitted' | 'projectInactive' | 'notActivePhase' | 'alreadyResponded' | 'notVerified';
 
 type PollTakeResponse = {
   enabled: boolean;
@@ -23,7 +23,7 @@ const disabledReason = (backendReason: PollDisabledReasons | null, signedIn: boo
     case 'already_responded':
       return 'alreadyResponded';
     case 'not_verified':
-      return 'notVerified';
+      return signedIn ? 'notVerified' : 'maybeNotPermitted';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:
