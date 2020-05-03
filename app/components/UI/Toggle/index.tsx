@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
+import { hideVisually, darken } from 'polished';
 
 const size = 21;
 const padding = 4;
@@ -14,58 +15,61 @@ const Container = styled.div`
   }
 `;
 
-const ToggleContainer: any = styled.div`
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  ${hideVisually()};
+`;
+
+const StyledToggle = styled.i<{ checked: boolean, disabled: boolean }>`
+  display: inline-block;
+  padding: ${padding}px;
+  padding-right: ${size}px;
+  border-radius: ${size + padding}px;
+  background-color: #ccc;
+  border: solid 1px transparent;
+  transition: all 150ms cubic-bezier(0.165, 0.84, 0.44, 1);
+
+  &:before {
+    display: block;
+    content: '';
+    width: ${size}px;
+    height: ${size}px;
+    border-radius: ${size}px;
+    background: #fff;
+    transition: all 80ms ease-out;
+  }
+
+  &.enabled:hover {
+    background: ${props => props.checked ? darken(0.05, colors.clGreen) : '#bbb'};
+  }
+
+  ${props => props.checked && css`
+    padding-right: ${padding}px;
+    padding-left: ${size}px;
+    background-color: ${colors.clGreen};
+  `};
+`;
+
+const StyledToggleWrapper = styled.div<{ checked: boolean, disabled: boolean }>`
   height: ${size + padding * 2}px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
-  ${(props: any) => props.disabled && css`
+  ${props => props.disabled && css`
     opacity: 0.25;
-
-    i,
-    i:before {
-      cursor: not-allowed;
-    }
+    cursor: not-allowed;
   `};
 
-  ${(props: any) => props.checked && css`
-    i {
-      padding-right: ${padding}px !important;
-      padding-left: ${size}px !important;
-      background: ${colors.clGreen} !important;
-    }
-  `};
-
-  input {
-    display: none;
-  }
-
-  i {
-    display: inline-block;
-    cursor: pointer;
-    padding: ${padding}px;
-    padding-right: ${size}px;
-    transition: all ease 0.15s;
-    border-radius: ${size + padding}px;
-    background: #ccc;
-    transform: translate3d(0, 0, 0);
-
-    &:before {
-      display: block;
-      content: '';
-      width: ${size}px;
-      height: ${size}px;
-      border-radius: ${size}px;
-      background: #fff;
-    }
+  ${HiddenCheckbox}.focus-visible + & ${StyledToggle} {
+    ${boxShadowOutline};
   }
 `;
 
 const Text = styled.div`
-  color: #333;
+  color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
-  line-height: 20px;
+  line-height: normal;
   padding-left: 10px;
   cursor: pointer;
 `;
@@ -75,7 +79,7 @@ export type Props = {
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
   size?: 'small' | 'normal' | 'large';
-  onChange: (event: React.FormEvent<any>) => void;
+  onChange: (event: React.FormEvent) => void;
   className?: string;
   id?: string;
 };
@@ -83,21 +87,39 @@ export type Props = {
 type State = {};
 
 export default class Toggle extends React.PureComponent<Props, State> {
-  handleOnClick = (event) => {
+  handleOnClick = (event: React.FormEvent) => {
     if (!this.props.disabled) {
+      event.preventDefault();
       this.props.onChange(event);
     }
   }
 
   render() {
-    const { value, disabled, label, className, id } = this.props;
+    const { value, disabled, label, className, id, onChange } = this.props;
 
     return (
-      <Container id={id} className={`${className} ${label && 'hasLabel'}`}>
-        <ToggleContainer onClick={this.handleOnClick} checked={value} disabled={disabled}>
-          <input type="checkbox" role="checkbox" aria-checked={value} />
-          <i />
-        </ToggleContainer>
+      <Container
+        id={id}
+        className={`${className || ''} ${label ? 'hasLabel' : ''}`}
+      >
+        <HiddenCheckbox
+          onChange={onChange}
+          checked={value}
+          disabled={disabled}
+          tabIndex={0}
+        />
+
+        <StyledToggleWrapper
+          checked={value}
+          disabled={!!disabled}
+          onClick={this.handleOnClick}
+        >
+          <StyledToggle
+            checked={value}
+            disabled={!!disabled}
+            className={disabled ? 'disabled' : 'enabled'}
+          />
+        </StyledToggleWrapper>
 
         {label &&
           <Text onClick={this.handleOnClick}>{label}</Text>

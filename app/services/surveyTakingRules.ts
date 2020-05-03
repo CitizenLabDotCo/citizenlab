@@ -20,7 +20,7 @@ const disabledReason = (backendReason: SurveyDisabledReasons | null, signedIn: b
     case 'project_inactive':
       return 'projectInactive';
     case 'not_verified':
-      return 'notVerified';
+      return signedIn ? 'notVerified' : 'maybeNotPermitted';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:

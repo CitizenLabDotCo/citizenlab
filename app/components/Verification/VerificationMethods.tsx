@@ -224,7 +224,7 @@ const VerificationMethods = memo<Props>(({
     } else {
       onMethodSelected(method);
     }
-  }, []);
+  }, [onVerifyBOSAButtonClick, onMethodSelected]);
 
   const onSkipButtonClicked = useCallback(() => {
     onSkipped?.();

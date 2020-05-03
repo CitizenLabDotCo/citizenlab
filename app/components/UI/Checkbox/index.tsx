@@ -68,7 +68,6 @@ type Props = DefaultProps & {
   checked: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
-  notFocusable?: boolean;
   label?: string | JSX.Element | null;
   id?: string;
 };
@@ -86,7 +85,6 @@ export default class Checkbox extends PureComponent<Props> {
       size,
       checked,
       className,
-      notFocusable,
       disabled,
       indeterminate,
       onChange
@@ -104,7 +102,7 @@ export default class Checkbox extends PureComponent<Props> {
               onChange={onChange}
               checked={checked}
               disabled={disabled}
-              tabIndex={notFocusable ? -1 : 0}
+              tabIndex={0}
             />
             <StyledCheckbox
               checkedOrIndeterminate={checked || indeterminate}
