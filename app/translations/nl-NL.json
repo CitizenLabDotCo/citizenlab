@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "De voorwaarden voor participatie",
   "app.components.VerificationModal.peopleMatchingConditions": "Mensen die aan de volgende voorwaarden voldoen:",
   "app.components.VerificationModal.showCOWHelp": "Waar kan ik mijn ID-serienummer vinden?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "We konden je niet verifiëren omdat er iets mis ging",
   "app.components.VerificationModal.submit": "Verzenden",
   "app.components.VerificationModal.takenFormError": "Reeds gebruikt.",

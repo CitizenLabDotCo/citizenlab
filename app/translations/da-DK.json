@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "Deltagelsesbetingelser",
   "app.components.VerificationModal.peopleMatchingConditions": "Mennesker der matcher følgende betingelser:",
   "app.components.VerificationModal.showCOWHelp": "Hvor kan jeg finde mit ID-Serienummer?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "Vi kan ikke bekræfte dig, fordi noget gik galt",
   "app.components.VerificationModal.submit": "Indsend",
   "app.components.VerificationModal.takenFormError": "Allerede taget.",

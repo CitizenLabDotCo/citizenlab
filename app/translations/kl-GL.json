@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "Peqataanissamut piumasaqaatit",
   "app.components.VerificationModal.peopleMatchingConditions": "Inuit piumasaqaatinut ukununnga tulluartut:",
   "app.components.VerificationModal.showCOWHelp": "ID-Serienummer sumi pissarsiarisinnaavara?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "Ajortoqarmat uppernarsarsinnaanngilatsigit.",
   "app.components.VerificationModal.submit": "Nassiuguk",
   "app.components.VerificationModal.takenFormError": "Tiguneqareerpoq.",

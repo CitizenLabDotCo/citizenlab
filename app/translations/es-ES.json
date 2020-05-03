@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "Condiciones para participar",
   "app.components.VerificationModal.peopleMatchingConditions": "Personas que cumplan las siguientes condiciones:",
   "app.components.VerificationModal.showCOWHelp": "¿Dónde puedo encontrar mi número de serie/ documento en la cédula de identidad?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "Algo salió mal, no podemos verificarlo",
   "app.components.VerificationModal.submit": "Enviar",
   "app.components.VerificationModal.takenFormError": "Ya está ocupado.",
