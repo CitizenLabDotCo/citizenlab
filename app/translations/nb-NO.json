@@ -382,6 +382,7 @@
   "app.components.VerificationModal.participationConditions": "Participation conditions",
   "app.components.VerificationModal.peopleMatchingConditions": "People matching the following conditions:",
   "app.components.VerificationModal.showCOWHelp": "Where can I find my ID Serial Number?",
+  "app.components.VerificationModal.skipThisStep": "",
   "app.components.VerificationModal.somethingWentWrongError": "We couldn't verify you because something went wrong",
   "app.components.VerificationModal.submit": "Submit",
   "app.components.VerificationModal.takenFormError": "Already taken.",
