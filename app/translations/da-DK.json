@@ -408,6 +408,7 @@
   "app.components.VoteControl.votingDisabledPhaseNotYetStarted": "{tenantName, select, DeloitteDK {Det er endnu ikke muligt at stemme på dette indlæg, da den fase den tilhører ikke er begyndt endnu} other {Det er endnu ikke muligt at stemme på denne ide, da den fase den tilhører ikke er begyndt endnu}}",
   "app.components.VoteControl.votingDisabledPossibleLater": "{tenantName, select, DeloitteDK {Afstemning på indlæg i {projectName} vil være muligt fra {enabledFromDate}} other {Afstemning på ideer i {projectName} vil være muligt fra {enabledFromDate}}}",
   "app.components.VoteControl.votingDisabledProjectInactive": "{tenantName, select, DeloitteDK {Du kan ikke længere stemme på indlæg i {projectName}} other {Du kan ikke længere stemme på ideer i {projectName}}}",
+  "app.components.admin.DateRangePicker.endDatePlaceholder": "",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Start date",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Save",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Success",

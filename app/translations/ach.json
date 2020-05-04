@@ -408,6 +408,7 @@
   "app.components.VoteControl.votingDisabledPhaseNotYetStarted": "",
   "app.components.VoteControl.votingDisabledPossibleLater": "",
   "app.components.VoteControl.votingDisabledProjectInactive": "",
+  "app.components.admin.DateRangePicker.endDatePlaceholder": "",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "",
