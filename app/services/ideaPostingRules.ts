@@ -14,14 +14,14 @@ interface PostingButtonStateArg {
   authUser: GetAuthUserChildProps;
 }
 
-const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: boolean, futureEnabled: string | null) => {
+const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: boolean, futureEnabled: string | null): DisabledReasons | null => {
   switch (backendReason) {
     case 'project_inactive':
       return 'projectInactive';
     case 'posting_disabled':
       return 'postingDisabled';
     case 'not_verified':
-      return signedIn ? 'notVerified' : 'maybeNotPermitted';
+      return 'notVerified';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:
@@ -35,7 +35,7 @@ const disabledReason = (backendReason: PostingDisabledReasons | null, signedIn: 
  *  phase: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
  *  authUser: The currently authenticated user
  */
-export const getPostingPermission = ({ project, phase, authUser }: PostingButtonStateArg) => {
+export const getIdeaPostingRules = ({ project, phase, authUser }: PostingButtonStateArg) => {
   const signedIn = !isNilOrError(authUser);
   const loggedInAsAdmin = (!isNilOrError(authUser) ? isAdmin({ data: authUser }) : false);
 
@@ -55,7 +55,7 @@ export const getPostingPermission = ({ project, phase, authUser }: PostingButton
     return {
       show: phase.attributes.participation_method === 'ideation' && phase.attributes.posting_enabled && disabled_reason !== 'not_ideation',
       enabled: false,
-      disabledReason: 'notActivePhase',
+      disabledReason: 'notActivePhase' as DisabledReasons,
     };
   } else if (!isNilOrError(project) && isNilOrError(phase)) { // if not in phase context
     const enabled = (loggedInAsAdmin || project.attributes.action_descriptor.posting.enabled);

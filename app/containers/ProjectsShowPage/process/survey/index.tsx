@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import Link from 'utils/cl-router/Link';
 
 // components
 import TypeformSurvey from './TypeformSurvey';
@@ -10,48 +9,25 @@ import GoogleFormsSurvey from './GoogleFormsSurvey';
 import Warning from 'components/UI/Warning';
 
 // services
-import { surveyTakingState, DisabledReasons } from 'services/surveyTakingRules';
+import { getSurveyTakingRules, DisabledReasons } from 'services/surveyTakingRules';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
-// events
-import { openVerificationModal } from 'components/Verification/verificationModalEvents';
-
-// styling
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-
+// i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// events
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
+import { openSignUpInModal } from 'components/SignUpIn/events';
+
+// styling
+import styled from 'styled-components';
+
 const Container = styled.div``;
-
-const StyledButton = styled.button`
-  color: ${colors.clBlueButtonText};
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-
-  &:hover {
-    text-decoration: underline;
-  }
-  display: inline-block;
-  padding: 0;
-`;
-
-const SignUpLink = styled(Link)`
-  color: ${colors.clBlueButtonText};
-  text-decoration: underline;
-  transition: all 100ms ease-out;
-
-  &:hover {
-    text-decoration: underline;
-  }
-  display: inline-block;
-  padding: 0;
-`;
 
 interface InputProps {
   projectId: string | null;
@@ -88,6 +64,34 @@ class Survey extends PureComponent<Props, State> {
     }
   }
 
+  signUpIn = (flow: 'signin' | 'signup') => {
+    const { phaseId, project, projectId } = this.props;
+
+    if (!isNilOrError(project)) {
+      const pcId = phaseId || projectId;
+      const pcType = phaseId ? 'phase' : 'project';
+      const takingSurveyDisabledReason = project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
+
+      openSignUpInModal({
+        flow,
+        verification: takingSurveyDisabledReason === 'not_verified',
+        verificationContext: !!(takingSurveyDisabledReason === 'not_verified' && pcId && pcType) ? {
+          action: 'taking_poll',
+          id: pcId,
+          type: pcType
+        } : undefined
+      });
+    }
+  }
+
+  signIn = () => {
+    this.signUpIn('signin');
+  }
+
+  signUp = () => {
+    this.signUpIn('signup');
+  }
+
   disabledMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
@@ -99,57 +103,63 @@ class Survey extends PureComponent<Props, State> {
   render() {
     const { surveyEmbedUrl, surveyService, authUser, project, phase, className } = this.props;
 
-    if (isNilOrError(project)) return null;
+    if (!isNilOrError(project)) {
+      const { enabled, disabledReason } = getSurveyTakingRules({
+        project,
+        phaseContext: phase,
+        signedIn: !isNilOrError(authUser)
+      });
 
-     const { show, disabledReason } = surveyTakingState({
-      project,
-      phaseContext: phase,
-      signedIn: !isNilOrError(authUser),
-    });
+      console.log(project.attributes.action_descriptor.taking_survey);
+      console.log(enabled);
+      console.log(disabledReason);
 
-    if (show) {
-      const email = (authUser ? authUser.attributes.email : null);
+      if (enabled) {
+        const email = (authUser ? authUser.attributes.email : null);
 
-      return (
-        <Container className={`${className} e2e-${surveyService}-survey`}>
-          {surveyService === 'typeform' &&
-            <TypeformSurvey
-              typeformUrl={surveyEmbedUrl}
-              email={(email || null)}
-            />
-          }
+        return (
+          <Container className={`${className} e2e-${surveyService}-survey`}>
+            {surveyService === 'typeform' &&
+              <TypeformSurvey
+                typeformUrl={surveyEmbedUrl}
+                email={(email || null)}
+              />
+            }
 
-          {surveyService === 'survey_monkey' &&
-            <SurveymonkeySurvey
-              surveymonkeyUrl={surveyEmbedUrl}
-            />
-          }
+            {surveyService === 'survey_monkey' &&
+              <SurveymonkeySurvey
+                surveymonkeyUrl={surveyEmbedUrl}
+              />
+            }
 
-          {surveyService === 'google_forms' &&
-            <GoogleFormsSurvey
-              googleFormsUrl={surveyEmbedUrl}
-            />
-          }
-        </Container>
-      );
-    } else {
-      const message = disabledReason ? this.disabledMessage[disabledReason] : messages.surveyDisabledNotPossible;
+            {surveyService === 'google_forms' &&
+              <GoogleFormsSurvey
+                googleFormsUrl={surveyEmbedUrl}
+              />
+            }
+          </Container>
+        );
+      } else {
+        const message = disabledReason ? this.disabledMessage[disabledReason] : messages.surveyDisabledNotPossible;
 
-      return (
-        <Container className={`warning ${className}`}>
-          <Warning icon="lock">
-            <FormattedMessage
-              {...message}
-              values={{
-                verificationLink: <StyledButton onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></StyledButton>,
-                signUpLink: <SignUpLink to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></SignUpLink>,
-                logInLink: <SignUpLink to="/sign-in"><FormattedMessage {...messages.logInLinkText} /></SignUpLink>
-              }}
-            />
-          </Warning>
-        </Container>
-      );
+        return (
+          <Container className={`warning ${className}`}>
+            <Warning icon="lock">
+              <FormattedMessage
+                {...message}
+                values={{
+                  verificationLink: <button onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
+                  signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
+                  logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
+                }}
+              />
+            </Warning>
+          </Container>
+        );
+      }
     }
+
+    return null;
   }
 }
 

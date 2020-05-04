@@ -7,7 +7,7 @@ import { DateRangePicker, DateRangePickerShape } from 'react-dates';
 
 // styles
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 // i18n
 import messages from './messages';
@@ -26,15 +26,17 @@ interface State {
 const StylingWrapper = styled.div`
   .DateRangePickerInput {
     border-radius: ${(props: any) => props.theme.borderRadius};
+    border: solid 1px ${colors.border};
 
-    svg {
-      z-index: 3;
+    &:hover {
+      border-color: ${colors.hoveredBorder};
     }
 
     .DateInput,
     .DateInput_input {
-      color: inherit;
+      color: ${colors.text};
       font-size: ${fontSizes.base}px;
+      line-height: normal;
       font-weight: 400;
       background: transparent;
     }
@@ -55,6 +57,10 @@ class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State>
     this.setState({ focusedInput });
   }
 
+  handleIsOutsideRange = () => {
+    return false;
+  }
+
   render() {
     return (
       <StylingWrapper className={this.props.className}>
@@ -64,6 +70,8 @@ class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State>
           focusedInput={this.state.focusedInput}
           onFocusChange={this.handleFocusChange}
           startDatePlaceholderText={this.props.intl.formatMessage(messages.startDatePlaceholder)}
+          endDatePlaceholderText={this.props.intl.formatMessage(messages.endDatePlaceholder)}
+          isOutsideRange={this.handleIsOutsideRange}
           {...omit(this.props, 'intl')}
         />
       </StylingWrapper>

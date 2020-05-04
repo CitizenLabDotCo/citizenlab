@@ -3,6 +3,7 @@ import React, { PureComponent } from 'react';
 // components
 import Input from 'components/UI/Input';
 import Label from 'components/UI/Label';
+import IconTooltip from 'components/UI/IconTooltip';
 
 // resources
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
@@ -68,6 +69,7 @@ class InputMultiloc extends PureComponent<Props, State> {
       id,
       valueMultiloc,
       label,
+      labelTooltipText,
       onBlur,
       type,
       placeholder,
@@ -99,6 +101,7 @@ class InputMultiloc extends PureComponent<Props, State> {
                   <Label htmlFor={inputId}>
                     <span>{label}</span>
                     {tenantLocales.length > 1 && <LanguageExtension>{tenantLocale.toUpperCase()}</LanguageExtension>}
+                    {labelTooltipText && <IconTooltip content={labelTooltipText} />}
                   </Label>
                 }
 

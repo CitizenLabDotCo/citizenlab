@@ -16,7 +16,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import { getPostingPermission } from 'services/ideaPostingRules';
+import { getIdeaPostingRules } from 'services/ideaPostingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -484,7 +484,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
-      const postingPermission = getPostingPermission({ project, phase, authUser });
+      const postingPermission = getIdeaPostingRules({ project, phase, authUser });
       const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
       const canPost = !!((!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled) && postingPermission.enabled);
       const canVote = !!((!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled) && get(project, 'attributes.action_descriptor.voting.enabled'));

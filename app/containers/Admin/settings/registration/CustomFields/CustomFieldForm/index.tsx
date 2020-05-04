@@ -14,7 +14,6 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import { Multiloc } from 'typings';
 import messages from '../messages';
-import IconTooltip from 'components/UI/IconTooltip';
 
 export interface FormValues {
   enabled: boolean;
@@ -51,7 +50,7 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
   }
 
   render() {
-    const { isSubmitting, mode, errors, isValid, touched, builtInField, status } = this.props;
+    const { isSubmitting, mode, errors, isValid, touched, builtInField, status, intl: { formatMessage } } = this.props;
 
     return (
       <Form>
@@ -91,12 +90,8 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
             <Field
               name="title_multiloc"
               component={FormikInputMultiloc}
-              label={
-                <>
-                  <FormattedMessage {...messages.fieldTitle} />
-                  <IconTooltip content={<FormattedMessage {...messages.fieldTitleTooltip} />} />
-                </>
-              }
+              label={formatMessage(messages.fieldTitle)}
+              labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
               disabled={builtInField}
             />
             {touched.title_multiloc && <Error
@@ -109,12 +104,8 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
             <Field
               name="description_multiloc"
               component={FormikTextAreaMultiloc}
-              label={
-                <>
-                  <FormattedMessage {...messages.fieldDescription} />
-                  <IconTooltip content={<FormattedMessage {...messages.fieldDescriptionTooltip} />} />
-                </>
-              }
+              label={formatMessage(messages.fieldDescription)}
+              labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
               disabled={builtInField}
             />
             {touched.description_multiloc && <Error

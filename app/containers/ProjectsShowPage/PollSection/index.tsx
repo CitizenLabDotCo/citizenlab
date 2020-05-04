@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IParticipationContextType } from 'typings';
 
 // services
-import { pollTakingState, DisabledReasons } from 'services/pollTakingRules';
+import { getPollTakingRules, DisabledReasons } from 'services/pollTakingRules';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -118,51 +118,54 @@ export class PollSection extends PureComponent<Props> {
 
   render() {
     const { pollQuestions, projectId, phaseId, project, phase, type, authUser } = this.props;
-    if (isNilOrError(pollQuestions) || isNilOrError(project) || type === 'phase' && isNilOrError(phase)) {
-      return null;
-    }
-    const { enabled, disabledReason } = pollTakingState({ project, phaseContext: phase, signedIn: !!authUser });
-    const message = disabledReason ? disabledMessages[disabledReason] : messages.pollDisabledNotPossible;
 
-    return (
-      <Container>
-        {disabledReason === 'alreadyResponded'
-          ? <FormCompleted />
-          : <>
-            {!enabled &&
-              <StyledWarning icon="lock">
-                <FormattedMessage
-                  {...message}
-                  values={{
-                    verificationLink: <button onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
-                    signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
-                    logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
-                  }}
-                />
-              </StyledWarning>
-            }
-            {enabled && isNilOrError(authUser) &&
-              <StyledWarning icon="lock">
-                <FormattedMessage
-                  {...messages.signUpToTakePoll}
-                  values={{
-                    signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
-                    logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
-                  }}
-                />
-              </StyledWarning>
-            }
-            <PollForm
-              projectId={projectId}
-              questions={pollQuestions}
-              id={type === 'project' ? projectId : phaseId as string}
-              type={type}
-              disabled={!enabled || isNilOrError(authUser)}
-            />
-          </>
-        }
-      </Container>
-    );
+    if (!isNilOrError(pollQuestions) && !isNilOrError(project)) {
+      const isSignedIn = !isNilOrError(authUser);
+      const { enabled, disabledReason } = getPollTakingRules({ project, phaseContext: phase, signedIn: !!authUser });
+      const message = disabledReason ? disabledMessages[disabledReason] : messages.pollDisabledNotPossible;
+
+      return (
+        <Container>
+          {disabledReason === 'alreadyResponded'
+            ? <FormCompleted />
+            : <>
+              {isSignedIn && !enabled &&
+                <StyledWarning icon="lock">
+                  <FormattedMessage
+                    {...message}
+                    values={{
+                      verificationLink: <button onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
+                      signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
+                      logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
+                    }}
+                  />
+                </StyledWarning>
+              }
+              {!isSignedIn && (enabled || disabledReason === 'notVerified') &&
+                <StyledWarning icon="lock">
+                  <FormattedMessage
+                    {...messages.signUpToTakePoll}
+                    values={{
+                      signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
+                      logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
+                    }}
+                  />
+                </StyledWarning>
+              }
+              <PollForm
+                projectId={projectId}
+                questions={pollQuestions}
+                id={type === 'project' ? projectId : phaseId as string}
+                type={type}
+                disabled={!enabled || isNilOrError(authUser)}
+              />
+            </>
+          }
+        </Container>
+      );
+    }
+
+    return null;
   }
 }
 
