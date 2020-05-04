@@ -305,6 +305,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.titleLabel}
               subtextMessage={messages.titleLabelSubtext}
+              required
             >
               <Input
                 type="text"
@@ -329,6 +330,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               htmlFor="body"
               labelMessage={messages.descriptionLabel}
               subtextMessage={messages.descriptionLabelSubtext}
+              required
             />
             <QuillEditor
               id="body"
@@ -355,6 +357,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               labelMessage={messages.topicsLabel}
               subtextMessage={messages.topicsLabelSubtext}
               htmlFor="field-topic-multiple-picker"
+              required
             />
             <TopicsPicker
               id="field-topic-multiple-picker"
@@ -372,7 +375,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.locationLabel}
               subtextMessage={messages.locationLabelSubtext}
-              optionality="optional"
             >
               <LocationInput
                 className="e2e-initiative-location-input"
@@ -391,7 +393,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
-              optionality="optional"
               htmlFor="initiative-banner-dropzone"
             />
             <ImagesDropzone
@@ -409,7 +410,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
-              optionality="optional"
               htmlFor="initiative-image-dropzone"
             />
             <ImagesDropzone
@@ -429,7 +429,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.fileUploadLabel}
               subtextMessage={messages.fileUploadLabelSubtext}
-              optionality="optional"
             >
               <FileUploader
                 id="e2e-initiative-file-upload"

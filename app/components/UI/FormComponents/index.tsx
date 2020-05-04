@@ -92,7 +92,7 @@ interface FormLabelGenericProps {
   className?: string;
   thin?: boolean;
   noSpace?: boolean;
-  optionality?: 'optional' | 'required';
+  required?: boolean;
 }
 
 export interface FormLabelProps extends FormLabelGenericProps {
@@ -116,7 +116,7 @@ export const FormLabel = memo<FormLabelProps>(({
   hidden,
   thin,
   noSpace,
-  optionality
+  required
 }) => (
   <FormLabelStyled
     thin={thin}
@@ -125,10 +125,10 @@ export const FormLabel = memo<FormLabelProps>(({
     htmlFor={htmlFor}
   >
     <FormattedMessage {...labelMessage} values={labelMessageValues} />
-    {optionality &&
+    {!required &&
       <OptionalityText thin={thin}>
         {' ('}
-        <FormattedMessage {...messages[optionality]} />
+        <FormattedMessage {...messages.optional} />
         {')'}
       </OptionalityText>
     }
@@ -159,14 +159,14 @@ export const FormLabelValue = memo(({
   hidden,
   thin,
   noSpace,
-  optionality
+  required
 }: FormLabelValueProps) => (
     <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
       {labelValue}
-      {optionality &&
+      {!required &&
         <OptionalityText thin={thin}>
           {' ('}
-          <FormattedMessage {...messages[optionality]} />
+          <FormattedMessage {...messages.optional} />
           {')'}
         </OptionalityText>
       }
