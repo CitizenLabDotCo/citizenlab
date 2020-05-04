@@ -7,7 +7,7 @@ import clHistory from 'utils/cl-router/history';
 import { IParticipationContextType } from 'typings';
 
 // services
-import { getPostingPermission, DisabledReasons } from 'services/ideaPostingRules';
+import { getIdeaPostingRules, DisabledReasons } from 'services/ideaPostingRules';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -208,7 +208,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { project, phase, authUser, className, intl: { formatMessage } } = this.props;
-    const { show, enabled, disabledReason } = getPostingPermission({ project, phase, authUser });
+    const { show, enabled, disabledReason } = getIdeaPostingRules({ project, phase, authUser });
 
     const verificationLink = (
       <a href="" role="button" onClick={this.verify}>
@@ -229,7 +229,8 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
     );
 
     if (show) {
-      const isPostingDisabled = (!enabled && !!disabledReason);
+      const isSignedIn = !isNilOrError(authUser);
+      const isDisabled = isSignedIn ? !!disabledReason : (!!disabledReason && disabledReason !== 'notVerified');
       const tippyContent = (!enabled && !!disabledReason) ? (
         <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
           <TooltipContentIcon name="lock-outlined" ariaHidden />
@@ -242,7 +243,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
       return (
         <Container className={className || ''}>
           <Tippy
-            enabled={isPostingDisabled}
+            enabled={isDisabled}
             interactive={true}
             placement="bottom"
             content={tippyContent}
@@ -250,14 +251,14 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
             hideOnClick={false}
           >
             <ButtonWrapper
-              tabIndex={isPostingDisabled ? 0 : -1}
-              className={`e2e-idea-button ${isPostingDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}
+              tabIndex={isDisabled ? 0 : -1}
+              className={`e2e-idea-button ${isDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}
             >
               <Button
                 {...this.props}
                 aria-describedby="tooltip-content"
                 onClick={this.onClick}
-                disabled={isPostingDisabled}
+                disabled={isDisabled}
                 ariaDisabled={false}
               >
                 <FormattedMessage {...messages.startAnIdea} />

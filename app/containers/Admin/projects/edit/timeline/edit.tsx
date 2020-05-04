@@ -1,7 +1,3 @@
-// must be at the top, before other imports!
-import 'react-dates/initialize';
-import 'react-dates/lib/css/_datepicker.css';
-
 // Libraries
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
@@ -27,7 +23,7 @@ import Label from 'components/UI/Label';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';
-import { DateRangePicker } from 'react-dates';
+import DateRangePicker from 'components/admin/DateRangePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
@@ -40,7 +36,6 @@ import messages from './messages';
 
 // Styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
 
 // Typings
 import { CLError, Locale, UploadFile, Multiloc } from 'typings';
@@ -49,31 +44,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // Resources
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
-const PhaseForm = styled.form`
-  .DateRangePickerInput {
-    border-radius: ${(props: any) => props.theme.borderRadius};
-
-    svg {
-      z-index: 3;
-    }
-
-    .DateInput,
-    .DateInput_input {
-      color: inherit;
-      font-size: ${fontSizes.base}px;
-      font-weight: 400;
-      background: transparent;
-    }
-  }
-
-  .DateRangePicker_picker {
-    z-index: 2;
-  }
-
-  .CalendarMonth_caption {
-    color: inherit;
-  }
-`;
+const PhaseForm = styled.form``;
 
 interface IParams {
   projectId: string | null;
@@ -96,7 +67,6 @@ interface State {
   attributeDiff: IUpdatedPhaseProperties;
   errors: { [fieldName: string]: CLError[] } | null;
   processing: boolean;
-  focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
   loaded: boolean;
   phaseFiles: UploadFile[];
@@ -117,7 +87,6 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
       attributeDiff: {},
       errors: null,
       processing: false,
-      focusedInput: null,
       saved: false,
       loaded: false,
       phaseFiles: [],
@@ -227,14 +196,6 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
         end_at: endDate ? endDate.format('YYYY-MM-DD') : ''
       }
     }));
-  }
-
-  handleDateFocusChange = (focusedInput: 'startDate' | 'endDate') => {
-    this.setState({ focusedInput });
-  }
-
-  isOutsideRange = () => {
-    return false;
   }
 
   handlePhaseFileOnAdd = (newFile: UploadFile) => {
@@ -380,7 +341,6 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
     const { loaded } = this.state;
 
     if (loaded) {
-      const { formatMessage } = this.props.intl;
       const { errors, phase, attributeDiff, processing, phaseFiles, submitState } = this.state;
       const phaseAttrs = (phase ? { ...phase.data.attributes, ...attributeDiff } : { ...attributeDiff });
       const startDate = this.getStartDate();
@@ -423,13 +383,6 @@ class AdminProjectTimelineEdit extends PureComponent<Props & InjectedIntlProps &
                   startDate={startDate}
                   endDate={endDate}
                   onDatesChange={this.handleDateUpdate}
-                  focusedInput={this.state.focusedInput}
-                  onFocusChange={this.handleDateFocusChange}
-                  isOutsideRange={this.isOutsideRange}
-                  firstDayOfWeek={1}
-                  displayFormat="DD/MM/YYYY"
-                  startDatePlaceholderText={formatMessage(messages.startDatePlaceholder)}
-                  endDatePlaceholderText={formatMessage(messages.endDatePlaceholder)}
                 />
                 <Error apiErrors={errors && errors.start_at} />
                 <Error apiErrors={errors && errors.end_at} />

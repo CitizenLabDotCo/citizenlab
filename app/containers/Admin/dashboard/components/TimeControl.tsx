@@ -117,8 +117,6 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onChange(startDate, endDate);
   }
 
-  isOutsideRange = () => (false);
-
   findActivePreset = () => {
     const { startAtMoment, endAtMoment } = this.props;
 
@@ -183,7 +181,6 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
           startDate={(startAtMoment === undefined) ? null : startAtMoment}
           endDate={endAtMoment}
           onDatesChange={this.handleDatesChange}
-          isOutsideRange={this.isOutsideRange}
         />
       </Container>
     );
