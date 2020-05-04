@@ -8,7 +8,6 @@ import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, /*Visibility*/
 // components
 import Icon from 'components/UI/Icon';
 const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
-// import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import IconToolTip from 'components/UI/IconTooltip';
 import Spinner from 'components/UI/Spinner';
@@ -164,17 +163,14 @@ interface Props {
 
 const disablableFields = ['topic_ids', 'location', 'attachments'];
 const requiredFields = ['title', 'body'];
-// const hidableFields = ['topic_ids', 'location'];
 
 const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
   const canSetRequired = !requiredFields.includes(ideaCustomField.attributes.key);
-  // const canSetHidden = hidableFields.find(field => field === ideaCustomField.attributes.key);
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
   const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
   const [fieldRequired, setFieldRequired] = useState(ideaCustomField.attributes.required);
-  // const [fieldVisibleTo, setFieldVisibleTo] = useState(ideaCustomField.attributes.visible_to);
 
   const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
@@ -200,14 +196,6 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
     onChange(ideaCustomField.id, { required: fieldRequired });
   }, [fieldRequired]);
 
-  // const handleVisibleToOnChange = useCallback((visibleTo: Visibility) => {
-  //   setFieldVisibleTo(visibleTo);
-  // }, []);
-
-  // useEffect(() => {
-  //   onChange(ideaCustomField.id, { visible_to: fieldVisibleTo });
-  // }, [fieldVisibleTo]);
-
   const removeFocus = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
   }, []);
@@ -217,7 +205,6 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   }, [ideaCustomField]);
 
   if (!isNilOrError(ideaCustomField)) {
-    // const key = ideaCustomField.attributes.key;
 
     return (
       <Container className={`${className || ''} ${first ? 'first' : ''}`}>
@@ -271,46 +258,18 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
               </Setting>
 
               {fieldEnabled &&
-                <>
-                  {/* {canSetHidden &&
-                    <Setting>
-                      <label>
-                        <LabelText>
-                          <FormattedMessage {...messages.visibility} />
-                        </LabelText>
-                        <Radio
-                          onChange={handleVisibleToOnChange}
-                          currentValue={fieldVisibleTo}
-                          value={'public'}
-                          name={`${key}-field-enabled`}
-                          id={`${key}-field-disabled`}
-                          label={<FormattedMessage {...messages.visibleToEveryone} />}
-                        />
-                        <Radio
-                          onChange={handleVisibleToOnChange}
-                          currentValue={fieldVisibleTo}
-                          value={'admins'}
-                          name={`${key}-field-enabled`}
-                          id={`${key}-field-enabled`}
-                          label={<FormattedMessage {...messages.visibleToAdmin} />}
-                        />
-                      </label>
-                    </Setting>
-                  } */}
-
-                  <Suspense fallback={<Spinner />}>
-                    <TextAreaMultilocWithLocaleSwitcher
-                      valueMultiloc={descriptionMultiloc}
-                      onChange={handleDescriptionOnChange}
-                      rows={3}
-                      labelTextElement={
-                        <LocaleSwitcherLabelText>
-                          <FormattedMessage {...messages.descriptionLabel} />
-                        </LocaleSwitcherLabelText>
-                      }
-                    />
-                  </Suspense>
-                </>
+                <Suspense fallback={<Spinner />}>
+                  <TextAreaMultilocWithLocaleSwitcher
+                    valueMultiloc={descriptionMultiloc}
+                    onChange={handleDescriptionOnChange}
+                    rows={3}
+                    labelTextElement={
+                      <LocaleSwitcherLabelText>
+                        <FormattedMessage {...messages.descriptionLabel} />
+                      </LocaleSwitcherLabelText>
+                    }
+                  />
+                </Suspense>
               }
 
             </CollapseContainerInner>
