@@ -110,10 +110,6 @@ class Survey extends PureComponent<Props, State> {
         signedIn: !isNilOrError(authUser)
       });
 
-      console.log(project.attributes.action_descriptor.taking_survey);
-      console.log(enabled);
-      console.log(disabledReason);
-
       if (enabled) {
         const email = (authUser ? authUser.attributes.email : null);
 

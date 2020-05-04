@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { Subscription } from 'rxjs';
 import { switchMap, tap, map as rxMap } from 'rxjs/operators';
 import { map, isEmpty, isEqual, difference } from 'lodash-es';
+import { adopt } from 'react-adopt';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -24,7 +26,7 @@ import Link from 'utils/cl-router/Link';
 // services
 import { projectByIdStream, updateProject, IProject } from 'services/projects';
 import { groupsProjectsByProjectIdStream, addGroupProject, deleteGroupProject, IGroupsProjects } from 'services/groupsProjects';
-import GetModerators from 'resources/GetModerators';
+import GetModerators, { GetModeratorsChildProps } from 'resources/GetModerators';
 
 // style
 import styled from 'styled-components';
@@ -73,13 +75,15 @@ const StyledLink = styled(Link)`
   }
 `;
 
-type Props = {
-  params: {
-    projectId: string | null
-  };
-};
+interface InputProps {}
 
-type State = {
+interface DataProps {
+  moderators: GetModeratorsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+interface State {
   project: IProject | null;
   oldGroupsProjects: IGroupsProjects | null;
   newGroupsProjects: IGroupsProjects | null;
@@ -88,13 +92,13 @@ type State = {
   loading: boolean;
   saving: boolean;
   status: 'disabled' | 'enabled' | 'error' | 'success';
-};
+}
 
-class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State> {
+class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   subscriptions: Subscription[];
 
-  constructor(props: Props) {
-    super(props as any);
+  constructor(props) {
+    super(props);
     this.state = {
       project: null,
       oldGroupsProjects: null,
@@ -283,9 +287,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
             </StyledSectionTitle>
 
             <ModeratorSubSection>
-              <GetModerators projectId={projectId}>
-                {moderators => <Moderators moderators={moderators} projectId={projectId} />}
-              </GetModerators>
+              <Moderators moderators={this.props.moderators} projectId={projectId} />
             </ModeratorSubSection>
 
             <SubSection>
@@ -316,4 +318,17 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps, State>
     return null;
   }
 }
-export default injectIntl<Props>(ProjectPermissions);
+
+const ProjectPermissionsWithHoC = injectIntl(ProjectPermissions);
+
+const Data = adopt<DataProps, WithRouterProps>({
+  moderators: ({ params, render }) => <GetModerators projectId={params.projectId}>{render}</GetModerators>
+});
+
+const WrappedProjectPermissions = withRouter((inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <ProjectPermissionsWithHoC {...inputProps} {...dataProps} />}
+  </Data>
+));
+
+export default WrappedProjectPermissions;

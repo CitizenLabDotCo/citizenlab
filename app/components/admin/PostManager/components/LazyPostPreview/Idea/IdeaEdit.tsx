@@ -257,7 +257,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             </Button>
           </Top>
 
-          <Content>
+          <Content className="idea-form">
             <IdeaForm
               projectId={projectId}
               title={title}
