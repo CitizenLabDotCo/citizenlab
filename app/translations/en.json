@@ -1148,7 +1148,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.description": "Define the structure of an idea for this project.",
   "app.containers.AdminPage.ProjectIdeaForm.descriptionLabel": "Field description",
   "app.containers.AdminPage.ProjectIdeaForm.enabled": "Enabled",
-  "app.containers.AdminPage.ProjectIdeaForm.enabledTooltip": "Show this field to people when creating an idea.",
   "app.containers.AdminPage.ProjectIdeaForm.errorMessage": "Something went wrong, please try again later",
   "app.containers.AdminPage.ProjectIdeaForm.expandAll": "Expand all fields",
   "app.containers.AdminPage.ProjectIdeaForm.required": "Required",
