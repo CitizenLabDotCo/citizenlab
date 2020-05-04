@@ -616,7 +616,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormLabel
                 htmlFor="title"
                 labelMessage={messages.title}
-                optionality={this.isFieldRequired('title', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                required={this.isFieldRequired('title', ideaCustomFieldsSchemas, locale)}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
               />
               <Input
@@ -637,7 +637,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 id="editor-label"
                 htmlFor="editor"
                 labelMessage={messages.descriptionTitle}
-                optionality={this.isFieldRequired('body', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                required={this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
               />
               <QuillEditor
@@ -686,7 +686,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                   <FormLabel
                     htmlFor="topics"
                     labelMessage={messages.topicsTitle}
-                    optionality={this.isFieldRequired('topic_ids', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                    required={this.isFieldRequired('topic_ids', ideaCustomFieldsSchemas, locale)}
                     subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
                   />
                   <TopicsPicker
@@ -702,7 +702,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 <FormElement>
                   <FormLabel
                     labelMessage={messages.locationTitle}
-                    optionality={this.isFieldRequired('location', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                    required={this.isFieldRequired('location', ideaCustomFieldsSchemas, locale)}
                     subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
                   >
                     <LocationInput
@@ -724,7 +724,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormLabel
                 htmlFor="idea-image-dropzone"
                 labelMessage={messages.imageUploadTitle}
-                optionality={this.isFieldRequired('images', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                required={this.isFieldRequired('images', ideaCustomFieldsSchemas, locale)}
                 subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
               />
               <ImagesDropzone
@@ -744,7 +744,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <FormElement id="e2e-idea-file-upload">
                 <FormLabel
                   labelMessage={messages.otherFilesTitle}
-                  optionality={this.isFieldRequired('attachments', ideaCustomFieldsSchemas, locale) ? 'required' : 'optional'}
+                  required={this.isFieldRequired('attachments', ideaCustomFieldsSchemas, locale)}
                   subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
                 >
                   <FileUploader
