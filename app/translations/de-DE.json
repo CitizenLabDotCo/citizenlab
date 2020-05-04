@@ -408,6 +408,7 @@
   "app.components.VoteControl.votingDisabledPhaseNotYetStarted": "Um an diese Idee abstimmen zu können, ist derzeitmöglich, weil die dazugehörende Phase noch nicht begonnen hat",
   "app.components.VoteControl.votingDisabledPossibleLater": "{orgName, select, München {Bewertungen von Mängelmeldungen in {projectName} werden ab dem {enabledFromDate} möglich sein} other {Abstimmungen zu Ideen für {projectName} werden ab dem {enabledFromDate} möglich sein}}",
   "app.components.VoteControl.votingDisabledProjectInactive": "{orgName, select, München {Mängelmeldungen in {projectName}, können nicht mehr bewertet werden} other {Es können nicht länger zu Ideen für {projectName} abgestimmt werden}}",
+  "app.components.admin.DateRangePicker.endDatePlaceholder": "",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Start date",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Save",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Success",

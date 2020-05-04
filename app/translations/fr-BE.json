@@ -408,6 +408,7 @@
   "app.components.VoteControl.votingDisabledPhaseNotYetStarted": "Voter sur cette idée n'est pas possible car la phase à laquelle elle appartient n'a pas encore commencé",
   "app.components.VoteControl.votingDisabledPossibleLater": "Le vote sur les idées de '{projectName}' sera possible à partir du '{enabledFromDate}'",
   "app.components.VoteControl.votingDisabledProjectInactive": "Vous ne pouvez plus voter sur les idées de '{projectName}'",
+  "app.components.admin.DateRangePicker.endDatePlaceholder": "",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Date de début",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Enregistrer",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Enregistré !",
