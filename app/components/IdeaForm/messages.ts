@@ -71,7 +71,7 @@ export default defineMessages({
   },
   fileAttachmentsTitle: {
     id: 'app.container.IdeaForm.fileAttachmentsTitle',
-    defaultMessage: 'File attachments',
+    defaultMessage: 'Attachments',
   },
   formGeneralSectionTitle: {
     id: 'app.components.IdeaForm.formGeneralSectionTitle',
