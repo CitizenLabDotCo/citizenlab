@@ -580,7 +580,6 @@
   "app.container.IdeaForm.budgetIsTooBig": "The provided budget is too big",
   "app.container.IdeaForm.budgetIsZeroError": "Please provide a budget larger than 0",
   "app.container.IdeaForm.budgetLabel": "Budget",
-  "app.container.IdeaForm.fileAttachmentsTitle": "File attachments",
   "app.container.IdeaForm.noBudgetError": "Please provide a budget",
   "app.container.InitiativeForm.fileUploadLabel": "Attachment",
   "app.container.InitiativeForm.fileUploadLabelSubtext": "Upload files to give others more information and context",
