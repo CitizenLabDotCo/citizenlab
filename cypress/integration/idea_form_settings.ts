@@ -1,15 +1,49 @@
+import moment = require('moment');
+import { randomString, apiRemoveProject } from '../support/commands';
+
 describe('Idea form settings', () => {
-  describe('Enabled setting', () => {
+  const projectTitle = randomString();
+  const projectDescriptionPreview = randomString();
+  const projectDescription = randomString();
 
-    describe('Location enabled', () => {
-      it('Shows an enabled field in the idea form', () => {
-        // go to idea form and verify location input field is present
+  const phasePastTitle = randomString();
+  const phaseCurrentTitle = randomString();
+  const phaseFutureTitle = randomString();
 
-      });
+  let projectId: string;
+  let projectSlug: string;
+
+  const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
+  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
+  const today = moment().format('DD/MM/YYYY');
+  const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
+  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
+
+  before(() => {
+    // create new project
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published'
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
     });
+  });
 
+  // beforeEach(() => {
+  //   // navigate to project
+  //   cy.visit(`/projects/${projectSlug}`);
+  //   cy.wait(1000);
+  // });
+
+  describe('Enabled setting', () => {
     describe('Location disabled', () => {
+
       it('Doesn\'t show a disabled field in the idea form', () => {
+        // create continuous
         // set project idea form setting of location to disabled
 
         // go to idea form and verify field is not there
@@ -64,5 +98,9 @@ describe('Idea form settings', () => {
 
     });
 
+  });
+
+  after(() => {
+    apiRemoveProject(projectId);
   });
 });
