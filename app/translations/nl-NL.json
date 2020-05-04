@@ -408,6 +408,7 @@
   "app.components.VoteControl.votingDisabledPhaseNotYetStarted": "Je kan nog niet stemmen op dit idee omdat de fase waartoe het behoort, nog niet gestart is",
   "app.components.VoteControl.votingDisabledPossibleLater": "Stemmen op ideeën in {projectName} wordt mogelijk vanaf {enabledFromDate}",
   "app.components.VoteControl.votingDisabledProjectInactive": "U kunt niet meer stemmen op ideeën in {projectName}",
+  "app.components.admin.DateRangePicker.endDatePlaceholder": "",
   "app.components.admin.DateRangePicker.startDatePlaceholder": "Begint op",
   "app.components.admin.FormikSubmitWrapper.buttonSave": "Opslaan",
   "app.components.admin.FormikSubmitWrapper.buttonSuccess": "Opgeslagen!",
