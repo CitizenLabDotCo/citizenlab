@@ -1081,7 +1081,6 @@
   "app.containers.AdminPage.ProjectEdit.pollDescription": "Users can answer a short multiple-choice questionnaire.",
   "app.containers.AdminPage.ProjectEdit.pollTab": "Poll",
   "app.containers.AdminPage.ProjectEdit.postingEnabled": "Posting ideas",
-  "app.containers.AdminPage.ProjectEdit.presentationModeTooltip": "You can choose how the ideas are presented by default: as cards in a list or as pins on a map.Note that this setting will only be applied if idea locations are enabled for this project. This location setting can be changed in the Idea form settings.",
   "app.containers.AdminPage.ProjectEdit.projectImageLabel": "Project images (max. 5)",
   "app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip": "The first added project image is used in the project overview on the home page. All images are shown on the project page. The ideal dimensions are 800x800.",
   "app.containers.AdminPage.ProjectEdit.projectName": "Project name",
