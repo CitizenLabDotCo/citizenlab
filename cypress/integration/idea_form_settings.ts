@@ -1,4 +1,3 @@
-import moment = require('moment');
 import { randomString, apiRemoveProject } from '../support/commands';
 
 describe('Idea form settings', () => {
@@ -6,18 +5,7 @@ describe('Idea form settings', () => {
   const projectDescriptionPreview = randomString();
   const projectDescription = randomString();
 
-  const phasePastTitle = randomString();
-  const phaseCurrentTitle = randomString();
-  const phaseFutureTitle = randomString();
-
   let projectId: string;
-  let projectSlug: string;
-
-  const twoMonthsAgo = moment().subtract(2, 'month').format('DD/MM/YYYY');
-  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const today = moment().format('DD/MM/YYYY');
-  const inTwoDays = moment().add(2, 'days').format('DD/MM/YYYY');
-  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
 
   before(() => {
     // create new project
@@ -29,22 +17,25 @@ describe('Idea form settings', () => {
       publicationStatus: 'published'
     }).then((project) => {
       projectId = project.body.data.id;
-      projectSlug = project.body.data.attributes.slug;
     });
+
+    cy.setAdminLoginCookie();
   });
 
   // beforeEach(() => {
-  //   // navigate to project
+
   //   cy.visit(`/projects/${projectSlug}`);
   //   cy.wait(1000);
   // });
 
   describe('Enabled setting', () => {
     describe('Location disabled', () => {
-
       it('Doesn\'t show a disabled field in the idea form', () => {
-        // create continuous
+        // go to idea form settings of our newly created idea
+        cy.visit(`admin/projects/${projectId}/ideaform`);
+
         // set project idea form setting of location to disabled
+        cy.get('.e2e-location-toggle').click();
 
         // go to idea form and verify field is not there
 

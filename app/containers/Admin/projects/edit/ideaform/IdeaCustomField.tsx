@@ -16,6 +16,7 @@ import Spinner from 'components/UI/Spinner';
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
@@ -164,7 +165,7 @@ interface Props {
 const disablableFields = ['topic_ids', 'location', 'attachments'];
 const requiredFields = ['title', 'body'];
 
-const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
+const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className, localize }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
   const canSetRequired = !requiredFields.includes(ideaCustomField.attributes.key);
 
@@ -211,7 +212,10 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         <CollapsedContent
           onMouseDown={removeFocus}
           onClick={handleCollapseExpand}
-          className={collapsed ? 'collapsed' : 'expanded'}
+          className={`
+            ${collapsed ? 'collapsed' : 'expanded'}
+            e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-toggle
+          `}
         >
           <CustomFieldTitle>
             <T value={ideaCustomField.attributes.title_multiloc} />
@@ -282,4 +286,4 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   return null;
 });
 
-export default IdeaCustomField;
+export default injectLocalize(IdeaCustomField);
