@@ -214,7 +214,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
           onClick={handleCollapseExpand}
           className={`
             ${collapsed ? 'collapsed' : 'expanded'}
-            e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-toggle
+            e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-setting-collapsed
           `}
         >
           <CustomFieldTitle>
@@ -243,6 +243,9 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
                       label={<FormattedMessage {...messages.enabled} />}
                       labelTextColor={colors.adminTextColor}
                       size={16}
+                      className={`
+                        e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-enabled-toggle-label
+                      `}
                     />
                     <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
                   </ToggleContainer>
