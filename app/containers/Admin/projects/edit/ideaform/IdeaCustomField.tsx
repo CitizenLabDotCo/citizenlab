@@ -126,13 +126,6 @@ const CollapseContainerInner = styled.div`
   margin-bottom: 25px;
 `;
 
-// const LabelText = styled.span`
-//   font-size: ${fontSizes.medium}px;
-//   display: block;
-//   margin-bottom: 20px;
-//   font-weight: 500;
-// `;
-
 const Setting = styled.div`
   margin-bottom: 30px;
 `;
