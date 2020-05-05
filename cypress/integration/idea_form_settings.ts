@@ -128,12 +128,28 @@ describe('Idea form settings', () => {
       describe('New idea', () => {
 
         it('The idea form reports an error when a required field is missing', () => {
-          // set topics field to be required
+          // go to idea form settings of our newly created project
+          cy.visit(`admin/projects/${projectId}/ideaform`);
 
-          // post an idea without the required topics field
+          // set project idea form setting of topics to required
+          cy.get('.e2e-topics-setting-collapsed').click();
+          cy.get('.e2e-topics-required-toggle-label').click();
+          cy.get('#e2e-ideaform-settings-submit').click();
+
+          // go to ideaform and try to post idea
+          cy.visit(`projects/${projectSlug}/ideas/new`);
+          cy.acceptCookies();
+          // reload so that the new settings are correctly applied
+          // cy.reload();
+          // try to post an idea without the required topics field
+          // without getting the form first, the form gets submitted before the fields are loaded
+          cy.get('#idea-form');
+          cy.get('#e2e-idea-new-submit-button').click();
 
           // verify that we got an error for the topics field
-
+          // and check we stay on the idea form page
+          cy.get('#e2e-new-idea-topics-error');
+          cy.url().should('eq', `http://localhost:3000/en-GB/projects/${projectSlug}/ideas/new`);
         });
       });
 
