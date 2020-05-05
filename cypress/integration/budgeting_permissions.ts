@@ -31,15 +31,21 @@ describe('Idea voting permissions', () => {
     it('sends unverified users to the verification flow', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('projects/verified-participatory-budgeting/ideas');
+      cy.get('#e2e-ideas-container');
       cy.acceptCookies();
-      cy.get('.e2e-assign-budget').first().find('button').click();
-      cy.get('.e2e-assign-disabled').find('button').click();
-      cy.get('.e2e-verification-steps');
+      cy.wait(1000);
+      cy.get('.e2e-idea-card').first().as('ideaCard');
+      cy.get('@ideaCard').find('.e2e-assign-budget-button').click();
+      cy.wait(500);
+      cy.get('@ideaCard').find('.e2e-assign-disabled');
     });
+
     it('lets verified users budget', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('projects/verified-participatory-budgeting/ideas');
+      cy.get('#e2e-ideas-container');
       cy.acceptCookies();
+      cy.wait(1000);
       cy.get('.e2e-assign-budget');
       cy.get('.e2e-assign-budget').first().find('.e2e-assign-budget-button').should('have.class', 'not-in-basket');
       cy.get('.e2e-assign-budget').first().find('.e2e-assign-budget-button').click();
