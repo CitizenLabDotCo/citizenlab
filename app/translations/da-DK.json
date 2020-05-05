@@ -5,7 +5,6 @@
   "UI.FormComponents.buttonDisabled": "Send-knappen deaktiveret",
   "UI.FormComponents.buttonEnabled": "Send-knappen aktiveret",
   "UI.FormComponents.optional": "valgfri",
-  "UI.FormComponents.required": "",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Ingen borgerforslag fundet",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "This content is shown at the bottom of your homepage. You can change it at any time.",

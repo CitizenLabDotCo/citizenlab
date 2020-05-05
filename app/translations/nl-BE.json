@@ -5,7 +5,6 @@
   "UI.FormComponents.buttonDisabled": "Verzendknop uitgeschakeld",
   "UI.FormComponents.buttonEnabled": "Verzendknop ingeschakeld",
   "UI.FormComponents.optional": "optioneel",
-  "UI.FormComponents.required": "",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Geen voorstellen gevonden",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Opgelet: Deze kleur heeft een te laag contrast. Hierdoor wordt sommige tekst moeilijk leesbaar. Kies een donkerdere kleur om de leesbaarheid te verbeteren.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "De inhoud wordt onderaan de homepagina van je platform weergegeven, zichtbaar voor alle gebruikers.",

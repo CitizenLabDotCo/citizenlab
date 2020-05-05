@@ -5,7 +5,6 @@
   "UI.FormComponents.buttonDisabled": "Nassiussilluni-toortagaq atorunnaarpoq",
   "UI.FormComponents.buttonEnabled": "Nassiussilluni-toortagaq atulerpoq",
   "UI.FormComponents.optional": "nammineq toqqarsinnaasaq",
-  "UI.FormComponents.required": "",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Innuttaasunit siunnersuummik nassaartoqanngilaq",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "This content is shown at the bottom of your homepage. You can change it at any time.",

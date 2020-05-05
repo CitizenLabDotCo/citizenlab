@@ -5,7 +5,6 @@
   "UI.FormComponents.buttonDisabled": "Bouton soumettre désactivé",
   "UI.FormComponents.buttonEnabled": "Bouton soumettre activé",
   "UI.FormComponents.optional": "optionnel",
-  "UI.FormComponents.required": "",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "Pas de propositions trouvées",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Attention : la couleur que vous avez sélectionné n’est pas assez contrastée. Cela peut entraîner des problèmes de lecture. Choisissez une couleur plus foncée pour optimiser la lisibilité.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "Le contenu de ce champ s’affichera au bas de la page d’accueil de la plate-forme, visible par tous les utilisateurs.",
