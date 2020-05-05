@@ -156,11 +156,11 @@ interface Props {
 }
 
 const disablableFields = ['topic_ids', 'location', 'attachments'];
-const requiredFields = ['title', 'body'];
+const alwaysRequiredFields = ['title', 'body'];
 
 const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className, localize }) => {
   const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
-  const canSetRequired = !requiredFields.includes(ideaCustomField.attributes.key);
+  const canSetRequired = !alwaysRequiredFields.includes(ideaCustomField.attributes.key);
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
   const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
