@@ -8,7 +8,7 @@ describe('Idea form settings', () => {
   let projectId: string;
   let projectSlug: string;
 
-  before(() => {
+  beforeEach(() => {
     // create new project
     cy.apiCreateProject({
       type: 'continuous',
@@ -24,12 +24,6 @@ describe('Idea form settings', () => {
     cy.setAdminLoginCookie();
   });
 
-  // beforeEach(() => {
-
-  //   cy.visit(`/projects/${projectSlug}`);
-  //   cy.wait(1000);
-  // });
-
   describe('Enabled setting', () => {
     describe('Location disabled', () => {
       it('Doesn\'t show a disabled field in the idea form', () => {
@@ -37,7 +31,7 @@ describe('Idea form settings', () => {
         cy.visit(`projects/${projectSlug}/ideas/new`);
         cy.get('.e2e-idea-form-location-input-field').should('exist');
 
-        // go to idea form settings of our newly created idea
+        // go to idea form settings of our newly created project
         cy.visit(`admin/projects/${projectId}/ideaform`);
 
         // set project idea form setting of location to disabled
@@ -52,9 +46,36 @@ describe('Idea form settings', () => {
 
       it('Doesn\'t show disabled field on idea show page', () => {
         // post idea with location
+        const ideaTitle = randomString();
+        const ideaContent = randomString();
+        const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
+        const locationDescription = 'Brussel, België';
 
-        // check idea show page and verify location (map) isn't there
+        cy
+          .apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription)
+          .then(() => {
+            cy.visit(`/ideas/${ideaTitle}`);
+            cy.get('#e2e-idea-show-page-content');
+            cy.wait(1000);
+          });
 
+        // check that location is initially on idea show page
+        cy.get('#e2e-map-toggle').contains('Brussel, België');
+
+        // go to idea form settings of this idea's project
+        cy.visit(`admin/projects/${projectId}/ideaform`);
+        cy.wait(1000);
+
+        // set location to disabled
+        cy.get('.e2e-location-setting-collapsed').click();
+        cy.get('.e2e-location-enabled-toggle-label').click();
+        cy.get('#e2e-ideaform-settings-submit').click();
+
+        // check that location isn't on the idea show page anymore
+        cy.visit(`/ideas/${ideaTitle}`);
+        cy.get('#e2e-idea-show-page-content');
+        cy.wait(1000);
+        cy.get('#e2e-map-toggle').should('not.exist');
       });
      });
   });
@@ -100,7 +121,7 @@ describe('Idea form settings', () => {
 
   });
 
-  after(() => {
+  afterEach(() => {
     apiRemoveProject(projectId);
   });
 });
