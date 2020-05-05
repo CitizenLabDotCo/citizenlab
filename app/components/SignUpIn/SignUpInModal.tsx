@@ -56,7 +56,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   useEffect(() => {
     const subscriptions = [
       openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
-        setMetaData(metaData);
+        !authUser && setMetaData(metaData);
       }),
       closeSignUpInModal$.subscribe(() => {
         setMetaData(undefined);
@@ -67,7 +67,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     ];
 
     return () => subscriptions.forEach(subscription => subscription.unsubscribe());
-  }, []);
+  }, [authUser]);
 
   const onClose = useCallback(() => {
     // if the user presses the close button (x) in the modal top right corner when the cusom-fields step is shown and

@@ -33,6 +33,7 @@ type DefaultStyleValues = {
     borderHoverColor?: string;
     iconColor?: string;
     iconHoverColor?: string;
+    padding?: string;
   };
 };
 
@@ -145,7 +146,10 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     },
     text: {
       bgColor: 'transparent',
-      textColor: colors.label
+      textColor: colors.label,
+      textHoverColor: '#000',
+      iconColor: colors.label,
+      iconHoverColor: '#000'
     },
     success: {
       bgColor: colors.clGreenSuccessBackground,
@@ -206,7 +210,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const borderRadius = props.borderRadius || get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) || props.theme.borderRadius;
   const textDecoration = props.textDecoration || get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) || 'none';
   const textDecorationHover = props.textDecorationHover || get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) || 'none';
-  const padding = getPadding(props);
+  const padding = get(defaultStyleValues, `${props.buttonStyle}.padding`) || getPadding(props);
   const fontSize = getFontSize(props);
   const lineHeight = getLineHeight(props);
   const iconSize = getIconHeight(props);

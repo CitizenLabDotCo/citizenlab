@@ -19,7 +19,6 @@ import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
 import IconTooltip from 'components/UI/IconTooltip';
-
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 
