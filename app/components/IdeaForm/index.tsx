@@ -694,7 +694,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     onChange={this.handleTopicsOnChange}
                     max={2}
                   />
-                  {topicsError && <Error text={topicsError} />}
+                  {topicsError && <Error id="e2e-new-idea-topics-error" text={topicsError} />}
                 </FormElement>
               )}
 
