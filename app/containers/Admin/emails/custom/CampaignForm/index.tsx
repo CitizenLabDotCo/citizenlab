@@ -40,7 +40,7 @@ export interface FormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  group_ids: string[];
+  group_ids: string[] | undefined;
 }
 
 interface InputProps {
@@ -81,10 +81,15 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   groupsOptions = (groups: GetGroupsChildProps) => {
-    return !isNilOrError(groups.groupsList) && groups.groupsList.map((group) => ({
+    const groupList = isNilOrError(groups) && !isNilOrError(groups.groupsList) ?
+    groups.groupsList.map((group) => ({
       label: this.props.localize(group.attributes.title_multiloc),
       value: group.id,
-    }));
+    }))
+    :
+    [];
+
+    return groupList;
   }
 
   renderFormikQuillMultiloc = (props) => {
@@ -135,7 +140,6 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
                   name="group_ids"
                   component={FormikMultipleSelect}
                   options={this.groupsOptions(groups)}
-                  placeholder={formatMessage(messages.allUsers)}
                 />
               )}
             </GetGroups>
