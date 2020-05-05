@@ -218,6 +218,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
             onClick={handleOnSubmit}
             processing={processing}
             disabled={isEmpty(changes)}
+            id="e2e-ideaform-settings-submit"
           >
             {success
               ? <FormattedMessage {...messages.saved} />
