@@ -169,10 +169,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
     }
   }
 
-  unauthenticatedVoteClick = () => {
-    this.setState({ showVotingDisabled: 'unauthenticated' });
-  }
-
   disabledVoteClick = () => {
     this.setState({ showVotingDisabled: 'votingDisabled' });
   }
@@ -259,7 +255,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                   {participationMethod !== 'budgeting' &&
                     <VoteControl
                       ideaId={idea.id}
-                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       ariaHidden={true}

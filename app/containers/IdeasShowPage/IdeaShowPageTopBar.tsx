@@ -131,10 +131,6 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
     }
   }, [insideModal]);
 
-  const onUnauthenticatedVoteClick = useCallback(() => {
-    clHistory.push('/sign-in');
-  }, []);
-
   const onDisabledVoteClick = useCallback((disabled_reason: IdeaVotingDisabledReason) => {
     if (!isNilOrError(authUser) && !isNilOrError(project) && disabled_reason === 'not_verified') {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
@@ -170,7 +166,6 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
             <VoteControl
               size="1"
               ideaId={ideaId}
-              unauthenticatedVoteClick={onUnauthenticatedVoteClick}
               disabledVoteClick={onDisabledVoteClick}
               showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
             />

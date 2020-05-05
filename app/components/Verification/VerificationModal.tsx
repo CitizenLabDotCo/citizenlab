@@ -8,6 +8,7 @@ import VerificationSteps from './VerificationSteps';
 
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
+import useAuthUser from 'hooks/useAuthUser';
 
 // events
 import { openVerificationModal$, closeVerificationModal$, closeVerificationModal } from 'components/Verification/verificationModalEvents';
@@ -58,6 +59,8 @@ export interface Props {
 
 const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
+  const authUser = useAuthUser();
+
   const isMounted = useIsMounted();
   const [activeStep, setActiveStep] = useState<VerificationModalSteps>(null);
   const [context, setContext] = useState<ContextShape>(null);
@@ -72,8 +75,10 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   useEffect(() => {
     const subscriptions = [
       openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
-        setActiveStep(step);
-        setContext(context);
+        if (!authUser) {
+          setActiveStep(step);
+          setContext(context);
+        }
       }),
       closeVerificationModal$.subscribe(() => {
         setActiveStep(null);
@@ -82,7 +87,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
     ];
 
     return () => subscriptions.forEach(subscription => subscription.unsubscribe());
-  }, []);
+  }, [authUser]);
 
   const onClose = useCallback(() => {
     closeVerificationModal();
