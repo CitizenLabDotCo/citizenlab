@@ -325,9 +325,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
     const locationEnabled = this.isFieldEnabled('location');
     const topicsEnabled = this.isFieldEnabled('topic_ids');
-    const showListView = !locationEnabled || selectedView === 'card';
-    const showMapView = (locationEnabled && selectedView === 'map');
     const showViewButtons = !!(locationEnabled && showViewToggle);
+    const showListView = !locationEnabled || selectedView === 'card';
+    const showMapView = selectedView === 'map';
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
 
     return (
