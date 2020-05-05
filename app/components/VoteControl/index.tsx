@@ -615,12 +615,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       <>
         {screenreaderContent}
         <Container
-          className={`
-            ${className}
-            e2e-vote-controls
-            ${myVoteMode === null ? 'neutral' : myVoteMode}
-            ${votingEnabled && 'enabled'}
-          `}
+          className={[
+            className,
+            'e2e-vote-controls',
+            myVoteMode === null ? 'neutral' : myVoteMode,
+            votingEnabled ? 'enabled' : 'disabled'
+          ].filter(item => item).join(' ')}
           aria-hidden={ariaHidden}
         >
           <Upvote
@@ -628,11 +628,12 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             onMouseDown={this.removeFocus}
             onClick={this.onClickUpvote}
             ref={this.setUpvoteRef}
-            className={`
-              ${votingAnimation === 'up' ? 'voteClick' : 'upvote'}
-              ${upvotingEnabled && 'enabled'}
-              e2e-ideacard-upvote-button
-            `}
+            className={[
+              'e2e-ideacard-upvote-button',
+              votingAnimation === 'up' ? 'voteClick' : 'upvote',
+              upvotingEnabled ? 'enabled' : 'disabled',
+              myVoteMode === 'up' ? 'active' : ''
+            ].join(' ')}
             enabled={upvotingEnabled}
             tabIndex={ariaHidden ? -1 : 0}
           >
@@ -651,11 +652,11 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
               onMouseDown={this.removeFocus}
               onClick={this.onClickDownvote}
               ref={this.setDownvoteRef}
-              className={`
-                ${votingAnimation === 'down' ? 'voteClick' : 'downvote'}
-                ${downvotingEnabled && 'enabled'}
-                e2e-ideacard-downvote-button
-              `}
+              className={[
+                'e2e-ideacard-downvote-button',
+                votingAnimation === 'down' ? 'voteClick' : 'downvote',
+                downvotingEnabled ? 'enabled' : 'disabled'
+              ].join(' ')}
               enabled={downvotingEnabled}
               tabIndex={ariaHidden ? -1 : 0}
             >

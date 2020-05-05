@@ -3,6 +3,9 @@ import { randomString } from '../support/commands';
 describe('Project ideas page', () => {
   beforeEach(() => {
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas');
+    cy.get('#e2e-project-ideas-page');
+    cy.get('#e2e-ideas-container');
+    cy.wait(1000);
   });
 
   it('shows where you are', () => {
@@ -26,6 +29,8 @@ describe('Project ideas page', () => {
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().find('.upvote.enabled').click();
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-login-button').click();
     cy.location('pathname').should('eq', '/en-GB/sign-in');
+
+    // TODO: 'back to the page part is missing'
   });
 
   it('takes you to the idea page when clicking an idea card', () => {

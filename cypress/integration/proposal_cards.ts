@@ -17,6 +17,7 @@ describe('InitiativeCards without filter sidebar component', () => {
   beforeEach(() => {
     cy.visit('/initiatives');
     cy.get('#e2e-initiatives-list');
+    cy.wait(1000);
   });
 
   it('lets you search the initiatives', () => {
@@ -44,9 +45,10 @@ describe('InitiativeCards without filter sidebar component', () => {
   });
 
   it('lets you filter the initiatives by topic', () => {
-    cy.get('.e2e-topics-filters').find('.e2e-topic').contains('Squares and streets').click();
+    cy.get('.e2e-topic').first().click();
     cy.wait(1000);
-    cy.get('#e2e-initiatives-container').find('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
+    cy.get('#e2e-initiatives-list');
+    cy.get('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
   });
 
   it('lets you filter the initiatives by status', () => {
@@ -58,7 +60,8 @@ describe('InitiativeCards without filter sidebar component', () => {
     // should contain the generated initiative as first card when the status 'Proposed' is selected
     cy.get('.e2e-statuses-filters').find('.e2e-status').contains('Proposed').click();
     cy.wait(1000);
-    cy.get('#e2e-initiatives-container').find('.e2e-initiative-card').first().contains(initiativeTitle);
+    cy.get('#e2e-initiatives-list');
+    cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
 
     // should be empty when the 'Threshold reached' status is selected
     cy.get('.e2e-statuses-filters').find('.e2e-status').contains('Threshold reached').click();

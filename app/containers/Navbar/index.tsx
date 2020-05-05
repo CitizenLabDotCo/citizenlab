@@ -482,7 +482,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
-                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' || secondUrlSegment === 'folders'  ? 'active' : ''}`}
+                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' || secondUrlSegment === 'folders' ? 'active' : ''}`}
                       aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}
@@ -501,29 +501,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                       content={(
                         <ProjectsList>
                           {adminPublications.list.map(
-                            (item: IAdminPublicationContent) => {
-                              if (item.publicationType === 'project') {
-                                return (
-                                  <ProjectsListItem
-                                    key={item.publicationId}
-                                    to={`/projects/${item.attributes.publication_slug}`}
-                                  >
-                                    {localize(item.attributes.publication_title_multiloc)}
-                                  </ProjectsListItem>
-                                );
-                              } else if (item.publicationType === 'projectFolder') {
-                                return (
-                                  <ProjectsListItem
-                                    key={item.publicationId}
-                                    to={`/folders/${item.attributes.publication_slug}`}
-                                  >
-                                    {localize(item.attributes.publication_title_multiloc)}
-                                  </ProjectsListItem>
-                                );
-                              } else {
-                                return null;
-                              }
-                            }
+                            (item: IAdminPublicationContent) => (
+                              <ProjectsListItem
+                                key={item.publicationId}
+                                to={`/${item.publicationType === 'project' ? 'projects' : 'folders'}/${item.attributes.publication_slug}`}
+                              >
+                                {localize(item.attributes.publication_title_multiloc)}
+                              </ProjectsListItem>
+                            )
                           )}
                         </ProjectsList>
                       )}
@@ -638,7 +623,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  adminPublications: <GetAdminPublications publicationStatusFilter={['published', 'archived']} noEmptyFolder folderId={null}/>,
+  adminPublications: <GetAdminPublications publicationStatusFilter={['published', 'archived']} noEmptyFolder folderId={null} />,
 });
 
 const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));
