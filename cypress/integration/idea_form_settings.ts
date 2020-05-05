@@ -139,8 +139,7 @@ describe('Idea form settings', () => {
           // go to ideaform and try to post idea
           cy.visit(`projects/${projectSlug}/ideas/new`);
           cy.acceptCookies();
-          // reload so that the new settings are correctly applied
-          // cy.reload();
+
           // try to post an idea without the required topics field
           // without getting the form first, the form gets submitted before the fields are loaded
           cy.get('#idea-form');
