@@ -27,9 +27,7 @@ import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/p
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
   ideaCustomFieldsSchemasStream,
-  ideaCustomFieldsStream,
   IIdeaCustomFieldsSchemas,
-  IIdeaCustomFields,
   CustomFieldCodes,
 } from 'services/ideaCustomFields';
 
@@ -133,7 +131,6 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas | null;
-  ideaCustomFields: IIdeaCustomFields | null;
   pbEnabled: boolean;
 }
 
@@ -163,7 +160,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaFiles: [],
       ideaFilesToRemove: [],
       ideaCustomFieldsSchemas: null,
-      ideaCustomFields: null,
       locationError: null,
       imageError: null,
       attachmentsError: null,
@@ -181,7 +177,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const topics$ = topicsStream().observable;
     const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
     const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(projectId as string).observable;
-    const ideaCustomFields$ = ideaCustomFieldsStream(projectId as string).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
       switchMap((project) => {
         if (project) {
@@ -223,7 +218,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       pbContext$.subscribe(pbContext => this.setState({ pbContext })),
 
       ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas => this.setState({ ideaCustomFieldsSchemas })),
-      ideaCustomFields$.subscribe(ideaCustomFields => this.setState({ ideaCustomFields })),
 
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
@@ -587,7 +581,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       budgetError,
       ideaFiles,
       ideaCustomFieldsSchemas,
-      ideaCustomFields,
       topicsError,
       locationError,
       imageError,
@@ -597,7 +590,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
     if (
-      !isNilOrError(ideaCustomFields) &&
       !isNilOrError(ideaCustomFieldsSchemas) &&
       !isNilOrError(locale)
     ) {
