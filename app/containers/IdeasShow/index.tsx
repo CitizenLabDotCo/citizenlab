@@ -491,7 +491,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     if (
       !isNilOrError(idea) &&
       !isNilOrError(ideaCustomFieldsSchemas) &&
-      !isNilOrError(locale) && loaded
+      !isNilOrError(locale) &&
+      loaded
     ) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea?.relationships?.author?.data?.id || null;
