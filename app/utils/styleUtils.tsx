@@ -108,7 +108,7 @@ export const colors = {
   text: '#333',
   secondaryText: '#84939E',
   label: '#596B7A',
-  placeholder: '#aaa',
+  placeholder: '#999',
   separation: '#e0e0e0',
 
   // default input element border colors
@@ -236,10 +236,6 @@ export const defaultInputStyle = css`
   -moz-appearance: none;
   -webkit-appearance: none;
   transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
-
-  &::placeholder {
-    font-weight: 400;
-  }
 
   &:not(:disabled):not(.disabled) {
     &:not(.error):hover,

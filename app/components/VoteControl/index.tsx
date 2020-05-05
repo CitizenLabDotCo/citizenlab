@@ -65,6 +65,7 @@ const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boo
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 1px;
   border-radius: 50%;
   border: solid 1px ${lighten(0.2, colors.label)};
   background: #fff;
@@ -228,6 +229,7 @@ const Downvote = styled(Vote)`
 interface Props {
   ideaId: string;
   size: '1' | '2' | '3';
+  unauthenticatedVoteClick?: (voteMode: 'up' | 'down') => void;
   disabledVoteClick?: (disabled_reason?: IdeaVotingDisabledReason) => void;
   ariaHidden?: boolean;
   className?: string;

@@ -18,11 +18,13 @@ import { addIdea, IIdeaAdd } from 'services/ideas';
 import { addIdeaFile } from 'services/ideaFiles';
 import { addIdeaImage } from 'services/ideaImages';
 import { globalState, IGlobalStateService, IIdeasPageGlobalState } from 'services/globalState';
+import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
+import { PreviousPathnameContext } from 'context';
 
 // utils
 import { convertToGeoJson, reverseGeocode } from 'utils/locationTools';
@@ -68,6 +70,7 @@ interface DataProps {
   locale: GetLocaleChildProps;
   authUser: GetAuthUserChildProps;
   project: GetProjectChildProps;
+  previousPathName: string | null;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -99,19 +102,19 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidMount() {
-    const { location, authUser } = this.props;
+    const { location } = this.props;
     const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
       return type === 'value' ? parseFloat(str) : str;
     }});
 
-    if (authUser === null) {
-      clHistory.replace('/sign-up');
-    } else if (lat && lng) {
+    this.redirectIfNotPermittedOnPage();
+
+    if (lat && lng) {
       reverseGeocode([lat, lng]).then((position) => {
         this.globalState.set({
-          // When an idea is posted through the map, we Google Maps gets an approximate address,
+          // When an idea is posted through the map, Google Maps gets an approximate address,
           // but we also keep the exact coordinates from the click so the location indicator keeps its initial position on the map
-          // and doesn't readjust together with the address correction/approximation
+          // and doesn't read just together with the address correction/approximation
           position,
           position_coordinates: {
             type: 'Point',
@@ -123,8 +126,19 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
-      clHistory.replace('/sign-up');
+    const { authUser, project } = this.props;
+
+    if (prevProps.project !== project || prevProps.authUser !== authUser) {
+      this.redirectIfNotPermittedOnPage();
+    }
+  }
+
+  redirectIfNotPermittedOnPage = () => {
+    const { authUser, project } = this.props;
+    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }) || isSuperAdmin({ data: authUser }));
+
+    if (!isPrivilegedUser && (authUser === null || (!isNilOrError(project) && !project.attributes.action_descriptor.posting.enabled))) {
+      clHistory.replace(this.props.previousPathName || (!authUser ? '/sign-up' : '/'));
     }
   }
 
@@ -190,7 +204,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { authUser, project } = this.props;
 
-    if (!isNilOrError(authUser) && !isNilOrError(project)) {
+    if (!isNilOrError(authUser) && !isNilOrError(project) && project.attributes.action_descriptor.posting.enabled) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
@@ -211,7 +225,8 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
+  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
