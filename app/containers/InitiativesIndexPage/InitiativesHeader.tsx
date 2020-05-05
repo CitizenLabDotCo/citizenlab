@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // components
 import Button from 'components/UI/Button';
@@ -10,6 +11,7 @@ import InitiativeInfoContent from './InitiativeInfoContent';
 import InitiativeInfoMobile from './InitiativeInfoContent/Mobile';
 
 // resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // tracking
@@ -21,7 +23,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
@@ -155,28 +157,36 @@ export interface InputProps {
 }
 
 interface DataProps {
+  authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-  theme: any;
-}
+interface Props extends InputProps, DataProps {}
 
 interface State { }
 
-class SignedOutHeader extends PureComponent<Props, State> {
+class InitiativesHeader extends PureComponent<Props, State> {
   startInitiative = () => {
+    const { authUser } = this.props;
+
     trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives header' } });
-    clHistory.push('/initiatives/new');
+
+    if (!isNilOrError(authUser)) {
+      clHistory.push('/initiatives/new');
+    } else {
+      openSignUpInModal({
+        action: () => clHistory.push('/initiatives/new')
+      });
+    }
   }
 
   render() {
-    const { className, theme, tenant } = this.props;
+    const { className, tenant } = this.props;
 
     if (isNilOrError(tenant)) return null;
 
     return (
-      <Container className={`e2e-initiatives-header ${className}`}>
+      <Container className={`e2e-initiatives-header ${className || ''}`}>
         <Header>
           <ScreenReaderOnly>
             <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
@@ -194,7 +204,6 @@ class SignedOutHeader extends PureComponent<Props, State> {
           <StartInitiative
             fontWeight="500"
             padding="13px 22px"
-            bgColor={theme.colorMain}
             textColor="#FFF"
             icon="arrowLeft"
             iconPos="right"
@@ -215,13 +224,12 @@ class SignedOutHeader extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
+  authUser: <GetAuthUser />,
   tenant: <GetTenant />
 });
 
-const SignedOutHeaderWithHoC = withTheme(SignedOutHeader);
-
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignedOutHeaderWithHoC {...inputProps} {...dataProps} />}
+    {dataProps => <InitiativesHeader {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -63,7 +63,9 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
+
     const { participationContextId, participationContextType } = this.props;
+
     openVerificationModal({
       context: {
         action: 'budgeting',

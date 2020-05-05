@@ -10,10 +10,11 @@ import SignUpIn from 'components/SignUpIn';
 import SignUpInPageMeta from './SignUpInPageMeta';
 
 // resources
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { endsWith } from 'utils/helperUtils';
+import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 // events
 import { signUpActiveStepChange$ } from 'components/SignUpIn/events';
@@ -98,6 +99,7 @@ const RightInner = styled.div`
 export interface InputProps {}
 
 export interface DataProps {
+  authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
 }
@@ -110,6 +112,8 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[] = [];
 
   componentDidMount() {
+    this.redirectIfSignedIn();
+
     this.subscriptions = [
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
@@ -117,8 +121,22 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     ];
   }
 
+  componentDidUpdate(prevprops: Props) {
+    if (prevprops.authUser !== this.props.authUser) {
+      this.redirectIfSignedIn();
+    }
+  }
+
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  redirectIfSignedIn = () => {
+    const { authUser, location: { pathname } } = this.props;
+
+    if (endsWith(pathname, 'sign-in') && !isNilOrError(authUser) && authUser.attributes.registration_completed_at) {
+      clHistory.replace(this.props.previousPathName || '/');
+    }
   }
 
   onSignUpInCompleted = () => {
@@ -173,6 +191,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 const SignUpPageWithHoC = withRouter(SignUpPage);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  authUser: <GetAuthUser />,
   locale: <GetLocale />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });

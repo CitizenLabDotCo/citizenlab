@@ -58,19 +58,6 @@ const Input = styled.input`
   &::-ms-clear {
     display: none;
   }
-
-  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: ${colors.label};
-    opacity: 1; /* Firefox */
-  }
-
-  :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: ${colors.label};
-  }
-
-  ::-ms-input-placeholder { /* Microsoft Edge */
-    color: ${colors.label};
-  }
 `;
 
 const SearchIcon = styled(Icon)`
