@@ -318,7 +318,7 @@ describe('<AdminProjectEdition />', () => {
           {...routerProps}
           {...localizeProps}
         />));
-        const linkPath = wrapper.find('##e2e-new-idea');
+        const linkPath = wrapper.find('#e2e-new-idea');
 
       expect(linkPath).toHaveLength(0);
     });
