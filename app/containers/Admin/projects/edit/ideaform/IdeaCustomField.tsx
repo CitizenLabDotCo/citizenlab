@@ -126,7 +126,7 @@ const CollapseContainerInner = styled.div`
   margin-bottom: 25px;
 `;
 
-const Setting = styled.div`
+const Toggles = styled.div`
   margin-bottom: 30px;
 `;
 
@@ -227,7 +227,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
         >
           <CollapseContainer>
             <CollapseContainerInner>
-              <Setting>
+              <Toggles>
                 {canSetEnabled && (
                   <ToggleContainer>
                     <StyledToggle
@@ -258,7 +258,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
                     <IconToolTip content={<FormattedMessage {...messages.requiredTooltip} />} />
                   </ToggleContainer>
                 )}
-              </Setting>
+              </Toggles>
 
               {fieldEnabled &&
                 <Suspense fallback={<Spinner />}>
