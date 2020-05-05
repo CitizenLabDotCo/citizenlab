@@ -44,14 +44,14 @@ class New extends React.Component<Props> {
       });
   }
 
-  initialValues = () : FormValues => {
+  initialValues = (): FormValues => {
     const { authUser } = this.props;
     return {
       sender: 'author',
       reply_to: (!isNilOrError(authUser) && authUser.attributes.email) ||  '',
       subject_multiloc: {},
       body_multiloc: {},
-      group_ids: [],
+      group_ids: undefined,
     };
   }
 
