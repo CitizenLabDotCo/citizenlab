@@ -98,6 +98,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
         <ButtonBarInner>
           <Button
             form={form}
+            id="e2e-submit-idea-form"
             className="e2e-submit-idea-form"
             processing={processing}
             text={<FormattedMessage {...messages.submit} />}

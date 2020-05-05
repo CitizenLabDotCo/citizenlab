@@ -258,6 +258,9 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
                       label={<FormattedMessage {...messages.required} />}
                       labelTextColor={colors.adminTextColor}
                       size={16}
+                      className={`
+                        e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-required-toggle-label
+                      `}
                     />
                     <IconToolTip content={<FormattedMessage {...messages.requiredTooltip} />} />
                   </ToggleContainer>

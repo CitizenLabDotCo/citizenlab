@@ -77,30 +77,50 @@ describe('Idea form settings', () => {
         cy.wait(1000);
         cy.get('#e2e-map-toggle').should('not.exist');
       });
-     });
+    });
   });
 
   describe('Required setting', () => {
 
-    describe('Optional topics field', () => {
-      it('An idea can be posted without filling out the optional field', () => {
-        // set topics field to be optional
-
-        // post an idea without the optional topics field
-
-        // verify that the idea posting succeeds and we're on the idea show page
-
-      });
-    });
-
     describe('Required topics field', () => {
       describe('Existing idea', () => {
         it('Requires field in idea edit form after it became required', () => {
+
           // post idea without topic
+          const ideaTitle = randomString();
+          const ideaContent = randomString(30);
+          let ideaId: string;
 
-          // make topic required
+          cy
+            .apiCreateIdea(projectId, ideaTitle, ideaContent)
+            .then((idea) => {
+              ideaId = idea.body.data.id;
+              cy.visit(`/ideas/${ideaTitle}`);
+              cy.get('#e2e-idea-show-page-content');
+              cy.wait(1000);
+              cy.acceptCookies();
 
-          // verify that we got an error for the topics field
+              // go to idea form settings of this idea's project
+              cy.visit(`admin/projects/${projectId}/ideaform`);
+              cy.wait(1000);
+
+              // set topics to required
+              cy.get('.e2e-topics-setting-collapsed').click();
+              cy.get('.e2e-topics-required-toggle-label').click();
+              cy.get('#e2e-ideaform-settings-submit').click();
+
+              // go to ideaform and try to post idea
+              cy.visit(`ideas/edit/${ideaId}`);
+              // reload so that the new settings are correctly applied
+              cy.reload();
+              // without getting the form first, the form gets submitted before the fields are loaded
+              cy.get('#idea-form');
+              cy.get('#e2e-idea-edit-save-button').click();
+
+              // find topics error on idea form page and check we stay on the idea form page
+              cy.get('#e2e-new-idea-topics-error');
+              cy.url().should('eq', `http://localhost:3000/en-GB/ideas/edit/${ideaId}`);
+            });
 
         });
       });
