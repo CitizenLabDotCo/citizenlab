@@ -225,17 +225,18 @@ export const defaultInputStyle = css`
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
-  padding: 11px;
+  padding: 12px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.border};
+  box-shadow: 0px 0px 0px 1px transparent;
   background: #fff;
-  box-shadow: none;
   cursor: text;
   outline: none;
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
   transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
+  transform: translate3d(0,0,0);
 
   &:not(:disabled):not(.disabled) {
     &:not(.error):hover,
@@ -246,7 +247,7 @@ export const defaultInputStyle = css`
     &:not(.error):focus,
     &:not(.error).focus {
       border-color: #000;
-      box-shadow: 0px 0px 0px 0.5px #000;
+      box-shadow: 0px 0px 0px 1px #000;
     }
 
     &.error {
@@ -254,7 +255,7 @@ export const defaultInputStyle = css`
 
       &:focus,
       &.focus {
-        box-shadow: 0px 0px 0px 0.5px ${colors.clRedError};
+        box-shadow: 0px 0px 0px 1px ${colors.clRedError};
       }
     }
   }

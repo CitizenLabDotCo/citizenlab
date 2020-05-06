@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
-// resource hooks
+// hooks
 import useTenant from 'hooks/useTenant';
+import useWindowSize from 'hooks/useWindowSize';
 
 // component
 import SignUp from 'components/SignUpIn/SignUp';
@@ -46,6 +47,7 @@ const SignUpIn = memo<Props>(({
   className
 }) => {
   const tenant = useTenant();
+  const { windowHeight } = useWindowSize();
 
   const [selectedFlow, setSelectedFlow] = useState(metaData.flow || 'signup');
 
@@ -69,12 +71,14 @@ const SignUpIn = memo<Props>(({
         {selectedFlow === 'signup' ? (
           <SignUp
             metaData={metaDataWithCurrentFlow}
+            windowHeight={windowHeight}
             onSignUpCompleted={onSignUpCompleted}
             onGoToSignIn={onToggleSelectedMethod}
           />
         ) : (
           <SignIn
             metaData={metaDataWithCurrentFlow}
+            windowHeight={windowHeight}
             onSignInCompleted={onSignInCompleted}
             onGoToSignUp={onToggleSelectedMethod}
           />

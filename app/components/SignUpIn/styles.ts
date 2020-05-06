@@ -64,8 +64,8 @@ export const StyledHeaderContainer = styled(HeaderContainer)<{ inModal: boolean 
 
     ${media.smallerThanMinTablet`
       padding-top: 0px;
-      padding-left: 0px;
-      padding-right: 0px;
+      padding-left: 2px;
+      padding-right: 2px;
     `}
   `}
 `;
@@ -76,17 +76,17 @@ export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
   `}
 `;
 
-export const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
+export const StyledModalContent = styled(ModalContent)<{
+  inModal: boolean,
+  windowHeight: string,
+  headerHeight: string
+}>`
   ${props => props.inModal && css`
     padding-top: 20px;
-    max-height: calc(85vh - 150px);
-
-    @media (min-width: 1025px) {
-      max-height: calc(90vh - 150px);
-    }
+    max-height: calc(85vh - ${props.headerHeight});
 
     ${media.smallerThanMinTablet`
-      max-height: calc(85vh - 150px);
+      max-height: ${props => `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
     `}
   `}
 
@@ -95,7 +95,7 @@ export const StyledModalContent = styled(ModalContent)<{ inModal: boolean }>`
     padding-top: 10px;
 
     ${media.smallerThanMinTablet`
-      padding: 0px;
+      padding: 2px;
       padding-top: 10px;
     `}
   `}

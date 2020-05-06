@@ -25,13 +25,19 @@ export type TSignInSteps = 'auth-providers' | 'password-signin';
 
 export interface Props {
   metaData: ISignUpInMetaData;
+  windowHeight: number;
   onSignInCompleted: (userId: string) => void;
   onGoToSignUp: () => void;
   className?: string;
 }
 
-const SignIn = memo<Props>(({ metaData, onSignInCompleted, onGoToSignUp, className }) => {
-
+const SignIn = memo<Props>(({
+  metaData,
+  windowHeight,
+  onSignInCompleted,
+  onGoToSignUp,
+  className
+}) => {
   const [activeStep, setActiveStep] = useState<TSignInSteps>('auth-providers');
 
   const handleOnAuthProviderSelected = useCallback((selectedMethod: AuthProvider) => {
@@ -62,7 +68,11 @@ const SignIn = memo<Props>(({ metaData, onSignInCompleted, onGoToSignUp, classNa
         </StyledHeaderTitle>
       </StyledHeaderContainer>
 
-      <StyledModalContent inModal={!!metaData.inModal}>
+      <StyledModalContent
+        inModal={!!metaData.inModal}
+        windowHeight={`${windowHeight}px`}
+        headerHeight="68px"
+      >
         {metaData.error ? (
           <Error
             text={<FormattedMessage {...messages.somethingWentWrongText} />}

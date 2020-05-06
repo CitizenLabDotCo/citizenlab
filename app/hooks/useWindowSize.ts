@@ -3,7 +3,13 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export default function useWindowSize() {
-  const [windowSize, setWindowSize] = useState<number | undefined | null>(window.innerWidth);
+  const [windowSize, setWindowSize] = useState<{
+    windowWidth: number,
+    windowHeight: number
+  }>({
+    windowWidth: window.innerWidth,
+    windowHeight: window.innerHeight
+  });
 
   useEffect(() => {
     const subscription = fromEvent(window, 'resize').pipe(
@@ -11,8 +17,9 @@ export default function useWindowSize() {
       distinctUntilChanged()
     ).subscribe((event) => {
       if (event.target) {
-        const size = event.target['innerWidth'] as number;
-        setWindowSize(size);
+        const windowWidth = event.target['innerWidth'] as number;
+        const windowHeight = event.target['innerHeight'] as number;
+        setWindowSize({ windowWidth, windowHeight });
       }
     });
 
