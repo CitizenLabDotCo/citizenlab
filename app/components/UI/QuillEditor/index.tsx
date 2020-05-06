@@ -123,7 +123,7 @@ const Container = styled.div<{
 
   &.focus:not(.error) .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: #000;
-    box-shadow: 0px 0px 0px 0.5px #000;
+    box-shadow: inset 0px 0px 0px 1px #000;
   }
 
   &.error .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -132,7 +132,7 @@ const Container = styled.div<{
 
   &.error.focus .ql-toolbar.ql-snow + .ql-container.ql-snow {
     border-color: ${colors.clRedError};
-    box-shadow: 0px 0px 0px 0.5px ${colors.clRedError};
+    box-shadow: inset 0px 0px 0px 1px ${colors.clRedError};
   }
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
@@ -142,7 +142,10 @@ const Container = styled.div<{
     cursor: text;
     border-radius: 0 0 ${({ theme }) => theme.borderRadius} ${({ theme }) => theme.borderRadius};
     border: 1px solid ${colors.border};
+    box-shadow: inset 0px 0px 0px 1px transparent;
     overflow-y: auto;
+    transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
+    transform: translate3d(0,0,0);
     ${(props: any) => quillEditedContent(props.theme.colorMain)};
 
     .ql-editor {

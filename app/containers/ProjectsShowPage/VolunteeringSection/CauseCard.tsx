@@ -151,10 +151,10 @@ interface Props {
 const CauseCard = memo<Props>(({ cause, className }) => {
 
   const authUser = useAuthUser();
-  const windowSize = useWindowSize();
+  const { windowWidth } = useWindowSize();
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
-  const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
   const signUpLink = <Link to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></Link>;
   const signInLink = <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>;
 

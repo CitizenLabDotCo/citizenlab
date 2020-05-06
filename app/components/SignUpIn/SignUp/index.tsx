@@ -12,6 +12,7 @@ import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContent } from 'components/SignUpIn/styles';
+import ReactResizeDetector from 'react-resize-detector';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -57,6 +58,7 @@ export type TSignUpSteps = 'auth-providers' | 'password-signup' | 'verification'
 
 export interface InputProps {
   metaData: ISignUpInMetaData;
+  windowHeight: number;
   onSignUpCompleted: () => void;
   onGoToSignIn: () => void;
   className?: string;
@@ -75,6 +77,7 @@ interface State {
   activeStep: TSignUpSteps | null | undefined;
   userId: string | null;
   error: boolean;
+  headerHeight: string;
 }
 
 class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
@@ -84,7 +87,8 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       steps: [],
       activeStep: undefined,
       userId: null,
-      error: false
+      error: false,
+      headerHeight: '100px'
     };
   }
 
@@ -223,9 +227,13 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ error: true });
   }
 
+  onResize = (_width, height) => {
+    this.setState({ headerHeight: `${Math.round(height) + 2}px` });
+  }
+
   render() {
-    const { activeStep, error, steps } = this.state;
-    const { tenant, metaData, className, intl: { formatMessage } } = this.props;
+    const { activeStep, error, steps, headerHeight } = this.state;
+    const { tenant, metaData, windowHeight, className, intl: { formatMessage } } = this.props;
     const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
     let stepName: string | null = null;
 
@@ -242,33 +250,43 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       }
 
       const showStepsCount = !!(!error && totalStepsCount > 1 && activeStepNumber > 0 && stepName);
+      const hasHeader = activeStep !== 'success';
+      const hasHeaderSubtitle = !!(activeStep !== 'success' && !error && stepName);
 
       return (
         <Container className={`e2e-sign-up-container ${className}`}>
-          {activeStep !== 'success' &&
-            <StyledHeaderContainer inModal={!!metaData.inModal}>
-              <StyledHeaderTitle inModal={!!metaData.inModal}>
-                <FormattedMessage {...messages.signUp2} />
-              </StyledHeaderTitle>
+          {hasHeader &&
+            <div>
+              <ReactResizeDetector handleWidth handleHeight onResize={this.onResize}>
+                <StyledHeaderContainer inModal={!!metaData.inModal}>
+                  <StyledHeaderTitle inModal={!!metaData.inModal}>
+                    <FormattedMessage {...messages.signUp2} />
+                  </StyledHeaderTitle>
 
-              {!error && stepName &&
-                <HeaderSubtitle>
-                  {showStepsCount ? (
-                    <FormattedMessage
-                      {...messages.headerSubtitle}
-                      values={{
-                        activeStepNumber,
-                        stepName,
-                        totalStepsCount
-                      }}
-                    />
-                  ) : stepName}
-                </HeaderSubtitle>
-              }
-            </StyledHeaderContainer>
+                  {hasHeaderSubtitle &&
+                    <HeaderSubtitle>
+                      {showStepsCount ? (
+                        <FormattedMessage
+                          {...messages.headerSubtitle}
+                          values={{
+                            activeStepNumber,
+                            stepName,
+                            totalStepsCount
+                          }}
+                        />
+                      ) : stepName}
+                    </HeaderSubtitle>
+                  }
+                </StyledHeaderContainer>
+              </ReactResizeDetector>
+            </div>
           }
 
-          <StyledModalContent inModal={!!metaData.inModal}>
+          <StyledModalContent
+            inModal={!!metaData.inModal}
+            windowHeight={`${windowHeight}px`}
+            headerHeight={headerHeight}
+          >
             {error ? (
               <Error
                 text={formatMessage(messages.somethingWentWrongText)}

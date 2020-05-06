@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import { Subscription, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
@@ -53,9 +55,10 @@ const CloseButton = styled.button`
   align-items: center;
   z-index: 2;
   border-radius: 50%;
+  border: solid 1px transparent;
   background: #fff;
   transition: all 100ms ease-out;
-  outline: none;
+  outline: none !important;
 
   &:hover {
     background: #ececec;
@@ -81,9 +84,10 @@ const StyledFocusOn = styled(FocusOn)<{ width: number }>`
   width: 100%;
   max-width: ${({ width }) => width}px;
   display: flex;
+  justify-content: center;
 `;
 
-const ModalContainer = styled(clickOutside)`
+const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
   width: 100%;
   max-height: 85vh;
   margin-top: 50px;
@@ -101,20 +105,15 @@ const ModalContainer = styled(clickOutside)`
     max-height: 600px;
   }
 
-  /* big landscape tablets, laptops, and desktops */
-  @media (min-width: 1025px) {
-    max-height: 90vh;
-  }
-
   /* tall desktops screens */
   @media (min-height: 1200px) {
     margin-top: 120px;
   }
 
   ${media.smallerThanMinTablet`
-    max-height: 85vh;
-    margin-top: 40px;
-    padding: 0px;
+    max-width: calc(100vw - 30px);
+    max-height: ${props => `calc(${props.windowHeight} - 30px)`};
+    margin-top: 15px;
 
     &.fixedHeight {
       height: auto;
@@ -148,6 +147,7 @@ const Overlay = styled.div`
   ${media.smallerThanMinTablet`
     padding-left: 12px;
     padding-right: 12px;
+    padding: 0px;
   `}
 
   &.modal-enter {
@@ -183,7 +183,7 @@ export const HeaderContainer = styled.div`
   padding-bottom: 20px;
   margin-right: 45px;
   border-bottom: solid 1px #e0e0e0;
-  background: #fff;
+  background: transparent;
 
   ${media.smallerThanMinTablet`
     padding-top: 15px;
@@ -263,10 +263,13 @@ export type Props = {
   closeOnClickOutside?: boolean;
 };
 
-type State = {};
+type State = {
+  windowHeight: string;
+};
 
 export default class Modal extends PureComponent<Props, State> {
   unlisten: null | (() => void);
+  subscription: Subscription | null;
 
   static defaultProps = {
     fixedHeight: false,
@@ -275,7 +278,23 @@ export default class Modal extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      windowHeight: `${window.innerHeight}px`
+    };
     this.unlisten = null;
+    this.subscription = null;
+  }
+
+  componentDidMount() {
+    this.subscription = fromEvent(window, 'resize').pipe(
+      debounceTime(50),
+      distinctUntilChanged()
+    ).subscribe((event) => {
+      if (event.target) {
+        const height = event.target['innerHeight'] as number;
+        this.setState({ windowHeight: `${height}px` });
+      }
+    });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -287,6 +306,7 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.subscription?.unsubscribe();
     this.cleanup();
   }
 
@@ -341,6 +361,7 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   render() {
+    const { windowHeight } = this.state;
     const { width, children, opened, header, footer, hasSkipButton, skipText, noClose } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const noPadding = header !== undefined || footer !== undefined || this.props.noPadding;
@@ -365,6 +386,7 @@ export default class Modal extends PureComponent<Props, State> {
               <ModalContainer
                 className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
+                windowHeight={windowHeight}
                 ariaLabelledBy="modal-header"
                 aria-modal="true"
                 role="dialog"

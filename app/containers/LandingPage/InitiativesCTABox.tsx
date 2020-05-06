@@ -117,8 +117,8 @@ interface Props extends InputProps {
 }
 
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
-  const windowSize = useWindowSize();
-  const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+  const { windowWidth } = useWindowSize();
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
   return (
     <Container className={className}>

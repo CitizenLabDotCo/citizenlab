@@ -276,7 +276,7 @@ const ProjectsListFooter = styled(Link)`
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colorSecondary};
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -285,7 +285,7 @@ const ProjectsListFooter = styled(Link)`
   &:hover,
   &:focus {
     color: #fff;
-    background: ${({ theme }) => darken(0.15, theme.colorMain)};
+    background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
     text-decoration: none;
   }
 `;
