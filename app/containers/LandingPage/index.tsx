@@ -24,6 +24,7 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -150,8 +151,10 @@ interface State { }
 
 class LandingPage extends PureComponent<Props, State> {
 
-  clickCreateAccountCTAFooter = () => {
+  signUpIn = (event: React.FormEvent) => {
+    event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
+    openSignUpInModal();
   }
 
   projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
@@ -223,9 +226,8 @@ class LandingPage extends PureComponent<Props, State> {
                     fontWeight="500"
                     padding="13px 22px"
                     buttonStyle="primary-inverse"
-                    linkTo="/sign-up"
+                    onClick={this.signUpIn}
                     text={<FormattedMessage {...messages.createAccount} />}
-                    onClick={this.clickCreateAccountCTAFooter}
                   />
                 </FooterBanner>
               }
