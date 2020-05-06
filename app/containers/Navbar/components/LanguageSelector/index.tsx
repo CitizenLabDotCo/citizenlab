@@ -61,6 +61,7 @@ const Container = styled.div`
   &:focus {
     ${DropdownButtonText} {
       color: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
+      text-decoration: underline;
     }
 
     ${DropdownButtonIcon} {
@@ -159,8 +160,8 @@ class LanguageSelector extends PureComponent<Props, State> {
           <Dropdown
             width="180px"
             top="68px"
-            right="-5px"
-            mobileRight="-5px"
+            right="25px"
+            mobileRight="5px"
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
             content={(
