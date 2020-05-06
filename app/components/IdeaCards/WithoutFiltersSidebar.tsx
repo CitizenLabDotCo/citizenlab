@@ -364,29 +364,30 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </Loading>
         }
 
-        {!querying && !hasIdeas && !showMapView &&
-          <EmptyContainer id="ideas-empty">
-            <IdeaIcon ariaHidden name="idea" />
-            <EmptyMessage>
-              <EmptyMessageLine>
-                <FormattedMessage {...messages.noIdeasForFilter} />
-              </EmptyMessageLine>
-            </EmptyMessage>
-          </EmptyContainer>
-        }
-
-        {showListView && !querying && hasIdeas && list &&
-          <IdeasList id="e2e-ideas-list">
-            {list.map((idea) => (
-              <StyledIdeaCard
-                key={idea.id}
-                ideaId={idea.id}
-                participationMethod={participationMethod}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-              />
-            ))}
-          </IdeasList>
+        {showListView && !querying &&
+          <>
+            {hasIdeas && list ?
+              <IdeasList id="e2e-ideas-list">
+                {list.map((idea) => (
+                  <StyledIdeaCard
+                    key={idea.id}
+                    ideaId={idea.id}
+                    participationMethod={participationMethod}
+                    participationContextId={participationContextId}
+                    participationContextType={participationContextType}
+                  />))}
+              </IdeasList>
+              :
+              <EmptyContainer id="ideas-empty">
+                <IdeaIcon ariaHidden name="idea" />
+                <EmptyMessage>
+                  <EmptyMessageLine>
+                    <FormattedMessage {...messages.noIdeasForFilter} />
+                  </EmptyMessageLine>
+                </EmptyMessage>
+              </EmptyContainer>
+            }
+          </>
         }
 
         {showListView && !querying && hasMore &&
