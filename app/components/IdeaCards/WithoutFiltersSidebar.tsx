@@ -213,6 +213,8 @@ const Footer = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
+const ListView = styled.div``;
+
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
@@ -358,55 +360,56 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </RightFilterArea>
         </FiltersArea>
 
-        {showListView && querying &&
-          <Loading id="ideas-loading">
-            <Spinner />
-          </Loading>
-        }
-
-        {showListView && !querying &&
-          <>
-            {hasIdeas && list ?
-              <IdeasList id="e2e-ideas-list">
-                {list.map((idea) => (
-                  <StyledIdeaCard
-                    key={idea.id}
-                    ideaId={idea.id}
-                    participationMethod={participationMethod}
-                    participationContextId={participationContextId}
-                    participationContextType={participationContextType}
-                  />))}
-              </IdeasList>
-              :
-              <EmptyContainer id="ideas-empty">
-                <IdeaIcon ariaHidden name="idea" />
-                <EmptyMessage>
-                  <EmptyMessageLine>
-                    <FormattedMessage {...messages.noIdeasForFilter} />
-                  </EmptyMessageLine>
-                </EmptyMessage>
-              </EmptyContainer>
+        {showListView &&
+          <ListView>
+            {querying ?
+              <Loading id="ideas-loading">
+                <Spinner />
+              </Loading>
+            :
+              <>
+                {hasIdeas && list ?
+                  <IdeasList id="e2e-ideas-list">
+                    {list.map((idea) => (
+                      <StyledIdeaCard
+                        key={idea.id}
+                        ideaId={idea.id}
+                        participationMethod={participationMethod}
+                        participationContextId={participationContextId}
+                        participationContextType={participationContextType}
+                      />))}
+                  </IdeasList>
+                  :
+                  <EmptyContainer id="ideas-empty">
+                    <IdeaIcon ariaHidden name="idea" />
+                    <EmptyMessage>
+                      <EmptyMessageLine>
+                        <FormattedMessage {...messages.noIdeasForFilter} />
+                      </EmptyMessageLine>
+                    </EmptyMessage>
+                  </EmptyContainer>
+                }
+                {hasMore &&
+                  <Footer>
+                    <ShowMoreButton
+                      id="e2e-idea-cards-show-more-button"
+                      onClick={this.loadMore}
+                      buttonStyle="secondary"
+                      text={<FormattedMessage {...messages.showMore} />}
+                      processing={loadingMore}
+                      height="50px"
+                      icon="showMore"
+                      iconPos="left"
+                      textColor={theme.colorText}
+                      bgColor={rgba(theme.colorText, 0.08)}
+                      bgHoverColor={rgba(theme.colorText, 0.12)}
+                      fontWeight="500"
+                    />
+                  </Footer>
+                }
+              </>
             }
-          </>
-        }
-
-        {showListView && !querying && hasMore &&
-          <Footer>
-            <ShowMoreButton
-              id="e2e-idea-cards-show-more-button"
-              onClick={this.loadMore}
-              buttonStyle="secondary"
-              text={<FormattedMessage {...messages.showMore} />}
-              processing={loadingMore}
-              height="50px"
-              icon="showMore"
-              iconPos="left"
-              textColor={theme.colorText}
-              bgColor={rgba(theme.colorText, 0.08)}
-              bgHoverColor={rgba(theme.colorText, 0.12)}
-              fontWeight="500"
-            />
-          </Footer>
+          </ListView>
         }
 
         {showMapView &&
