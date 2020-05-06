@@ -430,7 +430,7 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
     return (
-      <FormLabelValue thin htmlFor={id} labelValue={label} required={required} subtextValue={descriptionJSX} />
+      <FormLabelValue thin htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX} />
     );
   }
   return;
