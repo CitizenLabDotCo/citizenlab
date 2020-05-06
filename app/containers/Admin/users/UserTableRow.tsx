@@ -9,7 +9,7 @@ import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 
 // Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -218,12 +218,8 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
             <Tippy
               placement="bottom-end"
               interactive={true}
-              arrow={true}
               trigger="click"
               duration={[200, 0]}
-              flip={true}
-              flipBehavior="flip"
-              flipOnUpdate={true}
               content={
                 <DropdownList>
                   <DropdownListButton onClick={this.goToUserProfile(this.props.user.attributes.slug)}>

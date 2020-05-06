@@ -14,7 +14,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import Button, { ButtonContainerProps } from 'components/UI/Button';
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 import Icon from 'components/UI/Icon';
 
 // i18n
@@ -230,7 +230,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (show) {
       const isSignedIn = !isNilOrError(authUser);
-      const isDisabled = isSignedIn ? !!disabledReason : (!!disabledReason && disabledReason !== 'notVerified');
+      const isButtonDisabled = isSignedIn ? !!disabledReason : (!!disabledReason && disabledReason !== 'notVerified');
       const tippyContent = (!enabled && !!disabledReason) ? (
         <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
           <TooltipContentIcon name="lock-outlined" ariaHidden />
@@ -243,7 +243,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
       return (
         <Container className={className || ''}>
           <Tippy
-            enabled={isDisabled}
+            disabled={!isButtonDisabled}
             interactive={true}
             placement="bottom"
             content={tippyContent}
@@ -251,14 +251,14 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
             hideOnClick={false}
           >
             <ButtonWrapper
-              tabIndex={isDisabled ? 0 : -1}
-              className={`e2e-idea-button ${isDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}
+              tabIndex={isButtonDisabled ? 0 : -1}
+              className={`e2e-idea-button ${isButtonDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}
             >
               <Button
                 {...this.props}
                 aria-describedby="tooltip-content"
                 onClick={this.onClick}
-                disabled={isDisabled}
+                disabled={isButtonDisabled}
                 ariaDisabled={false}
               >
                 <FormattedMessage {...messages.startAnIdea} />

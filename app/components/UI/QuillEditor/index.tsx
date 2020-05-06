@@ -26,7 +26,7 @@ import { colors, quillEditedContent, media, fontSizes } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 
 const DropdownList = styled.div`
   display: flex;
@@ -296,6 +296,10 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
   const [focussed, setFocussed] = useState(false);
   const prevFocussed = usePrevious(focussed);
   const editorRef = useRef<HTMLDivElement>(null);
+  const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
+
+  const toggleButtonsMenu = useCallback(() => setIsButtonsMenuVisible(value => !value), []);
+  const hideButtonsMenu = useCallback(() => setIsButtonsMenuVisible(false), []);
 
   // initialize quill
   useEffect(() => {
@@ -459,16 +463,20 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
 
   const handleCustomLink = useCallback(() => {
     if (!editor) return;
+
     const selection = editor.getSelection();
+
     if (selection && selection.length > 0) {
       trackBasic('custom-link');
       const value = prompt(formatMessage(messages.customLinkPrompt));
       editor.format('button', value);
+      setIsButtonsMenuVisible(false);
     }
   }, [editor]);
 
   const handleNormalLink = useCallback(() => {
     if (!editor) return;
+
     const selection = editor.getSelection();
 
     // copied from the snow toolbar code
@@ -477,7 +485,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
     const preview = editor.getText(selection as any);
     const tooltip = (editor as any).theme.tooltip;
     tooltip.edit('link', preview);
-
+    setIsButtonsMenuVisible(false);
   }, [editor]);
 
   const classNames = [
@@ -535,15 +543,15 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
             <button className="ql-italic" onClick={trackBasic('italic')} aria-label={formatMessage(messages.italic)} />
             {withCTAButton ? (
               <Tippy
-                placement="bottom-start"
+                placement="bottom"
                 theme="light"
                 interactive={true}
-                arrow={true}
-                trigger="click"
+                visible={isButtonsMenuVisible}
+                onClickOutside={hideButtonsMenu}
                 duration={[200, 0]}
-                flip={true}
-                flipBehavior="flip"
-                flipOnUpdate={true}
+                popperOptions={{
+                  strategy: 'fixed'
+                }}
                 content={(
                   <DropdownList>
                     <DropdownListItem onClick={handleCustomLink} type="button">
@@ -555,7 +563,7 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
                   </DropdownList>
                 )}
               >
-                <button type="button">
+                <button type="button" onClick={toggleButtonsMenu}>
                   <svg viewBox="0 0 18 18">
                     <line className="ql-stroke" x1="7" x2="11" y1="7" y2="11" />
                     <path className="ql-even ql-stroke" d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z" />
@@ -564,10 +572,8 @@ const QuillEditor = memo<Props & InjectedIntlProps>(({
                 </button>
               </Tippy>
             ) : (
-
-                <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
-              )
-            }
+              <button className="ql-link" onClick={trackBasic('link')} aria-label={formatMessage(messages.link)} />
+            )}
           </span>
 
           {!limitedTextFormatting && !noAlign &&

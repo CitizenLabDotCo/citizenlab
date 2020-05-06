@@ -4,6 +4,7 @@ import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { Subscription } from 'rxjs';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import SignUpIn from 'components/SignUpIn';
@@ -14,7 +15,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { isNilOrError, endsWith } from 'utils/helperUtils';
+import { endsWith } from 'utils/helperUtils';
 
 // events
 import { signUpActiveStepChange$ } from 'components/SignUpIn/events';
@@ -112,8 +113,6 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[] = [];
 
   componentDidMount() {
-    this.redirectIfSignedIn();
-
     this.subscriptions = [
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
@@ -121,22 +120,20 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
     ];
   }
 
-  componentDidUpdate(prevprops: Props) {
-    if (prevprops.authUser !== this.props.authUser) {
-      this.redirectIfSignedIn();
+  static getDerivedStateFromProps(props: Props & WithRouterProps, _state: State) {
+    const { authUser, previousPathName, location: { pathname } } = props;
+    const isOnSignInPage = endsWith(pathname, 'sign-in');
+    const isLoggedIn = !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
+
+    if (isOnSignInPage && isLoggedIn) {
+      clHistory.replace(previousPathName || '/');
     }
+
+    return null;
   }
 
   componentWillUnmount() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  redirectIfSignedIn = () => {
-    const { authUser, location: { pathname } } = this.props;
-
-    if (endsWith(pathname, 'sign-in') && !isNilOrError(authUser) && authUser.attributes.registration_completed_at) {
-      clHistory.replace(this.props.previousPathName || '/');
-    }
   }
 
   onSignUpInCompleted = () => {
