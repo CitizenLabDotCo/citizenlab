@@ -74,7 +74,7 @@
     "leaflet-simplestyle": "1.0.1",
     "leaflet.markercluster": "1.4.1",
     "lodash-es": "4.17.15",
-    "moment": "2.24.0",
+    "moment": "2.25.3",
     "moment-timezone": "0.5.28",
     "polished": "3.5.2",
     "qs": "6.9.3",

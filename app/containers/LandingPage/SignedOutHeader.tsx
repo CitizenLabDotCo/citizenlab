@@ -167,7 +167,7 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SignedOutHeader extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
-  goToSignUpPage = (event: React.FormEvent) => {
+  signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-out header' } });
     openSignUpInModal();
@@ -204,7 +204,7 @@ class SignedOutHeader extends PureComponent<Props & InjectedLocalized & Injected
                 fontWeight="500"
                 padding="13px 22px"
                 buttonStyle="primary-inverse"
-                onClick={this.goToSignUpPage}
+                onClick={this.signUpIn}
                 text={<FormattedMessage {...messages.createAccount} />}
                 className="e2e-signed-out-header-cta-button"
               />
