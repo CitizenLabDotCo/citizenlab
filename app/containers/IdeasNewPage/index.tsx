@@ -204,7 +204,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
   render() {
     const { authUser, project } = this.props;
 
-    if (!isNilOrError(authUser) && !isNilOrError(project) && project.attributes.action_descriptor.posting.enabled) {
+    if (!isNilOrError(authUser) && !isNilOrError(project)) {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
