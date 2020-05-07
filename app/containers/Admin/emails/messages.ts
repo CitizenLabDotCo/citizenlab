@@ -246,5 +246,9 @@ export default defineMessages({
   toAllUsers: {
     id: 'app.containers.Admin.emails.toAllUsers',
     defaultMessage: 'Do you want to send this email to all users?'
-  }
+  },
+  senderRecipients: {
+    id: 'app.containers.Admin.emails.senderRecipients',
+    defaultMessage: 'Sender and recipients'
+  },
 });
