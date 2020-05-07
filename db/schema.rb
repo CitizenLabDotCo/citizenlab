@@ -152,7 +152,6 @@ ActiveRecord::Schema.define(version: 2020_04_23_123927) do
     t.boolean "enabled", default: true, null: false
     t.string "code"
     t.uuid "resource_id"
-    t.string "visible_to", default: "public", null: false
     t.index ["resource_type", "resource_id"], name: "index_custom_fields_on_resource_type_and_resource_id"
   end
 

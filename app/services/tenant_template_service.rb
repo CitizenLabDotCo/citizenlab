@@ -360,7 +360,6 @@ class TenantTemplateService
         'created_at'           => c.created_at.to_s,
         'updated_at'           => c.updated_at.to_s,
         'enabled'              => c.enabled,
-        'visible_to'           => c.visible_to,
         'code'                 => c.code
       }
       # No user custom fields are required anymore because

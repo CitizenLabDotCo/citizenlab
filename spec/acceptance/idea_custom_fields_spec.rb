@@ -76,7 +76,6 @@ resource "Idea Custom Fields" do
       with_options scope: :custom_field do
         parameter :required, "Whether filling out the field is mandatory", required: false
         parameter :enabled, "Whether the field is active or not", required: false
-        parameter :visible_to, "Defines who can see the custom field on the idea page, either #{CustomField::VISIBLE_TOS.join(",")}.", required: false
         parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false
       end
 
@@ -84,7 +83,6 @@ resource "Idea Custom Fields" do
       let(:code) { 'location' }
       let(:required) { true }
       let(:enabled) { false }
-      let(:visible_to) { 'admins' }
       let(:description_multiloc) { {"en" => "New description"} }
 
       context "when the custom_form doesn't exist yet" do
@@ -95,7 +93,6 @@ resource "Idea Custom Fields" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:code)).to eq code
-          expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
           expect(json_response.dig(:data,:attributes,:required)).to eq required
           expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
@@ -114,7 +111,6 @@ resource "Idea Custom Fields" do
             expect(response_status).to eq 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data,:attributes,:code)).to eq code
-            expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
             expect(json_response.dig(:data,:attributes,:required)).to eq required
             expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
             expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
@@ -130,25 +126,10 @@ resource "Idea Custom Fields" do
             json_response = json_parse(response_body)
             expect(json_response.dig(:data,:id)).to eq cf.id
             expect(json_response.dig(:data,:attributes,:code)).to eq code
-            expect(json_response.dig(:data,:attributes,:visible_to)).to eq visible_to
             expect(json_response.dig(:data,:attributes,:required)).to eq required
             expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
             expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
-          end
-        end
-
-        context "for title custom fields" do
-          let(:code) { 'title' }
-          let(:required) { false }
-          let(:enabled) { false }
-          let(:visible_to) { 'admins' }
-
-          example_request "Update the visibile_to required and enbled is not allowed" do
-            cf = CustomField.find_by code: code
-            expect(cf.visible_to).to eq 'public'
-            expect(cf.required).to eq true
-            expect(cf.enabled).to eq true
           end
         end
       end

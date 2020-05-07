@@ -7,7 +7,6 @@ class CustomField < ApplicationRecord
   FIELDABLE_TYPES = %w(User CustomForm)
   INPUT_TYPES = %w(text number multiline_text select multiselect checkbox date files)
   CODES = %w(gender birthyear domicile education title body topic_ids location images attachments)
-  VISIBLE_TOS = %w(public admins)
 
   validates :resource_type, presence: true, inclusion: {in: FIELDABLE_TYPES}
   validates :key, presence: true, uniqueness: {scope: [:resource_type, :resource_id]}, format: { with: /\A[a-zA-Z0-9_]+\z/,
@@ -18,13 +17,11 @@ class CustomField < ApplicationRecord
   validates :required, inclusion: {in: [true, false]}
   validates :enabled, inclusion: {in: [true, false]}
   validates :code, inclusion: {in: CODES}, uniqueness: {scope: [:resource_type, :resource_id]}, allow_nil: true
-  validates :visible_to, presence: true, inclusion: {in: VISIBLE_TOS}
 
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
-  before_validation :set_visible_to, on: :create
   before_destroy :check_group_references, prepend: true
 
   scope :with_resource_type, -> (resource_type) { where(resource_type: resource_type) }
@@ -34,20 +31,6 @@ class CustomField < ApplicationRecord
 
   def support_options?
     %w(select multiselect).include?(input_type)
-  end
-
-  def visible_for? user, project=nil
-    # For efficiency reasons, the project should
-    # be passed explicitely for idea custom 
-    # fields.
-    case visible_to
-    when 'public'
-      true
-    when 'admins'
-      user&.admin? || (project && user.project_moderator?(project.id))
-    else
-      raise "Method does not support #{visible_to}"
-    end
   end
 
   private
@@ -79,9 +62,5 @@ class CustomField < ApplicationRecord
     )
     self.description_multiloc = service.remove_empty_paragraphs_multiloc(self.description_multiloc)
     self.description_multiloc = service.linkify_multiloc(self.description_multiloc)
-  end
-
-  def set_visible_to
-    self.visible_to ||= 'public'
   end
 end

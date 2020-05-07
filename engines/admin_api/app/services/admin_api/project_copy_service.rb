@@ -99,7 +99,6 @@ module AdminApi
           'updated_at'           => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
           'enabled'              => c.enabled,
           'required'             => c.required,
-          'visible_to'           => c.visible_to,
           'code'                 => c.code
         }
         store_ref yml_custom_field, c.id, :custom_field
