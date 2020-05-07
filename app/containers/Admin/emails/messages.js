@@ -223,6 +223,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.allUsers',
     defaultMessage: 'All users'
   },
+  groups: {
+    id: 'app.containers.Admin.emails.groups',
+    defaultMessage: 'Groups'
+  },
   nameVariablesInfo: {
     id: 'app.containers.Admin.emails.nameVariablesInfo',
     defaultMessage: 'You can speak directly to citizens using the variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. "Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ..."'
