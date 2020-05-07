@@ -1,30 +1,37 @@
 import * as React from 'react';
 import { isEmpty, values as getValues, every } from 'lodash-es';
-import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
-import FormikSelect from 'components/UI/FormikSelect';
-import Error from 'components/UI/Error';
-import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formik';
-import Label from 'components/UI/Label';
-import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+import { adopt } from 'react-adopt';
 import { Multiloc } from 'typings';
 import styled from 'styled-components';
+
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
-import { adopt } from 'react-adopt';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+// utils
 import localize, { InjectedLocalized } from 'utils/localize';
 import { isNilOrError } from 'utils/helperUtils';
-import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
-import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import { fontSizes } from 'utils/styleUtils';
+
+// components
+import IconTooltip from 'components/UI/IconTooltip';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
-import { fontSizes } from 'utils/styleUtils';
-import IconTooltip from 'components/UI/IconTooltip';
+import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
+import { Section, SectionField, SectionTitle } from 'components/admin/Section';
+import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formik';
+import Label from 'components/UI/Label';
+import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
+import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
+import FormikSelect from 'components/UI/FormikSelect';
+import FormikRadio from 'components/UI/FormikRadio';
+import Error from 'components/UI/Error';
+
+// resources
+import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
+import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
@@ -145,6 +152,18 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               <FormattedMessage {...messages.fieldTo} />
               <IconTooltip content={<FormattedMessage {...messages.fieldToTooltip} />} />
             </Label>
+            <FormikRadio
+              name="group_ids"
+              value="all"
+              label={<FormattedMessage {...messages.allUsers} />}
+              id="recipients_all"
+            />
+            <FormikRadio
+              name="group_ids"
+              value="group"
+              label={<FormattedMessage {...messages.groups} />}
+              id="recipients_all"
+            />
             <GetGroups>
               {(groups) => (isNilOrError(groups)) ? null : (
                 <Field
