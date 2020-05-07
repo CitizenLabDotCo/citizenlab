@@ -239,7 +239,7 @@ class Show extends React.Component<Props, State> {
                   iconPos="right"
                   onClick={this.handleSendNow(noGroupsSelected)}
                 >
-                  <FormattedMessage {...messages.sendNowButton} />
+                  <FormattedMessage {...messages.send} />
                 </Button>
               </Buttons>
             }
@@ -315,7 +315,7 @@ class Show extends React.Component<Props, State> {
                   icon="send"
                   iconPos="right"
                 >
-                  <FormattedMessage {...messages.sendNowConfirmButton} />
+                  <FormattedMessage {...messages.sendNowButton} />
                 </Button>
               </ButtonsWrapper>
             </ModalContainer>

@@ -235,9 +235,9 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.changeRecipientsButton',
     defaultMessage: 'Change recipients'
   },
-  sendNowConfirmButton: {
-    id: 'app.containers.Admin.emails.sendNowConfirmButton',
-    defaultMessage: 'Send now'
+  send: {
+    id: 'app.containers.Admin.emails.send',
+    defaultMessage: 'Send'
   },
   confirmSendHeader: {
     id: 'app.containers.Admin.emails.confirmSendHeader',
