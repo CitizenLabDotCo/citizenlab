@@ -17,7 +17,7 @@ const PageTitle = styled.h1`
   width: 100%;
   font-size: 2rem;
   font-weight: 600;
-  margin: 3rem 0 1rem 0;
+  margin: 2rem 0;
 `;
 
 type Props = {
@@ -51,6 +51,7 @@ class New extends React.Component<Props> {
       reply_to: (!isNilOrError(authUser) && authUser.attributes.email) ||  '',
       subject_multiloc: {},
       body_multiloc: {},
+      group_ids: []
     };
   }
 

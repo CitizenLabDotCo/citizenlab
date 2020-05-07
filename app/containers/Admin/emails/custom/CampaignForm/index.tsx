@@ -25,7 +25,6 @@ import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSelect from 'components/UI/FormikSelect';
-import FormikRadio from 'components/UI/FormikRadio';
 import Error from 'components/UI/Error';
 
 // resources
@@ -35,6 +34,10 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 const StyledSection = styled(Section)`
   margin-bottom: 2.5rem;
+`;
+
+const StyledSectionField = styled(SectionField)`
+  margin-bottom: 10px;
 `;
 
 const StyledSectionTitle = styled(SectionTitle)`
@@ -102,11 +105,6 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
     :
       [];
 
-    groupList.push({
-      label: this.props.intl.formatMessage(messages.allUsers),
-      value: ''
-    });
-
     return groupList;
   }
 
@@ -127,10 +125,13 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
     return (
       <Form>
         <StyledSection>
-          <StyledSectionTitle>
+          {/* <StyledSectionTitle>
             1. <FormattedMessage {...messages.formTitleWho} />
+          </StyledSectionTitle> */}
+          <StyledSectionTitle>
+            Sender and recipients
           </StyledSectionTitle>
-          <SectionField>
+          <StyledSectionField>
             <Label>
               <FormattedMessage {...messages.fieldSender} />
               <IconTooltip content={<FormattedMessage {...messages.fieldSenderTooltip} />} />
@@ -145,31 +146,20 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               fieldName="sender"
               apiErrors={errors.sender as any}
             />}
-          </SectionField>
+          </StyledSectionField>
 
-          <SectionField>
+          <StyledSectionField>
             <Label>
               <FormattedMessage {...messages.fieldTo} />
               <IconTooltip content={<FormattedMessage {...messages.fieldToTooltip} />} />
             </Label>
-            <FormikRadio
-              name="group_ids"
-              value="all"
-              label={<FormattedMessage {...messages.allUsers} />}
-              id="recipients_all"
-            />
-            <FormikRadio
-              name="group_ids"
-              value="group"
-              label={<FormattedMessage {...messages.groups} />}
-              id="recipients_all"
-            />
             <GetGroups>
               {(groups) => (isNilOrError(groups)) ? null : (
                 <Field
                   name="group_ids"
                   component={FormikMultipleSelect}
                   options={this.groupsOptions(groups)}
+                  placeholder={<FormattedMessage {...messages.allUsers} />}
                 />
               )}
             </GetGroups>
@@ -177,9 +167,9 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               fieldName="group_ids"
               apiErrors={errors.group_ids as any}
             />}
-          </SectionField>
+          </StyledSectionField>
 
-          <SectionField>
+          <StyledSectionField>
             <Label>
               <FormattedMessage {...messages.fieldReplyTo} />
               <IconTooltip content={<FormattedMessage {...messages.fieldReplyToTooltip} />} />
@@ -193,14 +183,17 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               fieldName="reply_to"
               apiErrors={errors.reply_to as any}
             />}
-          </SectionField>
+          </StyledSectionField>
         </StyledSection>
 
         <StyledSection>
-          <StyledSectionTitle>
+          {/* <StyledSectionTitle>
             2. <FormattedMessage {...messages.formTitleWhat} />
-          </StyledSectionTitle>
+          </StyledSectionTitle> */}
           <SectionField>
+            <StyledSectionTitle>
+              Subject
+            </StyledSectionTitle>
             <FastField
               name="subject_multiloc"
               component={FormikInputMultiloc}
@@ -214,6 +207,9 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             />}
           </SectionField>
 
+          <StyledSectionTitle>
+            Message
+          </StyledSectionTitle>
           <SectionField>
             <FastField
               name="body_multiloc"
