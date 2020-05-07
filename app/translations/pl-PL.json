@@ -755,6 +755,7 @@
   "app.containers.Admin.emails.formTitleWhat": "What",
   "app.containers.Admin.emails.formTitleWho": "Who",
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Something went wrong, please try again later",
+  "app.containers.Admin.emails.groups": "",
   "app.containers.Admin.emails.helmetDescription": "Send out manual emails to certain citizen group and active automated campaigns",
   "app.containers.Admin.emails.helmetTitle": "Emails",
   "app.containers.Admin.emails.manageButtonLabel": "Manage",

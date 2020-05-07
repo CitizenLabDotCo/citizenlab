@@ -755,6 +755,7 @@
   "app.containers.Admin.emails.formTitleWhat": "Hva",
   "app.containers.Admin.emails.formTitleWho": "Hvem",
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Something went wrong, please try again later",
+  "app.containers.Admin.emails.groups": "",
   "app.containers.Admin.emails.helmetDescription": "Send manuelle e-poster til visse borgergrupper og aktive automatiserte kampanjer",
   "app.containers.Admin.emails.helmetTitle": "E-postkampanjer",
   "app.containers.Admin.emails.manageButtonLabel": "Administrer",
