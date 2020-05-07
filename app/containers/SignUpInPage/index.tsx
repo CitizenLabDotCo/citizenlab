@@ -4,7 +4,6 @@ import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { Subscription } from 'rxjs';
-import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import SignUpIn from 'components/SignUpIn';
@@ -15,7 +14,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // utils
-import { endsWith } from 'utils/helperUtils';
+import { isNilOrError, endsWith } from 'utils/helperUtils';
 
 // events
 import { signUpActiveStepChange$ } from 'components/SignUpIn/events';
