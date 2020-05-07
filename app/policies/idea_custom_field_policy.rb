@@ -53,7 +53,6 @@ class IdeaCustomFieldPolicy < ApplicationPolicy
       [
         :required,
         :enabled,
-        :visible_to,
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES
       ]

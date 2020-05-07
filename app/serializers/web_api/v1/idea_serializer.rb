@@ -1,14 +1,6 @@
 class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :body_multiloc, :author_name, :slug, :publication_status, :upvotes_count, :downvotes_count, :comments_count, :official_feedbacks_count, :created_at, :updated_at, :published_at, :budget, :baskets_count
 
-  attribute :location_point_geojson, if: Proc.new { |object, params|
-    show_custom_field? object, params, 'location'
-  }
-
-  attribute :location_description, if: Proc.new { |object, params|
-    show_custom_field? object, params, 'location'
-  }
-
   attribute :action_descriptor do |object, params|
     @participation_context_service = params[:pcs] || ParticipationContextService.new
     commenting_disabled_reason = @participation_context_service.commenting_disabled_reason_for_idea(object, current_user(params))
@@ -43,13 +35,9 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     }
   end
 
-  has_many :topics, if: Proc.new { |object, params|
-    show_custom_field? object, params, 'topic_ids'
-  }
+  has_many :topics
   has_many :areas
-  has_many :idea_images, serializer: WebApi::V1::ImageSerializer, if: Proc.new { |object, params|
-    show_custom_field? object, params, 'images'
-  }
+  has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
 
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
@@ -75,18 +63,5 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     else
        object.votes.where(user_id: current_user(params)&.id).first
      end
-  end
-
-  def self.show_custom_field? object, params, code
-    # Some projects don't have a custom form yet.
-    # Show the built-in custom fields by default
-    # in this case.
-    !object.project.custom_form || object.author_id == current_user(params).id || find_custom_field(object, code)&.visible_for?(current_user(params), object.project)
-  end
-
-  def self.find_custom_field object, code
-    object.project.custom_form.custom_fields.find do |cf|
-      cf.code == code
-    end
   end
 end

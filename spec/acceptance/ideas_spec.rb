@@ -454,48 +454,6 @@ resource "Ideas" do
         user_vote: {data: {id: user_vote.id, type: 'vote'}}
         )
     end
-
-    example "Get an idea with hidden fields for the current user" do
-      custom_form = idea.project.custom_form || CustomForm.new(project: idea.project)
-      custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, 'topic_ids')
-      custom_field.visible_to = 'admins'
-      custom_field.save!
-
-      do_request
-      expect(status).to eq 200
-      json_response = json_parse(response_body)
-
-      expect(json_response.dig(:data, :relationships, :topics, :data)).to be_blank
-    end
-
-    example "Get an idea with hidden fields for admins of moderators" do
-      custom_form = idea.project.custom_form || CustomForm.new(project: idea.project)
-      custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, 'topic_ids')
-      custom_field.visible_to = 'admins'
-      custom_field.save!
-      @user.add_role 'project_moderator', project_id: idea.project_id
-      @user.save!
-
-      do_request
-      expect(status).to eq 200
-      json_response = json_parse(response_body)
-
-      expect(json_response.dig(:data, :relationships, :topics, :data)).to be_present
-    end
-
-    example "Get an idea with hidden fields for the author" do
-      custom_form = idea.project.custom_form || CustomForm.new(project: idea.project)
-      custom_field = IdeaCustomFieldService.new.find_or_build_field(custom_form, 'topic_ids')
-      custom_field.visible_to = 'admins'
-      custom_field.save!
-      idea.update!(author: @user)
-
-      do_request
-      expect(status).to eq 200
-      json_response = json_parse(response_body)
-
-      expect(json_response.dig(:data, :relationships, :topics, :data)).to be_present
-    end
   end
 
   get "web_api/v1/ideas/by_slug/:slug" do
