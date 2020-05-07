@@ -14,10 +14,10 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
-import Link from 'utils/cl-router/Link';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -153,11 +153,6 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
-  const isVolunteer = !!cause.relationships?.user_volunteer?.data;
-  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
-  const signUpLink = <Link to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></Link>;
-  const signInLink = <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>;
-
   const handleOnVolunteerButtonClick = useCallback(() => {
     if (cause.relationships?.user_volunteer?.data) {
       deleteVolunteer(cause.id, cause.relationships.user_volunteer.data.id);
@@ -165,6 +160,19 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       addVolunteer(cause.id);
     }
   }, [cause]);
+
+  const signIn = useCallback(() => {
+    openSignUpInModal({ flow: 'signin' });
+  }, []);
+
+  const signUp = useCallback(() => {
+    openSignUpInModal({ flow: 'signup' });
+  }, []);
+
+  const isVolunteer = !!cause.relationships?.user_volunteer?.data;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const signUpLink = <button onClick={signUp}><FormattedMessage {...messages.signUpLinkText} /></button>;
+  const signInLink = <button onClick={signIn}><FormattedMessage {...messages.signInLinkText} /></button>;
 
   return (
     <Container className={className}>

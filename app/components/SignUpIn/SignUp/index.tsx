@@ -81,6 +81,8 @@ interface State {
 }
 
 class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
+  modalContentRef: HTMLDivElement | null = null;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -164,6 +166,10 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     const { authUser, metaData } = this.props;
     const hasVerificationStep = metaData?.verification;
 
+    if (this.modalContentRef) {
+      this.modalContentRef.scrollTop = 0;
+    }
+
     if (activeStep === 'auth-providers') {
       this.setState({ activeStep: 'password-signup' });
     } else if (activeStep === 'password-signup' && !isNilOrError(authUser) && !authUser.attributes.verified && hasVerificationStep) {
@@ -231,6 +237,10 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ headerHeight: `${Math.round(height) + 2}px` });
   }
 
+  setRef = (element: HTMLDivElement) => {
+    this.modalContentRef = element;
+  }
+
   render() {
     const { activeStep, error, steps, headerHeight } = this.state;
     const { tenant, metaData, windowHeight, className, intl: { formatMessage } } = this.props;
@@ -286,6 +296,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             inModal={!!metaData.inModal}
             windowHeight={`${windowHeight}px`}
             headerHeight={headerHeight}
+            ref={this.setRef}
           >
             {error ? (
               <Error

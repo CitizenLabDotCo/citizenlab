@@ -6,7 +6,6 @@ export const Options = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  margin-bottom: 10px;
 `;
 
 export const Option = styled.div`
@@ -83,20 +82,34 @@ export const StyledModalContent = styled(ModalContent)<{
 }>`
   ${props => props.inModal && css`
     padding-top: 20px;
+    padding-bottom: 0px;
     max-height: calc(85vh - ${props.headerHeight});
+
+    &:after {
+      content: "";
+      height: 30px;
+      display: block;
+    }
 
     ${media.smallerThanMinTablet`
       max-height: ${props => `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
+
+      &:after {
+        content: "";
+        height: 20px;
+        display: block;
+      }
     `}
   `}
 
   ${props => !props.inModal && css`
-    padding-bottom: 0px;
     padding-top: 10px;
+    padding-bottom: 0px;
 
     ${media.smallerThanMinTablet`
-      padding: 2px;
       padding-top: 10px;
+      padding-left: 2px;
+      padding-right: 2px;
     `}
   `}
 `;
