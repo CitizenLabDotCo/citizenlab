@@ -45,6 +45,13 @@ const StyledSectionTitle = styled(SectionTitle)`
   font-size: ${fontSizes.xl}px;
 `;
 
+export const PageTitle = styled.h1`
+  width: 100%;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 2rem 0 1rem;;
+`;
+
 export interface FormValues {
   sender: 'author' | 'organization';
   reply_to: string;
@@ -125,11 +132,8 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
     return (
       <Form>
         <StyledSection>
-          {/* <StyledSectionTitle>
-            1. <FormattedMessage {...messages.formTitleWho} />
-          </StyledSectionTitle> */}
           <StyledSectionTitle>
-            Sender and recipients
+            <FormattedMessage {...messages.senderRecipients} />
           </StyledSectionTitle>
           <StyledSectionField>
             <Label>
@@ -187,13 +191,10 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
         </StyledSection>
 
         <StyledSection>
-          {/* <StyledSectionTitle>
-            2. <FormattedMessage {...messages.formTitleWhat} />
-          </StyledSectionTitle> */}
+          <StyledSectionTitle>
+            <FormattedMessage {...messages.fieldSubject} />
+          </StyledSectionTitle>
           <SectionField>
-            <StyledSectionTitle>
-              Subject
-            </StyledSectionTitle>
             <FastField
               name="subject_multiloc"
               component={FormikInputMultiloc}
@@ -208,7 +209,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           </SectionField>
 
           <StyledSectionTitle>
-            Message
+            <FormattedMessage {...messages.fieldBody} />
           </StyledSectionTitle>
           <SectionField>
             <FastField
