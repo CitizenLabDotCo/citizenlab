@@ -22,8 +22,8 @@ pl:
       "new_comment_for_admin": Nowy komentarz w projekcie, który moderuję
       "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałem
       "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałem
-      "new_comment_on_voted_idea": Nowy komentarz do pomysłu, na który głosowałem
-      "new_comment_on_voted_initiative": Nowy komentarz do pomysłu, na który głosowałem
+      "new_comment_on_voted_idea": Nowy komentarz do pomysłu, nad którym głosowałem
+      "new_comment_on_voted_initiative": Nowy komentarz do pomysłu, nad którym głosowałem
       "new_idea_for_admin": Nowy pomysł w projekcie, który moderuję
       "new_initiative_for_admin": Nowa propozycja
       "official_feedback_on_commented_idea": Aktualizacja pomysłu, który skomentowałem
@@ -38,11 +38,11 @@ pl:
       "project_phase_upcoming": Nadchodzący nowy etap projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałem
       "status_change_of_commented_initiative": Zmiana statusu propozycji, którą skomentowałem
-      "status_change_of_voted_idea": Zmiana statusu pomysłu, na który zagłosowałem
-      "status_change_of_voted_initiative": Zmiana statusu propozycji, na który zagłosowałem
+      "status_change_of_voted_idea": Zmiana statusu pomysłu, nad którym zagłosowałem
+      "status_change_of_voted_initiative": Zmiana statusu propozycji, nad którym głosowałem
       "status_change_of_your_idea": Zmiana statusu mojego pomysłu
       "status_change_of_your_initiative": Zmiana statusu mojej propozycji
-      "threshold_reached_for_admin": Wniosek osiągnął próg poparcia w głosowaniu
+      "threshold_reached_for_admin": Propozycja osiągnęła próg poparcia w głosowaniu
       "welcome": Po rejestracji
       "admin_digest": Tygodniowy przegląd dla administratorów
       "moderator_digest": Tygodniowy przegląd dla moderatorów projektów
@@ -50,7 +50,7 @@ pl:
       "user_digest": Tygodniowy przegląd
       "your_proposed_initiatives_digest": Tygodniowy przegląd Twoich propozycji
     admin_campaign_type_description:
-      "manual": Official message - all users
+      "manual": Oficjalna wiadomość - wszyscy użytkownicy
       "admin_rights_received": Admin rights received - admins
       "comment_deleted_by_admin": Deletion of your comment - all users
       "comment_marked_as_spam": Comment spam report - admins and project moderators
@@ -77,10 +77,10 @@ pl:
       "new_initiative_for_admin": New proposal - admins
       "official_feedback_on_commented_idea": Update on an idea you commented on - all users
       "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
-      "official_feedback_on_voted_idea": Update on an idea you voted on - all users
+      "official_feedback_on_voted_idea": Aktualizacja pomysłu, na który głosowałeś - wszyscy użytkownicy
       "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
-      "official_feedback_on_your_idea": Update on your idea - all users
-      "official_feedback_on_your_initiative": Update on your proposal - all users
+      "official_feedback_on_your_idea": Aktualizacja Twojego pomysłu - wszyscy użytkownicy
+      "official_feedback_on_your_initiative": Aktualizacja Twojej propozycji - wszyscy użytkownicy
       "password_reset": Password reset - all users
       "project_moderation_rights_received": Project moderation rights received - project moderators
       "project_phase_started": New project phase - all users
@@ -89,12 +89,12 @@ pl:
       "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
       "status_change_of_voted_idea": Status change of an idea you voted on - all users
       "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
-      "status_change_of_your_idea": Status change of your idea - all users
-      "status_change_of_your_initiative": Status change of your proposal - all users
+      "status_change_of_your_idea": Zmiana statusu Twojego pomysłu - wszyscy użytkownicy
+      "status_change_of_your_initiative": Zmiana statusu Twojej propozycji - wszyscy użytkownicy
       "threshold_reached_for_admin": Proposal reached the voting threshold - admins
       "welcome": New user - admins
-      "admin_digest": Weekly overview - admins
-      "moderator_digest": Weekly overview - project moderators
-      "assignee_digest": Weekly overview of assigned ideas - admins and project moderators
-      "user_digest": Weekly overview - all users
-      "your_proposed_initiatives_digest": Weekly overview of your own proposals - all users
+      "admin_digest": Przegląd tygodniowy - administratorzy
+      "moderator_digest": Przegląd tygodniowy - moderatorzy projektów
+      "assignee_digest": Cotygodniowy przegląd przydzielonych pomysłów - administratorzy i moderatorzy projektów
+      "user_digest": Przegląd tygodniowy - wszyscy użytkownicy
+      "your_proposed_initiatives_digest": Tygodniowy przegląd własnych propozycji - wszyscy użytkownicy
