@@ -5,20 +5,13 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, validateCampaignForm } from '../CampaignForm';
+import CampaignForm, { FormValues, validateCampaignForm, PageTitle } from '../CampaignForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 2rem 0;
-`;
 
 type Props = {
   authUser: GetAuthUserChildProps;
