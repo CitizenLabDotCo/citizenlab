@@ -121,7 +121,7 @@ const ModalContainer = styled.div`
 
 const SendNowWarning = styled.div`
   font-size: ${fontSizes.base}px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
 `;
 
 interface InputProps { }
