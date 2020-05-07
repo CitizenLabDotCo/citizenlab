@@ -118,7 +118,7 @@ class VoteControl extends PureComponent<Props, State> {
   handleOnCancelVote = () => {
     const { initiative } = this.props;
 
-    if (!isNilOrError(initiative) && initiative.relationships.user_vote && initiative.relationships.user_vote.data) {
+    if (!isNilOrError(initiative) && initiative.relationships?.user_vote?.data?.id) {
       deleteVote(initiative.id, initiative.relationships.user_vote.data.id);
     }
   }
@@ -131,7 +131,9 @@ class VoteControl extends PureComponent<Props, State> {
       isNilOrError(initiativeStatus) ||
       isNilOrError(tenant) ||
       !tenant.attributes.settings.initiatives
-    ) return null;
+    ) {
+      return null;
+    }
 
     const expiresAt = moment(initiative.attributes.expires_at, 'YYYY-MM-DDThh:mm:ss.SSSZ');
     const durationAsSeconds = moment.duration(expiresAt.diff(moment())).asSeconds();

@@ -3,8 +3,6 @@ import { adopt } from 'react-adopt';
 import Leaflet from 'leaflet';
 import { withRouter, WithRouterProps } from 'react-router';
 import { isNilOrError } from 'utils/helperUtils';
-import clHistory from 'utils/cl-router/history';
-import { stringify } from 'qs';
 
 // Tracking
 import { trackEventByName } from 'utils/analytics';
@@ -28,9 +26,6 @@ import messages from './messages';
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-
-// Typing
-import { IGeotaggedIdeaData } from 'services/ideas';
 
 const Container = styled.div`
   > .create-idea-wrapper {
@@ -56,49 +51,39 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  selectedIdeaId: string | null;
   points: Point[];
+  selectedIdeaId: string | null;
+  selectedLatLng: Leaflet.LatLng | null;
 }
 
 export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
-  private addIdeaButtonElement: HTMLElement;
-  private savedPosition: Leaflet.LatLng | null = null;
+  ideaButtonRef: HTMLElement;
 
   constructor(props) {
     super(props);
     this.state = {
+      points: [],
       selectedIdeaId: null,
-      points: []
+      selectedLatLng: null
     };
   }
 
-  componentDidMount() {
-    const points = this.getPoints(this.props.ideaMarkers);
-    this.setState({ points });
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.ideaMarkers !== this.props.ideaMarkers) {
-      const points = this.getPoints(this.props.ideaMarkers);
-      this.setState({ points });
-    }
-  }
-
-  getPoints = (ideas: IGeotaggedIdeaData[] | null | undefined | Error) => {
+  static getDerivedStateFromProps(props: Props & WithRouterProps, _state: State) {
+    const { ideaMarkers } = props;
     const ideaPoints: Point[] = [];
 
-    if (!isNilOrError(ideas) && ideas.length > 0) {
-      ideas.forEach((idea) => {
-        if (idea.attributes && idea.attributes.location_point_geojson) {
+    if (!isNilOrError(ideaMarkers) && ideaMarkers.length > 0) {
+      ideaMarkers.forEach((ideaMarker) => {
+        if (ideaMarker.attributes && ideaMarker.attributes.location_point_geojson) {
           ideaPoints.push({
-            ...idea.attributes.location_point_geojson,
-            id: idea.id
+            ...ideaMarker.attributes.location_point_geojson,
+            id: ideaMarker.id
           });
         }
       });
     }
 
-    return ideaPoints;
+    return { points: ideaPoints };
   }
 
   toggleIdea = (ideaId: string) => {
@@ -114,52 +99,28 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
   }
 
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
-    this.savedPosition = position;
+    this.setState({ selectedLatLng: position });
 
-    if (this.props.projectIds && this.addIdeaButtonElement) {
+    if (this.props.projectIds && this.ideaButtonRef) {
       Leaflet
         .popup()
         .setLatLng(position)
-        .setContent(this.addIdeaButtonElement)
+        .setContent(this.ideaButtonRef)
         .openOn(map);
     }
 
     return;
   }
 
-  redirectToIdeaCreation = () => {
-    if (this.savedPosition && this.props.params && this.props.params.slug) {
-      const { lat, lng } = this.savedPosition;
-
-      trackEventByName(tracks.createIdeaFromMap, { position: this.savedPosition, projectSlug: this.props.params.slug });
-
-      clHistory.push({
-        pathname: `/projects/${this.props.params.slug}/ideas/new`,
-        search: stringify({ lat, lng }, { addQueryPrefix: true })
-      });
-    }
-  }
-
-  bindIdeaCreationButton = (element: HTMLDivElement) => {
-    if (element) {
-      this.addIdeaButtonElement = element;
-    }
+  setIdeaButtonRef = (element: HTMLDivElement) => {
+    this.ideaButtonRef = element;
   }
 
   getMapHeight = () => {
     const { windowSize } = this.props;
     const smallerThanMaxTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
     const smallerThanMinTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
-    let height = 550;
-
-    if (smallerThanMinTablet) {
-      height = 400;
-    }
-
-    if (smallerThanMaxTablet) {
-      height = 500;
-    }
-
+    const height = smallerThanMinTablet ? 400 : (smallerThanMaxTablet ? 500 : 550);
     return height;
   }
 
@@ -167,7 +128,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { phaseId, projectIds, ideaMarkers, className } = this.props;
-    const { selectedIdeaId, points } = this.state;
+    const { selectedIdeaId, points, selectedLatLng: selectedPosition } = this.state;
     const mapHeight = this.getMapHeight();
 
     return (
@@ -184,6 +145,7 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
           points={points}
           onMarkerClick={this.toggleIdea}
           onMapClick={this.onMapClick}
+          fitBounds={true}
           boxContent={selectedIdeaId ? <IdeaPreview ideaId={selectedIdeaId} /> : null}
           onBoxClose={this.deselectIdea}
           mapHeight={mapHeight}
@@ -191,12 +153,12 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
         />
 
         {projectIds && projectIds.length === 1 &&
-          <div className="create-idea-wrapper" ref={this.bindIdeaCreationButton}>
+          <div className="create-idea-wrapper" ref={this.setIdeaButtonRef}>
             <IdeaButton
               projectId={projectIds[0]}
               phaseId={phaseId || undefined}
-              onClick={this.redirectToIdeaCreation}
               participationContextType={phaseId ? 'phase' : 'project'}
+              latLng={selectedPosition}
             />
           </div>
         }
@@ -206,8 +168,8 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  ideaMarkers: ({ projectIds, phaseId, render }) => <GetIdeaMarkers projectIds={projectIds} phaseId={phaseId}>{render}</GetIdeaMarkers>,
-  windowSize: <GetWindowSize />
+  windowSize: <GetWindowSize />,
+  ideaMarkers: ({ projectIds, phaseId, render }) => <GetIdeaMarkers projectIds={projectIds} phaseId={phaseId}>{render}</GetIdeaMarkers>
 });
 
 const IdeasMapWithRouter = withRouter(IdeasMap);
