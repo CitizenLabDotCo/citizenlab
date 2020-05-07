@@ -6,7 +6,6 @@ import { adopt } from 'react-adopt';
 // components
 import Card from 'components/UI/Card';
 import Icon from 'components/UI/Icon';
-import Unauthenticated from 'components/UI/Card/Unauthenticated';
 import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
@@ -118,8 +117,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 interface State {
-  showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
-  showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
+  showVotingDisabled: 'votingDisabled' | null;
+  showAssignBudgetDisabled: 'assignBudgetDisabled' | null;
 }
 
 class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
@@ -171,10 +170,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
 
   disabledVoteClick = () => {
     this.setState({ showVotingDisabled: 'votingDisabled' });
-  }
-
-  unauthenticatedAssignBudgetClick = () => {
-    this.setState({ showAssignBudgetDisabled: 'unauthenticated' });
   }
 
   disabledAssignBudgetClick = () => {
@@ -269,7 +264,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
                       openIdea={this.onCardClick}
-                      unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
                       disabledAssignBudgetClick={this.disabledAssignBudgetClick}
                       projectId={projectId}
                     />
@@ -287,12 +281,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                     </ScreenReaderOnly>
                   </CommentInfo>
                 </FooterInner>
-              }
-
-              {(showVotingDisabled === 'unauthenticated' || showAssignBudgetDisabled === 'unauthenticated') &&
-                <BottomBounceUp icon="lock-outlined">
-                  <Unauthenticated />
-                </BottomBounceUp>
               }
 
               {showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId &&
