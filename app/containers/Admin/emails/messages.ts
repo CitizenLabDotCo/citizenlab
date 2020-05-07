@@ -230,5 +230,17 @@ export default defineMessages({
   nameVariablesInfo: {
     id: 'app.containers.Admin.emails.nameVariablesInfo',
     defaultMessage: 'You can speak directly to citizens using the variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. "Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ..."'
+  },
+  changeRecipientsButton: {
+    id: 'app.containers.Admin.emails.changeRecipientsButton',
+    defaultMessage: 'Change recipients'
+  },
+  sendNowConfirmButton: {
+    id: 'app.containers.Admin.emails.sendNowConfirmButton',
+    defaultMessage: 'Send now'
+  },
+  confirmSendHeader: {
+    id: 'app.containers.Admin.emails.confirmSendHeader',
+    defaultMessage: 'This email will be sent to all users'
   }
 });
