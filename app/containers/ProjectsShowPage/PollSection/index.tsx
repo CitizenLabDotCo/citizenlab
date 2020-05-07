@@ -119,7 +119,7 @@ export class PollSection extends PureComponent<Props> {
   render() {
     const { pollQuestions, projectId, phaseId, project, phase, type, authUser } = this.props;
 
-    if (!isNilOrError(pollQuestions) && !isNilOrError(project)) {
+    if (!isNilOrError(pollQuestions) && !isNilOrError(project) && !!(type === 'phase' ? !isNilOrError(phase) : true)) {
       const isSignedIn = !isNilOrError(authUser);
       const { enabled, disabledReason } = getPollTakingRules({ project, phaseContext: phase, signedIn: !!authUser });
       const message = disabledReason ? disabledMessages[disabledReason] : messages.pollDisabledNotPossible;
