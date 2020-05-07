@@ -82,8 +82,6 @@ export const validateCampaignForm = (values: FormValues): FormikErrors<FormValue
     errors.group_ids = [{ error: 'blank' }] as any;
   }
 
-  console.log('values', values);
-  console.log('errors', errors);
   return errors;
 };
 

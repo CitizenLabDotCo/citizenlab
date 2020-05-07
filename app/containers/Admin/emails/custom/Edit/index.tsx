@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { updateCampaign, ICampaignData } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
@@ -54,8 +53,6 @@ class Edit extends React.Component<Props> {
   }
 
   renderFn = (props) => {
-    console.log('renderFn', props);
-
     return (
       <CampaignForm
         {...props}
@@ -70,7 +67,6 @@ class Edit extends React.Component<Props> {
   }
 
   render() {
-    console.log('render initialValues', this.initialValues());
     return (
       <div>
         <GoBackButton onClick={this.goBack} />
