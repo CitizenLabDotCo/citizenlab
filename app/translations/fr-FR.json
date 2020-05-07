@@ -771,6 +771,7 @@
   "app.containers.Admin.emails.sendNowConfirmButton": "",
   "app.containers.Admin.emails.sendTestEmailButton": "Envoyer moi un email de test",
   "app.containers.Admin.emails.sendTestEmailTooltip": "Envoyer ce brouillon à une adresse email qui vous appartient pour vérifier à quoi ressemble l'email dans la \"vraie vie\".",
+  "app.containers.Admin.emails.senderRecipients": "",
   "app.containers.Admin.emails.sent": "Envoyé",
   "app.containers.Admin.emails.statsButton": "Statistiques",
   "app.containers.Admin.emails.subtitleEmails": "Ecrivez vos emails sur la plateforme et envoyer les à tous les utilisateurs ou à certains groupes. Contrôlez quels messages seront envoyés automatiquement aux utilisateurs de la plateforme.",
