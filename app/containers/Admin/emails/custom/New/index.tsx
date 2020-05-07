@@ -1,5 +1,4 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
