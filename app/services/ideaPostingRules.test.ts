@@ -1,4 +1,4 @@
-import { getPostingPermission } from './ideaPostingRules';
+import { getIdeaPostingRules } from './ideaPostingRules';
 
 import { getMockProject } from 'services/__mocks__/projects';
 import { mockUser, mockAdmin, mockProjectModerator } from 'services/__mocks__/auth';
@@ -26,39 +26,39 @@ const mockAdminData = mockAdmin.data;
 const mockThisProjectModeratorData = mockProjectModerator(projectId).data;
 const mockSomeProjectModeratorData = mockProjectModerator('rando446').data;
 
-describe('getPostingPermission', () => {
+describe('getIdeaPostingRules', () => {
   describe('continuous projects', () => {
     describe('no restrictions', () => {
       it('allows unsigned users', () => {
-        expect(getPostingPermission({ project: ideationContinuous }))
+        expect(getIdeaPostingRules({ project: ideationContinuous }))
           .toEqual({
             show: true,
             enabled: true,
           });
       });
       it('allows signed users', () => {
-        expect(getPostingPermission({ project: ideationContinuous, authUser: mockUserData }))
+        expect(getIdeaPostingRules({ project: ideationContinuous, authUser: mockUserData }))
           .toEqual({
             show: true,
             enabled: true,
           });
       });
       it('allows admin users', () => {
-        expect(getPostingPermission({ project: ideationContinuous, authUser: mockAdminData }))
+        expect(getIdeaPostingRules({ project: ideationContinuous, authUser: mockAdminData }))
           .toEqual({
             show: true,
             enabled: true,
           });
       });
       it('allows moderators for this project', () => {
-        expect(getPostingPermission({ project: ideationContinuous, authUser: mockThisProjectModeratorData }))
+        expect(getIdeaPostingRules({ project: ideationContinuous, authUser: mockThisProjectModeratorData }))
           .toEqual({
             show: true,
             enabled: true,
           });
       });
       it('allows moderators for another project', () => {
-        expect(getPostingPermission({ project: ideationContinuous, authUser: mockSomeProjectModeratorData }))
+        expect(getIdeaPostingRules({ project: ideationContinuous, authUser: mockSomeProjectModeratorData }))
           .toEqual({
             show: true,
             enabled: true,
@@ -69,7 +69,7 @@ describe('getPostingPermission', () => {
     describe('not_permitted', () => {
       it('disabled with notPermitted for signed in users', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_permitted');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockUserData
         }))
@@ -81,7 +81,7 @@ describe('getPostingPermission', () => {
       });
       it('treats moderators just as normal users', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_permitted');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockThisProjectModeratorData
         }))
@@ -90,7 +90,7 @@ describe('getPostingPermission', () => {
             enabled: false,
             disabledReason: 'notPermitted'
           });
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockSomeProjectModeratorData
         }))
@@ -102,7 +102,7 @@ describe('getPostingPermission', () => {
       });
       it('disabled with maybeNotPermitted for signed out users', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_permitted');
-        expect(getPostingPermission({ project: accessDeniedProject }))
+        expect(getIdeaPostingRules({ project: accessDeniedProject }))
           .toEqual({
             show: true,
             enabled: false,
@@ -111,7 +111,7 @@ describe('getPostingPermission', () => {
       });
       it('allows admins', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_permitted');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockAdminData
         }))
@@ -124,10 +124,10 @@ describe('getPostingPermission', () => {
 
     describe('project_inactive', () => {
       // the project mock is not fully what we expect from the back-end, it should be archived or something
-      // but getPostingPermission doesn't check much further than the action_descriptor.
+      // but getIdeaPostingRules doesn't check much further than the action_descriptor.
       it('disabled with projectInactive for signed in users', () => {
         const accessDeniedProject = getDisabledIdeationProject('project_inactive');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockUserData
         }))
@@ -139,7 +139,7 @@ describe('getPostingPermission', () => {
       });
       it('treats moderators (even of this project) just as normal users', () => {
         const accessDeniedProject = getDisabledIdeationProject('project_inactive');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockThisProjectModeratorData
         }))
@@ -148,7 +148,7 @@ describe('getPostingPermission', () => {
             enabled: false,
             disabledReason: 'projectInactive'
           });
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockSomeProjectModeratorData
         }))
@@ -160,7 +160,7 @@ describe('getPostingPermission', () => {
       });
       it('disabled with projectInactive for signed out users', () => {
         const accessDeniedProject = getDisabledIdeationProject('project_inactive');
-        expect(getPostingPermission({ project: accessDeniedProject }))
+        expect(getIdeaPostingRules({ project: accessDeniedProject }))
           .toEqual({
             show: true,
             enabled: false,
@@ -169,7 +169,7 @@ describe('getPostingPermission', () => {
       });
       it('allows admins', () => {
         const accessDeniedProject = getDisabledIdeationProject('project_inactive');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockAdminData
         }))
@@ -184,7 +184,7 @@ describe('getPostingPermission', () => {
       // should not be returned for unsigned users
       it('disabled with notVerified for signed in users', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_verified');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockUserData
         }))
@@ -196,7 +196,7 @@ describe('getPostingPermission', () => {
       });
       it('treats moderators (even of this project) just as normal users', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_verified');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockThisProjectModeratorData
         }))
@@ -205,7 +205,7 @@ describe('getPostingPermission', () => {
             enabled: false,
             disabledReason: 'notVerified'
           });
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockSomeProjectModeratorData
         }))
@@ -217,7 +217,7 @@ describe('getPostingPermission', () => {
       });
       it('allows admins', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_verified');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockAdminData
         }))
@@ -232,29 +232,29 @@ describe('getPostingPermission', () => {
       // PB projets ?
       it('is not shown for users', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_ideation');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockUserData
         }).show).toBe(false);
       });
       it('is not shown for moderators', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_ideation');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockThisProjectModeratorData
         }).show).toBe(false);
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockSomeProjectModeratorData
         }).show).toBe(false);
       });
       it('is not shown for unsigned users', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_ideation');
-        expect(getPostingPermission({ project: accessDeniedProject }).show).toBe(false);
+        expect(getIdeaPostingRules({ project: accessDeniedProject }).show).toBe(false);
       });
       it('is not shown for admins', () => {
         const accessDeniedProject = getDisabledIdeationProject('not_ideation');
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockAdminData
         }).show).toBe(false);
@@ -265,7 +265,7 @@ describe('getPostingPermission', () => {
       it('is not shown for users', () => {
         const accessDeniedProject = getDisabledIdeationProject('posting_disabled');
         accessDeniedProject.attributes.posting_enabled = false;
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockUserData
         }).show).toBe(false);
@@ -273,11 +273,11 @@ describe('getPostingPermission', () => {
       it('is not shown for moderators', () => {
         const accessDeniedProject = getDisabledIdeationProject('posting_disabled');
         accessDeniedProject.attributes.posting_enabled = false;
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockThisProjectModeratorData
         }).show).toBe(false);
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockSomeProjectModeratorData
         }).show).toBe(false);
@@ -285,12 +285,12 @@ describe('getPostingPermission', () => {
       it('is not shown for unsigned users', () => {
         const accessDeniedProject = getDisabledIdeationProject('posting_disabled');
         accessDeniedProject.attributes.posting_enabled = false;
-        expect(getPostingPermission({ project: accessDeniedProject }).show).toBe(false);
+        expect(getIdeaPostingRules({ project: accessDeniedProject }).show).toBe(false);
       });
       it('is not shown for admins', () => {
         const accessDeniedProject = getDisabledIdeationProject('posting_disabled');
         accessDeniedProject.attributes.posting_enabled = false;
-        expect(getPostingPermission({
+        expect(getIdeaPostingRules({
           project: accessDeniedProject,
           authUser: mockAdminData
         }).show).toBe(false);

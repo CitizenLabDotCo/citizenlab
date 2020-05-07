@@ -10,7 +10,8 @@ exports[`IdeasMap renders correctly 1`] = `
   </a11y__ScreenReaderOnly>
   <Component
     boxContent={null}
-    mapHeight={500}
+    fitBounds={true}
+    mapHeight={400}
     onBoxClose={[Function]}
     onMapClick={[Function]}
     onMarkerClick={[Function]}
@@ -21,7 +22,7 @@ exports[`IdeasMap renders correctly 1`] = `
     className="create-idea-wrapper"
   >
     <Component
-      onClick={[Function]}
+      latLng={null}
       participationContextType="phase"
       phaseId="c43968d3-171e-570c-8b71-f5fc0e55bbfa"
       projectId="379cac45-d26b-505c-9215-b2677a693d37"
