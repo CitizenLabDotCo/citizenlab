@@ -660,7 +660,7 @@ const Data = adopt<DataProps, InputProps>({
   adminPublications: <GetAdminPublications publicationStatusFilter={['published', 'archived']} noEmptyFolder folderId={null} />,
 });
 
-const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));
+const NavbarWithHOCs = injectLocalize<Props>(withRouter(injectIntl(Navbar)));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
