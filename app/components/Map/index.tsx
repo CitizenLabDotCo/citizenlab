@@ -376,7 +376,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     });
 
     if (
-      bounds && bounds.length > 0 &&
+      bounds &&
+      bounds.length > 0 &&
       this.props.fitBounds &&
       !this.state.initiated &&
       this.map

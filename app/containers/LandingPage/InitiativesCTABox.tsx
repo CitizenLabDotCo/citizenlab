@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
+import useAuthUser from 'hooks/useAuthUser';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -10,6 +11,11 @@ import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 // components
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
+
+// utils
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -117,8 +123,18 @@ interface Props extends InputProps {
 }
 
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
+
+  const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
+
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+
+  const signUp = useCallback(() => {
+    openSignUpInModal({
+      flow: 'signup',
+      action: () => clHistory.push('/initiatives/new')
+    });
+  }, []);
 
   return (
     <Container className={className}>
@@ -147,9 +163,8 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
           <StartInitiativeButton
             fontWeight="500"
             padding="13px 22px"
-            bgColor={theme.colorMain}
-            linkTo="/initiatives/new"
-            textColor="#fff"
+            linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
+            onClick={!authUser ? signUp : undefined}
             fullWidth={smallerThanSmallTablet}
             text={<FormattedMessage {...messages.startInitiative} />}
             className="e2e-initiatives-landing-CTA-new"

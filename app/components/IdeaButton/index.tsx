@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import clHistory from 'utils/cl-router/history';
+import { stringify } from 'qs';
 
 // typings
 import { IParticipationContextType } from 'typings';
@@ -37,6 +38,9 @@ import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { darken } from 'polished';
 
+// typings
+import { LatLng } from 'leaflet';
+
 const Container = styled.div``;
 
 const ButtonWrapper = styled.div``;
@@ -63,11 +67,9 @@ const TooltipContentText = styled.div`
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-word;
-  text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
 
-  a, button {
+  a,
+  button {
     color: ${colors.clBlueDark};
     font-size: ${fontSizes.base}px;
     line-height: normal;
@@ -99,9 +101,10 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface InputProps extends ButtonContainerProps {
+interface InputProps extends Omit<ButtonContainerProps, 'onClick'> {
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
+  latLng?: LatLng | null;
   className?: string;
   participationContextType: IParticipationContextType | null;
 }
@@ -123,36 +126,42 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
     notVerified: messages.postingNotVerified
   };
 
+  redirectToIdeaForm = () => {
+    const { project, latLng } = this.props;
+
+    if (!isNilOrError(project)) {
+      trackEventByName(tracks.redirectedToIdeaFrom);
+
+      clHistory.push({
+        pathname: `/projects/${project.attributes.slug}/ideas/new`,
+        search: latLng ? stringify({ lat: latLng.lat, lng: latLng.lng }, { addQueryPrefix: true }) : undefined
+      });
+    }
+  }
+
   onClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     trackEventByName(tracks.postYourIdeaButtonClicked);
 
-    // if no external onClick handler is defined through the props
-    if (!this.props.onClick) {
-      const { project, authUser, participationContextType, phaseId, projectId } = this.props;
-      const pcType = participationContextType;
-      const pcId = pcType === 'phase' ? phaseId : projectId;
-      const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
+    const { project, authUser, participationContextType, phaseId, projectId } = this.props;
+    const pcType = participationContextType;
+    const pcId = pcType === 'phase' ? phaseId : projectId;
+    const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
 
-      // if not logged in
-      if (isNilOrError(authUser) && !isNilOrError(project)) {
-        this.signUp();
-      }
+    // if not logged in
+    if (isNilOrError(authUser) && !isNilOrError(project)) {
+      this.signUp();
+    }
 
-      // if logged in but not verified and verification required
-      if (!isNilOrError(authUser) && postingDisabledReason === 'not_verified' && pcType && pcId) {
-        this.verify();
-      }
+    // if logged in but not verified and verification required
+    if (!isNilOrError(authUser) && postingDisabledReason === 'not_verified' && pcType && pcId) {
+      this.verify();
+    }
 
-      // if logegd in and posting allowed
-      if (!isNilOrError(authUser) && !isNilOrError(project) && !postingDisabledReason) {
-        trackEventByName(tracks.redirectedToIdeaFrom);
-        clHistory.push(`/projects/${project.attributes.slug}/ideas/new`);
-      }
-    } else {
-      trackEventByName(tracks.externalHandling);
-      this.props.onClick(event);
+    // if logegd in and posting allowed
+    if (!isNilOrError(authUser) && !isNilOrError(project) && !postingDisabledReason) {
+      this.redirectToIdeaForm();
     }
   }
 
@@ -182,7 +191,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
           id: pcId,
           type: pcType
         } : undefined,
-        action: () => clHistory.push(`/projects/${project.attributes.slug}/ideas/new`)
+        action: () => this.redirectToIdeaForm()
       });
     }
   }
