@@ -51,7 +51,6 @@ class New extends React.Component<Props> {
       reply_to: (!isNilOrError(authUser) && authUser.attributes.email) ||  '',
       subject_multiloc: {},
       body_multiloc: {},
-      group_ids: undefined,
     };
   }
 

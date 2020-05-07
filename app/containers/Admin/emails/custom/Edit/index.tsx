@@ -60,12 +60,16 @@ class Edit extends React.Component<Props> {
     };
   }
 
-  renderFn = (props) => (
-    <CampaignForm
-      {...props}
-      mode="edit"
-    />
-  )
+  renderFn = (props) => {
+    console.log('renderFn', props);
+
+    return (
+      <CampaignForm
+        {...props}
+        mode="edit"
+      />
+    );
+  }
 
   goBack = () => {
     const { id } = this.props.campaign;
@@ -73,6 +77,7 @@ class Edit extends React.Component<Props> {
   }
 
   render() {
+    console.log('render initialValues', this.initialValues());
     return (
       <div>
         <GoBackButton onClick={this.goBack} />
