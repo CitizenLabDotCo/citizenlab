@@ -241,7 +241,7 @@ export default defineMessages({
   },
   confirmSendHeader: {
     id: 'app.containers.Admin.emails.confirmSendHeader',
-    defaultMessage: 'This email will be sent to all users'
+    defaultMessage: 'Email to all users?'
   },
   toAllUsers: {
     id: 'app.containers.Admin.emails.toAllUsers',

@@ -296,7 +296,7 @@ class Show extends React.Component<Props, State> {
           <Modal
             opened={noGroupsSelected && showSendConfirmationModal}
             close={this.closeSendConfirmationModal}
-            header={'Email to all users?'}
+            header={<FormattedMessage {...messages.confirmSendHeader} />}
           >
             <ModalContainer>
               <SendNowWarning>
