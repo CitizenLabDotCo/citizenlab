@@ -755,6 +755,7 @@
   "app.containers.Admin.emails.formTitleWhat": "Qué",
   "app.containers.Admin.emails.formTitleWho": "Quién",
   "app.containers.Admin.emails.formUnexpectedErrorMessage": "Algo salió mal, por favor inténtalo más tarde",
+  "app.containers.Admin.emails.groups": "",
   "app.containers.Admin.emails.helmetDescription": "Enviar emails manual a cierto grupo del ciudadano y activar campañas automatizadas",
   "app.containers.Admin.emails.helmetTitle": "Correo electrónico",
   "app.containers.Admin.emails.manageButtonLabel": "Administrar",
