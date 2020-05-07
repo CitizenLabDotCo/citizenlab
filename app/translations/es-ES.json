@@ -771,6 +771,7 @@
   "app.containers.Admin.emails.sendNowConfirmButton": "",
   "app.containers.Admin.emails.sendTestEmailButton": "Mandame un mail de prueba",
   "app.containers.Admin.emails.sendTestEmailTooltip": "Envía este proyecto a la dirección de correo electrónico con la que estas conectado, para comprobar cómo se ve en la 'vida real'.",
+  "app.containers.Admin.emails.senderRecipients": "",
   "app.containers.Admin.emails.sent": "Enviado",
   "app.containers.Admin.emails.statsButton": "Estadísticas",
   "app.containers.Admin.emails.subtitleEmails": "Redacta mensajes de correo electrónico y envialos a todos los usuarios o a ciertos grupos. Y controla qué emails automatizados los usuarios reciben.",

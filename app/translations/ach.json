@@ -771,6 +771,7 @@
   "app.containers.Admin.emails.sendNowConfirmButton": "",
   "app.containers.Admin.emails.sendTestEmailButton": "",
   "app.containers.Admin.emails.sendTestEmailTooltip": "",
+  "app.containers.Admin.emails.senderRecipients": "",
   "app.containers.Admin.emails.sent": "",
   "app.containers.Admin.emails.statsButton": "",
   "app.containers.Admin.emails.subtitleEmails": "",
