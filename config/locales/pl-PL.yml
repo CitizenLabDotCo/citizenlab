@@ -15,14 +15,14 @@ pl:
   initiative_statuses:
     proposed: zaproponowana
     proposed_description: zaproponowana
-    expired: wygasły
-    expired_description: wygasły
-    threshold_reached: próg osiągnięty
-    threshold_reached_description: próg osiągnięty
+    expired: nieaktualna
+    expired_description: nieaktualna
+    threshold_reached: próg poparcia osiągnięty
+    threshold_reached_description: próg poparcia osiągnięty
     answered: z odpowiedzią
     answered_description: z odpowiedzią
-    ineligible: niekwalifikowalny
-    ineligible_description: niekwalifikowalny
+    ineligible: niekwalifikowana
+    ineligible_description: niekwalifikowalna
   topics:
     infrastructure: Place i ulice
     infrastructure_description: Place i ulice
@@ -127,10 +127,10 @@ pl:
       ISCED2: Gimnazjalne
       ISCED3: Ponadgimnazjalne
       ISCED4: Policealne
-      ISCED5: Licencjat
-      ISCED6: Licencjat lub jego odpowiednik
-      ISCED7: Magister lub odpowiednik
-      ISCED8: Doktorat lub jego odpowiednik
+      ISCED5: Studia krótkiego cyklu (między średnim, a licencjackim)
+      ISCED6: Licencjackie lub ich odpowiednik
+      ISCED7: Magisterskie lub ich odpowiednik
+      ISCED8: Doktoranckie lub ich odpowiednik
   initiatives:
     default_threshold_reached_message: >
       <p>Inicjatorzy są proszeni o przedstawienie swojej propozycji na następnym posiedzeniu rady. Przedstawimy oficjalną aktualizację.</p>
