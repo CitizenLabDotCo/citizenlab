@@ -771,6 +771,7 @@
   "app.containers.Admin.emails.sendNowConfirmButton": "",
   "app.containers.Admin.emails.sendTestEmailButton": "Stuur me een test e-mail",
   "app.containers.Admin.emails.sendTestEmailTooltip": "Zend deze draft naar het e-mailadres waarmee je bent ingelogd om na te gaan hoe je e-mail er 'in het echt' zal uitzien.",
+  "app.containers.Admin.emails.senderRecipients": "",
   "app.containers.Admin.emails.sent": "Verzonden",
   "app.containers.Admin.emails.statsButton": "Statistieken",
   "app.containers.Admin.emails.subtitleEmails": "Maak zelf e-mails aan die naar alle gebruikers of naar bepaalde groepen worden verzonden. En beheer de e-mails die je gebruikers automatisch ontvangen.",
