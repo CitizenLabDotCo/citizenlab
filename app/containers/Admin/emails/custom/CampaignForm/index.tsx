@@ -40,7 +40,7 @@ export interface FormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
-  group_ids: string[] | undefined;
+  group_ids?: string[];
 }
 
 interface InputProps {
@@ -61,6 +61,12 @@ export const validateCampaignForm = (values: FormValues): FormikErrors<FormValue
     errors.subject_multiloc = [{ error: 'blank' }] as any;
   }
 
+  if (!values.group_ids) {
+    errors.group_ids = [{ error: 'blank' }] as any;
+  }
+
+  console.log('values', values);
+  console.log('errors', errors);
   return errors;
 };
 
@@ -81,13 +87,18 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   groupsOptions = (groups: GetGroupsChildProps) => {
-    const groupList = isNilOrError(groups) && !isNilOrError(groups.groupsList) ?
-    groups.groupsList.map((group) => ({
-      label: this.props.localize(group.attributes.title_multiloc),
-      value: group.id,
-    }))
+    const groupList = (!isNilOrError(groups) && !isNilOrError(groups.groupsList)) ?
+      groups.groupsList.map((group) => ({
+        label: this.props.localize(group.attributes.title_multiloc),
+        value: group.id,
+      }))
     :
-    [];
+      [];
+
+    groupList.push({
+      label: this.props.intl.formatMessage(messages.allUsers),
+      value: ''
+    });
 
     return groupList;
   }
