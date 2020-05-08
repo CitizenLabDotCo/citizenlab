@@ -24,6 +24,7 @@ import { signUp } from 'services/auth';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetInvitedUser, { GetInvitedUserChildProps } from 'resources/GetInvitedUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
@@ -35,6 +36,7 @@ import messages from './messages';
 
 // style
 import styled from 'styled-components';
+import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { CLErrorsJSON } from 'typings';
@@ -75,6 +77,7 @@ type InputProps = {
 interface DataProps {
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
+  windowSize: GetWindowSizeChildProps;
   invitedUser: GetInvitedUserChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
@@ -266,6 +269,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const {
       tenant,
+      windowSize,
       className,
       hasNextStep,
       passwordLoginEnabled,
@@ -294,6 +298,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const signUpPageLink = <Link to={'/sign-up'}>{formatMessage(messages.signUpPage)}</Link>;
     const enabledProviders = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled].filter(provider => provider === true);
+    const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
 
     let unknownApiError: string | null = null;
 
@@ -332,7 +337,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                     placeholder={formatMessage(messages.tokenPlaceholder)}
                     error={tokenError}
                     onChange={this.handleTokenOnChange}
-                    autoFocus={!!(isInvitation && !this.props.metaData.token)}
+                    autoFocus={!!(isDesktop && isInvitation && !this.props.metaData.token)}
                   />
                 </FormElement>
               }
@@ -350,7 +355,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   error={firstNameError}
                   onChange={this.handleFirstNameOnChange}
                   autocomplete="given-name"
-                  autoFocus={!isInvitation || !!(isInvitation && this.props.metaData.token)}
+                  autoFocus={isDesktop && (!isInvitation || !!(isInvitation && this.props.metaData.token))}
                 />
                 <Error
                   fieldName={'first_name'}
@@ -479,6 +484,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
+  windowSize: <GetWindowSize />,
   invitedUser: ({ metaData: { token }, render }) => <GetInvitedUser token={token || null}>{render}</GetInvitedUser>,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,

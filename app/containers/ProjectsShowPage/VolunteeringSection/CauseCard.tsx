@@ -162,11 +162,17 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   }, [cause]);
 
   const signIn = useCallback(() => {
-    openSignUpInModal({ flow: 'signin' });
+    openSignUpInModal({
+      flow: 'signin',
+      action: () => handleOnVolunteerButtonClick()
+    });
   }, []);
 
   const signUp = useCallback(() => {
-    openSignUpInModal({ flow: 'signup' });
+    openSignUpInModal({
+      flow: 'signup',
+      action: () => handleOnVolunteerButtonClick()
+    });
   }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;

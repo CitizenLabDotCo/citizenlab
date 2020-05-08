@@ -21,20 +21,19 @@ import messages from './messages';
 
 // services
 import { addCommentToIdeaComment, addCommentToInitiativeComment } from 'services/comments';
-import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
+// events
+import { commentReplyButtonClicked$, commentAdded } from './events';
+
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { media, viewportWidths } from 'utils/styleUtils';
-
-// typings
-import { ICommentReplyClicked } from './CommentFooter';
 
 const Container = styled.div``;
 
@@ -134,7 +133,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     window.addEventListener('keydown', this.handleKeypress, useCapture);
 
     this.subscriptions = [
-      eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
+      commentReplyButtonClicked$.pipe(
         tap(() => this.setState({ inputValue: '', focused: false })),
         filter(({ eventValue }) => {
           const { commentId, parentCommentId } = eventValue;
@@ -254,7 +253,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           await addCommentToInitiativeComment(postId, authUser.id, parentId, commentBodyMultiloc, waitForChildCommentsRefetch);
         }
 
-        eventEmitter.emit('CommentAdded');
+        commentAdded();
 
         this.setState({
           inputValue: '',

@@ -109,7 +109,7 @@ class VoteControl extends PureComponent<Props, State> {
         addVote(initiative.id, { mode: 'up' });
       } else {
         openSignUpInModal({
-          action: () => addVote(initiative.id, { mode: 'up' })
+          action: () => this.handleOnvote()
         });
       }
     }

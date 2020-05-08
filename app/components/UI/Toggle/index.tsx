@@ -26,7 +26,8 @@ const StyledToggle = styled.i<{ checked: boolean, disabled: boolean }>`
   border-radius: ${size + padding}px;
   background-color: #ccc;
   border: solid 1px transparent;
-  transition: all 150ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
+              background-color 80ms ease-out;
 
   &:before {
     display: block;

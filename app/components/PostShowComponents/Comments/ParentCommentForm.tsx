@@ -2,7 +2,6 @@ import React, { PureComponent, MouseEvent } from 'react';
 import { isString, trim, get } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import eventEmitter from 'utils/eventEmitter';
 
 // components
 import Button from 'components/UI/Button';
@@ -27,9 +26,12 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 
+// events
+import { commentAdded } from './events';
+
 // style
 import styled from 'styled-components';
-import { hideVisually, darken } from 'polished';
+import { hideVisually } from 'polished';
 import { media } from 'utils/styleUtils';
 
 const Container = styled.div`
@@ -46,10 +48,10 @@ const CommentContainer = styled.div`
   box-sizing: border-box;
   box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
   border-radius: ${(props: any) => props.theme.borderRadius};
-  transition: all 100ms ease;
+  transition: all 100ms ease-out;
 
   &.focused {
-    border-color: ${darken(0.2, '#e3e3e3')};
+    border-color: #000;
   }
 
   ${media.smallerThanMinTablet`
@@ -182,7 +184,8 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
           await addCommentToInitiative(postId, authUser.id, commentBodyMultiloc);
         }
 
-        eventEmitter.emit('CommentAdded');
+        commentAdded();
+
         this.setState({ inputValue: '', processing: false });
       } catch (error) {
         const errorMessage = formatMessage(messages.addCommentError);
