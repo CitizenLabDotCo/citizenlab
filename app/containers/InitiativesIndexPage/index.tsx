@@ -86,16 +86,21 @@ interface Props {}
 const InitiativeIndexPage = memo<Props>(() => {
   const authUser = useAuthUser();
 
-  const onNewInitiativeButtonClick = useCallback((event: React.FormEvent) => {
-    event.preventDefault();
+  const onNewInitiativeButtonClick = useCallback((event?: React.FormEvent) => {
+    event?.preventDefault();
 
-    trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives footer' } });
+    trackEventByName(tracks.clickStartInitiativesCTA, {
+      extra: {
+        location: 'initiatives footer',
+        authenticated: !isNilOrError(authUser)
+      }
+    });
 
     if (!isNilOrError(authUser)) {
       clHistory.push('/initiatives/new');
     } else {
       openSignUpInModal({
-        action: () => clHistory.push('/initiatives/new')
+        action: () => onNewInitiativeButtonClick()
       });
     }
   }, [authUser]);

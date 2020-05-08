@@ -25,8 +25,8 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media, colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
 
-const timeout = 400;
-const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
+const timeout = 500;
+const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 export const ModalContent = styled.div<{ noPadding?: boolean | undefined }>`
   flex: 1 1 auto;
@@ -154,18 +154,18 @@ const Overlay = styled.div`
     opacity: 0;
 
     ${ModalContainer} {
-      opacity: 0;
-      transform: translateY(-40px);
+      opacity: 1;
+      transform: translateY(150px);
     }
 
     &.modal-enter-active {
       opacity: 1;
-      transition: opacity ${timeout}ms ${easing};
+      transition: opacity ${200}ms ${easing};
 
       ${ModalContainer} {
         opacity: 1;
         transform: translateY(0px);
-        transition: opacity ${timeout}ms ${easing},
+        transition: opacity ${200}ms ${easing},
                     transform ${timeout}ms ${easing};
       }
     }

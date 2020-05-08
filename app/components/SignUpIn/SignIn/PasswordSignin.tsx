@@ -15,6 +15,7 @@ import { Options, Option } from 'components/SignUpIn/styles';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetFeatureFlag from 'resources/GetFeatureFlag';
 
 // services
@@ -31,6 +32,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // style
 import styled from 'styled-components';
+import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
@@ -69,6 +71,7 @@ export interface InputProps {
 
 interface DataProps {
   tenant: GetTenantChildProps;
+  windowSize: GetWindowSizeChildProps;
   passwordLoginEnabled: boolean | null;
   googleLoginEnabled: boolean | null;
   facebookLoginEnabled: boolean | null;
@@ -188,10 +191,11 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
 
   render() {
     const { email, password, processing, emailError, passwordError, signInError } = this.state;
-    const { className, tenant, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
+    const { className, tenant, windowSize, passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const enabledProviders = [passwordLoginEnabled, googleLoginEnabled, facebookLoginEnabled, azureAdLoginEnabled, franceconnectLoginEnabled].filter(provider => provider === true);
+    const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
 
     return (
       <Container className={`e2e-sign-in-container ${className}`}>
@@ -209,7 +213,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
               onChange={this.handleEmailOnChange}
               setRef={this.handleEmailInputSetRef}
               autocomplete="email"
-              autoFocus={true}
+              autoFocus={!!isDesktop}
             />
           </FormElement>
 
@@ -276,6 +280,7 @@ const PasswordSigninWithHoC = withRouter<Props>(injectIntl(PasswordSignin));
 
 const Data = adopt<DataProps, {}>({
   tenant: <GetTenant />,
+  windowSize: <GetWindowSize />,
   passwordLoginEnabled: <GetFeatureFlag name="password_login" />,
   googleLoginEnabled: <GetFeatureFlag name="google_login" />,
   facebookLoginEnabled: <GetFeatureFlag name="facebook_login" />,

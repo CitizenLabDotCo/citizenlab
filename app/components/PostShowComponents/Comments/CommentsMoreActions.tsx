@@ -2,6 +2,7 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { get } from 'lodash-es';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,12 +22,11 @@ import Button from 'components/UI/Button';
 import HasPermission from 'components/HasPermission';
 import CommentsAdminDeletionModal from './CommentsAdminDeletionModal';
 
+// events
+import { deleteCommentModalClosed, commentDeleted } from './events';
+
 // Styling
 import styled from 'styled-components';
-
-// Utils
-import eventEmitter from 'utils/eventEmitter';
-import { get } from 'lodash-es';
 
 const ButtonsWrapper = styled.div`
   display: flex;
@@ -127,7 +127,7 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   closeDeleteModal = (event?: FormEvent) => {
     event && event.preventDefault();
     this.setState({ modalVisible_delete: false });
-    eventEmitter.emit('modalClosed');
+    deleteCommentModalClosed();
   }
 
   deleteComment = async (reason) => {
@@ -137,8 +137,8 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     const reasonObj = get(reason, 'reason_code') ? reason : undefined;
     this.setState({ loading_deleteComment: true });
     await markForDeletion(commentId, authorId, projectId, reasonObj);
-    eventEmitter.emit('modalClosed');
-    eventEmitter.emit('CommentDeleted');
+    deleteCommentModalClosed();
+    commentDeleted();
   }
 
   openSpamModal = () => {

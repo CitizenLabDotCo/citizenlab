@@ -175,7 +175,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
       clHistory.push('/initiatives/new');
     } else {
       openSignUpInModal({
-        action: () => clHistory.push('/initiatives/new')
+        action: () => this.startInitiative()
       });
     }
   }

@@ -68,9 +68,7 @@ const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boo
   margin-right: 1px;
   border-radius: 50%;
   border: solid 1px ${lighten(0.2, colors.label)};
-  background: #fff;
   transition: all 60ms ease-out;
-  will-change: transform;
 
   ${(props) => !props.votingEnabled ? css`
     margin-left: 5px;
