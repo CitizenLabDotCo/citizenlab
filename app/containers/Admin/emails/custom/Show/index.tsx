@@ -146,7 +146,7 @@ class Show extends React.Component<Props, State> {
     };
   }
 
-  handleSendNow = (noGroupsSelected: boolean) => () => {
+  handleSend = (noGroupsSelected: boolean) => () => {
     if (noGroupsSelected) {
       this.openSendConfirmationModal();
     } else {
@@ -237,7 +237,7 @@ class Show extends React.Component<Props, State> {
                   buttonStyle="admin-dark"
                   icon="send"
                   iconPos="right"
-                  onClick={this.handleSendNow(noGroupsSelected)}
+                  onClick={this.handleSend(noGroupsSelected)}
                 >
                   <FormattedMessage {...messages.send} />
                 </Button>
@@ -294,7 +294,7 @@ class Show extends React.Component<Props, State> {
           }
 
           <Modal
-            opened={noGroupsSelected && showSendConfirmationModal}
+            opened={showSendConfirmationModal}
             close={this.closeSendConfirmationModal}
             header={<FormattedMessage {...messages.confirmSendHeader} />}
           >
