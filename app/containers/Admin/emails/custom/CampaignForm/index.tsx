@@ -78,10 +78,6 @@ export const validateCampaignForm = (values: FormValues): FormikErrors<FormValue
     errors.subject_multiloc = [{ error: 'blank' }] as any;
   }
 
-  if (!values.group_ids) {
-    errors.group_ids = [{ error: 'blank' }] as any;
-  }
-
   return errors;
 };
 
