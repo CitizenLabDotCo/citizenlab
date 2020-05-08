@@ -126,7 +126,7 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
   }
 
   render() {
-    const { isSubmitting, errors, isValid, touched, status, intl: { formatMessage } } = this.props;
+    const { isSubmitting, errors, isValid, touched, status } = this.props;
     return (
       <Form>
         <StyledSection>
