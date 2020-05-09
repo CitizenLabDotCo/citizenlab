@@ -116,7 +116,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
           unknownError: null
         });
 
-        await completeRegistration(formData);
+        await completeRegistration(formData, { data: authUser });
 
         this.setState({ processing: false });
         this.props.onCompleted();
@@ -131,7 +131,13 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
 
   skipStep = async (event: FormEvent) => {
     event.preventDefault();
-    await completeRegistration({});
+
+    const { authUser } = this.props;
+
+    if (!isNilOrError(authUser)) {
+      await completeRegistration({}, { data: authUser });
+    }
+
     this.props.onCompleted();
   }
 

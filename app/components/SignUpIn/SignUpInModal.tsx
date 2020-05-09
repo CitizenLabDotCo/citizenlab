@@ -74,12 +74,17 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     // when this step -does not- have required fields, then this action is the equivalent of pressing the 'skip this step' button
     // and therefore should trigger completeRegistration() in order for the user to have a valid account.
     // If completeRegistration(), the user will be logged in but will not be able to perform any actions (e.g. voting)
-    if (signUpActiveStep === 'custom-fields' && !isNilOrError(customFieldsSchema) && !customFieldsSchema?.hasRequiredFields) {
-      completeRegistration({});
+    if (
+      signUpActiveStep === 'custom-fields' &&
+      !isNilOrError(authUser) &&
+      !isNilOrError(customFieldsSchema) &&
+      !customFieldsSchema?.hasRequiredFields
+    ) {
+      completeRegistration({}, authUser);
     }
 
     setMetaData(undefined);
-  }, [signUpActiveStep, customFieldsSchema]);
+  }, [signUpActiveStep, customFieldsSchema, authUser]);
 
   const onSignUpInCompleted = useCallback(() => {
     const hasAction = isFunction(metaData?.action);

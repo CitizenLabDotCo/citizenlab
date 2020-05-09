@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
+import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
@@ -8,6 +9,7 @@ import VerificationFormLookup from './VerificationFormLookup';
 import Spinner from 'components/UI/Spinner';
 
 // resource hooks
+import useAuthUser from 'hooks/useAuthUser';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // style
@@ -16,6 +18,7 @@ import styled from 'styled-components';
 // typings
 import { IVerificationMethod, IDLookupMethod } from 'services/verificationMethods';
 import { IParticipationContextType, ICitizenAction } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
@@ -84,6 +87,7 @@ const VerificationSteps = memo<Props>(({
   const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep || 'method-selection');
   const [method, setMethod] = useState<IDLookupMethod | null>(null);
 
+  const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
 
   useEffect(() => {
@@ -105,21 +109,30 @@ const VerificationSteps = memo<Props>(({
     setActiveStep(name);
   }, []);
 
+  const goToSuccessStep = useCallback(() => {
+    if (!isNilOrError(authUser)) {
+      streams.reset(authUser).then(() => {
+        setActiveStep('success');
+        setMethod(null);
+      });
+    }
+  }, [authUser]);
+
   const onCowCancel = useCallback(() => {
     setActiveStep('method-selection');
   }, []);
 
   const onCowVerified = useCallback(() => {
-    setActiveStep('success');
-  }, []);
+    goToSuccessStep();
+  }, [goToSuccessStep]);
 
   const onBogusCancel = useCallback(() => {
     setActiveStep('method-selection');
   }, []);
 
   const onBogusVerified = useCallback(() => {
-    setActiveStep('success');
-  }, []);
+    goToSuccessStep();
+  }, [goToSuccessStep]);
 
   const onLookupCancel = useCallback(() => {
     setActiveStep('method-selection');
@@ -127,9 +140,8 @@ const VerificationSteps = memo<Props>(({
   }, []);
 
   const onLookupVerified = useCallback(() => {
-    setActiveStep('success');
-    setMethod(null);
-  }, []);
+    goToSuccessStep();
+  }, [goToSuccessStep]);
 
   const onVerificationSkipped = useCallback(() => {
     onSkipped?.();

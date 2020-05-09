@@ -59,22 +59,22 @@ class Streams {
     this.streamIdsByDataIdWithQuery = {};
   }
 
-  reset(authUser: IUser | null) {
+  async reset(authUser: IUser | null) {
     this.resourcesByDataId = {};
-    // this.streamIdsByApiEndPointWithQuery = {};
-    // this.streamIdsByApiEndPointWithoutQuery = {};
-    // this.streamIdsByDataIdWithoutQuery = {};
-    // this.streamIdsByDataIdWithQuery = {};
 
     this.streams[authApiEndpoint].observer.next(authUser);
 
+    const promises: Promise<any>[] = [];
+
     Object.keys(this.streams).forEach((streamId) => {
       if (streamId === authApiEndpoint || streamId === currentTenantApiEndpoint || this.isActiveStream(streamId)) {
-        this.streams[streamId].fetch();
+        promises.push(this.streams[streamId].fetch());
       } else {
         this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
       }
     });
+
+    return await Promise.all(promises);
   }
 
   deepFreeze<T>(object: T): T {

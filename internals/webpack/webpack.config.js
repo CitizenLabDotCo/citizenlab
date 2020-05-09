@@ -60,10 +60,7 @@ const config = {
       },
       minimize: true,
       minimizer: [
-        new TerserPlugin({
-          parallel: false,
-          sourceMap: true
-        }),
+        new TerserPlugin({ sourceMap: true }),
         new OptimizeCSSAssetsPlugin()
       ]
     }
