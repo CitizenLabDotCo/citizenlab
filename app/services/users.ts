@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { authUserStream } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -106,10 +105,9 @@ export async function deleteUser(userId: string) {
   return response;
 }
 
-export async function completeRegistration(customFieldValues: object) {
+export async function completeRegistration(customFieldValues: object, authUser: IUser) {
   const response = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
-  await authUserStream().fetch();
-  await new Promise(res => setTimeout(res, 100));
+  await streams.reset(authUser);
   return response;
 }
 
