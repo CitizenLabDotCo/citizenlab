@@ -9,7 +9,7 @@ import { stringify } from 'qs';
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
 import SelectAreas from './SelectAreas';
-import Spinner from 'components/UI/Spinner';
+import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
 
 // resources
@@ -46,17 +46,6 @@ import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg'
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const Header = styled.div`
@@ -377,9 +366,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
           </Header>
 
           {loadingInitial &&
-            <Loading id="projects-loading">
-              <Spinner />
-            </Loading>
+            <LoadingBox />
           }
 
           {!loadingInitial && !hasPublications &&
