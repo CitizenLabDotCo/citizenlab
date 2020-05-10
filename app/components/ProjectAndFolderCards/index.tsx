@@ -362,13 +362,13 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                 }
               </Title>
             ) : (
-                <ScreenReaderOnly>
-                  {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
-                    ? <T value={customCurrentlyWorkingOn} />
-                    : <FormattedMessage {...messages.currentlyWorkingOn} />
-                  }
-                </ScreenReaderOnly>
-              )}
+              <ScreenReaderOnly>
+                {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                  ? <T value={customCurrentlyWorkingOn} />
+                  : <FormattedMessage {...messages.currentlyWorkingOn} />
+                }
+              </ScreenReaderOnly>
+            )}
             <FiltersArea>
               <FilterArea>
                 <SelectAreas selectedAreas={areas} onChange={this.handleAreasOnChange} />
@@ -412,12 +412,12 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                         layout={layout}
                       />
                     ) : (
-                        <ProjectFolderCard
-                          publication={item}
-                          size={size}
-                          layout={layout}
-                        />
-                      )}
+                      <ProjectFolderCard
+                        publication={item}
+                        size={size}
+                        layout={layout}
+                      />
+                    )}
                   </React.Fragment>
                 );
               }

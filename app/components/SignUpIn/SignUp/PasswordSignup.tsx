@@ -455,7 +455,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   </button>
                 ) : (
                   <FormattedMessage
-                    {...messages.goToSignUp}
+                    {...messages.goToLogIn}
                     values={{
                       goToOtherFlowLink: (
                         <button onClick={this.handleOnGoToSignIn} className="link">

@@ -64,6 +64,7 @@ export type Props = {
   autofocus?: boolean | undefined;
   maxCharCount?: number;
   disabled?: boolean;
+  focusOnError?: boolean;
   className?: string;
 };
 
@@ -78,7 +79,9 @@ export default class TextArea extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.error && this.props.error !== prevProps.error && this.textareaElement !== null) {
+    const { focusOnError, error } = this.props;
+
+    if (focusOnError && error && error !== prevProps.error && this.textareaElement !== null) {
       setTimeout(() => {
         if (this.textareaElement) {
           this.textareaElement.focus();

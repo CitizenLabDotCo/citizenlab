@@ -158,6 +158,8 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   onReply = () => {
     const { post, comment } = this.props;
 
+    console.log('zolg');
+
     if (!isNilOrError(post) && !isNilOrError(comment)) {
       const { authUser, author, commentType } = this.props;
       const { clickChildCommentReplyButton, clickParentCommentReplyButton } = tracks;
