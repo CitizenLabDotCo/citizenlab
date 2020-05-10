@@ -35,7 +35,6 @@ import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { PublicationStatus } from 'resources/GetProjects';
 import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.main`
@@ -156,8 +155,6 @@ class LandingPage extends PureComponent<Props, State> {
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
     openSignUpInModal();
   }
-
-  projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
   render() {
     const { locale, tenant, authUser, homepageInfoPage } = this.props;
