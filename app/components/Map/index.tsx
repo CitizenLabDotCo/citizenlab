@@ -20,8 +20,8 @@ import 'leaflet.markercluster';
 // Styling
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
-import { darken, lighten } from 'polished';
-import { colors, media } from 'utils/styleUtils';
+import { darken } from 'polished';
+import { media, boxShadowOutline } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
 import legendMarkerIcon from './legend-marker.svg';
 
@@ -52,44 +52,43 @@ const BoxContainer = styled.div`
   height: 80%;
 `;
 
-const CloseIcon = styled(Icon)`
-  height: 10px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const CloseButton = styled.div`
-  height: 34px;
-  width: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const CloseButton = styled.button`
+  width: 28px;
+  height: 28px;
   position: absolute;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
-  top: 9px;
-  right: 13px;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
-  transition: border-color 100ms ease-out;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 2;
+  border-radius: 50%;
+  border: solid 1px transparent;
+  background: #fff;
+  transition: all 100ms ease-out;
+  outline: none !important;
 
   &:hover {
-    border-color: #000;
+    background: #ececec;
+  }
 
-    ${CloseIcon} {
-      fill: #000;
-    }
+  &.focus-visible {
+    ${boxShadowOutline};
   }
 
   ${media.smallerThanMinTablet`
-    height: 32px;
-    width: 32px;
-    top: 8px;
-    right: 8px;
+    top: 4px;
+    right: 4px;
   `}
+`;
+
+const CloseIcon = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  fill: #000;
 `;
 
 const LeafletMapContainer = styled.div<{mapHeight: number}>`
