@@ -1937,6 +1937,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators and moderators",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Everyone",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Certain user groups",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "Users",
   "app.containers.admin.project.permissions.subtitlePermissions": "Define who has access to this project, who can moderate it and who will do the follow-up.",
   "app.containers.admin.project.permissions.titlePermissions": "Project access rights",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",

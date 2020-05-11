@@ -1937,6 +1937,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "",
   "app.containers.admin.project.permissions.subtitlePermissions": "",
   "app.containers.admin.project.permissions.titlePermissions": "",
   "app.containers.admin.project.permissions.viewingRightsTitle": "",

@@ -1937,6 +1937,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Beheerders en moderatoren",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Iedereen",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Bepaalde groepen gebruikers",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "",
   "app.containers.admin.project.permissions.subtitlePermissions": "Bepaal wie het project kan zien en wie het kan beheren als projectmoderator. Contacteer ons als je ook wil bepalen wie welke actie kan nemen.",
   "app.containers.admin.project.permissions.titlePermissions": "Toegangsrechten voor het project",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wie kan dit project zien?",
