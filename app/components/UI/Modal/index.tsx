@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import { adopt } from 'react-adopt';
 import { Subscription, fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import clHistory from 'utils/cl-router/history';
@@ -14,6 +15,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Icon from 'components/UI/Icon';
 import clickOutside from 'utils/containers/clickOutside';
 
+// resources
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -23,10 +27,21 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
+import { media, colors, fontSizes, boxShadowOutline, viewportWidths } from 'utils/styleUtils';
 
-const timeout = 500;
-const easing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const desktopOpacityTimeout = 250;
+const mobileOpacityTimeout = 250;
+
+const desktopTransformTimeout = 500;
+const mobileTransformTimeout = 700;
+
+const desktopTranslateY = '50px';
+const mobileTranslateY = '300px';
+
+const desktopEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+
+// cubic-bezier(0.165, 0.84, 0.44, 1)
 
 export const ModalContent = styled.div<{ noPadding?: boolean | undefined }>`
   flex: 1 1 auto;
@@ -155,18 +170,31 @@ const Overlay = styled.div`
 
     ${ModalContainer} {
       opacity: 1;
-      transform: translateY(150px);
+      transform: translateY(${desktopTranslateY});
+
+      ${media.smallerThanMinTablet`
+        transform: translateY(${mobileTranslateY});
+      `}
     }
 
     &.modal-enter-active {
       opacity: 1;
-      transition: opacity ${200}ms ${easing};
+      transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing};
+
+      ${media.smallerThanMinTablet`
+        transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing};
+      `}
 
       ${ModalContainer} {
         opacity: 1;
         transform: translateY(0px);
-        transition: opacity ${200}ms ${easing},
-                    transform ${timeout}ms ${easing};
+        transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing},
+                    transform ${desktopTransformTimeout}ms ${desktopEasing};
+
+        ${media.smallerThanMinTablet`
+          transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing},
+                      transform ${mobileTransformTimeout}ms ${mobileEasing};
+        `}
       }
     }
   }
@@ -248,7 +276,11 @@ const Skip = styled.div`
   `}
 `;
 
-export type Props = {
+interface DataProps {
+  windowSize: GetWindowSizeChildProps;
+}
+
+export interface InputProps {
   opened: boolean;
   fixedHeight?: boolean;
   width?: number;
@@ -261,13 +293,16 @@ export type Props = {
   noPadding?: boolean;
   noClose?: boolean;
   closeOnClickOutside?: boolean;
-};
+  children: React.ReactNode;
+}
 
-type State = {
+interface Props extends InputProps, DataProps {}
+
+interface State {
   windowHeight: string;
-};
+}
 
-export default class Modal extends PureComponent<Props, State> {
+class Modal extends PureComponent<Props, State> {
   unlisten: null | (() => void);
   subscription: Subscription | null;
 
@@ -362,9 +397,10 @@ export default class Modal extends PureComponent<Props, State> {
 
   render() {
     const { windowHeight } = this.state;
-    const { width, children, opened, header, footer, hasSkipButton, skipText, noClose } = this.props;
+    const { windowSize, width, children, opened, header, footer, hasSkipButton, skipText, noClose } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
     const noPadding = header !== undefined || footer !== undefined || this.props.noPadding;
+    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
     const modalPortalElement = document?.getElementById('modal-portal');
 
     if (modalPortalElement && width) {
@@ -372,7 +408,7 @@ export default class Modal extends PureComponent<Props, State> {
         <CSSTransition
           classNames="modal"
           in={opened}
-          timeout={timeout}
+          timeout={smallerThanSmallTablet ? mobileTransformTimeout : desktopTransformTimeout}
           mountOnEnter={true}
           unmountOnExit={true}
           enter={true}
@@ -426,3 +462,13 @@ export default class Modal extends PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <Modal {...inputProps} {...dataProps} />}
+  </Data>
+);
