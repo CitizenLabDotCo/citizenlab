@@ -194,8 +194,8 @@ pl:
       not_voted_comment_in: "Nie zagłosował na komentarze do pomysłu w projekcie %{value}"
       budgeted_in: "Przydzielono budżet w projekcie %{value}"
       not_budgeted_in: "Nie przydzielił budżetu do projektu %{value}"
-      volunteered_in: "Volunteered in the project %{value}"
-      not_volunteered_in: "Didn't volunteer in the project %{value}"
+      volunteered_in: "Zgłosił się na ochotnika do projektu %{value}"
+      not_volunteered_in: "Nie był wolontariuszem w projekcie %{value}"
     participated_in_topic:
       in: "Udział w pomyśle na temat %{value}"
       not_in: "Brak udziału w pomyśle na temat %{value}"
