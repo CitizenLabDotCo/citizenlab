@@ -170,7 +170,6 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
       try {
         this.setState({ processing: true });
         const user = await signIn(email, password);
-        this.setState({ processing: false });
         onSignInCompleted(user.data.id);
       } catch (error) {
         const signInError = formatMessage(messages.signInError);
