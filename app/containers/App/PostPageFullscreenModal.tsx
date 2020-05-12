@@ -6,7 +6,6 @@ import IdeasShow from 'containers/IdeasShow';
 import IdeaShowPageTopBar from 'containers/IdeasShowPage/IdeaShowPageTopBar';
 import InitiativesShow from 'containers/InitiativesShow';
 import InitiativeShowPageTopBar from 'containers/InitiativesShowPage/InitiativeShowPageTopBar';
-import Footer from 'containers/Footer';
 
 interface Props {
   type: 'idea' | 'initiative' | null;
@@ -41,7 +40,6 @@ const PostPageFullscreenModal = memo<Props>(({ id, slug, type, navbarRef, mobile
         <>
           {type === 'idea' && <IdeasShow ideaId={id} insideModal={true} />}
           {type === 'initiative' && <InitiativesShow initiativeId={id} insideModal={true} />}
-          <Footer />
         </>
       );
     }

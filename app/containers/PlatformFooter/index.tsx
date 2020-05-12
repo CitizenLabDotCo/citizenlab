@@ -301,7 +301,7 @@ interface State {
   feedbackSubmitted: boolean;
 }
 
-class Footer extends PureComponent<Props, State> {
+class PlatformFooter extends PureComponent<Props, State> {
   static defaultProps = {
     showShortFeedback: true
   };
@@ -493,6 +493,6 @@ const Data = adopt<Props>({
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <Footer {...inputProps} {...dataProps} />}
+    {dataProps => <PlatformFooter {...inputProps} {...dataProps} />}
   </Data>
 );

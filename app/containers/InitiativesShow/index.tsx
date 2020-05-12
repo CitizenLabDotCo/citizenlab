@@ -27,7 +27,7 @@ import Footer from 'components/PostShowComponents/Footer';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
 import OfficialFeedback from 'components/PostShowComponents/OfficialFeedback';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
-
+import PlatformFooter from 'containers/PlatformFooter';
 import InitiativeMeta from './InitiativeMeta';
 import PostedBy from './PostedBy';
 import PostedByMobile from './PostedByMobile';
@@ -606,6 +606,8 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           </InitiativeContainer>
 
           {loaded && <Footer postId={initiativeId} postType="initiative" />}
+
+          {this.props.insideModal && <PlatformFooter />}
         </>
       );
     }

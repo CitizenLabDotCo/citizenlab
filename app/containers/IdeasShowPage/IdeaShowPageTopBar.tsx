@@ -81,7 +81,7 @@ const GoBackButton = styled.button`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
+  border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 100ms ease-out;
 
   &:hover {

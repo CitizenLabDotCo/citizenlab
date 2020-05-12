@@ -36,7 +36,7 @@ import { trackPage } from 'utils/analytics';
 // components
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
-import Footer from 'containers/Footer';
+import PlatformFooter from 'containers/PlatformFooter';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
@@ -410,7 +410,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     </HasPermission>
                   </InnerContainer>
 
-                  {showFooter && <Footer showShortFeedback={showShortFeedback} />}
+                  {showFooter && <PlatformFooter showShortFeedback={showShortFeedback} />}
                 </Container>
                 </LiveAnnouncer>
             </ThemeProvider>
