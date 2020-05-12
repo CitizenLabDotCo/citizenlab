@@ -193,8 +193,6 @@ export function getProjectUrl(project: IProjectData) { // TODO MOVE projects roo
   // Determine where to send the user based on process type & participation method
   if (projectType === 'timeline') {
     lastUrlSegment = 'process';
-  } else if (projectMethod === 'survey') {
-    lastUrlSegment = 'survey';
   } else if (projectType === 'continuous' && projectMethod === 'budgeting') {
     lastUrlSegment = 'ideas';
   } else {
