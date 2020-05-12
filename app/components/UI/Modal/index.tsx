@@ -43,16 +43,16 @@ const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 // cubic-bezier(0.165, 0.84, 0.44, 1)
 
-export const ModalContent = styled.div<{ noPadding?: boolean | undefined }>`
+export const ModalContent = styled.div<{ padding?: string | undefined }>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: ${({ noPadding }) => noPadding ? 0 : '30px'};
+  padding: ${({ padding }) => padding ? 0 : '30px'};
 
   ${media.smallerThanMinTablet`
-    padding: ${({ noPadding }) => noPadding ? 0 : '20px'};
+    padding: ${({ padding }) => padding ? 0 : '20px'};
   `}
 `;
 
@@ -290,7 +290,7 @@ export interface InputProps {
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
-  noPadding?: boolean;
+  padding?: string;
   noClose?: boolean;
   closeOnClickOutside?: boolean;
   children: React.ReactNode;
@@ -399,9 +399,15 @@ class Modal extends PureComponent<Props, State> {
     const { windowHeight } = this.state;
     const { windowSize, width, children, opened, header, footer, hasSkipButton, skipText, noClose } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
-    const noPadding = header !== undefined || footer !== undefined || this.props.noPadding;
     const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
     const modalPortalElement = document?.getElementById('modal-portal');
+    let padding: string | undefined = undefined;
+
+    if (header !== undefined || footer !== undefined) {
+      padding = '0px';
+    } else if (this.props.padding) {
+      padding = this.props.padding;
+    }
 
     if (modalPortalElement && width) {
       return ReactDOM.createPortal((
@@ -443,7 +449,7 @@ class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 }
 
-                <ModalContent noPadding={noPadding}>
+                <ModalContent padding={padding}>
                   {children}
                 </ModalContent>
 

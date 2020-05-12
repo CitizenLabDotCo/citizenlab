@@ -36,15 +36,11 @@ const Loading = styled.div`
 `;
 
 const Container = styled.div`
-  padding-bottom: 10px;
+  padding-bottom: 30px;
 
   ${media.smallerThanMinTablet`
-    padding-bottom: 0px;
+    padding-bottom: 15px;
   `}
-`;
-
-const FormElement = styled.div`
-  margin-bottom: 20px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -170,25 +166,23 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
             onSubmit={this.handleCustomFieldsFormOnSubmit}
           />
 
-          <FormElement>
-            <ButtonWrapper>
-              <Button
-                id="e2e-signup-custom-fields-button"
-                processing={processing}
-                text={formatMessage(messages.completeSignUp)}
-                onClick={this.handleOnSubmitButtonClick}
-              />
-              {!customFieldsSchema.hasRequiredFields &&
-                <SkipButton
-                  className="e2e-signup-custom-fields-skip-btn"
-                  onClick={this.skipStep}
-                >
-                  {formatMessage(messages.skip)}
-                </SkipButton>
-              }
-            </ButtonWrapper>
-            <Error text={unknownError} />
-          </FormElement>
+          <ButtonWrapper>
+            <Button
+              id="e2e-signup-custom-fields-button"
+              processing={processing}
+              text={formatMessage(messages.completeSignUp)}
+              onClick={this.handleOnSubmitButtonClick}
+            />
+            {!customFieldsSchema.hasRequiredFields &&
+              <SkipButton
+                className="e2e-signup-custom-fields-skip-btn"
+                onClick={this.skipStep}
+              >
+                {formatMessage(messages.skip)}
+              </SkipButton>
+            }
+          </ButtonWrapper>
+          <Error text={unknownError} />
         </Container>
       );
     }

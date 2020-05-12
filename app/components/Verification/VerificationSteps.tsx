@@ -14,6 +14,7 @@ import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod, IDLookupMethod } from 'services/verificationMethods';
@@ -24,6 +25,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-bottom: 30px;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 20px;
+  `}
 `;
 
 const Loading = styled.div`

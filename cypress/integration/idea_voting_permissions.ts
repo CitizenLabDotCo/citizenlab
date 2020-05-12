@@ -53,7 +53,7 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
       cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-      cy.get('#e2e-signup-step1-button').click();
+      cy.get('#e2e-signup-password-button').click();
 
       // get verified
       cy.get('#e2e-verification-methods');
@@ -115,7 +115,7 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
       cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
       cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-      cy.get('#e2e-signup-step1-button').click();
+      cy.get('#e2e-signup-password-button').click();
 
       // Check if we're redirected to the project's idea overview page
       cy.location('pathname').should('eq', '/en-GB/projects/an-idea-bring-it-to-your-council/ideas');

@@ -320,7 +320,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         {!emailInvitationTokenInvalid &&
           <>
             <Form
-              id="e2e-signup-step1"
+              id="e2e-signup-password"
               onSubmit={this.handleOnSubmit}
               noValidate={true}
             >
@@ -435,7 +435,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               <FormElement>
                 <ButtonWrapper>
                   <Button
-                    id="e2e-signup-step1-button"
+                    id="e2e-signup-password-button"
                     processing={processing}
                     text={formatMessage(hasNextStep ? messages.nextStep : messages.signUp2)}
                     onClick={this.handleOnSubmit}

@@ -41,8 +41,8 @@ describe('Sign up step 2 page', () => {
       cy.visit('/complete-signup');
       cy.location('pathname').should('eq', '/en-GB/complete-signup');
       cy.get('#e2e-custom-signup-form');
-      cy.get('#e2e-signup-step3');
-      cy.get('.e2e-signup-step3-skip-btn').click();
+      cy.get('#e2e-signup-custom-fields');
+      cy.get('.e2e-signup-custom-fields-skip-btn').click();
       cy.location('pathname').should('eq', '/en-GB/');
       cy.get('#e2e-landing-page');
     });
@@ -73,9 +73,9 @@ describe('Sign up step 2 page', () => {
       cy.visit('/complete-signup');
       cy.location('pathname').should('eq', '/en-GB/complete-signup');
       cy.get('#e2e-custom-signup-form');
-      cy.get('#e2e-signup-step3');
-      cy.get('.e2e-signup-step3-skip-btn').should('not.exist');
-      cy.get('#e2e-signup-step3-button').click();
+      cy.get('#e2e-signup-custom-fields');
+      cy.get('.e2e-signup-custom-fields-skip-btn').should('not.exist');
+      cy.get('#e2e-signup-custom-fields-button').click();
       cy.get('.e2e-error-message').should('contain', 'This field is required');
     });
 
@@ -105,10 +105,10 @@ describe('Sign up step 2 page', () => {
       cy.visit('/complete-signup');
       cy.location('pathname').should('eq', '/en-GB/complete-signup');
       cy.get('#e2e-custom-signup-form');
-      cy.get('#e2e-signup-step3');
-      cy.get('.e2e-signup-step3-skip-btn').should('not.exist');
+      cy.get('#e2e-signup-custom-fields');
+      cy.get('.e2e-signup-custom-fields-skip-btn').should('not.exist');
       cy.get(`#root_${randomFieldName}`).type('test');
-      cy.get('#e2e-signup-step3-button').click();
+      cy.get('#e2e-signup-custom-fields-button').click();
       cy.location('pathname').should('eq', '/en-GB/');
       cy.get('#e2e-landing-page');
     });

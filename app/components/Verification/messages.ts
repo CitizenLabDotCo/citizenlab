@@ -120,5 +120,9 @@ export default defineMessages({
   skipThisStep: {
     id: 'app.components.VerificationModal.skipThisStep',
     defaultMessage: 'Skip this step'
+  },
+  close: {
+    id: 'app.components.VerificationModal.close',
+    defaultMessage: 'Close'
   }
 });

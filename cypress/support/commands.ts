@@ -217,7 +217,7 @@ export function signup(firstName: string, lastName: string, email: string, passw
   cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
   cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
   cy.get('.e2e-email-checkbox .e2e-checkbox').click();
-  cy.get('#e2e-signup-step1-button').click();
+  cy.get('#e2e-signup-password-button').click();
 }
 
 export function acceptCookies() {
