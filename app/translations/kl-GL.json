@@ -366,6 +366,7 @@
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "innuttaasutut pissarsiat atoruk",
   "app.components.VerificationModal.back": "Utimut",
   "app.components.VerificationModal.cancel": "Atorunnaarsiguk",
+  "app.components.VerificationModal.close": "",
   "app.components.VerificationModal.cowIdSerialNumber": "ID-serienummer",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "Imaqanngissinnaanngilaq",
