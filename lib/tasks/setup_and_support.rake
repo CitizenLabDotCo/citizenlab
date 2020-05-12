@@ -148,4 +148,25 @@ namespace :setup_and_support do
       end
     end
   end
+
+  desc "Translate all content of a platform from one locale to another"
+  task :translate_tenant, [:host,:locale_from,:locale_to] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      translator = MachineTranslations::MachineTranslationService.new
+      data_listing = Cl2DataListingService.new
+      data_listing.cl2_tenant_models.each do |claz|
+        claz.find_each do |object|
+          changes = {}
+          data_listing.multiloc_attributes(claz).each do |ml| 
+            value = object.send ml
+            if value.present? && value[args[:locale_from]].present? && !value[args[:locale_to]].present?
+              changes[ml] = value.clone
+              changes[ml][args[:locale_to]] = translator.translate value[args[:locale_from]], args[:locale_from], args[:locale_to]
+            end
+          end
+          object.update_columns changes if changes.present?
+        end
+      end
+    end
+  end
 end
