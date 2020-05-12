@@ -51,7 +51,7 @@ export default defineMessages({
   },
   tabTopics: {
     id: 'app.containers.AdminPage.SettingsPage.tabTopics',
-    defaultMessage: 'Topics',
+    defaultMessage: 'Topic manager',
   },
   tabWidgets: {
     id: 'app.containers.AdminPage.SettingsPage.tabWidgets',
