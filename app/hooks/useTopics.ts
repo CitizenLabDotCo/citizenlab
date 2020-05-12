@@ -4,11 +4,7 @@ import { Observable, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
-  topicIds?: string[];
-}
-
-export default function useTopics({ topicIds }: Props) {
+export default function useTopics(topicIds?: string[]) {
   const [topics, setTopics] = useState<(ITopicData | Error)[] | undefined | null | Error>(undefined);
 
   useEffect(() => {
