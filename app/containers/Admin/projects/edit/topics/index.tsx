@@ -2,6 +2,8 @@ import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import TopicSearch from './TopicSearch';
+import TopicList from './TopicList';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -18,7 +20,10 @@ const Topics = memo(() => {
       <SectionSubtitle>
         <FormattedMessage {...messages.subtitleDescription} />
       </SectionSubtitle>
+      <TopicSearch />
+      <TopicList />
     </Container>
+
   );
 });
 
