@@ -29,4 +29,10 @@ class Cl2DataListingService
     end
   end
 
+  def multiloc_attributes model_class
+    model_class.column_names.select do |column_name|
+      column_name.ends_with? '_multiloc'
+    end
+  end
+
 end
