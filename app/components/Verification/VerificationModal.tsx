@@ -25,6 +25,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-top: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 export type ProjectContext = { id: string, type: IParticipationContextType, action: ICitizenAction };
@@ -107,6 +110,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   return (
     <Modal
       width={820}
+      padding="0px"
       opened={opened}
       close={onClose}
       closeOnClickOutside={false}
@@ -124,11 +128,11 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
         }
 
         {activeStep === 'success' &&
-          <VerificationSuccess />
+          <VerificationSuccess onClose={onClose} />
         }
 
         {activeStep === 'error' && (context === null || isErrorContext(context)) &&
-          <VerificationError context={context}/>
+          <VerificationError context={context} />
         }
       </Container>
     </Modal>

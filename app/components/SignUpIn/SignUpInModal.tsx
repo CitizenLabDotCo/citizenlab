@@ -101,7 +101,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   return (
     <Modal
       width={modalWidth}
-      noPadding={true}
+      padding="0px"
       opened={opened}
       close={onClose}
       closeOnClickOutside={false}

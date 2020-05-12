@@ -95,16 +95,13 @@ const ReverifyButton = styled.button`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
+  white-space: normal;
+  text-align: left;
+  text-decoration: underline;
+  display: inline;
   padding: 0px;
   margin: 0px;
-  margin-top: 2px;
   border: none;
-  text-decoration: underline;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  word-break: break-word;
-  hyphens: auto;
   cursor: pointer;
 
   &:hover {
