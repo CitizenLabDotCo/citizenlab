@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { memo } from 'react';
 import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -19,6 +19,7 @@ import messages from './messages';
 // Components
 import Button from 'components/UI/Button';
 import AsyncSelect from 'react-select/async';
+import MultipleSelect from 'components/UI/MultipleSelect';
 
 // Style
 import styled from 'styled-components';
@@ -45,16 +46,13 @@ const StyledAsyncSelect = styled(AsyncSelect)`
   min-width: 300px;
 `;
 
-const AddGroupButton = styled(Button)`
+const AddTopicButton = styled(Button)`
   flex-grow: 0;
   flex-shrink: 0;
   margin-left: 30px;
 `;
 
-interface Props {
-  projectId: string;
-  moderators: GetModeratorsChildProps;
-}
+interface Props {}
 
 interface State {
   selection: IOption[];
@@ -66,7 +64,31 @@ function isModerator(user: IGroupMembershipsFoundUserData) {
   return get(user.attributes, 'is_moderator') !== undefined;
 }
 
-class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
+const MembersAdd = memo(() => {
+  const topics = useTopics();
+  return (
+    <Container>
+      <SelectGroupsContainer>
+        <MultipleSelect
+          value={selectedTopics}
+          options={topics}
+          onChange={handleTopicSelectionChange}
+        />
+
+        <AddTopicButton
+          text={formatMessage(messages.addTopics)}
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          onClick={this.handleOnAddModeratorsClick}
+          disabled={!selection || selection.length === 0}
+          processing={this.state.processing}
+        />
+      </SelectGroupsContainer>
+    </Container>
+  );
+});
+
+extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
@@ -140,43 +162,15 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
     }
   }
 
-  noOptionsMessage = () => {
-    return this.props.intl.formatMessage(messages.noOptions);
-  }
+  // noOptionsMessage = () => {
+  //   return this.props.intl.formatMessage(messages.noOptions);
+  // }
 
   render() {
     const { selection } = this.state;
     const { formatMessage } = this.props.intl;
 
-    return (
-      <Container>
-        <SelectGroupsContainer>
-          <StyledAsyncSelect
-            name="search-user"
-            isMulti={true}
-            cacheOptions={false}
-            defaultOptions={false}
-            loadOptions={this.loadOptions}
-            isLoading={this.state.loading}
-            isDisabled={this.state.processing}
-            value={selection}
-            onChange={this.handleOnChange}
-            placeholder={formatMessage(messages.searchUsers)}
-            styles={selectStyles}
-            noOptionsMessage={this.noOptionsMessage}
-          />
 
-          <AddGroupButton
-            text={formatMessage(messages.addModerators)}
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            onClick={this.handleOnAddModeratorsClick}
-            disabled={!selection || selection.length === 0}
-            processing={this.state.processing}
-          />
-        </SelectGroupsContainer>
-      </Container>
-    );
   }
 }
 
