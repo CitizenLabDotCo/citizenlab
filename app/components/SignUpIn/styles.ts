@@ -6,6 +6,11 @@ export const Options = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  margin-bottom: 30px;
+
+  ${media.smallerThanMinTablet`
+    margin-bottom: 20px;
+  `}
 `;
 
 export const Option = styled.div`
@@ -85,20 +90,8 @@ export const StyledModalContent = styled(ModalContent)<{
     padding-bottom: 0px;
     max-height: calc(85vh - ${props.headerHeight});
 
-    &:after {
-      content: "";
-      height: 30px;
-      display: block;
-    }
-
     ${media.smallerThanMinTablet`
       max-height: ${props => `calc(${props.windowHeight} - 30px - ${props.headerHeight})`};
-
-      &:after {
-        content: "";
-        height: 20px;
-        display: block;
-      }
     `}
   `}
 

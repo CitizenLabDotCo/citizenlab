@@ -37,6 +37,7 @@ import Footer from 'components/PostShowComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
+import PlatformFooter from 'containers/PlatformFooter';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -699,6 +700,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           </IdeaContainer>
 
           <Footer postId={ideaId} postType="idea" />
+
+          {this.props.insideModal && <PlatformFooter />}
         </>
       );
     }

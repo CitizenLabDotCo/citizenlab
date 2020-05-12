@@ -35,7 +35,13 @@ const Loading = styled.div`
   padding-top: 15px;
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+  padding-bottom: 10px;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 0px;
+  `}
+`;
 
 const FormElement = styled.div`
   margin-bottom: 20px;
@@ -64,6 +70,7 @@ const SkipButton = styled.button`
 
   &:hover {
     color: #000;
+    text-decoration: underline;
   }
 
   ${media.smallerThanMinTablet`
@@ -156,7 +163,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(authUser) && !isNilOrError(customFieldsSchema)) {
       return (
-        <Container id="e2e-signup-step3">
+        <Container id="e2e-signup-custom-fields">
           <CustomFieldsForm
             id="e2e-custom-signup-form"
             formData={authUser.attributes.custom_field_values}
@@ -166,14 +173,14 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
           <FormElement>
             <ButtonWrapper>
               <Button
-                id="e2e-signup-step3-button"
+                id="e2e-signup-custom-fields-button"
                 processing={processing}
                 text={formatMessage(messages.completeSignUp)}
                 onClick={this.handleOnSubmitButtonClick}
               />
               {!customFieldsSchema.hasRequiredFields &&
                 <SkipButton
-                  className="e2e-signup-step3-skip-btn"
+                  className="e2e-signup-custom-fields-skip-btn"
                   onClick={this.skipStep}
                 >
                   {formatMessage(messages.skip)}

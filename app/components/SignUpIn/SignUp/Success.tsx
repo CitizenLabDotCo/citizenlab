@@ -21,6 +21,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 30px;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 20px;
+  `}
 `;
 
 const ImageContainer = styled.div`
