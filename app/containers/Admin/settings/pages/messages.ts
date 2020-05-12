@@ -37,7 +37,7 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.information',
     defaultMessage: 'Information',
   },
-  'fileUploadLabel': {
+  fileUploadLabel: {
     id: 'app.containers.AdminPage.PagesEdition.fileUploadLabel',
     defaultMessage: 'Add files to the About page',
   },
