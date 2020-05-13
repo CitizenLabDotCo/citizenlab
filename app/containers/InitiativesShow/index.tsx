@@ -581,7 +581,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                 <RightColumnDesktop>
                   <MetaContent>
                     <ScreenReaderOnly>
-                      <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />}
+                      <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />
                     </ScreenReaderOnly>
                     <VoteControl
                       initiativeId={initiative.id}
