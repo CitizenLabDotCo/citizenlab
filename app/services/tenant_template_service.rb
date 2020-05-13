@@ -997,7 +997,7 @@ class TenantTemplateService
   end
 
   def yml_votes
-    Vote.all.map do |v|
+    Vote.where('user_id IS NOT NULL').map do |v|
       yml_vote = {
         'votable_ref' => lookup_ref(v.votable_id, [:idea, :initiative, :comment]),
         'user_ref'    => lookup_ref(v.user_id, :user),
