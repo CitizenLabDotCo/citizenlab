@@ -133,7 +133,7 @@ const TopicsFilter = memo<Props & InjectedLocalized>(({ topics, selectedTopicIds
         </Topics>
         <ScreenReaderOnly aria-live="polite">
           {/* Pronounces numbers of selected topics + selected topic names */}
-          <FormattedMessage {...messages.a11y_selectedTopicFilters} values={{ numberOfSelectedTopics, selectedTopicNames }} />}
+          <FormattedMessage {...messages.a11y_selectedTopicFilters} values={{ numberOfSelectedTopics, selectedTopicNames }} />
         </ScreenReaderOnly>
       </Container>
     );
