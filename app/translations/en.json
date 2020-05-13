@@ -1161,7 +1161,6 @@
   "app.containers.AdminPage.ProjectIdeaForm.save": "Save",
   "app.containers.AdminPage.ProjectIdeaForm.saveSuccessMessage": "Your changes have been saved successfully.",
   "app.containers.AdminPage.ProjectIdeaForm.saved": "Saved!",
-  "app.containers.AdminPage.ProjectIdeaForm.title": "Idea form",
   "app.containers.AdminPage.ProjectTimeline.addPhaseButton": "Add a phase",
   "app.containers.AdminPage.ProjectTimeline.datesLabel": "Dates",
   "app.containers.AdminPage.ProjectTimeline.deletePhaseButton": "Delete",
