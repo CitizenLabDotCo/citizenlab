@@ -367,7 +367,7 @@ class TenantTemplateService
         # No user custom fields are required anymore because
         # the user choices cannot be remembered.
       else
-        yml_custom_field['resource_ref'] = c.resource_id && lookup_ref(c.resource_id, :custom_form),
+        yml_custom_field['resource_ref'] = c.resource_id && lookup_ref(c.resource_id, :custom_form)
         yml_custom_field['required'] = c.required
       end
       store_ref yml_custom_field, c.id, :custom_field
