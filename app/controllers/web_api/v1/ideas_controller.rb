@@ -6,7 +6,7 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
+    @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions, custom_form: [:custom_fields]], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
       .left_outer_joins(:idea_trending_info)
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
 
