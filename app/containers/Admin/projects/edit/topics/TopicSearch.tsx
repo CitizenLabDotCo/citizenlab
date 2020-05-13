@@ -1,5 +1,5 @@
 // Libraries
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { get } from 'lodash-es';
 import { first } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -10,6 +10,9 @@ import { IGroupMembershipsFoundUserData } from 'services/groupMemberships';
 
 // Resources
 import { GetModeratorsChildProps } from 'resources/GetModerators';
+
+// Hooks
+import useTopics from 'hooks/useTopics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -66,26 +69,40 @@ function isModerator(user: IGroupMembershipsFoundUserData) {
 
 const MembersAdd = memo(() => {
   const topics = useTopics();
-  return (
-    <Container>
-      <SelectGroupsContainer>
-        <MultipleSelect
-          value={selectedTopics}
-          options={topics}
-          onChange={handleTopicSelectionChange}
-        />
 
-        <AddTopicButton
-          text={formatMessage(messages.addTopics)}
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          onClick={this.handleOnAddModeratorsClick}
-          disabled={!selection || selection.length === 0}
-          processing={this.state.processing}
-        />
-      </SelectGroupsContainer>
-    </Container>
-  );
+  const handleTopicSelectionChange = useCallback(() => {
+
+  }, []);
+
+  const getOptions = () => {
+
+  };
+
+  if (!isNilOrError(topics)) {
+
+    return (
+      <Container>
+        <SelectGroupsContainer>
+          <MultipleSelect
+            value={selectedTopics}
+            options={}
+            onChange={handleTopicSelectionChange}
+          />
+
+          <AddTopicButton
+            text={formatMessage(messages.addTopics)}
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            onClick={this.handleOnAddModeratorsClick}
+            disabled={!selection || selection.length === 0}
+            processing={this.state.processing}
+          />
+        </SelectGroupsContainer>
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 extends PureComponent<Props & InjectedIntlProps, State> {
