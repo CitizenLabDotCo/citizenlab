@@ -56,6 +56,20 @@ const Container = styled.div`
   }
 `;
 
+const InitialLoading = styled.div`
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  ${media.smallerThanMinTablet`
+    height: 150px;
+  `}
+`;
+
 const MobileSearchFilter = styled(SearchInput)`
   margin-bottom: 20px;
 `;
@@ -529,6 +543,12 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
     return (
       <Container id="e2e-ideas-container" className={className}>
+        {list === undefined &&
+          <InitialLoading id="ideas-loading">
+            <Spinner />
+          </InitialLoading>
+        }
+
         {list !== undefined &&
           <>
             {!biggerThanLargeTablet &&
