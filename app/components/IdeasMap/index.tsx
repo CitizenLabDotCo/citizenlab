@@ -33,6 +33,8 @@ const Container = styled.div`
   }
 `;
 
+const IdeaButtonWrapper = styled.div``;
+
 const StyledWarning = styled(Warning)`
   margin-bottom: 10px;
 `;
@@ -153,14 +155,15 @@ export class IdeasMap extends PureComponent<Props & WithRouterProps, State> {
         />
 
         {projectIds && projectIds.length === 1 &&
-          <div className="create-idea-wrapper" ref={this.setIdeaButtonRef}>
+          <IdeaButtonWrapper className="create-idea-wrapper" ref={this.setIdeaButtonRef}>
             <IdeaButton
               projectId={projectIds[0]}
               phaseId={phaseId || undefined}
               participationContextType={phaseId ? 'phase' : 'project'}
               latLng={selectedPosition}
+              inMap={true}
             />
-          </div>
+          </IdeaButtonWrapper>
         }
       </Container>
     );

@@ -45,10 +45,10 @@ const Container = styled.div``;
 
 const ButtonWrapper = styled.div``;
 
-const TooltipContent = styled.div`
+const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;
   align-items: center;
-  padding: 15px;
+  padding: ${props => props.inMap ? '0px' : '15px'};
 `;
 
 const TooltipContentIcon = styled(Icon)`
@@ -105,6 +105,7 @@ interface InputProps extends Omit<ButtonContainerProps, 'onClick'> {
   projectId?: string | undefined | null;
   phaseId?: string | undefined | null;
   latLng?: LatLng | null;
+  inMap?: boolean;
   className?: string;
   participationContextType: IParticipationContextType | null;
 }
@@ -216,8 +217,9 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { project, phase, authUser, className, intl: { formatMessage } } = this.props;
-    const { show, enabled, disabledReason } = getIdeaPostingRules({ project, phase, authUser });
+    const { project, phase, authUser, inMap, className, intl: { formatMessage } } = this.props;
+    const { show, enabled } = getIdeaPostingRules({ project, phase, authUser });
+    let { disabledReason } = getIdeaPostingRules({ project, phase, authUser });
 
     const verificationLink = (
       <a href="" role="button" onClick={this.verify}>
@@ -241,13 +243,28 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
       const isSignedIn = !isNilOrError(authUser);
       const isButtonDisabled = isSignedIn ? !!disabledReason : (!!disabledReason && disabledReason !== 'notVerified');
       const tippyContent = (!enabled && !!disabledReason) ? (
-        <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
+        <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip" inMap={inMap}>
           <TooltipContentIcon name="lock-outlined" ariaHidden />
           <TooltipContentText>
             <FormattedMessage {...this.disabledMessages[disabledReason]} values={{ verificationLink, signUpLink, signInLink }} />
           </TooltipContentText>
         </TooltipContent>
-      ) : <></>;
+      ) : null;
+
+      if (inMap && !enabled && !!disabledReason) {
+        if (!authUser && disabledReason === 'notVerified') {
+          disabledReason = 'maybeNotPermitted';
+        }
+
+        return (
+          <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip" inMap={inMap}>
+            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentText>
+              <FormattedMessage {...this.disabledMessages[disabledReason]} values={{ verificationLink, signUpLink, signInLink }} />
+            </TooltipContentText>
+          </TooltipContent>
+        );
+      }
 
       return (
         <Container className={className || ''}>
@@ -255,7 +272,7 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
             disabled={!isButtonDisabled}
             interactive={true}
             placement="bottom"
-            content={tippyContent}
+            content={tippyContent || <></>}
             theme="light"
             hideOnClick={false}
           >
