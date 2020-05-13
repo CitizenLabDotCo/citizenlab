@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNumber } from 'lodash-es';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -53,11 +54,11 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     const { location } = this.props;
     const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
       return type === 'value' ? parseFloat(str) : str;
-    }});
+    }}) as { [key: string]: string | number };
 
     this.redirectIfNotPermittedOnPage();
 
-    if (lat && lng) {
+    if (isNumber(lat) && isNumber(lng)) {
       reverseGeocode([lat, lng]).then((location_description) => {
         this.setState({ locationInfo: {
           // When an idea is posted through the map, we Google Maps gets an approximate address,
