@@ -150,11 +150,7 @@ class Show extends React.Component<Props, State> {
     if (noGroupsSelected) {
       this.openSendConfirmationModal();
     } else {
-      sendCampaign(this.props.campaign.id)
-      .then(() => {
-      })
-      .catch(() => {
-      });
+      sendCampaign(this.props.campaign.id);
     }
   }
 
@@ -200,8 +196,6 @@ class Show extends React.Component<Props, State> {
     sendCampaign(campaignId)
       .then(() => {
         this.closeSendConfirmationModal();
-      })
-      .catch(() => {
       });
   }
 
