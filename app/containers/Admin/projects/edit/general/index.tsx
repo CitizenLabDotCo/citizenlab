@@ -19,6 +19,7 @@ import { Section, SectionField, SectionTitle, SectionSubtitle, SubSectionTitle }
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
+import Warning from 'components/UI/Warning';
 
 import Link from 'utils/cl-router/Link';
 
@@ -60,6 +61,10 @@ import { isNilOrError } from 'utils/helperUtils';
 import { INewProjectCreatedEvent } from '../../all/CreateProject';
 
 const timeout = 350;
+
+const StyledForm = styled.form`
+  width: 500px;
+`;
 
 const StyledInputMultiloc = styled(InputMultiloc)`
   width: 497px;
@@ -154,6 +159,10 @@ const StyledFileUploader = styled(FileUploader)`
 
 const StyledMultipleSelect = styled(MultipleSelect)`
   width: 500px;
+`;
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 30px;
 `;
 
 type Props = {
@@ -641,7 +650,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       });
 
       return (
-        <form className="e2e-project-general-form" onSubmit={this.onSubmit}>
+        <StyledForm className="e2e-project-general-form" onSubmit={this.onSubmit}>
           <Section>
             {get(this.props, 'params.projectId') &&
               <>
@@ -708,9 +717,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               {!project ? (
                 <>
                   <SubSectionTitle>
-                    <FormattedMessage {...messages.projectType} />
+                    <FormattedMessage {...messages.projectTypeTitle} />
                     <IconTooltip content={<FormattedMessage {...messages.projectTypeTooltip} />} />
                   </SubSectionTitle>
+                  <StyledWarning text={<FormattedMessage {...messages.projectTypeWarning} />} />
                   <Radio
                     className="e2e-project-type-timeline"
                     onChange={this.handeProjectTypeOnChange}
@@ -733,8 +743,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               ) : (
                   <>
                     <SubSectionTitle>
-                      <FormattedMessage {...messages.projectTypeEdit} />
-                      <IconTooltip content={<FormattedMessage {...messages.projectTypeEditTooltip} />} />
+                      <FormattedMessage {...messages.projectTypeTitle} />
                     </SubSectionTitle>
                     <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
                   </>
@@ -927,7 +936,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               }}
             />
           </Section>
-        </form>
+        </StyledForm>
       );
     }
 

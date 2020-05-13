@@ -6,7 +6,7 @@ import GetIdea from 'resources/GetIdea';
 import { handlePreviewCLick, StyledLink } from './';
 
 export default (props: { postId: string, openPreview: (id: string) => void }) => (
-  <GetIdea id={props.postId}>
+  <GetIdea ideaId={props.postId}>
     {(post) =>  {
       if (isNilOrError(post)) return null;
 

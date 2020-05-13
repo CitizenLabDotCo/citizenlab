@@ -7,14 +7,14 @@ import { isObject } from 'lodash-es';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Spinner from 'components/UI/Spinner';
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 
 // services
 import { completeRegistration } from 'services/users';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -80,7 +80,7 @@ type InputProps = {
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -139,9 +139,9 @@ class Step3 extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { formatMessage } = this.props.intl;
     const { processing, unknownError } = this.state;
-    const { authUser, customFieldsSchema } = this.props;
+    const { authUser, userCustomFieldsSchema } = this.props;
 
-    if (isNilOrError(authUser) || isNilOrError(customFieldsSchema)) {
+    if (isNilOrError(authUser) || isNilOrError(userCustomFieldsSchema)) {
       return (
         <Loading>
           <Spinner />
@@ -149,10 +149,10 @@ class Step3 extends PureComponent<Props & InjectedIntlProps, State> {
       );
     }
 
-    if (!isNilOrError(authUser) && !isNilOrError(customFieldsSchema)) {
+    if (!isNilOrError(authUser) && !isNilOrError(userCustomFieldsSchema)) {
       return (
         <Container id="e2e-signup-step3">
-          <CustomFieldsForm
+          <UserCustomFieldsForm
             id="e2e-custom-signup-form"
             formData={authUser.attributes.custom_field_values}
             onSubmit={this.handleCustomFieldsFormOnSubmit}
@@ -166,7 +166,7 @@ class Step3 extends PureComponent<Props & InjectedIntlProps, State> {
                 text={formatMessage(messages.submit)}
                 onClick={this.handleOnSubmitButtonClick}
               />
-              {!customFieldsSchema.hasRequiredFields &&
+              {!userCustomFieldsSchema.hasRequiredFields &&
                 <SkipButton
                   className="e2e-signup-step3-skip-btn"
                   onClick={this.skipStep}
@@ -189,7 +189,7 @@ const Step3WithHocs = injectIntl<Props>(Step3);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  customFieldsSchema: <GetCustomFieldsSchema />
+  userCustomFieldsSchema: <GetUserCustomFieldsSchema />
 });
 
 export default (inputProps: InputProps) => (
