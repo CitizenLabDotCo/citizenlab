@@ -147,9 +147,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     text: {
       bgColor: 'transparent',
       textColor: colors.label,
-      textHoverColor: '#000',
       iconColor: colors.label,
-      iconHoverColor: '#000'
     },
     success: {
       bgColor: colors.clGreenSuccessBackground,

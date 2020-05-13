@@ -105,10 +105,10 @@ export async function deleteUser(userId: string) {
   return response;
 }
 
-export async function completeRegistration(customFieldValues: object, authUser: IUser) {
-  const response = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
+export async function completeRegistration(customFieldValues: object) {
+  const authUser = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
   await streams.reset(authUser);
-  return response;
+  return authUser;
 }
 
 export function mapUserToDiff(user: IUserData): IUserUpdate {

@@ -119,7 +119,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
           unknownError: null
         });
 
-        await completeRegistration(formData, { data: authUser });
+        await completeRegistration(formData);
 
         this.setState({ processing: false });
         this.props.onCompleted();
@@ -138,7 +138,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
     const { authUser } = this.props;
 
     if (!isNilOrError(authUser)) {
-      await completeRegistration({}, { data: authUser });
+      await completeRegistration({});
     }
 
     this.props.onCompleted();

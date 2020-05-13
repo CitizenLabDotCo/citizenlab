@@ -1,9 +1,10 @@
-import { Observer, Observable, Subscription, from, of } from 'rxjs';
-import { retry, catchError, startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
-import { includes, flatten, forOwn, isError, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union, uniq, isUndefined } from 'lodash-es';
+import { Observer, Observable, Subscription } from 'rxjs';
+import { startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
+import { includes, flatten, forOwn, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union, uniq, isUndefined } from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
+import { currentOnboardingCampaignsApiEndpoint } from 'services/onboardingCampaigns';
 import { IUser } from 'services/users';
 import stringify from 'json-stable-stringify';
 import { reportError } from 'utils/loggingUtils';
@@ -74,7 +75,12 @@ class Streams {
       }
     });
 
-    return await Promise.all(promises);
+    try {
+      const response = await Promise.all(promises);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
 
   deepFreeze<T>(object: T): T {
@@ -237,38 +243,23 @@ class Streams {
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
       const isSingleItemStream = this.isSingleItemStream(lastUrlSegment, isQueryStream);
       const observer: IObserver<T | null> = (null as any);
+      const apiEndPointWithoutCacheParam = apiEndpoint.replace('?cached=false', '');
 
       const fetch = () => {
-        return new Promise((resolve, reject) => {
-          const promise = request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters);
-
-          from(promise).pipe(
-            retry(3),
-            catchError((error) => {
-              return of(error);
-            })
-          ).subscribe((response) => {
-            if (!this.streams[streamId]) {
-              // no stream found with this streamId
-            } else {
-              if (!isError(response)) {
-                this.streams[streamId].observer.next(response);
-                resolve(response);
-              } else {
-                if (streamId !== authApiEndpoint) {
-                  const apiEndpoint = cloneDeep(this.streams[streamId].params.apiEndpoint);
-                  this.streams[streamId].observer.next(response);
-                  this.deleteStream(streamId, apiEndpoint);
-                  reportError(response);
-                  reject(response);
-                } else {
-                  this.streams[streamId].observer.next(null);
-                }
-              }
-            }
-          });
+        return request<any>(apiEndPointWithoutCacheParam, bodyData, { method: 'GET' }, queryParameters).then((response) => {
+          this.streams?.[streamId]?.observer?.next(response);
+          return response;
         }).catch((error) => {
-          return error;
+          if (streamId !== authApiEndpoint && streamId !== currentOnboardingCampaignsApiEndpoint) {
+            this.streams[streamId].observer.next(error);
+            this.deleteStream(streamId, apiEndpoint);
+            reportError(error);
+            throw error;
+          } else if (streamId === authApiEndpoint) {
+            this.streams[streamId].observer.next(null);
+          }
+
+          return null;
         });
       };
 
