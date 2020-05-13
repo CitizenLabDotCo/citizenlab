@@ -17,7 +17,7 @@ import Error from 'components/UI/Error';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -186,7 +186,7 @@ interface InputProps {
 
 interface DataProps {
   tenant: GetTenantChildProps;
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -214,9 +214,9 @@ class SignUp extends PureComponent<Props, State> {
 
     this.subscription = signUpNextStep$.subscribe(() => {
       const { activeStep } = this.state;
-      const { action, customFieldsSchema } = this.props;
+      const { action, userCustomFieldsSchema } = this.props;
       const hasVerificationStep = action?.action_requires_verification;
-      const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+      const hasCustomFields = !isNilOrError(userCustomFieldsSchema) && userCustomFieldsSchema.hasCustomFields;
 
       if (activeStep === 'account-creation' && hasVerificationStep) {
         this.setState({ activeStep: 'verification' });
@@ -356,7 +356,7 @@ class SignUp extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  customFieldsSchema: <GetCustomFieldsSchema />,
+  userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
 export default (inputProps: InputProps) => (

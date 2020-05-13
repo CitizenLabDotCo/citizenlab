@@ -49,7 +49,7 @@ class AutomatedCampaigns extends React.PureComponent<Props & InjectedIntlProps> 
             <Row key={campaign.id}>
               <Toggle
                 disabled={isUndefined(campaign.attributes.enabled)}
-                value={isUndefined(campaign.attributes.enabled) || campaign.attributes.enabled}
+                checked={isUndefined(campaign.attributes.enabled) || campaign.attributes.enabled}
                 onChange={this.handleOnEnabledToggle(campaign)}
               />
               <TextCell className="expand">
