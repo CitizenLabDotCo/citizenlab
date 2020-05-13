@@ -272,4 +272,4 @@ function collect(connect, monitor) {
   };
 }
 
-export default injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', ideaSource, collect)(IdeaRow)));
+export default injectIntl(localize(DragSource('IDEA', ideaSource, collect)(IdeaRow)));

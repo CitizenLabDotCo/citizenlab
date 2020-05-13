@@ -65,6 +65,7 @@ class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State>
     return (
       <StylingWrapper className={this.props.className}>
         <DateRangePicker
+          {...omit(this.props, 'intl')}
           startDateId="startAt"
           endDateId="endAt"
           focusedInput={this.state.focusedInput}
@@ -72,7 +73,6 @@ class OurDateRangePicker extends PureComponent<Props & InjectedIntlProps, State>
           startDatePlaceholderText={this.props.intl.formatMessage(messages.startDatePlaceholder)}
           endDatePlaceholderText={this.props.intl.formatMessage(messages.endDatePlaceholder)}
           isOutsideRange={this.handleIsOutsideRange}
-          {...omit(this.props, 'intl')}
         />
       </StylingWrapper>
     );

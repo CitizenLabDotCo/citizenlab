@@ -248,7 +248,7 @@ function collect(connect, monitor) {
   };
 }
 
-const InitiativesRowWithHocs = injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
+const InitiativesRowWithHocs = injectIntl(localize(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
