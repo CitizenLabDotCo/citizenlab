@@ -4,8 +4,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 import { CLErrorsJSON } from 'typings';
-import { ICustomFieldOptionsData, updateCustomFieldOption, deleteCustomFieldOption, addCustomFieldOption, ICustomFieldData } from 'services/userCustomFields';
-import GetCustomFieldOptions, { GetCustomFieldOptionsChildProps } from 'resources/GetCustomFieldOptions';
+import {
+  IUserCustomFieldOptionsData,
+  updateUserCustomFieldOption,
+  deleteUserCustomFieldOption,
+  addUserCustomFieldOption,
+  IUserCustomFieldData
+} from 'services/userCustomFields';
+import GetUserCustomFieldOptions, { GetUserCustomFieldOptionsChildProps } from 'resources/GetUserCustomFieldOptions';
 
 import { Formik, FormikErrors } from 'formik';
 import OptionForm, { FormValues } from './OptionForm';
@@ -18,11 +24,11 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 const OptionContainer = styled.div``;
 
 interface InputProps {
-  customField: ICustomFieldData;
+  customField: IUserCustomFieldData;
 }
 
 interface DataProps {
-  customFieldOptions: GetCustomFieldOptionsChildProps;
+  customFieldOptions: GetUserCustomFieldOptionsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -40,7 +46,7 @@ class OptionsForm extends React.Component<Props, State> {
     };
   }
 
-  initialValuesForEdit = (option: ICustomFieldOptionsData) => {
+  initialValuesForEdit = (option: IUserCustomFieldOptionsData) => {
     return {
       key: option.attributes.key,
       title_multiloc: option.attributes.title_multiloc,
@@ -73,7 +79,7 @@ class OptionsForm extends React.Component<Props, State> {
   }
 
   handleDelete = (option) => () => {
-    deleteCustomFieldOption(this.props.customField.id, option.id);
+    deleteUserCustomFieldOption(this.props.customField.id, option.id);
   }
 
   handleCancel = () => {
@@ -83,7 +89,7 @@ class OptionsForm extends React.Component<Props, State> {
   }
 
   handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting, resetForm, setStatus }) => {
-    updateCustomFieldOption(this.props.customField.id, option.id, values).then(() => {
+    updateUserCustomFieldOption(this.props.customField.id, option.id, values).then(() => {
       resetForm();
     }).catch((errorResponse) => {
       if (isCLErrorJSON(errorResponse)) {
@@ -97,7 +103,7 @@ class OptionsForm extends React.Component<Props, State> {
   }
 
   handleCreateSubmit = (values, { setErrors, setSubmitting, setStatus }) => {
-    addCustomFieldOption(this.props.customField.id, values).then(() => {
+    addUserCustomFieldOption(this.props.customField.id, values).then(() => {
       setSubmitting(false);
       this.setState({ addingOption: false });
     }).catch((errorResponse) => {
@@ -117,7 +123,7 @@ class OptionsForm extends React.Component<Props, State> {
     });
   }
 
-  renderFn = (option: ICustomFieldOptionsData | null = null) => (props) => (
+  renderFn = (option: IUserCustomFieldOptionsData | null = null) => (props) => (
     <OptionForm
       onClickDelete={this.handleDelete(option)}
       onClickCancel={this.handleCancel}
@@ -168,7 +174,7 @@ class OptionsForm extends React.Component<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetCustomFieldOptions customFieldId={inputProps.customField.id}>
+  <GetUserCustomFieldOptions customFieldId={inputProps.customField.id}>
     {customField => <OptionsForm {...inputProps} customFieldOptions={customField} />}
-  </GetCustomFieldOptions>
+  </GetUserCustomFieldOptions>
 );

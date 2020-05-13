@@ -112,7 +112,7 @@ class IdeaAssignedToYouNotification extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  idea: ({ notification, render }) => <GetIdea slug={notification?.attributes?.post_slug}>{render}</GetIdea>,
+  idea: ({ notification, render }) => <GetIdea ideaSlug={notification?.attributes?.post_slug}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>,
 });
 

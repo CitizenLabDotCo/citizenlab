@@ -17,7 +17,7 @@ import ReactResizeDetector from 'react-resize-detector';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError, isUndefinedOrError } from 'utils/helperUtils';
@@ -67,7 +67,7 @@ export interface InputProps {
 interface DataProps {
   authUser: GetAuthUserChildProps;
   tenant: GetTenantChildProps;
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  customFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -371,7 +371,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
-  customFieldsSchema: <GetCustomFieldsSchema />
+  customFieldsSchema: <GetUserCustomFieldsSchema />
 });
 
 const SignUpWithHoC = injectIntl(SignUp);

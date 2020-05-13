@@ -13,7 +13,7 @@ import { completeRegistration } from 'services/users';
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
 import useParticipationConditions from 'hooks/useParticipationConditions';
-import useCustomFieldsSchema from 'hooks/useCustomFieldsSchema';
+import useUserCustomFieldsSchema from 'hooks/useUserCustomFieldsSchema';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -44,7 +44,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
 
   const authUser = useAuthUser();
   const participationConditions = useParticipationConditions(metaData?.verificationContext && isProjectContext(metaData?.verificationContext) ? metaData?.verificationContext : null);
-  const customFieldsSchema = useCustomFieldsSchema();
+  const customFieldsSchema = useUserCustomFieldsSchema();
 
   const opened = !!metaData;
   const hasParticipationConditions = !isNilOrError(participationConditions) && participationConditions.length > 0;

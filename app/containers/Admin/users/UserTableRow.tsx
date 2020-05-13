@@ -209,7 +209,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
         <CreatedAt>{this.state.createdAt}</CreatedAt>
         <td>
           <Toggle
-            value={isAdmin}
+            checked={isAdmin}
             onChange={this.handleAdminRoleOnChange}
           />
         </td>

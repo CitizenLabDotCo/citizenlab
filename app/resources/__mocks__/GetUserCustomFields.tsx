@@ -1,6 +1,6 @@
-import { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
+import { GetUserCustomFieldsChildProps } from 'resources/GetUserCustomFields';
 
-export const mockGetCustomFields = [
+export const mockGetUserCustomFields = [
   {
     id: '3d9ad03c-fbe3-47e5-8d6d-c8bbc512682d',
     type: 'custom_field',
@@ -97,4 +97,4 @@ export const mockGetCustomFields = [
       updated_at: '2018-12-03T11:18:06.161Z'
     }
   }
-] as GetCustomFieldsChildProps;
+] as GetUserCustomFieldsChildProps;

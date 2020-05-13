@@ -7,9 +7,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.title',
     defaultMessage: 'Idea form',
   },
-  subtitle: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.subtitle',
-    defaultMessage: 'Configure what users see when they post an idea.',
+  description: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.description',
+    defaultMessage: 'Define the structure of an idea for this project.',
   },
   save: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.save',
@@ -38,5 +38,33 @@ export default defineMessages({
   expandAll: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.expandAll',
     defaultMessage: 'Expand all fields',
+  },
+  enabled: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.enabled',
+    defaultMessage: 'Enabled',
+  },
+  required: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.required',
+    defaultMessage: 'Required',
+  },
+  visibleToEveryone: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.visibleToEveryone',
+    defaultMessage: 'Visible to everyone',
+  },
+  visibleToAdmin: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.visibleToAdmin',
+    defaultMessage: 'Visible to admins and project moderators only',
+  },
+  visibility: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.visibility',
+    defaultMessage: 'Visibility on idea page',
+  },
+  enabledTooltip: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.enabledTooltip',
+    defaultMessage: 'Enable this field for people who want to create an idea for this project.',
+  },
+  requiredTooltip: {
+    id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltip',
+    defaultMessage: 'Require people to complete this field when creating an idea.',
   },
 });

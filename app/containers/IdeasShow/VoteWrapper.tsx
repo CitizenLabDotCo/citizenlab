@@ -81,7 +81,7 @@ class VoteWrapper extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>
 });
 
 export default (inputProps: InputProps) => (
