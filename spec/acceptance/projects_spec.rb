@@ -258,7 +258,6 @@ resource "Projects" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{ParticipationContext::PRESENTATION_MODES.join(",")}. Defaults to card.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned", required: false
-        parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)", required: false
       end
@@ -321,7 +320,6 @@ resource "Projects" do
         let(:voting_enabled) { project.voting_enabled }
         let(:voting_method) { project.voting_method }
         let(:voting_limited_max) { project.voting_limited_max }
-        let(:location_allowed) { false }
 
         example_request "Create a continuous project" do
           expect(response_status).to eq 201
@@ -340,7 +338,6 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:downvoting_enabled)).to eq true
           expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
           expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
-          expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed
 
         end
 
@@ -418,7 +415,6 @@ resource "Projects" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Project::PRESENTATION_MODES.join(",")}.", required: false
         parameter :default_assignee_id, "The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned", required: false
-        parameter :location_allowed, "Only for continuous projects. Can citizens add a location to their ideas?", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :folder_id, "The ID of the project folder (can be set to nil for top-level projects)"
       end

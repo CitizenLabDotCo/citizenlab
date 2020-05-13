@@ -114,7 +114,6 @@ class ProjectPolicy < ApplicationPolicy
       :max_budget,
       :presentation_mode,
       :default_assignee_id,
-      :location_allowed,
       :poll_anonymous,
       :folder_id,
       admin_publication_attributes: [:publication_status],

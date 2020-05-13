@@ -4,12 +4,14 @@ class WebApi::V1::IdeaCustomFieldsController < ApplicationController
   skip_after_action :verify_policy_scoped
 
   def index
-    @db_custom_fields = IdeaCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
+    @custom_fields = IdeaCustomFieldPolicy::Scope.new(current_user, CustomField.all).resolve
       .where(resource: @custom_form)
       .order(:ordering)
 
-    @custom_fields = IdeaCustomFieldService.new.db_and_built_in_fields(@custom_form, custom_fields_scope: @db_custom_fields)
-  
+    if IdeaCustomFieldPolicy.new(current_user, nil).can_view_custom_fields_for_project? @project
+      @custom_fields = IdeaCustomFieldService.new.db_and_built_in_fields(@custom_form, custom_fields_scope: @custom_fields)
+    end
+
     render json: WebApi::V1::CustomFieldSerializer.new(@custom_fields, params: fastjson_params).serialized_json
   end
 
