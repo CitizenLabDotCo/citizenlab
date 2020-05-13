@@ -366,6 +366,7 @@
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "und schalte das Bürgerpotential frei",
   "app.components.VerificationModal.back": "Zurück",
   "app.components.VerificationModal.cancel": "Abbrechen",
+  "app.components.VerificationModal.close": "",
   "app.components.VerificationModal.cowIdSerialNumber": "ID Seriennummer",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "Dies kann nicht leer sein",

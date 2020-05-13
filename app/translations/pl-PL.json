@@ -366,6 +366,7 @@
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "i odblokuj swój potencjał obywatelski",
   "app.components.VerificationModal.back": "Powrót",
   "app.components.VerificationModal.cancel": "Anuluj",
+  "app.components.VerificationModal.close": "",
   "app.components.VerificationModal.cowIdSerialNumber": "Seria i numer dowodu osobistego",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "To pole nie może być puste.",

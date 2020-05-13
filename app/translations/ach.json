@@ -366,6 +366,7 @@
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "",
   "app.components.VerificationModal.back": "",
   "app.components.VerificationModal.cancel": "",
+  "app.components.VerificationModal.close": "",
   "app.components.VerificationModal.cowIdSerialNumber": "",
   "app.components.VerificationModal.cowRunNumber": "",
   "app.components.VerificationModal.emptyFieldError": "",

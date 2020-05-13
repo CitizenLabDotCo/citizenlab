@@ -366,6 +366,7 @@
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "et libérez votre potentiel citoyen",
   "app.components.VerificationModal.back": "Précédent",
   "app.components.VerificationModal.cancel": "Annuler",
+  "app.components.VerificationModal.close": "",
   "app.components.VerificationModal.cowIdSerialNumber": "Numéro de série de l'ID",
   "app.components.VerificationModal.cowRunNumber": "EXECUTER\n",
   "app.components.VerificationModal.emptyFieldError": "Ce champ ne peut pas être vide.",
