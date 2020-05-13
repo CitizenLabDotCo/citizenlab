@@ -366,6 +366,7 @@
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "y desbloquea tu potencial ciudadano",
   "app.components.VerificationModal.back": "Volver",
   "app.components.VerificationModal.cancel": "Cancelar",
+  "app.components.VerificationModal.close": "",
   "app.components.VerificationModal.cowIdSerialNumber": "CI número de serie /número de documento",
   "app.components.VerificationModal.cowRunNumber": "RUT",
   "app.components.VerificationModal.emptyFieldError": "Este campo no puede estar vacío.",

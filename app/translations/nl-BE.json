@@ -366,6 +366,7 @@
   "app.components.VerificationModal.andUnlockYourCitizenPotential": "en maak gebruik van al je mogelijkheden als burger",
   "app.components.VerificationModal.back": "Vorige",
   "app.components.VerificationModal.cancel": "Annuleren",
+  "app.components.VerificationModal.close": "",
   "app.components.VerificationModal.cowIdSerialNumber": "ID-serienummer",
   "app.components.VerificationModal.cowRunNumber": "RUN",
   "app.components.VerificationModal.emptyFieldError": "Dit veld mag niet leeg zijn.",
