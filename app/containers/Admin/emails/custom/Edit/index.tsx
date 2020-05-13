@@ -1,10 +1,9 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { updateCampaign, ICampaignData } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, validateCampaignForm } from '../CampaignForm';
+import CampaignForm, { FormValues, validateCampaignForm, PageTitle } from '../CampaignForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -13,13 +12,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import GetCampaign from 'resources/GetCampaign';
 import { isNilOrError } from 'utils/helperUtils';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 3rem 0 1rem 0;
-`;
 
 interface InputProps {}
 
@@ -60,12 +52,14 @@ class Edit extends React.Component<Props> {
     };
   }
 
-  renderFn = (props) => (
-    <CampaignForm
-      {...props}
-      mode="edit"
-    />
-  )
+  renderFn = (props) => {
+    return (
+      <CampaignForm
+        {...props}
+        mode="edit"
+      />
+    );
+  }
 
   goBack = () => {
     const { id } = this.props.campaign;
