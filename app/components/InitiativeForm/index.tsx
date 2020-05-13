@@ -391,8 +391,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.bannerUploadLabel}
               subtextMessage={messages.bannerUploadLabelSubtext}
-              optional
               htmlFor="initiative-banner-dropzone"
+              optional
             />
             <ImagesDropzone
               id="initiative-banner-dropzone"
@@ -409,8 +409,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <FormLabel
               labelMessage={messages.imageUploadLabel}
               subtextMessage={messages.imageUploadLabelSubtext}
-              optional
               htmlFor="initiative-image-dropzone"
+              optional
             />
             <ImagesDropzone
               id="initiative-image-dropzone"

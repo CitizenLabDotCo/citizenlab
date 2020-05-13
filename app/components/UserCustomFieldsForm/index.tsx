@@ -9,7 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Form, { FieldProps } from 'react-jsonschema-form';
 
 // services
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
 
 // components
 import { FormLabelValue } from 'components/UI/FormComponents';
@@ -86,12 +86,12 @@ export interface InputProps {
 }
 
 interface DataProps {
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
 
-class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
+class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   submitbuttonElement: HTMLButtonElement | null;
   subscriptions: Subscription[];
 
@@ -150,10 +150,10 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   }
 
   validate = (formData, errors) => {
-    const { customFieldsSchema } = this.props;
+    const { userCustomFieldsSchema } = this.props;
 
-    if (!isNilOrError(customFieldsSchema)) {
-      const { schema, uiSchema } = customFieldsSchema;
+    if (!isNilOrError(userCustomFieldsSchema)) {
+      const { schema, uiSchema } = userCustomFieldsSchema;
       const requiredFieldNames = get(schema, 'required', []);
       const disabledFieldNames = get(uiSchema, 'ui:disabled', []);
       const fieldNames = get(schema, 'properties', null) as object;
@@ -393,10 +393,10 @@ class CustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { customFieldsSchema, className } = this.props;
+    const { userCustomFieldsSchema, className } = this.props;
 
-    if (!isNilOrError(customFieldsSchema)) {
-      const { schema, uiSchema } = customFieldsSchema;
+    if (!isNilOrError(userCustomFieldsSchema)) {
+      const { schema, uiSchema } = userCustomFieldsSchema;
       const { id } = this.props;
       const widgets: any = {
         TextWidget: this.CustomInput,
@@ -449,13 +449,13 @@ function renderLabel(id, label, required, descriptionJSX) {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  customFieldsSchema: <GetCustomFieldsSchema />
+  userCustomFieldsSchema: <GetUserCustomFieldsSchema />
 });
 
-const CustomFieldsFormWithHoc = injectIntl<Props>(CustomFieldsForm);
+const UserCustomFieldsFormWithHoc = injectIntl<Props>(UserCustomFieldsForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <CustomFieldsFormWithHoc {...inputProps} {...dataprops} />}
+    {dataprops => <UserCustomFieldsFormWithHoc {...inputProps} {...dataprops} />}
   </Data>
 );

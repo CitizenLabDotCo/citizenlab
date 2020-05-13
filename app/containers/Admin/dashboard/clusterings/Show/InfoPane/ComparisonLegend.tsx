@@ -57,7 +57,7 @@ class ComparisonLegend extends PureComponent<Props, State> {
     switch (node.type) {
       case 'idea':
         return (
-          <GetIdea id={node.id}>
+          <GetIdea ideaId={node.id}>
             {(idea) => isNilOrError(idea) ? null : <T value={idea && idea.attributes.title_multiloc} />}
           </GetIdea>
         );

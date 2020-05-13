@@ -4,7 +4,7 @@ import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
 import { hideVisually, darken } from 'polished';
 
 const size = 21;
-const padding = 4;
+const padding = 3;
 
 const Container = styled.div`
   display: inline-block;
@@ -27,7 +27,7 @@ const StyledToggle = styled.i<{ checked: boolean, disabled: boolean }>`
   background-color: #ccc;
   border: solid 1px transparent;
   transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
-              background-color 80ms ease-out;
+  background-color 80ms ease-out;
 
   &:before {
     display: block;
@@ -66,8 +66,8 @@ const StyledToggleWrapper = styled.div<{ checked: boolean, disabled: boolean }>`
   }
 `;
 
-const Text = styled.div`
-  color: ${colors.text};
+const Label = styled.div<{ labelTextColor?: string }>`
+  color: ${({ labelTextColor }) => labelTextColor || colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
@@ -76,9 +76,10 @@ const Text = styled.div`
 `;
 
 export type Props = {
-  value: boolean;
+  checked: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
+  labelTextColor?: string;
   size?: 'small' | 'normal' | 'large';
   onChange: (event: React.FormEvent) => void;
   className?: string;
@@ -96,7 +97,7 @@ export default class Toggle extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { value, disabled, label, className, id, onChange } = this.props;
+    const { checked, disabled, label, labelTextColor, className, id, onChange } = this.props;
 
     return (
       <Container
@@ -105,25 +106,30 @@ export default class Toggle extends React.PureComponent<Props, State> {
       >
         <HiddenCheckbox
           onChange={onChange}
-          checked={value}
+          checked={checked}
           disabled={disabled}
           tabIndex={0}
         />
 
         <StyledToggleWrapper
-          checked={value}
+          checked={checked}
           disabled={!!disabled}
           onClick={this.handleOnClick}
         >
           <StyledToggle
-            checked={value}
+            checked={checked}
             disabled={!!disabled}
             className={disabled ? 'disabled' : 'enabled'}
           />
         </StyledToggleWrapper>
 
         {label &&
-          <Text onClick={this.handleOnClick}>{label}</Text>
+          <Label
+            onClick={this.handleOnClick}
+            labelTextColor={labelTextColor}
+          >
+            {label}
+          </Label>
         }
       </Container>
     );

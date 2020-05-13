@@ -1,6 +1,6 @@
 // libraries
 import React, { Component } from 'react';
-import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
+import GetUserCustomFields, { GetUserCustomFieldsChildProps } from 'resources/GetUserCustomFields';
 import styled from 'styled-components';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
@@ -21,7 +21,7 @@ import Badge from 'components/admin/Badge';
 import Toggle from 'components/UI/Toggle';
 
 // services
-import { ICustomFieldData, deleteCustomField, updateCustomFieldForUsers, reorderCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
+import { IUserCustomFieldData, deleteUserCustomField, updateCustomFieldForUsers, reorderCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
 
 const Buttons = styled.div`
   display: flex;
@@ -33,14 +33,14 @@ const StyledBadge = styled(Badge)`
 `;
 
 interface State {
-  itemsWhileDragging: ICustomFieldData[] | null;
+  itemsWhileDragging: IUserCustomFieldData[] | null;
   isProcessing: boolean;
 }
 
 export interface InputProps {}
 
 interface DataProps {
-  customFields: GetCustomFieldsChildProps;
+  userCustomFields: GetUserCustomFieldsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -57,8 +57,8 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
   componentDidUpdate(prevProps: Props) {
     const { itemsWhileDragging } = this.state;
-    const prevCustomFieldsIds = (prevProps.customFields && prevProps.customFields.map(customField => customField.id));
-    const nextCustomFieldsIds = (this.props.customFields && this.props.customFields.map(customField => customField.id));
+    const prevCustomFieldsIds = (prevProps.userCustomFields && prevProps.userCustomFields.map(customField => customField.id));
+    const nextCustomFieldsIds = (this.props.userCustomFields && this.props.userCustomFields.map(customField => customField.id));
 
     if (itemsWhileDragging && !isEqual(prevCustomFieldsIds, nextCustomFieldsIds)) {
       this.setState({ itemsWhileDragging: null });
@@ -72,14 +72,14 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
       if (window.confirm(deleteMessage)) {
         this.setState({ itemsWhileDragging: null, isProcessing: true });
-        deleteCustomField(customFieldId).then(() => {
+        deleteUserCustomField(customFieldId).then(() => {
           this.setState({ isProcessing: false });
         });
       }
     }
   }
 
-  handleOnEnabledToggle = (field: ICustomFieldData) => () => {
+  handleOnEnabledToggle = (field: IUserCustomFieldData) => () => {
     if (!this.state.isProcessing) {
       this.setState({ isProcessing: true });
       updateCustomFieldForUsers(field.id, {
@@ -125,8 +125,8 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 
   listItems = () => {
     const { itemsWhileDragging } = this.state;
-    const { customFields } = this.props;
-    return (itemsWhileDragging || customFields);
+    const { userCustomFields } = this.props;
+    return (itemsWhileDragging || userCustomFields);
   }
 
   render() {
@@ -166,7 +166,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
                 >
                   <Toggle
                     className={`e2e-custom-registration-field-toggle ${field.attributes.enabled ? 'enabled' : 'disabled'}`}
-                    value={field.attributes.enabled}
+                    checked={field.attributes.enabled}
                     onChange={this.handleOnEnabledToggle(field)}
                   />
                   <TextCell className="expand">
@@ -212,7 +212,7 @@ class CustomFields extends Component<Props & InjectedIntlProps, State> {
 const CustomFieldsListWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(CustomFields));
 
 export default (inputProps: InputProps) => (
-  <GetCustomFields cache={false}>
-    {customFields => <CustomFieldsListWithHoCs {...inputProps} customFields={customFields} />}
-  </GetCustomFields>
+  <GetUserCustomFields cache={false}>
+    {customFields => <CustomFieldsListWithHoCs {...inputProps} userCustomFields={customFields} />}
+  </GetUserCustomFields>
 );

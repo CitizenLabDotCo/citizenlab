@@ -27,7 +27,6 @@ export interface IPhaseData {
     max_budget?: number;
     survey_service?: SurveyServices;
     survey_embed_url?: string;
-    location_allowed?: boolean;
     poll_anonymous?: boolean;
   };
   relationships: {

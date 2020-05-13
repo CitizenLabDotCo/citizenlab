@@ -173,7 +173,7 @@ class IdeaEditPage extends PureComponent<Props, State> {
         if (granted) {
           this.setState({
             locale,
-            selectedTopics: idea.data.relationships.topics.data.map(topic => topic.id),
+            selectedTopics: idea.data.relationships.topics?.data.map(topic => topic.id) || [],
             projectId: idea.data.relationships.project.data.id,
             loaded: true,
             ideaSlug: idea.data.attributes.slug,

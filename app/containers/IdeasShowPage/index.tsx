@@ -80,7 +80,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
     return (
       <Container>
         <StyledIdeaShowPageTopBar ideaId={idea.id} />
-        <StyledIdeasShow ideaId={idea.id} />
+        <StyledIdeasShow ideaId={idea.id} projectId={idea.relationships.project.data.id} />
       </Container>
     );
   }
@@ -89,7 +89,7 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
 });
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  idea: ({ params, render }) => <GetIdea slug={params.slug}>{render}</GetIdea>
+  idea: ({ params, render }) => <GetIdea ideaSlug={params.slug}>{render}</GetIdea>
 });
 
 export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
