@@ -172,7 +172,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
 
   useEffect(() => {
     onChange(ideaCustomField.id, { description_multiloc: descriptionMultiloc });
-  }, [descriptionMultiloc]);
+  }, [descriptionMultiloc, ideaCustomField, onChange]);
 
   const handleEnabledOnChange = useCallback(() => {
     setFieldEnabled(fieldEnabled => !fieldEnabled);
@@ -180,7 +180,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
 
   useEffect(() => {
     onChange(ideaCustomField.id, { enabled: fieldEnabled });
-  }, [fieldEnabled]);
+  }, [fieldEnabled, ideaCustomField, onChange]);
 
   const handleRequiredOnChange = useCallback(() => {
     setFieldRequired(fieldRequired => !fieldRequired);
@@ -188,7 +188,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
 
   useEffect(() => {
     onChange(ideaCustomField.id, { required: fieldRequired });
-  }, [fieldRequired]);
+  }, [fieldRequired, ideaCustomField, onChange]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
