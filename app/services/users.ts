@@ -99,8 +99,7 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 export async function deleteUser(userId: string) {
   const response = await streams.delete(`${apiEndpoint}/${userId}`, userId);
   await streams.fetchAllWith({
-    dataId: [userId],
-    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`]
+    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`, `${API_PATH}/stats/users_count`]
   });
   return response;
 }

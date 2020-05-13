@@ -243,10 +243,10 @@ class Streams {
       const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
       const isSingleItemStream = this.isSingleItemStream(lastUrlSegment, isQueryStream);
       const observer: IObserver<T | null> = (null as any);
-      const apiEndPointWithoutCacheParam = apiEndpoint.replace('?cached=false', '');
+      // const apiEndPointWithoutCacheParam = apiEndpoint.replace('?cached=false', '');
 
       const fetch = () => {
-        return request<any>(apiEndPointWithoutCacheParam, bodyData, { method: 'GET' }, queryParameters).then((response) => {
+        return request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters).then((response) => {
           this.streams?.[streamId]?.observer?.next(response);
           return response;
         }).catch((error) => {
