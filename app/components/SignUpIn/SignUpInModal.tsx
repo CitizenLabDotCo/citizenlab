@@ -22,6 +22,10 @@ import { isProjectContext } from 'components/Verification/VerificationSteps';
 // events
 import { openSignUpInModal$, closeSignUpInModal$, signUpActiveStepChange$ } from 'components/SignUpIn/events';
 
+// analytics
+// import { trackEventByName } from 'utils/analytics';
+// import tracks from 'components/SignUpIn/tracks';
+
 // style
 import styled from 'styled-components';
 
@@ -48,8 +52,8 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const modalNoClose = !!((signUpActiveStep === 'verification' || signUpActiveStep === 'custom-fields') && !isNilOrError(customFieldsSchema) && customFieldsSchema?.hasRequiredFields);
 
   useEffect(() => {
-    if (isMounted() && onMounted) {
-      onMounted();
+    if (isMounted()) {
+      onMounted?.();
     }
   }, [onMounted]);
 
@@ -80,7 +84,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       !isNilOrError(customFieldsSchema) &&
       !customFieldsSchema?.hasRequiredFields
     ) {
-      completeRegistration({}, authUser);
+      completeRegistration({});
     }
 
     setMetaData(undefined);

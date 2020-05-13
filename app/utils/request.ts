@@ -38,10 +38,9 @@ export default function request<T>(url, data, options, queryParameters): Promise
 
     const error = new Error(response.statusText);
     Object.assign(error, { json });
-
     throw error;
-  }).catch((error) => {
-    throw error;
+  }).catch(() => {
+    throw new Error(`request.ts error for ${urlWithParams}`);
   });
 }
 

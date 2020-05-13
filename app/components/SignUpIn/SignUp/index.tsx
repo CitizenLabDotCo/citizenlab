@@ -34,7 +34,7 @@ import messages from './messages';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
-import tracks from './tracks';
+import tracks from 'components/SignUpIn/tracks';
 
 // style
 import styled from 'styled-components';

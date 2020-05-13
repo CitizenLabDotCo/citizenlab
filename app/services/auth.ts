@@ -31,17 +31,14 @@ export function lockedFieldsStream() {
 }
 
 export async function signIn(email: string, password: string) {
-  const delay = (ms: number) => new Promise(r => setTimeout(r, ms));
-
   try {
     const bodyData = { auth: { email, password } };
     const httpMethod: IHttpMethod = { method: 'POST' };
     const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
     setJwt(jwt);
-    const authenticatedUser = await getAuthUserAsync();
-    streams.reset(authenticatedUser);
-    await delay(100);
-    return authenticatedUser;
+    const authUser = await getAuthUserAsync();
+    await streams.reset(authUser);
+    return authUser;
   } catch (error) {
     signOut();
     throw error;
