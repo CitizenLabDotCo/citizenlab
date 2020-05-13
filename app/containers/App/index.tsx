@@ -215,7 +215,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
     if (!isNilOrError(authUser) && signUpInModalMounted && (prevState.authUser === undefined || !prevState.signUpInModalMounted)) {
       const authError = endsWith(pathname, 'authentication-error');
-      const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as SSOParams;
+      const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as any as SSOParams;
       const shouldComplete = !authUser?.data?.attributes?.registration_completed_at;
 
       // see services/singleSignOn.ts

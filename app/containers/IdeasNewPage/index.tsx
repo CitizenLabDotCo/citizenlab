@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isString, isEmpty, get } from 'lodash-es';
+import { isString, isEmpty, isNumber, get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { parse } from 'qs';
 
@@ -105,11 +105,11 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
     const { location } = this.props;
     const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
       return type === 'value' ? parseFloat(str) : str;
-    }});
+    }}) as { [key: string]: string | number };
 
     this.redirectIfNotPermittedOnPage();
 
-    if (lat && lng) {
+    if (isNumber(lat) && isNumber(lng)) {
       reverseGeocode([lat, lng]).then((position) => {
         this.globalState.set({
           // When an idea is posted through the map, Google Maps gets an approximate address,
