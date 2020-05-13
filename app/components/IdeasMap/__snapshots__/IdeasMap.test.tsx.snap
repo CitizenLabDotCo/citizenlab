@@ -18,15 +18,16 @@ exports[`IdeasMap renders correctly 1`] = `
     points={Array []}
     projectId="379cac45-d26b-505c-9215-b2677a693d37"
   />
-  <div
+  <IdeasMap__IdeaButtonWrapper
     className="create-idea-wrapper"
   >
     <Component
+      inMap={true}
       latLng={null}
       participationContextType="phase"
       phaseId="c43968d3-171e-570c-8b71-f5fc0e55bbfa"
       projectId="379cac45-d26b-505c-9215-b2677a693d37"
     />
-  </div>
+  </IdeasMap__IdeaButtonWrapper>
 </IdeasMap__Container>
 `;
