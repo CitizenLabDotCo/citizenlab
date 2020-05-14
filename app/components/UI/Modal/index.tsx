@@ -29,18 +29,19 @@ import tracks from './tracks';
 import styled from 'styled-components';
 import { media, colors, fontSizes, boxShadowOutline, viewportWidths } from 'utils/styleUtils';
 
-const desktopOpacityTimeout = 250;
+const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;
 
 const desktopTransformTimeout = 500;
 const mobileTransformTimeout = 700;
 
-const desktopTranslateY = '50px';
+const desktopTranslateY = '-200px';
 const mobileTranslateY = '300px';
 
 const desktopEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
+// cubic-bezier(0.19, 1, 0.22, 1)
 // cubic-bezier(0.165, 0.84, 0.44, 1)
 
 export const ModalContent = styled.div<{ padding?: string | undefined }>`
