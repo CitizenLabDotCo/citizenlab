@@ -33,7 +33,7 @@ import { IdeaVotingDisabledReason } from 'services/ideas';
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
-  border-bottom: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
 
 const TopBarInner = styled.div`
