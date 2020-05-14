@@ -169,4 +169,58 @@ namespace :setup_and_support do
       end
     end
   end
+
+  desc "Birthyear select"
+  task :birthyear_select, [:host,:json_url] => [:environment] do |t, args|
+    errors = []
+    
+    multiloc = JSON.parse(open(args[:json_url]).read)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+        translation = I18n.with_locale(locale) { I18n.t!('custom_fields.users.birthyear.title') }
+        [locale, translation]
+      end.to_h
+      field = CustomField.create!(
+        resource_type: User,
+        key: 'custom_birthyear',
+        title_multiloc: title_multiloc,
+        input_type: 'select',
+        required: false,
+        enabled: true
+      )
+      CustomFieldOption.create!(
+        custom_field: field,
+        key: 'other_option',
+        title_multiloc: multiloc
+      )
+      (1900..Time.now.year).reverse_each do |year|
+        title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+          [locale, year.to_s]
+        end.to_h
+        CustomFieldOption.create!(
+          custom_field: field,
+          key: year.to_s,
+          title_multiloc: title_multiloc
+        )
+      end
+
+      User.all.select do |user|
+        user.birthyear.present?
+      end.each do |user|
+        user.custom_field_values[field.key] = user.birthyear.to_s
+        if !user.save
+          errors += [user.errors.messages]
+        end
+      end
+
+      CustomField.find_by(code: 'birthyear').update!(enabled: false, required: false)
+
+      if errors.present?
+        puts "Some errors occurred!"
+        errors.each{|err| puts err}
+      else
+        puts 'Success!'
+      end
+    end
+  end
 end
