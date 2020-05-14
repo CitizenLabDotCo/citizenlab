@@ -12,7 +12,7 @@
 - Admins will receive a warning and need to confirm before sending a custom email to all users
 - A survey project link in the top navigation will link to /info instead of to /survey
 
-## 2019-04-29
+## 2020-04-29
 
 ### Fixed
 
