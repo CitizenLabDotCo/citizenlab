@@ -177,7 +177,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
 

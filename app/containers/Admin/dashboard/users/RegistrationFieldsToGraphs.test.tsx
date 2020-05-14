@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
-jest.mock('resources/GetCustomFields');
+jest.mock('resources/GetUserCustomFields');
 jest.mock('services/stats');
 import { RegistrationFieldsToGraphs, Props } from './RegistrationFieldsToGraphs';
-import { mockGetCustomFields } from 'resources/__mocks__/GetCustomFields';
+import { mockGetUserCustomFields } from 'resources/__mocks__/GetUserCustomFields';
 import { mockUsersByRegFields } from 'services/__mocks__/stats';
 import { localizeProps } from 'utils/testUtils/localizeProps';
 import { intl } from 'utils/cl-intl';
@@ -18,7 +18,7 @@ describe('<RegistrationFieldsToGraphs />', () => {
         startAt="someTimeAgo"
         endAt="now"
         currentGroupFilter={null}
-        customFields={mockGetCustomFields}
+        customFields={mockGetUserCustomFields}
         intl={intl}
         {...localizeProps}
       />
@@ -31,7 +31,7 @@ describe('<RegistrationFieldsToGraphs />', () => {
         startAt="someTimeAgo"
         endAt="now"
         currentGroupFilter={null}
-        customFields={mockGetCustomFields}
+        customFields={mockGetUserCustomFields}
         intl={intl}
         {...localizeProps}
       />

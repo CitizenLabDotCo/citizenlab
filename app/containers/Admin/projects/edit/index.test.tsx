@@ -294,7 +294,7 @@ describe('<AdminProjectEdition />', () => {
           {...routerProps}
           {...localizeProps}
         />));
-        const linkPath = wrapper.find('#new-idea').props().linkTo;
+        const linkPath = wrapper.find('#e2e-new-idea').props().linkTo;
 
       expect(linkPath).toMatchSnapshot();
     });
@@ -318,7 +318,7 @@ describe('<AdminProjectEdition />', () => {
           {...routerProps}
           {...localizeProps}
         />));
-        const linkPath = wrapper.find('#new-idea');
+        const linkPath = wrapper.find('#e2e-new-idea');
 
       expect(linkPath).toHaveLength(0);
     });

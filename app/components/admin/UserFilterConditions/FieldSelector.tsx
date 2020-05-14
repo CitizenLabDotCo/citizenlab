@@ -4,8 +4,8 @@ import Select from 'components/UI/Select';
 
 import { IOption } from 'typings';
 import { TRule, ruleTypeConstraints } from './rules';
-import GetCustomFields, { GetCustomFieldsChildProps } from 'resources/GetCustomFields';
-import { ICustomFieldData } from 'services/userCustomFields';
+import GetCustomFields, { GetUserCustomFieldsChildProps } from 'resources/GetUserCustomFields';
+import { IUserCustomFieldData } from 'services/userCustomFields';
 
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
@@ -20,7 +20,7 @@ export interface FieldDescriptor {
 type Props = {
   field: FieldDescriptor;
   onChange: (FieldDescriptor: FieldDescriptor) => void;
-  customFields: GetCustomFieldsChildProps;
+  customFields: GetUserCustomFieldsChildProps;
   fieldName?: string;
 };
 
@@ -54,7 +54,7 @@ class FieldSelector extends React.PureComponent<Props & InjectedIntlProps & Inje
     this.props.onChange(this.optionValueToDescriptor(option.value));
   }
 
-  customFieldToDescriptor = (customField: ICustomFieldData) => {
+  customFieldToDescriptor = (customField: IUserCustomFieldData) => {
     let ruleType;
     switch (customField.attributes.input_type) {
       case 'multiline_text':

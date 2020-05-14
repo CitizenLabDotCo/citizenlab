@@ -122,7 +122,6 @@ export interface IParticipationContextConfig {
   voting_method?: 'unlimited' | 'limited' | null;
   voting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
-  location_allowed?: boolean | null;
   presentation_mode?: 'map' | 'card' | null;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;
@@ -167,7 +166,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method: 'unlimited',
       voting_limited_max: 5,
       downvoting_enabled: true,
-      location_allowed: true,
       presentation_mode: 'card',
       max_budget: null,
       survey_service: null,
@@ -201,7 +199,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             voting_method,
             voting_limited_max,
             downvoting_enabled,
-            location_allowed,
             presentation_mode,
             max_budget,
             survey_embed_url,
@@ -217,7 +214,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
             voting_method,
             voting_limited_max,
             downvoting_enabled,
-            location_allowed,
             presentation_mode,
             max_budget,
             survey_embed_url,
@@ -249,7 +245,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method,
       voting_limited_max,
       downvoting_enabled,
-      location_allowed,
       presentation_mode,
       max_budget,
       survey_embed_url,
@@ -268,7 +263,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         posting_enabled,
         commenting_enabled,
         voting_enabled,
-        location_allowed,
         presentation_mode,
         voting_method: (voting_enabled ? voting_method : null),
         voting_limited_max: (voting_enabled && voting_method === 'limited' ? voting_limited_max : null),
@@ -294,7 +288,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
         participation_method,
         max_budget,
         commenting_enabled,
-        location_allowed,
         presentation_mode
       }, isNil) as IParticipationContextConfig;
     }
@@ -325,7 +318,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method: (participation_method === 'ideation' ? 'unlimited' : null),
       voting_limited_max: null,
       downvoting_enabled: (participation_method === 'ideation' ? true : null),
-      location_allowed: ((participation_method === 'ideation' || participation_method === 'budgeting') ? true : null),
       presentation_mode: (participation_method === 'ideation' ? 'card' : null),
       survey_embed_url: null,
       survey_service: (participation_method === 'survey' ? 'typeform' : null),
@@ -366,13 +358,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
 
   handleDownvotingEnabledOnChange = (downvoting_enabled: boolean) => {
     this.setState({ downvoting_enabled });
-  }
-
-  handleLocationAllowedOnChange = (location_allowed: boolean) => {
-    this.setState({
-      location_allowed,
-      presentation_mode: 'card'
-    });
   }
 
   handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
@@ -424,8 +409,6 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       voting_method,
       voting_limited_max,
       downvoting_enabled,
-      location_allowed,
-      presentation_mode,
       max_budget,
       survey_embed_url,
       survey_service,
@@ -433,6 +416,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
       noVotingLimit,
       noBudgetingAmount,
       poll_anonymous,
+      presentation_mode,
     } = this.state;
     const tenantCurrency = (!isNilOrError(tenant) ? tenant.attributes.settings.core.currency : '');
 
@@ -581,7 +565,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.commentingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
+                    <Toggle checked={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
                   </ToggleRow>
                   <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
                 </SectionField>
@@ -600,7 +584,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.postingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={posting_enabled as boolean} onChange={this.togglePostingEnabled} />
+                    <Toggle checked={posting_enabled as boolean} onChange={this.togglePostingEnabled} />
                     <Error apiErrors={apiErrors && apiErrors.posting_enabled} />
                   </ToggleRow>
 
@@ -608,7 +592,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.commentingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
+                    <Toggle checked={commenting_enabled as boolean} onChange={this.toggleCommentingEnabled} />
                     <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
                   </ToggleRow>
 
@@ -616,7 +600,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <ToggleLabel>
                       <FormattedMessage {...messages.votingEnabled} />
                     </ToggleLabel>
-                    <Toggle value={voting_enabled as boolean} onChange={this.toggleVotingEnabled} />
+                    <Toggle checked={voting_enabled as boolean} onChange={this.toggleVotingEnabled} />
                     <Error apiErrors={apiErrors && apiErrors.voting_enabled} />
                   </ToggleRow>
                 </StyledSectionField>
@@ -690,54 +674,31 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     </FeatureFlag>
                   </>
                 }
-
-                <SectionField className="e2e-participation-context-location-allowed">
-                  <SubSectionTitle>
-                    <FormattedMessage {...messages.allowLocation} />
-                    <IconTooltip content={<FormattedMessage {...messages.allowLocationTooltip} />} />
-                  </SubSectionTitle>
-                  <Radio
-                    onChange={this.handleLocationAllowedOnChange}
-                    currentValue={location_allowed}
-                    value={true}
-                    name="location_allowed"
-                    id="locationd-enabled"
-                    className={`e2e-location-enabled ${location_allowed ? 'selected' : ''}`}
-                    label={<FormattedMessage {...messages.enabled} />}
-                  />
-                  <Radio
-                    onChange={this.handleLocationAllowedOnChange}
-                    currentValue={location_allowed}
-                    value={false}
-                    name="location_allowed"
-                    id="location-disabled"
-                    className={`e2e-location-disabled ${!location_allowed ? 'selected' : ''}`}
-                    label={<FormattedMessage {...messages.disabled} />}
-                  />
-                  <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-                </SectionField>
-
-                {location_allowed &&
-                  <SectionField>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.defaultDisplay} />
-                      <IconTooltip content={<FormattedMessage {...messages.defaultDisplayTooltip} />} />
-                    </SubSectionTitle>
-                    {['card', 'map'].map((key) => (
-                      <Radio
-                        key={key}
-                        onChange={this.handleIdeasDisplayChange}
-                        currentValue={presentation_mode}
-                        value={key}
-                        name="presentation_mode"
-                        id={`presentation_mode-${key}`}
-                        label={<FormattedMessage {...messages[`${key}Display`]} />}
-                      />
-                    ))}
-                    <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-                  </SectionField>
-                }
               </>
+            }
+
+            {(
+              participation_method === 'ideation' ||
+              participation_method === 'budgeting'
+            ) &&
+              <SectionField>
+                <SubSectionTitle>
+                  <FormattedMessage {...messages.defaultDisplay} />
+                  <IconTooltip content={<FormattedMessage {...messages.presentationModeTooltip} />} />
+                </SubSectionTitle>
+                {['card', 'map'].map((key) => (
+                  <Radio
+                    key={key}
+                    onChange={this.handleIdeasDisplayChange}
+                    currentValue={presentation_mode}
+                    value={key}
+                    name="presentation_mode"
+                    id={`presentation_mode-${key}`}
+                    label={<FormattedMessage {...messages[`${key}Display`]} />}
+                  />
+                ))}
+                <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+              </SectionField>
             }
 
             {participation_method === 'poll' &&
@@ -748,7 +709,7 @@ class ParticipationContext extends PureComponent<Props & InjectedIntlProps, Stat
                     <IconTooltip content={<FormattedMessage {...messages.anonymousPollingTooltip} />} />
                   </SubSectionTitle>
 
-                  <Toggle value={poll_anonymous as boolean} onChange={this.togglePollAnonymous} />
+                  <Toggle checked={poll_anonymous as boolean} onChange={this.togglePollAnonymous} />
 
                   <Error apiErrors={apiErrors && apiErrors.poll_anonymous} />
                 </SectionField>

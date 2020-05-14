@@ -7,14 +7,14 @@ import { isEmpty } from 'lodash-es';
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
 
 // services
-import { updateIdeaCustomField } from 'services/ideaCustomFields';
+import { updateIdeaCustomField, IUpdatedIdeaCustomFieldProperties } from 'services/ideaCustomFields';
 
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
 import IdeaCustomField from './IdeaCustomField';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -47,6 +47,11 @@ const StyledSectionTitle = styled(SectionTitle)`
   margin: 0;
 `;
 
+const StyledSubSectionTitle = styled(SubSectionTitle)`
+  font-weight: 500;
+  margin-bottom: 20px;
+`;
+
 const CollapseExpandAllButton = styled(Button)``;
 
 const Content = styled.div`
@@ -71,7 +76,8 @@ interface Props {
 
 interface IChanges {
   [key: string]: {
-    description_multiloc: Multiloc;
+    description_multiloc?: Multiloc;
+    enabled?: boolean;
   };
 }
 
@@ -119,15 +125,27 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
     setCollapsed(newCollapsed);
   }, [collapsed, allExpanded]);
 
-  const handleIdeaCustomFieldOnChange = useCallback((ideaCustomFieldId: string, { description_multiloc }: { description_multiloc: Multiloc }) => {
+  const handleIdeaCustomFieldOnChange = useCallback((
+    ideaCustomFieldId: string,
+    updatedProperties: IUpdatedIdeaCustomFieldProperties,
+  ) => {
     setSuccess(false);
     setError(false);
-    setChanges((changes) => ({
-      ...changes,
-      [ideaCustomFieldId]: {
-        description_multiloc
-      }
-    }));
+    setChanges((changes) => {
+      const fieldChanges = changes[ideaCustomFieldId] ? ({
+        ...changes[ideaCustomFieldId],
+        ...updatedProperties
+      }) : ({
+        ...updatedProperties
+      });
+
+      return ({
+        ...changes,
+        [ideaCustomFieldId]: {
+          ...fieldChanges
+        }
+      });
+    });
   }, []);
 
   const handleOnSubmit = useCallback(async () => {
@@ -163,31 +181,35 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
             <StyledSectionTitle>
               <FormattedMessage {...messages.title} />
             </StyledSectionTitle>
-            <CollapseExpandAllButton
-              buttonStyle="secondary"
-              padding="7px 10px"
-              onClick={handleCollapseExpandAll}
-              text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
-            />
           </TitleContainer>
           <SectionSubtitle>
-            <FormattedMessage {...messages.subtitle} />
+            <FormattedMessage {...messages.description} />
           </SectionSubtitle>
         </Header>
 
         <Content>
-          {ideaCustomFields.data.map((ideaCustomField, index) => {
-            return (
-              <IdeaCustomField
-                key={ideaCustomField.id}
-                collapsed={collapsed[ideaCustomField.id]}
-                first={index === 0}
-                ideaCustomField={ideaCustomField}
-                onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
-                onChange={handleIdeaCustomFieldOnChange}
+          <Section>
+            <StyledSubSectionTitle>
+              <CollapseExpandAllButton
+                buttonStyle="secondary"
+                padding="7px 10px"
+                onClick={handleCollapseExpandAll}
+                text={!allExpanded ? formatMessage(messages.expandAll) : formatMessage(messages.collapseAll)}
               />
-            );
-          })}
+            </StyledSubSectionTitle>
+            {ideaCustomFields.data.map((ideaCustomField, index) => {
+              return (
+                <IdeaCustomField
+                  key={ideaCustomField.id}
+                  collapsed={collapsed[ideaCustomField.id]}
+                  first={index === 0}
+                  ideaCustomField={ideaCustomField}
+                  onCollapseExpand={handleIdeaCustomFieldOnCollapseExpand}
+                  onChange={handleIdeaCustomFieldOnChange}
+                />
+              );
+            })}
+          </Section>
         </Content>
 
         <Footer>
@@ -196,6 +218,7 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
             onClick={handleOnSubmit}
             processing={processing}
             disabled={isEmpty(changes)}
+            id="e2e-ideaform-settings-submit"
           >
             {success
               ? <FormattedMessage {...messages.saved} />

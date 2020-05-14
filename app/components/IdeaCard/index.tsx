@@ -338,7 +338,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(idea, 'relationships.idea_images.data[0].id')}>{render}</GetIdeaImage>,
   ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
 });

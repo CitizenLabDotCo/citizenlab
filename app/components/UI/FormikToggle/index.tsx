@@ -13,7 +13,7 @@ class FormikToggle extends React.PureComponent<FieldProps & Props> {
     return (
       <Toggle
         {...this.props}
-        value={value}
+        checked={value}
         onChange={this.handleOnChange}
       />
     );
