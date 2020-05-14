@@ -137,7 +137,6 @@ describe('Idea cards inside of a project with location enabled', () => {
       description: projectDescription,
       publicationStatus: 'published',
       participationMethod: 'ideation',
-      locationAllowed: true
     }).then((project) => {
       projectId = project.body.data.id;
       const ideaTitle = randomString();
@@ -178,7 +177,6 @@ describe('Idea cards inside of a project with location disabled', () => {
       description: projectDescription,
       publicationStatus: 'published',
       participationMethod: 'ideation',
-      locationAllowed: false
     }).then((project) => {
       projectId = project.body.data.id;
       const ideaTitle = randomString();

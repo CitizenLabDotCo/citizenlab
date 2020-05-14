@@ -80,7 +80,7 @@ export const Spacer = styled.div`
   height: 10px;
 `;
 
-const OptionalText = styled.span<{ thin: boolean | undefined }>`
+const OptionalityText = styled.span<{ thin: boolean | undefined }>`
   font-weight: ${props => props.thin ? 300 : 400};
 `;
 
@@ -126,11 +126,11 @@ export const FormLabel = memo<FormLabelProps>(({
   >
     <FormattedMessage {...labelMessage} values={labelMessageValues} />
     {optional &&
-      <OptionalText thin={thin}>
+      <OptionalityText thin={thin}>
         {' ('}
         <FormattedMessage {...messages.optional} />
         {')'}
-      </OptionalText>
+      </OptionalityText>
     }
     {(subtextMessage || subtext) &&
       <>
@@ -164,11 +164,11 @@ export const FormLabelValue = memo(({
     <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
       {labelValue}
       {optional &&
-        <OptionalText thin={thin}>
+        <OptionalityText thin={thin}>
           {' ('}
           <FormattedMessage {...messages.optional} />
           {')'}
-        </OptionalText>
+        </OptionalityText>
       }
       {subtextValue &&
         <>

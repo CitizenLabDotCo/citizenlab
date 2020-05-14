@@ -18,7 +18,8 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
+import GetIdeaCustomFieldsSchemas, { GetIdeaCustomFieldsSchemasChildProps } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
 import messages from './messages';
@@ -33,6 +34,10 @@ import { rgba } from 'polished';
 // typings
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
+import { withRouter, WithRouterProps } from 'react-router';
+import {
+  CustomFieldCodes,
+} from 'services/ideaCustomFields';
 
 const Container = styled.div`
   width: 100%;
@@ -208,6 +213,8 @@ const Footer = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
+const ListView = styled.div``;
+
 interface InputProps extends GetIdeasInputProps  {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
@@ -219,10 +226,11 @@ interface InputProps extends GetIdeasInputProps  {
 }
 
 interface DataProps {
+  locale: GetLocaleChildProps;
   windowSize: GetWindowSizeChildProps;
   ideas: GetIdeasChildProps;
   project: GetProjectChildProps;
-  phase: GetPhaseChildProps;
+  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -275,6 +283,24 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     this.setState({ selectedView });
   }
 
+  isFieldEnabled = (
+    fieldCode: CustomFieldCodes,
+  ) => {
+    /*
+      If IdeaCards are used in a location that's not inside a project,
+      and has no ideaCustomFields settings as such,
+      we fall back to true
+    */
+
+    const { ideaCustomFieldsSchemas, locale } = this.props;
+
+    if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
+      return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] !== 'hidden';
+    }
+
+    return true;
+  }
+
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
 
@@ -286,12 +312,10 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       participationContextType,
       windowSize,
       ideas,
-      project,
-      phase,
       className,
       theme,
       allowProjectsFilter,
-      showViewToggle
+      showViewToggle,
     } = this.props;
     const {
       queryParameters,
@@ -301,18 +325,12 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       loadingMore
     } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
-    const showListView = (selectedView === 'card');
-    const showMapView = (selectedView === 'map');
+    const locationEnabled = this.isFieldEnabled('location');
+    const topicsEnabled = this.isFieldEnabled('topic_ids');
+    const showViewButtons = !!(locationEnabled && showViewToggle);
+    const showListView = !locationEnabled || (locationEnabled && selectedView === 'card');
+    const showMapView = (locationEnabled && selectedView === 'map');
     const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
-    let locationAllowed: boolean | undefined = true;
-
-    if (participationContextType === 'phase' && !isNilOrError(phase)) {
-      locationAllowed =  phase?.attributes?.location_allowed;
-    } else if (participationContextType === 'project' && !isNilOrError(project)) {
-      locationAllowed =  project?.attributes?.location_allowed;
-    }
-
-    const showViewButtons = !!(locationAllowed && showViewToggle);
 
     return (
       <Container id="e2e-ideas-container" className={className}>
@@ -330,7 +348,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
             <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'} ${showViewButtons ? 'hasViewButtons' : ''}`}>
               <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
               {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
-              <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
+              {topicsEnabled && <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />}
             </DropdownFilters>
 
             {showViewButtons &&
@@ -342,54 +360,56 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </RightFilterArea>
         </FiltersArea>
 
-        {showListView && querying &&
-          <Loading id="ideas-loading">
-            <Spinner />
-          </Loading>
-        }
-
-        {!querying && !hasIdeas && !showMapView &&
-          <EmptyContainer id="ideas-empty">
-            <IdeaIcon ariaHidden name="idea" />
-            <EmptyMessage>
-              <EmptyMessageLine>
-                <FormattedMessage {...messages.noIdeasForFilter} />
-              </EmptyMessageLine>
-            </EmptyMessage>
-          </EmptyContainer>
-        }
-
-        {showListView && !querying && hasIdeas && list &&
-          <IdeasList id="e2e-ideas-list">
-            {list.map((idea) => (
-              <StyledIdeaCard
-                key={idea.id}
-                ideaId={idea.id}
-                participationMethod={participationMethod}
-                participationContextId={participationContextId}
-                participationContextType={participationContextType}
-              />
-            ))}
-          </IdeasList>
-        }
-
-        {showListView && !querying && hasMore &&
-          <Footer>
-            <ShowMoreButton
-              id="e2e-idea-cards-show-more-button"
-              onClick={this.loadMore}
-              buttonStyle="secondary"
-              text={<FormattedMessage {...messages.showMore} />}
-              processing={loadingMore}
-              height="50px"
-              icon="showMore"
-              iconPos="left"
-              textColor={theme.colorText}
-              bgColor={rgba(theme.colorText, 0.08)}
-              bgHoverColor={rgba(theme.colorText, 0.12)}
-              fontWeight="500"
-            />
-          </Footer>
+        {showListView &&
+          <ListView>
+            {querying ?
+              <Loading id="ideas-loading">
+                <Spinner />
+              </Loading>
+            :
+              <>
+                {hasIdeas && list ?
+                  <IdeasList id="e2e-ideas-list">
+                    {list.map((idea) => (
+                      <StyledIdeaCard
+                        key={idea.id}
+                        ideaId={idea.id}
+                        participationMethod={participationMethod}
+                        participationContextId={participationContextId}
+                        participationContextType={participationContextType}
+                      />))}
+                  </IdeasList>
+                  :
+                  <EmptyContainer id="ideas-empty">
+                    <IdeaIcon ariaHidden name="idea" />
+                    <EmptyMessage>
+                      <EmptyMessageLine>
+                        <FormattedMessage {...messages.noIdeasForFilter} />
+                      </EmptyMessageLine>
+                    </EmptyMessage>
+                  </EmptyContainer>
+                }
+                {hasMore &&
+                  <Footer>
+                    <ShowMoreButton
+                      id="e2e-idea-cards-show-more-button"
+                      onClick={this.loadMore}
+                      buttonStyle="secondary"
+                      text={<FormattedMessage {...messages.showMore} />}
+                      processing={loadingMore}
+                      height="50px"
+                      icon="showMore"
+                      iconPos="left"
+                      textColor={theme.colorText}
+                      bgColor={rgba(theme.colorText, 0.08)}
+                      bgHoverColor={rgba(theme.colorText, 0.12)}
+                      fontWeight="500"
+                    />
+                  </Footer>
+                }
+              </>
+            }
+          </ListView>
         }
 
         {showMapView &&
@@ -400,17 +420,26 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  locale: <GetLocale />,
   windowSize: <GetWindowSize />,
-  ideas: ({ render, children, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
+  ideas: ({ render, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
+  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
+  ideaCustomFieldsSchemas: ({ project, render }) => {
+    return (
+      <GetIdeaCustomFieldsSchemas
+        projectId={!isNilOrError(project) ? project.id : null}
+      >
+        {render}
+      </GetIdeaCustomFieldsSchemas>
+    );
+  }
 });
 
 const WithoutFiltersSidebarWithHoCs = withTheme(injectIntl(WithoutFiltersSidebar));
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {dataProps => <WithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />}
   </Data>
-);
+));

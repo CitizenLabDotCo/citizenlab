@@ -4,7 +4,7 @@ import { IRelationship, Multiloc } from 'typings';
 
 export type IInputType = 'text' | 'number' | 'multiline_text' | 'select' | 'multiselect' | 'checkbox' | 'date';
 
-export interface ICustomFieldData {
+export interface IUserCustomFieldData {
   id: string;
   type: string;
   attributes: {
@@ -26,26 +26,26 @@ export interface ICustomFieldData {
   };
 }
 
-export interface CustomFieldsInfos {
+export interface UserCustomFieldsInfos {
   schema: any;
   uiSchema: any;
   hasRequiredFields: boolean;
   hasCustomFields: boolean;
 }
 
-export function isBuiltInField(field: ICustomFieldData) {
+export function isBuiltInField(field: IUserCustomFieldData) {
   return !!field.attributes.code;
 }
 
-export interface ICustomField {
-  data: ICustomFieldData;
+export interface IUserCustomField {
+  data: IUserCustomFieldData;
 }
 
-export interface ICustomFields {
-  data: ICustomFieldData[];
+export interface IUserCustomFields {
+  data: IUserCustomFieldData[];
 }
 
-export interface ICustomFieldOptionsData {
+export interface IUserCustomFieldOptionsData {
   id: string;
   type: string;
   attributes: {
@@ -62,16 +62,16 @@ export interface ICustomFieldOptionsData {
   };
 }
 
-export interface ICustomFieldOptions {
-  data: ICustomFieldOptionsData[];
+export interface IUserCustomFieldOptions {
+  data: IUserCustomFieldOptionsData[];
 }
 
 export function customFieldForUsersStream(customFieldId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<ICustomField>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}`, ...streamParams });
+  return streams.get<IUserCustomField>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}`, ...streamParams });
 }
 
 export function customFieldsForUsersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<ICustomFields>({ apiEndpoint: `${API_PATH}/users/custom_fields`, ...streamParams });
+  return streams.get<IUserCustomFields>({ apiEndpoint: `${API_PATH}/users/custom_fields`, ...streamParams });
 }
 
 export function customFieldsSchemaForUsersStream(streamParams: IStreamParams | null = null) {
@@ -79,33 +79,33 @@ export function customFieldsSchemaForUsersStream(streamParams: IStreamParams | n
 }
 
 export function addCustomFieldForUsers(data) {
-  return streams.add<ICustomField>(`${API_PATH}/users/custom_fields`, { custom_field: data });
+  return streams.add<IUserCustomField>(`${API_PATH}/users/custom_fields`, { custom_field: data });
 }
 
 export function updateCustomFieldForUsers(customFieldId: string, object) {
-  return streams.update<ICustomField>(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId, { custom_field: object });
+  return streams.update<IUserCustomField>(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId, { custom_field: object });
 }
 
 export function reorderCustomFieldForUsers(customFieldId: string, object) {
-  return streams.update<ICustomField>(`${API_PATH}/users/custom_fields/${customFieldId}/reorder`, customFieldId, { custom_field: object });
+  return streams.update<IUserCustomField>(`${API_PATH}/users/custom_fields/${customFieldId}/reorder`, customFieldId, { custom_field: object });
 }
 
-export function deleteCustomField(customFieldId: string) {
+export function deleteUserCustomField(customFieldId: string) {
   return streams.delete(`${API_PATH}/users/custom_fields/${customFieldId}`, customFieldId);
 }
 
-export function customFieldOptionsStream(customFieldId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<ICustomFieldOptions>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, ...streamParams });
+export function userCustomFieldOptionsStream(customFieldId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<IUserCustomFieldOptions>({ apiEndpoint: `${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, ...streamParams });
 }
 
-export function addCustomFieldOption(customFieldId: string, data) {
-  return streams.add<ICustomField>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, { custom_field_option: data });
+export function addUserCustomFieldOption(customFieldId: string, data) {
+  return streams.add<IUserCustomField>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options`, { custom_field_option: data });
 }
 
-export function updateCustomFieldOption(customFieldId: string, optionId: string, object) {
-  return streams.update<ICustomFieldOptions>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`, optionId, { custom_field_option: object });
+export function updateUserCustomFieldOption(customFieldId: string, optionId: string, object) {
+  return streams.update<IUserCustomFieldOptions>(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`, optionId, { custom_field_option: object });
 }
 
-export function deleteCustomFieldOption(customFieldId: string, optionId: string) {
+export function deleteUserCustomFieldOption(customFieldId: string, optionId: string) {
   return streams.delete(`${API_PATH}/users/custom_fields/${customFieldId}/custom_field_options/${optionId}`, optionId);
 }

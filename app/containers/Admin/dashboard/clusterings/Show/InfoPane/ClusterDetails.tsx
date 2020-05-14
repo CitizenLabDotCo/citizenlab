@@ -62,7 +62,7 @@ class ClusterDetails extends PureComponent<Props> {
         <h4><FormattedMessage {...messages.clusterContains} /></h4>
         <List>
           {ideaIds.map((id) => (
-            <GetIdea key={id} id={id}>
+            <GetIdea key={id} ideaId={id}>
               {(idea) => isNilOrError(idea) ? null : (
                 <ListItem key={idea.id}>
                   <T value={idea.attributes.title_multiloc} />
