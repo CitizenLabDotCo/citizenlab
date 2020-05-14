@@ -160,3 +160,5 @@ describe('Idea form settings', () => {
     apiRemoveProject(projectId);
   });
 });
+
+// TODO: remove list/view toggle tests from idea_cards, add those tests here
