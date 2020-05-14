@@ -1092,7 +1092,7 @@
   "app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip": "The first added project image is used in the project overview on the home page. All images are shown on the project page. The ideal dimensions are 800x800.",
   "app.containers.AdminPage.ProjectEdit.projectName": "Project name",
   "app.containers.AdminPage.ProjectEdit.projectTypeTitle": "Project type",
-  "app.containers.AdminPage.ProjectEdit.projectTypeTooltip": "Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.",
+  "app.containers.AdminPage.ProjectEdit.projectTypeTooltip": "Choose whether or not the project has a timeline. Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.",
   "app.containers.AdminPage.ProjectEdit.projectTypeWarning": "The project type can not be changed later.",
   "app.containers.AdminPage.ProjectEdit.publishedStatus": "Published",
   "app.containers.AdminPage.ProjectEdit.purposes": "Purposes",
