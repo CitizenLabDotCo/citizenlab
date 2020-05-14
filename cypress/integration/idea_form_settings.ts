@@ -25,6 +25,13 @@ describe('Idea form settings', () => {
   });
 
   describe('Enabled setting', () => {
+    describe('Location enabled', () => {
+      it('Shows the list/view toggle above the idea cards', () => {
+        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.get('#e2e-ideas-container');
+        cy.get('.e2e-list-map-viewbuttons').should('exist');
+      });
+    });
     describe('Location disabled', () => {
       it('Doesn\'t show a disabled field in the idea form', () => {
         // check that location field is in the project's idea form initially
@@ -76,6 +83,26 @@ describe('Idea form settings', () => {
         cy.get('#e2e-idea-show-page-content');
         cy.wait(1000);
         cy.get('#e2e-map-toggle').should('not.exist');
+      });
+
+      it('Doesn\'t show the list/view toggle above the idea cards', () => {
+        // check that location field is in the project's idea form initially
+        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.get('#e2e-ideas-container');
+        cy.get('.e2e-list-map-viewbuttons').should('exist');
+
+        // go to idea form settings of our newly created project
+        cy.visit(`admin/projects/${projectId}/ideaform`);
+
+        // set project idea form setting of location to disabled
+        cy.get('.e2e-location-setting-collapsed').click();
+        cy.get('.e2e-location-enabled-toggle-label').click();
+        cy.get('#e2e-ideaform-settings-submit').click();
+
+        // verify buttons are not there anymore
+        cy.visit(`projects/${projectTitle}/ideas`);
+        cy.get('#e2e-ideas-container');
+        cy.get('.e2e-list-map-viewbuttons').should('not.exist');
       });
     });
   });
@@ -160,5 +187,3 @@ describe('Idea form settings', () => {
     apiRemoveProject(projectId);
   });
 });
-
-// TODO: remove list/view toggle tests from idea_cards, add those tests here
