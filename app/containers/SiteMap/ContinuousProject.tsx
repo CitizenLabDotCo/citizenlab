@@ -29,7 +29,7 @@ const ContinuousProject = ({ project }: Props) => (
     )}
     {(project.attributes.participation_method === 'survey') && (
       <li>
-        <Link to={`/projects/${project.attributes.slug}/survey`}>
+        <Link to={`/projects/${project.attributes.slug}/info`}>
           <FormattedMessage {...messages.projectSurvey} />
         </Link>
       </li>

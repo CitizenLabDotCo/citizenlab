@@ -47,18 +47,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectIdeaForm.required',
     defaultMessage: 'Required',
   },
-  visibleToEveryone: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.visibleToEveryone',
-    defaultMessage: 'Visible to everyone',
-  },
-  visibleToAdmin: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.visibleToAdmin',
-    defaultMessage: 'Visible to admins and project moderators only',
-  },
-  visibility: {
-    id: 'app.containers.AdminPage.ProjectIdeaForm.visibility',
-    defaultMessage: 'Visibility on idea page',
-  },
   enabledTooltip: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.enabledTooltip',
     defaultMessage: 'Enable this field for people who want to create an idea for this project.',
