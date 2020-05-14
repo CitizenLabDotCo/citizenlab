@@ -57,13 +57,13 @@ pl:
       "comment_on_your_comment": Odpowiedź na Twój komentarz - wszyscy użytkownicy
       "comment_on_your_idea": Komentowanie Twojego pomysłu - wszyscy użytkownicy
       "comment_on_your_initiative": Komentowanie Twojej propozycji - wszyscy użytkownicy
-      "first_idea_published": Publication of your first idea - all users
+      "first_idea_published": Publikacja Twojego pierwszego pomysłu - wszyscy użytkownicy
       "idea_assigned_to_you": Przydzielenie pomysłu - administratorzy i moderatorzy projektu
       "idea_marked_as_spam": Zgłaszania pomysłu jako spamu - administratorzy i moderatorzy projektów
-      "idea_published": Publication of your idea - all users
+      "idea_published": Publikacja Twojego pomysłu - wszyscy użytkownicy
       "initiative_assigned_to_you": Przydzielenie propozycji - administratorzy
-      "initiative_marked_as_spam": Proposal spam report - admins
-      "initiative_published": Publication of your proposal - all users
+      "initiative_marked_as_spam": Zgłaszanie propozycji jako spamu - administratorzy
+      "initiative_published": Publikacja Twojej propozycji - wszyscy użytkownicy
       "invite_received": Zaproszenie - wszyscy użytkownicy
       "invite_reminder": Przypomnienie o zaproszeniu - wszyscy użytkownicy
       "mention_in_comment": Wzmianka w komentarzu - wszyscy użytkownicy
@@ -75,23 +75,23 @@ pl:
       "new_comment_on_voted_initiative": Nowy komentarz do propozycji, na który głosowałeś - wszyscy użytkownicy
       "new_idea_for_admin": Nowy pomysł - administratorzy i moderatorzy projektów
       "new_initiative_for_admin": Nowy wniosek - administratorzy
-      "official_feedback_on_commented_idea": Update on an idea you commented on - all users
-      "official_feedback_on_commented_initiative": Update on a proposal you commented on - all users
+      "official_feedback_on_commented_idea": Aktualizacja pomysłu, który skomentowałeś - wszyscy użytkownicy
+      "official_feedback_on_commented_initiative": Aktualizacja propozycji, którą skomentowałeś - wszyscy użytkownicy
       "official_feedback_on_voted_idea": Aktualizacja pomysłu, na który głosowałeś - wszyscy użytkownicy
-      "official_feedback_on_voted_initiative": Update on a proposal you voted on - all users
+      "official_feedback_on_voted_initiative": Aktualizacja propozycji, nad którą głosowałeś - wszyscy użytkownicy
       "official_feedback_on_your_idea": Aktualizacja Twojego pomysłu - wszyscy użytkownicy
       "official_feedback_on_your_initiative": Aktualizacja Twojej propozycji - wszyscy użytkownicy
       "password_reset": Zmiana hasła - wszyscy użytkownicy
-      "project_moderation_rights_received": Project moderation rights received - project moderators
+      "project_moderation_rights_received": Otrzymanie prawa do moderacji projektu - moderatorzy projektu
       "project_phase_started": Nowy etap projektu - wszyscy użytkownicy
-      "project_phase_upcoming": Upcoming new project phase - admins and project moderators
-      "status_change_of_commented_idea": Status change of an idea you commented on - all users
-      "status_change_of_commented_initiative": Status change of a proposal you commented on - all users
-      "status_change_of_voted_idea": Status change of an idea you voted on - all users
-      "status_change_of_voted_initiative": Status change of a proposal you voted on - all users
+      "project_phase_upcoming": Nowy etap projektu - administratorzy i moderatorzy projektu
+      "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałeś - wszyscy użytkownicy
+      "status_change_of_commented_initiative": Zmiana statusu propozycji, którą skomentowałeś - wszyscy użytkownicy
+      "status_change_of_voted_idea": Zmiana statusu pomysłu, na który głosowałeś - wszyscy użytkownicy
+      "status_change_of_voted_initiative": Zmiana statusu wniosku, nad którym głosowałeś - wszyscy użytkownicy
       "status_change_of_your_idea": Zmiana statusu Twojego pomysłu - wszyscy użytkownicy
       "status_change_of_your_initiative": Zmiana statusu Twojej propozycji - wszyscy użytkownicy
-      "threshold_reached_for_admin": Proposal reached the voting threshold - admins
+      "threshold_reached_for_admin": Propozycja osiągnęła próg poparcia w głosowaniu - administratorzy
       "welcome": Nowy użytkownik - administratorzy
       "admin_digest": Przegląd tygodniowy - administratorzy
       "moderator_digest": Przegląd tygodniowy - moderatorzy projektów

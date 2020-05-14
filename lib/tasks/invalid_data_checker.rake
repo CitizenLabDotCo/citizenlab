@@ -21,6 +21,7 @@ namespace :checks do
       tenant.settings.dig('core', 'lifecycle_stage') == 'active' || tenant.host.ends_with?(ENV.fetch('TEMPLATE_URL_SUFFIX','.localhost'))
     end.each do |tenant|
       Apartment::Tenant.switch(tenant.schema_name) do
+        puts "Processing #{tenant.host}..."
         Cl2DataListingService.new.cl2_tenant_models.each do |claz|
           claz.all.find_each do |object|
             errors = validation_errors object

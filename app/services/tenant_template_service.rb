@@ -349,11 +349,8 @@ class TenantTemplateService
   end
 
   def yml_custom_fields
-    # No custom fields are required anymore because
-    # the user choices cannot be remembered.
     CustomField.all.map do |c|
       yml_custom_field = {
-        'resource_type'        => c.resource_type,
         'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
         'key'                  => c.key,
         'input_type'           => c.input_type,
@@ -365,6 +362,14 @@ class TenantTemplateService
         'enabled'              => c.enabled,
         'code'                 => c.code
       }
+      if c.resource_type == User.name
+        yml_custom_field['resource_type'] = c.resource_type
+        # No user custom fields are required anymore because
+        # the user choices cannot be remembered.
+      else
+        yml_custom_field['resource_ref'] = c.resource_id && lookup_ref(c.resource_id, :custom_form)
+        yml_custom_field['required'] = c.required
+      end
       store_ref yml_custom_field, c.id, :custom_field
       yml_custom_field
     end
@@ -488,7 +493,7 @@ class TenantTemplateService
         'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
-        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field),
+        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_form),
         'admin_publication_attributes' => { 
           'publication_status'         => p.admin_publication.publication_status,
           'ordering'                   => p.admin_publication.ordering,
@@ -574,8 +579,7 @@ class TenantTemplateService
       'downvoting_enabled'           => pc.downvoting_enabled,
       'voting_method'                => pc.voting_method,
       'voting_limited_max'           => pc.voting_limited_max,
-      'max_budget'                   => pc.max_budget,
-      'location_allowed'             => pc.location_allowed
+      'max_budget'                   => pc.max_budget
     }
     if yml_pc['participation_method'] == 'survey'
       yml_pc.merge!({
