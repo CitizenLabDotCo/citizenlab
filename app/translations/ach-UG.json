@@ -1720,7 +1720,7 @@
   "app.containers.Projects.PollForm.pollDisabledProjectInactive": "crwdns27714:0crwdne27714:0",
   "app.containers.Projects.PollForm.sendAnswer": "crwdns27716:0crwdne27716:0",
   "app.containers.Projects.PollForm.signUpLinkText": "crwdns29113:0crwdne29113:0",
-  "app.containers.Projects.PollForm.signUpToTakePoll": "crwdns27718:0crwdne27718:0",
+  "app.containers.Projects.PollForm.signUpToTakePoll": "crwdns27718:0{logInLink}crwdne27718:0",
   "app.containers.Projects.PollForm.verificationLinkText": "crwdns28794:0crwdne28794:0",
   "app.containers.Projects.a11y_phase": "crwdns28706:0{phaseNumber}crwdnd28706:0{phaseTitle}crwdne28706:0",
   "app.containers.Projects.a11y_phasesOverview": "crwdns28708:0crwdne28708:0",
