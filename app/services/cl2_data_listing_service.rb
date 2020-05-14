@@ -4,7 +4,7 @@ class Cl2DataListingService
     # After https://github.com/rails/rails/issues/37006.
     # It seems that we need to use Zeitwerk::Loader.eager_load_all
     # instead of Rails.application.eager_load!.
-    Zeitwerk::Loader.eager_load_all if Rails.env.development?
+    Zeitwerk::Loader.eager_load_all if Rails.env.development? || (File.basename($0) == 'rake')
     views = ActiveRecord::Base.connection.execute(
       "SELECT table_name FROM information_schema.tables WHERE table_type = 'VIEW'"
       ).map{|r| r['table_name']}
