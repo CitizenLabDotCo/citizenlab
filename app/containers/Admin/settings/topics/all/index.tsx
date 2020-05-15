@@ -3,17 +3,17 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { clone, isEqual } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import { deleteTopic, ITopicData, reorderTopic } from 'services/topics';
+import { deleteTopic, ITopicData } from 'services/topics';
 
 import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 import { Section, SectionSubtitle, SectionTitle } from 'components/admin/Section';
-import { List, TextCell, SortableRow } from 'components/admin/ResourceList';
+import { List, TextCell, Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import styled from 'styled-components';
@@ -67,37 +67,6 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
     }
   }
 
-  handleDragRow = (fromIndex, toIndex) => {
-    if (!this.state.isProcessing) {
-      const listItems = this.listItems();
-
-      if (isNilOrError(listItems)) return;
-
-      const itemsWhileDragging = clone(listItems);
-      itemsWhileDragging.splice(fromIndex, 1);
-      itemsWhileDragging.splice(toIndex, 0, listItems[fromIndex]);
-      // const cleanItemsWhileDragging = itemsWhileDragging.filter(i => !isNilOrError(i)) as ITopicData[];
-      this.setState({
-        itemsWhileDragging // cleanItemsWhileDragging
-      });
-    }
-  }
-
-  handleDropRow = (fieldId: string, toIndex: number) => {
-    const listItems = this.listItems();
-
-    if (isNilOrError(listItems)) return;
-
-    const field = listItems.find(listItem => !isNilOrError(listItem) && listItem.id === fieldId);
-
-    if (!isNilOrError(field) && field.attributes.ordering !== toIndex) {
-      this.setState({ isProcessing: true });
-      reorderTopic(fieldId, toIndex).then(() => this.setState({ isProcessing: false }));
-    } else {
-      this.setState({ itemsWhileDragging: null });
-    }
-  }
-
   listItems = () => {
     const { itemsWhileDragging } = this.state;
     const { topics } = this.props;
@@ -135,14 +104,11 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
               }
               if (isNilOrError(field)) return null;
               return (
-                <SortableRow
+                <Row
                   key={field.id}
                   id={field.id}
                   className="e2e-topic-field-row"
-                  index={index}
                   lastItem={lastItem}
-                  moveRow={this.handleDragRow}
-                  dropRow={this.handleDropRow}
                 >
                   <TextCell className="expand">
                     <T value={field.attributes.title_multiloc} />
@@ -164,7 +130,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
                   </Buttons>
-                </SortableRow>
+                </Row>
               );
             })
           }
