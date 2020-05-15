@@ -121,6 +121,11 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         className: 'ideaform',
       },
       {
+        label: formatMessage(messages.topicsTab),
+        url: `${baseTabsUrl}/topics`,
+        className: 'topics',
+      },
+      {
         label: formatMessage(messages.volunteeringTab),
         url: `${baseTabsUrl}/volunteering`,
         feature: 'volunteering',
