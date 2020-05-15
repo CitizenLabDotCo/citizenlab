@@ -68,7 +68,7 @@ export const QuestionText = styled.span`
 interface Props {
   questions: IPollQuestion[];
   projectId: string;
-  id: string;
+  id: string | null;
   type: IParticipationContextType;
   disabled: boolean;
 }
@@ -104,7 +104,7 @@ export class PollForm extends PureComponent<Props, State> {
   sendAnswer = () => {
     const { id, type, projectId } = this.props;
     const { answers } = this.state;
-    if (this.validate()) {
+    if (this.validate() && id) {
       addPollResponse(id, type, Object.values(answers).flat(), projectId);
     }
   }
@@ -157,6 +157,7 @@ export class PollForm extends PureComponent<Props, State> {
           <Button
             onClick={this.sendAnswer}
             size="2"
+            fullWidth={true}
             disabled={!isValid}
             className="e2e-send-poll"
           >

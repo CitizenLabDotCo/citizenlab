@@ -122,7 +122,7 @@ export class PollSection extends PureComponent<Props> {
     if (!isNilOrError(pollQuestions) && !isNilOrError(project) && !!(type === 'phase' ? !isNilOrError(phase) : true)) {
       const isSignedIn = !isNilOrError(authUser);
       const { enabled, disabledReason } = getPollTakingRules({ project, phaseContext: phase, signedIn: !!authUser });
-      const message = disabledReason ? disabledMessages[disabledReason] : messages.pollDisabledNotPossible;
+      const message = disabledReason ? disabledMessages[disabledReason] : (isSignedIn ? messages.pollDisabledNotPossible : messages.pollDisabledMaybeNotPermitted);
 
       return (
         <Container>
@@ -144,7 +144,7 @@ export class PollSection extends PureComponent<Props> {
                 <PollForm
                   projectId={projectId}
                   questions={pollQuestions}
-                  id={type === 'project' ? projectId : phaseId as string}
+                  id={type === 'project' ? projectId : phaseId}
                   type={type}
                   disabled={!enabled || isNilOrError(authUser)}
                 />
