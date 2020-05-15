@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useState, useEffect } from 'react';
 
 // components
 import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
@@ -12,6 +12,10 @@ import { handleOnSSOClick } from 'services/singleSignOn';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
+
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'components/SignUpIn/tracks';
 
 // style
 import styled from 'styled-components';
@@ -40,6 +44,14 @@ const SignIn = memo<Props>(({
 }) => {
   const [activeStep, setActiveStep] = useState<TSignInSteps>('auth-providers');
 
+  useEffect(() => {
+    trackEventByName(tracks.signInFlowEntered);
+
+    return () => {
+      trackEventByName(tracks.signInFlowExited);
+    };
+  }, []);
+
   const handleOnAuthProviderSelected = useCallback((selectedMethod: AuthProvider) => {
     if (selectedMethod === 'email') {
       setActiveStep('password-signin');
@@ -53,6 +65,7 @@ const SignIn = memo<Props>(({
   }, [onGoToSignUp]);
 
   const handleOnSignInCompleted = useCallback((userId: string) => {
+    trackEventByName(tracks.signInFlowCompleted);
     onSignInCompleted(userId);
   }, [onSignInCompleted]);
 

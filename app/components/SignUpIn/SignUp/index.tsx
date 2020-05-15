@@ -126,6 +126,8 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
     const { activeStep } = this.state;
     const steps = cloneDeep(this.state.steps);
 
+    trackEventByName(tracks.signUpFlowEntered);
+
     signUpActiveStepChange(this.state.activeStep);
 
     if (activeStep === 'auth-providers' || activeStep === 'password-signup') {
@@ -158,6 +160,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentWillUnmount() {
+    trackEventByName(tracks.signUpFlowExited);
     signUpActiveStepChange(undefined);
   }
 
@@ -205,11 +208,18 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleVerificationCompleted = () => {
+    trackEventByName(tracks.signUpVerificationStepCompleted);
     this.goToNextStep();
   }
 
   handleVerificationSkipped = () => {
+    trackEventByName(tracks.signUpVerificationStepSkipped);
     this.goToNextStep();
+  }
+
+  handleVerificationError = () => {
+    trackEventByName(tracks.signUpVerificationStepFailed);
+    this.setState({ error: true });
   }
 
   handleCustomFieldsCompleted = () => {
@@ -221,16 +231,12 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   onSignUpCompleted = () => {
-    trackEventByName(tracks.successfulSignUp);
+    trackEventByName(tracks.signUpFlowCompleted);
     this.props.onSignUpCompleted();
   }
 
   goToSignIn = () => {
     clHistory.push('/sign-in');
-  }
-
-  onVerificationError = () => {
-    this.setState({ error: true });
   }
 
   onResize = (_width, height) => {
@@ -342,7 +348,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                     skippable={true}
                     onComplete={this.handleVerificationCompleted}
                     onSkipped={this.handleVerificationSkipped}
-                    onError={this.onVerificationError}
+                    onError={this.handleVerificationError}
                   />
                 }
 

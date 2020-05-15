@@ -30,6 +30,10 @@ import messages from './messages';
 import { isValidEmail } from 'utils/validate';
 import { isNilOrError } from 'utils/helperUtils';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'components/SignUpIn/tracks';
+
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
@@ -116,6 +120,14 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
     });
   }
 
+  componentDidMount() {
+    trackEventByName(tracks.signInEmailPasswordEntered);
+  }
+
+  componentWillUnmount() {
+    trackEventByName(tracks.signInEmailPasswordExited);
+  }
+
   handlePasswordOnChange = (password: string) => {
     this.setState({
       password,
@@ -170,8 +182,10 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
       try {
         this.setState({ processing: true });
         const user = await signIn(email, password);
+        trackEventByName(tracks.signInEmailPasswordCompleted);
         onSignInCompleted(user.data.id);
       } catch (error) {
+        trackEventByName(tracks.signInEmailPasswordFailed, { error });
         const signInError = formatMessage(messages.signInError);
         this.setState({ signInError, processing: false });
       }
