@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { InjectedIntlProps } from 'react-intl';
@@ -17,6 +17,7 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DefaultTopicRow from '../DefaultTopicRow';
 import CustomTopicRow from '../CustomTopicRow';
+import FeatureFlag from 'components/FeatureFlag';
 
 interface InputProps { }
 
@@ -66,15 +67,17 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
             <FormattedMessage {...messages.subtitleTopicManager} />
           </SectionSubtitle>
 
-          <ButtonWrapper>
-            <Button
-              buttonStyle="cl-blue"
-              icon="plus-circle"
-              linkTo="/admin/settings/topics/new"
-            >
-              <FormattedMessage {...messages.addTopicButton} />
-            </Button>
-          </ButtonWrapper>
+          {/* <FeatureFlag name="custom_topics"> */}
+            <ButtonWrapper>
+              <Button
+                buttonStyle="cl-blue"
+                icon="plus-circle"
+                linkTo="/admin/settings/topics/new"
+              >
+                <FormattedMessage {...messages.addTopicButton} />
+              </Button>
+            </ButtonWrapper>
+          {/* </FeatureFlag> */}
 
           <List key={topics.length}>
             {
