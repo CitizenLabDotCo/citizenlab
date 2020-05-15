@@ -23,7 +23,7 @@ const disabledReason = (backendReason: PollDisabledReasons | null, signedIn: boo
     case 'already_responded':
       return 'alreadyResponded';
     case 'not_verified':
-      return 'notVerified';
+      return signedIn ? 'notVerified' : 'maybeNotPermitted';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:

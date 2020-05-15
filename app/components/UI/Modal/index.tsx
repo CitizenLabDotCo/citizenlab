@@ -41,19 +41,16 @@ const mobileTranslateY = '300px';
 const desktopEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-// cubic-bezier(0.19, 1, 0.22, 1)
-// cubic-bezier(0.165, 0.84, 0.44, 1)
-
 export const ModalContent = styled.div<{ padding?: string | undefined }>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: ${({ padding }) => padding ? 0 : '30px'};
+  padding: ${({ padding }) => padding || '30px'};
 
   ${media.smallerThanMinTablet`
-    padding: ${({ padding }) => padding ? 0 : '20px'};
+    padding: ${({ padding }) => padding || '20px'};
   `}
 `;
 

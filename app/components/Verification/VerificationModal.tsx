@@ -10,12 +10,14 @@ import VerificationSteps from './VerificationSteps';
 // hooks
 import useIsMounted from 'hooks/useIsMounted';
 import useAuthUser from 'hooks/useAuthUser';
+import useWindowSize from 'hooks/useWindowSize';
 
 // events
 import { openVerificationModal$, closeVerificationModal$, closeVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // style
 import styled from 'styled-components';
+import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
@@ -64,11 +66,14 @@ export interface Props {
 const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
   const authUser = useAuthUser();
+  const { windowWidth } = useWindowSize();
 
   const isMounted = useIsMounted();
   const [activeStep, setActiveStep] = useState<VerificationModalSteps>(null);
   const [context, setContext] = useState<ContextShape>(null);
   const opened = !!activeStep;
+
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
   useEffect(() => {
     if (isMounted() && onMounted) {
@@ -110,7 +115,7 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
   return (
     <Modal
       width={820}
-      padding="0px"
+      padding={smallerThanSmallTablet ? '0px 5px 0px 5px' : '0px 20px 0px 20px'}
       opened={opened}
       close={onClose}
       closeOnClickOutside={false}
