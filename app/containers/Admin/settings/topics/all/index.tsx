@@ -1,27 +1,22 @@
-import React from 'react';
+import React, { lazy } from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { isEqual } from 'lodash-es';
 
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import { deleteTopic, ITopicData } from 'services/topics';
+import { deleteTopic } from 'services/topics';
 
 import messages from '../messages';
-import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
+// components
 import { Section, SectionSubtitle, SectionTitle } from 'components/admin/Section';
-import { List, TextCell, Row } from 'components/admin/ResourceList';
+import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import styled from 'styled-components';
-
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-`;
+import DefaultTopicRow from '../DefaultTopicRow';
+import CustomTopicRow from '../CustomTopicRow';
 
 interface InputProps { }
 
@@ -32,7 +27,6 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 interface State {
-  itemsWhileDragging: (ITopicData | Error)[] | null;
   isProcessing: boolean;
 }
 
@@ -41,19 +35,8 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
   constructor(props) {
     super(props);
     this.state = {
-      itemsWhileDragging: null,
       isProcessing: false
     };
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    const { itemsWhileDragging } = this.state;
-    const prevTopicsIds = (!isNilOrError(prevProps.topics) && prevProps.topics.map(topic => !isNilOrError(topic) && topic.id));
-    const nextTopicsIds = (!isNilOrError(this.props.topics) && this.props.topics.map(topic => !isNilOrError(topic) && topic.id));
-
-    if (itemsWhileDragging && !isEqual(prevTopicsIds, nextTopicsIds)) {
-      this.setState({ itemsWhileDragging: null });
-    }
   }
 
   handleDeleteClick = (topicId: string) => (event: React.FormEvent<any>) => {
@@ -67,76 +50,63 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
     }
   }
 
-  listItems = () => {
-    const { itemsWhileDragging } = this.state;
-    const { topics } = this.props;
-    return (itemsWhileDragging || topics);
-  }
-
   render() {
-    const listItems = this.listItems() || [];
-    if (isNilOrError(listItems)) return null;
-    const listItemsLength = listItems.length;
-    let lastItem = false;
-    return (
-      <Section>
-        <SectionTitle>
-          <FormattedMessage {...messages.titleTopicManager} />
-        </SectionTitle>
-        <SectionSubtitle>
-          <FormattedMessage {...messages.subtitleTopicManager} />
-        </SectionSubtitle>
+    const { topics } = this.props;
 
-        <ButtonWrapper>
-          <Button
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            linkTo="/admin/settings/topics/new"
-          >
-            <FormattedMessage {...messages.addTopicButton} />
-          </Button>
-        </ButtonWrapper>
-        <List key={listItems.length}>
-          {
-            listItems.map((field, index) => {
-              if (index === listItemsLength - 1) {
-                lastItem = true;
-              }
-              if (isNilOrError(field)) return null;
-              return (
-                <Row
-                  key={field.id}
-                  id={field.id}
-                  className="e2e-topic-field-row"
-                  lastItem={lastItem}
-                >
-                  <TextCell className="expand">
-                    <T value={field.attributes.title_multiloc} />
-                  </TextCell>
-                  <Buttons>
-                    <Button
-                      onClick={this.handleDeleteClick(field.id)}
-                      buttonStyle="text"
-                      icon="delete"
-                    >
-                      <FormattedMessage {...messages.deleteButtonLabel} />
-                    </Button>
+    if (!isNilOrError(topics)) {
+      let isLastItem = false;
+      const isDefaultTopic = true; // TO BE CHANGED
 
-                    <Button
-                      linkTo={`/admin/settings/topics/${field.id}`}
-                      buttonStyle="secondary"
-                      icon="edit"
-                    >
-                      <FormattedMessage {...messages.editButtonLabel} />
-                    </Button>
-                  </Buttons>
-                </Row>
-              );
-            })
-          }
-        </List>
-      </Section>
-    );
+      return (
+        <Section>
+          <SectionTitle>
+            <FormattedMessage {...messages.titleTopicManager} />
+          </SectionTitle>
+          <SectionSubtitle>
+            <FormattedMessage {...messages.subtitleTopicManager} />
+          </SectionSubtitle>
+
+          <ButtonWrapper>
+            <Button
+              buttonStyle="cl-blue"
+              icon="plus-circle"
+              linkTo="/admin/settings/topics/new"
+            >
+              <FormattedMessage {...messages.addTopicButton} />
+            </Button>
+          </ButtonWrapper>
+
+          <List key={topics.length}>
+            {
+              topics.map((topic, index) => {
+                if (!isNilOrError(topic)) {
+                  if (index === topics.length - 1) {
+                    isLastItem = true;
+                  }
+                  return (
+                    isDefaultTopic ?
+                      <DefaultTopicRow
+                        topic={topic}
+                        isLastItem={isLastItem}
+                      />
+                    :
+                      <CustomTopicRow
+                        topic={topic}
+                        isLastItem={isLastItem}
+                        handleDeleteClick={this.handleDeleteClick}
+                      />
+                  );
+                }
+
+                return null;
+              })
+            }
+          </List>
+        </Section>
+      );
+    }
+
+    return null;
   }
 }
 
