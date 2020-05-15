@@ -17,7 +17,6 @@ import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DefaultTopicRow from '../DefaultTopicRow';
 import CustomTopicRow from '../CustomTopicRow';
-import FeatureFlag from 'components/FeatureFlag';
 
 interface InputProps { }
 
@@ -67,17 +66,15 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
             <FormattedMessage {...messages.subtitleTopicManager} />
           </SectionSubtitle>
 
-          {/* <FeatureFlag name="custom_topics"> */}
-            <ButtonWrapper>
-              <Button
-                buttonStyle="cl-blue"
-                icon="plus-circle"
-                linkTo="/admin/settings/topics/new"
-              >
-                <FormattedMessage {...messages.addTopicButton} />
-              </Button>
-            </ButtonWrapper>
-          {/* </FeatureFlag> */}
+          <ButtonWrapper>
+            <Button
+              buttonStyle="cl-blue"
+              icon="plus-circle"
+              linkTo="/admin/settings/topics/new"
+            >
+              <FormattedMessage {...messages.addTopicButton} />
+            </Button>
+          </ButtonWrapper>
 
           <List key={topics.length}>
             {
