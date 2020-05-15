@@ -26,7 +26,7 @@ import { InjectedIntlProps } from 'react-intl';
 import eventEmitter from 'utils/eventEmitter';
 
 // utils
-import { pastPresentOrFuture } from 'utils/dateUtils';
+import { pastPresentOrFuture, getIsoDate } from 'utils/dateUtils';
 
 // style
 import styled, { css } from 'styled-components';
@@ -281,7 +281,7 @@ const Phases = styled.div`
 
 const phaseBarHeight = '25px';
 
-const PhaseBar: any = styled.button`
+const PhaseBar = styled.button`
   width: 100%;
   height: calc( ${phaseBarHeight} - 1px );
   color: ${greyOpaque};
@@ -311,7 +311,7 @@ const PhaseArrow = styled(Icon)`
   z-index: 2;
 `;
 
-const PhaseText: any = styled.div`
+const PhaseText = styled.div<{ current: boolean, selected: boolean }>`
   color: ${greyOpaque};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -322,10 +322,15 @@ const PhaseText: any = styled.div`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   line-height: 20px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
   max-height: 60px;
   margin-top: 12px;
-  padding-left: 6px;
-  padding-right: 6px;
+  margin-left: 5px;
+  margin-right: 5px;
   transition: color 60ms ease-out;
 `;
 
@@ -357,7 +362,7 @@ const currentSelectedPhaseBar = css`
 
 const PhaseContainer = styled.div<{ width: number }>`
   width: ${(props) => props.width}%;
-  /* min-width: 80px; */
+  min-width: 80px;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -581,16 +586,16 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       const isSelected = (selectedPhaseId !== null);
       const phaseStatus = (selectedPhase && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
       const lastPhaseIndex = phases.data.length - 1;
-      // const totalNumberOfDays = phases.data.map((phaseData) => {
-      //   const startIsoDate = getIsoDate(phaseData.attributes.start_at);
-      //   const endIsoDate = getIsoDate(phaseData.attributes.end_at);
-      //   const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-      //   const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-      //   const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-      //   return numberOfDays;
-      // }).reduce((accumulator, numberOfDays) => {
-      //   return accumulator + numberOfDays;
-      // });
+      const totalNumberOfDays = phases.data.map((phaseData) => {
+        const startIsoDate = getIsoDate(phaseData.attributes.start_at);
+        const endIsoDate = getIsoDate(phaseData.attributes.end_at);
+        const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+        const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+        const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+        return numberOfDays;
+      }).reduce((accumulator, numberOfDays) => {
+        return accumulator + numberOfDays;
+      });
 
       return (
         <Container className={className}>
@@ -707,13 +712,13 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 const isLast = (index === phases.data.length - 1);
                 const isCurrentPhase = (phase.id === currentPhaseId);
                 const isSelectedPhase = (phase.id === selectedPhaseId);
-                // const startIsoDate = getIsoDate(phase.attributes.start_at);
-                // const endIsoDate = getIsoDate(phase.attributes.end_at);
-                // const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-                // const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-                // const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-                // const width = Math.round(numberOfDays / totalNumberOfDays * 100);
-                const width = Math.round(100 / phases.data.length);
+                const startIsoDate = getIsoDate(phase.attributes.start_at);
+                const endIsoDate = getIsoDate(phase.attributes.end_at);
+                const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+                const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+                const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+                const width = Math.round(numberOfDays / totalNumberOfDays * 100);
+                // const width = Math.round(100 / phases.data.length);
                 const classNames = [
                   isFirst ? 'first' : null,
                   isLast ? 'last' : null,

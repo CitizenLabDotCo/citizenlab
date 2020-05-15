@@ -129,37 +129,26 @@ export class PollSection extends PureComponent<Props> {
           {disabledReason === 'alreadyResponded'
             ? <FormCompleted />
             : <>
-              {isSignedIn && !enabled &&
-                <StyledWarning icon="lock">
-                  <FormattedMessage
-                    {...message}
-                    values={{
-                      verificationLink: <button onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
-                      signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
-                      logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
-                    }}
-                  />
-                </StyledWarning>
-              }
-              {!isSignedIn && (enabled || disabledReason === 'notVerified') &&
-                <StyledWarning icon="lock">
-                  <FormattedMessage
-                    {...messages.signUpToTakePoll}
-                    values={{
-                      signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
-                      logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
-                    }}
-                  />
-                </StyledWarning>
-              }
-              <PollForm
-                projectId={projectId}
-                questions={pollQuestions}
-                id={type === 'project' ? projectId : phaseId as string}
-                type={type}
-                disabled={!enabled || isNilOrError(authUser)}
-              />
-            </>
+                {(!isSignedIn || !enabled) &&
+                  <StyledWarning icon="lock">
+                    <FormattedMessage
+                      {...message}
+                      values={{
+                        verificationLink: <button onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
+                        signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
+                        logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
+                      }}
+                    />
+                  </StyledWarning>
+                }
+                <PollForm
+                  projectId={projectId}
+                  questions={pollQuestions}
+                  id={type === 'project' ? projectId : phaseId as string}
+                  type={type}
+                  disabled={!enabled || isNilOrError(authUser)}
+                />
+              </>
           }
         </Container>
       );
