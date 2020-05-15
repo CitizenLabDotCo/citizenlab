@@ -1222,6 +1222,7 @@
   "app.containers.AdminPage.SettingsPage.color_main": "Hoofdkleur",
   "app.containers.AdminPage.SettingsPage.color_secondary": "Secundaire kleur",
   "app.containers.AdminPage.SettingsPage.color_text": "Tekstkleur",
+  "app.containers.AdminPage.SettingsPage.defaultTopic": "",
   "app.containers.AdminPage.SettingsPage.deleteButtonLabel": "Verwijder",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Verwijder",
   "app.containers.AdminPage.SettingsPage.editButtonLabel": "Bewerken",
