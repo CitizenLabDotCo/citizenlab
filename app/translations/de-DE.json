@@ -1222,6 +1222,7 @@
   "app.containers.AdminPage.SettingsPage.color_main": "Main color",
   "app.containers.AdminPage.SettingsPage.color_secondary": "Secondary color",
   "app.containers.AdminPage.SettingsPage.color_text": "Text color",
+  "app.containers.AdminPage.SettingsPage.defaultTopic": "",
   "app.containers.AdminPage.SettingsPage.deleteButtonLabel": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Delete",
   "app.containers.AdminPage.SettingsPage.editButtonLabel": "Edit",
