@@ -1,8 +1,18 @@
 import React, { memo } from 'react';
-import { TextCell, Row } from 'components/admin/ResourceList';
-import T from 'components/T';
+
 import { ITopicData } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
+
+// components
+import { TextCell, Row } from 'components/admin/ResourceList';
+import T from 'components/T';
+
+// i18n
+import messages from './messages';
+import { FormattedMessage } from 'utils/cl-intl';
+
+const DefaultTopicLabel = styled.span``;
 
 interface Props {
   topic: ITopicData | Error;
@@ -23,6 +33,9 @@ const DefaultTopicRow = memo((props: Props) => {
         <TextCell className="expand">
           <T value={topic.attributes.title_multiloc} />
         </TextCell>
+        <DefaultTopicLabel>
+          <FormattedMessage {...messages.defaultTopic} />
+        </DefaultTopicLabel>
       </Row>
     );
   }
