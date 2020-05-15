@@ -112,17 +112,17 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
     return (
       <Section>
         <SectionTitle>
-          <FormattedMessage {...messages.titleTopics} />
+          <FormattedMessage {...messages.titleTopicManager} />
         </SectionTitle>
         <SectionSubtitle>
-          <FormattedMessage {...messages.subtitleTopics} />
+          <FormattedMessage {...messages.subtitleTopicManager} />
         </SectionSubtitle>
 
         <ButtonWrapper>
           <Button
             buttonStyle="cl-blue"
             icon="plus-circle"
-            linkTo="/admin/topics/new"
+            linkTo="/admin/settings/topics/new"
           >
             <FormattedMessage {...messages.addTopicButton} />
           </Button>
@@ -157,7 +157,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
                     </Button>
 
                     <Button
-                      linkTo={`/admin/topics/${field.id}`}
+                      linkTo={`/admin/settings/topics/${field.id}`}
                       buttonStyle="secondary"
                       icon="edit"
                     >

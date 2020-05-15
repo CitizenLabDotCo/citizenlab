@@ -42,6 +42,10 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
         url: '/admin/settings/registration',
       },
       {
+        label: formatMessage(messages.tabTopics),
+        url: '/admin/settings/topics',
+      },
+      {
         label: formatMessage(messages.tabAreas),
         url: '/admin/settings/areas',
       }
