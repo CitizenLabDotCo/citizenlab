@@ -25,16 +25,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.topicDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this topic? This will also remove all existing references to that topic for ideas and initiatives.',
   },
-  fieldTitle: {
+  fieldTopicTitle: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitle',
     defaultMessage: 'Topic name',
   },
-  fieldTitleTooltip: {
+  fieldTopicTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip',
     defaultMessage: 'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
   },
-  editFormTitle: {
+  editTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
     defaultMessage: 'Edit topic',
+  },
+  defaultTopic: {
+    id: 'app.containers.AdminPage.SettingsPage.defaultTopic',
+    defaultMessage: 'Default topic',
   },
 });
