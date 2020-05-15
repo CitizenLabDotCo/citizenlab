@@ -3,14 +3,14 @@ import { keys, pick, isEqual } from 'lodash-es';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
-import { ICustomFieldData, updateCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
+import { IUserCustomFieldData, updateCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
 
 import CustomFieldForm, { FormValues } from '../CustomFieldForm';
 import { Formik } from 'formik';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 type Props = {
-  customField: ICustomFieldData;
+  customField: IUserCustomFieldData;
 };
 
 type State = {};

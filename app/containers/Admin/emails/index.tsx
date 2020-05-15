@@ -47,7 +47,6 @@ class EmailsDashboard extends React.PureComponent<Props & InjectedIntlProps & Wi
       <>
         <TabbedResource
           resource={{ title: formatMessage(messages.titleEmails), subtitle: formatMessage(messages.subtitleEmails) }}
-          messages={messages}
           tabs={this.tabs()}
         >
           <HelmetIntl

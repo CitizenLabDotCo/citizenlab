@@ -124,6 +124,7 @@ interface Props extends DefaultProps {
   errors?: string[];
   apiErrors?: (CLError | IInviteError)[] | null;
   message?: IMessageInfo['message'];
+  id?: string;
 }
 
 interface State {
@@ -169,7 +170,7 @@ export default class Error extends PureComponent<Props, State> {
 
   render() {
     const { mounted } = this.state;
-    const { text, errors, apiErrors, fieldName, marginTop, marginBottom, showIcon, showBackground, className, animate, message } = this.props;
+    const { text, errors, apiErrors, fieldName, marginTop, marginBottom, showIcon, showBackground, className, animate, message, id } = this.props;
     const dedupApiErrors = apiErrors && isArray(apiErrors) && !isEmpty(apiErrors) ? uniqBy(apiErrors, 'error') : undefined;
 
     return (
@@ -184,6 +185,7 @@ export default class Error extends PureComponent<Props, State> {
       >
         <Container
           className={`e2e-error-message ${className}`}
+          id={id}
           marginTop={marginTop}
           marginBottom={marginBottom}
           role="alert"

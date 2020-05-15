@@ -1,8 +1,8 @@
-import React, { memo } from 'react';
+import React, { lazy, Suspense, memo } from 'react';
 
 // components
-import WithFiltersSidebar from './WithFiltersSidebar';
-import WithoutFiltersSidebar from './WithoutFiltersSidebar';
+const WithFiltersSidebar = lazy(() => import('./WithFiltersSidebar'));
+const WithoutFiltersSidebar = lazy(() => import('./WithoutFiltersSidebar'));
 
 // styling
 import styled from 'styled-components';
@@ -38,7 +38,13 @@ const IdeaCards = memo<Props>(({ className, invisibleTitleMessage, ...props }) =
       <ScreenReaderOnly>
         <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
       </ScreenReaderOnly>
-      {props.showFiltersSidebar ? <WithFiltersSidebar {...props} /> : <WithoutFiltersSidebar {...props} />}
+      <Suspense fallback={null}>
+        {props.showFiltersSidebar ?
+          <WithFiltersSidebar {...props} />
+        :
+          <WithoutFiltersSidebar {...props} />
+        }
+      </Suspense>
     </Container>
   );
 });
