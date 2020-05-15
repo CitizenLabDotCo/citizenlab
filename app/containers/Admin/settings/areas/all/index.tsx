@@ -85,7 +85,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
         </ButtonWrapper>
         <List>
           {areas.map((area, index) => (
-            <Row key={area.id} lastItem={(index === areas.length - 1)}>
+            <Row key={area.id} isLastItem={(index === areas.length - 1)}>
               <TextCell className="expand">
                 <T value={area.attributes.title_multiloc} />
               </TextCell>

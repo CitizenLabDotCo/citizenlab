@@ -32,7 +32,7 @@ class SortableRow extends React.Component<Props, State> {
     const opacity = isDragging ? 0 : 1;
     return connectDropTarget(connectDragSource(
       <div style={{ opacity }} className={this.props.className}>
-        <Row lastItem={lastItem}>
+        <Row isLastItem={lastItem}>
           <DragHandle>
             <Icon name="sort" />
           </DragHandle>
