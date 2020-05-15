@@ -52,7 +52,7 @@ export interface IIdeaData {
     }
   };
   relationships: {
-    topics: {
+    topics?: {
       data: IRelationship[];
     };
     areas: {

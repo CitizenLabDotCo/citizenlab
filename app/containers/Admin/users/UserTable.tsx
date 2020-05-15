@@ -112,6 +112,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
           { type: 'admin' }
         ];
       }
+
       updateUser(user.id, { roles: newRoles }).then(() => {
         setTimeout(() => {
           streams.fetchAllWith({
