@@ -3,11 +3,8 @@ import { randomString, randomEmail } from '../support/commands';
 describe('Sign in page', () => {
   beforeEach(() => {
     cy.visit('/sign-in');
-    cy.acceptCookies();
-  });
-
-  it('shows the page', () => {
-    cy.get('.e2e-sign-in-page');
+    cy.get('#e2e-sign-up-in-page');
+    cy.get('#e2e-sign-in-email-password-container');
   });
 
   it('has a working email field', () => {
@@ -44,7 +41,7 @@ describe('Sign in page', () => {
     cy.location('pathname').should('eq', '/en-GB/sign-up');
   });
 
-  it('logs in with valid credentials', async () => {
+  it('logs in with valid credentials', () => {
     const email = 'admin@citizenlab.co';
     const password = 'testtest';
 
@@ -52,9 +49,10 @@ describe('Sign in page', () => {
     cy.get('#password').type(password);
     cy.get('.e2e-submit-signin').click();
     cy.location('pathname').should('eq', '/en-GB/');
+    cy.get('#e2e-landing-page');
   });
 
-  it('shows an error when trying to log in with invalid credentials', async () => {
+  it('shows an error when trying to log in with invalid credentials', () => {
     const email = randomEmail();
     const password = randomString();
 

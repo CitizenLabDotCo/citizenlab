@@ -154,7 +154,7 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
           <SignUpInPageMeta />
         }
 
-        <Container className="e2e-sign-up-in-page">
+        <Container id="e2e-sign-up-in-page">
           <Left>
             <Banner>
               <Slogan>

@@ -79,7 +79,7 @@ const Consent = memo<Props & InjectedIntlProps>(({
 
   return (
     <Container className={className}>
-      <CheckboxWrapper>
+      <CheckboxWrapper id="e2e-terms-and-conditions-container">
         <Checkbox
           className="e2e-terms-and-conditions"
           size="20px"
@@ -99,7 +99,7 @@ const Consent = memo<Props & InjectedIntlProps>(({
         <Error text={tacError ? formatMessage(messages.tacError) : null} />
       </CheckboxWrapper>
 
-      <CheckboxWrapper>
+      <CheckboxWrapper id="e2e-privacy-container">
         <Checkbox
           className="e2e-privacy-checkbox"
           size="20px"

@@ -74,7 +74,7 @@ const SignIn = memo<Props>(({
   }, []);
 
   return (
-    <Container className={`e2e-sign-in-container ${className}`}>
+    <Container className={className}>
       <StyledHeaderContainer inModal={!!metaData.inModal}>
         <StyledHeaderTitle inModal={!!metaData.inModal}>
           <FormattedMessage {...messages.logIn} />
