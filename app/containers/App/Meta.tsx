@@ -2,7 +2,7 @@ import React from 'react';
 import { adopt } from 'react-adopt';
 
 // libraries
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

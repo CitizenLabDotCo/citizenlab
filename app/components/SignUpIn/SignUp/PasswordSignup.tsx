@@ -34,6 +34,10 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'components/SignUpIn/tracks';
+
 // style
 import styled from 'styled-components';
 import { viewportWidths } from 'utils/styleUtils';
@@ -134,10 +138,18 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
+  componentDidMount() {
+    trackEventByName(tracks.signUpEmailPasswordStepEntered);
+  }
+
   componentDidUpdate(prevprops: Props) {
     if (prevprops.invitedUser !== this.props.invitedUser) {
       this.setState({ emailInvitationTokenInvalid: this.props.invitedUser?.isInvalidToken });
     }
+  }
+
+  componentWillMount() {
+    trackEventByName(tracks.signUpEmailPasswordStepExited);
   }
 
   handleTokenOnChange = (token: string) => {
@@ -241,8 +253,11 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ processing: true, unknownError: null });
         const user = await signUp(firstName, lastName, email, password, locale, isInvitation, token);
         this.setState({ processing: false });
+        trackEventByName(tracks.signUpEmailPasswordStepCompleted);
         this.props.onCompleted(user.data.id);
       } catch (errors) {
+        trackEventByName(tracks.signUpEmailPasswordStepFailed, { errors });
+
         // custom error handling for invitation codes
         if (get(errors, 'json.errors.base[0].error', null) === 'token_not_found') {
           tokenError = formatMessage(messages.tokenNotFoundError);

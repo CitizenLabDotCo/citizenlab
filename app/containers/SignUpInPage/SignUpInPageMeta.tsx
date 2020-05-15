@@ -1,6 +1,6 @@
 // libraries
 import React, { memo } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 

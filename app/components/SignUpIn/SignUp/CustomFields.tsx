@@ -25,6 +25,10 @@ import messages from './messages';
 import eventEmitter from 'utils/eventEmitter';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'components/SignUpIn/tracks';
+
 // style
 import styled from 'styled-components';
 
@@ -103,6 +107,14 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
     };
   }
 
+  componentDidMount() {
+    trackEventByName(tracks.signUpCustomFieldsStepEntered);
+  }
+
+  componentWillMount() {
+    trackEventByName(tracks.signUpCustomFieldsStepExited);
+  }
+
   handleOnSubmitButtonClick = (event: FormEvent) => {
     event.preventDefault();
     eventEmitter.emit('customFieldsSubmitEvent');
@@ -122,8 +134,10 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
         await completeRegistration(formData);
 
         this.setState({ processing: false });
+        trackEventByName(tracks.signUpCustomFieldsStepCompleted);
         this.props.onCompleted();
       } catch (error) {
+        trackEventByName(tracks.signUpCustomFieldsStepFailed, { error });
         this.setState({
           processing: false,
           unknownError: formatMessage(messages.unknownError)
@@ -136,6 +150,8 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
     event.preventDefault();
 
     const { authUser } = this.props;
+
+    trackEventByName(tracks.signUpCustomFieldsStepSkipped);
 
     if (!isNilOrError(authUser)) {
       await completeRegistration({});

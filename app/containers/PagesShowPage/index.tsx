@@ -6,7 +6,7 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import Icon from 'components/UI/Icon';
 import Fragment from 'components/Fragment';
