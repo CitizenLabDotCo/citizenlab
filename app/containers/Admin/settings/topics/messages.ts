@@ -1,13 +1,13 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  subtitleTopics: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleTopics',
-    defaultMessage: 'You can add, delete, rename and reorder your favorite topics here. Keep in mind that the current topics might be linked to existing content before renaming/removing topics to avoid loss of information.',
+  subtitleTopicManager: {
+    id: 'app.containers.AdminPage.SettingsPage.subtitleTopicManager',
+    defaultMessage: 'You can add and delete the topics that are available for ideation projects and proposals.',
   },
-  titleTopics: {
-    id: 'app.containers.AdminPage.SettingsPage.titleTopics',
-    defaultMessage: 'Topics configuration',
+  titleTopicManager: {
+    id: 'app.containers.AdminPage.SettingsPage.titleTopicManager',
+    defaultMessage: 'Topic manager',
   },
   deleteButtonLabel: {
     id: 'app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel',
@@ -36,9 +36,5 @@ export default defineMessages({
   editFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
     defaultMessage: 'Edit topic',
-  },
-  editFormSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.editTopicFormSubtitle',
-    defaultMessage: 'Keep in mind that this will also affect the topic name in ideas and initiatives currently referencing to this.',
   },
 });
