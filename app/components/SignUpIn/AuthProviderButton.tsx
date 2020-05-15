@@ -9,6 +9,10 @@ import Consent from 'components/SignUpIn/SignUp/Consent';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// analytics
+import { trackEventByName } from 'utils/analytics';
+import tracks from 'components/SignUpIn/tracks';
+
 // styling
 import styled from 'styled-components';
 import { darken } from 'polished';
@@ -128,6 +132,7 @@ const AuthProviderButton = memo<Props>(({
     if (flow === 'signup' && authProvider !== 'email') {
       setExpanded(prevExpanded => !prevExpanded);
     } else {
+      trackEventByName(tracks.signInWithSSOClicked, { authProvider })
       onContinue(authProvider);
     }
   }, [flow, authProvider, onContinue]);
@@ -142,6 +147,7 @@ const AuthProviderButton = memo<Props>(({
     }
 
     if (tacAccepted && privacyAccepted) {
+      trackEventByName(tracks.signUpWithSSOClicked, { authProvider })
       onContinue(authProvider);
     }
   }, [authProvider, onContinue, tacAccepted, privacyAccepted]);

@@ -28,4 +28,8 @@ export default {
   signInEmailPasswordExited: 'Sign in - email & password sign-in exited',
   signInEmailPasswordCompleted: 'Sign in - email & password sign-in completed',
   signInEmailPasswordFailed: 'Sign in - email & password sign-in failed',
+
+  signInWithSSOClicked: 'Sign in with SSO button clicked',
+
+  signUpWithSSOClicked: 'Sign up with SSO button clicked',
 };

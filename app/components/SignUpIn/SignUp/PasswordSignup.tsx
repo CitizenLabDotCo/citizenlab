@@ -331,7 +331,10 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     return (
-      <Container className={className}>
+      <Container
+        id="e2e-sign-up-email-password-container"
+        className={className}
+      >
         {!emailInvitationTokenInvalid &&
           <>
             <Form
@@ -340,7 +343,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               noValidate={true}
             >
               {isInvitation && !this.props.metaData.token &&
-                <FormElement>
+                <FormElement id="e2e-token-container">
                   <FormLabel
                     labelMessage={messages.tokenLabel}
                     htmlFor="token"
@@ -357,7 +360,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 </FormElement>
               }
 
-              <FormElement>
+              <FormElement id="e2e-firstName-container">
                 <FormLabel
                   labelMessage={messages.firstNamesLabel}
                   htmlFor="firstName"
@@ -378,7 +381,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 />
               </FormElement>
 
-              <FormElement>
+              <FormElement id="e2e-lastName-container">
                 <FormLabel
                   labelMessage={messages.lastNameLabel}
                   htmlFor="lastName"
@@ -398,7 +401,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 />
               </FormElement>
 
-              <FormElement>
+              <FormElement id="e2e-email-container">
                 <FormLabel
                   labelMessage={phone ? messages.emailOrPhoneLabel : messages.emailLabel}
                   htmlFor="email"
@@ -418,7 +421,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                 />
               </FormElement>
 
-              <FormElement>
+              <FormElement id="e2e-password-container">
                 <FormLabel
                   labelMessage={messages.passwordLabel}
                   htmlFor="password"

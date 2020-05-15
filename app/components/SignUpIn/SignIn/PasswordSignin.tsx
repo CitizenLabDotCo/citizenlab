@@ -211,7 +211,10 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
     const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
 
     return (
-      <Container className={`e2e-sign-in-container ${className}`}>
+      <Container
+        id="e2e-sign-in-email-password-container"
+        className={className || ''}
+      >
         <Form id="signin" onSubmit={this.handleOnSubmit} noValidate={true}>
           <FormElement>
             <FormLabel
@@ -275,7 +278,7 @@ class PasswordSignin extends PureComponent<Props & InjectedIntlProps & WithRoute
                 {...messages.goToSignUp}
                 values={{
                   goToOtherFlowLink: (
-                  <button onClick={this.handleGoToSignUp} className="link">
+                  <button onClick={this.handleGoToSignUp} className="link e2e-sign-up-link">
                     {formatMessage(messages.signUp)}
                   </button>
                   )
