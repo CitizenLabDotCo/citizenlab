@@ -35,7 +35,7 @@ class Edit extends React.PureComponent<Props> {
       ...values
     })
     .then(() => {
-      clHistory.push('/admin/topics');
+      clHistory.push('/admin/settings/topics');
     })
     .catch((errorResponse) => {
       if (isCLErrorJSON(errorResponse)) {
