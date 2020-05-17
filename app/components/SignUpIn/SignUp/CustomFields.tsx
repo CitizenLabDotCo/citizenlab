@@ -175,16 +175,15 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(authUser) && !isNilOrError(userCustomFieldsSchema)) {
       return (
-        <Container id="e2e-signup-custom-fields">
+        <Container id="e2e-signup-custom-fields-container">
           <UserCustomFieldsForm
-            id="e2e-custom-signup-form"
             formData={authUser.attributes.custom_field_values}
             onSubmit={this.handleCustomFieldsFormOnSubmit}
           />
 
           <ButtonWrapper>
             <Button
-              id="e2e-signup-custom-fields-button"
+              id="e2e-signup-custom-fields-submit-btn"
               processing={processing}
               text={formatMessage(messages.completeSignUp)}
               onClick={this.handleOnSubmitButtonClick}
