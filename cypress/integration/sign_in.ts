@@ -2,9 +2,10 @@ import { randomString, randomEmail } from '../support/commands';
 
 describe('Sign in page', () => {
   beforeEach(() => {
-    cy.visit('/sign-in');
-    cy.get('#e2e-sign-up-in-page');
-    cy.get('#e2e-sign-in-email-password-container');
+    cy.goToLandingPage();
+    cy.get('#e2e-navbar');
+    cy.get('#e2e-navbar-login-menu-item').click();
+    cy.get('#e2e-sign-in-container');
   });
 
   it('has a working email field', () => {
@@ -36,9 +37,9 @@ describe('Sign in page', () => {
     cy.location('pathname').should('eq', '/en-GB/password-recovery');
   });
 
-  it('has a working link to the sign up page', () => {
+  it('has a working link to the sign up flow', () => {
     cy.get('.e2e-sign-up-link').click();
-    cy.location('pathname').should('eq', '/en-GB/sign-up');
+    cy.get('#e2e-sign-up-container');
   });
 
   it('logs in with valid credentials', () => {
@@ -48,8 +49,7 @@ describe('Sign in page', () => {
     cy.get('#email').type(email);
     cy.get('#password').type(password);
     cy.get('.e2e-submit-signin').click();
-    cy.location('pathname').should('eq', '/en-GB/');
-    cy.get('#e2e-landing-page');
+    cy.get('#e2e-user-menu-container');
   });
 
   it('shows an error when trying to log in with invalid credentials', () => {

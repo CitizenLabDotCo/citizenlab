@@ -44,8 +44,7 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-ideacard-upvote-button').click();
 
       // check if we're redirected to sign-up page and sign up
-      cy.get('.e2e-sign-up-page');
-      cy.get('.e2e-sign-up-container');
+      cy.get('#e2e-sign-up-container');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
@@ -107,7 +106,7 @@ describe('Idea voting permissions', () => {
       cy.get('.e2e-register-button').click();
 
       // Sign up
-      cy.get('.e2e-sign-up-container');
+      cy.get('#e2e-sign-up-container');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);

@@ -498,7 +498,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
         }
 
         <Container
-          id="navbar"
+          id="e2e-navbar"
           className={`${adminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
           ref={this.handleRef}
         >
@@ -606,7 +606,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                     {isNilOrError(authUser) &&
 
                       <RightItem className="login noLeftMargin">
-                        <LogInMenuItem id="e2e-login-link" onClick={this.signIn}>
+                        <LogInMenuItem id="e2e-navbar-login-menu-item" onClick={this.signIn}>
                           <NavigationItemBorder />
                           <NavigationItemText>
                             <FormattedMessage {...messages.logIn} />
@@ -617,7 +617,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
                     {isNilOrError(authUser) &&
                       <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
-                        <SignUpMenuItem onClick={this.signUp}>
+                        <SignUpMenuItem id="e2e-navbar-signup-menu-item" onClick={this.signUp}>
                           <NavigationItemText className="sign-up-span">
                             <FormattedMessage {...messages.signUp} />
                           </NavigationItemText>

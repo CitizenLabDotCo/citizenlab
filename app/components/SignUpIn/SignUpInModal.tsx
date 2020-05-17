@@ -111,7 +111,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       closeOnClickOutside={!modalNoClose}
       noClose={modalNoClose}
     >
-      <Container className={className}>
+      <Container id="e2e-sign-up-in-container" className={className}>
         {opened && metaData &&
           <SignUpIn
             metaData={metaData}
