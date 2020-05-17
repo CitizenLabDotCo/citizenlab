@@ -1,10 +1,11 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('Sign in page', () => {
+describe('Sign up - Email + password step', () => {
   beforeEach(() => {
-    cy.visit('/sign-up');
-    cy.get('#e2e-sign-up-in-page');
-    cy.get('#e2e-sign-up-email-password-container');
+    cy.goToLandingPage();
+    cy.get('#e2e-navbar');
+    cy.get('#e2e-navbar-signup-menu-item').click();
+    cy.get('#e2e-sign-up-container');
   });
 
   it('has a working first name field', () => {
@@ -76,8 +77,21 @@ describe('Sign in page', () => {
     const email = randomEmail();
     const password = randomString();
 
-    cy.signup(firstName, lastName, email, password);
-    cy.location('pathname').should('eq', '/en-GB/');
+    cy.goToLandingPage();
     cy.get('#e2e-landing-page');
+    cy.get('#e2e-navbar');
+    cy.get('#e2e-navbar-signup-menu-item').click();
+    cy.get('#e2e-sign-up-container');
+    cy.get('#firstName').type(firstName);
+    cy.get('#lastName').type(lastName);
+    cy.get('#email').type(email);
+    cy.get('#password').type(password);
+    cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
+    cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
+    cy.get('#e2e-signup-password-button').click();
+    cy.get('#e2e-signup-success-container');
+    cy.get('.e2e-signup-success-close-button').click();
+    cy.get('#e2e-sign-up-in-container').should('not.exist');
+    cy.get('#e2e-user-menu-container');
   });
 });

@@ -270,7 +270,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       const hasHeaderSubtitle = !!(activeStep !== 'success' && !error && stepName);
 
       return (
-        <Container className={`e2e-sign-up-container ${className}`}>
+        <Container id="e2e-sign-up-container" className={className || ''}>
           {hasHeader &&
             <div>
               <ReactResizeDetector handleWidth handleHeight onResize={this.onResize}>

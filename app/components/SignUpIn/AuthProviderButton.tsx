@@ -132,7 +132,7 @@ const AuthProviderButton = memo<Props>(({
     if (flow === 'signup' && authProvider !== 'email') {
       setExpanded(prevExpanded => !prevExpanded);
     } else {
-      trackEventByName(tracks.signInWithSSOClicked, { authProvider })
+      trackEventByName(tracks.signInWithSSOClicked, { authProvider });
       onContinue(authProvider);
     }
   }, [flow, authProvider, onContinue]);
@@ -147,7 +147,7 @@ const AuthProviderButton = memo<Props>(({
     }
 
     if (tacAccepted && privacyAccepted) {
-      trackEventByName(tracks.signUpWithSSOClicked, { authProvider })
+      trackEventByName(tracks.signUpWithSSOClicked, { authProvider });
       onContinue(authProvider);
     }
   }, [authProvider, onContinue, tacAccepted, privacyAccepted]);

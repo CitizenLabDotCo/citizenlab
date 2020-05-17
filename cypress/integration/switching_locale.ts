@@ -5,14 +5,14 @@ describe('Locale switcher', () => {
 
   it('shows the en-GB version of the page by default', () => {
     cy.location('pathname').should('eq', '/en-GB/');
-    cy.get('#e2e-login-link').contains('Log in');
+    cy.get('#e2e-navbar-login-menu-item').contains('Log in');
   });
 
   it('can switch to nl-BE', () => {
     cy.get('.e2e-langage-dropdown-toggle').click();
     cy.get('.e2e-langage-nl-BE').click();
     cy.location('pathname').should('eq', '/nl-BE/');
-    cy.get('#e2e-login-link').contains('Inloggen');
+    cy.get('#e2e-navbar-login-menu-item').contains('Inloggen');
   });
 
   it('keeps the picked locale', () => {
@@ -23,7 +23,7 @@ describe('Locale switcher', () => {
     cy.location('pathname').should('eq', '/nl-BE/');
     cy.visit('/en-GB/');
     cy.location('pathname').should('eq', '/nl-BE/');
-    cy.get('#e2e-login-link').contains('Inloggen');
+    cy.get('#e2e-navbar-login-menu-item').contains('Inloggen');
   });
 
   it('gets you to the right locale on sign-up', () => {
