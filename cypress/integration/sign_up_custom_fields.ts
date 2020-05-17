@@ -33,8 +33,7 @@ describe('Sign up - custom fields step', () => {
     });
 
     it('shows the custom field step and can skip it', () => {
-      cy.get('#e2e-custom-signup-form');
-      cy.get('#e2e-signup-custom-fields');
+      cy.get('#e2e-signup-custom-fields-container');
       cy.get('.e2e-signup-custom-fields-skip-btn').click();
       cy.get('#e2e-signup-success-container');
       cy.get('.e2e-signup-success-close-button').click();
@@ -64,11 +63,10 @@ describe('Sign up - custom fields step', () => {
     });
 
     it('shows the custom field step and shows an error message when submitting an empty form', () => {
-      cy.get('#e2e-custom-signup-form');
-      cy.get('#e2e-signup-custom-fields');
+      cy.get('#e2e-signup-custom-fields-container');
       cy.get('.e2e-signup-custom-fields-skip-btn').should('not.exist');
-      cy.get('#e2e-signup-custom-fields-button').click();
-      cy.get('#e2e-custom-signup-form .e2e-error-message').should('contain', 'This field is required');
+      cy.get('#e2e-signup-custom-fields-submit-btn').click();
+      cy.get('#e2e-signup-custom-fields-container .e2e-error-message').should('contain', 'This field is required');
     });
 
     after(() => {
@@ -76,38 +74,36 @@ describe('Sign up - custom fields step', () => {
     });
   });
 
-  // describe('Required custom field', () => {
-  //   const randomFieldName = randomString();
-  //   const firstName = randomString();
-  //   const lastName = randomString();
-  //   const email = randomEmail();
-  //   const password = randomString();
-  //   let customFieldId: string;
+  describe('Required custom field', () => {
+    const randomFieldName = randomString();
+    const firstName = randomString();
+    const lastName = randomString();
+    const email = randomEmail();
+    const password = randomString();
+    let customFieldId: string;
 
-  //   before(() => {
-  //     cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
-  //       customFieldId = response.body.data.id;
-  //       cy.apiSignup(firstName, lastName, email, password);
-  //       cy.login(email, password);
-  //       cy.goToLandingPage();
-  //     });
-  //   });
+    before(() => {
+      cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
+        customFieldId = response.body.data.id;
+        cy.apiSignup(firstName, lastName, email, password);
+        cy.login(email, password);
+        cy.goToLandingPage();
+      });
+    });
 
-  //   it('successfully completes the sign-up process', () => {
-  //     cy.visit('/complete-signup');
-  //     cy.location('pathname').should('eq', '/en-GB/complete-signup');
-  //     cy.get('#e2e-custom-signup-form');
-  //     cy.get('#e2e-signup-custom-fields');
-  //     cy.get('.e2e-signup-custom-fields-skip-btn').should('not.exist');
-  //     cy.get(`#root_${randomFieldName}`).type('test');
-  //     cy.get('#e2e-signup-custom-fields-button').click();
-  //     cy.location('pathname').should('eq', '/en-GB/');
-  //     cy.get('#e2e-landing-page');
-  //   });
+    it('successfully completes the sign-up process', () => {
+      cy.get('#e2e-signup-custom-fields-container');
+      cy.get('.e2e-signup-custom-fields-skip-btn').should('not.exist');
+      cy.get(`#root_${randomFieldName}`).type('test');
+      cy.get('#e2e-signup-custom-fields-submit-btn').click();
+      cy.get('#e2e-signup-success-container');
+      cy.get('.e2e-signup-success-close-button').click();
+      cy.get('#e2e-sign-up-in-container').should('not.exist');
+    });
 
-  //   after(() => {
-  //     cy.apiRemoveCustomField(customFieldId);
-  //   });
-  // });
+    after(() => {
+      cy.apiRemoveCustomField(customFieldId);
+    });
+  });
 
 });
