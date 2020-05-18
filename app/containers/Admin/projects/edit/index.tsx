@@ -205,6 +205,27 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       }
     }
 
+    if (
+        !customTopicsEnabled
+      ||
+        (
+          processType === 'continuous' &&
+          participationMethod !== 'ideation' &&
+          participationMethod !== 'budgeting'
+        )
+      ||
+        (
+          processType === 'timeline' &&
+          !isNilOrError(phases) &&
+          phases.filter(phase => {
+            return phase.attributes.participation_method === 'ideation' ||
+                  phase.attributes.participation_method === 'budgeting';
+          }).length === 0
+        )
+    ) {
+      tabs = reject(tabs, { className: 'topics' });
+    }
+
     return tabs;
   }
 
