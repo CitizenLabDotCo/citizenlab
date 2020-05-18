@@ -187,7 +187,6 @@
 //     const { selection } = this.state;
 //     const { formatMessage } = this.props.intl;
 
-
 //   }
 // }
 
