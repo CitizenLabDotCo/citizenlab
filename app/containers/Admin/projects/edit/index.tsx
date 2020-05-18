@@ -123,6 +123,11 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         name: 'poll',
       },
       {
+        label: formatMessage(messages.surveyResultsTab),
+        url: `${baseTabsUrl}/survey-results`,
+        name: 'survey-results'
+      },
+      {
         label: formatMessage(messages.ideaFormTab),
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
@@ -181,6 +186,32 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
             phases.filter(phase => {
               return phase.attributes.participation_method === 'poll';
             }).length === 0
+          )
+        ) {
+          return true;
+        }
+
+        return false;
+      },
+      'survey-results': function surveyResultsTabHidden() {
+        if (
+          (!surveys_enabled || !typeform_enabled)
+        ||
+          (
+            surveys_enabled &&
+            typeform_enabled &&
+            processType === 'continuous' &&
+            participationMethod === 'survey' &&
+            project.attributes.survey_service !== 'typeform'
+          )
+        ||
+          (
+            processType === 'timeline' &&
+            !isNilOrError(phases) &&
+            phases.filter(phase => {
+                return phase.attributes.participation_method === 'survey' &&
+                       phase.attributes.survey_service === 'typeform';
+              }).length === 0
           )
         ) {
           return true;
@@ -270,29 +301,6 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         reject(tabs, { name: tabName });
       }
     });
-
-    if (surveys_enabled && typeform_enabled) {
-      if (
-        (
-          processType === 'continuous' &&
-          participationMethod === 'survey' &&
-          project.attributes.survey_service === 'typeform'
-        )
-        ||
-        (
-          processType === 'timeline' &&
-          !isNilOrError(phases) && phases.filter(phase => {
-            return phase.attributes.participation_method === 'survey' &&
-                   phase.attributes.survey_service === 'typeform';
-          }).length > 0
-        )) {
-        tabs.splice(3, 0, {
-          label: formatMessage(messages.surveyResultsTab),
-          url: `${baseTabsUrl}/survey-results`,
-          name: 'survey-results'
-        });
-      }
-    }
 
     return tabs;
   }
