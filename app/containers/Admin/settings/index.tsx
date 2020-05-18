@@ -6,7 +6,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
-import TabbedResource from 'components/admin/TabbedResource';
+import TabbedResource, { TabProps } from 'components/admin/TabbedResource';
 
 // i18n
 import messages from './messages';
@@ -15,6 +15,7 @@ import { injectIntl } from 'utils/cl-intl';
 
 // resources
 import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import { reject } from 'lodash-es';
 
 interface InputProps {}
 
@@ -28,11 +29,11 @@ interface Props extends InputProps, DataProps {}
 interface State { }
 
 class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
-  render() {
-    const { children, widgetsEnabled, customTopicsEnabled } = this.props;
+  getTabs = () => {
+    const { widgetsEnabled, customTopicsEnabled } = this.props;
     const { formatMessage } = this.props.intl;
 
-    const tabs = [
+    const tabs: TabProps[] = [
       {
         label: formatMessage(messages.tabSettings),
         url: '/admin/settings/general',
@@ -50,23 +51,53 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
         url: '/admin/settings/registration',
       },
       {
-        label: formatMessage(messages.tabAreas),
-        url: '/admin/settings/areas',
-      }
-    ];
-    if (customTopicsEnabled) {
-      // add topic manager tab after user data (/registration) tab if enabled
-      tabs.splice(4, 0, {
         label: formatMessage(messages.tabTopics),
         url: '/admin/settings/topics',
-      });
-    }
-    if (widgetsEnabled) {
-      tabs.push({
+        name: 'topics'
+      },
+      {
+        label: formatMessage(messages.tabAreas),
+        url: '/admin/settings/areas',
+      },
+      {
         label: formatMessage(messages.tabWidgets),
         url: '/admin/settings/widgets',
-      });
-    }
+        name: 'widgets'
+      }
+    ];
+
+    const tabHideConditions = {
+      topics: function isTopicsTabHidden() {
+        if (!customTopicsEnabled) {
+          return true;
+        }
+
+        return false;
+      },
+      widgets: function isWidgetsTabHidden() {
+        if (!widgetsEnabled) {
+          return true;
+        }
+
+        return false;
+      }
+    };
+
+    const tabNames = tabs.map(tab => tab.name);
+
+    tabNames.forEach(tabName => {
+      if (tabName && tabHideConditions[tabName]()) {
+        reject(tabs, { name: tabName });
+      }
+    });
+
+    return tabs;
+
+  }
+
+  render() {
+    const { children } = this.props;
+    const { formatMessage } = this.props.intl;
 
     const resource = {
       title: formatMessage(messages.pageTitle)
@@ -75,7 +106,7 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
     return (
       <TabbedResource
         resource={resource}
-        tabs={tabs}
+        tabs={this.getTabs()}
       >
         <HelmetIntl
           title={messages.helmetTitle}
