@@ -29,7 +29,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { IProjectData } from 'services/projects';
 import { Subscription } from 'rxjs';
 import eventEmitter from 'utils/eventEmitter';
-import { flatMap } from 'rxjs/operators';
 
 const TopContainer = styled.div`
   width: 100%;
@@ -306,7 +305,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         <TopContainer>
           <GoBackButton onClick={this.goBack} />
           <ActionsContainer>
-            {!isNilOrError(project) && tabbedProps.tabs.findIndex(tab => tab.className === 'ideas') !== -1 &&
+            {!isNilOrError(project) && tabbedProps.tabs.findIndex(tab => tab.name === 'ideas') !== -1 &&
               <Button
                 id="e2e-new-idea"
                 buttonStyle="cl-blue-outlined"
