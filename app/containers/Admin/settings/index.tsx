@@ -1,4 +1,5 @@
 import React from 'react';
+import { adopt } from 'react-adopt';
 
 // router
 import { withRouter, WithRouterProps } from 'react-router';
@@ -11,17 +12,24 @@ import TabbedResource from 'components/admin/TabbedResource';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
 
-interface Props {
-  showWidgets: boolean;
+// resources
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+
+interface InputProps {}
+
+interface DataProps {
+  widgetsEnabled: GetFeatureFlagChildProps;
+  customTopicsEnabled: GetFeatureFlagChildProps;
 }
+
+interface Props extends InputProps, DataProps {}
 
 interface State { }
 
 class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
   render() {
-    const { children, showWidgets } = this.props;
+    const { children, widgetsEnabled, customTopicsEnabled } = this.props;
     const { formatMessage } = this.props.intl;
 
     const tabs = [
@@ -42,15 +50,18 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
         url: '/admin/settings/registration',
       },
       {
-        label: formatMessage(messages.tabTopics),
-        url: '/admin/settings/topics',
-      },
-      {
         label: formatMessage(messages.tabAreas),
         url: '/admin/settings/areas',
       }
     ];
-    if (showWidgets) {
+    if (customTopicsEnabled) {
+      // add topic manager tab after user data (/registration) tab if enabled
+      tabs.splice(4, 0, {
+        label: formatMessage(messages.tabTopics),
+        url: '/admin/settings/topics',
+      });
+    }
+    if (widgetsEnabled) {
       tabs.push({
         label: formatMessage(messages.tabWidgets),
         url: '/admin/settings/widgets',
@@ -77,8 +88,14 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
 }
 
 const SettingsPageWithHocs = withRouter(injectIntl(SettingsPage));
-export default (inputProps) => (
-  <GetFeatureFlag name="widgets">
-    {(hasFeature) => <SettingsPageWithHocs {...inputProps} showWidgets={hasFeature} />}
-  </GetFeatureFlag>
+
+const Data = adopt<DataProps, InputProps>({
+  widgetsEnabled: <GetFeatureFlag name="widgets" />,
+  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />
+});
+
+export default (inputProps: InputProps & WithRouterProps) => (
+  <Data {...inputProps}>
+    {dataProps => <SettingsPageWithHocs {...inputProps} {...dataProps} />}
+  </Data>
 );
