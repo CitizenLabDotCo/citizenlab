@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import TopicSearch from './TopicSearch';
+// import TopicSearch from './TopicSearch';
 import TopicList from './TopicList';
 
 // i18n
