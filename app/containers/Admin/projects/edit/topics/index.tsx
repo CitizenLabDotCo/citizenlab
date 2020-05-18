@@ -13,16 +13,13 @@ import messages from './messages';
 // hooks
 import useTopics from 'hooks/useTopics';
 
-// types
-import { ITopicData } from 'services/topics';
-
 const Container = styled.div``;
 
 const Topics = memo(() => {
   const topics = useTopics();
   const defaultTopics = !isNilOrError(topics) ? topics.filter(topic => !isNilOrError(topic) && true) : []; // TODO
   const selectableTopics = !isNilOrError(topics) && topics.filter(topic => !isNilOrError(topic) && !selectedTopics.includes(topic));
-  const [selectedTopics, setSelectedTopics] = useState<ITopicData[]>(defaultTopics);
+  const [selectedTopics, setSelectedTopics] = useState(defaultTopics);
 
   return (
     <Container>
