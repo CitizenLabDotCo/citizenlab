@@ -21,7 +21,7 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
-import GetFeatureFlag from 'resources/GetFeatureFlag';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { isNilOrError } from 'utils/helperUtils';
@@ -60,6 +60,7 @@ export interface InputProps {}
 interface DataProps {
   surveys_enabled: boolean | null;
   typeform_enabled: boolean | null;
+  customTopicsEnabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
 }
@@ -96,7 +97,9 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const { formatMessage } = this.props.intl;
-    const { typeform_enabled, surveys_enabled, phases } = this.props;
+    const { typeform_enabled, surveys_enabled, phases, customTopicsEnabled } = this.props;
+    const processType = project.attributes.process_type;
+    const participationMethod = project.attributes.participation_method;
 
     let tabs: TabProps[] = [
       {
@@ -144,9 +147,6 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       },
     ];
 
-    const processType = project.attributes.process_type;
-    const participationMethod = project.attributes.participation_method;
-
     if (processType === 'continuous' && participationMethod !== 'ideation' && participationMethod !== 'budgeting') {
       tabs = reject(tabs, { className: 'ideas' });
     }
@@ -184,11 +184,18 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
     if (surveys_enabled && typeform_enabled) {
       if (
-        (processType === 'continuous'
-          && participationMethod === 'survey'
-          && project.attributes.survey_service === 'typeform'
-        ) || (processType === 'timeline'
-          && !isNilOrError(phases) && phases.filter(phase => phase.attributes.participation_method === 'survey' && phase.attributes.survey_service === 'typeform').length > 0
+        (
+          processType === 'continuous' &&
+          participationMethod === 'survey' &&
+          project.attributes.survey_service === 'typeform'
+        )
+        ||
+        (
+          processType === 'timeline' &&
+          !isNilOrError(phases) && phases.filter(phase => {
+            return phase.attributes.participation_method === 'survey' &&
+                   phase.attributes.survey_service === 'typeform';
+          }).length > 0
         )) {
         tabs.splice(3, 0, {
           label: formatMessage(messages.surveyResultsTab),
@@ -226,8 +233,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
   render() {
     const { projectId } = this.props.params;
-    const { project, intl: { formatMessage }, localize } = this.props;
-    const { children, location: { pathname } } = this.props;
+    const { project, intl: { formatMessage }, localize, children, location: { pathname } } = this.props;
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
     const tabbedProps = {
       resource: {
@@ -276,6 +282,7 @@ const AdminProjectEditionWithHoCs = withRouter(injectIntl<Props & WithRouterProp
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
+  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
   phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>,
   project: ({ params, render }) => <GetProject projectId={params.projectId}>{render}</GetProject>,
 });
