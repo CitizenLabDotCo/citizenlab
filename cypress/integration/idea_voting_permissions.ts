@@ -108,6 +108,7 @@ describe('Idea voting permissions', () => {
       cy.get('#e2e-signup-password-button').click();
 
       // success check
+      cy.get('#e2e-signup-success-container');
       cy.get('#e2e-signup-success-container .e2e-signup-success-close-button').click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container');
