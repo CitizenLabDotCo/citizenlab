@@ -100,67 +100,101 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     const { typeform_enabled, surveys_enabled, phases, customTopicsEnabled } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
-
     let tabs: TabProps[] = [
       {
         label: formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
-        className: 'general',
+        name: 'general',
       },
       {
         label: formatMessage(messages.descriptionTab),
         url: `${baseTabsUrl}/description`,
-        className: 'description',
+        name: 'description',
       },
       {
         label: formatMessage(messages.ideasTab),
         url: `${baseTabsUrl}/ideas`,
-        className: 'ideas',
+        name: 'ideas',
       },
       {
         label: formatMessage(messages.ideaFormTab),
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
-        className: 'ideaform',
+        name: 'ideaform',
       },
       {
         label: formatMessage(messages.topicsTab),
         url: `${baseTabsUrl}/topics`,
-        className: 'topics',
+        name: 'topics',
       },
       {
         label: formatMessage(messages.volunteeringTab),
         url: `${baseTabsUrl}/volunteering`,
         feature: 'volunteering',
-        className: 'volunteering',
+        name: 'volunteering',
       },
       {
         label: formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
-        className: 'events',
+        name: 'events',
       },
       {
         label: formatMessage(messages.permissionsTab),
         url: `${baseTabsUrl}/permissions`,
         feature: 'private_projects',
-        className: 'permissions',
+        name: 'permissions',
       },
     ];
 
-    if (processType === 'continuous' && participationMethod !== 'ideation' && participationMethod !== 'budgeting') {
-      tabs = reject(tabs, { className: 'ideas' });
-    }
+    const tabHideConditions = {
+      ideas: function isIdeaTabHidden() {
+        if (
+          processType === 'continuous' &&
+          participationMethod !== 'ideation' &&
+          participationMethod !== 'budgeting'
+        ) {
+          return true;
+        }
 
-    if ((processType === 'continuous' && participationMethod !== 'ideation' && participationMethod !== 'budgeting') ||
-        (processType === 'timeline' && !isNilOrError(phases)
-        && phases.filter(phase => phase.attributes.participation_method === 'ideation' || phase.attributes.participation_method === 'budgeting').length === 0)) {
-      tabs = reject(tabs, { className: 'ideaform' });
-    }
+        return false;
+      },
+      ideaform: function isIdeaformTabHidden() {
+        if (
+          (
+            processType === 'continuous' &&
+            participationMethod !== 'ideation' &&
+            participationMethod !== 'budgeting'
+          )
+          ||
+          (
+            processType === 'timeline' &&
+            !isNilOrError(phases) &&
+            phases.filter(phase => {
+              return phase.attributes.participation_method === 'ideation' ||
+                     phase.attributes.participation_method === 'budgeting';
+
+            }).length === 0
+          )
+        ) {
+          return true;
+        }
+
+        return false;
+      },
+    };
+
+    const tabNames = tabs.map(tab => tab.name);
+
+    tabNames.forEach(tabName => {
+      if (tabName && tabHideConditions[tabName]()) {
+        reject(tabs, { name: tabName });
+      }
+    });
 
     if ((processType === 'continuous' && participationMethod !== 'volunteering') ||
         (processType === 'timeline' && !isNilOrError(phases)
         && phases.filter(phase => phase.attributes.participation_method === 'volunteering').length === 0)) {
-      tabs = reject(tabs, { className: 'volunteering' });
+      tabs = reject(tabs, { name: 'volunteering' });
     }
 
     if (processType === 'continuous' && participationMethod === 'poll' ||
@@ -170,7 +204,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         label: formatMessage(messages.pollTab),
         url: `${baseTabsUrl}/poll`,
         feature: 'polls',
-        className: 'poll',
+        name: 'poll',
       });
     }
 
@@ -178,7 +212,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       tabs.splice(4, 0, {
         label: formatMessage(messages.phasesTab),
         url: `${baseTabsUrl}/timeline`,
-        className: 'phases',
+        name: 'phases',
       });
     }
 
@@ -200,7 +234,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         tabs.splice(3, 0, {
           label: formatMessage(messages.surveyResultsTab),
           url: `${baseTabsUrl}/survey-results`,
-          className: 'survey-results'
+          name: 'survey-results'
         });
       }
     }
@@ -223,7 +257,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
           }).length === 0
         )
     ) {
-      tabs = reject(tabs, { className: 'topics' });
+      tabs = reject(tabs, { name: 'topics' });
     }
 
     return tabs;
