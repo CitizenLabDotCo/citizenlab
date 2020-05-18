@@ -22,10 +22,6 @@ import { isProjectContext } from 'components/Verification/VerificationSteps';
 // events
 import { openSignUpInModal$, closeSignUpInModal$, signUpActiveStepChange$ } from 'components/SignUpIn/events';
 
-// analytics
-// import { trackEventByName } from 'utils/analytics';
-// import tracks from 'components/SignUpIn/tracks';
-
 // style
 import styled from 'styled-components';
 
