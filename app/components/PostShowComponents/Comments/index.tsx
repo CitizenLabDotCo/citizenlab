@@ -109,10 +109,11 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
     const phaseId = isNilOrError(project) ? undefined : project.relationships?.current_phase?.data?.id;
 
     return (
-      <Container className={`e2e-comments-${loaded ? 'loaded' : 'loading'} ${className}`}>
+      <Container className={className || ''}>
         <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
         </ScreenReaderOnly>
+
         {loaded && !isNilOrError(commentsList) ? (
           <>
             {/*

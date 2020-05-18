@@ -3,7 +3,6 @@ import { randomString, randomEmail } from '../support/commands';
 describe('Sign in page', () => {
   beforeEach(() => {
     cy.goToLandingPage();
-    cy.get('#e2e-navbar');
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-sign-in-container');
   });

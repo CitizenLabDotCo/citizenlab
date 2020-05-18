@@ -3,7 +3,6 @@ import { randomString, randomEmail } from '../support/commands';
 describe('Sign up - Email + password step', () => {
   beforeEach(() => {
     cy.goToLandingPage();
-    cy.get('#e2e-navbar');
     cy.get('#e2e-navbar-signup-menu-item').click();
     cy.get('#e2e-sign-up-container');
   });
@@ -78,8 +77,6 @@ describe('Sign up - Email + password step', () => {
     const password = randomString();
 
     cy.goToLandingPage();
-    cy.get('#e2e-landing-page');
-    cy.get('#e2e-navbar');
     cy.get('#e2e-navbar-signup-menu-item').click();
     cy.get('#e2e-sign-up-container');
     cy.get('#firstName').type(firstName);
@@ -91,7 +88,7 @@ describe('Sign up - Email + password step', () => {
     cy.get('#e2e-signup-password-button').click();
     cy.get('#e2e-signup-success-container');
     cy.get('.e2e-signup-success-close-button').click();
-    cy.get('#e2e-sign-up-in-container').should('not.exist');
+    cy.get('#e2e-sign-up-in-modal').should('not.exist');
     cy.get('#e2e-user-menu-container');
   });
 });

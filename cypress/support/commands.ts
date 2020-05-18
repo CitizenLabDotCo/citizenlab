@@ -88,7 +88,7 @@ export function login(email: string, password: string) {
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('.e2e-submit-signin').click();
-  cy.get('#e2e-sign-up-in-container').should('not.exist');
+  cy.get('#e2e-sign-up-in-modal').should('not.exist');
   cy.get('#e2e-user-menu-container');
   cy.wait(500);
 }
@@ -213,8 +213,8 @@ export function logout() {
 }
 
 export function acceptCookies() {
-  cy.get('#e2e-cookie-banner').as('cookieBanner');
-  cy.get('@cookieBanner').find('.e2e-accept-cookies-btn').click();
+  cy.get('#e2e-cookie-banner');
+  cy.get('#e2e-cookie-banner .e2e-accept-cookies-btn').click();
   cy.wait(200);
 }
 

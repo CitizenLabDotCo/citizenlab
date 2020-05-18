@@ -317,7 +317,6 @@ export default class ConsentForm extends PureComponent<Props, State> {
                       className={`${index === 0 ? 'first' : ''} ${index === consents.length - 1 ? 'last' : ''}`}
                     >
                       <Checkbox
-                        id="e2e-consent-checkbox"
                         size="20px"
                         checked={this.isConsented(consent.id)}
                         onChange={this.handleOnChange(consent)}

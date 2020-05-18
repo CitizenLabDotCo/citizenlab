@@ -11,7 +11,7 @@ describe('Sign up - custom fields step', () => {
       cy.apiSignup(firstName, lastName, email, password);
       cy.login(email, password);
       cy.get('#e2e-user-menu-container');
-      cy.get('#e2e-sign-up-in-container').should('not.exist');
+      cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
   });
 
@@ -37,7 +37,7 @@ describe('Sign up - custom fields step', () => {
       cy.get('.e2e-signup-custom-fields-skip-btn').click();
       cy.get('#e2e-signup-success-container');
       cy.get('.e2e-signup-success-close-button').click();
-      cy.get('#e2e-sign-up-in-container').should('not.exist');
+      cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
 
     after(() => {
@@ -98,7 +98,7 @@ describe('Sign up - custom fields step', () => {
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
       cy.get('#e2e-signup-success-container');
       cy.get('.e2e-signup-success-close-button').click();
-      cy.get('#e2e-sign-up-in-container').should('not.exist');
+      cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
 
     after(() => {

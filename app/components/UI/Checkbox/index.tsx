@@ -81,6 +81,7 @@ export default class Checkbox extends PureComponent<Props> {
 
   render() {
     const {
+      id,
       label,
       size,
       checked,
@@ -94,7 +95,8 @@ export default class Checkbox extends PureComponent<Props> {
     if (size && isBoolean(disabled) && isBoolean(indeterminate)) {
       return (
         <Label
-          className={`${className ? className : ''}`}
+          id={id || ''}
+          className={className || ''}
           disabled={disabled}
         >
           <CheckboxContainer hasLabel={hasLabel}>

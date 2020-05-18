@@ -240,7 +240,10 @@ const VerificationMethods = memo<Props>(({
 
   if (verificationMethods !== undefined && participationConditions !== undefined) {
     return (
-      <Container id="e2e-verification-methods" className={className}>
+      <Container
+        id="e2e-verification-wizard-method-selection-step"
+        className={className || ''}
+      >
         {showHeader &&
           <Header>
             <AboveTitle aria-hidden>

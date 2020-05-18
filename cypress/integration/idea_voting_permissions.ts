@@ -43,29 +43,26 @@ describe('Idea voting permissions', () => {
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
 
-      // check if we're redirected to sign-up page and sign up
+      // sign up modal check
       cy.get('#e2e-sign-up-container');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
       cy.get('#password').type(password);
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-      cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
       cy.get('#e2e-signup-password-button').click();
 
-      // get verified
-      cy.get('#e2e-verification-methods');
-      cy.get('#e2e-verification-methods #e2e-bogus-button').click();
-      cy.get('#e2e-verification-bogus-form');
+      // verification step check
+      cy.get('#e2e-verification-wizard-method-selection-step #e2e-bogus-button').click();
       cy.get('#e2e-verification-bogus-submit-button').click();
 
-      // check if we're redirected to project's idea page and the upvote should be registered in the idea card
-      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
-      cy.get('#e2e-project-ideas-page');
-      cy.get('#e2e-ideas-container');
-      cy.wait(1000);
-      cy.get('.e2e-ideacard-upvote-button').first().should('have.class', 'active');
+      // success check
+      cy.get('#e2e-signup-success-container');
+      cy.get('#e2e-signup-success-container .e2e-signup-success-close-button').click();
+      cy.get('#e2e-sign-up-in-modal').should('not.exist');
+      cy.get('#e2e-user-menu-container.e2e-verified');
+      cy.get('.e2e-ideacard-upvote-button.active');
     });
 
     it('sends unverified users to the verification flow', () => {
@@ -74,8 +71,7 @@ describe('Idea voting permissions', () => {
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').click();
-      cy.get('.e2e-verify-button').click();
-      cy.get('.e2e-verification-steps');
+      cy.get('#e2e-verification-wizard-root');
     });
 
     it('lets verified users vote', () => {
@@ -83,7 +79,6 @@ describe('Idea voting permissions', () => {
       cy.visit('projects/verified-ideation/ideas');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
-      cy.get('.e2e-ideacard-upvote-button');
       cy.get('.e2e-ideacard-upvote-button').click();
       cy.get('.e2e-vote-controls.up');
     });
@@ -102,28 +97,21 @@ describe('Idea voting permissions', () => {
       cy.wait(1000);
       cy.get('.e2e-ideacard-upvote-button').first().click();
 
-      // Go to sign up page
-      cy.get('.e2e-register-button').click();
-
-      // Sign up
+      // Sign up flow
       cy.get('#e2e-sign-up-container');
       cy.get('#firstName').type(firstName);
       cy.get('#lastName').type(lastName);
       cy.get('#email').type(email);
       cy.get('#password').type(password);
       cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click().should('have.class', 'checked');
-      cy.get('.e2e-email-checkbox .e2e-checkbox').click().should('have.class', 'checked');
+      cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
       cy.get('#e2e-signup-password-button').click();
 
-      // Check if we're redirected to the project's idea overview page
-      cy.location('pathname').should('eq', '/en-GB/projects/an-idea-bring-it-to-your-council/ideas');
-      cy.get('#e2e-project-ideas-page');
-      cy.get('#e2e-ideas-container');
-
-      // Should there be an automatic vote here or do we try to vote after logging in?
-      cy.get('.e2e-ideacard-upvote-button');
-      cy.get('.e2e-verification-steps').should('not.exist');
+      // success check
+      cy.get('#e2e-signup-success-container .e2e-signup-success-close-button').click();
+      cy.get('#e2e-sign-up-in-modal').should('not.exist');
+      cy.get('#e2e-user-menu-container');
+      cy.get('.e2e-ideacard-upvote-button').first().should('have.class', 'active');
     });
   });
 
