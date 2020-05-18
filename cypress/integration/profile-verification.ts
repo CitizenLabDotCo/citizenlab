@@ -1,7 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
-describe('profile verification', () => {
-
+describe('', () => {
   const firstName = randomString();
   const lastName = randomString();
   const peasantEmail = randomEmail();
@@ -17,37 +16,16 @@ describe('profile verification', () => {
     cy.acceptCookies();
   });
 
-  it('show not verified section and verification button', () => {
+  it('show not verified status box, goes through the verification flow and allows you to reverify afterwards', () => {
     cy.get('.e2e-not-verified');
     cy.get('#e2e-verify-user-button').click();
-    cy.get('.e2e-verification-steps');
-  });
-
-  it('shows verified section', () => {
-    cy.apiLogin(peasantEmail, peasantPassword).then((response) => {
-      cy.apiVerifyBogus(response.body.jwt);
-    });
-    cy.setLoginCookie(peasantEmail, peasantPassword);
-    cy.visit('/profile/edit');
-    cy.acceptCookies();
-
-    cy.get('.e2e-verified');
-  });
-
-  it('opens the verification modal success after redirection', () => {
-    cy.setLoginCookie(peasantEmail, peasantPassword);
-    cy.wait(500);
-    cy.visit('/profile/edit?verification_success');
-    cy.get('.e2e-verification-steps').find('.e2e-user-verified-success-modal-content');
-    cy.visit('?verification_success');
-    cy.get('.e2e-verification-steps').find('.e2e-user-verified-success-modal-content');
-  });
-
-  it('opens the verification modal error after redirection', () => {
-    cy.setLoginCookie(peasantEmail, peasantPassword);
-    cy.wait(500);
-    cy.visit('/profile/edit?verification_error=true');
-    cy.get('.e2e-verification-steps').find('.e2e-user-verified-errror-modal-content');
+    cy.get('#e2e-verification-wizard-method-selection-step #e2e-bogus-button').click();
+    cy.get('#e2e-verification-bogus-submit-button').click();
+    cy.get('#e2e-verification-success');
+    cy.get('.e2e-modal-close-button').click();
+    cy.reload();
+    cy.get('.e2e-reverify-user-button').click();
+    cy.get('#e2e-verification-wizard-root');
   });
 
   after(() => {

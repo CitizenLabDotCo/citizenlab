@@ -163,7 +163,10 @@ const VerificationSteps = memo<Props>(({
 
   if (verificationMethods !== undefined) {
     return (
-      <Container className={`e2e-verification-steps ${className || ''}`}>
+      <Container
+        id="e2e-verification-wizard-root"
+        className={className || ''}
+      >
         {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
           <VerificationMethods
             context={context}

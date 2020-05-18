@@ -5,7 +5,7 @@ describe('Idea Page', () => {
     before(() => {
       cy.setAdminLoginCookie();
       cy.visit('/ideas/controversial-idea');
-      cy.wait(500);
+      cy.get('#e2e-idea-show');
     });
 
     it('shows the correct content', () => {
@@ -35,7 +35,6 @@ describe('Idea Page', () => {
 
       // shows the comments content correctly
       cy.get('.e2e-comments-container').contains('Great idea, we stand behind you! I\'ll come riding a bicycle');
-      cy.get('.e2e-comments-container').contains('I\'ve never seen you riding a bicycle..');
       cy.get('.e2e-comments-container').contains('No no no no no');
 
       // shows the idea content footer'

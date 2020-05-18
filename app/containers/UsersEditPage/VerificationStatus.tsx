@@ -122,14 +122,17 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUserIsVerified = authUser.data.attributes.verified;
 
   const reverifyButton = (
-    <ReverifyButton onClick={onVerify}>
+    <ReverifyButton className="e2e-reverify-user-button" onClick={onVerify}>
       <FormattedMessage {...messages.clickHereToUpdateVerification} />
     </ReverifyButton>
   );
 
   return (
     <FeatureFlag name="verification">
-      <Container className={`${className} e2e${authUserIsVerified ? '' : '-not'}-verified`}>
+      <Container
+        id="e2e-verification-status"
+        className={`${className} e2e${authUserIsVerified ? '' : '-not'}-verified`}
+      >
         {authUserIsVerified ?
           <>
             <StyledAvatar
