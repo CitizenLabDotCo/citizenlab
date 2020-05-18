@@ -205,6 +205,25 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
         return false;
       },
+      volunteering: function isVolunteeringTabHidden() {
+        if (
+          (
+            processType === 'continuous' &&
+            participationMethod !== 'volunteering'
+          )
+        ||
+          (
+            processType === 'timeline' &&
+            !isNilOrError(phases) && phases.filter(phase => {
+              return phase.attributes.participation_method === 'volunteering';
+            }).length === 0
+          )
+        ) {
+          return true;
+        }
+
+        return false;
+      },
     };
 
     const tabNames = tabs.map(tab => tab.name);
@@ -214,12 +233,6 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         reject(tabs, { name: tabName });
       }
     });
-
-    if ((processType === 'continuous' && participationMethod !== 'volunteering') ||
-        (processType === 'timeline' && !isNilOrError(phases)
-        && phases.filter(phase => phase.attributes.participation_method === 'volunteering').length === 0)) {
-      tabs = reject(tabs, { name: 'volunteering' });
-    }
 
     if (processType === 'continuous' && participationMethod === 'poll' ||
         (processType === 'timeline' && !isNilOrError(phases)
