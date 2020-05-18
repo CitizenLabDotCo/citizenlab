@@ -100,7 +100,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     const { typeform_enabled, surveys_enabled, phases, customTopicsEnabled } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
-    let tabs: TabProps[] = [
+    const tabs: TabProps[] = [
       {
         label: formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
@@ -121,6 +121,11 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
         name: 'ideaform',
+      },
+      {
+        label: formatMessage(messages.phasesTab),
+        url: `${baseTabsUrl}/timeline`,
+        name: 'phases',
       },
       {
         label: formatMessage(messages.topicsTab),
@@ -176,6 +181,13 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
             }).length === 0
           )
         ) {
+          return true;
+        }
+
+        return false;
+      },
+      phases: function isPhasesTabHidden() {
+        if (processType !== 'timeline') {
           return true;
         }
 
@@ -242,14 +254,6 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         url: `${baseTabsUrl}/poll`,
         feature: 'polls',
         name: 'poll',
-      });
-    }
-
-    if (processType === 'timeline') {
-      tabs.splice(4, 0, {
-        label: formatMessage(messages.phasesTab),
-        url: `${baseTabsUrl}/timeline`,
-        name: 'phases',
       });
     }
 
