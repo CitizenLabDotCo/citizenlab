@@ -20,9 +20,10 @@ const Container = styled.div``;
 
 const Topics = memo(() => {
   const topics = useTopics();
-  const defaultTopics = !isNilOrError(topics) && topics.filter(topic => !isNilOrError(topic) && true); // TODO
-  const [selectedTopics, setSelectedTopics] = useState<ITopicData[]>(defaultTopics);
+  const defaultTopics = !isNilOrError(topics) ? topics.filter(topic => !isNilOrError(topic) && true) : []; // TODO
   const selectableTopics = !isNilOrError(topics) && topics.filter(topic => !isNilOrError(topic) && !selectedTopics.includes(topic));
+  const [selectedTopics, setSelectedTopics] = useState<ITopicData[]>(defaultTopics);
+
   return (
     <Container>
       <SectionTitle>
@@ -34,7 +35,6 @@ const Topics = memo(() => {
       <TopicSearch selectableTopics={selectableTopics} />
       <TopicList selectedTopics={selectedTopics} />
     </Container>
-
   );
 });
 
