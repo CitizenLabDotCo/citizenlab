@@ -44,7 +44,11 @@ export default class GetTopics extends React.Component<Props, State> {
           if (ids) {
             if (ids.length > 0) {
               return combineLatest(
-                ids.map(id => topicByIdStream(id).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
+                ids.map(id => {
+                  return topicByIdStream(id).observable.pipe(
+                    map(topic => !isNilOrError(topic) ? topic.data : topic)
+                  );
+                })
               );
             }
 
