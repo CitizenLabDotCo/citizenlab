@@ -117,6 +117,12 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         name: 'ideas',
       },
       {
+        label: formatMessage(messages.pollTab),
+        url: `${baseTabsUrl}/poll`,
+        feature: 'polls',
+        name: 'poll',
+      },
+      {
         label: formatMessage(messages.ideaFormTab),
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
@@ -157,6 +163,25 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
           processType === 'continuous' &&
           participationMethod !== 'ideation' &&
           participationMethod !== 'budgeting'
+        ) {
+          return true;
+        }
+
+        return false;
+      },
+      poll: function isPollTabHidden() {
+        if (
+          (
+            processType === 'continuous' && participationMethod !== 'poll'
+          )
+        ||
+          (
+            processType === 'timeline' &&
+            !isNilOrError(phases) &&
+            phases.filter(phase => {
+              return phase.attributes.participation_method === 'poll';
+            }).length === 0
+          )
         ) {
           return true;
         }
@@ -245,17 +270,6 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         reject(tabs, { name: tabName });
       }
     });
-
-    if (processType === 'continuous' && participationMethod === 'poll' ||
-        (processType === 'timeline' && !isNilOrError(phases)
-        && phases.filter(phase => phase.attributes.participation_method === 'poll').length > 0)) {
-      tabs.splice(3, 0, {
-        label: formatMessage(messages.pollTab),
-        url: `${baseTabsUrl}/poll`,
-        feature: 'polls',
-        name: 'poll',
-      });
-    }
 
     if (surveys_enabled && typeform_enabled) {
       if (
