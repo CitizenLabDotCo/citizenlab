@@ -44,6 +44,10 @@ const AddTopicButton = styled(Button)`
   margin-left: 30px;
 `;
 
+const StyledMultipleSelect = styled(MultipleSelect)`
+  min-width: 300px;
+`;
+
 interface Props {
   selectableTopicIds: string[];
   handleAddSelectedTopics: (topicIds: string[]) => void;
@@ -88,7 +92,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
   return (
     <Container>
       <SelectGroupsContainer>
-        <MultipleSelect
+        <StyledMultipleSelect
           value={selectedTopicOptions}
           options={getOptions()}
           onChange={handleTopicSelectionChange}
@@ -100,7 +104,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
           icon="plus-circle"
           onClick={handleOnAddTopicsClick}
           disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
-          processing={this.state.processing}
+          // processing={this.state.processing}
         />
       </SelectGroupsContainer>
     </Container>
