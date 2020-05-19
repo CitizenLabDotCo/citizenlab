@@ -45,16 +45,14 @@ export default function createRoutes() {
         },
         {
           path: 'complete-signup',
-          name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/SignUpInPage'),
+            loader: () => import('containers/LandingPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
         },
         {
           path: 'authentication-error',
-          name: 'signUpPage',
           component: Loadable({
             loader: () => import('containers/LandingPage'),
             loading: LoadableLoadingCitizen,
