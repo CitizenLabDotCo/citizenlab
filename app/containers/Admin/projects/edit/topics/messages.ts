@@ -27,4 +27,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.topicDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this topic?'
   },
+  remove: {
+    id: 'app.containers.AdminPage.Topics.remove',
+    defaultMessage: 'Remove'
+  },
 });
