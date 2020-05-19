@@ -308,6 +308,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
               <Error
                 text={formatMessage(messages.somethingWentWrongText)}
                 animate={false}
+                marginBottom="30px"
               />
             ) : (
               <>

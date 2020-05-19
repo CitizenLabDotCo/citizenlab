@@ -90,6 +90,7 @@ const SignIn = memo<Props>(({
           <Error
             text={<FormattedMessage {...messages.somethingWentWrongText} />}
             animate={false}
+            marginBottom="30px"
           />
         ) : (
           <>
