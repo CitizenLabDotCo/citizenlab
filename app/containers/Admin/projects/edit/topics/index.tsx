@@ -1,6 +1,7 @@
 import React, { memo, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
+import { isString } from 'lodash-es';
 
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import TopicSearch from './TopicSearch';
@@ -17,30 +18,51 @@ const Container = styled.div``;
 
 const Topics = memo(() => {
   const topics = useTopics();
-  const defaultTopics = !isNilOrError(topics) ? topics.filter(topic => !isNilOrError(topic) && true) : []; // TODO
-  const selectableTopics = !isNilOrError(topics) && topics.filter(topic => !isNilOrError(topic) && !selectedTopics.includes(topic));
-  const [selectedTopics, setSelectedTopics] = useState(defaultTopics);
+  const topicIds = !isNilOrError(topics) ?
+    topics.map(topic => !isNilOrError(topic) ? topic.id : topic)
+    :
+    [];
+  const defaultTopicIds = topicIds.filter(topicId => isString(topicId)); // TODO
+  const [selectedTopicIds, setSelectedTopicIds] = useState(defaultTopicIds);
+  const selectableTopicIds = topicIds.filter(topicId => !selectedTopicIds.includes(topicId));
 
   const handleRemoveSelectedTopic = useCallback((topicId: string) => {
-    const newSelectedTopics = selectedTopics.filter(topic => !isNilOrError(topic) && topic.id !== topicId);
-    setSelectedTopics(newSelectedTopics);
+    const newSelectedTopicIds = selectedTopicIds.filter(topic => !isNilOrError(topic) && topic.id !== topicId);
+    setSelectedTopicIds(newSelectedTopicIds);
   }, []);
 
-  return (
-    <Container>
-      <SectionTitle>
-        <FormattedMessage {...messages.titleDescription} />
-      </SectionTitle>
-      <SectionSubtitle>
-        <FormattedMessage {...messages.subtitleDescription} />
-      </SectionSubtitle>
-      <TopicSearch selectableTopics={selectableTopics} />
-      <TopicList
-        selectedTopics={selectedTopics}
-        handleRemoveSelectedTopic={handleRemoveSelectedTopic}
-      />
-    </Container>
-  );
+  const handleAddSelectedTopic = useCallback((topicId: string) => {
+    setSelectedTopicIds(selectedTopicIds => {
+      const newSelectedTopicIds = selectedTopicIds;
+      newSelectedTopicIds.push(topicId);
+
+      return newSelectedTopicIds;
+    });
+  }, []);
+
+  if (!isNilOrError(topics)) {
+
+    return (
+      <Container>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleDescription} />
+        </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleDescription} />
+        </SectionSubtitle>
+        <TopicSearch
+          selectableTopicIds={selectableTopicIds}
+          handleAddSelectedTopic={handleAddSelectedTopic}
+        />
+        <TopicList
+          selectedTopicIds={selectedTopicIds}
+          handleRemoveSelectedTopic={handleRemoveSelectedTopic}
+        />
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 export default Topics;
