@@ -39,11 +39,8 @@ const Container = styled.div``;
 
 const Form = styled.form`
   background: #fff;
-  border-top-color: #ebebeb;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-bottom: solid 2px #fff;
-  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+  border-top: solid 1px #ebebeb;
+  border-bottom: solid 3px #fff;
   transition: all 100ms ease;
 
   &.hidden {
@@ -53,7 +50,7 @@ const Form = styled.form`
   &.focused {
     background: #fff;
     border-radius: 0px;
-    border-bottom: solid 2px ${({ theme }) => theme.colorSecondary};
+    border-bottom-color: ${({ theme }) => theme.colorSecondary};
   }
 `;
 

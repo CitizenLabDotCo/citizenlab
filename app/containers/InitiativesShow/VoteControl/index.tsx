@@ -28,10 +28,11 @@ const Container = styled.div`
   ${media.biggerThanMaxTablet`
     margin-bottom: 45px;
     padding: 35px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+    box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
     border-radius: ${(props: any) => props.theme.borderRadius};
   `}
+
   ${media.smallerThanMaxTablet`
     padding: 15px;
   `}

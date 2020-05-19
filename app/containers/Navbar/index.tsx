@@ -57,7 +57,7 @@ const Container = styled.header`
   left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   border-bottom: solid 1px ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.03);
   z-index: 1004;
 
   &.hideNavbar {
