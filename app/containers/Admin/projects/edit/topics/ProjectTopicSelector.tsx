@@ -50,7 +50,7 @@ interface Props {
   handleAddSelectedTopic: (topicId: string) => void;
 }
 
-const TopicSelector = memo((props: Props & InjectedIntlProps) => {
+const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
   const { selectableTopicIds, intl: { formatMessage } } = props;
   const selectableTopics = useTopics(selectableTopicIds);
   const locale = useLocale();
@@ -101,4 +101,4 @@ const TopicSelector = memo((props: Props & InjectedIntlProps) => {
 
 });
 
-export default injectIntl<Props>(TopicSelector);
+export default injectIntl<Props>(ProjectTopicSelector);
