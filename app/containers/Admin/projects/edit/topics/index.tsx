@@ -32,12 +32,9 @@ const Topics = memo(() => {
     setSelectedTopicIds(newSelectedTopicIds);
   }, []);
 
-  const handleAddSelectedTopic = useCallback((topicId: string) => {
+  const handleAddSelectedTopics = useCallback((topicIds: string[]) => {
     setSelectedTopicIds(selectedTopicIds => {
-      const newSelectedTopicIds = selectedTopicIds;
-      newSelectedTopicIds.push(topicId);
-
-      return newSelectedTopicIds;
+      return selectedTopicIds.concat(topicIds);
     });
   }, []);
 
@@ -51,7 +48,7 @@ const Topics = memo(() => {
         </SectionSubtitle>
         <ProjectTopicSelector
           selectableTopicIds={selectableTopicIds}
-          handleAddSelectedTopic={handleAddSelectedTopic}
+          handleAddSelectedTopics={handleAddSelectedTopics}
         />
         <ProjectTopicList
           selectedTopicIds={selectedTopicIds}
