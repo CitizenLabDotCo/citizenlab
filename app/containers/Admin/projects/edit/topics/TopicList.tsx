@@ -1,68 +1,60 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isError } from 'lodash-es';
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
-import messages from './messages';
-import Button from 'components/UI/Button';
-import { List, Row } from 'components/admin/ResourceList';
-import Avatar from 'components/Avatar';
 import { isNilOrError } from 'utils/helperUtils';
-import { deleteModerator } from 'services/moderators';
-import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import { GetModeratorsChildProps } from 'resources/GetModerators';
-import { InjectedIntlProps } from 'react-intl';
 import styled from 'styled-components';
 
-const PendingInvitation = styled.span`
-  font-style: italic;
-`;
+// i18n
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 
-const UnknownName = styled.span`
-  font-style: italic;
-`;
+// components
+import Button from 'components/UI/Button';
+import { List, SortableRow } from 'components/admin/ResourceList';
+
+// services
+import { ITopicData } from 'services/topics';
 
 interface InputProps {
-  projectId: string;
-  moderators: GetModeratorsChildProps;
+  selectedTopics: (ITopicData | Error)[];
+  handleRemoveTopic: (topicId: string) => void;
 }
 
-interface DataProps {
-  authUser: GetAuthUserChildProps;
-}
+interface Props extends InputProps {}
 
-interface Props extends InputProps, DataProps {}
-
-class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
-  handleDeleteClick = (projectId: string, moderatorId: string) => (event: FormEvent) => {
-    const deleteMessage = this.props.intl.formatMessage(messages.topicDeletionConfirmation);
+class TopicList extends PureComponent<Props & InjectedIntlProps>{
+  handleRemoveTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
-    if (window.confirm(deleteMessage)) {
-      deleteModerator(projectId, moderatorId);
-    }
+    this.props.handleRemoveTopic(topicId);
   }
 
   render() {
-    const { moderators, projectId, authUser } = this.props;
+    const { selectedTopics } = this.props;
     const { formatMessage } = this.props.intl;
 
     return (
       <List>
-        {authUser && !isNilOrError(moderators) && moderators.map((moderator, index) => {
-          return (
-            <Row key={moderator.id} isLastItem={(index === moderators.length - 1)}>
-              <Avatar userId={moderator.id} size="30px" />
-              <p className="expand">Topic</p>
-              <p className="expand">{moderator.attributes.email}</p>
-              <Button
-                onClick={this.handleDeleteClick(projectId, moderator.id)}
-                buttonStyle="text"
-                icon="delete"
-                disabled={authUser.id === moderator.id}
+        {!isNilOrError(selectedTopics) && selectedTopics.map((topic, index) => {
+          if (!isNilOrError(topic)) {
+            return (
+              <SortableRow
+                key={topic.id}
+                isLastItem={(index === selectedTopics.length - 1)}
               >
-                <FormattedMessage {...messages.deleteTopicLabel} />
-              </Button>
-            </Row>
-          );
+                <p className="expand">Topic</p>
+                <Button
+                  onClick={this.handleRemoveTopic(topic.id)}
+                  buttonStyle="text"
+                  icon="delete"
+                >
+                  <FormattedMessage {...messages.remove} />
+                </Button>
+              </SortableRow>
+            );
+          }
+
+          return null;
         })
       }
       {/* {isError(moderators) &&
@@ -73,10 +65,6 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
   }
 }
 
-const ModeratorListWithHoc = injectIntl<Props>(ModeratorList);
+const TopicListWithHoc = injectIntl<Props>(TopicList);
 
-export default (props) => (
-  <GetAuthUser {...props}>
-    {authUser => <ModeratorListWithHoc authUser={authUser} {...props}/>}
-  </GetAuthUser>
-);
+export default TopicListWithHoc;
