@@ -17,16 +17,16 @@ import { ITopicData } from 'services/topics';
 
 interface InputProps {
   selectedTopics: (ITopicData | Error)[];
-  handleRemoveTopic: (topicId: string) => void;
+  handleRemoveSelectedTopic: (topicId: string) => void;
 }
 
 interface Props extends InputProps {}
 
 class TopicList extends PureComponent<Props & InjectedIntlProps>{
-  handleRemoveTopic = (topicId: string) => (event: FormEvent) => {
+  handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
-    this.props.handleRemoveTopic(topicId);
+    this.props.handleRemoveSelectedTopic(topicId);
   }
 
   render() {
@@ -44,7 +44,7 @@ class TopicList extends PureComponent<Props & InjectedIntlProps>{
               >
                 <p className="expand">Topic</p>
                 <Button
-                  onClick={this.handleRemoveTopic(topic.id)}
+                  onClick={this.handleRemoveSelectedTopic(topic.id)}
                   buttonStyle="text"
                   icon="delete"
                 >
