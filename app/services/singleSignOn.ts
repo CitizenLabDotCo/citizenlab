@@ -1,7 +1,6 @@
 import { AUTH_PATH } from 'containers/App/constants';
 import { ISignUpInMetaData } from 'components/SignUpIn';
 import { stringify } from 'qs';
-import { endsWith } from 'utils/helperUtils';
 import { omitBy, isNil } from 'lodash-es';
 
 export type SSOProvider = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
@@ -21,7 +20,7 @@ export const handleOnSSOClick = (provider: SSOProvider, metaData: ISignUpInMetaD
   const ssoParams: SSOParams = {
     sso_response: 'true',
     sso_flow: metaData.flow,
-    sso_pathname: !endsWith(pathname, ['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error']) ? pathname : '/',
+    sso_pathname: pathname,
     sso_verification: verification === true ? 'true' : undefined,
     sso_verification_action: verificationContext?.action,
     sso_verification_id: verificationContext?.id,

@@ -212,9 +212,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
   componentDidUpdate(_prevProps: Props, prevState: State) {
     const { authUser, signUpInModalMounted, verificationModalMounted } = this.state;
     const { pathname, search } = this.props.location;
+    const isAuthError = endsWith(pathname, 'authentication-error');
 
-    if (!isNilOrError(authUser) && signUpInModalMounted && (prevState.authUser === undefined || !prevState.signUpInModalMounted)) {
-      const isAuthError = endsWith(pathname, 'authentication-error');
+    if (isAuthError || (!isNilOrError(authUser) && signUpInModalMounted && (prevState.authUser === undefined || !prevState.signUpInModalMounted))) {
       const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as any as SSOParams;
       const shouldComplete = !authUser?.data?.attributes?.registration_completed_at;
 
@@ -232,12 +232,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       if (sso_response || shouldComplete) {
         const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
 
-        if (sso_response) {
-          const redirectUrl = (!sso_pathname || isAuthError || endsWith(sso_pathname, ['complete-signup', 'authentication-error'])) ? '/' : sso_pathname;
-          clHistory.replace(redirectUrl);
+        if (endsWith(pathname, ['authentication-error', 'complete-signup'])) {
+          window.history.replaceState(null, '', '/');
+        } else if (sso_pathname) {
+          clHistory.replace(sso_pathname);
         }
 
-        if (isAuthError || shouldVerify || shouldComplete) {
+        if (!endsWith(pathname, ['sign-up', 'sign-in', 'invite']) && (isAuthError || shouldVerify || shouldComplete)) {
           openSignUpInModal({
             flow: isAuthError && sso_flow ? sso_flow : 'signup',
             error: isAuthError,
