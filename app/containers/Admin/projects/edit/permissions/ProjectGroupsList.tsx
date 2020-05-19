@@ -137,7 +137,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
   }
 
   handleGroupsOnChange = (selectedGroups: IOption[]) => {
-    this.setState({ selectedGroups  });
+    this.setState({ selectedGroups });
   }
 
   handleOnAddGroupClick = async () => {
