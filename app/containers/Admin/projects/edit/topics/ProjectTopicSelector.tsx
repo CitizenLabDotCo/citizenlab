@@ -1,5 +1,5 @@
 // Libraries
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // Hooks
@@ -19,7 +19,6 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 // Style
 import styled from 'styled-components';
-import selectStyles from 'components/UI/MultipleSelect/styles';
 
 // Typings
 import { IOption } from 'typings';
@@ -47,19 +46,27 @@ const AddTopicButton = styled(Button)`
 
 interface Props {
   selectableTopicIds: string[];
-  handleAddSelectedTopic: (topicId: string) => void;
+  handleAddSelectedTopics: (topicIds: string[]) => void;
 }
 
 const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
-  const { selectableTopicIds, intl: { formatMessage } } = props;
+  const { selectableTopicIds, handleAddSelectedTopics, intl: { formatMessage } } = props;
   const selectableTopics = useTopics(selectableTopicIds);
   const locale = useLocale();
   const tenantLocales = useTenantLocales();
+  const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
 
-  const handleTopicSelectionChange = useCallback(() => {
-
+  // value of useCallback here?
+  const handleTopicSelectionChange = useCallback((newSelectedTopicOptions: IOption[]) => {
+    setSelectedTopicOptions(newSelectedTopicOptions);
   }, []);
 
+  const handleOnAddTopicsClick = useCallback(() => {
+    const newlySelectedTopicIds = selectedTopicOptions.map(topicOption => topicOption.value) as string[];
+    handleAddSelectedTopics(newlySelectedTopicIds);
+  }, []);
+
+  // need useCallback here?
   const getOptions = () => {
     if (!isNilOrError(selectableTopics)) {
       const topics = selectableTopics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
@@ -82,7 +89,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
     <Container>
       <SelectGroupsContainer>
         <MultipleSelect
-          value={selectedTopics}
+          value={selectedTopicOptions}
           options={getOptions()}
           onChange={handleTopicSelectionChange}
         />
@@ -91,8 +98,8 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
           text={formatMessage(messages.addTopics)}
           buttonStyle="cl-blue"
           icon="plus-circle"
-          onClick={this.handleOnAddModeratorsClick}
-          disabled={!selection || selection.length === 0}
+          onClick={handleOnAddTopicsClick}
+          disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
           processing={this.state.processing}
         />
       </SelectGroupsContainer>
