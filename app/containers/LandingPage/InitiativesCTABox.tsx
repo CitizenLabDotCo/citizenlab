@@ -25,11 +25,9 @@ const Container = styled.div``;
 
 const BoxContainer = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding: 40px 80px;
   justify-content: space-between;
-  min-height: 250px;
+  padding: 60px 40px;
   position: relative;
   overflow: hidden;
   margin-bottom: 70px;
@@ -58,6 +56,10 @@ const BackgroundIcon = styled(Icon)`
   right: -150px;
 `;
 
+const TextContainer = styled.div`
+  flex: 1 1 auto;
+`;
+
 const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxl}px;
@@ -68,6 +70,7 @@ const Title = styled.h2`
 
   ${media.smallerThanMinTablet`
     max-width: none;
+    text-align: center;
   `}
 `;
 
@@ -78,6 +81,7 @@ const Text = styled.div`
 
   ${media.smallerThanMinTablet`
     max-width: none;
+    text-align: center;
   `}
 `;
 
@@ -139,15 +143,15 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   return (
     <Container className={className}>
       <BoxContainer>
-        <BackgroundIcon name="initiatives"/>
-        <div>
+        <BackgroundIcon name="initiatives" />
+        <TextContainer>
           <Title>
             <FormattedMessage {...messages.initiativesBoxTitle} />
           </Title>
           <Text>
             <FormattedMessage {...messages.initiativesBoxText} />
           </Text>
-        </div>
+        </TextContainer>
         <ButtonContainer>
           <BrowseInitiativesButton
             fontWeight="500"
