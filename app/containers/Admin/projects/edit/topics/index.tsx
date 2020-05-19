@@ -1,9 +1,9 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
-// import TopicSearch from './TopicSearch';
+import TopicSearch from './TopicSearch';
 import TopicList from './TopicList';
 
 // i18n
@@ -21,6 +21,11 @@ const Topics = memo(() => {
   const selectableTopics = !isNilOrError(topics) && topics.filter(topic => !isNilOrError(topic) && !selectedTopics.includes(topic));
   const [selectedTopics, setSelectedTopics] = useState(defaultTopics);
 
+  const handleRemoveSelectedTopic = useCallback((topicId: string) => {
+    const newSelectedTopics = selectedTopics.filter(topic => !isNilOrError(topic) && topic.id !== topicId);
+    setSelectedTopics(newSelectedTopics);
+  }, []);
+
   return (
     <Container>
       <SectionTitle>
@@ -30,7 +35,10 @@ const Topics = memo(() => {
         <FormattedMessage {...messages.subtitleDescription} />
       </SectionSubtitle>
       <TopicSearch selectableTopics={selectableTopics} />
-      <TopicList selectedTopics={selectedTopics} />
+      <TopicList
+        selectedTopics={selectedTopics}
+        handleRemoveSelectedTopic={handleRemoveSelectedTopic}
+      />
     </Container>
   );
 });
