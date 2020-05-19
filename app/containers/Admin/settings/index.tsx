@@ -33,7 +33,7 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
     const { widgetsEnabled, customTopicsEnabled } = this.props;
     const { formatMessage } = this.props.intl;
 
-    const tabs: TabProps[] = [
+    let tabs: TabProps[] = [
       {
         label: formatMessage(messages.tabSettings),
         url: '/admin/settings/general',
@@ -87,7 +87,7 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
 
     tabNames.forEach(tabName => {
       if (tabName && tabHideConditions[tabName]()) {
-        reject(tabs, { name: tabName });
+        tabs = reject(tabs, { name: tabName });
       }
     });
 
