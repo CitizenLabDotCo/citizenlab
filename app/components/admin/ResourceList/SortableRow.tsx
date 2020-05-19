@@ -12,7 +12,7 @@ const DragHandle = styled.div`
   align-self: flex-start;
 `;
 
-type Props = {
+interface Props {
   connectDragSource: any;
   connectDropTarget: any;
   isDragging: boolean;
@@ -22,7 +22,7 @@ type Props = {
   lastItem: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex, number) => void;
-};
+}
 
 type State = {};
 

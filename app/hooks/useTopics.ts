@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ITopicData, ITopics, topicByIdStream, topicsStream } from 'services/topics';
+import { ITopicData, topicByIdStream, topicsStream } from 'services/topics';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
