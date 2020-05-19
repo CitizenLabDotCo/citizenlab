@@ -232,13 +232,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       if (sso_response || shouldComplete) {
         const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
 
-        if (endsWith(pathname, ['authentication-error', 'complete-signup'])) {
+        if (isAuthError) {
           window.history.replaceState(null, '', '/');
         } else if (sso_pathname) {
           clHistory.replace(sso_pathname);
         }
 
-        if (!endsWith(pathname, ['sign-up', 'sign-in', 'invite']) && (isAuthError || shouldVerify || shouldComplete)) {
+        if (!endsWith(sso_pathname, ['sign-up', 'sign-in', 'invite']) && (isAuthError || shouldVerify || shouldComplete)) {
           openSignUpInModal({
             flow: isAuthError && sso_flow ? sso_flow : 'signup',
             error: isAuthError,
