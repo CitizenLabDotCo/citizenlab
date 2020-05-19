@@ -20,7 +20,7 @@ interface Props {
   handleRemoveSelectedTopic: (topicId: string) => void;
 }
 
-const TopicList = memo(({ selectedTopicIds }: Props) => {
+const ProjectTopicList = memo(({ selectedTopicIds }: Props) => {
 
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
@@ -61,6 +61,6 @@ const TopicList = memo(({ selectedTopicIds }: Props) => {
   );
 });
 
-const TopicListWithHOCs = injectIntl<Props>(TopicList);
+const ProjectTopicListWithHOCs = injectIntl<Props>(ProjectTopicList);
 
-export default TopicListWithHOCs;
+export default ProjectTopicListWithHOCs;
