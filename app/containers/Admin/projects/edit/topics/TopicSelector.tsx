@@ -46,7 +46,8 @@ interface Props {
   handleAddSelectedTopic: (topicId: string) => void;
 }
 
-const TopicSearch = memo(() => {
+const TopicSelector = memo((props: Props & InjectedIntlProps) => {
+  const { intl: { formatMessage } } = props;
   const topics = useTopics();
 
   const handleTopicSelectionChange = useCallback(() => {
@@ -84,4 +85,4 @@ const TopicSearch = memo(() => {
   return null;
 });
 
-export default injectIntl<Props>(TopicSearch);
+export default injectIntl<Props>(TopicSelector);

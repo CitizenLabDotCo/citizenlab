@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isString } from 'lodash-es';
 
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
-import TopicSearch from './TopicSearch';
+import TopicSelector from './TopicSelector';
 import TopicList from './TopicList';
 
 // i18n
@@ -49,7 +49,7 @@ const Topics = memo(() => {
         <SectionSubtitle>
           <FormattedMessage {...messages.subtitleDescription} />
         </SectionSubtitle>
-        <TopicSearch
+        <TopicSelector
           selectableTopicIds={selectableTopicIds}
           handleAddSelectedTopic={handleAddSelectedTopic}
         />
