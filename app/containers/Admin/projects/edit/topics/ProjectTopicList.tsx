@@ -7,10 +7,11 @@ import styled from 'styled-components';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
-import { List, SortableRow } from 'components/admin/ResourceList';
+import { List, Row } from 'components/admin/ResourceList';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -20,8 +21,10 @@ interface Props {
   handleRemoveSelectedTopic: (topicId: string) => void;
 }
 
-const ProjectTopicList = memo(({ selectedTopicIds }: Props) => {
-
+const ProjectTopicList = memo(({
+  selectedTopicIds,
+  localize
+}: Props & InjectedIntlProps & InjectedLocalized) => {
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
@@ -35,11 +38,12 @@ const ProjectTopicList = memo(({ selectedTopicIds }: Props) => {
       {!isNilOrError(selectedTopics) && selectedTopics.map((topic, index) => {
         if (!isNilOrError(topic)) {
           return (
-            <SortableRow
-              key={topic.id}
+            <Row
+              id={topic.id}
+              key={index}
               isLastItem={(index === selectedTopics.length - 1)}
             >
-              <p className="expand">Topic</p>
+              <p>{localize(topic.attributes.title_multiloc)}</p>
               <Button
                 onClick={handleRemoveSelectedTopic(topic.id)}
                 buttonStyle="text"
@@ -47,7 +51,7 @@ const ProjectTopicList = memo(({ selectedTopicIds }: Props) => {
               >
                 <FormattedMessage {...messages.remove} />
               </Button>
-            </SortableRow>
+            </Row>
           );
         }
 
@@ -61,6 +65,6 @@ const ProjectTopicList = memo(({ selectedTopicIds }: Props) => {
   );
 });
 
-const ProjectTopicListWithHOCs = injectIntl<Props>(ProjectTopicList);
+const ProjectTopicListWithHOCs = injectIntl<Props>(injectLocalize(ProjectTopicList));
 
 export default ProjectTopicListWithHOCs;
