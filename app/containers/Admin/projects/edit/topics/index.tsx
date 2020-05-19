@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from 'react';
+import React, { memo, useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { isString } from 'lodash-es';
@@ -18,14 +18,18 @@ const Container = styled.div``;
 
 const Topics = memo(() => {
   const topics = useTopics();
-  const topicIds = !isNilOrError(topics) ?
+  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
+  const selectableTopicIds = selectedTopicIds.filter(topicId => !selectedTopicIds.includes(topicId));
+
+  useEffect(() => {
+    const topicIds = !isNilOrError(topics) ?
     topics.map(topic => !isNilOrError(topic) ? topic.id : null)
           .filter(topic => topic) as string[]
     :
     [];
-  const defaultTopicIds = topicIds.filter(topicId => isString(topicId)); // TODO
-  const [selectedTopicIds, setSelectedTopicIds] = useState(defaultTopicIds);
-  const selectableTopicIds = topicIds.filter(topicId => !selectedTopicIds.includes(topicId));
+
+    setSelectedTopicIds(topicIds);
+  }, [topics]);
 
   const handleRemoveSelectedTopic = useCallback((topicIdToRemove: string) => {
     const newSelectedTopicIds = selectedTopicIds.filter(topicId => topicId !== topicIdToRemove);
@@ -38,24 +42,24 @@ const Topics = memo(() => {
     });
   }, []);
 
-    return (
-      <Container>
-        <SectionTitle>
-          <FormattedMessage {...messages.titleDescription} />
-        </SectionTitle>
-        <SectionSubtitle>
-          <FormattedMessage {...messages.subtitleDescription} />
-        </SectionSubtitle>
-        <ProjectTopicSelector
-          selectableTopicIds={selectableTopicIds}
-          handleAddSelectedTopics={handleAddSelectedTopics}
-        />
-        <ProjectTopicList
-          selectedTopicIds={selectedTopicIds}
-          handleRemoveSelectedTopic={handleRemoveSelectedTopic}
-        />
-      </Container>
-    );
+  return (
+    <Container>
+      <SectionTitle>
+        <FormattedMessage {...messages.titleDescription} />
+      </SectionTitle>
+      <SectionSubtitle>
+        <FormattedMessage {...messages.subtitleDescription} />
+      </SectionSubtitle>
+      <ProjectTopicSelector
+        selectableTopicIds={selectableTopicIds}
+        handleAddSelectedTopics={handleAddSelectedTopics}
+      />
+      <ProjectTopicList
+        selectedTopicIds={selectedTopicIds}
+        handleRemoveSelectedTopic={handleRemoveSelectedTopic}
+      />
+    </Container>
+  );
 });
 
 export default Topics;
