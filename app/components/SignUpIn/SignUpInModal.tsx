@@ -45,7 +45,12 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const opened = !!metaData;
   const hasParticipationConditions = !isNilOrError(participationConditions) && participationConditions.length > 0;
   const modalWidth = !!(signUpActiveStep === 'verification' && hasParticipationConditions) ? 820 : 550;
-  const modalNoClose = !!((signUpActiveStep === 'verification' || signUpActiveStep === 'custom-fields') && !isNilOrError(customFieldsSchema) && customFieldsSchema?.hasRequiredFields);
+  const modalNoClose = !!(
+    metaData?.error !== true &&
+    (signUpActiveStep === 'verification' || signUpActiveStep === 'custom-fields') &&
+    !isNilOrError(customFieldsSchema) &&
+    customFieldsSchema?.hasRequiredFields
+  );
 
   useEffect(() => {
     if (isMounted()) {
