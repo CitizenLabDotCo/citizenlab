@@ -40,8 +40,6 @@ const Topics = memo(() => {
     });
   }, []);
 
-  if (!isNilOrError(topics)) {
-
     return (
       <Container>
         <SectionTitle>
@@ -60,9 +58,6 @@ const Topics = memo(() => {
         />
       </Container>
     );
-  }
-
-  return null;
 });
 
 export default Topics;
