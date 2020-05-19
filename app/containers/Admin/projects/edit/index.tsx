@@ -163,6 +163,12 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     ];
 
     const tabHideConditions = {
+      general: function isGeneralTabHidden() {
+        return false;
+      },
+      description: function isDescriptionTabHidden() {
+        return false;
+      },
       ideas: function isIdeaTabHidden() {
         if (
           processType === 'continuous' &&
@@ -292,6 +298,12 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
         return false;
       },
+      events: function isEventsTabHidden() {
+        return false;
+      },
+      permissions: function isPermissionsTabHidden() {
+        return false;
+      }
     };
 
     const tabNames = tabs.map(tab => tab.name);
