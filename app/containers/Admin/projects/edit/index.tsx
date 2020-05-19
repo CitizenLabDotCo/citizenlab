@@ -100,7 +100,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
     const { typeform_enabled, surveys_enabled, phases, customTopicsEnabled } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
-    const tabs: TabProps[] = [
+    let tabs: TabProps[] = [
       {
         label: formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
@@ -310,7 +310,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
     tabNames.forEach(tabName => {
       if (tabName && tabHideConditions[tabName]()) {
-        reject(tabs, { name: tabName });
+        tabs =  reject(tabs, { name: tabName });
       }
     });
 
