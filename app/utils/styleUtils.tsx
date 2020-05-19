@@ -220,6 +220,11 @@ export const boxShadowOutline = css`
   box-shadow: 0px 0px 0px 1px #000;
 `;
 
+export const boxShadowOutlineImportant = css`
+  border-color: #000 !important;
+  box-shadow: 0px 0px 0px 1px #000 !important;
+`;
+
 export const defaultInputStyle = css`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;

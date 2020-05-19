@@ -40,7 +40,8 @@ const Container = styled.div`
   flex-direction: column;
   padding: 20px 40px 40px;
   background: #fff;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:not(:last-child) {
     margin-bottom: 20px;
