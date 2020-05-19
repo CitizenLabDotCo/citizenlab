@@ -19,15 +19,16 @@ const Container = styled.div``;
 const Topics = memo(() => {
   const topics = useTopics();
   const topicIds = !isNilOrError(topics) ?
-    topics.map(topic => !isNilOrError(topic) ? topic.id : topic)
+    topics.map(topic => !isNilOrError(topic) ? topic.id : null)
+          .filter(topic => topic) as string[]
     :
     [];
   const defaultTopicIds = topicIds.filter(topicId => isString(topicId)); // TODO
   const [selectedTopicIds, setSelectedTopicIds] = useState(defaultTopicIds);
   const selectableTopicIds = topicIds.filter(topicId => !selectedTopicIds.includes(topicId));
 
-  const handleRemoveSelectedTopic = useCallback((topicId: string) => {
-    const newSelectedTopicIds = selectedTopicIds.filter(topic => !isNilOrError(topic) && topic.id !== topicId);
+  const handleRemoveSelectedTopic = useCallback((topicIdToRemove: string) => {
+    const newSelectedTopicIds = selectedTopicIds.filter(topicId => topicId !== topicIdToRemove);
     setSelectedTopicIds(newSelectedTopicIds);
   }, []);
 
