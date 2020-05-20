@@ -11,7 +11,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
-import { List, Row } from 'components/admin/ResourceList';
+import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -34,11 +34,16 @@ const ProjectTopicList = memo(({
   const selectedTopics = useTopics(selectedTopicIds);
 
   return (
-    <List>
+    <SortableList
+      items={AdminPublicationsList}
+      onReorder={handleReorderAdminPublication}
+      className="projects-list e2e-admin-projects-list"
+      id="e2e-admin-published-projects-list"
+    >
       {!isNilOrError(selectedTopics) && selectedTopics.map((topic, index) => {
         if (!isNilOrError(topic)) {
           return (
-            <Row
+            <SortableRow
               id={topic.id}
               key={index}
               isLastItem={(index === selectedTopics.length - 1)}
@@ -51,17 +56,17 @@ const ProjectTopicList = memo(({
               >
                 <FormattedMessage {...messages.remove} />
               </Button>
-            </Row>
+            </SortableRow>
           );
         }
 
         return null;
       })
     }
-    {/* {isError(moderators) &&
-      <FormattedMessage {...messages.moderatorsNotFound} />
-    } */}
-  </List>
+      {/* {isError(moderators) &&
+        <FormattedMessage {...messages.moderatorsNotFound} />
+      } */}
+    </SortableList>
   );
 });
 
