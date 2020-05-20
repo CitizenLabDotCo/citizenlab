@@ -3,14 +3,17 @@ import { randomString, randomEmail } from '../support/commands';
 describe('Sign up - custom fields step', () => {
 
   describe('No custom fields', () => {
-    it('does not show it when no custom fields are enabled', () => {
+    before(() => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();
       const password = randomString();
       cy.apiSignup(firstName, lastName, email, password);
-      cy.login(email, password);
-      cy.get('#e2e-user-menu-container');
+      cy.setLoginCookie(email, password);
+      cy.goToLandingPage();
+    });
+
+    it('does not show it when no custom fields are enabled', () => {
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
   });
@@ -27,7 +30,7 @@ describe('Sign up - custom fields step', () => {
         cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
-        cy.login(email, password);
+        cy.setLoginCookie(email, password);
         cy.goToLandingPage();
       });
     });
@@ -57,7 +60,7 @@ describe('Sign up - custom fields step', () => {
       cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
-        cy.login(email, password);
+        cy.setLoginCookie(email, password);
         cy.goToLandingPage();
       });
     });
@@ -86,7 +89,7 @@ describe('Sign up - custom fields step', () => {
       cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
         customFieldId = response.body.data.id;
         cy.apiSignup(firstName, lastName, email, password);
-        cy.login(email, password);
+        cy.setLoginCookie(email, password);
         cy.goToLandingPage();
       });
     });
