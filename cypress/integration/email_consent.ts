@@ -12,27 +12,23 @@ describe('email consent', () => {
     cy.get('.e2e-multiloc-input').find('input').first().type('Test subject');
     cy.get('.e2e-multiloc-editor').find('.ql-editor').first().type('Test content');
     cy.get('.e2e-submit-wrapper-button').find('button').click();
-
     cy.wait(1000);
+    cy.get('#e2e-custom-email-container');
+    cy.get('#e2e-custom-email-container iframe');
 
-    // check that iframe is loaded
-    cy.get('#e2e-email-preview-iframe');
-    cy.frameLoaded('#e2e-email-preview-iframe');
-
-    cy.wait(2000);
-
-    cy.enter('#e2e-email-preview-iframe').then((getBody) => {
-      // unsubscribe the user
-      getBody().find('a.e2e-unsubscribe').click();
+    cy.get('#e2e-custom-email-container iframe').then(($iframe) => {
+      const $body = $iframe.contents().find('body');
+      cy.wrap($body).find('a.e2e-unsubscribe').click();
     });
 
     cy.wait(2000);
 
-    cy.enter('#e2e-email-preview-iframe').then((getBody) => {
-      // check that the user is unsubscribed
-      getBody().find('#e2e-email-settings-page');
-      getBody().find('#e2e-consent-form');
-      getBody().find('.e2e-unsubscribe-status').contains('success').contains('Official');
+    cy.get('#e2e-custom-email-container iframe').then(($iframe) => {
+      const $body = $iframe.contents().find('body');
+      cy.wrap($body).find('#e2e-email-settings-page');
+      cy.wrap($body).find('#e2e-consent-form');
+      cy.wrap($body).find('.e2e-unsubscribe-status').contains('success').contains('Official');
     });
   });
+
 });

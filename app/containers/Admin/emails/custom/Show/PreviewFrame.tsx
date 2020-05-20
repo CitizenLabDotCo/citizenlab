@@ -32,12 +32,9 @@ class PreviewFrame extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    request<{html: string}>(`${API_PATH}/campaigns/${this.props.campaignId}/preview`, null, null, null)
-      .then((json) => {
-        this.setState({
-          previewHtml: json.html,
-        });
-      });
+    request<{html: string}>(`${API_PATH}/campaigns/${this.props.campaignId}/preview`, null, null, null).then((json) => {
+      this.setState({ previewHtml: json.html });
+    });
   }
 
   render() {
