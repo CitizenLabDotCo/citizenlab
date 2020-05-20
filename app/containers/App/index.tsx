@@ -229,12 +229,14 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         sso_verification_type
       } = urlSearchParams;
 
+      if (isAuthError) {
+        window.history.replaceState(null, '', '/');
+      }
+
       if (sso_response || shouldComplete) {
         const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
 
-        if (isAuthError) {
-          window.history.replaceState(null, '', '/');
-        } else if (sso_pathname) {
+        if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
         }
 
