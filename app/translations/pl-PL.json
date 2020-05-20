@@ -1801,7 +1801,7 @@
   "app.containers.SignIn.signInButtonAltText": "Zapisz się przez {loginMechanismName}",
   "app.containers.SignIn.signInError": "Podane informacje nie są prawidłowe. Kliknij \"Zapomniałem hasła\", aby zmienić swoje hasło.",
   "app.containers.SignIn.signUp": "Zarejestruj się",
-  "app.containers.SignIn.somethingWentWrong": "Something went wrong and we can't sign you in right now. Please try again later.",
+  "app.containers.SignIn.somethingWentWrong": "Coś poszło nie tak i nie możemy Cię zarejestrować. Proszę spróbuj później.",
   "app.containers.SignIn.submit": "Zaloguj się",
   "app.containers.SignIn.whatIsFranceConnect": "Co to jest France Connect?",
   "app.containers.SignUp.acceptTermsAndConditions": "Zaakceptuj nasz {tacLink}, aby zapisać się przez {loginMechanismName}",
