@@ -2,6 +2,7 @@ import { IUser, deleteUser } from 'services/users';
 import { IHttpMethod, Locale } from 'typings';
 import { API_PATH, AUTH_PATH } from 'containers/App/constants';
 import { getJwt, setJwt, removeJwt, decode } from 'utils/auth/jwt';
+import { endsWith } from 'utils/helperUtils';
 import request from 'utils/request';
 import streams from 'utils/streams';
 import clHistory from 'utils/cl-router/history';
@@ -35,9 +36,9 @@ export async function signIn(email: string, password: string) {
     const httpMethod: IHttpMethod = { method: 'POST' };
     const { jwt } = await request<IUserToken>(`${API_PATH}/user_token`, bodyData, httpMethod, null);
     setJwt(jwt);
-    const authenticatedUser = await getAuthUserAsync();
-    streams.reset(authenticatedUser);
-    return authenticatedUser;
+    const authUser = await getAuthUserAsync();
+    await streams.reset(authUser);
+    return authUser;
   } catch (error) {
     signOut();
     throw error;
@@ -90,22 +91,17 @@ export function signOut() {
       window.location.href = url;
     } else {
       streams.reset(null);
-      const { pathname, urlLocale } = removeLocale(location.pathname);
+      const { pathname } = removeLocale(location.pathname);
 
-      if (pathname) {
-        if (pathname.endsWith('/sign-up')) {
-          clHistory.push('/');
-        } else if (pathname.startsWith('/admin')) {
-          clHistory.push(`/${urlLocale}`);
-        }
+      if (pathname && (endsWith(pathname, '/sign-up') || pathname.startsWith('/admin'))) {
+        clHistory.push('/');
       }
     }
-
   }
 }
 
 export function signOutAndDeleteAccountPart1() {
-  setTimeout(() => eventEmitter.emit('UserProfile', 'tryAndDeleteProfile', null), 500);
+  setTimeout(() => eventEmitter.emit('tryAndDeleteProfile'), 500);
   clHistory.push('/');
 }
 

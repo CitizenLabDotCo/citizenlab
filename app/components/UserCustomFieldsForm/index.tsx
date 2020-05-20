@@ -39,6 +39,10 @@ import { IOption } from 'typings';
 
 const Container = styled.div``;
 
+const StyledSectionField = styled(SectionField)`
+  margin-bottom: 30px;
+`;
+
 const StyledFormLabelValue = styled(FormLabelValue)`
   display: block;
   margin-bottom: 10px;
@@ -60,15 +64,17 @@ const StyledIconTooltip = styled(IconTooltip)`
 const StyledSelect = styled(Select)`
   flex-grow: 1;
 `;
+
 const StyledTextArea = styled(TextArea)`
   flex-grow: 1;
 `;
+
 const StyledMultipleSelect = styled(MultipleSelect)`
   flex-grow: 1;
 `;
+
 const StyledDateInput = styled(DateInput)`
   flex-grow: 1;
-
 `;
 
 export interface InputProps {
@@ -76,6 +82,7 @@ export interface InputProps {
   onSubmit?: (arg: any) => void;
   onChange?: (arg: any) => void;
   id?: string;
+  className?: string;
 }
 
 interface DataProps {
@@ -300,7 +307,7 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
     if (isString(id)) {
       return (
         <>
-          {title && <StyledFormLabelValue noSpace htmlFor={id} thin labelValue={title} />}
+          {title && <StyledFormLabelValue noSpace htmlFor={id} labelValue={title} />}
           <InputContainer>
             <Checkbox
               checked={(isBoolean(props.value) ? props.value : false)}
@@ -342,14 +349,16 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
     );
   }
 
-  CustomFieldTemplate: any = (props: FieldProps) => {
+  CustomFieldTemplate = (props: FieldProps) => {
     const { id, label, description, rawErrors, children, required } = props;
     const errors: any = uniq(rawErrors);
+
     if (props.hidden !== true) {
       const safeDescription = description && get(description, 'props.description') && description.props.description.length > 0;
       const descriptionJSX = safeDescription && <div dangerouslySetInnerHTML={{ __html: description.props.description }} />;
+
       return (
-        <SectionField>
+        <StyledSectionField>
           {(props.schema.type !== 'boolean') &&
             renderLabel(id, label, required, descriptionJSX)
           }
@@ -359,7 +368,7 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
           {errors && errors.length > 0 && errors.map((value, index) => {
             return (<Error key={index} marginTop="10px" text={value} />);
           })}
-        </SectionField>
+        </StyledSectionField>
       );
     }
 
@@ -384,7 +393,7 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
   }
 
   render() {
-    const { userCustomFieldsSchema } = this.props;
+    const { userCustomFieldsSchema, className } = this.props;
 
     if (!isNilOrError(userCustomFieldsSchema)) {
       const { schema, uiSchema } = userCustomFieldsSchema;
@@ -398,14 +407,17 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
       };
 
       return (
-        <Container id={id ? id : ''} className={this.props['className']}>
+        <Container
+          id={id || ''}
+          className={className || ''}
+        >
           {schema && uiSchema &&
             <Form
               schema={schema}
               uiSchema={uiSchema}
               formData={this.props.formData}
               widgets={widgets}
-              FieldTemplate={this.CustomFieldTemplate}
+              FieldTemplate={this.CustomFieldTemplate as any}
               ObjectFieldTemplate={this.ObjectFieldTemplate}
               transformErrors={this.transformErrors}
               noHtml5Validate={true}
@@ -430,7 +442,7 @@ class UserCustomFieldsForm extends PureComponent<Props & InjectedIntlProps> {
 function renderLabel(id, label, required, descriptionJSX) {
   if (label && label.length > 0) {
     return (
-      <FormLabelValue thin htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX} />
+      <FormLabelValue htmlFor={id} labelValue={label} optional={!required} subtextValue={descriptionJSX} />
     );
   }
   return;

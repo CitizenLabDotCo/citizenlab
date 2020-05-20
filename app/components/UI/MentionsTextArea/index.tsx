@@ -13,27 +13,17 @@ import Error from 'components/UI/Error';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, boxShadowOutlineImportant } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
 import { Locale } from 'typings';
 
-const Container = styled.div<{ placeholderFontWeight: string }>`
+const Container = styled.div`
   position: relative;
 
-  textarea {
-    &:hover {
-      border-color: ${(props: any) => props.error && props.theme.colors.clRedError} !important;
-    }
-
-    &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'} !important;
-    }
-
-    &::placeholder {
-      font-weight: ${props => props.placeholderFontWeight} !important;
-    }
+  & .hasBorder textarea:focus {
+    ${boxShadowOutlineImportant};
   }
 
   .textareaWrapper__suggestions__list li:last-child {
@@ -65,7 +55,6 @@ export interface InputProps {
   borderRadius?: string;
   boxShadow?: string;
   background?: string;
-  placeholderFontWeight?: string;
   ariaLabel?: string;
 }
 
@@ -87,11 +76,10 @@ class MentionsTextArea extends PureComponent<Props, State> {
     fontWeight: '400',
     lineHeight: '24px',
     padding: '24px',
-    border: `solid 1px ${colors.separationDark}`,
-    borderRadius: '5px',
-    boxShadow: 'inset 0 0 2px rgba(0, 0, 0, 0.1)',
-    background: 'transparent',
-    placeholderFontWeight: '300'
+    border: `solid 1px ${colors.border}`,
+    borderRadius: '3px',
+    boxShadow: 'none',
+    background: '#fff',
   };
 
   constructor(props) {
@@ -220,18 +208,15 @@ class MentionsTextArea extends PureComponent<Props, State> {
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows, id, className, placeholderFontWeight, ariaLabel } = this.props;
+    const { name, placeholder, value, error, children, rows, id, className, ariaLabel } = this.props;
 
     if (style) {
       return (
-        <Container
-          className={className}
-          placeholderFontWeight={placeholderFontWeight as string}
-        >
+        <Container className={className}>
           <MentionsInput
             id={id}
             style={style}
-            className="textareaWrapper"
+            className={`textareaWrapper ${this.props.border !== 'none' ? 'hasBorder' : 'noBorder'}`}
             name={name || ''}
             rows={rows}
             value={value || ''}

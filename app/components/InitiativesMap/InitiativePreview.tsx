@@ -2,7 +2,6 @@ import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
-import clHistory from 'utils/cl-router/history';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -155,22 +154,12 @@ class InitiativePreview extends PureComponent<Props & InjectedLocalized, State> 
     const { initiative } = this.props;
 
     if (!isNilOrError(initiative)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('InitiativePreview', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: initiative.id,
         slug: initiative.attributes.slug,
         type: 'initiative'
       });
     }
-  }
-
-  goToLogin = (event: FormEvent) => {
-    event.preventDefault();
-    clHistory.push('/sign-in');
-  }
-
-  goToRegister = (event: FormEvent) => {
-    event.preventDefault();
-    clHistory.push('/sign-up');
   }
 
   render() {

@@ -21,16 +21,7 @@ describe('Project ideas page', () => {
 
   it('asks unauthorised users to log in or sign up before they vote', () => {
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().find('.upvote.enabled').click();
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-login-button');
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-register-button');
-  });
-
-  it('takes unauthorised users through signup and back to the page', () => {
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').first().find('.upvote.enabled').click();
-    cy.get('#e2e-ideas-container').find('.e2e-idea-card').find('.e2e-login-button').click();
-    cy.location('pathname').should('eq', '/en-GB/sign-in');
-
-    // TODO: 'back to the page part is missing'
+    cy.get('#e2e-sign-up-in-modal');
   });
 
   it('takes you to the idea page when clicking an idea card', () => {

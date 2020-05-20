@@ -12,7 +12,9 @@ export function moderatorsStream(projectId: string) {
 }
 
 export async function deleteModerator(projectId: string, moderatorId: string) {
-  return streams.delete(`${API_PATH}/projects/${projectId}/moderators/${moderatorId}`, moderatorId);
+  const response = await streams.delete(`${API_PATH}/projects/${projectId}/moderators/${moderatorId}`, moderatorId);
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/moderators`] });
+  return response;
 }
 
 export function findMembership(projectId: string, streamParams: IStreamParams | null = null) {

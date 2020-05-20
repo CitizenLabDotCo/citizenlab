@@ -13,7 +13,6 @@ declare global {
       apiCreateAdmin: typeof apiCreateAdmin;
       apiRemoveUser: typeof apiRemoveUser;
       logout: typeof logout;
-      signup: typeof signup;
       acceptCookies: typeof acceptCookies;
       getIdeaById: typeof getIdeaById;
       getProjectBySlug: typeof getProjectBySlug;
@@ -81,12 +80,17 @@ export function goToLandingPage() {
 
 export function login(email: string, password: string) {
   cy.wait(500);
-  cy.visit('/sign-in');
-  cy.get('.e2e-sign-in-container');
+  cy.visit('/');
+  cy.get('#e2e-landing-page');
+  cy.get('#e2e-navbar');
+  cy.get('#e2e-navbar-login-menu-item').click();
+  cy.get('#e2e-sign-in-container');
   cy.get('#email').type(email);
   cy.get('#password').type(password);
   cy.get('.e2e-submit-signin').click();
-  cy.wait(2000);
+  cy.get('#e2e-sign-up-in-modal').should('not.exist');
+  cy.get('#e2e-user-menu-container');
+  cy.wait(500);
 }
 
 export function apiLogin(email: string, password: string) {
@@ -208,21 +212,9 @@ export function logout() {
   cy.get('#e2e-sign-out-link').click();
 }
 
-export function signup(firstName: string, lastName: string, email: string, password: string) {
-  cy.visit('/sign-up');
-  cy.get('#firstName').type(firstName);
-  cy.get('#lastName').type(lastName);
-  cy.get('#email').type(email);
-  cy.get('#password').type(password);
-  cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
-  cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
-  cy.get('.e2e-email-checkbox .e2e-checkbox').click();
-  cy.get('#e2e-signup-step1-button').click();
-}
-
 export function acceptCookies() {
-  cy.get('#e2e-cookie-banner').as('cookieBanner');
-  cy.get('@cookieBanner').find('.e2e-accept-cookies-btn').click();
+  cy.get('#e2e-cookie-banner');
+  cy.get('#e2e-cookie-banner .e2e-accept-cookies-btn').click();
   cy.wait(200);
 }
 
@@ -899,7 +891,6 @@ Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
 Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('logout', logout);
-Cypress.Commands.add('signup', signup);
 Cypress.Commands.add('acceptCookies', acceptCookies);
 Cypress.Commands.add('getIdeaById', getIdeaById);
 Cypress.Commands.add('getProjectBySlug', getProjectBySlug);

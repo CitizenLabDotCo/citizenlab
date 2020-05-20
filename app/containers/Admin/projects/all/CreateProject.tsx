@@ -240,12 +240,16 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   useEffect(() => {
-    const subscription = eventEmitter.observeEvent<INewProjectCreatedEvent>('NewProjectCreated').subscribe(({ eventValue: { projectId } }) => {
-      setTimeout(() => {
-        clHistory.push({
-          pathname: `/admin/projects/${projectId}/edit`
-        });
-      }, 1000);
+    const subscription = eventEmitter.observeEvent<INewProjectCreatedEvent>('NewProjectCreated').subscribe(({ eventValue }) => {
+      const projectId = eventValue?.projectId;
+
+      if (projectId) {
+        setTimeout(() => {
+          clHistory.push({
+            pathname: `/admin/projects/${projectId}/edit`
+          });
+        }, 1000);
+      }
     });
 
     return () => subscription.unsubscribe();

@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNumber } from 'lodash-es';
 
 // libraries
 import clHistory from 'utils/cl-router/history';
@@ -7,9 +8,13 @@ import { withRouter, WithRouterProps } from 'react-router';
 import { reverseGeocode } from 'utils/locationTools';
 import { parse } from 'qs';
 
+// services
+import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import { PreviousPathnameContext } from 'context';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -22,6 +27,7 @@ import PageLayout from 'components/InitiativeForm/PageLayout';
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
+  previousPathName: string | null;
 }
 
 interface Props extends DataProps { }
@@ -45,14 +51,14 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
   }
 
   componentDidMount() {
-    const { location, authUser } = this.props;
+    const { location } = this.props;
     const { lat, lng } = parse(location.search, { ignoreQueryPrefix: true, decoder: (str, _defaultEncoder, _charset, type) => {
       return type === 'value' ? parseFloat(str) : str;
-    }});
+    }}) as { [key: string]: string | number };
 
-    if (authUser === null) {
-      clHistory.replace('/sign-up');
-    } else if (lat && lng) {
+    this.redirectIfNotPermittedOnPage();
+
+    if (isNumber(lat) && isNumber(lng)) {
       reverseGeocode([lat, lng]).then((location_description) => {
         this.setState({ locationInfo: {
           // When an idea is posted through the map, we Google Maps gets an approximate address,
@@ -71,7 +77,16 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
+    if (prevProps.authUser !== this.props.authUser) {
+      this.redirectIfNotPermittedOnPage();
+    }
+  }
+
+  redirectIfNotPermittedOnPage = () => {
+    const { authUser } = this.props;
+    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }) || isSuperAdmin({ data: authUser }));
+
+    if (!isPrivilegedUser && authUser === null) {
       clHistory.replace('/sign-up');
     }
   }
@@ -97,7 +112,8 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
 
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
-  locale: <GetLocale />
+  locale: <GetLocale />,
+  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
 export default withRouter((inputProps: WithRouterProps) => (

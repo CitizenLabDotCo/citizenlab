@@ -32,23 +32,19 @@ export const FormLabelWithIcon = memo(({
   children,
   className,
   hidden,
-  thin,
   noSpace,
   iconName,
   iconAriaHidden
 }: FormLabelWithIconProps) => (
-  <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
+  <FormLabelStyled id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
     <LabelContainer>
       <FormattedMessage {...labelMessage} values={labelMessageValues} />
       <StyledIcon name={iconName} ariaHidden={iconAriaHidden}/>
     </LabelContainer>
     {subtextMessage &&
-      <>
-        <br/>
-        <FormSubtextStyled>
-          <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
-        </FormSubtextStyled>
-      </>
+      <FormSubtextStyled>
+        <FormattedMessage {...subtextMessage} values={subtextMessageValues} />
+      </FormSubtextStyled>
     }
     {!noSpace && <Spacer />}
     {children}

@@ -9,7 +9,7 @@ import { IPollQuestion } from 'services/pollQuestions';
 import { addPollResponse } from 'services/pollResponses';
 
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes } from 'utils/styleUtils';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -29,20 +29,28 @@ export const QuestionContainer = styled.div`
   width: 100%;
   padding: 20px;
   background: #fff;
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
-export const Question = styled.h3``;
+export const Question = styled.h3`
+  display: flex;
+  align-items: center;
+`;
 
 export const QuestionNumber = styled.span`
-  font-size: ${fontSizes.medium}px;
-  line-height: ${fontSizes.medium}px;
+  flex: 0 0 25px;
+  width: 25px;
+  height: 25px;
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
   font-weight: 600;
-  background-color: ${colors.background};
-  padding: 4px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  margin-right: 15px;
+  margin-right: 13px;
 `;
 
 export const Label = styled.label`
@@ -60,7 +68,7 @@ export const QuestionText = styled.span`
 interface Props {
   questions: IPollQuestion[];
   projectId: string;
-  id: string;
+  id: string | null;
   type: IParticipationContextType;
   disabled: boolean;
 }
@@ -96,7 +104,7 @@ export class PollForm extends PureComponent<Props, State> {
   sendAnswer = () => {
     const { id, type, projectId } = this.props;
     const { answers } = this.state;
-    if (this.validate()) {
+    if (this.validate() && id) {
       addPollResponse(id, type, Object.values(answers).flat(), projectId);
     }
   }
@@ -149,6 +157,7 @@ export class PollForm extends PureComponent<Props, State> {
           <Button
             onClick={this.sendAnswer}
             size="2"
+            fullWidth={true}
             disabled={!isValid}
             className="e2e-send-poll"
           >

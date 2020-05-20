@@ -105,7 +105,7 @@ describe('<Container />', () => {
 
     // wih no destinations allowed, isConsentRequired will be false so no banner
     // but the modal is still accessible trough the cookie policy
-    eventEmitter.emit('footer', 'openConsentManager', null);
+    eventEmitter.emit('openConsentManager');
     expect(wrapper).toMatchSnapshot();
   });
 
@@ -239,7 +239,7 @@ describe('<Container />', () => {
         />
       );
       expect(wrapper.find('LoadableModal').props().opened).toBe(false);
-      eventEmitter.emit('footer', 'openConsentManager', null);
+      eventEmitter.emit('openConsentManager');
       expect(wrapper.find('LoadableModal').props().opened).toBe(true);
     });
   });

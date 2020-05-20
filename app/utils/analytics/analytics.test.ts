@@ -100,6 +100,7 @@ describe('trackEvent', () => {
       'Clicked button',
       {
         button_type: 'cta',
+        location: '/en/',
         tenantHost: 'wonderville.com',
         tenantId: 'c4b400e1-1786-5be2-af55-40730c6a843d',
         tenantLifecycleStage: 'active',

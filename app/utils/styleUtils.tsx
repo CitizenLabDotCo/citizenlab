@@ -103,15 +103,19 @@ export const media = {
   `,
 };
 
-export const customOutline = 'rgb(59,153,252) solid 2px';
-
 export const colors = {
   background: '#f4f4f5',
   text: '#333',
   secondaryText: '#84939E',
   label: '#596B7A',
-  placeholder: '#aaa',
+  placeholder: '#999',
   separation: '#e0e0e0',
+
+  // default input element border colors
+  border: '#999',
+  hoveredBorder: '#333',
+  focussedBorder: '#333',
+
   /**
   * this is the first grey to get 3.0 contrast ratio on a white background, needed for non-text contrast such as button/label borders
   */
@@ -209,6 +213,68 @@ export const fontSizes = {
   xxxxxl: 42
 };
 
+export const customOutline = 'solid 2px #000';
+
+export const boxShadowOutline = css`
+  border-color: #000;
+  box-shadow: 0px 0px 0px 1px #000;
+`;
+
+export const boxShadowOutlineImportant = css`
+  border-color: #000 !important;
+  box-shadow: 0px 0px 0px 1px #000 !important;
+`;
+
+export const defaultInputStyle = css`
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 400;
+  padding: 12px;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: solid 1px ${colors.border};
+  box-shadow: 0px 0px 0px 1px transparent;
+  background: #fff;
+  cursor: text;
+  outline: none;
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
+  transform: translate3d(0,0,0);
+
+  &:not(:disabled):not(.disabled) {
+    &:not(.error):hover,
+    &:not(.error).hover {
+      border-color: ${colors.hoveredBorder};
+    }
+
+    &:not(.error):focus,
+    &:not(.error).focus {
+      border-color: #000;
+      box-shadow: 0px 0px 0px 1px #000;
+    }
+
+    &.error {
+      border-color: ${colors.clRedError};
+
+      &:focus,
+      &.focus {
+        box-shadow: 0px 0px 0px 1px ${colors.clRedError};
+      }
+    }
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 1;
+    color: #666;
+    background-color: #f9f9f9;
+    border-color: #ccc;
+    cursor: not-allowed;
+  }
+`;
+
 export const stylingConsts = {
   menuHeight: 78,
   mobileMenuHeight: 72,
@@ -227,7 +293,7 @@ export function quillEditedContent(
   linkColor = colors.clBlueDark,
   textColor = colors.text,
   mentionColor = colors.text,
-  fontSize: 'base' | 'medium' | 'large' = 'base',
+  fontSize: 'small' | 'base' | 'medium' | 'large' = 'base',
   fontWeight: 300 | 400 = 400,
 ) {
   let lineHeight = 25;

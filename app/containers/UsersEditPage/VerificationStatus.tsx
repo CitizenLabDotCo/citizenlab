@@ -21,7 +21,7 @@ import { fontSizes, colors, media } from 'utils/styleUtils';
 import { darken } from 'polished';
 
 // events
-import { openVerificationModalWithoutContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 const Container = styled(FormSection)`
   display: flex;
@@ -95,16 +95,13 @@ const ReverifyButton = styled.button`
   font-size: ${fontSizes.base}px;
   font-weight: 300;
   line-height: normal;
+  white-space: normal;
+  text-align: left;
+  text-decoration: underline;
+  display: inline;
   padding: 0px;
   margin: 0px;
-  margin-top: 2px;
   border: none;
-  text-decoration: underline;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  word-break: break-all;
-  word-break: break-word;
-  hyphens: auto;
   cursor: pointer;
 
   &:hover {
@@ -116,24 +113,27 @@ const ReverifyButton = styled.button`
 const VerificationStatus = memo(({ className }: { className?: string }) => {
   const authUser = useAuthUser();
 
-  const openVerificationModal = useCallback(() => {
-    openVerificationModalWithoutContext('VerificationStatus');
+  const onVerify = useCallback(() => {
+    openVerificationModal();
   }, []);
 
   if (isNilOrError(authUser)) return null;
 
-  const authIsVerified = authUser.data.attributes.verified;
+  const authUserIsVerified = authUser.data.attributes.verified;
 
   const reverifyButton = (
-    <ReverifyButton onClick={openVerificationModal}>
+    <ReverifyButton className="e2e-reverify-user-button" onClick={onVerify}>
       <FormattedMessage {...messages.clickHereToUpdateVerification} />
     </ReverifyButton>
   );
 
   return (
     <FeatureFlag name="verification">
-      <Container className={`${className} e2e${authIsVerified ? '' : '-not'}-verified`}>
-        {authIsVerified ?
+      <Container
+        id="e2e-verification-status"
+        className={`${className} e2e${authUserIsVerified ? '' : '-not'}-verified`}
+      >
+        {authUserIsVerified ?
           <>
             <StyledAvatar
               userId={authUser.data.id}
@@ -174,7 +174,7 @@ const VerificationStatus = memo(({ className }: { className?: string }) => {
                 <FormattedMessage {...messages.becomeVerifiedSubtitle} />
               </StyledText>
             </Content>
-            <VerifyButton onClick={openVerificationModal} id="e2e-verify-user-button">
+            <VerifyButton onClick={onVerify} id="e2e-verify-user-button">
               <FormattedMessage {...messages.verifyNow} />
             </VerifyButton>
           </>

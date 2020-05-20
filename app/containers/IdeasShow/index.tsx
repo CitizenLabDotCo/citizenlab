@@ -41,6 +41,7 @@ import Footer from 'components/PostShowComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
+import PlatformFooter from 'containers/PlatformFooter';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -249,12 +250,12 @@ const ControlWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 45px;
   padding: 35px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
-const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
@@ -652,7 +653,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
-                    titleLevel="h2"
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                     emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
@@ -727,6 +727,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           </IdeaContainer>
 
           <Footer postId={ideaId} postType="idea" />
+
+          {this.props.insideModal && <PlatformFooter />}
         </>
       );
     }

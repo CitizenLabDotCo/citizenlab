@@ -38,7 +38,7 @@ describe('Idea posting permissions', () => {
       cy.get('.e2e-idea-button:visible').should('have.class', 'notVerified');
       cy.get('.e2e-idea-button:visible').click();
       cy.get('.e2e-disabled-tooltip').find('a').click();
-      cy.get('.e2e-verification-steps');
+      cy.get('#e2e-verification-wizard-root');
     });
 
     it('lets verified users post', () => {

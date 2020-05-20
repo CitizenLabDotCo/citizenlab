@@ -58,13 +58,11 @@ describe('Idea form settings', () => {
         const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
         const locationDescription = 'Brussel, België';
 
-        cy
-          .apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription)
-          .then(() => {
-            cy.visit(`/ideas/${ideaTitle}`);
-            cy.get('#e2e-idea-show-page-content');
-            cy.wait(1000);
-          });
+        cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription).then(() => {
+          cy.visit(`/ideas/${ideaTitle}`);
+          cy.get('#e2e-idea-show-page-content');
+          cy.wait(1000);
+        });
 
         // check that location is initially on idea show page
         cy.get('#e2e-map-toggle').contains('Brussel, België');
@@ -118,36 +116,35 @@ describe('Idea form settings', () => {
           const ideaContent = randomString(30);
           let ideaId: string;
 
-          cy
-            .apiCreateIdea(projectId, ideaTitle, ideaContent)
-            .then((idea) => {
-              ideaId = idea.body.data.id;
-              cy.visit(`/ideas/${ideaTitle}`);
-              cy.get('#e2e-idea-show-page-content');
-              cy.wait(1000);
-              cy.acceptCookies();
+          cy.apiCreateIdea(projectId, ideaTitle, ideaContent).then((idea) => {
+            ideaId = idea.body.data.id;
+            cy.visit(`/ideas/${ideaTitle}`);
+            cy.get('#e2e-idea-show-page-content');
+            cy.wait(1000);
+            cy.acceptCookies();
 
-              // go to idea form settings of this idea's project
-              cy.visit(`admin/projects/${projectId}/ideaform`);
-              cy.wait(1000);
+            // go to idea form settings of this idea's project
+            cy.visit(`admin/projects/${projectId}/ideaform`);
+            cy.wait(1000);
 
-              // set topics to required
-              cy.get('.e2e-topics-setting-collapsed').click();
-              cy.get('.e2e-topics-required-toggle-label').click();
-              cy.get('#e2e-ideaform-settings-submit').click();
+            // set topics to required
+            cy.get('.e2e-topics-setting-collapsed').click();
+            cy.get('.e2e-topics-required-toggle-label').click();
+            cy.get('#e2e-ideaform-settings-submit').click();
 
-              // go to ideaform and try to post idea
-              cy.visit(`ideas/edit/${ideaId}`);
-              // reload so that the new settings are correctly applied
-              cy.reload();
-              // without getting the form first, the form gets submitted before the fields are loaded
-              cy.get('#idea-form');
-              cy.get('#e2e-idea-edit-save-button').click();
+            // go to ideaform and try to post idea
+            cy.visit(`ideas/edit/${ideaId}`);
+            // reload so that the new settings are correctly applied
+            cy.reload();
+            cy.acceptCookies();
+            // without getting the form first, the form gets submitted before the fields are loaded
+            cy.get('#idea-form');
+            cy.get('#e2e-idea-edit-save-button').click();
 
-              // find topics error on idea form page and check we stay on the idea form page
-              cy.get('#e2e-new-idea-topics-error');
-              cy.url().should('eq', `http://localhost:3000/en-GB/ideas/edit/${ideaId}`);
-            });
+            // find topics error on idea form page and check we stay on the idea form page
+            cy.get('#e2e-new-idea-topics-error');
+            cy.url().should('eq', `http://localhost:3000/en-GB/ideas/edit/${ideaId}`);
+          });
 
         });
       });

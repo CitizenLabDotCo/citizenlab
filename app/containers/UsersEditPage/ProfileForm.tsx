@@ -189,7 +189,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
     const handleOnSubmit = () => {
       if (hasCustomFields) {
-        eventEmitter.emit('ProfileForm', 'customFieldsSubmitEvent', null);
+        eventEmitter.emit('customFieldsSubmitEvent');
       } else {
         submitForm();
       }
@@ -246,7 +246,6 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <FormLabel
-              thin
               htmlFor="firstName"
               labelMessage={messages.firstNames}
             />
@@ -272,7 +271,6 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <FormLabel
-              thin
               htmlFor="lastName"
               labelMessage={messages.lastName}
             />
@@ -297,7 +295,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="email" labelMessage={messages.email} />
+            <FormLabel htmlFor="email" labelMessage={messages.email} />
             <InputContainer>
               <Input
                 type="email"
@@ -320,7 +318,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin labelMessage={messages.bio} id="label-bio" />
+            <FormLabel labelMessage={messages.bio} id="label-bio" />
             <QuillEditor
               id="bio_multiloc"
               noImages={true}
@@ -335,7 +333,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="password" labelMessage={messages.password} />
+            <FormLabel htmlFor="password" labelMessage={messages.password} />
             <Input
               type="password"
               name="password"
@@ -348,7 +346,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="language" labelMessage={messages.language} />
+            <FormLabel htmlFor="language" labelMessage={messages.language} />
             <Select
               id="language"
               onChange={createChangeHandler('locale')}

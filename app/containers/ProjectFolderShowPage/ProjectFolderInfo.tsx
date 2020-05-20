@@ -154,7 +154,6 @@ const ProjectFolderInfo = ({ projectFolderId, theme, intl: { formatMessage } }: 
                 <Sharing
                   context="folder"
                   url={folderUrl}
-                  titleLevel="h2"
                   twitterMessage={formatMessage(messages.twitterMessage, { title })}
                   utmParams={utmParams}
                 />);
