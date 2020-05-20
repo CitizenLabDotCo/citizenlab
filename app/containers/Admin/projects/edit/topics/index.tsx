@@ -18,16 +18,15 @@ const Container = styled.div``;
 
 const Topics = memo(() => {
   const topics = useTopics();
-  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
-  const selectableTopicIds = selectedTopicIds.filter(topicId => !selectedTopicIds.includes(topicId));
-
-  useEffect(() => {
-    const topicIds = !isNilOrError(topics) ?
+  const topicIds = !isNilOrError(topics) ?
     topics.map(topic => !isNilOrError(topic) ? topic.id : null)
           .filter(topic => topic) as string[]
     :
     [];
+  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
+  const selectableTopicIds = topicIds.filter(topicId => !selectedTopicIds.includes(topicId));
 
+  useEffect(() => {
     setSelectedTopicIds(topicIds);
   }, [topics]);
 
@@ -37,9 +36,9 @@ const Topics = memo(() => {
   }, []);
 
   const handleAddSelectedTopics = useCallback((topicIds: string[]) => {
-    setSelectedTopicIds(selectedTopicIds => {
-      return selectedTopicIds.concat(topicIds);
-    });
+    // add code to save topics to a project
+
+    // add code to update selected topics state
   }, []);
 
   return (
