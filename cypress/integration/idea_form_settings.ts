@@ -143,7 +143,7 @@ describe('Idea form settings', () => {
 
             // find topics error on idea form page and check we stay on the idea form page
             cy.get('#e2e-new-idea-topics-error');
-            cy.url().should('eq', `http://localhost:3000/en-GB/ideas/edit/${ideaId}`);
+            cy.location('pathname').should('eq', `/en-GB/ideas/edit/${ideaId}`);
           });
 
         });
@@ -172,7 +172,7 @@ describe('Idea form settings', () => {
           // verify that we got an error for the topics field
           // and check we stay on the idea form page
           cy.get('#e2e-new-idea-topics-error');
-          cy.url().should('eq', `http://localhost:3000/en-GB/projects/${projectSlug}/ideas/new`);
+          cy.location('pathname').should('eq', `/en-GB/projects/${projectSlug}/ideas/new`);
         });
       });
 
