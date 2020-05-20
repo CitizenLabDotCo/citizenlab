@@ -8,6 +8,19 @@ RSpec.describe Polls::Response, type: :model do
     end
   end
 
+  describe do
+    it "adds an error when the user already responded to the poll" do
+      pc = create(:continuous_poll_project)
+      q1 = create(:poll_question, :with_options, participation_context: pc)
+      user = create(:user)
+      r1 = create(:poll_response, user: user, participation_context: pc, response_options_attributes: [{option_id: q1.options.first.id}])
+ 
+      r2 = build(:poll_response, user: user, participation_context: pc, response_options_attributes: [{option_id: q1.options.first.id}])
+      expect(r2.valid?(:response_submission)).to be false
+      expect(r2.errors.details[:user]).to include({error: :taken, value: user})
+    end
+  end
+
   describe "validate_option_count" do
     context "on a single_option question" do
       let!(:pc) { create(:continuous_poll_project) }
