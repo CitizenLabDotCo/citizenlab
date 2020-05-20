@@ -15,6 +15,7 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 
 // hooks
 import useTopics from 'hooks/useTopics';
+import { ITopicData } from 'services/topics';
 
 interface Props {
   selectedTopicIds: string[];
@@ -31,43 +32,48 @@ const ProjectTopicList = memo(({
     this.props.handleRemoveSelectedTopic(topicId);
   };
 
-  const selectedTopics = useTopics(selectedTopicIds);
+  const topics = useTopics(selectedTopicIds);
 
-  return (
-    <SortableList
-      items={AdminPublicationsList}
-      onReorder={handleReorderAdminPublication}
-      className="projects-list e2e-admin-projects-list"
-      id="e2e-admin-published-projects-list"
-    >
-      {!isNilOrError(selectedTopics) && selectedTopics.map((topic, index) => {
-        if (!isNilOrError(topic)) {
-          return (
-            <SortableRow
-              id={topic.id}
-              key={index}
-              isLastItem={(index === selectedTopics.length - 1)}
-            >
-              <p>{localize(topic.attributes.title_multiloc)}</p>
-              <Button
-                onClick={handleRemoveSelectedTopic(topic.id)}
-                buttonStyle="text"
-                icon="delete"
+  if (!isNilOrError(topics)) {
+    const selectedTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+
+    return (
+      <SortableList
+        items={selectedTopics}
+        onReorder={handleReorderAdminPublication}
+        className="projects-list e2e-admin-projects-list"
+        id="e2e-admin-published-projects-list"
+      >
+        {({ itemsList, handleDragRow, handleDropRow }) => (
+          itemsList.map((topic: ITopicData, index: number) => {
+            return (
+              <SortableRow
+                id={topic.id}
+                key={index}
+                moveRow={handleDragRow}
+                dropRow={handleDropRow}
+                lastItem={(index === selectedTopics.length - 1)}
               >
-                <FormattedMessage {...messages.remove} />
-              </Button>
-            </SortableRow>
-          );
+                <p>{localize(topic.attributes.title_multiloc)}</p>
+                <Button
+                  onClick={handleRemoveSelectedTopic(topic.id)}
+                  buttonStyle="text"
+                  icon="delete"
+                >
+                  <FormattedMessage {...messages.remove} />
+                </Button>
+              </SortableRow>
+            );
+          }))
         }
+        {/* {isError(moderators) &&
+          <FormattedMessage {...messages.moderatorsNotFound} />
+        } */}
+      </SortableList>
+    );
+  }
 
-        return null;
-      })
-    }
-      {/* {isError(moderators) &&
-        <FormattedMessage {...messages.moderatorsNotFound} />
-      } */}
-    </SortableList>
-  );
+  return null;
 });
 
 const ProjectTopicListWithHOCs = injectIntl<Props>(injectLocalize(ProjectTopicList));
