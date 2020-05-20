@@ -169,7 +169,7 @@ class IdeaEdit extends PureComponent<Props, State> {
   }
 
   handleOnSaveButtonClick = () => {
-    eventEmitter.emit('IdeasAdminEditPage', 'IdeaFormSubmitEvent', null);
+    eventEmitter.emit('IdeaFormSubmitEvent');
   }
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
@@ -257,7 +257,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             </Button>
           </Top>
 
-          <Content>
+          <Content className="idea-form">
             <IdeaForm
               projectId={projectId}
               title={title}

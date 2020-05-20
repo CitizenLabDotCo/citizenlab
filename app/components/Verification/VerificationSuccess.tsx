@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
@@ -7,6 +7,7 @@ import messages from './messages';
 
 // components
 import Avatar from 'components/Avatar';
+import Button from 'components/UI/Button';
 import { Title } from './styles';
 
 // hooks
@@ -24,6 +25,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 30px;
 `;
 
 const ImageAvatarContainer = styled.div`
@@ -49,27 +51,46 @@ const Subtitle = styled.h2`
   padding: 0;
 `;
 
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+`;
+
 interface Props {
+  onClose: () => void;
   className?: string;
 }
 
-export default memo<Props>(({ className }) => {
+export default memo<Props>(({ onClose, className }) => {
   const authUser = useAuthUser();
 
-  if (isNilOrError(authUser)) return null;
+  const handleOnClose = useCallback(() => {
+    onClose();
+  }, [onClose]);
 
-  return (
-    <Container id="e2e-verification-success" className={className}>
-      <ImageAvatarContainer aria-hidden>
-        <img src={illustration} alt="" role="presentation"/>
-        <StyledAvatar userId={authUser.data.id} size="96px" verified/>
-      </ImageAvatarContainer>
-      <Title className="e2e-user-verified-success-modal-content">
-        <strong><FormattedMessage {...messages.userVerifiedTitle} /></strong>
-      </Title>
-      <Subtitle>
-        <FormattedMessage {...messages.userVerifiedSubtitle} />
-      </Subtitle>
-    </Container>
-  );
+  if (!isNilOrError(authUser)) {
+    return (
+      <Container id="e2e-verification-success" className={className}>
+        <ImageAvatarContainer aria-hidden>
+          <img src={illustration} alt="" role="presentation"/>
+          <StyledAvatar userId={authUser.data.id} size="96px" verified/>
+        </ImageAvatarContainer>
+        <Title className="e2e-user-verified-success-modal-content">
+          <strong><FormattedMessage {...messages.userVerifiedTitle} /></strong>
+        </Title>
+        <Subtitle>
+          <FormattedMessage {...messages.userVerifiedSubtitle} />
+        </Subtitle>
+        <ButtonWrapper>
+          <Button onClick={handleOnClose}>
+            <FormattedMessage {...messages.close} />
+          </Button>
+        </ButtonWrapper>
+      </Container>
+    );
+  }
+
+  return null;
 });

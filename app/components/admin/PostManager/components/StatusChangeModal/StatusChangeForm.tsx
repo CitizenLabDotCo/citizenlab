@@ -152,7 +152,6 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           rows={8}
           padding="12px"
           background="#fff"
-          placeholderFontWeight="400"
           ariaLabel={formatMessage(messages.officialUpdateBody)}
           name="body_multiloc"
           value={newOfficialFeedback.body_multiloc?.[selectedLocale] || ''}

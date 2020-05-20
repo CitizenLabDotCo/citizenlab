@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 
 // Components
 import Icon, { IconNames } from 'components/UI/Icon';
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 
 // Styling
 import styled from 'styled-components';
@@ -160,12 +160,8 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
         <Tippy
           placement="bottom"
           interactive={true}
-          arrow={true}
           trigger="click"
           duration={[200, 0]}
-          flip={true}
-          flipBehavior="flip"
-          flipOnUpdate={true}
           content={
             <List className="e2e-more-actions-list">
               {actions.map((action, index) => {

@@ -36,7 +36,7 @@ const Container = styled(Link)`
   cursor: pointer;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 
   &.large {
     width: 100%;
@@ -85,15 +85,10 @@ const Container = styled(Link)`
   }
 
   &.desktop {
-    transition: all 200ms ease;
+    transition: all 180ms ease-out;
 
     &:hover {
-      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
-      transform: translate(0px, -2px);
-    }
-
-    &:focus {
-      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);
       transform: translate(0px, -2px);
     }
   }

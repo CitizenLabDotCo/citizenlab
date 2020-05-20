@@ -10,9 +10,12 @@ import IconTooltip from 'components/UI/IconTooltip';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
+// utils
+import { isPage } from 'utils/helperUtils';
+
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, defaultInputStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { isBoolean } from 'util';
 
@@ -24,39 +27,12 @@ const Container: any = styled.div`
   position: relative;
 
   input {
+    ${defaultInputStyle};
     width: 100%;
-    color: ${colors.text};
-    font-size: ${fontSizes.base}px;
-    line-height: 24px;
-    font-weight: 400;
-    padding: 12px;
-    border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px;
-    border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDark};
-    box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
-    background: #fff;
-    outline: none;
-    -webkit-appearance: none;
-
-    &.onGreyBackground {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : colors.separationDarkOnGreyBackground};
-    }
 
     &.hasMaxCharCount {
       padding-right: 62px;
     }
-
-    &:focus {
-      border-color: ${(props: any) => props.error ? props.theme.colors.clRedError : '#999'};
-    }
-
-    &:disabled {
-      background-color: #f9f9f9;
-    }
-
-    ${media.biggerThanPhone`
-      padding-right: ${props => props.error && '40px'};
-    `}
   }
 `;
 
@@ -98,7 +74,6 @@ export type Props = {
   required?: boolean;
   autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
   className?: string;
-  onGreyBackground?: boolean;
 };
 
 export class Input extends React.PureComponent<Props> {
@@ -126,18 +101,16 @@ export class Input extends React.PureComponent<Props> {
   }
 
   render() {
-    const { label, labelTooltipText, ariaLabel, className, onGreyBackground } = this.props;
-    let { value, placeholder, error } = this.props;
+    const { label, labelTooltipText, ariaLabel, className } = this.props;
     const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
-    const hasError = (!isNil(error) && !isEmpty(error));
+    const hasError = !isNil(this.props.error) && !isEmpty(this.props.error);
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
-
-    value = (value || '');
-    placeholder = (placeholder || '');
-    error = (error || null);
-
-    const currentCharCount = (maxCharCount && size(value));
-    const tooManyChars = (maxCharCount && currentCharCount && currentCharCount > maxCharCount);
+    const value = this.props.value || '';
+    const placeholder = this.props.placeholder || '';
+    const error = this.props.error || null;
+    const currentCharCount = maxCharCount && size(value);
+    const tooManyChars = !!(maxCharCount && currentCharCount && currentCharCount > maxCharCount);
+    const adminPage = isPage('admin', location.pathname);
 
     return (
       <Container error={hasError} className={className || ''}>
@@ -153,9 +126,9 @@ export class Input extends React.PureComponent<Props> {
           aria-label={ariaLabel}
           id={id}
           className={`
-            CLInputComponent
             ${maxCharCount && 'hasMaxCharCount'}
-            ${onGreyBackground ? 'onGreyBackground' : ''}
+            ${adminPage ? 'admin' : ''}
+            ${hasError ? 'error' : ''}
           `}
           name={name}
           type={type}

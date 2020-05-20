@@ -9,7 +9,7 @@ import IconTooltip from 'components/UI/IconTooltip';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, defaultInputStyle } from 'utils/styleUtils';
 
 // typings
 import { Locale } from 'typings';
@@ -18,37 +18,12 @@ const Container = styled.div`
   position: relative;
 
   .textarea {
+    ${defaultInputStyle};
     width: 100%;
-    color: ${colors.text};
-    font-size: ${fontSizes.base}px;
-    line-height: 24px;
-    font-weight: 400;
-    padding: 12px;
     resize: none;
-    outline: none;
     position: relative;
-    border-radius: ${(props: any) => props.theme.borderRadius};
-    border: solid 1px ${colors.separationDark};
-    background: #fff;
     overflow: hidden;
-    -webkit-appearance: none;
-
-    &:focus {
-      border-color: #666;
-    }
-
-    &:disabled {
-      background-color: #f9f9f9;
-    }
-
-    &.error {
-      border-color: ${colors.clRedError} !important;
-
-      &:hover,
-      &:focus {
-        border-color: ${colors.clRedError} !important;
-      }
-    }
+    line-height: 24px;
   }
 `;
 
@@ -65,7 +40,7 @@ const CharacterCount = styled.p`
   }
 `;
 
-const TextAreaContainer: any = styled.div`
+const TextAreaContainer = styled.div`
   width: 100%;
   position: relative;
   padding: 0;
@@ -89,6 +64,7 @@ export type Props = {
   autofocus?: boolean | undefined;
   maxCharCount?: number;
   disabled?: boolean;
+  focusOnError?: boolean;
   className?: string;
 };
 
@@ -103,7 +79,9 @@ export default class TextArea extends React.PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.error && this.props.error !== prevProps.error && this.textareaElement !== null) {
+    const { focusOnError, error } = this.props;
+
+    if (focusOnError && error && error !== prevProps.error && this.textareaElement !== null) {
       setTimeout(() => {
         if (this.textareaElement) {
           this.textareaElement.focus();
@@ -146,10 +124,10 @@ export default class TextArea extends React.PureComponent<Props, State> {
           </Label>
         }
 
-        <TextAreaContainer className="TextArea CLTextareaComponentContainer">
+        <TextAreaContainer className="TextArea">
           <TextareaAutosize
             id={id}
-            className={`textarea CLTextareaComponent ${!isEmpty(error) ? 'error' : ''}`}
+            className={`textarea ${!isEmpty(error) ? 'error' : ''}`}
             name={name || ''}
             rows={rows || 5}
             value={value || ''}

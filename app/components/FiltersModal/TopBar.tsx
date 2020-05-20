@@ -15,7 +15,7 @@ import { lighten } from 'polished';
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
-  border-bottom: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
 
 const TopBarInner = styled.div`
@@ -64,8 +64,8 @@ const CloseIcon = styled(Icon)`
 `;
 
 const CloseButton = styled.button`
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,9 +74,6 @@ const CloseButton = styled.button`
   margin-right: 6px;
   margin-left: -2px;
   cursor: pointer;
-  background: #fff;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
   transition: all 100ms ease-out;
 
   &:hover {

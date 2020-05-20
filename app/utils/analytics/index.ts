@@ -31,7 +31,7 @@ combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => 
   if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
     analytics.track(
       event.name,
-      { ...event.properties, ...tenantInfo(tenant.data) },
+      { ...tenantInfo(tenant.data), location: window?.location?.pathname, ...event.properties },
       { integrations: integrations(user) },
     );
   }

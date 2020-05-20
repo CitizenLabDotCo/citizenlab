@@ -17,7 +17,7 @@ import { getBase64FromFile } from 'utils/fileTools';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
@@ -70,17 +70,18 @@ const DropzoneInput = styled.input``;
 
 const DropzoneContent = styled.div<{ borderRadius?: string }>`
   box-sizing: border-box;
-  border: 1px dashed ${colors.separationDark};
+  border: 1px dashed ${colors.border};
   border-radius: ${(props) => props.borderRadius ? props.borderRadius : props.theme.borderRadius};
   position: relative;
   cursor: pointer;
   background: transparent;
   transition: all 100ms ease-out;
+  outline: none;
 
   &:not(.disabled) {
 
     &:focus-within {
-      outline: ${customOutline};
+      ${boxShadowOutline};
     }
 
     &:hover,

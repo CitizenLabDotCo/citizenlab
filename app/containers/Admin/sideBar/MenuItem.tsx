@@ -48,10 +48,12 @@ const MenuItemLink = styled(Link) `
   margin-bottom: 8px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  transition: background 80ms ease-out;
+  transition: background-color 80ms ease-out;
 
-  &:hover:not(.selected) {
-    background: rgba(0, 0, 0, 0.15);
+  &:hover,
+  &.selected,
+  &.focus-visible {
+    background: rgba(0, 0, 0, 0.36);
 
     ${Text} {
       opacity: 1;
@@ -59,12 +61,6 @@ const MenuItemLink = styled(Link) `
   }
 
   &.selected {
-    background: rgba(0, 0, 0, 0.36);
-
-    ${Text} {
-      opacity: 1;
-    }
-
     ${ArrowIcon} {
       opacity: 1;
     }

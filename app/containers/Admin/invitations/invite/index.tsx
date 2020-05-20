@@ -563,11 +563,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     </DownloadButtonContainer>
                     <SectionParagraph>
                       <FormattedMessage
-                        {...messages.fileRequirements}
-                      />
-                    </SectionParagraph>
-                    <SectionParagraph>
-                      <FormattedMessage
                         {...messages.visitSupportPage}
                         values={{
                           supportPageLink: (
@@ -581,6 +576,9 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                           )
                         }}
                       />
+                    </SectionParagraph>
+                    <SectionParagraph>
+                      <FormattedMessage {...messages.fileRequirements} />
                     </SectionParagraph>
                   </SectionDescription>
 

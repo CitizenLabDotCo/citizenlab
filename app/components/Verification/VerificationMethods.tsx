@@ -19,7 +19,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { colors, fontSizes, media } from 'utils/styleUtils';
 
 // typings
@@ -82,6 +82,7 @@ const ShieldIcon = styled(Icon)`
 
 const Content = styled.div`
   display: flex;
+  margin-bottom: 10px;
 
   &.inModal {
     justify-content: center;
@@ -93,25 +94,25 @@ const Content = styled.div`
 `;
 
 const Context = styled.div`
-  flex: 1 1 auto;
+  width:100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 32px;
-  padding-bottom: 32px;
+  padding-right: 30px;
+  padding-top: 30px;
+  padding-bottom: 30px;
 
   ${media.smallerThanMaxTablet`
     padding: 0;
-    margin: 20px 0 30px;
+    margin-bottom: 25px;
   `}
 `;
 
 const ContextLabel = styled.div`
-  color: ${colors.label};
+  color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.small}px;
+  font-weight: 400;
   line-height: normal;
   margin-bottom: 17px;
 `;
@@ -149,48 +150,60 @@ const Or = styled.span`
 `;
 
 const ButtonsContainer = styled.div`
-  flex: 1 1 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
   &.inModal {
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding: 30px;
     background: ${colors.background};
     border-radius: ${(props: any) => props.theme.borderRadius};
 
-    &.withoutContext {
-      width: 100%;
-      max-width: 480px;
-    }
-
     ${media.smallerThanMinTablet`
-      padding: 20px;
+      padding: 15px;
     `}
+
+    &.withoutContext {
+      max-width: 473px;
+    }
   }
 `;
 
 const MethodButton = styled(Button)`
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 
   &.last {
     margin-bottom: 0px;
   }
 `;
 
+const SkipButtonContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+`;
+
 interface Props {
   context: ContextShape | null;
-  onMethodSelected: (selectedMethod: IVerificationMethod) => void;
   showHeader?: boolean;
+  skippable?: boolean;
   inModal: boolean;
+  onMethodSelected: (selectedMethod: IVerificationMethod) => void;
+  onSkipped?: () => void;
   className?: string;
-  theme: any;
 }
 
-const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader, inModal, className }) => {
+const VerificationMethods = memo<Props>(({
+  context,
+  showHeader,
+  skippable,
+  inModal,
+  onMethodSelected,
+  onSkipped,
+  className
+}) => {
 
   const participationConditions = useParticipationConditions(isProjectContext(context) ? context : null);
 
@@ -211,7 +224,11 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
     } else {
       onMethodSelected(method);
     }
-  }, []);
+  }, [onVerifyBOSAButtonClick, onMethodSelected]);
+
+  const onSkipButtonClicked = useCallback(() => {
+    onSkipped?.();
+  }, [onSkipped]);
 
   if (verificationMethods === undefined || participationConditions === undefined) {
     return (
@@ -223,7 +240,10 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
 
   if (verificationMethods !== undefined && participationConditions !== undefined) {
     return (
-      <Container id="e2e-verification-methods" className={className}>
+      <Container
+        id="e2e-verification-wizard-method-selection-step"
+        className={className || ''}
+      >
         {showHeader &&
           <Header>
             <AboveTitle aria-hidden>
@@ -239,6 +259,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
             </Title>
           </Header>
         }
+
         <Content className={`${inModal ? 'inModal' : ''}`}>
           {withContext && !isNilOrError(participationConditions) && participationConditions.length > 0 &&
             <Context>
@@ -267,6 +288,7 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
               })}
             </Context>
           }
+
           <ButtonsContainer className={`${withContext ? 'withContext' : 'withoutContext'} ${inModal ? 'inModal' : ''}`}>
             {filteredVerificationMethods.map((method, index) => (
               <MethodButton
@@ -274,15 +296,13 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
                 id={`e2e-${method.attributes.name}-button`}
                 className={index + 1 === filteredVerificationMethods.length ? 'last' : ''}
                 icon="shieldVerified"
-                iconColor={colors.clGreen}
-                iconHoverColor={colors.clGreen}
                 iconSize="22px"
                 onClick={onSelectMethodButtonClick(method)}
                 buttonStyle="white"
                 fullWidth={true}
                 justify="left"
-                padding="14px 20px"
                 whiteSpace="wrap"
+                borderColor="#ccc"
                 boxShadow="0px 2px 2px rgba(0, 0, 0, 0.05)"
                 boxShadowHover="0px 2px 2px rgba(0, 0, 0, 0.1)"
               >
@@ -294,6 +314,14 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
             ))}
           </ButtonsContainer>
         </Content>
+
+        {skippable &&
+          <SkipButtonContainer>
+            <Button buttonStyle="text" padding="0px" onClick={onSkipButtonClicked}>
+              <FormattedMessage {...messages.skipThisStep} />
+            </Button>
+          </SkipButtonContainer>
+        }
       </Container>
     );
   }
@@ -301,4 +329,4 @@ const VerificationMethods = memo<Props>(({ context, onMethodSelected, showHeader
   return null;
 });
 
-export default withTheme(VerificationMethods);
+export default VerificationMethods;

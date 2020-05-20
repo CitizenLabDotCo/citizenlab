@@ -8,6 +8,7 @@ import messages from '../../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 import FeatureFlag from 'components/FeatureFlag';
+import { lighten } from 'polished';
 
 const Container = styled.nav`
   height: ${(props) => props.theme.mobileMenuHeight}px;
@@ -19,7 +20,7 @@ const Container = styled.nav`
   padding-right: 10px;
   padding-bottom: 3px;
   background: #fff;
-  border-top: solid 1px ${colors.separation};
+  border-top: solid 1px ${lighten(0.4, colors.label)};
   display: flex;
   align-items: stretch;
   justify-content: space-evenly;

@@ -51,7 +51,7 @@ const Loading = styled.div`
   justify-content: center;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const FiltersArea = styled.div`
@@ -174,7 +174,7 @@ const EmptyContainer = styled.div`
   padding-bottom: 100px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const IdeaIcon = styled(Icon)`

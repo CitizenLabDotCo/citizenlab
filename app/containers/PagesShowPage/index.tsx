@@ -6,7 +6,7 @@ import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
 import Icon from 'components/UI/Icon';
 import Fragment from 'components/Fragment';
@@ -114,7 +114,7 @@ const StyledLink = styled(Link)`
   padding: 20px 23px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   transition: all 200ms ease;
 
   &:hover {

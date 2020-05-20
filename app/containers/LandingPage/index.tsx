@@ -1,6 +1,5 @@
 import React, { PureComponent, Suspense } from 'react';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
 
 // components
 import ContentContainer from 'components/ContentContainer';
@@ -13,6 +12,7 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
+import LoadingBox from 'components/ProjectAndFolderCards';
 const ProjectAndFolderCards = React.lazy(() => import('components/ProjectAndFolderCards'));
 
 // resources
@@ -25,6 +25,7 @@ import GetPage, { GetPageChildProps } from 'resources/GetPage';
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -35,7 +36,6 @@ import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
 // typings
-import { PublicationStatus } from 'resources/GetProjects';
 import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.main`
@@ -151,23 +151,11 @@ interface State { }
 
 class LandingPage extends PureComponent<Props, State> {
 
-  goToIdeasPage = () => {
-    clHistory.push('/ideas');
-  }
-
-  goToProjectsPage = () => {
-    clHistory.push('/projects');
-  }
-
-  goToAddIdeaPage = () => {
-    clHistory.push('/ideas/new');
-  }
-
-  clickCreateAccountCTAFooter = () => {
+  signUpIn = (event: React.FormEvent) => {
+    event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
+    openSignUpInModal();
   }
-
-  projectsPublicationStatuses: PublicationStatus[] = ['published', 'archived'];
 
   render() {
     const { locale, tenant, authUser, homepageInfoPage } = this.props;
@@ -197,7 +185,7 @@ class LandingPage extends PureComponent<Props, State> {
               <StyledContentContainer mode="page">
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
-                    <Suspense fallback={null}>
+                    <Suspense fallback={LoadingBox}>
                       <ProjectAndFolderCards
                         publicationStatusFilter={['published', 'archived']}
                         showTitle={true}
@@ -236,9 +224,8 @@ class LandingPage extends PureComponent<Props, State> {
                     fontWeight="500"
                     padding="13px 22px"
                     buttonStyle="primary-inverse"
-                    linkTo="/sign-up"
+                    onClick={this.signUpIn}
                     text={<FormattedMessage {...messages.createAccount} />}
-                    onClick={this.clickCreateAccountCTAFooter}
                   />
                 </FooterBanner>
               }

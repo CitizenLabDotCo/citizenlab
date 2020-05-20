@@ -94,7 +94,7 @@ export async function addPhase(projectId: string, object: IUpdatedPhasePropertie
 
 export async function deletePhase(projectId: string, phaseId: string) {
   const response = await streams.delete(`${apiEndpoint}/${phaseId}`, phaseId);
-  streams.fetchAllWith({ dataId: [phaseId, projectId] });
+  streams.fetchAllWith({ dataId: [projectId] });
   return response;
 }
 

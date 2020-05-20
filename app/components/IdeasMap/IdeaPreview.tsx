@@ -1,8 +1,6 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -29,7 +27,7 @@ import messages from './messages';
 // style
 import styled from 'styled-components';
 import { colors, media, fontSizes, viewportWidths } from 'utils/styleUtils';
-import { darken, lighten } from 'polished';
+import { lighten } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -145,36 +143,6 @@ const CommentIcon = styled(Icon)`
   margin-top: 2px;
 `;
 
-const Unauthenticated = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const Divider = styled.span`
-  color: ${lighten(0.1, colors.label)};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-
-  ${media.smallerThanMinTablet`
-    display: none;
-  `}
-`;
-
-const RegisterLink = styled(Link)`
-  color: ${(props) => props.theme.colorMain};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  text-decoration: underline;
-  cursor: pointer;
-
-  &:hover {
-    color: ${(props) => darken(0.15, props.theme.colorMain)};
-    text-decoration: underline;
-  }
-`;
-
 const ViewIdeaButtonContainer = styled.div`
   display: flex;
 `;
@@ -193,7 +161,7 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 interface State {
-  showFooter: 'unauthenticated' | 'votingDisabled' | null;
+  showFooter: 'votingDisabled' | null;
 }
 
 class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
@@ -216,7 +184,7 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaPreview', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
         type: 'idea'
@@ -224,17 +192,8 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
     }
   }
 
-  handleUnauthenticatedVoteClick = () => {
-    this.setState({ showFooter: 'unauthenticated' });
-  }
-
   handleDisabledVoteClick = () => {
     this.setState({ showFooter: 'votingDisabled' });
-  }
-
-  goToLogin = (event: FormEvent) => {
-    event.preventDefault();
-    clHistory.push('/sign-in');
   }
 
   render() {
@@ -272,7 +231,6 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                   <VoteControl
                     ideaId={idea.id}
                     size={smallerThanSmallTablet ? '1' : '2'}
-                    unauthenticatedVoteClick={this.handleUnauthenticatedVoteClick}
                     disabledVoteClick={this.handleDisabledVoteClick}
                     showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
                   />
@@ -281,20 +239,6 @@ class IdeaPreview extends PureComponent<Props & InjectedLocalized, State> {
                     {idea.attributes.comments_count}
                   </CommentsCount>
                 </>
-              }
-
-              {showFooter === 'unauthenticated' &&
-                <Unauthenticated>
-                  <Button onClick={this.goToLogin}>
-                    <FormattedMessage {...messages.login} />
-                  </Button>
-                  <Divider>
-                    <FormattedMessage {...messages.or} />
-                  </Divider>
-                  <RegisterLink to="/sign-up">
-                    <FormattedMessage {...messages.register} />
-                  </RegisterLink>
-                </Unauthenticated>
               }
 
               {showFooter === 'votingDisabled' &&

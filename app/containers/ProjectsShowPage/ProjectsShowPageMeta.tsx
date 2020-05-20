@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // components
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

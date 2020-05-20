@@ -15,9 +15,8 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes } from 'utils/styleUtils';
+import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { transparentize } from 'polished';
 
 const Container = styled.div`
   width: 100%;
@@ -26,17 +25,11 @@ const Container = styled.div`
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px #ececec;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   transition: box-shadow 100ms ease-out;
 
   &.focused {
-    border-color: ${({ theme }) => theme.colorSecondary};
-    box-shadow: 0px 0px 0px 3px ${({ theme }) => transparentize(0.8, theme.colorSecondary)};
-
-    &.adminpage {
-      border-color: ${colors.adminTextColor};
-      box-shadow: 0px 0px 0px 3px ${transparentize(0.8, colors.adminTextColor)};
-    }
+    ${boxShadowOutline};
   }
 `;
 
@@ -57,19 +50,6 @@ const Input = styled.input`
 
   &::-ms-clear {
     display: none;
-  }
-
-  ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: ${colors.label};
-    opacity: 1; /* Firefox */
-  }
-
-  :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: ${colors.label};
-  }
-
-  ::-ms-input-placeholder { /* Microsoft Edge */
-    color: ${colors.label};
   }
 `;
 

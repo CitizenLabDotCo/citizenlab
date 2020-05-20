@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ImageSizes, Multiloc, Locale } from 'typings';
-import { authUserStream } from './auth';
 
 const apiEndpoint = `${API_PATH}/users`;
 
@@ -98,13 +97,17 @@ export async function updateUser(userId: string, object: IUserUpdate) {
 }
 
 export async function deleteUser(userId: string) {
-  return streams.delete(`${apiEndpoint}/${userId}`, userId);
+  const response = await streams.delete(`${apiEndpoint}/${userId}`, userId);
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`, `${API_PATH}/stats/users_count`]
+  });
+  return response;
 }
 
 export async function completeRegistration(customFieldValues: object) {
-  const response = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
-  await authUserStream().fetch();
-  return response;
+  const authUser = await streams.add<IUser>(`${apiEndpoint}/complete_registration`, { user: { custom_field_values: customFieldValues } });
+  await streams.reset(authUser);
+  return authUser;
 }
 
 export function mapUserToDiff(user: IUserData): IUserUpdate {

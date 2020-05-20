@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 import { stringify } from 'qs';
 import { getJwt } from 'utils/auth/jwt';
+import { isString } from 'lodash-es';
 
 export default function request<T>(url, data, options, queryParameters): Promise<T> {
   const urlParams = stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
@@ -32,16 +33,14 @@ export default function request<T>(url, data, options, queryParameters): Promise
     const response = result[0];
     const json = result[1];
 
-    if (response.ok) {
+    if (response.ok || response.status === 200) {
       return json;
     }
 
-    const error = new Error(response.statusText);
-    Object.assign(error, { json });
-
-    throw error;
+    const errorMessage = isString(json?.error) ? json.error : (response.statusText || 'unknown error');
+    throw new Error(`request.ts error for ${urlWithParams}: ${errorMessage}`);
   }).catch((error) => {
-    throw error;
+    throw new Error(`request.ts error for ${urlWithParams}: ${error || 'unknown error'}`);
   });
 }
 

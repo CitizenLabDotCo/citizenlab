@@ -8,13 +8,16 @@ import Observer from '@researchgate/react-intersection-observer';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 
-const Image = styled.img`
+const Image = styled.img<{ fadeInDuration: number | undefined }>`
   background: ${colors.placeholderBg};
-  transition: opacity 150ms ease-out;
-  opacity: 0;
 
-  &.loaded {
-    opacity: 1;
+  &.fadeIn {
+    transition: opacity ${props => props.fadeInDuration || 150}ms ease-out;
+    opacity: 0;
+
+    &.loaded {
+      opacity: 1;
+    }
   }
 `;
 
@@ -23,6 +26,8 @@ interface Props {
   alt?: HTMLImageElement['alt'];
   role?: string;
   cover?: boolean;
+  fadeIn?: boolean;
+  fadeInDuration?: number;
   className?: string;
 }
 
@@ -34,6 +39,7 @@ interface State {
 export default class LazyImage extends PureComponent<Props, State> {
   static defaultProps = {
     alt: '',
+    fadeIn: true
   };
 
   constructor(props) {
@@ -56,7 +62,7 @@ export default class LazyImage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { src, alt, role, cover, className } = this.props;
+    const { src, alt, role, cover, fadeIn, fadeInDuration, className } = this.props;
     const { visible, loaded } = this.state;
 
     if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
@@ -75,7 +81,8 @@ export default class LazyImage extends PureComponent<Props, State> {
             alt={alt}
             role={role}
             style={style}
-            className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${className}`}
+            fadeInDuration={fadeInDuration}
+            className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${fadeIn ? 'fadeIn' : ''} ${className}`}
             onLoad={this.handleImageLoaded}
           />
         </Observer>
