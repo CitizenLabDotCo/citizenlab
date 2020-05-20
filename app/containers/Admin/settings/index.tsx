@@ -17,7 +17,7 @@ import { injectIntl } from 'utils/cl-intl';
 import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
 
-interface InputProps {}
+export interface InputProps {}
 
 interface DataProps {
   widgetsEnabled: GetFeatureFlagChildProps;
