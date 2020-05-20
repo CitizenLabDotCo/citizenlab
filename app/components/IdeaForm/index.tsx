@@ -131,7 +131,6 @@ interface State {
   ideaFiles: UploadFile[];
   ideaFilesToRemove: UploadFile[];
   ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas | null;
-  pbEnabled: boolean;
 }
 
 class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
@@ -163,7 +162,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       locationError: null,
       imageError: null,
       attachmentsError: null,
-      pbEnabled: false,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -559,7 +557,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   render() {
     const className = this.props['className'];
-    const { projectId } = this.props;
+    const { projectId, pbEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -581,7 +579,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       locationError,
       imageError,
       attachmentsError,
-      pbEnabled
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
