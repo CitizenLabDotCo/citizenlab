@@ -12,7 +12,7 @@ class Vote < ApplicationRecord
 
   validates :votable, :mode, presence: true
   validates :mode, inclusion: { in: MODES }
-  validates :user_id, uniqueness: {scope: [:votable_id, :votable_type, :mode]}
+  validates :user_id, uniqueness: {scope: [:votable_id, :votable_type, :mode], allow_nil: true}
 
   scope :up, -> {where mode: 'up'}
   scope :down, -> {where mode: 'down'}
