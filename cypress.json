@@ -4,5 +4,8 @@
   "baseUrl": "http://localhost:3000",
   "video": false,
   "chromeWebSecurity": false,
-  "numTestsKeptInMemory": 10
+  "numTestsKeptInMemory": 10,
+  "env": {
+    "RETRIES": 2
+  }
 }
