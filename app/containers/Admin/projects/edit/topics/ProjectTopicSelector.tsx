@@ -70,8 +70,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
     handleAddSelectedTopics(newlySelectedTopicIds);
   }, []);
 
-  // need useCallback here?
-  const getOptions = () => {
+  const getOptions = useCallback(() => {
     if (!isNilOrError(selectableTopics)) {
       const topics = selectableTopics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
       return topics.map(topic => {
@@ -87,7 +86,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
     }
 
     return null;
-  };
+  }, [selectableTopics]);
 
   return (
     <Container>
