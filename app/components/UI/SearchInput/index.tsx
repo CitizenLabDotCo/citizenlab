@@ -24,11 +24,15 @@ const Container = styled.div`
   align-items: center;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px #ececec;
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
-  transition: box-shadow 100ms ease-out;
+  border: solid 1px ${colors.border};
+  transition: all 65ms ease-out;
+
+  &:hover {
+    border-color: ${colors.hoveredBorder};
+  }
 
   &.focused {
+    border-color: #000;
     ${boxShadowOutline};
   }
 `;

@@ -250,7 +250,7 @@ const ControlWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 45px;
   padding: 35px;
-  border: 1px solid #eee;
+  border: 1px solid #e8e8e8;
   border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
