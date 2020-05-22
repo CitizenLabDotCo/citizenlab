@@ -12,13 +12,13 @@ RSpec.describe Tenant, type: :model do
 
   describe "Apartment tenant" do
     it "is created on create" do
-      host = "something-else-than-the-default-test-tenant"
+      host = "something.else-than-the-default-test-tenant"
       expect(Apartment::Tenant).to receive(:create).with(host)
       create(:tenant, host: host)
     end
 
     it "is deleted on destroy" do
-      t = create(:tenant, host: "something-else-than-the-default-test-tenant")
+      t = create(:tenant, host: "something.else-than-the-default-test-tenant")
       expect(Apartment::Tenant).to receive(:drop).with(t.host)
       t.destroy
     end
@@ -100,7 +100,7 @@ RSpec.describe Tenant, type: :model do
   end
 
   describe "closest_locale_to" do
-    let(:tenant) { build(:tenant, host: 'something-else-than-the-default-test-tenant') }
+    let(:tenant) { build(:tenant, host: 'something.else-than-the-default-test-tenant') }
 
     it "returns the locale itself if it's present" do
       tenant.settings['core']['locales'] = ['en', 'nl-BE']
