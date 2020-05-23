@@ -1137,7 +1137,6 @@ class TenantTemplateService
         'created_at'      => layer.created_at.to_s,
         'updated_at'      => layer.updated_at.to_s
       }
-      store_ref yml_layer, layer.id, :maps_layer
       yml_layer
     end
   end
