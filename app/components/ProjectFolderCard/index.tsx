@@ -85,7 +85,7 @@ const Container = styled(Link)`
   }
 
   &.desktop {
-    transition: all 180ms ease-out;
+    transition: all 150ms ease-out;
 
     &:hover {
       box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);

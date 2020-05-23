@@ -22,7 +22,7 @@ import { isBoolean } from 'util';
 // typings
 import { Locale } from 'typings';
 
-const Container: any = styled.div`
+const Container = styled.div`
   width: 100%;
   position: relative;
 
@@ -113,7 +113,7 @@ export class Input extends React.PureComponent<Props> {
     const adminPage = isPage('admin', location.pathname);
 
     return (
-      <Container error={hasError} className={className || ''}>
+      <Container className={className || ''}>
 
         {label &&
           <Label htmlFor={id}>
