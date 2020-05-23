@@ -91,7 +91,7 @@ const CloseIcon = styled(Icon)`
   fill: #000;
 `;
 
-const LeafletMapContainer = styled.div<{mapHeight: number}>`
+const LeafletMapContainer = styled.div<{ mapHeight: number }>`
   flex: 1;
   height: ${props => props.mapHeight}px;
 
@@ -153,7 +153,7 @@ interface DataProps {
   mapConfig: GetMapConfigChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   initiated: boolean;
@@ -468,7 +468,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
 const CLMapWithHOCs = injectLocalize(CLMap);
 
- export default ({ projectId, ...inputProps }: InputProps) => projectId ? (
+export default ({ projectId, ...inputProps }: InputProps) => projectId ? (
   <GetMapConfig projectId={projectId}>
     {(mapConfig: GetMapConfigChildProps) => {
       if (isError(mapConfig) || mapConfig) {
@@ -479,6 +479,7 @@ const CLMapWithHOCs = injectLocalize(CLMap);
                 <CLMapWithHOCs
                   tenant={tenant}
                   mapConfig={mapConfig}
+                  projectId={projectId}
                   {...inputProps}
                 />
               );
@@ -491,15 +492,15 @@ const CLMapWithHOCs = injectLocalize(CLMap);
     }}
   </GetMapConfig>
 ) : (
-  <GetTenant>
-    {(tenant: GetTenantChildProps) => {
-      return (
-        <CLMapWithHOCs
-          tenant={tenant}
-          mapConfig={null}
-          {...inputProps}
-        />
-      );
-    }}
-  </GetTenant>
-);
+    <GetTenant>
+      {(tenant: GetTenantChildProps) => {
+        return (
+          <CLMapWithHOCs
+            tenant={tenant}
+            mapConfig={null}
+            {...inputProps}
+          />
+        );
+      }}
+    </GetTenant>
+  );
