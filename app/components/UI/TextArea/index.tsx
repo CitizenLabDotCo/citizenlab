@@ -14,16 +14,18 @@ import { colors, defaultInputStyle } from 'utils/styleUtils';
 // typings
 import { Locale } from 'typings';
 
-const Container = styled.div`
-  position: relative;
+const Container = styled.div``;
 
-  .textarea {
-    ${defaultInputStyle};
+const TextAreaContainer = styled.div`
+  width: 100%;
+  position: relative;
+  padding: 2px;
+  margin-top: -1px;
+  margin-left: -1px;
+
+  textarea {
     width: 100%;
-    resize: none;
-    position: relative;
-    overflow: hidden;
-    line-height: 24px;
+    ${defaultInputStyle}
   }
 `;
 
@@ -38,14 +40,6 @@ const CharacterCount = styled.p`
   &.error {
     color: ${colors.clRedError};
   }
-`;
-
-const TextAreaContainer = styled.div`
-  width: 100%;
-  position: relative;
-  padding: 0;
-  margin: 0;
-  border: none;
 `;
 
 export type Props = {

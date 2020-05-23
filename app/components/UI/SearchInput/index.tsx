@@ -1,12 +1,10 @@
-import React, { memo, useState, useCallback, useEffect, useMemo, ChangeEvent, MouseEvent, KeyboardEvent } from 'react';
+import React, { memo, useState, useCallback, useEffect, useMemo, MouseEvent } from 'react';
 import { isEmpty } from 'lodash-es';
 import { LiveMessage } from 'react-aria-live';
 
 // components
 import Icon from 'components/UI/Icon';
-
-// utils
-import { isPage } from 'utils/helperUtils';
+import Input from 'components/UI/Input';
 
 // i18n
 import messages from './messages';
@@ -15,69 +13,42 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
+import { colors } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  border: solid 1px ${colors.border};
-  transition: all 65ms ease-out;
-
-  &:hover {
-    border-color: ${colors.hoveredBorder};
-  }
-
-  &.focused {
-    border-color: #000;
-    ${boxShadowOutline};
-  }
+  position: relative;
 `;
 
-const Input = styled.input`
-  flex: 1;
-  height: 52px;
-  color: ${colors.text};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  padding: 0px;
-  padding-left: 20px;
-  margin: 0px;
-  background: transparent;
-  border: none;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+const StyledInput = styled(Input)`
+  input {
+    padding-right: 40px;
 
-  &::-ms-clear {
-    display: none;
+    &::-ms-clear {
+      display: none;
+    }
   }
 `;
 
 const SearchIcon = styled(Icon)`
+  flex: 0 0 20px;
   width: 20px;
   height: 20px;
   fill: ${colors.label};
-  margin-left: 10px;
-  margin-right: 20px;
 `;
 
 const CloseIcon = styled(Icon)`
+  flex: 0 0 14px;
   width: 14px;
   height: 14px;
   fill: ${colors.label};
 `;
 
 const SearchFieldButton = styled.button`
-  flex:  0 0 20px;
   width: 20px;
   height: 20px;
-  margin-left: 10px;
-  margin-right: 20px;
   padding: 0;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -85,6 +56,9 @@ const SearchFieldButton = styled.button`
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 12px;
 
   &:hover {
     ${CloseIcon} {
@@ -102,39 +76,20 @@ interface Props {
 
 const SearchInput = memo<Props & InjectedIntlProps>(({ onChange, placeholder, ariaLabel, className, intl }) => {
 
-  const adminPage = isPage('admin', location.pathname);
-
-  const [focused, setFocused] = useState(false);
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
-  const handleOnChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const newValue = !isEmpty(event.currentTarget.value) ? event.currentTarget.value : null;
+  const handleOnChange = useCallback((value: string) => {
+    const newValue = !isEmpty(value) ? value : null;
     setSearchTerm(newValue);
-  }, []);
-
-  const handleOnFocus = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setFocused(true);
-  }, []);
-
-  const handleOnBlur = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setFocused(false);
-  }, []);
-
-  const handleOnKeyDown = useCallback((event: KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      setSearchTerm(null);
-      setFocused(false);
-    }
   }, []);
 
   const handleOnReset = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    setSearchTerm(null);
-  }, []);
+
+    if (!isEmpty(searchTerm)) {
+      setSearchTerm(null);
+    }
+  }, [searchTerm]);
 
   useEffect(() => {
     // debounce input
@@ -153,36 +108,28 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ onChange, placeholder, ar
     return (ariaLabel || intl.formatMessage(messages.searchAriaLabel));
   }, [ariaLabel]);
 
-  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
-
   return (
-    <Container className={`${className} ${focused ? 'focused' : 'blurred'} ${adminPage ? 'adminpage' : ''}`}>
-      <Input
+    <Container className={className || ''}>
+      <StyledInput
+        className="e2e-search-input"
         type="text"
         aria-label={searchAriaLabel}
         placeholder={searchPlaceholder}
         value={searchTerm || ''}
         onChange={handleOnChange}
-        onFocus={handleOnFocus}
-        onBlur={handleOnBlur}
-        onKeyDown={handleOnKeyDown}
-        className="e2e-search-input"
       />
+
       <ScreenReaderOnly aria-live="polite">
         <FormattedMessage {...messages.searchTerm} values={{ searchTerm }} />
       </ScreenReaderOnly>
-      {isEmpty(searchTerm) ?
-        <SearchIcon ariaHidden name="search2" />
-      :
-        <SearchFieldButton
-          onMouseDown={removeFocus}
-          onClick={handleOnReset}
-        >
-          <CloseIcon title={intl.formatMessage(messages.removeSearchTerm)} name="close" />
-        </SearchFieldButton>
-      }
+
+      <SearchFieldButton onClick={handleOnReset}>
+        {isEmpty(searchTerm)
+          ? <SearchIcon ariaHidden name="search2" />
+          : <CloseIcon title={intl.formatMessage(messages.removeSearchTerm)} name="close" />
+        }
+      </SearchFieldButton>
+
       <LiveMessage
         message={searchTerm ?
           intl.formatMessage(messages.a11y_searchTerm, { searchTerm })

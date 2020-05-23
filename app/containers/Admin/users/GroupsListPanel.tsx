@@ -77,9 +77,6 @@ const ButtonWrapper = styled.div`
 const AddGroupButton = styled(Button)``;
 
 const GroupsList = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
   overflow-x: hidden;
   overflow-y: auto;
 `;
