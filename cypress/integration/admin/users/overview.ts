@@ -16,12 +16,10 @@ describe('/admin/users/ page', () => {
     cy.get('.e2e-user-table').find('.e2e-user-table-row').should('have.length', 1);
     cy.get('.e2e-user-table').find('.e2e-user-table-row').contains('admin@citizenlab.co');
     cy.get('.e2e-user-table').find('.e2e-user-table-row').contains('Sylvester Kalinoski');
-    cy.get('.e2e-user-table').find('.e2e-user-table-row').find('input').should('have.attr', 'aria-checked').and('be', 'true');
   });
 
   it('Lets you select users then show selected controls', () => {
     cy.get('.export.e2e-exportAllUsers');
-    cy.get('.e2e-selected-count').contains('0');
     cy.get('.e2e-user-table').find('.e2e-user-table-row').first().find('.e2e-checkbox').click();
     cy.get('.e2e-selected-count').contains('1');
     cy.get('.e2e-move-users');
