@@ -22,9 +22,9 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   });
 
   it('lets you search the ideas', () => {
-    cy.get('.e2e-search-input').type(ideaTitle);
+    cy.get('.e2e-search-input input').type(ideaTitle);
     cy.wait(1000);
-    cy.get('.e2e-search-input').should('have.value', ideaTitle);
+    cy.get('.e2e-search-input input').should('have.value', ideaTitle);
     cy.get('#e2e-ideas-list');
     cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
   });
