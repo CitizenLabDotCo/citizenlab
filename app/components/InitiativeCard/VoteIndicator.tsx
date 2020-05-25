@@ -147,7 +147,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             <VoteCounter>
               <VoteIcon name="upvote" ariaHidden />
               <VoteText aria-hidden>
-                <b  className="e2e-initiative-card-vote-count">{voteCount}</b>
+                <b className="e2e-initiative-card-vote-count">{voteCount}</b>
                 <span className="division-bar">/</span>
                 {voteLimit}
               </VoteText>
