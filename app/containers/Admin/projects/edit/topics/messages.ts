@@ -31,4 +31,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.remove',
     defaultMessage: 'Remove'
   },
+  fewerThanOneTopicForbidden: {
+    id: 'app.containers.AdminPage.Topics.fewerThanOneTopicForbidden',
+    defaultMessage: 'A project needs at least one topic. If you want to disable topics for this project, you can do so in the \'Idea form\' tab.'
+  },
 });
