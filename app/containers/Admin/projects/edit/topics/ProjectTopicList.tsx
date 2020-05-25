@@ -26,10 +26,15 @@ const ProjectTopicList = memo(({
   selectedTopicIds,
   localize
 }: Props & InjectedIntlProps & InjectedLocalized) => {
+
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
     this.props.handleRemoveSelectedTopic(topicId);
+  };
+
+  const handleReorderTopicProject = () => {
+    // To implement
   };
 
   const topics = useTopics(selectedTopicIds);
@@ -40,7 +45,7 @@ const ProjectTopicList = memo(({
     return (
       <SortableList
         items={selectedTopics}
-        onReorder={handleReorderAdminPublication}
+        onReorder={handleReorderTopicProject}
         className="projects-list e2e-admin-projects-list"
         id="e2e-admin-published-projects-list"
       >
