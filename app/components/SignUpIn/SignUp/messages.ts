@@ -137,9 +137,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.logIn2',
     defaultMessage: 'Log in',
   },
-  readAgreeTo: {
-    id: 'app.containers.SignUp.readAgreeTo',
-    defaultMessage: 'I have read and agree to the {link}.',
+  iHaveReadAndAgreeTo: {
+    id: 'app.containers.SignUp.iHaveReadAndAgreeTo',
+    defaultMessage: 'I have read and agree to {link}.',
   },
   emailApproval: {
     id: 'app.containers.SignUp.emailApproval',
@@ -149,17 +149,17 @@ export default defineMessages({
     id: 'app.containers.SignUp.acceptTermsAndConditions',
     defaultMessage: 'Accept our {tacLink} to sign up via {loginMechanismName}',
   },
-  termsAndConditions: {
-    id: 'app.containers.SignUp.termsAndConditions',
-    defaultMessage: 'terms and conditions',
+  theTermsAndConditions: {
+    id: 'app.containers.SignUp.theTermsAndConditions',
+    defaultMessage: 'the terms and conditions',
   },
   emailConsentError: {
     id: 'app.containers.SignUp.emailConsentError',
     defaultMessage: 'You have to accept receiving emails for your account management.',
   },
-  privacyPolicy: {
-    id: 'app.containers.SignUp.privacyPolicy',
-    defaultMessage: 'privacy policy',
+  thePrivacyPolicy: {
+    id: 'app.containers.SignUp.thePrivacyPolicy',
+    defaultMessage: 'the privacy policy',
   },
   tacError: {
     id: 'app.containers.SignUp.tacError',
