@@ -13,13 +13,13 @@ RSpec.describe Tenant, type: :model do
   describe "Apartment tenant" do
     it "is created on create" do
       host = "something.else-than-the-default-test-tenant"
-      expect(Apartment::Tenant).to receive(:create).with(host)
+      expect(Apartment::Tenant).to receive(:create).with(host.gsub(/\./, "_"))
       create(:tenant, host: host)
     end
 
     it "is deleted on destroy" do
       t = create(:tenant, host: "something.else-than-the-default-test-tenant")
-      expect(Apartment::Tenant).to receive(:drop).with(t.host)
+      expect(Apartment::Tenant).to receive(:drop).with(t.host.gsub(/\./, "_"))
       t.destroy
     end
 
