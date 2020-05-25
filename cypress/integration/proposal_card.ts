@@ -64,7 +64,7 @@ describe('Initiaitve card component', () => {
       const initiativeContent = Math.random().toString(36);
 
       cy.apiSignup(firstName, lastName, email, password).then(() => {
-        return cy.apiCreateInitiative({ initiativeTitle, initiativeContent })
+        return cy.apiCreateInitiative({ initiativeTitle, initiativeContent });
       }).then((initiative) => {
         initiativeId = initiative.body.data.id;
         cy.apiUpvoteInitiative(email, password, initiativeId);

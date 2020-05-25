@@ -57,7 +57,7 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-description-input .ql-editor').type(ideaContent);
 
     // verify the title and description
-    cy.get('#e2e-idea-title-input #title').should('have.value', ideaTitle);
+    cy.get('#e2e-idea-title-input #title').should('contain.value', ideaTitle);
     cy.get('#e2e-idea-description-input .ql-editor').contains(ideaContent);
 
     // add a topic
