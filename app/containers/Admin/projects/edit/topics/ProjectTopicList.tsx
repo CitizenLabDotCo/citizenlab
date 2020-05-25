@@ -43,38 +43,40 @@ const ProjectTopicList = memo(({
     const selectedTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
     return (
-      <SortableList
-        items={selectedTopics}
-        onReorder={handleReorderTopicProject}
-        className="projects-list e2e-admin-projects-list"
-        id="e2e-admin-published-projects-list"
-      >
-        {({ itemsList, handleDragRow, handleDropRow }) => (
-          itemsList.map((topic: ITopicData, index: number) => {
-            return (
-              <SortableRow
-                id={topic.id}
-                key={index}
-                moveRow={handleDragRow}
-                dropRow={handleDropRow}
-                lastItem={(index === selectedTopics.length - 1)}
-              >
-                <p>{localize(topic.attributes.title_multiloc)}</p>
-                <Button
-                  onClick={handleRemoveSelectedTopic(topic.id)}
-                  buttonStyle="text"
-                  icon="delete"
+      <>
+        <SortableList
+          items={selectedTopics}
+          onReorder={handleReorderTopicProject}
+          className="projects-list e2e-admin-projects-list"
+          id="e2e-admin-published-projects-list"
+        >
+          {({ itemsList, handleDragRow, handleDropRow }) => (
+            itemsList.map((topic: ITopicData, index: number) => {
+              return (
+                <SortableRow
+                  id={topic.id}
+                  key={index}
+                  moveRow={handleDragRow}
+                  dropRow={handleDropRow}
+                  lastItem={(index === selectedTopics.length - 1)}
                 >
-                  <FormattedMessage {...messages.remove} />
-                </Button>
-              </SortableRow>
-            );
-          }))
-        }
+                  <p>{localize(topic.attributes.title_multiloc)}</p>
+                  <Button
+                    onClick={handleRemoveSelectedTopic(topic.id)}
+                    buttonStyle="text"
+                    icon="delete"
+                  >
+                    <FormattedMessage {...messages.remove} />
+                  </Button>
+                </SortableRow>
+              );
+            }))
+          }
+        </SortableList>
         {/* {isError(moderators) &&
           <FormattedMessage {...messages.moderatorsNotFound} />
         } */}
-      </SortableList>
+      </>
     );
   }
 
