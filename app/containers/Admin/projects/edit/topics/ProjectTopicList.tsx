@@ -12,6 +12,7 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 // components
 import Button from 'components/UI/Button';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
+import { RowContent, RowContentInner, RowTitle } from '../../components/StyledComponents';
 
 // hooks
 import useTopics from 'hooks/useTopics';
@@ -60,7 +61,19 @@ const ProjectTopicList = memo(({
                   dropRow={handleDropRow}
                   lastItem={(index === selectedTopics.length - 1)}
                 >
-                  <p>{localize(topic.attributes.title_multiloc)}</p>
+                  <RowContent>
+                    <RowContentInner className="expand primary">
+                      <RowTitle value={topic.attributes.title_multiloc} />
+
+                      {/* {publication.attributes ?.publication_visible_to === 'admins' &&
+                        <StyledStatusLabel
+                          text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+                          color="clBlue"
+                          icon="lock"
+                        />
+                      } */}
+                    </RowContentInner>
+                  </RowContent>
                   <Button
                     onClick={handleRemoveSelectedTopic(topic.id)}
                     buttonStyle="text"
