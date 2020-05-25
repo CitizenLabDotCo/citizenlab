@@ -54,9 +54,6 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
     const { topics } = this.props;
 
     if (!isNilOrError(topics)) {
-      let isLastItem = false;
-      const isDefaultTopic = true; // TO BE CHANGED
-
       return (
         <Section>
           <SectionTitle>
@@ -75,14 +72,15 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
               <FormattedMessage {...messages.addTopicButton} />
             </Button>
           </ButtonWrapper>
-
           <List key={topics.length}>
             {
               topics.map((topic, index) => {
+                const isLastItem = (index === topics.length - 1);
+
                 if (!isNilOrError(topic)) {
-                  if (index === topics.length - 1) {
-                    isLastItem = true;
-                  }
+                  const isDefaultTopic = true;
+                  // const isDefaultTopic = topic.attributes.code !== 'custom';
+
                   return (
                     isDefaultTopic ?
                       <DefaultTopicRow
