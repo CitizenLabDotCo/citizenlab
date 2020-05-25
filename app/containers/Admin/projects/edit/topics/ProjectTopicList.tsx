@@ -24,18 +24,19 @@ const StyledWarning = styled(Warning)`
 
 interface Props {
   selectedTopicIds: string[];
-  handleRemoveSelectedTopic: (topicId: string) => void;
+  onHandleRemoveSelectedTopic: (topicId: string) => void;
 }
 
 const ProjectTopicList = memo(({
   selectedTopicIds,
+  onHandleRemoveSelectedTopic,
   localize
 }: Props & InjectedIntlProps & InjectedLocalized) => {
 
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
-    this.props.handleRemoveSelectedTopic(topicId);
+    onHandleRemoveSelectedTopic(topicId);
   };
 
   const handleReorderTopicProject = () => {
