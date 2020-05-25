@@ -13,10 +13,15 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import Button from 'components/UI/Button';
 import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { RowContent, RowContentInner, RowTitle } from '../../components/StyledComponents';
+import Warning from 'components/UI/Warning';
 
 // hooks
 import useTopics from 'hooks/useTopics';
 import { ITopicData } from 'services/topics';
+
+const StyledWarning = styled(Warning)`
+  margin-bottom: 20px;
+`;
 
 interface Props {
   selectedTopicIds: string[];
@@ -42,9 +47,15 @@ const ProjectTopicList = memo(({
 
   if (!isNilOrError(topics)) {
     const selectedTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+    const isLastSelectedTopic = selectedTopics.length === 1;
 
     return (
       <>
+        {isLastSelectedTopic &&
+          <StyledWarning>
+            <FormattedMessage {...messages.fewerThanOneTopicForbidden} />
+          </StyledWarning>
+        }
         <SortableList
           items={selectedTopics}
           onReorder={handleReorderTopicProject}
@@ -78,6 +89,7 @@ const ProjectTopicList = memo(({
                     onClick={handleRemoveSelectedTopic(topic.id)}
                     buttonStyle="text"
                     icon="delete"
+                    disabled={isLastSelectedTopic}
                   >
                     <FormattedMessage {...messages.remove} />
                   </Button>
