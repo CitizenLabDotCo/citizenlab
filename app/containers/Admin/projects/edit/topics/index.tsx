@@ -2,6 +2,7 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { isString } from 'lodash-es';
+import { withRouter, WithRouterProps } from 'react-router';
 
 import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ProjectTopicSelector from './ProjectTopicSelector';
@@ -14,9 +15,14 @@ import messages from './messages';
 // hooks
 import useTopics from 'hooks/useTopics';
 
+// services
+import { updateProject } from 'services/projects';
+
 const Container = styled.div``;
 
-const Topics = memo(() => {
+interface Props {}
+
+const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
   const topics = useTopics();
   const topicIds = !isNilOrError(topics) ?
     topics.map(topic => !isNilOrError(topic) ? topic.id : null)
@@ -31,8 +37,8 @@ const Topics = memo(() => {
   }, [topics]);
 
   const handleRemoveSelectedTopic = useCallback((topicIdToRemove: string) => {
-    const newSelectedTopicIds = selectedTopicIds.filter(topicId => topicId !== topicIdToRemove);
-    setSelectedTopicIds(newSelectedTopicIds);
+    const updatedSelectedTopicIds = topicIds.filter(topicId => topicId !== topicIdToRemove);
+    updateProject(projectId, { topic_ids: updatedSelectedTopicIds });
   }, []);
 
   const handleAddSelectedTopics = useCallback((topicIds: string[]) => {
@@ -55,10 +61,10 @@ const Topics = memo(() => {
       />
       <ProjectTopicList
         selectedTopicIds={selectedTopicIds}
-        handleRemoveSelectedTopic={handleRemoveSelectedTopic}
+        onHandleRemoveSelectedTopic={handleRemoveSelectedTopic}
       />
     </Container>
   );
 });
 
-export default Topics;
+export default withRouter(Topics);
