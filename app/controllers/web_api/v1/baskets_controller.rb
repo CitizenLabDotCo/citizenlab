@@ -14,7 +14,7 @@ class WebApi::V1::BasketsController < ApplicationController
     authorize @basket
 
     save_params = {}
-    save_params[:on] = [:basket_submission] if @basket.submitted_at.present?
+    save_params[:context] = [:basket_submission] if @basket.submitted_at.present?
     if @basket.save save_params
       SideFxBasketService.new.after_create @basket, current_user
       render json: WebApi::V1::BasketSerializer.new(
@@ -43,7 +43,7 @@ class WebApi::V1::BasketsController < ApplicationController
         end
         @basket.assign_attributes basket_params.except(:idea_ids)
         save_params = {}
-        save_params[:on] = [:basket_submission] if @basket.submitted_at.present?
+        save_params[:context] = [:basket_submission] if @basket.submitted_at.present?
         raise ClErrors::TransactionError.new(error_key: :unprocessable_basket) if !@basket.save(save_params)
         SideFxBasketService.new.after_update @basket, current_user 
       end
