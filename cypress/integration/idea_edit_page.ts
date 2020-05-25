@@ -27,14 +27,11 @@ describe('Idea edit page', () => {
       ideaId = idea.body.data.id;
       ideaSlug = idea.body.data.attributes.slug;
       cy.wait(500);
+      cy.setLoginCookie(email, password);
+      cy.visit(`/ideas/edit/${ideaId}`);
+      cy.get('#e2e-idea-edit-page');
+      cy.acceptCookies();
     });
-  });
-
-  beforeEach(() => {
-    cy.setLoginCookie(email, password);
-    cy.visit(`/ideas/edit/${ideaId}`);
-    cy.acceptCookies();
-    cy.get('#e2e-idea-edit-page');
   });
 
   it('has a working idea edit form', () => {
@@ -75,21 +72,19 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('#e2e-idea-edit-save-button').click();
-    cy.wait(3000);
-    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
 
     // verify updated idea page
-    cy.visit(`/ideas/${ideaSlug}`);
-    cy.wait(3000);
+    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
     cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(newIdeaTitle);
-    cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(newIdeaContent);
-    cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
-    cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
-    cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
-    cy.get('#e2e-idea-show').find('.e2e-post-last-modified-button').contains('modified');
+    cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
+    cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
+    cy.get('#e2e-idea-show #e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
+    cy.get('#e2e-idea-show #e2e-map-toggle').contains('Antwerpen, Belgium');
+    cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
+    cy.get('#e2e-idea-show .e2e-post-last-modified-button').contains('modified');
 
     // verify modal with edit changelog
+    cy.get('#e2e-idea-show .e2e-post-last-modified-button');
     cy.get('#e2e-idea-show').find('.e2e-post-last-modified-button').first().click();
     cy.wait(1000);
     cy.get('.e2e-activities-changelog').find('.e2e-idea-changelog-entry').should('have.length', 2);

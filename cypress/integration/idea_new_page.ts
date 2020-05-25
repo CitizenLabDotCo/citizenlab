@@ -5,8 +5,6 @@ describe('Idea new page', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const ideaTitle = randomString(40);
-  const ideaContent = randomString(60);
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
@@ -15,7 +13,7 @@ describe('Idea new page', () => {
   beforeEach(() => {
     cy.setLoginCookie(email, password);
     cy.visit('/projects/an-idea-bring-it-to-your-council/ideas/new');
-    cy.wait(500);
+    cy.get('#idea-form');
     cy.acceptCookies();
   });
 
@@ -48,6 +46,9 @@ describe('Idea new page', () => {
   });
 
   it('has a working idea form', () => {
+    const ideaTitle = randomString(40);
+    const ideaContent = randomString(60);
+
     cy.get('#e2e-idea-new-page');
     cy.get('#idea-form');
 
