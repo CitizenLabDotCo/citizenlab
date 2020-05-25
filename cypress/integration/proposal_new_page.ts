@@ -5,8 +5,6 @@ describe('Initiative new page', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const initiativeTitle = randomString(40);
-  const initiativeContent = randomString(501);
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
@@ -42,6 +40,9 @@ describe('Initiative new page', () => {
   });
 
   it('has a working initiative form', () => {
+    const initiativeTitle = randomString(40);
+    const initiativeContent = randomString(501);
+
     cy.get('#e2e-initiative-title-input').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as('descriptionInput');
 
@@ -50,7 +51,7 @@ describe('Initiative new page', () => {
     cy.get('@descriptionInput').type(initiativeContent, { delay: 1 });
 
     // verify the values
-    cy.get('@titleInput').should('have.value', initiativeTitle);
+    cy.get('@titleInput').should('contain.value', initiativeTitle);
     cy.get('@descriptionInput').contains(initiativeContent);
 
     // add a topic

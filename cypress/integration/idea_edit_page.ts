@@ -41,7 +41,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
     // check initial values
-    cy.get('@titleInput').should('have.value', ideaTitle);
+    cy.get('@titleInput').should('contain.value', ideaTitle);
     cy.get('@descriptionInput').contains(ideaContent);
 
     // edit title and description
@@ -49,7 +49,7 @@ describe('Idea edit page', () => {
     cy.get('@descriptionInput').clear().type(newIdeaContent);
 
     // verify the new values
-    cy.get('@titleInput').should('have.value', newIdeaTitle);
+    cy.get('@titleInput').should('contain.value', newIdeaTitle);
     cy.get('@descriptionInput').contains(newIdeaContent);
 
     // add a topic
