@@ -7,12 +7,17 @@ import styled from 'styled-components';
 // components
 import { TextCell, Row } from 'components/admin/ResourceList';
 import T from 'components/T';
+import { RowContent, RowContentInner, RowTitle } from '../StyledComponents';
 
 // i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 const DefaultTopicLabel = styled.span``;
+
+const StyledRowContentInner = styled(RowContentInner)`
+  height: 40px;
+`;
 
 interface Props {
   topic: ITopicData | Error;
@@ -30,9 +35,19 @@ const DefaultTopicRow = memo((props: Props) => {
         className="e2e-topic-field-row"
         isLastItem={isLastItem}
       >
-        <TextCell className="expand">
-          <T value={topic.attributes.title_multiloc} />
-        </TextCell>
+        <RowContent>
+          <StyledRowContentInner>
+            <RowTitle value={topic.attributes.title_multiloc} />
+
+            {/* {publication.attributes ?.publication_visible_to === 'admins' &&
+              <StyledStatusLabel
+                text={<FormattedMessage {...messages.onlyAdminsCanView} />}
+                color="clBlue"
+                icon="lock"
+              />
+            } */}
+          </StyledRowContentInner>
+        </RowContent>
         <DefaultTopicLabel>
           <FormattedMessage {...messages.defaultTopic} />
         </DefaultTopicLabel>
