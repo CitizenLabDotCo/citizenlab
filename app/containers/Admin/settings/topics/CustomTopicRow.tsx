@@ -42,19 +42,19 @@ const DefaultTopicRow = memo((props: Props) => {
         </RowContent>
         <Buttons>
           <Button
-            onClick={handleDeleteClick(topic.id)}
-            buttonStyle="text"
-            icon="delete"
-          >
-            <FormattedMessage {...messages.deleteButtonLabel} />
-          </Button>
-
-          <Button
             linkTo={`/admin/settings/topics/${topic.id}`}
             buttonStyle="secondary"
             icon="edit"
           >
             <FormattedMessage {...messages.editButtonLabel} />
+          </Button>
+
+          <Button
+            onClick={handleDeleteClick(topic.id)}
+            buttonStyle="text"
+            icon="delete"
+          >
+            <FormattedMessage {...messages.deleteButtonLabel} />
           </Button>
         </Buttons>
       </Row>
