@@ -1,5 +1,4 @@
 import React, { memo, FormEvent } from 'react';
-import { isError } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
@@ -98,9 +97,6 @@ const ProjectTopicList = memo(({
             }))
           }
         </SortableList>
-        {/* {isError(moderators) &&
-          <FormattedMessage {...messages.moderatorsNotFound} />
-        } */}
       </>
     );
   }
