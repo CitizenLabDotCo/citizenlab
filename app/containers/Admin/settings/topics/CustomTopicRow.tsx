@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { TextCell, Row } from 'components/admin/ResourceList';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import { RowContent, RowContentInner, RowTitle } from '../StyledComponents';
 
 // i18n
 import messages from './messages';
@@ -34,9 +35,11 @@ const DefaultTopicRow = memo((props: Props) => {
         className="e2e-topic-field-row"
         isLastItem={isLastItem}
       >
-        <TextCell className="expand">
-          <T value={topic.attributes.title_multiloc} />
-        </TextCell>
+        <RowContent>
+          <RowContentInner>
+            <RowTitle value={topic.attributes.title_multiloc} />
+          </RowContentInner>
+        </RowContent>
         <Buttons>
           <Button
             onClick={handleDeleteClick(topic.id)}
