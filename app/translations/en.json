@@ -1299,6 +1299,7 @@
   "app.containers.AdminPage.Topics.addTopics": "Add",
   "app.containers.AdminPage.Topics.browseTopics": "Browse topics",
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Delete",
+  "app.containers.AdminPage.Topics.fewerThanOneTopicForbidden": "A project needs at least one topic. If you want to disable topics for this project, you can do so in the 'Idea form' tab.",
   "app.containers.AdminPage.Topics.remove": "Remove",
   "app.containers.AdminPage.Topics.subtitleDescription": "Add or remove topics that are available to this project. Topics can be managed in the topic manager.",
   "app.containers.AdminPage.Topics.titleDescription": "Topics",
