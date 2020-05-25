@@ -30,9 +30,14 @@ RSpec.describe Basket, type: :model do
       ideas = create_list(:idea, 11, budget: 100, project: project)
       @basket = create(:basket, ideas: ideas, participation_context: project)
     end
-    it "cannot be submitted" do
+    it "is valid in normal context" do
       @basket.submitted_at = Time.now
-      expect(@basket).to be_invalid
+      expect(@basket).to be_valid
+    end
+
+    it "is not valid in submission context" do
+      @basket.submitted_at = Time.now
+      expect(@basket.save(context: :basket_submission)).to eq(false)
     end
   end
 
