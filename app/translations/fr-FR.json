@@ -1274,7 +1274,6 @@
   "app.containers.AdminPage.SettingsPage.titleMaxCharError": "Le texte dépasse la limite des 35 caractères autorisés",
   "app.containers.AdminPage.SettingsPage.titleRegistrationFields": "Données utilisateur",
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "",
-  "app.containers.AdminPage.SettingsPage.titleTopics": "Configuration des thèmes",
   "app.containers.AdminPage.SettingsPage.topicDeletionConfirmation": "Êtes-vous sûr de vouloir supprimer ce thème ? Cela supprimera également toutes les références existantes à ce thème pour les idées et les propositions.",
   "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Déposez votre image ici",
   "app.containers.AdminPage.SettingsPage.urlError": "Cet URL n'est pas valide.",
