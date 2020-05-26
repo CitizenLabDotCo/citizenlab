@@ -169,11 +169,7 @@ export class UserManager extends PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetUsers
-    pageSize={20}
-    cache={false}
-    {...inputProps}
-  >
+  <GetUsers pageSize={20} {...inputProps}>
     {(users) => <UserManager {...inputProps} users={users} />}
   </GetUsers>
 );

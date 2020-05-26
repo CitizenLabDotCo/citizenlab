@@ -1,55 +1,32 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Initiaitve card component', () => {
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
-  const initiativeTitle = randomString();
-  const initiativeContent = Math.random().toString(36);
-  const commentContent = randomString();
-  let initiativeId: string;
-  let userId: string;
-  let parentCommentId: string;
-  let childCommentId: string;
-
-  const preparePage = () => {
-    cy.setLoginCookie(email, password);
-
-    // visit initiatives page and sort initiative cards by newest first
-    cy.visit('/initiatives');
-
-    cy.wait(500);
-    cy.get('#e2e-initiatives-list');
-
-    // sort initiatives by newest first
-    cy.get('#e2e-initiatives-sort-dropdown').click();
-    cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
-
-    cy.wait(500);
-    cy.get('#e2e-initiatives-list');
-
-    // create a reference to the initiative card for later use
-    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').contains(initiativeTitle).closest('.e2e-initiative-card').as('initiativeCard');
-  };
-
-  before(() => {
-    cy.apiSignup(firstName, lastName, email, password).then(userResponse => {
-      userId = userResponse.body.data.id;
-      return cy.apiCreateInitiative({ initiativeTitle, initiativeContent });
-    }).then((initiaitve) => {
-      initiativeId = initiaitve.body.data.id;
-    });
-  });
 
   describe('card', () => {
+    const initiativeTitle = randomString();
+    const initiativeContent = Math.random().toString(36);
+    let initiativeId: string;
+
     before(() => {
-      preparePage();
+      cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then((initiaitve) => {
+        initiativeId = initiaitve.body.data.id;
+        cy.wait(2000);
+      });
     });
 
     it('contains the correct information on the card', () => {
+      cy.visit('/initiatives');
+      cy.get('#e2e-initiatives-list');
+      cy.get('#e2e-initiatives-sort-dropdown').click();
+      cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+      cy.wait(500);
+      cy.get('#e2e-initiatives-list');
+      cy.wait(1000);
+
+      cy.get('#e2e-initiatives-list .e2e-initiative-card').first().as('initiativeCard');
+
       // the first card should be the one for the initaitive we just created
-      cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
+      cy.get('@initiativeCard').contains(initiativeTitle);
 
       // the card should contain the title
       cy.get('@initiativeCard').find('.e2e-card-title').contains(initiativeTitle);
@@ -72,44 +49,89 @@ describe('Initiaitve card component', () => {
       cy.location('pathname').should('eq', `/en-GB/initiatives/${initiativeTitle}`);
       cy.get('#e2e-initiative-show');
     });
+
+    after(() => {
+      cy.apiRemoveInitiative(initiativeId);
+    });
   });
 
   describe('vote count', () => {
+    let initiativeId: string;
+
     before(() => {
-      cy.apiUpvoteInitiative(email, password, initiativeId);
-      preparePage();
+      const firstName = randomString();
+      const lastName = randomString();
+      const email = randomEmail();
+      const password = randomString();
+      const initiativeTitle = randomString();
+      const initiativeContent = Math.random().toString(36);
+
+      cy.apiSignup(firstName, lastName, email, password).then(() => {
+        return cy.apiCreateInitiative({ initiativeTitle, initiativeContent });
+      }).then((initiative) => {
+        initiativeId = initiative.body.data.id;
+        cy.apiUpvoteInitiative(email, password, initiativeId);
+        cy.wait(2000);
+      });
     });
 
     it('correctly increments the vote count', () => {
+      cy.visit('/initiatives');
+      cy.get('#e2e-initiatives-list');
+      cy.get('#e2e-initiatives-sort-dropdown').click();
+      cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+      cy.wait(500);
+      cy.get('#e2e-initiatives-list');
+      cy.wait(1000);
+
       // the card should contain a vote count of 2
-      cy.get('@initiativeCard').find('.e2e-initiative-card-vote-count').contains('2');
+      cy.get('#e2e-initiatives-list .e2e-initiative-card').first().find('.e2e-initiative-card-vote-count').contains('2');
+    });
+
+    after(() => {
+      cy.apiRemoveInitiative(initiativeId);
     });
   });
 
   describe('comment count', () => {
+    let initiativeId: string;
+    let parentCommentId: string;
+    let childCommentId: string;
+
     before(() => {
-      cy.apiAddComment(initiativeId, 'initiative', commentContent).then((parentComment) => {
+      const initiativeTitle = randomString();
+      const initiativeContent = Math.random().toString(36);
+      const commentContent = randomString();
+
+      cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then((initiaitve) => {
+        initiativeId = initiaitve.body.data.id;
+        return cy.apiAddComment(initiativeId, 'initiative', commentContent);
+      }).then((parentComment) => {
         parentCommentId = parentComment.body.data.id;
         return cy.apiAddComment(initiativeId, 'initiative', commentContent, parentCommentId);
       }).then((childComment) => {
         childCommentId = childComment.body.data.id;
-        preparePage();
+        cy.wait(2000);
       });
     });
 
     it('correctly increments the comment count', () => {
+      cy.visit('/initiatives');
+      cy.get('#e2e-initiatives-list');
+      cy.get('#e2e-initiatives-sort-dropdown').click();
+      cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
+      cy.wait(500);
+      cy.get('#e2e-initiatives-list');
+      cy.wait(1000);
+
       // the card should contain a comment count of 2
-      cy.get('@initiativeCard').find('.e2e-initiative-card-vote-count').contains('2');
+      cy.get('#e2e-initiatives-list .e2e-initiative-card').first().find('.e2e-initiativecard-comment-count').contains('2');
     });
 
     after(() => {
       cy.apiRemoveComment(childCommentId);
       cy.apiRemoveComment(parentCommentId);
+      cy.apiRemoveInitiative(initiativeId);
     });
-  });
-
-  after(() => {
-    cy.apiRemoveInitiative(initiativeId);
-    cy.apiRemoveUser(userId);
   });
 });

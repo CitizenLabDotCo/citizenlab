@@ -240,7 +240,7 @@ export default class SideModal extends PureComponent<Props, State> {
             role="dialog"
             aria-label={label}
           >
-            <FocusOn autoFocus={false}>
+            <FocusOn>
               <ModalContainer
                 onClickOutside={this.manuallyCloseModal}
                 closeOnClickOutsideEnabled={!this.state.innerModalOpened}

@@ -79,7 +79,7 @@ export default class IdeasEditButtonBar extends PureComponent<Props, State> {
   }
 
   handleOnSubmitButtonClick = () => {
-    eventEmitter.emit('IdeasEditPage', 'IdeaFormSubmitEvent', null);
+    eventEmitter.emit('IdeaFormSubmitEvent');
   }
 
   render() {

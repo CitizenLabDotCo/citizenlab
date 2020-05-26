@@ -21,30 +21,26 @@ import messages from './messages';
 
 // services
 import { addCommentToIdeaComment, addCommentToInitiativeComment } from 'services/comments';
-import eventEmitter from 'utils/eventEmitter';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 
+// events
+import { commentReplyButtonClicked$, commentAdded } from './events';
+
 // style
 import styled from 'styled-components';
 import { hideVisually } from 'polished';
 import { media, viewportWidths } from 'utils/styleUtils';
 
-// typings
-import { ICommentReplyClicked } from './CommentFooter';
-
 const Container = styled.div``;
 
 const Form = styled.form`
   background: #fff;
-  border-top-color: #ebebeb;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-bottom: solid 2px #fff;
-  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.1);
+  border-top: solid 1px #ebebeb;
+  border-bottom: solid 3px #fff;
   transition: all 100ms ease;
 
   &.hidden {
@@ -54,7 +50,7 @@ const Form = styled.form`
   &.focused {
     background: #fff;
     border-radius: 0px;
-    border-bottom: solid 2px ${({ theme }) => theme.colorSecondary};
+    border-bottom-color: ${({ theme }) => theme.colorSecondary};
   }
 `;
 
@@ -134,7 +130,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     window.addEventListener('keydown', this.handleKeypress, useCapture);
 
     this.subscriptions = [
-      eventEmitter.observeEvent<ICommentReplyClicked>('commentReplyButtonClicked').pipe(
+      commentReplyButtonClicked$.pipe(
         tap(() => this.setState({ inputValue: '', focused: false })),
         filter(({ eventValue }) => {
           const { commentId, parentCommentId } = eventValue;
@@ -254,7 +250,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           await addCommentToInitiativeComment(postId, authUser.id, parentId, commentBodyMultiloc, waitForChildCommentsRefetch);
         }
 
-        eventEmitter.emit('ChildCommentForm', 'CommentAdded', null);
+        commentAdded();
 
         this.setState({
           inputValue: '',

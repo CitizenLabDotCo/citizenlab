@@ -43,7 +43,12 @@ const Text = styled.div`
     margin: 0;
     border: none;
     cursor: pointer;
+    outline: none;
     transition: all 100ms ease-out;
+
+    &.focus-visible {
+      outline: solid 2px #000;
+    }
 
     &:hover {
       color: ${darken(0.15, colors.clBlueDarker)};

@@ -20,7 +20,7 @@ import { FormattedDate } from 'react-intl';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // utils
-import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';
@@ -79,7 +79,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-interface State { }
+interface State {}
 
 class VotingDisabled extends PureComponent<Props, State> {
   onVerify = (event) => {
@@ -91,7 +91,16 @@ class VotingDisabled extends PureComponent<Props, State> {
     if (!isNilOrError(project)) {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;
-      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
+
+      if (pcId && pcType) {
+        openVerificationModal({
+          context: {
+            action: 'voting',
+            id: pcId,
+            type: pcType
+          }
+        });
+      }
     }
   }
 

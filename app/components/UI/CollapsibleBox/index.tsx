@@ -148,7 +148,7 @@ const CollapsibleBox = memo<Props>((props) => {
 
   return (
     <Container className={className}>
-      <ContentToggleButton id={e2eId} aria-expanded={showContent} onClick={handleContentToggle}>
+      <ContentToggleButton id={e2eId || ''} aria-expanded={showContent} onClick={handleContentToggle}>
         <Title>
           {titleIconName && <TitleIcon name={titleIconName} />}
           <ContentLabel>

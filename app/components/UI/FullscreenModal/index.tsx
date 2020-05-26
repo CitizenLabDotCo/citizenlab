@@ -173,7 +173,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           id="e2e-fullscreenmodal-content"
           className={bottomBar ? 'hasBottomBar' : ''}
         >
-          <StyledFocusOn autoFocus={false} shards={shards}>
+          <StyledFocusOn shards={shards}>
             {topBar}
             <Content>
               {children}

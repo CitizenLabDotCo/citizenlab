@@ -8,13 +8,14 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // Services
 import { updateComment, IUpdatedComment } from 'services/comments';
-import eventEmitter from 'utils/eventEmitter';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
+
+import { commentTranslateButtonClicked$ } from './events';
 
 // i18n
 import { getLocalized } from 'utils/i18n';
@@ -107,7 +108,7 @@ class CommentBody extends PureComponent<Props, State> {
     this.setEditableCommentContent();
 
     this.subscriptions = [
-      eventEmitter.observeEvent<string>('commentTranslateButtonClicked').pipe(
+      commentTranslateButtonClicked$.pipe(
         filter(({ eventValue: commentId }) => commentId === this.props.commentId)
       ).subscribe(() => {
         this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));

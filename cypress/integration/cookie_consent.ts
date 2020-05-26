@@ -5,7 +5,7 @@ describe('Cookie consent form', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  let userId;
+  let userId: string = null as any;
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password).then(user => userId = user.body.data.id);

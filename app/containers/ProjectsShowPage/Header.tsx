@@ -129,7 +129,7 @@ interface State {
   selectedProjectPhaseId: string | null;
 }
 
-class ProjectsShowPage extends PureComponent<Props, State> {
+class ProjectsShowPageHeader extends PureComponent<Props, State> {
   subscription: Subscription;
 
   constructor(props) {
@@ -206,10 +206,10 @@ const Data = adopt<DataProps, InputProps>({
   project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
 });
 
-const ProjectsShowPageWithHoC = withTheme(ProjectsShowPage);
+const ProjectsShowPageHeaderWithHoC = withTheme(ProjectsShowPageHeader);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectsShowPageWithHoC {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectsShowPageHeaderWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

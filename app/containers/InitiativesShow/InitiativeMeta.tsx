@@ -2,7 +2,7 @@
 import React, { memo } from 'react';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

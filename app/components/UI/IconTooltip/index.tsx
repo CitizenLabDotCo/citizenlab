@@ -1,5 +1,5 @@
 import React, { memo, ReactChild } from 'react';
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 
 // components
 import Icon, { IconNames } from 'components/UI/Icon';

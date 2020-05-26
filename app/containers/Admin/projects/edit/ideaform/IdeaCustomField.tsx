@@ -235,7 +235,6 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
                       onChange={handleEnabledOnChange}
                       label={<FormattedMessage {...messages.enabled} />}
                       labelTextColor={colors.adminTextColor}
-                      size={16}
                       className={`
                         e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-enabled-toggle-label
                       `}
@@ -250,7 +249,6 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
                       onChange={handleRequiredOnChange}
                       label={<FormattedMessage {...messages.required} />}
                       labelTextColor={colors.adminTextColor}
-                      size={16}
                       className={`
                         e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-required-toggle-label
                       `}

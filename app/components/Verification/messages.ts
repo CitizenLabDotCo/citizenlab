@@ -117,4 +117,12 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyBOSA',
     defaultMessage: 'Verify with itsme or eID'
   },
+  skipThisStep: {
+    id: 'app.components.VerificationModal.skipThisStep',
+    defaultMessage: 'Skip this step'
+  },
+  close: {
+    id: 'app.components.VerificationModal.close',
+    defaultMessage: 'Close'
+  }
 });
