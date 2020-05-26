@@ -26,15 +26,15 @@ describe('Idea edit page', () => {
     }).then((idea) => {
       ideaId = idea.body.data.id;
       ideaSlug = idea.body.data.attributes.slug;
-      cy.wait(500);
-      cy.setLoginCookie(email, password);
-      cy.visit(`/ideas/edit/${ideaId}`);
-      cy.get('#e2e-idea-edit-page');
-      cy.acceptCookies();
+      cy.wait(2000);
     });
   });
 
   it('has a working idea edit form', () => {
+    cy.setLoginCookie(email, password);
+    cy.visit(`/ideas/edit/${ideaId}`);
+    cy.acceptCookies();
+
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input #title').as('titleInput');
@@ -59,12 +59,10 @@ describe('Idea edit page', () => {
     cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type('antwerp{enter}');
+    cy.get('.e2e-idea-form-location-input-field input').type('Boulevard Anspach Brussels{enter}');
     cy.get('.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div').first().click();
-
-    // verify location
-    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Antwerp');
-    cy.get('.e2e-idea-form-location-input-field input').should('not.have.value', 'antwerp');
+    cy.wait(500);
+    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Belgium');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -79,7 +77,7 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
     cy.get('#e2e-idea-show #e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
-    cy.get('#e2e-idea-show #e2e-map-toggle').contains('Antwerpen, Belgium');
+    cy.get('#e2e-idea-show #e2e-map-toggle').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
     cy.get('#e2e-idea-show .e2e-post-last-modified-button').contains('modified');
 

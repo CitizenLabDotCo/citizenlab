@@ -67,12 +67,10 @@ describe('Idea new page', () => {
     cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type('antwerp{enter}');
+    cy.get('.e2e-idea-form-location-input-field input').type('Boulevard Anspach Brussels{enter}');
     cy.get('.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div').first().click();
-
-    // verify the location
-    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Antwerp');
-    cy.get('.e2e-idea-form-location-input-field input').should('not.have.value', 'antwerp');
+    cy.wait(500);
+    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Belgium');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -88,7 +86,7 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
     cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(ideaContent);
     cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
-    cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
+    cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Boulevard Anspach');
     cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
   });
 
