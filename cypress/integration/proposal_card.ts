@@ -10,6 +10,7 @@ describe('Initiaitve card component', () => {
     before(() => {
       cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then((initiaitve) => {
         initiativeId = initiaitve.body.data.id;
+        cy.wait(2000);
       });
     });
 
@@ -20,6 +21,7 @@ describe('Initiaitve card component', () => {
       cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
+      cy.wait(1000);
 
       cy.get('#e2e-initiatives-list .e2e-initiative-card').first().as('initiativeCard');
 
@@ -69,6 +71,7 @@ describe('Initiaitve card component', () => {
       }).then((initiative) => {
         initiativeId = initiative.body.data.id;
         cy.apiUpvoteInitiative(email, password, initiativeId);
+        cy.wait(2000);
       });
     });
 
@@ -79,6 +82,7 @@ describe('Initiaitve card component', () => {
       cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
+      cy.wait(1000);
 
       // the card should contain a vote count of 2
       cy.get('#e2e-initiatives-list .e2e-initiative-card').first().find('.e2e-initiative-card-vote-count').contains('2');
@@ -118,6 +122,7 @@ describe('Initiaitve card component', () => {
       cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
+      cy.wait(1000);
 
       // the card should contain a comment count of 2
       cy.get('#e2e-initiatives-list .e2e-initiative-card').first().find('.e2e-initiativecard-comment-count').contains('2');
