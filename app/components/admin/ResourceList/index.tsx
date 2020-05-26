@@ -114,7 +114,7 @@ export const TextCell = styled.div`
 `;
 
 export const List: SFC<{ className?: string, id?: string }> = ({ children, className, id }) => (
-  <StyledList className="e2e-admin-list" {...{ className, id }}>
+  <StyledList key={Date.now()} className="e2e-admin-list" {...{ className, id }}>
     <TransitionGroup>
       {children}
     </TransitionGroup>

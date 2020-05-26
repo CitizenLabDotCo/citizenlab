@@ -267,7 +267,9 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     }));
   }
 
-  toggleGroup = (groupId: string) => () => {
+  toggleGroup = (groupId: string) => (event: React.ChangeEvent | React.MouseEvent) => {
+    event.preventDefault();
+
     const { selectedGroupIds } = this.state;
 
     if (!includes(selectedGroupIds, groupId)) {
@@ -288,12 +290,12 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
       const timeout = ms => new Promise(res => setTimeout(res, ms));
       const success = () => {
-        eventEmitter.emit<MembershipAdd>('usersAdmin', events.membershipAdd, { groupsIds: selectedGroupIds });
+        eventEmitter.emit<MembershipAdd>(events.membershipAdd, { groupsIds: selectedGroupIds });
         this.props.unselectAll();
         this.setState({ selectedGroupIds: [], processing: false, dropdownOpened: false });
       };
       const failed = () => {
-        eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipAddFailed, <FormattedMessage {...messages.membershipAddFailed} />);
+        eventEmitter.emit<JSX.Element>(events.membershipAddFailed, <FormattedMessage {...messages.membershipAddFailed} />);
         this.setState({ processing: false });
       };
 
@@ -383,6 +385,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
             </SelectAllCheckboxLabel>
           }
           checked={(selectedUsers === 'all')}
+          indeterminate={isArray(selectedUsers) && selectedUsers.length > 0}
           onChange={this.toggleAllUsers}
         />
         <ActionButtons>

@@ -3,7 +3,7 @@ import { isString, get } from 'lodash-es';
 import Icon from 'components/UI/Icon';
 import { IOption } from 'typings';
 import styled from 'styled-components';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { defaultInputStyle, colors } from 'utils/styleUtils';
 
 const Arrow = styled(Icon)`
   width: 12px;
@@ -19,21 +19,13 @@ const Arrow = styled(Icon)`
 `;
 
 const CustomSelect = styled.select`
+  ${defaultInputStyle};
   width: 100%;
-  color: #333;
-  font-size: ${fontSizes.base}px;
-  line-height: normal;
   margin: 0;
-  padding: 0;
-  padding: 10px;
+  padding-top: 11px;
+  padding-bottom: 11px;
   padding-right: 27px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  background: #fff;
-  border: solid 1px ${colors.separationDark};
   cursor: pointer;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  appearance: none;
 
   &::-ms-expand {
     display: none;
@@ -44,25 +36,22 @@ const Container = styled.div`
   position: relative;
 
   &.enabled {
-    &:hover,
-    &:focus {
-      ${CustomSelect} {
-        color: #000;
-        border-color: #999;
-      }
-
+    &:hover {
       ${Arrow} {
-        fill: #000;
+        fill: ${colors.hoveredBorder};
+      }
+    }
+
+    &:focus {
+      ${Arrow} {
+        fill: ${colors.focussedBorder};
       }
     }
   }
 
   &.disabled {
-    ${CustomSelect} {
-      cursor: not-allowed;
-      color: #bbb;
-      border-color: #ddd;
-      background: #f9f9f9;
+    ${Arrow} {
+      fill: #666;
     }
   }
 `;

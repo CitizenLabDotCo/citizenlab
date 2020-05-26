@@ -17,7 +17,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 // style
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import { darken } from 'polished';
 
 // i18n
 import { shortenedAppLocalePairs } from 'containers/App/constants';
@@ -60,11 +59,7 @@ const Container = styled.div`
   &:hover,
   &:focus {
     ${DropdownButtonText} {
-      color: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
-    }
-
-    ${DropdownButtonIcon} {
-      fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
+      text-decoration: underline;
     }
   }
 `;
@@ -159,8 +154,8 @@ class LanguageSelector extends PureComponent<Props, State> {
           <Dropdown
             width="180px"
             top="68px"
-            right="-5px"
-            mobileRight="-5px"
+            right="0px"
+            mobileRight="5px"
             opened={dropdownOpened}
             onClickOutside={this.toggleDropdown}
             content={(

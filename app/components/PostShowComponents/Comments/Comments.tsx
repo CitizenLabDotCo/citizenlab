@@ -1,7 +1,6 @@
 import React, { memo, useMemo, useCallback, useEffect, useState } from 'react';
 
 // utils
-import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -11,6 +10,9 @@ import Spinner from 'components/UI/Spinner';
 
 // services
 import { ICommentData, CommentsSort } from 'services/comments';
+
+// events
+import { commentAdded$, commentDeleted$ } from './events';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
@@ -101,11 +103,11 @@ const CommentsSection = memo<Props & InjectedIntlProps>(({
 
   useEffect(() => {
     const subscriptions = [
-      eventEmitter.observeEvent('CommentAdded').subscribe(() => {
+      commentAdded$.subscribe(() => {
         setCommentPostedMessage(formatMessage(messages.a11y_commentPosted));
         setTimeout(() => setCommentPostedMessage(''), 1000);
       }),
-      eventEmitter.observeEvent('CommentDeleted').subscribe(() => {
+      commentDeleted$.subscribe(() => {
         setCommentDeletedMessage(formatMessage(messages.a11y_commentDeleted));
         setTimeout(() => setCommentDeletedMessage(''), 1000);
       })

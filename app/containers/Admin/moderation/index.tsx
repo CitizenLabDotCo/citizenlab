@@ -158,7 +158,7 @@ const EmptyMessage = styled.div`
 
 const StyledSearch = styled(SearchInput)`
   margin-left: auto;
-  width: 400px;
+  width: 320px;
 `;
 
 interface Props {
@@ -223,7 +223,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
-  const handleOnSelectAll = useCallback((_event: React.MouseEvent | React.KeyboardEvent) => {
+  const handleOnSelectAll = useCallback((_event: React.ChangeEvent) => {
     if (!isNilOrError(moderationItems) && !processing) {
       const newSelectedRows = selectedRows.length < moderationItems.length ? moderationItems.map(item => item.id) : [];
       setSelectedRows(newSelectedRows);

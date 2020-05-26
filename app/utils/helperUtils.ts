@@ -15,6 +15,10 @@ export function isNilOrError(obj: any): obj is undefined | null | Error {
   return (obj === undefined || obj === null || obj instanceof Error);
 }
 
+export function isUndefinedOrError(obj: any): obj is undefined | Error {
+  return (obj === undefined || obj instanceof Error);
+}
+
 export function isEmptyMultiloc(multiloc: Multiloc) {
   let validTranslation = false;
 
@@ -42,13 +46,6 @@ export function isFullMultiloc(multiloc: Multiloc) {
 
 export function isNonEmptyString(str: string) {
   return isString(str) && trim(str) !== '';
-}
-
-export function isMobileDevice() {
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-    return true;
-  }
-  return false;
 }
 
 export function returnFileSize(number) {
@@ -150,4 +147,14 @@ export function toggleElementInArray(array, value) {
     } else {
         array.splice(index, 1);
     }
+}
+
+export function endsWith(pathname: string | undefined | null, endsWith: string | string[]) {
+  if (pathname) {
+    const pathnameWithoutTrailingSlash = pathname.replace(/\/$/, '');
+    const endsWithArray = isString(endsWith) ? [endsWith] : endsWith;
+    return endsWithArray.some(text => pathnameWithoutTrailingSlash.endsWith(text));
+  }
+
+  return false;
 }

@@ -22,7 +22,7 @@ export const ContentContainer = styled.div`
     font-size: ${fontSizes.large}px;
   }
 
-  ${media.smallerThanMaxTablet`
+  ${media.smallerThanMinTablet`
     margin: 0;
     padding: 20px;
   `}

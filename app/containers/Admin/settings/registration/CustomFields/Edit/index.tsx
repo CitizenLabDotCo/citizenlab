@@ -13,6 +13,7 @@ import messages from '../messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const StyledGoBackButton = styled(GoBackButton)`
+  display: flex;
   margin-bottom: 20px;
 `;
 

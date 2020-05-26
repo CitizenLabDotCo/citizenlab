@@ -11,7 +11,6 @@ import Icon from 'components/UI/Icon';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
-
 import messages from './messages';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -33,26 +32,20 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Title = styled.div<{ location: 'modal' | undefined }>`
-  font-size: ${fontSizes.large}px;
-  font-weight: 500;
+const Title = styled.h3<{ location: 'modal' | undefined }>`
   color: ${({ theme }) => theme.colorText};
+  font-size: ${fontSizes.large}px;
+  font-weight: 600;
   display: flex;
   align-items: center;
+  margin: 0;
+  margin-bottom: 12px;
   padding: 0;
-  margin-bottom: 18px;
   justify-content: ${({ location }) => location === 'modal' ? 'center' : 'start'};
-
-  h2, h3 {
-    margin: 0;
-  }
-  `;
-
-const ShareIcon = styled(Icon)`
-  margin-right: 14px;
 `;
 
 const StyledIcon = styled(Icon)`
+  flex: 0 0 20px;
   width: 20px;
   height: 20px;
   fill: #fff;
@@ -170,7 +163,6 @@ interface InputProps {
   emailBody?: string;
   utmParams?: UtmParams;
   id?: string;
-  titleLevel?: 'h2' | 'h3'; // defaults to h3
 }
 
 interface DataProps {
@@ -210,8 +202,7 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       className,
       intl: { formatMessage },
       location,
-      id,
-      titleLevel
+      id
     } = this.props;
 
     if (!isNilOrError(tenant)) {
@@ -291,11 +282,10 @@ class Sharing extends PureComponent<Props & ITracks & InjectedIntlProps> {
       return (
         <Container id={id || ''} className={className || ''}>
           <Title location={location}>
-            <ShareIcon name="share" />
-            {context === 'idea' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisIdea} />}
-            {context === 'project' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisProject} />}
-            {context === 'initiative' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisInitiative} />}
-            {context === 'folder' && <FormattedMessage tagName={titleLevel || 'h3'} {...messages.shareThisFolder} />}
+            {context === 'idea' && <FormattedMessage {...messages.shareIdea} />}
+            {context === 'project' && <FormattedMessage {...messages.shareThisProject} />}
+            {context === 'initiative' && <FormattedMessage {...messages.shareThisInitiative} />}
+            {context === 'folder' && <FormattedMessage {...messages.shareThisFolder} />}
           </Title>
           <Buttons>
             {facebook}

@@ -43,7 +43,8 @@ describe('Profile Page', () => {
   });
 
   it('shows the ideas the user posted', () => {
-    cy.get('.e2e-search-input').type(ideaTitle).should('have.value', ideaTitle);
+    cy.get('.e2e-search-input input').type(ideaTitle);
+    cy.get('.e2e-search-input input').should('have.value', ideaTitle);
     cy.get('#e2e-ideas-container').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
   });
 

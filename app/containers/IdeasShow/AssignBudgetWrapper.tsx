@@ -5,7 +5,6 @@ import { IParticipationContextType } from 'typings';
 import PopContainer from 'components/UI/PopContainer';
 import AssignBudgetControl from 'components/AssignBudgetControl';
 import AssignBudgetDisabled from 'components/AssignBudgetControl/AssignBudgetDisabled';
-import Unauthenticated from './Unauthenticated';
 
 // services
 import { IIdeaData } from 'services/ideas';
@@ -19,7 +18,7 @@ interface Props {
 }
 
 interface State {
-  error: 'unauthenticated' | 'budgetingDisabled' | null;
+  error: 'budgetingDisabled' | null;
 }
 
 class AssignBudgetWrapper extends PureComponent<Props, State> {
@@ -28,10 +27,6 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
     this.state = {
       error: null,
     };
-  }
-
-  unauthenticatedAssignBudgetClick = () => {
-    this.setState({ error: 'unauthenticated' });
   }
 
   disabledBudgetingClick = () => {
@@ -50,7 +45,6 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
             ideaId={ideaId}
             participationContextId={participationContextId}
             participationContextType={participationContextType}
-            unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
             disabledAssignBudgetClick={this.disabledBudgetingClick}
             projectId={projectId}
           />
@@ -62,11 +56,6 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
               participationContextType={participationContextType}
               budgetingDescriptor={budgetingDescriptor}
             />
-          </PopContainer>
-        }
-        {error === 'unauthenticated' &&
-          <PopContainer icon="lock-outlined">
-            <Unauthenticated />
           </PopContainer>
         }
       </div>

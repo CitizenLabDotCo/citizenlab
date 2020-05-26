@@ -208,7 +208,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
         });
 
         if (emitSuccessEvent) {
-          eventEmitter.emit('UseTemplateModal', 'NewProjectCreated', null);
+          eventEmitter.emit('NewProjectCreated');
         }
 
         setProcessing(false);

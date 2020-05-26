@@ -21,9 +21,9 @@ describe('InitiativeCards without filter sidebar component', () => {
   });
 
   it('lets you search the initiatives', () => {
-    cy.get('.e2e-search-input').type(initiativeTitle);
+    cy.get('.e2e-search-input input').type(initiativeTitle);
     cy.wait(1000);
-    cy.get('.e2e-search-input').should('have.value', initiativeTitle);
+    cy.get('.e2e-search-input input').should('have.value', initiativeTitle);
     cy.get('#e2e-initiatives-list');
     cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
   });

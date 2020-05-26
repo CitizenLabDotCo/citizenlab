@@ -308,7 +308,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphUnit="users"
                 startAt={startAt}
                 endAt={endAt}
-                resolution={resolution}
                 stream={usersByTimeCumulativeStream}
                 className="e2e-users-by-time-cumulative-chart"
                 {...this.state}
@@ -319,7 +318,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphTitleMessageKey="activeUsersByTimeTitle"
                 startAt={startAt}
                 endAt={endAt}
-                resolution={resolution}
                 stream={activeUsersByTimeStream}
                 infoMessage={infoMessage}
                 className="e2e-active-users-chart"
@@ -330,7 +328,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphUnit="ideas"
                 startAt={startAt}
                 endAt={endAt}
-                resolution={resolution}
                 stream={ideasByTimeCumulativeStream}
                 className="e2e-ideas-chart"
                 {...this.state}
@@ -340,7 +337,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                 graphUnit="comments"
                 startAt={startAt}
                 endAt={endAt}
-                resolution={resolution}
                 stream={commentsByTimeCumulativeStream}
                 className="e2e-comments-chart"
                 {...this.state}
@@ -350,7 +346,6 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
                   className="fullWidth e2e-votes-chart"
                   startAt={startAt}
                   endAt={endAt}
-                  resolution={resolution}
                   {...this.state}
                 />
                 <SelectableResourceByProjectChart

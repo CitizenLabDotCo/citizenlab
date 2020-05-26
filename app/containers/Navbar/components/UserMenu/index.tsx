@@ -123,7 +123,10 @@ class UserMenu extends PureComponent<Props, State> {
       const userSlug = authUser.attributes.slug;
 
       return (
-        <Container id="e2e-user-menu-container" className={authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'}>
+        <Container
+          id="e2e-user-menu-container"
+          className={authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'}
+        >
           <DropdownButton
             onMouseDown={this.removeFocus}
             onClick={this.toggleDropdown}

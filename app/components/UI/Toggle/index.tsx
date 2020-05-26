@@ -1,16 +1,13 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
-import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
+import { hideVisually, darken } from 'polished';
 
-const padding = 4;
+const size = 21;
+const padding = 3;
 
-const Label = styled.label<{ labelTextColor?: string }>`
+const Container = styled.div`
   display: inline-block;
-  color: ${({ labelTextColor }) => labelTextColor || '#333'};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 20px;
-  cursor: pointer;
 
   &.hasLabel {
     display: flex;
@@ -18,135 +15,123 @@ const Label = styled.label<{ labelTextColor?: string }>`
   }
 `;
 
-const HiddenInput = styled.input`
-  // Hide checkbox visually but remain accessible to screen readers.
-  // Source: https://polished.js.org/docs/#hidevisually
-  border: 0;
-  clip: rect(0 0 0 0);
-  clippath: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1px;
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+  ${hideVisually()};
 `;
 
-const ToggleContainer: any = styled.div<{ size: number }>`
-  height: ${({ size }) => size + padding * 2}px;
+const StyledToggle = styled.i<{ checked: boolean, disabled: boolean }>`
+  display: inline-block;
+  padding: ${padding}px;
+  padding-right: ${size}px;
+  border-radius: ${size + padding}px;
+  background-color: #ccc;
+  border: solid 1px transparent;
+  transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
+  background-color 80ms ease-out;
+
+  &:before {
+    display: block;
+    content: '';
+    width: ${size}px;
+    height: ${size}px;
+    border-radius: ${size}px;
+    background: #fff;
+    transition: all 80ms ease-out;
+  }
+
+  &.enabled:hover {
+    background: ${props => props.checked ? darken(0.05, colors.clGreen) : '#bbb'};
+  }
+
+  ${props => props.checked && css`
+    padding-right: ${padding}px;
+    padding-left: ${size}px;
+    background-color: ${colors.clGreen};
+  `};
+`;
+
+const StyledToggleWrapper = styled.div<{ checked: boolean, disabled: boolean }>`
+  height: ${size + padding * 2}px;
   display: flex;
   align-items: center;
-  margin-right: 10px;
+  cursor: pointer;
 
-  ${HiddenInput}:focus + & {
-    outline: ${customOutline};
-  }
-
-  ${(props: any) => props.disabled && css`
+  ${props => props.disabled && css`
     opacity: 0.25;
-
-    i,
-    i:before {
-      cursor: not-allowed;
-    }
+    cursor: not-allowed;
   `};
 
-  ${(props: any) => props.checked && css`
-    i {
-      padding-right: ${padding}px !important;
-      padding-left: ${props.size}px !important;
-      background: ${colors.clGreen} !important;
-    }
-  `};
-
-  input {
-    display: none;
+  ${HiddenCheckbox}.focus-visible + & ${StyledToggle} {
+    ${boxShadowOutline};
   }
+`;
 
-  i {
-    display: inline-block;
-    cursor: pointer;
-    padding: ${padding}px;
-    padding-right: ${({ size }) => size}px;
-    transition: all ease 0.15s;
-    border-radius: ${({ size }) => size + padding}px;
-    background: #ccc;
-    transform: translate3d(0, 0, 0);
-
-    &:before {
-      display: block;
-      content: '';
-      width: ${({ size }) => size}px;
-      height: ${({ size }) => size}px;
-      border-radius: ${({ size }) => size}px;
-      background: #fff;
-    }
-  }
+const Label = styled.div<{ labelTextColor?: string }>`
+  color: ${({ labelTextColor }) => labelTextColor || colors.text};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  padding-left: 10px;
+  cursor: pointer;
 `;
 
 export type Props = {
   checked: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
-  size?: number;
-  onChange: (event: React.FormEvent<any>) => void;
+  labelTextColor?: string;
+  size?: 'small' | 'normal' | 'large';
+  onChange: (event: React.FormEvent) => void;
   className?: string;
   id?: string;
-  labelTextColor?: string;
 };
 
 type State = {};
 
 export default class Toggle extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    size: 21
-  };
-
-  handleOnClick = (event) => {
-    event.preventDefault();
-
+  handleOnClick = (event: React.FormEvent) => {
     if (!this.props.disabled) {
+      event.preventDefault();
       this.props.onChange(event);
     }
   }
 
   render() {
-    const {
-      checked,
-      disabled,
-      label,
-      className,
-      id,
-      onChange,
-      labelTextColor,
-      size
-    } = this.props;
-    const hasLabel = !!(label);
+    const { checked, disabled, label, labelTextColor, className, id, onChange } = this.props;
 
     return (
-      <Label
+      <Container
         id={id}
-        className={`
-          ${className}
-          ${hasLabel && 'hasLabel'}
-        `}
-        labelTextColor={labelTextColor}
+        className={`${className || ''} ${label ? 'hasLabel' : ''}`}
       >
-        <HiddenInput
-          type="checkbox"
-          checked={checked}
+        <HiddenCheckbox
           onChange={onChange}
-        />
-        <ToggleContainer
           checked={checked}
           disabled={disabled}
-          size={size}
+          tabIndex={0}
+        />
+
+        <StyledToggleWrapper
+          checked={checked}
+          disabled={!!disabled}
+          onClick={this.handleOnClick}
         >
-          <i />
-        </ToggleContainer>
-        {label}
-      </Label>
+          <StyledToggle
+            checked={checked}
+            disabled={!!disabled}
+            className={disabled ? 'disabled' : 'enabled'}
+          />
+        </StyledToggleWrapper>
+
+        {label &&
+          <Label
+            onClick={this.handleOnClick}
+            labelTextColor={labelTextColor}
+          >
+            {label}
+          </Label>
+        }
+      </Container>
     );
   }
 }

@@ -138,7 +138,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
         })}
       </TopicsContainer>
       <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />}
+        <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />
       </ScreenReaderOnly>
     </>
   );
