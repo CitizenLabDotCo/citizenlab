@@ -4,6 +4,7 @@ import { get, includes } from 'lodash-es';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 import { locales } from 'containers/App/constants';
+import bowser from 'bowser';
 
 // components
 import NotificationMenu from './components/NotificationMenu';
@@ -32,6 +33,7 @@ import { isAdmin } from 'services/permissions/roles';
 
 // utils
 import { isNilOrError, isPage } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -46,15 +48,16 @@ import { rgba, darken } from 'polished';
 import { colors, media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.header`
-  width: 100%;
+  width: 100vw;
   height: ${({ theme }) => theme.menuHeight}px;
   display: flex;
   align-items: stretch;
   position: fixed;
   top: 0;
+  left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
   border-bottom: solid 1px ${({ theme }) => theme.navbarBorderColor || '#eaeaea'};;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.03);
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.03);
   z-index: 1004;
 
   &.hideNavbar {
@@ -83,12 +86,10 @@ const ContainerInner = styled.div`
   align-items: center;
   justify-content: space-between;
   padding-left: 20px;
-  padding-right: 20px;
   position: relative;
 
   ${media.smallerThanMinTablet`
     padding-left: 15px;
-    padding-right: 10px;
   `}
 `;
 
@@ -143,13 +144,13 @@ const NavigationItem = styled(Link)`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 100ms ease;
+  transition: all 100ms ease-out;
   height: 100%;
   position: relative;
 
-  &:focus,
   &:hover {
     color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+    text-decoration: underline;
 
     ${NavigationItemBorder} {
       background: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
@@ -178,10 +179,6 @@ const NavigationItem = styled(Link)`
 
 const NavigationItemText = styled.span`
   white-space: nowrap;
-
-  /* &:hover {
-    text-decoration: underline;
-  } */
 `;
 
 const NavigationDropdown = styled.div`
@@ -201,13 +198,14 @@ const NavigationDropdownItem = styled.button`
   justify-content: center;
   margin: 0;
   padding: 0 30px;
-  transition: all 100ms ease;
+  transition: all 100ms ease-out;
   cursor: pointer;
   position: relative;
 
   &:hover,
-  &:focus {
+  &.opened {
     color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+    text-decoration: underline;
 
     ${NavigationItemBorder} {
       background: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
@@ -276,7 +274,7 @@ const ProjectsListFooter = styled(Link)`
   text-decoration: none;
   padding: 15px 15px;
   cursor: pointer;
-  background: ${({ theme }) => theme.colorMain};
+  background: ${({ theme }) => theme.colorSecondary};
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-top-left-radius: 0;
   border-top-right-radius: 0;
@@ -285,7 +283,7 @@ const ProjectsListFooter = styled(Link)`
   &:hover,
   &:focus {
     color: #fff;
-    background: ${({ theme }) => darken(0.15, theme.colorMain)};
+    background: ${({ theme }) => darken(0.15, theme.colorSecondary)};
     text-decoration: none;
   }
 `;
@@ -296,7 +294,7 @@ const Right = styled.div`
   height: ${({ theme }) => theme.menuHeight}px;
 `;
 
-const RightItem: any = styled.div`
+const RightItem = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
@@ -317,21 +315,44 @@ const StyledRightFragment = styled(Fragment)`
   max-width: 200px;
 `;
 
-const LogInLink = styled(NavigationItem)`
+const LogInMenuItem = styled.button`
+  height: 100%;
+  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 500;
+  padding: 0 30px;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  transition: all 100ms ease-out;
+
+  &:hover {
+    /* background: #eee; */
+    text-decoration: underline;
+  }
+
   ${media.smallerThanMinTablet`
     padding: 0 15px;
   `}
 `;
 
-const SignUpLink = styled(NavigationItem)`
+const SignUpMenuItem = styled.button`
   height: calc(100% + 1px);
   color: #fff;
-  background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
+  font-size: ${fontSizes.base}px;
+  line-height: normal;
+  font-weight: 500;
+  padding: 0 30px;
+  cursor: pointer;
   border: none;
+  border-radius: 0px;
+  background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
+  transition: all 100ms ease-out;
 
-  &:focus,
   &:hover {
     color: #fff;
+    text-decoration: underline;
     background-color: ${({ theme }) => darken(0.12, theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary)};
   }
 
@@ -346,6 +367,16 @@ const SignUpLink = styled(NavigationItem)`
 
 const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
   padding-left: 32px;
+  padding-right: 32px;
+  transition: all 100ms ease-out;
+
+  &.ie {
+    padding-right: 40px;
+  }
+
+  /* &:hover {
+    background: #eee;
+  } */
 
   &.notLoggedIn {
     padding-left: 20px;
@@ -357,6 +388,7 @@ const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
 
   ${media.smallerThanMinTablet`
     padding-left: 20px;
+    padding-right: 10px;
   `}
 `;
 
@@ -392,7 +424,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
     }
   }
 
-  toggleProjectsDropdown = (event: FormEvent<any>) => {
+  toggleProjectsDropdown = (event: FormEvent) => {
     event.preventDefault();
     this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
   }
@@ -415,6 +447,14 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
   handleMobileNavigationRef = (element: HTMLElement) => {
     this.props.setMobileNavigationRef && this.props.setMobileNavigationRef(element);
+  }
+
+  signIn = () => {
+    openSignUpInModal({ flow: 'signin' });
+  }
+
+  signUp = () => {
+    openSignUpInModal({ flow: 'signup' });
   }
 
   render() {
@@ -458,7 +498,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
         }
 
         <Container
-          id="navbar"
+          id="e2e-navbar"
           className={`${adminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
           ref={this.handleRef}
         >
@@ -482,7 +522,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   <NavigationDropdown>
                     <NavigationDropdownItem
                       tabIndex={0}
-                      className={`e2e-projects-dropdown-link ${secondUrlSegment === 'projects' || secondUrlSegment === 'folders' ? 'active' : ''}`}
+                      className={`e2e-projects-dropdown-link ${projectsDropdownOpened ? 'opened' : 'closed'} ${secondUrlSegment === 'projects' || secondUrlSegment === 'folders' ? 'active' : ''}`}
                       aria-expanded={projectsDropdownOpened}
                       onMouseDown={this.removeFocus}
                       onClick={this.toggleProjectsDropdown}
@@ -566,28 +606,22 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                     {isNilOrError(authUser) &&
 
                       <RightItem className="login noLeftMargin">
-                        <LogInLink
-                          id="e2e-login-link"
-                          to="/sign-in"
-                          activeClassName="active"
-                        >
+                        <LogInMenuItem id="e2e-navbar-login-menu-item" onClick={this.signIn}>
                           <NavigationItemBorder />
                           <NavigationItemText>
                             <FormattedMessage {...messages.logIn} />
                           </NavigationItemText>
-                        </LogInLink>
+                        </LogInMenuItem>
                       </RightItem>
                     }
 
                     {isNilOrError(authUser) &&
                       <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
-                        <SignUpLink
-                          to="/sign-up"
-                        >
+                        <SignUpMenuItem id="e2e-navbar-signup-menu-item" onClick={this.signUp}>
                           <NavigationItemText className="sign-up-span">
                             <FormattedMessage {...messages.signUp} />
                           </NavigationItemText>
-                        </SignUpLink>
+                        </SignUpMenuItem>
                       </RightItem>
                     }
 
@@ -607,7 +641,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
                 {tenantLocales.length > 1 && locale &&
                   <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
-                    <StyledLoadableLanguageSelector className={!authUser ? 'notLoggedIn' : ''} />
+                    <StyledLoadableLanguageSelector className={`${!authUser ? 'notLoggedIn' : 'loggedIn'} ${bowser.msie ? 'ie' : ''}`} />
                   </RightItem>
                 }
               </Right>
@@ -626,7 +660,7 @@ const Data = adopt<DataProps, InputProps>({
   adminPublications: <GetAdminPublications publicationStatusFilter={['published', 'archived']} noEmptyFolder folderId={null} />,
 });
 
-const NavbarWithHOCs = injectLocalize(withRouter<Props & InjectedLocalized>(injectIntl(Navbar)));
+const NavbarWithHOCs = injectLocalize<Props>(withRouter(injectIntl(Navbar)));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>

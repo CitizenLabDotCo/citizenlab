@@ -203,6 +203,7 @@ export class ConsentManager extends PureComponent<Props> {
           mapCustomPreferences={handleMapCustomPreferences(tenantBlacklistedDestinations, roleBlacklistedDestinations)}
           initialPreferences={initialPreferences}
           onError={reportToSegment}
+          // shouldReload={true}
         >
           {(consentManagerProps: ConsentManagerProps) => (
             <ConsentManagerBuilderHandler

@@ -1,6 +1,6 @@
 // libraries
 import React, { memo } from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 // i18n
 import messages from './messages';
@@ -114,7 +114,7 @@ const StyledLink = styled(Link)`
   padding: 20px 23px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   transition: all 200ms ease;
 
   &:hover {
@@ -132,7 +132,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   const openConsentManager = () => {
-    eventEmitter.emit('footer', 'openConsentManager', null);
+    eventEmitter.emit('openConsentManager');
   };
 
   return (

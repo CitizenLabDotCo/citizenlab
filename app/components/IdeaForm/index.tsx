@@ -219,10 +219,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
-
-    if (!bowser.mobile && this.titleInputElement !== null) {
-      setTimeout(() => (this.titleInputElement as HTMLInputElement).focus(), 50);
-    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -616,6 +612,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 error={titleError}
                 onChange={this.handleTitleOnChange}
                 setRef={this.handleTitleInputSetRef}
+                autoFocus={!bowser.mobile}
                 maxCharCount={80}
                 autocomplete="off"
               />

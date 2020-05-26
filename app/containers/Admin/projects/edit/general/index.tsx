@@ -488,7 +488,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
 
     // if it's a new project of type continuous
     if (projectType === 'continuous') {
-      eventEmitter.emit('AdminProjectEditGeneral', 'getParticipationContext', null);
+      eventEmitter.emit('getParticipationContext');
     } else {
       this.save();
     }
@@ -587,9 +587,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         this.processing$.next(false);
 
         if (isNewProject && projectId) {
-          eventEmitter.emit<INewProjectCreatedEvent>('AdminProjectEditGeneral', 'NewProjectCreated', {
-            projectId
-          });
+          eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', { projectId });
         }
       } catch (errors) {
         // const cannotContainIdeasError = get(errors, 'json.errors.base', []).some((item) => get(item, 'error') === 'cannot_contain_ideas');

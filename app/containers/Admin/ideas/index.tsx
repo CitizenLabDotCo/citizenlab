@@ -5,7 +5,6 @@ import { adopt } from 'react-adopt';
 import HelmetIntl from 'components/HelmetIntl';
 import PageWrapper from 'components/admin/PageWrapper';
 import PostManager from 'components/admin/PostManager';
-import IdeaButton from 'components/IdeaButton';
 import { PageTitle, SectionSubtitle } from 'components/admin/Section';
 
 // i18n
@@ -54,7 +53,6 @@ class IdeaDashboard extends PureComponent<Props> {
               <FormattedMessage {...messages.headerSubtitle} />
             </SectionSubtitle>
           </Left>
-          <IdeaButton buttonStyle="admin-dark" participationContextType={null}/>
         </HeaderContainer>
 
         <PageWrapper>

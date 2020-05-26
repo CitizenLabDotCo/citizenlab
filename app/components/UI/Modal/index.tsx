@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+import { adopt } from 'react-adopt';
+import { Subscription, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { FocusOn } from 'react-focus-on';
@@ -12,6 +15,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import Icon from 'components/UI/Icon';
 import clickOutside from 'utils/containers/clickOutside';
 
+// resources
+import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
 
@@ -21,42 +27,39 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, boxShadowOutline, viewportWidths } from 'utils/styleUtils';
 
-const timeout = 400;
-const easing = 'cubic-bezier(0.165, 0.84, 0.44, 1)';
+const desktopOpacityTimeout = 500;
+const mobileOpacityTimeout = 250;
 
-const ModalContent = styled.div<{ hasHeaderOrFooter: boolean }>`
+const desktopTransformTimeout = 500;
+const mobileTransformTimeout = 700;
+
+const desktopTranslateY = '-200px';
+const mobileTranslateY = '300px';
+
+const desktopEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
+
+export const ModalContent = styled.div<{ padding?: string | undefined }>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '40px'};
+  padding: ${({ padding }) => padding || '30px'};
 
   ${media.smallerThanMinTablet`
-    padding: ${({ hasHeaderOrFooter }) => hasHeaderOrFooter ? 0 : '20px'};
-  `}
-`;
-
-const CloseIcon = styled(Icon)`
-  width: 17px;
-  height: 17px;
-  fill: ${colors.label};
-  transition: all 100ms ease-out;
-
-  ${media.smallerThanMinTablet`
-    width: 15px;
-    height: 15px;
+    padding: ${({ padding }) => padding || '20px'};
   `}
 `;
 
 const CloseButton = styled.button`
-  width: 31px;
-  height: 31px;
+  width: 28px;
+  height: 28px;
   position: absolute;
-  top: 21px;
-  right: 27px;
+  top: 20px;
+  right: 25px;
   cursor: pointer;
   margin: 0;
   padding: 0;
@@ -64,29 +67,43 @@ const CloseButton = styled.button`
   justify-content: center;
   align-items: center;
   z-index: 2;
+  border-radius: 50%;
+  border: solid 1px transparent;
+  background: #fff;
+  transition: all 100ms ease-out;
+  outline: none !important;
 
   &:hover {
-    ${CloseIcon} {
-      fill: #000;
-    }
+    background: #ececec;
+  }
+
+  &.focus-visible {
+    ${boxShadowOutline};
   }
 
   ${media.smallerThanMinTablet`
-    top: 12px;
-    right: 11px;
+    top: 13px;
+    right: 15px;
   `}
+`;
+
+const CloseIcon = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  fill: #000;
 `;
 
 const StyledFocusOn = styled(FocusOn)<{ width: number }>`
   width: 100%;
   max-width: ${({ width }) => width}px;
   display: flex;
+  justify-content: center;
 `;
 
-const ModalContainer = styled(clickOutside)`
+const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
   width: 100%;
   max-height: 85vh;
-  margin-top: 55px;
+  margin-top: 50px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;
@@ -101,13 +118,15 @@ const ModalContainer = styled(clickOutside)`
     max-height: 600px;
   }
 
+  /* tall desktops screens */
   @media (min-height: 1200px) {
     margin-top: 120px;
   }
 
   ${media.smallerThanMinTablet`
-    margin-top: 40px;
-    padding: 0px;
+    max-width: calc(100vw - 30px);
+    max-height: ${props => `calc(${props.windowHeight} - 30px)`};
+    margin-top: 15px;
 
     &.fixedHeight {
       height: auto;
@@ -141,42 +160,56 @@ const Overlay = styled.div`
   ${media.smallerThanMinTablet`
     padding-left: 12px;
     padding-right: 12px;
+    padding: 0px;
   `}
 
   &.modal-enter {
     opacity: 0;
 
     ${ModalContainer} {
-      opacity: 0;
-      transform: translateY(-40px);
+      opacity: 1;
+      transform: translateY(${desktopTranslateY});
+
+      ${media.smallerThanMinTablet`
+        transform: translateY(${mobileTranslateY});
+      `}
     }
 
     &.modal-enter-active {
       opacity: 1;
-      transition: opacity ${timeout}ms ${easing};
+      transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing};
+
+      ${media.smallerThanMinTablet`
+        transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing};
+      `}
 
       ${ModalContainer} {
         opacity: 1;
         transform: translateY(0px);
-        transition: opacity ${timeout}ms ${easing},
-                    transform ${timeout}ms ${easing};
+        transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing},
+                    transform ${desktopTransformTimeout}ms ${desktopEasing};
+
+        ${media.smallerThanMinTablet`
+          transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing},
+                      transform ${mobileTransformTimeout}ms ${mobileEasing};
+        `}
       }
     }
   }
 `;
 
-const HeaderContainer = styled.div`
+export const HeaderContainer = styled.div`
   width: 100%;
   display: flex;
-  flex-shrink: 0;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 20px;
   padding-bottom: 20px;
-  border-bottom: solid 1px ${colors.separation};
-  background: #fff;
+  margin-right: 45px;
+  border-bottom: solid 1px #e0e0e0;
+  background: transparent;
 
   ${media.smallerThanMinTablet`
     padding-top: 15px;
@@ -186,20 +219,25 @@ const HeaderContainer = styled.div`
   `}
 `;
 
-const HeaderTitle = styled.h1`
+export const HeaderTitle = styled.h1`
   width: 100%;
   color: ${colors.text};
-  font-size: ${fontSizes.xxl}px;
+  font-size: ${fontSizes.xl}px;
   font-weight: 600;
   line-height: normal;
   margin: 0;
-  margin-right: 45px;
   padding: 0;
+`;
 
-  ${media.smallerThanMinTablet`
-    font-size: ${fontSizes.large}px;
-    margin-right: 35px;
-  `}
+export const HeaderSubtitle = styled.h2`
+  width: 100%;
+  color: ${colors.text};
+  font-size: ${fontSizes.base}px;
+  font-weight: 300;
+  line-height: normal;
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
 `;
 
 const FooterContainer = styled.div`
@@ -236,28 +274,35 @@ const Skip = styled.div`
   `}
 `;
 
-export type Props = {
+interface DataProps {
+  windowSize: GetWindowSizeChildProps;
+}
+
+export interface InputProps {
   opened: boolean;
   fixedHeight?: boolean;
   width?: number;
   close: () => void;
   className?: string;
-  /*
-    If you don't provide a header, you can give the header/title
-    an id="modal-header". See VerificationMethods component for an example
-  */
   header?: JSX.Element | string;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
-  children?: any;
+  padding?: string;
+  noClose?: boolean;
   closeOnClickOutside?: boolean;
-};
+  children: React.ReactNode;
+}
 
-type State = {};
+interface Props extends InputProps, DataProps {}
 
-export default class Modal extends PureComponent<Props, State> {
+interface State {
+  windowHeight: string;
+}
+
+class Modal extends PureComponent<Props, State> {
   unlisten: null | (() => void);
+  subscription: Subscription | null;
 
   static defaultProps = {
     fixedHeight: false,
@@ -266,7 +311,23 @@ export default class Modal extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
+    this.state = {
+      windowHeight: `${window.innerHeight}px`
+    };
     this.unlisten = null;
+    this.subscription = null;
+  }
+
+  componentDidMount() {
+    this.subscription = fromEvent(window, 'resize').pipe(
+      debounceTime(50),
+      distinctUntilChanged()
+    ).subscribe((event) => {
+      if (event.target) {
+        const height = event.target['innerHeight'] as number;
+        this.setState({ windowHeight: `${height}px` });
+      }
+    });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -278,35 +339,38 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
+    this.subscription?.unsubscribe();
     this.cleanup();
   }
 
   openModal = () => {
     window.addEventListener('popstate', this.handlePopstateEvent);
     window.addEventListener('keydown', this.handleKeypress);
-    eventEmitter.emit('modal', 'modalOpened', null);
-    this.unlisten = clHistory.listen(() => this.props.close());
+    eventEmitter.emit('modalOpened');
+    this.unlisten = clHistory.listen(() => this.closeModal());
   }
 
-  manuallyCloseModal = () => {
-    this.props.close();
-    eventEmitter.emit('modal', 'modalClosed', null);
+  closeModal = () => {
+    if (!this.props.noClose) {
+      this.props.close();
+    }
   }
 
   handlePopstateEvent = () => {
-    this.props.close();
+    this.closeModal();
   }
 
   handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
-      this.props.close();
+      this.closeModal();
     }
   }
 
   cleanup = () => {
     window.removeEventListener('popstate', this.handlePopstateEvent);
     window.removeEventListener('keydown', this.handleKeypress);
+    eventEmitter.emit('modalClosed');
     this.unlisten && this.unlisten();
     this.unlisten = null;
   }
@@ -314,7 +378,7 @@ export default class Modal extends PureComponent<Props, State> {
   clickOutsideModal = () => {
     if (this.props.closeOnClickOutside !== false) {
       trackEventByName(tracks.clickOutsideModal);
-      this.manuallyCloseModal();
+      this.closeModal();
     }
   }
 
@@ -322,12 +386,7 @@ export default class Modal extends PureComponent<Props, State> {
     event.preventDefault();
     event.stopPropagation();
     trackEventByName(tracks.clickCloseButton);
-    this.manuallyCloseModal();
-  }
-
-  setCloseButtonRef = (element: HTMLButtonElement) => {
-    // remove focus on close button after modal has opened
-    setTimeout(() => element && element.blur(), 80);
+    this.closeModal();
   }
 
   removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -335,17 +394,25 @@ export default class Modal extends PureComponent<Props, State> {
   }
 
   render() {
-    const { width, children, opened, header, footer, hasSkipButton, skipText } = this.props;
+    const { windowHeight } = this.state;
+    const { windowSize, width, children, opened, header, footer, hasSkipButton, skipText, noClose } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
-    const hasHeaderOrFooter = header !== undefined || footer !== undefined;
+    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
     const modalPortalElement = document?.getElementById('modal-portal');
+    let padding: string | undefined = undefined;
 
-    if (modalPortalElement) {
+    if (header !== undefined || footer !== undefined) {
+      padding = '0px';
+    } else if (this.props.padding) {
+      padding = this.props.padding;
+    }
+
+    if (modalPortalElement && width) {
       return ReactDOM.createPortal((
         <CSSTransition
           classNames="modal"
           in={opened}
-          timeout={timeout}
+          timeout={smallerThanSmallTablet ? mobileTransformTimeout : desktopTransformTimeout}
           mountOnEnter={true}
           unmountOnExit={true}
           enter={true}
@@ -355,25 +422,24 @@ export default class Modal extends PureComponent<Props, State> {
             id="e2e-modal-container"
             className={this.props.className}
           >
-            <StyledFocusOn
-              width={width as number}
-              autoFocus={true}
-            >
+            <StyledFocusOn width={width}>
               <ModalContainer
                 className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
                 onClickOutside={this.clickOutsideModal}
+                windowHeight={windowHeight}
                 ariaLabelledBy="modal-header"
                 aria-modal="true"
                 role="dialog"
               >
-                <CloseButton
-                  className="e2e-modal-close-button"
-                  onMouseDown={this.removeFocus}
-                  onClick={this.clickCloseButton}
-                  ref={this.setCloseButtonRef}
-                >
-                  <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
-                </CloseButton >
+                {!noClose &&
+                  <CloseButton
+                    className="e2e-modal-close-button"
+                    onMouseDown={this.removeFocus}
+                    onClick={this.clickCloseButton}
+                  >
+                    <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
+                  </CloseButton >
+                }
 
                 {header &&
                   <HeaderContainer>
@@ -381,7 +447,7 @@ export default class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 }
 
-                <ModalContent hasHeaderOrFooter={hasHeaderOrFooter}>
+                <ModalContent padding={padding}>
                   {children}
                 </ModalContent>
 
@@ -400,3 +466,13 @@ export default class Modal extends PureComponent<Props, State> {
     return null;
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  windowSize: <GetWindowSize />
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <Modal {...inputProps} {...dataProps} />}
+  </Data>
+);

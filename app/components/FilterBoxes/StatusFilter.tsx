@@ -33,9 +33,8 @@ const Container = styled.div`
   padding-left: 20px;
   padding-right: 20px;
   background: #fff;
-  border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const Count = styled.span`

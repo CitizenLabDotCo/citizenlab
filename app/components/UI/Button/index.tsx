@@ -33,6 +33,7 @@ type DefaultStyleValues = {
     borderHoverColor?: string;
     iconColor?: string;
     iconHoverColor?: string;
+    padding?: string;
   };
 };
 
@@ -63,7 +64,8 @@ function getPadding(props: ButtonContainerProps & { theme: any }) {
       case '4':
         return '15px 26px';
       default:
-        return '.65em 1.45em';
+        // return '.65em 1.45em';
+        return '9px 18px';
     }
   }
 }
@@ -107,7 +109,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     primary: {
       bgColor: get(props.theme, 'colorMain'),
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     },
     'primary-outlined': {
       bgColor: 'transparent',
@@ -142,7 +146,8 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     },
     text: {
       bgColor: 'transparent',
-      textColor: colors.label
+      textColor: colors.label,
+      iconColor: colors.label,
     },
     success: {
       bgColor: colors.clGreenSuccessBackground,
@@ -151,7 +156,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     'cl-blue': {
       bgColor: colors.clBlueDark,
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     },
     'cl-blue-outlined': {
       bgColor: 'transparent',
@@ -162,7 +169,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     'admin-dark': {
       bgColor: colors.adminTextColor,
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     },
     'admin-dark-outlined': {
       bgColor: 'transparent',
@@ -177,7 +186,9 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     delete: {
       bgColor: colors.clRedError,
       textColor: '#fff',
-      textHoverColor: '#fff'
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff'
     }
   };
 
@@ -197,7 +208,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
   const borderRadius = props.borderRadius || get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) || props.theme.borderRadius;
   const textDecoration = props.textDecoration || get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) || 'none';
   const textDecorationHover = props.textDecorationHover || get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) || 'none';
-  const padding = getPadding(props);
+  const padding = get(defaultStyleValues, `${props.buttonStyle}.padding`) || getPadding(props);
   const fontSize = getFontSize(props);
   const lineHeight = getLineHeight(props);
   const iconSize = getIconHeight(props);

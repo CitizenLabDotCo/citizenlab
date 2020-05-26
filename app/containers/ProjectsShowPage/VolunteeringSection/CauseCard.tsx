@@ -14,10 +14,10 @@ import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Warning from 'components/UI/Warning';
-import Link from 'utils/cl-router/Link';
 
 // utils
 import { isEmptyMultiloc } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -32,7 +32,7 @@ const Container = styled.div`
   padding: 20px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   margin-bottom: 20px;
   display: flex;
   align-items: stretch;
@@ -151,12 +151,7 @@ interface Props {
 const CauseCard = memo<Props>(({ cause, className }) => {
 
   const authUser = useAuthUser();
-  const windowSize = useWindowSize();
-
-  const isVolunteer = !!cause.relationships?.user_volunteer?.data;
-  const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
-  const signUpLink = <Link to="/sign-up"><FormattedMessage {...messages.signUpLinkText} /></Link>;
-  const signInLink = <Link to="/sign-in"><FormattedMessage {...messages.signInLinkText} /></Link>;
+  const { windowWidth } = useWindowSize();
 
   const handleOnVolunteerButtonClick = useCallback(() => {
     if (cause.relationships?.user_volunteer?.data) {
@@ -165,6 +160,25 @@ const CauseCard = memo<Props>(({ cause, className }) => {
       addVolunteer(cause.id);
     }
   }, [cause]);
+
+  const signIn = useCallback(() => {
+    openSignUpInModal({
+      flow: 'signin',
+      action: () => handleOnVolunteerButtonClick()
+    });
+  }, []);
+
+  const signUp = useCallback(() => {
+    openSignUpInModal({
+      flow: 'signup',
+      action: () => handleOnVolunteerButtonClick()
+    });
+  }, []);
+
+  const isVolunteer = !!cause.relationships?.user_volunteer?.data;
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+  const signUpLink = <button onClick={signUp}><FormattedMessage {...messages.signUpLinkText} /></button>;
+  const signInLink = <button onClick={signIn}><FormattedMessage {...messages.signInLinkText} /></button>;
 
   return (
     <Container className={className}>

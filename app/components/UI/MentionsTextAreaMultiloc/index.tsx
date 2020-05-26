@@ -49,7 +49,6 @@ export interface InputProps {
   onFocus?: () => void;
   fontSize?: number;
   backgroundColor?: string;
-  placeholderFontWeight?: string;
   ariaLabel?: string;
   className?: string;
 }
@@ -87,7 +86,6 @@ class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
       errorMultiloc,
       fontSize,
       backgroundColor,
-      placeholderFontWeight,
       ariaLabel,
       className,
       tenantLocales
@@ -128,7 +126,6 @@ class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
                   ariaLabel={ariaLabel}
                   fontSize={fontSize ? `${fontSize}px` : undefined}
                   background={backgroundColor}
-                  placeholderFontWeight={placeholderFontWeight}
                 />
               </MentionsTextAreaWrapper>
             );

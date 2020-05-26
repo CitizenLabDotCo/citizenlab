@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { lighten } from 'polished';
 
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
@@ -14,7 +15,7 @@ const Container = styled.div`
   justify-content: center;
   padding: 40px;
   background: #fff;
-  border-top: solid 1px ${colors.separation};
+  border-top: solid 1px ${lighten(0.4, colors.label)};
 `;
 
 interface Props {

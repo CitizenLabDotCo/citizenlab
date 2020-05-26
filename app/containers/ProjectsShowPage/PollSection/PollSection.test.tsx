@@ -178,7 +178,7 @@ describe('<PollSection/>', () => {
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
       const splitMessageId = wrapper.find('PollSection__StyledWarning').find('FormattedMessage').prop('id').split('.');
-      expect(splitMessageId[splitMessageId.length - 1]).toBe('signUpToTakePoll');
+      expect(splitMessageId[splitMessageId.length - 1]).toBe('pollDisabledMaybeNotPermitted');
     });
     it('is enabled if user can anwser', () => {
       const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']

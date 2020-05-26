@@ -1,7 +1,8 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
+import useAuthUser from 'hooks/useAuthUser';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -11,6 +12,11 @@ import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 
+// utils
+import clHistory from 'utils/cl-router/history';
+import { isNilOrError } from 'utils/helperUtils';
+import { openSignUpInModal } from 'components/SignUpIn/events';
+
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
@@ -19,17 +25,15 @@ const Container = styled.div``;
 
 const BoxContainer = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding: 40px 80px;
   justify-content: space-between;
-  min-height: 250px;
+  padding: 60px 40px;
   position: relative;
   overflow: hidden;
   margin-bottom: 70px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 
   ${media.smallerThanMaxTablet`
     padding: 60px 50px 50px;
@@ -52,6 +56,10 @@ const BackgroundIcon = styled(Icon)`
   right: -150px;
 `;
 
+const TextContainer = styled.div`
+  flex: 1 1 auto;
+`;
+
 const Title = styled.h2`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.xxl}px;
@@ -62,6 +70,7 @@ const Title = styled.h2`
 
   ${media.smallerThanMinTablet`
     max-width: none;
+    text-align: center;
   `}
 `;
 
@@ -72,6 +81,7 @@ const Text = styled.div`
 
   ${media.smallerThanMinTablet`
     max-width: none;
+    text-align: center;
   `}
 `;
 
@@ -117,21 +127,31 @@ interface Props extends InputProps {
 }
 
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
-  const windowSize = useWindowSize();
-  const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+
+  const authUser = useAuthUser();
+  const { windowWidth } = useWindowSize();
+
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
+
+  const signUp = useCallback(() => {
+    openSignUpInModal({
+      flow: 'signup',
+      action: () => clHistory.push('/initiatives/new')
+    });
+  }, []);
 
   return (
     <Container className={className}>
       <BoxContainer>
-        <BackgroundIcon name="initiatives"/>
-        <div>
+        <BackgroundIcon name="initiatives" />
+        <TextContainer>
           <Title>
             <FormattedMessage {...messages.initiativesBoxTitle} />
           </Title>
           <Text>
             <FormattedMessage {...messages.initiativesBoxText} />
           </Text>
-        </div>
+        </TextContainer>
         <ButtonContainer>
           <BrowseInitiativesButton
             fontWeight="500"
@@ -147,9 +167,8 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
           <StartInitiativeButton
             fontWeight="500"
             padding="13px 22px"
-            bgColor={theme.colorMain}
-            linkTo="/initiatives/new"
-            textColor="#fff"
+            linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
+            onClick={!authUser ? signUp : undefined}
             fullWidth={smallerThanSmallTablet}
             text={<FormattedMessage {...messages.startInitiative} />}
             className="e2e-initiatives-landing-CTA-new"

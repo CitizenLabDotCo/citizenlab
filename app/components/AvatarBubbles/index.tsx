@@ -182,9 +182,11 @@ class AvatarBubbles extends PureComponent<Props & InjectedIntlProps, State> {
           </Container>
         );
       }
+    } else if (avatars !== undefined) {
+       return <EmptyContainer className={className} />;
     }
 
-    return <EmptyContainer className={className} />;
+    return null;
   }
 }
 

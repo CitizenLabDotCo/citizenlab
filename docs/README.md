@@ -1,5 +1,11 @@
 # Changelog
 
+## 2020-05-20
+
+### Fixed
+
+- Budget field is shown again in idea form for participatory budget projects
+
 ## 2020-05-14
 
 ### Added

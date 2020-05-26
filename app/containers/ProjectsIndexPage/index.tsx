@@ -37,21 +37,19 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-const PageTitle = styled.div`
-  & h1 {
-    color: ${colors.text};
-    font-size: ${fontSizes.xxxxl}px;
-    line-height: normal;
-    font-weight: 500;
-  }
+const PageTitle = styled.h1`
+  color: ${colors.text};
+  font-size: ${fontSizes.xxxxl}px;
+  line-height: normal;
+  font-weight: 500;
   text-align: center;
-  margin: 0;
   padding: 0;
-  margin-bottom: 40px;
+  margin: 0;
+  margin-bottom: 0px;
 
   ${media.smallerThanMaxTablet`
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
   `}
 
   ${media.smallerThanMinTablet`
@@ -65,7 +63,7 @@ export default React.memo(() => (
     <Container>
       <StyledContentContainer mode="page">
         <PageTitle>
-          <FormattedMessage tagName="h1" {...messages.pageTitle} />
+          <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
         <ProjectAndFolderCards
           showTitle={false}

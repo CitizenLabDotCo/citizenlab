@@ -9,7 +9,7 @@ import { stringify } from 'qs';
 import ProjectCard from 'components/ProjectCard';
 import ProjectFolderCard from 'components/ProjectFolderCard';
 import SelectAreas from './SelectAreas';
-import Spinner from 'components/UI/Spinner';
+import LoadingBox from './LoadingBox';
 import Button from 'components/UI/Button';
 
 // resources
@@ -36,7 +36,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths, colors } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
@@ -46,17 +46,6 @@ import EmptyProjectsImageSrc from 'assets/img/landingpage/no_projects_image.svg'
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Loading = styled.div`
-  width: 100%;
-  height: 300px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
 `;
 
 const Header = styled.div`
@@ -116,7 +105,7 @@ const EmptyContainer = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   position: relative;
   background: #fff;
-  border: solid 1px ${colors.separation};
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const EmptyProjectsImage = styled.img`
@@ -362,13 +351,13 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                 }
               </Title>
             ) : (
-                <ScreenReaderOnly>
-                  {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
-                    ? <T value={customCurrentlyWorkingOn} />
-                    : <FormattedMessage {...messages.currentlyWorkingOn} />
-                  }
-                </ScreenReaderOnly>
-              )}
+              <ScreenReaderOnly>
+                {customCurrentlyWorkingOn && !isEmpty(customCurrentlyWorkingOn)
+                  ? <T value={customCurrentlyWorkingOn} />
+                  : <FormattedMessage {...messages.currentlyWorkingOn} />
+                }
+              </ScreenReaderOnly>
+            )}
             <FiltersArea>
               <FilterArea>
                 <SelectAreas selectedAreas={areas} onChange={this.handleAreasOnChange} />
@@ -377,9 +366,7 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
           </Header>
 
           {loadingInitial &&
-            <Loading id="projects-loading">
-              <Spinner />
-            </Loading>
+            <LoadingBox />
           }
 
           {!loadingInitial && !hasPublications &&
@@ -412,12 +399,12 @@ class ProjectAndFolderCards extends PureComponent<Props & InjectedIntlProps & Wi
                         layout={layout}
                       />
                     ) : (
-                        <ProjectFolderCard
-                          publication={item}
-                          size={size}
-                          layout={layout}
-                        />
-                      )}
+                      <ProjectFolderCard
+                        publication={item}
+                        size={size}
+                        layout={layout}
+                      />
+                    )}
                   </React.Fragment>
                 );
               }
@@ -473,7 +460,7 @@ const ProjectAndFolderCardsWithHOCs = withTheme(injectIntl<Props>(withRouter(Pro
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   windowSize: <GetWindowSize />,
-  adminPublications: ({ render, ...props }) => <GetAdminPublications publicationStatusFilter={['published', 'archived']} pageSize={6} noEmptyFolder prefetchProjects {...props}>{render}</GetAdminPublications>
+  adminPublications: ({ render, ...props }) => <GetAdminPublications pageSize={6} noEmptyFolder prefetchProjects {...props}>{render}</GetAdminPublications>
 });
 
 export default (inputProps: InputProps) => (
