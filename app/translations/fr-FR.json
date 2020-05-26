@@ -1222,7 +1222,6 @@
   "app.containers.AdminPage.SettingsPage.editButtonLabel": "Modifier",
   "app.containers.AdminPage.SettingsPage.editFormTitle": "Modifier le lieu",
   "app.containers.AdminPage.SettingsPage.editTopicButtonLabel": "Modifier",
-  "app.containers.AdminPage.SettingsPage.editTopicFormSubtitle": "Gardez à l'esprit que cela affectera également le nom du sujet dans les idées et propositions qui y font actuellement référence.",
   "app.containers.AdminPage.SettingsPage.editTopicFormTitle": "Modifier un thème",
   "app.containers.AdminPage.SettingsPage.fieldDescription": "Description",
   "app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip": "Cette description existe seulement pour la collaboration interne, pour améliorer la comprhésion de chacun des administrateurs. Elle permet d’avoir une meilleure compréhension de ce qu'il se passe par lieu ou par quartier.",
