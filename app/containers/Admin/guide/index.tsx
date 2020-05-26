@@ -1,6 +1,6 @@
 // libraries
 import React from 'react';
-import Helmet from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
 // i18n
 import messages from './messages';

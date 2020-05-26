@@ -12,6 +12,17 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: inherit;
   }
 
+  * {
+    outline: none;
+
+    &.focus-visible {
+      outline-color: #000;
+      outline-style: solid;
+      outline-width: 2px;
+      outline-offset: 0px;
+    }
+  }
+
   html,
   body {
     background-color: #fff;

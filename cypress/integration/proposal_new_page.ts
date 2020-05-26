@@ -5,8 +5,6 @@ describe('Initiative new page', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const initiativeTitle = randomString(40);
-  const initiativeContent = randomString(501);
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
@@ -42,6 +40,9 @@ describe('Initiative new page', () => {
   });
 
   it('has a working initiative form', () => {
+    const initiativeTitle = randomString(40);
+    const initiativeContent = randomString(501);
+
     cy.get('#e2e-initiative-title-input').as('titleInput');
     cy.get('#e2e-initiative-form-description-section .ql-editor').as('descriptionInput');
 
@@ -50,7 +51,7 @@ describe('Initiative new page', () => {
     cy.get('@descriptionInput').type(initiativeContent, { delay: 1 });
 
     // verify the values
-    cy.get('@titleInput').should('have.value', initiativeTitle);
+    cy.get('@titleInput').should('contain.value', initiativeTitle);
     cy.get('@descriptionInput').contains(initiativeContent);
 
     // add a topic
@@ -60,12 +61,10 @@ describe('Initiative new page', () => {
     cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-initiative-location-input input').type('antwerp{enter}');
+    cy.get('.e2e-initiative-location-input input').type('Boulevard Anspach Brussels{enter}');
     cy.get('.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div').first().click();
-
-    // verify location
-    cy.get('.e2e-initiative-location-input input').should('contain.value', 'Antwerp');
-    cy.get('.e2e-initiative-location-input input').should('not.have.value', 'antwerp');
+    cy.wait(500);
+    cy.get('.e2e-initiative-location-input input').should('contain.value', 'Belgium');
 
     // verify that image and file upload components are present
     cy.get('#e2e-iniatiative-banner-dropzone');
@@ -94,7 +93,7 @@ describe('Initiative new page', () => {
       cy.get('#e2e-initiative-show').find('#e2e-initiative-title').contains(initiativeTitle);
       cy.get('#e2e-initiative-show').find('#e2e-initiative-description').contains(initiativeContent);
       cy.get('#e2e-initiative-show').find('#e2e-initiative-topics').find('.e2e-initiative-topic').should('have.length', 1);
-      cy.get('#e2e-initiative-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
+      cy.get('#e2e-initiative-show').find('#e2e-map-toggle').contains('Boulevard Anspach');
     });
   });
 

@@ -4,18 +4,14 @@ describe('Idea show page actions', () => {
   describe('not logged in', () => {
     before(() => {
       cy.visit('/ideas/controversial-idea');
-      cy.acceptCookies();
       cy.get('#e2e-idea-show');
+      cy.acceptCookies();
     });
 
     it('asks unauthorised users to log in or sign up before they vote', () => {
-      cy.get('.e2e-vote-controls-desktop').find('.e2e-ideacard-upvote-button').click();
-      cy.get('.e2e-vote-controls-desktop').find('.e2e-login-button');
-      cy.get('.e2e-vote-controls-desktop').find('.e2e-register-button');
-    });
-
-    after(() => {
-      cy.wait(1000);
+      cy.get('.e2e-vote-controls-desktop .e2e-ideacard-upvote-button').click();
+      cy.get('#e2e-sign-up-in-modal');
+      cy.get('#e2e-sign-up-container');
     });
   });
 
@@ -23,8 +19,8 @@ describe('Idea show page actions', () => {
     before(() => {
       cy.setAdminLoginCookie();
       cy.visit('/ideas/controversial-idea');
-      cy.acceptCookies();
       cy.get('#e2e-idea-show');
+      cy.acceptCookies();
     });
 
     it('saves a new official feedback, shows it and deletes it', () => {
@@ -62,7 +58,6 @@ describe('Idea show page actions', () => {
           cy.apiSignup(firstName, lastName, email, password);
           cy.setLoginCookie(email, password);
           cy.visit(`/ideas/${ideaTitle}`);
-          cy.wait(500);
           cy.get('#e2e-idea-show');
         });
       });

@@ -144,7 +144,7 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
             apiEndpoint: [`${API_PATH}/groups`]
           });
         } catch (error) {
-          eventEmitter.emit<JSX.Element>('usersAdmin', events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />);
+          eventEmitter.emit<JSX.Element>(events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />);
         }
       }
     }

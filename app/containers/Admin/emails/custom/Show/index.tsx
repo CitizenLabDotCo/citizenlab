@@ -34,6 +34,8 @@ import IconTooltip from 'components/UI/IconTooltip';
 
 import Stamp from './Stamp';
 
+const Container = styled.div``;
+
 const PageHeader = styled.div`
   display: flex;
   margin-bottom: 20px;
@@ -210,7 +212,7 @@ class Show extends React.Component<Props, State> {
       const noGroupsSelected = groupIds.length === 0;
 
       return (
-        <div>
+        <Container id="e2e-custom-email-container">
           <PageHeader>
             <PageTitleWrapper>
               <PageTitle>
@@ -314,7 +316,7 @@ class Show extends React.Component<Props, State> {
               </ButtonsWrapper>
             </ModalContainer>
           </Modal>
-        </div>
+        </Container>
       );
     }
 

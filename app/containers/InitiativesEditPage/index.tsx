@@ -5,6 +5,9 @@ import clHistory from 'utils/cl-router/history';
 import { adopt } from 'react-adopt';
 import { withRouter, WithRouterProps } from 'react-router';
 
+// services
+import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+
 // resources
 import HasPermission from 'components/HasPermission';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -12,6 +15,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import { PreviousPathnameContext } from 'context';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -41,22 +45,28 @@ interface DataProps {
   initiativeFiles: GetResourceFileObjectsChildProps;
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
+  previousPathName: string | null;
 }
 
 interface Props extends DataProps { }
 
 export class InitiativesEditPage extends React.PureComponent<Props> {
   componentDidMount() {
-    const { authUser } = this.props;
-
-    if (authUser === null) {
-      clHistory.replace('/sign-up');
-    }
+    this.checkPageAccess();
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (prevProps.authUser !== this.props.authUser && this.props.authUser === null) {
-      clHistory.replace('/sign-up');
+    if (prevProps.authUser !== this.props.authUser) {
+      this.checkPageAccess();
+    }
+  }
+
+  checkPageAccess = () => {
+    const { authUser } = this.props;
+    const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }) || isSuperAdmin({ data: authUser }));
+
+    if (!isPrivilegedUser && authUser === null) {
+      clHistory.replace(this.props.previousPathName || '/sign-up');
     }
   }
 
@@ -92,10 +102,9 @@ const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
   initiative: ({ params, render }) => <GetInitiative id={params.initiativeId}>{render}</GetInitiative>,
-  initiativeImages: ({ params, render }) => (
-    <GetInitiativeImages initiativeId={params.initiativeId}>{render}</GetInitiativeImages>
-  ),
+  initiativeImages: ({ params, render }) => <GetInitiativeImages initiativeId={params.initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ params, render }) => <GetResourceFileObjects resourceId={params.initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
+  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
 export default withRouter((withRouterProps: WithRouterProps) => (

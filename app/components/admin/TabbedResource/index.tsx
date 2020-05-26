@@ -74,17 +74,14 @@ const Tab = styled.div`
     transition: all 100ms ease-out;
   }
 
-  &:hover a {
+  &:not(.active):hover a {
     color: ${colors.adminTextColor};
+    border-color: #ddd;
   }
 
   &.active a {
     color: ${colors.adminTextColor};
-    border-color: ${colors.clBlueDark};
-  }
-
-  &:not(.active):hover a {
-    border-color: transparent;
+    border-color: ${colors.adminTextColor};
   }
 `;
 

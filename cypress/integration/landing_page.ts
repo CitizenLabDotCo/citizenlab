@@ -33,9 +33,9 @@ describe('Landing page - not signed in', () => {
     // shows a "show more" button underneath the project cards
     cy.get('.e2e-project-cards-show-more-button');
 
-    // shows the signed-out header CTA button, and redirects to /sign-up when clicked'
+    // shows the signed-out header CTA button, and shows the sign up/in modal when clicked
     cy.get('.e2e-signed-out-header-cta-button').click();
-    cy.location('pathname').should('eq', '/en-GB/sign-up');
+    cy.get('#e2e-sign-up-in-modal');
   });
 });
 
@@ -58,7 +58,7 @@ describe('Landing page - signed in', () => {
     // shows the "complete your profile" header by default
     cy.get('.e2e-signed-in-header');
     cy.get('#e2e-singed-in-header-verifiaction .e2e-singed-in-header-accept-btn').click();
-    cy.get('.e2e-verification-steps');
+    cy.get('#e2e-verification-wizard-root');
     cy.get('.e2e-modal-close-button').click();
     cy.get('#e2e-singed-in-header-verifiaction .e2e-singed-in-header-verification-skip-btn').click();
     cy.get('#e2e-singed-in-header-complete-profile .e2e-singed-in-header-accept-btn a').should('have.attr', 'href').and('include', '/en-GB/profile/edit');

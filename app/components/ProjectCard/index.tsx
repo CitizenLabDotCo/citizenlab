@@ -16,7 +16,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 
 // services
 import { getProjectUrl } from 'services/projects';
-import { getPostingPermission } from 'services/ideaPostingRules';
+import { getIdeaPostingRules } from 'services/ideaPostingRules';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
@@ -51,7 +51,7 @@ const Container = styled(Link)`
   cursor: pointer;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 
   &.large {
     width: 100%;
@@ -100,15 +100,10 @@ const Container = styled(Link)`
   }
 
   &.desktop {
-    transition: all 200ms ease;
+    transition: all 150ms ease-out;
 
     &:hover {
-      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
-      transform: translate(0px, -2px);
-    }
-
-    &:focus {
-      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.3);
+      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);
       transform: translate(0px, -2px);
     }
   }
@@ -484,7 +479,7 @@ class ProjectCard extends PureComponent<Props & InjectedIntlProps, State> {
     const { authUser, project, phase, size, projectImages, intl: { formatMessage }, layout, className } = this.props;
 
     if (!isNilOrError(project)) {
-      const postingPermission = getPostingPermission({ project, phase, authUser });
+      const postingPermission = getIdeaPostingRules({ project, phase, authUser });
       const participationMethod = (!isNilOrError(phase) ? phase.attributes.participation_method : project.attributes.participation_method);
       const canPost = !!((!isNilOrError(phase) ? phase.attributes.posting_enabled : project.attributes.posting_enabled) && postingPermission.enabled);
       const canVote = !!((!isNilOrError(phase) ? phase.attributes.voting_enabled : project.attributes.voting_enabled) && get(project, 'attributes.action_descriptor.voting.enabled'));

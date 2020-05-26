@@ -3,7 +3,7 @@ import { IPhaseData } from './phases';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { get } from 'lodash-es';
 
-export type DisabledReasons = 'notPermitted' | 'maybeNotPermitted' | 'projectInactive' | 'notActivePhase' | 'alreadyResponded' | 'notVerified';
+export type DisabledReasons =  'notPermitted' | 'maybeNotPermitted' | 'projectInactive' | 'notActivePhase' | 'alreadyResponded' | 'notVerified';
 
 type PollTakeResponse = {
   enabled: boolean;
@@ -23,7 +23,7 @@ const disabledReason = (backendReason: PollDisabledReasons | null, signedIn: boo
     case 'already_responded':
       return 'alreadyResponded';
     case 'not_verified':
-      return 'notVerified';
+      return signedIn ? 'notVerified' : 'maybeNotPermitted';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
     default:
@@ -37,7 +37,7 @@ const disabledReason = (backendReason: PollDisabledReasons | null, signedIn: boo
  *  phaseContext: The phase context in which the button is rendered. NOT necessarily the active phase. Optional.
  *  signedIn: Whether the user is currently authenticated
  */
-export const pollTakingState = ({ project, phaseContext, signedIn }: PollTakingStateArgs): PollTakeResponse => {
+export const getPollTakingRules = ({ project, phaseContext, signedIn }: PollTakingStateArgs): PollTakeResponse => {
   if (phaseContext) {
     const inCurrentPhase = (pastPresentOrFuture([phaseContext.attributes.start_at, phaseContext.attributes.end_at]) === 'present');
     const { disabled_reason } = get(project.attributes.action_descriptor, 'taking_poll', { disabled_reason: null });

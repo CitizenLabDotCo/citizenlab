@@ -32,6 +32,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 
 // typings
 import { CommentsSort } from 'services/comments';
+import { IdeaCommentingDisabledReason } from 'services/ideas';
 
 const Container = styled.div``;
 
@@ -101,17 +102,18 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
   );
 
   if (!isNilOrError(post)) {
-    const commentingEnabled: boolean = get(post, 'attributes.action_descriptor.commenting.enabled', true);
-    const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null);
+    const commentingEnabled = get(post, 'attributes.action_descriptor.commenting.enabled', true) as boolean;
+    const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null) as IdeaCommentingDisabledReason | null;
     const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
     const loaded = (!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project));
     const phaseId = isNilOrError(project) ? undefined : project.relationships?.current_phase?.data?.id;
 
     return (
-      <Container className={`e2e-comments-${loaded ? 'loaded' : 'loading'} ${className}`}>
+      <Container className={className || ''}>
         <ScreenReaderOnly>
           <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
         </ScreenReaderOnly>
+
         {loaded && !isNilOrError(commentsList) ? (
           <>
             {/*
@@ -125,7 +127,6 @@ const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comment
             }
 
             <CommentingDisabled
-              isLoggedIn={!!authUser}
               commentingEnabled={commentingEnabled}
               commentingDisabledReason={commentingDisabledReason}
               projectId={get(post, 'relationships.project.data.id')}

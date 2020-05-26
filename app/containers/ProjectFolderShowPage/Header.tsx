@@ -86,7 +86,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps { }
 
-class ProjectsShowPage extends PureComponent<Props> {
+class ProjectFolderShowPageHeader extends PureComponent<Props> {
   render() {
     const { projectFolder } = this.props;
 
@@ -118,6 +118,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectsShowPage {...inputProps} {...dataProps} />}
+    {dataProps => <ProjectFolderShowPageHeader {...inputProps} {...dataProps} />}
   </Data>
 );

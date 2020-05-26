@@ -58,22 +58,14 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
 
   const projectId = props.params.projectId;
   const phaseId = props.params.phaseId;
-
   const participationContextType = phaseId ? 'phase' : 'project';
   const participationContextId = phaseId || projectId;
 
   useEffect(() => {
-    eventEmitter.emit<SetBackButtonUrl>(
-      'NewCause',
-      setBackButtonUrlEventName,
-      `/admin/projects/${projectId}/volunteering`
-    );
+    eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName, `/admin/projects/${projectId}/volunteering`);
+
     return () => {
-      eventEmitter.emit<SetBackButtonUrl>(
-        'NewCause',
-        setBackButtonUrlEventName,
-        null
-      );
+      eventEmitter.emit<SetBackButtonUrl>(setBackButtonUrlEventName);
     };
   }, []);
 

@@ -7,43 +7,35 @@ import T from 'components/T';
 import Button from 'components/UI/Button';
 import CheckboxWithPartialCheck from 'components/UI/CheckboxWithPartialCheck';
 import Checkbox from 'components/UI/Checkbox';
-import { Fieldset, ScreenReaderOnly } from 'utils/a11y';
+import { ScreenReaderOnly } from 'utils/a11y';
 
 // analytics
 import { trackEventByName } from 'utils/analytics';
 import { FormSectionTitle, FormSection } from 'components/UI/FormComponents';
 
+// i18n
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 import Icon from 'components/UI/Icon';
 import { CSSTransition } from 'react-transition-group';
 
-const CategoryCheckboxContainer = styled.div`
-  margin-top: 20px;
-  margin-bottom: 5px;
-  &:last-child {
-    margin-bottom: 20px;
-  }
+const timeout = 400;
 
-  label {
-    color: ${({ theme }) => theme.colorMain};
-    font-weight: 700;
-  }
+const CategoryCheckboxContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 
-const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)`
-  padding: 10px 0px;
-`;
+const StyledCheckboxWithPartialCheck = styled(CheckboxWithPartialCheck)``;
 
 const ArrowIcon = styled(Icon)`
-  flex: 0 0 13px;
-  width: 13px;
-  height: 13px;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
   transform: rotate(90deg);
   transition: all .2s linear;
   margin-left: 5px;
@@ -53,32 +45,78 @@ const ArrowIcon = styled(Icon)`
   }
 `;
 
-const AnimatedFieldset = styled(Fieldset)`
-  &.dropdown-enter {
-    opacity: 0;
-    transform: translateY(-8px);
+const AnimatedFieldset = styled.fieldset`
+  border: none;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  display: none;
+  transition: all ${timeout}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: opacity, height;
 
-    &.dropdown-enter-active {
+  &.collapse-enter {
+    opacity: 0;
+    max-height: 0px;
+    overflow: hidden;
+    display: block;
+
+    &.collapse-enter-active {
       opacity: 1;
-      transform: translateY(0px);
-      transition: all 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      max-height: 350px;
+      overflow: hidden;
+      display: block;
     }
+  }
+
+  &.collapse-enter-done {
+    opacity: 1;
+    overflow: visible;
+    display: block;
+  }
+
+  &.collapse-exit {
+    opacity: 1;
+    max-height: 350px;
+    overflow: hidden;
+    display: block;
+
+    &.collapse-exit-active {
+      opacity: 0;
+      max-height: 0px;
+      overflow: hidden;
+      display: block;
+    }
+  }
+
+  &.collapse-exit-done {
+    display: none;
   }
 `;
 
 const CheckboxContainer = styled.div`
-  margin-bottom: 16px;
-  margin-left: 15px;
+  margin-bottom: 12px;
+  margin-left: 34px;
+
+  &.first {
+    margin-top: 15px;
+  }
 `;
 
 const ConsentList = styled.div`
-  margin-bottom: 20px;
+  padding-top: 14px;
+  padding-bottom: 14px;
   border-bottom: 1px solid ${colors.separation};
+
+  &.first {
+    border-top: 1px solid ${colors.separation};
+  }
+
+  &.last {
+    margin-bottom: 20px;
+  }
 `;
 
-const StyledSubmitWrapper = styled(SubmitWrapper)`
-  margin-top: 20px;
-`;
+const StyledSubmitWrapper = styled(SubmitWrapper)``;
 
 type Props = {
   consents: IConsentData[];
@@ -97,24 +135,27 @@ interface State {
 
 export default class ConsentForm extends PureComponent<Props, State> {
 
-  constructor(props: Props) {
-    super(props as any);
-
-    const categorizedConsents = getCategorizedConsents(props.consents);
-
-    const isCategoryOpen = {} as { [category: string]: boolean };
-    Object.keys(categorizedConsents).forEach(category =>
-      isCategoryOpen[category] = !categorizedConsents[category].every(consent => consent.attributes.consented)
-      && !categorizedConsents[category].every(consent => !consent.attributes.consented)
-    );
-
+  constructor(props) {
+    super(props);
     this.state = {
-      categorizedConsents,
-      isCategoryOpen,
+      categorizedConsents: {},
+      isCategoryOpen: {},
       consentChanges: {},
       isSaving: false,
       saveButtonStatus: 'disabled',
     };
+  }
+
+  componentDidMount() {
+    const categorizedConsents = getCategorizedConsents(this.props.consents);
+    const isCategoryOpen = {} as { [category: string]: boolean };
+
+    Object.keys(categorizedConsents).forEach((category) =>
+      isCategoryOpen[category] = !categorizedConsents[category].every(consent => consent.attributes.consented)
+      && !categorizedConsents[category].every(consent => !consent.attributes.consented)
+    );
+
+    this.setState({ categorizedConsents, isCategoryOpen });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -224,8 +265,12 @@ export default class ConsentForm extends PureComponent<Props, State> {
       <FormSection id="e2e-consent-form">
         <form action="">
           <FormSectionTitle message={messages.notificationsTitle} subtitleMessage={messages.notificationsSubTitle} />
-          {Object.entries(categorizedConsents).map(([category, consents]) => (
-            <ConsentList key={category}>
+
+          {Object.entries(categorizedConsents).map(([category, consents], index) => (
+            <ConsentList
+              key={category}
+              className={`${index === 0 ? 'first' : ''} ${index === Object.entries(categorizedConsents).length - 1 ? 'last' : ''}`}
+            >
               <CategoryCheckboxContainer>
                 <StyledCheckboxWithPartialCheck
                   id={category}
@@ -234,7 +279,13 @@ export default class ConsentForm extends PureComponent<Props, State> {
                   label={<FormattedMessage {...messages[`${category}Category`]} />}
                 />
                 {consents.length > 1 &&
-                  <Button onClick={this.handleToggleOpenCategory(category)} buttonStyle="text" type="button" ariaExpanded={isCategoryOpen[category]} padding="10px 0px 10px 5px">
+                  <Button
+                    onClick={this.handleToggleOpenCategory(category)}
+                    buttonStyle="text"
+                    type="button"
+                    ariaExpanded={isCategoryOpen[category]}
+                    padding="0px"
+                  >
                     {isCategoryOpen[category]
                       ? <FormattedMessage {...messages.collapse} />
                       : <FormattedMessage {...messages.expand} />
@@ -244,12 +295,14 @@ export default class ConsentForm extends PureComponent<Props, State> {
                 }
               </CategoryCheckboxContainer>
               <CSSTransition
+                classNames="collapse"
                 in={isCategoryOpen[category]}
-                timeout={30}
-                mountOnEnter={true}
-                unmountOnExit={true}
-                exit={false}
-                classNames="dropdown"
+                appear={isCategoryOpen[category]}
+                timeout={timeout}
+                mounOnEnter={false}
+                unmountOnExit={false}
+                enter={true}
+                exit={true}
               >
                 <AnimatedFieldset>
                   <ScreenReaderOnly>
@@ -258,10 +311,13 @@ export default class ConsentForm extends PureComponent<Props, State> {
                     </legend>
                   </ScreenReaderOnly>
 
-                  {consents.length > 1 && consents.map(consent => (
-                    <CheckboxContainer key={consent.id}>
+                  {consents.length > 1 && consents.map((consent, index) => (
+                    <CheckboxContainer
+                      key={consent.id}
+                      className={`${index === 0 ? 'first' : ''} ${index === consents.length - 1 ? 'last' : ''}`}
+                    >
                       <Checkbox
-                        id="e2e-consent-checkbox"
+                        size="20px"
                         checked={this.isConsented(consent.id)}
                         onChange={this.handleOnChange(consent)}
                         label={<T value={consent.attributes.campaign_type_description_multiloc} />}
@@ -272,6 +328,7 @@ export default class ConsentForm extends PureComponent<Props, State> {
               </CSSTransition>
             </ConsentList>
           ))}
+
           <StyledSubmitWrapper
             status={saveButtonStatus}
             buttonStyle="primary"

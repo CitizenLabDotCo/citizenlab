@@ -26,10 +26,9 @@ const DropdownContainer = styled.div`
   position: relative;
   cursor: pointer;
 `;
+
 const StyledButton = styled(Button)`
-  button {
-    padding-left: 0;
-  }
+  margin-right: 15px;
 `;
 
 const DropdownItemIcon = styled(Icon)`
@@ -117,8 +116,6 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
     this.props.onChange(startDate, endDate);
   }
 
-  isOutsideRange = () => (false);
-
   findActivePreset = () => {
     const { startAtMoment, endAtMoment } = this.props;
 
@@ -149,6 +146,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
           <StyledButton
             buttonStyle="text"
             onClick={this.toggleDropdown}
+            padding="0px"
             className="e2e-open-time-presets"
           >
             {activePreset ? activePreset.label : <FormattedMessage {...messages.customDateRange} />}
@@ -183,7 +181,6 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
           startDate={(startAtMoment === undefined) ? null : startAtMoment}
           endDate={endAtMoment}
           onDatesChange={this.handleDatesChange}
-          isOutsideRange={this.isOutsideRange}
         />
       </Container>
     );

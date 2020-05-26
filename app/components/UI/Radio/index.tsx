@@ -1,7 +1,12 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { fontSizes, customOutline, colors } from 'utils/styleUtils';
+import { fontSizes, colors, boxShadowOutline } from 'utils/styleUtils';
 import { get } from 'lodash-es';
+import { hideVisually } from 'polished';
+
+const HiddenRadio = styled.input.attrs({ type: 'radio' })`
+  ${hideVisually()};
+`;
 
 export const CustomRadio = styled.div`
   flex: 0 0 20px;
@@ -16,21 +21,15 @@ export const CustomRadio = styled.div`
   position: relative;
   background: #fff;
   border-radius: 50%;
-  border: 1px solid ${colors.separationDarkOnGreyBackground};
-  box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.15);
+  border: solid 1px ${colors.separationDarkOnGreyBackground};
+  transition: all 120ms ease-out;
 
-  &.focused {
-    outline: ${customOutline};
-    border-color: #000;
+  ${HiddenRadio}.focus-visible + & {
+    ${boxShadowOutline};
   }
 
-  &.enabled {
-    cursor: pointer;
-
-    &:hover,
-    &:active {
-      border-color: #000;
-    }
+  &.enabled:hover {
+    border-color: #000;
   }
 
   &.disabled {
@@ -57,6 +56,7 @@ const Label = styled.label`
   & > :not(last-child) {
     margin-right: 7px;
   }
+
   &.enabled {
     cursor: pointer;
 
@@ -65,18 +65,6 @@ const Label = styled.label`
         border-color: #000;
       }
     }
-  }
-`;
-
-const Input = styled.input`
-  &[type='radio'] {
-    /* See: https://snook.ca/archives/html_and_css/hiding-content-for-accessibility */
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
-    clip: rect(1px, 1px, 1px, 1px);
   }
 `;
 
@@ -169,7 +157,7 @@ export default class Radio extends PureComponent<Props, State> {
           ${disabled ? 'disabled' : 'enabled'}`
         }
       >
-        <Input
+        <HiddenRadio
           id={id}
           type="radio"
           name={name}
