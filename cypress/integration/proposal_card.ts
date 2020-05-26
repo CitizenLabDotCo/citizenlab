@@ -11,15 +11,16 @@ describe('Initiaitve card component', () => {
       cy.apiCreateInitiative({ initiativeTitle, initiativeContent }).then((initiaitve) => {
         initiativeId = initiaitve.body.data.id;
       });
+    });
+
+    it('contains the correct information on the card', () => {
       cy.visit('/initiatives');
       cy.get('#e2e-initiatives-list');
       cy.get('#e2e-initiatives-sort-dropdown').click();
       cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
-    });
 
-    it('contains the correct information on the card', () => {
       cy.get('#e2e-initiatives-list .e2e-initiative-card').first().as('initiativeCard');
 
       // the first card should be the one for the initaitive we just created
@@ -69,15 +70,16 @@ describe('Initiaitve card component', () => {
         initiativeId = initiative.body.data.id;
         cy.apiUpvoteInitiative(email, password, initiativeId);
       });
+    });
+
+    it('correctly increments the vote count', () => {
       cy.visit('/initiatives');
       cy.get('#e2e-initiatives-list');
       cy.get('#e2e-initiatives-sort-dropdown').click();
       cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
-    });
 
-    it('correctly increments the vote count', () => {
       // the card should contain a vote count of 2
       cy.get('#e2e-initiatives-list .e2e-initiative-card').first().find('.e2e-initiative-card-vote-count').contains('2');
     });
@@ -105,16 +107,18 @@ describe('Initiaitve card component', () => {
         return cy.apiAddComment(initiativeId, 'initiative', commentContent, parentCommentId);
       }).then((childComment) => {
         childCommentId = childComment.body.data.id;
+        cy.wait(2000);
       });
+    });
+
+    it('correctly increments the comment count', () => {
       cy.visit('/initiatives');
       cy.get('#e2e-initiatives-list');
       cy.get('#e2e-initiatives-sort-dropdown').click();
       cy.get('.e2e-sort-items').find('.e2e-sort-item-new').click();
       cy.wait(500);
       cy.get('#e2e-initiatives-list');
-    });
 
-    it('correctly increments the comment count', () => {
       // the card should contain a comment count of 2
       cy.get('#e2e-initiatives-list .e2e-initiative-card').first().find('.e2e-initiativecard-comment-count').contains('2');
     });
