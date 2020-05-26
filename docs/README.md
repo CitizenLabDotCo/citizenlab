@@ -1,5 +1,16 @@
 # Changelog
 
+## 2020-05-26
+
+### Changed
+- Lots of small UI improvements throughout the platform
+- Completely overhauled sign up/in flow:
+  - Improved UI
+  - Opens in a modal on top of existing page
+  - Opens when an unauthenticaed user tries to perform an action that requires authentication (e.g. voting)
+  - Automatically executes certain actions (e.g. voting) after the sign in/up flow has been completed (note: does not work for social sign-on, only email/password sign-on)
+  - Includes a verification step in the sign up flow when the action requires it (e.g. voting is only allowed for verified users)
+
 ## 2020-05-20
 
 ### Fixed
