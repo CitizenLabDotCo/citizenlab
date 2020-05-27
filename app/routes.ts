@@ -36,9 +36,8 @@ export default function createRoutes() {
         },
         {
           path: 'invite',
-          name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/SignUpInPage'),
+            loader: () => import('containers/LandingPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
