@@ -8,6 +8,7 @@ class Tenant < ApplicationRecord
 
   validates :name, :host, presence: true
   validates :host, uniqueness: true, exclusion: { in: %w(schema-migrations public) }
+  validate :valid_host_format
 
   validates :settings, presence: true, json: { 
     schema: -> { Tenant.settings_json_schema_str }, 
@@ -141,6 +142,16 @@ class Tenant < ApplicationRecord
     missing_dependencies = ss.missing_dependencies(settings, self.class.settings_json_schema)
     unless missing_dependencies.empty?
       errors.add(:settings, "has unactive features that other features are depending on: #{missing_dependencies}")
+    end
+  end
+
+  def valid_host_format
+    if host != 'localhost' && (!host.include?('.') || (host =~ /[A-Z]/) || host.include?('_'))
+      self.errors.add(
+        :host,
+        :invalid_format,
+        message: 'The chosen host does not have a valid format'
+      )
     end
   end
 

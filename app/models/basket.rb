@@ -7,7 +7,7 @@ class Basket < ApplicationRecord
 
   validates :user, :participation_context, presence: true
   validate :in_budgeting_participation_context
-  validate :submitted_and_exceeds_limit
+  validate :submitted_and_exceeds_limit, on: :basket_submission
 
   scope :submitted, -> { where.not(submitted_at: nil) }
 
