@@ -31,7 +31,6 @@ const Container = styled.div`
 `;
 
 const StyledUserName = styled(UserName)`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   margin-right: 4px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
@@ -59,10 +58,6 @@ const DropdownButton = styled.button`
 
   &:hover,
   &:focus {
-    ${StyledUserName} {
-      color: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
-    }
-
     ${StyledAvatar} {
       .avatarIcon {
         fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
@@ -133,6 +128,7 @@ class UserMenu extends PureComponent<Props, State> {
             aria-expanded={opened}
           >
             <StyledUserName
+              color={theme.navbarTextColor || theme.colorText}
               userId={userId}
               hideLastName
               verificationBadge
