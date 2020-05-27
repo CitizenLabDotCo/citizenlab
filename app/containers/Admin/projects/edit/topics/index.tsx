@@ -1,15 +1,14 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
-import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 
-import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import ProjectTopicList from './ProjectTopicList';
 
 // i18n
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
