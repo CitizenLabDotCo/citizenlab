@@ -420,6 +420,11 @@ if Apartment::Tenant.current == 'localhost'
 
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
+  # TODO link open idea project to default topics
+  Project.all.each do |pj|
+    # pj.update!(topics: Topic.where.not(code: 'custom'))
+    pj.update!(topics: Topic.all)
+  end
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
@@ -433,6 +438,13 @@ if Apartment::Tenant.current == 'localhost'
       title_multiloc: create_for_tenant_locales{"Westbrook"},
       description_multiloc: create_for_tenant_locales{"<p>The place to be these days</p>"}
     })
+
+    3.times do 
+      Topic.create!({
+        title_multiloc: create_for_tenant_locales{Faker::Lorem.word},
+        description_multiloc: create_for_tenant_locales{Faker::Lorem.sentence}
+      })
+    end
 
     2.times do
       folder = ProjectFolder.create!(
@@ -462,6 +474,7 @@ if Apartment::Tenant.current == 'localhost'
         presentation_mode: ['card', 'card', 'card', 'map', 'map'][rand(5)],
         process_type: ['timeline','timeline','timeline','timeline','continuous'][rand(5)],
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
+        topics: Topic.all.shuffle.take(rand(Topic.count)+1),
         admin_publication_attributes: {
           parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ProjectFolder.name).ids.shuffle.first),
           publication_status: ['published','published','published','published','published','draft','archived'][rand(7)]
@@ -598,7 +611,7 @@ if Apartment::Tenant.current == 'localhost'
         title_multiloc: create_for_some_locales{Faker::Lorem.sentence[0...80]},
         body_multiloc: create_for_some_locales{Faker::Lorem.paragraphs.map{|p| "<p>#{p}</p>"}.join},
         idea_status: rand_instance(IdeaStatus.all),
-        topics: rand(3).times.map{rand(Topic.count)}.uniq.map{|offset| Topic.offset(offset).first },
+        topics: rand(3).times.map{rand(project.topics.count)}.uniq.map{|offset| project.topics.offset(offset).first },
         areas: rand(3).times.map{rand(Area.count)}.uniq.map{|offset| Area.offset(offset).first },
         author: rand_instance(User.all),
         project: project,
