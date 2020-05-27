@@ -1827,7 +1827,7 @@
   "app.containers.SignUp.goToSignUp": "¿No tienes una cuenta? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Paso {activeStepNumber} de {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "He leído y estoy de acuerdo con {link}.",
-  "app.containers.SignUp.invalidTokenError": "Your invitation has expired or has already been redeemed. You can still create an account on the {signUpPageLink}.",
+  "app.containers.SignUp.invalidTokenError": "Tu invitación ha expirado. Aun puedes crear una cuenta en nuestra {signUpPageLink}.",
   "app.containers.SignUp.invitationTitle": "Activa tu invitación",
   "app.containers.SignUp.lastNameLabel": "Apellido",
   "app.containers.SignUp.lastNamePlaceholder": " ",
