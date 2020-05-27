@@ -120,7 +120,7 @@ export interface IUpdatedProjectProperties {
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
-  topic_ids?: string[];
+  topic_id?: string;
 }
 
 export interface IProject {

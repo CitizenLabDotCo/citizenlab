@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -25,17 +25,27 @@ interface Props {}
 const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
   const topics = useTopics();
   const project = useProject({ projectId });
+  const [processing, setProcessing] = useState(false);
 
   const handleRemoveSelectedTopic = useCallback(
     (currentSelectedTopics: string[]) => (topicIdToRemove: string) => {
       const updatedSelectedTopicIds = currentSelectedTopics.filter(topicId => topicId !== topicIdToRemove);
+
       updateProject(projectId, { topic_ids: updatedSelectedTopicIds });
     }, []
   );
 
-  const handleAddSelectedTopics = useCallback((toBeAddedtopicIds: string[]) => {
+  const handleAddSelectedTopics = useCallback(async (toBeAddedtopicIds: string[]) => {
     // add code to save topics to a project
+      setProcessing(true);
+      const promises = toBeAddedtopicIds.map(topicId => updateProject(projectId, { topic_id: topicId }));
 
+      try {
+        await Promise.all(promises);
+        setProcessing(false);
+      } catch {
+        setProcessing(false);
+      }
   }, []);
 
   if (
@@ -60,6 +70,7 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
         <ProjectTopicSelector
           selectableTopicIds={selectableTopicIds}
           handleAddSelectedTopics={handleAddSelectedTopics}
+          processing={processing}
         />
         <ProjectTopicList
           selectedTopicIds={selectedTopicIds}
