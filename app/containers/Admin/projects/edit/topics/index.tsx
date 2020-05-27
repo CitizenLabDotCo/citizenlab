@@ -45,9 +45,9 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
     const topicIds = topics
       .map(topic => !isNilOrError(topic) ? topic.id : null)
       .filter(topic => topic) as string[];
-    const projectTopicIds =  project.relationships.topics.data ?
+    const selectedTopicIds =  project.relationships.topics.data ?
       project.relationships.topics.data.map(topic => topic.id) : [];
-    const selectableTopicIds = topicIds.filter(topicId => !projectTopicIds.includes(topicId));
+    const selectableTopicIds = topicIds.filter(topicId => !selectedTopicIds.includes(topicId));
 
     return (
       <Container>
@@ -62,8 +62,8 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
           handleAddSelectedTopics={handleAddSelectedTopics}
         />
         <ProjectTopicList
-          selectedTopicIds={projectTopicIds}
-          onHandleRemoveSelectedTopic={handleRemoveSelectedTopic(projectTopicIds)}
+          selectedTopicIds={selectedTopicIds}
+          onHandleRemoveSelectedTopic={handleRemoveSelectedTopic(selectedTopicIds)}
         />
       </Container>
     );
