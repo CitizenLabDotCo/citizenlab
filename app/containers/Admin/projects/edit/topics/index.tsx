@@ -13,6 +13,7 @@ import messages from './messages';
 
 // hooks
 import useTopics from 'hooks/useTopics';
+import useProject from 'hooks/useProject';
 
 // services
 import { updateProject } from 'services/projects';
@@ -23,47 +24,52 @@ interface Props {}
 
 const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
   const topics = useTopics();
-  const topicIds = !isNilOrError(topics) ?
-    topics.map(topic => !isNilOrError(topic) ? topic.id : null)
-          .filter(topic => topic) as string[]
-    :
-    [];
-  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>([]);
-  const selectableTopicIds = topicIds.filter(topicId => !selectedTopicIds.includes(topicId));
+  const project = useProject({ projectId });
 
-  useEffect(() => {
-    setSelectedTopicIds(topicIds);
-  }, [topics]);
+  const handleRemoveSelectedTopic = useCallback(
+    (currentSelectedTopics: string[]) => (topicIdToRemove: string) => {
+      const updatedSelectedTopicIds = currentSelectedTopics.filter(topicId => topicId !== topicIdToRemove);
+      updateProject(projectId, { topic_ids: updatedSelectedTopicIds });
+    }, []
+  );
 
-  const handleRemoveSelectedTopic = useCallback((topicIdToRemove: string) => {
-    const updatedSelectedTopicIds = topicIds.filter(topicId => topicId !== topicIdToRemove);
-    updateProject(projectId, { topic_ids: updatedSelectedTopicIds });
-  }, []);
-
-  const handleAddSelectedTopics = useCallback((topicIds: string[]) => {
+  const handleAddSelectedTopics = useCallback((toBeAddedtopicIds: string[]) => {
     // add code to save topics to a project
 
-    // add code to update selected topics state
   }, []);
 
-  return (
-    <Container>
-      <SectionTitle>
-        <FormattedMessage {...messages.titleDescription} />
-      </SectionTitle>
-      <SectionSubtitle>
-        <FormattedMessage {...messages.subtitleDescription} />
-      </SectionSubtitle>
-      <ProjectTopicSelector
-        selectableTopicIds={selectableTopicIds}
-        handleAddSelectedTopics={handleAddSelectedTopics}
-      />
-      <ProjectTopicList
-        selectedTopicIds={selectedTopicIds}
-        onHandleRemoveSelectedTopic={handleRemoveSelectedTopic}
-      />
-    </Container>
-  );
+  if (
+    !isNilOrError(topics) &&
+    !isNilOrError(project)
+  ) {
+    const topicIds = topics
+      .map(topic => !isNilOrError(topic) ? topic.id : null)
+      .filter(topic => topic) as string[];
+    const projectTopicIds =  project.relationships.topics.data ?
+      project.relationships.topics.data.map(topic => topic.id) : [];
+    const selectableTopicIds = topicIds.filter(topicId => !projectTopicIds.includes(topicId));
+
+    return (
+      <Container>
+        <SectionTitle>
+          <FormattedMessage {...messages.titleDescription} />
+        </SectionTitle>
+        <SectionSubtitle>
+          <FormattedMessage {...messages.subtitleDescription} />
+        </SectionSubtitle>
+        <ProjectTopicSelector
+          selectableTopicIds={selectableTopicIds}
+          handleAddSelectedTopics={handleAddSelectedTopics}
+        />
+        <ProjectTopicList
+          selectedTopicIds={projectTopicIds}
+          onHandleRemoveSelectedTopic={handleRemoveSelectedTopic(projectTopicIds)}
+        />
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 export default withRouter(Topics);
