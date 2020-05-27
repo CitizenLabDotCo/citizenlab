@@ -29,14 +29,11 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
 
   const handleRemoveSelectedTopic = useCallback(
     (currentSelectedTopics: string[]) => (topicIdToRemove: string) => {
-      const updatedSelectedTopicIds = currentSelectedTopics.filter(topicId => topicId !== topicIdToRemove);
-
-      updateProject(projectId, { topic_ids: updatedSelectedTopicIds });
+      // To be implemented
     }, []
   );
 
   const handleAddSelectedTopics = useCallback(async (toBeAddedtopicIds: string[]) => {
-    // add code to save topics to a project
       setProcessing(true);
       const promises = toBeAddedtopicIds.map(topicId => updateProject(projectId, { topic_id: topicId }));
 
