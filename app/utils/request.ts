@@ -38,9 +38,9 @@ export default function request<T>(url, data, options, queryParameters): Promise
     }
 
     const errorMessage = isString(json?.error) ? json.error : (response.statusText || 'unknown error');
-    throw new Error(`request.ts error for ${urlWithParams}: ${errorMessage}`);
+    throw new Error(`error for ${urlWithParams}: ${errorMessage}`);
   }).catch((error) => {
-    throw new Error(`request.ts error for ${urlWithParams}: ${error || 'unknown error'}`);
+    throw new Error(`error for ${urlWithParams}: ${error || 'unknown error'}`);
   });
 }
 

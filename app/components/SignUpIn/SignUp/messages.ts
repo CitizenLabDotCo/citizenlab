@@ -244,5 +244,13 @@ export default defineMessages({
   close: {
     id: 'app.containers.SignUp.close',
     defaultMessage: 'Close',
-  }
+  },
+  invalidTokenError: {
+    id: 'app.containers.SignUp.invalidTokenError',
+    defaultMessage: 'Your invitation has expired or has already been redeemed. You can still create an account on the {signUpPageLink}. ',
+  },
+  signUpPage: {
+    id: 'app.containers.SignUp.signUpPage',
+    defaultMessage: 'sign up page',
+  },
 });
