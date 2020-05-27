@@ -43,7 +43,7 @@ const ProjectTopicList = memo(({
     // To implement
   };
 
-  const topics = useTopics(selectedTopicIds);
+  const topics = selectedTopicIds.length > 0 ? useTopics(selectedTopicIds) : null;
 
   if (!isNilOrError(topics)) {
     const selectedTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
