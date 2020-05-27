@@ -1827,7 +1827,7 @@
   "app.containers.SignUp.goToSignUp": "¿No tienes una cuenta? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Paso {activeStepNumber} de {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "He leído y estoy de acuerdo con {link}.",
-  "app.containers.SignUp.invitationError": "Your invitation has expired or has already been redeemed.",
+  "app.containers.SignUp.invitationError": "Su invitación ha expirado o ya ha sido aceptada.",
   "app.containers.SignUp.invitationTitle": "Activa tu invitación",
   "app.containers.SignUp.lastNameLabel": "Apellido",
   "app.containers.SignUp.lastNamePlaceholder": " ",
