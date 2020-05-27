@@ -219,7 +219,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       (!prevState.signUpInModalMounted && signUpInModalMounted && isAuthError) ||
       (!prevState.signUpInModalMounted && signUpInModalMounted && isInvitation) ||
       (!prevState.signUpInModalMounted && signUpInModalMounted && !isNilOrError(authUser)) ||
-      (isNilOrError(prevState.authUser) && !isNilOrError(authUser) && signUpInModalMounted)
+      (prevState.authUser === undefined && !isNilOrError(authUser) && signUpInModalMounted)
     ) {
       const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as any as SSOParams;
       const token = urlSearchParams?.['token'] as string | undefined;
