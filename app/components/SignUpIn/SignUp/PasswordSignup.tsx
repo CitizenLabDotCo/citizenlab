@@ -6,7 +6,6 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
-import Link from 'utils/cl-router/Link';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -100,7 +99,6 @@ type State = {
   tacAccepted: boolean;
   privacyAccepted: boolean;
   processing: boolean;
-  invalidTokenError: boolean;
   invitationRedeemError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
@@ -124,7 +122,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       tacAccepted: false,
       privacyAccepted: false,
       processing: false,
-      invalidTokenError: false,
       invitationRedeemError: null,
       firstNameError: null,
       lastNameError: null,
@@ -151,8 +148,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
           lastName: response?.data?.attributes.last_name || null,
           email: response?.data?.attributes?.email || null
         });
-      }).catch(() => {
-        this.setState({ invalidTokenError: true });
       });
     }
   }
@@ -316,7 +311,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       email,
       password,
       processing,
-      invalidTokenError,
       invitationRedeemError,
       firstNameError,
       lastNameError,
@@ -341,17 +335,6 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       } else {
         unknownApiError = formatMessage(messages.unknownError);
       }
-    }
-
-    if (invalidTokenError) {
-      const signUpPageLink = <Link to={'/sign-up'}>{formatMessage(messages.signUpPage)}</Link>;
-
-      return (
-        <Error
-          animate={false}
-          text={<FormattedMessage {...messages.invalidTokenError} values={{ signUpPageLink }} />}
-        />
-      );
     }
 
     return (
