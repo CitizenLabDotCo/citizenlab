@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isEmpty, cloneDeep, indexOf } from 'lodash-es';
 import clHistory from 'utils/cl-router/history';
+import { API_PATH } from 'containers/App/constants';
+import request from 'utils/request';
 
 // components
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
@@ -76,7 +78,7 @@ interface State {
   steps: ('create-account' | Extract<TSignUpSteps, 'verification' | 'custom-fields'>)[];
   activeStep: TSignUpSteps | null | undefined;
   userId: string | null;
-  error: boolean;
+  error: string | null;
   headerHeight: string;
 }
 
@@ -89,14 +91,14 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
       steps: [],
       activeStep: undefined,
       userId: null,
-      error: false,
+      error: null,
       headerHeight: '100px'
     };
   }
 
-  static getDerivedStateFromProps(props: Props, state: State) {
-    const { activeStep, error } = state;
-    const { authUser, onSignUpCompleted, metaData } = props;
+  static getDerivedStateFromProps(props: Props & InjectedIntlProps, state: State) {
+    const { activeStep } = state;
+    const { authUser, onSignUpCompleted, metaData, intl: { formatMessage } } = props;
     let nextActiveStep = activeStep;
 
     if (activeStep === undefined && !isUndefinedOrError(authUser)) {
@@ -117,16 +119,22 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
     return {
       activeStep: nextActiveStep,
-      error: metaData.error || error
+      error: metaData.error ? formatMessage(messages.somethingWentWrongText) : state.error
     };
   }
 
   componentDidMount() {
-    const { metaData, customFieldsSchema } = this.props;
+    const { metaData, customFieldsSchema, intl: { formatMessage } } = this.props;
     const { activeStep } = this.state;
     const steps = cloneDeep(this.state.steps);
 
     trackEventByName(tracks.signUpFlowEntered);
+
+    if (metaData?.token) {
+      request(`${API_PATH}/users/by_invite/${metaData.token}`, null, { method: 'GET' }, null).catch(() => {
+        this.setState({ error: formatMessage(messages.invitationError) });
+      });
+    }
 
     signUpActiveStepChange(this.state.activeStep);
 
@@ -219,7 +227,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
   handleVerificationError = () => {
     trackEventByName(tracks.signUpVerificationStepFailed);
-    this.setState({ error: true });
+    this.setState({ error: this.props.intl.formatMessage(messages.somethingWentWrongText) });
   }
 
   handleCustomFieldsCompleted = () => {
@@ -306,7 +314,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
           >
             {error ? (
               <Error
-                text={formatMessage(messages.somethingWentWrongText)}
+                text={error}
                 animate={false}
                 marginBottom="30px"
               />

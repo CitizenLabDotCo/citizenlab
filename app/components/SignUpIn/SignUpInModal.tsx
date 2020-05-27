@@ -61,7 +61,8 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   useEffect(() => {
     const subscriptions = [
       openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
-        !authUser && setMetaData(metaData);
+        // don't overwrite metaData if already present!
+        !authUser && setMetaData(prevMetaData => prevMetaData ? prevMetaData : metaData);
       }),
       closeSignUpInModal$.subscribe(() => {
         setMetaData(undefined);
@@ -109,7 +110,7 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       padding="0px"
       opened={opened}
       close={onClose}
-      closeOnClickOutside={!modalNoClose}
+      closeOnClickOutside={false}
       noClose={modalNoClose}
     >
       <Container id="e2e-sign-up-in-modal" className={className}>
