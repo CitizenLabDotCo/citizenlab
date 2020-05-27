@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { Subscription } from 'rxjs';
-import { parse } from 'qs';
 
 // components
-import SignUpIn, { TSignUpInFlow } from 'components/SignUpIn';
+import SignUpIn from 'components/SignUpIn';
 import SignUpInPageMeta from './SignUpInPageMeta';
 
 // resources
@@ -107,53 +105,17 @@ export interface DataProps {
 
 export interface Props extends InputProps, DataProps {}
 
-interface State {
-  initialFlow: TSignUpInFlow;
-  isInvitation: boolean;
-  token?: string;
-  error: boolean;
-  loaded: boolean;
-}
+interface State {}
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[] = [];
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      initialFlow: 'signup',
-      isInvitation: false,
-      token: undefined,
-      error: false,
-      loaded: false
-    };
-  }
-
-  static getDerivedStateFromProps(props: Props & WithRouterProps, state: State) {
-    const { authUser, previousPathName, location: { pathname } } = props;
+  static getDerivedStateFromProps(props: Props & WithRouterProps, _state: State) {
+    const { authUser, previousPathName } = props;
     const isLoggedIn = !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
-    const urlSearchParams = parse(props.location.search, { ignoreQueryPrefix: true });
-    const token = isString(urlSearchParams?.token) ? urlSearchParams.token : undefined;
 
     if (isLoggedIn) {
       clHistory.replace(previousPathName || '/');
-    }
-
-    if (!state.loaded) {
-      const error = endsWith(pathname, 'authentication-error');
-      const isInvitation = !!token || endsWith(pathname, 'invite');
-      const initialFlow = !isInvitation && endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
-
-      // remove any urlSearchParams so that they don't accidentaly get reused in the future
-      window.history.replaceState(null, '', window.location.pathname);
-
-      return {
-        initialFlow,
-        isInvitation,
-        error,
-        token,
-        loaded: true
-      };
     }
 
     return null;
@@ -177,45 +139,36 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
 
   render() {
     const { location: { pathname } } = this.props;
-    const { initialFlow, isInvitation, error, token, loaded } = this.state;
+    const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
 
-    if (loaded) {
-      return (
-        <>
-          {!isInvitation && !error &&
-            <SignUpInPageMeta />
-          }
+    return (
+      <>
+        <SignUpInPageMeta />
 
-          <Container id="e2e-sign-up-in-page">
-            <Left>
-              <Banner>
-                <Slogan>
-                  <FormattedMessage {...messages.slogan} />
-                </Slogan>
-              </Banner>
-            </Left>
-            <Right>
-              <RightInner>
-                <SignUpIn
-                  metaData={{
-                    pathname,
-                    error,
-                    isInvitation,
-                    token,
-                    flow: initialFlow,
-                    inModal: false,
-                    verification: undefined
-                  }}
-                  onSignUpInCompleted={this.onSignUpInCompleted}
-                />
-              </RightInner>
-            </Right>
-          </Container>
-        </>
-      );
-    }
-
-    return null;
+        <Container id="e2e-sign-up-in-page">
+          <Left>
+            <Banner>
+              <Slogan>
+                <FormattedMessage {...messages.slogan} />
+              </Slogan>
+            </Banner>
+          </Left>
+          <Right>
+            <RightInner>
+              <SignUpIn
+                metaData={{
+                  flow,
+                  pathname,
+                  inModal: false,
+                  verification: undefined
+                }}
+                onSignUpInCompleted={this.onSignUpInCompleted}
+              />
+            </RightInner>
+          </Right>
+        </Container>
+      </>
+    );
   }
 }
 
