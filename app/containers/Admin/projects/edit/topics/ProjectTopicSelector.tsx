@@ -51,10 +51,16 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 interface Props {
   selectableTopicIds: string[];
   handleAddSelectedTopics: (topicIds: string[]) => void;
+  processing: boolean;
 }
 
 const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
-  const { selectableTopicIds, handleAddSelectedTopics, intl: { formatMessage } } = props;
+  const {
+    selectableTopicIds,
+    handleAddSelectedTopics,
+    intl: { formatMessage },
+    processing
+  } = props;
   const selectableTopics = useTopics(selectableTopicIds);
   const locale = useLocale();
   const tenantLocales = useTenantLocales();
@@ -103,7 +109,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
           icon="plus-circle"
           onClick={handleOnAddTopicsClick}
           disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
-          // processing={this.state.processing}
+          processing={processing}
         />
       </SelectGroupsContainer>
     </Container>
