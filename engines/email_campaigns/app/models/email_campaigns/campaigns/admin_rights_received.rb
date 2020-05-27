@@ -4,7 +4,7 @@ module EmailCampaigns
     include Disableable
     include LifecycleStageRestrictable
     include Trackable
-    allow_lifecycle_stages except: ['churned']
+    allow_lifecycle_stages except: ['trial', 'churned']
 
     recipient_filter :filter_notification_recipient
 
