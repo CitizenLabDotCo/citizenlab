@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback, useEffect } from 'react';
+import React, { memo, useCallback } from 'react';
 import styled from 'styled-components';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';

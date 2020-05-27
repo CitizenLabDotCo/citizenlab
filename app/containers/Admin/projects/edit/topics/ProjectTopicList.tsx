@@ -75,14 +75,6 @@ const ProjectTopicList = memo(({
                   <RowContent>
                     <RowContentInner className="expand primary">
                       <RowTitle value={topic.attributes.title_multiloc} />
-
-                      {/* {publication.attributes ?.publication_visible_to === 'admins' &&
-                        <StyledStatusLabel
-                          text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-                          color="clBlue"
-                          icon="lock"
-                        />
-                      } */}
                     </RowContentInner>
                   </RowContent>
                   <Button
