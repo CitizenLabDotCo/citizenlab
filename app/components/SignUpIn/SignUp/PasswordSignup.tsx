@@ -6,6 +6,7 @@ import { API_PATH } from 'containers/App/constants';
 import request from 'utils/request';
 
 // components
+import Link from 'utils/cl-router/Link';
 import Input from 'components/UI/Input';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
@@ -99,7 +100,8 @@ type State = {
   tacAccepted: boolean;
   privacyAccepted: boolean;
   processing: boolean;
-  tokenError: string | null;
+  invalidTokenError: boolean;
+  invitationRedeemError: string | null;
   firstNameError: string | null;
   lastNameError: string | null;
   emailError: string | null;
@@ -122,7 +124,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       tacAccepted: false,
       privacyAccepted: false,
       processing: false,
-      tokenError: null,
+      invalidTokenError: false,
+      invitationRedeemError: null,
       firstNameError: null,
       lastNameError: null,
       emailError: null,
@@ -139,14 +142,17 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
     const { metaData } = this.props;
 
+    this.setState({ token: metaData?.token });
+
     if (metaData?.token) {
       request<IUser>(`${API_PATH}/users/by_invite/${metaData.token}`, null, { method: 'GET' }, null).then((response) => {
         this.setState({
-          token: metaData.token,
           firstName: response?.data?.attributes?.first_name || null,
           lastName: response?.data?.attributes.last_name || null,
           email: response?.data?.attributes?.email || null
         });
+      }).catch(() => {
+        this.setState({ invalidTokenError: true });
       });
     }
   }
@@ -158,7 +164,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
   handleTokenOnChange = (token: string) => {
     this.setState({
       token,
-      tokenError: null,
+      invitationRedeemError: null,
       unknownError: null
     });
   }
@@ -231,7 +237,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
     const { locale } = this.props;
     const { token, firstName, lastName, email, password, tacAccepted, privacyAccepted, processing } = this.state;
-    let tokenError = isInvitation && !token ? formatMessage(messages.noTokenError) : null;
+    let invitationRedeemError = isInvitation && !token ? formatMessage(messages.noTokenError) : null;
     const phone = !isNilOrError(tenant) && tenant.attributes.settings.password_login?.phone;
     const hasEmailError = !phone && (!email || !isValidEmail(email));
     const emailError = (hasEmailError ? (!email ? formatMessage(messages.noEmailError) : formatMessage(messages.noValidEmailError)) : null);
@@ -247,9 +253,9 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       passwordError = formatMessage(messages.noValidPasswordError);
     }
 
-    const hasErrors = [tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError].some(error => error);
+    const hasErrors = [invitationRedeemError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError].some(error => error);
 
-    this.setState({ tokenError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError });
+    this.setState({ invitationRedeemError, emailError, firstNameError, lastNameError, passwordError, tacError, privacyError });
 
     if (!hasErrors && !processing && firstName && lastName && email && password && locale) {
       try {
@@ -263,15 +269,15 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
 
         // custom error handling for invitation codes
         if (get(errors, 'json.errors.base[0].error') === 'token_not_found') {
-          tokenError = formatMessage(messages.tokenNotFoundError);
+          invitationRedeemError = formatMessage(messages.tokenNotFoundError);
         }
 
         if (get(errors, 'json.errors.base[0].error') === 'already_accepted') {
-          tokenError = formatMessage(messages.tokenAlreadyAcceptedError);
+          invitationRedeemError = formatMessage(messages.tokenAlreadyAcceptedError);
         }
 
         this.setState({
-          tokenError,
+          invitationRedeemError,
           processing: false,
           apiErrors: errors
         });
@@ -310,7 +316,8 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       email,
       password,
       processing,
-      tokenError,
+      invalidTokenError,
+      invitationRedeemError,
       firstNameError,
       lastNameError,
       emailError,
@@ -336,6 +343,17 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
       }
     }
 
+    if (invalidTokenError) {
+      const signUpPageLink = <Link to={'/sign-up'}>{formatMessage(messages.signUpPage)}</Link>;
+
+      return (
+        <Error
+          animate={false}
+          text={<FormattedMessage {...messages.invalidTokenError} values={{ signUpPageLink }} />}
+        />
+      );
+    }
+
     return (
       <Container
         id="e2e-sign-up-email-password-container"
@@ -358,7 +376,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
                   type="text"
                   value={token}
                   placeholder={formatMessage(messages.tokenPlaceholder)}
-                  error={tokenError}
+                  error={invitationRedeemError}
                   onChange={this.handleTokenOnChange}
                   autoFocus={!!(isDesktop && isInvitation && !this.props.metaData.token)}
                 />
@@ -466,7 +484,7 @@ class PasswordSignup extends PureComponent<Props & InjectedIntlProps, State> {
               </ButtonWrapper>
             </FormElement>
 
-            <Error text={tokenError || unknownApiError} />
+            <Error text={invitationRedeemError || unknownApiError} />
           </Form>
 
           <Options>
