@@ -20,5 +20,5 @@ export default defineMessages({
   slogan: {
     id: 'app.containers.SignUpInPage.slogan',
     defaultMessage: 'We need your opinion to create a better city!',
-  },
+  }
 });
