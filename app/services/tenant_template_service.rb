@@ -45,7 +45,12 @@ class TenantTemplateService
           end
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
-          raise e
+          json_info = {
+            error_message: e.message,
+            model_class: model_class.name,
+            attributes: attributes
+          }.to_json
+          raise "Failed to create instance during template application: #{json_info}"
         end
         obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
       end
@@ -1137,7 +1142,6 @@ class TenantTemplateService
         'created_at'      => layer.created_at.to_s,
         'updated_at'      => layer.updated_at.to_s
       }
-      store_ref yml_layer, layer.id, :maps_layer
       yml_layer
     end
   end

@@ -33,6 +33,9 @@ module AdminApi
       @template['models']['polls/question']        = yml_poll_questions shift_timestamps: shift_timestamps
       @template['models']['polls/option']          = yml_poll_options shift_timestamps: shift_timestamps
       @template['models']['volunteering/cause']    = yml_volunteering_causes shift_timestamps: shift_timestamps
+      @template['models']['maps/map_config']       = yml_maps_map_configs shift_timestamps: shift_timestamps
+      @template['models']['maps/layer']            = yml_maps_layers shift_timestamps: shift_timestamps
+      @template['models']['maps/legend_item']      = yml_maps_legend_items shift_timestamps: shift_timestamps
 
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
@@ -265,6 +268,48 @@ module AdminApi
         }
         store_ref yml_cause, c.id, :volunteering_cause
         yml_cause
+      end
+    end
+
+    def yml_maps_map_configs shift_timestamps: 0
+      Maps::MapConfig.where(project_id: @project.id).map do |map_config|
+        yml_map_config = {
+          'project_ref'            => lookup_ref(map_config.project_id, :project),
+          'center_geojson'         => map_config.center_geojson,
+          'zoom_level'             => map_config.zoom_level.to_f,
+          'tile_provider'          => map_config.tile_provider,
+          'created_at'             => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
+          'updated_at'             => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_map_config, map_config.id, :maps_map_config
+        yml_map_config
+      end
+    end
+
+    def yml_maps_layers shift_timestamps: 0
+      (@project.map_config&.layers || []).map do |layer|
+        yml_layer = {
+          'map_config_ref'  => lookup_ref(layer.map_config_id, :maps_map_config),
+          'title_multiloc'  => layer.title_multiloc,
+          'geojson'         => layer.geojson,
+          'default_enabled' => layer.default_enabled,
+          'marker_svg_url'  => layer.marker_svg_url,
+          'created_at'      => shift_timestamp(layer.created_at, shift_timestamp)&.iso8601,
+          'updated_at'      => shift_timestamp(layer.updated_at, shift_timestamp)&.iso8601
+        }
+        yml_layer
+      end
+    end
+
+    def yml_maps_legend_items shift_timestamps: 0
+      (@project.map_config&.legend_items || []).map do |legend_item|
+        {
+          'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
+          'title_multiloc' => legend_item.title_multiloc,
+          'color'          => legend_item.color,
+          'created_at'     => shift_timestamp(legend_item.created_at, shift_timestamps)&.iso8601,
+          'updated_at'     => shift_timestamp(legend_item.updated_at, shift_timestamps)&.iso8601
+        }
       end
     end
 
