@@ -45,7 +45,7 @@ const AddTopicButton = styled(Button)`
 `;
 
 const StyledMultipleSelect = styled(MultipleSelect)`
-  min-width: 300px;
+  width: 350px;
 `;
 
 interface Props {
