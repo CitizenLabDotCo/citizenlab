@@ -24,8 +24,8 @@ module EmailCampaigns
     def generate_commands recipient:, activity:
       [{
         event_payload: {
-          inviter_first_name: activity.item.inviter.first_name,
-          inviter_last_name: activity.item.inviter.last_name,
+          inviter_first_name: activity.item.inviter&.first_name,
+          inviter_last_name: activity.item.inviter&.last_name,
           invitee_first_name: activity.item.invitee.first_name,
           invitee_last_name: activity.item.invitee.last_name,
           invite_text: activity.item.invite_text,
