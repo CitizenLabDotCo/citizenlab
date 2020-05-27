@@ -299,7 +299,7 @@ const Right = styled.div`
   }
 
   ${media.desktop`
-    margin-right: 35px;
+    margin-right: 40px;
   `}
 
   ${media.smallerThanMinTablet`
