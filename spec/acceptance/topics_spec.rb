@@ -51,7 +51,7 @@ resource "Topics" do
       let(:topic) { build(:topic) }
       let(:title_multiloc) { topic.title_multiloc }
 
-      example_request "Create an topic" do
+      example_request "Create a topic" do
         expect(response_status).to eq 201
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
@@ -70,7 +70,7 @@ resource "Topics" do
       let(:title_multiloc) { {'en' => "Comedy"} }
       let(:description_multiloc) { {'en' => "Stuff that tends to make you laugh"} }
 
-      example_request "Update an topic" do
+      example_request "Update a topic" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
@@ -98,12 +98,43 @@ resource "Topics" do
       let(:topic) { create(:topic) }
       let!(:id) { topic.id }
 
-      example "Delete an topic" do
+      example "Delete a topic" do
         old_count = Topic.count
         do_request
         expect(response_status).to eq 200
         expect{Topic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(Topic.count).to eq (old_count - 1)
+      end
+    end
+
+    post "web_api/v1/projects/:project_id/topics" do
+      ValidationErrorHelper.new.error_fields(self, ProjectsTopic)
+
+      parameter :topic_id, "The ID of the topic to add"
+
+      let(:project_id) { create(:project).id }
+      let(:topic_id) { create(:topic).id }
+
+      example "Add a topic to a project" do
+        old_count = ProjectsTopic.count
+        do_request
+        expect(response_status).to eq 201
+        expect(ProjectsTopic.count).to eq (old_count + 1)
+      end
+    end
+
+    delete "web_api/v1/projects/:project_id/topics/:topic_id" do
+      let(:projects_topic) { create(:projects_topic) }
+      let(:project_id) { projects_topic.project_id }
+      let(:topic_id) { projects_topic.topic_id }
+
+      example "Delete a topic from a project" do
+        id = projects_topic.id
+        old_count = ProjectsTopic.count
+        do_request
+        expect(response_status).to eq 200
+        expect{ProjectsTopic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
+        expect(ProjectsTopic.count).to eq (old_count - 1)
       end
     end
   end

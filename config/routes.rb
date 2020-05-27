@@ -130,6 +130,7 @@ Rails.application.routes.draw do
       end
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
+        resources :topics, controller: 'projects_topics', only: [:create, :destroy], param: :topic_id
         resources :phases, only: [:index, :new, :create]
         resources :images, defaults: {container_type: 'Project'}
         resources :files, defaults: {container_type: 'Project'}
