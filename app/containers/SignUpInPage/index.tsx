@@ -4,9 +4,10 @@ import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { Subscription } from 'rxjs';
+import { parse } from 'qs';
 
 // components
-import SignUpIn from 'components/SignUpIn';
+import SignUpIn, { TSignUpInFlow } from 'components/SignUpIn';
 import SignUpInPageMeta from './SignUpInPageMeta';
 
 // resources
@@ -106,10 +107,57 @@ export interface DataProps {
 
 export interface Props extends InputProps, DataProps {}
 
-interface State {}
+interface State {
+  initialFlow: TSignUpInFlow;
+  isInvitation: boolean;
+  token?: string;
+  error: boolean;
+  loaded: boolean;
+}
 
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[] = [];
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      initialFlow: 'signup',
+      isInvitation: false,
+      token: undefined,
+      error: false,
+      loaded: false
+    };
+  }
+
+  static getDerivedStateFromProps(props: Props & WithRouterProps, state: State) {
+    const { authUser, previousPathName, location: { pathname } } = props;
+    const isLoggedIn = !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
+    const urlSearchParams = parse(props.location.search, { ignoreQueryPrefix: true });
+    const token = isString(urlSearchParams?.token) ? urlSearchParams.token : undefined;
+
+    if (isLoggedIn) {
+      clHistory.replace(previousPathName || '/');
+    }
+
+    if (!state.loaded) {
+      const error = endsWith(pathname, 'authentication-error');
+      const isInvitation = !!token || endsWith(pathname, 'invite');
+      const initialFlow = !isInvitation && endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
+
+      // remove any urlSearchParams so that they don't accidentaly get reused in the future
+      window.history.replaceState(null, '', window.location.pathname);
+
+      return {
+        initialFlow,
+        isInvitation,
+        error,
+        token,
+        loaded: true
+      };
+    }
+
+    return null;
+  }
 
   componentDidMount() {
     this.subscriptions = [
@@ -117,18 +165,6 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
         window.scrollTo(0, 0);
       })
     ];
-  }
-
-  static getDerivedStateFromProps(props: Props & WithRouterProps, _state: State) {
-    const { authUser, previousPathName, location: { pathname } } = props;
-    const isOnSignInPage = endsWith(pathname, 'sign-in');
-    const isLoggedIn = !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
-
-    if (isOnSignInPage && isLoggedIn) {
-      clHistory.replace(previousPathName || '/');
-    }
-
-    return null;
   }
 
   componentWillUnmount() {
@@ -140,47 +176,46 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { location: { pathname, query } } = this.props;
-    const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
-    const error = endsWith(pathname, 'authentication-error');
-    const isInvitation = endsWith(pathname, 'invite');
-    const token = isString(query?.token) ? query.token : undefined;
-    const inModal = false;
-    const verification = undefined;
+    const { location: { pathname } } = this.props;
+    const { initialFlow, isInvitation, error, token, loaded } = this.state;
 
-    return (
-      <>
-        {!isInvitation && !error &&
-          <SignUpInPageMeta />
-        }
+    if (loaded) {
+      return (
+        <>
+          {!isInvitation && !error &&
+            <SignUpInPageMeta />
+          }
 
-        <Container id="e2e-sign-up-in-page">
-          <Left>
-            <Banner>
-              <Slogan>
-                <FormattedMessage {...messages.slogan} />
-              </Slogan>
-            </Banner>
-          </Left>
-          <Right>
-            <RightInner>
-              <SignUpIn
-                metaData={{
-                  flow,
-                  pathname,
-                  error,
-                  isInvitation,
-                  token,
-                  inModal,
-                  verification
-                }}
-                onSignUpInCompleted={this.onSignUpInCompleted}
-              />
-            </RightInner>
-          </Right>
-        </Container>
-      </>
-    );
+          <Container id="e2e-sign-up-in-page">
+            <Left>
+              <Banner>
+                <Slogan>
+                  <FormattedMessage {...messages.slogan} />
+                </Slogan>
+              </Banner>
+            </Left>
+            <Right>
+              <RightInner>
+                <SignUpIn
+                  metaData={{
+                    pathname,
+                    error,
+                    isInvitation,
+                    token,
+                    flow: initialFlow,
+                    inModal: false,
+                    verification: undefined
+                  }}
+                  onSignUpInCompleted={this.onSignUpInCompleted}
+                />
+              </RightInner>
+            </Right>
+          </Container>
+        </>
+      );
+    }
+
+    return null;
   }
 }
 
