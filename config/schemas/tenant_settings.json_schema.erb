@@ -794,6 +794,16 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
         }
+      },
+      "custom_topics": {
+        "type": "object",
+        "description": "Customize the platform topics",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
       }
     },
   "dependencies": {
