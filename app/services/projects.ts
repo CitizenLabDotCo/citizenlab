@@ -177,13 +177,15 @@ export async function updateProject(projectId, projectData: IUpdatedProjectPrope
   return response;
 }
 
-export function deleteProjectTopic(projectId: string, topicId: string) {
-  return streams.delete(`${apiEndpoint}/${projectId}/topics/${topicId}`, topicId);
+export async function deleteProjectTopic(projectId: string, topicId: string) {
+  const response = streams.delete(`${apiEndpoint}/${projectId}/topics/${topicId}`, topicId);
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/topics`, `${API_PATH}/projects`] });
+  return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
   const response = streams.add(`${apiEndpoint}/${projectId}/topics`, { topic_id: topicId });
-  // await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/topics`, `${API_PATH}/projects`, `${API_PATH}/admin_publications`] });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/topics`, `${API_PATH}/projects`] });
   return response;
 }
 
