@@ -191,7 +191,6 @@ resource "Ideas" do
     end
 
     example "Search for ideas" do
-      u = create(:user)
       i1 = create(:idea, title_multiloc: {en: "This idea is uniqque"})
       i2 = create(:idea, title_multiloc: {en: "This one origiinal"})
 
@@ -202,7 +201,6 @@ resource "Ideas" do
     end
 
     example "List all ideas sorted by new" do
-      u = create(:user)
       i1 = create(:idea)
 
       do_request sort: "new"
@@ -212,7 +210,6 @@ resource "Ideas" do
     end
 
     example "List all ideas sorted by baskets count", document: false do
-      u = create(:user)
       i1 = create(:idea)
       baskets = create_list(:basket, 3, ideas: [i1])
       SideFxBasketService.new.update_basket_counts
@@ -224,7 +221,6 @@ resource "Ideas" do
     end
 
     example "List all ideas by random ordering", document: false do
-      u = create(:user)
       i1 = create(:idea)
 
       do_request sort: "random"

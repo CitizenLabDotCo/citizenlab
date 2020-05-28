@@ -20,6 +20,9 @@ class Topic < ApplicationRecord
   before_validation :set_code
 
 
+  scope :order_new, -> (direction=:desc) {order(created_at: direction, id: direction)}
+
+
   def custom?
     self.code == 'custom'
   end
