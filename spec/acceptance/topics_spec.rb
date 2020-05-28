@@ -31,6 +31,28 @@ resource "Topics" do
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 4
     end
+
+    example "List all topics sorted by newest first" do
+      t1 = create(:topic, created_at: Time.now + 1.hour)
+
+      do_request sort: 'new'
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 6
+      expect(json_response[:data][0][:id]).to eq t1.id
+    end
+
+    example "List all topics sorted by custom ordering" do
+      t1 = create(:topic)
+      t1.insert_at!(0)
+      t2 = create(:topic)
+      t2.insert_at!(6)
+
+      do_request sort: 'custom'
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 7
+      expect(json_response[:data][0][:id]).to eq t1.id
+      expect(json_response[:data][6][:id]).to eq t2.id
+    end
   end
 
   get "web_api/v1/topics/:id" do
@@ -161,6 +183,16 @@ resource "Topics" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 2
+    end
+
+    example "List all topics of a project sorted by custom ordering" do
+      t1 = @topics.first
+      t1.projects_topics.find_by(project_id: project_id).insert_at!(1)
+
+      do_request sort: 'custom'
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+      expect(json_response[:data][1][:id]).to eq t1.id
     end
   end
 
