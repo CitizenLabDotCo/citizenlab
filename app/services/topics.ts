@@ -12,6 +12,7 @@ export interface ITopicData {
     description_multiloc: Multiloc;
     icon: string;
     ordering: number;
+    code: string // to change with specific codes
   };
 }
 
