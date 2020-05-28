@@ -19,7 +19,9 @@ import useProject from 'hooks/useProject';
 import { addProjectTopic, deleteProjectTopic } from 'services/projects';
 import { ITopicData } from 'services/topics';
 
-const Container = styled.div``;
+const Container = styled.div`
+  min-height: 80vh;
+`;
 
 interface Props {}
 
