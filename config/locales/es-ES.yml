@@ -24,34 +24,38 @@ es:
     ineligible: no elegible
     ineligible_description: no elegible
   topics:
-    infrastructure: Plazas y calles
-    infrastructure_description: Plazas y calles
-    waste: Limpieza y residuos
-    waste_description: Limpieza y residuos
-    mobility: Movilidad
-    mobility_description: Movilidad
-    technology: Tecnología
-    technology_description: Tecnología
-    economy: Trabajo, economía y comercio
-    economy_description: Trabajo, economía y comercio
-    nature: Naturaleza y la biodiversidad
-    nature_description: Naturaleza y biodiversidad
-    sustainability: Desarrollo sostenible
-    sustainability_description: Desarrollo sostenible
-    housing: Vivienda
-    housing_description: Vivienda
-    culture: Arte, cultura y eventos
-    culture_description: Arte, cultura y eventos
-    citizenship: Ciudadanía
-    citizenship_description: Ciudadanía
-    social: Inclusión social
-    social_description: Inclusión social
-    health: Cuidado y bienestar
-    health_description: Cuidado y bienestar
-    sport: Deportes
-    sport_description: Deportes
-    education: Educación y juventud
-    education_description: Educación y juventud
+    nature: Nature and animals
+    nature_description: Nature and animals
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
+    housing: Housing
+    housing_description: Housing
+    public_space: Public space
+    public_space_description: Public space
+    safety: Safety
+    safety_description: Safety
+    education: Education and youth
+    education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: City services
+    services_description: City services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Términos y Condiciones
     terms_and_conditions_body: >

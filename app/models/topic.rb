@@ -1,6 +1,6 @@
 class Topic < ApplicationRecord
 
-  CODES = %w(mobility nature waste sustainability technology economy housing infrastructure security education culture health social citizenship services other custom)
+  CODES = %w(nature waste sustainability mobility technology economy housing public_space safety education culture health inclusion community services other custom)
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
   
