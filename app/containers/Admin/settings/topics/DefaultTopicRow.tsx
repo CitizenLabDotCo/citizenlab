@@ -5,8 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 // components
-import { TextCell, Row } from 'components/admin/ResourceList';
-import T from 'components/T';
+import { Row } from 'components/admin/ResourceList';
 import { RowContent, RowContentInner, RowTitle } from '../StyledComponents';
 
 // i18n

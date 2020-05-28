@@ -4,8 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 // components
-import { TextCell, Row } from 'components/admin/ResourceList';
-import T from 'components/T';
+import { Row } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { RowContent, RowContentInner, RowTitle } from '../StyledComponents';
 

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import Button from 'components/UI/Button';
 import T from 'components/T';
 
 export const RowContent = styled.div`
