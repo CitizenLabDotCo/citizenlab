@@ -78,8 +78,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
                 const isLastItem = (index === topics.length - 1);
 
                 if (!isNilOrError(topic)) {
-                  const isDefaultTopic = true;
-                  // const isDefaultTopic = topic.attributes.code !== 'custom';
+                  const isDefaultTopic = topic.attributes.code !== 'custom';
 
                   return (
                     isDefaultTopic ?
