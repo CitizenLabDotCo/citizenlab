@@ -2,12 +2,24 @@ class WebApi::V1::TopicsController < ApplicationController
    before_action :set_topic, only: [:show, :update, :reorder, :destroy]
 
    def index
-     @topics = policy_scope(Topic)
-       .order(:ordering)
+     @topics = policy_scope(Topic).includes(:projects_topics)
+
+     @topics = if params[:project_id].present?
+      @topics.where(projects_topics: {project_id: params[:project_id]})
+        .order('projects_topics.ordering')
+     else
+       @topics.order(:ordering)
+     end
+
+     @topics = @topics
        .page(params.dig(:page, :number))
        .per(params.dig(:page, :size))
 
-     render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: fastjson_params)
+     render json: linked_json(
+      @topics, 
+      WebApi::V1::TopicSerializer, 
+      params: fastjson_params(project_id: params[:project_id])
+      )
    end
 
    def show
@@ -48,14 +60,19 @@ class WebApi::V1::TopicsController < ApplicationController
   def reorder
     authorize @topic
     SideFxTopicService.new.before_update(@topic, current_user)
-    if @topic.insert_at(permitted_attributes(@topic)[:ordering])
+    instance = if params[:project_id].present?
+      @topic.projects_topics.find_by project_id: params[:project_id]
+    else
+      @topic
+    end
+    if instance.insert_at(permitted_attributes(@topic)[:ordering])
       SideFxTopicService.new.after_update(@topic, current_user)
       render json: WebApi::V1::TopicSerializer.new(
         @topic.reload, 
-        params: fastjson_params
+        params: fastjson_params(project_id: params[:project_id])
         ).serialized_json, status: :ok
     else
-      render json: { errors: @topic.errors.details }, status: :unprocessable_entity
+      render json: { errors: instance.errors.details }, status: :unprocessable_entity
     end
   end
 

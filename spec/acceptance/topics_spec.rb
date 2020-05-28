@@ -86,10 +86,10 @@ resource "Topics" do
       let(:id) { create(:topic).id }
       let(:ordering) { 1 }
 
-      example_request "Reorder a topic" do
+      example_request "Reorder a topic globally" do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering)).to match ordering
+        expect(json_response.dig(:data,:attributes,:ordering)).to eq ordering
       end
     end
 
@@ -135,6 +135,47 @@ resource "Topics" do
         expect(response_status).to eq 200
         expect{ProjectsTopic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectsTopic.count).to eq (old_count - 1)
+      end
+    end
+  end
+
+  get "web_api/v1/projects/:project_id/topics" do
+    with_options scope: :page do
+      parameter :number, "Page number"
+      parameter :size, "Number of topics per page"
+    end
+
+    let(:topics) { @topics.take(2) }
+    let(:project_id) { create(:project, topics: topics).id }
+    
+    example_request "List all topics of a project" do
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 2
+    end
+  end
+
+  context "when admin" do
+    before do
+      @admin = create(:admin)
+      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
+    patch "web_api/v1/projects/:project_id/topics/:topic_id/reorder" do
+      with_options scope: :topic do
+        parameter :ordering, "The position, starting from 0, where the field should be at. Fields after will move down.", required: true
+      end
+
+      let(:topics) { @topics.take(3) }
+      let(:project_id) { create(:project, topics: topics).id }
+      let(:topic_id) { topics[1].id }
+      let(:ordering) { 0 }
+
+      example_request "Reorder a topic within the context of a project" do
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data,:attributes,:ordering_within_project)).to eq ordering
       end
     end
   end
