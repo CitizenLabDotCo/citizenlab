@@ -37,7 +37,7 @@ const ProjectTopicList = memo(({
   };
 
   const handleReorderTopicProject = () => {
-    // To implement
+    // reorderProjectTopic(itemId, newOrder);
   };
 
   const topics = selectedTopicIds.length > 0 ? useTopics(selectedTopicIds) : null;
