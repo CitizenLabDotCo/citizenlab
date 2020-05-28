@@ -16,11 +16,20 @@ resource "Topics" do
       parameter :number, "Page number"
       parameter :size, "Number of topics per page"
     end
+    parameter :code, 'Filter by code', required: false
     
     example_request "List all topics" do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq 5
+    end
+
+    example "List all topics by code" do
+      @topics.first.update!(code: 'nature')
+      do_request code: 'custom'
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 4
     end
   end
 

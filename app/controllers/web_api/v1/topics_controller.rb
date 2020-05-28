@@ -3,6 +3,7 @@ class WebApi::V1::TopicsController < ApplicationController
 
    def index
      @topics = policy_scope(Topic).includes(:projects_topics)
+     @topics = @topics.where(code: params[:code]) if params[:code].present?
 
      @topics = if params[:project_id].present?
       @topics.where(projects_topics: {project_id: params[:project_id]})
