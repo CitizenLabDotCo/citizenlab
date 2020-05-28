@@ -24,34 +24,38 @@ de:
     ineligible: untauglich
     ineligible_description: untauglich
   topics:
-    infrastructure: Straßen und Plätze
-    infrastructure_description: Straßen und Plätze
-    waste: Sauberkeit und Abfall
-    waste_description: Sauberkeit und Abfall
-    mobility: Mobilität
-    mobility_description: Mobilität
-    technology: Technologie
-    technology_description: Technologie
-    economy: Arbeit, Wirtschaft und Handel
-    economy_description: Arbeit, Wirtschaft und Handel
-    nature: Natur und biologische Vielfalt
-    nature_description: Natur und biologische Vielfalt
-    sustainability: Nachhaltige Entwicklung
-    sustainability_description: Nachhaltige Entwicklung
-    housing: Wohnen
-    housing_description: Wohnen
-    culture: Kunst, Kultur und Veranstaltungen
-    culture_description: Kunst, Kultur und Veranstaltungen
-    citizenship: Bevölkerung
-    citizenship_description: Bevölkerung
-    social: Soziale Inklusion
-    social_description: Soziale Inklusion
-    health: Fürsorge und Wohlfahrt
-    health_description: Fürsorge und Wohlfahrt
-    sport: Sport
-    sport_description: Sport
-    education: Bildung und Jugend
-    education_description: Bildung und Jugend
+    nature: Nature and animals
+    nature_description: Nature and animals
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
+    housing: Housing
+    housing_description: Housing
+    public_space: Public space
+    public_space_description: Public space
+    safety: Safety
+    safety_description: Safety
+    education: Education and youth
+    education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: City services
+    services_description: City services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Verwendungsbedingungen
     terms_and_conditions_body: >

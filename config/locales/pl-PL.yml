@@ -24,34 +24,38 @@ pl:
     ineligible: niekwalifikowana
     ineligible_description: niekwalifikowalna
   topics:
-    infrastructure: Place i ulice
-    infrastructure_description: Place i ulice
-    waste: Czystość i odpady
-    waste_description: Czystość i odpady
-    mobility: Mobilność
-    mobility_description: Mobilność
-    technology: Technologia
-    technology_description: Technologia
-    economy: Praca, gospodarka i handel
-    economy_description: Praca, gospodarka i handel
-    nature: Przyroda i różnorodność biologiczna
-    nature_description: Przyroda i różnorodność biologiczna
-    sustainability: Zrównoważony rozwój
-    sustainability_description: Zrównoważony rozwój
-    housing: Mieszkalnictwo
-    housing_description: Mieszkalnictwo
-    culture: Sztuki piękne, kultura i wydarzenia
-    culture_description: Sztuki piękne, kultura i wydarzenia
-    citizenship: Obywatelstwo
-    citizenship_description: Obywatelstwo
-    social: Integracja społeczna
-    social_description: Integracja społeczna
-    health: Opieka społeczna
-    health_description: Opieka społeczna
-    sport: Sport
-    sport_description: Sport
-    education: Edukacja i młodzież
-    education_description: Edukacja i młodzież
+    nature: Nature and animals
+    nature_description: Nature and animals
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
+    housing: Housing
+    housing_description: Housing
+    public_space: Public space
+    public_space_description: Public space
+    safety: Safety
+    safety_description: Safety
+    education: Education and youth
+    education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: City services
+    services_description: City services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Regulamin
     terms_and_conditions_body: >

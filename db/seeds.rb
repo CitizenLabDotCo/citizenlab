@@ -18,7 +18,7 @@ end
 # Possible values: large, medium, small, generic, empty
 SEED_SIZE = ENV.fetch('SEED_SIZE','medium')
 
-SEED_LOCALES = ['en','nl-BE', 'fr-BE']
+SEED_LOCALES = ['en','nl-BE','fr-BE']
 
 num_users = 10
 num_projects = 4

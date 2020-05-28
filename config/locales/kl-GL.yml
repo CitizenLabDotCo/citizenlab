@@ -24,34 +24,38 @@ kl:
     ineligible: naleqqutinngilaq
     ineligible_description: naleqqutinngilaq
   topics:
-    infrastructure: Kipparissut aqquserngillu
-    infrastructure_description: Kipparissut aqquserngillu
-    waste: Saligaatsuuneq eqqagassallu
-    waste_description: Saligaatsuuneq eqqagassallu
-    mobility: Nikerarsinnaaneq
-    mobility_description: Nikerarsinnaaneq
-    technology: Teknologi
-    technology_description: Teknologi
-    economy: Sulineq, aningaasaqarneq niuernerlu
-    economy_description: Sulineq, aningaasaqarneq niuernerlu
-    nature: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
-    nature_description: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
-    sustainability: Piujuartitsilluni ineriartorneq
-    sustainability_description: Piujuartitsilluni ineriartorneq
-    housing: Inissiat
-    housing_description: Inissiat
-    culture: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
-    culture_description: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
-    citizenship: Inuttaaqataaneq
-    citizenship_description: Inuttaaqataaneq
-    social: Inunnut akulerunneq
-    social_description: Inunnut akulerunneq
-    health: Paaqqutarineqarneq atugarissaarnerlu
-    health_description: Paaqqutarineqarneq atugarissaarnerlu
-    sport: Timersorneq
-    sport_description: Timersorneq
-    education: Ilinniartitaaneq inuusuttullu
-    education_description: Ilinniartitaaneq inuusuttullu
+    nature: Nature and animals
+    nature_description: Nature and animals
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
+    housing: Housing
+    housing_description: Housing
+    public_space: Public space
+    public_space_description: Public space
+    safety: Safety
+    safety_description: Safety
+    education: Education and youth
+    education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: City services
+    services_description: City services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Vilkår og Betingelser
     terms_and_conditions_body: >
