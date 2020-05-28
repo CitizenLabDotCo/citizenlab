@@ -50,7 +50,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 
 interface Props {
   selectableTopicIds: string[];
-  handleAddSelectedTopics: (topicIds: string[]) => void;
+  handleAddSelectedTopics: (topics: ITopicData[]) => void;
   processing: boolean;
 }
 
@@ -61,7 +61,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
     intl: { formatMessage },
     processing
   } = props;
-  const selectableTopics = useTopics(selectableTopicIds);
+  const topics = useTopics(selectableTopicIds);
   const locale = useLocale();
   const tenantLocales = useTenantLocales();
   const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
@@ -71,50 +71,54 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
     setSelectedTopicOptions(newSelectedTopicOptions);
   }, []);
 
-  const handleOnAddTopicsClick = useCallback(() => {
+  const handleOnAddTopicsClick = useCallback(
+    (selectableTopics: ITopicData[], selectedTopicOptions: IOption[]) =>
+    (_event: React.FormEvent) => {
     const newlySelectedTopicIds = selectedTopicOptions.map(topicOption => topicOption.value) as string[];
-    handleAddSelectedTopics(newlySelectedTopicIds);
+    const newlySelectedTopics = selectableTopics.filter(topic => newlySelectedTopicIds.includes(topic.id));
+    handleAddSelectedTopics(newlySelectedTopics);
   }, []);
 
-  const getOptions = useCallback(() => {
-    if (!isNilOrError(selectableTopics)) {
-      const topics = selectableTopics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
-      return topics.map(topic => {
-        return ({
-          value: topic.id,
-          label: getLocalized(
-            topic.attributes.title_multiloc,
-            locale,
-            tenantLocales
-          )
-        });
+  const getOptions = (selectableTopics: ITopicData[]) => {
+    const topics = selectableTopics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
+    return topics.map(topic => {
+      return ({
+        value: topic.id,
+        label: getLocalized(
+          topic.attributes.title_multiloc,
+          locale,
+          tenantLocales
+        )
       });
-    }
+    });
+  };
 
-    return null;
-  }, [selectableTopics]);
+  if (!isNilOrError(topics)) {
+    const selectableTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
 
-  return (
-    <Container>
-      <SelectGroupsContainer>
-        <StyledMultipleSelect
-          value={selectedTopicOptions}
-          options={getOptions()}
-          onChange={handleTopicSelectionChange}
-        />
+    return (
+      <Container>
+        <SelectGroupsContainer>
+          <StyledMultipleSelect
+            value={selectedTopicOptions}
+            options={getOptions(selectableTopics)}
+            onChange={handleTopicSelectionChange}
+          />
 
-        <AddTopicButton
-          text={formatMessage(messages.addTopics)}
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          onClick={handleOnAddTopicsClick}
-          disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
-          processing={processing}
-        />
-      </SelectGroupsContainer>
-    </Container>
-  );
+          <AddTopicButton
+            text={formatMessage(messages.addTopics)}
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            onClick={handleOnAddTopicsClick(selectableTopics, selectedTopicOptions)}
+            disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
+            processing={processing}
+          />
+        </SelectGroupsContainer>
+      </Container>
+    );
+  }
 
+  return null;
 });
 
 export default injectIntl<Props>(ProjectTopicSelector);

@@ -2,6 +2,7 @@ import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { SurveyServices, ParticipationMethod } from './participationContexts';
+import { ITopic } from 'services/topics';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -120,7 +121,6 @@ export interface IUpdatedProjectProperties {
   survey_embed_url?: string | null;
   default_assignee_id?: string | null;
   poll_anonymous?: boolean;
-  topic_id?: string;
 }
 
 export interface IProject {
@@ -175,6 +175,14 @@ export async function updateProject(projectId, projectData: IUpdatedProjectPrope
   // TODO: clear partial cache
 
   return response;
+}
+
+export function deleteProjectTopic(projectId: string, topicId: string) {
+  return streams.delete(`${apiEndpoint}/${projectId}/topics/${topicId}`, topicId);
+}
+
+export function addProjectTopic(projectId: string, topic: ITopic) {
+  return streams.add(`${apiEndpoint}/${projectId}/topics`, { topic });
 }
 
 export function reorderProject(projectId: IProjectData['id'], newOrder: number) {
