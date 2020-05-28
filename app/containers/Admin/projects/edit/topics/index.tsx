@@ -34,7 +34,7 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
 
   const handleAddSelectedTopics = useCallback(async (toBeAddedtopics: ITopicData[]) => {
       setProcessing(true);
-      const promises = toBeAddedtopics.map(topic => addProjectTopic(projectId, { data: topic }));
+      const promises = toBeAddedtopics.map(topic => addProjectTopic(projectId, topic.id));
 
       try {
         await Promise.all(promises);
