@@ -16,7 +16,8 @@ import useTopics from 'hooks/useTopics';
 import useProject from 'hooks/useProject';
 
 // services
-import { updateProject } from 'services/projects';
+import { addProjectTopic, deleteProjectTopic } from 'services/projects';
+import { ITopicData } from 'services/topics';
 
 const Container = styled.div``;
 
@@ -27,15 +28,13 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
   const project = useProject({ projectId });
   const [processing, setProcessing] = useState(false);
 
-  const handleRemoveSelectedTopic = useCallback(
-    (currentSelectedTopics: string[]) => (topicIdToRemove: string) => {
-      // To be implemented
-    }, []
-  );
+  const handleRemoveSelectedTopic = useCallback((topicIdToRemove: string) => {
+    deleteProjectTopic(projectId, topicIdToRemove);
+  }, []);
 
-  const handleAddSelectedTopics = useCallback(async (toBeAddedtopicIds: string[]) => {
+  const handleAddSelectedTopics = useCallback(async (toBeAddedtopics: ITopicData[]) => {
       setProcessing(true);
-      const promises = toBeAddedtopicIds.map(topicId => updateProject(projectId, { topic_id: topicId }));
+      const promises = toBeAddedtopics.map(topic => addProjectTopic(projectId, { data: topic }));
 
       try {
         await Promise.all(promises);
@@ -71,7 +70,7 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
         />
         <ProjectTopicList
           selectedTopicIds={selectedTopicIds}
-          onHandleRemoveSelectedTopic={handleRemoveSelectedTopic(selectedTopicIds)}
+          onHandleRemoveSelectedTopic={handleRemoveSelectedTopic}
         />
       </Container>
     );
