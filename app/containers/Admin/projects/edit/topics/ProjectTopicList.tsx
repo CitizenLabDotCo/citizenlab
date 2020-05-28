@@ -3,10 +3,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 
 // i18n
-import { FormattedMessage, injectIntl } from 'utils/cl-intl';
+import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { InjectedIntlProps } from 'react-intl';
-import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // components
 import Button from 'components/UI/Button';
@@ -30,8 +28,7 @@ interface Props {
 const ProjectTopicList = memo(({
   selectedTopicIds,
   onHandleRemoveSelectedTopic,
-  localize
-}: Props & InjectedIntlProps & InjectedLocalized) => {
+}: Props) => {
 
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
@@ -97,6 +94,4 @@ const ProjectTopicList = memo(({
   return null;
 });
 
-const ProjectTopicListWithHOCs = injectIntl<Props>(injectLocalize(ProjectTopicList));
-
-export default ProjectTopicListWithHOCs;
+export default ProjectTopicList;
