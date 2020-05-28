@@ -1827,7 +1827,7 @@
   "app.containers.SignUp.goToSignUp": "Don't have an account? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Step {activeStepNumber} of {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "I have read and agree to {link}.",
-  "app.containers.SignUp.invitationError": "Your invitation has expired or has already been redeemed.",
+  "app.containers.SignUp.invitationError": "Your invitation has expired or has already been used.",
   "app.containers.SignUp.invitationTitle": "Redeem your invitation",
   "app.containers.SignUp.lastNameLabel": "Last name",
   "app.containers.SignUp.lastNamePlaceholder": " ",
