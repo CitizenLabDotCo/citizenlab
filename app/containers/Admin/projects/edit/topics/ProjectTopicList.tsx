@@ -13,7 +13,6 @@ import { RowContent, RowContentInner, RowTitle } from '../../components/StyledCo
 import Warning from 'components/UI/Warning';
 
 // hooks
-import useTopics from 'hooks/useTopics';
 import { ITopicData } from 'services/topics';
 
 const StyledWarning = styled(Warning)`
@@ -21,13 +20,13 @@ const StyledWarning = styled(Warning)`
 `;
 
 interface Props {
-  selectedTopicIds: string[];
   onHandleRemoveSelectedTopic: (topicId: string) => void;
+  projectTopics: ITopicData[];
 }
 
 const ProjectTopicList = memo(({
-  selectedTopicIds,
   onHandleRemoveSelectedTopic,
+  projectTopics
 }: Props) => {
 
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
@@ -40,58 +39,51 @@ const ProjectTopicList = memo(({
     // reorderProjectTopic(itemId, newOrder);
   };
 
-  const topics = selectedTopicIds.length > 0 ? useTopics(selectedTopicIds) : null;
+  const isLastSelectedTopic = projectTopics.length === 1;
 
-  if (!isNilOrError(topics)) {
-    const selectedTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
-    const isLastSelectedTopic = selectedTopics.length === 1;
-
-    return (
-      <>
-        {isLastSelectedTopic &&
-          <StyledWarning>
-            <FormattedMessage {...messages.fewerThanOneTopicForbidden} />
-          </StyledWarning>
-        }
-        <SortableList
-          items={selectedTopics}
-          onReorder={handleReorderTopicProject}
-          className="projects-list e2e-admin-projects-list"
-          id="e2e-admin-published-projects-list"
-        >
-          {({ itemsList, handleDragRow, handleDropRow }) => (
-            itemsList.map((topic: ITopicData, index: number) => {
-              return (
-                <SortableRow
-                  id={topic.id}
-                  key={index}
-                  moveRow={handleDragRow}
-                  dropRow={handleDropRow}
-                  lastItem={(index === selectedTopics.length - 1)}
+  return (
+    <>
+      {isLastSelectedTopic &&
+        <StyledWarning>
+          <FormattedMessage {...messages.fewerThanOneTopicForbidden} />
+        </StyledWarning>
+      }
+      <SortableList
+        items={projectTopics}
+        onReorder={handleReorderTopicProject}
+        className="projects-list e2e-admin-projects-list"
+        id="e2e-admin-published-projects-list"
+      >
+        {({ itemsList, handleDragRow, handleDropRow }) => (
+          itemsList.map((topic: ITopicData, index: number) => {
+            return (
+              <SortableRow
+                id={topic.id}
+                key={index}
+                moveRow={handleDragRow}
+                dropRow={handleDropRow}
+                lastItem={(index === projectTopics.length - 1)}
+              >
+                <RowContent>
+                  <RowContentInner className="expand primary">
+                    <RowTitle value={topic.attributes.title_multiloc} />
+                  </RowContentInner>
+                </RowContent>
+                <Button
+                  onClick={handleRemoveSelectedTopic(topic.id)}
+                  buttonStyle="text"
+                  icon="delete"
+                  disabled={isLastSelectedTopic}
                 >
-                  <RowContent>
-                    <RowContentInner className="expand primary">
-                      <RowTitle value={topic.attributes.title_multiloc} />
-                    </RowContentInner>
-                  </RowContent>
-                  <Button
-                    onClick={handleRemoveSelectedTopic(topic.id)}
-                    buttonStyle="text"
-                    icon="delete"
-                    disabled={isLastSelectedTopic}
-                  >
-                    <FormattedMessage {...messages.remove} />
-                  </Button>
-                </SortableRow>
-              );
-            }))
-          }
-        </SortableList>
-      </>
-    );
-  }
-
-  return null;
+                  <FormattedMessage {...messages.remove} />
+                </Button>
+              </SortableRow>
+            );
+          }))
+        }
+      </SortableList>
+    </>
+  );
 });
 
 export default ProjectTopicList;

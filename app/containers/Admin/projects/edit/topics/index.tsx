@@ -13,11 +13,11 @@ import messages from './messages';
 
 // hooks
 import useTopics from 'hooks/useTopics';
-import useProject from 'hooks/useProject';
 
 // services
 import { addProjectTopic, deleteProjectTopic } from 'services/projects';
 import { ITopicData } from 'services/topics';
+import useProjectTopics from 'hooks/useProjectTopics';
 
 const Container = styled.div`
   min-height: 80vh;
@@ -27,7 +27,7 @@ interface Props {}
 
 const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
   const topics = useTopics();
-  const project = useProject({ projectId });
+  const projectTopics = useProjectTopics({ projectId });
   const [processing, setProcessing] = useState(false);
 
   const handleRemoveSelectedTopic = useCallback((topicIdToRemove: string) => {
@@ -48,14 +48,13 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
 
   if (
     !isNilOrError(topics) &&
-    !isNilOrError(project)
+    !isNilOrError(projectTopics)
   ) {
     const topicIds = topics
       .map(topic => !isNilOrError(topic) ? topic.id : null)
       .filter(topic => topic) as string[];
-    const selectedTopicIds =  project.relationships.topics.data ?
-      project.relationships.topics.data.map(topic => topic.id) : [];
-    const selectableTopicIds = topicIds.filter(topicId => !selectedTopicIds.includes(topicId));
+    const projectTopicIds = projectTopics.map(topic => topic.id);
+    const selectableTopicIds = topicIds.filter(topicId => !projectTopicIds.includes(topicId));
 
     return (
       <Container>
@@ -71,7 +70,7 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
           processing={processing}
         />
         <ProjectTopicList
-          selectedTopicIds={selectedTopicIds}
+          projectTopics={projectTopics}
           onHandleRemoveSelectedTopic={handleRemoveSelectedTopic}
         />
       </Container>

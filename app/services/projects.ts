@@ -2,7 +2,7 @@ import { IRelationship, Multiloc, ImageSizes } from 'typings';
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { SurveyServices, ParticipationMethod } from './participationContexts';
-import { ITopic } from 'services/topics';
+import { ITopics } from 'services/topics';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -187,6 +187,10 @@ export async function addProjectTopic(projectId: string, topicId: string) {
   const response = streams.add(`${apiEndpoint}/${projectId}/topics`, { topic_id: topicId });
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/topics`, `${API_PATH}/projects`] });
   return response;
+}
+
+export function projectTopicsStream(projectId: string, streamParams: IStreamParams | null = null) {
+  return streams.get<ITopics>({ apiEndpoint: `${apiEndpoint}/${projectId}/topics`, ...streamParams });
 }
 
 export function reorderProject(projectId: IProjectData['id'], newOrder: number) {
