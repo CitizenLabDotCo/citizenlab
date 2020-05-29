@@ -1858,7 +1858,7 @@
   "app.containers.SignUp.submit": "Zarejestruj się",
   "app.containers.SignUp.tacError": "Akceptacja naszych warunków jest konieczna, aby kontynuować",
   "app.containers.SignUp.thePrivacyPolicy": "z Polityką prywatności",
-  "app.containers.SignUp.theTermsAndConditions": "z Regulamin",
+  "app.containers.SignUp.theTermsAndConditions": "z Regulaminem",
   "app.containers.SignUp.tokenAlreadyAcceptedError": "Zaproszenie zostało przyjęte",
   "app.containers.SignUp.tokenLabel": "Kod zaproszenia",
   "app.containers.SignUp.tokenNotFoundError": "Nie znaleziono kodu zaproszenia",
