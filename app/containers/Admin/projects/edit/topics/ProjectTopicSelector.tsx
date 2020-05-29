@@ -1,17 +1,17 @@
 // Libraries
 import React, { memo, useCallback, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
 import useTopics from 'hooks/useTopics';
-import useTenantLocales from 'hooks/useTenantLocales';
-import useLocale from 'hooks/useLocale';
+import useProjectTopics from 'hooks/useProjectTopics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
-import { getLocalized } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // Components
 import Button from 'components/UI/Button';
@@ -49,21 +49,20 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 `;
 
 interface Props {
-  selectableTopicIds: string[];
   handleAddSelectedTopics: (topics: ITopicData[]) => void;
   processing: boolean;
 }
 
-const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
+const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouterProps & InjectedLocalized) => {
   const {
-    selectableTopicIds,
     handleAddSelectedTopics,
     intl: { formatMessage },
-    processing
+    processing,
+    localize,
+    params: { projectId }
   } = props;
-  const topics = useTopics(selectableTopicIds);
-  const locale = useLocale();
-  const tenantLocales = useTenantLocales();
+  const topics = useTopics();
+  const projectTopics = useProjectTopics({ projectId });
   const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
 
   // value of useCallback here?
@@ -80,21 +79,23 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
   }, []);
 
   const getOptions = (selectableTopics: ITopicData[]) => {
-    const topics = selectableTopics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
-    return topics.map(topic => {
+    return selectableTopics.map(topic => {
       return ({
         value: topic.id,
-        label: getLocalized(
-          topic.attributes.title_multiloc,
-          locale,
-          tenantLocales
+        label: localize(
+          topic.attributes.title_multiloc
         )
       });
     });
   };
 
-  if (!isNilOrError(topics)) {
-    const selectableTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
+  if (
+    !isNilOrError(topics) &&
+    !isNilOrError(projectTopics)
+  ) {
+    const allTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
+    const projectTopicIds = projectTopics.map(topic => topic.id);
+    const selectableTopics = allTopics.filter(topic => !projectTopicIds.includes(topic.id));
 
     return (
       <Container>
@@ -121,4 +122,4 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps) => {
   return null;
 });
 
-export default injectIntl<Props>(ProjectTopicSelector);
+export default injectIntl<Props>(withRouter(injectLocalize(ProjectTopicSelector)));
