@@ -1,6 +1,5 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
-import { withRouter, WithRouterProps } from 'react-router';
 
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
 import ProjectTopicSelector from './ProjectTopicSelector';
@@ -10,21 +9,11 @@ import SortableProjectTopicList from './SortableProjectTopicList';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
-// services
-import { deleteProjectTopic } from 'services/projects';
-
 const Container = styled.div`
   min-height: 80vh;
 `;
 
-interface Props {}
-
-const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
-
-  const handleRemoveSelectedTopic = useCallback((topicIdToRemove: string) => {
-    deleteProjectTopic(projectId, topicIdToRemove);
-  }, []);
-
+const Topics = memo(() => {
   return (
     <Container>
       <SectionTitle>
@@ -34,11 +23,9 @@ const Topics = memo(({ params: { projectId } }: Props & WithRouterProps) => {
         <FormattedMessage {...messages.subtitleDescription} />
       </SectionSubtitle>
       <ProjectTopicSelector />
-      <SortableProjectTopicList
-        onHandleRemoveSelectedTopic={handleRemoveSelectedTopic}
-      />
+      <SortableProjectTopicList />
     </Container>
   );
 });
 
-export default withRouter(Topics);
+export default Topics;
