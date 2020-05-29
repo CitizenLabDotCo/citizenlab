@@ -41,7 +41,7 @@ const DefaultTopicRow = memo((props: Props) => {
         </RowContent>
         <Buttons>
           <Button
-            linkTo={`/admin/settings/topics/${topic.id}`}
+            linkTo={`/admin/settings/topics/${topic.id}/edit`}
             buttonStyle="secondary"
             icon="edit"
           >
