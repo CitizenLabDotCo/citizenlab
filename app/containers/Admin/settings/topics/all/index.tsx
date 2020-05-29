@@ -85,12 +85,14 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
                       <DefaultTopicRow
                         topic={topic}
                         isLastItem={isLastItem}
+                        key={topic.id}
                       />
                     :
                       <CustomTopicRow
                         topic={topic}
                         isLastItem={isLastItem}
                         handleDeleteClick={this.handleDeleteClick}
+                        key={topic.id}
                       />
                   );
                 }
