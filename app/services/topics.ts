@@ -13,6 +13,7 @@ export interface ITopicData {
     icon: string;
     ordering: number;
     code: string // to change with specific codes
+    sort: 'custom' | 'new'
   };
 }
 
