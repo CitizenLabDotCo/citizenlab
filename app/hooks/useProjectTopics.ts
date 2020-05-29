@@ -22,16 +22,16 @@ export default function useProjectTopics({
   const [projectTopics, setProjectTopics] = useState<ITopicData[] | undefined | null | Error>(undefined);
 
   useEffect(() => {
-    let observable: Observable<ITopics| null> = of(null);
+    let observable: Observable<ITopicData[]| null> = of(null);
 
-    observable = projectTopicsStream(projectId).observable;
+    observable = projectTopicsStream(projectId).observable.pipe(map(topics => topics.data));
 
     const subscription = observable.subscribe((topics) => {
-      setProjectTopics(topics ? topics.data : topics);
+      setProjectTopics(topics);
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [projectId]);
 
   return projectTopics;
 }
