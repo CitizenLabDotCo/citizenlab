@@ -24,6 +24,9 @@ import styled from 'styled-components';
 import { IOption } from 'typings';
 import { ITopicData } from 'services/topics';
 
+// Services
+import { addProjectTopic } from 'services/projects';
+
 const Container = styled.div`
   width: 100%;
   margin-bottom: 20px;
@@ -48,35 +51,38 @@ const StyledMultipleSelect = styled(MultipleSelect)`
   width: 350px;
 `;
 
-interface Props {
-  handleAddSelectedTopics: (topics: ITopicData[]) => void;
-  processing: boolean;
-}
+interface Props {}
 
 const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouterProps & InjectedLocalized) => {
   const {
-    handleAddSelectedTopics,
     intl: { formatMessage },
-    processing,
     localize,
     params: { projectId }
   } = props;
   const topics = useTopics();
   const projectTopics = useProjectTopics({ projectId });
   const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
+  const [processing, setProcessing] = useState(false);
 
   // value of useCallback here?
   const handleTopicSelectionChange = useCallback((newSelectedTopicOptions: IOption[]) => {
     setSelectedTopicOptions(newSelectedTopicOptions);
   }, []);
 
-  const handleOnAddTopicsClick = useCallback(
-    (selectableTopics: ITopicData[], selectedTopicOptions: IOption[]) =>
-    (_event: React.FormEvent) => {
-    const newlySelectedTopicIds = selectedTopicOptions.map(topicOption => topicOption.value) as string[];
-    const newlySelectedTopics = selectableTopics.filter(topic => newlySelectedTopicIds.includes(topic.id));
-    handleAddSelectedTopics(newlySelectedTopics);
-  }, []);
+  const handleOnAddTopicsClick = async (_event: React.FormEvent) => {
+    const topicIdsToAdd = selectedTopicOptions.map(topicOption => topicOption.value) as string[];
+
+    setProcessing(true);
+
+    const promises = topicIdsToAdd.map(topicId => addProjectTopic(projectId, topicId));
+
+    try {
+      await Promise.all(promises);
+      setProcessing(false);
+    } catch {
+      setProcessing(false);
+    }
+  };
 
   const getOptions = (selectableTopics: ITopicData[]) => {
     return selectableTopics.map(topic => {
@@ -110,7 +116,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
             text={formatMessage(messages.addTopics)}
             buttonStyle="cl-blue"
             icon="plus-circle"
-            onClick={handleOnAddTopicsClick(selectableTopics, selectedTopicOptions)}
+            onClick={handleOnAddTopicsClick}
             disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
             processing={processing}
           />
