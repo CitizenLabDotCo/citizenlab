@@ -189,6 +189,22 @@ export async function addProjectTopic(projectId: string, topicId: string) {
   return response;
 }
 
+export async function reorderProjectTopic(
+  projectId: string,
+  topicId: string,
+  newOrder: number
+) {
+  return streams.update<IProject>(
+    `${apiEndpoint}/${projectId}/topics/${topicId}/reorder`,
+    projectId,
+    {
+      topic: {
+        ordering: newOrder
+      }
+    }
+  );
+}
+
 export function projectTopicsStream(projectId: string, streamParams: IStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint: `${apiEndpoint}/${projectId}/topics`, ...streamParams });
 }

@@ -15,7 +15,7 @@ import Warning from 'components/UI/Warning';
 
 // services
 import { ITopicData } from 'services/topics';
-import { deleteProjectTopic } from 'services/projects';
+import { deleteProjectTopic, reorderProjectTopic } from 'services/projects';
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';
@@ -36,8 +36,8 @@ const SortableProjectTopicList = memo(({
     deleteProjectTopic(projectId, topicId);
   };
 
-  const handleReorderTopicProject = () => {
-    // reorderProjectTopic(itemId, newOrder);
+  const handleReorderTopicProject = (topicId, newOrder) => {
+    reorderProjectTopic(projectId, topicId, newOrder);
   };
 
   const projectTopics = useProjectTopics({ projectId });
@@ -64,6 +64,7 @@ const SortableProjectTopicList = memo(({
                 <SortableRow
                   id={topic.id}
                   key={index}
+                  index={index}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
                   lastItem={(index === projectTopics.length - 1)}
