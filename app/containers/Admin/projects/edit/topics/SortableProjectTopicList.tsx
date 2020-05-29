@@ -15,6 +15,7 @@ import Warning from 'components/UI/Warning';
 
 // services
 import { ITopicData } from 'services/topics';
+import { deleteProjectTopic } from 'services/projects';
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';
@@ -23,19 +24,16 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
 `;
 
-interface Props {
-  onHandleRemoveSelectedTopic: (topicId: string) => void;
-}
+interface Props {}
 
 const SortableProjectTopicList = memo(({
-  onHandleRemoveSelectedTopic,
   params: { projectId }
 }: Props & WithRouterProps) => {
 
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
-    onHandleRemoveSelectedTopic(topicId);
+    deleteProjectTopic(projectId, topicId);
   };
 
   const handleReorderTopicProject = () => {
