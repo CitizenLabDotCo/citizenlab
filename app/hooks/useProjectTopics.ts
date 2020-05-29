@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { ITopicData, topicByIdStream, topicsStream, ITopics } from 'services/topics';
+import { ITopicData } from 'services/topics';
 import { projectTopicsStream } from 'services/projects';
 
-import { Observable, of, combineLatest } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Parameters {
   projectId: string;
