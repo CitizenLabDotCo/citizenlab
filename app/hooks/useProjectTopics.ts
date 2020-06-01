@@ -5,7 +5,7 @@ import { projectTopicsStream } from 'services/projects';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-interface Parameters {
+export interface Parameters {
   projectId: string;
   code?: Code[];
   exclude_code?: Code[];
