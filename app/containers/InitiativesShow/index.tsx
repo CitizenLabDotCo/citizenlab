@@ -18,7 +18,7 @@ import Sharing from 'components/Sharing';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
 
-import Topics from 'components/PostShowComponents/Topics';
+import TopicSelector from 'components/PostShowComponents/TopicSelector';
 import Title from 'components/PostShowComponents/Title';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
 import Body from 'components/PostShowComponents/Body';
@@ -488,7 +488,7 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           <InitiativeContainer>
             <Content>
               <LeftColumn>
-                <Topics postType="initiative" topicIds={topicIds} />
+                <TopicSelector postType="initiative" topicIds={topicIds} />
 
                 {isDesktop &&
                   <InitiativeHeader>
