@@ -49,7 +49,7 @@ class IdeaStatus < ApplicationRecord
 
   def remove_notifications
     notifications.each do |notification|
-      if !notification.update post_status_id: nil
+      if !notification.update post_status: nil
         notification.destroy!
       end
     end
