@@ -91,7 +91,7 @@ export interface IIdeaFormOutput {
 }
 
 interface InputProps {
-  projectId: string | null;
+  projectId: string;
   title: string | null;
   description: string | null;
   selectedTopics: string[];
@@ -170,7 +170,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
-    const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
+    const project$: Observable<IProject | null> = projectByIdStream(projectId).observable;
     const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(projectId as string).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
       switchMap((project) => {
