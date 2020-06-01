@@ -133,4 +133,12 @@ RSpec.describe Notification, type: :model do
     expect{Notification.find(n1.id)}.to raise_error(ActiveRecord::RecordNotFound)
     expect(Notification.find(n2.id)).to be_present
   end
+
+  it "deleting a post also deletes notifications requiring that post" do
+    post = create(:idea)
+    notification = create(:comment_on_your_idea, post: post)
+    post.destroy!
+
+    expect{Notification.find(notification.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end
