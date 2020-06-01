@@ -5,21 +5,24 @@ import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { adopt } from 'react-adopt';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import GetTopics from 'resources/GetTopics';
+import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProjectTopics';
 import { isNilOrError } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
 
 interface InputProps {
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
+  isInsideProjectSettings?: boolean;
 }
 
 interface DataProps {
-  topics: GetTopicsChildProps;
+  topics: GetProjectTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
 
-class FilterSidebarTopics extends React.PureComponent<Props> {
+class FilterSidebarTopics extends React.PureComponent<Props & WithRouterProps> {
 
   handleItemClick = (id) => (event) => {
     if (event.ctrlKey) {
@@ -59,12 +62,15 @@ class FilterSidebarTopics extends React.PureComponent<Props> {
   }
 }
 
-const Data = adopt<DataProps, InputProps>({
-  topics: <GetTopics />,
+const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  topics: ({ params: { projectId }, isInsideProjectSettings, render }) => isInsideProjectSettings ?
+    <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
+    :
+    <GetTopics>{render}</GetTopics>,
 });
 
-export default (inputProps: InputProps) => (
+export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
     {dataProps => <FilterSidebarTopics {...inputProps} {...dataProps} />}
   </Data>
-);
+));
