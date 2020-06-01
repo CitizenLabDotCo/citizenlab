@@ -20,6 +20,14 @@ namespace :fix_existing_tenants do
     Tenant.all.each do |tenant|
       Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
         Notification.where(initiating_user_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(comment_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(post_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(project_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(phase_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(invite_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(official_feedback_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(spam_report_id: nil).reject(&:valid?).each(&:destroy!)
+        Notification.where(post_status_id: nil).reject(&:valid?).each(&:destroy!)
       end
     end
   end
