@@ -22,8 +22,7 @@ import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComp
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { topicsStream, ITopics, ITopicData } from 'services/topics';
-import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
   ideaCustomFieldsSchemasStream,
@@ -37,7 +36,6 @@ import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProje
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { getLocalized } from 'utils/i18n';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -202,8 +200,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         locale$,
         tenant$,
       ).subscribe(([locale, tenant]) => {
-        const tenantLocales = tenant.data.attributes.settings.core.locales;
-
+        // check: still needed?
         this.setState({
           locale,
           tenant,
@@ -569,7 +566,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
     if (
       !isNilOrError(ideaCustomFieldsSchemas) &&
-      !isNilOrError(locale)
+      !isNilOrError(locale) &&
+      !isNilOrError(topics)
     ) {
       const topicsEnabled = this.isFieldEnabled('topic_ids', ideaCustomFieldsSchemas, locale);
       const locationEnabled = this.isFieldEnabled('location', ideaCustomFieldsSchemas, locale);
@@ -664,7 +662,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     value={selectedTopics}
                     onChange={this.handleTopicsOnChange}
                     max={2}
-                    topics={topics}
+                    availableTopics={topics}
                   />
                   {topicsError && <Error id="e2e-new-idea-topics-error" text={topicsError} />}
                 </FormElement>
