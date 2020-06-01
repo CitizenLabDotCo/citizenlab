@@ -2,11 +2,13 @@ import React from 'react';
 import { isEqual } from 'lodash-es';
 import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
-import { ITopicData, topicByIdStream, topicsStream } from 'services/topics';
+import { ITopicData, topicByIdStream, topicsStream, Code } from 'services/topics';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   ids?: string[];
+  code?: Code[];
+  exclude_code?: Code[];
 }
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
@@ -33,14 +35,14 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { ids } = this.props;
+    const { ids, code, exclude_code } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ ids });
+    this.inputProps$ = new BehaviorSubject({ ids, code, exclude_code });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ ids }) => {
+        switchMap(({ ids, code, exclude_code }) => {
           if (ids) {
             if (ids.length > 0) {
               return combineLatest(
@@ -55,7 +57,8 @@ export default class GetTopics extends React.Component<Props, State> {
             return of(null);
           }
 
-          return topicsStream().observable.pipe(map(topics => topics.data));
+          // making the assumption that you will not provide ids and code/exclude_code at the same time
+          return topicsStream({ queryParameters: { code, exclude_code } }).observable.pipe(map(topics => topics.data));
         })
       ).subscribe((topics) => {
         this.setState({ topics });

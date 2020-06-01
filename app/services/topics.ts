@@ -4,6 +4,8 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/topics`;
 
+export type Code = 'custom' | string; // To be changed
+
 export interface ITopicData {
   id: string;
   type: string;
@@ -12,8 +14,8 @@ export interface ITopicData {
     description_multiloc: Multiloc;
     icon: string;
     ordering: number;
-    code: string // to change with specific codes
-    sort: 'custom' | 'new'
+    code: Code;
+    sort: 'custom' | 'new';
   };
 }
 

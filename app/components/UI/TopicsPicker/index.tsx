@@ -11,7 +11,7 @@ import { darken, lighten } from 'polished';
 // resources
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
-import { ITopicData } from 'services/topics';
+import { ITopicData, Code } from 'services/topics';
 
 // intl
 import T from 'components/T';
@@ -78,6 +78,7 @@ export interface InputProps {
   id?: string;
   className?: string;
   setRef?: (element: HTMLButtonElement) => void;
+  excludedCodes?: Code[];
 }
 
 interface DataProps {
@@ -145,7 +146,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
 });
 
 const Data = adopt<DataProps,  InputProps>({
-  topics: <GetTopics />
+  topics: ({ excludedCodes, render }) => <GetTopics exclude_code={excludedCodes}>{render}</GetTopics>
 });
 
 const TopicsPickerWithHoc = injectLocalize(TopicsPicker);
