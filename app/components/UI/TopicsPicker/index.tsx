@@ -1,17 +1,14 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { adopt } from 'react-adopt';
 import { orderBy } from 'lodash-es';
-
+import { isNilOrError } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 
-// resources
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import { isNilOrError } from 'utils/helperUtils';
-import { ITopicData, Code } from 'services/topics';
+// types
+import { ITopicData } from 'services/topics';
 
 // intl
 import T from 'components/T';
@@ -78,16 +75,12 @@ export interface InputProps {
   id?: string;
   className?: string;
   setRef?: (element: HTMLButtonElement) => void;
-  excludedCodes?: Code[];
+  availableTopics: ITopicData[];
 }
 
-interface DataProps {
-  topics: GetTopicsChildProps;
-}
+interface Props extends InputProps {}
 
-interface Props extends InputProps, DataProps {}
-
-const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, className, setRef }: Props & InjectedLocalized) => {
+const TopicsPicker = memo(({ onChange, onBlur, value, localize, availableTopics, max, className, setRef }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
@@ -108,14 +101,14 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
     }
   };
 
-  if (isNilOrError(topics)) return null;
+  if (isNilOrError(availableTopics)) return null;
 
-  const workingTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+  const workingTopics = availableTopics.filter(topic => !isNilOrError(topic)) as ITopicData[];
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
   const numberOfSelectedTopics = value.length;
-  const selectedTopics = value.map(topicId => topics.find(topic => !isNilOrError(topic) && topic.id === topicId));
+  const selectedTopics = value.map(topicId => availableTopics.find(topic => !isNilOrError(topic) && topic.id === topicId));
   const selectedTopicNames = selectedTopics && selectedTopics.map(topic => !isNilOrError(topic) && localize(topic.attributes.title_multiloc)).join(', ');
 
   return (
@@ -145,14 +138,4 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, cla
   );
 });
 
-const Data = adopt<DataProps,  InputProps>({
-  topics: ({ excludedCodes, render }) => <GetTopics exclude_code={excludedCodes}>{render}</GetTopics>
-});
-
-const TopicsPickerWithHoc = injectLocalize(TopicsPicker);
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <TopicsPickerWithHoc {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default injectLocalize(TopicsPicker);
