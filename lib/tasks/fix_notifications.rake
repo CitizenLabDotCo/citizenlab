@@ -13,4 +13,14 @@ namespace :fix_existing_tenants do
       end
     end
   end
+
+  desc "Delete notifications with deleted required relationships"
+  task :delete_invalid_notifications => [:environment] do |t, args|
+    failures = []
+    Tenant.all.each do |tenant|
+      Apartment::Tenant.switch(tenant.host.gsub('.', '_')) do
+        Notification.where(initiating_user_id: nil).reject(&:valid?).each(&:destroy!)
+      end
+    end
+  end
 end
