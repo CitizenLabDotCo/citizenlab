@@ -59,7 +59,8 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
     localize,
     params: { projectId }
   } = props;
-  const topics = useTopics();
+  // Q for code review: do we agree about this hooks API?
+  const topics = useTopics({});
   const projectTopics = useProjectTopics({ projectId });
   const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
   const [processing, setProcessing] = useState(false);

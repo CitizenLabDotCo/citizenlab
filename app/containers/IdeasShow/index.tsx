@@ -21,7 +21,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import Sharing from 'components/Sharing';
 import IdeaMeta from './IdeaMeta';
 import DropdownMap from 'components/PostShowComponents/DropdownMap';
-import TopicSelector from 'components/PostShowComponents/TopicSelector';
+import Topics from 'components/PostShowComponents/Topics';
 import Title from 'components/PostShowComponents/Title';
 import Body from 'components/PostShowComponents/Body';
 import ContentFooter from 'components/PostShowComponents/ContentFooter';
@@ -558,7 +558,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
                 {topicsEnabled && topicIds.length > 0 &&
-                  <TopicSelector
+                  <Topics
                     postType="idea"
                     topicIds={topicIds}
                   />

@@ -362,6 +362,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               value={topic_ids}
               onChange={this.changeAndSaveTopics}
               setRef={this.handleTopicsPickerSetRef}
+              topics={topics}
             />
             {touched.topic_ids && errors.topic_ids
               ? <Error message={errors.topic_ids.message} />

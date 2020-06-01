@@ -14,7 +14,7 @@ import { fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
-import { ITopicData } from 'services/topics';
+import { ITopicData, Code } from 'services/topics';
 
 const Container = styled.div`
   display: flex;
@@ -49,7 +49,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const TopicSelector = memo<Props & InjectedLocalized>(({ topics, localize, className, postType }) => {
+const Topics = memo<Props & InjectedLocalized>(({ topics, localize, className, postType, excludedCodes }) => {
   if (!isNilOrError(topics) && topics.length > 0) {
     return (
       <Container id={`e2e-${postType}-topics`} className={className}>
@@ -63,7 +63,7 @@ const TopicSelector = memo<Props & InjectedLocalized>(({ topics, localize, class
   return null;
 });
 
-const TopicSelectorWithHOCs = injectLocalize<Props>(TopicSelector);
+const TopicsWithHoCs = injectLocalize<Props>(Topics);
 
 const Data = adopt<DataProps, InputProps>({
   topics: ({ topicIds, render }) => <GetTopics ids={topicIds}>{render}</GetTopics>
@@ -71,6 +71,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <TopicSelectorWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <TopicsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
