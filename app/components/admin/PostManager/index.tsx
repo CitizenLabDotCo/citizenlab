@@ -356,6 +356,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                 onChangeTopicsFilter={onChangeTopics}
                 onChangeStatusFilter={onChangeStatus}
                 onChangeProjectFilter={this.onChangeProjects}
+                isInsideProjectSettings={type === 'ProjectIdeas'}
               />
               {multipleIdeasSelected && showDragAndDropInfoMessage &&
                 <Message

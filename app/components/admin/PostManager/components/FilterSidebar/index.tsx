@@ -41,6 +41,7 @@ interface Props {
   activeFilterMenu: string | null;
   onChangeActiveFilterMenu: (arg: string) => void;
   visibleFilterMenus: string[];
+  isInsideProjectSettings?: boolean;
 }
 
 class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
@@ -82,6 +83,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
           <TopicsMenu
             selectedTopics={this.props.selectedTopics}
             onChangeTopicsFilter={this.props.onChangeTopicsFilter}
+            isInsideProjectSettings={this.props.isInsideProjectSettings}
           />
         )
       }
