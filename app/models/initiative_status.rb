@@ -4,6 +4,7 @@ class InitiativeStatus < ApplicationRecord
 
   has_many :initiative_status_changes, dependent: :nullify
   has_many :initiative_initiative_statuses
+  before_destroy :remove_notifications
   has_many :initiatives, through: :initiative_initiative_statuses
   has_many :notifications, foreign_key: :post_status_id, dependent: :nullify
 
@@ -25,6 +26,14 @@ class InitiativeStatus < ApplicationRecord
   def strip_title
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
+    end
+  end
+
+  def remove_notifications
+    notifications.each do |notification|
+      if !notification.update post_status: nil
+        notification.destroy!
+      end
     end
   end
 
