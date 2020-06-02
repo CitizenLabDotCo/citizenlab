@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
-import { stripHtmlTags } from 'utils/helperUtils';
+import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 import scrollToComponent from 'react-scroll-to-component';
@@ -25,6 +25,7 @@ import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
+import { ITopicData } from 'services/topics';
 
 // resources
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
@@ -307,174 +308,182 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
     const { touched, errors } = this.state;
 
-    return (
-      <Form id="initiative-form">
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formGeneralSectionTitle} />
+    if (
+      !isNilOrError(topics)
+    ) {
+      const availableTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
-          <SectionField id="e2e-initiative-form-title-section">
-            <FormLabel
-              labelMessage={messages.titleLabel}
-              subtextMessage={messages.titleLabelSubtext}
-            >
-              <Input
-                type="text"
-                id="e2e-initiative-title-input"
-                value={title_multiloc?.[locale] || ''}
+      return (
+        <Form id="initiative-form">
+          <StyledFormSection>
+            <FormSectionTitle message={messages.formGeneralSectionTitle} />
+
+            <SectionField id="e2e-initiative-form-title-section">
+              <FormLabel
+                labelMessage={messages.titleLabel}
+                subtextMessage={messages.titleLabelSubtext}
+              >
+                <Input
+                  type="text"
+                  id="e2e-initiative-title-input"
+                  value={title_multiloc?.[locale] || ''}
+                  locale={locale}
+                  onChange={this.handleTitleOnChange}
+                  onBlur={this.onBlur('title_multiloc')}
+                  autocomplete="off"
+                  setRef={this.handleTitleInputSetRef}
+                />
+                {touched.title_multiloc && errors.title_multiloc
+                  ? <Error message={errors.title_multiloc.message} />
+                  : apiErrors && apiErrors.title_multiloc && <Error apiErrors={apiErrors.title_multiloc} />
+                }
+              </FormLabel>
+            </SectionField>
+
+            <SectionField id="e2e-initiative-form-description-section">
+              <FormLabel
+                id="description-label-id"
+                htmlFor="body"
+                labelMessage={messages.descriptionLabel}
+                subtextMessage={messages.descriptionLabelSubtext}
+              />
+              <QuillEditor
+                id="body"
+                value={body_multiloc?.[locale] || ''}
                 locale={locale}
-                onChange={this.handleTitleOnChange}
-                onBlur={this.onBlur('title_multiloc')}
-                autocomplete="off"
-                setRef={this.handleTitleInputSetRef}
+                noVideos={true}
+                noAlign={true}
+                onChange={this.handleBodyOnChange}
+                onBlur={this.onBlur('body_multiloc')}
+                setRef={this.handleDescriptionSetRef}
               />
-              {touched.title_multiloc && errors.title_multiloc
-                ? <Error message={errors.title_multiloc.message} />
-                : apiErrors && apiErrors.title_multiloc && <Error apiErrors={apiErrors.title_multiloc} />
+              {touched.body_multiloc && errors.body_multiloc
+                ? <Error message={errors.body_multiloc.message} />
+                : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
               }
-            </FormLabel>
-          </SectionField>
+            </SectionField>
+          </StyledFormSection>
 
-          <SectionField id="e2e-initiative-form-description-section">
-            <FormLabel
-              id="description-label-id"
-              htmlFor="body"
-              labelMessage={messages.descriptionLabel}
-              subtextMessage={messages.descriptionLabelSubtext}
-            />
-            <QuillEditor
-              id="body"
-              value={body_multiloc?.[locale] || ''}
-              locale={locale}
-              noVideos={true}
-              noAlign={true}
-              onChange={this.handleBodyOnChange}
-              onBlur={this.onBlur('body_multiloc')}
-              setRef={this.handleDescriptionSetRef}
-            />
-            {touched.body_multiloc && errors.body_multiloc
-              ? <Error message={errors.body_multiloc.message} />
-              : apiErrors && apiErrors.body_multiloc && <Error apiErrors={apiErrors.body_multiloc} />
-            }
-          </SectionField>
-        </StyledFormSection>
+          <StyledFormSection>
+            <FormSectionTitle message={messages.formDetailsSectionTitle} />
 
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formDetailsSectionTitle} />
-
-          <SectionField aria-live="polite">
-            <FormLabel
-              labelMessage={messages.topicsLabel}
-              subtextMessage={messages.topicsLabelSubtext}
-              htmlFor="field-topic-multiple-picker"
-            />
-            <TopicsPicker
-              id="field-topic-multiple-picker"
-              max={2}
-              value={topic_ids}
-              onChange={this.changeAndSaveTopics}
-              setRef={this.handleTopicsPickerSetRef}
-              topics={topics}
-            />
-            {touched.topic_ids && errors.topic_ids
-              ? <Error message={errors.topic_ids.message} />
-              : apiErrors && apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
-            }
-          </SectionField>
-          <SectionField>
-            <FormLabel
-              labelMessage={messages.locationLabel}
-              subtextMessage={messages.locationLabelSubtext}
-              optional
-            >
-              <LocationInput
-                className="e2e-initiative-location-input"
-                inCitizen
-                value={position || ''}
-                onChange={onChangePosition}
-                onBlur={this.onBlur('position')}
-                placeholder={formatMessage(messages.locationPlaceholder)}
+            <SectionField aria-live="polite">
+              <FormLabel
+                labelMessage={messages.topicsLabel}
+                subtextMessage={messages.topicsLabelSubtext}
+                htmlFor="field-topic-multiple-picker"
               />
-            </FormLabel>
-          </SectionField>
-        </StyledFormSection>
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-          <SectionField id="e2e-iniatiative-banner-dropzone">
-            <FormLabel
-              labelMessage={messages.bannerUploadLabel}
-              subtextMessage={messages.bannerUploadLabelSubtext}
-              htmlFor="initiative-banner-dropzone"
-              optional
-            />
-            <ImagesDropzone
-              id="initiative-banner-dropzone"
-              images={banner ? [banner] : null}
-              imagePreviewRatio={360 / 1440}
-              maxNumberOfImages={1}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              onAdd={this.addBanner}
-              onRemove={this.removeBanner}
-            />
-            {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />}
-          </SectionField>
-          <SectionField id="e2e-iniatiative-img-dropzone">
-            <FormLabel
-              labelMessage={messages.imageUploadLabel}
-              subtextMessage={messages.imageUploadLabelSubtext}
-              htmlFor="initiative-image-dropzone"
-              optional
-            />
-            <ImagesDropzone
-              id="initiative-image-dropzone"
-              images={image ? [image] : null}
-              imagePreviewRatio={135 / 298}
-              maxNumberOfImages={1}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              onAdd={this.addImage}
-              onRemove={this.removeImage}
-            />
-            {touched.image
-              && errors.image
-              && <Error message={errors.image.message} />}
-          </SectionField>
-          <SectionField>
-            <FormLabel
-              labelMessage={messages.fileUploadLabel}
-              subtextMessage={messages.fileUploadLabelSubtext}
-              optional
-            >
-              <FileUploader
-                id="e2e-initiative-file-upload"
-                onFileAdd={onAddFile}
-                onFileRemove={onRemoveFile}
-                files={files}
-                errors={apiErrors}
+              <TopicsPicker
+                id="field-topic-multiple-picker"
+                max={2}
+                value={topic_ids}
+                onChange={this.changeAndSaveTopics}
+                setRef={this.handleTopicsPickerSetRef}
+                availableTopics={availableTopics}
               />
-            </FormLabel>
-          </SectionField>
-        </StyledFormSection>
-        <FormSubmitFooter
-          className="e2e-initiative-publish-button"
-          message={messages.publishButton}
-          error={publishError}
-          errorMessage={messages.publishUnknownError}
-          processing={publishing}
-          onSubmit={this.handleOnPublish}
-        />
-      </Form>
-    );
+              {touched.topic_ids && errors.topic_ids
+                ? <Error message={errors.topic_ids.message} />
+                : apiErrors && apiErrors.topic_ids && <Error apiErrors={apiErrors.topic_ids} />
+              }
+            </SectionField>
+            <SectionField>
+              <FormLabel
+                labelMessage={messages.locationLabel}
+                subtextMessage={messages.locationLabelSubtext}
+                optional
+              >
+                <LocationInput
+                  className="e2e-initiative-location-input"
+                  inCitizen
+                  value={position || ''}
+                  onChange={onChangePosition}
+                  onBlur={this.onBlur('position')}
+                  placeholder={formatMessage(messages.locationPlaceholder)}
+                />
+              </FormLabel>
+            </SectionField>
+          </StyledFormSection>
+          <StyledFormSection>
+            <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
+            <SectionField id="e2e-iniatiative-banner-dropzone">
+              <FormLabel
+                labelMessage={messages.bannerUploadLabel}
+                subtextMessage={messages.bannerUploadLabelSubtext}
+                htmlFor="initiative-banner-dropzone"
+                optional
+              />
+              <ImagesDropzone
+                id="initiative-banner-dropzone"
+                images={banner ? [banner] : null}
+                imagePreviewRatio={360 / 1440}
+                maxNumberOfImages={1}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                onAdd={this.addBanner}
+                onRemove={this.removeBanner}
+              />
+              {apiErrors && apiErrors.header_bg && <Error apiErrors={apiErrors.header_bg} />}
+            </SectionField>
+            <SectionField id="e2e-iniatiative-img-dropzone">
+              <FormLabel
+                labelMessage={messages.imageUploadLabel}
+                subtextMessage={messages.imageUploadLabelSubtext}
+                htmlFor="initiative-image-dropzone"
+                optional
+              />
+              <ImagesDropzone
+                id="initiative-image-dropzone"
+                images={image ? [image] : null}
+                imagePreviewRatio={135 / 298}
+                maxNumberOfImages={1}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                onAdd={this.addImage}
+                onRemove={this.removeImage}
+              />
+              {touched.image
+                && errors.image
+                && <Error message={errors.image.message} />}
+            </SectionField>
+            <SectionField>
+              <FormLabel
+                labelMessage={messages.fileUploadLabel}
+                subtextMessage={messages.fileUploadLabelSubtext}
+                optional
+              >
+                <FileUploader
+                  id="e2e-initiative-file-upload"
+                  onFileAdd={onAddFile}
+                  onFileRemove={onRemoveFile}
+                  files={files}
+                  errors={apiErrors}
+                />
+              </FormLabel>
+            </SectionField>
+          </StyledFormSection>
+          <FormSubmitFooter
+            className="e2e-initiative-publish-button"
+            message={messages.publishButton}
+            error={publishError}
+            errorMessage={messages.publishUnknownError}
+            processing={publishing}
+            onSubmit={this.handleOnPublish}
+          />
+        </Form>
+      );
+    }
+
+    return null;
   }
 }
 
 const InitiativeFormWithHOCs = injectIntl(InitiativeForm);
 
-const Data = adopt<Props, DataProps>({
+const Data = adopt<DataProps, Props>({
   topics: <GetTopics />
 });
 
 // perhaps not ideal to have data loading in this component but by far the easiest/cleanest solution imo
 export default (inputProps: Props) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativeFormWithHOCs {...dataProps} />}
+    {dataProps => <InitiativeFormWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );
