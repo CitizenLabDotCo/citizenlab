@@ -26,6 +26,7 @@ class User < ApplicationRecord
   has_many :votes, dependent: :nullify
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
   has_many :unread_notifications, -> { where read_at: nil }, class_name: 'Notification', foreign_key: :recipient_id
+  before_destroy :remove_initiated_notifications # Line must be here, to ensure it's called before dependent: :nullify
   has_many :initiator_notifications, class_name: 'Notification', foreign_key: :initiating_user_id, dependent: :nullify
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
@@ -292,6 +293,14 @@ class User < ApplicationRecord
       domain = email.split('@')&.last
       if domain && EMAIL_DOMAIN_BLACKLIST.include?(domain.strip.downcase)
         errors.add(:email, :domain_blacklisted, value: domain)
+      end
+    end
+  end
+
+  def remove_initiated_notifications
+    initiator_notifications.each do |notification|
+      if !notification.update initiating_user_id: nil
+        notification.destroy!
       end
     end
   end

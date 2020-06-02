@@ -123,4 +123,22 @@ RSpec.describe Notification, type: :model do
     create(:project_phase_started, phase: phase)
     phase.destroy!
   end
+
+  it "deleting initiating user also deletes notifications requiring the initiator" do
+    u = create(:admin)
+    n1 = create(:invite_accepted, initiating_user: u)
+    n2 = create(:comment_deleted_by_admin, initiating_user: u)
+    u.destroy!
+
+    expect{Notification.find(n1.id)}.to raise_error(ActiveRecord::RecordNotFound)
+    expect(Notification.find(n2.id)).to be_present
+  end
+
+  it "deleting a post also deletes notifications requiring that post" do
+    post = create(:idea)
+    notification = create(:comment_on_your_idea, post: post)
+    post.destroy!
+
+    expect{Notification.find(notification.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
 end

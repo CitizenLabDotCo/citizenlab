@@ -8,6 +8,7 @@ class Phase < ApplicationRecord
   has_many :votes, through: :ideas
   has_many :text_images, as: :imageable, dependent: :destroy
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
+  before_destroy :remove_notifications
   has_many :notifications, foreign_key: :phase_id, dependent: :nullify
 
   validates :project, presence: true
@@ -68,6 +69,14 @@ class Phase < ApplicationRecord
   def strip_title
     self.title_multiloc.each do |key, value|
       self.title_multiloc[key] = value.strip
+    end
+  end
+
+  def remove_notifications
+    notifications.each do |notification|
+      if !notification.update phase_id: nil
+        notification.destroy!
+      end
     end
   end
 
