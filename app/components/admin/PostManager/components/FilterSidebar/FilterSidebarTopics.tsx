@@ -13,7 +13,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 interface InputProps {
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
-  isInsideProjectSettings?: boolean;
 }
 
 interface DataProps {
@@ -63,10 +62,12 @@ class FilterSidebarTopics extends React.PureComponent<Props & WithRouterProps> {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  topics: ({ params: { projectId }, isInsideProjectSettings, render }) => isInsideProjectSettings ?
-    <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
-    :
-    <GetTopics>{render}</GetTopics>,
+  topics: ({ params: { projectId }, render }) => {
+    return projectId ?
+      <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
+      :
+      <GetTopics>{render}</GetTopics>;
+  }
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
