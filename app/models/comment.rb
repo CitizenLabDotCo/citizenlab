@@ -11,6 +11,7 @@ class Comment < ApplicationRecord
   has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
   has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
   has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
+  before_destroy :remove_notifications
   has_many :notifications, foreign_key: :comment_id, dependent: :nullify
   
   counter_culture :post,
@@ -38,14 +39,6 @@ class Comment < ApplicationRecord
     return unless post_type == 'Initiative'
     super
   end
-
-  has_many :votes, as: :votable, dependent: :destroy
-  has_many :upvotes, -> { where(mode: "up") }, as: :votable, class_name: 'Vote'
-  has_many :downvotes, -> { where(mode: "down") }, as: :votable, class_name: 'Vote'
-  has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
-
-  has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
-  has_many :notifications, foreign_key: :comment_id, dependent: :nullify
 
   PUBLICATION_STATUSES = %w(published deleted)
 
@@ -79,6 +72,14 @@ class Comment < ApplicationRecord
     )
     self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+  end
+
+  def remove_notifications
+    notifications.each do |notification|
+      if !notification.update comment_id: nil
+        notification.destroy!
+      end
+    end
   end
 
 end

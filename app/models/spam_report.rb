@@ -3,6 +3,7 @@ class SpamReport < ApplicationRecord
 
   belongs_to :spam_reportable, polymorphic: true
   belongs_to :user, optional: true
+  before_destroy :remove_notifications
   has_many :notifications, foreign_key: :spam_report_id, dependent: :nullify
 
   validates :spam_reportable, presence: true
@@ -20,5 +21,13 @@ class SpamReport < ApplicationRecord
 
   def set_reported_at
     self.reported_at ||= Time.now
+  end
+
+  def remove_notifications
+    notifications.each do |notification|
+      if !notification.update official_feedback_id: nil
+        notification.destroy!
+      end
+    end
   end
 end
