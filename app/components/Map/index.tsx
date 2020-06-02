@@ -201,7 +201,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   calculateMapConfig = () => {
-    const { tenant, center, mapConfig, zoom } = this.props;
+    const { tenant, center, mapConfig, zoom: zoom_level_inputProps } = this.props;
     let initCenter: [number, number] = [0, 0];
     const defaultMapConfig = {
       center: initCenter,
@@ -220,7 +220,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
           lat,
           long
         },
-        zoom_level,
+        zoom_level: zoom_level_tenantMapConfig,
         tile_provider,
       } = tenant.attributes.settings.maps;
 
@@ -232,7 +232,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
         tenantMapConfig['center'] = initCenter;
       }
-      if (zoom_level) tenantMapConfig['zoom_level'] = zoom_level;
+      if (zoom_level_tenantMapConfig) tenantMapConfig['zoom_level'] = zoom_level_tenantMapConfig;
       if (tile_provider) tenantMapConfig['tile_provider'] = tile_provider;
     }
 
@@ -240,7 +240,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     if (!isNilOrError(mapConfig) && mapConfig.attributes) {
       const {
-        zoom_level,
+        zoom_level: zoom_level_dataPropsMapConfig,
         tile_provider,
         center_geojson,
       } = mapConfig.attributes;
@@ -250,7 +250,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         initCenter = [latitude, longitude];
         dataPropsMapConfig['center'] = initCenter;
       }
-      if (zoom_level) dataPropsMapConfig['zoom_level'] = zoom_level;
+      if (zoom_level_dataPropsMapConfig) dataPropsMapConfig['zoom_level'] = zoom_level_dataPropsMapConfig;
       if (tile_provider) dataPropsMapConfig['tile_provider'] = tile_provider;
     }
 
@@ -262,7 +262,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       inputPropsMapConfig['center'] = initCenter;
     }
 
-    if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
+    if (zoom_level_inputProps) inputPropsMapConfig['zoom_level'] = zoom_level_inputProps;
 
     return {
       ...defaultMapConfig,
@@ -273,8 +273,9 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   initMap = () => {
-    const { localize, mapConfig, points } = this.props;
-    const { zoom_level, tile_provider, center } = this.calculateMapConfig();
+    const { localize, mapConfig: dataPropsMapConfig, points } = this.props;
+    const mapConfig = this.calculateMapConfig();
+    const { zoom_level, tile_provider, center } = mapConfig;
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -300,11 +301,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     // Create layers
     if (
-      !isNilOrError(mapConfig) &&
-      mapConfig.attributes.layers &&
-      mapConfig.attributes.layers.length > 0
+      !isNilOrError(dataPropsMapConfig) &&
+      dataPropsMapConfig.attributes.layers &&
+      dataPropsMapConfig.attributes.layers.length > 0
     ) {
-      const layers = mapConfig.attributes.layers;
+      const layers = dataPropsMapConfig.attributes.layers;
 
       // add default enabled layers to map
       const leafletLayers = createLeafletLayers(layers);
@@ -355,6 +356,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
   convertPoints = (points: Point[]) => {
     const bounds: [number, number][] = [];
+    const mapConfig = this.calculateMapConfig();
+    const { zoom_level, center } = mapConfig;
 
     this.markers = compact(points).map((point) => {
       const latlng: [number, number] = [
@@ -381,7 +384,13 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       !this.state.initiated &&
       this.map
     ) {
-      this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+      if (
+        // If zoom level and center are the default values
+        zoom_level === 15 &&
+        (center[0] === 0 && center[1] === 0)
+      ) {
+        this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+      }
       this.setState({ initiated: true });
     }
 
