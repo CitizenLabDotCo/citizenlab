@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { stripHtmlTags } from 'utils/helperUtils';
 import styled from 'styled-components';
@@ -24,6 +25,9 @@ import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 // typings
 import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
+
+// resources
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 const Form = styled.form`
   display: flex;
@@ -58,7 +62,11 @@ export interface FormProps {
   onPublish: () => void;
 }
 
-interface Props extends FormValues, FormProps {
+interface DataProps {
+  topics: GetTopicsChildProps;
+}
+
+interface InputProps extends FormValues, FormProps {
   onChangeTitle: (newValue: Multiloc) => void;
   onChangeBody: (newValue: Multiloc) => void;
   onChangeTopics: (newValue: string[]) => void;
@@ -71,6 +79,8 @@ interface Props extends FormValues, FormProps {
   publishError: boolean;
   apiErrors: any;
 }
+
+interface Props extends InputProps, DataProps {}
 
 interface State {
   touched: {
@@ -291,7 +301,8 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
       onRemoveFile,
       publishError,
       intl: { formatMessage },
-      apiErrors
+      apiErrors,
+      topics
     } = this.props;
 
     const { touched, errors } = this.state;
@@ -455,4 +466,15 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
   }
 }
 
-export default injectIntl(InitiativeForm);
+const InitiativeFormWithHOCs = injectIntl(InitiativeForm);
+
+const Data = adopt<Props, DataProps>({
+  topics: <GetTopics />
+});
+
+// perhaps not ideal to have data loading in this component but by far the easiest/cleanest solution imo
+export default (inputProps: Props) => (
+  <Data {...inputProps}>
+    {dataProps => <InitiativeFormWithHOCs {...dataProps} />}
+  </Data>
+);
