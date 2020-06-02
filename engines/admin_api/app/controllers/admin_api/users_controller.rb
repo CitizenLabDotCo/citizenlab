@@ -1,10 +1,15 @@
 module AdminApi
   class UsersController < AdminApiController
 
-    before_action :set_user, only: [:update]
+    before_action :set_user, only: [:update, :show]
 
     def by_email
       @user = User.find_by!(email: params[:email])
+      render json: @user
+    end
+
+    def show
+      # This uses default model serialization
       render json: @user
     end
 
