@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ITopicData, Code } from 'services/topics';
-import { projectTopicsStream } from 'services/projects';
+import { projectTopicsStream } from 'services/projectTopics';
 
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export default function useProjectTopics({
   sort
 }: Parameters) {
   const [projectTopics, setProjectTopics] = useState<ITopicData[] | undefined | null | Error>(undefined);
-  const queryParameters = { code, exclude_code };
+  const queryParameters = { code, exclude_code, sort };
 
   useEffect(() => {
     let observable: Observable<ITopicData[]| null> = of(null);
