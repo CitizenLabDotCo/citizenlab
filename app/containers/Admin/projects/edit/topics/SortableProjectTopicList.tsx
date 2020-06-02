@@ -15,7 +15,7 @@ import Warning from 'components/UI/Warning';
 
 // services
 import { ITopicData } from 'services/topics';
-import { deleteProjectTopic, reorderProjectTopic } from 'services/projects';
+import { deleteProjectTopic, reorderProjectTopic } from 'services/projectTopics';
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';

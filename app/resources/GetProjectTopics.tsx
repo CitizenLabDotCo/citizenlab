@@ -9,7 +9,7 @@ interface Props extends HookProps {
   children?: children;
 }
 
-export default ({ projectId, ...props }: Props) => {
-  const projectTopics = useProjectTopics({ projectId });
+export default (props: Props) => {
+  const projectTopics = useProjectTopics({ ...props });
   return (props.children as children)(projectTopics);
 };

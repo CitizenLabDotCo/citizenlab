@@ -25,7 +25,7 @@ import { IOption } from 'typings';
 import { ITopicData } from 'services/topics';
 
 // Services
-import { addProjectTopic } from 'services/projects';
+import { addProjectTopic } from 'services/projectTopics';
 
 const Container = styled.div`
   width: 100%;
