@@ -201,7 +201,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   calculateMapConfig = () => {
-    const { tenant, center, mapConfig, zoom: zoom_level_inputProps } = this.props;
+    const { tenant, center, mapConfig, zoom } = this.props;
     let initCenter: [number, number] = [0, 0];
     const defaultMapConfig = {
       center: initCenter,
@@ -220,7 +220,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
           lat,
           long
         },
-        zoom_level: zoom_level_tenantMapConfig,
+        zoom_level,
         tile_provider,
       } = tenant.attributes.settings.maps;
 
@@ -232,7 +232,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
         tenantMapConfig['center'] = initCenter;
       }
-      if (zoom_level_tenantMapConfig) tenantMapConfig['zoom_level'] = zoom_level_tenantMapConfig;
+      if (zoom_level) tenantMapConfig['zoom_level'] = zoom_level;
       if (tile_provider) tenantMapConfig['tile_provider'] = tile_provider;
     }
 
@@ -240,7 +240,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     if (!isNilOrError(mapConfig) && mapConfig.attributes) {
       const {
-        zoom_level: zoom_level_dataPropsMapConfig,
+        zoom_level,
         tile_provider,
         center_geojson,
       } = mapConfig.attributes;
@@ -250,7 +250,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         initCenter = [latitude, longitude];
         dataPropsMapConfig['center'] = initCenter;
       }
-      if (zoom_level_dataPropsMapConfig) dataPropsMapConfig['zoom_level'] = zoom_level_dataPropsMapConfig;
+      if (zoom_level) dataPropsMapConfig['zoom_level'] = zoom_level;
       if (tile_provider) dataPropsMapConfig['tile_provider'] = tile_provider;
     }
 
@@ -262,7 +262,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       inputPropsMapConfig['center'] = initCenter;
     }
 
-    if (zoom_level_inputProps) inputPropsMapConfig['zoom_level'] = zoom_level_inputProps;
+    if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
 
     return {
       ...defaultMapConfig,
@@ -273,9 +273,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
   }
 
   initMap = () => {
-    const { localize, mapConfig: dataPropsMapConfig, points } = this.props;
-    const mapConfig = this.calculateMapConfig();
-    const { zoom_level, tile_provider, center } = mapConfig;
+    const { localize, mapConfig, points } = this.props;
+    const { zoom_level, tile_provider, center } = this.calculateMapConfig();
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -301,11 +300,11 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
     // Create layers
     if (
-      !isNilOrError(dataPropsMapConfig) &&
-      dataPropsMapConfig.attributes.layers &&
-      dataPropsMapConfig.attributes.layers.length > 0
+      !isNilOrError(mapConfig) &&
+      mapConfig.attributes.layers &&
+      mapConfig.attributes.layers.length > 0
     ) {
-      const layers = dataPropsMapConfig.attributes.layers;
+      const layers = mapConfig.attributes.layers;
 
       // add default enabled layers to map
       const leafletLayers = createLeafletLayers(layers);
