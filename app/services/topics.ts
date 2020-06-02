@@ -4,7 +4,10 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/topics`;
 
-export type Code = 'custom' | string; // To be changed
+type DefaultTopicCodes = 'nature' | 'waste' | 'sustainability' | 'mobility' |
+ 'technology' | 'economy' | 'housing' | 'public_space' | 'safety' | 'education' |
+ 'culture' | 'health' | 'inclusion' | 'community' | 'services' | 'other' ;
+export type Code = 'custom' | DefaultTopicCodes;
 
 export interface ITopicData {
   id: string;
