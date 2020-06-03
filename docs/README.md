@@ -1,5 +1,11 @@
 # Changelog
 
+## 2020-06-03
+
+### Fixed
+
+- Maps with markers don't lose their center/zoom settings anymore
+
 ## 2020-05-26
 
 ### Changed
