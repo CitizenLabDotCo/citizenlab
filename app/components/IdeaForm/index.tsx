@@ -737,7 +737,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
-  topics: ({ projectId }) => <GetProjectTopics projectId={projectId} />
+  topics: ({ projectId, render }) => <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
 });
 
 const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));

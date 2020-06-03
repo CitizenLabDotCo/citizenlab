@@ -121,6 +121,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
             onClick={handleOnAddTopicsClick}
             disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
             processing={processing}
+            id="e2e-add-project-topic-button"
           />
         </SelectGroupsContainer>
       </Container>

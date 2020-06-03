@@ -113,17 +113,120 @@ describe('Project topics', () => {
       .contains('Edited custom topic 3');
   });
 
-  describe('Project settings', () => {
+  describe('Project topic settings', () => {
     it('Adding a topic to a project makes it available in the idea form', () => {
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-custom-topics').click();
+      cy.get('#e2e-topic-name-en').type('Custom topic for idea form test');
+      cy.get('.e2e-submit-wrapper-button').click();
+
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
+
+      // Add our new topic
+      cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea form test').click();
+      cy.get('#e2e-add-project-topic-button').click();
+
+      // Go to idea form for our project
+      cy.get('#e2e-new-idea').click();
+
+      // Verify the topic is selectable in the topic selector
+      cy.get('.e2e-topics-picker').contains('Custom topic for idea form test');
     });
 
     it('Removing a topic from a project makes it unavailable in the idea form', () => {
+      it('Adding a topic to a project makes it available in the idea form', () => {
+        // create a topic
+        cy.visit('admin/settings/topics');
+        cy.get('#e2e-custom-topics').click();
+        cy.get('#e2e-topic-name-en').type('Custom topic for idea form test');
+        cy.get('.e2e-submit-wrapper-button').click();
+
+        // Go to our project topic settings
+        cy.visit(`admin/projects/${projectId}/topics`);
+
+        // Add our new topic
+        cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea form test').click();
+        cy.get('#e2e-add-project-topic-button').click();
+
+        // Go to idea form for our project
+        cy.get('#e2e-new-idea').click();
+
+        // Verify the topic is selectable in the topic selector
+        cy.get('.e2e-topics-picker').contains('Custom topic for idea form test 2');
+
+        // Go to our project topic settings
+        cy.visit(`admin/projects/${projectId}/topics`);
+
+        // Remove our new topic from the project
+        cy.get('.e2e-admin-list-row').contains('Custom topic for idea form test 2')
+          .find('#e2e-remove-project-topic-button').click();
+        cy.on('window:confirm', () => true);
+
+        // Go to idea form for our project
+        cy.get('#e2e-new-idea').click();
+
+        // Verify the topic is not available in the topic selector
+        cy.get('.e2e-topics-picker').contains('Custom topic for idea form test 2').should('not.exist');
+      });
     });
 
     it('Adding a topic to a project makes it available in the project idea manager', () => {
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-custom-topics').click();
+      cy.get('#e2e-topic-name-en').type('Custom topic for idea manager test');
+      cy.get('.e2e-submit-wrapper-button').click();
+
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
+
+      // Add our new topic
+      cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea manager test').click();
+      cy.get('#e2e-add-project-topic-button').click();
+
+      // Go to idea manager for our project
+      // TODO
+
+      // Verify the topic is selectable in the idea manager
+      // TODO
+
     });
 
     it('Removing a topic from a project makes it unavailable in the project idea manager', () => {
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-custom-topics').click();
+      cy.get('#e2e-topic-name-en').type('Custom topic for idea manager test');
+      cy.get('.e2e-submit-wrapper-button').click();
+
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
+
+      // Add our new topic
+      cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea manager test').click();
+      cy.get('#e2e-add-project-topic-button').click();
+
+      // Go to idea manager for our project
+      // TODO
+
+      // Verify the topic is selectable in the topic selector
+      cy.get('.e2e-topics-picker').contains('Custom topic for idea manager test 2');
+
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
+
+      // Remove our new topic from the project
+      cy.get('.e2e-admin-list-row').contains('Custom topic for idea manager test 2')
+        .find('#e2e-remove-project-topic-button').click();
+      cy.on('window:confirm', () => true);
+
+      // Go to idea manager for our project
+      // TODO
+
+      // Verify the topic is not selectable in the idea manager
+      // TODO
     });
 
   });
