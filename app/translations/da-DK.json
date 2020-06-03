@@ -1825,7 +1825,7 @@
   "app.containers.SignUp.goToSignUp": "Har du ikke en konto? {goToOtherFlowLink}",
   "app.containers.SignUp.headerSubtitle": "Trin {activeStepNumber} af {totalStepsCount}: {stepName}",
   "app.containers.SignUp.iHaveReadAndAgreeTo": "Jeg har læst og accepterer {link}.",
-  "app.containers.SignUp.invitationError": "",
+  "app.containers.SignUp.invitationError": "Din invitation er udløbet eller er allerede indløst.",
   "app.containers.SignUp.invitationTitle": "Indløs din invitation",
   "app.containers.SignUp.lastNameLabel": "Efternavn",
   "app.containers.SignUp.lastNamePlaceholder": " ",
