@@ -86,7 +86,7 @@ describe('Sign up - Email + password step', () => {
     cy.get('.e2e-terms-and-conditions .e2e-checkbox').click();
     cy.get('.e2e-privacy-checkbox .e2e-checkbox').click();
     cy.get('#e2e-signup-password-button').click();
-    cy.get('#e2e-signup-success-container');
+    cy.get('#e2e-signup-success-container', { timeout: 20000 });
     cy.get('.e2e-signup-success-close-button').click();
     cy.get('#e2e-sign-up-in-modal').should('not.exist');
     cy.get('#e2e-user-menu-container');

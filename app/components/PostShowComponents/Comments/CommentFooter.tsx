@@ -193,16 +193,18 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   render() {
-    const { commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, post, canReply, intl: { formatMessage } } = this.props;
+    const { authUser, commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, post, canReply, intl: { formatMessage } } = this.props;
     const { translateButtonClicked } = this.state;
 
     if (!isNilOrError(post) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
       const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason');
+      const commentingDisabled = commentingDisabledReason && (commentingDisabledReason !== 'not_verified' || (!authUser && commentingDisabledReason !== 'not_permitted'));
       const commentingVotingDisabledReason = get(post, 'attributes.action_descriptor.comment_voting.disabled_reason');
+      const commentVotingDisabled = commentingVotingDisabledReason && (commentingVotingDisabledReason !== 'not_verified' || (!authUser && commentingVotingDisabledReason !== 'not_permitted'));
       const upvoteCount = comment.attributes.upvotes_count;
       const showVoteComponent = commentingDisabledReason !== 'commenting_disabled' || upvoteCount > 0;
-      const showReplyButton = canReply && commentingDisabledReason !== 'commenting_disabled';
+      const showReplyButton = canReply && !commentingDisabled;
       const showTranslateButton = !!(commentBodyMultiloc && !commentBodyMultiloc[locale] && tenantLocales.length > 1);
 
       return (
@@ -215,7 +217,7 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                   postType={postType}
                   commentId={commentId}
                   commentType={commentType}
-                  disabled={commentingVotingDisabledReason === 'commenting_disabled'}
+                  disabled={commentVotingDisabled}
                   commentingDisabledReason={commentingDisabledReason}
                 />
                 {/* // Make sure there's a next item before adding a separator */}
