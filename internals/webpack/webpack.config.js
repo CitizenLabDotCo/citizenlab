@@ -20,6 +20,9 @@ const API_HOST = process.env.API_HOST || 'localhost';
 const API_PORT = process.env.API_PORT || 4000;
 const GRAPHQL_HOST = process.env.GRAPHQL_HOST || 'localhost';
 const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
+const DEV_WORKSHOPS_HOST = process.env.DEV_WORKSHOPS_HOST || 'localhost';
+const DEV_WORKSHOPS_PORT = process.env.DEV_WORKSHOPS_PORT || 4005;
+
 const currentYear = new Date().getFullYear();
 
 const config = {
@@ -49,6 +52,7 @@ const config = {
       '/widgets/': `http://${API_HOST}:3200`,
       '/admin_templates_api': `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
       '/uploads': `http://${API_HOST}:${API_PORT}`,
+      '/workshops': `http://${DEV_WORKSHOPS_HOST}:${DEV_WORKSHOPS_PORT}`,
     },
   },
 
