@@ -5,6 +5,7 @@
 ### Fixed
 
 - Maps with markers don't lose their center/zoom settings anymore
+- English placeholders in idea form are gone for Spanish platforms
 
 ## 2020-05-26
 
