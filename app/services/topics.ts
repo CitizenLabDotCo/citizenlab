@@ -38,8 +38,10 @@ export function topicsStream(streamParams: IStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
 }
 
-export function addTopic(object) {
-  return streams.add<ITopic>(apiEndpoint, { topic: object });
+export async function addTopic(object) {
+  const response = await streams.add<ITopic>(apiEndpoint, { topic: object });
+  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
+  return response;
 }
 
 export function updateTopic(topicId: string, object) {
