@@ -187,11 +187,13 @@ describe('Project topics', () => {
       cy.get('#e2e-add-project-topic-button').click();
 
       // Go to idea manager for our project
-      // TODO
+      cy.visit(`admin/projects/${projectId}/ideas`);
 
-      // Verify the topic is selectable in the idea manager
-      // TODO
+      // Open topics tab
+      cy.get('#topics').click();
 
+      //
+      cy.get('#e2e-idea-manager-topic-filters').contains('Custom topic for idea manager test');
     });
 
     it('Removing a topic from a project makes it unavailable in the project idea manager', () => {
@@ -209,9 +211,9 @@ describe('Project topics', () => {
       cy.get('#e2e-add-project-topic-button').click();
 
       // Go to idea manager for our project
-      // TODO
+      cy.visit(`admin/projects/${projectId}/ideas`);
 
-      // Verify the topic is selectable in the topic selector
+      // Verify the topic is selectable in the idea manager topics tab
       cy.get('.e2e-topics-picker').contains('Custom topic for idea manager test 2');
 
       // Go to our project topic settings
@@ -223,10 +225,12 @@ describe('Project topics', () => {
       cy.on('window:confirm', () => true);
 
       // Go to idea manager for our project
-      // TODO
+      cy.visit(`admin/projects/${projectId}/ideas`);
 
-      // Verify the topic is not selectable in the idea manager
-      // TODO
+      // Verify the topic is not selectable in the idea manager topics tab
+      cy.get('#e2e-idea-manager-topic-filters')
+        .contains('Custom topic for idea manager test')
+        .should('not.exist');
     });
 
   });
