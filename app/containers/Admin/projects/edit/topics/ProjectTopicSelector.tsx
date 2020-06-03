@@ -111,6 +111,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
             value={selectedTopicOptions}
             options={getOptions(selectableTopics)}
             onChange={handleTopicSelectionChange}
+            id="e2e-project-topic-multiselect"
           />
 
           <AddTopicButton
