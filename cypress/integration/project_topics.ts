@@ -39,7 +39,7 @@ describe('Project topics', () => {
 
       // Add custom topic
       cy.get('#e2e-custom-topics').click();
-      cy.get('#e2e-topic-name').type('Custom topic 1');
+      cy.get('#e2e-topic-name-en').type('Custom topic 1');
       cy.get('.e2e-submit-wrapper-button').click();
 
       // Go to our project topic settings
@@ -48,29 +48,69 @@ describe('Project topics', () => {
     });
 
     it('Removing a custom topic in the topic manager makes it unavailable in the project topic settings', () => {
-      // check that our topic is there initially
+
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-custom-topics').click();
+      cy.get('#e2e-topic-name-en').type('Custom topic 2');
+      cy.get('.e2e-submit-wrapper-button').click();
+
+      // and check that our topic is there initially
       cy.visit(`admin/projects/${projectId}/topics`);
       cy.get('#e2e-project-topic-multiselect')
       .click()
-      .contains('Custom topic 1');
+      .contains('Custom topic 2');
 
       // go to topic manager
       cy.visit('admin/settings/topics');
 
       // Remove custom topic
-      // todo
+      cy.get('.e2e-topic-field-row')
+        .first()
+        .contains('Custom topic 2')
+        .find('#e2e-custom-topic-delete-button')
+        .click();
+      cy.on('window:confirm', () => true);
 
-      // Go to our project topic settings
+      // Go to our project topic settings and check that topic is not available
       cy.visit(`admin/projects/${projectId}/topics`);
       cy.get('#e2e-project-topic-multiselect')
         .click()
-        .contains('Custom topic 1')
+        .contains('Custom topic 2')
         .should('not.exist');
     });
 
     it('Renaming a custom topic in the topic manager updates its name in the project topic settings', () => {
+        // create a topic
+        cy.visit('admin/settings/topics');
+        cy.get('#e2e-custom-topics').click();
+        cy.get('#e2e-topic-name-en').type('Custom topic 3');
+        cy.get('.e2e-submit-wrapper-button').click();
+
+        // and check that our topic is there initially
+        cy.visit(`admin/projects/${projectId}/topics`);
+        cy.get('#e2e-project-topic-multiselect')
+        .click()
+        .contains('Custom topic 3');
     });
 
+    // go to topic manager
+    cy.visit('admin/settings/topics');
+
+    // Edit the name of the custom topic
+    cy.get('.e2e-topic-field-row')
+      .first()
+      .contains('Custom topic 2')
+      .find('#e2e-custom-topic-edit-button')
+      .click();
+    cy.get('#e2e-topic-name-en').type('Edited custom topic 3');
+    cy.get('.e2e-submit-wrapper-button').click();
+
+    // Go to our project topic settings and check that topic is not available
+    cy.visit(`admin/projects/${projectId}/topics`);
+    cy.get('#e2e-project-topic-multiselect')
+      .click()
+      .contains('Edited custom topic 3');
   });
 
   describe('Project settings', () => {
