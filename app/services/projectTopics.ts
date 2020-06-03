@@ -6,14 +6,14 @@ import { IProject } from 'services/projects';
 const apiEndpoint = `${API_PATH}/projects`;
 
 export async function deleteProjectTopic(projectId: string, topicId: string) {
-  const response = streams.delete(`${apiEndpoint}/${projectId}/topics/${topicId}`, topicId);
+  const response = await streams.delete(`${apiEndpoint}/${projectId}/topics/${topicId}`, topicId);
   // line below to be checked
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/topics`, `${API_PATH}/projects/${projectId}/topics`] });
   return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
-  const response = streams.add(`${apiEndpoint}/${projectId}/topics`, { topic_id: topicId });
+  const response = await streams.add(`${apiEndpoint}/${projectId}/topics`, { topic_id: topicId });
   // line below to be checked
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/topics`, `${API_PATH}/projects/${projectId}/topics`] });
   return response;
@@ -24,7 +24,7 @@ export async function reorderProjectTopic(
   topicId: string,
   newOrder: number
 ) {
-  return streams.update<IProject>(
+  return await streams.update<IProject>(
     `projects/${projectId}/topics/${topicId}/reorder`,
     projectId,
     {
