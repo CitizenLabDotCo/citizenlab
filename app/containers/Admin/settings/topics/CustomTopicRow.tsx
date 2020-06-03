@@ -44,6 +44,7 @@ const DefaultTopicRow = memo((props: Props) => {
             linkTo={`/admin/settings/topics/${topic.id}/edit`}
             buttonStyle="secondary"
             icon="edit"
+            id="e2e-custom-topic-edit-button"
           >
             <FormattedMessage {...messages.editButtonLabel} />
           </Button>
@@ -52,6 +53,7 @@ const DefaultTopicRow = memo((props: Props) => {
             onClick={handleDeleteClick(topic.id)}
             buttonStyle="text"
             icon="delete"
+            id="e2e-custom-topic-delete-button"
           >
             <FormattedMessage {...messages.deleteButtonLabel} />
           </Button>
