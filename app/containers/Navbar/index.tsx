@@ -292,6 +292,27 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
+  margin-right: 30px;
+
+  &.ie {
+    margin-right: 50px;
+  }
+
+  ${media.desktop`
+    margin-right: 40px;
+  `}
+
+  ${media.smallerThanMinTablet`
+    margin-right: 20px;
+  `}
+`;
+
+const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
+  padding-left: 20px;
+
+  ${media.smallerThanMinTablet`
+    padding-left: 15px;
+  `}
 `;
 
 const RightItem = styled.div`
@@ -299,7 +320,7 @@ const RightItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 42px;
+  margin-left: 40px;
   white-space: nowrap;
 
   &.noLeftMargin {
@@ -328,7 +349,6 @@ const LogInMenuItem = styled.button`
   transition: all 100ms ease-out;
 
   &:hover {
-    /* background: #eee; */
     text-decoration: underline;
   }
 
@@ -362,33 +382,6 @@ const SignUpMenuItem = styled.button`
 
   ${media.phone`
     padding: 0 12px;
-  `}
-`;
-
-const StyledLoadableLanguageSelector = styled(LoadableLanguageSelector)`
-  padding-left: 32px;
-  padding-right: 32px;
-  transition: all 100ms ease-out;
-
-  &.ie {
-    padding-right: 40px;
-  }
-
-  /* &:hover {
-    background: #eee;
-  } */
-
-  &.notLoggedIn {
-    padding-left: 20px;
-
-    ${media.smallerThanMinTablet`
-      padding-left: 10px;
-    `}
-  }
-
-  ${media.smallerThanMinTablet`
-    padding-left: 20px;
-    padding-right: 10px;
   `}
 `;
 
@@ -600,11 +593,10 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
               </NavigationItems>
             </Left>
             <StyledRightFragment name="navbar-right">
-              <Right>
+              <Right className={bowser.msie ? 'ie' : ''}>
                 {!emailSettingsPage && (
                   <>
                     {isNilOrError(authUser) &&
-
                       <RightItem className="login noLeftMargin">
                         <LogInMenuItem id="e2e-navbar-login-menu-item" onClick={this.signIn}>
                           <NavigationItemBorder />
@@ -641,7 +633,7 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
                 {tenantLocales.length > 1 && locale &&
                   <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
-                    <StyledLoadableLanguageSelector className={`${!authUser ? 'notLoggedIn' : 'loggedIn'} ${bowser.msie ? 'ie' : ''}`} />
+                    <StyledLoadableLanguageSelector />
                   </RightItem>
                 }
               </Right>

@@ -38,7 +38,7 @@ describe('Sign up - custom fields step', () => {
     it('shows the custom field step and can skip it', () => {
       cy.get('#e2e-signup-custom-fields-container');
       cy.get('.e2e-signup-custom-fields-skip-btn').click();
-      cy.get('#e2e-signup-success-container');
+      cy.get('#e2e-signup-success-container', { timeout: 20000 });
       cy.get('.e2e-signup-success-close-button').click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
@@ -99,7 +99,7 @@ describe('Sign up - custom fields step', () => {
       cy.get('.e2e-signup-custom-fields-skip-btn').should('not.exist');
       cy.get(`#root_${randomFieldName}`).type('test');
       cy.get('#e2e-signup-custom-fields-submit-btn').click();
-      cy.get('#e2e-signup-success-container');
+      cy.get('#e2e-signup-success-container', { timeout: 20000 });
       cy.get('.e2e-signup-success-close-button').click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
     });
