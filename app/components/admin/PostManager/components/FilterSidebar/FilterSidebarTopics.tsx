@@ -43,7 +43,7 @@ class FilterSidebarTopics extends React.PureComponent<Props & WithRouterProps> {
   render() {
     const { topics, selectedTopics } = this.props;
     return (
-      <Menu secondary={true} vertical={true} fluid={true}>
+      <Menu id="e2e-idea-manager-topic-filters" secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!selectedTopics || selectedTopics.length === 0}>
           <FormattedMessage {...messages.allTopics} />
         </Menu.Item>
