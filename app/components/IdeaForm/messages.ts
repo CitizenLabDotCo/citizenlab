@@ -21,17 +21,9 @@ export default defineMessages({
     id: 'app.components.IdeaForm.title',
     defaultMessage: 'Title',
   },
-  titlePlaceholder: {
-    id: 'app.components.IdeaForm.titlePlaceholder',
-    defaultMessage: 'Enter the title of your idea',
-  },
   descriptionTitle: {
     id: 'app.components.IdeaForm.descriptionTitle',
     defaultMessage: 'Description',
-  },
-  descriptionPlaceholder: {
-    id: 'app.components.IdeaForm.descriptionPlaceholder',
-    defaultMessage: 'Enter the description of your idea',
   },
   topicsTitle: {
     id: 'app.components.IdeaForm.topicsTitle',

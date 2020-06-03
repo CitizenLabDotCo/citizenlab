@@ -608,7 +608,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 id="title"
                 type="text"
                 value={title}
-                placeholder={formatMessage(messages.titlePlaceholder)}
                 error={titleError}
                 onChange={this.handleTitleOnChange}
                 setRef={this.handleTitleInputSetRef}
@@ -630,7 +629,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                 id="editor"
                 noImages={true}
                 value={description}
-                placeholder={formatMessage(messages.descriptionPlaceholder)}
                 onChange={this.handleDescriptionOnChange}
                 setRef={this.handleDescriptionSetRef}
                 hasError={descriptionError !== null}
