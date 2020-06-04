@@ -28,7 +28,7 @@ export async function reorderProjectTopic(
     topicId,
     {
       topic: {
-        ordering_within_project: newOrder
+        ordering: newOrder
       }
     }
   );
