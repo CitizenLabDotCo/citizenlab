@@ -68,7 +68,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
               buttonStyle="cl-blue"
               icon="plus-circle"
               linkTo="/admin/settings/topics/new"
-              id="e2e-add-custom-topic"
+              id="e2e-add-custom-topic-button"
             >
               <FormattedMessage {...messages.addTopicButton} />
             </Button>

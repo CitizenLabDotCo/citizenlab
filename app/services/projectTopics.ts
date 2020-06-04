@@ -1,7 +1,6 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { ITopics } from 'services/topics';
-import { IProject } from 'services/projects';
 
 const apiEndpoint = `${API_PATH}/projects`;
 
