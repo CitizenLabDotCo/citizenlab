@@ -1,28 +1,28 @@
 import { randomString, apiRemoveProject } from '../support/commands';
 
-// describe('Project topics', () => {
-//   const projectTitle = randomString();
-//   const projectDescriptionPreview = randomString();
-//   const projectDescription = randomString();
+describe('Project topics', () => {
+  const projectTitle = randomString();
+  const projectDescriptionPreview = randomString();
+  const projectDescription = randomString();
 
-//   let projectId: string;
-//   let projectSlug: string;
+  let projectId: string;
+  let projectSlug: string;
 
-//   beforeEach(() => {
-//     // create new project
-//     cy.apiCreateProject({
-//       type: 'continuous',
-//       title: projectTitle,
-//       descriptionPreview: projectDescriptionPreview,
-//       description: projectDescription,
-//       publicationStatus: 'published'
-//     }).then((project) => {
-//       projectId = project.body.data.id;
-//       projectSlug = project.body.data.attributes.slug;
-//     });
+  beforeEach(() => {
+    // create new project
+    cy.apiCreateProject({
+      type: 'continuous',
+      title: projectTitle,
+      descriptionPreview: projectDescriptionPreview,
+      description: projectDescription,
+      publicationStatus: 'published'
+    }).then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+    });
 
-//     cy.setAdminLoginCookie();
-//   });
+    cy.setAdminLoginCookie();
+  });
 
 //   describe('Topic manager', () => {
 //     it('Adding a custom topic in the topic manager makes it available in the project topic settings', () => {
@@ -116,127 +116,137 @@ import { randomString, apiRemoveProject } from '../support/commands';
 //       });
 //   });
 
-  // describe('Project topic settings', () => {
-  //   it('Adding a topic to a project makes it available in the idea form', () => {
-  //     // create a topic
-  //     cy.visit('admin/settings/topics');
-  //     cy.get('#e2e-add-custom-topic-button').click();
-  //     cy.get('#e2e-topic-name-en').type('Custom topic for idea form test');
-  //     cy.get('.e2e-submit-wrapper-button').click();
+  describe('Project topic settings', () => {
+    it('Adding a topic to a project makes it available in the idea form', () => {
+      const topicTitle = randomString();
 
-  //     // Go to our project topic settings
-  //     cy.visit(`admin/projects/${projectId}/topics`);
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-add-custom-topic-button').click();
+      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('.e2e-submit-wrapper-button').click();
 
-  //     // Add our new topic
-  //     cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea form test').click();
-  //     cy.get('#e2e-add-project-topic-button').click();
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
 
-  //     // Go to idea form for our project
-  //     cy.get('#e2e-new-idea').click();
+      // Add our new topic
+      cy.get('#e2e-project-topic-multiselect').click().type('{enter}'); // selects first/top item in the multiselect
+      cy.get('#e2e-add-project-topic-button').click();
 
-  //     // Verify the topic is selectable in the topic selector
-  //     cy.get('.e2e-topics-picker').contains('Custom topic for idea form test');
-  //   });
+      // Go to idea form for our project
+      cy.get('#e2e-new-idea').click();
 
-  //   it('Removing a topic from a project makes it unavailable in the idea form', () => {
-  //     it('Adding a topic to a project makes it available in the idea form', () => {
-  //       // create a topic
-  //       cy.visit('admin/settings/topics');
-  //       cy.get('#e2e-add-custom-topic-button').click();
-  //       cy.get('#e2e-topic-name-en').type('Custom topic for idea form test');
-  //       cy.get('.e2e-submit-wrapper-button').click();
+      // Verify the topic is selectable in the topic selector
+      cy.get('.e2e-topics-picker').contains(topicTitle);
+    });
 
-  //       // Go to our project topic settings
-  //       cy.visit(`admin/projects/${projectId}/topics`);
+    it('Removing a topic from a project makes it unavailable in the idea form', () => {
+      const topicTitle = randomString();
 
-  //       // Add our new topic
-  //       cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea form test').click();
-  //       cy.get('#e2e-add-project-topic-button').click();
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-add-custom-topic-button').click();
+      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('.e2e-submit-wrapper-button').click();
 
-  //       // Go to idea form for our project
-  //       cy.get('#e2e-new-idea').click();
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
 
-  //       // Verify the topic is selectable in the topic selector
-  //       cy.get('.e2e-topics-picker').contains('Custom topic for idea form test 2');
+      // Add our new topic
+      cy.get('#e2e-project-topic-multiselect').click().type('{enter}'); // selects first/top item in the multiselect
+      cy.get('#e2e-add-project-topic-button').click();
 
-  //       // Go to our project topic settings
-  //       cy.visit(`admin/projects/${projectId}/topics`);
+      // Go to idea form for our project
+      cy.get('#e2e-new-idea').click();
 
-  //       // Remove our new topic from the project
-  //       cy.get('.e2e-admin-list-row').contains('Custom topic for idea form test 2')
-  //         .find('#e2e-remove-project-topic-button').click();
-  //       cy.on('window:confirm', () => true);
+      // Verify the topic is selectable in the topic selector
+      cy.get('.e2e-topics-picker').contains(topicTitle);
 
-  //       // Go to idea form for our project
-  //       cy.get('#e2e-new-idea').click();
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
 
-  //       // Verify the topic is not available in the topic selector
-  //       cy.get('.e2e-topics-picker').contains('Custom topic for idea form test 2').should('not.exist');
-  //     });
-  //   });
+      // Remove our new topic from the project
+      cy.get('.e2e-admin-list-row')
+        .first()
+        .find('#e2e-remove-project-topic-button').click();
+      cy.on('window:confirm', () => true);
 
-  //   it('Adding a topic to a project makes it available in the project idea manager', () => {
-  //     // create a topic
-  //     cy.visit('admin/settings/topics');
-  //     cy.get('#e2e-add-custom-topic-button').click();
-  //     cy.get('#e2e-topic-name-en').type('Custom topic for idea manager test');
-  //     cy.get('.e2e-submit-wrapper-button').click();
+      // Go to idea form for our project
+      cy.get('#e2e-new-idea').click();
 
-  //     // Go to our project topic settings
-  //     cy.visit(`admin/projects/${projectId}/topics`);
+      // Verify the topic is not available in the topic selector
+      cy.get('.e2e-topics-picker').contains(topicTitle).should('not.exist');
+    });
 
-  //     // Add our new topic
-  //     cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea manager test').click();
-  //     cy.get('#e2e-add-project-topic-button').click();
+    it('Adding a topic to a project makes it available in the project idea manager', () => {
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-add-custom-topic-button').click();
+      cy.get('#e2e-topic-name-en').type('Custom topic for idea manager test');
+      cy.get('.e2e-submit-wrapper-button').click();
 
-  //     // Go to idea manager for our project
-  //     cy.visit(`admin/projects/${projectId}/ideas`);
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
 
-  //     // Open topics tab
-  //     cy.get('#topics').click();
+      // Add our new topic
+      cy.get('#e2e-project-topic-multiselect')
+        .click()
+        .type('{enter}'); // selects first/top item in the multiselect
+      cy.get('#e2e-add-project-topic-button').click();
 
-  //     //
-  //     cy.get('#e2e-idea-manager-topic-filters').contains('Custom topic for idea manager test');
-  //   });
+      // Go to idea manager for our project
+      cy.visit(`admin/projects/${projectId}/ideas`);
 
-  //   it('Removing a topic from a project makes it unavailable in the project idea manager', () => {
-  //     // create a topic
-  //     cy.visit('admin/settings/topics');
-  //     cy.get('#e2e-add-custom-topic-button').click();
-  //     cy.get('#e2e-topic-name-en').type('Custom topic for idea manager test');
-  //     cy.get('.e2e-submit-wrapper-button').click();
+      // Open topics tab
+      cy.get('#topics').click();
 
-  //     // Go to our project topic settings
-  //     cy.visit(`admin/projects/${projectId}/topics`);
+      //
+      cy.get('#e2e-idea-manager-topic-filters').contains('Custom topic for idea manager test');
+    });
 
-  //     // Add our new topic
-  //     cy.get('#e2e-project-topic-multiselect').click().contains('Custom topic for idea manager test').click();
-  //     cy.get('#e2e-add-project-topic-button').click();
+    it('Removing a topic from a project makes it unavailable in the project idea manager', () => {
+      const topicTitle = randomString();
 
-  //     // Go to idea manager for our project
-  //     cy.visit(`admin/projects/${projectId}/ideas`);
+      // create a topic
+      cy.visit('admin/settings/topics');
+      cy.get('#e2e-add-custom-topic-button').click();
+      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('.e2e-submit-wrapper-button').click();
 
-  //     // Verify the topic is selectable in the idea manager topics tab
-  //     cy.get('.e2e-topics-picker').contains('Custom topic for idea manager test 2');
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
 
-  //     // Go to our project topic settings
-  //     cy.visit(`admin/projects/${projectId}/topics`);
+      // Add our new topic
+      cy.get('#e2e-project-topic-multiselect')
+        .click()
+        .type('{enter}'); // selects first/top item in the multiselect
+      cy.get('#e2e-add-project-topic-button').click();
 
-  //     // Remove our new topic from the project
-  //     cy.get('.e2e-admin-list-row').contains('Custom topic for idea manager test 2')
-  //       .find('#e2e-remove-project-topic-button').click();
-  //     cy.on('window:confirm', () => true);
+      // Go to idea manager for our project
+      cy.visit(`admin/projects/${projectId}/ideas`);
 
-  //     // Go to idea manager for our project
-  //     cy.visit(`admin/projects/${projectId}/ideas`);
+      // Verify the topic is selectable in the idea manager topics tab
+      cy.get('.e2e-topics-picker').contains(topicTitle);
 
-  //     // Verify the topic is not selectable in the idea manager topics tab
-  //     cy.get('#e2e-idea-manager-topic-filters')
-  //       .contains('Custom topic for idea manager test')
-  //       .should('not.exist');
-  //   });
+      // Go to our project topic settings
+      cy.visit(`admin/projects/${projectId}/topics`);
 
-  // });
+      // Remove our new topic from the project
+      cy.get('.e2e-admin-list-row')
+        .first()
+        .find('#e2e-remove-project-topic-button').click();
+      cy.on('window:confirm', () => true);
+
+      // Go to idea manager for our project
+      cy.visit(`admin/projects/${projectId}/ideas`);
+
+      // Verify the topic is not selectable in the idea manager topics tab
+      cy.get('#e2e-idea-manager-topic-filters')
+        .contains(topicTitle)
+        .should('not.exist');
+    });
+
+  });
 
   afterEach(() => {
     apiRemoveProject(projectId);
