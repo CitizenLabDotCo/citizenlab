@@ -62,6 +62,7 @@ class FilterSidebarTopics extends React.PureComponent<Props & WithRouterProps> {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
+  // todo always use gettopics here? use case for getprojecttopics?
   topics: ({ params: { projectId }, render }) => {
     return projectId ?
       <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
