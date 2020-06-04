@@ -15,6 +15,7 @@ import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { PreviousPathnameContext } from 'context';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -23,11 +24,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
+import { ITopicData } from 'services/topics';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends DataProps { }
@@ -92,15 +95,25 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
   }
 
   render() {
-    const { authUser, locale } = this.props;
+    const { authUser, locale, topics } = this.props;
     const { locationInfo } = this.state;
-    if (isNilOrError(authUser) || isNilOrError(locale) || locationInfo === undefined) return null;
+    if (
+      isNilOrError(authUser) ||
+      isNilOrError(locale) ||
+      isNilOrError(topics) ||
+      locationInfo === undefined
+    ) {
+      return null;
+    }
+    const initiativeTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+
     return (
       <>
         <InitiativesNewMeta />
         <PageLayout>
           <InitiativesNewFormWrapper
             locale={locale}
+            topics={initiativeTopics}
             {...locationInfo}
           />
         </PageLayout>
@@ -113,6 +126,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
+  topics: <GetTopics />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 
