@@ -40,7 +40,7 @@ const SortableProjectTopicList = memo(({
     reorderProjectTopic(projectId, topicId, newOrder);
   };
 
-  const projectTopics = useProjectTopics({ projectId });
+  const projectTopics = useProjectTopics({ projectId, sort: 'custom' });
 
   if (!isNilOrError(projectTopics)) {
     const isLastSelectedTopic = projectTopics.length === 1;
