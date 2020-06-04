@@ -80,6 +80,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
     try {
       await Promise.all(promises);
       setProcessing(false);
+      setSelectedTopicOptions([]);
     } catch {
       setProcessing(false);
     }

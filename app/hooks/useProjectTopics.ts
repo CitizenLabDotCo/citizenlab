@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ITopicData, Code } from 'services/topics';
 import { projectTopicsStream } from 'services/projectTopics';
-
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -24,7 +23,9 @@ export default function useProjectTopics({
   useEffect(() => {
     let observable: Observable<ITopicData[]| null> = of(null);
 
-    observable = projectTopicsStream(projectId, { queryParameters }).observable.pipe(map(topics => topics.data));
+    observable = projectTopicsStream(projectId, { queryParameters }).observable.pipe(
+      map(topics => topics.data.filter(topic => topic))
+    );
 
     const subscription = observable.subscribe((topics) => {
       setProjectTopics(topics);
