@@ -84,7 +84,8 @@ class WebApi::V1::TopicsController < ApplicationController
     else
       @topic
     end
-    if instance.insert_at(permitted_attributes(@topic)[:ordering])
+    ordering = permitted_attributes(@topic)[:ordering]
+    if ordering && instance.insert_at(ordering)
       SideFxTopicService.new.after_update(@topic, current_user)
       render json: WebApi::V1::TopicSerializer.new(
         @topic.reload, 
