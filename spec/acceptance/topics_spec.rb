@@ -32,6 +32,14 @@ resource "Topics" do
       expect(json_response[:data].size).to eq 4
     end
 
+    example "List all topics by code exclusion" do
+      @topics.first.update!(code: 'nature')
+      do_request exclude_code: 'custom'
+      expect(status).to eq(200)
+      json_response = json_parse(response_body)
+      expect(json_response[:data].size).to eq 1
+    end
+
     example "List all topics sorted by newest first" do
       t1 = create(:topic, created_at: Time.now + 1.hour)
 
