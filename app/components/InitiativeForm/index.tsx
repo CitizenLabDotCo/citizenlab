@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { adopt } from 'react-adopt';
 import { get } from 'lodash-es';
 import { stripHtmlTags, isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
@@ -26,9 +25,6 @@ import { IMessageInfo, injectIntl } from 'utils/cl-intl';
 import { Multiloc, Locale, UploadFile } from 'typings';
 import bowser from 'bowser';
 import { ITopicData } from 'services/topics';
-
-// resources
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 const Form = styled.form`
   display: flex;
@@ -63,11 +59,7 @@ export interface FormProps {
   onPublish: () => void;
 }
 
-interface DataProps {
-  topics: GetTopicsChildProps;
-}
-
-interface InputProps extends FormValues, FormProps {
+interface Props extends FormValues, FormProps {
   onChangeTitle: (newValue: Multiloc) => void;
   onChangeBody: (newValue: Multiloc) => void;
   onChangeTopics: (newValue: string[]) => void;
@@ -79,9 +71,8 @@ interface InputProps extends FormValues, FormProps {
   locale: Locale;
   publishError: boolean;
   apiErrors: any;
+  topics: ITopicData[];
 }
-
-interface Props extends InputProps, DataProps {}
 
 interface State {
   touched: {
@@ -477,13 +468,4 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
 
 const InitiativeFormWithHOCs = injectIntl(InitiativeForm);
 
-const Data = adopt<DataProps, Props>({
-  topics: <GetTopics />
-});
-
-// perhaps not ideal to have data loading in this component but by far the easiest/cleanest solution imo
-export default (inputProps: Props) => (
-  <Data {...inputProps}>
-    {dataProps => <InitiativeFormWithHOCs {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default InitiativeFormWithHOCs;

@@ -200,7 +200,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         locale$,
         tenant$,
       ).subscribe(([locale, tenant]) => {
-        // check: still needed?
         this.setState({
           locale,
           tenant,
