@@ -24,12 +24,12 @@ export async function reorderProjectTopic(
   topicId: string,
   newOrder: number
 ) {
-  return await streams.update<IProject>(
-    `projects/${projectId}/topics/${topicId}/reorder`,
-    projectId,
+  return await streams.update(
+    `${apiEndpoint}/${projectId}/topics/${topicId}/reorder`,
+    topicId,
     {
       topic: {
-        ordering: newOrder
+        ordering_within_project: newOrder
       }
     }
   );
