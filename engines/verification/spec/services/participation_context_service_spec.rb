@@ -14,14 +14,28 @@ describe ParticipationContextService do
       expect(service.posting_disabled_reason_for_project(project, create(:user, verified: true))).to be_nil
     end
 
-    it "returns `not_verified` when not permitted and a permitted group requires verification" do
+    it "returns `not_verified` when not permitted and a permitted group requires verification, while the user is not verified" do
       project = create(:continuous_project, with_permissions: true)
       permission = project.permissions.find_by(action: 'posting')
       verified_members = create(:smart_group, rules: [{ruleType: 'verified', predicate: 'is_verified'}])
       permission.update!(permitted_by: 'groups', 
         group_ids: [create(:group).id, verified_members.id]
         )
-      expect(service.posting_disabled_reason_for_project(project, create(:user))).to eq 'not_verified'
+      expect(service.posting_disabled_reason_for_project(project, create(:user, verified: false))).to eq 'not_verified'
+    end
+
+    it "returns `not_permitted` when not permitted and a permitted group requires verification, while the user is verified" do
+      project = create(:continuous_project, with_permissions: true)
+      permission = project.permissions.find_by(action: 'posting')
+      birthyear = create(:birthyear_custom_field)
+      verified_members = create(:smart_group, rules: [
+        {ruleType: 'verified', predicate: 'is_verified'}, 
+        {value: 2002, ruleType: "custom_field_number", predicate: "is_smaller_than_or_equal", customFieldId: birthyear.id}
+      ])
+      permission.update!(permitted_by: 'groups', 
+        group_ids: [create(:group).id, verified_members.id]
+        )
+      expect(service.posting_disabled_reason_for_project(project, create(:user, verified: true, birthyear: 2008))).to eq 'not_permitted'
     end
 
     it "returns `not_permitted` when only permitted to admins but a group requires verification" do
