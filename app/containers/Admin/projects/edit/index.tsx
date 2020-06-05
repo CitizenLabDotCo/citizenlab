@@ -274,7 +274,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
             }).length === 0
           )
         ) {
-          return false; // Change back to true!
+          return true;
         }
 
         return false;
