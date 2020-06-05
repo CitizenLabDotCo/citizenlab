@@ -402,7 +402,7 @@ class TenantTemplateService
         'description_multiloc' => t.description_multiloc,
         'icon'                 => t.icon,
         'ordering'             => t.ordering,
-        'code'                 => t.code
+        'code'                 => t.code,
         'created_at'           => t.created_at.to_s,
         'updated_at'           => t.updated_at.to_s
       }
