@@ -115,6 +115,17 @@ resource "Topics" do
         expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
       end
+
+      context do
+        let(:topic) { create(:topic, code: 'mobility', title_multiloc: {'en' => 'Drama'}) }
+        let(:id) { topic.id }
+
+        example_request "Rename a default topic does not work", example: false do
+          expect(response_status).to eq 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:attributes,:title_multiloc).stringify_keys).to match ({'en' => 'Drama'})
+        end
+      end
     end
 
     patch "web_api/v1/topics/:id/reorder" do
@@ -130,6 +141,15 @@ resource "Topics" do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data,:attributes,:ordering)).to eq ordering
       end
+
+      context do
+        let(:topic) { create(:topic, code: 'mobility') }
+        let(:id) { topic.id }
+
+        example_request "Reoreder a default topic", document: :false do
+          expect(response_status).to eq 200
+        end
+      end
     end
 
     delete "web_api/v1/topics/:id" do
@@ -143,6 +163,15 @@ resource "Topics" do
         expect(response_status).to eq 200
         expect{Topic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(Topic.count).to eq (old_count - 1)
+      end
+
+      context do
+        let(:topic) { create(:topic, code: 'mobility') }
+        let(:id) { topic.id }
+
+        example_request "[error] Delete a default topic" do
+          expect(response_status).to eq 401
+        end
       end
     end
 
