@@ -116,7 +116,7 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
-  topics: <GetTopics />,
+  topics: <GetTopics exclude_code={['custom']} />,
   initiative: ({ params, render }) => <GetInitiative id={params.initiativeId}>{render}</GetInitiative>,
   initiativeImages: ({ params, render }) => <GetInitiativeImages initiativeId={params.initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ params, render }) => <GetResourceFileObjects resourceId={params.initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
