@@ -8,6 +8,7 @@ interface Parameters {
   topicIds?: string[];
   code?: Code;
   exclude_code?: Code;
+  sort?: 'new' | 'custom';
 }
 
 export default function useTopics(parameters: Parameters) {
@@ -15,9 +16,10 @@ export default function useTopics(parameters: Parameters) {
     topicIds,
     code,
     exclude_code,
+    sort
   } = parameters;
   const [topics, setTopics] = useState<(ITopicData | Error)[] | undefined | null | Error>(undefined);
-  const queryParameters = { code, exclude_code };
+  const queryParameters = { code, exclude_code, sort };
 
   useEffect(() => {
     let observable: Observable<(ITopicData | Error)[] | null> = of(null);
