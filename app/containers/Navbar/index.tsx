@@ -292,11 +292,15 @@ const Right = styled.div`
   display: flex;
   align-items: center;
   height: ${({ theme }) => theme.menuHeight}px;
-  margin-right: 35px;
+  margin-right: 30px;
 
   &.ie {
     margin-right: 50px;
   }
+
+  ${media.desktop`
+    margin-right: 40px;
+  `}
 
   ${media.smallerThanMinTablet`
     margin-right: 20px;

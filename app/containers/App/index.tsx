@@ -213,9 +213,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const { authUser, signUpInModalMounted, verificationModalMounted } = this.state;
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
+    const isInvitation = endsWith(pathname, '/invite');
 
-    if (isAuthError || (!isNilOrError(authUser) && signUpInModalMounted && (prevState.authUser === undefined || !prevState.signUpInModalMounted))) {
+    if (
+      (!prevState.signUpInModalMounted && signUpInModalMounted && isAuthError) ||
+      (!prevState.signUpInModalMounted && signUpInModalMounted && isInvitation) ||
+      (!prevState.signUpInModalMounted && signUpInModalMounted && !isNilOrError(authUser)) ||
+      (prevState.authUser === undefined && !isNilOrError(authUser) && signUpInModalMounted)
+    ) {
       const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as any as SSOParams;
+      const token = urlSearchParams?.['token'] as string | undefined;
       const shouldComplete = !authUser?.data?.attributes?.registration_completed_at;
 
       // see services/singleSignOn.ts
@@ -229,19 +236,21 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         sso_verification_type
       } = urlSearchParams;
 
-      if (isAuthError) {
+      if (isAuthError || isInvitation) {
         window.history.replaceState(null, '', '/');
       }
 
-      if (sso_response || shouldComplete) {
+      if (sso_response || shouldComplete || isInvitation) {
         const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
 
         if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
         }
 
-        if (!endsWith(sso_pathname, ['sign-up', 'sign-in', 'invite']) && (isAuthError || shouldVerify || shouldComplete)) {
+        if (!endsWith(sso_pathname, ['sign-up', 'sign-in']) && (isAuthError || (isInvitation && shouldComplete) || shouldVerify || shouldComplete)) {
           openSignUpInModal({
+            isInvitation,
+            token,
             flow: isAuthError && sso_flow ? sso_flow : 'signup',
             error: isAuthError,
             verification: !!sso_verification,
