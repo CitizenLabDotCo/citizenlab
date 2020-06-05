@@ -37,14 +37,6 @@ const DefaultTopicRow = memo((props: Props) => {
         <RowContent>
           <StyledRowContentInner>
             <RowTitle value={topic.attributes.title_multiloc} />
-
-            {/* {publication.attributes ?.publication_visible_to === 'admins' &&
-              <StyledStatusLabel
-                text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-                color="clBlue"
-                icon="lock"
-              />
-            } */}
           </StyledRowContentInner>
         </RowContent>
         <DefaultTopicLabel>

@@ -12,6 +12,7 @@ const DragHandle = styled.div`
   align-self: flex-start;
 `;
 
+// TODO: type checking doesn't work for this component
 interface Props {
   connectDragSource: any;
   connectDropTarget: any;
