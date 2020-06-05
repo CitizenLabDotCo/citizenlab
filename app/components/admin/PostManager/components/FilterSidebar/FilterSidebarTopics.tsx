@@ -4,26 +4,15 @@ import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { adopt } from 'react-adopt';
-import GetTopics from 'resources/GetTopics';
-import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProjectTopics';
-import { isNilOrError } from 'utils/helperUtils';
-import { withRouter, WithRouterProps } from 'react-router';
+import { ITopicData } from 'services/topics';
 
-interface InputProps {
+interface Props {
+  selectableTopics: ITopicData[];
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
 }
 
-interface DataProps {
-  // Covers both possible cases. If we use GetTopics,
-  // it'll only be from 1 topics stream, so no individual stream errors possible.
-  topics: GetProjectTopicsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-class FilterSidebarTopics extends React.PureComponent<Props & WithRouterProps> {
+export default class FilterSidebarTopics extends React.PureComponent<Props> {
 
   handleItemClick = (id) => (event) => {
     if (event.ctrlKey) {
@@ -43,37 +32,22 @@ class FilterSidebarTopics extends React.PureComponent<Props & WithRouterProps> {
   }
 
   render() {
-    const { topics, selectedTopics } = this.props;
+    const { selectableTopics, selectedTopics } = this.props;
     return (
       <Menu id="e2e-idea-manager-topic-filters" secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!selectedTopics || selectedTopics.length === 0}>
           <FormattedMessage {...messages.allTopics} />
         </Menu.Item>
         <Divider />
-        {!isNilOrError(topics) && topics.map((topic) => !isNilOrError(topic) ? (
+        {selectableTopics.map(topic => (
           <FilterSidebarTopicsItem
             key={topic.id}
             topic={topic}
             active={!!this.isActive(topic.id)}
             onClick={this.handleItemClick(topic.id)}
           />
-        ) : null)}
+        ))}
       </Menu>
     );
   }
 }
-
-const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  topics: ({ params: { projectId }, render }) => {
-    return projectId ?
-      <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
-      :
-      <GetTopics exclude_code={'custom'}>{render}</GetTopics>;
-  }
-});
-
-export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <FilterSidebarTopics {...inputProps} {...dataProps} />}
-  </Data>
-));
