@@ -114,6 +114,6 @@ const TopicListWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(TopicL
 
 export default () => (
   <GetTopics>
-    {topics => (<TopicListWithHoCs topics={topics} />)}
+    {topics => <TopicListWithHoCs topics={topics} />}
   </GetTopics>
 );

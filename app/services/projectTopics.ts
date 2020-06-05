@@ -6,14 +6,12 @@ const apiEndpoint = `${API_PATH}/projects`;
 
 export async function deleteProjectTopic(projectId: string, topicId: string) {
   const response = await streams.delete(`${apiEndpoint}/${projectId}/topics/${topicId}`, topicId);
-  // line below to be checked
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/topics`, `${API_PATH}/topics`] });
   return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
   const response = await streams.add(`${apiEndpoint}/${projectId}/topics`, { topic_id: topicId });
-  // line below to be checked
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/topics`, `${API_PATH}/topics`] });
   return response;
 }
