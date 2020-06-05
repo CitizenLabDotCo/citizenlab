@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 
 export interface Parameters {
   projectId: string;
-  code?: Code[];
-  exclude_code?: Code[];
+  code?: Code;
+  exclude_code?: Code;
   sort?: 'custom' | 'new';
 }
 

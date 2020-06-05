@@ -68,7 +68,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
     return projectId ?
       <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
       :
-      <GetTopics exclude_code={['custom']}>{render}</GetTopics>;
+      <GetTopics exclude_code={'custom'}>{render}</GetTopics>;
   }
 });
 
