@@ -401,6 +401,8 @@ class TenantTemplateService
         'title_multiloc'       => t.title_multiloc,
         'description_multiloc' => t.description_multiloc,
         'icon'                 => t.icon,
+        'ordering'             => t.ordering,
+        'code'                 => t.code
         'created_at'           => t.created_at.to_s,
         'updated_at'           => t.updated_at.to_s
       }
@@ -539,7 +541,10 @@ class TenantTemplateService
     ProjectsTopic.all.map do |p|
       {
         'project_ref' => lookup_ref(p.project_id, :project),
-        'topic_ref'   => lookup_ref(p.topic_id, :topic)
+        'topic_ref'   => lookup_ref(p.topic_id, :topic),
+        'ordering'    => p.ordering,
+        'created_at'  => p.created_at.to_s,
+        'updated_at'  => p.updated_at.to_s
       }
     end
   end
