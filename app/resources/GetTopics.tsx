@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   ids?: string[];
-  code?: Code[];
+  code?: Code;
   exclude_code?: Code;
 }
 

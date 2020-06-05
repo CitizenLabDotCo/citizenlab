@@ -6,8 +6,8 @@ import { isNilOrError } from 'utils/helperUtils';
 
 interface Parameters {
   topicIds?: string[];
-  code?: Code[];
-  exclude_code?: Code[];
+  code?: Code;
+  exclude_code?: Code;
 }
 
 export default function useTopics(parameters: Parameters) {
