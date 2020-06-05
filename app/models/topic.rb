@@ -22,6 +22,10 @@ class Topic < ApplicationRecord
 
   scope :order_new, -> (direction=:desc) {order(created_at: direction, id: direction)}
 
+  scope :defaults, -> {
+    where.not(code: 'custom')
+  }
+
 
   def custom?
     self.code == 'custom'
