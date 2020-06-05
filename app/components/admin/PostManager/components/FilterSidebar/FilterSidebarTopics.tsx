@@ -16,6 +16,8 @@ interface InputProps {
 }
 
 interface DataProps {
+  // Covers both possible cases. If we use GetTopics,
+  // it'll only be from 1 topics stream, so no individual stream errors possible.
   topics: GetProjectTopicsChildProps;
 }
 
@@ -62,12 +64,11 @@ class FilterSidebarTopics extends React.PureComponent<Props & WithRouterProps> {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  // todo always use gettopics here? use case for getprojecttopics?
   topics: ({ params: { projectId }, render }) => {
     return projectId ?
       <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>
       :
-      <GetTopics>{render}</GetTopics>;
+      <GetTopics exclude_code={['custom']}>{render}</GetTopics>;
   }
 });
 
