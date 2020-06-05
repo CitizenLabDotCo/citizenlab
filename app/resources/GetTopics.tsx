@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 interface InputProps {
   ids?: string[];
   code?: Code[];
-  exclude_code?: Code[];
+  exclude_code?: Code;
 }
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
@@ -67,7 +67,12 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    this.inputProps$.next({ ids: this.props.ids });
+    const { ids, code, exclude_code } = this.props;
+    this.inputProps$.next({
+      ids,
+      code,
+      exclude_code
+    });
   }
 
   componentWillUnmount() {
