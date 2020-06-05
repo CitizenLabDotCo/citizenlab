@@ -267,6 +267,9 @@ resource "Projects" do
       ValidationErrorHelper.new.error_fields(self, Project)
 
       describe do
+        before do
+          create(:topic, code: 'nature')
+        end
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
         let(:description_multiloc) { project.description_multiloc }
@@ -291,6 +294,7 @@ resource "Projects" do
           expect(json_response.dig(:data,:attributes,:header_bg)).to be_present
           # New projects are added to the top
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
+          expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array Topic.defaults.ids
         end
 
         example "Create a project in a folder" do

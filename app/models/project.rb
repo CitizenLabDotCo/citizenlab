@@ -55,6 +55,7 @@ class Project < ApplicationRecord
   before_validation :sanitize_description_preview_multiloc, if: :description_preview_multiloc
   before_validation :strip_title
   before_validation :set_admin_publication
+  before_validation :set_default_topics
 
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -183,6 +184,11 @@ class Project < ApplicationRecord
 
   def set_admin_publication
     self.admin_publication_attributes= {} if !self.admin_publication
+  end
+
+  def set_default_topics
+    # TODO do this outside the model
+    self.topics = Topic.defaults if self.topics.blank?
   end
 
 end
