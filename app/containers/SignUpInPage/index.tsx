@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import { isString } from 'lodash-es';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { Subscription } from 'rxjs';
@@ -111,24 +110,23 @@ interface State {}
 class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[] = [];
 
+  static getDerivedStateFromProps(props: Props & WithRouterProps, _state: State) {
+    const { authUser, previousPathName } = props;
+    const isLoggedIn = !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
+
+    if (isLoggedIn) {
+      clHistory.replace(previousPathName || '/');
+    }
+
+    return null;
+  }
+
   componentDidMount() {
     this.subscriptions = [
       signUpActiveStepChange$.subscribe(() => {
         window.scrollTo(0, 0);
       })
     ];
-  }
-
-  static getDerivedStateFromProps(props: Props & WithRouterProps, _state: State) {
-    const { authUser, previousPathName, location: { pathname } } = props;
-    const isOnSignInPage = endsWith(pathname, 'sign-in');
-    const isLoggedIn = !isNilOrError(authUser) && authUser.attributes.registration_completed_at;
-
-    if (isOnSignInPage && isLoggedIn) {
-      clHistory.replace(previousPathName || '/');
-    }
-
-    return null;
   }
 
   componentWillUnmount() {
@@ -140,19 +138,12 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
   }
 
   render() {
-    const { location: { pathname, query } } = this.props;
+    const { location: { pathname } } = this.props;
     const flow = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
-    const error = endsWith(pathname, 'authentication-error');
-    const isInvitation = endsWith(pathname, 'invite');
-    const token = isString(query?.token) ? query.token : undefined;
-    const inModal = false;
-    const verification = undefined;
 
     return (
       <>
-        {!isInvitation && !error &&
-          <SignUpInPageMeta />
-        }
+        <SignUpInPageMeta />
 
         <Container id="e2e-sign-up-in-page">
           <Left>
@@ -168,11 +159,8 @@ class SignUpPage extends PureComponent<Props & WithRouterProps, State> {
                 metaData={{
                   flow,
                   pathname,
-                  error,
-                  isInvitation,
-                  token,
-                  inModal,
-                  verification
+                  inModal: false,
+                  verification: undefined
                 }}
                 onSignUpInCompleted={this.onSignUpInCompleted}
               />

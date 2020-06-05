@@ -355,6 +355,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
   convertPoints = (points: Point[]) => {
     const bounds: [number, number][] = [];
+    const mapConfig = this.calculateMapConfig();
+    const { zoom_level, center } = mapConfig;
 
     this.markers = compact(points).map((point) => {
       const latlng: [number, number] = [
@@ -381,7 +383,13 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       !this.state.initiated &&
       this.map
     ) {
-      this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+      if (
+        // If zoom level and center are the default values
+        zoom_level === 15 &&
+        (center[0] === 0 && center[1] === 0)
+      ) {
+        this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+      }
       this.setState({ initiated: true });
     }
 

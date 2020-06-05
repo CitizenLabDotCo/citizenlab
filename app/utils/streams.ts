@@ -76,10 +76,9 @@ class Streams {
     });
 
     try {
-      const response = await Promise.all(promises);
-      return response;
-    } catch (error) {
-      throw error;
+      await Promise.all(promises);
+    } finally {
+      return true;
     }
   }
 
