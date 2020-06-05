@@ -1,5 +1,4 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { orderBy } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 // styles
 import styled from 'styled-components';
@@ -103,7 +102,6 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, availableTopics,
 
   if (isNilOrError(availableTopics)) return null;
 
-  const workingTopics = availableTopics.filter(topic => !isNilOrError(topic)) as ITopicData[];
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
@@ -114,7 +112,7 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, availableTopics,
   return (
     <>
       <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
-        {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic, index) => {
+        {availableTopics.map((topic, index) => {
           const isActive = value && !!value.find(id => id === topic.id);
           const isDisabled = !isActive && value.length >= max;
           return (
