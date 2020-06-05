@@ -18,7 +18,6 @@ export interface ITopicData {
     icon: string;
     ordering: number;
     code: Code;
-    sort: 'custom' | 'new';
   };
 }
 
