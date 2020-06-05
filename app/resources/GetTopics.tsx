@@ -9,6 +9,7 @@ interface InputProps {
   ids?: string[];
   code?: Code;
   exclude_code?: Code;
+  sort?: 'new' | 'custom';
 }
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
@@ -35,14 +36,16 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { ids, code, exclude_code } = this.props;
+    const { ids, code, exclude_code, sort } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ ids, code, exclude_code });
+    this.inputProps$ = new BehaviorSubject({ ids, code, exclude_code, sort });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ ids, code, exclude_code }) => {
+        switchMap(({ ids, code, exclude_code, sort }) => {
+          const queryParameters = { code, exclude_code, sort };
+
           if (ids) {
             if (ids.length > 0) {
               return combineLatest(
@@ -57,8 +60,8 @@ export default class GetTopics extends React.Component<Props, State> {
             return of(null);
           }
 
-          // making the assumption that you will not provide ids and code/exclude_code at the same time
-          return topicsStream({ queryParameters: { code, exclude_code } }).observable.pipe(map(topics => topics.data));
+          // making the possibly wrong assumption that you will not provide ids and queryParameters at the same time
+          return topicsStream({ queryParameters }).observable.pipe(map(topics => topics.data));
         })
       ).subscribe((topics) => {
         this.setState({ topics });
@@ -67,11 +70,12 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { ids, code, exclude_code } = this.props;
+    const { ids, code, exclude_code, sort } = this.props;
     this.inputProps$.next({
       ids,
       code,
-      exclude_code
+      exclude_code,
+      sort
     });
   }
 
