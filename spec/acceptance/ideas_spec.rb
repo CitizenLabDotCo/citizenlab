@@ -683,6 +683,11 @@ resource "Ideas" do
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
       end
+
+      example "[error] Adding a topic to an idea that is not a project topic", document: false do
+        do_request topic_ids: [create(:topic).id]
+        expect(status).to be 422
+      end
     end
 
     describe do
