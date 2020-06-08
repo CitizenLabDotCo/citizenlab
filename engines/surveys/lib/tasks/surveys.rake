@@ -13,7 +13,6 @@ namespace :surveys do
 
   desc "Removes the `?email=` parameter from the survey_embed_url for typeform"
   task :remove_typeform_email_param => [:environment] do |t, args|
-    puts remove_params_from_uri("https://som.url?email=jajaj&koen=true", "email")
     Tenant.all.each do |tn|
       Apartment::Tenant.switch(tn.schema_name) do
         Project
