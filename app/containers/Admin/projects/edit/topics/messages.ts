@@ -25,7 +25,7 @@ export default defineMessages({
   },
   topicDeletionConfirmation: {
     id: 'app.containers.AdminPage.Topics.topicDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this topic?'
+    defaultMessage: 'Are you sure you want to delete this topic? This will also remove all existing references between this topic and existing ideas with this topic.'
   },
   remove: {
     id: 'app.containers.AdminPage.Topics.remove',

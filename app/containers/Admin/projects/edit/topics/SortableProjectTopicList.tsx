@@ -4,8 +4,9 @@ import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from './messages';
+import { InjectedIntlProps } from 'react-intl';
 
 // components
 import Button from 'components/UI/Button';
@@ -27,13 +28,17 @@ const StyledWarning = styled(Warning)`
 interface Props {}
 
 const SortableProjectTopicList = memo(({
-  params: { projectId }
-}: Props & WithRouterProps) => {
+  params: { projectId },
+  intl: { formatMessage }
+}: Props & WithRouterProps & InjectedIntlProps) => {
 
   const handleRemoveSelectedTopic = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
+    const deleteMessage = formatMessage(messages.topicDeletionConfirmation);
 
-    deleteProjectTopic(projectId, topicId);
+    if (window.confirm(deleteMessage)) {
+      deleteProjectTopic(projectId, topicId);
+    }
   };
 
   const handleReorderTopicProject = (topicId, newOrder) => {
@@ -95,4 +100,4 @@ const SortableProjectTopicList = memo(({
   return null;
 });
 
-export default withRouter(SortableProjectTopicList);
+export default withRouter(injectIntl(SortableProjectTopicList));
