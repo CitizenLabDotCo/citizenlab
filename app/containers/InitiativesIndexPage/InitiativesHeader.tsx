@@ -29,7 +29,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import T from 'components/T';
 
 // images
-import illustrationSrc from './initiativesHeaderImage.png';
+import illustrationSrc from './initiativesHeaderImage.jpg';
 
 const Container = styled.div`
   width: 100%;
@@ -161,7 +161,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State { }
 
@@ -189,7 +189,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
       <Container className={`e2e-initiatives-header ${className || ''}`}>
         <Header>
           <ScreenReaderOnly>
-            <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle}/>
+            <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle} />
           </ScreenReaderOnly>
           <StyledInitiativeInfoMobile />
           <HeaderContent>
