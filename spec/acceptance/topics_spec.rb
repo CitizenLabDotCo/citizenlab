@@ -199,10 +199,12 @@ resource "Topics" do
       example "Delete a topic from a project" do
         id = projects_topic.id
         old_count = ProjectsTopic.count
+        idea = create(:idea, project: projects_topic.project, topics: [projects_topic.topic])
         do_request
         expect(response_status).to eq 200
         expect{ProjectsTopic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
         expect(ProjectsTopic.count).to eq (old_count - 1)
+        expect(idea.reload.topics).to be_blank
       end
     end
   end
