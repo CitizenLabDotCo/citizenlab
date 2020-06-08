@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, lazy } from 'react';
 import styled from 'styled-components';
 
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
@@ -13,7 +13,7 @@ const Container = styled.div`
   min-height: 80vh;
 `;
 
-const Topics = memo(() => {
+const ProjectTopics = memo(() => {
   return (
     <Container>
       <SectionTitle>
@@ -28,4 +28,4 @@ const Topics = memo(() => {
   );
 });
 
-export default Topics;
+export default ProjectTopics;

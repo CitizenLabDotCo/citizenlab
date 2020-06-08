@@ -115,7 +115,7 @@ export default () => ({
           path: '/:locale/admin/projects/:projectId/topics',
           name: 'admin projects topics',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/topics'),
+            loader: () => import('containers/Admin/projects/edit/projectTopics'),
             loading: () => null
           }),
         },
