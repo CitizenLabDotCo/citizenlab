@@ -41,4 +41,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.defaultTopic',
     defaultMessage: 'Default topic',
   },
+  confirmHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.confirmHeader',
+    defaultMessage: 'Do you want to remove this topic?'
+  },
+  topicDeletionWarning: {
+    id: 'app.containers.AdminPage.SettingsPage.topicDeletionWarning',
+    defaultMessage: 'Removing this topic will also remove the topic from all ideas and proposals that contain this topic.'
+  },
+  cancel: {
+    id: 'app.containers.AdminPage.SettingsPage.cancel',
+    defaultMessage: 'Cancel'
+  },
+  delete: {
+    id: 'app.containers.AdminPage.SettingsPage.delete',
+    defaultMessage: 'Delete'
+  },
 });
