@@ -39,7 +39,7 @@ class Idea < ApplicationRecord
     idea.before_validation :set_idea_status
     idea.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
-
+  validate :topics_belong_to_project
   after_update :fix_comments_count_on_projects
 
   scope :with_all_topics, (Proc.new do |topic_ids|
@@ -112,6 +112,16 @@ class Idea < ApplicationRecord
         :assignee_id,
         :assignee_can_not_moderate_project,
         message: 'The assignee can not moderate the project of this idea'
+      )
+    end
+  end
+
+  def topics_belong_to_project
+    if (self.topic_ids - self.project.topic_ids).present?
+      self.errors.add(
+        :topic_ids,
+        :not_included_in_project_topics,
+        message: 'The idea topics must all be topics assigned to the project'
       )
     end
   end
