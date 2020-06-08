@@ -322,6 +322,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
   })
 
   Tenant.create!({
+    id: "07ff8088-cc78-4307-9a1c-ebb6fb836f96",
     name: 'empty',
     host: 'empty.localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -387,7 +388,8 @@ user = {
 if Apartment::Tenant.current == 'empty_localhost'
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
-  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
+  random_user = AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
+  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({**admin, id: "e0d698fc-5969-439f-9fe6-e74fe82b567a"})
 end
 
 
