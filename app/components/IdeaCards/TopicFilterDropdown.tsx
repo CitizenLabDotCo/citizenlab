@@ -15,19 +15,20 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import { Locale } from 'typings';
 
-type Props = {
-  id?: string | undefined;
+interface InputProps {
   alignment: 'left' | 'right';
   onChange: (value: any) => void;
-};
+  projectId: string | null;
+}
 
-type State = {
+interface Props extends InputProps {}
+
+interface State {
   currentTenant: ITenant | null;
   locale: Locale | null;
-  topics: ITopics | null;
   selectedValues: string[];
   titleKey: number;
-};
+}
 
 export default class TopicFilterDropdown extends PureComponent<Props, State> {
   subscriptions: Subscription[];
@@ -37,7 +38,6 @@ export default class TopicFilterDropdown extends PureComponent<Props, State> {
     this.state = {
       currentTenant: null,
       locale: null,
-      topics: null,
       selectedValues: [],
       titleKey: Math.floor(Math.random() * 10000000)
     };
@@ -47,13 +47,11 @@ export default class TopicFilterDropdown extends PureComponent<Props, State> {
   componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
     const locale$ = localeStream().observable;
-    const topics$ = topicsStream().observable;
 
     this.subscriptions = [
       combineLatest(
         currentTenant$,
         locale$,
-        topics$
       ).subscribe(([currentTenant, locale, topics]) => {
         this.setState({ currentTenant, locale, topics });
       })
