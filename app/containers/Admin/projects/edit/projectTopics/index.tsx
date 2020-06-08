@@ -1,4 +1,4 @@
-import React, { memo, lazy } from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 
 import { SectionTitle, SectionSubtitle } from 'components/admin/Section';

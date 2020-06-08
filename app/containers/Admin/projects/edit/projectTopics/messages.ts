@@ -35,4 +35,20 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.fewerThanOneTopicForbidden',
     defaultMessage: 'A project needs at least one topic. If you want to disable topics for this project, you can do so in the \'Idea form\' tab.'
   },
+  confirmHeader: {
+    id: 'app.containers.AdminPage.Topics.confirmHeader',
+    defaultMessage: 'Do you want to remove this project topic?'
+  },
+  topicDeletionWarning: {
+    id: 'app.containers.AdminPage.Topics.topicDeletionWarning',
+    defaultMessage: 'Removing this topic from the project will also remove the topic from all ideas in this project.'
+  },
+  cancel: {
+    id: 'app.containers.AdminPage.Topics.cancel',
+    defaultMessage: 'Cancel'
+  },
+  delete: {
+    id: 'app.containers.AdminPage.Topics.delete',
+    defaultMessage: 'Delete'
+  },
 });
