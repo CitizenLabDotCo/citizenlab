@@ -656,7 +656,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
                   />
                   <TopicsPicker
-                    value={selectedTopics}
+                    selectedTopicIds={selectedTopics}
                     onChange={this.handleTopicsOnChange}
                     max={2}
                     availableTopics={topics}

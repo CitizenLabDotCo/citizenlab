@@ -40,7 +40,6 @@ const TopicFilterDropdown = memo(({
     if (!isNilOrError(topics)) {
       const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
-      console.log(1);
       return filteredTopics.map(topic => {
         return {
           text: localize(topic.attributes.title_multiloc),
