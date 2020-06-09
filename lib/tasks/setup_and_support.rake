@@ -223,4 +223,17 @@ namespace :setup_and_support do
       end
     end
   end
+
+  desc "Add JSON map layer"
+  task :add_map_layer, [:host,:project_slug,:json_url,:map_title,:default_enabled] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      project = Project.find_by slug: args[:project_slug]
+      config = project.map_config || Maps::MapConfig.create!(project: project)
+      config.layers.create!(
+        title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:map_title]},
+        geojson: JSON.parse(open(args[:json_url]).read),
+        default_enabled: (args[:default_enabled] == 'true') || true
+        )
+    end
+  end
 end
