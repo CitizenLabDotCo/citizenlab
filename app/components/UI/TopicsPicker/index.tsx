@@ -123,15 +123,15 @@ const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, avail
       <>
         <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
           {availableTopics.map((topic, index) => {
-            const isActive = selectedTopicIds && !!selectedTopicIds.find(id => id === topic.id);
-            const isDisabled = !isActive && selectedTopicIds.length >= max;
+            const isSelected = selectedTopicIds.includes(topic.id);
+            const isDisabled = !isSelected && selectedTopicIds.length >= max;
 
             debugger;
             return (
               <TopicSwitch
                 key={topic.id}
                 onClick={handleOnChange(topic.id)}
-                className={isActive ? 'selected' : ''}
+                className={isSelected ? 'selected' : ''}
                 disabled={isDisabled}
                 onMouseDown={removeFocus}
                 ref={index === 0 ? setRef : undefined}
