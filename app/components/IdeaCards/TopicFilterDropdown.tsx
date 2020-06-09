@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useMemo } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -36,40 +36,46 @@ const TopicFilterDropdown = memo(({
     onChange(newSelectedValues);
   };
 
-  const getOptions = (topics: ITopicData[]) => {
-    console.log(1);
-    return topics.map(topic => {
-      return {
-        text: localize(topic.attributes.title_multiloc),
-        value: topic.id
-      };
-    });
+  const getOptions = () => {
+    if (!isNilOrError(topics)) {
+      const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+
+      console.log(1);
+      return filteredTopics.map(topic => {
+        return {
+          text: localize(topic.attributes.title_multiloc),
+          value: topic.id
+        };
+      });
+    }
+
+    return [];
   };
 
-  if (
-    !isNilOrError(topics)
-  ) {
-    const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
-    const options = getOptions(filteredTopics);
+  const options = useMemo(() => getOptions(), [topics]);
 
-    if (options && options.length > 0) {
-      return (
-        <FilterSelector
-          id="e2e-idea-filter-selector"
-          title={<FormattedMessage {...messages.topicsTitle} />}
-          name="topics"
-          selected={selectedValues}
-          values={options}
-          onChange={handleOnChange}
-          multipleSelectionAllowed={true}
-          last={true}
-          left={alignment === 'left' ? '-5px' : undefined}
-          mobileLeft={alignment === 'left' ? '-5px' : undefined}
-          right={alignment === 'right' ? '-5px' : undefined}
-          mobileRight={alignment === 'right' ? '-5px' : undefined}
-        />
-      );
-    }
+  if (options && options.length > 0) {
+    return (
+      <FilterSelector
+        id="e2e-idea-filter-selector"
+        title={
+          <FormattedMessage
+            {...messages.topicsTitle}
+            key={`topic-title-${Math.floor(Math.random() * 100000000)}`}
+          />
+        }
+        name="topics"
+        selected={selectedValues}
+        values={options}
+        onChange={handleOnChange}
+        multipleSelectionAllowed={true}
+        last={true}
+        left={alignment === 'left' ? '-5px' : undefined}
+        mobileLeft={alignment === 'left' ? '-5px' : undefined}
+        right={alignment === 'right' ? '-5px' : undefined}
+        mobileRight={alignment === 'right' ? '-5px' : undefined}
+      />
+    );
   }
 
   return null;
