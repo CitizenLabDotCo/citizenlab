@@ -15,6 +15,9 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
+// hooks
+import useTopics from 'hooks/useTopics';
+
 const TopicsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -69,7 +72,7 @@ const TopicSwitch = styled.button`
 export interface InputProps {
   onChange: (tocisIds: string[]) => void;
   onBlur?: () => void;
-  value: string[];
+  selectedTopicIds: string[];
   max: number;
   id?: string;
   className?: string;
@@ -79,17 +82,19 @@ export interface InputProps {
 
 interface Props extends InputProps {}
 
-const TopicsPicker = memo(({ onChange, onBlur, value, localize, availableTopics, max, className, setRef }: Props & InjectedLocalized) => {
+const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, availableTopics, max, className, setRef }: Props & InjectedLocalized) => {
+  const selectedTopics = useTopics({ topicIds: selectedTopicIds });
+
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
-    const newTopics = [...value];
-    if (!value) {
+    const newTopics = [...selectedTopicIds];
+    if (!selectedTopicIds) {
       onChange([topicId]);
     } else {
       const i = newTopics.lastIndexOf(topicId);
       if (i === -1) {
-        if (value.length <= max) {
+        if (selectedTopicIds.length <= max) {
           newTopics.push(topicId);
           onChange(newTopics);
         }
@@ -100,40 +105,50 @@ const TopicsPicker = memo(({ onChange, onBlur, value, localize, availableTopics,
     }
   };
 
-  if (isNilOrError(availableTopics)) return null;
-
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
-  const numberOfSelectedTopics = value.length;
-  const selectedTopics = value.map(topicId => availableTopics.find(topic => !isNilOrError(topic) && topic.id === topicId));
-  const selectedTopicNames = selectedTopics && selectedTopics.map(topic => !isNilOrError(topic) && localize(topic.attributes.title_multiloc)).join(', ');
 
-  return (
-    <>
-      <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
-        {availableTopics.map((topic, index) => {
-          const isActive = value && !!value.find(id => id === topic.id);
-          const isDisabled = !isActive && value.length >= max;
-          return (
-            <TopicSwitch
-              key={topic.id}
-              onClick={handleOnChange(topic.id)}
-              className={isActive ? 'selected' : ''}
-              disabled={isDisabled}
-              onMouseDown={removeFocus}
-              ref={index === 0 ? setRef : undefined}
-            >
-              <T value={topic.attributes.title_multiloc} />
-            </TopicSwitch>
-          );
-        })}
-      </TopicsContainer>
-      <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />
-      </ScreenReaderOnly>
-    </>
-  );
+  if (
+    !isNilOrError(availableTopics) &&
+    !isNilOrError(selectedTopics)
+  ) {
+    const numberOfSelectedTopics = selectedTopicIds.length;
+    const selectedTopicNames = selectedTopics
+      .filter(topic => !isNilOrError(topic))
+      .map((topic: ITopicData) => localize(topic.attributes.title_multiloc))
+      .join(', ');
+
+    return (
+      <>
+        <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
+          {availableTopics.map((topic, index) => {
+            const isActive = selectedTopicIds && !!selectedTopicIds.find(id => id === topic.id);
+            const isDisabled = !isActive && selectedTopicIds.length >= max;
+
+            debugger;
+            return (
+              <TopicSwitch
+                key={topic.id}
+                onClick={handleOnChange(topic.id)}
+                className={isActive ? 'selected' : ''}
+                disabled={isDisabled}
+                onMouseDown={removeFocus}
+                ref={index === 0 ? setRef : undefined}
+              >
+                <T value={topic.attributes.title_multiloc} />
+              </TopicSwitch>
+            );
+          })}
+        </TopicsContainer>
+        <ScreenReaderOnly aria-live="polite">
+          <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />
+        </ScreenReaderOnly>
+      </>
+    );
+  }
+
+  return null;
 });
 
 export default injectLocalize(TopicsPicker);
