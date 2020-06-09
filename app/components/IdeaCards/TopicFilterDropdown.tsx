@@ -1,105 +1,78 @@
-import React, { PureComponent } from 'react';
-import { Subscription, combineLatest } from 'rxjs';
+import React, { memo, useState } from 'react';
 
 // components
 import FilterSelector from 'components/FilterSelector';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
-import { localeStream } from 'services/locale';
-import { topicsStream, ITopics } from 'services/topics';
+import { ITopicData } from 'services/topics';
 
 // i18n
-import { getLocalized } from 'utils/i18n';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-import { Locale } from 'typings';
 
-interface InputProps {
+// hooks
+import useProjectTopics from 'hooks/useProjectTopics';
+import useTopics from 'hooks/useTopics';
+import { isNilOrError } from 'utils/helperUtils';
+
+interface Props {
   alignment: 'left' | 'right';
   onChange: (value: any) => void;
   projectId: string | null;
 }
 
-interface Props extends InputProps {}
+const TopicFilterDropdown = memo(({
+  alignment,
+  projectId,
+  onChange,
+  localize
+}: Props & InjectedLocalized) => {
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const topics = projectId ? useProjectTopics({ projectId }) : useTopics({});
 
-interface State {
-  currentTenant: ITenant | null;
-  locale: Locale | null;
-  selectedValues: string[];
-  titleKey: number;
-}
+  const handleOnChange = (newSelectedValues) => {
+    setSelectedValues(newSelectedValues);
+    onChange(newSelectedValues);
+  };
 
-export default class TopicFilterDropdown extends PureComponent<Props, State> {
-  subscriptions: Subscription[];
+  const getOptions = (topics: ITopicData[]) => {
+    console.log(1);
+    return topics.map(topic => {
+      return {
+        text: localize(topic.attributes.title_multiloc),
+        value: topic.id
+      };
+    });
+  };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentTenant: null,
-      locale: null,
-      selectedValues: [],
-      titleKey: Math.floor(Math.random() * 10000000)
-    };
-    this.subscriptions = [];
-  }
+  if (
+    !isNilOrError(topics)
+  ) {
+    const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+    const options = getOptions(filteredTopics);
 
-  componentDidMount() {
-    const currentTenant$ = currentTenantStream().observable;
-    const locale$ = localeStream().observable;
-
-    this.subscriptions = [
-      combineLatest(
-        currentTenant$,
-        locale$,
-      ).subscribe(([currentTenant, locale, topics]) => {
-        this.setState({ currentTenant, locale, topics });
-      })
-    ];
-  }
-
-  componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
-  handleOnChange = (selectedValues) => {
-    this.setState({ selectedValues });
-    this.props.onChange(selectedValues);
-  }
-
-  render() {
-    const { alignment } = this.props;
-    const { currentTenant, locale, topics, selectedValues, titleKey } = this.state;
-
-    if (currentTenant && locale && topics && topics.data && topics.data.length > 0) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const options = topics.data.map((topic) => {
-        return {
-          text: getLocalized(topic.attributes.title_multiloc, locale, currentTenantLocales),
-          value: topic.id
-        };
-      });
-
-      if (options && options.length > 0) {
-        return (
-          <FilterSelector
-            id="e2e-idea-filter-selector"
-            title={<FormattedMessage {...messages.topicsTitle} key={titleKey} />}
-            name="topics"
-            selected={selectedValues}
-            values={options}
-            onChange={this.handleOnChange}
-            multipleSelectionAllowed={true}
-            last={true}
-            left={alignment === 'left' ? '-5px' : undefined}
-            mobileLeft={alignment === 'left' ? '-5px' : undefined}
-            right={alignment === 'right' ? '-5px' : undefined}
-            mobileRight={alignment === 'right' ? '-5px' : undefined}
-          />
-        );
-      }
+    if (options && options.length > 0) {
+      return (
+        <FilterSelector
+          id="e2e-idea-filter-selector"
+          title={<FormattedMessage {...messages.topicsTitle} />}
+          name="topics"
+          selected={selectedValues}
+          values={options}
+          onChange={handleOnChange}
+          multipleSelectionAllowed={true}
+          last={true}
+          left={alignment === 'left' ? '-5px' : undefined}
+          mobileLeft={alignment === 'left' ? '-5px' : undefined}
+          right={alignment === 'right' ? '-5px' : undefined}
+          mobileRight={alignment === 'right' ? '-5px' : undefined}
+        />
+      );
     }
-
-    return null;
   }
-}
+
+  return null;
+});
+
+export default injectLocalize(TopicFilterDropdown);
