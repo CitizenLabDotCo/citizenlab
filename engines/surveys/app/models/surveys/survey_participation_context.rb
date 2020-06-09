@@ -13,6 +13,10 @@ module Surveys::SurveyParticipationContext
         with: /\Ahttps:\/\/.*\.typeform\.com\/to\/.*\z/,
         message: "Not a valid Typeform embed URL"
       }
+      survey.validates :survey_embed_url, if: [:survey?, :typeform?], format: {
+        without: /\A.*\?*.email=.*\z/,
+        message: "Not a valid Typeform embed URL"
+      }
       survey.validates :survey_embed_url, if: [:survey?, :survey_monkey?], format: { 
         with: /\Ahttps:\/\/widget\.surveymonkey\.com\/collect\/website\/js\/.*\.js\z/,
         message: "Not a valid SurveyMonkey embed URL"
