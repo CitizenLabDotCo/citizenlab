@@ -126,7 +126,6 @@ const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, avail
             const isSelected = selectedTopicIds.includes(topic.id);
             const isDisabled = !isSelected && selectedTopicIds.length >= max;
 
-            debugger;
             return (
               <TopicSwitch
                 key={topic.id}
