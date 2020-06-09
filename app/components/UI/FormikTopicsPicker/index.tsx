@@ -15,7 +15,7 @@ class FormikTopicsPicker extends React.Component<FieldProps & VanillaTopicsPicke
     return (
       <TopicsPicker
         {...this.props}
-        value={value}
+        selectedTopicIds={value}
         onChange={this.handleOnChange}
       />
     );
