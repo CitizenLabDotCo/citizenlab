@@ -1286,6 +1286,7 @@
   "app.containers.AdminPage.SideBar.projects": "",
   "app.containers.AdminPage.SideBar.settings": "",
   "app.containers.AdminPage.SideBar.users": "",
+  "app.containers.AdminPage.SideBar.workshop": "",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "",
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupName": "",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "",

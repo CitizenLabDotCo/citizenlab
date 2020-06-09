@@ -1286,6 +1286,7 @@
   "app.containers.AdminPage.SideBar.projects": "{tenantName, select, frw {Communes} other {Projets}}",
   "app.containers.AdminPage.SideBar.settings": "Paramètres",
   "app.containers.AdminPage.SideBar.users": "Utilisateurs",
+  "app.containers.AdminPage.SideBar.workshop": "",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Ajouter un nouveau groupe",
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupName": "Nom du groupe",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Créer un groupe manuel",
