@@ -367,7 +367,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
               <TopicsPicker
                 id="field-topic-multiple-picker"
                 max={2}
-                value={topic_ids}
+                selectedTopicIds={topic_ids}
                 onChange={this.changeAndSaveTopics}
                 setRef={this.handleTopicsPickerSetRef}
                 availableTopics={availableTopics}
