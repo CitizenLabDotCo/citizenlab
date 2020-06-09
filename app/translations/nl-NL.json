@@ -1286,6 +1286,7 @@
   "app.containers.AdminPage.SideBar.projects": "Projecten",
   "app.containers.AdminPage.SideBar.settings": "Instellingen",
   "app.containers.AdminPage.SideBar.users": "Gebruikers",
+  "app.containers.AdminPage.SideBar.workshop": "",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Voeg een groep toe",
   "app.containers.AdminPage.Users.GroupCreation.fieldGroupName": "Naam van de groep",
   "app.containers.AdminPage.Users.GroupCreation.modalHeaderManual": "Maak een manuele groep aan",
