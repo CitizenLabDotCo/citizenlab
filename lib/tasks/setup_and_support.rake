@@ -232,7 +232,7 @@ namespace :setup_and_support do
       config.layers.create!(
         title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:map_title]},
         geojson: JSON.parse(open(args[:json_url]).read),
-        default_enabled: (args[:default_enabled] == 'true') || true
+        default_enabled: args[:default_enabled].blank? || (args[:default_enabled] == 'true')
         )
     end
   end
