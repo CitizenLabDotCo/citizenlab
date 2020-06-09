@@ -97,6 +97,14 @@ export default () => ({
       }),
     },
     {
+      path: 'workshop',
+      component: Loadable({
+        loader: () => import('containers/Admin/workshop'),
+        loading: LoadableLoadingAdmin,
+        delay: 500
+      }),
+    },
+    {
       path: 'ideas',
       component: Loadable({
         loader: () => import('containers/Admin/ideas'),
