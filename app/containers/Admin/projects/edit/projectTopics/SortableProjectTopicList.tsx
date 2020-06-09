@@ -109,7 +109,6 @@ const SortableProjectTopicList = memo(({
             }))
           }
         </SortableList>
-        // maybe adjust this modal with reusable components
         <Modal
           opened={showConfirmationModal}
           close={closeSendConfirmationModal}
