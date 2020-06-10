@@ -111,7 +111,7 @@ const SortableProjectTopicList = memo(({
                     disabled={isLastSelectedTopic}
                     id="e2e-remove-project-topic-button"
                   >
-                    <FormattedMessage {...messages.remove} />
+                    <FormattedMessage {...messages.delete} />
                   </Button>
                 </SortableRow>
               );

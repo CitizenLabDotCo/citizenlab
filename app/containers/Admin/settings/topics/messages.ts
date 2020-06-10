@@ -39,7 +39,7 @@ export default defineMessages({
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.SettingsPage.confirmHeader',
-    defaultMessage: 'Do you want to remove this topic?'
+    defaultMessage: 'Do you want to delete this topic?'
   },
   topicDeletionConfirmationMessage: {
     id: 'app.containers.AdminPage.SettingsPage.topicDeletionConfirmationMessage',
