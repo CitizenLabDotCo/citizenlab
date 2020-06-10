@@ -24,6 +24,7 @@ const IndeterminateIcon = styled(Icon)<{ size: string }>`
 `;
 
 const Label = styled.label<{ disabled: boolean }>`
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
