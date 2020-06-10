@@ -15,10 +15,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.deleteQuestion',
     defaultMessage: 'Delete',
   },
-  editQuestion: {
-    id: 'app.containers.AdminPage.ProjectEdit.PollTab.editQuestion',
-    defaultMessage: 'Edit',
-  },
   editOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.editOptions',
     defaultMessage: 'Manage options',
