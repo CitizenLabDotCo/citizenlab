@@ -14,7 +14,7 @@ export default defineMessages({
     defaultMessage: 'Terminology',
   },
   deleteButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.deleteButtonLabel',
+    id: 'app.containers.AdminPage.SettingsPage.areas.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
