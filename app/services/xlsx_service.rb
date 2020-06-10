@@ -74,7 +74,8 @@ class XlsxService
           "longitude",
           "location_description",
           "comments_count",
-          "attachments_count"
+          "attachments_count",
+          "attachmens"
         ], style: header_style(s)
         ideas.each do |idea|
           lat, lon = [nil, nil]
@@ -101,7 +102,8 @@ class XlsxService
             lon,
             idea.location_description,
             idea.comments_count,
-            idea.idea_files.size
+            idea.idea_files.size,
+            idea.idea_files.map{|f| f.file.url}.join("\n")
           ]
         end
         sheet.column_info[2].width = 65

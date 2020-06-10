@@ -13,7 +13,13 @@ describe "seedfile", slow_test: true do
     expect(Tenant.count).to be(3)
     Apartment::Tenant.switch('localhost') do
       load Rails.root.join("db","seeds.rb")
+      # The default tenant has a locked id to make it easier for other related
+      # projects to have seeddata that works out of the box with cl2-back
+      expect(Tenant.current.id).to eq "c72c5211-8e03-470b-9564-04ec0a8c322b"
       expect(User.count).to be > 0
+      expect(User.find_by(email: 'admin@citizenlab.co').id).to eq "386d255e-2ff1-4192-8e50-b3022576be50"
+      expect(User.find_by(email: 'moderator@citizenlab.co').id).to eq "61caabce-f7e5-4804-b9df-36d7d7d73e4d"
+      expect(User.find_by(email: 'user@citizenlab.co').id).to eq "546335a3-33b9-471c-a18a-d5b58ebf173a"
       expect(Topic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
@@ -39,7 +45,9 @@ describe "seedfile", slow_test: true do
     end
     Apartment::Tenant.switch('empty_localhost') do
       load Rails.root.join("db","seeds.rb")
+      expect(Tenant.current.id).to eq "07ff8088-cc78-4307-9a1c-ebb6fb836f96"
       expect(User.count).to be 1
+      expect(User.find_by(email: 'admin@citizenlab.co').id).to eq "e0d698fc-5969-439f-9fe6-e74fe82b567a"
       expect(Topic.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Area.count).to be 0
