@@ -27,10 +27,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.remove',
     defaultMessage: 'Remove'
   },
-  fewerThanOneTopicForbidden: {
-    id: 'app.containers.AdminPage.Topics.fewerThanOneTopicForbidden',
-    defaultMessage: 'A project needs at least one topic. If you want to disable topics for this project, you can do so in the \'Idea form\' tab.'
-  },
   confirmHeader: {
     id: 'app.containers.AdminPage.Topics.confirmHeader',
     defaultMessage: 'Do you want to remove this project topic?'
@@ -54,5 +50,13 @@ export default defineMessages({
   topicManager: {
     id: 'app.containers.AdminPage.Topics.topicManager',
     defaultMessage: 'Topic Manager'
-  }
+  },
+  fewerThanOneTopicWarning: {
+    id: 'app.containers.AdminPage.Topics.fewerThanOneTopicWarning',
+    defaultMessage: 'Please select at least one topic. If you do not want to allow users to add topics to their ideas, you can disable Topics in the {ideaFormLink} tab.'
+  },
+  ideaForm: {
+    id: 'app.containers.AdminPage.Topics.ideaForm',
+    defaultMessage: 'Idea form'
+  },
 });

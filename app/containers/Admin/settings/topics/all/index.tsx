@@ -156,7 +156,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
           >
             <ModalContentContainer>
               <Content>
-                <FormattedMessage {...messages.topicDeletionWarning} />
+                <FormattedMessage {...messages.topicDeletionConfirmationMessage} />
               </Content>
               <ButtonsWrapper>
                 <Button
