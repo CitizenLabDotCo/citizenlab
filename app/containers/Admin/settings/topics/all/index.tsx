@@ -3,7 +3,6 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import styled from 'styled-components';
 
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { deleteTopic } from 'services/topics';
@@ -12,18 +11,13 @@ import messages from '../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
-import { Section, SectionSubtitle, SectionTitle } from 'components/admin/Section';
+import { Section, SectionSubtitle, SectionTitle, StyledLink } from 'components/admin/Section';
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DefaultTopicRow from '../DefaultTopicRow';
 import CustomTopicRow from '../CustomTopicRow';
 import Modal, { ModalContentContainer, ButtonsWrapper, Content } from 'components/UI/Modal';
-import Link from 'utils/cl-router/Link';
-
-const StyledLink = styled(Link)`
-  text-decoration: underline;
-`;
 
 interface InputProps { }
 
