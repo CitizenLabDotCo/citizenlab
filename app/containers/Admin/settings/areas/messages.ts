@@ -49,10 +49,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
     defaultMessage: 'Edit area',
   },
-  titleAreaTerms: {
-    id: 'app.containers.AdminPage.SettingsPage.titleAreaTerms',
-    defaultMessage: 'Area terminology',
-  },
   terminologyTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.terminologyTooltip',
     defaultMessage: 'How should areas be called towards users? e.g. neighbourhoods, quarters, counties, ...',
