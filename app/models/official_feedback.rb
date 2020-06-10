@@ -3,6 +3,7 @@ class OfficialFeedback < ApplicationRecord
   counter_culture :post
 
   belongs_to :user, optional: true
+  before_destroy :remove_notifications
   has_many :notifications, foreign_key: :official_feedback_id, dependent: :nullify
   has_many :initiative_status_changes, dependent: :nullify
 
@@ -23,5 +24,13 @@ class OfficialFeedback < ApplicationRecord
     )
     self.body_multiloc = service.remove_empty_paragraphs_multiloc(self.body_multiloc)
     self.body_multiloc = service.linkify_multiloc(self.body_multiloc)
+  end
+
+  def remove_notifications
+    notifications.each do |notification|
+      if !notification.update official_feedback_id: nil
+        notification.destroy!
+      end
+    end
   end
 end

@@ -25,6 +25,8 @@ module Post
     has_one :user_vote, -> (user_id) {where(user_id: user_id)}, as: :votable, class_name: 'Vote'
 
     has_many :spam_reports, as: :spam_reportable, class_name: 'SpamReport', dependent: :destroy
+    before_destroy :remove_notifications
+    has_many :notifications, foreign_key: :post_id, dependent: :nullify
     
     validates :publication_status, presence: true, inclusion: {in: PUBLICATION_STATUSES}
 
@@ -103,6 +105,14 @@ module Post
 
     def set_assigned_at
       self.assigned_at ||= Time.now
+    end
+
+    def remove_notifications
+      notifications.each do |notification|
+        if !notification.update post: nil
+          notification.destroy!
+        end
+      end
     end
     
   end
