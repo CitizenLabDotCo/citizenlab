@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { remCalc, colors, fontSizes } from 'utils/styleUtils';
+import Link from 'utils/cl-router/Link';
 
 export const Section = styled.div`
   margin-bottom: 0;
@@ -63,4 +64,8 @@ export const SectionField = styled.div`
   .editor {
     width: 120%;
   }
+`;
+
+export const StyledLink = styled(Link)`
+  text-decoration: underline;
 `;

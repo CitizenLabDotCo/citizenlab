@@ -13,6 +13,7 @@ import { SortableList, SortableRow } from 'components/admin/ResourceList';
 import { RowContent, RowContentInner, RowTitle } from '../../components/StyledComponents';
 import Warning from 'components/UI/Warning';
 import Modal, { ModalContentContainer, Content, ButtonsWrapper } from 'components/UI/Modal';
+import { StyledLink } from 'components/admin/Section';
 
 // services
 import { ITopicData } from 'services/topics';
@@ -70,7 +71,15 @@ const SortableProjectTopicList = memo(({
       <>
         {isLastSelectedTopic &&
           <StyledWarning>
-            <FormattedMessage {...messages.fewerThanOneTopicForbidden} />
+            <FormattedMessage
+              {...messages.fewerThanOneTopicWarning}
+              values={{
+                ideaFormLink:
+                  <StyledLink to={`/admin/projects/${projectId}/ideaform`}>
+                    <FormattedMessage {...messages.ideaForm} />
+                  </StyledLink>
+              }}
+            />
           </StyledWarning>
         }
         <SortableList

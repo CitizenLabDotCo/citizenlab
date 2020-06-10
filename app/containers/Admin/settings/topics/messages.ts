@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.addTopicButton',
     defaultMessage: 'Add topic',
   },
-  topicDeletionConfirmation: {
-    id: 'app.containers.AdminPage.SettingsPage.topicDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to delete this topic? This will also remove all existing references to that topic for ideas and initiatives.',
-  },
   fieldTopicTitle: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitle',
     defaultMessage: 'Topic name',
@@ -45,9 +41,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.confirmHeader',
     defaultMessage: 'Do you want to remove this topic?'
   },
-  topicDeletionWarning: {
-    id: 'app.containers.AdminPage.SettingsPage.topicDeletionWarning',
-    defaultMessage: 'Removing this topic will also remove the topic from all ideas and proposals that contain this topic.'
+  topicDeletionConfirmationMessage: {
+    id: 'app.containers.AdminPage.SettingsPage.topicDeletionConfirmationMessage',
+     defaultMessage: 'Are you sure you want to delete this topic? This will also remove all existing references to that topic for ideas. This change will apply to all of your projects.',
   },
   cancel: {
     id: 'app.containers.AdminPage.SettingsPage.cancel',
