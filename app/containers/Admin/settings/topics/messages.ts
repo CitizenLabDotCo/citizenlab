@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  subtitleTopicManager: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleTopicManager',
-    defaultMessage: 'You can add and delete the topics that are available for ideation projects and proposals.',
+  topicManagerDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.topicManagerDescription',
+    defaultMessage: 'Topics are selected by users to categorize their ideas. Here you can add and delete the topics available on your platform. Go to the {adminProjectsLink} to manage the available topics for each project.'
   },
   titleTopicManager: {
     id: 'app.containers.AdminPage.SettingsPage.titleTopicManager',
@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.delete',
     defaultMessage: 'Delete'
   },
+  projectsSettings: {
+    id: 'app.containers.AdminPage.SettingsPage.projectsSettings',
+    defaultMessage: 'project settings'
+  }
 });

@@ -3,6 +3,7 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { InjectedIntlProps } from 'react-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import styled from 'styled-components';
 
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { deleteTopic } from 'services/topics';
@@ -18,6 +19,11 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DefaultTopicRow from '../DefaultTopicRow';
 import CustomTopicRow from '../CustomTopicRow';
 import Modal, { ModalContentContainer, ButtonsWrapper, Content } from 'components/UI/Modal';
+import Link from 'utils/cl-router/Link';
+
+const StyledLink = styled(Link)`
+  text-decoration: underline;
+`;
 
 interface InputProps { }
 
@@ -93,7 +99,15 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
             <FormattedMessage {...messages.titleTopicManager} />
           </SectionTitle>
           <SectionSubtitle>
-            <FormattedMessage {...messages.subtitleTopicManager} />
+            <FormattedMessage
+              {...messages.topicManagerDescription}
+              values={{
+                adminProjectsLink:
+                  <StyledLink to="/admin/projects/">
+                    <FormattedMessage {...messages.projectsSettings} />
+                  </StyledLink>
+              }}
+            />
           </SectionSubtitle>
 
           <ButtonWrapper>
