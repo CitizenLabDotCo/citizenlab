@@ -69,35 +69,86 @@ models:
       color: '#E52516'
       description_multiloc: initiative_statuses.ineligible_description
   topic:
-  - title_multiloc: topics.infrastructure
-    description_multiloc: topics.infrastructure_description
-  - &topic_waste
-    title_multiloc: topics.waste
-    description_multiloc: topics.waste_description
-  - title_multiloc: topics.mobility
-    description_multiloc: topics.mobility_description
-  - title_multiloc: topics.technology
-    description_multiloc: topics.technology_description
-  - title_multiloc: topics.economy
-    description_multiloc: topics.economy_description
-  - title_multiloc: topics.nature
-    description_multiloc: topics.nature_description
-  - title_multiloc: topics.sustainability
-    description_multiloc: topics.sustainability_description
-  - title_multiloc: topics.housing
-    description_multiloc: topics.housing_description
-  - title_multiloc: topics.culture
-    description_multiloc: topics.culture_description
-  - title_multiloc: topics.citizenship
-    description_multiloc: topics.citizenship_description
-  - title_multiloc: topics.social
-    description_multiloc: topics.social_description
-  - title_multiloc: topics.health
-    description_multiloc: topics.health_description
-  - title_multiloc: topics.sport
-    description_multiloc: topics.sport_description
-  - title_multiloc: topics.education
-    description_multiloc: topics.education_description
+    - &topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
+      code: nature
+      ordering: 0
+    - &topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
+      code: waste
+      ordering: 1
+    - &topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
+      code: sustainability
+      ordering: 2
+    - &topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
+      code: mobility
+      ordering: 3
+    - &topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
+      code: technology
+      ordering: 4
+    - &topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
+      code: economy
+      ordering: 5
+    - &topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
+      code: housing
+      ordering: 6
+    - &topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
+      code: public_space
+      ordering: 7
+    - &topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
+      code: safety
+      ordering: 8
+    - &topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
+      code: education
+      ordering: 9
+    - &topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
+      code: culture
+      ordering: 10
+    - &topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
+      code: health
+      ordering: 11
+    - &topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
+      code: inclusion
+      ordering: 12
+    - &topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
+      code: community
+      ordering: 13
+    - &topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
+      code: services
+      ordering: 14
+    - &topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
+      code: other
+      ordering: 15
   page:
   - &1
     title_multiloc: pages.infopage_title
@@ -1119,6 +1170,615 @@ models:
     updated_at: 2019-01-14 13:46:54 UTC
     name: 20190110_rueil_intermediaire.pdf
     remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/5641ddcd-0590-49f6-aa93-7c29f917ec9b/project_file/file/600a9dd5-52d9-49fa-9791-e63e63341cbd/20190110_rueil_intermediaire.pdf
+  projects_topic:
+    - project_ref: *project1
+      topic_ref: *topic-nature
+    - project_ref: *project1
+      topic_ref: *topic-waste
+    - project_ref: *project1
+      topic_ref: *topic-sustainability
+    - project_ref: *project1
+      topic_ref: *topic-mobility
+    - project_ref: *project1
+      topic_ref: *topic-technology
+    - project_ref: *project1
+      topic_ref: *topic-economy
+    - project_ref: *project1
+      topic_ref: *topic-housing
+    - project_ref: *project1
+      topic_ref: *topic-public_space
+    - project_ref: *project1
+      topic_ref: *topic-safety
+    - project_ref: *project1
+      topic_ref: *topic-education
+    - project_ref: *project1
+      topic_ref: *topic-culture
+    - project_ref: *project1
+      topic_ref: *topic-health
+    - project_ref: *project1
+      topic_ref: *topic-inclusion
+    - project_ref: *project1
+      topic_ref: *topic-community
+    - project_ref: *project1
+      topic_ref: *topic-services
+    - project_ref: *project1
+      topic_ref: *topic-other
+    - project_ref: *Pb
+      topic_ref: *topic-nature
+    - project_ref: *Pb
+      topic_ref: *topic-waste
+    - project_ref: *Pb
+      topic_ref: *topic-sustainability
+    - project_ref: *Pb
+      topic_ref: *topic-mobility
+    - project_ref: *Pb
+      topic_ref: *topic-technology
+    - project_ref: *Pb
+      topic_ref: *topic-economy
+    - project_ref: *Pb
+      topic_ref: *topic-housing
+    - project_ref: *Pb
+      topic_ref: *topic-public_space
+    - project_ref: *Pb
+      topic_ref: *topic-safety
+    - project_ref: *Pb
+      topic_ref: *topic-education
+    - project_ref: *Pb
+      topic_ref: *topic-culture
+    - project_ref: *Pb
+      topic_ref: *topic-health
+    - project_ref: *Pb
+      topic_ref: *topic-inclusion
+    - project_ref: *Pb
+      topic_ref: *topic-community
+    - project_ref: *Pb
+      topic_ref: *topic-services
+    - project_ref: *Pb
+      topic_ref: *topic-other
+    - project_ref: *charliesPb
+      topic_ref: *topic-nature
+    - project_ref: *charliesPb
+      topic_ref: *topic-waste
+    - project_ref: *charliesPb
+      topic_ref: *topic-sustainability
+    - project_ref: *charliesPb
+      topic_ref: *topic-mobility
+    - project_ref: *charliesPb
+      topic_ref: *topic-technology
+    - project_ref: *charliesPb
+      topic_ref: *topic-economy
+    - project_ref: *charliesPb
+      topic_ref: *topic-housing
+    - project_ref: *charliesPb
+      topic_ref: *topic-public_space
+    - project_ref: *charliesPb
+      topic_ref: *topic-safety
+    - project_ref: *charliesPb
+      topic_ref: *topic-education
+    - project_ref: *charliesPb
+      topic_ref: *topic-culture
+    - project_ref: *charliesPb
+      topic_ref: *topic-health
+    - project_ref: *charliesPb
+      topic_ref: *topic-inclusion
+    - project_ref: *charliesPb
+      topic_ref: *topic-community
+    - project_ref: *charliesPb
+      topic_ref: *topic-services
+    - project_ref: *charliesPb
+      topic_ref: *topic-other
+    - project_ref: *verifiedPb
+      topic_ref: *topic-nature
+    - project_ref: *verifiedPb
+      topic_ref: *topic-waste
+    - project_ref: *verifiedPb
+      topic_ref: *topic-sustainability
+    - project_ref: *verifiedPb
+      topic_ref: *topic-mobility
+    - project_ref: *verifiedPb
+      topic_ref: *topic-technology
+    - project_ref: *verifiedPb
+      topic_ref: *topic-economy
+    - project_ref: *verifiedPb
+      topic_ref: *topic-housing
+    - project_ref: *verifiedPb
+      topic_ref: *topic-public_space
+    - project_ref: *verifiedPb
+      topic_ref: *topic-safety
+    - project_ref: *verifiedPb
+      topic_ref: *topic-education
+    - project_ref: *verifiedPb
+      topic_ref: *topic-culture
+    - project_ref: *verifiedPb
+      topic_ref: *topic-health
+    - project_ref: *verifiedPb
+      topic_ref: *topic-inclusion
+    - project_ref: *verifiedPb
+      topic_ref: *topic-community
+    - project_ref: *verifiedPb
+      topic_ref: *topic-services
+    - project_ref: *verifiedPb
+      topic_ref: *topic-other
+    - project_ref: *project2
+      topic_ref: *topic-nature
+    - project_ref: *project2
+      topic_ref: *topic-waste
+    - project_ref: *project2
+      topic_ref: *topic-sustainability
+    - project_ref: *project2
+      topic_ref: *topic-mobility
+    - project_ref: *project2
+      topic_ref: *topic-technology
+    - project_ref: *project2
+      topic_ref: *topic-economy
+    - project_ref: *project2
+      topic_ref: *topic-housing
+    - project_ref: *project2
+      topic_ref: *topic-public_space
+    - project_ref: *project2
+      topic_ref: *topic-safety
+    - project_ref: *project2
+      topic_ref: *topic-education
+    - project_ref: *project2
+      topic_ref: *topic-culture
+    - project_ref: *project2
+      topic_ref: *topic-health
+    - project_ref: *project2
+      topic_ref: *topic-inclusion
+    - project_ref: *project2
+      topic_ref: *topic-community
+    - project_ref: *project2
+      topic_ref: *topic-services
+    - project_ref: *project2
+      topic_ref: *topic-other
+    - project_ref: *76
+      topic_ref: *topic-nature
+    - project_ref: *76
+      topic_ref: *topic-waste
+    - project_ref: *76
+      topic_ref: *topic-sustainability
+    - project_ref: *76
+      topic_ref: *topic-mobility
+    - project_ref: *76
+      topic_ref: *topic-technology
+    - project_ref: *76
+      topic_ref: *topic-economy
+    - project_ref: *76
+      topic_ref: *topic-housing
+    - project_ref: *76
+      topic_ref: *topic-public_space
+    - project_ref: *76
+      topic_ref: *topic-safety
+    - project_ref: *76
+      topic_ref: *topic-education
+    - project_ref: *76
+      topic_ref: *topic-culture
+    - project_ref: *76
+      topic_ref: *topic-health
+    - project_ref: *76
+      topic_ref: *topic-inclusion
+    - project_ref: *76
+      topic_ref: *topic-community
+    - project_ref: *76
+      topic_ref: *topic-services
+    - project_ref: *76
+      topic_ref: *topic-other
+    - project_ref: *121
+      topic_ref: *topic-nature
+    - project_ref: *121
+      topic_ref: *topic-waste
+    - project_ref: *121
+      topic_ref: *topic-sustainability
+    - project_ref: *121
+      topic_ref: *topic-mobility
+    - project_ref: *121
+      topic_ref: *topic-technology
+    - project_ref: *121
+      topic_ref: *topic-economy
+    - project_ref: *121
+      topic_ref: *topic-housing
+    - project_ref: *121
+      topic_ref: *topic-public_space
+    - project_ref: *121
+      topic_ref: *topic-safety
+    - project_ref: *121
+      topic_ref: *topic-education
+    - project_ref: *121
+      topic_ref: *topic-culture
+    - project_ref: *121
+      topic_ref: *topic-health
+    - project_ref: *121
+      topic_ref: *topic-inclusion
+    - project_ref: *121
+      topic_ref: *topic-community
+    - project_ref: *121
+      topic_ref: *topic-services
+    - project_ref: *121
+      topic_ref: *topic-other
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-nature
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-waste
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-sustainability
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-mobility
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-technology
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-economy
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-housing
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-public_space
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-safety
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-education
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-culture
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-health
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-inclusion
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-community
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-services
+    - project_ref: *charliesVerifiedPPlproject
+      topic_ref: *topic-other
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-nature
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-waste
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-sustainability
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-mobility
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-technology
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-economy
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-housing
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-public_space
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-safety
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-education
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-culture
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-health
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-inclusion
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-community
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-services
+    - project_ref: *verifiedIdeation
+      topic_ref: *topic-other
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-nature
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-waste
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-sustainability
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-mobility
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-technology
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-economy
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-housing
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-public_space
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-safety
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-education
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-culture
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-health
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-inclusion
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-community
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-services
+    - project_ref: *charliesIdeation
+      topic_ref: *topic-other
+    - project_ref: *contsurv
+      topic_ref: *topic-nature
+    - project_ref: *contsurv
+      topic_ref: *topic-waste
+    - project_ref: *contsurv
+      topic_ref: *topic-sustainability
+    - project_ref: *contsurv
+      topic_ref: *topic-mobility
+    - project_ref: *contsurv
+      topic_ref: *topic-technology
+    - project_ref: *contsurv
+      topic_ref: *topic-economy
+    - project_ref: *contsurv
+      topic_ref: *topic-housing
+    - project_ref: *contsurv
+      topic_ref: *topic-public_space
+    - project_ref: *contsurv
+      topic_ref: *topic-safety
+    - project_ref: *contsurv
+      topic_ref: *topic-education
+    - project_ref: *contsurv
+      topic_ref: *topic-culture
+    - project_ref: *contsurv
+      topic_ref: *topic-health
+    - project_ref: *contsurv
+      topic_ref: *topic-inclusion
+    - project_ref: *contsurv
+      topic_ref: *topic-community
+    - project_ref: *contsurv
+      topic_ref: *topic-services
+    - project_ref: *contsurv
+      topic_ref: *topic-other
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-nature
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-waste
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-sustainability
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-mobility
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-technology
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-economy
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-housing
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-public_space
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-safety
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-education
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-culture
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-health
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-inclusion
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-community
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-services
+    - project_ref: *verifiedSurvey
+      topic_ref: *topic-other
+    - project_ref: *polling
+      topic_ref: *topic-nature
+    - project_ref: *polling
+      topic_ref: *topic-waste
+    - project_ref: *polling
+      topic_ref: *topic-sustainability
+    - project_ref: *polling
+      topic_ref: *topic-mobility
+    - project_ref: *polling
+      topic_ref: *topic-technology
+    - project_ref: *polling
+      topic_ref: *topic-economy
+    - project_ref: *polling
+      topic_ref: *topic-housing
+    - project_ref: *polling
+      topic_ref: *topic-public_space
+    - project_ref: *polling
+      topic_ref: *topic-safety
+    - project_ref: *polling
+      topic_ref: *topic-education
+    - project_ref: *polling
+      topic_ref: *topic-culture
+    - project_ref: *polling
+      topic_ref: *topic-health
+    - project_ref: *polling
+      topic_ref: *topic-inclusion
+    - project_ref: *polling
+      topic_ref: *topic-community
+    - project_ref: *polling
+      topic_ref: *topic-services
+    - project_ref: *polling
+      topic_ref: *topic-other
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-nature
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-waste
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-sustainability
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-mobility
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-technology
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-economy
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-housing
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-public_space
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-safety
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-education
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-culture
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-health
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-inclusion
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-community
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-services
+    - project_ref: *verifiedPoll
+      topic_ref: *topic-other
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-nature
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-waste
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-sustainability
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-mobility
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-technology
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-economy
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-housing
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-public_space
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-safety
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-education
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-culture
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-health
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-inclusion
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-community
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-services
+    - project_ref: *charliesSurvey
+      topic_ref: *topic-other
+    - project_ref: *charliesPoll
+      topic_ref: *topic-nature
+    - project_ref: *charliesPoll
+      topic_ref: *topic-waste
+    - project_ref: *charliesPoll
+      topic_ref: *topic-sustainability
+    - project_ref: *charliesPoll
+      topic_ref: *topic-mobility
+    - project_ref: *charliesPoll
+      topic_ref: *topic-technology
+    - project_ref: *charliesPoll
+      topic_ref: *topic-economy
+    - project_ref: *charliesPoll
+      topic_ref: *topic-housing
+    - project_ref: *charliesPoll
+      topic_ref: *topic-public_space
+    - project_ref: *charliesPoll
+      topic_ref: *topic-safety
+    - project_ref: *charliesPoll
+      topic_ref: *topic-education
+    - project_ref: *charliesPoll
+      topic_ref: *topic-culture
+    - project_ref: *charliesPoll
+      topic_ref: *topic-health
+    - project_ref: *charliesPoll
+      topic_ref: *topic-inclusion
+    - project_ref: *charliesPoll
+      topic_ref: *topic-community
+    - project_ref: *charliesPoll
+      topic_ref: *topic-services
+    - project_ref: *charliesPoll
+      topic_ref: *topic-other
+    - project_ref: *90
+      topic_ref: *topic-nature
+    - project_ref: *90
+      topic_ref: *topic-waste
+    - project_ref: *90
+      topic_ref: *topic-sustainability
+    - project_ref: *90
+      topic_ref: *topic-mobility
+    - project_ref: *90
+      topic_ref: *topic-technology
+    - project_ref: *90
+      topic_ref: *topic-economy
+    - project_ref: *90
+      topic_ref: *topic-housing
+    - project_ref: *90
+      topic_ref: *topic-public_space
+    - project_ref: *90
+      topic_ref: *topic-safety
+    - project_ref: *90
+      topic_ref: *topic-education
+    - project_ref: *90
+      topic_ref: *topic-culture
+    - project_ref: *90
+      topic_ref: *topic-health
+    - project_ref: *90
+      topic_ref: *topic-inclusion
+    - project_ref: *90
+      topic_ref: *topic-community
+    - project_ref: *90
+      topic_ref: *topic-services
+    - project_ref: *90
+      topic_ref: *topic-other
+    - project_ref: *85
+      topic_ref: *topic-nature
+    - project_ref: *85
+      topic_ref: *topic-waste
+    - project_ref: *85
+      topic_ref: *topic-sustainability
+    - project_ref: *85
+      topic_ref: *topic-mobility
+    - project_ref: *85
+      topic_ref: *topic-technology
+    - project_ref: *85
+      topic_ref: *topic-economy
+    - project_ref: *85
+      topic_ref: *topic-housing
+    - project_ref: *85
+      topic_ref: *topic-public_space
+    - project_ref: *85
+      topic_ref: *topic-safety
+    - project_ref: *85
+      topic_ref: *topic-education
+    - project_ref: *85
+      topic_ref: *topic-culture
+    - project_ref: *85
+      topic_ref: *topic-health
+    - project_ref: *85
+      topic_ref: *topic-inclusion
+    - project_ref: *85
+      topic_ref: *topic-community
+    - project_ref: *85
+      topic_ref: *topic-services
+    - project_ref: *85
+      topic_ref: *topic-other
+    - project_ref: *66
+      topic_ref: *topic-nature
+    - project_ref: *66
+      topic_ref: *topic-waste
+    - project_ref: *66
+      topic_ref: *topic-sustainability
+    - project_ref: *66
+      topic_ref: *topic-mobility
+    - project_ref: *66
+      topic_ref: *topic-technology
+    - project_ref: *66
+      topic_ref: *topic-economy
+    - project_ref: *66
+      topic_ref: *topic-housing
+    - project_ref: *66
+      topic_ref: *topic-public_space
+    - project_ref: *66
+      topic_ref: *topic-safety
+    - project_ref: *66
+      topic_ref: *topic-education
+    - project_ref: *66
+      topic_ref: *topic-culture
+    - project_ref: *66
+      topic_ref: *topic-health
+    - project_ref: *66
+      topic_ref: *topic-inclusion
+    - project_ref: *66
+      topic_ref: *topic-community
+    - project_ref: *66
+      topic_ref: *topic-services
+    - project_ref: *66
+      topic_ref: *topic-other
   idea:
   - &controversial_idea
     title_multiloc:
@@ -6993,7 +7653,7 @@ models:
       option_ref: *kicker-yes
   ideas_topic:
   - idea_ref: *topic_idea
-    topic_ref: *topic_waste
+    topic_ref: *topic-waste
   ideas_phase:
   - idea_ref: *234
     phase_ref: *project1pastIdeation
