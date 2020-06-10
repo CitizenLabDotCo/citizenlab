@@ -29,11 +29,11 @@ export default defineMessages({
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.Topics.confirmHeader',
-    defaultMessage: 'Do you want to remove this project topic?'
+    defaultMessage: 'Do you want to delete this project topic?'
   },
   topicDeletionWarning: {
     id: 'app.containers.AdminPage.Topics.topicDeletionWarning',
-    defaultMessage: 'Removing this topic from the project will also remove the topic from all ideas in this project.'
+    defaultMessage: 'Deleting this topic from the project will also remove the topic from all ideas in this project.'
   },
   cancel: {
     id: 'app.containers.AdminPage.Topics.cancel',
