@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.PagesEdition.buttonSave',
     defaultMessage: 'Save',
   },
-  buttonError: {
-    id: 'app.containers.AdminPage.PagesEdition.buttonError',
-    defaultMessage: 'Error',
-  },
   buttonSuccess: {
     id: 'app.containers.AdminPage.PagesEdition.buttonSuccess',
     defaultMessage: 'Saved',

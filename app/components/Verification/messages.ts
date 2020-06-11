@@ -25,14 +25,6 @@ export default defineMessages({
     id: 'app.components.VerificationModal.showCOWHelp',
     defaultMessage: 'Where can I find my ID Serial Number ?',
   },
-  cowRunNumber: {
-    id: 'app.components.VerificationModal.cowRunNumber',
-    defaultMessage: 'RUN',
-  },
-  cowIdSerialNumber: {
-    id: 'app.components.VerificationModal.cowIdSerialNumber',
-    defaultMessage: 'ID serial number',
-  },
   emptyFieldError: {
     id: 'app.components.VerificationModal.emptyFieldError',
     defaultMessage: 'This field cannot be empty.',
