@@ -133,7 +133,7 @@ class Project < ApplicationRecord
   end
 
   def set_default_topics!
-    self.topics = Topic.defaults
+    self.topics = Topic.defaults.order(:ordering).reverse
     self.save!
   end
 
