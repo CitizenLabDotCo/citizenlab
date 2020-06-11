@@ -268,7 +268,9 @@ resource "Projects" do
 
       describe do
         before do
-          create(:topic, code: 'nature')
+          create(:topic, code: 'nature', ordering: 0)
+          create(:topic, code: 'safety', ordering: 2)
+          create(:topic, code: 'mobility', ordering: 1)
         end
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
@@ -295,6 +297,7 @@ resource "Projects" do
           # New projects are added to the top
           expect(json_response[:included].select{|inc| inc[:type] == 'admin_publication'}.first.dig(:attributes, :ordering)).to eq 0
           expect(json_response.dig(:data,:relationships,:topics,:data).map{|d| d[:id]}).to match_array Topic.defaults.ids
+          expect(ProjectsTopic.where(project_id: json_response.dig(:data,:id)).order('projects_topics.ordering').pluck(:topic_id)).to eq Topic.defaults.order(:ordering).ids
         end
 
         example "Create a project in a folder" do
