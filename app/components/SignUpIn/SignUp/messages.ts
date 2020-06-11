@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  invitationTitle: {
-    id: 'app.containers.SignUp.invitationTitle',
-    defaultMessage: 'Redeem your invitation',
-  },
   tokenLabel: {
     id: 'app.containers.SignUp.tokenLabel',
     defaultMessage: 'Invitation code',
@@ -85,10 +81,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.noValidPasswordError',
     defaultMessage: 'The password must be at least 8 characters long',
   },
-  noValidLocaleError: {
-    id: 'app.containers.SignUp.noValidLocaleError',
-    defaultMessage: 'Language not supported',
-  },
   continue: {
     id: 'app.containers.SignUp.continue',
     defaultMessage: 'Continue',
@@ -100,10 +92,6 @@ export default defineMessages({
   signUp2: {
     id: 'app.containers.SignUp.signUp2',
     defaultMessage: 'Sign up',
-  },
-  redeem: {
-    id: 'app.containers.SignUp.redeem',
-    defaultMessage: 'Redeem',
   },
   submit: {
     id: 'app.containers.SignUp.submit',
@@ -121,10 +109,6 @@ export default defineMessages({
     id: 'app.containers.SignUp.or',
     defaultMessage: 'or',
   },
-  orSignUpWith: {
-    id: 'app.containers.SignUp.orSignUpWith',
-    defaultMessage: 'Or sign up with',
-  },
   goToLogIn: {
     id: 'app.containers.SignUp.goToLogIn',
     defaultMessage: 'Already have an account? {goToOtherFlowLink}',
@@ -141,21 +125,9 @@ export default defineMessages({
     id: 'app.containers.SignUp.iHaveReadAndAgreeTo',
     defaultMessage: 'I have read and agree to {link}.',
   },
-  emailApproval: {
-    id: 'app.containers.SignUp.emailApproval',
-    defaultMessage: 'Check here to confirm that you agree receiving emails from this platform. You can select which emails you wish to receive from your user settings.',
-  },
-  acceptTermsAndConditions: {
-    id: 'app.containers.SignUp.acceptTermsAndConditions',
-    defaultMessage: 'Accept our {tacLink} to sign up via {loginMechanismName}',
-  },
   theTermsAndConditions: {
     id: 'app.containers.SignUp.theTermsAndConditions',
     defaultMessage: 'the terms and conditions',
-  },
-  emailConsentError: {
-    id: 'app.containers.SignUp.emailConsentError',
-    defaultMessage: 'You have to accept receiving emails for your account management.',
   },
   thePrivacyPolicy: {
     id: 'app.containers.SignUp.thePrivacyPolicy',
@@ -176,14 +148,6 @@ export default defineMessages({
   whatIsFranceConnect: {
     id: 'app.containers.SignUp.whatIsFranceConnect',
     defaultMessage: 'What is France Connect?',
-  },
-  defaultSignUpHelper: {
-    id: 'app.containers.SignUp.defaultSignUpHelper',
-    defaultMessage: 'Tell us who you are and we’ll tell you how you can participate.',
-  },
-  somethingWentWrongTitle: {
-    id: 'app.containers.SignUp.somethingWentWrongTitle',
-    defaultMessage: 'Something went wrong',
   },
   somethingWentWrongText: {
     id: 'app.containers.SignUp.somethingWentWrongText',
