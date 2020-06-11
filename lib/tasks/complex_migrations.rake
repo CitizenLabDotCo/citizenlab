@@ -150,7 +150,6 @@ namespace :complex_migrations do
       # add ALL topics to all project, in ordering
 
       # TODO catch all possible errors and keep log
-    end
     if errors.present?
       puts 'Errors occured:'
       errors.each{|err| puts err}
