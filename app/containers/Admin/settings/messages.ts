@@ -133,10 +133,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
     defaultMessage: 'The provided subtitle exceeds the maximum allowed character limit',
   },
-  uploadPlaceholder: {
-    id: 'app.containers.AdminPage.SettingsPage.uploadPlaceholder',
-    defaultMessage: 'Drop your files here',
-  },
   noLogo: {
     id: 'app.containers.AdminPage.SettingsPage.noLogo',
     defaultMessage: 'Please upload a logo',

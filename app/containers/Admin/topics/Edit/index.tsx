@@ -62,10 +62,10 @@ class Edit extends React.PureComponent<Props> {
       <Section>
         <GoBackButton onClick={this.goBack} />
         <SectionTitle>
-          <FormattedMessage {...messages.editFormTitle} />
+          <FormattedMessage {...messages.editTopicFormTitle} />
         </SectionTitle>
         <SectionSubtitle>
-          <FormattedMessage {...messages.editFormSubtitle} />
+          <FormattedMessage {...messages.editTopicFormSubtitle} />
         </SectionSubtitle>
         {!isNilOrError(topic) &&
           <Formik
