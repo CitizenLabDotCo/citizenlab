@@ -18,7 +18,7 @@ export default defineMessages({
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.editButtonLabel',
+    id: 'app.containers.AdminPage.SettingsPage.areas.editButtonLabel',
     defaultMessage: 'Edit',
   },
   addAreaButton: {
