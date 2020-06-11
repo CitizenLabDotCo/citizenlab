@@ -53,10 +53,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.emailSharingBody',
     defaultMessage: 'What do you think of this idea? Vote on it and share the discussion at {ideaUrl} to make your voice heard!',
   },
-  byAuthorName: {
-    id: 'app.containers.IdeasShow.byAuthorName',
-    defaultMessage: 'by {authorName}',
-  },
   deletedUser: {
     id: 'app.containers.IdeasShow.deletedUser',
     defaultMessage: 'deleted user',
@@ -65,14 +61,6 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.currentStatus',
     defaultMessage: 'Current status',
   },
-  login: {
-    id: 'app.components.IdeasShow.login',
-    defaultMessage: 'Login',
-  },
-  register: {
-    id: 'app.components.IdeasShow.register',
-    defaultMessage: 'Create an account',
-  },
   moreOptions: {
     id: 'app.components.IdeasShow.moreOptions',
     defaultMessage: 'More options',
@@ -80,10 +68,6 @@ export default defineMessages({
   reportAsSpam: {
     id: 'app.components.IdeasShow.reportAsSpam',
     defaultMessage: 'Report as spam',
-  },
-  spamModalLabelIdea: {
-    id: 'app.components.IdeasShow.spamModalLabelIdea',
-    defaultMessage: 'Report idea as spam: select reason',
   },
   editIdea: {
     id: 'app.components.IdeasShow.editIdea',

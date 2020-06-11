@@ -73,10 +73,6 @@ export default defineMessages({
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.disallow',
     defaultMessage: 'Disallow',
   },
-  ariaRadioGroup: {
-    id: 'app.components.ConsentManager.Modal.PreferencesDialog.ariaRadioGroup',
-    defaultMessage: 'Allow {category} tracking?',
-  },
   save: {
     id: 'app.components.ConsentManager.Modal.PreferencesDialog.save',
     defaultMessage: 'Save',
