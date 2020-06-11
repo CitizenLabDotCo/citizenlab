@@ -1240,7 +1240,6 @@
   "app.containers.AdminPage.SettingsPage.titleTopicManager": "",
   "app.containers.AdminPage.SettingsPage.topicDeletionConfirmationMessage": "",
   "app.containers.AdminPage.SettingsPage.topicManagerDescription": "",
-  "app.containers.AdminPage.SettingsPage.uploadPlaceholder": "Déposez votre image ici",
   "app.containers.AdminPage.SettingsPage.urlError": "Cet URL n'est pas valide.",
   "app.containers.AdminPage.SettingsPage.urlTitle": "Site internet",
   "app.containers.AdminPage.SettingsPage.urlTitleTooltip": "Ajoutez l’URL du site que vous souhaitez lier à cette plateforme. Ce site sera accessible au bas de page d’accueil.",
