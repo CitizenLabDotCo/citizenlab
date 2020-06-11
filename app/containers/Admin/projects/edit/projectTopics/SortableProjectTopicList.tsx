@@ -109,7 +109,7 @@ const SortableProjectTopicList = memo(({
                     buttonStyle="text"
                     icon="delete"
                     disabled={isLastSelectedTopic}
-                    id="e2e-remove-project-topic-button"
+                    id="e2e-project-topic-delete-button"
                   >
                     <FormattedMessage {...messages.delete} />
                   </Button>
@@ -138,6 +138,7 @@ const SortableProjectTopicList = memo(({
                 buttonStyle="delete"
                 onClick={handleProjectTopicDeletionConfirm}
                 processing={processingDeletion}
+                id="e2e-project-topic-delete-confirm-button"
               >
                 <FormattedMessage {...messages.delete} />
               </Button>
