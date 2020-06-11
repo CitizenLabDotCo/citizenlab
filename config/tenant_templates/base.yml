@@ -242,36 +242,52 @@ models:
   projects_topic:
     - project_ref: *open_idea_project
       topic_ref: *topic-nature
+      ordering: 0
     - project_ref: *open_idea_project
       topic_ref: *topic-waste
+      ordering: 1
     - project_ref: *open_idea_project
       topic_ref: *topic-sustainability
+      ordering: 2
     - project_ref: *open_idea_project
       topic_ref: *topic-mobility
+      ordering: 3
     - project_ref: *open_idea_project
       topic_ref: *topic-technology
+      ordering: 4
     - project_ref: *open_idea_project
       topic_ref: *topic-economy
+      ordering: 5
     - project_ref: *open_idea_project
       topic_ref: *topic-housing
+      ordering: 6
     - project_ref: *open_idea_project
       topic_ref: *topic-public_space
+      ordering: 7
     - project_ref: *open_idea_project
       topic_ref: *topic-safety
+      ordering: 8
     - project_ref: *open_idea_project
       topic_ref: *topic-education
+      ordering: 9
     - project_ref: *open_idea_project
       topic_ref: *topic-culture
+      ordering: 10
     - project_ref: *open_idea_project
       topic_ref: *topic-health
+      ordering: 11
     - project_ref: *open_idea_project
       topic_ref: *topic-inclusion
+      ordering: 12
     - project_ref: *open_idea_project
       topic_ref: *topic-community
+      ordering: 13
     - project_ref: *open_idea_project
       topic_ref: *topic-services
+      ordering: 14
     - project_ref: *open_idea_project
       topic_ref: *topic-other
+      ordering: 15
   event:
     - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title
