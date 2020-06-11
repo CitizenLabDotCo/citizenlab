@@ -90,7 +90,7 @@ namespace :complex_migrations do
                     end
                     changed_associations += [{
                       tenant_host: tenant.host,
-                      post_type: 'Idea'
+                      post_type: 'Idea',
                       post_id: idea.id,
                       merged_topic_id: topic.id,
                       merged_topic_code: topic.code,
@@ -113,7 +113,7 @@ namespace :complex_migrations do
                     end
                     changed_associations += [{
                       tenant_host: tenant.host,
-                      post_type: 'Initiative'
+                      post_type: 'Initiative',
                       post_id: initiative.id,
                       merged_topic_id: topic.id,
                       merged_topic_code: topic.code,
