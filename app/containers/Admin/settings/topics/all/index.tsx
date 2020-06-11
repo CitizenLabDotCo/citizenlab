@@ -163,6 +163,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
                   buttonStyle="delete"
                   onClick={this.handleTopicDeletionConfirm}
                   processing={processingDeletion}
+                  id="e2e-custom-topic-delete-confirmation-button"
                 >
                   <FormattedMessage {...messages.delete} />
                 </Button>

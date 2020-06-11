@@ -71,7 +71,8 @@ describe('Project topics', () => {
         .first()
         .find('#e2e-custom-topic-delete-button')
         .click();
-      cy.on('window:confirm', () => true);
+      cy.get('#e2e-custom-topic-delete-confirmation-button')
+        .click();
 
       // Go to our project topic settings and check that topic is not available
       cy.visit(`admin/projects/${projectId}/topics`);
@@ -135,7 +136,6 @@ describe('Project topics', () => {
 
       // Go to idea form for our project
       cy.visit(`projects/${projectSlug}/ideas/new`);
-      // cy.get('#e2e-new-idea').click();
 
       // Verify the topic is selectable in the topic selector
       cy.get('.e2e-topics-picker').contains(topicTitle);
@@ -169,8 +169,10 @@ describe('Project topics', () => {
       // Remove our new topic from the project
       cy.get('.e2e-admin-list-row')
         .first()
-        .find('#e2e-remove-project-topic-button').click();
-      cy.on('window:confirm', () => true);
+        .find('#e2e-project-topic-delete-button').click();
+      // Confirm in the modal
+      cy.get('#e2e-project-topic-delete-confirm-button')
+        .click();
 
       // Go to idea form for our project
       cy.get('#e2e-new-idea').click();
@@ -241,8 +243,12 @@ describe('Project topics', () => {
       // Remove our new topic from the project
       cy.get('.e2e-admin-list-row')
         .first()
-        .find('#e2e-remove-project-topic-button').click();
-      cy.on('window:confirm', () => true);
+        .find('#e2e-custom-topic-delete-button')
+        .click();
+
+      // Confirm in modal
+      cy.get('#e2e-custom-topic-delete-confirmation-button')
+        .click();
 
       // Go to idea manager for our project
       cy.visit(`admin/projects/${projectId}/ideas`);
