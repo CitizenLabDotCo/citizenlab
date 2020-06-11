@@ -243,11 +243,11 @@ describe('Project topics', () => {
       // Remove our new topic from the project
       cy.get('.e2e-admin-list-row')
         .first()
-        .find('#e2e-custom-topic-delete-button')
+        .find('#e2e-project-topic-delete-button')
         .click();
 
       // Confirm in modal
-      cy.get('#e2e-custom-topic-delete-confirmation-button')
+      cy.get('#e2e-project-topic-delete-confirm-button')
         .click();
 
       // Go to idea manager for our project
