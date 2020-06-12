@@ -284,7 +284,6 @@ export class PostManager extends React.PureComponent<Props, State> {
     );
 
     if (!isNilOrError(topics)) {
-      console.log(postStatuses);
       return (
         <>
           <TopActionBar>
