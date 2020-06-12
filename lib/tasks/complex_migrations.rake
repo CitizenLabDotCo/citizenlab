@@ -27,7 +27,7 @@ namespace :complex_migrations do
     data = CSV.parse(open(args[:url]).read, { headers: true, col_sep: ',', converters: [] })
     is_mapping = {}
     data.each do |d|
-      if d['tenant_id'].present? && d['id'].present? && d['Link_to'] == 'is' && d['Current_topic'].present?
+      if d['tenant_id'].present? && d['id'].present? && ['is', 'synonym of'].include?(d['Link_to']) && d['Current_topic'].present?
         is_mapping[d['tenant_id']] ||= {}
         code = TOPIC_CODE_MAPPING[d['Current_topic']]
         errors += ["No topic code found for #{d['Current_topic']} (tenant #{d['tenant_id']})"] if !code
@@ -36,7 +36,7 @@ namespace :complex_migrations do
     end
     sub_mapping = {}
     data.each do |d|
-      if d['tenant_id'].present? && d['id'].present? && d['Link_to'] == 'subtopic of' && d['Merge'].present?
+      if d['tenant_id'].present? && d['id'].present? && d['Link_to'] == 'subtopic of' && d['Merge'].present? && d['Current_topic'].present?
         sub_mapping[d['tenant_id']] ||= {}
         code = TOPIC_CODE_MAPPING[d['Current_topic']]
         errors += ["No topic code found for #{d['Current_topic']} (tenant #{d['tenant_id']})"] if !code
@@ -56,14 +56,17 @@ namespace :complex_migrations do
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        begin
-          # Add code to existing topics
+        # begin
+          # Add code to existing topics and update them to latest titles
           tenant_is_mapping = is_mapping[tenant.id]
           if tenant_is_mapping
             Topic.where(id: tenant_is_mapping.keys).each do |topic|
               code = tenant_is_mapping[topic.id]
-              # TODO also overwrite title?
-              if topic.update(code: code)
+              title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+                translation = I18n.with_locale(locale) { I18n.t!("topics.#{code}") }
+                [locale, translation]
+              end.to_h
+              if topic.update(code: code, title_multiloc: title_multiloc)
                 puts "#{topic.id} (#{topic.title_multiloc.values.first})=> #{code}"
               else
                 errors += ["Failed to update topic #{topic.id} in #{tenant.host}: #{topic.errors.details}"]
@@ -72,7 +75,13 @@ namespace :complex_migrations do
           end
 
           # Add new topics
-          template = { 'models' => { 'topic' => base_topics.select{ |tp| %w(safety services other).include? tp['code'] } } }
+          template = { 'models' => { 
+            'topic' => base_topics.select{ |tp| 
+              %w(safety services other).include?(tp['code']) && !Topic.find_by(code: tp['code']).present?
+            }.map{ |tp|
+              tp.except 'ordering'
+            }
+          } }
           TenantTemplateService.new.apply_template template
 
           # Merge subtopics (e.g. Sports -> Culture)
@@ -137,7 +146,12 @@ namespace :complex_migrations do
             end
           end
 
-          # TODO reorder topics in default order?
+          # Reorder default topics
+          Topic.defaults.sort_by do |topic|
+            base_topics.select{|tp| tp['code'] == topic.code}.first['ordering']
+          end.reverse.each do |topic|
+            topic.move_to_top
+          end
 
           # Add topics to existing projects
           Project.all.each do |pj|
@@ -148,15 +162,17 @@ namespace :complex_migrations do
           end
 
           # Write backup file
-          CSV.open('changed_associations.csv', "wb") do |csv|
-            csv << changed_associations.first.keys
-            changed_associations.each do |d|
-              csv << d.values
+          if changed_associations.present?
+            CSV.open('changed_associations.csv', "wb") do |csv|
+              csv << changed_associations.first.keys
+              changed_associations.each do |d|
+                csv << d.values
+              end
             end
           end
-        rescue Exception => e
-          errors += ["Failed to migrate topics for tenant #{tenant.host}: #{e.message}"]
-        end
+        # rescue Exception => e
+        #   errors += ["Failed to migrate topics for tenant #{tenant.host}: #{e.message}"]
+        # end
       end
     end
 
@@ -166,5 +182,23 @@ namespace :complex_migrations do
     else
       puts 'Success!'
     end
+  end
+
+  desc "Display the topics of all tenants"
+  task :display_topics, [] => [:environment] do |t, args|
+    logs = []
+    Tenant.all.each do |tenant|
+      logs += ['------------']
+      logs += [tenant.host]
+      Apartment::Tenant.switch(tenant.schema_name) do
+        locale = tenant.settings.dig('core', 'locales').first
+        Topic.order(:ordering).each do |tp|
+          logs += ["#{tp.ordering}. #{tp.title_multiloc[locale]} (#{tp.code})"]
+        end
+      end
+      logs += ['------------']
+      logs += ['']
+    end
+    logs.each{|l| puts l}
   end
 end
