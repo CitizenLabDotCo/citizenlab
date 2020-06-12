@@ -43,9 +43,13 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.delete',
     defaultMessage: 'Delete'
   },
-  projectTopicSettingsDescription: {
-    id: 'app.containers.AdminPage.Topics.projectTopicSettingsDescription',
-    defaultMessage: 'You can add and delete the topics that are available for Idea Collection projects here. Topics are selected by users to categorize their ideas. If you would like to add additional project topics, you can do so in the {topicManagerLink}.'
+  topicManagerInfo: {
+    id: 'app.containers.AdminPage.Topics.topicManagerInfo',
+    defaultMessage: 'If you would like to add additional project topics, you can do so in the {topicManagerLink}.'
+  },
+  pageDescription: {
+    id: 'app.containers.AdminPage.Topics.pageDescription',
+    defaultMessage: 'You can add and delete the topics that are available for Idea Collection projects here. Topics are selected by users to categorize their ideas.'
   },
   topicManager: {
     id: 'app.containers.AdminPage.Topics.topicManager',

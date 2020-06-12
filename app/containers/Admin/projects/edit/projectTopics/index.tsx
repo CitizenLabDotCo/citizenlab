@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { SectionTitle, SectionSubtitle, StyledLink } from 'components/admin/Section';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
+import HasPermission from 'components/HasPermission';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -20,15 +21,21 @@ const ProjectTopics = memo(() => {
         <FormattedMessage {...messages.titleDescription} />
       </SectionTitle>
       <SectionSubtitle>
-        <FormattedMessage
-          {...messages.projectTopicSettingsDescription}
-          values={{
-            topicManagerLink:
-              <StyledLink to="/admin/settings/topics">
-                <FormattedMessage {...messages.topicManager} />
-              </StyledLink>
-          }}
-        />
+        <FormattedMessage {...messages.pageDescription} />
+        <span>
+          <HasPermission item={{ type: 'route', path: '/admin/settings/topics' }} action="access">
+            &nbsp;
+            <FormattedMessage
+              {...messages.topicManagerInfo}
+              values={{
+                topicManagerLink:
+                  <StyledLink to="/admin/settings/topics">
+                    <FormattedMessage {...messages.topicManager} />
+                  </StyledLink>
+              }}
+            />
+          </HasPermission>
+        </span>
       </SectionSubtitle>
       <ProjectTopicSelector />
       <SortableProjectTopicList />
