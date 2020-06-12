@@ -39,11 +39,11 @@ export default defineMessages({
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.SettingsPage.confirmHeader',
-    defaultMessage: 'Do you want to delete this topic?'
+    defaultMessage: 'Are you sure you want to delete this topic?'
   },
   topicDeletionConfirmationMessage: {
     id: 'app.containers.AdminPage.SettingsPage.topicDeletionConfirmationMessage',
-     defaultMessage: 'Are you sure you want to delete this topic? This will also remove all existing references to that topic for ideas. This change will apply to all of your projects.',
+     defaultMessage: 'This will also remove all existing references to that topic for ideas. This change will apply to all of your projects.',
   },
   cancel: {
     id: 'app.containers.AdminPage.SettingsPage.cancel',
