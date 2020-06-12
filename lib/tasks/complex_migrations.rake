@@ -43,6 +43,7 @@ namespace :complex_migrations do
         sub_mapping[d['tenant_id']][d['id']] = {'code' => code, 'merge' => (d['Merge'] == 'TRUE')}
       end
     end
+    base_topics = YAML.load(open(Rails.root.join('config', 'tenant_templates', 'base.yml')).read).dig('models', 'topic')
 
     if errors.present?
       puts 'Errors occured:'
@@ -70,7 +71,9 @@ namespace :complex_migrations do
             end
           end
 
-          # TODO add new if not exist
+          # Add new topics
+          template = { 'models' => { 'topic' => base_topics.select{ |tp| %w(safety services other).include? tp['code'] } } }
+          TenantTemplateService.new.apply_template template
 
           # Merge subtopics (e.g. Sports -> Culture)
           tenant_sub_mapping = sub_mapping[tenant.id]
@@ -134,6 +137,8 @@ namespace :complex_migrations do
             end
           end
 
+          # TODO reorder topics in default order?
+
           # Add topics to existing projects
           Project.all.each do |pj|
             pj.topics = Topic.order(:ordering).reverse
@@ -154,7 +159,7 @@ namespace :complex_migrations do
         end
       end
     end
-    
+
     if errors.present?
       puts 'Errors occured:'
       errors.each{|err| puts err}
