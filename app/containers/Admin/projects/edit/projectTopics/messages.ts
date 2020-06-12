@@ -29,7 +29,7 @@ export default defineMessages({
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.Topics.confirmHeader',
-    defaultMessage: 'Do you want to delete this project topic?'
+    defaultMessage: 'Are you sure you want to delete this project topic?'
   },
   topicDeletionWarning: {
     id: 'app.containers.AdminPage.Topics.topicDeletionWarning',
