@@ -97,9 +97,9 @@ export default () => ({
       }),
     },
     {
-      path: 'workshop',
+      path: 'workshops',
       component: Loadable({
-        loader: () => import('containers/Admin/workshop'),
+        loader: () => import('containers/Admin/workshops'),
         loading: LoadableLoadingAdmin,
         delay: 500
       }),

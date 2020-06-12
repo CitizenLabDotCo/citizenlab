@@ -648,6 +648,12 @@ const icons = {
       </g>
     </Svg>
   ),
+  workshops: (props: IconProps) => (
+    <Svg {...props} className={`cl-icon ${props.className ? props.className : ''}`} viewBox="0 0 43.1 43.2">
+      <path className="cl-icon-accent" fill={props.colorTheme?.clIconAccent} d="M28.6 13.3l-4.5 3.1v-3.1h-9.6V22.9h9.6v-2.8l4.5 2.8z"/>
+      <path className="cl-icon-primary" fill={props.colorTheme?.clIconPrimary} d="M35.7 7.5V5.6H7.5v26.2H28l2.3 1.7 5.3 4.1v-9l.1-21.1zm-25 21.1V8.8h21.8v19.8H10.7z"/>
+    </Svg>
+  ),
   users: (props: IconProps) => (
     <Svg {...props} className={`cl-icon ${props.className ? props.className : ''}`} width="28" height="28" viewBox="0 0 28 28">
       <g className="Users-icon">
