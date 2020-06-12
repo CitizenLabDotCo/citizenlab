@@ -4,7 +4,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 
 import { IDestination } from './';
 
