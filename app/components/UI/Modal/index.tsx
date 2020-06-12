@@ -98,12 +98,12 @@ const StyledFocusOn = styled(FocusOn)<{ width: number }>`
   max-width: ${({ width }) => width}px;
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
   width: 100%;
   max-height: 85vh;
-  margin-top: 50px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;
@@ -144,7 +144,7 @@ const Overlay = styled.div`
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.75);
   padding-left: 30px;
