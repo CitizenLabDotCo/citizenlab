@@ -53,7 +53,7 @@ export default defineMessages({
   },
   fewerThanOneTopicWarning: {
     id: 'app.containers.AdminPage.Topics.fewerThanOneTopicWarning',
-    defaultMessage: 'Please select at least one topic. If you do not want to allow users to add topics to their ideas, you can disable Topics in the {ideaFormLink} tab.'
+    defaultMessage: 'At least one project topic is required. If you do not want to allow users to add topics to their ideas, you can disable Topics in the {ideaFormLink} tab.'
   },
   ideaForm: {
     id: 'app.containers.AdminPage.Topics.ideaForm',
