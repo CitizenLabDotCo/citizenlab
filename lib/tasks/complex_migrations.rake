@@ -61,10 +61,11 @@ namespace :complex_migrations do
           if tenant_is_mapping
             Topic.where(id: tenant_is_mapping.keys).each do |topic|
               code = tenant_is_mapping[topic.id]
+              # TODO also overwrite title?
               if topic.update(code: code)
                 puts "#{topic.id} (#{topic.title_multiloc.values.first})=> #{code}"
               else
-                errors += ["Failed to update topic #{topic.id} in #{tenant.host}"]
+                errors += ["Failed to update topic #{topic.id} in #{tenant.host}: #{topic.errors.details}"]
               end
             end
           end
@@ -133,23 +134,27 @@ namespace :complex_migrations do
             end
           end
 
-          # TODO add ALL topics to all project, in ordering
+          # Add topics to existing projects
+          Project.all.each do |pj|
+            pj.topics = Topic.order(:ordering).reverse
+            if !pj.save
+              errors += ["Failed to add topics to project #{pj.id} in #{tenant.host}: #{pj.errors.details}"]
+            end
+          end
 
-          # TODO write file
+          # Write backup file
+          CSV.open('changed_associations.csv', "wb") do |csv|
+            csv << changed_associations.first.keys
+            changed_associations.each do |d|
+              csv << d.values
+            end
+          end
         rescue Exception => e
           errors += ["Failed to migrate topics for tenant #{tenant.host}: #{e.message}"]
         end
       end
     end
-
-
-      # set code for IS links
-      # SUB if merge => find topic with code and assign ideas => add those ideas to output + if already had topic
-      # SUB if not merge => keep topic (also add to project => nothing needs to do) 
-      # add new default topics if not exist
-      # add ALL topics to all project, in ordering
-
-      # TODO catch all possible errors and keep log
+    
     if errors.present?
       puts 'Errors occured:'
       errors.each{|err| puts err}
