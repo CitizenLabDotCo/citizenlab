@@ -4,7 +4,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import RangeInput from 'components/UI/RangeInput';

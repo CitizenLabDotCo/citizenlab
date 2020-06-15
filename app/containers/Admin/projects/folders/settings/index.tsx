@@ -6,7 +6,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import Error from 'components/UI/Error';
 import { isNilOrError } from 'utils/helperUtils';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import { deleteProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';

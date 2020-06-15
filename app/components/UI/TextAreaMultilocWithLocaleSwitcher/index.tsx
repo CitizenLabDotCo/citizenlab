@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import TextArea, { Props as TextAreaProps } from 'components/UI/TextArea';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import IconTooltip from 'components/UI/IconTooltip';
 

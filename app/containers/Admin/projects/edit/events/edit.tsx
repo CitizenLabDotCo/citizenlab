@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import ErrorComponent from 'components/UI/Error';

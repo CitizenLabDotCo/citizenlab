@@ -17,7 +17,7 @@ import Toggle from 'components/UI/Toggle';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';

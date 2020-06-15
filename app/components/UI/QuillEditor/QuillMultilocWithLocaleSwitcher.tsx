@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import IconTooltip from 'components/UI/IconTooltip';
 

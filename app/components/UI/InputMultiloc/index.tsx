@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 // components
 import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import IconTooltip from 'components/UI/IconTooltip';
 
 // resources

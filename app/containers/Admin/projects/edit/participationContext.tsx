@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import { Section, SectionField, SubSectionTitle } from 'components/admin/Section';

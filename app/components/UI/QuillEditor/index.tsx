@@ -8,7 +8,7 @@ import BlotFormatter from 'quill-blot-formatter';
 import 'quill/dist/quill.snow.css';
 
 // components
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import IconTooltip from 'components/UI/IconTooltip';
 
 // i18n
