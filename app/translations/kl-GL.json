@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Una tuugassaq toorukku taava kontut pilerseqqissinnaanngilarput.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Nalunaarutit qanoq ittut e-mailikkut pisarusuppigit? ",
   "app.containers.UsersEditPage.notificationsTitle": "E-mail notifikationer",
-  "app.containers.UsersEditPage.outside": "{orgType, select, city {Udenfor {name}} generic {None of these}}",
   "app.containers.UsersEditPage.password": "Kode isissutissat nutaaq allaguk",
   "app.containers.UsersEditPage.privacyReasons": "Nammineq inuuneqarnerit ernummatigigukku uani atuarsinnaavutit {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Nassiunneqarpoq ..",

@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Sobald du diesen Button klickst, können wir deinen Account nicht wiederherstellen.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Welche Arten von E-Mail-Benachrichtigungen möchtest du erhalten? ",
   "app.containers.UsersEditPage.notificationsTitle": "E-Mail Benachrichtigungen",
-  "app.containers.UsersEditPage.outside": "{orgType, select, city {Außerhalb von {name}} generic {None of these}}",
   "app.containers.UsersEditPage.password": "Wählen Sie ein neues Passwort",
   "app.containers.UsersEditPage.privacyReasons": "Falls du dir Sorgen um deine Privatsphäre machst, dann lese bitte {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Wird gesendet...",
