@@ -106,6 +106,8 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
     return (
       <TabbedResource
         resource={resource}
+        // TODO: optimization would be to use useMemo for tabs,
+        // as they get recalculated on every click
         tabs={this.getTabs()}
       >
         <HelmetIntl

@@ -348,6 +348,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
       resource: {
         title: !isNilOrError(project) ? localize(project.attributes.title_multiloc) : formatMessage(messages.newProject),
       },
+      // TODO: optimization would be to use useMemo for tabs, as they get recalculated on every click
       tabs: ((projectId && !isNilOrError(project)) ? this.getTabs(projectId, project) : [])
     };
 
