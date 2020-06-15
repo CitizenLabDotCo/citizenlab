@@ -33,7 +33,7 @@ nl:
       "official_feedback_on_your_idea": Update op mijn idee
       "official_feedback_on_your_initiative": Update op mijn initiatief
       "password_reset": Wachtwoord reset
-      "project_moderation_rights_received": Projectmoderatorrechten ontvangen
+      "project_moderation_rights_received": Projectbeheerdersrechten ontvangen
       "project_phase_started": Nieuwe projectfase
       "project_phase_upcoming": Opkomende nieuwe projectfase
       "status_change_of_commented_idea": Statuswijziging van een idee waar ik op reageerde
@@ -45,7 +45,7 @@ nl:
       "threshold_reached_for_admin": Een initiatief bereikte het benodigd aantal stemmen
       "welcome": Na registratie
       "admin_digest": Weekoverzicht voor admins
-      "moderator_digest": Weekoverzicht voor projectmoderatoren
+      "moderator_digest": Weekoverzicht voor projectbeheerders
       "assignee_digest": Weekoverzicht van toegewezen ideeën
       "user_digest": Weekoverzicht
       "your_proposed_initiatives_digest": Weekoverzicht van je initiatieven
@@ -53,13 +53,13 @@ nl:
       "manual": Officieel bericht - alle gebruikers
       "admin_rights_received": Administratierechten ontvangen - admins
       "comment_deleted_by_admin": Verwijderen van je reactie - alle gebruikers
-      "comment_marked_as_spam": Spammeldinig reactie - admins en projectmoderatoren
+      "comment_marked_as_spam": Spammeldinig reactie - admins en projectbeheerders
       "comment_on_your_comment": Antwoord op je reactie - alle gebruikers
       "comment_on_your_idea": Reactie op jouw idee - alle gebruikers
       "comment_on_your_initiative": Reactie op jouw initiatief - alle gebruikers
       "first_idea_published": Posten van je eerste idee - alle gebruikers
-      "idea_assigned_to_you": Toewijzing van een idee - admins en projectmoderatoren
-      "idea_marked_as_spam": Spammeldinig idee - admins en projectmoderatoren
+      "idea_assigned_to_you": Toewijzing van een idee - admins en projectbeheerders
+      "idea_marked_as_spam": Spammeldinig idee - admins en projectbeheerders
       "idea_published": Posten van je idee - alle gebruikers
       "initiative_assigned_to_you": Toewijzing van een initiatief - admins
       "initiative_marked_as_spam": Initiatief spammelding - admins
@@ -68,12 +68,12 @@ nl:
       "invite_reminder": Herinnering uitnodiging - alle gebruikers
       "mention_in_comment": Vermelding in een reactie - alle gebruikers
       "mention_in_official_feedback": Vermelding in een update - alle gebruikers
-      "new_comment_for_admin": Nieuwe reactie - admins en projectmoderatoren
+      "new_comment_for_admin": Nieuwe reactie - admins en projectbeheerders
       "new_comment_on_commented_idea": Nieuwe reactie op een idee waar je op reageerde - alle gebruikers
       "new_comment_on_commented_initiative": Nieuwe reactie op een initiatief waar je op reageerde - alle gebruikers
       "new_comment_on_voted_idea": Nieuwe reactie op een idee waar je op stemde - alle gebruikers
       "new_comment_on_voted_initiative": Nieuwe reactie op een initiatief waar je op stemde - alle gebruikers
-      "new_idea_for_admin": Nieuw idee - admins en projectmoderatoren
+      "new_idea_for_admin": Nieuw idee - admins en projectbeheerders
       "new_initiative_for_admin": Nieuw initiatief - admins
       "official_feedback_on_commented_idea": Update op een idee waar je op reageerde - alle gebruikers
       "official_feedback_on_commented_initiative": Update op een initiatief waar je op reageerde - alle gebruikers
@@ -82,9 +82,9 @@ nl:
       "official_feedback_on_your_idea": Update op jouw idee - alle gebruikers
       "official_feedback_on_your_initiative": Update op jouw initiatief - alle gebruikers
       "password_reset": Wachtwoord resetten - alle gebruikers
-      "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectmoderatoren
+      "project_moderation_rights_received": Projectmoderatorrechten ontvangen - projectbeheerders
       "project_phase_started": Nieuwe projectfase - alle gebruikers
-      "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectmoderatoren
+      "project_phase_upcoming": Opkomende nieuwe projectfase - admins en projectbeheerders
       "status_change_of_commented_idea": Statuswijziging van een idee waar je op reageerde - alle gebruikers
       "status_change_of_commented_initiative": Statuswijziging van een initiatief waar je op reageerde - alle gebruikers
       "status_change_of_voted_idea": Statuswijziging van een idee waar je op stemde - alle gebruikers
@@ -94,7 +94,7 @@ nl:
       "threshold_reached_for_admin": Een initiatief bereikte het benodigd aantal stemmen - admins
       "welcome": Nieuwe gebruiker - admins
       "admin_digest": Weekoverzicht - admins
-      "moderator_digest": Weekoverzicht - projectmoderatoren
-      "assignee_digest": Wekelijks overzicht van toegewezen ideeën - admins en projectmoderatoren
+      "moderator_digest": Weekoverzicht - projectbeheerders
+      "assignee_digest": Wekelijks overzicht van toegewezen ideeën - admins en projectbeheerders
       "user_digest": Weekoverzicht - alle gebruikers
       "your_proposed_initiatives_digest": Weekoverzicht van je eigen initiatieven - alle gebruikers
