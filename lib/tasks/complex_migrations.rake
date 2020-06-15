@@ -56,7 +56,15 @@ namespace :complex_migrations do
     Tenant.all.each do |tenant|
       puts "Processing tenant #{tenant.host}..."
       Apartment::Tenant.switch(tenant.schema_name) do
-        # begin
+        begin
+          # Add all topics to existing projects to keep coming data operations valid
+          Project.all.each do |pj|
+            pj.topics = Topic.all
+            if !pj.save
+              errors += ["Failed to add topics to project #{pj.id} in #{tenant.host}: #{pj.errors.details}"]
+            end
+          end
+
           # Add code to existing topics and update them to latest titles
           tenant_is_mapping = is_mapping[tenant.id]
           if tenant_is_mapping
@@ -75,23 +83,36 @@ namespace :complex_migrations do
           end
 
           # Add new topics
-          template = { 'models' => { 
-            'topic' => base_topics.select{ |tp| 
-              %w(safety services other).include?(tp['code']) && !Topic.find_by(code: tp['code']).present?
-            }.map{ |tp|
-              tp.except 'ordering'
-            }
-          } }
-          TenantTemplateService.new.apply_template template
+          base_topics.select do |tp| 
+            %w(safety services other).include?(tp['code']) && !Topic.find_by(code: tp['code']).present?
+          end.sort_by do |tp|
+            tp['ordering']
+          end.each do |tp|
+            title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+              translation = I18n.with_locale(locale) { I18n.t!("topics.#{tp['code']}") }
+              [locale, translation]
+            end.to_h
+            description_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+              translation = I18n.with_locale(locale) { I18n.t!("topics.#{tp['code']}_description") }
+              [locale, translation]
+            end.to_h
+            tp = Topic.create!(
+              title_multiloc: title_multiloc,
+              description_multiloc: description_multiloc,
+              code: tp['code']
+            )
+            tp.move_to_bottom
+          end
 
           # Merge subtopics (e.g. Sports -> Culture)
           tenant_sub_mapping = sub_mapping[tenant.id]
           if tenant_sub_mapping
-            tenant_is_mapping.each do |topic_id, value|
+            tenant_sub_mapping&.each do |topic_id, value|
               code = value['code']
               if value['merge']
                 parent_topic = Topic.find_by code: code
-                if parent_topic
+                topic = Topic.find topic_id
+                if parent_topic && topic
                   ideas = Idea.where(id: IdeasTopic.where(topic_id: topic_id).pluck(:idea_id))
                   ideas.each do |idea|
                     already_assigned = false
@@ -147,11 +168,21 @@ namespace :complex_migrations do
           end
 
           # Reorder default topics
-          Topic.defaults.sort_by do |topic|
-            base_topics.select{|tp| tp['code'] == topic.code}.first['ordering']
-          end.reverse.each do |topic|
-            topic.move_to_top
+          code_seq = Topic.order('ordering').pluck :code
+          custom_min = code_seq.each_index.select{|i| code_seq[i] == 'custom'}.first
+          custom_max = code_seq.each_index.select{|i| code_seq[i] == 'custom'}.last
+          # Preserve order when there's custom topics in between default topics
+          preserve_order = custom_min.present? && custom_max.present? && code_seq.each_index.select{|i| code_seq[i] != 'custom'}.select{|i| custom_min < i && i < custom_max }.present?
+
+          if !preserve_order
+            Topic.defaults.sort_by do |topic|
+              base_topics.select{|tp| tp['code'] == topic.code}.first['ordering']
+            end.reverse.each do |topic|
+              topic.move_to_top
+            end
           end
+          Topic.find_by(code: 'other')&.move_to_bottom
+          
 
           # Add topics to existing projects
           Project.all.each do |pj|
@@ -170,9 +201,9 @@ namespace :complex_migrations do
               end
             end
           end
-        # rescue Exception => e
-        #   errors += ["Failed to migrate topics for tenant #{tenant.host}: #{e.message}"]
-        # end
+        rescue Exception => e
+          errors += ["Failed to migrate topics for tenant #{tenant.host}: #{e.message}"]
+        end
       end
     end
 
