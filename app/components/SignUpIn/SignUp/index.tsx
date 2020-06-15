@@ -320,7 +320,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
               />
             ) : (
               <>
-                {activeStep === 'auth-providers' && !isEmpty(helperText) &&
+                {activeStep === 'password-signup' && !isEmpty(helperText) &&
                   <SignUpHelperText
                     textColor={colors.text}
                     fontSize="base"
