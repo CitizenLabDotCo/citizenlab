@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Once you click this button, we will have no way to restore your account.",
   "app.containers.UsersEditPage.notificationsSubTitle": "What kinds of email notifications do you want to receive? ",
   "app.containers.UsersEditPage.notificationsTitle": "E-postvarsler",
-  "app.containers.UsersEditPage.outside": "{orgType, velg, by {Outside of {name}} generisk {None of these}}",
   "app.containers.UsersEditPage.password": "Velg et nytt passord",
   "app.containers.UsersEditPage.privacyReasons": "If you are worried about your privacy, you can read {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Sender...",

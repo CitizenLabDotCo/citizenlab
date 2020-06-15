@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Wanneer je op deze knop klikt, wordt je profiel definitief verwijderd.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Wat voor soort e-mailmeldingen wil je ontvangen?",
   "app.containers.UsersEditPage.notificationsTitle": "E-mail notificaties",
-  "app.containers.UsersEditPage.outside": "{orgType, select, city {buiten {name}} generic {None of these}}",
   "app.containers.UsersEditPage.password": "Kies een nieuw wachtwoord",
   "app.containers.UsersEditPage.privacyReasons": "Als je bezorgd bent om je privacy, kan je {conditionsLink} lezen.",
   "app.containers.UsersEditPage.processing": "Verzenden...",

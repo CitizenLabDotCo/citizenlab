@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Una vez que presiones este botón, no vamos a tener forma de recuperar tu cuenta.",
   "app.containers.UsersEditPage.notificationsSubTitle": "¿Qué tipo de notificaciones por correo electrónico quiere recibir?",
   "app.containers.UsersEditPage.notificationsTitle": "Email notificaciones",
-  "app.containers.UsersEditPage.outside": "{orgType, select, city {Fuera de {name}} generic {Ninguno de estos}}",
   "app.containers.UsersEditPage.password": "Elige una contraseña nueva",
   "app.containers.UsersEditPage.privacyReasons": "Si le preocupa su privacidad, puede leer {conditionLink}.",
   "app.containers.UsersEditPage.processing": "Enviando...",

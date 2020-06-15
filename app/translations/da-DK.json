@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Når du klikker på denne knap, vil vi ikke kunne genskabe din konto. ",
   "app.containers.UsersEditPage.notificationsSubTitle": "Hvilke slags e-mail-meddelelser vil du modtage?",
   "app.containers.UsersEditPage.notificationsTitle": "E-mail notifikationer",
-  "app.containers.UsersEditPage.outside": "{orgType, select, city {Udenfor {name}} generic {Ingen af disse}}",
   "app.containers.UsersEditPage.password": "Vælg en ny adgangskode",
   "app.containers.UsersEditPage.privacyReasons": "Hvis du er bekymret for dit privatliv kan du læse {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Sender...",

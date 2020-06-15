@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Une fois que vous aurez cliqué sur ce bouton, nous n'aurons aucuns moyens de restaurer votre compte.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Quels types de notifications par email souhaitez-vous recevoir ?",
   "app.containers.UsersEditPage.notificationsTitle": "Notifications par email",
-  "app.containers.UsersEditPage.outside": "{orgType, select, city {À l'extérieur de {name}} generic {Aucun}}",
   "app.containers.UsersEditPage.password": "Choisissez un nouveau mot de passe",
   "app.containers.UsersEditPage.privacyReasons": "Si vous vous inquiétez pour votre vie privée, vous pouvez lire {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Envoi...",

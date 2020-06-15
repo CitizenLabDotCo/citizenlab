@@ -1879,7 +1879,6 @@
   "app.containers.UsersEditPage.noGoingBack": "Po kliknięciu tego przycisku nie będziemy mieli możliwości przywrócenia Twojego konta.",
   "app.containers.UsersEditPage.notificationsSubTitle": "Jakie powiadomienia e-mail chcesz otrzymywać? ",
   "app.containers.UsersEditPage.notificationsTitle": "Powiadomienia pocztą elektroniczną",
-  "app.containers.UsersEditPage.outside": "{orgType, select, city {Spoza {name}} rdzenny {None of these}}",
   "app.containers.UsersEditPage.password": "Wybierz nowe hasło",
   "app.containers.UsersEditPage.privacyReasons": "Jeśli martwisz się o swoją prywatność, możesz przeczytać {conditionsLink}.",
   "app.containers.UsersEditPage.processing": "Wysyłanie...",
