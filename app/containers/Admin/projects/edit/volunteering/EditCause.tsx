@@ -16,7 +16,7 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 // i18n

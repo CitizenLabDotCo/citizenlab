@@ -19,7 +19,7 @@ import shallowCompare from 'utils/shallowCompare';
 import { convertUrlToUploadFileObservable } from 'utils/fileTools';
 
 // Components
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
 import Error from 'components/UI/Error';

@@ -21,7 +21,7 @@ import FormikInput from 'components/UI/FormikInput';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formik';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSelect from 'components/UI/FormikSelect';

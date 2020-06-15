@@ -13,7 +13,7 @@ import messages from '../messages';
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
 import Input from 'components/UI/Input';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';

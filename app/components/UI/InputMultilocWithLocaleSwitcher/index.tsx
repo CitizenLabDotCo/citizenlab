@@ -3,7 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Input, { Props as InputProps } from 'components/UI/Input';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import IconTooltip from 'components/UI/IconTooltip';
 
