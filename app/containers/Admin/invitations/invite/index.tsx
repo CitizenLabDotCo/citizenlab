@@ -414,7 +414,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     } = this.state;
     const projectOptions = this.getProjectOptions(projects, locale, tenantLocales);
     const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
-    const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) && (hasModeratorRights ? !isEmpty(selectedProjects) : true ) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
+    const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) && (hasModeratorRights ? !isEmpty(selectedProjects) : true) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
     const invitationTabs = [
       {
         value: 'import',
