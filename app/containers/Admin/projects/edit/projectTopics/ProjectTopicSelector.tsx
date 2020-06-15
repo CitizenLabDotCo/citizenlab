@@ -1,5 +1,5 @@
 // Libraries
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useMemo, useState } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
 
@@ -59,16 +59,14 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
     localize,
     params: { projectId }
   } = props;
-  // Q for code review: do we agree about this hooks API?
   const topics = useTopics({});
   const projectTopics = useProjectTopics({ projectId });
   const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
   const [processing, setProcessing] = useState(false);
 
-  // value of useCallback here?
-  const handleTopicSelectionChange = useCallback((newSelectedTopicOptions: IOption[]) => {
+  const handleTopicSelectionChange = (newSelectedTopicOptions: IOption[]) => {
     setSelectedTopicOptions(newSelectedTopicOptions);
-  }, []);
+  };
 
   const handleOnAddTopicsClick = async (_event: React.FormEvent) => {
     const topicIdsToAdd = selectedTopicOptions.map(topicOption => topicOption.value) as string[];
@@ -86,31 +84,40 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
     }
   };
 
-  const getOptions = (selectableTopics: ITopicData[]) => {
-    return selectableTopics.map(topic => {
-      return ({
-        value: topic.id,
-        label: localize(
-          topic.attributes.title_multiloc
-        )
+  const getOptions = () => {
+    if (
+      !isNilOrError(topics) &&
+      !isNilOrError(projectTopics)
+    ) {
+      const allTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
+      const projectTopicIds = projectTopics.map(topic => topic.id);
+      const selectableTopics = allTopics.filter(topic => !projectTopicIds.includes(topic.id));
+
+      return selectableTopics.map(topic => {
+        return ({
+          value: topic.id,
+          label: localize(
+            topic.attributes.title_multiloc
+          )
+        });
       });
-    });
+    }
+
+    return [];
   };
 
+  const multiSelectOptions = useMemo(() => getOptions(), [topics, projectTopics]);
+
   if (
-    !isNilOrError(topics) &&
-    !isNilOrError(projectTopics)
+    multiSelectOptions && multiSelectOptions.length > 0
   ) {
-    const allTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
-    const projectTopicIds = projectTopics.map(topic => topic.id);
-    const selectableTopics = allTopics.filter(topic => !projectTopicIds.includes(topic.id));
 
     return (
       <Container>
         <SelectGroupsContainer>
           <StyledMultipleSelect
             value={selectedTopicOptions}
-            options={getOptions(selectableTopics)}
+            options={multiSelectOptions}
             onChange={handleTopicSelectionChange}
             id="e2e-project-topic-multiselect"
           />
