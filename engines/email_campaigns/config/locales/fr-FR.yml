@@ -45,7 +45,7 @@ fr:
       "threshold_reached_for_admin": La proposition a atteint le seuil de vote
       "welcome": Après inscription
       "admin_digest": Aperçu hebdomadaire pour les administrateurs
-      "moderator_digest": Aperçu hebdomadaire pour les modérateurs de projet
+      "moderator_digest": Aperçu hebdomadaire pour les administrateurs projet
       "assignee_digest": Aperçu hebdomadaire des idées attribuées
       "user_digest": Aperçu hebdomadaire
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propositions
@@ -53,13 +53,13 @@ fr:
       "manual": Message officiel (tous les utilisateurs)
       "admin_rights_received": Droits d'administrateur reçus (administrateurs)
       "comment_deleted_by_admin": Suppression de votre commentaire (tous les utilisateurs)
-      "comment_marked_as_spam": Rapport de spam de commentaires (administrateurs et modérateurs de projets)
+      "comment_marked_as_spam": Rapport de spam de commentaires - administrateurs et administrateurs projet
       "comment_on_your_comment": Répondre à votre commentaire (tous les utilisateurs)
       "comment_on_your_idea": Commentez votre idée (tous les utilisateurs)
       "comment_on_your_initiative": Commentez votre proposition - tous les utilisateurs
       "first_idea_published": Publication de votre première idée (tous les utilisateurs)
-      "idea_assigned_to_you": Attribution d'une idée (administrateurs et modérateurs de projets)
-      "idea_marked_as_spam": Rapport de spam d'idées (administrateurs et modérateurs de projets)
+      "idea_assigned_to_you": Attribution d'une idée - administrateurs et administrateurs projet
+      "idea_marked_as_spam": Rapport de spam d'idées - administrateurs et administrateurs projet
       "idea_published": Publication de votre idée (tous les utilisateurs)
       "initiative_assigned_to_you": Attribution d'une proposition - admins
       "initiative_marked_as_spam": Rapport de spam de proposition - admins
@@ -68,12 +68,12 @@ fr:
       "invite_reminder": Rappel d'invitation (tous les utilisateurs)
       "mention_in_comment": Mention dans un commentaire (tous les utilisateurs)
       "mention_in_official_feedback": Mention dans une mise à jour (tous les utilisateurs)
-      "new_comment_for_admin": Nouveau commentaire (administrateurs et modérateurs de projets)
+      "new_comment_for_admin": Nouveau commentaire - administrateurs et administrateurs projet
       "new_comment_on_commented_idea": Nouveau commentaire sur une idée que vous avez commentée (tous les utilisateurs)
       "new_comment_on_commented_initiative": Nouveau commentaire sur une proposition que vous avez commentée - tous les utilisateurs
       "new_comment_on_voted_idea": Nouveau commentaire sur une idée pour laquelle vous avez voté (tous les utilisateurs)
       "new_comment_on_voted_initiative": Nouveau commentaire sur une proposition que vous avez votée - tous les utilisateurs
-      "new_idea_for_admin": Nouvelle idée (administrateurs et modérateurs de projets)
+      "new_idea_for_admin": Nouvelle idée - administrateurs et administrateurs projet
       "new_initiative_for_admin": Nouvelle proposition - admins
       "official_feedback_on_commented_idea": Mise à jour sur une idée que vous avez commentée (tous les utilisateurs)
       "official_feedback_on_commented_initiative": Mise à jour sur une proposition que vous avez commentée - tous les utilisateurs
@@ -82,9 +82,9 @@ fr:
       "official_feedback_on_your_idea": Mise à jour de votre idée (tous les utilisateurs)
       "official_feedback_on_your_initiative": Mise à jour de votre proposition - tous les utilisateurs
       "password_reset": Réinitialisation du mot de passe (tous les utilisateurs)
-      "project_moderation_rights_received": Droits de modération de projet reçus (modérateurs de projet)
+      "project_moderation_rights_received": Droits de modération de projet reçus - administrateurs projet
       "project_phase_started": Nouvelle phase de projet - tous les utilisateurs
-      "project_phase_upcoming": Nouvelle phase de projet à venir (administrateurs et modérateurs de projet)
+      "project_phase_upcoming": Nouvelle phase de projet à venir - administrateurs et administrateurs projet
       "status_change_of_commented_idea": Changement de statut d'une idée que vous avez commentée (tous les utilisateurs)
       "status_change_of_commented_initiative": Changement de statut d'une proposition que vous avez commentée - tous les utilisateurs
       "status_change_of_voted_idea": Changement de statut d'une idée pour laquelle vous avez voté (tous les utilisateurs)
@@ -94,7 +94,7 @@ fr:
       "threshold_reached_for_admin": La proposition a atteint le seuil de vote - admins
       "welcome": Nouvel utilisateur (administrateurs)
       "admin_digest": Vue d'ensemble hebdomadaire - administrateurs
-      "moderator_digest": Aperçu hebdomadaire (modérateurs de projet)
-      "assignee_digest": Aperçu hebdomadaire des idées attribuées (administrateurs et modérateurs de projet)
+      "moderator_digest": Aperçu hebdomadaire - administrateurs projet
+      "assignee_digest": Aperçu hebdomadaire des idées attribuées - administrateurs et administrateurs projet
       "user_digest": Aperçu hebdomadaire (tous les utilisateurs)
       "your_proposed_initiatives_digest": Aperçu hebdomadaire de vos propres propositions - tous les utilisateurs
