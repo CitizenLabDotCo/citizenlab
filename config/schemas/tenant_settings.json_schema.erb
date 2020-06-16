@@ -330,6 +330,17 @@
         }
       },
 
+      "workshops": {
+        "type": "object",
+        "description":	"",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
       "ideas_overview": {
         "type": "object",
         "description":  "Show a menu item for the ideas overview page in the navigation bar (mobile & desktop)",
