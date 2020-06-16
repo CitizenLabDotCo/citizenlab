@@ -24,32 +24,32 @@ pl:
     ineligible: niekwalifikowana
     ineligible_description: niekwalifikowalna
   topics:
-    nature: Nature and animals
-    nature_description: Nature and animals
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
+    nature: Przyroda i różnorodność biologiczna
+    nature_description: Przyroda i różnorodność biologiczna
+    waste: Czystość i odpady
+    waste_description: Czystość i odpady
+    sustainability: Zrównoważony rozwój
+    sustainability_description: Zrównoważony rozwój
+    mobility: Mobilność
+    mobility_description: Mobilność
+    technology: Technologia
+    technology_description: Technologia
+    economy: Praca, gospodarka i handel
+    economy_description: Praca, gospodarka i handel
+    housing: Mieszkalnictwo
+    housing_description: Mieszkalnictwo
+    public_space: Place i ulice
+    public_space_description: Place i ulice
     safety: Safety
     safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
+    education: Edukacja i młodzież
+    education_description: Edukacja i młodzież
+    culture: Sztuki piękne, kultura i wydarzenia
+    culture_description: Sztuki piękne, kultura i wydarzenia
+    health: Opieka społeczna
+    health_description: Opieka społeczna
+    inclusion: Integracja społeczna
+    inclusion_description: Integracja społeczna
     community: Community development
     community_description: Community development
     services: City services
