@@ -1,6 +1,42 @@
 # Changelog
 
-## 2019-04-29
+## 2020-06-03
+
+### Fixed
+
+- Maps with markers don't lose their center/zoom settings anymore
+- English placeholders in idea form are gone for Spanish platforms
+
+## 2020-05-26
+
+### Changed
+- Lots of small UI improvements throughout the platform
+- Completely overhauled sign up/in flow:
+  - Improved UI
+  - Opens in a modal on top of existing page
+  - Opens when an unauthenticaed user tries to perform an action that requires authentication (e.g. voting)
+  - Automatically executes certain actions (e.g. voting) after the sign in/up flow has been completed (note: does not work for social sign-on, only email/password sign-on)
+  - Includes a verification step in the sign up flow when the action requires it (e.g. voting is only allowed for verified users)
+
+## 2020-05-20
+
+### Fixed
+
+- Budget field is shown again in idea form for participatory budget projects
+
+## 2020-05-14
+
+### Added
+
+- Idea configurability: disabling/requiring certain fields in the idea form
+- The footer has our new logo
+
+### Changed
+
+- Admins will receive a warning and need to confirm before sending a custom email to all users
+- A survey project link in the top navigation will link to /info instead of to /survey
+
+## 2020-04-29
 
 ### Fixed
 

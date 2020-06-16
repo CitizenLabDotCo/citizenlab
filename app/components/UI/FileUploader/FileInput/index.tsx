@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, customOutline } from 'utils/styleUtils';
+import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
 
 // components
 import Icon from 'components/UI/Icon';
@@ -34,7 +34,7 @@ const Input = styled.input`
   &:focus + label {
     color: #000;
     border-color: #000;
-    outline: ${customOutline};
+    ${boxShadowOutline};
 
     ${StyledIcon} {
       fill: #000;
@@ -46,7 +46,7 @@ const Label = styled.label`
   display: flex;
   align-items: center;
   cursor: pointer;
-  border: 1px dashed ${colors.separationDark};
+  border: 1px dashed ${colors.border};
   border-radius: ${(props: any) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   padding: 10px 20px;

@@ -1,4 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Modal from 'components/UI/Modal';
@@ -6,11 +7,17 @@ import VerificationSuccess from './VerificationSuccess';
 import VerificationError from './VerificationError';
 import VerificationSteps from './VerificationSteps';
 
+// hooks
+import useIsMounted from 'hooks/useIsMounted';
+import useAuthUser from 'hooks/useAuthUser';
+import useWindowSize from 'hooks/useWindowSize';
+
 // events
-import { closeVerificationModal } from 'containers/App/verificationModalEvents';
+import { openVerificationModal$, closeVerificationModal$, closeVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // style
 import styled from 'styled-components';
+import { viewportWidths } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod } from 'services/verificationMethods';
@@ -20,6 +27,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-top: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
 `;
 
 export type ProjectContext = { id: string, type: IParticipationContextType, action: ICitizenAction };
@@ -45,60 +55,92 @@ export function isProjectOrErrorContext(obj: ContextShape) {
     return 'ErrorContext';
   }
 }
+
 export type VerificationModalSteps = 'method-selection' | 'success' | 'error' | null | IVerificationMethod['attributes']['name'];
 
 export interface Props {
-  opened: boolean;
-  initialActiveStep?: VerificationModalSteps;
   className?: string;
-  context: ContextShape; // TODO change to pass in additionnal rules info
+  onMounted: () => void;
 }
 
-const VerificationModal = memo<Props>(({ opened, className, context, initialActiveStep }) => {
+const VerificationModal = memo<Props>(({ className, onMounted }) => {
 
-  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(initialActiveStep || 'method-selection');
+  const authUser = useAuthUser();
+  const { windowWidth } = useWindowSize();
+
+  const isMounted = useIsMounted();
+  const [activeStep, setActiveStep] = useState<VerificationModalSteps>(null);
+  const [context, setContext] = useState<ContextShape>(null);
+  const opened = !!activeStep;
+
+  const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
 
   useEffect(() => {
-    // reset active step when modal opens or closes
-    setActiveStep(initialActiveStep || 'method-selection');
-  }, [opened, initialActiveStep]);
+    if (isMounted() && onMounted) {
+      onMounted();
+    }
+  }, [onMounted]);
+
+  useEffect(() => {
+    const subscriptions = [
+      openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
+        if (!isNilOrError(authUser)) {
+          setActiveStep(step);
+          setContext(context);
+        }
+      }),
+      closeVerificationModal$.subscribe(() => {
+        setActiveStep(null);
+        setContext(null);
+      })
+    ];
+
+    return () => subscriptions.forEach(subscription => subscription.unsubscribe());
+  }, [authUser]);
 
   const onClose = useCallback(() => {
-    closeVerificationModal('VerificationModal');
+    closeVerificationModal();
   }, []);
 
   const onComplete = useCallback(() => {
     setActiveStep('success');
+    setContext(null);
   }, []);
 
   const onError = useCallback(() => {
     setActiveStep('error');
+    setContext(null);
   }, []);
 
   return (
     <Modal
       width={820}
+      padding={smallerThanSmallTablet ? '0px 5px 0px 5px' : '0px 20px 0px 20px'}
       opened={opened}
       close={onClose}
+      closeOnClickOutside={false}
     >
-      <Container className={`e2e-verification-steps ${className || ''}`}>
-        {initialActiveStep !== 'success' && initialActiveStep !== 'error' &&
+      <Container
+        id="e2e-verification-modal"
+        className={className || ''}
+      >
+        {activeStep && activeStep !== 'success' && activeStep !== 'error' &&
           <VerificationSteps
             context={context}
             inModal={true}
             showHeader={true}
-            initialActiveStep={initialActiveStep || 'method-selection'}
+            initialActiveStep={activeStep}
             onComplete={onComplete}
             onError={onError}
           />
         }
 
         {activeStep === 'success' &&
-          <VerificationSuccess />
+          <VerificationSuccess onClose={onClose} />
         }
 
         {activeStep === 'error' && (context === null || isErrorContext(context)) &&
-          <VerificationError context={context}/>
+          <VerificationError context={context} />
         }
       </Container>
     </Modal>

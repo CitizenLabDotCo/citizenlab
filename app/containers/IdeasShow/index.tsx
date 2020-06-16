@@ -4,7 +4,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { adopt } from 'react-adopt';
 
 // typings
-import { IParticipationContextType } from 'typings';
+import { IParticipationContextType, Locale } from 'typings';
+import {
+  IIdeaCustomFieldsSchemas,
+  CustomFieldCodes,
+} from 'services/ideaCustomFields';
 
 // analytics
 import { trackEvent } from 'utils/analytics';
@@ -37,6 +41,7 @@ import Footer from 'components/PostShowComponents/Footer';
 import Spinner from 'components/UI/Spinner';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
+import PlatformFooter from 'containers/PlatformFooter';
 
 // utils
 import { pastPresentOrFuture } from 'utils/dateUtils';
@@ -52,6 +57,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
 import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
 import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetIdeaCustomFieldsSchemas, { GetIdeaCustomFieldsSchemasChildProps } from 'resources/GetIdeaCustomFieldsSchemas';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -244,12 +250,12 @@ const ControlWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 45px;
   padding: 35px;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e8e8e8;
   border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
-const ControlWrapperHorizontalRule: any = styled.hr`
+const ControlWrapperHorizontalRule = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
@@ -312,10 +318,12 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
   officialFeedbacks: GetOfficialFeedbacksChildProps;
   postOfficialFeedbackPermission: GetPermissionChildProps;
+  ideaCustomFieldsSchemas: GetIdeaCustomFieldsSchemasChildProps;
 }
 
 interface InputProps {
   ideaId: string | null;
+  projectId: string;
   insideModal?: boolean;
   className?: string;
 }
@@ -455,6 +463,14 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
     });
   }
 
+  isFieldEnabled = (
+    fieldCode: CustomFieldCodes,
+    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    locale: Locale
+  ) => {
+    return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] !== 'hidden';
+  }
+
   render() {
     const {
       ideaFiles,
@@ -465,13 +481,20 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       authUser,
       windowSize,
       className,
-      postOfficialFeedbackPermission
+      postOfficialFeedbackPermission,
+      projectId,
+      ideaCustomFieldsSchemas
     } = this.props;
     const { loaded, ideaIdForSocialSharing, translateButtonClicked, actionInfos } = this.state;
     const { formatMessage } = this.props.intl;
     let content: JSX.Element | null = null;
 
-    if (!isNilOrError(idea) && !isNilOrError(locale) && loaded) {
+    if (
+      !isNilOrError(idea) &&
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale) &&
+      loaded
+    ) {
       // If the user deletes their profile, authorId can be null
       const authorId = idea?.relationships?.author?.data?.id || null;
       const ideaPublishedAt = idea.attributes.published_at;
@@ -482,7 +505,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const ideaImageLarge = ideaImages?.[0]?.attributes?.versions?.large || null;
       const ideaGeoPosition = idea?.attributes?.location_point_geojson || null;
       const ideaAddress = idea?.attributes?.location_description || null;
-      const projectId = idea?.relationships?.project.data?.id;
       const topicIds = idea?.relationships?.topics?.data?.map(item => item.id) || [];
       const ideaUrl = location.href;
       const ideaId = idea.id;
@@ -495,6 +517,10 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
       const biggerThanLargeTablet = windowSize ? windowSize > viewportWidths.largeTablet : false;
       const smallerThanLargeTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
       const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+      const topicsEnabled = this.isFieldEnabled('topic_ids', ideaCustomFieldsSchemas, locale);
+      const locationEnabled = this.isFieldEnabled('location', ideaCustomFieldsSchemas, locale);
+      const attachmentsEnabled = this.isFieldEnabled('attachments', ideaCustomFieldsSchemas, locale);
+
       const utmParams = !isNilOrError(authUser) ? {
         source: 'share_idea',
         campaign: 'share_content',
@@ -531,10 +557,12 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
 
             <Content id="e2e-idea-show-page-content">
               <LeftColumn>
-                <Topics
-                  postType="idea"
-                  topicIds={topicIds}
-                />
+                {topicsEnabled && topicIds.length > 0 &&
+                  <Topics
+                    postType="idea"
+                    topicIds={topicIds}
+                  />
+                }
 
                 <IdeaHeader>
                   <Title
@@ -570,7 +598,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   />
                 }
 
-                {ideaGeoPosition && ideaAddress &&
+                {locationEnabled && ideaGeoPosition && ideaAddress &&
                   <StyledDropdownMap
                     address={ideaAddress}
                     position={ideaGeoPosition}
@@ -588,7 +616,7 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
+                {attachmentsEnabled && !isNilOrError(ideaFiles) && ideaFiles.length > 0 &&
                   <FileAttachments files={ideaFiles} />
                 }
 
@@ -625,7 +653,6 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
                   <SharingMobile
                     context="idea"
                     url={ideaUrl}
-                    titleLevel="h2"
                     twitterMessage={formatMessage(messages.twitterMessage, { ideaTitle })}
                     emailSubject={formatMessage(messages.emailSharingSubject, { ideaTitle })}
                     emailBody={formatMessage(messages.emailSharingBody, { ideaUrl, ideaTitle })}
@@ -700,6 +727,8 @@ export class IdeasShow extends PureComponent<Props & InjectedIntlProps & Injecte
           </IdeaContainer>
 
           <Footer postId={ideaId} postType="idea" />
+
+          {this.props.insideModal && <PlatformFooter />}
         </>
       );
     }
@@ -755,13 +784,18 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImages: ({ ideaId, render }) => <GetIdeaImages ideaId={ideaId}>{render}</GetIdeaImages>,
   ideaFiles: ({ ideaId, render }) => <GetResourceFiles resourceId={ideaId} resourceType="idea">{render}</GetResourceFiles>,
-  project: ({ idea, render }) => <GetProject projectId={!isNilOrError(idea) ? idea?.relationships?.project?.data?.id : null}>{render}</GetProject>,
-  phases: ({ idea, render }) => <GetPhases projectId={!isNilOrError(idea) ? idea?.relationships?.project?.data?.id : null}>{render}</GetPhases>,
+  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
+  phases: ({ projectId, render }) => <GetPhases projectId={projectId}>{render}</GetPhases>,
   officialFeedbacks: ({ ideaId, render }) => <GetOfficialFeedbacks postId={ideaId} postType="idea">{render}</GetOfficialFeedbacks>,
-  postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>
+  postOfficialFeedbackPermission: ({ project, render }) => <GetPermission item={!isNilOrError(project) ? project : null} action="moderate" >{render}</GetPermission>,
+  ideaCustomFieldsSchemas: ({ projectId, render }) => (
+    <GetIdeaCustomFieldsSchemas projectId={projectId}>
+      {render}
+    </GetIdeaCustomFieldsSchemas>
+  )
 });
 
 export default (inputProps: InputProps) => (

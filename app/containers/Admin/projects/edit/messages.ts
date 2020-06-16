@@ -177,14 +177,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.limited',
     defaultMessage: 'Limited',
   },
-  allowLocation: {
-    id: 'app.containers.AdminPage.ProjectEdit.allowLocation',
-    defaultMessage: 'Idea location',
-  },
-  allowLocationTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.allowLocationTooltip',
-    defaultMessage: 'Enable or disable the ability to add a location to an idea.',
-  },
   anonymousPolling: {
     id: 'app.containers.AdminPage.ProjectEdit.anonymousPolling',
     defaultMessage: 'Anonymous polling',
@@ -205,9 +197,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.defaultDisplay',
     defaultMessage: 'Ideas displayed by default as:',
   },
-  defaultDisplayTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.defaultDisplayTooltip',
-    defaultMessage: 'Choose whether ideas on the project page are shown as idea cards or as pins on a map. Either way, users can switch to the other view themselves.',
+  presentationModeTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.presentationModeTooltip',
+    defaultMessage: 'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.',
   },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',

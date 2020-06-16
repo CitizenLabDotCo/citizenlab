@@ -5,9 +5,11 @@ import { Subscription } from 'rxjs';
 // services
 import { currentTenantStream, ITenant } from 'services/tenant';
 
+type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
+
 interface Props {
   name?: string;
-  children?: (showFeature: GetFeatureFlagChildProps) => JSX.Element | null;
+  children?: children;
 }
 
 interface State {
@@ -21,21 +23,23 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    this.state = { tenantSettings: null };
+    this.state = {
+      tenantSettings: null
+    };
     this.subscription = null;
   }
 
   componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
+
     this.subscription = currentTenant$.subscribe(currentTenant => {
       this.setState({ tenantSettings: currentTenant.data.attributes.settings });
     });
   }
 
   componentWillUnmount() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription?.unsubscribe();
+    this.subscription = null;
   }
 
   render() {
@@ -45,7 +49,8 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
       get(tenantSettings, `${name}.allowed`) === true &&
       get(tenantSettings, `${name}.enabled`) === true
     ));
+    return (children as children)(showFeature);
 
-    return children ? children(showFeature) : null;
+    // return children ? children(showFeature) : null;
   }
 }

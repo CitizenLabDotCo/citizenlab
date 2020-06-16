@@ -1,24 +1,16 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { createCampaign } from 'services/campaigns';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, validateCampaignForm } from '../CampaignForm';
+import CampaignForm, { FormValues, validateCampaignForm, PageTitle } from '../CampaignForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import { isCLErrorJSON } from 'utils/errorUtils';
-
-const PageTitle = styled.h1`
-  width: 100%;
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 3rem 0 1rem 0;
-`;
 
 type Props = {
   authUser: GetAuthUserChildProps;
@@ -44,14 +36,14 @@ class New extends React.Component<Props> {
       });
   }
 
-  initialValues = () : FormValues => {
+  initialValues = (): FormValues => {
     const { authUser } = this.props;
     return {
       sender: 'author',
       reply_to: (!isNilOrError(authUser) && authUser.attributes.email) ||  '',
       subject_multiloc: {},
       body_multiloc: {},
-      group_ids: [],
+      group_ids: []
     };
   }
 

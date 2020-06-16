@@ -89,6 +89,7 @@ class QuillMultiloc extends PureComponent<Props, State> {
                 className={`${index === tenantLocales.length - 1 && 'last'}`}
               >
                 <QuillEditor
+                  {...otherProps}
                   id={`${id}-${locale}`}
                   value={valueMultiloc?.[locale] || ''}
                   label={label}
@@ -100,7 +101,6 @@ class QuillMultiloc extends PureComponent<Props, State> {
                   noVideos={noVideos}
                   noAlign={noAlign}
                   limitedTextFormatting={limitedTextFormatting}
-                  {...otherProps}
                 />
               </EditorWrapper>
             );

@@ -20,7 +20,7 @@ export default function createRoutes() {
           path: 'sign-in',
           name: 'signInPage',
           component: Loadable({
-            loader: () => import('containers/SignInPage'),
+            loader: () => import('containers/SignUpInPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
@@ -29,34 +29,31 @@ export default function createRoutes() {
           path: 'sign-up',
           name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/SignUpPage'),
+            loader: () => import('containers/SignUpInPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
         },
         {
           path: 'invite',
-          name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/SignUpPage'),
+            loader: () => import('containers/LandingPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
         },
         {
           path: 'complete-signup',
-          name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/SignUpPage'),
+            loader: () => import('containers/LandingPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })
         },
         {
           path: 'authentication-error',
-          name: 'signUpPage',
           component: Loadable({
-            loader: () => import('containers/SignUpPage'),
+            loader: () => import('containers/LandingPage'),
             loading: LoadableLoadingCitizen,
             delay: 500
           })

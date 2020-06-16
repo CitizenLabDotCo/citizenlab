@@ -6,7 +6,7 @@ import streams from 'utils/streams';
 
 // services
 import { updateUser, mapUserToDiff } from 'services/users';
-import GetCustomFieldsSchema, { GetCustomFieldsSchemaChildProps } from 'resources/GetCustomFieldsSchema';
+import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
 import GetLockedFields, { GetLockedFieldsChildProps } from 'resources/GetLockedFields';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -20,7 +20,7 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
 import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
-import CustomFieldsForm from 'components/CustomFieldsForm';
+import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import Input from 'components/UI/Input';
 import Select from 'components/UI/Select';
 import QuillEditor from 'components/UI/QuillEditor';
@@ -46,14 +46,14 @@ interface InputProps {
 }
 
 interface DataProps {
-  customFieldsSchema: GetCustomFieldsSchemaChildProps;
+  userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
   authUser: GetAuthUserChildProps;
   lockedFields: GetLockedFieldsChildProps;
 }
 
 interface State {
   avatar: UploadFile[] | null;
-  customFieldsFormData: any;
+  userCustomFieldsFormData: any;
 }
 
 const InputContainer = styled.div`
@@ -74,7 +74,7 @@ class ProfileForm extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       avatar: null,
-      customFieldsFormData: null
+      userCustomFieldsFormData: null
     };
   }
 
@@ -119,14 +119,14 @@ class ProfileForm extends PureComponent<Props, State> {
   handleFormikSubmit = async (values, formikActions) => {
     let newValues = values;
     const { setSubmitting, resetForm, setErrors, setStatus } = formikActions;
-    const { customFieldsSchema, authUser } = this.props;
+    const { userCustomFieldsSchema, authUser } = this.props;
 
     if (isNilOrError(authUser)) return;
 
-    if (!isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields) {
+    if (!isNilOrError(userCustomFieldsSchema) && userCustomFieldsSchema.hasCustomFields) {
       newValues = {
         ...values,
-        custom_field_values: this.state.customFieldsFormData
+        custom_field_values: this.state.userCustomFieldsFormData
       };
     }
 
@@ -150,14 +150,14 @@ class ProfileForm extends PureComponent<Props, State> {
 
   formikRender = (props) => {
     const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
-    const { customFieldsSchema, lockedFields, authUser } = this.props;
+    const { userCustomFieldsSchema, lockedFields, authUser } = this.props;
 
     // Won't be called with a nil or error user.
     if (isNilOrError(authUser)) return null;
 
-    const hasCustomFields = !isNilOrError(customFieldsSchema) && customFieldsSchema.hasCustomFields;
+    const hasCustomFields = !isNilOrError(userCustomFieldsSchema) && userCustomFieldsSchema.hasCustomFields;
 
-    const customFieldsValues = this.state.customFieldsFormData || authUser.attributes.custom_field_values;
+    const customFieldsValues = this.state.userCustomFieldsFormData || authUser.attributes.custom_field_values;
 
     const lockedFieldsNames = isNilOrError(lockedFields) ? [] : lockedFields.map(field => field.attributes.name);
 
@@ -178,18 +178,18 @@ class ProfileForm extends PureComponent<Props, State> {
     };
 
     const handleCustomFieldsFormOnChange = (formData) => {
-      this.setState({ customFieldsFormData: formData });
+      this.setState({ userCustomFieldsFormData: formData });
       setStatus('enabled');
     };
 
     const handleCustomFieldsFormOnSubmit = (formData) => {
-      this.setState({ customFieldsFormData: formData });
+      this.setState({ userCustomFieldsFormData: formData });
       submitForm();
     };
 
     const handleOnSubmit = () => {
       if (hasCustomFields) {
-        eventEmitter.emit('ProfileForm', 'customFieldsSubmitEvent', null);
+        eventEmitter.emit('customFieldsSubmitEvent');
       } else {
         submitForm();
       }
@@ -246,7 +246,6 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <FormLabel
-              thin
               htmlFor="firstName"
               labelMessage={messages.firstNames}
             />
@@ -272,7 +271,6 @@ class ProfileForm extends PureComponent<Props, State> {
 
           <SectionField>
             <FormLabel
-              thin
               htmlFor="lastName"
               labelMessage={messages.lastName}
             />
@@ -297,7 +295,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="email" labelMessage={messages.email} />
+            <FormLabel htmlFor="email" labelMessage={messages.email} />
             <InputContainer>
               <Input
                 type="email"
@@ -320,7 +318,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin labelMessage={messages.bio} id="label-bio" />
+            <FormLabel labelMessage={messages.bio} id="label-bio" />
             <QuillEditor
               id="bio_multiloc"
               noImages={true}
@@ -335,7 +333,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="password" labelMessage={messages.password} />
+            <FormLabel htmlFor="password" labelMessage={messages.password} />
             <Input
               type="password"
               name="password"
@@ -348,7 +346,7 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
 
           <SectionField>
-            <FormLabel thin htmlFor="language" labelMessage={messages.language} />
+            <FormLabel htmlFor="language" labelMessage={messages.language} />
             <Select
               id="language"
               onChange={createChangeHandler('locale')}
@@ -361,7 +359,7 @@ class ProfileForm extends PureComponent<Props, State> {
         </form>
 
         {hasCustomFields &&
-          <CustomFieldsForm
+          <UserCustomFieldsForm
             formData={customFieldsValues}
             onChange={handleCustomFieldsFormOnChange}
             onSubmit={handleCustomFieldsFormOnSubmit}
@@ -406,7 +404,7 @@ const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   lockedFields: <GetLockedFields />,
-  customFieldsSchema: <GetCustomFieldsSchema />
+  userCustomFieldsSchema: <GetUserCustomFieldsSchema />
 });
 
 export default (inputProps: InputProps) => (

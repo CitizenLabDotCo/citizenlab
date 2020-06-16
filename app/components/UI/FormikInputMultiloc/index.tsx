@@ -14,6 +14,7 @@ class FormikInputMultiloc extends PureComponent<FieldProps & InputProps> {
 
   render() {
     const { value } = this.props.field;
+
     return (
       <InputMultiloc
         {...this.props}

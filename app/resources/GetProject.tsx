@@ -12,6 +12,8 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
+export type GetProjectChildProps = IProjectData | undefined | null | Error;
+
 type children = (renderProps: GetProjectChildProps) => JSX.Element | null;
 
 interface Props extends InputProps {
@@ -19,10 +21,8 @@ interface Props extends InputProps {
 }
 
 interface State {
-  project: IProjectData | undefined | null | Error;
+  project: GetProjectChildProps;
 }
-
-export type GetProjectChildProps = IProjectData | undefined | null | Error;
 
 export default class GetProject extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;

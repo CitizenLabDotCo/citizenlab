@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.ProjectsIndexPage.pageTitle',
     defaultMessage: 'Projects',
   },
-  invisibleSubtitle: {
-    id: 'app.containers.ProjectsIndexPage.invisibleSubtitle',
-    defaultMessage: 'The list of all projects of {orgName}',
-  },
   metaTitle: {
     id: 'app.containers.ProjectsIndexPage.metaTitle',
     defaultMessage: 'Projects • {orgName}',

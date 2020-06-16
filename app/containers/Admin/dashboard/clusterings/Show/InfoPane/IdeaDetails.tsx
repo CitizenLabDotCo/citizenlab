@@ -31,7 +31,7 @@ class IdeaDetails extends PureComponent<Props> {
 }
 
 export default (inputProps) => (
-  <GetIdea id={inputProps.ideaId}>
+  <GetIdea ideaId={inputProps.ideaId}>
     {(idea) => <IdeaDetails {...inputProps} idea={idea} />}
   </GetIdea>
 );

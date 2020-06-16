@@ -48,7 +48,7 @@ const StyledAsyncSelect = styled(AsyncSelect)`
 const AddGroupButton = styled(Button)`
   flex-grow: 0;
   flex-shrink: 0;
-  margin-left: 30px;
+  margin-left: 20px;
 `;
 
 interface Props {
@@ -170,6 +170,7 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
             text={formatMessage(messages.addModerators)}
             buttonStyle="cl-blue"
             icon="plus-circle"
+            padding="13px 16px"
             onClick={this.handleOnAddModeratorsClick}
             disabled={!selection || selection.length === 0}
             processing={this.state.processing}

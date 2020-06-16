@@ -10,11 +10,11 @@ export default defineMessages({
     defaultMessage: 'Topics configuration',
   },
   deleteButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel',
+    id: 'app.containers.AdminPage.SettingsPage.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   editButtonLabel: {
-    id: 'app.containers.AdminPage.SettingsPage.editTopicButtonLabel',
+    id: 'app.containers.AdminPage.SettingsPage.editButtonLabel',
     defaultMessage: 'Edit',
   },
   addTopicButton: {
@@ -25,19 +25,19 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.topicDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this topic? This will also remove all existing references to that topic for ideas and initiatives.',
   },
-  fieldTitle: {
+  fieldTopicTitle: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitle',
     defaultMessage: 'Topic name',
   },
-  fieldTitleTooltip: {
+  fieldTopicTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip',
     defaultMessage: 'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
   },
-  editFormTitle: {
+  editTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
     defaultMessage: 'Edit topic',
   },
-  editFormSubtitle: {
+  editTopicFormSubtitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormSubtitle',
     defaultMessage: 'Keep in mind that this will also affect the topic name in ideas and initiatives currently referencing to this.',
   },

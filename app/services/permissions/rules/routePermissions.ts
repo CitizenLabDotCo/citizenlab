@@ -14,7 +14,8 @@ definePermissionRule('route', 'access', (item: IRouteItem, user: IUser | null, t
       item.path === '/admin/projects' ||
       item.path === '/admin/dashboard' ||
       item.path === '/admin/emails' ||
-      item.path === '/admin/ideas'
+      item.path === '/admin/ideas' ||
+      item.path === '/admin/workshops'
     )) return true;
 
     // Try to find a project ID in the URL

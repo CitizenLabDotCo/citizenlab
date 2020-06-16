@@ -11,7 +11,7 @@ export interface Props {
   projectId?: string | null;
 }
 
-const DropdownMap = memo(({ address, position, className, projectId }: Props) => {
+const DropdownMap = memo<Props>(({ address, position, className, projectId }) => {
   return (
     <CollapsibleBox
       e2eId="e2e-map-toggle"

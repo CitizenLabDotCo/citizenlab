@@ -1,6 +1,7 @@
 import { colors, fontSizes } from 'utils/styleUtils';
+import { transparentize } from 'polished';
 
-export function getSelectStyles(borderColor = colors.separationDark) {
+export function getSelectStyles(borderColor = colors.border) {
   return {
     container: (base) => ({
       ...base,
@@ -12,19 +13,29 @@ export function getSelectStyles(borderColor = colors.separationDark) {
       ...base,
       fontSize: `${fontSizes.base}px`,
       borderWidth: '1px',
-      borderColor: isFocused ? '#000' : `${borderColor}`,
-      borderRadius: '5px',
+      borderColor: isFocused ? colors.focussedBorder : `${borderColor}`,
+      borderRadius: '3px',
       minHeight: '48px',
       backgroundColor: '#fff',
-      boxShadow: 'none',
+      boxShadow: isFocused ? `0px 0px 0px 1px ${transparentize(0.4, colors.focussedBorder)}` : 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: isFocused ? '#000' : '#aaa'
-      },
+        borderColor: isFocused ? colors.focussedBorder : colors.hoveredBorder
+      }
+    }),
+    indicatorSeparator: () => ({
+      display: 'none'
+    }),
+    dropdownIndicator: (base, { isFocused }) => ({
+      ...base,
+      color: isFocused ? colors.focussedBorder : `${borderColor}`,
+      '&:hover': {
+        color: isFocused ? colors.focussedBorder : colors.hoveredBorder
+      }
     }),
     placeholder: (base) => ({
       ...base,
-      color: '#000'
+      color: '#999'
     }),
     option: (base, { isFocused }) => ({
       ...base,

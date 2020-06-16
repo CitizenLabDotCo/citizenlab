@@ -147,7 +147,7 @@ class IdeaEdit extends PureComponent<Props, State> {
         if (granted) {
           this.setState({
             locale,
-            selectedTopics: idea.data.relationships.topics.data.map(topic => topic.id),
+            selectedTopics: idea.data.relationships.topics?.data.map(topic => topic.id) || [],
             projectId: idea.data.relationships.project.data.id,
             loaded: true,
             titleMultiloc: idea.data.attributes.title_multiloc,
@@ -169,7 +169,7 @@ class IdeaEdit extends PureComponent<Props, State> {
   }
 
   handleOnSaveButtonClick = () => {
-    eventEmitter.emit('IdeasAdminEditPage', 'IdeaFormSubmitEvent', null);
+    eventEmitter.emit('IdeaFormSubmitEvent');
   }
 
   handleIdeaFormOutput = async (ideaFormOutput: IIdeaFormOutput) => {
@@ -257,7 +257,7 @@ class IdeaEdit extends PureComponent<Props, State> {
             </Button>
           </Top>
 
-          <Content>
+          <Content className="idea-form">
             <IdeaForm
               projectId={projectId}
               title={title}

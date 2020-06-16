@@ -20,8 +20,8 @@ import 'leaflet.markercluster';
 // Styling
 import 'leaflet/dist/leaflet.css';
 import styled from 'styled-components';
-import { darken, lighten } from 'polished';
-import { colors, media } from 'utils/styleUtils';
+import { darken } from 'polished';
+import { media, boxShadowOutline } from 'utils/styleUtils';
 import ideaMarkerIcon from './idea-marker.svg';
 import legendMarkerIcon from './legend-marker.svg';
 
@@ -52,47 +52,46 @@ const BoxContainer = styled.div`
   height: 80%;
 `;
 
-const CloseIcon = styled(Icon)`
-  height: 10px;
-  fill: ${colors.label};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: fill 100ms ease-out;
-`;
-
-const CloseButton = styled.div`
-  height: 34px;
-  width: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const CloseButton = styled.button`
+  width: 28px;
+  height: 28px;
   position: absolute;
+  top: 10px;
+  right: 10px;
   cursor: pointer;
-  top: 9px;
-  right: 13px;
-  border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
-  transition: border-color 100ms ease-out;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 2;
+  border-radius: 50%;
+  border: solid 1px transparent;
+  background: #fff;
+  transition: all 100ms ease-out;
+  outline: none !important;
 
   &:hover {
-    border-color: #000;
+    background: #ececec;
+  }
 
-    ${CloseIcon} {
-      fill: #000;
-    }
+  &.focus-visible {
+    ${boxShadowOutline};
   }
 
   ${media.smallerThanMinTablet`
-    height: 32px;
-    width: 32px;
-    top: 8px;
-    right: 8px;
+    top: 4px;
+    right: 4px;
   `}
 `;
 
-const LeafletMapContainer = styled.div<{mapHeight: number}>`
+const CloseIcon = styled(Icon)`
+  width: 12px;
+  height: 12px;
+  fill: #000;
+`;
+
+const LeafletMapContainer = styled.div<{ mapHeight: number }>`
   flex: 1;
   height: ${props => props.mapHeight}px;
 
@@ -154,7 +153,7 @@ interface DataProps {
   mapConfig: GetMapConfigChildProps;
 }
 
-interface Props extends InputProps, DataProps {}
+interface Props extends InputProps, DataProps { }
 
 interface State {
   initiated: boolean;
@@ -238,10 +237,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     const dataPropsMapConfig = {};
-    if (
-      !isNilOrError(mapConfig) &&
-      mapConfig.attributes
-    ) {
+
+    if (!isNilOrError(mapConfig) && mapConfig.attributes) {
       const {
         zoom_level,
         tile_provider,
@@ -258,11 +255,13 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     const inputPropsMapConfig = {};
+
     if (center) {
       const [longitude, latitude] = center;
       initCenter = [latitude, longitude];
       inputPropsMapConfig['center'] = initCenter;
     }
+
     if (zoom) inputPropsMapConfig['zoom_level'] = zoom;
 
     return {
@@ -337,7 +336,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     */
     function createLeafletLayers(layers) {
       return layers.map((layer) => {
-        const customLegendMarker = layer.marker_svg_url && require(layer.marker_svg_url);
+        const customLegendMarker = layer.marker_svg_url && require(`${layer.marker_svg_url}`);
         const geoJsonOptions = {
           useSimpleStyle: true,
           pointToLayer: (_feature, latlng) => {
@@ -356,6 +355,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
   convertPoints = (points: Point[]) => {
     const bounds: [number, number][] = [];
+    const mapConfig = this.calculateMapConfig();
+    const { zoom_level, center } = mapConfig;
 
     this.markers = compact(points).map((point) => {
       const latlng: [number, number] = [
@@ -376,12 +377,19 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     });
 
     if (
-      bounds && bounds.length > 0 &&
+      bounds &&
+      bounds.length > 0 &&
       this.props.fitBounds &&
       !this.state.initiated &&
       this.map
     ) {
-      this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+      if (
+        // If zoom level and center are the default values
+        zoom_level === 15 &&
+        (center[0] === 0 && center[1] === 0)
+      ) {
+        this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
+      }
       this.setState({ initiated: true });
     }
 
@@ -468,7 +476,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
 const CLMapWithHOCs = injectLocalize(CLMap);
 
- export default ({ projectId, ...inputProps }: InputProps) => projectId ? (
+export default ({ projectId, ...inputProps }: InputProps) => projectId ? (
   <GetMapConfig projectId={projectId}>
     {(mapConfig: GetMapConfigChildProps) => {
       if (isError(mapConfig) || mapConfig) {
@@ -479,6 +487,7 @@ const CLMapWithHOCs = injectLocalize(CLMap);
                 <CLMapWithHOCs
                   tenant={tenant}
                   mapConfig={mapConfig}
+                  projectId={projectId}
                   {...inputProps}
                 />
               );
@@ -491,15 +500,15 @@ const CLMapWithHOCs = injectLocalize(CLMap);
     }}
   </GetMapConfig>
 ) : (
-  <GetTenant>
-    {(tenant: GetTenantChildProps) => {
-      return (
-        <CLMapWithHOCs
-          tenant={tenant}
-          mapConfig={null}
-          {...inputProps}
-        />
-      );
-    }}
-  </GetTenant>
-);
+    <GetTenant>
+      {(tenant: GetTenantChildProps) => {
+        return (
+          <CLMapWithHOCs
+            tenant={tenant}
+            mapConfig={null}
+            {...inputProps}
+          />
+        );
+      }}
+    </GetTenant>
+  );

@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
-import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
@@ -14,6 +13,9 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
+
+// utils
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -165,10 +167,10 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class SignedOutHeader extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
-  goToSignUpPage = (event: React.FormEvent) => {
+  signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
     trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'signed-out header' } });
-    clHistory.push('/sign-up');
+    openSignUpInModal();
   }
 
   render() {
@@ -202,7 +204,7 @@ class SignedOutHeader extends PureComponent<Props & InjectedLocalized & Injected
                 fontWeight="500"
                 padding="13px 22px"
                 buttonStyle="primary-inverse"
-                onClick={this.goToSignUpPage}
+                onClick={this.signUpIn}
                 text={<FormattedMessage {...messages.createAccount} />}
                 className="e2e-signed-out-header-cta-button"
               />

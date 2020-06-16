@@ -31,7 +31,6 @@ const Container = styled.div`
 `;
 
 const StyledUserName = styled(UserName)`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colorText};
   margin-right: 4px;
   white-space: nowrap;
   font-size: ${fontSizes.base}px;
@@ -59,10 +58,6 @@ const DropdownButton = styled.button`
 
   &:hover,
   &:focus {
-    ${StyledUserName} {
-      color: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
-    }
-
     ${StyledAvatar} {
       .avatarIcon {
         fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
@@ -123,13 +118,17 @@ class UserMenu extends PureComponent<Props, State> {
       const userSlug = authUser.attributes.slug;
 
       return (
-        <Container id="e2e-user-menu-container" className={authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'}>
+        <Container
+          id="e2e-user-menu-container"
+          className={authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'}
+        >
           <DropdownButton
             onMouseDown={this.removeFocus}
             onClick={this.toggleDropdown}
             aria-expanded={opened}
           >
             <StyledUserName
+              color={theme.navbarTextColor || theme.colorText}
               userId={userId}
               hideLastName
               verificationBadge

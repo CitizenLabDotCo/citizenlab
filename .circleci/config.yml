@@ -4,7 +4,7 @@
 #
 version: 2.1
 orbs:
-  cypress: cypress-io/cypress@1.8.0
+  cypress: cypress-io/cypress@1.23.0
 jobs:
   test:
     docker:
@@ -237,9 +237,9 @@ jobs:
     steps:
       - checkout
       - run:
-          command: npm install lighthouse-ci@1.3.1
+          command: npm install lighthouse-ci@1.10.0
       - run:
-          command: npx lighthouse-ci@1.3.1 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
+          command: npx lighthouse-ci@1.10.0 https://demo.stg.citizenlab.co --performance=3 --report=/tmp
       - store_artifacts:
           path: /tmp/report.html
           destination: lighthouse

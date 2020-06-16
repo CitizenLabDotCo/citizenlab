@@ -20,7 +20,7 @@ import { lighten } from 'polished';
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
-  border-bottom: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${lighten(0.4, colors.label)};
 
   ${media.biggerThanMaxTablet`
     display: none;
@@ -76,7 +76,7 @@ const GoBackButton = styled.button`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
+  border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 100ms ease-out;
 
   &:hover {
@@ -111,7 +111,7 @@ const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, insideModal, class
     event.preventDefault();
 
     if (insideModal) {
-      eventEmitter.emit('IdeaShowPageTopBar', 'closeIdeaModal', null);
+      eventEmitter.emit('closeIdeaModal');
     } else {
       clHistory.push('/');
     }

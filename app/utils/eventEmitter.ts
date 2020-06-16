@@ -2,7 +2,6 @@ import { Subject, Observable } from 'rxjs';
 import { filter, share } from 'rxjs/operators';
 
 export interface IEventEmitterEvent<T> {
-  eventSource: string;
   eventName: string;
   eventValue: T;
 }
@@ -16,8 +15,8 @@ class EventEmitter {
     this.stream = {};
   }
 
-  emit<T>(eventSource: string, eventName: string, eventValue: T) {
-    this.subject.next({ eventSource, eventName, eventValue });
+  emit<T>(eventName: string, eventValue: T = null as any) {
+    this.subject.next({ eventName, eventValue });
   }
 
   observeEvent<T>(eventName: string): Observable<IEventEmitterEvent<T>> {

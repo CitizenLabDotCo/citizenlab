@@ -87,13 +87,14 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>((pr
   }, []);
 
   const validate = useCallback(() => {
-    if (!isNilOrError(tenantLocales)) {
-      // check that all fields have content for all tenant locales
-      const { description_preview_multiloc, description_multiloc } = formValues;
-      return tenantLocales.every(locale => !isEmpty(description_preview_multiloc?.[locale]) && !isEmpty(description_multiloc?.[locale]));
-    }
+    // if (!isNilOrError(tenantLocales)) {
+    //   // check that all fields have content for all tenant locales
+    //   const { description_preview_multiloc, description_multiloc } = formValues;
+    //   return tenantLocales.every(locale => !isEmpty(description_preview_multiloc?.[locale]) && !isEmpty(description_multiloc?.[locale]));
+    // }
 
-    return false;
+    // return false;
+    return true;
   }, [tenantLocales, formValues]);
 
   const handleOnSubmit = useCallback(() => {
@@ -162,7 +163,7 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>((pr
             buttonStyle="admin-dark"
             onClick={handleOnSubmit}
             processing={processing}
-            disabled={!touched || !validate()}
+            disabled={!touched}
           >
             {success
               ? <FormattedMessage {...messages.saved} />

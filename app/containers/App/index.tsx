@@ -1,12 +1,15 @@
 import React, { PureComponent, Suspense, lazy } from 'react';
 import { Subscription, combineLatest } from 'rxjs';
 import { tap, first } from 'rxjs/operators';
-import { isString, isObject, uniq, has } from 'lodash-es';
-import { isNilOrError, isPage } from 'utils/helperUtils';
+import { uniq, has } from 'lodash-es';
+import { isNilOrError, isPage, endsWith } from 'utils/helperUtils';
+import { withRouter, WithRouterProps } from 'react-router';
+import clHistory from 'utils/cl-router/history';
 import { parse } from 'qs';
 import moment from 'moment';
 import 'moment-timezone';
 import 'intersection-observer';
+import 'focus-visible';
 import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
@@ -20,9 +23,11 @@ import { ApolloProvider } from 'react-apollo';
 // context
 import { PreviousPathnameContext } from 'context';
 
-// libraries
-import { withRouter, WithRouterProps } from 'react-router';
-import clHistory from 'utils/cl-router/history';
+// signup/in
+import { openSignUpInModal } from 'components/SignUpIn/events';
+
+// verification
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // analytics
 import ConsentManager from 'components/ConsentManager';
@@ -31,13 +36,15 @@ import { trackPage } from 'utils/analytics';
 // components
 import Meta from './Meta';
 import Navbar from 'containers/Navbar';
-import Footer from 'containers/Footer';
+import PlatformFooter from 'containers/PlatformFooter';
 import ForbiddenRoute from 'components/routing/forbiddenRoute';
 import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
 const VerificationModal = lazy(() => import('components/Verification/VerificationModal'));
+const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
+const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
 // auth
 import HasPermission from 'components/HasPermission';
@@ -50,7 +57,6 @@ import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import { openVerificationModal$, closeVerificationModal$ } from 'containers/App/verificationModalEvents';
 import { getJwt } from 'utils/auth/jwt';
 
 // style
@@ -58,7 +64,8 @@ import styled, { ThemeProvider } from 'styled-components';
 import { media, getTheme } from 'utils/styleUtils';
 
 // typings
-import { TVerificationSteps, ContextShape } from 'components/Verification/VerificationSteps';
+import { ContextShape } from 'components/Verification/VerificationSteps';
+import { SSOParams } from 'services/singleSignOn';
 
 const Container = styled.div`
   display: flex;
@@ -100,18 +107,15 @@ type State = {
   visible: boolean;
   userDeletedModalOpened: boolean;
   userActuallyDeleted: boolean;
-  verificationModalOpened: boolean;
-  verificationModalInitialStep: TVerificationSteps;
-  verificationModalContext: ContextShape | null;
+  signUpInModalMounted: boolean;
+  verificationModalMounted: boolean;
   navbarRef: HTMLElement | null;
   mobileNavbarRef: HTMLElement | null;
 };
 
-const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
-
 class App extends PureComponent<Props & WithRouterProps, State> {
   subscriptions: Subscription[];
-  unlisten: Function;
+  unlisten: () => void;
 
   constructor(props) {
     super(props);
@@ -125,9 +129,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible: true,
       userDeletedModalOpened: false,
       userActuallyDeleted: false,
-      verificationModalOpened: false,
-      verificationModalContext: null,
-      verificationModalInitialStep: null,
+      signUpInModalMounted: false,
+      verificationModalMounted: false,
       navbarRef: null,
       mobileNavbarRef: null
     };
@@ -140,25 +143,10 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const tenant$ = currentTenantStream().observable;
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
-      const { authUser } = this.state;
-      const previousPathname = location.pathname;
-      const nextPathname = newLocation.pathname;
-      const registrationCompletedAt = (authUser ? authUser.data.attributes.registration_completed_at : null);
-
-      this.setState((state) => ({
-        previousPathname: !(previousPathname.endsWith('/sign-up') || previousPathname.endsWith('/sign-in')) ? previousPathname : state.previousPathname
-      }));
-
+      const newPreviousPathname = location.pathname;
+      const pathsToIgnore = ['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'];
+      this.setState((state) => ({ previousPathname: !endsWith(newPreviousPathname, pathsToIgnore) ? newPreviousPathname : state.previousPathname }));
       trackPage(newLocation.pathname);
-
-      // If already created a user (step 1 of sign-up) and there's a required field in step 2,
-      // redirect to complete-signup page
-      if (isObject(authUser) && !isString(registrationCompletedAt) && !nextPathname.replace(/\/$/, '').endsWith('complete-signup')) {
-        clHistory.replace({
-          pathname: '/complete-signup',
-          search: newLocation.search
-        });
-      }
     });
 
     this.subscriptions = [
@@ -205,14 +193,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         this.openPostPageModal(id, slug, type);
       }),
 
-      openVerificationModal$.subscribe(({ eventValue: { step, context } }) => {
-        this.openVerificationModal(step, context);
-      }),
-
-      closeVerificationModal$.subscribe(() => {
-        this.closeVerificationModal();
-      }),
-
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
         this.closePostPageModal();
       }),
@@ -229,25 +209,84 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     ];
   }
 
-  componentWillUnmount() {
-    this.unlisten();
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-  }
-
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.authUser === undefined && !isNilOrError(this.state.authUser)) {
-      const urlSearchParams = parse(this.props.location.search, { ignoreQueryPrefix: true });
+    const { authUser, signUpInModalMounted, verificationModalMounted } = this.state;
+    const { pathname, search } = this.props.location;
+    const isAuthError = endsWith(pathname, 'authentication-error');
+    const isInvitation = endsWith(pathname, '/invite');
+
+    if (
+      (!prevState.signUpInModalMounted && signUpInModalMounted && isAuthError) ||
+      (!prevState.signUpInModalMounted && signUpInModalMounted && isInvitation) ||
+      (!prevState.signUpInModalMounted && signUpInModalMounted && !isNilOrError(authUser)) ||
+      (prevState.authUser === undefined && !isNilOrError(authUser) && signUpInModalMounted)
+    ) {
+      const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as any as SSOParams;
+      const token = urlSearchParams?.['token'] as string | undefined;
+      const shouldComplete = !authUser?.data?.attributes?.registration_completed_at;
+
+      // see services/singleSignOn.ts
+      const {
+        sso_response,
+        sso_flow,
+        sso_pathname,
+        sso_verification,
+        sso_verification_action,
+        sso_verification_id,
+        sso_verification_type
+      } = urlSearchParams;
+
+      if (isAuthError || isInvitation) {
+        window.history.replaceState(null, '', '/');
+      }
+
+      if (sso_response || shouldComplete || isInvitation) {
+        const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
+
+        if (!isAuthError && sso_pathname) {
+          clHistory.replace(sso_pathname);
+        }
+
+        if (!endsWith(sso_pathname, ['sign-up', 'sign-in']) && (isAuthError || (isInvitation && shouldComplete) || shouldVerify || shouldComplete)) {
+          openSignUpInModal({
+            isInvitation,
+            token,
+            flow: isAuthError && sso_flow ? sso_flow : 'signup',
+            error: isAuthError,
+            verification: !!sso_verification,
+            verificationContext: !!(sso_verification && sso_verification_action && sso_verification_id && sso_verification_type) ? {
+              action: sso_verification_action as any,
+              id: sso_verification_id as any,
+              type: sso_verification_type as any
+            } : undefined
+          });
+        }
+      }
+    }
+
+    if (!isNilOrError(authUser) && verificationModalMounted && (prevState.authUser === undefined || !prevState.verificationModalMounted)) {
+      const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
 
       if (has(urlSearchParams, 'verification_success')) {
         window.history.replaceState(null, '', window.location.pathname);
-        this.openVerificationModal('success', null);
+        openVerificationModal({ step: 'success' });
       }
 
       if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
         window.history.replaceState(null, '', window.location.pathname);
-        this.openVerificationModal('error', { error: this.props.location.query?.error || null } as ContextShape);
+        openVerificationModal({
+          step: 'error',
+          context: {
+            error: this.props.location.query?.error || null
+          } as ContextShape
+        });
       }
     }
+  }
+
+  componentWillUnmount() {
+    this.unlisten();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   openPostPageModal = (id: string, slug: string, type: 'idea' | 'initiative') => {
@@ -270,32 +309,20 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     this.setState({ userDeletedModalOpened: false });
   }
 
-  openVerificationModal = (step: TVerificationSteps, context: ContextShape | null) => {
-    if (this.state.authUser) {
-      this.setState({
-        verificationModalOpened: true,
-        verificationModalInitialStep: step,
-        verificationModalContext: context
-      });
-    } else {
-      console.log('verification modal not opened because user is not authenticated');
-    }
-  }
-
-  closeVerificationModal = () => {
-    this.setState({
-      verificationModalOpened: false,
-      verificationModalInitialStep: null,
-      verificationModalContext: null
-    });
-  }
-
   setNavbarRef = (navbarRef: HTMLElement) => {
     this.setState({ navbarRef });
   }
 
   setMobileNavigationRef = (mobileNavbarRef: HTMLElement) => {
     this.setState({ mobileNavbarRef });
+  }
+
+  singUpInModalMounted = () => {
+    this.setState({ signUpInModalMounted: true });
+  }
+
+  verificationModalMounted = () => {
+    this.setState({ verificationModalMounted: true });
   }
 
   render() {
@@ -309,9 +336,6 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       visible,
       userDeletedModalOpened,
       userActuallyDeleted,
-      verificationModalOpened,
-      verificationModalInitialStep,
-      verificationModalContext,
       navbarRef,
       mobileNavbarRef
     } = this.state;
@@ -345,7 +369,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     <Suspense fallback={null}>
                       <PostPageFullscreenModal
                         type={modalType}
-                        id={modalId}
+                        postId={modalId}
                         slug={modalSlug}
                         close={this.closePostPageModal}
                         navbarRef={navbarRef}
@@ -365,11 +389,13 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <VerificationModal
-                        opened={verificationModalOpened}
-                        initialActiveStep={verificationModalInitialStep}
-                        context={verificationModalContext}
-                      />
+                      <SignUpInModal onMounted={this.singUpInModalMounted} />
+                    </Suspense>
+                  </ErrorBoundary>
+
+                  <ErrorBoundary>
+                    <Suspense fallback={null}>
+                      <VerificationModal onMounted={this.verificationModalMounted} />
                     </Suspense>
                   </ErrorBoundary>
 
@@ -396,7 +422,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                     </HasPermission>
                   </InnerContainer>
 
-                  {showFooter && <Footer showShortFeedback={showShortFeedback} />}
+                  {showFooter && <PlatformFooter showShortFeedback={showShortFeedback} />}
                 </Container>
                 </LiveAnnouncer>
             </ThemeProvider>

@@ -22,9 +22,9 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
   });
 
   it('lets you search the ideas', () => {
-    cy.get('.e2e-search-input').type(ideaTitle);
+    cy.get('.e2e-search-input input').type(ideaTitle);
     cy.wait(1000);
-    cy.get('.e2e-search-input').should('have.value', ideaTitle);
+    cy.get('.e2e-search-input input').should('have.value', ideaTitle);
     cy.get('#e2e-ideas-list');
     cy.get('#e2e-ideas-list').find('.e2e-idea-card').should('have.length', 1).contains(ideaTitle);
   });
@@ -118,85 +118,5 @@ describe('Idea cards without filter sidebar pagination', () => {
     cy.apiRemoveIdea(ideaId1);
     cy.apiRemoveIdea(ideaId2);
     cy.apiRemoveIdea(ideaId3);
-  });
-});
-
-describe('Idea cards inside of a project with location enabled', () => {
-  const projectTitle = randomString();
-  let projectId: string;
-  let ideaId: string;
-
-  before(() => {
-    const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
-
-    cy.apiCreateProject({
-      type: 'continuous',
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-      participationMethod: 'ideation',
-      locationAllowed: true
-    }).then((project) => {
-      projectId = project.body.data.id;
-      const ideaTitle = randomString();
-      const ideaContent = randomString();
-      const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
-      const locationDescription = 'Brussel, België';
-      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
-    }).then((idea) => {
-      ideaId = idea.body.data.id;
-    });
-  });
-
-  it('displays the map/list viewbuttons above the idea cards', () => {
-    cy.visit(`projects/${projectTitle}/ideas`);
-    cy.get('#e2e-ideas-container');
-    cy.get('.e2e-list-map-viewbuttons').should('exist');
-  });
-
-  after(() => {
-    cy.apiRemoveIdea(ideaId);
-    cy.apiRemoveProject(projectId);
-  });
-});
-
-describe('Idea cards inside of a project with location disabled', () => {
-  const projectTitle = randomString();
-  let projectId: string;
-  let ideaId: string;
-
-  before(() => {
-    const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
-
-    cy.apiCreateProject({
-      type: 'continuous',
-      title: projectTitle,
-      descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
-      publicationStatus: 'published',
-      participationMethod: 'ideation',
-      locationAllowed: false
-    }).then((project) => {
-      projectId = project.body.data.id;
-      const ideaTitle = randomString();
-      const ideaContent = randomString();
-      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-    }).then((idea) => {
-      ideaId = idea.body.data.id;
-    });
-  });
-
-  it('does not display the map/list viewbuttons above the idea cards', () => {
-    cy.visit(`projects/${projectTitle}/ideas`);
-    cy.get('#e2e-ideas-container');
-    cy.get('.e2e-list-map-viewbuttons').should('not.exist');
-  });
-
-  after(() => {
-    cy.apiRemoveIdea(ideaId);
-    cy.apiRemoveProject(projectId);
   });
 });

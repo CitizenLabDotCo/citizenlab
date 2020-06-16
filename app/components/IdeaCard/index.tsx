@@ -6,7 +6,6 @@ import { adopt } from 'react-adopt';
 // components
 import Card from 'components/UI/Card';
 import Icon from 'components/UI/Icon';
-import Unauthenticated from 'components/UI/Card/Unauthenticated';
 import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';
@@ -118,8 +117,8 @@ interface DataProps {
 interface Props extends InputProps, DataProps { }
 
 interface State {
-  showVotingDisabled: 'unauthenticated' | 'votingDisabled' | null;
-  showAssignBudgetDisabled: 'unauthenticated' | 'assignBudgetDisabled' | null;
+  showVotingDisabled: 'votingDisabled' | null;
+  showAssignBudgetDisabled: 'assignBudgetDisabled' | null;
 }
 
 class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
@@ -161,7 +160,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
     const { idea } = this.props;
 
     if (!isNilOrError(idea)) {
-      eventEmitter.emit<IOpenPostPageModalEvent>('IdeaCard', 'cardClick', {
+      eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: idea.id,
         slug: idea.attributes.slug,
         type: 'idea'
@@ -169,16 +168,8 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
     }
   }
 
-  unauthenticatedVoteClick = () => {
-    this.setState({ showVotingDisabled: 'unauthenticated' });
-  }
-
   disabledVoteClick = () => {
     this.setState({ showVotingDisabled: 'votingDisabled' });
-  }
-
-  unauthenticatedAssignBudgetClick = () => {
-    this.setState({ showAssignBudgetDisabled: 'unauthenticated' });
   }
 
   disabledAssignBudgetClick = () => {
@@ -259,7 +250,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                   {participationMethod !== 'budgeting' &&
                     <VoteControl
                       ideaId={idea.id}
-                      unauthenticatedVoteClick={this.unauthenticatedVoteClick}
                       disabledVoteClick={this.disabledVoteClick}
                       size="2"
                       ariaHidden={true}
@@ -274,7 +264,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                       participationContextId={participationContextId}
                       participationContextType={participationContextType}
                       openIdea={this.onCardClick}
-                      unauthenticatedAssignBudgetClick={this.unauthenticatedAssignBudgetClick}
                       disabledAssignBudgetClick={this.disabledAssignBudgetClick}
                       projectId={projectId}
                     />
@@ -292,12 +281,6 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
                     </ScreenReaderOnly>
                   </CommentInfo>
                 </FooterInner>
-              }
-
-              {(showVotingDisabled === 'unauthenticated' || showAssignBudgetDisabled === 'unauthenticated') &&
-                <BottomBounceUp icon="lock-outlined">
-                  <Unauthenticated />
-                </BottomBounceUp>
               }
 
               {showVotingDisabled === 'votingDisabled' && votingDescriptor && projectId &&
@@ -338,7 +321,7 @@ class IdeaCard extends PureComponent<Props & InjectedLocalized & InjectedIntlPro
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   ideaImage: ({ ideaId, idea, render }) => <GetIdeaImage ideaId={ideaId} ideaImageId={get(idea, 'relationships.idea_images.data[0].id')}>{render}</GetIdeaImage>,
   ideaAuthor: ({ idea, render }) => <GetUser id={get(idea, 'relationships.author.data.id')}>{render}</GetUser>
 });

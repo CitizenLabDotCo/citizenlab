@@ -102,7 +102,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
     trackAdminToggle();
 
     if (authUser && authUser.id === user.id) {
-      eventEmitter.emit<JSX.Element>('usersAdmin', events.userRoleChangeFailed, <FormattedMessage {...messages.youCantUnadminYourself} />);
+      eventEmitter.emit<JSX.Element>(events.userRoleChangeFailed, <FormattedMessage {...messages.youCantUnadminYourself} />);
     } else {
       if (user.attributes.roles && isAdmin({ data: user })) {
         newRoles = user.attributes.roles.filter(role => role.type !== 'admin');
@@ -112,6 +112,7 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
           { type: 'admin' }
         ];
       }
+
       updateUser(user.id, { roles: newRoles }).then(() => {
         setTimeout(() => {
           streams.fetchAllWith({
