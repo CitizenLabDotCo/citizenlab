@@ -37,6 +37,7 @@ class Idea < ApplicationRecord
     idea.validate :assignee_can_moderate_project
 
     idea.before_validation :set_idea_status
+    idea.before_validation :reject_idea_topics_not_in_project
     idea.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
   validate :topics_belong_to_project
@@ -114,6 +115,10 @@ class Idea < ApplicationRecord
         message: 'The assignee can not moderate the project of this idea'
       )
     end
+  end
+
+  def reject_idea_topics_not_in_project
+    self.topic_ids = self.topic_ids & self.project.topic_ids
   end
 
   def topics_belong_to_project
