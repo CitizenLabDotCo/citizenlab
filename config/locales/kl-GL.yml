@@ -24,32 +24,32 @@ kl:
     ineligible: naleqqutinngilaq
     ineligible_description: naleqqutinngilaq
   topics:
-    nature: Nature and animals
-    nature_description: Nature and animals
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public space
-    public_space_description: Public space
+    nature: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
+    nature_description: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
+    waste: Saligaatsuuneq eqqagassallu
+    waste_description: Saligaatsuuneq eqqagassallu
+    sustainability: Piujuartitsilluni ineriartorneq
+    sustainability_description: Piujuartitsilluni ineriartorneq
+    mobility: Nikerarsinnaaneq
+    mobility_description: Nikerarsinnaaneq
+    technology: Teknologi
+    technology_description: Teknologi
+    economy: Sulineq, aningaasaqarneq niuernerlu
+    economy_description: Sulineq, aningaasaqarneq niuernerlu
+    housing: Inissiat
+    housing_description: Inissiat
+    public_space: Kipparissut aqquserngillu
+    public_space_description: Kipparissut aqquserngillu
     safety: Safety
     safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
+    education: Ilinniartitaaneq inuusuttullu
+    education_description: Ilinniartitaaneq inuusuttullu
+    culture: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
+    culture_description: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
+    health: Paaqqutarineqarneq atugarissaarnerlu
+    health_description: Paaqqutarineqarneq atugarissaarnerlu
+    inclusion: Inunnut akulerunneq
+    inclusion_description: Inunnut akulerunneq
     community: Community development
     community_description: Community development
     services: City services

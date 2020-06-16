@@ -24,38 +24,38 @@ fr-BE:
     ineligible: inéligible
     ineligible_description: inéligible
   topics:
-    nature: Nature and animals
+    nature: Nature et animaux
     nature_description: Nature and animals
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
+    waste: Propreté et déchets
+    waste_description: Propreté et déchets
+    sustainability: Développement durable
+    sustainability_description: Développement durable
+    mobility: Mobilité
+    mobility_description: Mobilité
+    technology: Énergie et technologie
+    technology_description: Énergie et technologie
+    economy: Emploi, economie et commerce
+    economy_description: Emploi, economie et commerce
+    housing: Logement
+    housing_description: Logement
+    public_space: Espace public
+    public_space_description: Espace public
+    safety: Sécurité
+    safety_description: Sécurité
+    education: Éducation et jeunesse
+    education_description: Éducation et jeunesse
+    culture: Culture, sport et événements
+    culture_description: Culture, sport et événements
+    health: Santé
+    health_description: Santé
+    inclusion: Social
+    inclusion_description: Social
     community: Community development
     community_description: Community development
-    services: City services
-    services_description: City services
-    other: Other
-    other_description: Other
+    services: Services publiques
+    services_description: Services publiques
+    other: Autres
+    other_description: Autres
   pages:
     terms_and_conditions_title: Conditions Générales d'Utilisation
     terms_and_conditions_body: >
