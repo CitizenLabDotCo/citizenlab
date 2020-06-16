@@ -256,7 +256,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   getSubmitState = (errors: IInviteError[] | null, processed: boolean) => {
-    const isInvitationValid = this.validateInvitation()
+    const isInvitationValid = this.validateInvitation();
     if (errors && errors.length > 0) {
       return 'error';
     } else if (processed && !isInvitationValid) {
@@ -390,11 +390,11 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
   }
 
   validateInvitation = (): boolean => {
-    const {selectedEmails, selectedProjects, hasModeratorRights, selectedFileBase64 } = this.state
+    const { selectedEmails, selectedProjects, hasModeratorRights, selectedFileBase64 } = this.state;
     const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
     const hasValidRights = hasModeratorRights ? !isEmpty(selectedProjects) : true;
     const isValidInvitationTemplate = isString(selectedFileBase64) && !isEmpty(selectedFileBase64);
-    return (isValidEmails && hasValidRights ) || isValidInvitationTemplate;
+    return (isValidEmails && hasValidRights) || isValidInvitationTemplate;
   }
 
   render() {
