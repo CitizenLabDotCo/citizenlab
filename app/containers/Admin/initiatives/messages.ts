@@ -13,17 +13,21 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.titleInitiatives',
     defaultMessage: 'Initiatives'
   },
-  tabSettings: {
-    id: 'app.containers.Admin.initiatives.tabSettings',
+  settingsTab: {
+    id: 'app.containers.Admin.initiatives.settingsTab',
     defaultMessage: 'Settings'
   },
-  tabManage: {
-    id: 'app.containers.Admin.initiatives.tabManage',
+  manageTab: {
+    id: 'app.containers.Admin.initiatives.manageTab',
     defaultMessage: 'Manage'
   },
-  titleSettingsTab: {
-    id: 'app.containers.Admin.initiatives.titleSettingsTab',
-    defaultMessage: 'Define how initiatives should work in your context.'
+  settingsTabTitle: {
+    id: 'app.containers.Admin.initiatives.settingsTabTitle',
+    defaultMessage: 'Configure your proposals'
+  },
+  settingsTabSubtitle: {
+    id: 'app.containers.Admin.initiatives.settingsTabSubtitle',
+    defaultMessage: 'Enable or disable posting of proposals, or visibility of   proposals altogether. Set thresholds to reach and provide more instructions.'
   },
   titleManageTab: {
     id: 'app.containers.Admin.initiatives.titleManageTab',
@@ -84,5 +88,17 @@ export default defineMessages({
   initiativeSettingsFormSuccess: {
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormSuccess',
     defaultMessage: 'Your changes have been saved.'
+  },
+  fieldPostingEnabled: {
+    id: 'app.containers.Admin.initiatives.fieldPostingEnabled',
+    defaultMessage: 'Starting new proposals'
+  },
+  showProposalEnabled: {
+    id: 'app.containers.Admin.initiatives.showProposalEnabled',
+    defaultMessage: 'Proposals on the platform'
+  },
+  enabledToggle: {
+    id: 'app.containers.Admin.initiatives.enabledToggle',
+    defaultMessage: 'Enabled'
   },
 });
