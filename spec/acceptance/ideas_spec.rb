@@ -50,6 +50,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
+      i1.project.update!(topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -64,9 +65,11 @@ resource "Ideas" do
       t2 = create(:topic)
 
       i1 = @ideas[0]
+      i1.project.update!(topics: Topic.all)
       i1.topics = [t1]
       i1.save
       i2 = @ideas[1]
+      i2.project.update!(topics: Topic.all)
       i2.topics = [t2]
       i2.save
 
@@ -655,13 +658,13 @@ resource "Ideas" do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:id) { @idea.id }
-    let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
     let(:location_description) { "Watkins Road 8" }
 
     describe do
       let(:title_multiloc) { {"en" => "Changed title" } }
+      let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
 
       example_request "Update an idea" do
         expect(status).to be 200
@@ -682,11 +685,6 @@ resource "Ideas" do
         expect(new_idea.votes[0].mode).to eq 'up'
         expect(new_idea.votes[0].user.id).to eq @user.id
         expect(json_response.dig(:data, :attributes, :upvotes_count)).to eq 1
-      end
-
-      example "[error] Adding a topic to an idea that is not a project topic", document: false do
-        do_request idea: { topic_ids: [create(:topic).id] }
-        expect(status).to be 422
       end
     end
 
@@ -789,6 +787,23 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:budget)).to eq budget
+        end
+      end
+
+      describe do
+        before do 
+          @project.update!(topics: create_list(:topic, 2))
+          @project2 = create(:project, topics: [@project.topics.first])
+          @idea.update!(topics: @project.topics)
+        end
+        let(:project_id) { @project2.id }
+
+        example_request "Change the project (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
+          # should also remove topics not in new project from the idea
+          expect(@idea.reload.topics.ids).to eq [@project.topics.first.id]
         end
       end
     end
