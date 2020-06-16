@@ -1906,6 +1906,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators and moderators",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Everyone",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Certain user groups",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.containers.app.navbar.admin": "Aqutsisoq",
   "app.containers.app.navbar.allProjects": "Suliniutit tamarmik",
