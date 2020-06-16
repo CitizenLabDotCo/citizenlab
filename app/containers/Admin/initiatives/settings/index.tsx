@@ -9,7 +9,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
 // components
-import { SectionTitle, Section, SectionField } from 'components/admin/Section';
+import { SectionTitle, SectionSubtitle, Section, SectionField, SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
@@ -32,6 +32,10 @@ import styled from 'styled-components';
 import { Multiloc, Locale } from 'typings';
 
 const Container = styled.div``;
+
+const StyledToggle = styled(Toggle)`
+  margin-right: 10px;
+`;
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 7px;
@@ -79,6 +83,7 @@ interface FormValues {
   threshold_reached_message: Multiloc;
   voting_threshold: number;
   enabled: boolean;
+  posting_enabled: boolean;
 }
 
 interface State {
@@ -113,7 +118,8 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
           eligibility_criteria: initiativesSettings.eligibility_criteria,
           threshold_reached_message: initiativesSettings.threshold_reached_message,
           voting_threshold: initiativesSettings.voting_threshold,
-          enabled: initiativesSettings.enabled
+          enabled: initiativesSettings.enabled,
+          posting_enabled: initiativesSettings.posting_enabled,
         }
       });
     }
@@ -197,6 +203,17 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
     }));
   }
 
+  handlePostingEnabledOnChange = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    this.setState(({ formValues }) => ({
+      formValues: {
+        ...formValues,
+        posting_enabled: !formValues.posting_enabled
+      }
+    }));
+  }
+
   handleVotingTresholdOnChange = (value: string) => {
     this.setState(({ formValues }) => ({
       formValues: {
@@ -245,18 +262,33 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
       return (
         <Container className={className || ''}>
           <SectionTitle>
-            <FormattedMessage {...messages.titleSettingsTab} />
+            <FormattedMessage {...messages.settingsTabTitle} />
           </SectionTitle>
+          <SectionSubtitle>
+            <FormattedMessage {...messages.settingsTabSubtitle} />
+          </SectionSubtitle>
 
           <Section>
             <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldEnable} />
-              </Label>
-              <Toggle
+              <SubSectionTitle>
+                <FormattedMessage {...messages.showProposalEnabled} />
+              </SubSectionTitle>
+              <StyledToggle
                 checked={formValues.enabled}
                 onChange={this.handleEnabledOnChange}
+                label={<FormattedMessage {...messages.enabledToggle} />}
               />
+            </SectionField>
+            <SectionField>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.fieldPostingEnabled} />
+              </SubSectionTitle>
+                <StyledToggle
+                  checked={formValues.posting_enabled}
+                  onChange={this.handlePostingEnabledOnChange}
+                  label={<FormattedMessage {...messages.enabledToggle} />}
+                />
+
             </SectionField>
             <SectionField>
               <Label>
