@@ -12,17 +12,17 @@ import Label from 'components/UI/Label';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div``;
 
 const DateInputWrapper = styled.div<{ openOnLeft: boolean | undefined }>`
+  width: 100%;
   display: inline-flex;
   position: relative;
   border-radius: ${(props) => props.theme.borderRadius};
   background: #fff;
-  border: solid 1px #ccc;
-  width: 100%;
+  border: solid 1px ${colors.border};
 
   .SingleDatePickerInput {
     outline: none;

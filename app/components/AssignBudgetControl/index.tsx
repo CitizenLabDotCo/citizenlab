@@ -30,6 +30,7 @@ import tracks from 'containers/ProjectsShowPage/pb/tracks';
 import streams from 'utils/streams';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import clHistory from 'utils/cl-router/history';
+import { openSignUpInModal } from 'components/SignUpIn/events';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -138,7 +139,6 @@ interface InputProps {
   participationContextId: string;
   participationContextType: IParticipationContextType;
   openIdea?: (event: FormEvent<any>) => void;
-  unauthenticatedAssignBudgetClick?: () => void;
   disabledAssignBudgetClick?: () => void;
   className?: string;
   projectId: string;
@@ -159,7 +159,6 @@ interface Tracks {
   ideaRemovedFromBasket: () => void;
   ideaAddedToBasket: () => void;
   basketSubmitted: () => void;
-  unauthenticatedAssignClick: () => void;
   disabledAssignClick: () => void;
 }
 
@@ -189,13 +188,9 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
     return true;
   }
 
-  assignBudget = async (event: FormEvent<any>) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    const { ideaId, idea, authUser, basket, participationContextId, participationContextType, unauthenticatedAssignBudgetClick, disabledAssignBudgetClick } = this.props;
-    const basketIdeaIds = (!isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : []);
-    const isInBasket = includes(basketIdeaIds, ideaId);
+  assignBudget = async (event?: FormEvent<any>) => {
+    event?.preventDefault();
+    event?.stopPropagation();
 
     const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
     const done = async () => {
@@ -203,15 +198,26 @@ class AssignBudgetControl extends PureComponent<Props & Tracks & InjectedIntlPro
       this.setState({ processing: false });
     };
 
-    if (!authUser) {
-      unauthenticatedAssignBudgetClick && unauthenticatedAssignBudgetClick();
-      this.props.unauthenticatedAssignClick();
-    } else if (!isNilOrError(idea) && !isNilOrError(authUser)) {
-      const budgetingEnabled = idea?.attributes?.action_descriptor?.budgeting?.enabled;
+    if (!isNilOrError(this.props.idea)) {
+      const { ideaId, idea, authUser, basket, participationContextId, participationContextType, disabledAssignBudgetClick } = this.props;
+      const budgetingEnabled = idea.attributes.action_descriptor.budgeting?.enabled;
+      const budgetingDisabledReason = idea.attributes.action_descriptor.budgeting?.disabled_reason;
+      const basketIdeaIds = !isNilOrError(basket) ? basket.relationships.ideas.data.map(idea => idea.id) : [];
+      const isInBasket = includes(basketIdeaIds, ideaId);
 
-      if (budgetingEnabled === false) {
-        disabledAssignBudgetClick && disabledAssignBudgetClick();
-      } else {
+      if (isNilOrError(authUser) && (budgetingEnabled || budgetingDisabledReason === 'not_verified')) {
+        openSignUpInModal({
+          verification: budgetingDisabledReason === 'not_verified',
+          verificationContext: budgetingDisabledReason === 'not_verified' ? {
+            action: 'budgeting',
+            id: participationContextId,
+            type: participationContextType
+          } : undefined,
+          action: () => this.assignBudget()
+        });
+      } else if (!budgetingEnabled && disabledAssignBudgetClick) {
+        disabledAssignBudgetClick();
+      } else if (!isNilOrError(authUser) && budgetingEnabled) {
         this.setState({ processing: true });
 
         if (!isNilOrError(basket)) {
@@ -376,7 +382,7 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
   phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
   basket: ({ project, phase, participationContextType, render }) => {
@@ -397,7 +403,6 @@ const AssignBudgetControlWithHoCs = injectIntl(injectTracks<Props>({
   ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
   ideaAddedToBasket: tracks.ideaAddedToBasket,
   basketSubmitted: tracks.basketSubmitted,
-  unauthenticatedAssignClick: tracks.unauthenticatedAssignClick,
   disabledAssignClick: tracks.disabledAssignClick
 })(AssignBudgetControl));
 

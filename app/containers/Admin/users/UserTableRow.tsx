@@ -9,16 +9,12 @@ import Avatar from 'components/Avatar';
 import Toggle from 'components/UI/Toggle';
 import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 
 // Translation
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from './messages';
-
-// Utils
-import { API_PATH } from 'containers/App/constants';
-import streams from 'utils/streams';
 
 // Events --- For error handling
 import eventEmitter from 'utils/eventEmitter';
@@ -169,17 +165,10 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (window.confirm(deleteMessage)) {
       if (authUser && authUser.id === user.id) {
-        eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
+        eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.youCantDeleteYourself} />);
       } else {
-        deleteUser(user.id).then(() => {
-          setTimeout(() => {
-            streams.fetchAllWith({
-              dataId: [user.id],
-              apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`]
-            });
-          }, 2000);
-        }).catch(() => {
-          eventEmitter.emit<JSX.Element>('usersAdmin', events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
+        deleteUser(user.id).catch(() => {
+          eventEmitter.emit<JSX.Element>(events.userDeletionFailed, <FormattedMessage {...messages.userDeletionFailed} />);
         });
       }
     }
@@ -220,7 +209,7 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
         <CreatedAt>{this.state.createdAt}</CreatedAt>
         <td>
           <Toggle
-            value={isAdmin}
+            checked={isAdmin}
             onChange={this.handleAdminRoleOnChange}
           />
         </td>
@@ -229,12 +218,8 @@ class UserTableRow extends PureComponent<Props & InjectedIntlProps, State> {
             <Tippy
               placement="bottom-end"
               interactive={true}
-              arrow={true}
               trigger="click"
               duration={[200, 0]}
-              flip={true}
-              flipBehavior="flip"
-              flipOnUpdate={true}
               content={
                 <DropdownList>
                   <DropdownListButton onClick={this.goToUserProfile(this.props.user.attributes.slug)}>

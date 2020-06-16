@@ -4,7 +4,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import PopContainer from 'components/UI/PopContainer';
 import VoteControl from 'components/VoteControl';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
-import Unauthenticated from './Unauthenticated';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 
 interface InputProps {
@@ -18,9 +17,9 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-type State = {
-  error: 'votingDisabled' | 'unauthenticated' | null;
-};
+interface State {
+  error: 'votingDisabled' | null;
+}
 
 class VoteWrapper extends PureComponent<Props, State> {
   constructor(props) {
@@ -46,10 +45,6 @@ class VoteWrapper extends PureComponent<Props, State> {
     }
   }
 
-  unauthenticatedVoteClick = () => {
-    this.setState({ error: 'unauthenticated' });
-  }
-
   disabledVoteClick = () => {
     this.setState({ error: 'votingDisabled' });
   }
@@ -67,7 +62,6 @@ class VoteWrapper extends PureComponent<Props, State> {
         {!error &&
           <VoteControl
             ideaId={ideaId}
-            unauthenticatedVoteClick={this.unauthenticatedVoteClick}
             disabledVoteClick={this.disabledVoteClick}
             size="3"
             showDownvote={votingDescriptor.downvoting_enabled}
@@ -81,18 +75,13 @@ class VoteWrapper extends PureComponent<Props, State> {
             />
           </PopContainer>
         }
-        {error === 'unauthenticated' &&
-          <PopContainer icon="lock-outlined">
-            <Unauthenticated />
-          </PopContainer>
-        }
       </>
     );
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>
 });
 
 export default (inputProps: InputProps) => (

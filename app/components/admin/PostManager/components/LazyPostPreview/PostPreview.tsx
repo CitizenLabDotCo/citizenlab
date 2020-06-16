@@ -41,6 +41,10 @@ export const Content = styled.div`
   padding-right: 35px;
   margin-top: 0px;
   width: 100%;
+
+  &.idea-form {
+    background: #f4f4f4;
+  }
 `;
 
 interface DataProps {}

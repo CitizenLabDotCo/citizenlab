@@ -26,25 +26,22 @@ describe('Idea edit page', () => {
     }).then((idea) => {
       ideaId = idea.body.data.id;
       ideaSlug = idea.body.data.attributes.slug;
-      cy.wait(500);
+      cy.wait(2000);
     });
   });
 
-  beforeEach(() => {
+  it('has a working idea edit form', () => {
     cy.setLoginCookie(email, password);
     cy.visit(`/ideas/edit/${ideaId}`);
     cy.acceptCookies();
-    cy.get('#e2e-idea-edit-page');
-  });
 
-  it('has a working idea edit form', () => {
     cy.get('#e2e-idea-edit-page');
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input #title').as('titleInput');
     cy.get('#e2e-idea-description-input .ql-editor').as('descriptionInput');
 
     // check initial values
-    cy.get('@titleInput').should('have.value', ideaTitle);
+    cy.get('@titleInput').should('contain.value', ideaTitle);
     cy.get('@descriptionInput').contains(ideaContent);
 
     // edit title and description
@@ -52,7 +49,7 @@ describe('Idea edit page', () => {
     cy.get('@descriptionInput').clear().type(newIdeaContent);
 
     // verify the new values
-    cy.get('@titleInput').should('have.value', newIdeaTitle);
+    cy.get('@titleInput').should('contain.value', newIdeaTitle);
     cy.get('@descriptionInput').contains(newIdeaContent);
 
     // add a topic
@@ -62,12 +59,10 @@ describe('Idea edit page', () => {
     cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type('antwerp{enter}');
+    cy.get('.e2e-idea-form-location-input-field input').type('Boulevard Anspach Brussels{enter}');
     cy.get('.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div').first().click();
-
-    // verify location
-    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Antwerp');
-    cy.get('.e2e-idea-form-location-input-field input').should('not.have.value', 'antwerp');
+    cy.wait(500);
+    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Belgium');
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -75,21 +70,19 @@ describe('Idea edit page', () => {
 
     // save the form
     cy.get('#e2e-idea-edit-save-button').click();
-    cy.wait(3000);
-    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
 
     // verify updated idea page
-    cy.visit(`/ideas/${ideaSlug}`);
-    cy.wait(3000);
+    cy.location('pathname').should('eq', `/en-GB/ideas/${ideaSlug}`);
     cy.get('#e2e-idea-show');
-    cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(newIdeaTitle);
-    cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(newIdeaContent);
-    cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
-    cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Antwerpen, Belgium');
-    cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
-    cy.get('#e2e-idea-show').find('.e2e-post-last-modified-button').contains('modified');
+    cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
+    cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
+    cy.get('#e2e-idea-show #e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
+    cy.get('#e2e-idea-show #e2e-map-toggle').contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
+    cy.get('#e2e-idea-show .e2e-post-last-modified-button').contains('modified');
 
     // verify modal with edit changelog
+    cy.get('#e2e-idea-show .e2e-post-last-modified-button');
     cy.get('#e2e-idea-show').find('.e2e-post-last-modified-button').first().click();
     cy.wait(1000);
     cy.get('.e2e-activities-changelog').find('.e2e-idea-changelog-entry').should('have.length', 2);

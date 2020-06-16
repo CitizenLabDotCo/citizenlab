@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
-import { ICustomFieldData, isBuiltInField } from 'services/userCustomFields';
+import { IUserCustomFieldData, isBuiltInField } from 'services/userCustomFields';
 import GetCustomField, { GetCustomFieldChildProps } from 'resources/GetCustomField';
 import GoBackButton from 'components/UI/GoBackButton';
 import TabbedResource from 'components/admin/TabbedResource';
@@ -13,6 +13,7 @@ import messages from '../messages';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 const StyledGoBackButton = styled(GoBackButton)`
+  display: flex;
   margin-bottom: 20px;
 `;
 
@@ -34,7 +35,7 @@ class Edit extends React.Component<Props & WithRouterProps & InjectedIntlProps &
     clHistory.push('/admin/settings/registration');
   }
 
-  getTabs = (customField: ICustomFieldData) => {
+  getTabs = (customField: IUserCustomFieldData) => {
     const baseTabsUrl = `/admin/settings/registration/custom_fields/${customField.id}`;
 
     const tabs = [

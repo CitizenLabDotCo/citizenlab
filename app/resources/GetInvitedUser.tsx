@@ -18,10 +18,9 @@ interface Props extends InputProps {
 
 interface State {
   user: IUserData | undefined | null;
-  isInvalidToken: boolean;
 }
 
-export type GetInvitedUserChildProps = State;
+export type GetInvitedUserChildProps = IUserData | undefined | null;
 
 export default class GetInvitedUser extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<string | null>;
@@ -34,37 +33,26 @@ export default class GetInvitedUser extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      user: undefined,
-      isInvalidToken: false
+      user: undefined
     };
   }
 
   componentDidMount() {
-    const { token, resetOnChange } = this.props;
+    const { resetOnChange } = this.props;
 
-    this.inputProps$ = new BehaviorSubject(token);
+    this.inputProps$ = new BehaviorSubject(this.props.token);
 
     this.subscription = this.inputProps$.pipe(
       distinctUntilChanged(),
       tap(() => resetOnChange && this.setState({ user: undefined })),
-      switchMap(token => {
-        if (isString(token)) {
-          return userByInviteStream(token).observable;
-        }
-
-        return of(null);
-      })
+      switchMap((token) => isString(token) ? userByInviteStream(token).observable : of(null))
     ).subscribe((user) => {
-      this.setState({
-        user: !isNilOrError(user) ? user.data : null,
-        isInvalidToken: token && isNilOrError(user) ? true : false
-      });
+      this.setState({ user: !isNilOrError(user) ? user.data : null });
     });
   }
 
   componentDidUpdate() {
-    const { token } = this.props;
-    this.inputProps$.next(token);
+    this.inputProps$.next(this.props.token);
   }
 
   componentWillUnmount() {
@@ -74,10 +62,6 @@ export default class GetInvitedUser extends React.Component<Props, State> {
   render() {
     const { children } = this.props;
     const { user } = this.state;
-    if (user === undefined) {
-      return null;
-    } else {
-      return (children as children)(this.state);
-    }
+    return (children as children)(user);
   }
 }

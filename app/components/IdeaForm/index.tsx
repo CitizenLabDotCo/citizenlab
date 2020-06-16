@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import { Subscription, combineLatest, of, Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { withRouter, WithRouterProps } from 'react-router';
-import { isBoolean } from 'lodash-es';
 import shallowCompare from 'utils/shallowCompare';
+import { adopt } from 'react-adopt';
 
 // libraries
 import scrollToComponent from 'react-scroll-to-component';
@@ -17,7 +17,6 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
 import HasPermission from 'components/HasPermission';
 import FileUploader from 'components/UI/FileUploader';
-import FeatureFlag from 'components/FeatureFlag';
 import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComponents';
 
 // services
@@ -25,13 +24,21 @@ import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { topicsStream, ITopics, ITopicData } from 'services/topics';
 import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
-import { phasesStream, IPhaseData, getCurrentPhase } from 'services/phases';
-import { ideaCustomFieldsSchemasStream, IIdeaCustomFieldsSchemas } from 'services/ideaCustomFields';
+import { phasesStream, IPhaseData } from 'services/phases';
+import {
+  ideaCustomFieldsSchemasStream,
+  IIdeaCustomFieldsSchemas,
+  CustomFieldCodes,
+} from 'services/ideaCustomFields';
+
+// resources
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
 import { getLocalized } from 'utils/i18n';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -84,7 +91,7 @@ export interface IIdeaFormOutput {
   ideaFilesToRemove: UploadFile[];
 }
 
-interface Props {
+interface InputProps {
   projectId: string | null;
   title: string | null;
   description: string | null;
@@ -96,11 +103,16 @@ interface Props {
   remoteIdeaFiles?: UploadFile[] | null;
 }
 
+interface DataProps {
+  pbEnabled: GetFeatureFlagChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
 interface State {
   locale: Locale | null;
   tenant: ITenant | null;
   topics: IOption[] | null;
-  locationAllowed: boolean;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
@@ -108,6 +120,10 @@ interface State {
   description: string;
   descriptionError: string | JSX.Element | null;
   selectedTopics: string[];
+  topicsError: string | JSX.Element | null;
+  locationError: string | JSX.Element | null;
+  imageError: string | JSX.Element | null;
+  attachmentsError: string | JSX.Element | null;
   budget: number | null;
   budgetError: string | JSX.Element | null;
   address: string;
@@ -130,19 +146,22 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       topics: null,
       pbContext: null,
       projects: null,
-      locationAllowed: true,
       title: '',
       titleError: null,
       description: '',
       descriptionError: null,
       selectedTopics: [],
+      topicsError: null,
       address: '',
       imageFile: [],
       budget: null,
       budgetError: null,
       ideaFiles: [],
       ideaFilesToRemove: [],
-      ideaCustomFieldsSchemas: null
+      ideaCustomFieldsSchemas: null,
+      locationError: null,
+      imageError: null,
+      attachmentsError: null,
     };
     this.subscriptions = [];
     this.titleInputElement = null;
@@ -176,27 +195,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
         return of(null) as Observable<any>;
       })
     );
-    const locationAllowed$ = project$.pipe(
-      switchMap((project) => {
-        if (project) {
-          if (project.data.attributes.process_type === 'continuous' && isBoolean(project.data.attributes.location_allowed)) {
-            return of(project.data.attributes.location_allowed);
-          }
-
-          if (project.data.attributes.process_type === 'timeline') {
-            return phasesStream(project.data.id).observable.pipe(
-              map((phases) => {
-                const currentPhase = getCurrentPhase(phases.data);
-                const locationAllowed = currentPhase?.attributes?.location_allowed;
-                return isBoolean(locationAllowed) ? locationAllowed : true;
-              })
-            );
-          }
-        }
-
-        return of(true);
-      })
-    );
 
     this.mapPropsToState();
 
@@ -217,16 +215,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
       pbContext$.subscribe(pbContext => this.setState({ pbContext })),
 
-      locationAllowed$.subscribe(locationAllowed => this.setState({ locationAllowed })),
-
       ideaCustomFieldsSchemas$.subscribe(ideaCustomFieldsSchemas => this.setState({ ideaCustomFieldsSchemas })),
 
       eventEmitter.observeEvent('IdeaFormSubmitEvent').subscribe(this.handleOnSubmit),
     ];
-
-    if (!bowser.mobile && this.titleInputElement !== null) {
-      setTimeout(() => (this.titleInputElement as HTMLInputElement).focus(), 50);
-    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -240,7 +232,15 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   mapPropsToState = () => {
-    const { title, description, selectedTopics, address, budget, imageFile, remoteIdeaFiles } = this.props;
+    const {
+      title,
+      description,
+      selectedTopics,
+      address,
+      budget,
+      imageFile,
+      remoteIdeaFiles,
+    } = this.props;
     const ideaFiles = Array.isArray(remoteIdeaFiles) ? remoteIdeaFiles : [];
 
     this.setState({
@@ -250,7 +250,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       ideaFiles,
       address,
       title: (title || ''),
-      description: (description || '')
+      description: (description || ''),
     });
   }
 
@@ -338,10 +338,106 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return null;
   }
 
-  validate = (title: string | null, description: string | null, budget: number | null) => {
+  validateTopics = (selectedTopics: string[]) => {
+    const { ideaCustomFieldsSchemas, locale } = this.state;
+
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const topicsRequired = this.isFieldRequired(
+        'topic_ids',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (topicsRequired && selectedTopics.length === 0) {
+        return <FormattedMessage {...messages.noTopicsError} />;
+      }
+    }
+
+    return null;
+  }
+
+  validateLocation = (address: string) => {
+    const { ideaCustomFieldsSchemas, locale } = this.state;
+
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const locationRequired = this.isFieldRequired(
+        'location',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (locationRequired && !address) {
+        return <FormattedMessage {...messages.noLocationError} />;
+      }
+    }
+
+    return null;
+  }
+
+  validateImage = (imageFiles: UploadFile[]) => {
+    const { ideaCustomFieldsSchemas, locale } = this.state;
+
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const imagesRequired = this.isFieldRequired(
+        'images',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (imagesRequired && imageFiles.length === 0) {
+        return <FormattedMessage {...messages.noImageError} />;
+      }
+    }
+
+    return null;
+  }
+
+  validateAttachments = (ideaFiles: UploadFile[]) => {
+    const { ideaCustomFieldsSchemas, locale } = this.state;
+
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const attachmentsRequired = this.isFieldRequired(
+        'attachments',
+        ideaCustomFieldsSchemas,
+        locale
+      );
+
+      if (attachmentsRequired && ideaFiles.length === 0) {
+        return <FormattedMessage {...messages.noAttachmentsError} />;
+      }
+    }
+
+    return null;
+  }
+
+  validate = (
+    title: string | null,
+    description: string | null,
+    budget: number | null,
+    selectedTopics: string[],
+    address: string,
+    imageFiles: UploadFile[],
+    ideaFiles: UploadFile[],
+  ) => {
     const { pbContext } = this.state;
     const titleError = this.validateTitle(title);
     const descriptionError = this.validateDescription(description);
+    const topicsError = this.validateTopics(selectedTopics);
+    const locationError = this.validateLocation(address);
+    const imageError = this.validateImage(imageFiles);
+    const attachmentsError = this.validateAttachments(ideaFiles);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
     let budgetError: JSX.Element | null = null;
 
@@ -355,8 +451,17 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       }
     }
 
-    this.setState({ titleError, descriptionError, budgetError });
+    this.setState({
+      titleError,
+      descriptionError,
+      budgetError,
+      topicsError,
+      locationError,
+      imageError,
+      attachmentsError
+    });
 
+    // scroll to erroneous title/description fields
     if (titleError && this.titleInputElement) {
       scrollToComponent(this.titleInputElement, { align: 'top', offset: -240, duration: 300 });
       setTimeout(() => this.titleInputElement && this.titleInputElement.focus(), 300);
@@ -365,11 +470,17 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       setTimeout(() => this.descriptionElement && this.descriptionElement.focus(), 300);
     }
 
-    if (!pbContext) {
-      return (!titleError && !descriptionError);
-    }
+    const hasError = (
+      !titleError &&
+      !descriptionError &&
+      !budgetError &&
+      !topicsError &&
+      !locationError &&
+      !imageError &&
+      !attachmentsError
+    );
 
-    return (!titleError && !descriptionError && !budgetError);
+    return hasError;
   }
 
   handleIdeaFileOnAdd = (ideaFileToAdd: UploadFile) => {
@@ -392,8 +503,25 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   handleOnSubmit = () => {
-    const { title, description, selectedTopics, address, budget, imageFile, ideaFiles, ideaFilesToRemove } = this.state;
-    const formIsValid = this.validate(title, description, budget);
+    const {
+      title,
+      description,
+      selectedTopics,
+      address,
+      budget,
+      imageFile,
+      ideaFiles,
+      ideaFilesToRemove
+    } = this.state;
+    const formIsValid = this.validate(
+      title,
+      description,
+      budget,
+      selectedTopics,
+      address,
+      imageFile,
+      ideaFiles,
+    );
 
     if (formIsValid) {
       const output: IIdeaFormOutput = {
@@ -411,9 +539,25 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     }
   }
 
+  isFieldRequired = (
+    fieldCode: CustomFieldCodes,
+    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    locale: Locale
+  ) => {
+    return ideaCustomFieldsSchemas.json_schema_multiloc[locale].required.includes(fieldCode);
+  }
+
+  isFieldEnabled = (
+    fieldCode: CustomFieldCodes,
+    ideaCustomFieldsSchemas: IIdeaCustomFieldsSchemas,
+    locale: Locale
+  ) => {
+    return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] !== 'hidden';
+  }
+
   render() {
     const className = this.props['className'];
-    const { projectId } = this.props;
+    const { projectId, pbEnabled } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
@@ -430,151 +574,189 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       descriptionError,
       budgetError,
       ideaFiles,
-      locationAllowed,
-      ideaCustomFieldsSchemas
+      ideaCustomFieldsSchemas,
+      topicsError,
+      locationError,
+      imageError,
+      attachmentsError,
     } = this.state;
     const tenantCurrency = (tenant ? tenant.data.attributes.settings.core.currency : '');
 
-    return (
-      <Form id="idea-form" className={className}>
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formGeneralSectionTitle} />
-          <FormElement id="e2e-idea-title-input">
-            <FormLabel
-              htmlFor="title"
-              labelMessage={messages.titleLabel}
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
-            />
-            <Input
-              id="title"
-              type="text"
-              value={title}
-              placeholder={formatMessage(messages.titlePlaceholder)}
-              error={titleError}
-              onChange={this.handleTitleOnChange}
-              setRef={this.handleTitleInputSetRef}
-              maxCharCount={80}
-              autocomplete="off"
-            />
-          </FormElement>
+    if (
+      !isNilOrError(ideaCustomFieldsSchemas) &&
+      !isNilOrError(locale)
+    ) {
+      const topicsEnabled = this.isFieldEnabled('topic_ids', ideaCustomFieldsSchemas, locale);
+      const locationEnabled = this.isFieldEnabled('location', ideaCustomFieldsSchemas, locale);
+      const attachmentsEnabled = this.isFieldEnabled('attachments', ideaCustomFieldsSchemas, locale);
+      const showPBBudget = pbContext && pbEnabled;
+      const showTopics = topicsEnabled && topics && topics.length > 0;
+      const showLocation = locationEnabled;
 
-          <FormElement id="e2e-idea-description-input">
-            <FormLabel
-              id="editor-label"
-              htmlFor="editor"
-              labelMessage={messages.descriptionLabel}
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
-            />
-            <QuillEditor
-              id="editor"
-              noImages={true}
-              value={description}
-              placeholder={formatMessage(messages.descriptionPlaceholder)}
-              onChange={this.handleDescriptionOnChange}
-              setRef={this.handleDescriptionSetRef}
-              hasError={descriptionError !== null}
-            />
-            {descriptionError && <Error text={descriptionError} />}
-          </FormElement>
-        </StyledFormSection>
+      return (
+        <Form id="idea-form" className={className}>
+          <StyledFormSection>
+            <FormSectionTitle message={messages.formGeneralSectionTitle} />
+            <FormElement id="e2e-idea-title-input">
+              <FormLabel
+                htmlFor="title"
+                labelMessage={messages.title}
+                optional={!this.isFieldRequired('title', ideaCustomFieldsSchemas, locale)}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.title?.description}
+              />
+              <Input
+                id="title"
+                type="text"
+                value={title}
+                error={titleError}
+                onChange={this.handleTitleOnChange}
+                setRef={this.handleTitleInputSetRef}
+                autoFocus={!bowser.mobile}
+                maxCharCount={80}
+                autocomplete="off"
+              />
+            </FormElement>
 
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formDetailsSectionTitle} />
-          {pbContext && (
-            <FeatureFlag name="participatory_budgeting">
-              <HasPermission
-                item="idea"
-                action="assignBudget"
-                context={{ projectId }}
-              >
+            <FormElement id="e2e-idea-description-input">
+              <FormLabel
+                id="editor-label"
+                htmlFor="editor"
+                labelMessage={messages.descriptionTitle}
+                optional={!this.isFieldRequired('body', ideaCustomFieldsSchemas, locale)}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.body?.description}
+              />
+              <QuillEditor
+                id="editor"
+                noImages={true}
+                value={description}
+                onChange={this.handleDescriptionOnChange}
+                setRef={this.handleDescriptionSetRef}
+                hasError={descriptionError !== null}
+              />
+              {descriptionError && <Error text={descriptionError} />}
+            </FormElement>
+          </StyledFormSection>
+
+          {(showPBBudget || showTopics || showLocation) &&
+            <StyledFormSection>
+              <FormSectionTitle message={messages.formDetailsSectionTitle} />
+              {showPBBudget && (
+                <HasPermission
+                  item="idea"
+                  action="assignBudget"
+                  context={{ projectId }}
+                >
+                  <FormElement>
+                    <FormLabelWithIcon
+                      labelMessage={messages.budgetLabel}
+                      labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext?.attributes.max_budget }}
+                      htmlFor="budget"
+                      iconName="admin"
+                      iconAriaHidden
+                    />
+                    <Input
+                      id="budget"
+                      error={budgetError}
+                      value={String(budget)}
+                      type="number"
+                      onChange={this.handleBudgetOnChange}
+                    />
+                  </FormElement>
+                </HasPermission>
+              )}
+
+              {showTopics && (
                 <FormElement>
-                  <FormLabelWithIcon
-                    labelMessage={messages.budgetLabel}
-                    labelMessageValues={{ currency: tenantCurrency, maxBudget: pbContext.attributes.max_budget }}
-                    htmlFor="budget"
-                    iconName="admin"
-                    iconAriaHidden
+                  <FormLabel
+                    htmlFor="topics"
+                    labelMessage={messages.topicsTitle}
+                    optional={!this.isFieldRequired('topic_ids', ideaCustomFieldsSchemas, locale)}
+                    subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
                   />
-                  <Input
-                    id="budget"
-                    error={budgetError}
-                    value={String(budget)}
-                    type="number"
-                    onChange={this.handleBudgetOnChange}
+                  <TopicsPicker
+                    value={selectedTopics}
+                    onChange={this.handleTopicsOnChange}
+                    max={2}
                   />
+                  {topicsError && <Error id="e2e-new-idea-topics-error" text={topicsError} />}
                 </FormElement>
-              </HasPermission>
-            </FeatureFlag>
-          )}
+              )}
 
-          {topics && topics.length > 0 && (
-            <FormElement>
-              <FormLabel
-                htmlFor="topics"
-                labelMessage={messages.topicsLabel}
-                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
-              />
-              <TopicsPicker
-                value={selectedTopics}
-                onChange={this.handleTopicsOnChange}
-                max={2}
-              />
-            </FormElement>
-          )}
-
-          {locationAllowed &&
-            <FormElement>
-              <FormLabel
-                labelMessage={messages.locationLabel}
-                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
-              >
-                <LocationInput
-                  className="e2e-idea-form-location-input-field"
-                  value={address}
-                  placeholder={formatMessage(messages.locationPlaceholder)}
-                  onChange={this.handleLocationOnChange}
-                />
-              </FormLabel>
-            </FormElement>
+              {showLocation &&
+                <FormElement>
+                  <FormLabel
+                    labelMessage={messages.locationTitle}
+                    optional={!this.isFieldRequired('location', ideaCustomFieldsSchemas, locale)}
+                    subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.location?.description}
+                  >
+                    <LocationInput
+                      className="e2e-idea-form-location-input-field"
+                      value={address}
+                      placeholder={formatMessage(messages.locationPlaceholder)}
+                      onChange={this.handleLocationOnChange}
+                    />
+                  </FormLabel>
+                  {locationError && <Error text={locationError} />}
+                </FormElement>
+              }
+            </StyledFormSection>
           }
-        </StyledFormSection>
 
-        <StyledFormSection>
-          <FormSectionTitle message={messages.formAttachmentsSectionTitle} />
-          <FormElement id="e2e-idea-image-upload">
-            <FormLabel
-              htmlFor="idea-image-dropzone"
-              labelMessage={messages.imageUploadLabel}
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
-            />
-            <ImagesDropzone
-              id="idea-image-dropzone"
-              images={imageFile}
-              imagePreviewRatio={135 / 298}
-              acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
-              maxImageFileSize={5000000}
-              maxNumberOfImages={1}
-              onAdd={this.handleUploadOnAdd}
-              onRemove={this.handleUploadOnRemove}
-            />
-          </FormElement>
-
-          <FormElement id="e2e-idea-file-upload">
-            <FormLabel
-              labelMessage={messages.fileUploadLabel}
-              subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
-            >
-              <FileUploader
-                onFileAdd={this.handleIdeaFileOnAdd}
-                onFileRemove={this.handleIdeaFileOnRemove}
-                files={ideaFiles}
+          <StyledFormSection>
+            <FormSectionTitle message={messages.fileAttachmentsTitle} />
+            <FormElement id="e2e-idea-image-upload">
+              <FormLabel
+                htmlFor="idea-image-dropzone"
+                labelMessage={messages.imageUploadTitle}
+                optional={!this.isFieldRequired('images', ideaCustomFieldsSchemas, locale)}
+                subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.images?.description}
               />
-            </FormLabel>
-          </FormElement>
-        </StyledFormSection>
-      </Form>
-    );
+              <ImagesDropzone
+                id="idea-image-dropzone"
+                images={imageFile}
+                imagePreviewRatio={135 / 298}
+                acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
+                maxImageFileSize={5000000}
+                maxNumberOfImages={1}
+                onAdd={this.handleUploadOnAdd}
+                onRemove={this.handleUploadOnRemove}
+              />
+              {imageError && <Error text={imageError} />}
+            </FormElement>
+
+            {attachmentsEnabled &&
+              <FormElement id="e2e-idea-file-upload">
+                <FormLabel
+                  labelMessage={messages.otherFilesTitle}
+                  optional={!this.isFieldRequired('attachments', ideaCustomFieldsSchemas, locale)}
+                  subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.attachments?.description}
+                >
+                  <FileUploader
+                    onFileAdd={this.handleIdeaFileOnAdd}
+                    onFileRemove={this.handleIdeaFileOnRemove}
+                    files={ideaFiles}
+                  />
+                </FormLabel>
+                {attachmentsError && <Error text={attachmentsError} />}
+              </FormElement>
+            }
+          </StyledFormSection>
+        </Form>
+      );
+    }
+
+    return null;
   }
 }
 
-export default withRouter<Props>(injectIntl(IdeaForm));
+const Data = adopt<DataProps, InputProps>({
+  pbEnabled: <GetFeatureFlag name="participatory_budgeting" />
+});
+
+const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <IdeaFormWitHOCs {...dataProps} {...inputProps} />}
+  </Data>
+);

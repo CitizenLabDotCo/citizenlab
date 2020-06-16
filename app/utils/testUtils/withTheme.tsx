@@ -11,10 +11,6 @@ export const theme = {
   colorText: '#e68f51',
   colorSecondary: '#f76901',
   menuStyle: 'light',
-  menuHeight: 74,
-  mobileMenuHeight: 72,
-  mobileTopBarHeight: 66,
-  maxPageWidth: 952,
   ...stylingConsts
 };
 

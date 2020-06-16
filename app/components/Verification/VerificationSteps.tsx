@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import streams from 'utils/streams';
 
 // components
 import VerificationMethods from './VerificationMethods';
@@ -9,19 +9,27 @@ import VerificationFormLookup from './VerificationFormLookup';
 import Spinner from 'components/UI/Spinner';
 
 // resource hooks
+import useAuthUser from 'hooks/useAuthUser';
 import useVerificationMethods from 'hooks/useVerificationMethods';
 
 // style
 import styled from 'styled-components';
+import { media } from 'utils/styleUtils';
 
 // typings
 import { IVerificationMethod, IDLookupMethod } from 'services/verificationMethods';
 import { IParticipationContextType, ICitizenAction } from 'typings';
+import { isNilOrError } from 'utils/helperUtils';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  padding-bottom: 30px;
+
+  ${media.smallerThanMinTablet`
+    padding-bottom: 20px;
+  `}
 `;
 
 const Loading = styled.div`
@@ -63,24 +71,30 @@ export interface Props {
   initialActiveStep: TVerificationSteps;
   showHeader?: boolean;
   inModal: boolean;
+  skippable?: boolean;
   onComplete?: () => void;
+  onSkipped?: () => void;
   onError?: () => void;
   className?: string;
 }
 
-const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, showHeader, inModal, onComplete, onError }) => {
+const VerificationSteps = memo<Props>(({
+  className,
+  context,
+  initialActiveStep,
+  showHeader,
+  inModal,
+  skippable,
+  onComplete,
+  onSkipped,
+  onError
+}) => {
 
-  const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep);
+  const [activeStep, setActiveStep] = useState<TVerificationSteps>(initialActiveStep || 'method-selection');
   const [method, setMethod] = useState<IDLookupMethod | null>(null);
 
+  const authUser = useAuthUser();
   const verificationMethods = useVerificationMethods();
-
-  useEffect(() => {
-    if (!isNilOrError(verificationMethods) && verificationMethods.data.length === 1) {
-      setMethod(verificationMethods.data[0] as IDLookupMethod);
-      setActiveStep(verificationMethods.data[0].attributes.name);
-    }
-  }, [verificationMethods]);
 
   useEffect(() => {
     if (activeStep === 'success' && onComplete) {
@@ -101,21 +115,30 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
     setActiveStep(name);
   }, []);
 
+  const goToSuccessStep = useCallback(() => {
+    if (!isNilOrError(authUser)) {
+      streams.reset(authUser).then(() => {
+        setActiveStep('success');
+        setMethod(null);
+      });
+    }
+  }, [authUser]);
+
   const onCowCancel = useCallback(() => {
     setActiveStep('method-selection');
   }, []);
 
   const onCowVerified = useCallback(() => {
-    setActiveStep('success');
-  }, []);
+    goToSuccessStep();
+  }, [goToSuccessStep]);
 
   const onBogusCancel = useCallback(() => {
     setActiveStep('method-selection');
   }, []);
 
   const onBogusVerified = useCallback(() => {
-    setActiveStep('success');
-  }, []);
+    goToSuccessStep();
+  }, [goToSuccessStep]);
 
   const onLookupCancel = useCallback(() => {
     setActiveStep('method-selection');
@@ -123,9 +146,12 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
   }, []);
 
   const onLookupVerified = useCallback(() => {
-    setActiveStep('success');
-    setMethod(null);
-  }, []);
+    goToSuccessStep();
+  }, [goToSuccessStep]);
+
+  const onVerificationSkipped = useCallback(() => {
+    onSkipped?.();
+  }, [onSkipped]);
 
   if (verificationMethods === undefined) {
     return (
@@ -137,12 +163,17 @@ const VerificationSteps = memo<Props>(({ className, context, initialActiveStep, 
 
   if (verificationMethods !== undefined) {
     return (
-      <Container className={`e2e-verification-steps ${className || ''}`}>
+      <Container
+        id="e2e-verification-wizard-root"
+        className={className || ''}
+      >
         {activeStep === 'method-selection' && (context === null || isProjectContext(context)) &&
           <VerificationMethods
             context={context}
             showHeader={showHeader}
             inModal={inModal}
+            skippable={skippable}
+            onSkipped={onVerificationSkipped}
             onMethodSelected={onMethodSelected}
           />
         }

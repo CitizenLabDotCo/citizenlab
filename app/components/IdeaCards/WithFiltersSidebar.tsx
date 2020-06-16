@@ -64,8 +64,7 @@ const InitialLoading = styled.div`
   justify-content: center;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
-
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   ${media.smallerThanMinTablet`
     height: 150px;
   `}
@@ -157,9 +156,8 @@ const EmptyContainer = styled.div`
   display: flex;
   justify-content: center;
   background: #fff;
-  border: 1px solid #ececec;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.04);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const EmptyContainerInner = styled.div`
@@ -484,7 +482,17 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
   render() {
     const { selectedView, selectedIdeaFilters, filtersModalOpened } = this.state;
-    const { participationMethod, participationContextId, participationContextType, ideas, ideasFilterCounts, windowSize, className, theme, showViewToggle } = this.props;
+    const {
+      participationMethod,
+      participationContextId,
+      participationContextType,
+      ideas,
+      ideasFilterCounts,
+      windowSize,
+      className,
+      theme,
+      showViewToggle
+    } = this.props;
     const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
     const hasIdeas = (!isNilOrError(list) && list.length > 0);
     const showListView = (selectedView === 'card');
@@ -617,6 +625,12 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
 
             <Content>
               <ContentLeft>
+                {showListView && querying &&
+                  <Loading id="ideas-loading">
+                    <Spinner />
+                  </Loading>
+                }
+
                 {showListView && !querying && hasIdeas && list &&
                   <IdeasList id="e2e-ideas-list">
                     {list.map((idea) => (
@@ -650,18 +664,12 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </Footer>
                 }
 
-                {showListView && querying &&
-                  <Loading id="ideas-loading">
-                    <Spinner />
-                  </Loading>
-                }
-
                 {!querying && !hasIdeas &&
                   <EmptyContainer id="ideas-empty">
                     <EmptyContainerInner>
                       <IdeaIcon name="idea" ariaHidden />
                       <EmptyMessage>
-                        <EmptyMessageMainLine><FormattedMessage {...messages.noIdeasForFilter} /></EmptyMessageMainLine>
+                        <EmptyMessageMainLine><FormattedMessage {...messages.noFilteredIdeas} /></EmptyMessageMainLine>
                         <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>
                       </EmptyMessage>
                     </EmptyContainerInner>

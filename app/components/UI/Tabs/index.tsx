@@ -35,7 +35,7 @@ const Tab = styled.button<{ index: number }>`
   padding: 11px 18px;
   background: #fff;
   border-radius: 0;
-  border: solid 1px #ccc;
+  border: solid 1px #aaa;
   z-index: ${({ index }) => index};
   cursor: pointer;
   transition: all 80ms ease-out;

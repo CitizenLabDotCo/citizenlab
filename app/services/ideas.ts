@@ -52,7 +52,7 @@ export interface IIdeaData {
     }
   };
   relationships: {
-    topics: {
+    topics?: {
       data: IRelationship[];
     };
     areas: {
@@ -186,12 +186,10 @@ export function geotaggedIdeasStream(streamParams: IStreamParams | null = null) 
 
 export async function addIdea(object: IIdeaAdd) {
   const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
-
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
     apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`]
   });
-
   return response;
 }
 

@@ -96,18 +96,30 @@ const ProjectNavbarLink = styled(Link)`
   color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   opacity: 0.6;
   margin-right: 60px;
-  border-top: solid 2px transparent;
-  border-bottom: solid 2px transparent;
+  border-top: solid 3px transparent;
+  border-bottom: solid 3px transparent;
+
+  &.focus-visible {
+    color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
+    outline-color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
+    outline-style: solid;
+    outline-width: 2px;
+    outline-offset: 0px;
+    opacity: 1;
+  }
 
   &.active,
-  &:focus,
   &:hover {
     color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
     opacity: 1;
   }
 
+  &:not(.active):hover {
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
   &.active {
-    border-bottom: 2px solid ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
+    border-bottom-color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
   }
 
   &:first-of-type {
@@ -168,170 +180,154 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State {
-  dropdownOpened: boolean;
-}
+interface State {}
 
 class ProjectNavbar extends PureComponent<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dropdownOpened: false
-    };
-  }
-
-  toggleExpensesDropdown = () => {
-    this.setState(({ dropdownOpened }) => ({ dropdownOpened: !dropdownOpened }));
-  }
-
   render() {
     const { project, events, phase, theme } = this.props;
 
     if (!isNilOrError(project)) {
       const projectSlug = project.attributes.slug;
-      const hasEvents = (events && events.length > 0);
+      const hasEvents = !!(events && events.length > 0);
+      const projectType = project.attributes.process_type;
+      const projectMethod = project.attributes.participation_method;
+      const projectPublicationStatus = project.attributes.publication_status;
+      const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
+      const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
+      let participationContextType: IParticipationContextType | null = null;
+      let participationContextId: string | null = null;
 
-      if (project) {
-        const projectType = project.attributes.process_type;
-        const projectMethod = project.attributes.participation_method;
-        const projectPublicationStatus = project.attributes.publication_status;
-        const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
-        const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
-        let participationContextType: IParticipationContextType | null = null;
-        let participationContextId: string | null = null;
-
-        if (isPBProject) {
-          participationContextType = 'project';
-        } else if (isPBPhase) {
-          participationContextType = 'phase';
-        }
-
-        if (isPBProject) {
-          participationContextId = project.id;
-        } else if (isPBPhase && phase) {
-          participationContextId = phase.id;
-        }
-
-        return (
-          <>
-            <ScreenReaderOnly>
-              <FormattedMessage {...messages.a11y_projectNav} />
-            </ScreenReaderOnly>
-            <ProjectNavbarWrapper>
-            <StyledContentContainer>
-              <ProjectNavbarItems>
-
-                {/* Process link */}
-                {projectType === 'timeline' &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/process`}
-                    activeClassName="active"
-                    className="e2e-project-process-link"
-                  >
-                    <ProjectNavbarIcon name="timeline" ariaHidden />
-                    <FormattedMessage {...messages.navProcess} />
-                  </ProjectNavbarLink>
-                }
-
-                {/* Information link */}
-                <ProjectNavbarLink
-                  to={`/projects/${projectSlug}/info`}
-                  activeClassName="active"
-                  className="e2e-project-info-link"
-                >
-                  <InfoIcon name="info" ariaHidden />
-                  <FormattedMessage {...messages.navInformation} />
-                </ProjectNavbarLink>
-
-                {/* Ideas link */}
-                {projectType === 'continuous' && (projectMethod === 'ideation' || projectMethod === 'budgeting') &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/ideas`}
-                    activeClassName="active"
-                    className="e2e-project-ideas-link"
-                  >
-                    <ProjectNavbarIcon name="idea2" className="idea" ariaHidden />
-                    <FormattedMessage {...messages.navIdeas} />
-                  </ProjectNavbarLink>
-                }
-
-                {/* Survey link */}
-                {projectType === 'continuous' && projectMethod === 'survey' &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/survey`}
-                    activeClassName="active"
-                    className="e2e-project-survey-link"
-                  >
-                    <ProjectNavbarIcon name="survey" ariaHidden />
-                    <FormattedMessage {...messages.navSurvey} />
-                  </ProjectNavbarLink>
-                }
-
-                {/* Poll link */}
-                {projectType === 'continuous' && projectMethod === 'poll' &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/poll`}
-                    activeClassName="active"
-                    className="e2e-project-poll-link"
-                  >
-                    <ProjectNavbarIcon name="survey" />
-                    <FormattedMessage {...messages.navPoll} />
-                  </ProjectNavbarLink>
-                }
-
-                {/* Volunteering link */}
-                {projectType === 'continuous' && projectMethod === 'volunteering' &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/volunteering`}
-                    activeClassName="active"
-                    className="e2e-project-volunteering-link"
-                  >
-                    <ProjectNavbarIcon name="volunteer-hand" />
-                    <FormattedMessage {...messages.navVolunteering} />
-                  </ProjectNavbarLink>
-                }
-
-                {/* Events link */}
-                {hasEvents &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/events`}
-                    activeClassName="active"
-                    className="e2e-project-event-link"
-                  >
-                    <ProjectNavbarIcon name="calendar" ariaHidden/>
-                    <FormattedMessage {...messages.navEvents} />
-                  </ProjectNavbarLink>
-                }
-
-                <Spacer />
-
-                {/* PB basket button */}
-                {participationContextType && participationContextId &&
-                  <StyledPBNavbarButton
-                    participationContextType={participationContextType}
-                    participationContextId={participationContextId}
-                    className="e2e-project-pb-button"
-                  />
-                }
-
-                {/* Continuous Ideation Idea Button desktop */}
-                {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
-                  <StyledIdeaButton
-                    projectId={project.id}
-                    height="58px"
-                    bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
-                    textColor={theme.projectNavbarIdeaButtonTextColor}
-                    opacityDisabled="0.5"
-                    borderRadius="0px"
-                    participationContextType="project"
-                  />
-                }
-              </ProjectNavbarItems>
-            </StyledContentContainer>
-          </ProjectNavbarWrapper>
-          </>
-        );
+      if (isPBProject) {
+        participationContextType = 'project';
+      } else if (isPBPhase) {
+        participationContextType = 'phase';
       }
+
+      if (isPBProject) {
+        participationContextId = project.id;
+      } else if (isPBPhase && phase) {
+        participationContextId = phase.id;
+      }
+
+      return (
+        <>
+          <ScreenReaderOnly>
+            <FormattedMessage {...messages.a11y_projectNav} />
+          </ScreenReaderOnly>
+          <ProjectNavbarWrapper>
+          <StyledContentContainer>
+            <ProjectNavbarItems>
+
+              {/* Process link */}
+              {projectType === 'timeline' &&
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/process`}
+                  activeClassName="active"
+                  className="e2e-project-process-link"
+                >
+                  <ProjectNavbarIcon name="timeline" ariaHidden />
+                  <FormattedMessage {...messages.navProcess} />
+                </ProjectNavbarLink>
+              }
+
+              {/* Information link */}
+              <ProjectNavbarLink
+                to={`/projects/${projectSlug}/info`}
+                activeClassName="active"
+                className="e2e-project-info-link"
+              >
+                <InfoIcon name="info" ariaHidden />
+                <FormattedMessage {...messages.navInformation} />
+              </ProjectNavbarLink>
+
+              {/* Ideas link */}
+              {projectType === 'continuous' && (projectMethod === 'ideation' || projectMethod === 'budgeting') &&
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/ideas`}
+                  activeClassName="active"
+                  className="e2e-project-ideas-link"
+                >
+                  <ProjectNavbarIcon name="idea2" className="idea" ariaHidden />
+                  <FormattedMessage {...messages.navIdeas} />
+                </ProjectNavbarLink>
+              }
+
+              {/* Survey link */}
+              {projectType === 'continuous' && projectMethod === 'survey' &&
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/survey`}
+                  activeClassName="active"
+                  className="e2e-project-survey-link"
+                >
+                  <ProjectNavbarIcon name="survey" ariaHidden />
+                  <FormattedMessage {...messages.navSurvey} />
+                </ProjectNavbarLink>
+              }
+
+              {/* Poll link */}
+              {projectType === 'continuous' && projectMethod === 'poll' &&
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/poll`}
+                  activeClassName="active"
+                  className="e2e-project-poll-link"
+                >
+                  <ProjectNavbarIcon name="survey" />
+                  <FormattedMessage {...messages.navPoll} />
+                </ProjectNavbarLink>
+              }
+
+              {/* Volunteering link */}
+              {projectType === 'continuous' && projectMethod === 'volunteering' &&
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/volunteering`}
+                  activeClassName="active"
+                  className="e2e-project-volunteering-link"
+                >
+                  <ProjectNavbarIcon name="volunteer-hand" />
+                  <FormattedMessage {...messages.navVolunteering} />
+                </ProjectNavbarLink>
+              }
+
+              {/* Events link */}
+              {hasEvents &&
+                <ProjectNavbarLink
+                  to={`/projects/${projectSlug}/events`}
+                  activeClassName="active"
+                  className="e2e-project-event-link"
+                >
+                  <ProjectNavbarIcon name="calendar" ariaHidden/>
+                  <FormattedMessage {...messages.navEvents} />
+                </ProjectNavbarLink>
+              }
+
+              <Spacer />
+
+              {/* PB basket button */}
+              {participationContextType && participationContextId &&
+                <StyledPBNavbarButton
+                  participationContextType={participationContextType}
+                  participationContextId={participationContextId}
+                  className="e2e-project-pb-button"
+                />
+              }
+
+              {/* Continuous Ideation Idea Button desktop */}
+              {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
+                <StyledIdeaButton
+                  projectId={project.id}
+                  height="58px"
+                  bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
+                  textColor={theme.projectNavbarIdeaButtonTextColor}
+                  opacityDisabled="0.5"
+                  borderRadius="0px"
+                  participationContextType="project"
+                />
+              }
+            </ProjectNavbarItems>
+          </StyledContentContainer>
+        </ProjectNavbarWrapper>
+        </>
+      );
     }
 
     return null;

@@ -84,7 +84,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     const { initiative } = this.props;
     const initiativeId = initiative.id;
 
-    eventEmitter.emit<StatusChangeModalOpen>('initiativeManager', events.statusChangeModalOpen, { initiativeId, newStatusId: statusId });
+    eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, { initiativeId, newStatusId: statusId });
 
     trackEventByName(tracks.initiativeStatusChange, {
       location: 'Initiative overview',
@@ -248,7 +248,7 @@ function collect(connect, monitor) {
   };
 }
 
-const InitiativesRowWithHocs = injectIntl<InputProps>(localize<InputProps & InjectedIntlProps>(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
+const InitiativesRowWithHocs = injectIntl(localize(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,

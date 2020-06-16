@@ -447,7 +447,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               <FormattedMessage {...messages.adminLabel} />
               <IconTooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
             </Label>
-            <Toggle value={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+            <Toggle checked={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
           </SectionField>
 
           <SectionField>
@@ -469,7 +469,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                 }
               />
             </Label>
-            <StyledToggle value={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
+            <StyledToggle checked={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
             {hasModeratorRights &&
               <MultipleSelect
                 value={selectedProjects}
@@ -563,11 +563,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     </DownloadButtonContainer>
                     <SectionParagraph>
                       <FormattedMessage
-                        {...messages.fileRequirements}
-                      />
-                    </SectionParagraph>
-                    <SectionParagraph>
-                      <FormattedMessage
                         {...messages.visitSupportPage}
                         values={{
                           supportPageLink: (
@@ -581,6 +576,9 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                           )
                         }}
                       />
+                    </SectionParagraph>
+                    <SectionParagraph>
+                      <FormattedMessage {...messages.fileRequirements} />
                     </SectionParagraph>
                   </SectionDescription>
 

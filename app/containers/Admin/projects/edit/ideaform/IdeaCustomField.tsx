@@ -1,18 +1,22 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState, lazy, Suspense } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // services
-import { IIdeaCustomFieldData } from 'services/ideaCustomFields';
+import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, /*Visibility*/ } from 'services/ideaCustomFields';
 
 // components
 import Icon from 'components/UI/Icon';
-import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
+const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
+import Toggle from 'components/UI/Toggle';
+import IconToolTip from 'components/UI/IconTooltip';
+import Spinner from 'components/UI/Spinner';
 
 // i18n
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
+import injectLocalize, { InjectedLocalized } from 'utils/localize';
 
 // styling
 import styled from 'styled-components';
@@ -37,9 +41,9 @@ const Container = styled.div`
 const CustomFieldTitle = styled.div`
   flex: 1;
   color: ${colors.adminTextColor};
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
+  font-size: ${fontSizes.large}px;
   line-height: normal;
+  font-weight: 500;
 `;
 
 const ChevronIcon = styled(Icon)`
@@ -118,8 +122,28 @@ const CollapseContainer = styled.div`
 `;
 
 const CollapseContainerInner = styled.div`
-  padding-top: 25px;
-  padding-bottom: 25px;
+  padding-top: 10px;
+  margin-bottom: 25px;
+`;
+
+const Toggles = styled.div`
+  margin-bottom: 30px;
+`;
+
+const LocaleSwitcherLabelText = styled.span`
+  font-weight: 500;
+  color: ${colors.adminTextColor};
+  font-size: ${fontSizes.medium}px;
+`;
+
+const ToggleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+`;
+
+const StyledToggle = styled(Toggle)`
+  margin-right: 10px;
 `;
 
 interface Props {
@@ -127,18 +151,44 @@ interface Props {
   collapsed: boolean;
   first?: boolean;
   onCollapseExpand: (ideaCustomFieldId: string) => void;
-  onChange: (ideaCustomFieldId: string, { description_multiloc: Multiloc }) => void;
+  onChange: (ideaCustomFieldId: string, updatedProperties: IUpdatedIdeaCustomFieldProperties) => void;
   className?: string;
 }
 
-const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className }) => {
+const disablableFields = ['topic_ids', 'location', 'attachments'];
+const alwaysRequiredFields = ['title', 'body'];
+
+const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, collapsed, first, onChange, onCollapseExpand, className, localize }) => {
+  const canSetEnabled = disablableFields.find(field => field === ideaCustomField.attributes.key);
+  const canSetRequired = !alwaysRequiredFields.includes(ideaCustomField.attributes.key);
 
   const [descriptionMultiloc, setDescriptionMultiloc] = useState(ideaCustomField.attributes.description_multiloc);
+  const [fieldEnabled, setFieldEnabled] = useState(ideaCustomField.attributes.enabled);
+  const [fieldRequired, setFieldRequired] = useState(ideaCustomField.attributes.required);
 
-  const handleOnChange = useCallback((description_multiloc: Multiloc) => {
+  const handleDescriptionOnChange = useCallback((description_multiloc: Multiloc) => {
     setDescriptionMultiloc(description_multiloc);
-    onChange(ideaCustomField.id, { description_multiloc });
-  }, [ideaCustomField, onChange]);
+  }, []);
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { description_multiloc: descriptionMultiloc });
+  }, [descriptionMultiloc, ideaCustomField, onChange]);
+
+  const handleEnabledOnChange = useCallback(() => {
+    setFieldEnabled(fieldEnabled => !fieldEnabled);
+  }, []);
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { enabled: fieldEnabled });
+  }, [fieldEnabled, ideaCustomField, onChange]);
+
+  const handleRequiredOnChange = useCallback(() => {
+    setFieldRequired(fieldRequired => !fieldRequired);
+  }, []);
+
+  useEffect(() => {
+    onChange(ideaCustomField.id, { required: fieldRequired });
+  }, [fieldRequired, ideaCustomField, onChange]);
 
   const removeFocus = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
@@ -149,12 +199,16 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   }, [ideaCustomField]);
 
   if (!isNilOrError(ideaCustomField)) {
+
     return (
       <Container className={`${className || ''} ${first ? 'first' : ''}`}>
         <CollapsedContent
           onMouseDown={removeFocus}
           onClick={handleCollapseExpand}
-          className={collapsed ? 'collapsed' : 'expanded'}
+          className={`
+            ${collapsed ? 'collapsed' : 'expanded'}
+            e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-setting-collapsed
+          `}
         >
           <CustomFieldTitle>
             <T value={ideaCustomField.attributes.title_multiloc} />
@@ -173,12 +227,52 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
         >
           <CollapseContainer>
             <CollapseContainerInner>
-              <TextAreaMultilocWithLocaleSwitcher
-                label={<FormattedMessage {...messages.descriptionLabel} />}
-                valueMultiloc={descriptionMultiloc}
-                onChange={handleOnChange}
-                rows={3}
-              />
+              <Toggles>
+                {canSetEnabled && (
+                  <ToggleContainer>
+                    <StyledToggle
+                      checked={fieldEnabled}
+                      onChange={handleEnabledOnChange}
+                      label={<FormattedMessage {...messages.enabled} />}
+                      labelTextColor={colors.adminTextColor}
+                      className={`
+                        e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-enabled-toggle-label
+                      `}
+                    />
+                    <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
+                  </ToggleContainer>
+                )}
+                {fieldEnabled && canSetRequired && (
+                  <ToggleContainer>
+                    <StyledToggle
+                      checked={fieldRequired}
+                      onChange={handleRequiredOnChange}
+                      label={<FormattedMessage {...messages.required} />}
+                      labelTextColor={colors.adminTextColor}
+                      className={`
+                        e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-required-toggle-label
+                      `}
+                    />
+                    <IconToolTip content={<FormattedMessage {...messages.requiredTooltip} />} />
+                  </ToggleContainer>
+                )}
+              </Toggles>
+
+              {fieldEnabled &&
+                <Suspense fallback={<Spinner />}>
+                  <TextAreaMultilocWithLocaleSwitcher
+                    valueMultiloc={descriptionMultiloc}
+                    onChange={handleDescriptionOnChange}
+                    rows={3}
+                    labelTextElement={
+                      <LocaleSwitcherLabelText>
+                        <FormattedMessage {...messages.descriptionLabel} />
+                      </LocaleSwitcherLabelText>
+                    }
+                  />
+                </Suspense>
+              }
+
             </CollapseContainerInner>
           </CollapseContainer>
         </CSSTransition>
@@ -189,4 +283,4 @@ const IdeaCustomField = memo<Props>(({ ideaCustomField, collapsed, first, onChan
   return null;
 });
 
-export default IdeaCustomField;
+export default injectLocalize(IdeaCustomField);

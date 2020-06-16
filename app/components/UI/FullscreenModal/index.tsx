@@ -53,6 +53,8 @@ const Container = styled.div`
   ${media.smallerThanMaxTablet`
     top: 0;
     bottom: ${props => props.theme.mobileMenuHeight}px;
+    // there is no top navbar at this screen size, so okay
+    // that it is higher than the z-index of NavBar here
     z-index: 1005;
 
     &.hasBottomBar {
@@ -171,7 +173,7 @@ class FullscreenModal extends PureComponent<Props, State> {
           id="e2e-fullscreenmodal-content"
           className={bottomBar ? 'hasBottomBar' : ''}
         >
-          <StyledFocusOn autoFocus={false} shards={shards}>
+          <StyledFocusOn shards={shards}>
             {topBar}
             <Content>
               {children}

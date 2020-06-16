@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // utils
-import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // styling
 import styled from 'styled-components';
@@ -63,8 +63,16 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = (event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
+
     const { participationContextId, participationContextType } = this.props;
-    openVerificationModalWithContext('ActionBudget', participationContextId, participationContextType, 'budgeting');
+
+    openVerificationModal({
+      context: {
+        action: 'budgeting',
+        id: participationContextId,
+        type: participationContextType
+      }
+    });
   }
 
   removeFocus = (event: React.MouseEvent) => {

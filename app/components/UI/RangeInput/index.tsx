@@ -1,12 +1,31 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Range, getTrackBackground } from 'react-range';
-import { colors } from 'utils/styleUtils';
 import styled from 'styled-components';
+import { colors, boxShadowOutline } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+
+  & .thumb {
+    &:not(.dragged):hover {
+      border-color: #333 !important;
+    }
+
+    &.dragged {
+      border-color: #333 !important;
+      background: linear-gradient(180deg, #e0e0e0 40%, #fff 100%) !important;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &.focus-visible {
+      ${boxShadowOutline};
+    }
+  }
 `;
 
 interface Props {
@@ -40,8 +59,6 @@ interface ITrackProps {
   onTouchStart: (e: React.TouchEvent) => void;
 }
 
-const activeColor = colors.label;
-
 class RangeInput extends PureComponent<Props, State> {
 
   handleOnChange = (values: number[]) => {
@@ -64,12 +81,12 @@ class RangeInput extends PureComponent<Props, State> {
         <div
           ref={props.ref}
           style={{
-            height: '3px',
+            height: '2px',
             width: '100%',
             borderRadius: '4px',
             background: getTrackBackground({
               values: [this.props.value],
-              colors: [activeColor, '#e0e0e0'],
+              colors: [colors.label, '#e0e0e0'],
               min: this.props.min,
               max: this.props.max
             }),
@@ -92,8 +109,10 @@ class RangeInput extends PureComponent<Props, State> {
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: '50%',
-          backgroundColor: isDragged ? colors.clBlue : activeColor
+          border: 'solid 1px #999',
+          background: 'linear-gradient(180deg, #fff 40%, #e0e0e0 100%)'
         }}
+        className={`thumb ${isDragged ? 'dragged' : ''}`}
       >
         <div
           style={{
@@ -104,7 +123,7 @@ class RangeInput extends PureComponent<Props, State> {
             fontSize: '14px',
             padding: '2px 6px',
             borderRadius: '4px',
-            backgroundColor: colors.clBlue,
+            backgroundColor: '#333',
             display: isDragged ? 'block' : 'none'
           }}
         >

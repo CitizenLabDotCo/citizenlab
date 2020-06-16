@@ -79,7 +79,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
   }
 
   handleOnSubmitButtonClick = () => {
-    eventEmitter.emit('IdeasNewPage', 'IdeaFormSubmitEvent', null);
+    eventEmitter.emit('IdeaFormSubmitEvent');
   }
 
   render() {
@@ -98,6 +98,7 @@ export default class IdeasNewButtonBar extends PureComponent<Props, State> {
         <ButtonBarInner>
           <Button
             form={form}
+            id="e2e-idea-new-submit-button"
             className="e2e-submit-idea-form"
             processing={processing}
             text={<FormattedMessage {...messages.submit} />}

@@ -23,6 +23,7 @@ import StatusLabel from 'components/UI/StatusLabel';
 import DraftCampaignDetails from './DraftCampaignDetails';
 import SentCampaignDetails from './SentCampaignDetails';
 import T from 'components/T';
+import Modal from 'components/UI/Modal';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,6 +33,8 @@ import { fontSizes } from 'utils/styleUtils';
 import IconTooltip from 'components/UI/IconTooltip';
 
 import Stamp from './Stamp';
+
+const Container = styled.div``;
 
 const PageHeader = styled.div`
   display: flex;
@@ -102,6 +105,27 @@ const GroupLink = styled.a`
   }
 `;
 
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
+
+  .Button {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const ModalContainer = styled.div`
+  padding: 30px;
+`;
+
+const SendNowWarning = styled.div`
+  font-size: ${fontSizes.base}px;
+  margin-bottom: 30px;
+`;
+
 interface InputProps { }
 
 interface DataProps {
@@ -112,16 +136,24 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps, WithRouterProps, InjectedIntlProps, InjectedLocalized { }
 
-interface State { }
+interface State {
+  showSendConfirmationModal: boolean;
+}
 
 class Show extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showSendConfirmationModal: false,
+    };
+  }
 
-  handleSendNow = () => {
-    sendCampaign(this.props.campaign.id)
-      .then(() => {
-      })
-      .catch(() => {
-      });
+  handleSend = (noGroupsSelected: boolean) => () => {
+    if (noGroupsSelected) {
+      this.openSendConfirmationModal();
+    } else {
+      sendCampaign(this.props.campaign.id);
+    }
   }
 
   handleSendTestEmail = () => {
@@ -154,16 +186,33 @@ class Show extends React.Component<Props, State> {
     return senderName;
   }
 
+  openSendConfirmationModal = () => {
+    this.setState({ showSendConfirmationModal: true });
+  }
+
+  closeSendConfirmationModal = () => {
+    this.setState({ showSendConfirmationModal: false });
+  }
+
+  confirmSendCampaign = (campaignId: string) => () => {
+    sendCampaign(campaignId)
+      .then(() => {
+        this.closeSendConfirmationModal();
+      });
+  }
+
   render() {
     const { campaign } = this.props;
+    const { showSendConfirmationModal } = this.state;
 
     if (campaign) {
       const groupIds: string[] = campaign.relationships.groups.data.map(group => group.id);
       const senderType = campaign.attributes.sender;
       const senderName = this.getSenderName(senderType);
+      const noGroupsSelected = groupIds.length === 0;
 
       return (
-        <div>
+        <Container id="e2e-custom-email-container">
           <PageHeader>
             <PageTitleWrapper>
               <PageTitle>
@@ -184,9 +233,9 @@ class Show extends React.Component<Props, State> {
                   buttonStyle="admin-dark"
                   icon="send"
                   iconPos="right"
-                  onClick={this.handleSendNow}
+                  onClick={this.handleSend(noGroupsSelected)}
                 >
-                  <FormattedMessage {...messages.sendNowButton} />
+                  <FormattedMessage {...messages.send} />
                 </Button>
               </Buttons>
             }
@@ -206,7 +255,7 @@ class Show extends React.Component<Props, State> {
                   <FormattedMessage {...messages.campaignTo} />
                   &nbsp;
                 </FromToHeader>
-                {groupIds.length === 0 && <GroupLink onClick={this.handleGroupLinkClick()}>
+                {noGroupsSelected && <GroupLink onClick={this.handleGroupLinkClick()}>
                   {this.props.intl.formatMessage(messages.allUsers)}
                 </GroupLink>}
                 {groupIds.map((groupId, index) => (
@@ -239,7 +288,35 @@ class Show extends React.Component<Props, State> {
             :
             <SentCampaignDetails campaignId={campaign.id} />
           }
-        </div>
+
+          <Modal
+            opened={showSendConfirmationModal}
+            close={this.closeSendConfirmationModal}
+            header={<FormattedMessage {...messages.confirmSendHeader} />}
+          >
+            <ModalContainer>
+              <SendNowWarning>
+                <FormattedMessage {...messages.toAllUsers} />
+              </SendNowWarning>
+              <ButtonsWrapper>
+                <Button
+                  buttonStyle="secondary"
+                  linkTo={`/admin/emails/custom/${campaign.id}/edit`}
+                >
+                  <FormattedMessage {...messages.changeRecipientsButton} />
+                </Button>
+                <Button
+                  buttonStyle="primary"
+                  onClick={this.confirmSendCampaign(this.props.campaign.id)}
+                  icon="send"
+                  iconPos="right"
+                >
+                  <FormattedMessage {...messages.sendNowButton} />
+                </Button>
+              </ButtonsWrapper>
+            </ModalContainer>
+          </Modal>
+        </Container>
       );
     }
 

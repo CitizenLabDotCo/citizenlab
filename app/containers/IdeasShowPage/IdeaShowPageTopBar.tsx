@@ -16,7 +16,7 @@ import Icon from 'components/UI/Icon';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { openVerificationModalWithContext } from 'containers/App/verificationModalEvents';
+import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -33,7 +33,7 @@ import { IdeaVotingDisabledReason } from 'services/ideas';
 const Container = styled.div`
   height: ${props => props.theme.mobileTopBarHeight}px;
   background: #fff;
-  border-bottom: solid 1px ${colors.separation};
+  border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
 
 const TopBarInner = styled.div`
@@ -81,7 +81,7 @@ const GoBackButton = styled.button`
   cursor: pointer;
   background: #fff;
   border-radius: 50%;
-  border: solid 1px ${lighten(0.4, colors.label)};
+  border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 100ms ease-out;
 
   &:hover {
@@ -125,21 +125,26 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
     event.preventDefault();
 
     if (insideModal) {
-      eventEmitter.emit('IdeaShowPageTopBar', 'closeIdeaModal', null);
+      eventEmitter.emit('closeIdeaModal');
     } else {
       clHistory.push('/');
     }
   }, [insideModal]);
 
-  const onUnauthenticatedVoteClick = useCallback(() => {
-    clHistory.push('/sign-in');
-  }, []);
-
   const onDisabledVoteClick = useCallback((disabled_reason: IdeaVotingDisabledReason) => {
     if (!isNilOrError(authUser) && !isNilOrError(project) && disabled_reason === 'not_verified') {
       const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
       const pcId = project.relationships?.current_phase?.data?.id || project.id;
-      pcId && openVerificationModalWithContext('ActionVote', pcId, pcType, 'voting');
+
+      if (pcId && pcType) {
+        openVerificationModal({
+          context: {
+            action: 'voting',
+            id: pcId,
+            type: pcType
+          }
+        });
+      }
     }
   }, [authUser, project]);
 
@@ -161,7 +166,6 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
             <VoteControl
               size="1"
               ideaId={ideaId}
-              unauthenticatedVoteClick={onUnauthenticatedVoteClick}
               disabledVoteClick={onDisabledVoteClick}
               showDownvote={idea.attributes.action_descriptor.voting.downvoting_enabled}
             />
@@ -177,7 +181,7 @@ const IdeaShowPageTopBar = memo<Props>(({ ideaId, insideModal, className, idea, 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   authUser: <GetAuthUser />,
-  idea: ({ ideaId, render }) => <GetIdea id={ideaId}>{render}</GetIdea>,
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
   project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
 });
 

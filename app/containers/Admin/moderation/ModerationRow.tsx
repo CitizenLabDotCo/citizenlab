@@ -6,7 +6,7 @@ import { omitBy, isNil, isEmpty } from 'lodash-es';
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
-import Tippy from '@tippy.js/react';
+import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
 
 // i18n
@@ -94,7 +94,7 @@ const ModerationRow = memo<Props & InjectedIntlProps>(({ moderation, selected, o
     viewLink = `/${parentType.toLowerCase()}s/${parentSlug}`;
   }
 
-  const handleOnChecked = useCallback((_event: React.MouseEvent | React.KeyboardEvent) => {
+  const handleOnChecked = useCallback((_event: React.ChangeEvent) => {
     onSelect(moderation.id);
   }, [onSelect]);
 

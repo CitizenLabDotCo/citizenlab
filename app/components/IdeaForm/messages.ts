@@ -17,41 +17,29 @@ export default defineMessages({
     id: 'app.components.IdeaForm.descriptionLengthError',
     defaultMessage: 'The idea description must be at least 30 characters long',
   },
-  titleLabel: {
-    id: 'app.components.IdeaForm.titleLabel',
-    defaultMessage: 'Title (required)',
+  title: {
+    id: 'app.components.IdeaForm.title',
+    defaultMessage: 'Title',
   },
-  titlePlaceholder: {
-    id: 'app.components.IdeaForm.titlePlaceholder',
-    defaultMessage: 'Enter the title of your idea',
+  descriptionTitle: {
+    id: 'app.components.IdeaForm.descriptionTitle',
+    defaultMessage: 'Description',
   },
-  descriptionLabel: {
-    id: 'app.components.IdeaForm.descriptionLabel',
-    defaultMessage: 'Description (required)',
+  topicsTitle: {
+    id: 'app.components.IdeaForm.topicsTitle',
+    defaultMessage: 'Topics',
   },
-  descriptionPlaceholder: {
-    id: 'app.components.IdeaForm.descriptionPlaceholder',
-    defaultMessage: 'Enter the description of your idea',
-  },
-  topicsLabel: {
-    id: 'app.components.IdeaForm.topicsLabel',
-    defaultMessage: 'Topics (optional, max. 2)',
-  },
-  locationLabel: {
-    id: 'app.components.IdeaForm.locationLabel',
-    defaultMessage: 'Location (optional)',
+  locationTitle: {
+    id: 'app.components.IdeaForm.locationTitle',
+    defaultMessage: 'Location',
   },
   locationPlaceholder: {
     id: 'app.components.IdeaForm.locationPlaceholder',
     defaultMessage: 'Enter a location for your idea',
   },
-  imageUploadLabel: {
-    id: 'app.components.IdeaForm.imageUploadLabel',
-    defaultMessage: 'Image (optional)',
-  },
-  imageUploadPlaceholder: {
-    id: 'app.components.IdeaForm.imageUploadPlaceholder',
-    defaultMessage: 'Select an image for your idea.<br /> This will increase the visibility of your idea!',
+  imageUploadTitle: {
+    id: 'app.components.IdeaForm.imageUploadTitle',
+    defaultMessage: 'Image',
   },
   budgetLabel: {
     id: 'app.container.IdeaForm.budgetLabel',
@@ -69,9 +57,9 @@ export default defineMessages({
     id: 'app.container.IdeaForm.budgetIsTooBig',
     defaultMessage: 'The provided budget is too big',
   },
-  fileUploadLabel: {
-    id: 'app.container.IdeaForm.fileUploadLabel',
-    defaultMessage: 'Add files to your idea',
+  fileAttachmentsTitle: {
+    id: 'app.container.IdeaForm.fileAttachmentsTitle',
+    defaultMessage: 'Attachments',
   },
   formGeneralSectionTitle: {
     id: 'app.components.IdeaForm.formGeneralSectionTitle',
@@ -81,8 +69,24 @@ export default defineMessages({
     id: 'app.components.IdeaForm.formDetailsSectionTitle',
     defaultMessage: 'Details',
   },
-  formAttachmentsSectionTitle: {
-    id: 'app.components.IdeaForm.formAttachmentsSectionTitle',
-    defaultMessage: 'Images and attachments',
+  noTopicsError: {
+    id: 'app.components.IdeaForm.noTopicsError',
+    defaultMessage: 'Please select a topic',
+  },
+  noLocationError: {
+    id: 'app.components.IdeaForm.noLocationError',
+    defaultMessage: 'Please enter a location',
+  },
+  noImageError: {
+    id: 'app.components.IdeaForm.noImageError',
+    defaultMessage: 'Please add an image',
+  },
+  noAttachmentsError: {
+    id: 'app.components.IdeaForm.noAttachmentsError',
+    defaultMessage: 'Please add an attachment',
+  },
+  otherFilesTitle: {
+    id: 'app.components.IdeaForm.otherFilesTitle',
+    defaultMessage: 'Other files',
   }
 });

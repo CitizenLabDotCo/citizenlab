@@ -27,29 +27,23 @@ describe('Comment voting permissions', () => {
       cy.apiVerifyBogus(response.body.jwt);
     });
   });
+
   describe('a project that requires verification on comment voting', () => {
     it('lets verified users vote', () => {
       cy.setLoginCookie(verifiedEmail, verifiedPassword);
       cy.visit('ideas/verified-idea');
-      cy.acceptCookies();
-      cy.wait(3000);
-      cy.get('.e2e-comments-loaded');
-      cy.get('.e2e-comment-vote');
       cy.get('.e2e-comment-vote').click();
-      cy.wait(3000);
-      cy.get('.e2e-comment-vote').should('have.class', 'voted');
+      cy.get('.e2e-comment-vote.voted');
     });
+
     it('doesn\'t let unverified users vote', () => {
       cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       cy.visit('ideas/verified-idea');
-      cy.acceptCookies();
-      cy.wait(3000);
-      cy.get('.e2e-comments-loaded');
-      cy.get('#e2e-parent-and-childcomments');
-      cy.get('.e2e-comment-vote');
-      cy.get('.e2e-comment-vote').should('have.class', 'disabled');
+      cy.get('.e2e-comment-vote').click();
+      cy.get('#e2e-verification-wizard-method-selection-step');
     });
   });
+
   after(() => {
     cy.apiRemoveUser(verifiedId);
     cy.apiRemoveUser(unverifiedId);

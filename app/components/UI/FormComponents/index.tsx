@@ -1,5 +1,4 @@
 import React, { memo } from 'react';
-
 import styled, { withTheme } from 'styled-components';
 import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
@@ -18,7 +17,7 @@ export const FormSection = styled.div`
   margin-bottom: 15px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 
   ${media.smallerThanMaxTablet`
     min-width: auto;
@@ -59,10 +58,11 @@ export const FormSectionTitle = memo(({ message, values, subtitleMessage }: Form
   </TitleContainer>
 ));
 
-export const FormLabelStyled = styled.label<{ thin: boolean | undefined }>`
+export const FormLabelStyled = styled.label`
+  width: 100%;
   font-size: ${fontSizes.base}px;
   color: ${({ theme }) => theme.colorText};
-  font-weight: ${props => props.thin ? 400 : 600};
+  font-weight: 500;
   line-height: normal;
 
   &.invisible {
@@ -70,18 +70,23 @@ export const FormLabelStyled = styled.label<{ thin: boolean | undefined }>`
   }
 `;
 
-export const FormSubtextStyled = styled.span`
+export const FormSubtextStyled = styled.div`
+  width: 100%;
   font-size: ${fontSizes.small}px;
   color: ${colors.label};
-  font-weight: 400;
+  font-weight: 300;
+  line-height: normal;
+  margin-top: 4px;
+  margin-bottom: 4px;
 `;
 
 export const Spacer = styled.div`
-  height: 10px;
+  height: 8px;
 `;
 
-const OptionalText = styled.span<{ thin: boolean | undefined }>`
-  font-weight: ${props => props.thin ? 300 : 400};
+const OptionalText = styled.span`
+  color: ${({ theme }) => theme.colorText};
+  font-weight: 400;
 `;
 
 interface FormLabelGenericProps {
@@ -90,7 +95,6 @@ interface FormLabelGenericProps {
   children?: any;
   hidden?: boolean;
   className?: string;
-  thin?: boolean;
   noSpace?: boolean;
   optional?: boolean;
 }
@@ -114,31 +118,26 @@ export const FormLabel = memo<FormLabelProps>(({
   children,
   className,
   hidden,
-  thin,
   noSpace,
   optional
 }) => (
   <FormLabelStyled
-    thin={thin}
     id={id}
     className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`}
     htmlFor={htmlFor}
   >
     <FormattedMessage {...labelMessage} values={labelMessageValues} />
     {optional &&
-      <OptionalText thin={thin}>
+      <OptionalText>
         {' ('}
         <FormattedMessage {...messages.optional} />
         {')'}
       </OptionalText>
     }
     {(subtextMessage || subtext) &&
-      <>
-        <br />
-        <FormSubtextStyled>
-          {subtextMessage ? <FormattedMessage {...subtextMessage} values={subtextMessageValues} /> : subtext}
-        </FormSubtextStyled>
-      </>
+      <FormSubtextStyled>
+        {subtextMessage ? <FormattedMessage {...subtextMessage} values={subtextMessageValues} /> : subtext}
+      </FormSubtextStyled>
     }
     {!noSpace && <Spacer />}
     {children}
@@ -157,26 +156,22 @@ export const FormLabelValue = memo(({
   htmlFor,
   className,
   hidden,
-  thin,
   noSpace,
   optional
 }: FormLabelValueProps) => (
-    <FormLabelStyled thin={thin} id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
+    <FormLabelStyled id={id} className={`${booleanClass(className, className)}${booleanClass(hidden, 'invisible')}`} htmlFor={htmlFor}>
       {labelValue}
       {optional &&
-        <OptionalText thin={thin}>
+        <OptionalText>
           {' ('}
           <FormattedMessage {...messages.optional} />
           {')'}
         </OptionalText>
       }
       {subtextValue &&
-        <>
-          <br />
-          <FormSubtextStyled>
-            {subtextValue}
-          </FormSubtextStyled>
-        </>
+        <FormSubtextStyled>
+          {subtextValue}
+        </FormSubtextStyled>
       }
       {!noSpace && <Spacer />}
     </FormLabelStyled>
@@ -272,10 +267,8 @@ const ErrorContainer = styled.div`
   color: ${colors.clRedError};
 `;
 
-export const FormError = memo(({
-  message
-}: IMessageInfo) => (
-    <ErrorContainer className="e2e-error-form">
-      <FormattedMessage {...message} />
-    </ErrorContainer>
-  ));
+export const FormError = memo(({ message }: IMessageInfo) => (
+  <ErrorContainer className="e2e-error-form">
+    <FormattedMessage {...message} />
+  </ErrorContainer>
+));

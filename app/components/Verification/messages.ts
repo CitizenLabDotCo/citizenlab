@@ -25,14 +25,6 @@ export default defineMessages({
     id: 'app.components.VerificationModal.showCOWHelp',
     defaultMessage: 'Where can I find my ID Serial Number ?',
   },
-  cowRunNumber: {
-    id: 'app.components.VerificationModal.cowRunNumber',
-    defaultMessage: 'RUN',
-  },
-  cowIdSerialNumber: {
-    id: 'app.components.VerificationModal.cowIdSerialNumber',
-    defaultMessage: 'ID serial number',
-  },
   emptyFieldError: {
     id: 'app.components.VerificationModal.emptyFieldError',
     defaultMessage: 'This field cannot be empty.',
@@ -117,4 +109,12 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyBOSA',
     defaultMessage: 'Verify with itsme or eID'
   },
+  skipThisStep: {
+    id: 'app.components.VerificationModal.skipThisStep',
+    defaultMessage: 'Skip this step'
+  },
+  close: {
+    id: 'app.components.VerificationModal.close',
+    defaultMessage: 'Close'
+  }
 });

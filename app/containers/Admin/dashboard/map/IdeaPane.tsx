@@ -126,7 +126,7 @@ class IdeaPane extends PureComponent<Props, State> {
 }
 
 export default (inputProps: InputProps) => (
-  <GetIdea id={inputProps.ideaId}>
+  <GetIdea ideaId={inputProps.ideaId}>
     {idea => <IdeaPane {...inputProps} idea={idea} />}
   </GetIdea>
 );
