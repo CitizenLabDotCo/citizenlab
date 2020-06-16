@@ -132,7 +132,6 @@ type State = {
   selectedInviteText: string | null;
   invitationOptionsOpened: boolean;
   selectedView: 'import' | 'text';
-  dirty: boolean;
   processing: boolean;
   processed: boolean;
   apiErrors: IInviteError[] | null;
@@ -156,7 +155,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
       selectedInviteText: null,
       invitationOptionsOpened: false,
       selectedView: 'import',
-      dirty: false,
       processing: false,
       processed: false,
       apiErrors: null,
@@ -257,15 +255,15 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.setState({ selectedInviteText });
   }
 
-  getSubmitState = (errors: IInviteError[] | null, processed: boolean, dirty: boolean) => {
+  getSubmitState = (errors: IInviteError[] | null, processed: boolean) => {
+    const isInvitationValid = this.validateInvitation()
     if (errors && errors.length > 0) {
       return 'error';
-    } else if (processed && !dirty) {
+    } else if (processed && !isInvitationValid) {
       return 'success';
-    } else if (!dirty) {
+    } else if (!isInvitationValid) {
       return 'disabled';
     }
-
     return 'enabled';
   }
 
@@ -286,7 +284,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
       selectedInviteText: null,
       invitationOptionsOpened: false,
       processed: false,
-      dirty: false,
       apiErrors: null,
       filetypeError: null,
       unknownError: null
@@ -377,7 +374,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
         this.setState({
           processing: false,
           processed: true,
-          dirty: false,
           selectedEmails: null,
           selectedFileBase64: null
         });
@@ -393,11 +389,18 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     }
   }
 
+  validateInvitation = (): boolean => {
+    const {selectedEmails, selectedProjects, hasModeratorRights, selectedFileBase64 } = this.state
+    const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
+    const hasValidRights = hasModeratorRights ? !isEmpty(selectedProjects) : true;
+    const isValidInvitationTemplate = isString(selectedFileBase64) && !isEmpty(selectedFileBase64);
+    return (isValidEmails && hasValidRights ) || isValidInvitationTemplate;
+  }
+
   render() {
     const { projects, locale, tenantLocales, groups, intl: { formatMessage } } = this.props;
     const {
       selectedEmails,
-      selectedFileBase64,
       hasAdminRights,
       hasModeratorRights,
       selectedLocale,
@@ -414,7 +417,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     } = this.state;
     const projectOptions = this.getProjectOptions(projects, locale, tenantLocales);
     const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
-    const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) && (hasModeratorRights ? !isEmpty(selectedProjects) : true) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
+
     const invitationTabs = [
       {
         value: 'import',
@@ -625,7 +628,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               <ButtonWrapper>
                 <SubmitWrapper
                   loading={processing}
-                  status={this.getSubmitState(apiErrors, processed, dirty)}
+                  status={this.getSubmitState(apiErrors, processed)}
                   messages={{
                     buttonSave: messages.save,
                     buttonSuccess: messages.saveSuccess,
