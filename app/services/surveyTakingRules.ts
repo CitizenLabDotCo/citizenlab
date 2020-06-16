@@ -55,8 +55,6 @@ export const getSurveyTakingRules = ({ project, phaseContext, signedIn }: Survey
   } else { // if not in phase context
     const { enabled, disabled_reason } = project.attributes.action_descriptor.taking_survey;
 
-    console.log(project.attributes.action_descriptor.taking_survey);
-
     return {
       enabled,
       disabledReason: enabled ? undefined : disabledReason(disabled_reason, !!signedIn),
