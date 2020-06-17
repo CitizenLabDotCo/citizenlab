@@ -5,6 +5,7 @@
   "UI.FormComponents.buttonDisabled": "crwdns28676:0crwdne28676:0",
   "UI.FormComponents.buttonEnabled": "crwdns28678:0crwdne28678:0",
   "UI.FormComponents.optional": "crwdns27004:0crwdne27004:0",
+  "UI.FormComponents.required": "crwdns53644:0crwdne53644:0",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "crwdns27006:0crwdne27006:0",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "crwdns19271:0crwdne19271:0",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "crwdns22916:0crwdne22916:0",

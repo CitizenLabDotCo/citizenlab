@@ -56,7 +56,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
   render() {
     const { id, className } = this.props;
-    let { value, placeholder, options, max, autoBlur } = this.props;
+    let { value, placeholder, options, max, autoBlur, disabled } = this.props;
     const { inputId } = this.props;
 
     value = this.findFullOptionValues();
@@ -80,7 +80,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
         placeholder={placeholder as string}
         options={options}
         onChange={this.handleOnChange}
-        isDisabled={this.props.disabled}
+        isDisabled={disabled}
         styles={selectStyles}
         menuPlacement="auto"
       />

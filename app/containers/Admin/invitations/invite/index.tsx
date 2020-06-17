@@ -18,6 +18,7 @@ import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import IconTooltip from 'components/UI/IconTooltip';
 import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
@@ -102,8 +103,9 @@ const SectionParagraph = styled.p`
   }
 `;
 
-const DownloadButtonContainer = styled.div`
+const FlexWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 const DownloadButton = styled(Button)`
@@ -446,41 +448,55 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
       >
         <InvitationOptions>
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.adminLabel} />
-              <IconTooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
-            </Label>
-            <Toggle checked={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+            <FlexWrapper>
+              <Label>
+                <FormattedMessage {...messages.adminLabel} />
+                <IconTooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
+              </Label>
+              <Toggle checked={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+            </FlexWrapper>
           </SectionField>
 
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.moderatorLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.moderatorLabelTooltip}
-                    values={{
-                      moderatorLabelTooltipLink: (
-                        // tslint:disable-next-line
-                        <a href={formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
-                          <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
-                        </a>
-                      )
-                    }}
-                  />
-                }
-              />
-            </Label>
-            <StyledToggle checked={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
-            {hasModeratorRights &&
-              <MultipleSelect
-                value={selectedProjects}
-                options={projectOptions}
-                onChange={this.handleSelectedProjectsOnChange}
-                placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
-              />
+            <FlexWrapper>
+              <Label>
+                <FormattedMessage {...messages.moderatorLabel} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.moderatorLabelTooltip}
+                      values={{
+                        moderatorLabelTooltipLink: (
+                          // tslint:disable-next-line
+                          <a href={formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
+                            <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
+                          </a>
+                        )
+                      }}
+                    />
+                  }
+                />
+              </Label>
+              <StyledToggle checked={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
+            </FlexWrapper>
+
+
+            {
+              hasModeratorRights &&
+              <>
+                <MultipleSelect
+                  value={selectedProjects}
+                  options={projectOptions}
+                  onChange={this.handleSelectedProjectsOnChange}
+                  placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
+                />
+                {isNilOrError(selectedProjects) &&
+                  <Warning>
+                    <FormattedMessage {...messages.required} />
+                  </Warning>}
+              </>
             }
+
           </SectionField>
 
           {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
@@ -555,7 +571,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     <FormattedMessage {...messages.downloadFillOutTemplate} />
                   </StyledSectionTitle>
                   <SectionDescription>
-                    <DownloadButtonContainer>
+                    <FlexWrapper>
                       <DownloadButton
                         buttonStyle="secondary"
                         icon="download"
@@ -563,7 +579,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                       >
                         <FormattedMessage {...messages.downloadTemplate} />
                       </DownloadButton>
-                    </DownloadButtonContainer>
+                    </FlexWrapper>
                     <SectionParagraph>
                       <FormattedMessage
                         {...messages.visitSupportPage}
