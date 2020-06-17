@@ -14,6 +14,7 @@
 - The `signup_helper_text` setting in admin HQ is again displayed in step 1 of the sign up flow
 ## Added
 - There's a new field in admin HQ to configure custom copy in step 2 of the sign up flow called `custom_fields_signup_helper_text`
+- `workshops` can be turned on/off in admin HQ, displayed as a new page in the admin interface
 
 ## Changed
 - The copy for `project moderator` has changed to `project manager` everywhere
