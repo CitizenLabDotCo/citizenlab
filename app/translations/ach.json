@@ -5,6 +5,7 @@
   "UI.FormComponents.buttonDisabled": "",
   "UI.FormComponents.buttonEnabled": "",
   "UI.FormComponents.optional": "",
+  "UI.FormComponents.required": "",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "",
