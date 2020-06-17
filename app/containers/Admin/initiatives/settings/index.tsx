@@ -271,9 +271,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
           <SectionTitle>
             <FormattedMessage {...messages.settingsTabTitle} />
           </SectionTitle>
-          {/* <SectionSubtitle>
+          <SectionSubtitle>
             <FormattedMessage {...messages.settingsTabSubtitle} />
-          </SectionSubtitle> */}
+          </SectionSubtitle>
 
           <Section>
             <SectionField>
