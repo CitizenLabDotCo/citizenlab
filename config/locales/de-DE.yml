@@ -339,7 +339,7 @@ de:
     role:
       is_admin: "Die Rolle ist Admin"
       not_is_admin: "Die Rolle ist nicht Admin"
-      is_project_moderator: "Die Rolle ist Projektmoderator"
-      not_is_project_moderator: "Die Rolle ist nicht Projektmoderator"
+      is_project_moderator: "Role is project moderator"
+      not_is_project_moderator: "Role is not project moderator"
       is_normal_user: "Die Rolle ist normaler Benutzer"
       not_is_normal_user: "Die Rolle ist nicht normaler Benutzer"
