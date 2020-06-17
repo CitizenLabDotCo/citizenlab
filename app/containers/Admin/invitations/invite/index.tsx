@@ -480,7 +480,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               <StyledToggle checked={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
             </FlexWrapper>
 
-
             {
               hasModeratorRights &&
               <>
