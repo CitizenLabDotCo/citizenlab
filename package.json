@@ -1,6 +1,7 @@
 {
   "//": [
-    "** Use this section to describe why certain dependencies are used and versioned as they are **"
+    "** Use this section to describe why certain dependencies are used and versioned as they are **",
+    "** @segment/consent-manager : 4.0.1 is the last version before breaking changes, we need to adapt our codebase to upgrade and there is no clear need to do so for now.**"
   ],
   "name": "cl2-front",
   "version": "1.0.0",
@@ -46,7 +47,7 @@
     "@apollo/react-hooks": "3.1.3",
     "@babel/runtime": "7.10.1",
     "@researchgate/react-intersection-observer": "1.1.3",
-    "@segment/consent-manager": "5.0.0",
+    "@segment/consent-manager": "4.0.1",
     "@segment/snippet": "4.12.0",
     "@sentry/browser": "5.15.5",
     "@sentry/integrations": "5.15.5",

@@ -37,6 +37,12 @@ const SearchIcon = styled(Icon)`
   fill: ${colors.label};
 `;
 
+const IconContainer = styled.div`
+  position: absolute;
+  right: 12px;
+  top: 12px;
+`;
+
 const CloseIcon = styled(Icon)`
   flex: 0 0 14px;
   width: 14px;
@@ -44,7 +50,7 @@ const CloseIcon = styled(Icon)`
   fill: ${colors.label};
 `;
 
-const SearchFieldButton = styled.button`
+const CloseButton = styled.button`
   width: 20px;
   height: 20px;
   padding: 0;
@@ -56,9 +62,6 @@ const SearchFieldButton = styled.button`
   -webkit-appearance: none;
   -moz-appearance: none;
   cursor: pointer;
-  position: absolute;
-  right: 12px;
-  top: 12px;
 
   &:hover {
     ${CloseIcon} {
@@ -123,12 +126,20 @@ const SearchInput = memo<Props & InjectedIntlProps>(({ onChange, placeholder, ar
         <FormattedMessage {...messages.searchTerm} values={{ searchTerm }} />
       </ScreenReaderOnly>
 
-      <SearchFieldButton onClick={handleOnReset}>
-        {isEmpty(searchTerm)
-          ? <SearchIcon ariaHidden name="search2" />
-          : <CloseIcon title={intl.formatMessage(messages.removeSearchTerm)} name="close" />
+      <IconContainer>
+        {isEmpty(searchTerm) ?
+          <SearchIcon ariaHidden name="search2" />
+          :
+          <CloseButton
+            onClick={handleOnReset}
+          >
+            <CloseIcon
+              title={intl.formatMessage(messages.removeSearchTerm)}
+              name="close"
+            />
+          </CloseButton>
         }
-      </SearchFieldButton>
+      </IconContainer>
 
       <LiveMessage
         message={searchTerm ?
