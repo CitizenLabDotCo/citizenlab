@@ -20,7 +20,7 @@ namespace :complex_migrations do
   }
 
 
-  desc "Fix the old timezones values in the tenant settings by mapping them to the new timezone values"
+  desc "Migrate the topics of existing tenants, given a CSV file describing a mapping (behaviour for updating translations or the code, or to merge topics together)"
   task :migrate_topic_codes, [:url] => [:environment] do |t, args|
     errors = []
     puts "Processing topic mapping"
