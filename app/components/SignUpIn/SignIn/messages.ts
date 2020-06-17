@@ -57,14 +57,6 @@ export default defineMessages({
     id: 'app.containers.SignIn.signUp',
     defaultMessage: 'Sign up',
   },
-  createAnAccount: {
-    id: 'app.containers.SignIn.createAnAccount',
-    defaultMessage: 'Create an account',
-  },
-  signInButtonAltText: {
-    id: 'app.containers.SignIn.signInButtonAltText',
-    defaultMessage: 'Sign in with {loginMechanismName}',
-  },
   whatIsFranceConnect: {
     id: 'app.containers.SignIn.whatIsFranceConnect',
     defaultMessage: 'What is France Connect?',

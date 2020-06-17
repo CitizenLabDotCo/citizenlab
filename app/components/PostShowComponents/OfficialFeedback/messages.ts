@@ -49,14 +49,6 @@ export default defineMessages({
     id: 'app.components.PostComponents.OfficialFeedback.updateButtonError',
     defaultMessage: 'Sorry, there was a problem',
   },
-  updateButtonSuccess: {
-    id: 'app.components.PostComponents.OfficialFeedback.updateButtonSuccess',
-    defaultMessage: 'Update saved!',
-  },
-  updateMessageError: {
-    id: 'app.components.PostComponents.OfficialFeedback.updateMessageError',
-    defaultMessage: 'Please try again later or report the issue',
-  },
   updateMessageSuccess: {
     id: 'app.components.PostComponents.OfficialFeedback.updateMessageSuccess',
     defaultMessage: 'Your update was published successfully!',

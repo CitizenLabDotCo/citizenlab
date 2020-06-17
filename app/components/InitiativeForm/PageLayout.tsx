@@ -84,7 +84,7 @@ const TwoColumns = styled.div`
 `;
 
 const StyledCollapsibleTipsAndInfo = styled(CollapsibleTipsAndInfo)`
-  max-width: 580px;
+  max-width: 620px;
   margin-bottom: 20px;
 
   ${media.biggerThanMaxTablet`
