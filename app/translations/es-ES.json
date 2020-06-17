@@ -5,6 +5,7 @@
   "UI.FormComponents.buttonDisabled": "Botón de envío desactivado",
   "UI.FormComponents.buttonEnabled": "Botón de envío activo",
   "UI.FormComponents.optional": "opcional",
+  "UI.FormComponents.required": "obligatorio",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No se encontraron propuestas",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Advertencia: el color seleccionado no tiene un contraste suficientemente alto. Esto puede hacer que el texto que sea difícil de leer. Elige un color más oscuro para optimizar la legibilidad.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "El contenido de este campo se mostrará en la parte inferior de la página de inicio de la plataforma, visible para todos los usuarios.",
