@@ -426,10 +426,6 @@ if Apartment::Tenant.current == 'localhost'
 
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
-  # TODO link open idea project to default topics
-  # Project.all.each do |pj|
-  #   pj.update!(topics: Topic.defaults)
-  # end
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(moderator)
   User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(user)
