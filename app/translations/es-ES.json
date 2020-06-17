@@ -264,7 +264,7 @@
   "app.components.ProjectCard.ideas": "ideas",
   "app.components.ProjectCard.learnMore": "Aprende más",
   "app.components.ProjectCard.postYourIdea": "Propone tu idea",
-  "app.components.ProjectCard.remaining": "queda {timeRemaining}",
+  "app.components.ProjectCard.remaining": "queda(n) {timeRemaining}",
   "app.components.ProjectCard.takeThePoll": "Responder consulta",
   "app.components.ProjectCard.takeTheSurvey": "Haz la encuesta",
   "app.components.ProjectCard.viewTheIdeas": "Ver las ideas",
