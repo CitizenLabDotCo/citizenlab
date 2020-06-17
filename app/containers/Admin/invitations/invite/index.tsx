@@ -391,7 +391,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     }
   }
 
-  validateInvitation = (): boolean => {
+  validateInvitation = () => {
     const { selectedEmails, selectedProjects, hasModeratorRights, selectedFileBase64 } = this.state;
     const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
     const hasValidRights = hasModeratorRights ? !isEmpty(selectedProjects) : true;
