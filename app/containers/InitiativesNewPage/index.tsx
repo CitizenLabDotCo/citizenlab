@@ -14,6 +14,7 @@ import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { PreviousPathnameContext } from 'context';
 
 // utils
@@ -27,6 +28,7 @@ import PageLayout from 'components/InitiativeForm/PageLayout';
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
   previousPathName: string | null;
 }
 
@@ -86,9 +88,26 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     const { authUser } = this.props;
     const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }) || isSuperAdmin({ data: authUser }));
 
+    if (!this.isPostingProposalEnabled()) {
+      clHistory.replace('/initiatives');
+    }
+
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace('/sign-up');
     }
+  }
+
+  isPostingProposalEnabled() {
+    const { tenant } = this.props;
+
+    if (
+      !isNilOrError(tenant) &&
+      !isNilOrError(tenant.attributes.settings.initiatives)
+    ) {
+      return tenant.attributes.settings.initiatives.posting_enabled;
+    }
+
+    return false;
   }
 
   render() {
@@ -112,6 +131,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
 
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
   locale: <GetLocale />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
