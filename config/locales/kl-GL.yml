@@ -216,7 +216,7 @@ kl:
     role:
       is_admin: "Rolle tassaavoq aqutsisoq"
       not_is_admin: "Rolle tassaanngilaq aqutsisoq"
-      is_project_moderator: "Rolle tassaavoq suliniummik aqutsisoq "
-      not_is_project_moderator: "Rolle tassaanngilaq suliniummik aqutsisoq "
+      is_project_moderator: "Role is project moderator"
+      not_is_project_moderator: "Role is not project moderator"
       is_normal_user: "Rolle tassaavoq nalinginnaasumik atuisoq "
       not_is_normal_user: "Rolle tassaanngilaq nalinginnaasumik atuisoq "
