@@ -27,7 +27,7 @@ export default defineMessages({
   },
   settingsTabSubtitle: {
     id: 'app.containers.Admin.initiatives.settingsTabSubtitle',
-    defaultMessage: 'Enable or disable posting of proposals, or visibility of   proposals altogether. Set thresholds to reach and provide more instructions.'
+    defaultMessage: 'Enable or disable proposals, or just disable the posting of new proposals. Set voting thresholds and provide more information about proposals.'
   },
   titleManageTab: {
     id: 'app.containers.Admin.initiatives.titleManageTab',
@@ -95,19 +95,19 @@ export default defineMessages({
   },
   fieldPostingEnabled: {
     id: 'app.containers.Admin.initiatives.fieldPostingEnabled',
-    defaultMessage: 'Starting new proposals'
+    defaultMessage: 'Proposal submission'
   },
   showProposalEnabled: {
     id: 'app.containers.Admin.initiatives.showProposalEnabled',
-    defaultMessage: 'Proposals on the platform'
+    defaultMessage: 'Proposals'
   },
   showProposalEnabledInfo: {
     id: 'app.containers.Admin.initiatives.showProposalEnabledInfo',
-    defaultMessage: 'Show or hide proposals on the platform.'
+    defaultMessage: 'Enable or disable the proposals feature on your platform.'
   },
   showProposalPostingEnabledInfo: {
     id: 'app.containers.Admin.initiatives.showProposalPostingEnabledInfo',
-    defaultMessage: 'Enable or disable posting of new proposals. Existing proposals will remain visible even when posting new proposals is disabled.'
+    defaultMessage: 'Enable or disable new proposals from being posted on your platform. Existing proposals will remain visible.'
   },
   enabledToggle: {
     id: 'app.containers.Admin.initiatives.enabledToggle',
