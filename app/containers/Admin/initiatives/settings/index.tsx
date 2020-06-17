@@ -17,7 +17,6 @@ import Toggle from 'components/UI/Toggle';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import Label from 'components/UI/Label';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -64,6 +63,14 @@ const SuccessMessage = styled.div`
   font-weight: 400;
   line-height: normal;
   margin-left: 14px;
+`;
+
+const SubSectionTitleWithDescription = styled(SubSectionTitle)`
+  margin-bottom: 5px;
+`;
+
+const SubSectionDescription = styled(SectionSubtitle)`
+  margin-bottom: 20px;
 `;
 
 interface InputProps {
@@ -264,15 +271,18 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
           <SectionTitle>
             <FormattedMessage {...messages.settingsTabTitle} />
           </SectionTitle>
-          <SectionSubtitle>
+          {/* <SectionSubtitle>
             <FormattedMessage {...messages.settingsTabSubtitle} />
-          </SectionSubtitle>
+          </SectionSubtitle> */}
 
           <Section>
             <SectionField>
-              <SubSectionTitle>
+              <SubSectionTitleWithDescription>
                 <FormattedMessage {...messages.showProposalEnabled} />
-              </SubSectionTitle>
+              </SubSectionTitleWithDescription>
+              <SubSectionDescription>
+                <FormattedMessage {...messages.showProposalEnabledInfo} />
+              </SubSectionDescription>
               <StyledToggle
                 checked={formValues.enabled}
                 onChange={this.handleEnabledOnChange}
@@ -280,9 +290,12 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               />
             </SectionField>
             <SectionField>
-              <SubSectionTitle>
+              <SubSectionTitleWithDescription>
                 <FormattedMessage {...messages.fieldPostingEnabled} />
-              </SubSectionTitle>
+              </SubSectionTitleWithDescription>
+              <SubSectionDescription>
+                <FormattedMessage {...messages.showProposalPostingEnabledInfo} />
+              </SubSectionDescription>
                 <StyledToggle
                   checked={formValues.posting_enabled}
                   onChange={this.handlePostingEnabledOnChange}
@@ -291,9 +304,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
 
             </SectionField>
             <SectionField>
-              <Label>
+              <SubSectionTitle>
                 <FormattedMessage {...messages.fieldVotingThreshold} />
-              </Label>
+              </SubSectionTitle>
               <StyledWarning>
                 <FormattedMessage {...messages.warningTresholdSettings}/>
               </StyledWarning>
@@ -317,9 +330,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
             </SectionField>
 
             <SectionField>
-              <Label>
-                <FormattedMessage {...messages.fieldDaysLimit} />
-              </Label>
+              <SubSectionTitle>
+                <FormattedMessage {...messages.fieldVotingDaysLimit} />
+              </SubSectionTitle>
               <StyledWarning>
                 <FormattedMessage {...messages.warningTresholdSettings}/>
               </StyledWarning>
@@ -338,11 +351,17 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
             </SectionField>
 
             <StyledSectionField>
+              <SubSectionTitleWithDescription>
+                <FormattedMessage {...messages.proposalSuccessMessage} />
+              </SubSectionTitleWithDescription>
+              <SubSectionDescription>
+                <FormattedMessage {...messages.proposalSuccessMessageInfo} />
+              </SubSectionDescription>
               <QuillMultilocWithLocaleSwitcher
                 id="threshold_reached_message"
                 valueMultiloc={formValues.threshold_reached_message}
                 onChange={this.handleThresholdReachedMessageOnChange}
-                label={intl.formatMessage(messages.fieldThresholdReachedMessage)}
+                // label={intl.formatMessage(messages.fieldThresholdReachedMessage)}
                 labelTooltipText={intl.formatMessage(messages.fieldThresholdReachedMessageInfo)}
                 noImages={true}
                 noVideos={true}
@@ -352,12 +371,18 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               />
             </StyledSectionField>
             <SectionField>
+              <SubSectionTitleWithDescription>
+                <FormattedMessage {...messages.proposalEligibilityCriteria} />
+              </SubSectionTitleWithDescription>
+              <SubSectionDescription>
+                <FormattedMessage {...messages.proposalEligibilityCriteriaInfo} />
+              </SubSectionDescription>
               <QuillMultilocWithLocaleSwitcher
                 id="eligibility_criteria"
                 valueMultiloc={formValues.eligibility_criteria}
                 onChange={this.handleEligibilityCriteriaOnChange}
-                label={intl.formatMessage(messages.fieldEligibilityCriteria)}
-                labelTooltipText={intl.formatMessage(messages.fieldEligibilityCriteriaInfo)}
+                // label={intl.formatMessage(messages.fieldEligibilityCriteria)}
+                // labelTooltipText={intl.formatMessage(messages.fieldEligibilityCriteriaInfo)}
                 noImages={true}
                 noVideos={true}
                 noAlign={true}

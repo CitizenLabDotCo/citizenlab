@@ -49,9 +49,9 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
     defaultMessage: 'Voting threshold'
   },
-  fieldDaysLimit: {
-    id: 'app.containers.Admin.initiatives.fieldDaysLimit',
-    defaultMessage: 'Days to reach threshold'
+  fieldVotingDaysLimit: {
+    id: 'app.containers.Admin.initiatives.fieldVotingDaysLimit',
+    defaultMessage: 'Days to reach voting threshold'
   },
   fieldThresholdReachedMessage: {
     id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessage',
@@ -65,9 +65,13 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.fieldEligibilityCriteria',
     defaultMessage: 'The criteria for an initiative'
   },
-  fieldEligibilityCriteriaInfo: {
-    id: 'app.containers.Admin.initiatives.fieldEligibilityCriteriaInfo',
-    defaultMessage: 'This will be shown to users posting an initiative. These criteria define when an initiative can be eligible or not'
+  proposalEligibilityCriteria: {
+    id: 'app.containers.Admin.initiatives.proposalEligibilityCriteria',
+    defaultMessage: 'Eligibility criteria'
+  },
+  proposalEligibilityCriteriaInfo: {
+    id: 'app.containers.Admin.initiatives.proposalEligibilityCriteriaInfo',
+    defaultMessage: 'Give a clear description of the criteria you\'ll use to decide if a proposal is eligible or not.'
   },
   initiativeSettingsFormSave: {
     id: 'app.containers.Admin.initiatives.initiativeSettingsFormSave',
@@ -97,8 +101,24 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.showProposalEnabled',
     defaultMessage: 'Proposals on the platform'
   },
+  showProposalEnabledInfo: {
+    id: 'app.containers.Admin.initiatives.showProposalEnabledInfo',
+    defaultMessage: 'Show or hide proposals on the platform.'
+  },
+  showProposalPostingEnabledInfo: {
+    id: 'app.containers.Admin.initiatives.showProposalPostingEnabledInfo',
+    defaultMessage: 'Enable or disable posting of new proposals. Existing proposals will remain visible even when posting new proposals is disabled.'
+  },
   enabledToggle: {
     id: 'app.containers.Admin.initiatives.enabledToggle',
     defaultMessage: 'Enabled'
   },
+  proposalSuccessMessage: {
+    id: 'app.containers.Admin.initiatives.proposalSuccessMessage',
+    defaultMessage: 'Success message'
+  },
+  proposalSuccessMessageInfo: {
+    id: 'app.containers.Admin.initiatives.proposalSuccessMessageInfo',
+    defaultMessage: 'Give a clear description of what proposal initiators can expect when their proposal reaches the voting threshold in time.'
+  }
 });
