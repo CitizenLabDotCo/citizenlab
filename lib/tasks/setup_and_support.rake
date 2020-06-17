@@ -236,4 +236,32 @@ namespace :setup_and_support do
         )
     end
   end
+
+  desc "Change the map center of a project"
+  task :change_map_center, [:host,:project_slug,:latitude,:longitude,:zoom_level] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      project = Project.find_by slug: args[:project_slug]
+      config = project.map_config || Maps::MapConfig.create!(project: project)
+      config.center_geojson = {
+          "coordinates" => [args[:longitude].to_f, args[:latitude].to_f],
+          "type" => "Point"
+        }
+      config.zoom_level = args[:zoom_level].to_i
+      config.save!
+    end
+  end
+
+  desc "Create a new manual group, given a list of user emails"
+  task :create_group_from_email_list, [:host,:url,:title] => [:environment] do |t, args|
+    locale = Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
+    emails = open(args[:url]).readlines.map(&:strip)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      users = User.where(email: emails)
+      group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
+      users.each do |u| 
+        group.add_member u
+      end
+      group.save!
+    end
+  end
 end
