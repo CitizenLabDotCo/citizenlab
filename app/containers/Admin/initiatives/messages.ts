@@ -41,10 +41,6 @@ export default defineMessages({
     id: 'app.containers.Admin.initiatives.warningTresholdSettings',
     defaultMessage: 'Changing this will impact all active initiatives'
   },
-  fieldEnable: {
-    id: 'app.containers.Admin.initiatives.fieldEnable',
-    defaultMessage: 'Enable initiatives'
-  },
   fieldVotingThreshold: {
     id: 'app.containers.Admin.initiatives.fieldVotingThreshold',
     defaultMessage: 'Voting threshold'
@@ -52,18 +48,6 @@ export default defineMessages({
   fieldVotingDaysLimit: {
     id: 'app.containers.Admin.initiatives.fieldVotingDaysLimit',
     defaultMessage: 'Days to reach voting threshold'
-  },
-  fieldThresholdReachedMessage: {
-    id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessage',
-    defaultMessage: 'What can people expect when their initiatives reach the threshold in time?'
-  },
-  fieldThresholdReachedMessageInfo: {
-    id: 'app.containers.Admin.initiatives.fieldThresholdReachedMessageInfo',
-    defaultMessage: 'This will be visible to all and shown with every initiative'
-  },
-  fieldEligibilityCriteria: {
-    id: 'app.containers.Admin.initiatives.fieldEligibilityCriteria',
-    defaultMessage: 'The criteria for an initiative'
   },
   proposalEligibilityCriteria: {
     id: 'app.containers.Admin.initiatives.proposalEligibilityCriteria',
