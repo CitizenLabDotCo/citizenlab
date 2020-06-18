@@ -82,18 +82,25 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     if (prevProps.authUser !== this.props.authUser) {
       this.redirectIfNotPermittedOnPage();
     }
+
+    if (prevProps.tenant !== this.props.tenant) {
+      this.redirectIfPostingNotEnabled();
+    }
+
   }
 
   redirectIfNotPermittedOnPage = () => {
     const { authUser } = this.props;
     const isPrivilegedUser = !isNilOrError(authUser) && (isAdmin({ data: authUser }) || isModerator({ data: authUser }) || isSuperAdmin({ data: authUser }));
 
-    if (!this.isPostingProposalEnabled()) {
-      clHistory.replace('/initiatives');
-    }
-
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace('/sign-up');
+    }
+  }
+
+  redirectIfPostingNotEnabled() {
+    if (!this.isPostingProposalEnabled()) {
+      clHistory.replace('/initiatives');
     }
   }
 
@@ -113,6 +120,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
   render() {
     const { authUser, locale } = this.props;
     const { locationInfo } = this.state;
+
     if (isNilOrError(authUser) || isNilOrError(locale) || locationInfo === undefined) return null;
     return (
       <>
