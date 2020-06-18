@@ -75,6 +75,11 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
           showConfirmationModal: false,
           topicIdToDelete: null
         });
+      })
+      .catch(() => {
+        this.setState({
+          processingDeletion: false,
+        });
       });
     }
   }

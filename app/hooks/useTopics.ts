@@ -38,7 +38,7 @@ export default function useTopics(parameters: Parameters) {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [topicIds]);
 
   return topics;
 }

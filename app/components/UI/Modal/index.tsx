@@ -65,7 +65,7 @@ const CloseButton = styled.button`
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center;-
   z-index: 2;
   border-radius: 50%;
   border: solid 1px transparent;
@@ -98,12 +98,13 @@ const StyledFocusOn = styled(FocusOn)<{ width: number }>`
   max-width: ${({ width }) => width}px;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 const ModalContainer = styled(clickOutside)<{ windowHeight: string }>`
   width: 100%;
   max-height: 85vh;
+  margin-top: 50px;
   background: #fff;
   border-radius: ${({ theme }) => theme.borderRadius};
   display: flex;
