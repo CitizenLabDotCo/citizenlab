@@ -38,6 +38,10 @@ export const SubSectionTitle = styled.h3`
   }
 `;
 
+export const SubSectionTitleWithDescription = styled(SubSectionTitle)`
+  margin-bottom: 5px;
+`;
+
 export const SectionField = styled.div`
   margin-bottom: 35px;
   transition: all 200ms ease-in-out;
