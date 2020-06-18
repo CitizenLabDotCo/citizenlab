@@ -361,8 +361,6 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 id="threshold_reached_message"
                 valueMultiloc={formValues.threshold_reached_message}
                 onChange={this.handleThresholdReachedMessageOnChange}
-                // label={intl.formatMessage(messages.fieldThresholdReachedMessage)}
-                labelTooltipText={intl.formatMessage(messages.fieldThresholdReachedMessageInfo)}
                 noImages={true}
                 noVideos={true}
                 noAlign={true}
@@ -381,8 +379,6 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 id="eligibility_criteria"
                 valueMultiloc={formValues.eligibility_criteria}
                 onChange={this.handleEligibilityCriteriaOnChange}
-                // label={intl.formatMessage(messages.fieldEligibilityCriteria)}
-                // labelTooltipText={intl.formatMessage(messages.fieldEligibilityCriteriaInfo)}
                 noImages={true}
                 noVideos={true}
                 noAlign={true}
