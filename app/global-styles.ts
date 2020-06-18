@@ -23,6 +23,11 @@ const GlobalStyle = createGlobalStyle`
     }
   }
 
+  *::placeholder {
+    opacity: 1;
+    color: #767676;
+  }
+
   html,
   body {
     background-color: #fff;
