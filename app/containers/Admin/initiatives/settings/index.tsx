@@ -9,7 +9,7 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
 // components
-import { SectionTitle, SectionSubtitle, Section, SectionField, SubSectionTitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription, Section, SectionField, SubSectionTitle } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
@@ -69,7 +69,7 @@ const SubSectionTitleWithDescription = styled(SubSectionTitle)`
   margin-bottom: 5px;
 `;
 
-const SubSectionDescription = styled(SectionSubtitle)`
+const SubSectionDescription = styled(SectionDescription)`
   margin-bottom: 20px;
 `;
 
@@ -271,9 +271,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
           <SectionTitle>
             <FormattedMessage {...messages.settingsTabTitle} />
           </SectionTitle>
-          <SectionSubtitle>
+          <SectionDescription>
             <FormattedMessage {...messages.settingsTabSubtitle} />
-          </SectionSubtitle>
+          </SectionDescription>
 
           <Section>
             <SectionField>
