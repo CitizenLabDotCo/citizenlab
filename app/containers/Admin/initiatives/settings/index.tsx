@@ -9,7 +9,14 @@ import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { updateTenant } from 'services/tenant';
 
 // components
-import { SectionTitle, SectionDescription, Section, SectionField, SubSectionTitle } from 'components/admin/Section';
+import {
+  SectionTitle,
+  SectionDescription,
+  Section,
+  SectionField,
+  SubSectionTitle,
+  SubSectionTitleWithDescription
+} from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
@@ -65,11 +72,7 @@ const SuccessMessage = styled.div`
   margin-left: 14px;
 `;
 
-const SubSectionTitleWithDescription = styled(SubSectionTitle)`
-  margin-bottom: 5px;
-`;
-
-const SubSectionDescription = styled(SectionDescription)`
+const StyledSectionDescription = styled(SectionDescription)`
   margin-bottom: 20px;
 `;
 
@@ -280,9 +283,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               <SubSectionTitleWithDescription>
                 <FormattedMessage {...messages.showProposalEnabled} />
               </SubSectionTitleWithDescription>
-              <SubSectionDescription>
+              <StyledSectionDescription>
                 <FormattedMessage {...messages.showProposalEnabledInfo} />
-              </SubSectionDescription>
+              </StyledSectionDescription>
               <StyledToggle
                 checked={formValues.enabled}
                 onChange={this.handleEnabledOnChange}
@@ -293,9 +296,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               <SubSectionTitleWithDescription>
                 <FormattedMessage {...messages.fieldPostingEnabled} />
               </SubSectionTitleWithDescription>
-              <SubSectionDescription>
+              <StyledSectionDescription>
                 <FormattedMessage {...messages.showProposalPostingEnabledInfo} />
-              </SubSectionDescription>
+              </StyledSectionDescription>
                 <StyledToggle
                   checked={formValues.posting_enabled}
                   onChange={this.handlePostingEnabledOnChange}
@@ -354,9 +357,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               <SubSectionTitleWithDescription>
                 <FormattedMessage {...messages.proposalSuccessMessage} />
               </SubSectionTitleWithDescription>
-              <SubSectionDescription>
+              <StyledSectionDescription>
                 <FormattedMessage {...messages.proposalSuccessMessageInfo} />
-              </SubSectionDescription>
+              </StyledSectionDescription>
               <QuillMultilocWithLocaleSwitcher
                 id="threshold_reached_message"
                 valueMultiloc={formValues.threshold_reached_message}
@@ -372,9 +375,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               <SubSectionTitleWithDescription>
                 <FormattedMessage {...messages.proposalEligibilityCriteria} />
               </SubSectionTitleWithDescription>
-              <SubSectionDescription>
+              <StyledSectionDescription>
                 <FormattedMessage {...messages.proposalEligibilityCriteriaInfo} />
-              </SubSectionDescription>
+              </StyledSectionDescription>
               <QuillMultilocWithLocaleSwitcher
                 id="eligibility_criteria"
                 valueMultiloc={formValues.eligibility_criteria}
