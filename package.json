@@ -116,7 +116,7 @@
     "semantic-ui-react": "0.88.2",
     "webfontloader": "1.6.28",
     "whatwg-fetch": "3.0.0",
-    "cl2-component-library": "0.2.3"
+    "cl2-component-library": "latest"
   },
   "devDependencies": {
     "@babel/cli": "7.x",
