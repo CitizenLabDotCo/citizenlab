@@ -27,7 +27,7 @@ export default defineMessages({
   },
   settingsTabSubtitle: {
     id: 'app.containers.Admin.initiatives.settingsTabSubtitle',
-    defaultMessage: 'Enable or disable proposals, or just disable the posting of new proposals. Set voting thresholds and provide more information about proposals.'
+    defaultMessage: 'Configure the settings for proposals, including activating the feature, setting voting thresholds and including relevant information and proposal criteria.'
   },
   titleManageTab: {
     id: 'app.containers.Admin.initiatives.titleManageTab',
