@@ -14,7 +14,7 @@ import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import Success from 'components/UI/Success';
 import IdeaCustomField from './IdeaCustomField';
-import { Section, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
+import { Section, SectionTitle, SectionDescription, SubSectionTitle } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -182,9 +182,9 @@ const IdeaForm = memo<Props & WithRouterProps & InjectedIntlProps>(({ params, cl
               <FormattedMessage {...messages.title} />
             </StyledSectionTitle>
           </TitleContainer>
-          <SectionSubtitle>
+          <SectionDescription>
             <FormattedMessage {...messages.description} />
-          </SectionSubtitle>
+          </SectionDescription>
         </Header>
 
         <Content>

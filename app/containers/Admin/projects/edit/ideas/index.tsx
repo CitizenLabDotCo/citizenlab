@@ -11,7 +11,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 
 // Components
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import PostManager from 'components/admin/PostManager';
 
 // resources
@@ -46,9 +46,9 @@ class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, Sta
           <SectionTitle>
             <FormattedMessage {...messages.titleIdeas} />
           </SectionTitle>
-          <SectionSubtitle>
+          <SectionDescription>
             <FormattedMessage {...messages.subtitleIdeas} />
-          </SectionSubtitle>
+          </SectionDescription>
         </StyledDiv>
 
         {!isNilOrError(project) &&

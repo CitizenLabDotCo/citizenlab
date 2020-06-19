@@ -13,7 +13,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import ExportVolunteersButton from './ExportVolunteersButton';
 import AllCauses from './AllCauses';
 import T from 'components/T';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -67,9 +67,9 @@ export class AdminProjectVolunteering extends React.PureComponent<Props> {
               <SectionTitle>
                 <FormattedMessage {...messages.titleVolunteeringTab} />
               </SectionTitle>
-              <SectionSubtitle>
+              <SectionDescription>
                 <FormattedMessage {...messages.subtitleVolunteeringTab} />
-              </SectionSubtitle>
+              </SectionDescription>
             </Left>
             <ExportVolunteersButton
               participationContextType="project"
@@ -93,9 +93,9 @@ export class AdminProjectVolunteering extends React.PureComponent<Props> {
           <SectionTitle>
             <FormattedMessage {...messages.titleVolunteeringTab} />
           </SectionTitle>
-          <SectionSubtitle>
+          <SectionDescription>
             <FormattedMessage {...messages.subtitleVolunteeringTab} />
-          </SectionSubtitle>
+          </SectionDescription>
           {volunteeringPhases.map(phase => (
             <PhaseContainer key={phase.id}>
               <HeaderContainer>

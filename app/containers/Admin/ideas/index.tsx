@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 import HelmetIntl from 'components/HelmetIntl';
 import PageWrapper from 'components/admin/PageWrapper';
 import PostManager from 'components/admin/PostManager';
-import { PageTitle, SectionSubtitle } from 'components/admin/Section';
+import { PageTitle, SectionDescription } from 'components/admin/Section';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -49,9 +49,9 @@ class IdeaDashboard extends PureComponent<Props> {
             <PageTitle>
               <FormattedMessage {...messages.header} />
             </PageTitle>
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.headerSubtitle} />
-            </SectionSubtitle>
+            </SectionDescription>
           </Left>
         </HeaderContainer>
 

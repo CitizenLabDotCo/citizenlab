@@ -185,6 +185,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
 
     if (isNilOrError(tenant)) return null;
 
+    const postingProposalEnabled = tenant.attributes.settings.initiatives?.posting_enabled;
     return (
       <Container className={`e2e-initiatives-header ${className || ''}`}>
         <Header>
@@ -201,16 +202,18 @@ class InitiativesHeader extends PureComponent<Props, State> {
             </HeaderTitle>
             <StyledAvatarBubbles />
           </HeaderContent>
-          <StartInitiative
-            fontWeight="500"
-            padding="13px 22px"
-            textColor="#FFF"
-            icon="arrowLeft"
-            iconPos="right"
-            onClick={this.startInitiative}
-            text={<FormattedMessage {...messages.startInitiative} />}
-            className="e2e-initiatives-header-cta-button"
-          />
+          {postingProposalEnabled &&
+            <StartInitiative
+              fontWeight="500"
+              padding="13px 22px"
+              textColor="#FFF"
+              icon="arrowLeft"
+              iconPos="right"
+              onClick={this.startInitiative}
+              text={<FormattedMessage {...messages.startInitiative} />}
+              className="e2e-initiatives-header-cta-button"
+            />
+          }
         </Header>
         <InitiativeInfo>
           <Wrapper>
