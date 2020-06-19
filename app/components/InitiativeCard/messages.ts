@@ -7,6 +7,6 @@ export default defineMessages({
   },
   xVotesOfY: {
     id: 'app.components.InitiativeCard.xVotesOfY',
-    defaultMessage: '{count, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}',
+    defaultMessage: '{xVotes, plural, =0 {no votes} one {1 vote} other {# votes}} out of {votingThreshold}',
   },
 });
