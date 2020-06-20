@@ -10,6 +10,7 @@ import CityLogoSection from 'components/CityLogoSection';
 
 // hooks
 import useAuthUser from 'hooks/useAuthUser';
+import useTenant from 'hooks/useTenant';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -85,6 +86,7 @@ interface Props {}
 
 const InitiativeIndexPage = memo<Props>(() => {
   const authUser = useAuthUser();
+  const tenant = useTenant();
 
   const onNewInitiativeButtonClick = useCallback((event?: React.FormEvent) => {
     event?.preventDefault();
@@ -105,37 +107,46 @@ const InitiativeIndexPage = memo<Props>(() => {
     }
   }, [authUser]);
 
-  return (
-    <>
-      <InitiativesIndexMeta />
-      <Container>
-        <InitiativesHeader />
-        <StyledContentContainer maxWidth="100%">
-          <SuccessStories />
-          <Padding />
-          <InitiativeCards
-            invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
-          />
-        </StyledContentContainer>
-        <FooterBanner>
-          <FooterMessage>
-            <FormattedMessage {...messages.footer} />
-          </FooterMessage>
+  if (!isNilOrError(tenant)) {
+    const postingProposalEnabled = tenant.data.attributes.settings.initiatives?.posting_enabled;
 
-          <Button
-            fontWeight="500"
-            padding="13px 22px"
-            buttonStyle="primary-inverse"
-            onClick={onNewInitiativeButtonClick}
-            icon="arrowLeft"
-            iconPos="right"
-            text={<FormattedMessage {...messages.startInitiative} />}
-          />
-        </FooterBanner>
-        <CityLogoSection />
-      </Container>
-    </>
-  );
+    return (
+      <>
+        <InitiativesIndexMeta />
+        <Container>
+          <InitiativesHeader />
+          <StyledContentContainer maxWidth="100%">
+            <SuccessStories />
+            <Padding />
+            <InitiativeCards
+              invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
+            />
+          </StyledContentContainer>
+          <FooterBanner>
+            <FooterMessage>
+              <FormattedMessage {...messages.footer} />
+            </FooterMessage>
+
+            {postingProposalEnabled &&
+              <Button
+                fontWeight="500"
+                padding="13px 22px"
+                buttonStyle="primary-inverse"
+                onClick={onNewInitiativeButtonClick}
+                icon="arrowLeft"
+                iconPos="right"
+                text={<FormattedMessage {...messages.startInitiative} />}
+              />
+            }
+          </FooterBanner>
+          <CityLogoSection />
+        </Container>
+      </>
+    );
+  }
+
+  return null;
+
 });
 
 export default InitiativeIndexPage;

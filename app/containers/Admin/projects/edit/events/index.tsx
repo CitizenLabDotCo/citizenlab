@@ -18,7 +18,7 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 import { List, Row, HeadRow } from 'components/admin/ResourceList';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // Styles
 const ListWrapper = styled.div`
@@ -62,9 +62,9 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
         <SectionTitle>
           <FormattedMessage {...messages.titleEvents} />
         </SectionTitle>
-        <SectionSubtitle>
+        <SectionDescription>
           <FormattedMessage {...messages.subtitleEvents} />
-        </SectionSubtitle>
+        </SectionDescription>
         <ListWrapper className="e2e-projects-events">
           <AddButton buttonStyle="cl-blue" icon="plus-circle" linkTo={`/admin/projects/${projectId}/events/new`}>
             <FormattedMessage {...messages.addEventButton} />
