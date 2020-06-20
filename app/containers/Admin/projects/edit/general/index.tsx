@@ -15,7 +15,7 @@ import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Section, SectionField, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionDescription, SubSectionTitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
@@ -655,9 +655,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <SectionTitle>
                   <FormattedMessage {...messages.titleGeneral} />
                 </SectionTitle>
-                <SectionSubtitle>
+                <SectionDescription>
                   <FormattedMessage {...messages.subtitleGeneral} />
-                </SectionSubtitle>
+                </SectionDescription>
               </>
             }
 

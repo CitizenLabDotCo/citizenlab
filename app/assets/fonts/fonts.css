@@ -18,8 +18,8 @@
 
 @font-face {
   font-family: 'larsseit';
-  src:  url('./larsseit.woff2') format('woff2'),
-        url('./larsseit.woff') format('woff');
+  src:  url('./larsseit-regular.woff2') format('woff2'),
+        url('./larsseit-regular.woff') format('woff');
   font-style: normal;
   font-weight: 400;
   font-display: auto;
@@ -27,8 +27,8 @@
 
 @font-face {
   font-family: 'larsseit';
-  src:  url('./larsseit-italic.woff2') format('woff2'),
-        url('./larsseit-italic.woff') format('woff');
+  src:  url('./larsseit-regularitalic.woff2') format('woff2'),
+        url('./larsseit-regularitalic.woff') format('woff');
   font-style: italic;
   font-weight: 400;
   font-display: auto;
