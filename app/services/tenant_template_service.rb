@@ -823,7 +823,7 @@ class TenantTemplateService
   end
 
   def yml_areas_ideas
-    AreasIdea.all.map do |a|
+    AreasIdea.where(idea: Idea.published).map do |a|
       if lookup_ref(a.idea_id, :idea)
         {
           'area_ref' => lookup_ref(a.area_id, :area),
@@ -834,7 +834,7 @@ class TenantTemplateService
   end
 
   def yml_baskets_ideas
-    BasketsIdea.all.map do |b|
+    BasketsIdea.where(idea: Idea.published).map do |b|
       if lookup_ref(b.idea_id, :idea)
         {
           'basket_ref' => lookup_ref(b.basket_id, :basket),
@@ -845,7 +845,7 @@ class TenantTemplateService
   end
 
   def yml_idea_files
-    IdeaFile.all.map do |i|
+    IdeaFile.where(idea: Idea.published).map do |i|
       {
         'idea_ref'        => lookup_ref(i.idea_id, :idea),
         'name'            => i.name,
@@ -858,7 +858,7 @@ class TenantTemplateService
   end
 
   def yml_idea_images
-    IdeaImage.all.map do |i|
+    IdeaImage.where(idea: Idea.published).map do |i|
       {
         'idea_ref'         => lookup_ref(i.idea_id, :idea),
         'remote_image_url' => i.image_url,
@@ -870,7 +870,7 @@ class TenantTemplateService
   end
 
   def yml_ideas_phases
-    IdeasPhase.all.map do |i|
+    IdeasPhase.where(idea: Idea.published).map do |i|
       {
         'idea_ref'   => lookup_ref(i.idea_id, :idea),
         'phase_ref'  => lookup_ref(i.phase_id, :phase),
@@ -881,7 +881,7 @@ class TenantTemplateService
   end
 
   def yml_ideas_topics
-    IdeasTopic.all.map do |i|
+    IdeasTopic.where(idea: Idea.published).map do |i|
       {
         'idea_ref'   => lookup_ref(i.idea_id, :idea),
         'topic_ref'  => lookup_ref(i.topic_id, :topic)
@@ -935,7 +935,7 @@ class TenantTemplateService
   end
 
   def yml_areas_initiatives
-    AreasInitiative.all.map do |a|
+    AreasInitiative.where(initiative: Initiative.published).map do |a|
       if lookup_ref(a.initiative_id, :initiative)
         {
           'area_ref'       => lookup_ref(a.area_id, :area),
@@ -946,7 +946,7 @@ class TenantTemplateService
   end
 
   def yml_initiative_files
-    InitiativeFile.all.map do |i|
+    InitiativeFile.where(initiative: Initiative.published).map do |i|
       {
         'initiative_ref'  => lookup_ref(i.initiative_id, :initiative),
         'name'            => i.name,
@@ -959,7 +959,7 @@ class TenantTemplateService
   end
 
   def yml_initiative_images
-    InitiativeImage.all.map do |i|
+    InitiativeImage.where(initiative: Initiative.published).map do |i|
       {
         'initiative_ref'   => lookup_ref(i.initiative_id, :initiative),
         'remote_image_url' => i.image_url,
@@ -971,7 +971,7 @@ class TenantTemplateService
   end
 
   def yml_initiatives_topics
-    InitiativesTopic.all.map do |i|
+    InitiativesTopic.where(initiative: Initiative.published).map do |i|
       {
         'initiative_ref'   => lookup_ref(i.initiative_id, :initiative),
         'topic_ref'  => lookup_ref(i.topic_id, :topic)
