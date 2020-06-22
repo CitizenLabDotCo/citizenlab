@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { shallow } from 'enzyme';
 
 jest.mock('components/admin/FormLocaleSwitcher', () => 'FormLocaleSwitcher');

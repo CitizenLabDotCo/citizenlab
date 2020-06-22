@@ -2,7 +2,7 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input, { Props as InputProps } from 'components/UI/Input';
+import { Input, InputProps } from 'cl2-component-library';
 import Label from 'components/UI/Label';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import IconTooltip from 'components/UI/IconTooltip';

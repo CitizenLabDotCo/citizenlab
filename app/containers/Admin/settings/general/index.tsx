@@ -6,7 +6,8 @@ import { Subscription } from 'rxjs';
 import { CLError, Multiloc, IOption } from 'typings';
 
 // i18n
-import { FormattedMessage } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { appLocalePairs } from 'containers/App/constants';
 import messages from '../messages';
 
@@ -31,7 +32,7 @@ import {
 import getSubmitState from 'utils/getSubmitState';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-interface Props {}
+export interface Props {}
 
 interface State {
   loading: boolean;
@@ -44,7 +45,7 @@ interface State {
   hasUrlError: boolean;
 }
 
-export default class SettingsGeneralTab extends PureComponent<Props, State> {
+class SettingsGeneralTab extends PureComponent<Props & InjectedIntlProps, State> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -168,6 +169,7 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
     const { tenant } = this.state;
 
     if (tenant) {
+      const { intl: { formatMessage } } = this.props;
       const { errors, saved, attributesDiff, hasUrlError } = this.state;
       const updatedLocales = get(attributesDiff, 'settings.core.locales');
 
@@ -221,14 +223,14 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.urlTitle} />
-                <IconTooltip content={<FormattedMessage {...messages.urlTitleTooltip} />} />
+                <IconTooltip content={formatMessage(messages.urlTitleTooltip)} />
               </Label>
               <Input
                 type="text"
                 placeholder="https://..."
                 onChange={this.handleUrlOnChange}
                 value={tenantSite}
-                error={hasUrlError ? <FormattedMessage {...messages.urlError} /> : null}
+                error={hasUrlError ? formatMessage(messages.urlError) : null}
               />
             </SectionField>
 
@@ -250,3 +252,5 @@ export default class SettingsGeneralTab extends PureComponent<Props, State> {
     return null;
   }
 }
+
+export default injectIntl<Props>(SettingsGeneralTab);
