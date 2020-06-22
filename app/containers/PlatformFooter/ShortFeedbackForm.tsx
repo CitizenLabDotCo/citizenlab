@@ -9,7 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import { SectionField } from 'components/admin/Section';
 import TextArea from 'components/UI/TextArea';
 import Error from 'components/UI/Error';

@@ -18,7 +18,7 @@ import Radio from 'components/UI/Radio';
 import { Section } from 'components/admin/Section';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import Button from 'components/UI/Button';
 

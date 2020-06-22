@@ -8,7 +8,7 @@ import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
 import Select from 'components/UI/Select';
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings

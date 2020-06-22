@@ -4,7 +4,7 @@ import { colors } from 'utils/styleUtils';
 
 // components
 import { ChromePicker, ColorResult } from 'react-color';
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 
 const Container = styled.div`
   position: relative;

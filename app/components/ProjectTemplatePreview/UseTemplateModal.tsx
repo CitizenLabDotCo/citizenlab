@@ -22,7 +22,7 @@ import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Modal from 'components/UI/Modal';
 import Error from 'components/UI/Error';
 import Link from 'utils/cl-router/Link';

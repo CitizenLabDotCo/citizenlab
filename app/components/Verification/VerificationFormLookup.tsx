@@ -6,7 +6,7 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import IconTooltip from 'components/UI/IconTooltip';
 import Collapse from 'components/UI/Collapse';
