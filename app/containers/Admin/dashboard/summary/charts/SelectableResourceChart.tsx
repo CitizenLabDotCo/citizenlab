@@ -16,7 +16,7 @@ import GetSerieFromStream from 'resources/GetSerieFromStream';
 // components
 import { BarChart, Bar, Tooltip, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 import { GraphCard, NoDataContainer, GraphCardInner, GraphCardHeaderWithFilter } from '../..';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import { HiddenLabel } from 'utils/a11y';
 
 const SHiddenLabel = styled(HiddenLabel)`

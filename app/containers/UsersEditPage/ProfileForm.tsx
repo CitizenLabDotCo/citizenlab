@@ -22,7 +22,7 @@ import { SectionField } from 'components/admin/Section';
 import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import Input from 'components/UI/Input';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import IconTooltip from 'components/UI/IconTooltip';
 

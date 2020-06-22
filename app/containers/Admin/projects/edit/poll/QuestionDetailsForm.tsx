@@ -7,7 +7,7 @@ import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 // Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import Input from 'components/UI/Input';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 

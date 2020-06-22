@@ -1,6 +1,6 @@
 import React from 'react';
 import { keys } from 'lodash-es';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 
 import { IOption } from 'typings';
 import { TRule, ruleTypeConstraints } from './rules';

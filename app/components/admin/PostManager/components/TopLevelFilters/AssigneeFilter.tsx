@@ -4,7 +4,7 @@ import { memoize } from 'lodash-es';
 
 import { isNilOrError } from 'utils/helperUtils';
 
-// import Select from 'components/UI/Select';
+// import { Select } from 'cl2-component-library';
 import { Dropdown } from 'semantic-ui-react';
 
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
