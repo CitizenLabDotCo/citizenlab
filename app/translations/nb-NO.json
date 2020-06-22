@@ -5,6 +5,7 @@
   "UI.FormComponents.buttonDisabled": "Submit button disabled",
   "UI.FormComponents.buttonEnabled": "Submit button enabled",
   "UI.FormComponents.optional": "optional",
+  "UI.FormComponents.required": "påkrevd",
   "app.ccomponents.InitiativeCards.noInitiativesForFilter": "No proposals found",
   "app.components.AdminPage.SettingsPage.contrastRatioTooLow": "Warning: the color you selected doesn't have a high enough contrast. This may result in text that's hard to read. Choose a darker color to optimize readability.",
   "app.components.AdminPage.SettingsPage.customSectionInfo": "This content is shown at the bottom of your homepage. You can change it at any time.",
