@@ -204,4 +204,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.configureInvitations',
     defaultMessage: '3. Configure the invitations',
   },
+  required: {
+    id: 'UI.FormComponents.required',
+    defaultMessage: 'required'
+  },
 });
