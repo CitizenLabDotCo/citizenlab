@@ -124,7 +124,11 @@ const InitiativeIndexPage = memo<Props>(() => {
           </StyledContentContainer>
           <FooterBanner>
             <FooterMessage>
-              <FormattedMessage {...messages.footer} />
+              {postingProposalEnabled ?
+                <FormattedMessage {...messages.footer} />
+                :
+                <FormattedMessage {...messages.footerPostingDisabled} />
+              }
             </FooterMessage>
 
             {postingProposalEnabled &&

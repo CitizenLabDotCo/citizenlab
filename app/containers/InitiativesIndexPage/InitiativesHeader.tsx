@@ -195,10 +195,17 @@ class InitiativesHeader extends PureComponent<Props, State> {
           <StyledInitiativeInfoMobile />
           <HeaderContent>
             <HeaderTitle>
-              <FormattedMessage
-                {...messages.header}
-                values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
-              />
+              {postingProposalEnabled ?
+                <FormattedMessage
+                  {...messages.header}
+                  values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
+                />
+              :
+                <FormattedMessage
+                  {...messages.headerPostingProposalDisabled}
+                  values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
+                />
+              }
             </HeaderTitle>
             <StyledAvatarBubbles />
           </HeaderContent>
