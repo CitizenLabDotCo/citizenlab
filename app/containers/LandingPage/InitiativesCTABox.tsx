@@ -150,12 +150,18 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
         <BoxContainer>
           <BackgroundIcon name="initiatives" />
           <TextContainer>
-            <Title>
-              <FormattedMessage {...messages.initiativesBoxTitle} />
-            </Title>
-            <Text>
-              <FormattedMessage {...messages.initiativesBoxText} />
-            </Text>
+            {postingProposalEnabled ?
+            <>
+              <Title>
+                <FormattedMessage {...messages.initiativesBoxTitle} />
+              </Title>
+              <Text>
+                <FormattedMessage {...messages.initiativesBoxText} />
+              </Text>
+            </> :
+            <></>
+          }
+
           </TextContainer>
           <ButtonContainer>
             <BrowseInitiativesButton
@@ -166,7 +172,9 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
               textDecorationHover="underline"
               fullWidth={smallerThanSmallTablet}
               linkTo="/initiatives"
-              text={<FormattedMessage {...messages.browseInitiative} />}
+              text={
+                <FormattedMessage {...messages.browseInitiative} />
+              }
               className="e2e-initiatives-landing-CTA-browse"
             />
             {postingProposalEnabled &&
