@@ -112,6 +112,10 @@ const DownloadButton = styled(Button)`
   margin-bottom: 15px;
 `;
 
+const StyledWarning = styled(Warning)`
+  margin-top: 5px;
+`;
+
 export interface InputProps { }
 
 interface DataProps {
@@ -396,7 +400,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
     const hasValidRights = hasModeratorRights ? !isEmpty(selectedProjects) : true;
     const isValidInvitationTemplate = isString(selectedFileBase64) && !isEmpty(selectedFileBase64);
-    return (isValidEmails && hasValidRights) || isValidInvitationTemplate;
+    return (isValidEmails || isValidInvitationTemplate) && hasValidRights;
   }
 
   render() {
@@ -490,9 +494,9 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                   placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
                 />
                 {isNilOrError(selectedProjects) &&
-                  <Warning>
+                  <StyledWarning>
                     <FormattedMessage {...messages.required} />
-                  </Warning>}
+                  </StyledWarning>}
               </>
             }
 
