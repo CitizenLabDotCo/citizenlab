@@ -10,7 +10,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import LocationInput from 'components/UI/LocationInput';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';

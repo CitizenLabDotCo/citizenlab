@@ -5,7 +5,7 @@ import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';

@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
 
 // components
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';

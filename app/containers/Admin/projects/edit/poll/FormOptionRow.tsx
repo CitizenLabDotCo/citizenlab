@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 // Components
 import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
 import { TextCell, Row } from 'components/admin/ResourceList';
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // Typings

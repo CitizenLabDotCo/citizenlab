@@ -12,7 +12,7 @@ import messages from '../messages';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
-import Input from 'components/UI/Input';
+import { Input } from 'cl2-component-library';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
