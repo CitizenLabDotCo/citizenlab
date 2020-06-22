@@ -3,6 +3,7 @@ import React, { memo, useCallback } from 'react';
 // hooks
 import useWindowSize from 'hooks/useWindowSize';
 import useAuthUser from 'hooks/useAuthUser';
+import useTenant from 'hooks/useTenant';
 
 // styling
 import styled, { withTheme } from 'styled-components';
@@ -129,6 +130,7 @@ interface Props extends InputProps {
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
 
   const authUser = useAuthUser();
+  const tenant = useTenant();
   const { windowWidth } = useWindowSize();
 
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
@@ -140,43 +142,51 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
     });
   }, []);
 
-  return (
-    <Container className={className}>
-      <BoxContainer>
-        <BackgroundIcon name="initiatives" />
-        <TextContainer>
-          <Title>
-            <FormattedMessage {...messages.initiativesBoxTitle} />
-          </Title>
-          <Text>
-            <FormattedMessage {...messages.initiativesBoxText} />
-          </Text>
-        </TextContainer>
-        <ButtonContainer>
-          <BrowseInitiativesButton
-            fontWeight="500"
-            padding="13px 22px"
-            buttonStyle="text"
-            textColor={theme.colorMain}
-            textDecorationHover="underline"
-            fullWidth={smallerThanSmallTablet}
-            linkTo="/initiatives"
-            text={<FormattedMessage {...messages.browseInitiative} />}
-            className="e2e-initiatives-landing-CTA-browse"
-          />
-          <StartInitiativeButton
-            fontWeight="500"
-            padding="13px 22px"
-            linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
-            onClick={!authUser ? signUp : undefined}
-            fullWidth={smallerThanSmallTablet}
-            text={<FormattedMessage {...messages.startInitiative} />}
-            className="e2e-initiatives-landing-CTA-new"
-          />
-        </ButtonContainer>
-      </BoxContainer>
-    </Container>
-  );
+  if (!isNilOrError(tenant)) {
+    const postingProposalEnabled = tenant.data.attributes.settings.initiatives?.posting_enabled;
+
+    return (
+      <Container className={className}>
+        <BoxContainer>
+          <BackgroundIcon name="initiatives" />
+          <TextContainer>
+            <Title>
+              <FormattedMessage {...messages.initiativesBoxTitle} />
+            </Title>
+            <Text>
+              <FormattedMessage {...messages.initiativesBoxText} />
+            </Text>
+          </TextContainer>
+          <ButtonContainer>
+            <BrowseInitiativesButton
+              fontWeight="500"
+              padding="13px 22px"
+              buttonStyle="text"
+              textColor={theme.colorMain}
+              textDecorationHover="underline"
+              fullWidth={smallerThanSmallTablet}
+              linkTo="/initiatives"
+              text={<FormattedMessage {...messages.browseInitiative} />}
+              className="e2e-initiatives-landing-CTA-browse"
+            />
+            {postingProposalEnabled &&
+              <StartInitiativeButton
+                fontWeight="500"
+                padding="13px 22px"
+                linkTo={!isNilOrError(authUser) ? '/initiatives/new' : undefined}
+                onClick={!authUser ? signUp : undefined}
+                fullWidth={smallerThanSmallTablet}
+                text={<FormattedMessage {...messages.startInitiative} />}
+                className="e2e-initiatives-landing-CTA-new"
+              />
+            }
+          </ButtonContainer>
+        </BoxContainer>
+      </Container>
+    );
+  }
+
+  return null;
 });
 
 export default withTheme(InitiativesCTABox);
