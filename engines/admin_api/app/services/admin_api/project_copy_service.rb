@@ -295,8 +295,8 @@ module AdminApi
           'geojson'         => layer.geojson,
           'default_enabled' => layer.default_enabled,
           'marker_svg_url'  => layer.marker_svg_url,
-          'created_at'      => shift_timestamp(layer.created_at, shift_timestamp)&.iso8601,
-          'updated_at'      => shift_timestamp(layer.updated_at, shift_timestamp)&.iso8601
+          'created_at'      => shift_timestamp(layer.created_at, shift_timestamps)&.iso8601,
+          'updated_at'      => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
         }
         yml_layer
       end
