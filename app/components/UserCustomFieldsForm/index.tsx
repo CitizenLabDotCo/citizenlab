@@ -16,7 +16,7 @@ import { FormLabelValue } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
 import Input from 'components/UI/Input';
 import DateInput from 'components/UI/DateInput';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';

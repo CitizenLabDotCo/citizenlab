@@ -17,7 +17,7 @@ import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
 import { updateProject } from 'services/projects';
 
 // components
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 
 // i18n
 import messages from './messages';

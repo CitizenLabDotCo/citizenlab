@@ -7,7 +7,7 @@ import Table from 'components/UI/Table';
 import ModerationRow from './ModerationRow';
 import Pagination from 'components/admin/Pagination/Pagination';
 import Checkbox from 'components/UI/Checkbox';
-import Select from 'components/UI/Select';
+import { Select } from 'cl2-component-library';
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
 import Tabs from 'components/UI/Tabs';
