@@ -1,8 +1,8 @@
 require "i18n/backend/fallbacks"
 
-CL2_SUPPORTED_LOCALES = [:en, :"en-GB", :"en-CA", :"nl-BE", :"nl-NL", :"fr-BE", :"fr-FR", :"de-DE", :"da-DK", :"nb-NO", :"es-ES", :"es-CL", :"pl-PL", :"hu-HU", :"kl-GL"]
+CL2_SUPPORTED_LOCALES = [:en, :"en-GB", :"en-CA", :"nl-BE", :"nl-NL", :"fr-BE", :"fr-FR", :"de-DE", :"da-DK", :"nb-NO", :"es-ES", :"es-CL", :"pl-PL", :"hu-HU", :"kl-GL", :"ro-RO"]
 
-I18n.available_locales = CL2_SUPPORTED_LOCALES + [:nl, :fr, :de, :da, :nb, :es, :pl, :hu, :kl]
+I18n.available_locales = CL2_SUPPORTED_LOCALES + [:nl, :fr, :de, :da, :nb, :es, :pl, :hu, :kl, :ro]
 
 I18n.default_locale = :en
 
