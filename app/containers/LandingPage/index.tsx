@@ -20,6 +20,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
+import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -34,9 +35,6 @@ import messages from './messages';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-
-// typings
-import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.main`
   height: 100%;
@@ -141,6 +139,7 @@ interface DataProps {
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
+  proposalsEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -158,12 +157,13 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage, proposalsEnabled } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       // custom section
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
+      const postingProposalsEnabled = tenant.attributes.settings.initiatives?.posting_enabled;
 
       // tranlate header slogan into a h2 wih a fallback
       const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
@@ -195,9 +195,12 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
-                <FeatureFlag name="initiatives">
+                {(
+                  proposalsEnabled &&
+                  postingProposalsEnabled
+                ) &&
                   <StyledInitiativesCTABox />
-                </FeatureFlag>
+                }
               </StyledContentContainer>
 
               {showCustomSection &&
@@ -244,7 +247,8 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  homepageInfoPage: <GetPage slug="homepage-info" />
+  homepageInfoPage: <GetPage slug="homepage-info" />,
+  proposalsEnabled: <GetFeatureFlag name="initiatives" />
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);
