@@ -24,6 +24,13 @@ class ProjectsTopicPolicy < ApplicationPolicy
     user&.active? && user&.active_admin_or_moderator?(record.project_id)
   end
 
+  def permitted_attributes_for_create
+    [
+      :topic_id,
+      :project_id
+    ]
+  end
+
   def permitted_attributes_for_reorder
     [:ordering]
   end
