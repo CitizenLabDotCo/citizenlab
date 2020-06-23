@@ -6,7 +6,7 @@ import clHistory from 'utils/cl-router/history';
 
 // Components
 import Avatar from 'components/Avatar';
-import Toggle from 'components/UI/Toggle';
+import { Toggle } from 'cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';
 import Icon from 'components/UI/Icon';
 import Tippy from '@tippyjs/react';

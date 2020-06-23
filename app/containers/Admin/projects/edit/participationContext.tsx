@@ -9,7 +9,7 @@ import Input from 'components/UI/Input';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
-import Toggle from 'components/UI/Toggle';
+import { Toggle } from 'cl2-component-library';
 import { Section, SectionField, SubSectionTitle } from 'components/admin/Section';
 import IconTooltip from 'components/UI/IconTooltip';
 

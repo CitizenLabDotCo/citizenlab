@@ -13,7 +13,7 @@ import { SectionTitle, Section, SectionField } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Input from 'components/UI/Input';
-import Toggle from 'components/UI/Toggle';
+import { Toggle } from 'cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
