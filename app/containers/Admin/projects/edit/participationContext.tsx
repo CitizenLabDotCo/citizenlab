@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Input } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 import Toggle from 'components/UI/Toggle';
 import { Section, SectionField, SubSectionTitle } from 'components/admin/Section';
 import { IconTooltip } from 'cl2-component-library';

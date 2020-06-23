@@ -26,7 +26,7 @@ import { IconTooltip } from 'cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import { addProjectFolderFile, deleteProjectFolderFile } from 'services/projectFolderFiles';
 import useProjectFolderFiles from 'hooks/useProjectFolderFiles';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 import useAdminPublication from 'hooks/useAdminPublication';
 
 interface Props {
