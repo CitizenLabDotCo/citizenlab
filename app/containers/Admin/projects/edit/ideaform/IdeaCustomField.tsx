@@ -8,7 +8,7 @@ import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, /*Visibility*/
 // components
 import Icon from 'components/UI/Icon';
 const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
-import Toggle from 'components/UI/Toggle';
+import { Toggle } from 'cl2-component-library';
 import IconToolTip from 'components/UI/IconTooltip';
 import Spinner from 'components/UI/Spinner';
 
