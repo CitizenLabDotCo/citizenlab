@@ -1554,6 +1554,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Wszystkie propozycje {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Poznaj i poprzyj propozycje {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Wszystkie propozycje • {orgName}",
+  "app.containers.InitiativesIndexPage.postingDisabledExplanation": "",
   "app.containers.InitiativesIndexPage.readMore": "Więcej o procedurze tutaj.",
   "app.containers.InitiativesIndexPage.startInitiative": "Opublikuj swoją propozycję",
   "app.containers.InitiativesIndexPage.success": "sukces",

@@ -1554,6 +1554,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Alle voorstellen die plaatsvinden in {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Ontdek en steun de voorstellen in {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Alle voorstellen • {orgName}",
+  "app.containers.InitiativesIndexPage.postingDisabledExplanation": "",
   "app.containers.InitiativesIndexPage.readMore": "Lees hier meer over de procedure.",
   "app.containers.InitiativesIndexPage.startInitiative": "Plaats je voorstel",
   "app.containers.InitiativesIndexPage.success": "succes",

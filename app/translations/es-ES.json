@@ -1554,6 +1554,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Todas las propuestas que tienen lugar en {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Explora y apoya propuestas relacionadas con {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Todas las propuestas • {orgName}",
+  "app.containers.InitiativesIndexPage.postingDisabledExplanation": "",
   "app.containers.InitiativesIndexPage.readMore": "Lea más sobre el proceso de postulación aquí.",
   "app.containers.InitiativesIndexPage.startInitiative": "Envía tu propuesta",
   "app.containers.InitiativesIndexPage.success": "¡Éxito!",
