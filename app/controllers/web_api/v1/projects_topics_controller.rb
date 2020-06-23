@@ -17,7 +17,7 @@ class WebApi::V1::ProjectsTopicsController < ApplicationController
   end
 
   def create
-    @projects_topic = ProjectsTopic.new(project_id: params[:project_id], topic_id: params[:topic_id])
+    @projects_topic = ProjectsTopic.new(permitted_attributes(ProjectsTopic))
     authorize @projects_topic
 
     SideFxProjectsTopicService.new.before_create @projects_topic, current_user
