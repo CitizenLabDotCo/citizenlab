@@ -202,29 +202,4 @@ resource "Topics" do
     end
   end
 
-  context "when admin" do
-    before do
-      @admin = create(:admin)
-      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
-      header 'Authorization', "Bearer #{token}"
-    end
-
-    patch "web_api/v1/projects/:project_id/topics/:topic_id/reorder" do
-      with_options scope: :topic do
-        parameter :ordering, "The position, starting from 0, where the field should be at. Fields after will move down.", required: true
-      end
-
-      let(:topics) { @topics.take(3) }
-      let(:project_id) { create(:project, topics: topics).id }
-      let(:topic_id) { topics[1].id }
-      let(:ordering) { 0 }
-
-      example_request "Reorder a topic within the context of a project" do
-        expect(response_status).to eq 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data,:attributes,:ordering_within_project)).to eq ordering
-      end
-    end
-  end
-
 end

@@ -76,11 +76,11 @@ class WebApi::V1::TopicsController < ApplicationController
   def reorder
     SideFxTopicService.new.before_update(@topic, current_user)
     ordering = permitted_attributes(@topic)[:ordering]
-    if ordering && instance.insert_at(ordering)
+    if ordering && @topic.insert_at(ordering)
       SideFxTopicService.new.after_update(@topic, current_user)
       render json: WebApi::V1::TopicSerializer.new(@topic.reload, params: fastjson_params).serialized_json, status: :ok
     else
-      render json: { errors: instance.errors.details }, status: :unprocessable_entity
+      render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end
   end
 
