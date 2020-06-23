@@ -11,7 +11,7 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SubSectionTitle, SectionTitle, SectionField } from 'components/admin/Section';

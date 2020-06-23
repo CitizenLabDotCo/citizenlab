@@ -10,7 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';

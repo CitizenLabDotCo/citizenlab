@@ -15,7 +15,7 @@ import messages from '../../messages';
 
 // components
 import OfficialFeedbackPost from 'components/PostShowComponents/OfficialFeedback/OfficialFeedbackPost';
-import Radio from 'components/UI/Radio';
+import { Radio } from 'cl2-component-library';
 import { Section } from 'components/admin/Section';
 import { Input, LocaleSwitcher } from 'cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
