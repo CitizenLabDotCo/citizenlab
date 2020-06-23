@@ -6,14 +6,14 @@ import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
 import Button from 'components/UI/Button';
 
 import T from 'components/T';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 const Container = styled.div``;
 

@@ -24,7 +24,7 @@ import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import { Input } from 'cl2-component-library';
 import Select from 'components/UI/Select';
 import QuillEditor from 'components/UI/QuillEditor';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';

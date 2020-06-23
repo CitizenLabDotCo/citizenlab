@@ -12,7 +12,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
 import { FormattedMessage } from 'utils/cl-intl';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Radio from 'components/UI/Radio';
 
 // i18n

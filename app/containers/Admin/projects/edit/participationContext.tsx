@@ -11,7 +11,7 @@ import Label from 'components/UI/Label';
 import Radio from 'components/UI/Radio';
 import Toggle from 'components/UI/Toggle';
 import { Section, SectionField, SubSectionTitle } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';

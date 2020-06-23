@@ -21,7 +21,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
 import { SectionField } from 'components/admin/Section';
 import Error from 'components/UI/Error';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';

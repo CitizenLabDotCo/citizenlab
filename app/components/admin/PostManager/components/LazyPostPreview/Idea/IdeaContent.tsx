@@ -13,7 +13,7 @@ import Comments from 'components/PostShowComponents/Comments';
 import FileAttachments from 'components/UI/FileAttachments';
 import FeedbackSettings from './FeedbackSettings';
 import VotePreview from './VotePreview';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 import Button from 'components/UI/Button';
 import Link from 'utils/cl-router/Link';

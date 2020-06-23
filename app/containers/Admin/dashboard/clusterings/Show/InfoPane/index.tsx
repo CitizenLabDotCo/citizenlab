@@ -17,7 +17,7 @@ import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
 import Radio from 'components/UI/Radio';
 import ComparisonLegend from './ComparisonLegend';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

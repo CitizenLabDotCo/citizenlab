@@ -2,13 +2,11 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Input, InputProps } from 'cl2-component-library';
+import { Input, InputProps, IconTooltip, LocaleSwitcher } from 'cl2-component-library';
 import Label from 'components/UI/Label';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
-import IconTooltip from 'components/UI/IconTooltip';
 
 // hooks
-import useTenant from 'hooks/useTenant';
+import useTenantLocales from 'hooks/useTenantLocales';
 
 // style
 import styled from 'styled-components';
@@ -34,7 +32,7 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+const StyledLocaleSwitcher = styled(LocaleSwitcher)`
   width: auto;
 `;
 
@@ -51,11 +49,10 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
 
   const [selectedLocale, setSelectedLocale] = useState<Locale | null>(null);
 
-  const tenant = useTenant();
-  const tenantLocales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
+  const tenantLocales = useTenantLocales();
 
   useEffect(() => {
-    const newSelectedLocale = tenantLocales && tenantLocales.length > 0 ? tenantLocales[0] : null;
+    const newSelectedLocale = !isNilOrError(tenantLocales) && tenantLocales.length > 0 ? tenantLocales[0] : null;
     setSelectedLocale(newSelectedLocale);
     onSelectedLocaleChange && newSelectedLocale && onSelectedLocaleChange(newSelectedLocale);
   }, [tenantLocales, onSelectedLocaleChange]);
@@ -85,8 +82,9 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
             </StyledLabel>
           ) : <Spacer />}
 
-          <StyledFormLocaleSwitcher
-            onLocaleChange={handleOnSelectedLocaleChange}
+          <StyledLocaleSwitcher
+            onSelectedLocaleChange={handleOnSelectedLocaleChange}
+            locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
             values={{
               input_field: valueMultiloc as Multiloc

@@ -5,7 +5,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Spinner from 'components/UI/Spinner';
 import TopicFilterDropdown from './TopicFilterDropdown';
 import SelectSort from './SortFilterDropdown';
