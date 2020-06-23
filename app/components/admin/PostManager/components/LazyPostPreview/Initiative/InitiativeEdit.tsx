@@ -94,7 +94,6 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
             onSelectedLocaleChange={this.onLocaleChange}
             locales={tenantLocales}
             selectedLocale={selectedLocale}
-            values={{}}
           />
         </Top>
         <Content>
