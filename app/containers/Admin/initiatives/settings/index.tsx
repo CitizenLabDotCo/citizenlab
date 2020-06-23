@@ -205,12 +205,24 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
   handleEnabledOnChange = (event: React.FormEvent) => {
     event.preventDefault();
 
-    this.setState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        enabled: !formValues.enabled
-      }
-    }));
+    this.setState(({ formValues }) => {
+      const { enabled } = formValues;
+
+      return enabled === true ? ({
+        formValues: {
+          ...formValues,
+          enabled: false,
+          posting_enabled: false
+        }
+      })
+      :
+      ({
+        formValues: {
+          ...formValues,
+          enabled: true,
+        }
+      });
+    });
   }
 
   handlePostingEnabledOnChange = (event: React.FormEvent) => {
@@ -222,6 +234,25 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
         posting_enabled: !formValues.posting_enabled
       }
     }));
+
+    this.setState(({ formValues }) => {
+      const { posting_enabled, enabled } = formValues;
+
+      // return enabled === false ? ({
+      //   formValues: {
+      //     ...formValues,
+      //     enabled: false,
+      //     posting_enabled: false
+      //   }
+      // })
+      // :
+      // ({
+      //   formValues: {
+      //     ...formValues,
+      //     enabled: true,
+      //   }
+      // });
+    });
   }
 
   handleVotingTresholdOnChange = (value: string) => {
