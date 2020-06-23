@@ -208,6 +208,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
     if (isNilOrError(tenant)) return null;
 
     const postingProposalEnabled = tenant.attributes.settings.initiatives?.posting_enabled;
+
     return (
       <Container className={`e2e-initiatives-header ${className || ''}`}>
         <Header>
@@ -218,7 +219,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
           <HeaderContent>
             <HeaderTitle>
               <FormattedMessage
-                {...messages.header}
+                {...messages[postingProposalEnabled ? 'header' : 'headerPostingProposalDisabled']}
                 values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
               />
             </HeaderTitle>

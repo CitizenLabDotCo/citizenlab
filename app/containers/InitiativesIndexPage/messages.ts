@@ -23,7 +23,7 @@ export default defineMessages({
   },
   headerPostingProposalDisabled: {
     id: 'app.containers.InitiativesIndexPage.headerPostingProposalDisabled',
-    defaultMessage: 'To be defined'
+    defaultMessage: 'Explore citizen proposals for {styledOrgName}'
   },
   readMore: {
     id: 'app.containers.InitiativesIndexPage.readMore',

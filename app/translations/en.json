@@ -1548,7 +1548,6 @@
   "app.containers.InitiativesIndexPage.explanationTitle": "How does it work?",
   "app.containers.InitiativesIndexPage.footer": "Start your own proposal and make your voice heard",
   "app.containers.InitiativesIndexPage.header": "Post your proposal here and place it on the agenda of {styledOrgName}",
-  "app.containers.InitiativesIndexPage.headerPostingProposalDisabled": "To be defined",
   "app.containers.InitiativesIndexPage.invisibleInitiativesPageTitle": "Discover proposals",
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "All proposals taking place in {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Explore and support proposals conducted in {orgName}",
