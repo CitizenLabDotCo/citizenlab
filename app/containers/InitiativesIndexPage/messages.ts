@@ -59,6 +59,10 @@ export default defineMessages({
   },
   footerPostingDisabled: {
     id: 'app.containers.InitiativesIndexPage.footerPostingDisabled',
-    defaultMessage: 'To be defined'
+    defaultMessage: 'Support the citizen proposals and make your voice heard!'
   },
+  postingDisabledExplanation: {
+    id: 'app.containers.InitiativesIndexPage.postingDisabledExplanation',
+    defaultMessage: 'New proposals are currently on hold. Please browse and lend your feedback and support to existing proposals!'
+  }
 });
