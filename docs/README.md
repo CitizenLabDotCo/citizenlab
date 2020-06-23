@@ -1,5 +1,14 @@
 # Changelog
 
+
+## 2020-06-19
+
+## Fixed
+- Some Polisch caharcters not being rendered correctly
+
+## Added
+- Option in back-office to toggle on/off the ability to add new proposals to the platform (but so without completely turning on/off the proposal feature)
+
 ## 2020-06-17
 
 ## Fixed
