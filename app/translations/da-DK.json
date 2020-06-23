@@ -1554,6 +1554,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Alle borgerforslag der finder sted i {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Udforsk og støt borgerforslag, der gennemføres i {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "Alle borgerforslag • {orgName}",
+  "app.containers.InitiativesIndexPage.postingDisabledExplanation": "",
   "app.containers.InitiativesIndexPage.readMore": "Læs mere om proceduren her.",
   "app.containers.InitiativesIndexPage.startInitiative": "Aflever dit borgerforslag",
   "app.containers.InitiativesIndexPage.success": "succes",

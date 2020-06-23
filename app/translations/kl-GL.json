@@ -1554,6 +1554,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "Innuttaasut siunnersuutaat tamarmik uani pisartut {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Innuttaasut siunnersuutaat misissukkit tapersersorlugillu",
   "app.containers.InitiativesIndexPage.metaTitle": "Innuttaasut siunnersuutaat tamarmik • {orgName}",
+  "app.containers.InitiativesIndexPage.postingDisabledExplanation": "",
   "app.containers.InitiativesIndexPage.readMore": "Uani periaaseq atuaruk",
   "app.containers.InitiativesIndexPage.startInitiative": "Innuttaasutut siunnersuutit tunniuguk",
   "app.containers.InitiativesIndexPage.success": "iluatsilluarpoq",

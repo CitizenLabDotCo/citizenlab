@@ -1554,6 +1554,7 @@
   "app.containers.InitiativesIndexPage.invisibleTitleInitiativeCards": "All proposals taking place in {orgName}",
   "app.containers.InitiativesIndexPage.metaDescription": "Explore and support proposals conducted in {orgName}",
   "app.containers.InitiativesIndexPage.metaTitle": "All proposals • {orgName}",
+  "app.containers.InitiativesIndexPage.postingDisabledExplanation": "",
   "app.containers.InitiativesIndexPage.readMore": "Read more about the procedure here.",
   "app.containers.InitiativesIndexPage.startInitiative": "Post your proposal",
   "app.containers.InitiativesIndexPage.success": "success",
