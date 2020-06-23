@@ -229,7 +229,7 @@ class InitiativesHeader extends PureComponent<Props, State> {
               interactive={true}
               placement="bottom"
               content={
-                <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip">
+                <TooltipContent id="tooltip-content">
                   <TooltipContentIcon name="lock-outlined" ariaHidden />
                   <TooltipContentText>
                     <FormattedMessage {...messages.postingDisabledExplanation} />
@@ -250,7 +250,6 @@ class InitiativesHeader extends PureComponent<Props, State> {
                   iconPos="right"
                   onClick={this.startInitiative}
                   text={<FormattedMessage {...messages.startInitiative} />}
-                  className="e2e-initiatives-header-cta-button"
                   disabled={!postingProposalEnabled}
                 />
               </div>
