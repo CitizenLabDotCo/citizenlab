@@ -2,7 +2,7 @@ import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';

@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 // components
 import { Input } from 'cl2-component-library';
 import Label from 'components/UI/Label';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 // resources
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';

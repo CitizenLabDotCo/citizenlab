@@ -8,7 +8,7 @@ import { IParticipationContextType } from 'typings';
 
 // components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { addBasket, updateBasket } from 'services/baskets';

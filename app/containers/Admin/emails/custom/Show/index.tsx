@@ -30,7 +30,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // styling
 import { fontSizes } from 'utils/styleUtils';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 import Stamp from './Stamp';
 

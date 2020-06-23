@@ -14,7 +14,7 @@ import GetSimilarIdeas, { GetSimilarIdeasChildProps } from 'resources/GetSimilar
 
 // components
 import T from 'components/T';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 
 // utils

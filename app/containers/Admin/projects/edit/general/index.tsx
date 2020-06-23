@@ -18,7 +18,7 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 import Warning from 'components/UI/Warning';
 
 import Link from 'utils/cl-router/Link';

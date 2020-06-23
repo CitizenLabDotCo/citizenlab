@@ -7,7 +7,7 @@ import bowser from 'bowser';
 import Link from 'utils/cl-router/Link';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import LazyImage from 'components/LazyImage';
 
 // i18n

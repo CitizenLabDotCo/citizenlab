@@ -7,7 +7,7 @@ import Link from 'utils/cl-router/Link';
 // components
 import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
 import { Popup } from 'semantic-ui-react';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Avatar from 'components/Avatar';
 
 // i18n

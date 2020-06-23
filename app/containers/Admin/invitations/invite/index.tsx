@@ -16,7 +16,7 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 
 // services

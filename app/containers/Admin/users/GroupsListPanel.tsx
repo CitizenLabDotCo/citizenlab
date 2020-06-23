@@ -16,7 +16,7 @@ import events, { MembershipAdd } from './events';
 
 // Components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import T from 'components/T';
 
 // i18n

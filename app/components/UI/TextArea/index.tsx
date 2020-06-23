@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash-es';
 import Error from 'components/UI/Error';
 import TextareaAutosize from 'react-autosize-textarea';
 import Label from 'components/UI/Label';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';

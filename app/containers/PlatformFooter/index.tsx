@@ -12,7 +12,7 @@ import Modal from 'components/UI/Modal';
 import ShortFeedbackForm from './ShortFeedbackForm';
 import { postProductFeedback } from 'services/productFeedback';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
