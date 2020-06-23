@@ -146,7 +146,7 @@ resource "Topics" do
         let(:topic) { create(:topic, code: 'mobility') }
         let(:id) { topic.id }
 
-        example_request "Reoreder a default topic", document: :false do
+        example_request "Reorder a default topic", document: :false do
           expect(response_status).to eq 200
         end
       end
@@ -172,39 +172,6 @@ resource "Topics" do
         example_request "[error] Delete a default topic" do
           expect(response_status).to eq 401
         end
-      end
-    end
-
-    post "web_api/v1/projects/:project_id/topics" do
-      ValidationErrorHelper.new.error_fields(self, ProjectsTopic)
-
-      parameter :topic_id, "The ID of the topic to add"
-
-      let(:project_id) { create(:project).id }
-      let(:topic_id) { create(:topic).id }
-
-      example "Add a topic to a project" do
-        old_count = ProjectsTopic.count
-        do_request
-        expect(response_status).to eq 201
-        expect(ProjectsTopic.count).to eq (old_count + 1)
-      end
-    end
-
-    delete "web_api/v1/projects/:project_id/topics/:topic_id" do
-      let(:projects_topic) { create(:projects_topic) }
-      let(:project_id) { projects_topic.project_id }
-      let(:topic_id) { projects_topic.topic_id }
-
-      example "Delete a topic from a project" do
-        id = projects_topic.id
-        old_count = ProjectsTopic.count
-        idea = create(:idea, project: projects_topic.project, topics: [projects_topic.topic])
-        do_request
-        expect(response_status).to eq 200
-        expect{ProjectsTopic.find(id)}.to raise_error(ActiveRecord::RecordNotFound)
-        expect(ProjectsTopic.count).to eq (old_count - 1)
-        expect(idea.reload.topics).to be_blank
       end
     end
   end

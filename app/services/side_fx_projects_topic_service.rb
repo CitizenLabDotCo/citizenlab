@@ -9,6 +9,14 @@ class SideFxProjectsTopicService
     LogActivityJob.perform_later(projects_topic, 'created', user, projects_topic.created_at.to_i)
   end
 
+  def before_update projects_topic, user
+
+  end
+
+  def after_update projects_topic, user
+    LogActivityJob.perform_later(projects_topic, 'changed', user, projects_topic.updated_at.to_i)
+  end
+
   def before_destroy projects_topic, user
   end
 
