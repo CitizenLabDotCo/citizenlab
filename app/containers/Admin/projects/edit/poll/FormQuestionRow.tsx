@@ -40,16 +40,18 @@ class FormQuestionRow extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedLocale: !isNilOrError(props.locale) ? props.locale : null
+      selectedLocale: null
     };
   }
 
-  componentDidUpdate(prevProps) {
-    const { locale } = this.props;
-
-    if (prevProps.locale !== locale && !isNilOrError(locale)) {
-      this.setState({ selectedLocale: locale });
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (!isNilOrError(props.locale) && !state.selectedLocale) {
+      return {
+        selectedLocale: props.locale
+      };
     }
+
+    return null;
   }
 
   onChangeLocale = (selectedLocale: Locale) => {
