@@ -7,7 +7,7 @@
 - Polish characters not being rendered correctly
 
 ## Added
-- Option in back-office to toggle on/off the ability to add new proposals to the platform (but so without completely turning on/off the proposal feature)
+- Back-office toggle to turn on/off the ability to add new proposals to the platform
 
 ## 2020-06-17
 
