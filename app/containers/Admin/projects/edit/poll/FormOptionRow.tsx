@@ -47,23 +47,31 @@ interface State {
 }
 
 class FormOptionRow extends PureComponent<Props, State> {
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     this.state = {
-      selectedLocale: !isNilOrError(props.locale) ? props.locale : null,
-      titleMultiloc: props.titleMultiloc || {}
+      selectedLocale: null,
+      titleMultiloc: {}
     };
   }
 
-  componentDidUpdate(prevProps: Props) {
-    const { optionId, titleMultiloc, locale } = this.props;
-
-    if (prevProps.optionId !== optionId) {
-      this.setState({ titleMultiloc: titleMultiloc || {} });
+  static getDerivedStateFromProps(props: Props, state: State) {
+    if (!isNilOrError(props.locale) && !state.selectedLocale) {
+      return {
+        selectedLocale: props.locale
+      };
     }
 
-    if (prevProps.locale !== locale && !isNilOrError(locale)) {
-      this.setState({ selectedLocale: locale });
+    return null;
+  }
+
+  componentDidMount() {
+    this.setState({ titleMultiloc: this.props.titleMultiloc || {} });
+  }
+
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.optionId !== this.props.optionId) {
+      this.setState({ titleMultiloc: this.props.titleMultiloc || {} });
     }
   }
 
