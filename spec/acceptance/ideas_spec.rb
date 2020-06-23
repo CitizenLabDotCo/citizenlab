@@ -802,8 +802,6 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
-          # should also remove topics not in new project from the idea
-          expect(@idea.reload.topics.ids).to eq [@project.topics.first.id]
         end
       end
     end
