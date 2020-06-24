@@ -4,8 +4,7 @@ import { isBoolean, isNil, isString, get } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, lighten, transparentize } from 'polished';
 import { colors, invisibleA11yText, fontSizes } from 'utils/styleUtils';
-import { Spinner } from 'cl2-component-library';
-import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
+import { Spinner, Icon, IconProps, IconColors } from 'cl2-component-library';
 
 export type ButtonStyles =
   'primary'
@@ -402,7 +401,7 @@ export interface Props extends ButtonContainerProps {
   icon?: IconProps['name'];
   iconPos?: 'left' | 'right';
   iconTitle?: IconProps['title'];
-  iconTheme?: clColorTheme;
+  iconTheme?: IconColors;
   linkTo?: string;
   openInNewTab?: boolean;
   setSubmitButtonRef?: (value: any) => void;
@@ -549,7 +548,7 @@ export class Button extends PureComponent<Props, State> {
             name={icon}
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
             title={iconTitle}
-            colorTheme={iconTheme}
+            iconColors={iconTheme}
             ariaHidden={iconAriaHidden}
           />
         }
@@ -560,7 +559,7 @@ export class Button extends PureComponent<Props, State> {
             name={icon}
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
             title={iconTitle}
-            colorTheme={iconTheme}
+            iconColors={iconTheme}
             ariaHidden={iconAriaHidden}
           />
         }

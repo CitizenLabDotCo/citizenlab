@@ -10,7 +10,7 @@ import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 import PreviewFrame from './PreviewFrame';
 import styled from 'styled-components';
-import { clColorTheme } from 'components/UI/Icon';
+import { IconColors } from 'cl2-component-library';
 
 const ButtonWrapper = styled.div`
   margin: 40px 0;
@@ -42,7 +42,7 @@ class DraftCampaignDetails extends React.Component<Props> {
 
   render() {
     const { campaign } = this.props;
-    const iconColors: clColorTheme = {
+    const iconColors: IconColors = {
       clIconPrimary: '#fff',
       clIconSecondary: '',
       clIconAccent: '#fff',
