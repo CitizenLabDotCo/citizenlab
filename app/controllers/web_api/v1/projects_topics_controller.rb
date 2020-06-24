@@ -6,6 +6,7 @@ class WebApi::V1::ProjectsTopicsController < ApplicationController
     @projects_topics = @projects_topics.where(project_id: params[:project_id]) if params[:project_id].present?
 
     @projects_topics = @projects_topics
+      .order(:ordering)
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
