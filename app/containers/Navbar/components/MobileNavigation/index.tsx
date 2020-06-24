@@ -130,7 +130,7 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
             <NavigationIcon
               ariaHidden
               name="folder"
-              colorTheme={{
+              iconColors={{
                 clIconPrimary: `${colors.clIconPrimary}`,
                 clIconSecondary: `${colors.clIconAccent}`
               }}

@@ -303,7 +303,7 @@ const ProjectFolderCard = memo(({
       <MapIcon
         name="folder"
         ariaHidden
-        colorTheme={{
+        iconColors={{
           clIconPrimary: `${theme.colorSecondary}`,
           clIconSecondary: `${theme.colorSecondary}`,
         }}
