@@ -10,7 +10,6 @@ import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 import PreviewFrame from './PreviewFrame';
 import styled from 'styled-components';
-import { IconColors } from 'cl2-component-library';
 
 const ButtonWrapper = styled.div`
   margin: 40px 0;
@@ -42,18 +41,12 @@ class DraftCampaignDetails extends React.Component<Props> {
 
   render() {
     const { campaign } = this.props;
-    const iconColors: IconColors = {
-      clIconPrimary: '#fff',
-      clIconSecondary: '',
-      clIconAccent: '#fff',
-      clIconBackground: ''
-    };
+
     return (
       <>
         <PreviewFrame campaignId={campaign.id} />
         <ButtonWrapper>
           <Button
-            iconTheme={iconColors}
             buttonStyle="delete"
             icon="trash"
             onClick={this.handleDelete}

@@ -60,6 +60,17 @@ const MenuItemLink = styled(Link) `
     }
   }
 
+  &:not(.selected) {
+    .cl-icon {
+      .cl-icon-primary {
+        fill: ${colors.clIconPrimary};
+      }
+      .cl-icon-accent {
+        fill: ${colors.clIconAccent};
+      }
+    }
+  }
+
   &.selected {
     ${ArrowIcon} {
       opacity: 1;
