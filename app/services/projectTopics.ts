@@ -1,6 +1,30 @@
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
-import { ITopics } from 'services/topics';
+import { IRelationship } from 'typings';
+
+export interface IProjectTopicData {
+  id: string;
+  type: 'projects_topic';
+  attributes: {
+    ordering: number;
+  };
+  relationships: {
+    project: {
+      data: IRelationship;
+    }
+    topic: {
+      data: IRelationship;
+    }
+  };
+}
+
+export interface IProjectTopic {
+  data: IProjectTopicData;
+}
+
+export interface IProjectTopics {
+  data: IProjectTopicData[];
+}
 
 const apiEndpoint = `${API_PATH}/projects`;
 
@@ -33,5 +57,5 @@ export async function reorderProjectTopic(
 }
 
 export function projectTopicsStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<ITopics>({ apiEndpoint: `${apiEndpoint}/${projectId}/topics`, ...streamParams });
+  return streams.get<IProjectTopics>({ apiEndpoint: `${apiEndpoint}/${projectId}/projects_topics`, ...streamParams });
 }

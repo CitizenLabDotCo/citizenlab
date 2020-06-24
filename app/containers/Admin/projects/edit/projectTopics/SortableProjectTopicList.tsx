@@ -21,6 +21,7 @@ import { deleteProjectTopic, reorderProjectTopic } from 'services/projectTopics'
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';
+import useTopics from 'hooks/useTopics';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
@@ -34,7 +35,9 @@ const SortableProjectTopicList = memo(({
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [processingDeletion, setProcessingDeletion] = useState(false);
   const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
-  const projectTopics = useProjectTopics({ projectId, sort: 'custom' });
+  const projectTopics = useProjectTopics({ projectId });
+  const topicIds = !isNilOrError(projectTopics) ? projectTopics.map(topic => topic.relationships.topic.data.id) : [];
+  const topics = useTopics({ topicIds });
 
   const handleProjectTopicDelete = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
@@ -64,8 +67,9 @@ const SortableProjectTopicList = memo(({
     setTopicIdToDelete(null);
   };
 
-  if (!isNilOrError(projectTopics)) {
-    const isLastSelectedTopic = projectTopics.length === 1;
+  if (!isNilOrError(topics)) {
+    const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+    const isLastSelectedTopic = filteredTopics.length === 1;
 
     return (
       <>
@@ -83,7 +87,7 @@ const SortableProjectTopicList = memo(({
           </StyledWarning>
         }
         <SortableList
-          items={projectTopics}
+          items={filteredTopics}
           onReorder={handleReorderTopicProject}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-published-projects-list"
@@ -97,7 +101,7 @@ const SortableProjectTopicList = memo(({
                   index={index}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
-                  lastItem={(index === projectTopics.length - 1)}
+                  lastItem={(index === filteredTopics.length - 1)}
                 >
                   <RowContent>
                     <RowContentInner className="expand primary">
