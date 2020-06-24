@@ -8,7 +8,8 @@
   <link rel="preload" crossorigin="anonymous" href="/larsseit.woff2" as="font" type="font/woff2">
   <link rel="preload" crossorigin="anonymous" href="/larsseit-medium.woff2" as="font" type="font/woff2">
   <link rel="preload" crossorigin="anonymous" href="/larsseit-bold.woff2" as="font" type="font/woff2">
-  <script src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Intl.~locale.en,Intl.~locale.en-GB,Intl.~locale.en-CA,Intl.~locale.fr-BE,Intl.~locale.fr-FR,Intl.~locale.nl-BE,Intl.~locale.nl-NL,Intl.~locale.de-DE,Intl.~locale.da-DK,Intl.~locale.nb-NO,Intl.~locale.es-ES,Intl.~locale.es-CL,Intl.~locale.pl-PL,Intl.~locale.hu-HU,Intl.~locale.kl-GL"></script>
+  <script
+    src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=Intl.~locale.en,Intl.~locale.en-GB,Intl.~locale.en-CA,Intl.~locale.fr-BE,Intl.~locale.fr-FR,Intl.~locale.nl-BE,Intl.~locale.nl-NL,Intl.~locale.de-DE,Intl.~locale.da-DK,Intl.~locale.nb-NO,Intl.~locale.es-ES,Intl.~locale.es-CL,Intl.~locale.pl-PL,Intl.~locale.hu-HU,Intl.~locale.kl-GL,Intl.~locale.ro-RO"></script>
   <style>
     html,
     body {
@@ -50,6 +51,7 @@
       0% {
         transform: rotate(0deg);
       }
+
       100% {
         transform: rotate(360deg);
       }
@@ -65,10 +67,11 @@
   </div>
 
   <script>
-    window.myCallbackFunc = function() {}
+    window.myCallbackFunc = function () { }
   </script>
 
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places&callback=myCallbackFunc"></script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=***REMOVED***&libraries=places&callback=myCallbackFunc"></script>
 </body>
 
 </html>
