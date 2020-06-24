@@ -6,9 +6,8 @@ import { IInitiativeData } from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 import { ITenantSettings } from 'services/tenant';
 
-import { Icon } from 'cl2-component-library';
+import { Icon, IconTooltip } from 'cl2-component-library';
 import { StatusWrapper, StatusExplanation } from './SharedStyles';
-import { IconTooltip } from 'cl2-component-library';
 
 import ProgressBar from 'components/UI/ProgressBar';
 import Button from 'components/UI/Button';

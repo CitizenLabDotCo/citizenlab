@@ -13,12 +13,11 @@ import messages from '../messages';
 
 // components
 import InputMultiloc from 'components/UI/InputMultiloc';
-import { Input } from 'cl2-component-library';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
-import { IconTooltip } from 'cl2-component-library';
 
 // services
 import {

@@ -15,9 +15,8 @@ import AgeChart from './AgeChart';
 import DomicileChart from './DomicileChart';
 import IdeaDetails from './IdeaDetails';
 import ClusterDetails from './ClusterDetails';
-import { Radio } from 'cl2-component-library';
+import { Radio, IconTooltip } from 'cl2-component-library';
 import ComparisonLegend from './ComparisonLegend';
-import { IconTooltip } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

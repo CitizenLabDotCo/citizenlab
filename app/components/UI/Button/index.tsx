@@ -4,7 +4,7 @@ import { isBoolean, isNil, isString, get } from 'lodash-es';
 import styled, { withTheme } from 'styled-components';
 import { darken, lighten, transparentize } from 'polished';
 import { colors, invisibleA11yText, fontSizes } from 'utils/styleUtils';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
 export type ButtonStyles =

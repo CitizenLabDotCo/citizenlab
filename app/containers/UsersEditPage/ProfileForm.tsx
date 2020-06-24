@@ -21,10 +21,9 @@ import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
 import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-import { Input } from 'cl2-component-library';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Select from 'components/UI/Select';
 import QuillEditor from 'components/UI/QuillEditor';
-import { IconTooltip } from 'cl2-component-library';
 
 // i18n
 import { appLocalePairs, API_PATH } from 'containers/App/constants';
