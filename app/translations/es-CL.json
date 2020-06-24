@@ -348,7 +348,6 @@
   "app.components.UI.Card.a11y_unauthenticatedPopup": "Inicie sesión o regístrese para realizar esta acción",
   "app.components.UI.Card.login": "Iniciar sesión",
   "app.components.UI.Card.register": "Inscríbete",
-  "app.components.UI.IconTooltip.a11y_informationTooltip": "Casilla de sugerencia",
   "app.components.UI.TranslateButton.seeOriginal": "Ver original",
   "app.components.UI.TranslateButton.seeTranslation": "Ver traducción",
   "app.components.Upload.a11y_removeImage": "Eliminar",
