@@ -218,42 +218,53 @@ class InitiativesHeader extends PureComponent<Props, State> {
           <StyledInitiativeInfoMobile />
           <HeaderContent>
             <HeaderTitle>
-              <FormattedMessage
-                {...messages[postingProposalEnabled ? 'header' : 'headerPostingProposalDisabled']}
-                values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
-              />
+              {postingProposalEnabled ?
+                <FormattedMessage
+                  {...messages.header}
+                  values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
+                />
+                :
+                <FormattedMessage
+                  {...messages.headerPostingProposalDisabled}
+                  values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
+                />
+              }
             </HeaderTitle>
             <StyledAvatarBubbles />
-            <Tippy
-              disabled={postingProposalEnabled}
-              interactive={true}
-              placement="bottom"
-              content={
-                <TooltipContent id="tooltip-content">
-                  <TooltipContentIcon name="lock-outlined" ariaHidden />
-                  <TooltipContentText>
-                    <FormattedMessage {...messages.postingDisabledExplanation} />
-                  </TooltipContentText>
-                </TooltipContent>
-              }
-              theme="dark"
-              hideOnClick={false}
-            >
-              <div
-                tabIndex={postingProposalEnabled ? -1 : 0}
+            <div aria-live="polite">
+              <Tippy
+                disabled={postingProposalEnabled}
+                interactive={true}
+                placement="bottom"
+                content={
+                  <TooltipContent id="tooltip-content">
+                    <TooltipContentIcon name="lock-outlined" ariaHidden />
+                    <TooltipContentText>
+                      <FormattedMessage {...messages.postingDisabledExplanation} />
+                    </TooltipContentText>
+                  </TooltipContent>
+                }
+                theme="dark"
+                hideOnClick={false}
               >
-                <StartInitiativeButton
-                  fontWeight="500"
-                  padding="13px 22px"
-                  textColor="#FFF"
-                  icon="arrowLeft"
-                  iconPos="right"
-                  onClick={this.startInitiative}
-                  text={<FormattedMessage {...messages.startInitiative} />}
-                  disabled={!postingProposalEnabled}
-                />
-              </div>
-            </Tippy>
+                <div
+                  tabIndex={postingProposalEnabled ? -1 : 0}
+                >
+                  <StartInitiativeButton
+                    fontWeight="500"
+                    padding="13px 22px"
+                    textColor="#FFF"
+                    icon="arrowLeft"
+                    iconPos="right"
+                    iconAriaHidden
+                    onClick={this.startInitiative}
+                    text={<FormattedMessage {...messages.startInitiative} />}
+                    disabled={!postingProposalEnabled}
+                  />
+                </div>
+              </Tippy>
+            </div>
+
           </HeaderContent>
         </Header>
         <InitiativeInfo>

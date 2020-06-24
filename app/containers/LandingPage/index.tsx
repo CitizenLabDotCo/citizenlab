@@ -20,7 +20,6 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 
 // utils
 import { trackEventByName } from 'utils/analytics';
@@ -139,7 +138,6 @@ interface DataProps {
   tenant: GetTenantChildProps;
   authUser: GetAuthUserChildProps;
   homepageInfoPage: GetPageChildProps;
-  proposalsEnabled: GetFeatureFlagChildProps;
 }
 
 interface Props extends InputProps, DataProps {
@@ -157,7 +155,7 @@ class LandingPage extends PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenant, authUser, homepageInfoPage, proposalsEnabled } = this.props;
+    const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
     if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
       // custom section
@@ -195,10 +193,7 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
-                {(
-                  proposalsEnabled &&
-                  postingProposalsEnabled
-                ) &&
+                {postingProposalsEnabled &&
                   <StyledInitiativesCTABox />
                 }
               </StyledContentContainer>
@@ -248,7 +243,6 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   homepageInfoPage: <GetPage slug="homepage-info" />,
-  proposalsEnabled: <GetFeatureFlag name="initiatives" />
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);
