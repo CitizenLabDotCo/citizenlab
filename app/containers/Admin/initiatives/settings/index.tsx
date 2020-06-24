@@ -206,20 +206,15 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
     event.preventDefault();
 
     this.setState(({ formValues }) => {
-      const { enabled } = formValues;
+      const { enabled, posting_enabled } = formValues;
 
-      return enabled === true ? ({
+      return ({
         formValues: {
           ...formValues,
-          enabled: false,
-          posting_enabled: false
-        }
-      })
-      :
-      ({
-        formValues: {
-          ...formValues,
-          enabled: true,
+          enabled: !enabled,
+          // if proposals are turned off,
+          // posting of new proposals is automatically as well
+          posting_enabled: enabled === true ? false : posting_enabled
         }
       });
     });
@@ -228,30 +223,18 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
   handlePostingEnabledOnChange = (event: React.FormEvent) => {
     event.preventDefault();
 
-    this.setState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        posting_enabled: !formValues.posting_enabled
-      }
-    }));
-
     this.setState(({ formValues }) => {
       const { posting_enabled, enabled } = formValues;
 
-      // return enabled === false ? ({
-      //   formValues: {
-      //     ...formValues,
-      //     enabled: false,
-      //     posting_enabled: false
-      //   }
-      // })
-      // :
-      // ({
-      //   formValues: {
-      //     ...formValues,
-      //     enabled: true,
-      //   }
-      // });
+      return ({
+        formValues: {
+          ...formValues,
+          // if proposal submission is turned on,
+          // posting of new proposals is automatically as well
+          enabled: posting_enabled === false ? true : enabled,
+          posting_enabled: !posting_enabled
+        }
+      });
     });
   }
 
