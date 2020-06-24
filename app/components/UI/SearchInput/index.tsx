@@ -3,8 +3,7 @@ import { isEmpty } from 'lodash-es';
 import { LiveMessage } from 'react-aria-live';
 
 // components
-import { Icon } from 'cl2-component-library';
-import { Input } from 'cl2-component-library';
+import { Icon, Input } from 'cl2-component-library';
 
 // i18n
 import messages from './messages';

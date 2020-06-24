@@ -11,14 +11,13 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import { Radio } from 'cl2-component-library';
+import { Radio, IconTooltip } from 'cl2-component-library';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SubSectionTitle, SectionTitle, SectionField } from 'components/admin/Section';
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
-import { IconTooltip } from 'cl2-component-library';
 import IdeaAssignment from './IdeaAssignment';
 import Link from 'utils/cl-router/Link';
 

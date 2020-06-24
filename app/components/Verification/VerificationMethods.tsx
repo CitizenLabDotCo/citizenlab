@@ -2,11 +2,10 @@ import React, { memo, useCallback, Fragment } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Icon } from 'cl2-component-library';
+import { Icon, Spinner } from 'cl2-component-library';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 import Button from 'components/UI/Button';
-import Spinner from 'components/UI/Spinner';
 import { Title, Subtitle } from './styles';
 
 // hooks

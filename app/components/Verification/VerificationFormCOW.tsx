@@ -6,9 +6,8 @@ import streams from 'utils/streams';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import { Input } from 'cl2-component-library';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Error from 'components/UI/Error';
-import { IconTooltip } from 'cl2-component-library';
 import Collapse from 'components/UI/Collapse';
 import { FormContainer, Title, Form, FormField, StyledLabel, LabelTextContainer, Footer, SubmitButton, CancelButton, HelpImage } from './styles';
 

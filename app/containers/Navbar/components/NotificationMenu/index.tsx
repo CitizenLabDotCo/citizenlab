@@ -11,7 +11,7 @@ import tracks from '../../tracks';
 import NotificationCount from './components/NotificationCount';
 import Dropdown from 'components/UI/Dropdown';
 import Notification from './components/Notification';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import messages from './messages';
