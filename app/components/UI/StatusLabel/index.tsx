@@ -1,4 +1,4 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
 import { Icon, IconProps } from 'cl2-component-library';
@@ -32,7 +32,7 @@ interface Props {
   icon?: IconProps['name'];
 }
 
-const StatusLabel: SFC<Props> = (props: Props) => {
+const StatusLabel: FC<Props> = (props) => {
   return (
     <Container
       color={props.color}
