@@ -1,7 +1,7 @@
 import React, { SFC } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import Icon, { Props as IconProps } from 'components/UI/Icon';
+import { Icon, IconProps } from 'cl2-component-library';
 
 const Container: any = styled.div`
   height: 28px;

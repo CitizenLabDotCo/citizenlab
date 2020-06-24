@@ -20,7 +20,7 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from './tracks';
 
 // style
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
@@ -263,23 +263,18 @@ const MapIconDescription = styled.span`
   color: ${({ theme }) => theme.colorSecondary};
 `;
 
-export interface InputProps {
+export interface Props {
   publication: IAdminPublicationContent;
   size: 'small' | 'medium' | 'large';
   layout: 'dynamic' | 'threecolumns' | 'twocolumns';
   className?: string;
 }
 
-interface Props extends InputProps {
-  theme?: any;
-}
-
 const ProjectFolderCard = memo(({
   publication,
   size,
   layout,
-  className,
-  theme,
+  className
 }: Props) => {
   const projectFolderImages = useProjectFolderImages(publication.publicationId);
 
@@ -303,10 +298,6 @@ const ProjectFolderCard = memo(({
       <MapIcon
         name="folder"
         ariaHidden
-        iconColors={{
-          clIconPrimary: `${theme.colorSecondary}`,
-          clIconSecondary: `${theme.colorSecondary}`,
-        }}
       />
       <MapIconDescription aria-hidden className="e2e-folder-card-numberofprojects">
         {numberOfProjects}
@@ -381,4 +372,4 @@ const ProjectFolderCard = memo(({
   );
 });
 
-export default withTheme(ProjectFolderCard);
+export default ProjectFolderCard;
