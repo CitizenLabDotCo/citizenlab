@@ -67,7 +67,10 @@ const SortableProjectTopicList = memo(({
     setTopicIdToDelete(null);
   };
 
-  if (!isNilOrError(topics)) {
+  if (
+    !isNilOrError(topics) &&
+    topics.length > 0
+  ) {
     const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
     const isLastSelectedTopic = filteredTopics.length === 1;
 
