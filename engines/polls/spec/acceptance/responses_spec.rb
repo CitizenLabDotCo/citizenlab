@@ -24,6 +24,8 @@ resource "Poll Responses" do
         r1.update!(response_options: [@q1,@q2].map{|q| create(:poll_response_option, response: r1, option: q.options.first)})
         r2 = create(:poll_response, participation_context: @participation_context)
         r2.update!(response_options: [@q1,@q2].map{|q| create(:poll_response_option, response: r2, option: q.options.last)})
+        r3 = create(:poll_response, participation_context: @participation_context)
+        r3.update!(response_options: [@q1,@q2].map{|q| create(:poll_response_option, response: r3, option: q.options.last)})
         @q1.options.first.destroy!
         @q2.destroy!
         @q3 = create(:poll_question, :with_options, participation_context: @participation_context)
@@ -33,13 +35,17 @@ resource "Poll Responses" do
 
       example_request "XLSX export for a non-anonymous poll" do
         expect(status).to eq 200
+        File.open("abcdef.xlsx", 'wb') { |file| file.write(response_body) }
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
-        expect(worksheet.count).to eq 3
-        expect(worksheet[0][3].value.to_s).to eq @q3.title_multiloc['en']
+        headers = worksheet[0].cells.map(&:value).map(&:downcase)
+
+        expect(worksheet.count).to eq 4
+        expect(headers).not_to include "email"
+        expect(worksheet[0][2].value.to_s).to eq @q3.title_multiloc['en']
+        expect(worksheet[1][1].value.to_s).to eq ''
         expect(worksheet[1][2].value.to_s).to eq ''
-        expect(worksheet[1][3].value.to_s).to eq ''
-        expect(worksheet[2][2].value.to_s).to eq @q1.options.last.title_multiloc['en']
-        expect(worksheet[2][3].value.to_s).to eq ''
+        expect(worksheet[2][1].value.to_s).to eq @q1.options.last.title_multiloc['en']
+        expect(worksheet[2][2].value.to_s).to eq ''
       end
     end
     context "anonymous poll" do
