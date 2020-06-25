@@ -206,15 +206,13 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
     event.preventDefault();
 
     this.setState(({ formValues }) => {
-      const { enabled, posting_enabled } = formValues;
+      const { enabled } = formValues;
 
       return ({
         formValues: {
           ...formValues,
           enabled: !enabled,
-          // if proposals are turned off,
-          // posting of new proposals is automatically as well
-          posting_enabled: enabled === true ? false : posting_enabled
+          posting_enabled: !enabled
         }
       });
     });
