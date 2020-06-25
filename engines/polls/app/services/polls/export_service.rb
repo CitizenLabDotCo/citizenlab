@@ -11,7 +11,7 @@ module Polls
       wb.styles do |s|
         wb.add_worksheet(name: 'Poll results') do |sheet|
           sheet.add_row [
-            *(participation_context.poll_anonymous? ? [] : ['User ID','Email']),
+            *(participation_context.poll_anonymous? ? [] : ['User ID']),
             *questions.map{|q| multiloc_service.t(q.title_multiloc)}
           ], style: XlsxService.new.header_style(s)
           responses.includes(:user, response_options: [:option]).each do |response|
@@ -24,7 +24,7 @@ module Polls
               end
             end
             sheet.add_row [
-              *(participation_context.poll_anonymous? ? [] : [response.user.id,response.user.email]),
+              *(participation_context.poll_anonymous? ? [] : [response.user.id]),
               *user_options
             ]
           end
