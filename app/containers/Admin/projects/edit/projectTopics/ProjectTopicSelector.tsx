@@ -90,8 +90,8 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
       !isNilOrError(projectTopics)
     ) {
       const allTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
-      const projectTopicIds = projectTopics.map(topic => topic.id);
-      const selectableTopics = allTopics.filter(topic => !projectTopicIds.includes(topic.id));
+      const selectedInProjectTopicIds = !isNilOrError(projectTopics) ? projectTopics.map(topic => topic.relationships.topic.data.id) : [];
+      const selectableTopics = allTopics.filter(topic => !selectedInProjectTopicIds.includes(topic.id));
 
       return selectableTopics.map(topic => {
         return ({
