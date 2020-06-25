@@ -41,15 +41,15 @@ export async function addProjectTopic(projectId: string, topicId: string) {
 }
 
 export async function reorderProjectTopic(
-  projectId: string,
-  topicId: string,
+  // projectId: string,
+  projectTopicId: string,
   newOrder: number
 ) {
   return await streams.update(
-    `${apiEndpoint}/${projectId}/topics/${topicId}/reorder`,
-    topicId,
+    `${API_PATH}/projects_topics/${projectTopicId}/reorder`,
+    projectTopicId,
     {
-      topic: {
+      projects_topic: {
         ordering: newOrder
       }
     }

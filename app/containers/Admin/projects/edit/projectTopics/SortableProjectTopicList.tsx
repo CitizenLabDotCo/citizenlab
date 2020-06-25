@@ -59,7 +59,10 @@ const SortableProjectTopicList = memo(({
   };
 
   const handleReorderTopicProject = (topicId, newOrder) => {
-    reorderProjectTopic(projectId, topicId, newOrder);
+    if (!isNilOrError(projectTopics)) {
+      const projectTopicId = projectTopics.find(projectTopic => projectTopic.relationships.topic.data.id === topicId)?.id;
+      projectTopicId && reorderProjectTopic(projectTopicId, newOrder);
+    }
   };
 
   const closeSendConfirmationModal = () => {
