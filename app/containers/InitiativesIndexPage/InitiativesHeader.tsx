@@ -10,7 +10,6 @@ import Button from 'components/UI/Button';
 import Icon from 'components/UI/Icon';
 import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeInfoContent from './InitiativeInfoContent';
-import InitiativeInfoMobile from './InitiativeInfoContent/Mobile';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
