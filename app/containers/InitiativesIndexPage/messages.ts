@@ -59,7 +59,7 @@ export default defineMessages({
   },
   footerPostingDisabled: {
     id: 'app.containers.InitiativesIndexPage.footerPostingDisabled',
-    defaultMessage: 'Support the citizen proposals and make your voice heard!'
+    defaultMessage: 'Support citizen proposals and make your voice heard!'
   },
   postingDisabledExplanation: {
     id: 'app.containers.InitiativesIndexPage.postingDisabledExplanation',
