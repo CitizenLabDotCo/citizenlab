@@ -69,7 +69,7 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
     const tabHideConditions = {
       topics: function isTopicsTabHidden() {
         if (!customTopicsEnabled) {
-          return true;
+          return false; // to be changed
         }
 
         return false;
