@@ -93,14 +93,6 @@ const HeaderTitle = styled.h2`
   `}
 `;
 
-const StyledInitiativeInfoMobile = styled(InitiativeInfoMobile)`
-  width: 100%;
-
-  ${media.biggerThanMinTablet`
-    display: none;
-  `}
-`;
-
 const StyledAvatarBubbles = styled(AvatarBubbles)`
   min-height: 40px;
   margin-bottom: 18px;
@@ -122,9 +114,15 @@ const InitiativeInfo = styled.div`
   border: 1px solid ${colors.separation};
   border-left: none;
   border-right: none;
+  background: white;
+  line-height: ${fontSizes.xl}px;
+
+  ${media.smallerThanMaxTablet`
+    padding: 40px 0;
+  `}
 
   ${media.smallerThanMinTablet`
-    display: none;
+    margin-bottom: 40px;
   `}
 `;
 
@@ -215,7 +213,6 @@ class InitiativesHeader extends PureComponent<Props, State> {
           <ScreenReaderOnly>
             <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle} />
           </ScreenReaderOnly>
-          <StyledInitiativeInfoMobile />
           <HeaderContent>
             <HeaderTitle>
               {postingProposalEnabled ?
