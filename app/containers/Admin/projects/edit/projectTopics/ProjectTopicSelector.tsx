@@ -108,35 +108,28 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
 
   const multiSelectOptions = useMemo(() => getOptions(), [topics, projectTopics]);
 
-  if (
-    multiSelectOptions && multiSelectOptions.length > 0
-  ) {
+  return (
+    <Container>
+      <SelectGroupsContainer>
+        <StyledMultipleSelect
+          value={selectedTopicOptions}
+          options={multiSelectOptions}
+          onChange={handleTopicSelectionChange}
+          id="e2e-project-topic-multiselect"
+        />
 
-    return (
-      <Container>
-        <SelectGroupsContainer>
-          <StyledMultipleSelect
-            value={selectedTopicOptions}
-            options={multiSelectOptions}
-            onChange={handleTopicSelectionChange}
-            id="e2e-project-topic-multiselect"
-          />
-
-          <AddTopicButton
-            text={formatMessage(messages.addTopics)}
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            onClick={handleOnAddTopicsClick}
-            disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
-            processing={processing}
-            id="e2e-add-project-topic-button"
-          />
-        </SelectGroupsContainer>
-      </Container>
-    );
-  }
-
-  return null;
+        <AddTopicButton
+          text={formatMessage(messages.addTopics)}
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          onClick={handleOnAddTopicsClick}
+          disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
+          processing={processing}
+          id="e2e-add-project-topic-button"
+        />
+      </SelectGroupsContainer>
+    </Container>
+  );
 });
 
 export default injectIntl<Props>(withRouter(injectLocalize(ProjectTopicSelector)));

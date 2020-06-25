@@ -34,26 +34,32 @@ const SortableProjectTopicList = memo(({
 }: Props & WithRouterProps) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [processingDeletion, setProcessingDeletion] = useState(false);
-  const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
+  const [projectTopicIdToDelete, setProjectTopicIdToDelete] = useState<string | null>(null);
   const projectTopics = useProjectTopics({ projectId });
-  const topicIds = !isNilOrError(projectTopics) ? projectTopics.map(topic => topic.relationships.topic.data.id) : [];
-  const topics = useTopics({ topicIds });
+  const projectTopicIds = !isNilOrError(projectTopics) ? projectTopics.map(topic => topic.relationships.topic.data.id) : [];
+  const topics = useTopics({ topicIds: projectTopicIds });
 
   const handleProjectTopicDelete = (topicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
-    setShowConfirmationModal(true);
-    setTopicIdToDelete(topicId);
+    if (!isNilOrError(projectTopics)) {
+      const projectTopicId = projectTopics.find(projectTopic => projectTopic.relationships.topic.data.id === topicId)?.id;
+
+      if (projectTopicId) {
+        setShowConfirmationModal(true);
+        setProjectTopicIdToDelete(projectTopicId);
+      }
+    }
   };
 
   const handleProjectTopicDeletionConfirm = () => {
-    if (topicIdToDelete) {
+    if (projectTopicIdToDelete) {
       setProcessingDeletion(true);
       deleteProjectTopic(projectId, projectTopicIdToDelete)
       .then(() => {
         setProcessingDeletion(false);
         setShowConfirmationModal(false);
-        setTopicIdToDelete(null);
+        setProjectTopicIdToDelete(null);
       });
     }
   };
@@ -67,7 +73,7 @@ const SortableProjectTopicList = memo(({
 
   const closeSendConfirmationModal = () => {
     setShowConfirmationModal(false);
-    setTopicIdToDelete(null);
+    setProjectTopicIdToDelete(null);
   };
 
   if (
