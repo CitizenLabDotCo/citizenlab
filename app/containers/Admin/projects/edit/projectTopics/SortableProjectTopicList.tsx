@@ -49,7 +49,7 @@ const SortableProjectTopicList = memo(({
   const handleProjectTopicDeletionConfirm = () => {
     if (topicIdToDelete) {
       setProcessingDeletion(true);
-      deleteProjectTopic(projectId, topicIdToDelete)
+      deleteProjectTopic(projectId, projectTopicIdToDelete)
       .then(() => {
         setProcessingDeletion(false);
         setShowConfirmationModal(false);

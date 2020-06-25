@@ -28,15 +28,15 @@ export interface IProjectTopics {
 
 const apiEndpoint = `${API_PATH}/projects`;
 
-export async function deleteProjectTopic(projectId: string, topicId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${projectId}/topics/${topicId}`, topicId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/topics`, `${API_PATH}/topics`] });
+export async function deleteProjectTopic(projectId: string, projectTopicId: string) {
+  const response = await streams.delete(`${API_PATH}/projects_topics/${projectTopicId}`, projectTopicId);
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/projects_topics`] });
   return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
   const response = await streams.add(`${API_PATH}/projects_topics`, { project_id: projectId, topic_id: topicId });
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects_topics`, `${API_PATH}/topics`] });
+  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/projects_topics`] });
   return response;
 }
 
