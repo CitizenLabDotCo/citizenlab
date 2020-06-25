@@ -1,54 +1,54 @@
 ro:
   email_campaigns:
     campaign_type_description:
-      "manual": Official messages
-      "admin_rights_received": Admin rights received
-      "comment_deleted_by_admin": Deletion of my comment
-      "comment_marked_as_spam": Comment spam report
-      "comment_on_your_comment": A reply on my comment
-      "comment_on_your_idea": A comment on my idea
-      "comment_on_your_initiative": A comment on my proposal
-      "first_idea_published": Publication of my first idea
-      "idea_assigned_to_you": Assignment of an idea to me
-      "idea_marked_as_spam": Idea spam report
-      "idea_published": Publication of my idea
-      "initiative_assigned_to_you": Assignment of a proposal to me
-      "initiative_marked_as_spam": Proposal spam report
-      "initiative_published": Publication of my proposal
-      "invite_received": Invitation
-      "invite_reminder": Invitation reminder
-      "mention_in_comment": Mention in a comment
-      "mention_in_official_feedback": Mention in an update
-      "new_comment_for_admin": New comment in a project I moderate
-      "new_comment_on_commented_idea": New comment on an idea I commented on
-      "new_comment_on_commented_initiative": New comment on a proposal I commented on
-      "new_comment_on_voted_idea": New comment on an idea I voted for
-      "new_comment_on_voted_initiative": New comment on a proposal I voted for
-      "new_idea_for_admin": New idea in a project I moderate
-      "new_initiative_for_admin": New proposal
-      "official_feedback_on_commented_idea": Update on an idea I commented on
-      "official_feedback_on_commented_initiative": Update on a proposal I commented on
-      "official_feedback_on_voted_idea": Update on an idea I voted on
-      "official_feedback_on_voted_initiative": Update on a proposal I voted on
-      "official_feedback_on_your_idea": Update on my idea
-      "official_feedback_on_your_initiative": Update on my proposal
-      "password_reset": Password reset
-      "project_moderation_rights_received": Project moderation rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
-      "status_change_of_commented_idea": Status change of an idea I commented on
-      "status_change_of_commented_initiative": Status change of a proposal I commented on
-      "status_change_of_voted_idea": Status change of an idea I voted for
-      "status_change_of_voted_initiative": Status change of a proposal I voted for
-      "status_change_of_your_idea": Status change of my idea
-      "status_change_of_your_initiative": Status change of my proposal
-      "threshold_reached_for_admin": Proposal reached the voting threshold
-      "welcome": After registration
-      "admin_digest": Weekly overview for admins
+      "manual": Mesajele oficiale
+      "admin_rights_received": Drepturi de administrator primite
+      "comment_deleted_by_admin": Ștergerea comentariului meu
+      "comment_marked_as_spam": Comentează raport de spam 
+      "comment_on_your_comment": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D164,""en"",""ro"")"),"Un raspuns la meu Comentariul")'
+      "comment_on_your_idea": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D165,""en"",""ro"")"),"Un comentariu la idee mea")'
+      "comment_on_your_initiative": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D166,""en"",""ro"")"),"Un comentariu la propunerea mea")'
+      "first_idea_published": Publicarea primei mele idei
+      "idea_assigned_to_you": Atribuirea unei idei mie
+      "idea_marked_as_spam": Idee raport de spam
+      "idea_published": Publicarea ideii mele
+      "initiative_assigned_to_you": Atribuirea unei propuneri mie
+      "initiative_marked_as_spam": Propunere raport de spam
+      "initiative_published": Publicarea propunerii mele
+      "invite_received": Invitație
+      "invite_reminder": Invitație de memento
+      "mention_in_comment": Menționare într-un comentariu
+      "mention_in_official_feedback": Menționare într-o actualizare
+      "new_comment_for_admin": Comentariu nou intr-un proiect pe care il moderez
+      "new_comment_on_commented_idea": Comentariu nou la o idee pe care am comentat-o
+      "new_comment_on_commented_initiative": Comentariu nou la o propunere pe care am comentat-o
+      "new_comment_on_voted_idea": Comentariu nou la o idee pe care am votat-o
+      "new_comment_on_voted_initiative": Comentariu nou la o propunere pe care am votat-o
+      "new_idea_for_admin": Idee nouă într-un proiect pe care îl moderez
+      "new_initiative_for_admin": Propunere nouă
+      "official_feedback_on_commented_idea": Actualizare la o idee la care am comentat
+      "official_feedback_on_commented_initiative": Actualizare la o propunere la care am comentat
+      "official_feedback_on_voted_idea": Actualizare la o idee votată de către mine
+      "official_feedback_on_voted_initiative": Actualizare la o propunere votată de către mine
+      "official_feedback_on_your_idea": Actualizare la idea mea
+      "official_feedback_on_your_initiative": Actualizare la propunerea mea
+      "password_reset": Resetare parolă
+      "project_moderation_rights_received": Drepturile de moderare a proiectului au fost primite
+      "project_phase_started": Noua fază de proiect
+      "project_phase_upcoming": Viitoarea etapă a proiectului
+      "status_change_of_commented_idea": Schimbarea stării unei idei la care am comentat
+      "status_change_of_commented_initiative": Schimbarea stării unei propuneri la care am comentat
+      "status_change_of_voted_idea": Schimbarea stării unei idei pe care am votat-o
+      "status_change_of_voted_initiative": Schimbarea stării unei propuneri pe care am votat-o
+      "status_change_of_your_idea": Schimbarea stării ideii mele
+      "status_change_of_your_initiative": Schimbarea stării propunerii mele
+      "threshold_reached_for_admin": Propunerea a atins pragul de vot
+      "welcome": '=IFERROR(__xludf.DUMMYFUNCTION("googletranslate(D202,""en"",""ro"")"),"dupa Inregistrare")'
+      "admin_digest": Rezumate săptămânale pentru admini
       "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Weekly overview of assigned ideas
-      "user_digest": Weekly overview
-      "your_proposed_initiatives_digest": Weekly overview of your proposals
+      "assignee_digest": Rezumate săptămânale ale ideilor atribuite
+      "user_digest": Rezumate săptămânale
+      "your_proposed_initiatives_digest": Rezumate săptămânale ale propunerilor dumneavoastră
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
