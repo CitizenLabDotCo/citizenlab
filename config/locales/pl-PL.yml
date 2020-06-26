@@ -212,7 +212,7 @@ pl:
     role:
       is_admin: "Rola administratora"
       not_is_admin: "Rola nie administratora"
-      is_project_moderator: "Role is project moderator"
-      not_is_project_moderator: "Role is not project moderator"
+      is_project_moderator: "Role is project manager"
+      not_is_project_moderator: "Role is not project manager"
       is_normal_user: "Rola zwykłego użytkownika"
       not_is_normal_user: "Rola nie zwykłego użytkownika"

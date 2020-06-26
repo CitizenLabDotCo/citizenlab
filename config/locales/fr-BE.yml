@@ -228,7 +228,7 @@ fr-BE:
     role:
       is_admin: "C'est un rôle d'administrateur"
       not_is_admin: "Ce n'est pas un rôle d'administrateur"
-      is_project_moderator: "C'est un rôle de modérateur de projet"
-      not_is_project_moderator: "Ce n'est pas un rôle de modérateur de projet"
+      is_project_moderator: "C'est un rôle d'administrateur projet"
+      not_is_project_moderator: "Ce n'est pas un rôle d'administrateur projet"
       is_normal_user: "C'est un rôle d'utilisateur normal"
       not_is_normal_user: "Ce n'est pas un rôle d'utilisateur normal"
