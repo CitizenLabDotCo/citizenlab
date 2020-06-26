@@ -212,7 +212,7 @@ da:
     role:
       is_admin: "Rolle er administrator"
       not_is_admin: "Rolle er ikke administrator"
-      is_project_moderator: "Role is project moderator"
-      not_is_project_moderator: "Role is not project moderator"
+      is_project_moderator: "Role is project manager"
+      not_is_project_moderator: "Role is not project manager"
       is_normal_user: "Rolle er normal bruger "
       not_is_normal_user: "Rolle er ikke normal bruger "
