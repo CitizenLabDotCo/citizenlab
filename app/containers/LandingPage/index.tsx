@@ -35,9 +35,6 @@ import messages from './messages';
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 
-// typings
-import FeatureFlag from 'components/FeatureFlag';
-
 const Container = styled.main`
   height: 100%;
   min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
@@ -164,6 +161,7 @@ class LandingPage extends PureComponent<Props, State> {
       // custom section
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
+      const postingProposalsEnabled = tenant.attributes.settings.initiatives?.posting_enabled;
 
       // tranlate header slogan into a h2 wih a fallback
       const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
@@ -195,9 +193,9 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
-                <FeatureFlag name="initiatives">
+                {postingProposalsEnabled &&
                   <StyledInitiativesCTABox />
-                </FeatureFlag>
+                }
               </StyledContentContainer>
 
               {showCustomSection &&
@@ -244,7 +242,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  homepageInfoPage: <GetPage slug="homepage-info" />
+  homepageInfoPage: <GetPage slug="homepage-info" />,
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);
