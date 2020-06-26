@@ -213,7 +213,7 @@ ro:
     role:
       is_admin: "Rolul este de admin"
       not_is_admin: "Rolul nu este de admin"
-      is_project_moderator: "Role is project moderator"
-      not_is_project_moderator: "Role is not project moderator"
+      is_project_moderator: "Role is project manager"
+      not_is_project_moderator: "Role is not project manager"
       is_normal_user: "Rolul este de utilizator normal"
       not_is_normal_user: "Rolul nu este de utilizator normal"
