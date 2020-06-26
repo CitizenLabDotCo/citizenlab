@@ -205,23 +205,35 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
   handleEnabledOnChange = (event: React.FormEvent) => {
     event.preventDefault();
 
-    this.setState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        enabled: !formValues.enabled
-      }
-    }));
+    this.setState(({ formValues }) => {
+      const { enabled } = formValues;
+
+      return ({
+        formValues: {
+          ...formValues,
+          enabled: !enabled,
+          posting_enabled: !enabled
+        }
+      });
+    });
   }
 
   handlePostingEnabledOnChange = (event: React.FormEvent) => {
     event.preventDefault();
 
-    this.setState(({ formValues }) => ({
-      formValues: {
-        ...formValues,
-        posting_enabled: !formValues.posting_enabled
-      }
-    }));
+    this.setState(({ formValues }) => {
+      const { posting_enabled, enabled } = formValues;
+
+      return ({
+        formValues: {
+          ...formValues,
+          // if proposal submission is turned on,
+          // posting of new proposals is automatically as well
+          enabled: posting_enabled === false ? true : enabled,
+          posting_enabled: !posting_enabled
+        }
+      });
+    });
   }
 
   handleVotingTresholdOnChange = (value: string) => {
