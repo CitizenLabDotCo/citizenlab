@@ -18,7 +18,7 @@ module Polls
 
           responses.includes(:user, response_options: [:option]).each do |resp_obj|
             user_responses = questions.map { |q| extract_responses(resp_obj, q.id, multiloc_service) }
-            response_row = is_anonymous ? [] : [resp_obj.user.id]
+            response_row = is_anonymous ? [] : [resp_obj.user_id]
             response_row += user_responses
             sheet.add_row response_row
           end
