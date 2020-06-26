@@ -212,7 +212,7 @@ kl:
     role:
       is_admin: "Rolle tassaavoq aqutsisoq"
       not_is_admin: "Rolle tassaanngilaq aqutsisoq"
-      is_project_moderator: "Role is project moderator"
-      not_is_project_moderator: "Role is not project moderator"
+      is_project_moderator: "Role is project manager"
+      not_is_project_moderator: "Role is not project manager"
       is_normal_user: "Rolle tassaavoq nalinginnaasumik atuisoq "
       not_is_normal_user: "Rolle tassaanngilaq nalinginnaasumik atuisoq "
