@@ -73,7 +73,15 @@ const StyledContentContainer = styled(ContentContainer)`
   `}
 `;
 
-interface Props {}
+const Padding = styled.div`
+  width: 100%;
+  height: 100px;
+  ${media.smallerThanMinTablet`
+    height: 40px;
+  `}
+`;
+
+interface Props { }
 
 const InitiativeIndexPage = memo<Props>(() => {
   const authUser = useAuthUser();
@@ -108,6 +116,7 @@ const InitiativeIndexPage = memo<Props>(() => {
           <InitiativesHeader />
           <StyledContentContainer maxWidth="100%">
             <SuccessStories />
+            <Padding />
             <InitiativeCards
               invisibleTitleMessage={messages.invisibleTitleInitiativeCards}
             />
