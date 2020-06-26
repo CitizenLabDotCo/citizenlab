@@ -172,7 +172,7 @@ nb:
       not_has_value_outside: "%{property} er ikke et annet sted"
     participated_in_idea_status:
       in: "Deltok i en idé med status %{value}"
-      not_in: "Deltakelse i en idé med emnet %{value}"
+      not_in: "Ingen deltakelse i en idé med emnet %{value}"
       posted_in: "Deltok ikke i en idé med status %{value}"
       not_posted_in: "Publiserte ikke en idé med status %{value}"
       commented_in: "Kommenterte på en idé med status %{value}"
