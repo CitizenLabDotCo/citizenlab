@@ -35,7 +35,6 @@ resource "Poll Responses" do
 
       example_request "XLSX export for a non-anonymous poll" do
         expect(status).to eq 200
-        File.open("abcdef.xlsx", 'wb') { |file| file.write(response_body) }
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         headers = worksheet[0].cells.map(&:value).map(&:downcase)
 
