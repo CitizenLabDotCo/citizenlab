@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import qs from 'qs';
+import { omitBy, isNil } from 'lodash-es';
 import styled from 'styled-components';
 import Iframe from 'react-iframe';
 import { colors } from 'utils/styleUtils';
@@ -14,16 +16,19 @@ const Container = styled.div`
 
 type Props = {
   typeformUrl: string;
-  email: string | null;
   className?: string;
+  email: string | null;
+  user_id: string | null;
 };
 
 type State = {};
 
 export default class TypeformSurvey extends PureComponent<Props, State> {
   render() {
-    const { email, typeformUrl, className } = this.props;
-    const surveyUrl = (email ? `${typeformUrl}?email=${email}` : typeformUrl);
+    const { email, user_id, typeformUrl, className } = this.props;
+
+    const queryString = qs.stringify(omitBy({ email, user_id }, isNil));
+    const surveyUrl = `${typeformUrl}?${queryString}`;
 
     return (
       <Container className={className}>
