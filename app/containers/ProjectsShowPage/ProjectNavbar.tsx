@@ -215,117 +215,117 @@ class ProjectNavbar extends PureComponent<Props, State> {
             <FormattedMessage {...messages.a11y_projectNav} />
           </ScreenReaderOnly>
           <ProjectNavbarWrapper>
-          <StyledContentContainer>
-            <ProjectNavbarItems>
+            <StyledContentContainer>
+              <ProjectNavbarItems>
 
-              {/* Process link */}
-              {projectType === 'timeline' &&
+                {/* Process link */}
+                {projectType === 'timeline' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/process`}
+                    activeClassName="active"
+                    className="e2e-project-process-link"
+                  >
+                    <ProjectNavbarIcon name="timeline" ariaHidden />
+                    <FormattedMessage {...messages.navProcess} />
+                  </ProjectNavbarLink>
+                }
+
+                {/* Information link */}
                 <ProjectNavbarLink
-                  to={`/projects/${projectSlug}/process`}
+                  to={`/projects/${projectSlug}/info`}
                   activeClassName="active"
-                  className="e2e-project-process-link"
+                  className="e2e-project-info-link"
                 >
-                  <ProjectNavbarIcon name="timeline" ariaHidden />
-                  <FormattedMessage {...messages.navProcess} />
+                  <InfoIcon name="info" ariaHidden />
+                  <FormattedMessage {...messages.navInformation} />
                 </ProjectNavbarLink>
-              }
 
-              {/* Information link */}
-              <ProjectNavbarLink
-                to={`/projects/${projectSlug}/info`}
-                activeClassName="active"
-                className="e2e-project-info-link"
-              >
-                <InfoIcon name="info" ariaHidden />
-                <FormattedMessage {...messages.navInformation} />
-              </ProjectNavbarLink>
+                {/* Ideas link */}
+                {projectType === 'continuous' && (projectMethod === 'ideation' || projectMethod === 'budgeting') &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/ideas`}
+                    activeClassName="active"
+                    className="e2e-project-ideas-link"
+                  >
+                    <ProjectNavbarIcon name="idea2" className="idea" ariaHidden />
+                    <FormattedMessage {...messages.navIdeas} />
+                  </ProjectNavbarLink>
+                }
 
-              {/* Ideas link */}
-              {projectType === 'continuous' && (projectMethod === 'ideation' || projectMethod === 'budgeting') &&
-                <ProjectNavbarLink
-                  to={`/projects/${projectSlug}/ideas`}
-                  activeClassName="active"
-                  className="e2e-project-ideas-link"
-                >
-                  <ProjectNavbarIcon name="idea2" className="idea" ariaHidden />
-                  <FormattedMessage {...messages.navIdeas} />
-                </ProjectNavbarLink>
-              }
+                {/* Survey link */}
+                {projectType === 'continuous' && projectMethod === 'survey' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/survey`}
+                    activeClassName="active"
+                    className="e2e-project-survey-link"
+                  >
+                    <ProjectNavbarIcon name="survey" ariaHidden />
+                    <FormattedMessage {...messages.navSurvey} />
+                  </ProjectNavbarLink>
+                }
 
-              {/* Survey link */}
-              {projectType === 'continuous' && projectMethod === 'survey' &&
-                <ProjectNavbarLink
-                  to={`/projects/${projectSlug}/survey`}
-                  activeClassName="active"
-                  className="e2e-project-survey-link"
-                >
-                  <ProjectNavbarIcon name="survey" ariaHidden />
-                  <FormattedMessage {...messages.navSurvey} />
-                </ProjectNavbarLink>
-              }
+                {/* Poll link */}
+                {projectType === 'continuous' && projectMethod === 'poll' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/poll`}
+                    activeClassName="active"
+                    className="e2e-project-poll-link"
+                  >
+                    <ProjectNavbarIcon name="survey" />
+                    <FormattedMessage {...messages.navPoll} />
+                  </ProjectNavbarLink>
+                }
 
-              {/* Poll link */}
-              {projectType === 'continuous' && projectMethod === 'poll' &&
-                <ProjectNavbarLink
-                  to={`/projects/${projectSlug}/poll`}
-                  activeClassName="active"
-                  className="e2e-project-poll-link"
-                >
-                  <ProjectNavbarIcon name="survey" />
-                  <FormattedMessage {...messages.navPoll} />
-                </ProjectNavbarLink>
-              }
+                {/* Volunteering link */}
+                {projectType === 'continuous' && projectMethod === 'volunteering' &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/volunteering`}
+                    activeClassName="active"
+                    className="e2e-project-volunteering-link"
+                  >
+                    <ProjectNavbarIcon name="volunteer-hand" />
+                    <FormattedMessage {...messages.navVolunteering} />
+                  </ProjectNavbarLink>
+                }
 
-              {/* Volunteering link */}
-              {projectType === 'continuous' && projectMethod === 'volunteering' &&
-                <ProjectNavbarLink
-                  to={`/projects/${projectSlug}/volunteering`}
-                  activeClassName="active"
-                  className="e2e-project-volunteering-link"
-                >
-                  <ProjectNavbarIcon name="volunteer-hand" />
-                  <FormattedMessage {...messages.navVolunteering} />
-                </ProjectNavbarLink>
-              }
+                {/* Events link */}
+                {hasEvents &&
+                  <ProjectNavbarLink
+                    to={`/projects/${projectSlug}/events`}
+                    activeClassName="active"
+                    className="e2e-project-event-link"
+                  >
+                    <ProjectNavbarIcon name="calendar" ariaHidden/>
+                    <FormattedMessage {...messages.navEvents} />
+                  </ProjectNavbarLink>
+                }
 
-              {/* Events link */}
-              {hasEvents &&
-                <ProjectNavbarLink
-                  to={`/projects/${projectSlug}/events`}
-                  activeClassName="active"
-                  className="e2e-project-event-link"
-                >
-                  <ProjectNavbarIcon name="calendar" ariaHidden/>
-                  <FormattedMessage {...messages.navEvents} />
-                </ProjectNavbarLink>
-              }
+                <Spacer />
 
-              <Spacer />
+                {/* PB basket button */}
+                {participationContextType && participationContextId &&
+                  <StyledPBNavbarButton
+                    participationContextType={participationContextType}
+                    participationContextId={participationContextId}
+                    className="e2e-project-pb-button"
+                  />
+                }
 
-              {/* PB basket button */}
-              {participationContextType && participationContextId &&
-                <StyledPBNavbarButton
-                  participationContextType={participationContextType}
-                  participationContextId={participationContextId}
-                  className="e2e-project-pb-button"
-                />
-              }
-
-              {/* Continuous Ideation Idea Button desktop */}
-              {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
-                <StyledIdeaButton
-                  projectId={project.id}
-                  height="58px"
-                  bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
-                  textColor={theme.projectNavbarIdeaButtonTextColor}
-                  opacityDisabled="0.5"
-                  borderRadius="0px"
-                  participationContextType="project"
-                />
-              }
-            </ProjectNavbarItems>
-          </StyledContentContainer>
-        </ProjectNavbarWrapper>
+                {/* Continuous Ideation Idea Button desktop */}
+                {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
+                  <StyledIdeaButton
+                    projectId={project.id}
+                    height="58px"
+                    bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
+                    textColor={theme.projectNavbarIdeaButtonTextColor}
+                    opacityDisabled="0.5"
+                    borderRadius="0px"
+                    participationContextType="project"
+                  />
+                }
+              </ProjectNavbarItems>
+            </StyledContentContainer>
+          </ProjectNavbarWrapper>
         </>
       );
     }

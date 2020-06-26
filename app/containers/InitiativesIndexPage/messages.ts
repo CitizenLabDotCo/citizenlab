@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.header',
     defaultMessage: 'Start your own initiative and make your voice heard by {styledOrgName}'
   },
+  headerPostingProposalDisabled: {
+    id: 'app.containers.InitiativesIndexPage.headerPostingProposalDisabled',
+    defaultMessage: 'Explore citizen proposals for {styledOrgName}'
+  },
   readMore: {
     id: 'app.containers.InitiativesIndexPage.readMore',
     defaultMessage: 'Read more about initiatives.'
@@ -53,4 +57,12 @@ export default defineMessages({
     id: 'app.containers.InitiativesIndexPage.footer',
     defaultMessage: 'Start your own initiative and make your voice heard'
   },
+  footerPostingDisabled: {
+    id: 'app.containers.InitiativesIndexPage.footerPostingDisabled',
+    defaultMessage: 'Support citizen proposals and make your voice heard!'
+  },
+  postingDisabledExplanation: {
+    id: 'app.containers.InitiativesIndexPage.postingDisabledExplanation',
+    defaultMessage: 'New proposals are currently on hold. Please browse and lend your feedback and support to existing proposals!'
+  }
 });

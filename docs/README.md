@@ -1,5 +1,14 @@
 # Changelog
 
+
+## 2020-06-19
+
+## Fixed
+- Polish characters not being rendered correctly
+
+## Added
+- Back-office toggle to turn on/off the ability to add new proposals to the platform
+
 ## 2020-06-17
 
 ## Fixed
