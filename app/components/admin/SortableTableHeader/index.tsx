@@ -6,7 +6,6 @@ const SortableLink = styled.a`
   color: rgba(0, 0, 0, 0.87);
   cursor: pointer;
   display: flex;
-  flex-wrap: no-wrap;
 `;
 
 interface Props {

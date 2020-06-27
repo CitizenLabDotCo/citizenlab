@@ -1,7 +1,5 @@
 import React from 'react';
-
 import { shallow } from 'enzyme';
-
 import { mockOption } from 'services/__mocks__/pollOptions';
 
 jest.mock('services/pollOptions', () => ({
@@ -9,23 +7,19 @@ jest.mock('services/pollOptions', () => ({
   updatePollOption: jest.fn(() => { return new Promise((resolve) => resolve); }),
   deletePollOption: jest.fn()
 }));
+
 import * as pollOptionsService from 'services/pollOptions';
 const addPollOptionSpy = jest.spyOn(pollOptionsService, 'addPollOption');
 const updatePollOptionSpy = jest.spyOn(pollOptionsService, 'updatePollOption');
 const deletePollOptionSpy = jest.spyOn(pollOptionsService, 'deletePollOption');
 
-// jest.mock('resources/GetTenantLocales');
-// import { mockGetTenantLocales } from 'resources/__mocks__/GetTenantLocales';
-
-jest.mock('resources/GetTenantLocales', ({ children }) => children(['en', 'fr-BE']));
-
-jest.mock('components/admin/FormLocaleSwitcher', () => 'FormLocaleSwitcher');
+jest.mock('resources/GetTenantLocales', () => 'GetTenantLocales');
+jest.mock('resources/GetLocale', () => 'GetLocale');
+jest.mock('cl2-component-library', () => ({ Input: 'Input', LocaleSwitcher: 'LocaleSwitcher' }));
 jest.mock('components/admin/ResourceList', () => ({ TextCell: 'TextCell', Row: 'Row' }));
 jest.mock('components/UI/InputMultiloc', () => 'InputMultiloc');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
-
-jest.mock('resources/GetTenant', () => 'GetTenant');
 
 import FormOptionRow from './FormOptionRow';
 
@@ -44,10 +38,11 @@ describe('<FormOptionRow />', () => {
         <FormOptionRow
           titleMultiloc={titleMultiloc}
           closeRow={closeRow}
-          locale="en"
           mode="edit"
           questionId="questionId"
           optionId="optionId"
+          locale="en"
+          tenantLocales={['en', '']}
         />
       );
       wrapper.setProps({ titleMultiloc: getTitleMultiloc('Pistachio'), optionId: 'anotherOption' });
@@ -60,27 +55,25 @@ describe('<FormOptionRow />', () => {
       const wrapper = shallow(
         <FormOptionRow
           closeRow={closeRow}
-          locale="en"
           mode="new"
           questionId="questionId"
         />
       );
       expect(wrapper.find('Input').prop('locale')).toBe('en');
-      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('en');
+      expect(wrapper.find('LocaleSwitcher').prop('selectedLocale')).toBe('en');
     });
 
     it('reacts to locale change', () => {
       const wrapper = shallow(
         <FormOptionRow
           closeRow={closeRow}
-          locale="en"
           mode="new"
           questionId="questionId"
         />
       );
       wrapper.setProps({ locale: 'fr-BE' });
       expect(wrapper.find('Input').prop('locale')).toBe('fr-BE');
-      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('fr-BE');
+      expect(wrapper.find('LocaleSwitcher').prop('selectedLocale')).toBe('fr-BE');
     });
 
     it('handles changing field locale', () => {
@@ -88,12 +81,11 @@ describe('<FormOptionRow />', () => {
         <FormOptionRow
           titleMultiloc={getTitleMultiloc('Vanilla')}
           closeRow={closeRow}
-          locale="en"
           mode="new"
           questionId="questionId"
         />
       );
-      wrapper.find('FormLocaleSwitcher').prop('onLocaleChange')('fr-BE');
+      wrapper.find('LocaleSwitcher').prop('onLocaleChange')('fr-BE');
       expect(wrapper.find('Input').prop('locale')).toBe('fr-BE');
     });
   });
@@ -104,7 +96,6 @@ describe('<FormOptionRow />', () => {
         const wrapper = shallow(
           <FormOptionRow
             closeRow={closeRow}
-            locale="en"
             mode="new"
             questionId="questionId"
           />
@@ -118,7 +109,6 @@ describe('<FormOptionRow />', () => {
           <FormOptionRow
             titleMultiloc={titleMultiloc}
             closeRow={closeRow}
-            locale="en"
             mode="new"
             questionId="questionId"
           />
@@ -138,7 +128,6 @@ describe('<FormOptionRow />', () => {
           <FormOptionRow
             titleMultiloc={titleMultiloc}
             closeRow={closeRow}
-            locale="en"
             mode="edit"
             questionId="questionId"
             optionId="optionId"
@@ -152,7 +141,6 @@ describe('<FormOptionRow />', () => {
           <FormOptionRow
             titleMultiloc={getTitleMultiloc('Vani')}
             closeRow={closeRow}
-            locale="en"
             mode="edit"
             questionId="questionId"
             optionId="optionId"
@@ -171,7 +159,6 @@ describe('<FormOptionRow />', () => {
           <FormOptionRow
             titleMultiloc={getTitleMultiloc('Vani')}
             closeRow={closeRow}
-            locale="en"
             mode="new"
             questionId="questionId"
           />
@@ -191,7 +178,6 @@ describe('<FormOptionRow />', () => {
         const wrapper = shallow(
           <FormOptionRow
             closeRow={closeRow}
-            locale="en"
             mode="edit"
             questionId="questionId"
             optionId="optionId"
@@ -211,7 +197,6 @@ describe('<FormOptionRow />', () => {
         const wrapper = shallow(
           <FormOptionRow
             closeRow={closeRow}
-            locale="en"
             mode="new"
             questionId="questionId"
           />
@@ -227,7 +212,6 @@ describe('<FormOptionRow />', () => {
           <FormOptionRow
             titleMultiloc={getTitleMultiloc('Vani')}
             closeRow={closeRow}
-            locale="en"
             mode="new"
             questionId="questionId"
             optionId="optionId"
