@@ -54,7 +54,8 @@ interface State {
 
 export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps, State> {
   typeOptions: IOption[];
-  constructor(props) {
+
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       maxAnswers: props.question.attributes.max_options,

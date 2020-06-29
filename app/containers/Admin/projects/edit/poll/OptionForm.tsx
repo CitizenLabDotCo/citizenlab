@@ -162,8 +162,10 @@ const Data = adopt<DataProps, InputProps>({
   pollOptions: ({ question, render }) => <GetPollOptions questionId={question.id} >{render}</GetPollOptions>,
 });
 
-export default (inputProps: InputProps) => (
+const OptionFormWithData = (inputProps: InputProps) => (
   <Data {...inputProps}>
     {dataProps => <OptionForm {...inputProps} {...dataProps} />}
   </Data>
 );
+
+export default OptionFormWithData;
