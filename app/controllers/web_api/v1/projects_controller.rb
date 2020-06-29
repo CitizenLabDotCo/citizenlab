@@ -33,7 +33,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects, 
       WebApi::V1::ProjectSerializer, 
       params: fastjson_params(instance_options), 
-      include: [:admin_publication, :project_images, :current_phase, :avatars]
+      include: [:admin_publication, :project_images, :current_phase, :avatars, :topics]
       )
   end
 
