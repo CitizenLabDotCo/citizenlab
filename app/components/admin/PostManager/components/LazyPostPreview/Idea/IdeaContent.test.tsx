@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { localizeProps } from 'utils/testUtils/localizeProps';
-import { getDummyIntlObject } from 'utils/testUtils/mockedIntl'
+import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
 
 jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
@@ -18,7 +18,8 @@ jest.mock('components/PostShowComponents/OfficialFeedback', () => 'OfficialFeedb
 jest.mock('components/PostShowComponents/Comments', () => 'Comments');
 jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
 jest.mock('components/UI/Button', () => 'Button');
-jest.mock('components/UI/IconTooltip', () => 'IconTooltip');
+jest.mock('cl2-component-library', () => ({ IconTooltip: 'IconTooltip' }));
+jest.mock('../PostPreview', () => ({ Top: 'Top', Content: 'Content', Container: 'Container' }));
 jest.mock('./FeedbackSettings', () => 'FeedbackSettings');
 jest.mock('./VotePreview', () => 'VotePreview');
 jest.mock('utils/cl-router/Link', () => 'Link');
