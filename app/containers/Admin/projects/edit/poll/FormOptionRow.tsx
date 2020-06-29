@@ -46,12 +46,12 @@ interface State {
   titleMultiloc: Multiloc;
 }
 
-class FormOptionRow extends PureComponent<Props, State> {
-  constructor(props) {
+export class FormOptionRow extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
-      selectedLocale: null,
-      titleMultiloc: {}
+      selectedLocale: props.locale || null,
+      titleMultiloc: props.titleMultiloc || {}
     };
   }
 
@@ -63,10 +63,6 @@ class FormOptionRow extends PureComponent<Props, State> {
     }
 
     return null;
-  }
-
-  componentDidMount() {
-    this.setState({ titleMultiloc: this.props.titleMultiloc || {} });
   }
 
   componentDidUpdate(prevProps: Props) {
