@@ -39,9 +39,9 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
 }
 
-interface Props extends DataProps, InputProps { }
+export interface Props extends DataProps, InputProps { }
 
-interface State {
+export interface State {
   selectedLocale: Locale | null;
   titleMultiloc: Multiloc;
 }

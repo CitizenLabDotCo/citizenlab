@@ -1,27 +1,25 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { shallow } from 'enzyme';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
 jest.mock('services/pollOptions', () => ({
   addPollOption: jest.fn((_id, _type, title) => { return new Promise((resolve) => resolve({ data: mockOption('newOption', title) })); }),
-  updatePollOption: jest.fn(() => { return new Promise((resolve) => resolve); }),
-  deletePollOption: jest.fn()
+  updatePollOption: jest.fn(() => { return new Promise((resolve) => resolve); })
 }));
 
 import * as pollOptionsService from 'services/pollOptions';
 const addPollOptionSpy = jest.spyOn(pollOptionsService, 'addPollOption');
 const updatePollOptionSpy = jest.spyOn(pollOptionsService, 'updatePollOption');
-const deletePollOptionSpy = jest.spyOn(pollOptionsService, 'deletePollOption');
 
-jest.mock('resources/GetTenantLocales', () => 'GetTenantLocales');
-jest.mock('resources/GetLocale', () => 'GetLocale');
+import { Input, LocaleSwitcher } from 'cl2-component-library';
+
 jest.mock('cl2-component-library', () => ({ Input: 'Input', LocaleSwitcher: 'LocaleSwitcher' }));
 jest.mock('components/admin/ResourceList', () => ({ TextCell: 'TextCell', Row: 'Row' }));
 jest.mock('components/UI/InputMultiloc', () => 'InputMultiloc');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
-import { FormOptionRow } from './FormOptionRow';
+import { FormOptionRow, Props, State } from './FormOptionRow';
 
 let closeRow = jest.fn();
 const getTitleMultiloc = (title: string) => ({ en: title });
@@ -33,7 +31,7 @@ describe('<FormOptionRow />', () => {
 
   it('matches the snapshot', () => {
     const titleMultiloc = getTitleMultiloc('Vanilla');
-    const wrapper = shallow(
+    const wrapper = shallow<Component<Props, State>>(
       <FormOptionRow
         titleMultiloc={titleMultiloc}
         closeRow={closeRow}
@@ -50,7 +48,7 @@ describe('<FormOptionRow />', () => {
   describe('boundaries', () => {
     it('reacts to option change', () => {
       const titleMultiloc = getTitleMultiloc('Vanilla');
-      const wrapper = shallow(
+      const wrapper = shallow<Component<Props, State>>(
         <FormOptionRow
           titleMultiloc={titleMultiloc}
           closeRow={closeRow}
@@ -68,7 +66,7 @@ describe('<FormOptionRow />', () => {
 
   describe('handles language switch for multilingual content', () => {
     it('shows the passed in locale by default', () => {
-      const wrapper = shallow(
+      const wrapper = shallow<Component<Props, State>>(
         <FormOptionRow
           closeRow={closeRow}
           mode="new"
@@ -82,7 +80,7 @@ describe('<FormOptionRow />', () => {
     });
 
     it('handles changing field locale', () => {
-      const wrapper = shallow(
+      const wrapper = shallow<Component<Props, State>>(
         <FormOptionRow
           titleMultiloc={getTitleMultiloc('Vanilla')}
           closeRow={closeRow}
@@ -92,7 +90,7 @@ describe('<FormOptionRow />', () => {
           tenantLocales={['en', 'fr-BE']}
         />
       );
-      wrapper.find('LocaleSwitcher').prop('onSelectedLocaleChange')('fr-BE');
+      wrapper.find(LocaleSwitcher).prop('onSelectedLocaleChange')('fr-BE');
       expect(wrapper.find('Input').prop('locale')).toBe('fr-BE');
     });
   });
@@ -100,7 +98,7 @@ describe('<FormOptionRow />', () => {
   describe('handles input of title multiloc', () => {
     describe('for a new option', () => {
       it('passes down initial value', () => {
-        const wrapper = shallow(
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             closeRow={closeRow}
             mode="new"
@@ -114,7 +112,7 @@ describe('<FormOptionRow />', () => {
 
       it('reacts to user input', () => {
         const titleMultiloc = getTitleMultiloc('Vanilla');
-        const wrapper = shallow<FormOptionRow>(
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             titleMultiloc={titleMultiloc}
             closeRow={closeRow}
@@ -124,8 +122,8 @@ describe('<FormOptionRow />', () => {
             tenantLocales={['en', 'fr-BE']}
           />
         );
-        wrapper.find('Input').prop('onChange')('Pistachio', 'en');
-        wrapper.find('Input').prop('onChange')('Chocolate', 'fr-BE');
+        wrapper.find(Input).prop('onChange' as any)('Pistachio', 'en');
+        wrapper.find(Input).prop('onChange' as any)('Chocolate', 'fr-BE');
         const instance = wrapper.instance();
         expect(instance.state.titleMultiloc['en']).toBe('Pistachio');
         expect(instance.state.titleMultiloc['fr-BE']).toBe('Chocolate');
@@ -135,7 +133,7 @@ describe('<FormOptionRow />', () => {
     describe('when editing an option', () => {
       it('passes down initial value', () => {
         const titleMultiloc = getTitleMultiloc('Vanilla');
-        const wrapper = shallow(
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             titleMultiloc={titleMultiloc}
             closeRow={closeRow}
@@ -150,7 +148,7 @@ describe('<FormOptionRow />', () => {
       });
 
       it('reacts to user input', () => {
-        const wrapper = shallow(
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             titleMultiloc={getTitleMultiloc('Vani')}
             closeRow={closeRow}
@@ -161,7 +159,7 @@ describe('<FormOptionRow />', () => {
             tenantLocales={['en', 'fr-BE']}
           />
         );
-        wrapper.find('Input').prop('onChange')('Vanilla', 'en');
+        wrapper.find(Input).prop('onChange' as any)('Vanilla', 'en');
         expect(wrapper.find('Input').prop('value')).toEqual('Vanilla');
       });
     });
@@ -170,21 +168,23 @@ describe('<FormOptionRow />', () => {
   describe('handles saving', () => {
     describe('for a new option', () => {
       it('handles saving the new option', () => {
-        const wrapper = shallow(
+        const titleMultiloc = getTitleMultiloc('Vani');
+        const questionId = 'questionId';
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             titleMultiloc={getTitleMultiloc('Vani')}
             closeRow={closeRow}
             mode="new"
-            questionId="questionId"
+            questionId={questionId}
             locale="en"
             tenantLocales={['en', 'fr-BE']}
           />
         );
         wrapper.find('.e2e-form-option-save').simulate('click');
         expect(addPollOptionSpy).toHaveBeenCalledTimes(1);
-        expect(addPollOptionSpy).toHaveBeenCalledWith('questionId', { en: 'Vani' });
+        expect(addPollOptionSpy).toHaveBeenCalledWith(questionId, titleMultiloc);
         // resolve the promise the test the callback
-        return pollOptionsService.addPollOption().then(() => {
+        return pollOptionsService.addPollOption(questionId, titleMultiloc).then(() => {
           expect(closeRow).toHaveBeenCalledTimes(1);
         });
       });
@@ -192,7 +192,7 @@ describe('<FormOptionRow />', () => {
 
     describe('when editing an option', () => {
       it('handles updating the option', () => {
-        const wrapper = shallow(
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             closeRow={closeRow}
             mode="edit"
@@ -213,7 +213,7 @@ describe('<FormOptionRow />', () => {
   describe('handles cancelling', () => {
     describe('for a new option', () => {
       it('handles closing the form to cancel', () => {
-        const wrapper = shallow(
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             closeRow={closeRow}
             mode="new"
@@ -229,7 +229,7 @@ describe('<FormOptionRow />', () => {
 
     describe('when editing an option', () => {
       it('handles closing the form to cancel', () => {
-        const wrapper = shallow(
+        const wrapper = shallow<Component<Props, State>>(
           <FormOptionRow
             titleMultiloc={getTitleMultiloc('Vani')}
             closeRow={closeRow}
