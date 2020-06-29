@@ -4,12 +4,6 @@ import { localizeProps } from 'utils/testUtils/localizeProps';
 import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
 
-jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
-jest.mock('resources/GetIdea', () => 'GetIdea');
-jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
-jest.mock('resources/GetTenant', () => 'GetTenant');
-jest.mock('resources/GetProject', () => 'GetProject');
-jest.mock('resources/GetPermission', () => 'GetPermission');
 jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
@@ -24,12 +18,13 @@ jest.mock('./FeedbackSettings', () => 'FeedbackSettings');
 jest.mock('./VotePreview', () => 'VotePreview');
 jest.mock('utils/cl-router/Link', () => 'Link');
 jest.mock('components/T', () => 'T');
-jest.mock('../', () => ({
-  Top: () => 'Top',
-  Content: () => 'Content',
-  Container: () => 'Container'
-}));
 jest.mock('services/ideas');
+jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
+jest.mock('resources/GetIdea', () => 'GetIdea');
+jest.mock('resources/GetIdeaImages', () => 'GetIdeaImages');
+jest.mock('resources/GetTenant', () => 'GetTenant');
+jest.mock('resources/GetProject', () => 'GetProject');
+jest.mock('resources/GetPermission', () => 'GetPermission');
 jest.mock('utils/cl-intl');
 
 import { IdeaContent } from './IdeaContent';
