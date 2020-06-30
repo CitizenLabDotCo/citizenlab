@@ -6,8 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import InitiativeCard from 'components/InitiativeCard';
 import InitiativesMap from 'components/InitiativesMap';
-import Icon from 'components/UI/Icon';
-import Spinner from 'components/UI/Spinner';
+import { Icon, Spinner } from 'cl2-component-library';
 import SortFilterDropdown from './SortFilterDropdown';
 import StatusFilterBox from './StatusFilterBox';
 import TopicFilterBox from './TopicFilterBox';

@@ -19,7 +19,7 @@ import { ScreenReaderOnly } from 'utils/a11y';
 import styled, { withTheme } from 'styled-components';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import ContentContainer from 'components/ContentContainer';
 import PBNavbarButton from './pb/PBNavbarButton';
 import IdeaButton from 'components/IdeaButton';

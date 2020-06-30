@@ -1,9 +1,8 @@
 import React, { PureComponent } from 'react';
 
 // components
-import Input from 'components/UI/Input';
+import { Input, IconTooltip } from 'cl2-component-library';
 import Label from 'components/UI/Label';
-import IconTooltip from 'components/UI/IconTooltip';
 
 // resources
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';

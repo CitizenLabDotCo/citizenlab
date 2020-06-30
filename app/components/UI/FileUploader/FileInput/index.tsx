@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 const Container = styled.div`
   margin-bottom: 10px;

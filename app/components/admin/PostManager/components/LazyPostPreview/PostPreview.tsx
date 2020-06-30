@@ -1,15 +1,19 @@
 import React, { Suspense, PureComponent } from 'react';
-import SideModal from 'components/UI/SideModal';
-import styled from 'styled-components';
-import { colors } from 'utils/styleUtils';
-import { ManagerType } from '../..';
 
 // components
+import SideModal from 'components/UI/SideModal';
 import FullPageSpinner from 'components/UI/FullPageSpinner';
 import LazyIdeaEdit from './Idea/LazyIdeaEdit';
 import LazyIdeaContent from './Idea/LazyIdeaContent';
 import LazyInitiativeEdit from './Initiative/LazyInitiativeEdit';
 import LazyInitiativeContent from './Initiative/LazyInitiativeContent';
+
+// styling
+import styled from 'styled-components';
+import { colors } from 'utils/styleUtils';
+
+// typings
+import { ManagerType } from '../..';
 
 export const Container = styled.div`
   min-height: 100%;

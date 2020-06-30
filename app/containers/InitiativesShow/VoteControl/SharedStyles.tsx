@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 export const StatusWrapper = styled.div`
   display: flex;

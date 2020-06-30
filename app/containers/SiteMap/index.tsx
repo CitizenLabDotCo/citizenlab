@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // components
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import ContentContainer from 'components/ContentContainer';

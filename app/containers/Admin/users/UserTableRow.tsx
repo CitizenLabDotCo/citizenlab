@@ -8,7 +8,7 @@ import clHistory from 'utils/cl-router/history';
 import Avatar from 'components/Avatar';
 import { Toggle } from 'cl2-component-library';
 import Checkbox from 'components/UI/Checkbox';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Tippy from '@tippyjs/react';
 
 // Translation

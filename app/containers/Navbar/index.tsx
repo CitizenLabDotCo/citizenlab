@@ -10,7 +10,7 @@ import bowser from 'bowser';
 import NotificationMenu from './components/NotificationMenu';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
 import Dropdown from 'components/UI/Dropdown';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';

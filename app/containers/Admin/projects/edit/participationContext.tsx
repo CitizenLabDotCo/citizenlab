@@ -5,13 +5,10 @@ import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import { Input, Radio, IconTooltip, Toggle } from 'cl2-component-library';
 import Error from 'components/UI/Error';
 import Label from 'components/UI/Label';
-import Radio from 'components/UI/Radio';
-import { Toggle } from 'cl2-component-library';
 import { Section, SectionField, SubSectionTitle } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';

@@ -15,7 +15,7 @@ import PublicationStatusLabel from './PublicationStatusLabel';
 import GetProjectGroups from 'resources/GetProjectGroups';
 
 // types
-import { IconNames } from 'components/UI/Icon';
+import { IconNames } from 'cl2-component-library';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const StyledStatusLabel = styled(StatusLabel)`

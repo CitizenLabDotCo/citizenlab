@@ -10,7 +10,7 @@ import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // utils
 import clHistory from 'utils/cl-router/history';

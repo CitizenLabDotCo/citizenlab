@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { isBoolean } from 'lodash-es';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style

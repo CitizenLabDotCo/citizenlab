@@ -13,7 +13,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import Sharing from 'components/Sharing';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
