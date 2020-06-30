@@ -62,15 +62,16 @@ resource "Ideas" do
     example "List all ideas which match one of the given topics", document: false do
       t1 = create(:topic)
       t2 = create(:topic)
+      t3 = create(:topic)
 
       i1 = @ideas[0]
-      i1.topics = [t1]
+      i1.topics = [t1,t3]
       i1.save!
       i2 = @ideas[1]
       i2.topics = [t2]
       i2.save!
       i3 = @ideas[3]
-      i3.topics = [t1,t2]
+      i3.topics = [t3,t1,t2]
       i3.save!
 
       do_request topics: [t1.id, t2.id]
