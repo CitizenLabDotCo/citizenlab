@@ -6,9 +6,8 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, /*Visibility*/ } from 'services/ideaCustomFields';
 
 // components
-import { Icon, IconTooltip, Spinner } from 'cl2-component-library';
+import { Icon, IconTooltip, Spinner, Toggle } from 'cl2-component-library';
 const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
-import Toggle from 'components/UI/Toggle';
 
 // i18n
 import T from 'components/T';
