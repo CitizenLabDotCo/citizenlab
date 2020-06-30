@@ -1,4 +1,5 @@
 import React, { memo, useState, useMemo } from 'react';
+import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import FilterSelector from 'components/FilterSelector';
@@ -12,9 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // hooks
-import useProjectTopics from 'hooks/useProjectTopics';
 import useTopics from 'hooks/useTopics';
-import { isNilOrError } from 'utils/helperUtils';
 
 interface Props {
   alignment: 'left' | 'right';
@@ -29,12 +28,8 @@ const TopicFilterDropdown = memo(({
   localize
 }: Props & InjectedLocalized) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const projectTopics = projectId ? useProjectTopics({ projectId }) : [];
-  const topics = (
-    !isNilOrError(projectTopics) &&
-    projectTopics.length > 0
-  ) ?
-    useTopics({ topicIds: projectTopics.map(projectTopic => projectTopic.relationships.topic.data.id) })
+  const topics = projectId ?
+    useTopics({ projectId })
   :
     useTopics({});
 
