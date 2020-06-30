@@ -281,11 +281,7 @@ export class PostManager extends React.PureComponent<Props, State> {
       (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
     );
 
-    console.log(1);
-
     if (!isNilOrError(topics)) {
-      console.log(2);
-
       const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
       return (

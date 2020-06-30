@@ -7,6 +7,7 @@ import { projectTopicsStream } from 'services/projectTopics';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
+  // todo: make props mutually exclusive, check input component for how to
   projectId?: string;
   ids?: string[];
   code?: Code;
@@ -57,24 +58,17 @@ export default class GetTopics extends React.Component<Props, State> {
                 );
               }),
             );
+           } else if (ids && ids.length > 0) {
+            return combineLatest(
+              ids.map(id => {
+                return topicByIdStream(id).observable.pipe(
+                  map(topic => !isNilOrError(topic) ? topic.data : topic)
+                );
+              })
+            );
+          } else {
+            return topicsStream({ queryParameters }).observable.pipe(map(topics => topics.data));
           }
-
-          if (ids) {
-            if (ids.length > 0) {
-              return combineLatest(
-                ids.map(id => {
-                  return topicByIdStream(id).observable.pipe(
-                    map(topic => !isNilOrError(topic) ? topic.data : topic)
-                  );
-                })
-              );
-            }
-
-            return of(null);
-          }
-
-          // making the possibly wrong assumption that you will not provide ids and queryParameters at the same time
-          return topicsStream({ queryParameters }).observable.pipe(map(topics => topics.data));
         })
       ).subscribe((topics) => {
         this.setState({ topics });
