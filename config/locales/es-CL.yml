@@ -212,7 +212,7 @@ es-CL:
     role:
       is_admin: "El rol es de administrador"
       not_is_admin: "El rol no es de administrador"
-      is_project_moderator: "El rol es de moderador del proyecto"
-      not_is_project_moderator: "El rol no es de moderador del proyecto"
+      is_project_moderator: "El rol es de administrador de proyecto"
+      not_is_project_moderator: "El rol no es de administrador de proyecto"
       is_normal_user: "El rol es de usuario normal"
       not_is_normal_user: "El rol no es de usuario normal"
