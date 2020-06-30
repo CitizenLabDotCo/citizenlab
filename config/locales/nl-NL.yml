@@ -213,7 +213,7 @@ nl:
     role:
       is_admin: "Functie is beheerder"
       not_is_admin: "Functie is niet beheerder"
-      is_project_moderator: "Functie is project-moderator"
-      not_is_project_moderator: "Functie is niet project-moderator"
+      is_project_moderator: "Functie is projectbeheerder"
+      not_is_project_moderator: "Functie is niet projectbeheerder"
       is_normal_user: "Functie is normale gebruiker"
       not_is_normal_user: "Functie is niet normale gebruiker"
