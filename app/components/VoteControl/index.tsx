@@ -12,7 +12,7 @@ import messages from './messages';
 import { LiveMessage } from 'react-aria-live';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { authUserStream } from 'services/auth';

@@ -6,7 +6,7 @@ require('leaflet-simplestyle');
 
 // components
 import ReactResizeDetector from 'react-resize-detector';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Legend from './Legend';
 
 // resources

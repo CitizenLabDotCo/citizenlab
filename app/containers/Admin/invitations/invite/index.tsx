@@ -7,7 +7,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import TextArea from 'components/UI/TextArea';
 import Label from 'components/UI/Label';
 import Error from 'components/UI/Error';
-import Radio from 'components/UI/Radio';
+import { Radio, IconTooltip } from 'cl2-component-library';
 import Toggle from 'components/UI/Toggle';
 import Tabs from 'components/UI/Tabs';
 import Collapse from 'components/UI/Collapse';
@@ -16,7 +16,6 @@ import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
-import IconTooltip from 'components/UI/IconTooltip';
 import Button from 'components/UI/Button';
 
 // services

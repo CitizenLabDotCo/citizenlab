@@ -2,7 +2,7 @@ import React, { memo, useState, useCallback, MouseEvent } from 'react';
 import { truncate } from 'lodash-es';
 
 // components
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import { LocaleSwitcher } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -32,7 +32,7 @@ const ContentTitle = styled.div`
 
 const ContentBody = styled.div``;
 
-const StyledLocaleSwitcher = styled(FormLocaleSwitcher)`
+const StyledLocaleSwitcher = styled(LocaleSwitcher)`
   display: flex;
   justify-content: flex-start;
   margin-bottom: 10px;
@@ -80,7 +80,7 @@ const ModerationContentCell = memo<Props>(({ contentTitle, contentBody, classNam
     <Container className={className}>
       {contentBodyLocales.length > 1 &&
         <StyledLocaleSwitcher
-          onLocaleChange={handleOnSelectedLocaleChange}
+          onSelectedLocaleChange={handleOnSelectedLocaleChange}
           locales={contentBodyLocales}
           selectedLocale={selectedLocale}
         />

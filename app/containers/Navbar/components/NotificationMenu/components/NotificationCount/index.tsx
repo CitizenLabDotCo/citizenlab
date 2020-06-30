@@ -7,7 +7,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';

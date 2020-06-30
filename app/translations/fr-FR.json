@@ -348,7 +348,6 @@
   "app.components.UI.Card.a11y_unauthenticatedPopup": "Connectez-vous ou inscrivez-vous pour effectuer cette action",
   "app.components.UI.Card.login": "Se connecter",
   "app.components.UI.Card.register": "S'inscrire",
-  "app.components.UI.IconTooltip.a11y_informationTooltip": "Infobulle",
   "app.components.UI.TranslateButton.seeOriginal": "Afficher l'original",
   "app.components.UI.TranslateButton.seeTranslation": "Voir la traduction",
   "app.components.Upload.a11y_removeImage": "Enlever",

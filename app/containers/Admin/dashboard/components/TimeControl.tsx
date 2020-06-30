@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment';
 // components
 import Dropdown from 'components/UI/Dropdown';
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import DateRangePicker from 'components/admin/DateRangePicker';
 
 // i18n

@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import Card from 'components/UI/Card';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import BottomBounceUp from 'components/UI/Card/BottomBounceUp';
 import VotingDisabled from 'components/VoteControl/VotingDisabled';
 import VoteControl from 'components/VoteControl';

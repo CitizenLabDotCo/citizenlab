@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { shallow } from 'enzyme';
-
 import { OptionForm } from './OptionForm';
-
+import { IPollOption } from 'services/pollOptions';
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
@@ -16,8 +14,8 @@ jest.mock('./OptionRow', () => 'OptionRow');
 jest.mock('./QuestionDetailsForm', () => 'QuestionDetailsForm');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
-const mockOptions: IPollQuestion[];
 const question = mockQuestion('questionId', 'What is your favourite ice cream flavour ?');
+const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry'].map((item, index) => mockOption(index, item)) as IPollOption[];
 
 describe('<OptionForm/>', () => {
   it('clicking done calls the collapse handler', () => {
@@ -26,7 +24,6 @@ describe('<OptionForm/>', () => {
       <OptionForm
         question={question}
         collapse={collapse}
-        locale="en"
         pollOptions={null}
       />
     );
@@ -40,7 +37,6 @@ describe('<OptionForm/>', () => {
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          locale="en"
           pollOptions={null}
         />
       );
@@ -48,12 +44,10 @@ describe('<OptionForm/>', () => {
       expect(wrapper.find('.e2e-add-option').exists()).toBe(true);
     });
     it('renders correctly with when pollOptions is []', () => {
-
       const wrapper = shallow(
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          locale="en"
           pollOptions={[]}
         />
       );
@@ -63,13 +57,10 @@ describe('<OptionForm/>', () => {
   });
   describe('displays question settings form', () => {
     it('displays', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          locale="en"
           pollOptions={pollOptions}
         />
       );
@@ -79,13 +70,10 @@ describe('<OptionForm/>', () => {
   });
   describe('displays passed in options', () => {
     it('shows the right amount', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          locale="en"
           pollOptions={pollOptions}
         />
       );
@@ -96,20 +84,16 @@ describe('<OptionForm/>', () => {
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          locale="en"
-          pollOptions={[mockOption('vanillaId', 'Vanilla')]}
+          pollOptions={[mockOption('vanillaId', 'Vanilla')] as IPollOption[]}
         />
       );
-      expect(wrapper.find('OptionRow').find(item => item.prop('pollOptionId') === 'vanillaId')).toBeTruthy();
+      expect(wrapper.find('OptionRow').find((item: any) => item.prop('pollOptionId') === 'vanillaId')).toBeTruthy();
     });
     it('List reacts to addition', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          locale="en"
           pollOptions={pollOptions}
         />
       );
@@ -117,13 +101,10 @@ describe('<OptionForm/>', () => {
       expect(wrapper.find('OptionRow').length).toBe(4);
     });
     it('List reacts to deletion', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}
           collapse={jest.fn()}
-          locale="en"
           pollOptions={pollOptions}
         />
       );
@@ -138,7 +119,6 @@ describe('<OptionForm/>', () => {
           <OptionForm
             question={question}
             collapse={jest.fn()}
-            locale="en"
             pollOptions={null}
           />
         );
@@ -152,7 +132,6 @@ describe('<OptionForm/>', () => {
           <OptionForm
             question={question}
             collapse={jest.fn()}
-            locale="en"
             pollOptions={null}
           />
         );
@@ -164,12 +143,11 @@ describe('<OptionForm/>', () => {
           <OptionForm
             question={question}
             collapse={jest.fn()}
-            locale="en"
             pollOptions={null}
           />
         );
         wrapper.find('.e2e-add-option').simulate('click');
-        wrapper.find('FormOptionRow').prop('closeRow')();
+        wrapper.find('FormOptionRow').prop('closeRow' as any)();
         expect(wrapper.find('FormOptionRow').exists()).toBe(false);
       });
     });
@@ -179,11 +157,10 @@ describe('<OptionForm/>', () => {
           <OptionForm
             question={question}
             collapse={jest.fn()}
-            locale="en"
-            pollOptions={[mockOption('vanillaId', 'Vanilla')]}
+            pollOptions={[mockOption('vanillaId', 'Vanilla')] as IPollOption[]}
           />
         );
-        wrapper.find('OptionRow').prop('editOption')();
+        wrapper.find('OptionRow').prop('editOption' as any)();
         expect(wrapper.find('FormOptionRow').exists()).toBe(true);
         expect(wrapper.find('OptionRow').exists()).toBe(false);
       });
