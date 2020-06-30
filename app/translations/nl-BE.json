@@ -348,7 +348,6 @@
   "app.components.UI.Card.a11y_unauthenticatedPopup": "Log in of registreer om deze actie te nemen",
   "app.components.UI.Card.login": "Inloggen",
   "app.components.UI.Card.register": "Registreren",
-  "app.components.UI.IconTooltip.a11y_informationTooltip": "Tooltip met informatie",
   "app.components.UI.TranslateButton.seeOriginal": "Toon origineel",
   "app.components.UI.TranslateButton.seeTranslation": "Toon de vertaling",
   "app.components.Upload.a11y_removeImage": "Verwijderen",

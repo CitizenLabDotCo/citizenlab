@@ -6,11 +6,9 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import { IIdeaCustomFieldData, IUpdatedIdeaCustomFieldProperties, /*Visibility*/ } from 'services/ideaCustomFields';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon, IconTooltip, Spinner } from 'cl2-component-library';
 const TextAreaMultilocWithLocaleSwitcher = lazy(() => import('components/UI/TextAreaMultilocWithLocaleSwitcher'));
 import Toggle from 'components/UI/Toggle';
-import IconToolTip from 'components/UI/IconTooltip';
-import Spinner from 'components/UI/Spinner';
 
 // i18n
 import T from 'components/T';
@@ -239,7 +237,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
                         e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-enabled-toggle-label
                       `}
                     />
-                    <IconToolTip content={<FormattedMessage {...messages.enabledTooltip} />} />
+                    <IconTooltip content={<FormattedMessage {...messages.enabledTooltip} />} />
                   </ToggleContainer>
                 )}
                 {fieldEnabled && canSetRequired && (
@@ -253,7 +251,7 @@ const IdeaCustomField = memo<Props & InjectedLocalized>(({ ideaCustomField, coll
                         e2e-${localize(ideaCustomField.attributes.title_multiloc).toLowerCase()}-required-toggle-label
                       `}
                     />
-                    <IconToolTip content={<FormattedMessage {...messages.requiredTooltip} />} />
+                    <IconTooltip content={<FormattedMessage {...messages.requiredTooltip} />} />
                   </ToggleContainer>
                 )}
               </Toggles>

@@ -9,7 +9,7 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import FeatureFlag from 'components/FeatureFlag';
 
 // resources

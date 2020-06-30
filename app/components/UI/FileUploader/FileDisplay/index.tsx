@@ -8,7 +8,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { isError } from 'util';
 import { UploadFile } from 'typings';
 

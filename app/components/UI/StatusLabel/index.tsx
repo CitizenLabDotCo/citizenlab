@@ -1,9 +1,9 @@
-import React, { SFC } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { fontSizes, colors } from 'utils/styleUtils';
-import Icon, { Props as IconProps } from 'components/UI/Icon';
+import { Icon, IconNames } from 'cl2-component-library';
 
-const Container: any = styled.div`
+const Container = styled.div<{ color: string }>`
   height: 28px;
   color: #fff;
   font-size: ${fontSizes.xs}px;
@@ -15,7 +15,7 @@ const Container: any = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${(props: Props) => colors[props.color] || props.color};
+  background: ${props => colors[props.color] || props.color};
   padding-left: 10px;
   padding-right: 10px;
 `;
@@ -29,14 +29,15 @@ const StyledIcon = styled(Icon)`
 interface Props {
   text: JSX.Element | string;
   color: keyof typeof colors | string;
-  icon?: IconProps['name'];
+  icon?: IconNames;
+  className?: string;
 }
 
-const StatusLabel: SFC<Props> = (props: Props) => {
+const StatusLabel: FC<Props> = (props) => {
   return (
     <Container
       color={props.color}
-      className={props['className']}
+      className={props?.className || ''}
     >
       {props.icon && <StyledIcon name={props.icon} />}
       {props.text}

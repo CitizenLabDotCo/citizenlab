@@ -348,7 +348,6 @@
   "app.components.UI.Card.a11y_unauthenticatedPopup": "Log in or sign up to take this action",
   "app.components.UI.Card.login": "Log in",
   "app.components.UI.Card.register": "Sign up",
-  "app.components.UI.IconTooltip.a11y_informationTooltip": "Information tooltip",
   "app.components.UI.TranslateButton.seeOriginal": "See original",
   "app.components.UI.TranslateButton.seeTranslation": "See translation",
   "app.components.Upload.a11y_removeImage": "Remove",

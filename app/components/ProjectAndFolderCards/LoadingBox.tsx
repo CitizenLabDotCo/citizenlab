@@ -1,5 +1,5 @@
 import React, { memo } from 'react';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import styled from 'styled-components';
 
 const Container = styled.div`
