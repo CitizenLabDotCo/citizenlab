@@ -9,6 +9,8 @@
 # > As it turns out, rspec_api_documentation relies on string encoding to determine if it should include the response
 # > body in the documentation or not.
 
+require 'rspec_api_documentation'
+
 module RspecApiDocumentation
   class RackTestClient < ClientBase
     def response_body
