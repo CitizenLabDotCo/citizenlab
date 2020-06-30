@@ -145,10 +145,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupsPanel.select',
     defaultMessage: 'Select',
   },
-  userCount: {
-    id: 'app.containers.AdminPage.Users.GroupsPanel.userCount',
-    defaultMessage: '{count, plural, zero {No users} one {1 user} other {{count} users}}',
-  },
   groupDeletionConfirmation: {
     id: 'app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation',
     defaultMessage: 'Are you sure you want to delete this group?',

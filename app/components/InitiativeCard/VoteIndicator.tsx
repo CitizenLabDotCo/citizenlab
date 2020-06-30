@@ -161,7 +161,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
             <ScreenReaderOnly>
               <FormattedMessage
                   {...messages.xVotesOfY}
-                  values={{ count: voteCount, votingThreshold: voteLimit }}
+                  values={{ xVotes: voteCount, votingThreshold: voteLimit }}
               />
             </ScreenReaderOnly>
           </div>
@@ -194,7 +194,7 @@ class VoteIndicator extends PureComponent<Props & { theme: any }> {
               <ScreenReaderOnly>
                 <FormattedMessage
                   {...messages.xVotesOfY}
-                  values={{ count: voteCount, votingThreshold: voteLimit }}
+                  values={{ xVotes: voteCount, votingThreshold: voteLimit }}
                 />
               </ScreenReaderOnly>
             </VoteCounter>

@@ -383,7 +383,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
                     <IdeaIcon ariaHidden name="idea" />
                     <EmptyMessage>
                       <EmptyMessageLine>
-                        <FormattedMessage {...messages.noIdeasForFilter} />
+                        <FormattedMessage {...messages.noFilteredIdeas} />
                       </EmptyMessageLine>
                     </EmptyMessage>
                   </EmptyContainer>

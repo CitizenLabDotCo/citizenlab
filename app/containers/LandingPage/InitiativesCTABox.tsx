@@ -127,7 +127,6 @@ interface Props extends InputProps {
 }
 
 const InitiativesCTABox = memo<Props>(({ theme, className }) => {
-
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
@@ -161,7 +160,9 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
             textDecorationHover="underline"
             fullWidth={smallerThanSmallTablet}
             linkTo="/initiatives"
-            text={<FormattedMessage {...messages.browseInitiative} />}
+            text={
+              <FormattedMessage {...messages.browseInitiative} />
+            }
             className="e2e-initiatives-landing-CTA-browse"
           />
           <StartInitiativeButton

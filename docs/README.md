@@ -1,5 +1,43 @@
 # Changelog
 
+## 2020-06-26
+
+## Fixed
+- No longer possible to invite a project manager without selecting a project
+- The button on the homepage now also respects the 'disable posting' setting in proposals
+- Using project copy or a tenant template that contains a draft initiative no longer fails
+
+## Added
+- Romanian
+
+## 2020-06-19
+
+## Fixed
+- Polish characters not being rendered correctly
+
+## Added
+- Back-office toggle to turn on/off the ability to add new proposals to the platform
+
+## 2020-06-17
+
+## Fixed
+- It's no longer needed to manually refresh after deleting your account for a consistent UI
+- It's no longer needed to manually refresh after using the admin toggle in the user overview
+- The sign-in/up flow now correctly asks the user to verify if the smart group has other rules besides verification
+- `demo` is no longer an available option for `organization_type` in admin HQ
+- An error is shown when saving a typeform URL with `?email=xxxx` in the URL, which prevented emails to be linked to survey results
+- On mobile, the info container in the proposal info page now has the right width
+- A general issue with storing cookies if fixed, noticable by missing data in GA, Intercom not showing and the cookie consent repeatedly appearing
+- Accessibility fix for the search field
+- The `signup_helper_text` setting in admin HQ is again displayed in step 1 of the sign up flow
+## Added
+- There's a new field in admin HQ to configure custom copy in step 2 of the sign up flow called `custom_fields_signup_helper_text`
+- `workshops` can be turned on/off in admin HQ, displayed as a new page in the admin interface
+
+## Changed
+- The copy for `project moderator` has changed to `project manager` everywhere
+- The info image in the proposals header has changed
+
 ## 2020-06-03
 
 ### Fixed
