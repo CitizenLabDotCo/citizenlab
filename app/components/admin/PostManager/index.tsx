@@ -18,7 +18,6 @@ import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProjectTopics';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -109,7 +108,6 @@ interface InputProps {
 interface DataProps {
   posts: GetIdeasChildProps | GetInitiativesChildProps;
   postStatuses: GetIdeaStatusesChildProps | GetInitiativeStatusesChildProps;
-  projectTopics: GetProjectTopicsChildProps;
   topics: GetTopicsChildProps;
 }
 
@@ -283,7 +281,11 @@ export class PostManager extends React.PureComponent<Props, State> {
       (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
     );
 
+    console.log(1);
+
     if (!isNilOrError(topics)) {
+      console.log(2);
+
       const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
       return (
@@ -443,18 +445,13 @@ const Data = adopt<DataProps, InputProps>({
     return null;
   },
   postStatuses: ({ type, render }) => type === 'Initiatives' ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses> : <GetIdeaStatuses>{render}</GetIdeaStatuses>,
-  projectTopics: ({ projectId, render }) => {
-    return projectId ? <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics> : null;
-  },
-  topics: ({ type, projectId, projectTopics, render }) => {
+  topics: ({ type, projectId, render }) => {
     if (type === 'Initiatives') {
       return <GetTopics exclude_code="custom">{render}</GetTopics>;
     }
 
-    if (type === 'ProjectIdeas' && !isNilOrError(projectTopics) && projectId) {
-      const topicIds = projectTopics.map(projectTopic => projectTopic.relationships.topic.data.id);
-
-      return <GetTopics ids={topicIds}>{render}</GetTopics>;
+    if (type === 'ProjectIdeas' && projectId) {
+      return <GetTopics projectId={projectId}>{render}</GetTopics>;
     }
 
     if (type === 'AllIdeas') {
@@ -467,8 +464,10 @@ const Data = adopt<DataProps, InputProps>({
 
 const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};

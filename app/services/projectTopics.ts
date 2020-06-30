@@ -41,7 +41,6 @@ export async function addProjectTopic(projectId: string, topicId: string) {
 }
 
 export async function reorderProjectTopic(
-  // projectId: string,
   projectTopicId: string,
   newOrder: number
 ) {
