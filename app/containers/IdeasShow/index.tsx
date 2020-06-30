@@ -38,7 +38,7 @@ import IdeaStatus from './IdeaStatus';
 import IdeaPostedBy from './IdeaPostedBy';
 import IdeaAuthor from './IdeaAuthor';
 import Footer from 'components/PostShowComponents/Footer';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import ActionBar from './ActionBar';
 import TranslateButton from 'components/PostShowComponents/TranslateButton';
 import PlatformFooter from 'containers/PlatformFooter';

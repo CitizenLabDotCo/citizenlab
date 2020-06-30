@@ -5,7 +5,7 @@ import { omitBy, isNil, isEmpty } from 'lodash-es';
 // components
 import ModerationContentCell from './ModerationContentCell';
 import Checkbox from 'components/UI/Checkbox';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Tippy from '@tippyjs/react';
 import Link from 'utils/cl-router/Link';
 

@@ -16,7 +16,7 @@ import { LEGAL_PAGES } from 'services/pages';
 // components
 import Link from 'utils/cl-router/Link';
 import ContentContainer from 'components/ContentContainer';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 
 // styles

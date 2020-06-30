@@ -11,7 +11,7 @@ import StatusesMenu from './FilterSidebarStatuses';
 import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 import messages from '../../messages';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
 

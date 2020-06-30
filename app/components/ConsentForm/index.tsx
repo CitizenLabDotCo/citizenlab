@@ -20,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { CSSTransition } from 'react-transition-group';
 
 const timeout = 400;

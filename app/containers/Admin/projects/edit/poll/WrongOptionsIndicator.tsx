@@ -6,7 +6,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 import styled from 'styled-components';
 import { TextCell } from 'components/admin/ResourceList';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 import { colors } from 'utils/styleUtils';
 
 export const Indicator = styled(TextCell) <({ isWarning?: boolean }) >`
