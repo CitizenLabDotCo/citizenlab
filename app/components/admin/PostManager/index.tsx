@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 import { IProjectData } from 'services/projects';
+import { ITopicData } from 'services/topics';
 
 // resources
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
@@ -16,7 +17,7 @@ import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resource
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
-import GetTopics from 'resources/GetTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProjectTopics';
 
 // components
@@ -108,9 +109,8 @@ interface InputProps {
 interface DataProps {
   posts: GetIdeasChildProps | GetInitiativesChildProps;
   postStatuses: GetIdeaStatusesChildProps | GetInitiativeStatusesChildProps;
-  // We use only 1 stream for all topics, so
-  // this covers all types, even though we use GetTopics
-  topics: GetProjectTopicsChildProps;
+  projectTopics: GetProjectTopicsChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -284,6 +284,8 @@ export class PostManager extends React.PureComponent<Props, State> {
     );
 
     if (!isNilOrError(topics)) {
+      const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+
       return (
         <>
           <TopActionBar>
@@ -354,7 +356,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                   phases={!isNilOrError(phases) ? phases : undefined}
                   projects={!isNilOrError(projects) ? projects : undefined}
                   statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                  topics={topics}
+                  topics={filteredTopics}
                   selectedPhase={selectedPhase}
                   selectedTopics={selectedTopics}
                   selectedStatus={selectedStatus}
@@ -441,13 +443,18 @@ const Data = adopt<DataProps, InputProps>({
     return null;
   },
   postStatuses: ({ type, render }) => type === 'Initiatives' ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses> : <GetIdeaStatuses>{render}</GetIdeaStatuses>,
-  topics: ({ type, projectId, render }) => {
+  projectTopics: ({ projectId, render }) => {
+    return projectId ? <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics> : null;
+  },
+  topics: ({ type, projectId, projectTopics, render }) => {
     if (type === 'Initiatives') {
       return <GetTopics exclude_code="custom">{render}</GetTopics>;
     }
 
-    if (type === 'ProjectIdeas' && projectId) {
-      return <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>;
+    if (type === 'ProjectIdeas' && !isNilOrError(projectTopics) && projectId) {
+      const topicIds = projectTopics.map(projectTopic => projectTopic.relationships.topic.data.id);
+
+      return <GetTopics ids={topicIds}>{render}</GetTopics>;
     }
 
     if (type === 'AllIdeas') {
