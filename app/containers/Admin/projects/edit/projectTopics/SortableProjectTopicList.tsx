@@ -36,7 +36,7 @@ const SortableProjectTopicList = memo(({
   const [processingDeletion, setProcessingDeletion] = useState(false);
   const [projectTopicIdToDelete, setProjectTopicIdToDelete] = useState<string | null>(null);
   const projectTopics = useProjectTopics({ projectId });
-  const projectTopicIds = !isNilOrError(projectTopics) ? projectTopics.map(topic => topic.relationships.topic.data.id) : [];
+  const projectTopicIds = !isNilOrError(projectTopics) ? projectTopics.map(projectTopic => projectTopic.relationships.topic.data.id) : [];
   const topics = useTopics({ topicIds: projectTopicIds });
 
   const handleProjectTopicDelete = (topicId: string) => (event: FormEvent) => {
@@ -83,6 +83,7 @@ const SortableProjectTopicList = memo(({
     const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
     const isLastSelectedTopic = filteredTopics.length === 1;
 
+    console.log(1);
     return (
       <>
         {isLastSelectedTopic &&
