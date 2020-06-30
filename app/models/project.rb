@@ -70,10 +70,9 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
-    collection_with_duplicates = left_outer_joins(:areas_projects)
+    joins(:areas_projects)
       .where(areas_projects: {area_id: area_ids})
-    # Remove duplicates in collection.
-    where(id: collection_with_duplicates)
+      .distinct
   end)
 
   scope :without_areas, -> {
