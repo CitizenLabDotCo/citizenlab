@@ -3,9 +3,11 @@ import { isEqual } from 'lodash-es';
 import { Subscription, BehaviorSubject, of, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { ITopicData, topicByIdStream, topicsStream, Code } from 'services/topics';
+import { projectTopicsStream } from 'services/projectTopics';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
+  projectId?: string;
   ids?: string[];
   code?: Code;
   exclude_code?: Code;
@@ -36,15 +38,26 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { ids, code, exclude_code, sort } = this.props;
+    const { ids, code, exclude_code, sort, projectId } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ ids, code, exclude_code, sort });
+    this.inputProps$ = new BehaviorSubject({ ids, code, exclude_code, sort, projectId });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ ids, code, exclude_code, sort }) => {
+        switchMap(({ ids, code, exclude_code, sort, projectId }) => {
           const queryParameters = { code, exclude_code, sort };
+
+          if (projectId) {
+            return projectTopicsStream(projectId).observable.pipe(
+              map(topics => topics.data.filter(topic => topic).map(topic => topic.relationships.topic.data.id)),
+              switchMap((topicIds) => {
+                return combineLatest(
+                  topicIds.map(topicId => topicByIdStream(topicId).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
+                );
+              }),
+            );
+          }
 
           if (ids) {
             if (ids.length > 0) {
