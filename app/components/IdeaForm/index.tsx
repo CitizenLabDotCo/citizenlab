@@ -22,6 +22,7 @@ import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComp
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
+import { ITopicData } from 'services/topics';
 import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
@@ -33,6 +34,7 @@ import {
 // resources
 import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
 import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProjectTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
@@ -104,7 +106,8 @@ interface InputProps {
 
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
-  topics: GetProjectTopicsChildProps;
+  projectTopics: GetProjectTopicsChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -574,6 +577,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       const showPBBudget = pbContext && pbEnabled;
       const showTopics = topicsEnabled && topics && topics.length > 0;
       const showLocation = locationEnabled;
+      const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
       return (
         <Form id="idea-form" className={className}>
@@ -659,7 +663,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     selectedTopicIds={selectedTopics}
                     onChange={this.handleTopicsOnChange}
                     max={2}
-                    availableTopics={topics}
+                    availableTopics={filteredTopics}
                   />
                   {topicsError && <Error id="e2e-new-idea-topics-error" text={topicsError} />}
                 </FormElement>
@@ -734,7 +738,16 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
-  topics: ({ projectId, render }) => <GetProjectTopics projectId={projectId} sort="custom">{render}</GetProjectTopics>
+  projectTopics: ({ projectId, render }) => <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>,
+  topics: ({ projectTopics, render }) => {
+    if (!isNilOrError(projectTopics)) {
+      const topicIds = projectTopics.map(projectTopic => projectTopic.relationships.topic.data.id);
+
+      return <GetTopics ids={topicIds}>{render}</GetTopics>;
+    }
+
+    return null;
+  }
 });
 
 const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));
