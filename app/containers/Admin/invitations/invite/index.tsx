@@ -17,6 +17,7 @@ import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import QuillEditor from 'components/UI/QuillEditor';
 import HelmetIntl from 'components/HelmetIntl';
 import Button from 'components/UI/Button';
+import Warning from 'components/UI/Warning';
 
 // services
 import { bulkInviteXLSX, bulkInviteEmails, IInviteError, INewBulkInvite } from 'services/invites';
@@ -101,12 +102,17 @@ const SectionParagraph = styled.p`
   }
 `;
 
-const DownloadButtonContainer = styled.div`
+const FlexWrapper = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 const DownloadButton = styled(Button)`
   margin-bottom: 15px;
+`;
+
+const StyledWarning = styled(Warning)`
+  margin-top: 5px;
 `;
 
 export interface InputProps { }
@@ -131,7 +137,6 @@ type State = {
   selectedInviteText: string | null;
   invitationOptionsOpened: boolean;
   selectedView: 'import' | 'text';
-  dirty: boolean;
   processing: boolean;
   processed: boolean;
   apiErrors: IInviteError[] | null;
@@ -155,7 +160,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
       selectedInviteText: null,
       invitationOptionsOpened: false,
       selectedView: 'import',
-      dirty: false,
       processing: false,
       processed: false,
       apiErrors: null,
@@ -256,15 +260,15 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     this.setState({ selectedInviteText });
   }
 
-  getSubmitState = (errors: IInviteError[] | null, processed: boolean, dirty: boolean) => {
+  getSubmitState = (errors: IInviteError[] | null, processed: boolean) => {
+    const isInvitationValid = this.validateInvitation();
     if (errors && errors.length > 0) {
       return 'error';
-    } else if (processed && !dirty) {
+    } else if (processed && !isInvitationValid) {
       return 'success';
-    } else if (!dirty) {
+    } else if (!isInvitationValid) {
       return 'disabled';
     }
-
     return 'enabled';
   }
 
@@ -285,7 +289,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
       selectedInviteText: null,
       invitationOptionsOpened: false,
       processed: false,
-      dirty: false,
       apiErrors: null,
       filetypeError: null,
       unknownError: null
@@ -376,7 +379,6 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
         this.setState({
           processing: false,
           processed: true,
-          dirty: false,
           selectedEmails: null,
           selectedFileBase64: null
         });
@@ -392,11 +394,18 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     }
   }
 
+  validateInvitation = () => {
+    const { selectedEmails, selectedProjects, hasModeratorRights, selectedFileBase64 } = this.state;
+    const isValidEmails = isString(selectedEmails) && !isEmpty(selectedEmails);
+    const hasValidRights = hasModeratorRights ? !isEmpty(selectedProjects) : true;
+    const isValidInvitationTemplate = isString(selectedFileBase64) && !isEmpty(selectedFileBase64);
+    return (isValidEmails || isValidInvitationTemplate) && hasValidRights;
+  }
+
   render() {
     const { projects, locale, tenantLocales, groups, intl: { formatMessage } } = this.props;
     const {
       selectedEmails,
-      selectedFileBase64,
       hasAdminRights,
       hasModeratorRights,
       selectedLocale,
@@ -413,7 +422,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
     } = this.state;
     const projectOptions = this.getProjectOptions(projects, locale, tenantLocales);
     const groupOptions = this.getGroupOptions(groups, locale, tenantLocales);
-    const dirty = ((isString(selectedEmails) && !isEmpty(selectedEmails)) || (isString(selectedFileBase64) && !isEmpty(selectedFileBase64)));
+
     const invitationTabs = [
       {
         value: 'import',
@@ -442,41 +451,54 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
       >
         <InvitationOptions>
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.adminLabel} />
-              <IconTooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
-            </Label>
-            <Toggle checked={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+            <FlexWrapper>
+              <Label>
+                <FormattedMessage {...messages.adminLabel} />
+                <IconTooltip content={<FormattedMessage {...messages.adminLabelTooltip} />} />
+              </Label>
+              <Toggle checked={hasAdminRights} onChange={this.handleAdminRightsOnToggle} />
+            </FlexWrapper>
           </SectionField>
 
           <SectionField>
-            <Label>
-              <FormattedMessage {...messages.moderatorLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage
-                    {...messages.moderatorLabelTooltip}
-                    values={{
-                      moderatorLabelTooltipLink: (
-                        // tslint:disable-next-line
-                        <a href={formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
-                          <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
-                        </a>
-                      )
-                    }}
-                  />
-                }
-              />
-            </Label>
-            <StyledToggle checked={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
-            {hasModeratorRights &&
-              <MultipleSelect
-                value={selectedProjects}
-                options={projectOptions}
-                onChange={this.handleSelectedProjectsOnChange}
-                placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
-              />
+            <FlexWrapper>
+              <Label>
+                <FormattedMessage {...messages.moderatorLabel} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.moderatorLabelTooltip}
+                      values={{
+                        moderatorLabelTooltipLink: (
+                          // tslint:disable-next-line
+                          <a href={formatMessage(messages.moderatorLabelTooltipLink)} target="_blank">
+                            <FormattedMessage {...messages.moderatorLabelTooltipLinkText} />
+                          </a>
+                        )
+                      }}
+                    />
+                  }
+                />
+              </Label>
+              <StyledToggle checked={hasModeratorRights} onChange={this.handleModeratorRightsOnToggle} />
+            </FlexWrapper>
+
+            {
+              hasModeratorRights &&
+              <>
+                <MultipleSelect
+                  value={selectedProjects}
+                  options={projectOptions}
+                  onChange={this.handleSelectedProjectsOnChange}
+                  placeholder={<FormattedMessage {...messages.projectSelectorPlaceholder} />}
+                />
+                {isNilOrError(selectedProjects) &&
+                  <StyledWarning>
+                    <FormattedMessage {...messages.required} />
+                  </StyledWarning>}
+              </>
             }
+
           </SectionField>
 
           {!isNilOrError(tenantLocales) && tenantLocales.length > 1 &&
@@ -551,7 +573,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                     <FormattedMessage {...messages.downloadFillOutTemplate} />
                   </StyledSectionTitle>
                   <SectionDescription>
-                    <DownloadButtonContainer>
+                    <FlexWrapper>
                       <DownloadButton
                         buttonStyle="secondary"
                         icon="download"
@@ -559,7 +581,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
                       >
                         <FormattedMessage {...messages.downloadTemplate} />
                       </DownloadButton>
-                    </DownloadButtonContainer>
+                    </FlexWrapper>
                     <SectionParagraph>
                       <FormattedMessage
                         {...messages.visitSupportPage}
@@ -624,7 +646,7 @@ class Invitations extends React.PureComponent<Props & InjectedIntlProps, State> 
               <ButtonWrapper>
                 <SubmitWrapper
                   loading={processing}
-                  status={this.getSubmitState(apiErrors, processed, dirty)}
+                  status={this.getSubmitState(apiErrors, processed)}
                   messages={{
                     buttonSave: messages.save,
                     buttonSuccess: messages.saveSuccess,

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { LEGAL_PAGES } from 'services/pages';
 import PageEditor from './PageEditor';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // intl
 import { FormattedMessage } from 'utils/cl-intl';
@@ -14,9 +14,9 @@ export default class AdminSettingsPages extends PureComponent {
       <SectionTitle>
         <FormattedMessage {...messages.titlePages} />
       </SectionTitle>
-      <SectionSubtitle>
+      <SectionDescription>
         <FormattedMessage {...messages.subtitlePages} />
-      </SectionSubtitle>
+      </SectionDescription>
         {LEGAL_PAGES.map((slug) => (
           <PageEditor
             key={slug}

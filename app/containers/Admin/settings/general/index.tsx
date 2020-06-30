@@ -17,7 +17,7 @@ import { Input, IconTooltip } from 'cl2-component-library';
 import Label from 'components/UI/Label';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SectionTitle, SectionField, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField, SectionDescription } from 'components/admin/Section';
 
 // services
 import {
@@ -192,9 +192,9 @@ class SettingsGeneralTab extends PureComponent<Props & InjectedIntlProps, State>
             <SectionTitle>
               <FormattedMessage {...messages.titleBasic} />
             </SectionTitle>
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitleBasic} />
-            </SectionSubtitle>
+            </SectionDescription>
 
             <SectionField>
               <InputMultiloc

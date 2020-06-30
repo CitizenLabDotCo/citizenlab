@@ -13,7 +13,7 @@ export default defineMessages({
     id: 'app.components.IdeaCards.empty',
     defaultMessage: 'It looks like there are no ideas yet.',
   },
-  noIdeasForFilter: {
+  noFilteredIdeas: {
     id: 'app.containers.IdeaCards.noFilteredIdeas',
     defaultMessage: 'No ideas found',
   },

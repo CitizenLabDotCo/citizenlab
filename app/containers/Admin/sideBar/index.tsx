@@ -174,6 +174,14 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
         isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/projects`))
       },
       {
+        id: 'workshops',
+        link: '/admin/workshops',
+        iconName: 'workshops',
+        message: 'workshops',
+        featureName: 'workshops',
+        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/workshops`))
+      },
+      {
         id: 'ideas',
         link: '/admin/ideas',
         iconName: 'ideas',

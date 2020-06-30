@@ -668,7 +668,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                     <EmptyContainerInner>
                       <IdeaIcon name="idea" ariaHidden />
                       <EmptyMessage>
-                        <EmptyMessageMainLine><FormattedMessage {...messages.noIdeasForFilter} /></EmptyMessageMainLine>
+                        <EmptyMessageMainLine><FormattedMessage {...messages.noFilteredIdeas} /></EmptyMessageMainLine>
                         <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>
                       </EmptyMessage>
                     </EmptyContainerInner>

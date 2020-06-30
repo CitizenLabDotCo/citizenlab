@@ -14,6 +14,7 @@ import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { PreviousPathnameContext } from 'context';
 
 // utils
@@ -27,6 +28,7 @@ import PageLayout from 'components/InitiativeForm/PageLayout';
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
   previousPathName: string | null;
 }
 
@@ -80,6 +82,11 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     if (prevProps.authUser !== this.props.authUser) {
       this.redirectIfNotPermittedOnPage();
     }
+
+    if (prevProps.tenant !== this.props.tenant) {
+      this.redirectIfPostingNotEnabled();
+    }
+
   }
 
   redirectIfNotPermittedOnPage = () => {
@@ -91,9 +98,29 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     }
   }
 
+  redirectIfPostingNotEnabled() {
+    if (!this.isPostingProposalEnabled()) {
+      clHistory.replace('/initiatives');
+    }
+  }
+
+  isPostingProposalEnabled() {
+    const { tenant } = this.props;
+
+    if (
+      !isNilOrError(tenant) &&
+      !isNilOrError(tenant.attributes.settings.initiatives)
+    ) {
+      return tenant.attributes.settings.initiatives.posting_enabled;
+    }
+
+    return false;
+  }
+
   render() {
     const { authUser, locale } = this.props;
     const { locationInfo } = this.state;
+
     if (isNilOrError(authUser) || isNilOrError(locale) || locationInfo === undefined) return null;
     return (
       <>
@@ -112,6 +139,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
 
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
   locale: <GetLocale />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });

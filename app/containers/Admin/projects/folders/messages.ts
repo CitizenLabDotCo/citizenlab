@@ -22,10 +22,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderProjectsTab',
     defaultMessage: 'Projects',
   },
-  newProjectFolder: {
-    id: 'app.containers.AdminPage.FoldersEdit.newFolder',
-    defaultMessage: 'New folder',
-  },
   titleInputLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.titleInputLabel',
     defaultMessage: 'Title',
@@ -85,18 +81,6 @@ export default defineMessages({
   projectsYouCanAdd: {
     id: 'app.containers.AdminPage.FoldersEdit.projectsYouCanAdd',
     defaultMessage: 'Projects you can add to this folder',
-  },
-  otherPublishedProjects: {
-    id: 'app.containers.AdminPage.FoldersEdit.otherPublishedProjects',
-    defaultMessage: 'Published projects',
-  },
-  otherArchivedProjects: {
-    id: 'app.containers.AdminPage.FoldersEdit.otherArchivedProjects',
-    defaultMessage: 'Archived projects',
-  },
-  otherDraftProjects: {
-    id: 'app.containers.AdminPage.FoldersEdit.otherDraftProjects',
-    defaultMessage: 'Draft projects',
   },
   emptyFolder: {
     id: 'app.containers.AdminPage.FoldersEdit.emptyFolder',

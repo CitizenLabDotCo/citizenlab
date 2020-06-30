@@ -11,7 +11,7 @@ import { updateCause } from 'services/causes';
 import useCause from 'hooks/useCause';
 
 // Components
-import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionDescription } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
@@ -149,9 +149,9 @@ const EditCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
       <SectionTitle>
         <FormattedMessage {...messages.editCauseTitle} />
       </SectionTitle>
-      <SectionSubtitle>
+      <SectionDescription>
         <FormattedMessage {...messages.editCauseSubtitle} />
-      </SectionSubtitle>
+      </SectionDescription>
 
       <Section>
         <SectionField>

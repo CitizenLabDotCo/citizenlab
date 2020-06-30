@@ -17,7 +17,7 @@ import FeatureFlag from 'components/FeatureFlag';
 import ExportPollButton from './ExportPollButton';
 import PollAdminForm from './PollAdminForm';
 import T from 'components/T';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // i18n
 import messages from './messages';
@@ -73,9 +73,9 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                 <SectionTitle>
                   <FormattedMessage {...messages.titlePollTab} />
                 </SectionTitle>
-                <SectionSubtitle>
+                <SectionDescription>
                   <FormattedMessage {...messages.subtitlePollTab} />
-                </SectionSubtitle>
+                </SectionDescription>
               </Left>
               <ExportPollButton
                 participationContextType="project"
@@ -108,9 +108,9 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
             <SectionTitle>
               <FormattedMessage {...messages.titlePollTab} />
             </SectionTitle>
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitlePollTab} />
-            </SectionSubtitle>
+            </SectionDescription>
             {pollPhases.map(phase => (
               <PhaseContainer key={phase.id}>
                 <HeaderContainer>

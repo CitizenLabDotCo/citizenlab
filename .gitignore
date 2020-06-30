@@ -31,3 +31,6 @@ cypress/screenshots/
 
 # Storybook generated output
 .out/
+
+#Local VsCode config
+.vscode/launch.json
