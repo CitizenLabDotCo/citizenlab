@@ -16,12 +16,13 @@ import Modal, { ModalContentContainer, Content, ButtonsWrapper } from 'component
 import { StyledLink } from 'components/admin/Section';
 
 // services
-import { ITopicData } from 'services/topics';
-import { deleteProjectTopic, reorderProjectTopic } from 'services/projectTopics';
+import { deleteProjectTopic, reorderProjectTopic, IProjectTopicData } from 'services/projectTopics';
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';
-import useTopics from 'hooks/useTopics';
+
+// resources
+import GetTopic from 'resources/GetTopic';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
@@ -36,20 +37,12 @@ const SortableProjectTopicList = memo(({
   const [processingDeletion, setProcessingDeletion] = useState(false);
   const [projectTopicIdToDelete, setProjectTopicIdToDelete] = useState<string | null>(null);
   const projectTopics = useProjectTopics({ projectId });
-  const projectTopicIds = !isNilOrError(projectTopics) ? projectTopics.map(projectTopic => projectTopic.relationships.topic.data.id) : [];
-  const topics = useTopics({ topicIds: projectTopicIds });
 
-  const handleProjectTopicDelete = (topicId: string) => (event: FormEvent) => {
+  const handleProjectTopicDelete = (projectTopicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
-    if (!isNilOrError(projectTopics)) {
-      const projectTopicId = projectTopics.find(projectTopic => projectTopic.relationships.topic.data.id === topicId)?.id;
-
-      if (projectTopicId) {
-        setShowConfirmationModal(true);
-        setProjectTopicIdToDelete(projectTopicId);
-      }
-    }
+    setShowConfirmationModal(true);
+    setProjectTopicIdToDelete(projectTopicId);
   };
 
   const handleProjectTopicDeletionConfirm = () => {
@@ -64,11 +57,8 @@ const SortableProjectTopicList = memo(({
     }
   };
 
-  const handleReorderTopicProject = (topicId, newOrder) => {
-    if (!isNilOrError(projectTopics)) {
-      const projectTopicId = projectTopics.find(projectTopic => projectTopic.relationships.topic.data.id === topicId)?.id;
-      projectTopicId && reorderProjectTopic(projectTopicId, newOrder);
-    }
+  const handleReorderTopicProject = (projectTopicId, newOrder) => {
+    reorderProjectTopic(projectTopicId, newOrder);
   };
 
   const closeSendConfirmationModal = () => {
@@ -77,13 +67,11 @@ const SortableProjectTopicList = memo(({
   };
 
   if (
-    !isNilOrError(topics) &&
-    topics.length > 0
+    !isNilOrError(projectTopics) &&
+    projectTopics.length > 0
   ) {
-    const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
-    const isLastSelectedTopic = filteredTopics.length === 1;
+    const isLastSelectedTopic = projectTopics.length === 1;
 
-    console.log(1);
     return (
       <>
         {isLastSelectedTopic &&
@@ -100,29 +88,31 @@ const SortableProjectTopicList = memo(({
           </StyledWarning>
         }
         <SortableList
-          items={filteredTopics}
+          items={projectTopics}
           onReorder={handleReorderTopicProject}
           className="projects-list e2e-admin-projects-list"
           id="e2e-admin-published-projects-list"
         >
           {({ itemsList, handleDragRow, handleDropRow }) => (
-            itemsList.map((topic: ITopicData, index: number) => {
+            itemsList.map((projectTopic: IProjectTopicData, index: number) => {
               return (
                 <SortableRow
-                  id={topic.id}
+                  id={projectTopic.id}
                   key={index}
                   index={index}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
-                  lastItem={(index === filteredTopics.length - 1)}
+                  lastItem={(index === projectTopics.length - 1)}
                 >
                   <RowContent>
                     <RowContentInner className="expand primary">
-                      <RowTitle value={topic.attributes.title_multiloc} />
+                      <GetTopic id={projectTopic.relationships.topic.data.id}>
+                        {topic => !isNilOrError(topic) ? <RowTitle value={topic.attributes.title_multiloc} /> : null}
+                      </GetTopic>
                     </RowContentInner>
                   </RowContent>
                   <Button
-                    onClick={handleProjectTopicDelete(topic.id)}
+                    onClick={handleProjectTopicDelete(projectTopic.id)}
                     buttonStyle="text"
                     icon="delete"
                     disabled={isLastSelectedTopic}
