@@ -10,7 +10,7 @@ interface InputProps {
   // Don't use projectId, ids or the query parameters (code, exclude_code, sort) together
   // Only one of the three at a time.
   projectId?: string;
-  ids?: string[];
+  topicIds?: string[];
   code?: Code;
   exclude_code?: Code;
   sort?: 'new' | 'custom';
@@ -40,14 +40,14 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { ids, code, exclude_code, sort, projectId } = this.props;
+    const { topicIds, code, exclude_code, sort, projectId } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ ids, code, exclude_code, sort, projectId });
+    this.inputProps$ = new BehaviorSubject({ topicIds, code, exclude_code, sort, projectId });
 
     this.subscriptions = [
       this.inputProps$.pipe(
         distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ ids, code, exclude_code, sort, projectId }) => {
+        switchMap(({ topicIds, code, exclude_code, sort, projectId }) => {
           const queryParameters = { code, exclude_code, sort };
 
           if (projectId) {
@@ -59,10 +59,10 @@ export default class GetTopics extends React.Component<Props, State> {
                 );
               }),
             );
-          } else if (ids) {
-            if (ids.length > 0) {
+          } else if (topicIds) {
+            if (topicIds.length > 0) {
               return combineLatest(
-                ids.map(id => {
+                topicIds.map(id => {
                   return topicByIdStream(id).observable.pipe(
                     map(topic => !isNilOrError(topic) ? topic.data : topic)
                   );
@@ -82,9 +82,9 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { ids, code, exclude_code, sort } = this.props;
+    const { topicIds, code, exclude_code, sort } = this.props;
     this.inputProps$.next({
-      ids,
+      topicIds,
       code,
       exclude_code,
       sort

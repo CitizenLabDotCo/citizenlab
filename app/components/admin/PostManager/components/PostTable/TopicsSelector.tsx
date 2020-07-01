@@ -25,7 +25,7 @@ export default class TopicsSelector extends React.PureComponent<Props> {
 
   render() {
     return (
-      <GetTopics ids={this.props.selectedTopics}>
+      <GetTopics topicIds={this.props.selectedTopics}>
         {topics => {
           if (isNilOrError(topics)) return null;
 

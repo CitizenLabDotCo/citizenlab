@@ -67,7 +67,7 @@ const Topics = memo<Props & InjectedLocalized>(({ topics, localize, className, p
 const TopicsWithHoCs = injectLocalize<Props>(Topics);
 
 const Data = adopt<DataProps, InputProps>({
-  topics: ({ topicIds, render }) => <GetTopics ids={topicIds}>{render}</GetTopics>
+  topics: ({ topicIds, render }) => <GetTopics topicIds={topicIds}>{render}</GetTopics>
 });
 
 export default (inputProps: InputProps) => (
