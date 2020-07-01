@@ -7,8 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-# gem 'rails', '~> 5.1.0.beta1'
-gem 'rails', '~> 6.0.1'
+gem 'rails', '~> 6.0.3.1'
 # Use postgresql as the database for Active Record
 gem 'pg' # , '~> 0.18'
 # Use Puma as the app server
@@ -74,7 +73,7 @@ gem "apartment", github: 'influitive/apartment', branch: 'development'
 gem "apartment-sidekiq", "~> 1.2.0"
 gem "carrierwave", "~> 2.0.2"
 gem "carrierwave-base64", "~> 2.6"
-gem "kaminari", "~> 1.1.1"
+gem "kaminari", "~> 1.2"
 gem 'api-pagination', "~> 4.8.2"
 gem "activerecord_json_validator", "~> 1.3.0"
 gem 'rails-i18n', '~> 6.0.0'
