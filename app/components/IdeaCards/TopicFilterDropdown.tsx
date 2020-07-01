@@ -28,10 +28,7 @@ const TopicFilterDropdown = memo(({
   localize
 }: Props & InjectedLocalized) => {
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const topics = projectId ?
-    useTopics({ projectId })
-  :
-    useTopics({});
+  const topics = useTopics(projectId ? { projectId } : {});
 
   const handleOnChange = (newSelectedValues) => {
     setSelectedValues(newSelectedValues);
