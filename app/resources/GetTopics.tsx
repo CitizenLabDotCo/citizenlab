@@ -46,7 +46,7 @@ export default class GetTopics extends React.Component<Props, State> {
 
     this.subscriptions = [
       this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => isEqual(prev, next)),
+        distinctUntilChanged((prev, next) =>  isEqual(prev, next)),
         switchMap(({ topicIds, code, exclude_code, sort, projectId }) => {
           const queryParameters = { code, exclude_code, sort };
 
@@ -82,12 +82,13 @@ export default class GetTopics extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { topicIds, code, exclude_code, sort } = this.props;
+    const { topicIds, code, exclude_code, sort, projectId } = this.props;
     this.inputProps$.next({
       topicIds,
       code,
       exclude_code,
-      sort
+      sort,
+      projectId
     });
   }
 
