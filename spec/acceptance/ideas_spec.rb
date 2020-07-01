@@ -62,18 +62,22 @@ resource "Ideas" do
     example "List all ideas which match one of the given topics", document: false do
       t1 = create(:topic)
       t2 = create(:topic)
+      t3 = create(:topic)
 
       i1 = @ideas[0]
-      i1.topics = [t1]
-      i1.save
+      i1.topics = [t1,t3]
+      i1.save!
       i2 = @ideas[1]
       i2.topics = [t2]
-      i2.save
+      i2.save!
+      i3 = @ideas[3]
+      i3.topics = [t3,t1,t2]
+      i3.save!
 
       do_request topics: [t1.id, t2.id]
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].size).to eq 3
+      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id, i3.id]
     end
 
 
@@ -82,7 +86,7 @@ resource "Ideas" do
 
       i1 = @ideas.first
       i1.areas << a1
-      i1.save
+      i1.save!
 
       do_request areas: [a1.id]
       json_response = json_parse(response_body)
