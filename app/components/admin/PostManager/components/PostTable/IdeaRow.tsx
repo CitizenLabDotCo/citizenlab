@@ -4,6 +4,8 @@ import { take } from 'rxjs/operators';
 import { uniq, isEmpty, get } from 'lodash-es';
 import { findDOMNode } from 'react-dom';
 import { DragSource } from 'react-dnd';
+import { API_PATH } from 'containers/App/constants';
+import streams from 'utils/streams';
 
 // services
 import { IIdeaData, updateIdea, ideaByIdStream } from 'services/ideas';
@@ -64,6 +66,10 @@ class IdeaRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLo
   onUpdateIdeaTopics = (selectedTopics) => {
     updateIdea(this.props.idea.id, {
       topic_ids: selectedTopics,
+    }).then(() => {
+      streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/topics`]
+      });
     });
   }
 
