@@ -30,18 +30,17 @@ const apiEndpoint = `${API_PATH}/projects`;
 
 export async function deleteProjectTopic(projectId: string, projectTopicId: string) {
   const response = await streams.delete(`${API_PATH}/projects_topics/${projectTopicId}`, projectTopicId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/projects_topics`] });
+  await streams.fetchAllWith({ apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`] });
   return response;
 }
 
 export async function addProjectTopic(projectId: string, topicId: string) {
   const response = await streams.add(`${API_PATH}/projects_topics`, { project_id: projectId, topic_id: topicId });
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/projects/${projectId}/projects_topics`] });
+  await streams.fetchAllWith({ apiEndpoint: [`${apiEndpoint}/${projectId}/projects_topics`] });
   return response;
 }
 
 export async function reorderProjectTopic(
-  // projectId: string,
   projectTopicId: string,
   newOrder: number
 ) {

@@ -5,7 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
 import useTopics from 'hooks/useTopics';
-import useProjectTopics from 'hooks/useProjectTopics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -60,7 +59,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
     params: { projectId }
   } = props;
   const topics = useTopics({});
-  const projectTopics = useProjectTopics({ projectId });
+  const projectTopics = useTopics({ projectId });
   const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
   const [processing, setProcessing] = useState(false);
 
@@ -90,7 +89,9 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
       !isNilOrError(projectTopics)
     ) {
       const allTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
-      const selectedInProjectTopicIds = !isNilOrError(projectTopics) ? projectTopics.map(topic => topic.relationships.topic.data.id) : [];
+      const selectedInProjectTopics = projectTopics
+        .filter(topic => !isNilOrError(topic)) as ITopicData[];
+      const selectedInProjectTopicIds = selectedInProjectTopics.map(topic => topic.id);
       const selectableTopics = allTopics.filter(topic => !selectedInProjectTopicIds.includes(topic.id));
 
       return selectableTopics.map(topic => {
