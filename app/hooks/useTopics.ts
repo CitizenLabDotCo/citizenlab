@@ -36,10 +36,12 @@ export default function useTopics(parameters: Parameters) {
           );
         }),
       );
-    } else if (topicIds && topicIds.length) {
-      observable = combineLatest(
-        topicIds.map(id => topicByIdStream(id).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
-      );
+    } else if (topicIds) {
+      if (topicIds.length > 0) {
+        observable = combineLatest(
+          topicIds.map(id => topicByIdStream(id).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
+        );
+      }
     } else {
       observable = topicsStream({ queryParameters }).observable.pipe(map(topics => topics.data));
     }
