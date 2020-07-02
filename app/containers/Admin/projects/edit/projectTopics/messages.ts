@@ -33,7 +33,7 @@ export default defineMessages({
   },
   topicDeletionWarning: {
     id: 'app.containers.AdminPage.Topics.topicDeletionWarning',
-    defaultMessage: 'Deleting this topic from the project will also remove the topic from all ideas in this project.'
+    defaultMessage: 'This topic will no longer be used in this project. However, the topic will not be deleted from existing ideas.'
   },
   cancel: {
     id: 'app.containers.AdminPage.Topics.cancel',
