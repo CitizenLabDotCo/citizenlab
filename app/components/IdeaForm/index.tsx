@@ -33,7 +33,6 @@ import {
 
 // resources
 import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
-import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProjectTopics';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
@@ -106,7 +105,6 @@ interface InputProps {
 
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
-  projectTopics: GetProjectTopicsChildProps;
   topics: GetTopicsChildProps;
 }
 
@@ -738,15 +736,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
 const Data = adopt<DataProps, InputProps>({
   pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
-  projectTopics: ({ projectId, render }) => <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>,
-  topics: ({ projectTopics, render }) => {
-    if (!isNilOrError(projectTopics)) {
-      const topicIds = projectTopics.map(projectTopic => projectTopic.relationships.topic.data.id);
-
-      return <GetTopics ids={topicIds}>{render}</GetTopics>;
-    }
-
-    return null;
+  topics: ({ projectId, render }) => {
+    return <GetTopics projectId={projectId}>{render}</GetTopics>;
   }
 });
 
