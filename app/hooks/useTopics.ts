@@ -37,9 +37,11 @@ export default function useTopics(parameters: Parameters) {
         }),
       );
     } else if (topicIds) {
-      observable = combineLatest(
-        topicIds.map(id => topicByIdStream(id).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
-      );
+      if (topicIds.length > 0) {
+        observable = combineLatest(
+          topicIds.map(id => topicByIdStream(id).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
+        );
+      }
     } else {
       observable = topicsStream({ queryParameters }).observable.pipe(map(topics => topics.data));
     }
@@ -51,5 +53,6 @@ export default function useTopics(parameters: Parameters) {
     return () => subscription.unsubscribe();
   }, [topicIds]);
 
+  console.log(topics);
   return topics;
 }
