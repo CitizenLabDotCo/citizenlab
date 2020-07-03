@@ -361,12 +361,11 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <SectionField aria-live="polite">
               <FormLabel
                 labelMessage={messages.topicsLabel}
-                subtextMessage={messages.topicsLabelSubtext}
+                subtextMessage={messages.topicsLabelDescription}
                 htmlFor="field-topic-multiple-picker"
               />
               <TopicsPicker
                 id="field-topic-multiple-picker"
-                max={2}
                 selectedTopicIds={topic_ids}
                 onChange={this.changeAndSaveTopics}
                 setRef={this.handleTopicsPickerSetRef}

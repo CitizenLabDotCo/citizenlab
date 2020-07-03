@@ -189,7 +189,7 @@
   "app.components.InitiativeForm.titleLengthError": "",
   "app.components.InitiativeForm.topicEmptyError": "",
   "app.components.InitiativeForm.topicsLabel": "",
-  "app.components.InitiativeForm.topicsLabelSubtext": "",
+  "app.components.InitiativeForm.topicsLabelDescription": "",
   "app.components.InitiativesMap.noInitiativesWithLocation": "",
   "app.components.InitiativesMap.postInitiativeHere": "",
   "app.components.InitiativesMap.seeInitiative": "",

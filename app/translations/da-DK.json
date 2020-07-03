@@ -189,7 +189,7 @@
   "app.components.InitiativeForm.titleLengthError": "Titlen skal være mindst 10 tegn lang",
   "app.components.InitiativeForm.topicEmptyError": "Oplys venligst et emne",
   "app.components.InitiativeForm.topicsLabel": "Vælg emnet for dit borgerforslag",
-  "app.components.InitiativeForm.topicsLabelSubtext": "Du kan vælge op til to emner",
+  "app.components.InitiativeForm.topicsLabelDescription": "",
   "app.components.InitiativesMap.noInitiativesWithLocation": "{tenantName, select, DeloitteDK {Borgerforslag i dette verdensmål har ingen placeringsoplysninger.} other {Borgerforslag i dette projekt har ingen placeringsoplysninger.}}",
   "app.components.InitiativesMap.postInitiativeHere": "Slå et borgerforslag op her",
   "app.components.InitiativesMap.seeInitiative": "Se borgerforslag",

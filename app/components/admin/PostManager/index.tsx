@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 import { IProjectData } from 'services/projects';
+import { ITopicData } from 'services/topics';
 
 // resources
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
@@ -16,8 +17,7 @@ import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resource
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
-import GetTopics from 'resources/GetTopics';
-import GetProjectTopics, { GetProjectTopicsChildProps } from 'resources/GetProjectTopics';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -108,9 +108,7 @@ interface InputProps {
 interface DataProps {
   posts: GetIdeasChildProps | GetInitiativesChildProps;
   postStatuses: GetIdeaStatusesChildProps | GetInitiativeStatusesChildProps;
-  // We use only 1 stream for all topics, so
-  // this covers all types, even though we use GetTopics
-  topics: GetProjectTopicsChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -284,6 +282,8 @@ export class PostManager extends React.PureComponent<Props, State> {
     );
 
     if (!isNilOrError(topics)) {
+      const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
+
       return (
         <>
           <TopActionBar>
@@ -354,7 +354,7 @@ export class PostManager extends React.PureComponent<Props, State> {
                   phases={!isNilOrError(phases) ? phases : undefined}
                   projects={!isNilOrError(projects) ? projects : undefined}
                   statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                  topics={topics}
+                  topics={filteredTopics}
                   selectedPhase={selectedPhase}
                   selectedTopics={selectedTopics}
                   selectedStatus={selectedStatus}
@@ -447,7 +447,7 @@ const Data = adopt<DataProps, InputProps>({
     }
 
     if (type === 'ProjectIdeas' && projectId) {
-      return <GetProjectTopics projectId={projectId}>{render}</GetProjectTopics>;
+      return <GetTopics projectId={projectId}>{render}</GetTopics>;
     }
 
     if (type === 'AllIdeas') {
@@ -460,8 +460,10 @@ const Data = adopt<DataProps, InputProps>({
 
 const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};
