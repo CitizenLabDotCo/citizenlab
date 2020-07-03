@@ -73,7 +73,6 @@ export interface InputProps {
   onChange: (tocisIds: string[]) => void;
   onBlur?: () => void;
   selectedTopicIds: string[];
-  max: number;
   id?: string;
   className?: string;
   setRef?: (element: HTMLButtonElement) => void;
@@ -82,26 +81,27 @@ export interface InputProps {
 
 interface Props extends InputProps {}
 
-const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, availableTopics, max, className, setRef }: Props & InjectedLocalized) => {
+const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, availableTopics, className, setRef }: Props & InjectedLocalized) => {
   const selectedTopics = useTopics({ topicIds: selectedTopicIds });
 
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
     const newTopics = [...selectedTopicIds];
+
     if (!selectedTopicIds) {
       onChange([topicId]);
     } else {
       const i = newTopics.lastIndexOf(topicId);
-      if (i === -1) {
-        if (selectedTopicIds.length <= max) {
-          newTopics.push(topicId);
-          onChange(newTopics);
-        }
+      const topicNotSelectedYet = (i === -1);
+
+      if (topicNotSelectedYet) {
+        newTopics.push(topicId);
       } else {
         newTopics.splice(i, 1);
-        onChange(newTopics);
       }
+
+      onChange(newTopics);
     }
   };
 
@@ -110,30 +110,31 @@ const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, avail
   }, []);
 
   if (
-    !isNilOrError(availableTopics) &&
-    !isNilOrError(selectedTopics)
+    !isNilOrError(availableTopics)
   ) {
     const numberOfSelectedTopics = selectedTopicIds.length;
-    const selectedTopicNames = selectedTopics
+    const selectedTopicNames = !isNilOrError(selectedTopics) ? selectedTopics
       .filter(topic => !isNilOrError(topic))
       .map((topic: ITopicData) => localize(topic.attributes.title_multiloc))
-      .join(', ');
+      .join(', ')
+    :
+      ''
+    ;
 
     return (
       <>
         <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
           {availableTopics.map((topic, index) => {
             const isSelected = selectedTopicIds.includes(topic.id);
-            const isDisabled = !isSelected && selectedTopicIds.length >= max;
 
             return (
               <TopicSwitch
                 key={topic.id}
                 onClick={handleOnChange(topic.id)}
                 className={isSelected ? 'selected' : ''}
-                disabled={isDisabled}
                 onMouseDown={removeFocus}
-                ref={index === 0 ? setRef : undefined}
+                ref={index === 0 ? setRef :  undefined}
+                disabled={false}
               >
                 <T value={topic.attributes.title_multiloc} />
               </TopicSwitch>
