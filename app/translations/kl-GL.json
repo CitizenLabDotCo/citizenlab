@@ -189,7 +189,7 @@
   "app.components.InitiativeForm.titleLengthError": "Taaguutaa minnerpaamik naqinnernik 10-nik takitigissaaq",
   "app.components.InitiativeForm.topicEmptyError": "Qulequtaa allalaariuk",
   "app.components.InitiativeForm.topicsLabel": "Innuttaasutut siunnersuuternut qulequttamik toqqaagit",
-  "app.components.InitiativeForm.topicsLabelSubtext": "Qulequttanik marlunnik toqqaasinnaavutit",
+  "app.components.InitiativeForm.topicsLabelDescription": "",
   "app.components.InitiativesMap.noInitiativesWithLocation": "{tenantName, select, DeloitteDK {Suliami nunarsuaq tamakkerlugu anguniakkani innuttaasunit siunnersuummi sumiiffinnik paasissutissaqanngilaq.} other {Suliami uani sumiiffinnik paasissutissaqanngilaq.}}",
   "app.components.InitiativesMap.postInitiativeHere": "Uani innuttaasutut siunnersuummik ikkussigit ",
   "app.components.InitiativesMap.seeInitiative": "Innuttaasutut siunnersuut takujuk",
