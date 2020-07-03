@@ -33,7 +33,7 @@ export default defineMessages({
   },
   topicDeletionWarning: {
     id: 'app.containers.AdminPage.Topics.topicDeletionWarning',
-    defaultMessage: 'This topic will no longer be used in this project. However, the topic will not be deleted from existing ideas.'
+    defaultMessage: 'This topic will no longer be able to be selected for new ideas.'
   },
   cancel: {
     id: 'app.containers.AdminPage.Topics.cancel',
