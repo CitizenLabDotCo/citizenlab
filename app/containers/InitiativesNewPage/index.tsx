@@ -14,6 +14,7 @@ import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
+import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { PreviousPathnameContext } from 'context';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
@@ -29,6 +30,7 @@ import { ITopicData } from 'services/topics';
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
+  tenant: GetTenantChildProps;
   previousPathName: string | null;
   topics: GetTopicsChildProps;
 }
@@ -83,6 +85,11 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     if (prevProps.authUser !== this.props.authUser) {
       this.redirectIfNotPermittedOnPage();
     }
+
+    if (prevProps.tenant !== this.props.tenant) {
+      this.redirectIfPostingNotEnabled();
+    }
+
   }
 
   redirectIfNotPermittedOnPage = () => {
@@ -92,6 +99,25 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
     if (!isPrivilegedUser && authUser === null) {
       clHistory.replace('/sign-up');
     }
+  }
+
+  redirectIfPostingNotEnabled() {
+    if (!this.isPostingProposalEnabled()) {
+      clHistory.replace('/initiatives');
+    }
+  }
+
+  isPostingProposalEnabled() {
+    const { tenant } = this.props;
+
+    if (
+      !isNilOrError(tenant) &&
+      !isNilOrError(tenant.attributes.settings.initiatives)
+    ) {
+      return tenant.attributes.settings.initiatives.posting_enabled;
+    }
+
+    return false;
   }
 
   render() {
@@ -125,6 +151,7 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
 
 const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
+  tenant: <GetTenant />,
   locale: <GetLocale />,
   topics: <GetTopics exclude_code={'custom'} />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>

@@ -9,7 +9,7 @@ import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-import { Section, SectionSubtitle, SectionTitle } from 'components/admin/Section';
+import { Section, SectionDescription, SectionTitle } from 'components/admin/Section';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -61,9 +61,9 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
         <SectionTitle>
           <FormattedMessage {...messages.titleAreas} />
         </SectionTitle>
-        <SectionSubtitle>
+        <SectionDescription>
           <FormattedMessage {...messages.subtitleAreas} />
-        </SectionSubtitle>
+        </SectionDescription>
 
         <Collapse
           opened={terminologyOpened}

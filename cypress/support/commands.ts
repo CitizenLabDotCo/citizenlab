@@ -389,14 +389,14 @@ export function apiCreateInitiative({
   jwt,
   topicIds
 }: {
-    initiativeTitle: string,
-    initiativeContent: string,
-    assigneeId?: string,
-    locationGeoJSON?: { 'type': string, 'coordinates': number[] },
-    locationDescription?: string,
-    jwt?: string,
-    topicIds?: string[]
-  }) {
+  initiativeTitle: string,
+  initiativeContent: string,
+  assigneeId?: string,
+  locationGeoJSON?: { 'type': string, 'coordinates': number[] },
+  locationDescription?: string,
+  jwt?: string,
+  topicIds?: string[]
+}) {
   let adminJwt: string;
   let headers: { 'Content-Type': string; Authorization: string; } | null = null;
 
@@ -605,16 +605,16 @@ export function apiCreateProject({
   surveyUrl,
   surveyService,
 }: {
-    type: 'timeline' | 'continuous',
-    title: string,
-    descriptionPreview: string,
-    description: string,
-    publicationStatus?: 'draft' | 'published' | 'archived',
-    participationMethod?: 'ideation' | 'information' | 'survey' | 'budgeting' | 'poll',
-    assigneeId?: string,
-    surveyUrl?: string,
-    surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
-  }) {
+  type: 'timeline' | 'continuous',
+  title: string,
+  descriptionPreview: string,
+  description: string,
+  publicationStatus?: 'draft' | 'published' | 'archived',
+  participationMethod?: 'ideation' | 'information' | 'survey' | 'budgeting' | 'poll',
+  assigneeId?: string,
+  surveyUrl?: string,
+  surveyService?: 'typeform' | 'survey_monkey' | 'google_forms',
+}) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -628,7 +628,9 @@ export function apiCreateProject({
       body: {
         project: {
           process_type: type,
-          publication_status: publicationStatus,
+          admin_publication_attributes: {
+            'publication_status': publicationStatus
+          },
           title_multiloc: {
             'en-GB': title,
             'nl-BE': title
@@ -658,13 +660,13 @@ export function apiCreateFolder({
   description,
   publicationStatus = 'published'
 }: {
-    type: 'timeline' | 'continuous',
-    title: string,
-    descriptionPreview: string,
-    description: string,
-    publicationStatus?: 'draft' | 'published' | 'archived',
-    projectIds?: string[]
-  }) {
+  type: 'timeline' | 'continuous',
+  title: string,
+  descriptionPreview: string,
+  description: string,
+  publicationStatus?: 'draft' | 'published' | 'archived',
+  projectIds?: string[]
+}) {
   return cy.apiLogin('admin@citizenlab.co', 'testtest').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -678,7 +680,9 @@ export function apiCreateFolder({
       body: {
         project_folder: {
           process_type: type,
-          publication_status: publicationStatus,
+          admin_publication_attributes: {
+            publication_status: publicationStatus
+          },
           title_multiloc: {
             'en-GB': title,
             'nl-BE': title
