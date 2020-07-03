@@ -189,7 +189,7 @@
   "app.components.InitiativeForm.titleLengthError": "Tytuł pomysłu musi mieć co najmniej 10 znaków",
   "app.components.InitiativeForm.topicEmptyError": "Podaj obszar tematyczny",
   "app.components.InitiativeForm.topicsLabel": "Wybierz obszar tematyczny swojej propozycji",
-  "app.components.InitiativeForm.topicsLabelSubtext": "Można wybrać maksymalnie dwa obszary tematyczne",
+  "app.components.InitiativeForm.topicsLabelDescription": "",
   "app.components.InitiativesMap.noInitiativesWithLocation": "Pomysły w tym projekcie nie mają żadnej informacji o lokalizacji.",
   "app.components.InitiativesMap.postInitiativeHere": "Prześlij propozycję tutaj",
   "app.components.InitiativesMap.seeInitiative": "Pokaż propozycje",

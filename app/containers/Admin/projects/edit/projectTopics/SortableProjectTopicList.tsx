@@ -16,11 +16,13 @@ import Modal, { ModalContentContainer, Content, ButtonsWrapper } from 'component
 import { StyledLink } from 'components/admin/Section';
 
 // services
-import { ITopicData } from 'services/topics';
-import { deleteProjectTopic, reorderProjectTopic } from 'services/projectTopics';
+import { deleteProjectTopic, reorderProjectTopic, IProjectTopicData } from 'services/projectTopics';
 
 // hooks
 import useProjectTopics from 'hooks/useProjectTopics';
+
+// resources
+import GetTopic from 'resources/GetTopic';
 
 const StyledWarning = styled(Warning)`
   margin-bottom: 20px;
@@ -33,38 +35,41 @@ const SortableProjectTopicList = memo(({
 }: Props & WithRouterProps) => {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [processingDeletion, setProcessingDeletion] = useState(false);
-  const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
-  const projectTopics = useProjectTopics({ projectId, sort: 'custom' });
+  const [projectTopicIdToDelete, setProjectTopicIdToDelete] = useState<string | null>(null);
+  const projectTopics = useProjectTopics({ projectId });
 
-  const handleProjectTopicDelete = (topicId: string) => (event: FormEvent) => {
+  const handleProjectTopicDelete = (projectTopicId: string) => (event: FormEvent) => {
     event.preventDefault();
 
     setShowConfirmationModal(true);
-    setTopicIdToDelete(topicId);
+    setProjectTopicIdToDelete(projectTopicId);
   };
 
   const handleProjectTopicDeletionConfirm = () => {
-    if (topicIdToDelete) {
+    if (projectTopicIdToDelete) {
       setProcessingDeletion(true);
-      deleteProjectTopic(projectId, topicIdToDelete)
+      deleteProjectTopic(projectId, projectTopicIdToDelete)
       .then(() => {
         setProcessingDeletion(false);
         setShowConfirmationModal(false);
-        setTopicIdToDelete(null);
+        setProjectTopicIdToDelete(null);
       });
     }
   };
 
-  const handleReorderTopicProject = (topicId, newOrder) => {
-    reorderProjectTopic(projectId, topicId, newOrder);
+  const handleReorderTopicProject = (projectTopicId, newOrder) => {
+    reorderProjectTopic(projectTopicId, newOrder);
   };
 
   const closeSendConfirmationModal = () => {
     setShowConfirmationModal(false);
-    setTopicIdToDelete(null);
+    setProjectTopicIdToDelete(null);
   };
 
-  if (!isNilOrError(projectTopics)) {
+  if (
+    !isNilOrError(projectTopics) &&
+    projectTopics.length > 0
+  ) {
     const isLastSelectedTopic = projectTopics.length === 1;
 
     return (
@@ -89,10 +94,10 @@ const SortableProjectTopicList = memo(({
           id="e2e-admin-published-projects-list"
         >
           {({ itemsList, handleDragRow, handleDropRow }) => (
-            itemsList.map((topic: ITopicData, index: number) => {
+            itemsList.map((projectTopic: IProjectTopicData, index: number) => {
               return (
                 <SortableRow
-                  id={topic.id}
+                  id={projectTopic.id}
                   key={index}
                   index={index}
                   moveRow={handleDragRow}
@@ -101,11 +106,13 @@ const SortableProjectTopicList = memo(({
                 >
                   <RowContent>
                     <RowContentInner className="expand primary">
-                      <RowTitle value={topic.attributes.title_multiloc} />
+                      <GetTopic id={projectTopic.relationships.topic.data.id}>
+                        {topic => !isNilOrError(topic) ? <RowTitle value={topic.attributes.title_multiloc} /> : null}
+                      </GetTopic>
                     </RowContentInner>
                   </RowContent>
                   <Button
-                    onClick={handleProjectTopicDelete(topic.id)}
+                    onClick={handleProjectTopicDelete(projectTopic.id)}
                     buttonStyle="text"
                     icon="delete"
                     disabled={isLastSelectedTopic}

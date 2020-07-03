@@ -5,7 +5,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // Hooks
 import useTopics from 'hooks/useTopics';
-import useProjectTopics from 'hooks/useProjectTopics';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -60,7 +59,7 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
     params: { projectId }
   } = props;
   const topics = useTopics({});
-  const projectTopics = useProjectTopics({ projectId });
+  const projectTopics = useTopics({ projectId });
   const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
   const [processing, setProcessing] = useState(false);
 
@@ -90,8 +89,10 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
       !isNilOrError(projectTopics)
     ) {
       const allTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
-      const projectTopicIds = projectTopics.map(topic => topic.id);
-      const selectableTopics = allTopics.filter(topic => !projectTopicIds.includes(topic.id));
+      const selectedInProjectTopics = projectTopics
+        .filter(topic => !isNilOrError(topic)) as ITopicData[];
+      const selectedInProjectTopicIds = selectedInProjectTopics.map(topic => topic.id);
+      const selectableTopics = allTopics.filter(topic => !selectedInProjectTopicIds.includes(topic.id));
 
       return selectableTopics.map(topic => {
         return ({
@@ -108,35 +109,28 @@ const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouter
 
   const multiSelectOptions = useMemo(() => getOptions(), [topics, projectTopics]);
 
-  if (
-    multiSelectOptions && multiSelectOptions.length > 0
-  ) {
+  return (
+    <Container>
+      <SelectGroupsContainer>
+        <StyledMultipleSelect
+          value={selectedTopicOptions}
+          options={multiSelectOptions}
+          onChange={handleTopicSelectionChange}
+          id="e2e-project-topic-multiselect"
+        />
 
-    return (
-      <Container>
-        <SelectGroupsContainer>
-          <StyledMultipleSelect
-            value={selectedTopicOptions}
-            options={multiSelectOptions}
-            onChange={handleTopicSelectionChange}
-            id="e2e-project-topic-multiselect"
-          />
-
-          <AddTopicButton
-            text={formatMessage(messages.addTopics)}
-            buttonStyle="cl-blue"
-            icon="plus-circle"
-            onClick={handleOnAddTopicsClick}
-            disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
-            processing={processing}
-            id="e2e-add-project-topic-button"
-          />
-        </SelectGroupsContainer>
-      </Container>
-    );
-  }
-
-  return null;
+        <AddTopicButton
+          text={formatMessage(messages.addTopics)}
+          buttonStyle="cl-blue"
+          icon="plus-circle"
+          onClick={handleOnAddTopicsClick}
+          disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
+          processing={processing}
+          id="e2e-add-project-topic-button"
+        />
+      </SelectGroupsContainer>
+    </Container>
+  );
 });
 
 export default injectIntl<Props>(withRouter(injectLocalize(ProjectTopicSelector)));
