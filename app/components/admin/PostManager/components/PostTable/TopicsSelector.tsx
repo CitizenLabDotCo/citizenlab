@@ -25,7 +25,7 @@ const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
     event.stopPropagation();
     const newSelectedTopics = pull(selectedTopics, topicId);
     onUpdateTopics(newSelectedTopics);
-  }, [selectedTopics]);
+  }, [selectedTopics, onUpdateTopics]);
 
   if (processedTopics) {
     return (
