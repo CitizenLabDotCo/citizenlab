@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled from 'styled-components';
 
-import { SectionTitle, SectionSubtitle, StyledLink } from 'components/admin/Section';
+import { SectionTitle, SectionDescription, StyledLink } from 'components/admin/Section';
 import ProjectTopicSelector from './ProjectTopicSelector';
 import SortableProjectTopicList from './SortableProjectTopicList';
 import HasPermission from 'components/HasPermission';
@@ -20,7 +20,7 @@ const ProjectTopics = memo(() => {
       <SectionTitle>
         <FormattedMessage {...messages.titleDescription} />
       </SectionTitle>
-      <SectionSubtitle>
+      <SectionDescription>
         <FormattedMessage {...messages.pageDescription} />
         <span>
           <HasPermission item={{ type: 'route', path: '/admin/settings/topics' }} action="access">
@@ -36,7 +36,7 @@ const ProjectTopics = memo(() => {
             />
           </HasPermission>
         </span>
-      </SectionSubtitle>
+      </SectionDescription>
       <ProjectTopicSelector />
       <SortableProjectTopicList />
     </Container>

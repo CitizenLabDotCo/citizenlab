@@ -11,7 +11,7 @@ import messages from '../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
-import { Section, SectionSubtitle, SectionTitle, StyledLink } from 'components/admin/Section';
+import { Section, SectionDescription, SectionTitle, StyledLink } from 'components/admin/Section';
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
@@ -97,7 +97,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
           <SectionTitle>
             <FormattedMessage {...messages.titleTopicManager} />
           </SectionTitle>
-          <SectionSubtitle>
+          <SectionDescription>
             <FormattedMessage
               {...messages.topicManagerDescription}
               values={{
@@ -107,7 +107,7 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
                   </StyledLink>
               }}
             />
-          </SectionSubtitle>
+          </SectionDescription>
 
           <ButtonWrapper>
             <Button

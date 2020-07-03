@@ -11,6 +11,21 @@ export const SubSection = styled.section`
   margin-bottom: 0;
 `;
 
+export const SectionField = styled.div`
+  margin-bottom: 35px;
+  transition: all 200ms ease-in-out;
+  width: 100%;
+  max-width: 540px;
+
+  &.fullWidth {
+    max-width: 100%;
+  }
+
+  .editor {
+    width: 120%;
+  }
+`;
+
 export const PageTitle = styled.h1`
   font-size: ${fontSizes.xxxl}px;
   line-height: 40px;
@@ -43,25 +58,6 @@ export const SubSectionTitleWithDescription = styled(SubSectionTitle)`
   margin-bottom: 5px;
 `;
 
-export const SectionField = styled.div`
-  margin-bottom: 35px;
-  transition: all 200ms ease-in-out;
-  width: 100%;
-  max-width: 540px;
-
-  &.fullWidth {
-    max-width: 100%;
-  }
-
-  .editor {
-    width: 120%;
-  }
-`;
-
-export const StyledLink = styled(Link)`
-  text-decoration: underline;
-`;
-
 export const SectionDescription = styled.p`
   color: ${colors.adminSecondaryTextColor};
   font-size: ${fontSizes.base}px;
@@ -72,4 +68,8 @@ export const SectionDescription = styled.p`
   ${SectionTitle} + & {
     margin-top: -2rem;
   }
+`;
+
+export const StyledLink = styled(Link)`
+  text-decoration: underline;
 `;
