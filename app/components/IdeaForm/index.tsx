@@ -660,7 +660,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                   <TopicsPicker
                     selectedTopicIds={selectedTopics}
                     onChange={this.handleTopicsOnChange}
-                    max={2}
                     availableTopics={filteredTopics}
                   />
                   {topicsError && <Error id="e2e-new-idea-topics-error" text={topicsError} />}
