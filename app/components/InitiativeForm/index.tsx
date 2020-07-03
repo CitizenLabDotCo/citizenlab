@@ -361,7 +361,7 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             <SectionField aria-live="polite">
               <FormLabel
                 labelMessage={messages.topicsLabel}
-                subtextMessage={messages.topicsLabelSubtext}
+                subtextMessage={messages.topicsLabelDescription}
                 htmlFor="field-topic-multiple-picker"
               />
               <TopicsPicker
