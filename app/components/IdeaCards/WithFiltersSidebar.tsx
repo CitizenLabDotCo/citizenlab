@@ -1,4 +1,4 @@
-import React, { PureComponent, MouseEvent } from 'react';
+import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
@@ -69,7 +69,7 @@ const InitialLoading = styled.div`
   `}
 `;
 
-const MobileSearchFilter = styled(SearchInput)`
+const MobileSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 `;
 
@@ -272,7 +272,7 @@ const ClearFiltersButton = styled.button`
   }
 `;
 
-const StyledSearchInput = styled(SearchInput)`
+const DesktopSearchInput = styled(SearchInput)`
   margin-bottom: 20px;
 
   ${media.smallerThanMaxTablet`
@@ -334,6 +334,9 @@ interface State {
 }
 
 class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
+  desktopSearchInputClearButton: HTMLButtonElement | null = null;
+  mobileSearchInputClearButton: HTMLButtonElement | null = null;
+
   static defaultProps = {
     showViewToggle: false
   };
@@ -438,6 +441,9 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
         topics: null
       };
 
+      this.desktopSearchInputClearButton?.click();
+      this.mobileSearchInputClearButton?.click();
+
       this.props.ideas.onIdeaFiltering(selectedIdeaFilters);
 
       return { selectedIdeaFilters };
@@ -471,8 +477,12 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     this.setState({ selectedView });
   }
 
-  removeFocus = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  handleDesktopSearchInputClearButtonRef = (element: HTMLButtonElement) => {
+    this.desktopSearchInputClearButton = element;
+  }
+
+  handleMobileSearchInputClearButtonRef = (element: HTMLButtonElement) => {
+    this.mobileSearchInputClearButton = element;
   }
 
   filterMessage = <FormattedMessage {...messages.filter} />;
@@ -506,7 +516,7 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
         {filtersActive &&
-          <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleIdeaFiltersOnResetAndApply}>
+          <ClearFiltersButton onClick={this.handleIdeaFiltersOnResetAndApply}>
             <ClearFiltersText>
               <FormattedMessage {...messages.resetFilters} />
             </ClearFiltersText>
@@ -522,9 +532,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
           }
         </ScreenReaderOnly>
 
-        <StyledSearchInput
+        <DesktopSearchInput
           placeholder={this.searchPlaceholder}
           ariaLabel={this.searchAriaLabel}
+          setClearButtonRef={this.handleDesktopSearchInputClearButtonRef}
           onChange={this.handleSearchOnChange}
         />
         <StyledIdeasStatusFilter
@@ -578,9 +589,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
                   </MobileFiltersSidebarWrapper>
                 </FullscreenModal>
 
-                <MobileSearchFilter
+                <MobileSearchInput
                   placeholder={this.searchPlaceholder}
                   ariaLabel={this.searchAriaLabel}
+                  setClearButtonRef={this.handleMobileSearchInputClearButtonRef}
                   onChange={this.handleSearchOnChange}
                 />
 

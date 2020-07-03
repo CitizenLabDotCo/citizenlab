@@ -49,7 +49,7 @@ export default class NoUsers extends React.PureComponent<Props> {
     if (this.props.noSuchSearchResult) {
       return (
         <NoUsersPage>
-          <Icon name="search2" />
+          <Icon name="search" />
           <FormattedMessage {...messages.noUserMatchesYourSearch} />
         </NoUsersPage>
       );
