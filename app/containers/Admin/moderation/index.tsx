@@ -155,7 +155,7 @@ const EmptyMessage = styled.div`
   text-align: center;
 `;
 
-const StyledSearch = styled(SearchInput)`
+const StyledSearchInput = styled(SearchInput)`
   margin-left: auto;
   width: 320px;
 `;
@@ -349,7 +349,7 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
 
             </>
           }
-          <StyledSearch
+          <StyledSearchInput
             onChange={handleSearchTermChange}
           />
         </Filters>
