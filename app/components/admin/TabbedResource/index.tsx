@@ -16,7 +16,7 @@ import { Message } from 'typings';
 // components
 import FeatureFlag from 'components/FeatureFlag';
 import Button from 'components/UI/Button';
-import { SectionSubtitle } from 'components/admin/Section';
+import { SectionDescription } from 'components/admin/Section';
 import Title from 'components/admin/PageTitle';
 
 const ResourceHeader = styled.div`
@@ -135,9 +135,9 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
           <div>
             <Title>{title}</Title>
             {subtitle &&
-              <SectionSubtitle>
+              <SectionDescription>
                 {subtitle}
-              </SectionSubtitle>
+              </SectionDescription>
             }
           </div>
 

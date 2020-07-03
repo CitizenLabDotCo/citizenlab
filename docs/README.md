@@ -1,5 +1,23 @@
 # Changelog
 
+## 2020-06-26
+
+## Fixed
+- No longer possible to invite a project manager without selecting a project
+- The button on the homepage now also respects the 'disable posting' setting in proposals
+- Using project copy or a tenant template that contains a draft initiative no longer fails
+
+## Added
+- Romanian
+
+## 2020-06-19
+
+## Fixed
+- Polish characters not being rendered correctly
+
+## Added
+- Back-office toggle to turn on/off the ability to add new proposals to the platform
+
 ## 2020-06-17
 
 ## Fixed

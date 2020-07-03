@@ -9,7 +9,7 @@ import { mockPhaseInformationData, mockPhasePollData } from 'services/__mocks__/
 jest.mock('./ExportPollButton', () => 'ExportPollButton');
 jest.mock('./PollAdminForm', () => 'PollAdminForm');
 jest.mock('components/T', () => 'T');
-jest.mock('components/admin/Section', () => ({ SectionTitle: 'SectionTitle', SectionSubtitle: 'SectionSubtitle' }));
+jest.mock('components/admin/Section', () => ({ SectionTitle: 'SectionTitle', SectionDescription: 'SectionDescription' }));
 jest.mock('components/FeatureFlag', () => 'FeatureFlag');
 
 describe('<AdminProjectPoll/>', () => {
