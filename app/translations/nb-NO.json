@@ -190,7 +190,7 @@
   "app.components.InitiativeForm.titleLengthError": "Titlen må være mindst 10 karakterer.",
   "app.components.InitiativeForm.topicEmptyError": "Vennligst oppgi et emne.",
   "app.components.InitiativeForm.topicsLabel": "Velg emnet for forslaget ditt.",
-  "app.components.InitiativeForm.topicsLabelSubtext": "Du kan velge opp til to emner.",
+  "app.components.InitiativeForm.topicsLabelDescription": "",
   "app.components.InitiativesMap.noInitiativesWithLocation": "Det er ikke lagt til informasjon om sted i dette prosjektet.",
   "app.components.InitiativesMap.postInitiativeHere": "Post et forslag her",
   "app.components.InitiativesMap.seeInitiative": "Se forslag",
