@@ -93,7 +93,7 @@ const AdminProjectList = memo<Props>(({ AdminPublications, foldersEnabled }) => 
                 </SortableRow>
               );
             }
-            ))}
+          ))}
         </SortableList>
       </>
     );
