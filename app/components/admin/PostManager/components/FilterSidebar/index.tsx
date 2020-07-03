@@ -14,6 +14,7 @@ import messages from '../../messages';
 import Icon from 'components/UI/Icon';
 import styled from 'styled-components';
 import { colors } from 'utils/styleUtils';
+import { ITopicData } from 'services/topics';
 
 const InfoIcon = styled(Icon)`
   fill: ${colors.clBlueDarker};
@@ -30,6 +31,7 @@ interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
+  topics: ITopicData[];
   selectedTopics?: string[] | null;
   selectedPhase?: string | null;
   selectedProject?: string | null;
@@ -80,6 +82,7 @@ class FilterSidebar extends React.PureComponent<Props & InjectedIntlProps> {
         key: 'topics',
         content: (
           <TopicsMenu
+            selectableTopics={this.props.topics}
             selectedTopics={this.props.selectedTopics}
             onChangeTopicsFilter={this.props.onChangeTopicsFilter}
           />

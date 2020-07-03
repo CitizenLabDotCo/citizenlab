@@ -6,7 +6,7 @@ import { sendSpamReport, Report } from 'services/spamReports';
 
 // Components
 import ReportForm from './SpamReportForm';
-import { ModalContent } from 'components/UI/Modal';
+import { ModalContentContainer } from 'components/UI/Modal';
 
 // Typings
 import { CRUDParams, CLErrorsJSON } from 'typings';
@@ -80,7 +80,7 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
 
   render () {
     return (
-      <ModalContent>
+      <ModalContentContainer>
         <ReportForm
           reasonCodes={this.reasonCodes}
           diff={this.state.diff}
@@ -91,7 +91,7 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
           saved={this.state.saved}
           errors={this.state.errors}
         />
-      </ModalContent>
+      </ModalContentContainer>
     );
   }
 }
