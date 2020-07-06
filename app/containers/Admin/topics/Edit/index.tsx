@@ -10,7 +10,7 @@ import GetTopic, { GetTopicChildProps } from 'resources/GetTopic';
 import { updateTopic } from 'services/topics';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import { Section, SectionTitle } from 'components/admin/Section';
+import { Section, SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import { Formik } from 'formik';
 import TopicForm, { FormValues } from '../TopicForm';
@@ -35,7 +35,7 @@ class Edit extends React.PureComponent<Props> {
       ...values
     })
     .then(() => {
-      clHistory.push('/admin/settings/topics');
+      clHistory.push('/admin/topics');
     })
     .catch((errorResponse) => {
       if (isCLErrorJSON(errorResponse)) {
@@ -53,7 +53,7 @@ class Edit extends React.PureComponent<Props> {
   }
 
   goBack = () => {
-    clHistory.push('/admin/settings/topics');
+    clHistory.push('/admin/topics');
   }
 
   render() {
@@ -64,6 +64,9 @@ class Edit extends React.PureComponent<Props> {
         <SectionTitle>
           <FormattedMessage {...messages.editTopicFormTitle} />
         </SectionTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.editTopicFormSubtitle} />
+        </SectionDescription>
         {!isNilOrError(topic) &&
           <Formik
             initialValues={{

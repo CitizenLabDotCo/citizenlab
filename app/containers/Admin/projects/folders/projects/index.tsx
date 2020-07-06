@@ -165,7 +165,7 @@ class AdminFoldersProjectsList extends Component<Props & WithRouterProps, State>
                 return (
                   <Row
                     id={adminPublication.id}
-                    isLastItem={(index === otherProjects.length - 1)}
+                    lastItem={(index === otherProjects.length - 1)}
                     key={adminPublication.id}
                   >
                     <ProjectRow

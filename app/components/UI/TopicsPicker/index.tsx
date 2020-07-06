@@ -1,12 +1,16 @@
 import React, { memo, useCallback, MouseEvent } from 'react';
-import { isNilOrError } from 'utils/helperUtils';
+import { adopt } from 'react-adopt';
+import { orderBy } from 'lodash-es';
+
 // styles
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken, lighten } from 'polished';
 
-// types
+// resources
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import { isNilOrError } from 'utils/helperUtils';
 import { ITopicData } from 'services/topics';
 
 // intl
@@ -14,9 +18,6 @@ import T from 'components/T';
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
-
-// hooks
-import useTopics from 'hooks/useTopics';
 
 const TopicsContainer = styled.div`
   display: flex;
@@ -72,83 +73,85 @@ const TopicSwitch = styled.button`
 export interface InputProps {
   onChange: (tocisIds: string[]) => void;
   onBlur?: () => void;
-  selectedTopicIds: string[];
+  value: string[];
+  max: number;
   id?: string;
   className?: string;
   setRef?: (element: HTMLButtonElement) => void;
-  availableTopics: ITopicData[];
 }
 
-interface Props extends InputProps {}
+interface DataProps {
+  topics: GetTopicsChildProps;
+}
 
-const TopicsPicker = memo(({ onChange, onBlur, selectedTopicIds, localize, availableTopics, className, setRef }: Props & InjectedLocalized) => {
-  const selectedTopics = useTopics({ topicIds: selectedTopicIds });
+interface Props extends InputProps, DataProps {}
 
+const TopicsPicker = memo(({ onChange, onBlur, value, localize, topics, max, className, setRef }: Props & InjectedLocalized) => {
   const handleOnChange = (topicId: string) => (event) => {
     event.stopPropagation();
     event.preventDefault();
-    const newTopics = [...selectedTopicIds];
-
-    if (!selectedTopicIds) {
+    const newTopics = [...value];
+    if (!value) {
       onChange([topicId]);
     } else {
       const i = newTopics.lastIndexOf(topicId);
-      const topicNotSelectedYet = (i === -1);
-
-      if (topicNotSelectedYet) {
-        newTopics.push(topicId);
+      if (i === -1) {
+        if (value.length <= max) {
+          newTopics.push(topicId);
+          onChange(newTopics);
+        }
       } else {
         newTopics.splice(i, 1);
+        onChange(newTopics);
       }
-
-      onChange(newTopics);
     }
   };
 
+  if (isNilOrError(topics)) return null;
+
+  const workingTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
+  const numberOfSelectedTopics = value.length;
+  const selectedTopics = value.map(topicId => topics.find(topic => !isNilOrError(topic) && topic.id === topicId));
+  const selectedTopicNames = selectedTopics && selectedTopics.map(topic => !isNilOrError(topic) && localize(topic.attributes.title_multiloc)).join(', ');
 
-  if (
-    !isNilOrError(availableTopics)
-  ) {
-    const numberOfSelectedTopics = selectedTopicIds.length;
-    const selectedTopicNames = !isNilOrError(selectedTopics) ? selectedTopics
-      .filter(topic => !isNilOrError(topic))
-      .map((topic: ITopicData) => localize(topic.attributes.title_multiloc))
-      .join(', ')
-    :
-      ''
-    ;
-
-    return (
-      <>
-        <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
-          {availableTopics.map((topic, index) => {
-            const isSelected = selectedTopicIds.includes(topic.id);
-
-            return (
-              <TopicSwitch
-                key={topic.id}
-                onClick={handleOnChange(topic.id)}
-                className={isSelected ? 'selected' : ''}
-                onMouseDown={removeFocus}
-                ref={index === 0 ? setRef :  undefined}
-                disabled={false}
-              >
-                <T value={topic.attributes.title_multiloc} />
-              </TopicSwitch>
-            );
-          })}
-        </TopicsContainer>
-        <ScreenReaderOnly aria-live="polite">
-          <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />
-        </ScreenReaderOnly>
-      </>
-    );
-  }
-
-  return null;
+  return (
+    <>
+      <TopicsContainer onBlur={onBlur} className={`${className} e2e-topics-picker`}>
+        {orderBy(workingTopics, topic => localize(topic.attributes.title_multiloc)).map((topic, index) => {
+          const isActive = value && !!value.find(id => id === topic.id);
+          const isDisabled = !isActive && value.length >= max;
+          return (
+            <TopicSwitch
+              key={topic.id}
+              onClick={handleOnChange(topic.id)}
+              className={isActive ? 'selected' : ''}
+              disabled={isDisabled}
+              onMouseDown={removeFocus}
+              ref={index === 0 ? setRef : undefined}
+            >
+              <T value={topic.attributes.title_multiloc} />
+            </TopicSwitch>
+          );
+        })}
+      </TopicsContainer>
+      <ScreenReaderOnly aria-live="polite">
+        <FormattedMessage {...messages.selectedTopics} values={{ numberOfSelectedTopics, selectedTopicNames }} />
+      </ScreenReaderOnly>
+    </>
+  );
 });
 
-export default injectLocalize(TopicsPicker);
+const Data = adopt<DataProps,  InputProps>({
+  topics: <GetTopics />
+});
+
+const TopicsPickerWithHoc = injectLocalize(TopicsPicker);
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <TopicsPickerWithHoc {...inputProps} {...dataProps} />}
+  </Data>
+);

@@ -1,11 +1,10 @@
-import React, { memo, useCallback, FormEvent } from 'react';
+import React from 'react';
 import { pull } from 'lodash-es';
 import { Label, Icon } from 'semantic-ui-react';
 import T from 'components/T';
-import useTopics from 'hooks/useTopics';
+import GetTopics from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
 import styled from 'styled-components';
-import { ITopicData } from 'services/topics';
 
 const StyledLabel = styled(Label)`
   white-space: nowrap;
@@ -16,40 +15,43 @@ interface Props {
   onUpdateTopics: (topicIds: string[]) => void;
 }
 
-const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
+export default class TopicsSelector extends React.PureComponent<Props> {
 
-  const topics = useTopics({ topicIds: selectedTopics });
-  const processedTopics = !isNilOrError(topics) ? topics.filter(topic => !isNilOrError(topic)) as ITopicData[] : null;
-
-  const handleTopicDelete = useCallback((topicId: string) => (event: FormEvent) => {
+  handleTopicDelete = (topicId) => (event) => {
     event.stopPropagation();
-    const newSelectedTopics = pull(selectedTopics, topicId);
-    onUpdateTopics(newSelectedTopics);
-  }, [selectedTopics, onUpdateTopics]);
-
-  if (processedTopics) {
-    return (
-      <>
-        {processedTopics.map(topic => {
-          return (
-            <StyledLabel
-              key={topic.id}
-              color="teal"
-              basic={true}
-            >
-              <T value={topic.attributes.title_multiloc} />
-              <Icon
-                name="delete"
-                onClick={handleTopicDelete(topic.id)}
-              />
-            </StyledLabel>
-          );
-        })}
-      </>
-    );
+    const newSelectedTopics = pull(this.props.selectedTopics, topicId);
+    this.props.onUpdateTopics(newSelectedTopics);
   }
 
-  return null;
-});
+  render() {
+    return (
+      <GetTopics ids={this.props.selectedTopics}>
+        {topics => {
+          if (isNilOrError(topics)) return null;
 
-export default TopicsSelector;
+          return (
+            <>
+              {topics.map(topic => {
+                if (isNilOrError(topic)) return null;
+
+                return (
+                  <StyledLabel
+                    key={topic.id}
+                    color="teal"
+                    basic={true}
+                  >
+                    <T value={topic.attributes.title_multiloc} />
+                    <Icon
+                      name="delete"
+                      onClick={this.handleTopicDelete(topic.id)}
+                    />
+                  </StyledLabel>
+                );
+              })}
+            </>
+          );
+        }}
+      </GetTopics>
+    );
+  }
+}
