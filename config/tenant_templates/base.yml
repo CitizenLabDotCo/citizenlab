@@ -117,7 +117,7 @@ models:
       slug: information
     - &2
       title_multiloc: pages.cookie_policy_title
-      body_multiloc: pages.cookie_policy_body
+      body_multiloc: pages.cookie_policy_title
       slug: cookie-policy
     - &3
       title_multiloc: pages.privacy_policy_title
