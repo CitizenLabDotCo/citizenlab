@@ -158,8 +158,7 @@ export default class FilterSelector extends PureComponent<Props, State> {
       mobileLeft,
       right,
       mobileRight,
-      last,
-      name
+      last
     } = this.props;
     const currentTitle = this.getTitle(selected, values, multipleSelectionAllowed, title);
 
@@ -193,7 +192,6 @@ export default class FilterSelector extends PureComponent<Props, State> {
           mobileLeft={mobileLeft}
           right={right}
           mobileRight={mobileRight}
-          name={name}
         />
       </Container>
     );

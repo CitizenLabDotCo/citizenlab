@@ -13,7 +13,7 @@ import CustomFields from 'components/SignUpIn/SignUp/CustomFields';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContentContainer } from 'components/SignUpIn/styles';
+import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContent } from 'components/SignUpIn/styles';
 import ReactResizeDetector from 'react-resize-detector';
 
 // resources
@@ -309,7 +309,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             </div>
           }
 
-          <StyledModalContentContainer
+          <StyledModalContent
             inModal={!!metaData.inModal}
             windowHeight={`${windowHeight}px`}
             headerHeight={headerHeight}
@@ -377,7 +377,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 }
               </>
             )}
-          </StyledModalContentContainer>
+          </StyledModalContent>
         </Container>
       );
     }

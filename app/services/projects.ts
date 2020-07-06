@@ -92,9 +92,6 @@ export interface IProjectData {
     admin_publication: {
       data: IRelationship | null;
     }
-    topics: {
-      data: IRelationship[] | null;
-    }
   };
 }
 

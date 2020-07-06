@@ -244,47 +244,43 @@ class IdeaEdit extends PureComponent<Props, State> {
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
       const submitErrorMessage = (submitError ? <FormattedMessage {...messages.submitError} /> : null);
 
-      if (projectId) {
-        return (
-          <Container>
-            <Top>
-              <Button
-                icon="arrow-back"
-                buttonStyle="text"
-                textColor={colors.adminTextColor}
-                onClick={goBack}
-              >
-                <FormattedMessage {...messages.cancelEdit}/>
-              </Button>
-            </Top>
+      return (
+        <Container>
+          <Top>
+            <Button
+              icon="arrow-back"
+              buttonStyle="text"
+              textColor={colors.adminTextColor}
+              onClick={goBack}
+            >
+              <FormattedMessage {...messages.cancelEdit}/>
+            </Button>
+          </Top>
 
-            <Content className="idea-form">
-              <IdeaForm
-                projectId={projectId}
-                title={title}
-                description={description}
-                selectedTopics={selectedTopics}
-                budget={budget}
-                address={address || ''}
-                imageFile={imageFile}
-                onSubmit={this.handleIdeaFormOutput}
-                remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
+          <Content className="idea-form">
+            <IdeaForm
+              projectId={projectId}
+              title={title}
+              description={description}
+              selectedTopics={selectedTopics}
+              budget={budget}
+              address={address || ''}
+              imageFile={imageFile}
+              onSubmit={this.handleIdeaFormOutput}
+              remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
+            />
+
+            <ButtonWrapper>
+              <SaveButton
+                processing={processing}
+                text={<FormattedMessage {...messages.save} />}
+                onClick={this.handleOnSaveButtonClick}
               />
-
-              <ButtonWrapper>
-                <SaveButton
-                  processing={processing}
-                  text={<FormattedMessage {...messages.save} />}
-                  onClick={this.handleOnSaveButtonClick}
-                />
-                <Error text={submitErrorMessage} marginTop="0px" />
-              </ButtonWrapper>
-            </Content>
-          </Container>
-        );
-      }
-
-      return null;
+              <Error text={submitErrorMessage} marginTop="0px" />
+            </ButtonWrapper>
+          </Content>
+        </Container>
+      );
     }
 
     return null;

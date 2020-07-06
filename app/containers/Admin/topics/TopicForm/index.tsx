@@ -35,7 +35,6 @@ class TopicForm extends React.Component<InjectedFormikProps<Props & InjectedIntl
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldTopicTitle} />}
               labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
-              id="e2e-topic-name"
             />
             {touched.title_multiloc && <Error
               fieldName="title_multiloc"

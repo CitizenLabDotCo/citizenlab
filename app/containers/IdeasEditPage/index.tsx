@@ -265,36 +265,32 @@ class IdeaEditPage extends PureComponent<Props, State> {
       const title = locale && titleMultiloc ? titleMultiloc[locale] || '' : '';
       const description = (locale && descriptionMultiloc ? descriptionMultiloc[locale] || '' : null);
 
-      if (projectId) {
-        return (
-          <Container id="e2e-idea-edit-page">
-            <IdeasEditMeta />
-            <FormContainer>
-              <Title>
-                <FormattedMessage {...messages.formTitle} />
-              </Title>
+      return (
+        <Container id="e2e-idea-edit-page">
+          <IdeasEditMeta />
+          <FormContainer>
+            <Title>
+              <FormattedMessage {...messages.formTitle} />
+            </Title>
 
-              <IdeaForm
-                projectId={projectId}
-                title={title}
-                description={description}
-                selectedTopics={selectedTopics}
-                budget={budget}
-                address={address || ''}
-                imageFile={imageFile}
-                onSubmit={this.handleIdeaFormOutput}
-                remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
-              />
+            <IdeaForm
+              projectId={projectId}
+              title={title}
+              description={description}
+              selectedTopics={selectedTopics}
+              budget={budget}
+              address={address || ''}
+              imageFile={imageFile}
+              onSubmit={this.handleIdeaFormOutput}
+              remoteIdeaFiles={!isNilOrError(remoteIdeaFiles) ? remoteIdeaFiles : null}
+            />
 
-              <ButtonBarContainer>
-                <IdeasEditButtonBar id="e2e-idea-edit-save-button" form="idea-form" />
-              </ButtonBarContainer>
-            </FormContainer>
-          </Container>
-        );
-      }
-      return null;
-
+            <ButtonBarContainer>
+              <IdeasEditButtonBar id="e2e-idea-edit-save-button" form="idea-form" />
+            </ButtonBarContainer>
+          </FormContainer>
+        </Container>
+      );
     }
 
     return null;

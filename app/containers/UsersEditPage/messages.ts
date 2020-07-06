@@ -155,6 +155,13 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle',
     defaultMessage: 'Remove profile picture',
   },
+  outside: {
+    id: 'app.containers.UsersEditPage.outside',
+    defaultMessage: `{orgType, select,
+      city {Outside of {name}}
+      generic {None of these}
+    }`,
+  },
   submit: {
     id: 'app.containers.UsersEditPage.submit',
     defaultMessage: 'Update profile',
