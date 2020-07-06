@@ -137,7 +137,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
   }
 
   handleGroupsOnChange = (selectedGroups: IOption[]) => {
-    this.setState({ selectedGroups });
+    this.setState({ selectedGroups  });
   }
 
   handleOnAddGroupClick = async () => {
@@ -209,7 +209,7 @@ class ProjectGroupsList extends PureComponent<Props & InjectedIntlProps, State> 
     const groupsList = ((!loading && projectGroups && projectGroups.length > 0) ? (
       <List>
         {projectGroups.map((projectGroup, index) => (
-          <Row key={projectGroup.group_project_id} isLastItem={(index === projectGroups.length - 1)}>
+          <Row key={projectGroup.group_project_id} lastItem={(index === projectGroups.length - 1)}>
             <GroupAvatar groupId={projectGroup.group_id} />
             <GroupTitle className="expand">
               {projectGroup.title}

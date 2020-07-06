@@ -12,8 +12,7 @@ const DragHandle = styled.div`
   align-self: flex-start;
 `;
 
-// TODO: type checking doesn't work for this component
-interface Props {
+type Props = {
   connectDragSource: any;
   connectDropTarget: any;
   isDragging: boolean;
@@ -23,7 +22,7 @@ interface Props {
   lastItem: boolean;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (itemId: string, toIndex, number) => void;
-}
+};
 
 type State = {};
 
@@ -33,7 +32,7 @@ class SortableRow extends React.Component<Props, State> {
     const opacity = isDragging ? 0 : 1;
     return connectDropTarget(connectDragSource(
       <div style={{ opacity }} className={this.props.className}>
-        <Row isLastItem={lastItem}>
+        <Row lastItem={lastItem}>
           <DragHandle>
             <Icon name="sort" />
           </DragHandle>

@@ -4,15 +4,22 @@ import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { ITopicData } from 'services/topics';
+import { adopt } from 'react-adopt';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
+import { isNilOrError } from 'utils/helperUtils';
 
-interface Props {
-  selectableTopics: ITopicData[];
+interface InputProps {
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
 }
 
-export default class FilterSidebarTopics extends React.PureComponent<Props> {
+interface DataProps {
+  topics: GetTopicsChildProps;
+}
+
+interface Props extends InputProps, DataProps {}
+
+class FilterSidebarTopics extends React.PureComponent<Props> {
 
   handleItemClick = (id) => (event) => {
     if (event.ctrlKey) {
@@ -32,22 +39,32 @@ export default class FilterSidebarTopics extends React.PureComponent<Props> {
   }
 
   render() {
-    const { selectableTopics, selectedTopics } = this.props;
+    const { topics, selectedTopics } = this.props;
     return (
-      <Menu id="e2e-idea-manager-topic-filters" secondary={true} vertical={true} fluid={true}>
+      <Menu secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!selectedTopics || selectedTopics.length === 0}>
           <FormattedMessage {...messages.allTopics} />
         </Menu.Item>
         <Divider />
-        {selectableTopics.map(topic => (
+        {!isNilOrError(topics) && topics.map((topic) => !isNilOrError(topic) ? (
           <FilterSidebarTopicsItem
             key={topic.id}
             topic={topic}
             active={!!this.isActive(topic.id)}
             onClick={this.handleItemClick(topic.id)}
           />
-        ))}
+        ) : null)}
       </Menu>
     );
   }
 }
+
+const Data = adopt<DataProps, InputProps>({
+  topics: <GetTopics />,
+});
+
+export default (inputProps: InputProps) => (
+  <Data {...inputProps}>
+    {dataProps => <FilterSidebarTopics {...inputProps} {...dataProps} />}
+  </Data>
+);

@@ -4,7 +4,7 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import Error from 'components/UI/Error';
-import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContentContainer } from 'components/SignUpIn/styles';
+import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContent } from 'components/SignUpIn/styles';
 
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -81,7 +81,7 @@ const SignIn = memo<Props>(({
         </StyledHeaderTitle>
       </StyledHeaderContainer>
 
-      <StyledModalContentContainer
+      <StyledModalContent
         inModal={!!metaData.inModal}
         windowHeight={`${windowHeight}px`}
         headerHeight="68px"
@@ -112,7 +112,7 @@ const SignIn = memo<Props>(({
             }
           </>
         )}
-      </StyledModalContentContainer>
+      </StyledModalContent>
     </Container>
   );
 });

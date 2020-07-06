@@ -21,7 +21,7 @@ import tracks from './tracks';
 // style
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import GetFeatureFlag from 'resources/GetFeatureFlag';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import { isNilOrError } from 'utils/helperUtils';
@@ -60,7 +60,6 @@ export interface InputProps {}
 interface DataProps {
   surveys_enabled: boolean | null;
   typeform_enabled: boolean | null;
-  customTopicsEnabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
 }
@@ -97,222 +96,102 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const { formatMessage } = this.props.intl;
-    const { typeform_enabled, surveys_enabled, phases, customTopicsEnabled } = this.props;
-    const processType = project.attributes.process_type;
-    const participationMethod = project.attributes.participation_method;
+    const { typeform_enabled, surveys_enabled, phases } = this.props;
+
     let tabs: TabProps[] = [
       {
         label: formatMessage(messages.generalTab),
         url: `${baseTabsUrl}/edit`,
-        name: 'general',
+        className: 'general',
       },
       {
         label: formatMessage(messages.descriptionTab),
         url: `${baseTabsUrl}/description`,
-        name: 'description',
+        className: 'description',
       },
       {
         label: formatMessage(messages.ideasTab),
         url: `${baseTabsUrl}/ideas`,
-        name: 'ideas',
-      },
-      {
-        label: formatMessage(messages.pollTab),
-        url: `${baseTabsUrl}/poll`,
-        feature: 'polls',
-        name: 'poll',
-      },
-      {
-        label: formatMessage(messages.surveyResultsTab),
-        url: `${baseTabsUrl}/survey-results`,
-        name: 'survey-results'
+        className: 'ideas',
       },
       {
         label: formatMessage(messages.ideaFormTab),
         url: `${baseTabsUrl}/ideaform`,
         feature: 'idea_custom_fields',
-        name: 'ideaform',
-      },
-      {
-        label: formatMessage(messages.phasesTab),
-        url: `${baseTabsUrl}/timeline`,
-        name: 'phases',
-      },
-      {
-        label: formatMessage(messages.topicsTab),
-        url: `${baseTabsUrl}/topics`,
-        name: 'topics',
+        className: 'ideaform',
       },
       {
         label: formatMessage(messages.volunteeringTab),
         url: `${baseTabsUrl}/volunteering`,
         feature: 'volunteering',
-        name: 'volunteering',
+        className: 'volunteering',
       },
       {
         label: formatMessage(messages.eventsTab),
         url: `${baseTabsUrl}/events`,
-        name: 'events',
+        className: 'events',
       },
       {
         label: formatMessage(messages.permissionsTab),
         url: `${baseTabsUrl}/permissions`,
         feature: 'private_projects',
-        name: 'permissions',
+        className: 'permissions',
       },
     ];
 
-    const tabHideConditions = {
-      general: function isGeneralTabHidden() {
-        return false;
-      },
-      description: function isDescriptionTabHidden() {
-        return false;
-      },
-      ideas: function isIdeaTabHidden() {
-        if (
-          processType === 'continuous' &&
-          participationMethod !== 'ideation' &&
-          participationMethod !== 'budgeting'
-        ) {
-          return true;
-        }
+    const processType = project.attributes.process_type;
+    const participationMethod = project.attributes.participation_method;
 
-        return false;
-      },
-      poll: function isPollTabHidden() {
-        if (
-          (
-            processType === 'continuous' && participationMethod !== 'poll'
-          )
-        ||
-          (
-            processType === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.filter(phase => {
-              return phase.attributes.participation_method === 'poll';
-            }).length === 0
-          )
-        ) {
-          return true;
-        }
+    if (processType === 'continuous' && participationMethod !== 'ideation' && participationMethod !== 'budgeting') {
+      tabs = reject(tabs, { className: 'ideas' });
+    }
 
-        return false;
-      },
-      'survey-results': function surveyResultsTabHidden() {
-        if (
-          (!surveys_enabled || !typeform_enabled)
-        ||
-          (
-            surveys_enabled &&
-            typeform_enabled &&
-            processType === 'continuous' &&
-            participationMethod === 'survey' &&
-            project.attributes.survey_service !== 'typeform'
-          )
-        ||
-          (
-            processType === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.filter(phase => {
-                return phase.attributes.participation_method === 'survey' &&
-                       phase.attributes.survey_service === 'typeform';
-              }).length === 0
-          )
-        ) {
-          return true;
-        }
+    if ((processType === 'continuous' && participationMethod !== 'ideation' && participationMethod !== 'budgeting') ||
+        (processType === 'timeline' && !isNilOrError(phases)
+        && phases.filter(phase => phase.attributes.participation_method === 'ideation' || phase.attributes.participation_method === 'budgeting').length === 0)) {
+      tabs = reject(tabs, { className: 'ideaform' });
+    }
 
-        return false;
-      },
-      ideaform: function isIdeaformTabHidden() {
-        if (
-          (
-            processType === 'continuous' &&
-            participationMethod !== 'ideation' &&
-            participationMethod !== 'budgeting'
-          )
-        ||
-          (
-            processType === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.filter(phase => {
-              return phase.attributes.participation_method === 'ideation' ||
-                     phase.attributes.participation_method === 'budgeting';
+    if ((processType === 'continuous' && participationMethod !== 'volunteering') ||
+        (processType === 'timeline' && !isNilOrError(phases)
+        && phases.filter(phase => phase.attributes.participation_method === 'volunteering').length === 0)) {
+      tabs = reject(tabs, { className: 'volunteering' });
+    }
 
-            }).length === 0
-          )
-        ) {
-          return true;
-        }
+    if (processType === 'continuous' && participationMethod === 'poll' ||
+        (processType === 'timeline' && !isNilOrError(phases)
+        && phases.filter(phase => phase.attributes.participation_method === 'poll').length > 0)) {
+      tabs.splice(3, 0, {
+        label: formatMessage(messages.pollTab),
+        url: `${baseTabsUrl}/poll`,
+        feature: 'polls',
+        className: 'poll',
+      });
+    }
 
-        return false;
-      },
-      phases: function isPhasesTabHidden() {
-        if (processType !== 'timeline') {
-          return true;
-        }
+    if (processType === 'timeline') {
+      tabs.splice(4, 0, {
+        label: formatMessage(messages.phasesTab),
+        url: `${baseTabsUrl}/timeline`,
+        className: 'phases',
+      });
+    }
 
-        return false;
-      },
-      topics: function isTopicsTabHidden() {
-        if (
-          !customTopicsEnabled
-        ||
-          (
-            processType === 'continuous' &&
-            participationMethod !== 'ideation' &&
-            participationMethod !== 'budgeting'
-          )
-        ||
-          (
-            processType === 'timeline' &&
-            !isNilOrError(phases) &&
-            phases.filter(phase => {
-              return phase.attributes.participation_method === 'ideation' ||
-                    phase.attributes.participation_method === 'budgeting';
-            }).length === 0
-          )
-        ) {
-          return true;
-        }
-
-        return false;
-      },
-      volunteering: function isVolunteeringTabHidden() {
-        if (
-          (
-            processType === 'continuous' &&
-            participationMethod !== 'volunteering'
-          )
-        ||
-          (
-            processType === 'timeline' &&
-            !isNilOrError(phases) && phases.filter(phase => {
-              return phase.attributes.participation_method === 'volunteering';
-            }).length === 0
-          )
-        ) {
-          return true;
-        }
-
-        return false;
-      },
-      events: function isEventsTabHidden() {
-        return false;
-      },
-      permissions: function isPermissionsTabHidden() {
-        return false;
+    if (surveys_enabled && typeform_enabled) {
+      if (
+        (processType === 'continuous'
+          && participationMethod === 'survey'
+          && project.attributes.survey_service === 'typeform'
+        ) || (processType === 'timeline'
+          && !isNilOrError(phases) && phases.filter(phase => phase.attributes.participation_method === 'survey' && phase.attributes.survey_service === 'typeform').length > 0
+        )) {
+        tabs.splice(3, 0, {
+          label: formatMessage(messages.surveyResultsTab),
+          url: `${baseTabsUrl}/survey-results`,
+          className: 'survey-results'
+        });
       }
-    };
-
-    const tabNames = tabs.map(tab => tab.name);
-
-    tabNames.forEach(tabName => {
-      if (tabName && tabHideConditions[tabName]()) {
-        tabs =  reject(tabs, { name: tabName });
-      }
-    });
+    }
 
     return tabs;
   }
@@ -342,13 +221,13 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
 
   render() {
     const { projectId } = this.props.params;
-    const { project, intl: { formatMessage }, localize, children, location: { pathname } } = this.props;
+    const { project, intl: { formatMessage }, localize } = this.props;
+    const { children, location: { pathname } } = this.props;
     const childrenWithExtraProps = React.cloneElement(children as React.ReactElement<any>, { project });
     const tabbedProps = {
       resource: {
         title: !isNilOrError(project) ? localize(project.attributes.title_multiloc) : formatMessage(messages.newProject),
       },
-      // TODO: optimization would be to use useMemo for tabs, as they get recalculated on every click
       tabs: ((projectId && !isNilOrError(project)) ? this.getTabs(projectId, project) : [])
     };
 
@@ -357,7 +236,7 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         <TopContainer>
           <GoBackButton onClick={this.goBack} />
           <ActionsContainer>
-            {!isNilOrError(project) && tabbedProps.tabs.findIndex(tab => tab.name === 'ideas') !== -1 &&
+            {!isNilOrError(project) && tabbedProps.tabs.findIndex(tab => tab.className === 'ideas') !== -1 &&
               <Button
                 id="e2e-new-idea"
                 buttonStyle="cl-blue-outlined"
@@ -392,7 +271,6 @@ const AdminProjectEditionWithHoCs = withRouter(injectIntl<Props & WithRouterProp
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
   phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>,
   project: ({ params, render }) => <GetProject projectId={params.projectId}>{render}</GetProject>,
 });

@@ -1,6 +1,5 @@
 import Loadable from 'react-loadable';
 import { LoadableLoadingAdmin } from 'components/UI/LoadableLoading';
-import topicsRoutes from './topics/routes';
 
 export default () => ({
   path: 'settings',
@@ -46,7 +45,6 @@ export default () => ({
         loading: () => null
       }),
     },
-    topicsRoutes(),
     {
       path: 'widgets',
       component: Loadable({

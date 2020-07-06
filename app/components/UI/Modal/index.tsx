@@ -41,7 +41,7 @@ const mobileTranslateY = '300px';
 const desktopEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-export const ModalContentContainer = styled.div<{ padding?: string | undefined }>`
+export const ModalContent = styled.div<{ padding?: string | undefined }>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
@@ -274,24 +274,6 @@ const Skip = styled.div`
   `}
 `;
 
-export const ButtonsWrapper = styled.div`
-display: flex;
-justify-content: flex-start;
-flex-wrap: wrap;
-width: 100%;
-
-.Button {
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-}
-`;
-
-export const Content = styled.p`
-  font-size: ${fontSizes.base}px;
-  line-height: ${fontSizes.xxl}px;
-  margin-bottom: 30px;
-`;
-
 interface DataProps {
   windowSize: GetWindowSizeChildProps;
 }
@@ -465,9 +447,9 @@ class Modal extends PureComponent<Props, State> {
                   </HeaderContainer>
                 }
 
-                <ModalContentContainer padding={padding}>
+                <ModalContent padding={padding}>
                   {children}
-                </ModalContentContainer>
+                </ModalContent>
 
                 {footer && <FooterContainer>{footer}</FooterContainer>}
 

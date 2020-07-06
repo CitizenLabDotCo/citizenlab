@@ -58,7 +58,7 @@ class ModeratorList extends PureComponent<Props & InjectedIntlProps>{
               : <UnknownName>{formatMessage(messages.unknownName)}</UnknownName>;
 
           return (
-            <Row key={moderator.id} isLastItem={(index === moderators.length - 1)}>
+            <Row key={moderator.id} lastItem={(index === moderators.length - 1)}>
               <Avatar userId={moderator.id} size="30px" />
               <p className="expand">{displayName}</p>
               <p className="expand">{moderator.attributes.email}</p>

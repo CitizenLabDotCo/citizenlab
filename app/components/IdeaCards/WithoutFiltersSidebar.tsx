@@ -316,7 +316,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       theme,
       allowProjectsFilter,
       showViewToggle,
-      project
     } = this.props;
     const {
       queryParameters,
@@ -349,13 +348,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
             <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'} ${showViewButtons ? 'hasViewButtons' : ''}`}>
               <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
               {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
-              {topicsEnabled && (
-                <TopicFilterDropdown
-                  onChange={this.handleTopicsOnChange}
-                  alignment={biggerThanLargeTablet ? 'right' : 'left'}
-                  projectId={!isNilOrError(project) ? project.id : null}
-                />
-              )}
+              {topicsEnabled && <TopicFilterDropdown onChange={this.handleTopicsOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />}
             </DropdownFilters>
 
             {showViewButtons &&
