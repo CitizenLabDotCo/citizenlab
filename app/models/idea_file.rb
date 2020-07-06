@@ -11,7 +11,7 @@ class IdeaFile < ApplicationRecord
   private 
 
   def extension_whitelist
-    if !EXTENSION_WHITELIST.include? self.name.split('.').last
+    if !EXTENSION_WHITELIST.include? self.name.split('.').last.downcase
       self.errors.add(
         :file,
         :extension_whitelist_error,

@@ -14,7 +14,6 @@ class Initiative < ApplicationRecord
   has_many :initiative_status_changes, dependent: :destroy
   has_one :initiative_initiative_status
   has_one :initiative_status, through: :initiative_initiative_status
-  has_many :notifications, foreign_key: :post_id, dependent: :nullify
   has_many :text_images, as: :imageable, dependent: :destroy
 
   belongs_to :assignee, class_name: 'User', optional: true
@@ -40,6 +39,7 @@ class Initiative < ApplicationRecord
   scope :with_some_topics, (Proc.new do |topic_ids|
     joins(:initiatives_topics)
       .where(initiatives_topics: {topic_id: topic_ids})
+      .distinct
   end)
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -52,6 +52,7 @@ class Initiative < ApplicationRecord
   scope :with_some_areas, (Proc.new do |area_ids|
     joins(:areas_initiatives)
       .where(areas_initiatives: {area_id: area_ids})
+      .distinct
   end)
 
   scope :with_status_code, (Proc.new do |code|

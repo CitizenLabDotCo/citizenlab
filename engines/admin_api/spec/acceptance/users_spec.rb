@@ -15,10 +15,20 @@ resource "User", admin_api: true do
 
     let(:email) { 'moderator@citizenlab.co' }
 
-    example_request "Get one users by email" do
+    example_request "Get one user by email" do
       expect(status).to eq 200
       json_response = json_parse(response_body)
       expect(json_response[:email]).to eq 'moderator@citizenlab.co'
+    end
+  end
+
+  get "admin_api/users/:id" do
+    let(:id) { user.id }
+
+    example_request "Get one user by id" do
+      expect(status).to eq 200
+      json_response = json_parse(response_body)
+      expect(json_response[:id]).to eq user.id
     end
   end
 

@@ -106,7 +106,7 @@ class ParticipationContextService
     elsif !(permission = context_permission(context, 'posting'))&.granted_to?(user)
       if not_signed_in? user, permission
         POSTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification? permission
+      elsif requires_verification?(permission) && !user&.verified
         POSTING_DISABLED_REASONS[:not_verified]
       else
         POSTING_DISABLED_REASONS[:not_permitted]
@@ -142,7 +142,7 @@ class ParticipationContextService
     elsif !(permission = context_permission(context, 'commenting'))&.granted_to?(user)
       if not_signed_in? user, permission
         COMMENTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification? permission
+      elsif requires_verification?(permission) && !user&.verified
         COMMENTING_DISABLED_REASONS[:not_verified]
       else
         COMMENTING_DISABLED_REASONS[:not_permitted]
@@ -210,7 +210,7 @@ class ParticipationContextService
     elsif !(permission = context_permission(context, 'voting'))&.granted_to?(user)
       if not_signed_in? user, permission
         VOTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification? permission
+      elsif requires_verification?(permission) && !user&.verified
         VOTING_DISABLED_REASONS[:not_verified]
       else
         VOTING_DISABLED_REASONS[:not_permitted]
@@ -239,7 +239,7 @@ class ParticipationContextService
     elsif !(permission = context_permission(context, 'voting'))&.granted_to?(user)
       if not_signed_in? user, permission
         VOTING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification? permission
+      elsif requires_verification?(permission) && !user&.verified
         VOTING_DISABLED_REASONS[:not_verified]
       else
         VOTING_DISABLED_REASONS[:not_permitted]
@@ -262,7 +262,7 @@ class ParticipationContextService
     elsif !(permission = context_permission(context, 'taking_survey'))&.granted_to?(user)
       if not_signed_in? user, permission
         TAKING_SURVEY_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification? permission
+      elsif requires_verification?(permission) && !user&.verified
         TAKING_SURVEY_DISABLED_REASONS[:not_verified]
       else
         TAKING_SURVEY_DISABLED_REASONS[:not_permitted]
@@ -285,7 +285,7 @@ class ParticipationContextService
     elsif !(permission = context_permission(context, 'taking_poll'))&.granted_to?(user)
       if not_signed_in? user, permission
         TAKING_POLL_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification? permission
+      elsif requires_verification?(permission) && !user&.verified
         TAKING_POLL_DISABLED_REASONS[:not_verified]
       else
         TAKING_POLL_DISABLED_REASONS[:not_permitted]
@@ -312,7 +312,7 @@ class ParticipationContextService
     elsif !(permission = context_permission(context, 'budgeting'))&.granted_to?(user)
       if not_signed_in? user, permission
         BUDGETING_DISABLED_REASONS[:not_signed_in]
-      elsif requires_verification? permission
+      elsif requires_verification?(permission)  && !user&.verified
         BUDGETING_DISABLED_REASONS[:not_verified]
       else
         BUDGETING_DISABLED_REASONS[:not_permitted]

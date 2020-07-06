@@ -19,6 +19,9 @@ module AdminApi
       @template = {'models' => {}}
 
       # TODO deal with linking idea_statuses, topics, custom field values and maybe areas and groups
+      @template['models']['custom_form']           = yml_custom_forms shift_timestamps: shift_timestamps
+      @template['models']['custom_field']          = yml_custom_fields shift_timestamps: shift_timestamps
+      @template['models']['custom_field_option']   = yml_custom_field_options shift_timestamps: shift_timestamps
       @template['models']['project']               = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
       @template['models']['project_file']          = yml_project_files shift_timestamps: shift_timestamps
       @template['models']['project_image']         = yml_project_images shift_timestamps: shift_timestamps
@@ -30,6 +33,9 @@ module AdminApi
       @template['models']['polls/question']        = yml_poll_questions shift_timestamps: shift_timestamps
       @template['models']['polls/option']          = yml_poll_options shift_timestamps: shift_timestamps
       @template['models']['volunteering/cause']    = yml_volunteering_causes shift_timestamps: shift_timestamps
+      @template['models']['maps/map_config']       = yml_maps_map_configs shift_timestamps: shift_timestamps
+      @template['models']['maps/layer']            = yml_maps_layers shift_timestamps: shift_timestamps
+      @template['models']['maps/legend_item']      = yml_maps_legend_items shift_timestamps: shift_timestamps
 
       if include_ideas
         @template['models']['user']                = yml_users anonymize_users, shift_timestamps: shift_timestamps
@@ -57,6 +63,7 @@ module AdminApi
     end
 
     def lookup_ref id, model_name
+      return nil if !id
       if model_name.kind_of?(Array)
         model_name.each do |n|
           return @refs[n][id] if @refs[n][id]
@@ -71,6 +78,53 @@ module AdminApi
       @refs[model_name][id] = yml_obj
     end
 
+    def yml_custom_forms shift_timestamps: 0
+      return [] if !@project.custom_form_id
+      yml_custom_form = {
+        'created_at' => shift_timestamp(@project.custom_form.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(@project.custom_form.updated_at, shift_timestamps)&.iso8601
+      }
+      store_ref yml_custom_form, @project.custom_form.id, :custom_form
+      [yml_custom_form]
+    end
+
+    def yml_custom_fields shift_timestamps: 0
+      return [] if !@project.custom_form_id
+      CustomField.where(resource: @project.custom_form).map do |c|
+        yml_custom_field = {
+          'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
+          'key'                  => c.key,
+          'input_type'           => c.input_type,
+          'title_multiloc'       => c.title_multiloc,
+          'description_multiloc' => c.description_multiloc,
+          'ordering'             => c.ordering,
+          'created_at'           => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+          'updated_at'           => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601,
+          'enabled'              => c.enabled,
+          'required'             => c.required,
+          'code'                 => c.code
+        }
+        store_ref yml_custom_field, c.id, :custom_field
+        yml_custom_field
+      end
+    end
+
+    def yml_custom_field_options shift_timestamps: 0
+      return [] if !@project.custom_form_id
+      CustomFieldOption.where(custom_field: @project.custom_form.custom_fields).map do |c|
+        yml_custom_field_option = {
+          'custom_field_ref'     => lookup_ref(c.custom_field_id, :custom_field),
+          'key'                  => c.key,
+          'title_multiloc'       => c.title_multiloc,
+          'ordering'             => c.ordering,
+          'created_at'           => shift_timestamp(c.created_at, shift_timestamps)&.iso8601,
+          'updated_at'           => shift_timestamp(c.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_custom_field_option, c.id, :custom_field_option
+        yml_custom_field_option
+      end
+    end
+
     def yml_projects shift_timestamps: 0, new_slug: nil, new_title_multiloc: nil, new_publication_status: nil
       yml_project = yml_participation_context @project, shift_timestamps: shift_timestamps
       yml_project.merge!({
@@ -82,7 +136,8 @@ module AdminApi
         'visible_to'                   => @project.visible_to,
         'description_preview_multiloc' => @project.description_preview_multiloc, 
         'process_type'                 => @project.process_type,
-        'admin_publication_attributes'  => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status }
+        'admin_publication_attributes' => { 'publication_status' => new_publication_status || @project.admin_publication.publication_status },
+        'custom_form_ref'              => lookup_ref(@project.custom_form_id, :custom_form)
       })
       yml_project['slug'] = new_slug if new_slug.present?
       store_ref yml_project, @project.id, :project
@@ -158,8 +213,7 @@ module AdminApi
         'downvoting_enabled'           => pc.downvoting_enabled,
         'voting_method'                => pc.voting_method,
         'voting_limited_max'           => pc.voting_limited_max,
-        'max_budget'                   => pc.max_budget,
-        'location_allowed'             => pc.location_allowed
+        'max_budget'                   => pc.max_budget
       }
       if yml_pc['participation_method'] == 'survey'
         yml_pc.merge!({
@@ -214,6 +268,48 @@ module AdminApi
         }
         store_ref yml_cause, c.id, :volunteering_cause
         yml_cause
+      end
+    end
+
+    def yml_maps_map_configs shift_timestamps: 0
+      Maps::MapConfig.where(project_id: @project.id).map do |map_config|
+        yml_map_config = {
+          'project_ref'            => lookup_ref(map_config.project_id, :project),
+          'center_geojson'         => map_config.center_geojson,
+          'zoom_level'             => map_config.zoom_level.to_f,
+          'tile_provider'          => map_config.tile_provider,
+          'created_at'             => shift_timestamp(map_config.created_at, shift_timestamps)&.iso8601,
+          'updated_at'             => shift_timestamp(map_config.updated_at, shift_timestamps)&.iso8601
+        }
+        store_ref yml_map_config, map_config.id, :maps_map_config
+        yml_map_config
+      end
+    end
+
+    def yml_maps_layers shift_timestamps: 0
+      (@project.map_config&.layers || []).map do |layer|
+        yml_layer = {
+          'map_config_ref'  => lookup_ref(layer.map_config_id, :maps_map_config),
+          'title_multiloc'  => layer.title_multiloc,
+          'geojson'         => layer.geojson,
+          'default_enabled' => layer.default_enabled,
+          'marker_svg_url'  => layer.marker_svg_url,
+          'created_at'      => shift_timestamp(layer.created_at, shift_timestamps)&.iso8601,
+          'updated_at'      => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
+        }
+        yml_layer
+      end
+    end
+
+    def yml_maps_legend_items shift_timestamps: 0
+      (@project.map_config&.legend_items || []).map do |legend_item|
+        {
+          'map_config_ref' => lookup_ref(legend_item.map_config_id, :maps_map_config),
+          'title_multiloc' => legend_item.title_multiloc,
+          'color'          => legend_item.color,
+          'created_at'     => shift_timestamp(legend_item.created_at, shift_timestamps)&.iso8601,
+          'updated_at'     => shift_timestamp(legend_item.updated_at, shift_timestamps)&.iso8601
+        }
       end
     end
 

@@ -45,7 +45,7 @@ es:
       "threshold_reached_for_admin": La propuesta ha alcanzado el umbral de votación
       "welcome": Después del registro
       "admin_digest": Resumen semanal para administradores
-      "moderator_digest": Resumen semanal para moderadores de proyectos
+      "moderator_digest": Resumen semanal para administradores de proyecto
       "assignee_digest": Resumen semanal de ideas asignadas
       "user_digest": Resumen semanal
       "your_proposed_initiatives_digest": Resumen semanal de tus propuestas
@@ -53,13 +53,13 @@ es:
       "manual": 'Mensaje oficial: todos los usuarios'
       "admin_rights_received": 'Derechos de administrador recibidos: administradores'
       "comment_deleted_by_admin": 'Eliminación de tu comentario: todos los usuarios'
-      "comment_marked_as_spam": 'Informar de spam de comentarios: administradores y moderadores de proyectos'
+      "comment_marked_as_spam": Informar de spam de comentarios - administradores y administradores de proyecto
       "comment_on_your_comment": 'Responder a tu comentario: todos los usuarios'
       "comment_on_your_idea": 'Comentar en tu idea: todos los usuarios'
       "comment_on_your_initiative": 'Comentar en tu propuesta: todos los usuarios'
       "first_idea_published": 'Publicación de tu primera idea: todos los usuarios'
-      "idea_assigned_to_you": 'Asignación de una idea: administradores y moderadores de proyectos'
-      "idea_marked_as_spam": 'Informar de spam de ideas: administradores y moderadores de proyectos'
+      "idea_assigned_to_you": Asignación de una idea - administradores y administradores de proyecto
+      "idea_marked_as_spam": Informar de spam de ideas - administradores y administradores de proyecto
       "idea_published": 'Publicación de tu idea: todos los usuarios'
       "initiative_assigned_to_you": 'Asignación de una propuesta: administradores'
       "initiative_marked_as_spam": 'Informar de spam de propuesta: administradores'
@@ -68,12 +68,12 @@ es:
       "invite_reminder": 'Recordatorio de invitación: todos los usuarios'
       "mention_in_comment": 'Mencionar en un comentario: todos los usuarios'
       "mention_in_official_feedback": 'Mencionar en una actualización: todos los usuarios'
-      "new_comment_for_admin": 'Nuevo comentario: administradores y moderadores de proyectos'
+      "new_comment_for_admin": Nuevo comentario - administradores y administradores de proyecto
       "new_comment_on_commented_idea": 'Nuevo comentario sobre una idea que has comentado: todos los usuarios'
       "new_comment_on_commented_initiative": 'Nuevo comentario sobre una propuesta que has comentado: todos los usuarios'
       "new_comment_on_voted_idea": 'Nuevo comentario sobre una idea por la que has votado: todos los usuarios'
       "new_comment_on_voted_initiative": 'Nuevo comentario sobre una propuesta por la que has votado: todos los usuarios'
-      "new_idea_for_admin": 'Nueva idea: administradores y moderadores de proyectos'
+      "new_idea_for_admin": Nueva idea - administradores y administradores de proyecto
       "new_initiative_for_admin": 'Nueva propuesta: administradores'
       "official_feedback_on_commented_idea": 'Actualización en una idea que has comentado: todos los usuarios'
       "official_feedback_on_commented_initiative": 'Actualización en una propuesta que has comentado: todos los usuarios'
@@ -82,9 +82,9 @@ es:
       "official_feedback_on_your_idea": 'Actualización sobre tu idea: todos los usuarios'
       "official_feedback_on_your_initiative": 'Actualización sobre tu propuesta: todos los usuarios'
       "password_reset": 'Restablecimiento de contraseña: todos los usuarios'
-      "project_moderation_rights_received": 'Derechos de moderación del proyecto recibidos: moderadores del proyecto'
+      "project_moderation_rights_received": Derechos de administrador de proyecto recibidos - administradores de proyecto
       "project_phase_started": 'Nueva fase del proyecto: todos los usuarios'
-      "project_phase_upcoming": 'Próxima nueva fase del proyecto: administradores y moderadores del proyecto'
+      "project_phase_upcoming": Próxima nueva fase del proyecto - administradores y administradores de proyecto
       "status_change_of_commented_idea": 'Cambio de estado de una idea que has comentado: todos los usuarios'
       "status_change_of_commented_initiative": 'Cambio de estado de una propuesta que has comentado: todos los usuarios'
       "status_change_of_voted_idea": 'Cambio de estado de una idea que has votado: todos los usuarios'
@@ -94,7 +94,7 @@ es:
       "threshold_reached_for_admin": 'La propuesta ha alcanzado el umbral de votación: administradores'
       "welcome": 'Nuevo usuario: administradores'
       "admin_digest": 'Resumen semanal: administradores'
-      "moderator_digest": 'Resumen semanal: moderadores de proyectos'
-      "assignee_digest": 'Resumen semanal de ideas asignadas: administradores y moderadores de proyectos'
+      "moderator_digest": Resumen semanal - administradores de proyecto
+      "assignee_digest": Resumen semanal de ideas asignadas - administradores y administradores de proyecto
       "user_digest": 'Resumen semanal: todos los usuarios'
       "your_proposed_initiatives_digest": 'Resumen semanal de tus propias propuestas: todos los usuarios'
