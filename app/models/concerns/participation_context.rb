@@ -26,7 +26,6 @@ module ParticipationContext
         ideation.validates :voting_method, presence: true, inclusion: {in: VOTING_METHODS}
         ideation.validates :voting_limited_max, presence: true, numericality: {only_integer: true, greater_than: 0}, if: [:ideation?, :voting_limited?]
         ideation.validates :presentation_mode, presence: true, inclusion: {in: PRESENTATION_MODES}
-        ideation.validates :location_allowed, inclusion: {in: [true, false]}
       end
 
       with_options if: :budgeting? do |budgeting|

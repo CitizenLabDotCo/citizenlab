@@ -22,5 +22,17 @@ RSpec.describe Vote, type: :model do
       expect(build(:vote, mode: 'down', votable: idea, user: user)).to be_valid
       expect{ create(:vote, mode: 'down', votable: idea, user: user) }.to raise_error(ActiveRecord::RecordNotUnique)
     end
+
+    it "two votes of deleted users are allowed" do
+      idea = create(:idea)
+      u1 = create(:user)
+      v1 = create(:vote, votable: idea, user: u1)
+      u2 = create(:user)
+      v2 = create(:vote, votable: idea, user: u2)
+      u1.destroy!
+      u2.destroy!
+      expect(v1.reload).to be_valid
+      expect(v2.reload).to be_valid
+    end
   end
 end

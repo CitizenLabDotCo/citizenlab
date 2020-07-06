@@ -103,6 +103,7 @@ end
 
 if ['public','example_org'].include? Apartment::Tenant.current
   t = Tenant.create!({
+    id: 'c72c5211-8e03-470b-9564-04ec0a8c322b',
     name: 'local',
     host: 'localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -243,6 +244,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
       initiatives: {
         enabled: true,
         allowed: true,
+        posting_enabled: true,
         voting_threshold: 20,
         days_limit: 5,
         threshold_reached_message: MultilocService.new.i18n_to_multiloc(
@@ -317,10 +319,15 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         allowed: true
       },
+      moderation: {
+        enabled: true,
+        allowed: true
+      },
     }
   })
 
   Tenant.create!({
+    id: "07ff8088-cc78-4307-9a1c-ebb6fb836f96",
     name: 'empty',
     host: 'empty.localhost',
     logo: Rails.root.join("spec/fixtures/logo.png").open,
@@ -362,6 +369,7 @@ if ['public','example_org'].include? Apartment::Tenant.current
 end
 
 admin = {
+  id: "386d255e-2ff1-4192-8e50-b3022576be50",
   email: 'admin@citizenlab.co',
   password: 'testtest',
   roles: [
@@ -370,11 +378,13 @@ admin = {
   locale: 'en'
 }
 moderator = {
+  id: "61caabce-f7e5-4804-b9df-36d7d7d73e4d",
   email: 'moderator@citizenlab.co',
   password: 'testtest',
   roles: []
 }
 user = {
+  id: "546335a3-33b9-471c-a18a-d5b58ebf173a",
   email: 'user@citizenlab.co',
   password: 'testtest',
   roles: []
@@ -383,7 +393,8 @@ user = {
 if Apartment::Tenant.current == 'empty_localhost'
   TenantTemplateService.new.resolve_and_apply_template 'base', external_subfolder: false
   SideFxTenantService.new.after_apply_template Tenant.current, nil
-  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge(admin)
+  random_user = AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales'))
+  User.create! AnonymizeUserService.new.anonymized_attributes(Tenant.current.settings.dig('core', 'locales')).merge({**admin, id: "e0d698fc-5969-439f-9fe6-e74fe82b567a"})
 end
 
 
@@ -475,8 +486,7 @@ if Apartment::Tenant.current == 'localhost'
           downvoting_enabled: rand(3) != 0,
           commenting_enabled: rand(4) != 0,
           voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-          voting_limited_max: rand(15)+1,
-          location_allowed: rand(4) != 0,
+          voting_limited_max: rand(15)+1
         })
       end
 
@@ -517,8 +527,7 @@ if Apartment::Tenant.current == 'localhost'
               downvoting_enabled: rand(3) != 0,
               commenting_enabled: rand(4) != 0,
               voting_method: ['unlimited','unlimited','unlimited','limited'][rand(4)],
-              voting_limited_max: rand(15)+1,
-              location_allowed: rand(4) != 0,
+              voting_limited_max: rand(15)+1
             })
           end
           if phase.budgeting?

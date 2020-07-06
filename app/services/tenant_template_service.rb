@@ -45,7 +45,12 @@ class TenantTemplateService
           end
           ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
         rescue Exception => e
-          raise e
+          json_info = {
+            error_message: e.message,
+            model_class: model_class.name,
+            attributes: attributes
+          }.to_json
+          raise "Failed to create instance during template application: #{json_info}"
         end
         obj_to_id_and_class[attributes.object_id] = [model.id, model_class]
       end
@@ -349,11 +354,8 @@ class TenantTemplateService
   end
 
   def yml_custom_fields
-    # No custom fields are required anymore because
-    # the user choices cannot be remembered.
     CustomField.all.map do |c|
       yml_custom_field = {
-        'resource_type'        => c.resource_type,
         'resource_ref'         => c.resource_id && lookup_ref(c.resource_id, :custom_form),
         'key'                  => c.key,
         'input_type'           => c.input_type,
@@ -365,6 +367,14 @@ class TenantTemplateService
         'enabled'              => c.enabled,
         'code'                 => c.code
       }
+      if c.resource_type == User.name
+        yml_custom_field['resource_type'] = c.resource_type
+        # No user custom fields are required anymore because
+        # the user choices cannot be remembered.
+      else
+        yml_custom_field['resource_ref'] = c.resource_id && lookup_ref(c.resource_id, :custom_form)
+        yml_custom_field['required'] = c.required
+      end
       store_ref yml_custom_field, c.id, :custom_field
       yml_custom_field
     end
@@ -488,7 +498,7 @@ class TenantTemplateService
         'description_preview_multiloc' => p.description_preview_multiloc,
         'process_type'                 => p.process_type,
         'internal_role'                => p.internal_role,
-        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_field),
+        'custom_form_ref'              => lookup_ref(p.custom_form_id, :custom_form),
         'admin_publication_attributes' => { 
           'publication_status'         => p.admin_publication.publication_status,
           'ordering'                   => p.admin_publication.ordering,
@@ -574,8 +584,7 @@ class TenantTemplateService
       'downvoting_enabled'           => pc.downvoting_enabled,
       'voting_method'                => pc.voting_method,
       'voting_limited_max'           => pc.voting_limited_max,
-      'max_budget'                   => pc.max_budget,
-      'location_allowed'             => pc.location_allowed
+      'max_budget'                   => pc.max_budget
     }
     if yml_pc['participation_method'] == 'survey'
       yml_pc.merge!({
@@ -809,7 +818,7 @@ class TenantTemplateService
   end
 
   def yml_areas_ideas
-    AreasIdea.all.map do |a|
+    AreasIdea.where(idea: Idea.published).map do |a|
       if lookup_ref(a.idea_id, :idea)
         {
           'area_ref' => lookup_ref(a.area_id, :area),
@@ -820,7 +829,7 @@ class TenantTemplateService
   end
 
   def yml_baskets_ideas
-    BasketsIdea.all.map do |b|
+    BasketsIdea.where(idea: Idea.published).map do |b|
       if lookup_ref(b.idea_id, :idea)
         {
           'basket_ref' => lookup_ref(b.basket_id, :basket),
@@ -831,7 +840,7 @@ class TenantTemplateService
   end
 
   def yml_idea_files
-    IdeaFile.all.map do |i|
+    IdeaFile.where(idea: Idea.published).map do |i|
       {
         'idea_ref'        => lookup_ref(i.idea_id, :idea),
         'name'            => i.name,
@@ -844,7 +853,7 @@ class TenantTemplateService
   end
 
   def yml_idea_images
-    IdeaImage.all.map do |i|
+    IdeaImage.where(idea: Idea.published).map do |i|
       {
         'idea_ref'         => lookup_ref(i.idea_id, :idea),
         'remote_image_url' => i.image_url,
@@ -856,7 +865,7 @@ class TenantTemplateService
   end
 
   def yml_ideas_phases
-    IdeasPhase.all.map do |i|
+    IdeasPhase.where(idea: Idea.published).map do |i|
       {
         'idea_ref'   => lookup_ref(i.idea_id, :idea),
         'phase_ref'  => lookup_ref(i.phase_id, :phase),
@@ -867,7 +876,7 @@ class TenantTemplateService
   end
 
   def yml_ideas_topics
-    IdeasTopic.all.map do |i|
+    IdeasTopic.where(idea: Idea.published).map do |i|
       {
         'idea_ref'   => lookup_ref(i.idea_id, :idea),
         'topic_ref'  => lookup_ref(i.topic_id, :topic)
@@ -921,7 +930,7 @@ class TenantTemplateService
   end
 
   def yml_areas_initiatives
-    AreasInitiative.all.map do |a|
+    AreasInitiative.where(initiative: Initiative.published).map do |a|
       if lookup_ref(a.initiative_id, :initiative)
         {
           'area_ref'       => lookup_ref(a.area_id, :area),
@@ -932,7 +941,7 @@ class TenantTemplateService
   end
 
   def yml_initiative_files
-    InitiativeFile.all.map do |i|
+    InitiativeFile.where(initiative: Initiative.published).map do |i|
       {
         'initiative_ref'  => lookup_ref(i.initiative_id, :initiative),
         'name'            => i.name,
@@ -945,7 +954,7 @@ class TenantTemplateService
   end
 
   def yml_initiative_images
-    InitiativeImage.all.map do |i|
+    InitiativeImage.where(initiative: Initiative.published).map do |i|
       {
         'initiative_ref'   => lookup_ref(i.initiative_id, :initiative),
         'remote_image_url' => i.image_url,
@@ -957,7 +966,7 @@ class TenantTemplateService
   end
 
   def yml_initiatives_topics
-    InitiativesTopic.all.map do |i|
+    InitiativesTopic.where(initiative: Initiative.published).map do |i|
       {
         'initiative_ref'   => lookup_ref(i.initiative_id, :initiative),
         'topic_ref'  => lookup_ref(i.topic_id, :topic)
@@ -1133,7 +1142,6 @@ class TenantTemplateService
         'created_at'      => layer.created_at.to_s,
         'updated_at'      => layer.updated_at.to_s
       }
-      store_ref yml_layer, layer.id, :maps_layer
       yml_layer
     end
   end

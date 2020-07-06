@@ -148,4 +148,120 @@ namespace :setup_and_support do
       end
     end
   end
+
+  desc "Translate all content of a platform from one locale to another"
+  task :translate_tenant, [:host,:locale_from,:locale_to] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      translator = MachineTranslations::MachineTranslationService.new
+      data_listing = Cl2DataListingService.new
+      data_listing.cl2_tenant_models.each do |claz|
+        claz.find_each do |object|
+          changes = {}
+          data_listing.multiloc_attributes(claz).each do |ml| 
+            value = object.send ml
+            if value.present? && value[args[:locale_from]].present? && !value[args[:locale_to]].present?
+              changes[ml] = value.clone
+              changes[ml][args[:locale_to]] = translator.translate value[args[:locale_from]], args[:locale_from], args[:locale_to]
+            end
+          end
+          object.update_columns changes if changes.present?
+        end
+      end
+    end
+  end
+
+  desc "Birthyear select"
+  task :birthyear_select, [:host,:json_url] => [:environment] do |t, args|
+    errors = []
+    
+    multiloc = JSON.parse(open(args[:json_url]).read)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+        translation = I18n.with_locale(locale) { I18n.t!('custom_fields.users.birthyear.title') }
+        [locale, translation]
+      end.to_h
+      field = CustomField.create!(
+        resource_type: User,
+        key: 'custom_birthyear',
+        title_multiloc: title_multiloc,
+        input_type: 'select',
+        required: false,
+        enabled: true
+      )
+      CustomFieldOption.create!(
+        custom_field: field,
+        key: 'other_option',
+        title_multiloc: multiloc
+      )
+      (1900..Time.now.year).reverse_each do |year|
+        title_multiloc = CL2_SUPPORTED_LOCALES.map do |locale|
+          [locale, year.to_s]
+        end.to_h
+        CustomFieldOption.create!(
+          custom_field: field,
+          key: year.to_s,
+          title_multiloc: title_multiloc
+        )
+      end
+
+      User.all.select do |user|
+        user.birthyear.present?
+      end.each do |user|
+        user.custom_field_values[field.key] = user.birthyear.to_s
+        if !user.save
+          errors += [user.errors.messages]
+        end
+      end
+
+      CustomField.find_by(code: 'birthyear').update!(enabled: false, required: false)
+
+      if errors.present?
+        puts "Some errors occurred!"
+        errors.each{|err| puts err}
+      else
+        puts 'Success!'
+      end
+    end
+  end
+
+  desc "Add JSON map layer"
+  task :add_map_layer, [:host,:project_slug,:json_url,:map_title,:default_enabled] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      project = Project.find_by slug: args[:project_slug]
+      config = project.map_config || Maps::MapConfig.create!(project: project)
+      config.layers.create!(
+        title_multiloc: {Tenant.current.settings.dig('core','locales').first => args[:map_title]},
+        geojson: JSON.parse(open(args[:json_url]).read),
+        default_enabled: args[:default_enabled].blank? || (args[:default_enabled] == 'true')
+        )
+    end
+  end
+
+  desc "Change the map center of a project"
+  task :change_map_center, [:host,:project_slug,:latitude,:longitude,:zoom_level] => [:environment] do |t, args|
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      project = Project.find_by slug: args[:project_slug]
+      config = project.map_config || Maps::MapConfig.create!(project: project)
+      config.center_geojson = {
+          "coordinates" => [args[:longitude].to_f, args[:latitude].to_f],
+          "type" => "Point"
+        }
+      config.zoom_level = args[:zoom_level].to_i
+      config.save!
+    end
+  end
+
+  desc "Create a new manual group, given a list of user emails"
+  task :create_group_from_email_list, [:host,:url,:title] => [:environment] do |t, args|
+    locale = Tenant.find_by(host: args[:host]).settings.dig('core', 'locales').first
+    emails = open(args[:url]).readlines.map(&:strip)
+    Apartment::Tenant.switch(args[:host].gsub '.', '_') do
+      users = User.where(email: emails)
+      group = Group.create!(title_multiloc: {locale => args[:title]}, membership_type: 'manual', members: users)
+      users.each do |u| 
+        group.add_member u
+      end
+      group.save!
+    end
+  end
 end

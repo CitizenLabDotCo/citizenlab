@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_25_160114) do
+ActiveRecord::Schema.define(version: 2020_05_19_164633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -575,6 +575,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_160114) do
     t.string "campaign_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["campaign_name", "user_id"], name: "index_dismissals_on_campaign_name_and_user_id", unique: true
     t.index ["user_id"], name: "index_onboarding_campaign_dismissals_on_user_id"
   end
 
@@ -647,7 +648,6 @@ ActiveRecord::Schema.define(version: 2020_03_25_160114) do
     t.string "survey_service"
     t.string "presentation_mode", default: "card"
     t.integer "max_budget"
-    t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
     t.boolean "downvoting_enabled", default: true, null: false
     t.index ["project_id"], name: "index_phases_on_project_id"
@@ -689,6 +689,7 @@ ActiveRecord::Schema.define(version: 2020_03_25_160114) do
     t.uuid "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["participation_context_id", "participation_context_type", "user_id"], name: "index_polls_responses_on_participation_context_and_user_id", unique: true
     t.index ["participation_context_type", "participation_context_id"], name: "index_poll_responses_on_participation_context"
     t.index ["user_id"], name: "index_polls_responses_on_user_id"
   end
@@ -766,7 +767,6 @@ ActiveRecord::Schema.define(version: 2020_03_25_160114) do
     t.integer "max_budget"
     t.integer "comments_count", default: 0, null: false
     t.uuid "default_assignee_id"
-    t.boolean "location_allowed", default: true, null: false
     t.boolean "poll_anonymous", default: false, null: false
     t.uuid "custom_form_id"
     t.boolean "downvoting_enabled", default: true, null: false

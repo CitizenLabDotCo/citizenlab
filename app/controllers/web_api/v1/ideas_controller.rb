@@ -6,7 +6,7 @@ class WebApi::V1::IdeasController < ApplicationController
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def index
-    @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
+    @ideas = policy_scope(Idea).includes(:topics, :areas, :idea_images, project: [:phases, :permissions, custom_form: [:custom_fields]], phases: [:permissions], author: [:unread_notifications], assignee: [:unread_notifications])
       .left_outer_joins(:idea_trending_info)
     @ideas = PostsFilteringService.new.apply_common_idea_index_filters @ideas, params
 
@@ -91,7 +91,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def index_xlsx
     I18n.with_locale(current_user&.locale) do
       @ideas = policy_scope(Idea)
-        .includes(:author, :topics, :areas, :project, :idea_status)
+        .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
         .where(publication_status: 'published')
       @ideas = @ideas.where(project_id: params[:project]) if params[:project].present?
       @ideas = @ideas.where(id: params[:ideas]) if params[:ideas].present?

@@ -74,11 +74,15 @@ resource "Idea Custom Fields" do
 
     patch "web_api/v1/projects/:project_id/custom_fields/by_code/:code" do
       with_options scope: :custom_field do
+        parameter :required, "Whether filling out the field is mandatory", required: false
+        parameter :enabled, "Whether the field is active or not", required: false
         parameter :description_multiloc, "An optional description of the field, as shown to users, in multiple locales", required: false
       end
 
       let(:project_id) { project.id }
-      let(:code) { 'title' }
+      let(:code) { 'location' }
+      let(:required) { true }
+      let(:enabled) { false }
       let(:description_multiloc) { {"en" => "New description"} }
 
       context "when the custom_form doesn't exist yet" do
@@ -89,6 +93,8 @@ resource "Idea Custom Fields" do
           expect(response_status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:code)).to eq code
+          expect(json_response.dig(:data,:attributes,:required)).to eq required
+          expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
           expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
           expect(CustomField.count).to eq 1
           expect(CustomForm.count).to eq 1
@@ -105,6 +111,8 @@ resource "Idea Custom Fields" do
             expect(response_status).to eq 200
             json_response = json_parse(response_body)
             expect(json_response.dig(:data,:attributes,:code)).to eq code
+            expect(json_response.dig(:data,:attributes,:required)).to eq required
+            expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
             expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
           end
@@ -118,6 +126,8 @@ resource "Idea Custom Fields" do
             json_response = json_parse(response_body)
             expect(json_response.dig(:data,:id)).to eq cf.id
             expect(json_response.dig(:data,:attributes,:code)).to eq code
+            expect(json_response.dig(:data,:attributes,:required)).to eq required
+            expect(json_response.dig(:data,:attributes,:enabled)).to eq enabled
             expect(json_response.dig(:data,:attributes,:description_multiloc).stringify_keys).to match description_multiloc
             expect(CustomField.count).to eq 1
           end

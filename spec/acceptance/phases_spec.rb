@@ -71,7 +71,6 @@ resource "Phases" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase", required: true
         parameter :end_at, "The end date of the phase", required: true
-        parameter :location_allowed, "Can citizens add a location to their ideas? Defaults to true", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Defaults to false. Only applies if participation_method is 'poll'", required: false        
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -212,7 +211,6 @@ resource "Phases" do
         parameter :max_budget, "The maximal budget amount each citizen can spend during participatory budgeting.", required: false
         parameter :start_at, "The start date of the phase"
         parameter :end_at, "The end date of the phase"
-        parameter :location_allowed, "Can citizens add a location to their ideas?", required: false
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
       end
       ValidationErrorHelper.new.error_fields(self, Phase)
@@ -229,7 +227,6 @@ resource "Phases" do
       let(:voting_method) { 'limited' }
       let(:voting_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
-      let(:location_allowed) { false }
 
       example_request "Update a phase" do
         expect(response_status).to eq 200
@@ -242,7 +239,6 @@ resource "Phases" do
         expect(json_response.dig(:data,:attributes,:voting_method)).to eq voting_method
         expect(json_response.dig(:data,:attributes,:voting_limited_max)).to eq voting_limited_max
         expect(json_response.dig(:data,:attributes,:presentation_mode)).to eq presentation_mode
-        expect(json_response.dig(:data,:attributes,:location_allowed)).to eq location_allowed
       end
 
       describe do
