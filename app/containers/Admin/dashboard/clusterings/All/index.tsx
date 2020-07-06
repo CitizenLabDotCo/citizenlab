@@ -44,7 +44,7 @@ class AreaList extends PureComponent<Props & InjectedIntlProps>{
         </SectionTitle>
         <List>
           {clusterings.map((area, index) => (
-            <Row key={area.id} lastItem={(index === clusterings.length - 1)}>
+            <Row key={area.id} isLastItem={(index === clusterings.length - 1)}>
               <TextCell className="expand">
                 <T value={area.attributes.title_multiloc} />
               </TextCell>
