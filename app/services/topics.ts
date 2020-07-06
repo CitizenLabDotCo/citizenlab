@@ -4,11 +4,6 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/topics`;
 
-type DefaultTopicCodes = 'nature' | 'waste' | 'sustainability' | 'mobility' |
- 'technology' | 'economy' | 'housing' | 'public_space' | 'safety' | 'education' |
- 'culture' | 'health' | 'inclusion' | 'community' | 'services' | 'other' ;
-export type Code = 'custom' | DefaultTopicCodes;
-
 export interface ITopicData {
   id: string;
   type: string;
@@ -17,7 +12,6 @@ export interface ITopicData {
     description_multiloc: Multiloc;
     icon: string;
     ordering: number;
-    code: Code;
   };
 }
 
@@ -37,10 +31,8 @@ export function topicsStream(streamParams: IStreamParams | null = null) {
   return streams.get<ITopics>({ apiEndpoint, ...streamParams });
 }
 
-export async function addTopic(object) {
-  const response = await streams.add<ITopic>(apiEndpoint, { topic: object });
-  await streams.fetchAllWith({ apiEndpoint: [apiEndpoint] });
-  return response;
+export function addTopic(object) {
+  return streams.add<ITopic>(apiEndpoint, { topic: object });
 }
 
 export function updateTopic(topicId: string, object) {
@@ -48,15 +40,7 @@ export function updateTopic(topicId: string, object) {
 }
 
 export function reorderTopic(topicId: string, index: number) {
-  return streams.update<ITopic>(
-    `${API_PATH}/topics/${topicId}/reorder`,
-    topicId,
-    {
-      topic: {
-        ordering: index
-      }
-    }
-  );
+  return streams.update<ITopic>(`${API_PATH}/topics/${topicId}/reorder`, topicId, { topic: { ordering: index } });
 }
 
 export function deleteTopic(topicId: string) {

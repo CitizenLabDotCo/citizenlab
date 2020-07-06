@@ -50,40 +50,40 @@ export default ({
 }: Props) => {
   return (
     <Table.Row active={active} className={className}>
-      <Table.Cell as={FilterCell} collapsing={true} />
-      <Table.Cell colSpan={6} as={FilterCell}>
-        {activeFilterMenu === 'phases' && phases &&
-          <PhasesSelector
-            selectedPhases={selectedPhases || []}
-            phases={phases}
-            onUpdatePhases={onUpdatePhases}
-          />
-        }
-        {activeFilterMenu === 'topics' &&
-          <TopicsSelector
-            selectedTopics={selectedTopics || []}
-            onUpdateTopics={onUpdateTopics}
-          />
-        }
-        {activeFilterMenu === 'projects' && projectId &&
-          <ProjectSelector projectId={projectId} />
-        }
-        {activeFilterMenu === 'statuses' && postType === 'initiative' && statuses && allowedTransitions !== undefined &&
-          <InitiativesStatusSelector
-            statuses={statuses as IInitiativeStatusData[]}
-            selectedStatus={selectedStatus}
-            onUpdateStatus={onUpdateStatus}
-            allowedTransitions={allowedTransitions}
-          />
-        }
-        {activeFilterMenu === 'statuses' && postType === 'idea' && statuses &&
-          <IdeasStatusSelector
-            statuses={statuses as IIdeaStatusData[]}
-            selectedStatus={selectedStatus}
-            onUpdateStatus={onUpdateStatus}
-          />
-        }
-      </Table.Cell>
-    </Table.Row>
+       <Table.Cell as={FilterCell} collapsing={true} />
+       <Table.Cell colSpan={6} as={FilterCell}>
+         {activeFilterMenu === 'phases' && phases &&
+           <PhasesSelector
+             selectedPhases={selectedPhases || []}
+             phases={phases}
+             onUpdatePhases={onUpdatePhases}
+           />
+         }
+         {activeFilterMenu === 'topics' &&
+           <TopicsSelector
+             selectedTopics={selectedTopics || []}
+             onUpdateTopics={onUpdateTopics}
+           />
+         }
+         {activeFilterMenu === 'projects' && projectId &&
+           <ProjectSelector projectId={projectId} />
+         }
+         {activeFilterMenu === 'statuses' && postType === 'initiative' && statuses && allowedTransitions !== undefined &&
+           <InitiativesStatusSelector
+             statuses={statuses as IInitiativeStatusData[]}
+             selectedStatus={selectedStatus}
+             onUpdateStatus={onUpdateStatus}
+             allowedTransitions={allowedTransitions}
+           />
+         }
+         {activeFilterMenu === 'statuses' && postType === 'idea' && statuses &&
+           <IdeasStatusSelector
+             statuses={statuses as IIdeaStatusData[]}
+             selectedStatus={selectedStatus}
+             onUpdateStatus={onUpdateStatus}
+           />
+         }
+       </Table.Cell>
+     </Table.Row>
   );
 };
