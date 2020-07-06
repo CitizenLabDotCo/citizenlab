@@ -8,6 +8,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
 import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,7 +25,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
 import { colors } from 'utils/styleUtils';
 
+// typings
 import { Locale } from 'typings';
+import { ITopicData } from 'services/topics';
 
 export interface InputProps {
   initiativeId: string;
@@ -36,6 +39,7 @@ interface DataProps {
   initiativeImages: GetInitiativeImagesChildProps;
   locale: GetLocaleChildProps;
   initiativeFiles: GetResourceFileObjectsChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends DataProps, InputProps { }
@@ -64,7 +68,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, initiative, initiativeImages, goBack, initiativeFiles } = this.props;
+    const { locale, initiative, initiativeImages, goBack, initiativeFiles, topics } = this.props;
     const { selectedLocale } = this.state;
 
     if (
@@ -73,8 +77,10 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
       isNilOrError(initiative) ||
       initiativeImages === undefined ||
       initiativeFiles === undefined ||
-      isError(initiativeFiles)
+      isError(initiativeFiles) ||
+      isNilOrError(topics)
     ) return null;
+    const initiativeTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
     return (
       <Container>
@@ -100,6 +106,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
             initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
             onPublished={goBack}
             initiativeFiles={initiativeFiles}
+            topics={initiativeTopics}
           />
         </Content>
       </Container>
@@ -109,6 +116,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
+  topics: <GetTopics exclude_code={'custom'} />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
