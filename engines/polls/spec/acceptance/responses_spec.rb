@@ -34,12 +34,15 @@ resource "Poll Responses" do
       example_request "XLSX export for a non-anonymous poll" do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
+        headers = worksheet[0].cells.map(&:value).map(&:downcase)
+
         expect(worksheet.count).to eq 3
-        expect(worksheet[0][3].value.to_s).to eq @q3.title_multiloc['en']
+        expect(headers).not_to include "email"
+        expect(worksheet[0][2].value.to_s).to eq @q3.title_multiloc['en']
+        expect(worksheet[1][1].value.to_s).to eq ''
         expect(worksheet[1][2].value.to_s).to eq ''
-        expect(worksheet[1][3].value.to_s).to eq ''
-        expect(worksheet[2][2].value.to_s).to eq @q1.options.last.title_multiloc['en']
-        expect(worksheet[2][3].value.to_s).to eq ''
+        expect(worksheet[2][1].value.to_s).to eq @q1.options.last.title_multiloc['en']
+        expect(worksheet[2][2].value.to_s).to eq ''
       end
     end
     context "anonymous poll" do
