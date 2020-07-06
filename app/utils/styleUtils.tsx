@@ -104,7 +104,7 @@ export const media = {
 };
 
 export const colors = {
-  background: '#f4f4f5',
+  background: '#f5f5f6',
   text: '#333',
   secondaryText: '#84939E',
   label: '#596B7A',
@@ -200,6 +200,10 @@ export const colors = {
   clBlueButtonText: '#1391A1'
 };
 
+export const defaultStyles = {
+  boxShadow: '0px 2px 2px -1px rgba(152, 162, 179, 0.25), 0px 1px 5px -2px rgba(152, 162, 179, 0.4)'
+};
+
 export const fontSizes = {
   xs: 12,
   small: 14,
@@ -213,16 +217,20 @@ export const fontSizes = {
   xxxxxl: 42
 };
 
-export const customOutline = 'solid 2px #000';
+export const defaultCardStyle = css`
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: ${defaultStyles.boxShadow};
+`;
 
 export const boxShadowOutline = css`
-  border-color: #000;
-  box-shadow: 0px 0px 0px 1px #000;
+  border-color: #596b7a;
+  box-shadow: 0px 0px 0px 1px #596b7a;
 `;
 
 export const boxShadowOutlineImportant = css`
-  border-color: #000 !important;
-  box-shadow: 0px 0px 0px 1px #000 !important;
+  border-color: #596b7a !important;
+  box-shadow: 0px 0px 0px 1px #596b7a !important;
 `;
 
 export const defaultInputStyle = css`
@@ -251,8 +259,8 @@ export const defaultInputStyle = css`
 
     &:not(.error):focus,
     &:not(.error).focus {
-      border-color: #000;
-      box-shadow: 0px 0px 0px 1px #000;
+      border-color: #596b7a;
+      box-shadow: 0px 0px 0px 1px #596b7a;
     }
 
     &.error {

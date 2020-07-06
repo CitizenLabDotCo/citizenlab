@@ -5,15 +5,15 @@ import LoadingComments from './Comments/LoadingComments';
 
 // styling
 import styled from 'styled-components';
-import { media, postPageContentMaxWidth } from 'utils/styleUtils';
+import { media, postPageContentMaxWidth, colors } from 'utils/styleUtils';
 import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
 
 const Container = styled.div`
   flex: 1 1 auto;
   width: 100%;
   margin-top: 50px;
-  background: #f8f8f9;
-  border-top: solid 1px #e2e2e2;
+  background: ${colors.background};
+  border-top: 1px solid ${colors.adminSeparation};
 `;
 
 const Content = styled.div`

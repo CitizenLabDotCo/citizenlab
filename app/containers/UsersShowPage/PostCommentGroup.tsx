@@ -19,7 +19,7 @@ import eventEmitter from 'utils/eventEmitter';
 
 // style
 import styled from 'styled-components';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import { colors, media, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { darken } from 'polished';
 
@@ -39,9 +39,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 20px 40px 40px;
-  background: #fff;
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  ${defaultCardStyle};
 
   &:not(:last-child) {
     margin-bottom: 20px;

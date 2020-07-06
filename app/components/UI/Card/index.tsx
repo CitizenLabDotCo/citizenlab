@@ -7,7 +7,7 @@ import LazyImage from 'components/LazyImage';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes } from 'utils/styleUtils';
+import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
 
 const Container = styled(Link)`
   width: 100%;
@@ -17,9 +17,7 @@ const Container = styled(Link)`
   display: flex;
   flex-direction: column;
   position: relative;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   &.desktop {
     transition: all 150ms ease-out;

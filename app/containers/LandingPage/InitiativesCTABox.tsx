@@ -6,7 +6,7 @@ import useAuthUser from 'hooks/useAuthUser';
 
 // styling
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, media, viewportWidths } from 'utils/styleUtils';
+import { colors, fontSizes, media, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
 
 // components
 import Button from 'components/UI/Button';
@@ -31,9 +31,7 @@ const BoxContainer = styled.div`
   position: relative;
   overflow: hidden;
   margin-bottom: 70px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   ${media.smallerThanMaxTablet`
     padding: 60px 50px 50px;
