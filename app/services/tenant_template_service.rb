@@ -503,6 +503,15 @@ class TenantTemplateService
           'publication_status'         => p.admin_publication.publication_status,
           'ordering'                   => p.admin_publication.ordering,
           'parent_ref'                 => lookup_ref(p.admin_publication.parent_id, :admin_publication_attributes)
+        },
+        'text_images_attributes'       => p.text_images.map{ |ti|
+          {
+            'imageable_field'          => ti.imageable_field,
+            'remote_image_url'         => ti.image_url,
+            'text_reference'           => ti.text_reference,
+            'created_at'               => ti.created_at.to_s,
+            'updated_at'               => ti.updated_at.to_s
+          }
         }
       })
       store_ref yml_project, p.id, :project
