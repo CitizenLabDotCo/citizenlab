@@ -375,7 +375,6 @@ class InitiativeForm extends React.Component<Props & InjectedIntlProps, State> {
             >
               <LocationInput
                 className="e2e-initiative-location-input"
-                inCitizen
                 value={position || ''}
                 onChange={onChangePosition}
                 onBlur={this.onBlur('position')}
