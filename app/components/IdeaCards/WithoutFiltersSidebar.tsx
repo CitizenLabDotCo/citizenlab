@@ -27,7 +27,7 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
 import { rgba } from 'polished';
 
 // typings
@@ -48,9 +48,7 @@ const Loading = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 const FiltersArea = styled.div`
@@ -171,9 +169,7 @@ const EmptyContainer = styled.div`
   margin: 0;
   padding-top: 100px;
   padding-bottom: 100px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 const IdeaIcon = styled(Icon)`
@@ -337,8 +333,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           <LeftFilterArea className={`${showMapView && 'hidden'}`}>
             <StyledSearchInput
               className="e2e-search-ideas-input"
-              placeholder={this.searchPlaceholder}
-              ariaLabel={this.searchAriaLabel}
               onChange={this.handleSearchOnChange}
             />
           </LeftFilterArea>

@@ -55,8 +55,8 @@ export const ModalContent = styled.div<{ padding?: string | undefined }>`
 `;
 
 const CloseButton = styled.button`
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   position: absolute;
   top: 20px;
   right: 25px;
@@ -74,7 +74,7 @@ const CloseButton = styled.button`
   outline: none !important;
 
   &:hover {
-    background: #ececec;
+    background: #e0e0e0;
   }
 
   &.focus-visible {

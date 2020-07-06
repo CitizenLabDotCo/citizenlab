@@ -11,8 +11,8 @@ import { colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
 const Container = styled.div`
   width: 100%;
   height: 50px;
-  background-color: rgba(132, 147, 158, 0.06);
   color: ${colors.label};
+  background: rgba(132, 147, 158, 0.06);
   border-bottom: 1px solid ${colors.adminSeparation};
 `;
 
