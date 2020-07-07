@@ -21,7 +21,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import useProjectFolderImages from 'hooks/useProjectFolderImages';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
@@ -83,12 +83,7 @@ const Container = styled(Link)`
   }
 
   &.desktop {
-    transition: all 150ms ease-out;
-
-    &:hover {
-      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);
-      transform: translate(0px, -2px);
-    }
+    ${defaultCardHoverStyle};
   }
 
   ${media.smallerThanMinTablet`

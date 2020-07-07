@@ -7,7 +7,7 @@ import LazyImage from 'components/LazyImage';
 
 // styling
 import styled from 'styled-components';
-import { fontSizes, defaultCardStyle } from 'utils/styleUtils';
+import { fontSizes, defaultCardStyle, defaultCardHoverStyle } from 'utils/styleUtils';
 
 const Container = styled(Link)`
   width: 100%;
@@ -20,12 +20,7 @@ const Container = styled(Link)`
   ${defaultCardStyle};
 
   &.desktop {
-    transition: all 150ms ease-out;
-
-    &:hover {
-      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);
-      transform: translate(0px, -2px);
-    }
+    ${defaultCardHoverStyle};
   }
 `;
 
