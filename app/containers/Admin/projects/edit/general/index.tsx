@@ -205,9 +205,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     this.state = {
       processing: false,
       project: undefined,
-      publicationStatus: 'published',
+      publicationStatus: 'draft',
       projectType: 'timeline',
-      projectAttributesDiff: {},
+      projectAttributesDiff: {
+        admin_publication_attributes: {
+          publication_status: 'draft'
+        }
+      },
       projectHeaderImage: null,
       presentationMode: 'card',
       projectImages: [],
@@ -269,7 +273,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               areasOptions,
               presentationMode: (project && project.data.attributes.presentation_mode || state.presentationMode),
               areas: areas.data,
-              projectAttributesDiff: {},
+              projectAttributesDiff: {
+                admin_publication_attributes : {
+                  publication_status : publicationStatus
+                }
+              },
             };
           });
         }
