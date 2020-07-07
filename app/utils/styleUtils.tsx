@@ -104,7 +104,7 @@ export const media = {
 };
 
 export const colors = {
-  background: '#f5f5f6',
+  background: '#F4F4F5',
   text: '#333',
   secondaryText: '#84939E',
   label: '#596B7A',
@@ -201,7 +201,8 @@ export const colors = {
 };
 
 export const defaultStyles = {
-  boxShadow: '0px 2px 2px -1px rgba(152, 162, 179, 0.25), 0px 1px 5px -2px rgba(152, 162, 179, 0.4)'
+  boxShadow: '0px 1.5px 2px 0px rgba(0, 0, 0, 0.08)',
+  boxShadowHover: '0px 7.4px 15.4px 0px rgba(0, 0, 0, 0.102), 0px 2.2px 4.6px 0px rgba(0, 0, 0, 0.078)'
 };
 
 export const fontSizes = {
@@ -221,6 +222,15 @@ export const defaultCardStyle = css`
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
   box-shadow: ${defaultStyles.boxShadow};
+`;
+
+export const defaultCardHoverStyle = css`
+  transition: all 150ms ease-out;
+
+  &:hover {
+    box-shadow: ${defaultStyles.boxShadowHover};
+    transform: translate(0px, -2px);
+  }
 `;
 
 export const boxShadowOutline = css`
