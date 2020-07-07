@@ -200,11 +200,6 @@ export const colors = {
   clBlueButtonText: '#1391A1'
 };
 
-export const defaultStyles = {
-  boxShadow: '0px 1.5px 2px 0px rgba(0, 0, 0, 0.08)',
-  boxShadowHover: '0px 7.4px 15.4px 0px rgba(0, 0, 0, 0.102), 0px 2.2px 4.6px 0px rgba(0, 0, 0, 0.078)'
-};
-
 export const fontSizes = {
   xs: 12,
   small: 14,
@@ -216,6 +211,11 @@ export const fontSizes = {
   xxxl: 30,
   xxxxl: 34,
   xxxxxl: 42
+};
+
+export const defaultStyles = {
+  boxShadow: '0px 1.5px 2px 0px rgba(0, 0, 0, 0.08)',
+  boxShadowHover: '0px 7.4px 15.4px 0px rgba(0, 0, 0, 0.102), 0px 2.2px 4.6px 0px rgba(0, 0, 0, 0.078)'
 };
 
 export const defaultCardStyle = css`
@@ -243,12 +243,14 @@ export const boxShadowOutlineImportant = css`
   box-shadow: 0px 0px 0px 1px #596b7a !important;
 `;
 
+export const defaultInputPadding = '12px';
+
 export const defaultInputStyle = css`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
-  padding: 12px;
+  padding: ${defaultInputPadding};
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.border};
   box-shadow: 0px 0px 0px 1px transparent;
