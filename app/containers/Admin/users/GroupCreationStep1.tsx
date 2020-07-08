@@ -29,6 +29,7 @@ const GroupType = styled.div`
   padding-right: 20px;
   padding-top: 50px;
   padding-bottom: 50px;
+  position: relative;
 
   &.manual {
     background: ${colors.lightGreyishBlue};
@@ -79,6 +80,37 @@ const MoreInfoLink = styled.a`
 
 const Step2Button = styled(Button)``;
 
+const BlackedOut = styled.div`
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  text-align: center;
+`;
+
+const Copy = styled.p`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LockIcon = styled(Icon)`
+  width: 30px;
+  height: 30px;
+  margin-bottom: 30px;
+`;
+
+const LearnMoreLink = styled.a`
+  color: white;
+  text-decoration: underline;
+`;
+
 // Typings
 import { IGroupData } from 'services/groups';
 
@@ -126,6 +158,13 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
           <Step2Button className="e2e-create-rules-group-button" buttonStyle="cl-blue" onClick={this.createStep2Handler('rules')}>
             <FormattedMessage {...messages.step1CreateButtonSmart} />
           </Step2Button>
+          <BlackedOut>
+            <LockIcon name="lock" />
+            <Copy>
+              Smart groups are available on the Standard and Premium plans.
+            </Copy>
+            <LearnMoreLink>Learn more about our plans</LearnMoreLink>
+          </BlackedOut>
         </GroupType>
       </Container>
     );
