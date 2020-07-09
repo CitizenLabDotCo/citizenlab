@@ -1,5 +1,15 @@
 # Changelog
 
+## 2020-07-09 - Workshops
+
+## Fixed
+- Speps are scrollable
+
+## Added
+- Ability to export the inputs as an exel sheet
+- Polish translations
+- Portugese (pt-BR) translations
+
 ## 2020-06-26
 
 ## Fixed
