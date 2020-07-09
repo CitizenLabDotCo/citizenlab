@@ -38,8 +38,8 @@ de:
     economy_description: Arbeit, Wirtschaft und Handel
     housing: Wohnen
     housing_description: Wohnen
-    public_space: Straßen und Plätze
-    public_space_description: Straßen und Plätze
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
     safety: Safety
     safety_description: Safety
     education: Bildung und Jugend
@@ -48,12 +48,12 @@ de:
     culture_description: Kunst, Kultur und Veranstaltungen
     health: Fürsorge und Wohlfahrt
     health_description: Fürsorge und Wohlfahrt
-    inclusion: Soziale Inklusion
-    inclusion_description: Soziale Inklusion
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
     community: Community development
     community_description: Community development
-    services: City services
-    services_description: City services
+    services: Public services
+    services_description: Public services
     other: Other
     other_description: Other
   pages:
