@@ -109,6 +109,12 @@ const LockIcon = styled(Icon)`
 const LearnMoreLink = styled.a`
   color: white;
   text-decoration: underline;
+
+  &:hover {
+    color: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
 
 // Typings
@@ -140,7 +146,7 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
           </GroupName>
           <GroupDescription>
             <DescriptionText><FormattedMessage {...messages.step1TypeDescriptionNormal} /></DescriptionText>
-            <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
+            <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1LearnMoreGroups} /></MoreInfoLink>
           </GroupDescription>
           <Step2Button className="e2e-create-normal-group-button" buttonStyle="cl-blue" onClick={this.createStep2Handler('manual')}>
             <FormattedMessage {...messages.step1CreateButtonNormal} />
@@ -153,18 +159,18 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
           </GroupName>
           <GroupDescription>
           <DescriptionText><FormattedMessage {...messages.step1TypeDescriptionSmart} /></DescriptionText>
-            <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1ReadMore} /></MoreInfoLink>
+            <MoreInfoLink href={formattedLink} target="_blank" ><FormattedMessage {...messages.step1LearnMoreGroups} /></MoreInfoLink>
           </GroupDescription>
           <Step2Button className="e2e-create-rules-group-button" buttonStyle="cl-blue" onClick={this.createStep2Handler('rules')}>
             <FormattedMessage {...messages.step1CreateButtonSmart} />
           </Step2Button>
-          <BlackedOut>
+          {/* <BlackedOut>
             <LockIcon name="lock" />
             <Copy>
-              Smart groups are available on the Standard and Premium plans.
+              <FormattedMessage {...messages.smartGroupsAvailability}/>
             </Copy>
-            <LearnMoreLink>Learn more about our plans</LearnMoreLink>
-          </BlackedOut>
+            <LearnMoreLink href="https://www.citizenlab.co/plans" target="_blank">Learn more about our plans</LearnMoreLink>
+          </BlackedOut> */}
         </GroupType>
       </Container>
     );

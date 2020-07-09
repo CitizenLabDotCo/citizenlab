@@ -113,9 +113,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.GroupCreation.step1CreateButtonSmart',
     defaultMessage: 'Create a smart group',
   },
-  step1ReadMore: {
-    id: 'app.containers.AdminPage.Users.GroupCreation.step1ReadMore',
-    defaultMessage: 'Read More about it',
+  step1LearnMoreGroups: {
+    id: 'app.containers.AdminPage.Users.GroupCreation.step1LearnMoreGroups',
+    defaultMessage: 'Learn more about groups',
   },
   readMoreLink: {
     id: 'app.containers.AdminPage.Users.GroupCreation.readMoreLink',
@@ -193,4 +193,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Users.UsersGroup.verificationDisabled',
     defaultMessage: 'Verification is disabled for your platform, remove the verification rule or contact support.',
   },
+  smartGroupsAvailability: {
+    id: 'app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability',
+    defaultMessage: 'Smart groups are available on the Standard and Premium plans.',
+  }
 });
