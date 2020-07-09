@@ -24,34 +24,38 @@ pt:
     ineligible: inelegível
     ineligible_description: inelegível
   topics:
-    infrastructure: Praças e ruas
-    infrastructure_description: Praças e ruas
+    nature: Natureza e biodiversidade
+    nature_description: Natureza e biodiversidade
     waste: Limpeza e desperdício
     waste_description: Limpeza e desperdício
+    sustainability: Desenvolvimento sustentável
+    sustainability_description: Desenvolvimento sustentável
     mobility: Mobilidade
     mobility_description: Mobilidade
     technology: Tecnologia
     technology_description: Tecnologia
     economy: Trabalho, economia e comércio
     economy_description: Trabalho, economia e comércio
-    nature: Natureza e biodiversidade
-    nature_description: Natureza e biodiversidade
-    sustainability: Desenvolvimento sustentável
-    sustainability_description: Desenvolvimento sustentável
     housing: Moradia
     housing_description: Moradia
-    culture: Artes, cultura e eventos
-    culture_description: Artes, cultura e eventos
-    citizenship: Cidadania
-    citizenship_description: Cidadania
-    social: Inclusão social
-    social_description: Inclusão social
-    health: Cuidados e bem-estar
-    health_description: Cuidados e bem-estar
-    sport: Esportes
-    sport_description: Esportes
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
+    safety: Safety
+    safety_description: Safety
     education: Educação e juventude
     education_description: Educação e juventude
+    culture: Artes, cultura e eventos
+    culture_description: Artes, cultura e eventos
+    health: Cuidados e bem-estar
+    health_description: Cuidados e bem-estar
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: Public services
+    services_description: Public services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Termos
     terms_and_conditions_body: >
