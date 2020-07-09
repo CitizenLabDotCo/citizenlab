@@ -70,9 +70,8 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
-    joins(:areas_projects)
-      .where(areas_projects: {area_id: area_ids})
-      .distinct
+    with_dups = joins(:areas_projects).where(areas_projects: {area_id: area_ids})
+    where(id: with_dups)
   end)
 
   scope :without_areas, -> {
