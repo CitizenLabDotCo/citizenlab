@@ -1274,7 +1274,7 @@
   "app.containers.AdminPage.Topics.delete": "Supprimer",
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Supprimer",
   "app.containers.AdminPage.Topics.fewerThanOneTopicWarning": "Au moins un thème de projet est requis. Si vous ne souhaitez pas permettre aux utilisateurs d'ajouter des thèmes à leurs idées, vous pouvez désactiver les thèmes dans l'onglet {ideaFormLink} .",
-  "app.containers.AdminPage.Topics.ideaForm": "Idea form",
+  "app.containers.AdminPage.Topics.ideaForm": "Formulaire d'idée",
   "app.containers.AdminPage.Topics.pageDescription": "Vous pouvez ici ajouter et supprimer les thèmes disponibles pour les phases d'idéation. Les thèmes sont sélectionnés par les utilisateurs pour catégoriser leurs idées.",
   "app.containers.AdminPage.Topics.remove": "Supprimer",
   "app.containers.AdminPage.Topics.titleDescription": "Thèmes",
