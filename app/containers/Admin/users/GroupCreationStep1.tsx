@@ -162,15 +162,17 @@ const GroupCreationStep1 = memo(({ intl, onOpenStep2 }: Props & InjectedIntlProp
         <Step2Button disabled={!smartGroupsEnabled} className="e2e-create-rules-group-button" buttonStyle="cl-blue" onClick={createStep2Handler('rules')}>
           <FormattedMessage {...messages.step1CreateButtonSmart} />
         </Step2Button>
-        <BlackedOut>
-          <LockIcon name="lock" />
-          <Copy>
-            <FormattedMessage {...messages.smartGroupsAvailability}/>
-          </Copy>
-          <LearnMoreLink href="https://www.citizenlab.co/plans" target="_blank">
-            <FormattedMessage {...messages.learnMorePlans} />
-          </LearnMoreLink>
-        </BlackedOut>
+        {!smartGroupsEnabled &&
+          <BlackedOut>
+            <LockIcon name="lock" />
+            <Copy>
+              <FormattedMessage {...messages.smartGroupsAvailability}/>
+            </Copy>
+            <LearnMoreLink href="https://www.citizenlab.co/plans" target="_blank">
+              <FormattedMessage {...messages.learnMorePlans} />
+            </LearnMoreLink>
+          </BlackedOut>
+        }
       </GroupType>
     </Container>
   );
