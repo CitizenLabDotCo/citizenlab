@@ -810,7 +810,7 @@ if Apartment::Tenant.current == 'localhost'
     ])
 
     Permission.all.shuffle.take(rand(10)+1).each do |permission|
-      permitted_by = ['groups', 'admins_moderators'].shuffle.first
+      permitted_by = ['everyone', 'groups', 'admins_moderators'].shuffle.first
       permission.permitted_by = permitted_by
       if permitted_by == 'groups'
         permission.groups = Group.all.shuffle.take(rand(5))
