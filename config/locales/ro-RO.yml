@@ -24,36 +24,36 @@ ro:
     ineligible: neeligibil
     ineligible_description: neeligibil
   topics:
-    nature: Nature and animals
-    nature_description: Nature and animals
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public space
-    public_space_description: Public space
+    nature: Natură și biodiversitate
+    nature_description: Natură și biodiversitate
+    waste: Curățenia și deșeurile
+    waste_description: Curățenia și deșeurile
+    sustainability: Dezvoltare durabilă
+    sustainability_description: Dezvoltare durabilă
+    mobility: Mobilitate
+    mobility_description: Mobilitate
+    technology: Tehnologie
+    technology_description: Tehnologie
+    economy: Muncă, economie și comerț
+    economy_description: Muncă, economie și comerț
+    housing: Locuințe
+    housing_description: Locuințe
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
     safety: Safety
     safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
+    education: Educație și tineret
+    education_description: Educație și tineret
+    culture: Artă, cultură și evenimente
+    culture_description: Artă, cultură și evenimente
+    health: Îngrijire și bunăstare
+    health_description: Îngrijire și bunăstare
     inclusion: Social inclusion
     inclusion_description: Social inclusion
     community: Community development
     community_description: Community development
-    services: City services
-    services_description: City services
+    services: Public services
+    services_description: Public services
     other: Other
     other_description: Other
   pages:

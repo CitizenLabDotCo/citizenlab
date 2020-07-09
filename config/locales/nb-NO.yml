@@ -24,36 +24,36 @@ nb:
     ineligible: ikke kvalifisert
     ineligible_description: ikke kvalifisert
   topics:
-    nature: Nature and animals
-    nature_description: Nature and animals
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public space
-    public_space_description: Public space
+    nature: Natur og biologisk mangfold
+    nature_description: Natur og biologisk mangfold
+    waste: Renhold og avfall
+    waste_description: Renhold og avfall
+    sustainability: Bærekraftig utvikling
+    sustainability_description: Bærekraftig utvikling
+    mobility: Mobilitet
+    mobility_description: Mobilitet
+    technology: Teknologi
+    technology_description: Teknologi
+    economy: Arbeid, økonomi og handel
+    economy_description: Arbeid, økonomi og handel
+    housing: Boliger
+    housing_description: Boliger
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
     safety: Safety
     safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
+    education: Utdanning og ungdom
+    education_description: Utdanning og ungdom
+    culture: Kunst, kultur og arrangementer
+    culture_description: Kunst, kultur og arrangementer
+    health: Omsorg og velferd
+    health_description: Omsorg og velferd
     inclusion: Social inclusion
     inclusion_description: Social inclusion
     community: Community development
     community_description: Community development
-    services: City services
-    services_description: City services
+    services: Public services
+    services_description: Public services
     other: Other
     other_description: Other
   pages:

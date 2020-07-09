@@ -38,8 +38,8 @@ kl:
     economy_description: Sulineq, aningaasaqarneq niuernerlu
     housing: Inissiat
     housing_description: Inissiat
-    public_space: Kipparissut aqquserngillu
-    public_space_description: Kipparissut aqquserngillu
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
     safety: Safety
     safety_description: Safety
     education: Ilinniartitaaneq inuusuttullu
@@ -48,12 +48,12 @@ kl:
     culture_description: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
     health: Paaqqutarineqarneq atugarissaarnerlu
     health_description: Paaqqutarineqarneq atugarissaarnerlu
-    inclusion: Inunnut akulerunneq
-    inclusion_description: Inunnut akulerunneq
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
     community: Community development
     community_description: Community development
-    services: City services
-    services_description: City services
+    services: Public services
+    services_description: Public services
     other: Other
     other_description: Other
   pages:
