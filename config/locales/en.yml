@@ -24,18 +24,18 @@ en:
     ineligible: ineligible
     ineligible_description: ineligible
   topics:
-    nature: Nature and animals
-    nature_description: Nature and animals
+    nature: Nature and biodiversity
+    nature_description: Nature and biodiversity
     waste: Cleanliness and waste
     waste_description: Cleanliness and waste
     sustainability: Sustainable development
     sustainability_description: Sustainable development
     mobility: Mobility
     mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
+    technology: Technology
+    technology_description: Technology
+    economy: Work, economy and commerce
+    economy_description: Work, economy and commerce
     housing: Housing
     housing_description: Housing
     public_space: Public spaces and buildings
@@ -44,10 +44,10 @@ en:
     safety_description: Safety
     education: Education and youth
     education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
+    culture: Arts, culture and events
+    culture_description: Arts, culture and events
+    health: Care and welfare
+    health_description: Care and welfare
     inclusion: Social inclusion
     inclusion_description: Social inclusion
     community: Community development
