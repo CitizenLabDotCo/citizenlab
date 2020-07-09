@@ -1915,6 +1915,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "crwdns18023:0crwdne18023:0",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "crwdns18024:0crwdne18024:0",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "crwdns18025:0crwdne18025:0",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "crwdns54014:0crwdne54014:0",
   "app.containers.admin.project.permissions.viewingRightsTitle": "crwdns53562:0crwdne53562:0",
   "app.containers.app.navbar.admin": "crwdns16032:0crwdne16032:0",
   "app.containers.app.navbar.allProjects": "crwdns18432:0crwdne18432:0",
