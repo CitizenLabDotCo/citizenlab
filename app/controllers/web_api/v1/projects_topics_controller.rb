@@ -1,7 +1,24 @@
 class WebApi::V1::ProjectsTopicsController < ApplicationController
+  before_action :set_projects_topic, only: [:show, :reorder, :destroy]
+  
+  def index
+    @projects_topics = policy_scope(ProjectsTopic)
+    @projects_topics = @projects_topics.where(project_id: params[:project_id]) if params[:project_id].present?
 
-   def create
-    @projects_topic = ProjectsTopic.new(project_id: params[:project_id], topic_id: params[:topic_id])
+    @projects_topics = @projects_topics
+      .order(:ordering)
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: linked_json(@projects_topics, WebApi::V1::ProjectsTopicSerializer, params: fastjson_params)
+  end
+
+  def show
+    render json: WebApi::V1::ProjectsTopicSerializer.new(@projects_topic, params: fastjson_params).serialized_json
+  end
+
+  def create
+    @projects_topic = ProjectsTopic.new(permitted_attributes(ProjectsTopic))
     authorize @projects_topic
 
     SideFxProjectsTopicService.new.before_create @projects_topic, current_user
@@ -13,10 +30,18 @@ class WebApi::V1::ProjectsTopicsController < ApplicationController
     end
   end
 
-  def destroy
-    @projects_topic = ProjectsTopic.find_by!(project_id: params[:project_id], topic_id: params[:topic_id])
-    authorize @projects_topic
+  def reorder
+    SideFxProjectsTopicService.new.before_update(@projects_topic, current_user)
+    ordering = permitted_attributes(@projects_topic)[:ordering]
+    if ordering && @projects_topic.insert_at(ordering)
+      SideFxProjectsTopicService.new.after_update(@projects_topic, current_user)
+      render json: WebApi::V1::ProjectsTopicSerializer.new(@projects_topic.reload, params: fastjson_params).serialized_json, status: :ok
+    else
+      render json: { errors: @projects_topic.errors.details }, status: :unprocessable_entity
+    end
+  end
 
+  def destroy
     SideFxProjectsTopicService.new.before_destroy @projects_topic, current_user
     projects_topic = @projects_topic.destroy
     if projects_topic.destroyed?
@@ -27,9 +52,14 @@ class WebApi::V1::ProjectsTopicsController < ApplicationController
     end
   end
 
-   private
+  private
 
-   def secure_controller?
-     false
-   end
+  def set_projects_topic
+    @projects_topic = ProjectsTopic.find(params[:id])
+    authorize @projects_topic
+  end
+
+  def secure_controller?
+    false
+  end
 end
