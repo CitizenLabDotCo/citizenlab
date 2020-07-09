@@ -29,7 +29,7 @@ class TopicPolicy < ApplicationPolicy
   end
 
   def destroy?
-    update?
+    record.custom? && update?
   end
 
   def permitted_attributes_for_create
@@ -40,7 +40,11 @@ class TopicPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_update
-    permitted_attributes_for_create
+    attributes = [
+      description_multiloc: CL2_SUPPORTED_LOCALES
+    ]
+    attributes += [title_multiloc: CL2_SUPPORTED_LOCALES] if record.custom?
+    attributes
   end
 
   def permitted_attributes_for_reorder

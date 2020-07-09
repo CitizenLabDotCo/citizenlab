@@ -24,34 +24,38 @@ en-CA:
     ineligible: ineligible
     ineligible_description: ineligible
   topics:
-    infrastructure: Squares and streets
-    infrastructure_description: Squares and streets
+    nature: Nature and animals
+    nature_description: Nature and animals
     waste: Cleanliness and waste
     waste_description: Cleanliness and waste
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Technology
-    technology_description: Technology
-    economy: Work, economy and commerce
-    economy_description: Work, economy and commerce
-    nature: Nature and biodiversity
-    nature_description: Nature and biodiversity
     sustainability: Sustainable development
     sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
     housing: Housing
     housing_description: Housing
-    culture: Arts, culture and events
-    culture_description: Arts, culture and events
-    citizenship: Citizenship
-    citizenship_description: Citizenship
-    social: Social inclusion
-    social_description: Social inclusion
-    health: Care and welfare
-    health_description: Care and welfare
-    sport: Sports
-    sport_description: Sports
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
+    safety: Safety
+    safety_description: Safety
     education: Education and youth
     education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: Public services
+    services_description: Public services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Terms & conditions
     terms_and_conditions_body: >

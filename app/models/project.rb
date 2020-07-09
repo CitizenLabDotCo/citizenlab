@@ -131,6 +131,11 @@ class Project < ApplicationRecord
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
   end
 
+  def set_default_topics!
+    self.topics = Topic.defaults.order(:ordering).reverse
+    self.save!
+  end
+
 
   private
 

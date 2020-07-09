@@ -39,7 +39,6 @@ class Idea < ApplicationRecord
     idea.before_validation :set_idea_status
     idea.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
-
   after_update :fix_comments_count_on_projects
 
   scope :with_all_topics, (Proc.new do |topic_ids|

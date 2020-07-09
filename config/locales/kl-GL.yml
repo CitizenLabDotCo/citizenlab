@@ -24,34 +24,38 @@ kl:
     ineligible: naleqqutinngilaq
     ineligible_description: naleqqutinngilaq
   topics:
-    infrastructure: Kipparissut aqquserngillu
-    infrastructure_description: Kipparissut aqquserngillu
+    nature: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
+    nature_description: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
     waste: Saligaatsuuneq eqqagassallu
     waste_description: Saligaatsuuneq eqqagassallu
+    sustainability: Piujuartitsilluni ineriartorneq
+    sustainability_description: Piujuartitsilluni ineriartorneq
     mobility: Nikerarsinnaaneq
     mobility_description: Nikerarsinnaaneq
     technology: Teknologi
     technology_description: Teknologi
     economy: Sulineq, aningaasaqarneq niuernerlu
     economy_description: Sulineq, aningaasaqarneq niuernerlu
-    nature: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
-    nature_description: Pinngortitaq aamma uumassusillit assigiinngissitaarnerat
-    sustainability: Piujuartitsilluni ineriartorneq
-    sustainability_description: Piujuartitsilluni ineriartorneq
     housing: Inissiat
     housing_description: Inissiat
-    culture: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
-    culture_description: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
-    citizenship: Inuttaaqataaneq
-    citizenship_description: Inuttaaqataaneq
-    social: Inunnut akulerunneq
-    social_description: Inunnut akulerunneq
-    health: Paaqqutarineqarneq atugarissaarnerlu
-    health_description: Paaqqutarineqarneq atugarissaarnerlu
-    sport: Timersorneq
-    sport_description: Timersorneq
+    public_space: Kipparissut aqquserngillu
+    public_space_description: Kipparissut aqquserngillu
+    safety: Safety
+    safety_description: Safety
     education: Ilinniartitaaneq inuusuttullu
     education_description: Ilinniartitaaneq inuusuttullu
+    culture: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
+    culture_description: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
+    health: Paaqqutarineqarneq atugarissaarnerlu
+    health_description: Paaqqutarineqarneq atugarissaarnerlu
+    inclusion: Inunnut akulerunneq
+    inclusion_description: Inunnut akulerunneq
+    community: Community development
+    community_description: Community development
+    services: City services
+    services_description: City services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Vilkår og Betingelser
     terms_and_conditions_body: >
