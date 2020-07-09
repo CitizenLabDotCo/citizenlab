@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent } from 'react';
+import React, { PureComponent, memo } from 'react';
 import { Multiloc } from 'typings';
 
 // Components
@@ -90,6 +90,9 @@ const StyledSearchInput = styled(SearchInput)`
   margin-top: -10px;
 `;
 
+const EditGroupButton = styled(Button)``;
+const DeleteGroupButton = styled(Button)``;
+
 interface Props {
   title?: Multiloc;
   smartGroup?: boolean;
@@ -97,49 +100,86 @@ interface Props {
   onDelete?: () => void;
   onSearch: (newValue: string) => void;
 }
-interface State {}
 
 interface Tracks {
   trackSearchInput: Function;
 }
 
-class UsersHeader extends PureComponent<Props & Tracks, State> {
-  handleSearchChange = (newValue: string) => {
-    this.props.onSearch(newValue);
-  }
-
-  render() {
-    if (this.props.title) {
-      return (
-        <OnlyRow>
-          {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
-          <TextAndButtons>
-            <T as="h1" value={this.props.title} />
-            <Buttons>
-              <Button iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" buttonStyle="secondary" onClick={this.props.onEdit} />
-              <Button iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" buttonStyle="text" onClick={this.props.onDelete} />
-            </Buttons>
-          </TextAndButtons>
-          <Spacer />
-          <StyledSearchInput onChange={this.handleSearchChange} />
-        </OnlyRow>
-      );
-    }
-
+const UsersHeader = memo(({
+  title,
+  smartGroup,
+  onEdit,
+  onDelete,
+  onSearch
+}: Props & Tracks) => {
+  if (title) {
     return (
-      <TitleWrapper>
-        <FirstRow>
-          <TextAndButtons>
-            <FormattedMessage tagName="h1" {...messages.allUsers} />
-          </TextAndButtons>
-          <Spacer />
-          <StyledSearchInput onChange={this.handleSearchChange} />
-        </FirstRow>
-        <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
-      </TitleWrapper>
+      <OnlyRow>
+        {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
+        <TextAndButtons>
+          <T as="h1" value={this.props.title} />
+          <Buttons>
+            <EditGroupButton iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" buttonStyle="secondary" onClick={this.props.onEdit} />
+            <DeleteGroupButton iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" buttonStyle="text" onClick={this.props.onDelete} />
+          </Buttons>
+        </TextAndButtons>
+        <Spacer />
+        <StyledSearchInput onChange={handleSearchChange} />
+      </OnlyRow>
     );
   }
-}
+
+  return (
+    <TitleWrapper>
+      <FirstRow>
+        <TextAndButtons>
+          <FormattedMessage tagName="h1" {...messages.allUsers} />
+        </TextAndButtons>
+        <Spacer />
+        <StyledSearchInput onChange={handleSearchChange} />
+      </FirstRow>
+      <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
+    </TitleWrapper>
+  );
+});
+
+// class UsersHeader extends PureComponent<Props & Tracks, State> {
+//   handleSearchChange = (newValue: string) => {
+//     this.props.onSearch(newValue);
+//   }
+
+//   render() {
+//     if (this.props.title) {
+//       return (
+//         <OnlyRow>
+//           {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
+//           <TextAndButtons>
+//             <T as="h1" value={this.props.title} />
+//             <Buttons>
+//               <EditGroupButton iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" buttonStyle="secondary" onClick={this.props.onEdit} />
+//               <DeleteGroupButton iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" buttonStyle="text" onClick={this.props.onDelete} />
+//             </Buttons>
+//           </TextAndButtons>
+//           <Spacer />
+//           <StyledSearchInput onChange={this.handleSearchChange} />
+//         </OnlyRow>
+//       );
+//     }
+
+//     return (
+//       <TitleWrapper>
+//         <FirstRow>
+//           <TextAndButtons>
+//             <FormattedMessage tagName="h1" {...messages.allUsers} />
+//           </TextAndButtons>
+//           <Spacer />
+//           <StyledSearchInput onChange={this.handleSearchChange} />
+//         </FirstRow>
+//         <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
+//       </TitleWrapper>
+//     );
+//   }
+// }
 
 export default injectTracks<Props>({
   trackSearchInput: tracks.searchInput,
