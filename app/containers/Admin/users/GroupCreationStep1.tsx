@@ -164,13 +164,15 @@ export class GroupCreationStep1 extends React.PureComponent<Props & InjectedIntl
           <Step2Button className="e2e-create-rules-group-button" buttonStyle="cl-blue" onClick={this.createStep2Handler('rules')}>
             <FormattedMessage {...messages.step1CreateButtonSmart} />
           </Step2Button>
-          {/* <BlackedOut>
+          <BlackedOut>
             <LockIcon name="lock" />
             <Copy>
               <FormattedMessage {...messages.smartGroupsAvailability}/>
             </Copy>
-            <LearnMoreLink href="https://www.citizenlab.co/plans" target="_blank">Learn more about our plans</LearnMoreLink>
-          </BlackedOut> */}
+            <LearnMoreLink href="https://www.citizenlab.co/plans" target="_blank">
+              <FormattedMessage {...messages.learnMorePlans} />
+            </LearnMoreLink>
+          </BlackedOut>
         </GroupType>
       </Container>
     );
