@@ -43,7 +43,6 @@ export default class ActionsForm extends PureComponent<Props> {
           <ActionForm
             permissionId={permission.id}
             permittedBy={permission.attributes.permitted_by}
-            action={permission.attributes.action}
             groupIds={permission.relationships.groups.data.map((p) => p.id)}
             onChange={this.handlePermissionChange(permission)}
           />

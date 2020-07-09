@@ -22,8 +22,7 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 
 interface InputProps {
   permissionId: string;
-  action: string;
-  permittedBy: 'everyone' | 'groups' | 'admins_moderators' | 'users';
+  permittedBy: 'everyone' | 'groups' | 'admins_moderators';
   groupIds?: string[];
   onChange: (permittedBy: Props['permittedBy'], groupIds: Props['groupIds']) => void;
 }
@@ -32,7 +31,7 @@ interface DataProps {
   groups: GetGroupsChildProps;
 }
 
-export interface Props extends InputProps, DataProps, InjectedLocalized { }
+export interface Props extends InputProps, DataProps, InjectedLocalized {}
 
 class ActionForm extends PureComponent<Props> {
 
@@ -53,34 +52,25 @@ class ActionForm extends PureComponent<Props> {
     onChange(value, groupIds);
   }
 
-  handleGroupIdsUpdate = (options: { value: string }[]) => {
+  handleGroupIdsUpdate = (options: {value: string}[]) => {
     const { permittedBy, onChange } = this.props;
     onChange(permittedBy, options.map(o => o.value));
   }
 
   render() {
-    const { permissionId, permittedBy, groupIds, action } = this.props;
+    const { permissionId, permittedBy, groupIds } = this.props;
     const groupsOptions = this.groupsOptions();
-
     return (
       <form>
         <StyledFieldset>
           <Radio
-            name={`permittedBy-${permissionId}`}
-            value="users"
-            currentValue={permittedBy}
-            label={<FormattedMessage {...messages.permissionsUsersLabel} />}
-            onChange={this.handlePermittedByUpdate('users')}
-            id={`participation-permission-users-${permissionId}`}
-          />
-          {action === 'taking_survey' && <Radio
             name={`permittedBy-${permissionId}`}
             value="everyone"
             currentValue={permittedBy}
             label={<FormattedMessage {...messages.permissionsEveryoneLabel} />}
             onChange={this.handlePermittedByUpdate('everyone')}
             id={`participation-permission-everyone-${permissionId}`}
-          />}
+          />
           <Radio
             name={`permittedBy-${permissionId}`}
             value="admins_moderators"
