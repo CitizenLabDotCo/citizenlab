@@ -53,6 +53,7 @@ class Idea < ApplicationRecord
   scope :with_some_topics, (Proc.new do |topic_ids|
     joins(:ideas_topics)
       .where(ideas_topics: {topic_id: topic_ids})
+      .distinct
   end)
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -65,6 +66,7 @@ class Idea < ApplicationRecord
   scope :with_some_areas, (Proc.new do |area_ids|
     joins(:areas_ideas)
       .where(areas_ideas: {area_id: area_ids})
+      .distinct
   end)
 
   scope :in_phase, (Proc.new do |phase_id|
