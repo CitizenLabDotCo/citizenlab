@@ -24,34 +24,38 @@ de:
     ineligible: untauglich
     ineligible_description: untauglich
   topics:
-    infrastructure: Straßen und Plätze
-    infrastructure_description: Straßen und Plätze
+    nature: Natur und biologische Vielfalt
+    nature_description: Natur und biologische Vielfalt
     waste: Sauberkeit und Abfall
     waste_description: Sauberkeit und Abfall
+    sustainability: Nachhaltige Entwicklung
+    sustainability_description: Nachhaltige Entwicklung
     mobility: Mobilität
     mobility_description: Mobilität
     technology: Technologie
     technology_description: Technologie
     economy: Arbeit, Wirtschaft und Handel
     economy_description: Arbeit, Wirtschaft und Handel
-    nature: Natur und biologische Vielfalt
-    nature_description: Natur und biologische Vielfalt
-    sustainability: Nachhaltige Entwicklung
-    sustainability_description: Nachhaltige Entwicklung
     housing: Wohnen
     housing_description: Wohnen
-    culture: Kunst, Kultur und Veranstaltungen
-    culture_description: Kunst, Kultur und Veranstaltungen
-    citizenship: Bevölkerung
-    citizenship_description: Bevölkerung
-    social: Soziale Inklusion
-    social_description: Soziale Inklusion
-    health: Fürsorge und Wohlfahrt
-    health_description: Fürsorge und Wohlfahrt
-    sport: Sport
-    sport_description: Sport
+    public_space: Straßen und Plätze
+    public_space_description: Straßen und Plätze
+    safety: Safety
+    safety_description: Safety
     education: Bildung und Jugend
     education_description: Bildung und Jugend
+    culture: Kunst, Kultur und Veranstaltungen
+    culture_description: Kunst, Kultur und Veranstaltungen
+    health: Fürsorge und Wohlfahrt
+    health_description: Fürsorge und Wohlfahrt
+    inclusion: Soziale Inklusion
+    inclusion_description: Soziale Inklusion
+    community: Community development
+    community_description: Community development
+    services: City services
+    services_description: City services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Verwendungsbedingungen
     terms_and_conditions_body: >

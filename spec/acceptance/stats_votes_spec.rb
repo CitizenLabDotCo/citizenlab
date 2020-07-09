@@ -320,9 +320,10 @@ resource "Stats - Votes" do
       let!(:topic1) { create(:topic) }
       let!(:topic2) { create(:topic) }
       let!(:topic3) { create(:topic) }
-      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1])}
-      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2])}
-      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2])}
+      let!(:project1) { create(:project, topics: [topic1, topic2, topic3]) }
+      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1], project: project1)}
+      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1)}
+      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1)}
       let!(:idea4) { create(:idea, idea_status: @idea_status)}
       let!(:vote1) { create(:vote, votable: idea1) }
       let!(:vote2) { create(:vote, votable: idea1, mode: 'down') }
@@ -416,7 +417,8 @@ resource "Stats - Votes" do
     describe "filtered by topic" do
       before do
         @topic = create(:topic)
-        idea1 = create(:idea, idea_status: @idea_status, topics: [@topic])
+        project = create(:project, topics: [@topic])
+        idea1 = create(:idea, idea_status: @idea_status, topics: [@topic], project: project)
         idea2 = create(:idea_with_topics, idea_status: @idea_status)
         create(:vote, votable: idea1)
         create(:vote, votable: idea2)

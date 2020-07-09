@@ -24,34 +24,38 @@ ro:
     ineligible: neeligibil
     ineligible_description: neeligibil
   topics:
-    infrastructure: Piețe și străzi
-    infrastructure_description: Piețe și străzi
-    waste: Curățenia și deșeurile
-    waste_description: Curățenia și deșeurile
-    mobility: Mobilitate
-    mobility_description: Mobilitate
-    technology: Tehnologie
-    technology_description: Tehnologie
-    economy: Muncă, economie și comerț
-    economy_description: Muncă, economie și comerț
-    nature: Natură și biodiversitate
-    nature_description: Natură și biodiversitate
-    sustainability: Dezvoltare durabilă
-    sustainability_description: Dezvoltare durabilă
-    housing: Locuințe
-    housing_description: Locuințe
-    culture: Artă, cultură și evenimente
-    culture_description: Artă, cultură și evenimente
-    citizenship: Cetățenie
-    citizenship_description: Cetățenie
-    social: Incluziune socială
-    social_description: Incluziune socială
-    health: Îngrijire și bunăstare
-    health_description: Îngrijire și bunăstare
-    sport: Sporturi
-    sport_description: Sporturi
-    education: Educație și tineret
-    education_description: Educație și tineret
+    nature: Nature and animals
+    nature_description: Nature and animals
+    waste: Cleanliness and waste
+    waste_description: Cleanliness and waste
+    sustainability: Sustainable development
+    sustainability_description: Sustainable development
+    mobility: Mobility
+    mobility_description: Mobility
+    technology: Energy and technology
+    technology_description: Energy and technology
+    economy: Work, economy and tourism
+    economy_description: Work, economy and tourism
+    housing: Housing
+    housing_description: Housing
+    public_space: Public space
+    public_space_description: Public space
+    safety: Safety
+    safety_description: Safety
+    education: Education and youth
+    education_description: Education and youth
+    culture: Culture, sports and events
+    culture_description: Culture, sports and events
+    health: Health and welfare
+    health_description: Health and welfare
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
+    community: Community development
+    community_description: Community development
+    services: City services
+    services_description: City services
+    other: Other
+    other_description: Other
   pages:
     terms_and_conditions_title: Termeni și condiții
     terms_and_conditions_body: >

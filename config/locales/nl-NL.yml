@@ -24,34 +24,38 @@ nl:
     ineligible: niet in aanmerking
     ineligible_description: niet in aanmerking
   topics:
-    infrastructure: Straten en pleinen
-    infrastructure_description: Straten en pleinen
+    nature: Natuur en dieren
+    nature_description: Natuur en dieren
     waste: Netheid en afval
     waste_description: Netheid en afval
-    mobility: Mobiliteit
-    mobility_description: Mobiliteit
-    technology: Technologie
-    technology_description: Technologie
-    economy: Werk, economie en handel
-    economy_description: Werk, economie en handel
-    nature: Natuur en biodiversiteit
-    nature_description: Natuur en biodiversiteit
     sustainability: Duurzame ontwikkeling
     sustainability_description: Duurzame ontwikkeling
+    mobility: Mobiliteit
+    mobility_description: Mobiliteit
+    technology: Energie en technologie
+    technology_description: Energie en technologie
+    economy: Werk, economie en tourisme
+    economy_description: Werk, economie en tourisme
     housing: Wonen
     housing_description: Wonen
-    culture: Kunst, cultuur en evenementen
-    culture_description: Kunst, cultuur en evenementen
-    citizenship: Burgerschap
-    citizenship_description: Burgerschap
-    social: Sociale inclusie
-    social_description: Sociale inclusie
-    health: Zorg en welzijn
-    health_description: Zorg en welzijn
-    sport: Sport
-    sport_description: Sport
+    public_space: Publieke ruimtes en gebouwen
+    public_space_description: Publieke ruimtes en gebouwen
+    safety: Veiligheid
+    safety_description: Veiligheid
     education: Onderwijs en jeugd
     education_description: Onderwijs en jeugd
+    culture: Cultuur, sport en evenementen
+    culture_description: Cultuur, sport en evenementen
+    health: Zorg en welzijn
+    health_description: Zorg en welzijn
+    inclusion: Sociale inclusie
+    inclusion_description: Sociale inclusie
+    community: Gemeenschapsontwikkeling
+    community_description: Gemeenschapsontwikkeling
+    services: Publieke diensten
+    services_description: Publieke diensten
+    other: Andere
+    other_description: Andere
   pages:
     terms_and_conditions_title: Gebruiksvoorwaarden
     terms_and_conditions_body: >
