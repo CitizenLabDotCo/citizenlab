@@ -190,7 +190,7 @@
   "app.components.InitiativeForm.titleLengthError": "The proposal title must be at least 10 characters long",
   "app.components.InitiativeForm.topicEmptyError": "Please provide a topic",
   "app.components.InitiativeForm.topicsLabel": "Select the topic of your proposal",
-  "app.components.InitiativeForm.topicsLabelDescription": "Select the relevant topics for your proposal.",
+  "app.components.InitiativeForm.topicsLabelDescription": "Select the topics that are related to your proposal.",
   "app.components.InitiativesMap.noInitiativesWithLocation": "The proposals in this project don't have any location information.",
   "app.components.InitiativesMap.postInitiativeHere": "Post a proposal here",
   "app.components.InitiativesMap.seeInitiative": "See proposal",
