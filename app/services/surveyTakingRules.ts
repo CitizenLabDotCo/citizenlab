@@ -23,8 +23,6 @@ const disabledReason = (backendReason: SurveyDisabledReasons | null, signedIn: b
       return signedIn ? 'notVerified' : 'maybeNotPermitted';
     case 'not_permitted':
       return signedIn ? 'notPermitted' : 'maybeNotPermitted';
-    case 'not_signed_in':
-      return 'maybeNotPermitted';
     default:
       return null;
   }
@@ -54,7 +52,6 @@ export const getSurveyTakingRules = ({ project, phaseContext, signedIn }: Survey
     }
   } else { // if not in phase context
     const { enabled, disabled_reason } = project.attributes.action_descriptor.taking_survey;
-
     return {
       enabled,
       disabledReason: enabled ? undefined : disabledReason(disabled_reason, !!signedIn),
