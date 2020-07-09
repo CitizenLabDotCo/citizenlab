@@ -40,22 +40,22 @@ fr:
     housing_description: Logement
     public_space: Bâtiments et lieux publics
     public_space_description: Bâtiments et lieux publics
-    safety: Safety
-    safety_description: Safety
+    safety: Sécurité
+    safety_description: Sécurité
     education: Éducation et jeunesse
     education_description: Éducation et jeunesse
     culture: Art, culture et événements
     culture_description: Art, culture et événements
     health: Santé
     health_description: Santé
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
+    inclusion: Inclusion sociale
+    inclusion_description: Inclusion sociale
     community: Community development
     community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    services: Services publics
+    services_description: Services publics
+    other: Autres
+    other_description: Autres
   pages:
     terms_and_conditions_title: Conditions Générales d'Utilisation
     terms_and_conditions_body: >
