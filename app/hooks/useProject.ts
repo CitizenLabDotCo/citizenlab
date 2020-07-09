@@ -3,12 +3,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
 import { projectByIdStream, projectBySlugStream, IProject, IProjectData } from 'services/projects';
 
-interface Props {
+interface Parameters {
   projectId?: string | null;
   projectSlug?: string | null;
 }
 
-export default function useProject({ projectId, projectSlug }: Props) {
+export default function useProject({ projectId, projectSlug }: Parameters) {
   const [project, setProject] = useState<IProjectData | undefined | null | Error>(undefined);
 
   useEffect(() => {
