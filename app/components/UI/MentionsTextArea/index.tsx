@@ -13,7 +13,7 @@ import Error from 'components/UI/Error';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { colors, fontSizes, boxShadowOutlineImportant } from 'utils/styleUtils';
+import { colors, fontSizes, defaultStyles } from 'utils/styleUtils';
 import { transparentize } from 'polished';
 
 // typings
@@ -23,7 +23,8 @@ const Container = styled.div`
   position: relative;
 
   & .hasBorder textarea:focus {
-    ${boxShadowOutlineImportant};
+    border-color: ${defaultStyles.borderColorFocused} !important;
+    box-shadow: ${defaultStyles.boxShadowFocused} !important;
   }
 
   .textareaWrapper__suggestions__list li:last-child {

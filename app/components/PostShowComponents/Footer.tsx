@@ -5,8 +5,8 @@ import LoadingComments from './Comments/LoadingComments';
 
 // styling
 import styled from 'styled-components';
-import { media, postPageContentMaxWidth, colors } from 'utils/styleUtils';
-import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
+import { media, colors } from 'utils/styleUtils';
+import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet, postPageContentMaxWidth } from './styleConstants';
 
 const Container = styled.div`
   flex: 1 1 auto;
@@ -18,7 +18,7 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 100%;
-  max-width: ${postPageContentMaxWidth};
+  max-width: ${postPageContentMaxWidth}px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 50px;
