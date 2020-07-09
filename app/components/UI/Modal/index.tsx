@@ -27,7 +27,7 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, boxShadowOutline, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultOutline, viewportWidths } from 'utils/styleUtils';
 
 const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;
@@ -78,7 +78,7 @@ const CloseButton = styled.button`
   }
 
   &.focus-visible {
-    ${boxShadowOutline};
+    ${defaultOutline};
   }
 
   ${media.smallerThanMinTablet`

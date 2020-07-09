@@ -17,7 +17,7 @@ import { getBase64FromFile } from 'utils/fileTools';
 
 // style
 import styled from 'styled-components';
-import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
+import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 
 // typings
 import { UploadFile } from 'typings';
@@ -81,7 +81,7 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
   &:not(.disabled) {
 
     &:focus-within {
-      ${boxShadowOutline};
+      ${defaultOutline};
     }
 
     &:hover,

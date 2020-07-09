@@ -1,7 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { Range, getTrackBackground } from 'react-range';
 import styled from 'styled-components';
-import { colors, boxShadowOutline } from 'utils/styleUtils';
+import { colors, defaultOutline } from 'utils/styleUtils';
 
 const Container = styled.div`
   display: flex;
@@ -23,7 +23,7 @@ const Container = styled.div`
     }
 
     &.focus-visible {
-      ${boxShadowOutline};
+      ${defaultOutline};
     }
   }
 `;

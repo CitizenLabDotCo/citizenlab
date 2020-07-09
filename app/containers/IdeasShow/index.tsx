@@ -71,9 +71,9 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, postPageContentMaxWidth, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
+import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet, pageContentMaxWidth } from './styleConstants';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -118,7 +118,7 @@ const Container = styled.main<{ insideModal: boolean }>`
 
 const IdeaContainer = styled.div`
   width: 100%;
-  max-width: ${postPageContentMaxWidth};
+  max-width: ${pageContentMaxWidth}px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -250,9 +250,9 @@ const ControlWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 45px;
   padding: 35px;
-  border: 1px solid #e0e0e0;
-  ${defaultCardStyle};
-  box-shadow: none;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: ${(props: any) => props.theme.borderRadius};
 `;
 
 const ControlWrapperHorizontalRule = styled.hr`

@@ -8,7 +8,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 // styling
 import styled from 'styled-components';
-import { colors, fontSizes, boxShadowOutline } from 'utils/styleUtils';
+import { colors, fontSizes, defaultOutline } from 'utils/styleUtils';
 
 // components
 import { Icon } from 'cl2-component-library';
@@ -34,7 +34,7 @@ const Input = styled.input`
   &:focus + label {
     color: #000;
     border-color: #000;
-    ${boxShadowOutline};
+    ${defaultOutline};
 
     ${StyledIcon} {
       fill: #000;

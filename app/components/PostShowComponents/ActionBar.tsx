@@ -6,7 +6,8 @@ import FeatureFlag from 'components/FeatureFlag';
 
 // styles
 import styled from 'styled-components';
-import { colors, media, postPageContentMaxWidth } from 'utils/styleUtils';
+import { colors, media } from 'utils/styleUtils';
+import { postPageContentMaxWidth } from './styleConstants';
 
 const Container = styled.div`
   width: 100%;
@@ -17,7 +18,7 @@ const Container = styled.div`
 `;
 
 const Inner = styled.div`
-  max-width: ${postPageContentMaxWidth};
+  max-width: ${postPageContentMaxWidth}px;
   height: 100%;
   margin: 0 auto;
   padding-left: 60px;

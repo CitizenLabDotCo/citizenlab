@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
-import { media, defaultCardStyle } from 'utils/styleUtils';
+import { media } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 import moment from 'moment';
@@ -28,8 +28,9 @@ const Container = styled.div`
   ${media.biggerThanMaxTablet`
     margin-bottom: 45px;
     padding: 35px;
-    border: 1px solid #e0e0e0;
-    ${defaultCardStyle};
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: ${(props: any) => props.theme.borderRadius};
   `}
 
   ${media.smallerThanMaxTablet`
