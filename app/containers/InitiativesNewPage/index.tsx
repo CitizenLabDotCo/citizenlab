@@ -16,6 +16,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import { PreviousPathnameContext } from 'context';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -24,12 +25,14 @@ import { isNilOrError } from 'utils/helperUtils';
 import InitiativesNewMeta from './InitiativesNewMeta';
 import InitiativesNewFormWrapper from './InitiativesNewFormWrapper';
 import PageLayout from 'components/InitiativeForm/PageLayout';
+import { ITopicData } from 'services/topics';
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   tenant: GetTenantChildProps;
   previousPathName: string | null;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends DataProps { }
@@ -118,16 +121,25 @@ export class InitiativesNewPage extends React.PureComponent<Props & WithRouterPr
   }
 
   render() {
-    const { authUser, locale } = this.props;
+    const { authUser, locale, topics } = this.props;
     const { locationInfo } = this.state;
+    if (
+      isNilOrError(authUser) ||
+      isNilOrError(locale) ||
+      isNilOrError(topics) ||
+      locationInfo === undefined
+    ) {
+      return null;
+    }
+    const initiativeTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
-    if (isNilOrError(authUser) || isNilOrError(locale) || locationInfo === undefined) return null;
     return (
       <>
         <InitiativesNewMeta />
         <PageLayout>
           <InitiativesNewFormWrapper
             locale={locale}
+            topics={initiativeTopics}
             {...locationInfo}
           />
         </PageLayout>
@@ -141,6 +153,7 @@ const Data = adopt<DataProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
+  topics: <GetTopics exclude_code={'custom'} />,
   previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
 });
 

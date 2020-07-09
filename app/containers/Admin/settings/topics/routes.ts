@@ -20,7 +20,7 @@ export default () => ({
       }),
     },
     {
-      path: ':topicId',
+      path: ':topicId/edit',
       name: 'admin topic edit',
       component: Loadable({
         loader: () => import('./Edit'),
