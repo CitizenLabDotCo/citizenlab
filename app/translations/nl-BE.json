@@ -1915,6 +1915,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Beheerders en projectbeheerders",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Iedereen",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Bepaalde groepen gebruikers",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "Users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Wie kan dit project zien?",
   "app.containers.app.navbar.admin": "Beheer platform",
   "app.containers.app.navbar.allProjects": "Alle projecten",
