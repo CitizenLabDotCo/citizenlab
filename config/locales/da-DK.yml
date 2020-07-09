@@ -38,8 +38,8 @@ da:
     economy_description: Arbejde, økonomi og handel
     housing: Boliger
     housing_description: Boliger
-    public_space: Public space
-    public_space_description: Public space
+    public_space: Public spaces and buildings
+    public_space_description: Public spaces and buildings
     safety: Safety
     safety_description: Safety
     education: Uddannelse og ungdom
@@ -48,12 +48,12 @@ da:
     culture_description: Kunst, kultur og arrangementer
     health: Pleje og velfærd
     health_description: Pleje og velfærd
-    inclusion: Social integration
-    inclusion_description: Social integration
+    inclusion: Social inclusion
+    inclusion_description: Social inclusion
     community: Community development
     community_description: Community development
-    services: City services
-    services_description: City services
+    services: Public services
+    services_description: Public services
     other: Other
     other_description: Other
   pages:
