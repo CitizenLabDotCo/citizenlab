@@ -17,7 +17,7 @@ class PermissionsService
       actions.select do |action|
         !participation_context.permissions.find_by action: action
       end.map do |action|
-        participation_context.permissions.create! action: action, permitted_by: 'everyone'
+        participation_context.permissions.create! action: action
       end
     end
   end
