@@ -38,24 +38,24 @@ nl-BE:
     economy_description: Werk, economie en handel
     housing: Wonen
     housing_description: Wonen
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
+    public_space: Openbare ruimtes en gebouwen
+    public_space_description: Openbare ruimtes en gebouwen
+    safety: Veiligheid
+    safety_description: Veiligheid
     education: Onderwijs en jeugd
     education_description: Onderwijs en jeugd
     culture: Kunst, cultuur en evenementen
     culture_description: Kunst, cultuur en evenementen
     health: Zorg en welzijn
     health_description: Zorg en welzijn
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    inclusion: Sociale inclusie
+    inclusion_description: Sociale inclusie
+    community: Ontwikkeling gemeenschap
+    community_description: Ontwikkeling gemeenschap
+    services: Openbare diensten
+    services_description: Openbare diensten
+    other: Overige
+    other_description: Overige
   pages:
     terms_and_conditions_title: Gebruiksvoorwaarden
     terms_and_conditions_body: >
