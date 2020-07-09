@@ -5,6 +5,10 @@ export default defineMessages({
     id: 'app.containers.admin.project.permissions.viewingRightsTitle',
     defaultMessage: 'Who can see this project?',
   },
+  permissionsUsersLabel: {
+    id: 'app.containers.admin.project.permissions.permissionsUsersLabel',
+    defaultMessage: 'Users',
+  },
   permissionsEveryoneLabel: {
     id: 'app.containers.admin.project.permissions.permissionsEveryoneLabel',
     defaultMessage: 'Everyone',
