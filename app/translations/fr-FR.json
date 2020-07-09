@@ -1915,6 +1915,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrateurs et administrateurs projet",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Tout le monde",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Certains groupes d'utilisateurs",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "Users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Qui peut voir ce projet ?",
   "app.containers.app.navbar.admin": "Panneau admin",
   "app.containers.app.navbar.allProjects": "{tenantName, select, frw {Toutes les communes} other {Tous les projets}}",
