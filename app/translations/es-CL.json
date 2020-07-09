@@ -1935,7 +1935,6 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administradores y moderadores",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Todo el mundo",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Algunos grupos de usuarios",
-  "app.containers.admin.project.permissions.permissionsUsersLabel": "Users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "¿Quién puede ver este proyecto?",
   "app.containers.app.navbar.admin": "Admin",
   "app.containers.app.navbar.allProjects": "Todos los proyectos",
