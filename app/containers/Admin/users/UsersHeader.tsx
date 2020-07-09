@@ -1,5 +1,5 @@
 // Libraries
-import React, { PureComponent, memo } from 'react';
+import React, { memo } from 'react';
 import { Multiloc } from 'typings';
 
 // Components
@@ -11,10 +11,6 @@ import SearchInput from 'components/UI/SearchInput';
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
-
-// tracking
-import { injectTracks } from 'utils/analytics';
-import tracks from './tracks';
 
 // Styling
 import styled from 'styled-components';
@@ -101,26 +97,26 @@ interface Props {
   onSearch: (newValue: string) => void;
 }
 
-interface Tracks {
-  trackSearchInput: Function;
-}
-
 const UsersHeader = memo(({
   title,
   smartGroup,
   onEdit,
   onDelete,
   onSearch
-}: Props & Tracks) => {
+}: Props) => {
+  const handleSearchChange = (newValue: string) => {
+    onSearch(newValue);
+  };
+
   if (title) {
     return (
       <OnlyRow>
-        {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
+        {smartGroup && <TitleIcon name="lightingBolt" />}
         <TextAndButtons>
           <T as="h1" value={this.props.title} />
           <Buttons>
-            <EditGroupButton iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" buttonStyle="secondary" onClick={this.props.onEdit} />
-            <DeleteGroupButton iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" buttonStyle="text" onClick={this.props.onDelete} />
+            <EditGroupButton iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" buttonStyle="secondary" onClick={onEdit} />
+            <DeleteGroupButton iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" buttonStyle="text" onClick={onDelete} />
           </Buttons>
         </TextAndButtons>
         <Spacer />
@@ -143,44 +139,4 @@ const UsersHeader = memo(({
   );
 });
 
-// class UsersHeader extends PureComponent<Props & Tracks, State> {
-//   handleSearchChange = (newValue: string) => {
-//     this.props.onSearch(newValue);
-//   }
-
-//   render() {
-//     if (this.props.title) {
-//       return (
-//         <OnlyRow>
-//           {this.props.smartGroup && <TitleIcon name="lightingBolt" />}
-//           <TextAndButtons>
-//             <T as="h1" value={this.props.title} />
-//             <Buttons>
-//               <EditGroupButton iconTitle={<FormattedMessage {...messages.editGroup} />} hiddenText={<FormattedMessage {...messages.editGroup} />} padding=".65em" icon="edit" buttonStyle="secondary" onClick={this.props.onEdit} />
-//               <DeleteGroupButton iconTitle={<FormattedMessage {...messages.deleteGroup} />} hiddenText={<FormattedMessage {...messages.deleteGroup} />} padding=".65em" icon="delete" buttonStyle="text" onClick={this.props.onDelete} />
-//             </Buttons>
-//           </TextAndButtons>
-//           <Spacer />
-//           <StyledSearchInput onChange={this.handleSearchChange} />
-//         </OnlyRow>
-//       );
-//     }
-
-//     return (
-//       <TitleWrapper>
-//         <FirstRow>
-//           <TextAndButtons>
-//             <FormattedMessage tagName="h1" {...messages.allUsers} />
-//           </TextAndButtons>
-//           <Spacer />
-//           <StyledSearchInput onChange={this.handleSearchChange} />
-//         </FirstRow>
-//         <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
-//       </TitleWrapper>
-//     );
-//   }
-// }
-
-export default injectTracks<Props>({
-  trackSearchInput: tracks.searchInput,
-})(UsersHeader);
+export default UsersHeader;
