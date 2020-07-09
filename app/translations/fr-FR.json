@@ -1084,7 +1084,7 @@
   "app.containers.AdminPage.ProjectEdit.titleGeneral": "Paramètres généraux du projet",
   "app.containers.AdminPage.ProjectEdit.titleLabel": "Nom du projet",
   "app.containers.AdminPage.ProjectEdit.titleLabelTooltip": "Choisissez un titre court, attractif et explicite. Il s’affichera dans la liste déroulante avec les autres projets en haut de la page d’accueil.",
-  "app.containers.AdminPage.ProjectEdit.topicsTab": "Topics",
+  "app.containers.AdminPage.ProjectEdit.topicsTab": "Thèmes",
   "app.containers.AdminPage.ProjectEdit.typeform": "Typeform",
   "app.containers.AdminPage.ProjectEdit.unassigned": "Non attribué",
   "app.containers.AdminPage.ProjectEdit.unlimited": "Illimité",
