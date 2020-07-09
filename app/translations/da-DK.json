@@ -1915,6 +1915,7 @@
   "app.containers.admin.project.permissions.permissionsAdministrators": "Administrators and project managers",
   "app.containers.admin.project.permissions.permissionsEveryoneLabel": "Everyone",
   "app.containers.admin.project.permissions.permissionsSelectionLabel": "Certain user groups",
+  "app.containers.admin.project.permissions.permissionsUsersLabel": "Users",
   "app.containers.admin.project.permissions.viewingRightsTitle": "Who can see this project?",
   "app.containers.app.navbar.admin": "Administrator",
   "app.containers.app.navbar.allProjects": "{tenantName, select, DeloitteDK {Alle verdensmål} other {Alle projekter}}",
