@@ -181,57 +181,53 @@ Rails.application.routes.draw do
         get :as_xlsx, on: :collection, action: 'index_xlsx'
       end
 
-      scope 'stats', controller: 'stats' do
-        with_options controller: 'stats_users' do
-          get 'users_count'
-          get 'users_by_time'
-          get 'users_by_time_cumulative'
-          get 'active_users_by_time'
-          get 'users_by_gender'
-          get 'users_by_birthyear'
-          get 'users_by_domicile'
-          get 'users_by_education'
-          get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field
-          get 'users_engagement_scores'
-        end
+      scope 'stats' do
+        route_params = {controller: 'stats_users'}
+        get 'users_count', **route_params
+        get 'users_by_time', **route_params
+        get 'users_by_time_cumulative', **route_params
+        get 'active_users_by_time', **route_params
+        get 'users_by_gender', **route_params
+        get 'users_by_birthyear', **route_params
+        get 'users_by_domicile', **route_params
+        get 'users_by_education', **route_params
+        get 'users_engagement_scores', **route_params
+        get 'users_by_custom_field/:custom_field_id', action: :users_by_custom_field, **route_params
 
-        with_options controller: 'stats_ideas' do
-          get 'ideas_count'
-          get 'ideas_by_time'
-          get 'ideas_by_time_cumulative'
-          get 'ideas_by_topic'
-          get 'ideas_by_project'
-          get 'ideas_by_area'
-        end
 
-        with_options controller: 'stats_initiatives' do
-          get 'initiatives_count'
-          get 'initiatives_by_time'
-          get 'initiatives_by_time_cumulative'
-          get 'initiatives_by_topic'
-          get 'initiatives_by_area'
-        end
+        route_params = {controller: 'stats_ideas'}
+        get 'ideas_count', **route_params
+        get 'ideas_by_time', **route_params
+        get 'ideas_by_time_cumulative', **route_params
+        get 'ideas_by_topic', **route_params
+        get 'ideas_by_project', **route_params
+        get 'ideas_by_area', **route_params
 
-        with_options controller: 'stats_comments' do
-          get 'comments_count'
-          get 'comments_by_time'
-          get 'comments_by_time_cumulative'
-          get 'comments_by_topic'
-          get 'comments_by_project'
-        end
+        route_params = { controller: 'stats_initiatives' }
+        get 'initiatives_count', **route_params
+        get 'initiatives_by_time', **route_params
+        get 'initiatives_by_time_cumulative', **route_params
+        get 'initiatives_by_topic', **route_params
+        get 'initiatives_by_area', **route_params
 
-        with_options controller: 'stats_votes' do
-          get 'votes_count'
-          get 'votes_by_birthyear'
-          get 'votes_by_education'
-          get 'votes_by_domicile'
-          get 'votes_by_gender'
-          get 'votes_by_custom_field'
-          get 'votes_by_time'
-          get 'votes_by_time_cumulative'
-          get 'votes_by_topic'
-          get 'votes_by_project'
-        end
+        route_params = { controller: 'stats_comments' }
+        get 'comments_count', **route_params
+        get 'comments_by_time', **route_params
+        get 'comments_by_time_cumulative', **route_params
+        get 'comments_by_topic', **route_params
+        get 'comments_by_project', **route_params
+
+        route_params = { controller: 'stats_votes' }
+        get 'votes_count', **route_params
+        get 'votes_by_birthyear', **route_params
+        get 'votes_by_education', **route_params
+        get 'votes_by_domicile', **route_params
+        get 'votes_by_gender', **route_params
+        get 'votes_by_custom_field', **route_params
+        get 'votes_by_time', **route_params
+        get 'votes_by_time_cumulative', **route_params
+        get 'votes_by_topic', **route_params
+        get 'votes_by_project', **route_params
       end
 
       scope 'mentions', controller: 'mentions' do

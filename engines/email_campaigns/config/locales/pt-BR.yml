@@ -1,54 +1,54 @@
-nb:
+pt:
   email_campaigns:
     campaign_type_description:
-      "manual": Offisielle beskjed 
-      "admin_rights_received": Administratorrettigheter mottatt
-      "comment_deleted_by_admin": Sletting  av min kommentar
-      "comment_marked_as_spam": Kommenter spamrapport
-      "comment_on_your_comment": Et svar på min kommentar
-      "comment_on_your_idea": En kommentar på min idé
-      "comment_on_your_initiative": En kommentar på mitt forslag
-      "first_idea_published": Publisering av min  første idé
-      "idea_assigned_to_you": En idé tildelt meg
-      "idea_marked_as_spam": Rapportere idé-spam
-      "idea_published": Publisering av min idé
-      "initiative_assigned_to_you": Et forslag tildelt meg
-      "initiative_marked_as_spam": Forslag til spam-rapport
-      "initiative_published": Publisering av mitt forslag
-      "invite_received": Invitasjon
-      "invite_reminder": 'Påminnelse: invitasjon'
-      "mention_in_comment": Nevne i en kommentar
-      "mention_in_official_feedback": Nevne i en oppdatering
-      "new_comment_for_admin": Ny kommentar i et prosjekt jeg moderer
-      "new_comment_on_commented_idea": Ny kommentar på en idé jeg har kommentert
-      "new_comment_on_commented_initiative": Ny kommentar på et forslag jeg har kommentert
-      "new_comment_on_voted_idea": Ny kommentar på en idé jeg stemte på 
-      "new_comment_on_voted_initiative": Ny kommentar på et forslag jeg stemte på 
-      "new_idea_for_admin": Ny idé i et prosjekt jeg modererer
-      "new_initiative_for_admin": Nytt forslag
-      "official_feedback_on_commented_idea": Oppdatering på en idé jeg kommenterte
-      "official_feedback_on_commented_initiative": Oppdatering på en idé jeg kommenterte på
-      "official_feedback_on_voted_idea": Oppdatering på en forslag jeg kommenterte
-      "official_feedback_on_voted_initiative": Oppdatering på en idé jeg stemte på
-      "official_feedback_on_your_idea": Oppdatering på min idé
-      "official_feedback_on_your_initiative": Oppdatering på mitt forslag
-      "password_reset": Nullstill passord
-      "project_moderation_rights_received": Rettigheter til å moderere prosjekter mottatt
-      "project_phase_started": Ny prosjektfase
-      "project_phase_upcoming": Kommende ny prosjektfase
-      "status_change_of_commented_idea": Statusendring på en idé jeg kommenterte
-      "status_change_of_commented_initiative": Statusendring på et forslag jeg kommenterte
-      "status_change_of_voted_idea": Statusendring på en idé jeg stemte på
-      "status_change_of_voted_initiative": Statusendring på et forslag jeg stemte på
-      "status_change_of_your_idea": Statusendring på min idé
-      "status_change_of_your_initiative": Statusendring på mitt forslag
-      "threshold_reached_for_admin": Forslaget har nådd stemmegrensen
-      "welcome": Etter registrering
-      "admin_digest": Ukentlig oversikt for administratorer
-      "moderator_digest": Weekly overview for project managers
-      "assignee_digest": Ukentlig oversikt over tildelte ideer
-      "user_digest": Ukentlig oversikt
-      "your_proposed_initiatives_digest": Ukentlig oversikt over dine forslag
+      "manual": Mensagens oficiais
+      "admin_rights_received": Direitos de administração recebidos
+      "comment_deleted_by_admin": Eliminação do meu comentário
+      "comment_marked_as_spam": Comente o relatório de spam
+      "comment_on_your_comment": Uma resposta ao meu comentário
+      "comment_on_your_idea": Um comentário sobre a minha ideia
+      "comment_on_your_initiative": Um comentário sobre a minha proposta
+      "first_idea_published": Publicação da minha primeira ideia
+      "idea_assigned_to_you": Atribuição de uma idéia para mim
+      "idea_marked_as_spam": Relatório de spam de ideias
+      "idea_published": Publicação da minha ideia
+      "initiative_assigned_to_you": Atribuição de uma proposta a mim
+      "initiative_marked_as_spam": Relatório de spam proposto
+      "initiative_published": Publicação da minha proposta
+      "invite_received": Convite
+      "invite_reminder": Lembrete do convite
+      "mention_in_comment": Menção em um comentário
+      "mention_in_official_feedback": Menção em uma atualização
+      "new_comment_for_admin": Novo comentário em um projeto que modero
+      "new_comment_on_commented_idea": Novo comentário sobre uma ideia que eu comentei
+      "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que eu comentei
+      "new_comment_on_voted_idea": Novo comentário sobre uma ideia que eu votei favoravelmente
+      "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que eu votei favoravelmente
+      "new_idea_for_admin": Nova idéia em um projeto que modero
+      "new_initiative_for_admin": Nova proposta
+      "official_feedback_on_commented_idea": Actualização sobre uma ideia que comentei
+      "official_feedback_on_commented_initiative": Atualização sobre uma proposta que comentei
+      "official_feedback_on_voted_idea": Atualização sobre uma idéia que eu votei
+      "official_feedback_on_voted_initiative": Actualização sobre uma proposta que votei
+      "official_feedback_on_your_idea": Actualização da minha ideia
+      "official_feedback_on_your_initiative": Actualização sobre a minha proposta
+      "password_reset": Redefinição de senha
+      "project_moderation_rights_received": Direitos de moderação de projetos recebidos
+      "project_phase_started": Nova fase do projeto
+      "project_phase_upcoming": Próxima nova fase do projeto
+      "status_change_of_commented_idea": Mudança de status de uma idéia que comentei
+      "status_change_of_commented_initiative": Mudança de status de uma proposta que comentei
+      "status_change_of_voted_idea": Mudança de status de uma idéia que votei a favor
+      "status_change_of_voted_initiative": Mudança de status de uma proposta em que votei
+      "status_change_of_your_idea": Mudança de status da minha idéia
+      "status_change_of_your_initiative": Mudança de status da minha proposta
+      "threshold_reached_for_admin": Proposta atingiu o limiar de votação
+      "welcome": Após o registo
+      "admin_digest": Visão geral semanal para os administradores
+      "moderator_digest": Visão geral semanal para gestores de projecto
+      "assignee_digest": Visão geral semanal das ideias atribuídas
+      "user_digest": Visão geral semanal
+      "your_proposed_initiatives_digest": Visão geral semanal das suas propostas
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins

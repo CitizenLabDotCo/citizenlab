@@ -1,4 +1,5 @@
 class ApplyTenantTemplateJob < ApplicationJob
+  sidekiq_options retry: false
   queue_as :default
 
   def perform template, tenant
