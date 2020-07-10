@@ -10,6 +10,7 @@ module AdminApi
       end
       Project.where.not(id: project_ids_before).each do |project|
         project.update!(slug: SlugService.new.generate_slug(project, project.slug))
+        project.set_default_topics!
       end
     end
 

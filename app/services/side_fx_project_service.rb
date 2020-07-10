@@ -12,6 +12,7 @@ class SideFxProjectService
   end
 
   def after_create project, user
+    project.set_default_topics!
     project.update!(description_multiloc: TextImageService.new.swap_data_images(project, :description_multiloc))
     LogActivityJob.perform_later(project, 'created', user, project.created_at.to_i)
     @sfx_pc.after_create project, user if project.is_participation_context?

@@ -70,9 +70,8 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
-    joins(:areas_projects)
-      .where(areas_projects: {area_id: area_ids})
-      .distinct
+    with_dups = joins(:areas_projects).where(areas_projects: {area_id: area_ids})
+    where(id: with_dups)
   end)
 
   scope :without_areas, -> {
@@ -129,6 +128,11 @@ class Project < ApplicationRecord
 
   def allocated_budget
     Idea.from(ideas.select('budget * baskets_count as allocated_budget')).sum(:allocated_budget)
+  end
+
+  def set_default_topics!
+    self.topics = Topic.defaults.order(:ordering).reverse
+    self.save!
   end
 
 

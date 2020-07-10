@@ -24,34 +24,38 @@ pt:
     ineligible: inelegível
     ineligible_description: inelegível
   topics:
-    infrastructure: Praças e ruas
-    infrastructure_description: Praças e ruas
-    waste: Limpeza e desperdício
-    waste_description: Limpeza e desperdício
-    mobility: Mobilidade
-    mobility_description: Mobilidade
-    technology: Tecnologia
-    technology_description: Tecnologia
-    economy: Trabalho, economia e comércio
-    economy_description: Trabalho, economia e comércio
     nature: Natureza e biodiversidade
     nature_description: Natureza e biodiversidade
+    waste: Limpeza e desperdício
+    waste_description: Limpeza e desperdício
     sustainability: Desenvolvimento sustentável
     sustainability_description: Desenvolvimento sustentável
+    mobility: Mobilidade
+    mobility_description: Mobilidade
+    technology: Energia e tecnologia
+    technology_description: Energia e tecnologia
+    economy: Trabalho, economia e turismo
+    economy_description: Trabalho, economia e turismo
     housing: Moradia
     housing_description: Moradia
-    culture: Artes, cultura e eventos
-    culture_description: Artes, cultura e eventos
-    citizenship: Cidadania
-    citizenship_description: Cidadania
-    social: Inclusão social
-    social_description: Inclusão social
-    health: Cuidados e bem-estar
-    health_description: Cuidados e bem-estar
-    sport: Esportes
-    sport_description: Esportes
+    public_space: Construções e espaços públicos
+    public_space_description: Construções e espaços públicos
+    safety: Segurança
+    safety_description: Segurança
     education: Educação e juventude
     education_description: Educação e juventude
+    culture: Cultura, esportes e eventos
+    culture_description: Cultura, esportes e eventos
+    health: Saúde e bem-estar
+    health_description: Saúde e bem-estar
+    inclusion: Inclusão social
+    inclusion_description: Inclusão social
+    community: Desenvolvimento da comunidade
+    community_description: Desenvolvimento da comunidade
+    services: Serviços públicos
+    services_description: Serviços públicos
+    other: Outros
+    other_description: Outros
   pages:
     terms_and_conditions_title: Termos
     terms_and_conditions_body: >

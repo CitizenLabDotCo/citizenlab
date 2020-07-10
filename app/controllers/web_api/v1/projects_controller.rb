@@ -12,7 +12,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     @projects = ProjectsFilteringService.new.apply_common_index_filters @projects, params
 
     @projects = @projects.ordered
-      .includes(:project_images, :phases, :areas, :topics, admin_publication: [:children])
+      .includes(:project_images, :phases, :areas, :topics, :projects_topics, admin_publication: [:children])
       .page(params.dig(:page, :number))
       .per(params.dig(:page, :size))
 
@@ -33,7 +33,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
       @projects, 
       WebApi::V1::ProjectSerializer, 
       params: fastjson_params(instance_options), 
-      include: [:admin_publication, :project_images, :current_phase, :avatars]
+      include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
       )
   end
 
@@ -41,7 +41,7 @@ class WebApi::V1::ProjectsController < ::ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project, 
       params: fastjson_params, 
-      include: [:admin_publication, :project_images, :current_phase, :avatars]
+      include: [:admin_publication, :project_images, :current_phase, :avatars, :topics, :projects_topics]
       ).serialized_json
   end
 
@@ -80,7 +80,6 @@ class WebApi::V1::ProjectsController < ::ApplicationController
 
   def update
     params[:project][:area_ids] ||= [] if params[:project].has_key?(:area_ids)
-    params[:project][:topic_ids] ||= [] if params[:project].has_key?(:topic_ids)
     params[:project][:default_assignee_id] ||= nil if params[:project].has_key?(:default_assignee_id)
 
     project_params = permitted_attributes(Project)

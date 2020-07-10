@@ -139,13 +139,14 @@ describe ParticipantsService do
 
     it "returns participants of given topics" do
       t1, t2, t3 = create_list(:topic, 3)
+      project = create(:project, topics: [t1, t2, t3])
       participants = create_list(:user, 3)
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
-      i1 = create(:idea, topics: [t1], author: pp1)
-      i2 = create(:idea, topics: [t2,t3], author: pp2)
-      i3 = create(:idea, topics: [t3], author: pp1)
-      i4 = create(:idea, topics: [], author: others.first)
+      i1 = create(:idea, topics: [t1], author: pp1, project: project)
+      i2 = create(:idea, topics: [t2,t3], author: pp2, project: project)
+      i3 = create(:idea, topics: [t3], author: pp1, project: project)
+      i4 = create(:idea, topics: [], author: others.first, project: project)
       create(:comment, post: i1, author: pp3)
 
       expect(service.topics_participants([t1,t2]).map(&:id)).to match_array participants.map(&:id)
