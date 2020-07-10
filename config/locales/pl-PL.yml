@@ -21,8 +21,8 @@ pl:
     threshold_reached_description: próg poparcia osiągnięty
     answered: z odpowiedzią
     answered_description: z odpowiedzią
-    ineligible: niekwalifikowana
-    ineligible_description: niekwalifikowalna
+    ineligible: niekwalifikowalna
+    ineligible_description: niekwalifikowana
   topics:
     nature: Przyroda i różnorodność biologiczna
     nature_description: Przyroda i różnorodność biologiczna
@@ -38,8 +38,8 @@ pl:
     economy_description: Praca, gospodarka i handel
     housing: Mieszkalnictwo
     housing_description: Mieszkalnictwo
-    public_space: Przestrzenie i budynki publiczne
-    public_space_description: Przestrzenie i budynki publiczne
+    public_space: Przestrzeń publiczna i budynki
+    public_space_description: Przestrzeń publiczna i budynki
     safety: Bezpieczeństwo
     safety_description: Bezpieczeństwo
     education: Edukacja i młodzież
@@ -48,14 +48,14 @@ pl:
     culture_description: Sztuki piękne, kultura i wydarzenia
     health: Opieka społeczna
     health_description: Opieka społeczna
-    inclusion: Włączenie społeczne
-    inclusion_description: Włączenie społeczne
-    community: Rozwój Wspólnoty
-    community_description: Rozwój Wspólnoty
+    inclusion: Integracja społeczna
+    inclusion_description: Integracja społeczna
+    community: Rozwój lokalny
+    community_description: Rozwój lokalny
     services: Usługi publiczne
     services_description: Usługi publiczne
-    other: Inne
-    other_description: Inne
+    other: Inny
+    other_description: Inny
   pages:
     terms_and_conditions_title: Regulamin
     terms_and_conditions_body: >
