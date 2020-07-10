@@ -4,22 +4,15 @@ import { Menu, Divider } from 'semantic-ui-react';
 import FilterSidebarTopicsItem from './FilterSidebarTopicsItem';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import { adopt } from 'react-adopt';
-import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
-import { isNilOrError } from 'utils/helperUtils';
+import { ITopicData } from 'services/topics';
 
-interface InputProps {
+interface Props {
+  selectableTopics: ITopicData[];
   selectedTopics?: string[] | null;
   onChangeTopicsFilter?: (topics: string[]) => void;
 }
 
-interface DataProps {
-  topics: GetTopicsChildProps;
-}
-
-interface Props extends InputProps, DataProps {}
-
-class FilterSidebarTopics extends React.PureComponent<Props> {
+export default class FilterSidebarTopics extends React.PureComponent<Props> {
 
   handleItemClick = (id) => (event) => {
     if (event.ctrlKey) {
@@ -39,32 +32,22 @@ class FilterSidebarTopics extends React.PureComponent<Props> {
   }
 
   render() {
-    const { topics, selectedTopics } = this.props;
+    const { selectableTopics, selectedTopics } = this.props;
     return (
-      <Menu secondary={true} vertical={true} fluid={true}>
+      <Menu id="e2e-idea-manager-topic-filters" secondary={true} vertical={true} fluid={true}>
         <Menu.Item onClick={this.clearFilter} active={!selectedTopics || selectedTopics.length === 0}>
           <FormattedMessage {...messages.allTopics} />
         </Menu.Item>
         <Divider />
-        {!isNilOrError(topics) && topics.map((topic) => !isNilOrError(topic) ? (
+        {selectableTopics.map(topic => (
           <FilterSidebarTopicsItem
             key={topic.id}
             topic={topic}
             active={!!this.isActive(topic.id)}
             onClick={this.handleItemClick(topic.id)}
           />
-        ) : null)}
+        ))}
       </Menu>
     );
   }
 }
-
-const Data = adopt<DataProps, InputProps>({
-  topics: <GetTopics />,
-});
-
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <FilterSidebarTopics {...inputProps} {...dataProps} />}
-  </Data>
-);

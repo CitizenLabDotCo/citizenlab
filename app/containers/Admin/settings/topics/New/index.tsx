@@ -26,7 +26,7 @@ export default class New extends React.Component<Props> {
       ...values
     })
     .then(() => {
-      clHistory.push('/admin/topics');
+      clHistory.push('/admin/settings/topics');
     })
     .catch((errorResponse) => {
       if (isCLErrorJSON(errorResponse)) {
@@ -44,7 +44,7 @@ export default class New extends React.Component<Props> {
   }
 
   goBack = () => {
-    clHistory.push('/admin/topics');
+    clHistory.push('/admin/settings/topics');
   }
 
   initialValues = () => ({
