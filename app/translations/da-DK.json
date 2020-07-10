@@ -51,7 +51,7 @@
   "app.components.ConsentManager.Modal.CancelDialog.confirm": "Bekræft",
   "app.components.ConsentManager.Modal.CancelDialog.confirmation": "Hvis du annullerer, vil dine præferencer gå tabt.",
   "app.components.ConsentManager.Modal.PreferencesDialog.advertising": "Reklamer og annoncering",
-  "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "For at personliggøre og måle reklamekampagnernes effektivitet på vores webside. Vi viser ikke nogen reklamer på denne platform, men følgende tjenester kan give dig en personlig reklame baseret på de sider du besøger på vores side.",
+  "app.components.ConsentManager.Modal.PreferencesDialog.advertisingPurpose": "{tenantName, select, Horsholm {For at personliggøre og måle reklamekampagnernes effektivitet på vores webside. Vi viser ikke nogen reklamer på denne platform, men følgende tjenester kan give dig en personlig reklame baseret på de sider du besøger på vores side. Denne platform sender data fra Google Analytics videre til Siteimprove, som er den applikation, der bruges af Hørsholm Kommune.} other {For at personliggøre og måle reklamekampagnernes effektivitet på vores webside. Vi viser ikke nogen reklamer på denne platform, men følgende tjenester kan give dig en personlig reklame baseret på de sider du besøger på vores side.}}",
   "app.components.ConsentManager.Modal.PreferencesDialog.allow": "Tillade",
   "app.components.ConsentManager.Modal.PreferencesDialog.analytics": "Analyseværktøj",
   "app.components.ConsentManager.Modal.PreferencesDialog.analyticsPurpose": "Vi bruger denne sporing for bedre at forstå hvordan du bruger platformen og for at kunne lære og forbedre din navigation. Denne information bruges kun til masseanalyser og på ingen måde til at spore enkeltpersoner.",
