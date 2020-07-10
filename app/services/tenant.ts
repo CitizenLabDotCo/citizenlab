@@ -21,7 +21,7 @@ export type TenantSettingsFeatureNames = 'demographic_fields' |
 'groups' | 'projects' | 'projects_phases' | 'projects_pages' |
 'projects_events' | 'projects_info' | 'excel_export' | 'private_projects' |
 'maps' | 'participatory_budgeting' | 'initiatives' | 'fragments' |
-'verficiation' | 'idea_custom_fields' | 'user_custom_fields' |
+'verfication' | 'idea_custom_fields' | 'user_custom_fields' |
 'volunteering' | 'smart_groups';
 
 export interface ITenantSettings {
@@ -116,9 +116,13 @@ export interface ITenantSettings {
   fragments?: {
     allowed: boolean,
     enabled: boolean,
-    enabled_fragments: String[]
+    enabled_fragments: string[]
   };
-  verification?: TenantFeature;
+  verification?: {
+    allowed: boolean,
+    enabled: boolean,
+    verification_methods: string[]
+  };
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
