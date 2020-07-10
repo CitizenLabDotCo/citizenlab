@@ -7,9 +7,7 @@
 
 ## Changed
 - Userid instead of email is used for hidden field in surveys (Leiden)
-
-## Fixed
-
+- Set status to 'draft' by default when creating a project
 
 ## 2020-07-09 - Workshops
 
