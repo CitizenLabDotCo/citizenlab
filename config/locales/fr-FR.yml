@@ -32,22 +32,22 @@ fr:
     sustainability_description: Développement durable
     mobility: Mobilité
     mobility_description: Mobilité
-    technology: Technologie
-    technology_description: Technologie
-    economy: Emploi, economie et commerce
-    economy_description: Emploi, economie et commerce
+    technology: Énergie et technologie
+    technology_description: Énergie et technologie
+    economy: Emploi, economie et tourisme
+    economy_description: Emploi, economie et tourisme
     housing: Logement
     housing_description: Logement
-    public_space: Bâtiments et lieux publics
+    public_space: Espaces et bâtiments publics
     public_space_description: Espaces et bâtiments publics
     safety: Sécurité
     safety_description: Sécurité
     education: Éducation et jeunesse
     education_description: Éducation et jeunesse
-    culture: Art, culture et événements
-    culture_description: Art, culture et événements
-    health: Santé
-    health_description: Santé
+    culture: Culture, sports et événements
+    culture_description: Culture, sports et événements
+    health: Santé et bien-être
+    health_description: Santé et bien-être
     inclusion: Social
     inclusion_description: Social
     community: Développement communautaire
