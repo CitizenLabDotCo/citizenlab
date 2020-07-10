@@ -15,6 +15,15 @@ export type ISuccessStory = {
   page_slug: string;
 };
 
+export type TenantSettingsFeatureNames = 'demographic_fields' |
+'password_login' | 'facebook_login' | 'google_login' | 'azure_ad_login' | 'franceconnect_login' |
+'manual_project_sorting' | 'admin_project_templates' | 'pages' |
+'groups' | 'projects' | 'projects_phases' | 'projects_pages' |
+'projects_events' | 'projects_info' | 'excel_export' | 'private_projects' |
+'maps' | 'participatory_budgeting' | 'initiatives' | 'fragments' |
+'verficiation' | 'idea_custom_fields' | 'user_custom_fields' |
+'volunteering' | 'smart_groups';
+
 export interface ITenantSettings {
   core: {
     allowed: boolean;
@@ -74,14 +83,15 @@ export interface ITenantSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
-  manual_project_sorting?: {
+  franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
+    environment: string;
+    identifier: string;
+    secret: string;
   };
-  admin_project_templates?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
+  manual_project_sorting?: TenantFeature;
+  admin_project_templates?: TenantFeature;
   pages?: TenantFeature;
   groups?: TenantFeature;
   projects?: TenantFeature;
@@ -112,6 +122,7 @@ export interface ITenantSettings {
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
+  smart_groups?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
