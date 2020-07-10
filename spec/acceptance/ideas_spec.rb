@@ -60,6 +60,18 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
+    example "List all ideas for a topic with other filters enabled", document: false do
+      t1 = create(:topic)
+
+      i1 = @ideas.first
+      i1.project.update!(topics: Topic.all)
+      i1.topics << t1
+      i1.save
+
+      do_request topics: [t1.id], sort: 'random'
+      expect(status).to eq(200)
+    end
+
     example "List all ideas which match one of the given topics", document: false do
       t1 = create(:topic)
       t2 = create(:topic)
