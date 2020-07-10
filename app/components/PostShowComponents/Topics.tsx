@@ -50,10 +50,11 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 const Topics = memo<Props & InjectedLocalized>(({ topics, localize, className, postType }) => {
+
   if (!isNilOrError(topics) && topics.length > 0) {
     return (
       <Container id={`e2e-${postType}-topics`} className={className}>
-        {topics.map((topic: ITopicData) => {
+        {topics.filter(topic => !isNilOrError(topic)).map((topic: ITopicData) => {
           return <Topic key={topic.id} className={`e2e-${postType}-topic`}>{localize(topic.attributes.title_multiloc)}</Topic>;
         })}
       </Container>
@@ -63,14 +64,14 @@ const Topics = memo<Props & InjectedLocalized>(({ topics, localize, className, p
   return null;
 });
 
-const TopicsWithHOCs = injectLocalize<Props>(Topics);
+const TopicsWithHoCs = injectLocalize<Props>(Topics);
 
 const Data = adopt<DataProps, InputProps>({
-  topics: ({ topicIds, render }) => <GetTopics ids={topicIds}>{render}</GetTopics>
+  topics: ({ topicIds, render }) => <GetTopics topicIds={topicIds}>{render}</GetTopics>
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <TopicsWithHOCs {...inputProps} {...dataProps} />}
+    {dataProps => <TopicsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

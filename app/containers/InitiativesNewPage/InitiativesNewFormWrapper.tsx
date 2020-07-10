@@ -6,6 +6,7 @@ import InitiativeForm, { FormValues, SimpleFormValues } from 'components/Initiat
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
 import { addInitiative, updateInitiative, IInitiativeData, IInitiativeAdd } from 'services/initiatives';
+import { ITopicData } from 'services/topics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -36,6 +37,7 @@ interface InputProps {
   locale: Locale;
   location_description?: string;
   location_point_geojson?: Point;
+  topics: ITopicData[];
 }
 
 interface DataProps {
@@ -328,7 +330,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
 
   render() {
     const { initiativeId, hasBannerChanged, hasImageChanged, ...otherProps } = this.state;
-    const { locale } = this.props;
+    const { locale, topics } = this.props;
 
     return (
       <StyledInitiativeForm
@@ -344,6 +346,7 @@ export default class InitiativesNewFormWrapper extends React.PureComponent<Props
         onChangeImage={this.onChangeImage}
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
+        topics={topics}
       />
     );
   }

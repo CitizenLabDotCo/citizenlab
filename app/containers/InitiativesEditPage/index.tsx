@@ -7,6 +7,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 
 // services
 import { isAdmin, isSuperAdmin, isModerator } from 'services/permissions/roles';
+import { ITopicData } from 'services/topics';
 
 // resources
 import HasPermission from 'components/HasPermission';
@@ -16,6 +17,7 @@ import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative'
 import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
 import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
 import { PreviousPathnameContext } from 'context';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -46,6 +48,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
   locale: GetLocaleChildProps;
   previousPathName: string | null;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends DataProps { }
@@ -78,9 +81,20 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
   }
 
   render() {
-    const { authUser, locale, initiative, initiativeImages, initiativeFiles } = this.props;
-    if (isNilOrError(authUser) || isNilOrError(locale) || isNilOrError(initiative) || initiativeImages === undefined || initiativeFiles === undefined || isError(initiativeFiles)) return null;
+    const { authUser, locale, initiative, initiativeImages, initiativeFiles, topics } = this.props;
+    if (
+      isNilOrError(authUser) ||
+      isNilOrError(locale) ||
+      isNilOrError(initiative) ||
+      initiativeImages === undefined ||
+      initiativeFiles === undefined ||
+      isError(initiativeFiles) ||
+      isNilOrError(topics)
+    ) {
+      return null;
+    }
 
+    const initiativeTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
     return (
       <HasPermission item={initiative} action="edit" context={initiative}>
         <InitiativesEditMeta />
@@ -91,6 +105,7 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
             initiativeImage={isNilOrError(initiativeImages) || initiativeImages.length === 0 ? null : initiativeImages[0]}
             onPublished={this.onPublished}
             initiativeFiles={initiativeFiles}
+            topics={initiativeTopics}
           />
         </PageLayout>
       </HasPermission>
@@ -101,10 +116,11 @@ export class InitiativesEditPage extends React.PureComponent<Props> {
 const Data = adopt<DataProps, WithRouterProps>({
   authUser: <GetAuthUser />,
   locale: <GetLocale />,
+  topics: <GetTopics exclude_code={'custom'} />,
   initiative: ({ params, render }) => <GetInitiative id={params.initiativeId}>{render}</GetInitiative>,
   initiativeImages: ({ params, render }) => <GetInitiativeImages initiativeId={params.initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ params, render }) => <GetResourceFileObjects resourceId={params.initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,
-  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>
+  previousPathName: ({ render }) => <PreviousPathnameContext.Consumer>{render as any}</PreviousPathnameContext.Consumer>,
 });
 
 export default withRouter((withRouterProps: WithRouterProps) => (
