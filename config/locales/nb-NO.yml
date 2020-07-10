@@ -32,10 +32,10 @@ nb:
     sustainability_description: Bærekraftig utvikling
     mobility: Mobilitet
     mobility_description: Mobilitet
-    technology: Teknologi
-    technology_description: Teknologi
-    economy: Arbeid, økonomi og handel
-    economy_description: Arbeid, økonomi og handel
+    technology: Energi og teknologi
+    technology_description: Energi og teknologi
+    economy: Arbeid, økonomi og turisme
+    economy_description: Arbeid, økonomi og turisme
     housing: Bolig
     housing_description: Bolig
     public_space: Offentlige rom og bygninger
@@ -44,10 +44,10 @@ nb:
     safety_description: Sikkerhet
     education: Utdanning og ungdom
     education_description: Utdanning og ungdom
-    culture: Kunst, kultur og arrangementer
-    culture_description: Kunst, kultur og arrangementer
-    health: Omsorg og velferd
-    health_description: Omsorg og velferd
+    culture: Kultur, idrett og arrangementer
+    culture_description: Kultur, idrett og arrangementer
+    health: Helse og velferd
+    health_description: Helse og velferd
     inclusion: Sosial inkludering
     inclusion_description: Sosial inkludering
     community: Samfunnsutvikling

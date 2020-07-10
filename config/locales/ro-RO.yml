@@ -32,10 +32,10 @@ ro:
     sustainability_description: Dezvoltare durabilă
     mobility: Mobilitate
     mobility_description: Mobilitate
-    technology: Tehnologie
-    technology_description: Tehnologie
-    economy: Muncă, economie și comerț
-    economy_description: Muncă, economie și comerț
+    technology: Energie și tehnologie
+    technology_description: Energie și tehnologie
+    economy: Muncă, economie și turism
+    economy_description: Muncă, economie și turism
     housing: Locuințe
     housing_description: Locuințe
     public_space: Spatii publice si cladiri
@@ -44,8 +44,8 @@ ro:
     safety_description: Securitate
     education: Educație și tineret
     education_description: Educație și tineret
-    culture: Artă, cultură și evenimente
-    culture_description: Artă, cultură și evenimente
+    culture: Cultură, sport și evenimente
+    culture_description: Cultură, sport și evenimente
     health: Îngrijire și bunăstare
     health_description: Îngrijire și bunăstare
     inclusion: Incluziune socială

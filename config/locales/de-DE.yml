@@ -32,10 +32,10 @@ de:
     sustainability_description: Nachhaltige Entwicklung
     mobility: Mobilität
     mobility_description: Mobilität
-    technology: Technologie
-    technology_description: Technologie
-    economy: Arbeit, Wirtschaft und Handel
-    economy_description: Arbeit, Wirtschaft und Handel
+    technology: Energie und Technik
+    technology_description: Energie und Technik
+    economy: Arbeit, Wirtschaft und Tourismus
+    economy_description: Arbeit, Wirtschaft und Tourismus
     housing: Wohnen
     housing_description: Wohnen
     public_space: Öffentliche Räume und Gebäude
@@ -44,10 +44,10 @@ de:
     safety_description: Sicherheit
     education: Bildung und Jugend
     education_description: Bildung und Jugend
-    culture: Kunst, Kultur und Veranstaltungen
-    culture_description: Kunst, Kultur und Veranstaltungen
-    health: Fürsorge und Wohlfahrt
-    health_description: Fürsorge und Wohlfahrt
+    culture: Kultur, Sport und Veranstaltungen
+    culture_description: Kultur, Sport und Veranstaltungen
+    health: Gesundheit und Wohlbefinden
+    health_description: Gesundheit und Wohlbefinden
     inclusion: Soziale Inklusion
     inclusion_description: Soziale Inklusion
     community: Entwicklung der Gemeinschaft
