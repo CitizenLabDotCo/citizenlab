@@ -103,7 +103,7 @@ export type TabProps = {
   url: string,
   active?: boolean,
   feature?: string,
-  className?: string,
+  name?: string,
 };
 
 type Props = {
@@ -159,14 +159,14 @@ class TabbedResource extends React.PureComponent<Props & WithRouterProps, State>
               if (tab.feature) {
                 return (
                   <FeatureFlag key={tab.url} name={tab.feature}>
-                    <Tab key={tab.url} className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
+                    <Tab key={tab.url} className={`${tab.name} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
                       <Link to={tab.url}>{tab.label}</Link>
                     </Tab>
                   </FeatureFlag>
                 );
               } else {
                 return (
-                  <Tab key={tab.url} className={`${tab.className} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
+                  <Tab key={tab.url} className={`${tab.name} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
                     <Link to={tab.url}>{tab.label}</Link>
                   </Tab>
                 );
