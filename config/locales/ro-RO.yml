@@ -38,24 +38,24 @@ ro:
     economy_description: Muncă, economie și comerț
     housing: Locuințe
     housing_description: Locuințe
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
+    public_space: Spatii publice si cladiri
+    public_space_description: Spatii publice si cladiri
+    safety: Securitate
+    safety_description: Securitate
     education: Educație și tineret
     education_description: Educație și tineret
     culture: Artă, cultură și evenimente
     culture_description: Artă, cultură și evenimente
     health: Îngrijire și bunăstare
     health_description: Îngrijire și bunăstare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    inclusion: Incluziune socială
+    inclusion_description: Incluziune socială
+    community: Dezvoltare comunitară
+    community_description: Dezvoltare comunitară
+    services: Serviciul Public
+    services_description: Serviciul Public
+    other: alții
+    other_description: alții
   pages:
     terms_and_conditions_title: Termeni și condiții
     terms_and_conditions_body: >
