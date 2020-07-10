@@ -38,24 +38,24 @@ pt:
     economy_description: Trabalho, economia e comércio
     housing: Moradia
     housing_description: Moradia
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
+    public_space: Espaços e edifícios públicos
+    public_space_description: Espaços e edifícios públicos
+    safety: Segurança
+    safety_description: Segurança
     education: Educação e juventude
     education_description: Educação e juventude
     culture: Artes, cultura e eventos
     culture_description: Artes, cultura e eventos
     health: Cuidados e bem-estar
     health_description: Cuidados e bem-estar
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    inclusion: Inclusão social
+    inclusion_description: Inclusão social
+    community: desenvolvimento comunitário
+    community_description: desenvolvimento comunitário
+    services: Serviços públicos
+    services_description: Serviços públicos
+    other: Outros
+    other_description: Outros
   pages:
     terms_and_conditions_title: Termos
     terms_and_conditions_body: >
