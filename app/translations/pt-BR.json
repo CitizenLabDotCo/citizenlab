@@ -190,7 +190,7 @@
   "app.components.InitiativeForm.titleLengthError": "O título da proposta deve ter pelo menos 10 caracteres",
   "app.components.InitiativeForm.topicEmptyError": "Por favor, forneça um tópico",
   "app.components.InitiativeForm.topicsLabel": "Selecione o tópico da sua proposta",
-  "app.components.InitiativeForm.topicsLabelDescription": "Select the topics that best cover your proposal.",
+  "app.components.InitiativeForm.topicsLabelDescription": "Selecione os tópicos que são relacionados à sua proposta",
   "app.components.InitiativesMap.noInitiativesWithLocation": "As propostas deste projecto não têm qualquer informação de localização.",
   "app.components.InitiativesMap.postInitiativeHere": "Faça aqui uma proposta",
   "app.components.InitiativesMap.seeInitiative": "Ver proposta",
