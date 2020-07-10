@@ -22,7 +22,7 @@ export type TenantSettingsFeatureNames = 'demographic_fields' |
 'projects_events' | 'projects_info' | 'excel_export' | 'private_projects' |
 'maps' | 'participatory_budgeting' | 'initiatives' | 'fragments' |
 'verfication' | 'idea_custom_fields' | 'user_custom_fields' |
-'volunteering' | 'smart_groups';
+'volunteering' | 'smart_groups' | 'manual_emailing' | 'automated_emailing_control';
 
 export interface ITenantSettings {
   core: {
@@ -127,6 +127,8 @@ export interface ITenantSettings {
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
   smart_groups?: TenantFeature;
+  manual_emailing?: TenantFeature;
+  automated_emailing_control?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
