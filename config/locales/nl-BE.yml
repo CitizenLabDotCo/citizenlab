@@ -32,10 +32,10 @@ nl-BE:
     sustainability_description: Duurzame ontwikkeling
     mobility: Mobiliteit
     mobility_description: Mobiliteit
-    technology: Technologie
-    technology_description: Technologie
-    economy: Werk, economie en handel
-    economy_description: Werk, economie en handel
+    technology: Energie en technologie
+    technology_description: Energie en technologie
+    economy: Werk, economie en toerisme
+    economy_description: Werk, economie en toerisme
     housing: Wonen
     housing_description: Wonen
     public_space: Openbare ruimtes en gebouwen
@@ -44,10 +44,10 @@ nl-BE:
     safety_description: Veiligheid
     education: Onderwijs en jeugd
     education_description: Onderwijs en jeugd
-    culture: Kunst, cultuur en evenementen
-    culture_description: Kunst, cultuur en evenementen
-    health: Zorg en welzijn
-    health_description: Zorg en welzijn
+    culture: Cultuur, sport en evenementen
+    culture_description: Cultuur, sport en evenementen
+    health: Gezondheid en welzijn
+    health_description: Gezondheid en welzijn
     inclusion: Sociale inclusie
     inclusion_description: Sociale inclusie
     community: Ontwikkeling gemeenschap
