@@ -38,24 +38,24 @@ de:
     economy_description: Arbeit, Wirtschaft und Handel
     housing: Wohnen
     housing_description: Wohnen
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
+    public_space: Öffentliche Räume und Gebäude
+    public_space_description: Öffentliche Räume und Gebäude
+    safety: Sicherheit
+    safety_description: Sicherheit
     education: Bildung und Jugend
     education_description: Bildung und Jugend
     culture: Kunst, Kultur und Veranstaltungen
     culture_description: Kunst, Kultur und Veranstaltungen
     health: Fürsorge und Wohlfahrt
     health_description: Fürsorge und Wohlfahrt
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    inclusion: Soziale Eingliederung
+    inclusion_description: Soziale Eingliederung
+    community: Entwicklung der Gemeinschaft
+    community_description: Entwicklung der Gemeinschaft
+    services: Öffentliche Dienste
+    services_description: Öffentliche Dienste
+    other: Andere
+    other_description: Andere
   pages:
     terms_and_conditions_title: Verwendungsbedingungen
     terms_and_conditions_body: >
