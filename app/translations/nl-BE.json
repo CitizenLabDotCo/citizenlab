@@ -190,7 +190,7 @@
   "app.components.InitiativeForm.titleLengthError": "De titel van je voorstel moet ten minste 10 tekens lang zijn",
   "app.components.InitiativeForm.topicEmptyError": "Gelieve een thema toe te voegen",
   "app.components.InitiativeForm.topicsLabel": "Kies het thema van je voorstel",
-  "app.components.InitiativeForm.topicsLabelDescription": "Selecteer de thema's die jouw voorstel het best beschrijven.",
+  "app.components.InitiativeForm.topicsLabelDescription": "Selecteer de thema's die jouw voorstel het best beschrijven",
   "app.components.InitiativesMap.noInitiativesWithLocation": "De voorstellen in dit project hebben geen locatie.",
   "app.components.InitiativesMap.postInitiativeHere": "Plaats hier een voorstel",
   "app.components.InitiativesMap.seeInitiative": "Toon dit voorstel",
