@@ -38,24 +38,24 @@ nb:
     economy_description: Arbeid, økonomi og handel
     housing: Boliger
     housing_description: Boliger
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
+    public_space: Offentlige rom og bygninger
+    public_space_description: Offentlige rom og bygninger
+    safety: Sikkerhet
+    safety_description: Sikkerhet
     education: Utdanning og ungdom
     education_description: Utdanning og ungdom
     culture: Kunst, kultur og arrangementer
     culture_description: Kunst, kultur og arrangementer
     health: Omsorg og velferd
     health_description: Omsorg og velferd
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    inclusion: Sosial inkludering
+    inclusion_description: Sosial inkludering
+    community: Samfunnsutvikling
+    community_description: Samfunnsutvikling
+    services: Offentlige tjenester
+    services_description: Offentlige tjenester
+    other: Annet
+    other_description: Annet
   pages:
     terms_and_conditions_title: Vilkår og betingelser
     terms_and_conditions_body: >
