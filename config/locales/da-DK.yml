@@ -24,34 +24,38 @@ da:
     ineligible: uegnet
     ineligible_description: uegnet
   topics:
-    infrastructure: Firkanter og gader
-    infrastructure_description: Firkanter og gader
-    waste: Renlighed og affald
-    waste_description: Renlighed og affald
-    mobility: Mobilitet
-    mobility_description: Mobilitet
-    technology: Teknologi
-    technology_description: Teknologi
-    economy: Arbejde, økonomi og handel
-    economy_description: Arbejde, økonomi og handel
     nature: Natur og biodiversitet
     nature_description: Natur og biodiversitet
+    waste: Renlighed og affald
+    waste_description: Renlighed og affald
     sustainability: Bæredygtig udvikling
     sustainability_description: Bæredygtig udvikling
+    mobility: Mobilitet
+    mobility_description: Mobilitet
+    technology: Energi og teknologi
+    technology_description: Energi og teknologi
+    economy: Arbejde, økonomi og turisme
+    economy_description: Arbejde, økonomi og turisme
     housing: Boliger
     housing_description: Boliger
-    culture: Kunst, kultur og arrangementer
-    culture_description: Kunst, kultur og arrangementer
-    citizenship: Borgerskab
-    citizenship_description: Borgerskab
-    social: Social integration
-    social_description: Social integration
-    health: Pleje og velfærd
-    health_description: Pleje og velfærd
-    sport: Sport
-    sport_description: Sport
+    public_space: Offentlige rum og bygninger
+    public_space_description: Offentlige rum og bygninger
+    safety: Sikkerhed
+    safety_description: Sikkerhed
     education: Uddannelse og ungdom
     education_description: Uddannelse og ungdom
+    culture: Kultur, idræt og arrangementer
+    culture_description: Kunst, kultur og arrangementer
+    health: Helse og velfærd
+    health_description: Helse og velfærd
+    inclusion: Social integration
+    inclusion_description: Social integration
+    community: Udvikling af lokale fællesskaber
+    community_description: Udvikling af lokale fællesskaber
+    services: Offentlige tjenester
+    services_description: Offentlige tjenester
+    other: Andet
+    other_description: Andet
   pages:
     terms_and_conditions_title: Vilkår og Betingelser
     terms_and_conditions_body: >

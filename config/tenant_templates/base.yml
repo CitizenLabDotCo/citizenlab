@@ -68,48 +68,86 @@ models:
       color: '#E52516'
       description_multiloc: initiative_statuses.ineligible_description
   topic:
-    -
-      title_multiloc: topics.infrastructure
-      description_multiloc: topics.infrastructure_description
-    -
-      title_multiloc: topics.waste
-      description_multiloc: topics.waste_description
-    -
-      title_multiloc: topics.mobility
-      description_multiloc: topics.mobility_description
-    -
-      title_multiloc: topics.technology
-      description_multiloc: topics.technology_description
-    -
-      title_multiloc: topics.economy
-      description_multiloc: topics.economy_description
-    -
+    - &topic-nature
       title_multiloc: topics.nature
       description_multiloc: topics.nature_description
-    -
+      code: nature
+      ordering: 0
+    - &topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
+      code: waste
+      ordering: 1
+    - &topic-sustainability
       title_multiloc: topics.sustainability
       description_multiloc: topics.sustainability_description
-    -
+      code: sustainability
+      ordering: 2
+    - &topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
+      code: mobility
+      ordering: 3
+    - &topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
+      code: technology
+      ordering: 4
+    - &topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
+      code: economy
+      ordering: 5
+    - &topic-housing
       title_multiloc: topics.housing
       description_multiloc: topics.housing_description
-    -
-      title_multiloc: topics.culture
-      description_multiloc: topics.culture_description
-    -
-      title_multiloc: topics.citizenship
-      description_multiloc: topics.citizenship_description
-    -
-      title_multiloc: topics.social
-      description_multiloc: topics.social_description
-    -
-      title_multiloc: topics.health
-      description_multiloc: topics.health_description
-    -
-      title_multiloc: topics.sport
-      description_multiloc: topics.sport_description
-    -
+      code: housing
+      ordering: 6
+    - &topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
+      code: public_space
+      ordering: 7
+    - &topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
+      code: safety
+      ordering: 8
+    - &topic-education
       title_multiloc: topics.education
       description_multiloc: topics.education_description
+      code: education
+      ordering: 9
+    - &topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
+      code: culture
+      ordering: 10
+    - &topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
+      code: health
+      ordering: 11
+    - &topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
+      code: inclusion
+      ordering: 12
+    - &topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
+      code: community
+      ordering: 13
+    - &topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
+      code: services
+      ordering: 14
+    - &topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
+      code: other
+      ordering: 15
   page:
     - &1
       title_multiloc: pages.infopage_title
@@ -147,7 +185,6 @@ models:
       title_multiloc: pages.initiatives_success_3_title
       body_multiloc: pages.initiatives_success_3_body
       slug: initiatives-success-3
-
   page_link:
     - linking_page_ref: *1
       linked_page_ref: *2
@@ -202,6 +239,55 @@ models:
   project_image:
     - remote_image_url: https://res.cloudinary.com/citizenlabco/image/upload/v1539874546/undraw_brainstorming_49d4_iaimmn.png
       project_ref: *open_idea_project
+  projects_topic:
+    - project_ref: *open_idea_project
+      topic_ref: *topic-nature
+      ordering: 0
+    - project_ref: *open_idea_project
+      topic_ref: *topic-waste
+      ordering: 1
+    - project_ref: *open_idea_project
+      topic_ref: *topic-sustainability
+      ordering: 2
+    - project_ref: *open_idea_project
+      topic_ref: *topic-mobility
+      ordering: 3
+    - project_ref: *open_idea_project
+      topic_ref: *topic-technology
+      ordering: 4
+    - project_ref: *open_idea_project
+      topic_ref: *topic-economy
+      ordering: 5
+    - project_ref: *open_idea_project
+      topic_ref: *topic-housing
+      ordering: 6
+    - project_ref: *open_idea_project
+      topic_ref: *topic-public_space
+      ordering: 7
+    - project_ref: *open_idea_project
+      topic_ref: *topic-safety
+      ordering: 8
+    - project_ref: *open_idea_project
+      topic_ref: *topic-education
+      ordering: 9
+    - project_ref: *open_idea_project
+      topic_ref: *topic-culture
+      ordering: 10
+    - project_ref: *open_idea_project
+      topic_ref: *topic-health
+      ordering: 11
+    - project_ref: *open_idea_project
+      topic_ref: *topic-inclusion
+      ordering: 12
+    - project_ref: *open_idea_project
+      topic_ref: *topic-community
+      ordering: 13
+    - project_ref: *open_idea_project
+      topic_ref: *topic-services
+      ordering: 14
+    - project_ref: *open_idea_project
+      topic_ref: *topic-other
+      ordering: 15
   event:
     - project_ref: *open_idea_project
       title_multiloc: events.council_meeting_title

@@ -101,6 +101,9 @@ Rails.application.routes.draw do
       resources :topics do
         patch 'reorder', on: :member
       end
+      resources :projects_topics, only: [:index, :show, :create, :reorder, :destroy] do
+        patch 'reorder', on: :member
+      end
       resources :areas
 
       resources :tenants, only: [:update] do
@@ -130,6 +133,10 @@ Rails.application.routes.draw do
       end
       resources :projects, concerns: :participation_context, defaults: {parent_param: :project_id} do
         resources :events, only: [:index, :new, :create]
+        resources :projects_topics, only: [:index]
+        resources :topics, only: [:index, :reorder] do
+          patch 'reorder', on: :member
+        end
         resources :phases, only: [:index, :new, :create]
         resources :images, defaults: {container_type: 'Project'}
         resources :files, defaults: {container_type: 'Project'}

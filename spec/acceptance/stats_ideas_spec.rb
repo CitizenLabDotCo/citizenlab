@@ -122,9 +122,10 @@ resource "Stats - Ideas" do
       let(:end_at) { (now - 1.year).in_time_zone(@timezone).end_of_year }
 
       before do
-        @project = create(:project)
+        topic = create(:topic)
+        @project = create(:project, topics: [topic])
         travel_to start_at + 2.months do
-          idea = create(:idea, project: @project, topics: [create(:topic)])
+          idea = create(:idea, project: @project, topics: [topic])
           create(:idea)
         end
       end

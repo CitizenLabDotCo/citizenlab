@@ -21,37 +21,41 @@ pl:
     threshold_reached_description: próg poparcia osiągnięty
     answered: z odpowiedzią
     answered_description: z odpowiedzią
-    ineligible: niekwalifikowana
-    ineligible_description: niekwalifikowalna
+    ineligible: niekwalifikowalna
+    ineligible_description: niekwalifikowana
   topics:
-    infrastructure: Place i ulice
-    infrastructure_description: Place i ulice
-    waste: Czystość i odpady
-    waste_description: Czystość i odpady
-    mobility: Mobilność
-    mobility_description: Mobilność
-    technology: Technologia
-    technology_description: Technologia
-    economy: Praca, gospodarka i handel
-    economy_description: Praca, gospodarka i handel
     nature: Przyroda i różnorodność biologiczna
     nature_description: Przyroda i różnorodność biologiczna
+    waste: Czystość i odpady
+    waste_description: Czystość i odpady
     sustainability: Zrównoważony rozwój
     sustainability_description: Zrównoważony rozwój
+    mobility: Mobilność
+    mobility_description: Mobilność
+    technology: Energia i technologia
+    technology_description: Energia i technologia
+    economy: Praca, gospodarka i turystyka
+    economy_description: Praca, gospodarka i turystyka
     housing: Mieszkalnictwo
     housing_description: Mieszkalnictwo
-    culture: Sztuki piękne, kultura i wydarzenia
-    culture_description: Sztuki piękne, kultura i wydarzenia
-    citizenship: Obywatelstwo
-    citizenship_description: Obywatelstwo
-    social: Integracja społeczna
-    social_description: Integracja społeczna
-    health: Opieka społeczna
-    health_description: Opieka społeczna
-    sport: Sport
-    sport_description: Sport
+    public_space: Przestrzeń publiczna i budynki
+    public_space_description: Przestrzeń publiczna i budynki
+    safety: Bezpieczeństwo
+    safety_description: Bezpieczeństwo
     education: Edukacja i młodzież
     education_description: Edukacja i młodzież
+    culture: Kultura, sport i wydarzenia
+    culture_description: Kultura, sport i wydarzenia
+    health: Zdrowie i opieka
+    health_description: Zdrowie i opieka
+    inclusion: Integracja społeczna
+    inclusion_description: Integracja społeczna
+    community: Rozwój lokalny
+    community_description: Rozwój lokalny
+    services: Usługi publiczne
+    services_description: Usługi publiczne
+    other: Inny
+    other_description: Inny
   pages:
     terms_and_conditions_title: Regulamin
     terms_and_conditions_body: >
