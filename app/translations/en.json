@@ -1205,7 +1205,7 @@
   "app.containers.AdminPage.SettingsPage.fieldTitle": "Area name",
   "app.containers.AdminPage.SettingsPage.fieldTitleTooltip": "The name you choose for each area will be visible for citizens during signup and when filtering projects.",
   "app.containers.AdminPage.SettingsPage.fieldTopicTitle": "Topic name",
-  "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible for citizens.",
+  "app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip": "The name you choose for each topic will be visible to the platform users.",
   "app.containers.AdminPage.SettingsPage.header": "Homepage banner",
   "app.containers.AdminPage.SettingsPage.headerOverlayColor": "Header overlay color",
   "app.containers.AdminPage.SettingsPage.headerOverlayOpacity": "Signed out header overlay opacity",
