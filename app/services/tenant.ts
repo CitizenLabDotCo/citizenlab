@@ -23,7 +23,8 @@ export type TenantSettingsFeatureNames = 'demographic_fields' |
 'maps' | 'participatory_budgeting' | 'initiatives' | 'fragments' |
 'verification' | 'idea_custom_fields' | 'user_custom_fields' |
 'volunteering' | 'smart_groups' | 'manual_emailing' | 'automated_emailing_control' |
-'typeform_surveys' | 'surveys';
+'typeform_surveys' | 'surveys' | 'google_forms_surveys' | 'surveymonkey_surveys' |
+'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets';
 
 export interface ITenantSettings {
   core: {
@@ -136,6 +137,12 @@ export interface ITenantSettings {
     user_token: string
   };
   surveys?: TenantFeature;
+  google_forms_surveys?: TenantFeature;
+  surveymonkey_surveys?: TenantFeature;
+  project_folders?: TenantFeature;
+  clustering?: TenantFeature;
+  geographic_dashboard?: TenantFeature;
+  widgets?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
