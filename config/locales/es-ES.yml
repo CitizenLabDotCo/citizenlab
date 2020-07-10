@@ -38,8 +38,8 @@ es:
     economy_description: Trabajo, economía y comercio
     housing: Vivienda
     housing_description: Vivienda
-    public_space: Espacios y edificios públicos
-    public_space_description: Espacios y edificios públicos
+    public_space: Espacios públicos y edificios
+    public_space_description: Espacios públicos y edificios
     safety: Seguridad
     safety_description: Seguridad
     education: Educación y juventud
@@ -50,12 +50,12 @@ es:
     health_description: Cuidado y bienestar
     inclusion: Inclusión social
     inclusion_description: Inclusión social
-    community: Desarrollo de la comunidad
-    community_description: Desarrollo de la comunidad
-    services: Servicios públicos
-    services_description: Servicios públicos
-    other: Otros
-    other_description: Otros
+    community: Desarrollo comunitario
+    community_description: Desarrollo comunitario
+    services: Servicio público
+    services_description: Servicio público
+    other: Otro
+    other_description: Otro
   pages:
     terms_and_conditions_title: Términos y Condiciones
     terms_and_conditions_body: >
