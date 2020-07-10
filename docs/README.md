@@ -1,5 +1,16 @@
 # Changelog
 
+## 2020-07-10
+
+## Added
+- Project topics
+
+## Changed
+- Userid instead of email is used for hidden field in surveys (Leiden)
+
+## Fixed
+
+
 ## 2020-07-09 - Workshops
 
 ## Fixed
