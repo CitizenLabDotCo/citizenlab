@@ -190,7 +190,7 @@
   "app.components.InitiativeForm.titleLengthError": "Titlul propunerii trebuie să fie de cel puțin 10 caractere",
   "app.components.InitiativeForm.topicEmptyError": "Vă rugăm să furnizați un subiect",
   "app.components.InitiativeForm.topicsLabel": "Selectați subiectul propunerii dvs.",
-  "app.components.InitiativeForm.topicsLabelDescription": "Select the topics that best cover your proposal.",
+  "app.components.InitiativeForm.topicsLabelDescription": "Selectați subiectele care acoperă cel mai bine propunerea dvs.",
   "app.components.InitiativesMap.noInitiativesWithLocation": "Propunerile din acest proiect nu oferă informații cu privire la locație.",
   "app.components.InitiativesMap.postInitiativeHere": "Postați o propunere aici",
   "app.components.InitiativesMap.seeInitiative": "Vizualizați propunerea",
