@@ -33,9 +33,9 @@ es-CL:
     mobility: Movilidad
     mobility_description: Movilidad
     technology: Tecnología
-    technology_description: Tecnología
+    technology_description: Energía y tecnología
     economy: Trabajo, economía y comercio
-    economy_description: Trabajo, economía y comercio
+    economy_description: Trabajo, economía y turismo
     housing: Vivienda
     housing_description: Vivienda
     public_space: Public spaces and buildings
@@ -44,10 +44,10 @@ es-CL:
     safety_description: Safety
     education: Educación y juventud
     education_description: Educación y juventud
-    culture: Arte, cultura y eventos
-    culture_description: Arte, cultura y eventos
-    health: Cuidado y bienestar
-    health_description: Cuidado y bienestar
+    culture: Cultura, deportes y eventos
+    culture_description: Cultura, deportes y eventos
+    health: Salud y bienestar
+    health_description: Salud y bienestar
     inclusion: Social inclusion
     inclusion_description: Social inclusion
     community: Community development
