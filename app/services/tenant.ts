@@ -17,14 +17,14 @@ export type ISuccessStory = {
 
 export type TenantSettingsFeatureNames = 'demographic_fields' |
 'password_login' | 'facebook_login' | 'google_login' | 'azure_ad_login' | 'franceconnect_login' |
-'manual_project_sorting' | 'admin_project_templates' | 'pages' |
-'groups' | 'projects' | 'projects_phases' | 'projects_pages' |
-'projects_events' | 'projects_info' | 'excel_export' | 'private_projects' |
+'manual_project_sorting' | 'admin_project_templates' | 'pages' | 'private_projects' |
 'maps' | 'participatory_budgeting' | 'initiatives' | 'fragments' |
 'verification' | 'idea_custom_fields' | 'user_custom_fields' |
 'volunteering' | 'smart_groups' | 'manual_emailing' | 'automated_emailing_control' |
 'typeform_surveys' | 'surveys' | 'google_forms_surveys' | 'surveymonkey_surveys' |
-'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets' | 'granular_permissions';
+'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets' | 'ideas_overview' | 'workshops' |
+'ideaflow_social_sharing' | 'initiativeflow_social_sharing' | 'machine_translations' | 'custom_topics' |
+'similar_ideas' | 'polls' | 'disable_downvoting' | 'granular_permissions';
 
 export interface ITenantSettings {
   core: {
@@ -65,6 +65,7 @@ export interface ITenantSettings {
     allowed: boolean;
     enabled: boolean;
     phone?: boolean;
+    phone_email_pattern?: string;
   };
   facebook_login?: {
     allowed: boolean;
@@ -95,13 +96,6 @@ export interface ITenantSettings {
   manual_project_sorting?: TenantFeature;
   admin_project_templates?: TenantFeature;
   pages?: TenantFeature;
-  groups?: TenantFeature;
-  projects?: TenantFeature;
-  projects_phases?: TenantFeature;
-  projects_pages?: TenantFeature;
-  projects_events?: TenantFeature;
-  projects_info?: TenantFeature;
-  excel_export?: TenantFeature;
   private_projects?: TenantFeature;
   maps?: TenantMapSettings;
   participatory_budgeting?: TenantFeature;
@@ -128,6 +122,8 @@ export interface ITenantSettings {
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
+  workshops?: TenantFeature;
+  ideas_overview?: TenantFeature;
   smart_groups?: TenantFeature;
   manual_emailing?: TenantFeature;
   automated_emailing_control?: TenantFeature;
@@ -144,6 +140,14 @@ export interface ITenantSettings {
   geographic_dashboard?: TenantFeature;
   widgets?: TenantFeature;
   granular_permissions?: TenantFeature;
+  ideaflow_social_sharing?: TenantFeature;
+  initiativeflow_social_sharing?: TenantFeature;
+  machine_translations?: TenantFeature;
+  custom_topics?: TenantFeature;
+  similar_ideas?: TenantFeature;
+  polls?: TenantFeature;
+  moderation?: TenantFeature;
+  disable_downvoting?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
