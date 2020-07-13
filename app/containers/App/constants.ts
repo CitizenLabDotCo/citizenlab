@@ -40,6 +40,7 @@ export const locales = [
   'kl-GL',
   'hu-HU',
   'ro-RO',
+  'pt-BR',
 ];
 
 export const graphqlLocales = [
@@ -65,7 +66,8 @@ export const graphqlLocales = [
   'plPl',
   'klGl',
   'huHu',
-  'roRo'
+  'roRo',
+  'ptBR',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -86,6 +88,7 @@ export const appLocalePairs = {
   'kl-GL': 'Kalaallisut',
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
+  'pt-BR': 'Português (Brasil)',
   ach: 'Acholi',
 };
 
@@ -113,6 +116,7 @@ export const appGraphqlLocalePairs = {
   klGl: 'kl-GL',
   huHu: 'hu-HU',
   roRo: 'ro-RO',
+  ptBr: 'pt-BR',
 };
 
 export const shortenedAppLocalePairs = {
@@ -132,6 +136,7 @@ export const shortenedAppLocalePairs = {
   'kl-GL': 'Kalaallisut',
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
+  'pt-BR': 'Português',
   ach: 'Acholi',
 };
 
@@ -150,5 +155,6 @@ export const appLocalesMomentPairs = {
   'pl-PL': 'pl',
   'kl-GL': 'da',
   'hu-HU': 'hu',
-  'ro-RO': 'ro'
+  'ro-RO': 'ro',
+  'pt-BR': 'pt',
 };
