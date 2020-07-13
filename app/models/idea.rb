@@ -39,7 +39,6 @@ class Idea < ApplicationRecord
     idea.before_validation :set_idea_status
     idea.before_validation :sanitize_body_multiloc, if: :body_multiloc
   end
-
   after_update :fix_comments_count_on_projects
 
   scope :with_all_topics, (Proc.new do |topic_ids|
@@ -50,9 +49,11 @@ class Idea < ApplicationRecord
   end)
 
   scope :with_some_topics, (Proc.new do |topic_ids|
-    joins(:ideas_topics)
-      .where(ideas_topics: {topic_id: topic_ids})
-      .distinct
+    with_dups = joins(:ideas_topics).where(ideas_topics: {topic_id: topic_ids})
+    # Removing duplicate results in this manner, 
+    # because .distinct gives SQL errors when
+    # combined with other queries.
+    where(id: with_dups)
   end)
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -63,9 +64,8 @@ class Idea < ApplicationRecord
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
-    joins(:areas_ideas)
-      .where(areas_ideas: {area_id: area_ids})
-      .distinct
+    with_dups = joins(:areas_ideas).where(areas_ideas: {area_id: area_ids})
+    where(id: with_dups)
   end)
 
   scope :in_phase, (Proc.new do |phase_id|

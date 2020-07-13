@@ -21,7 +21,9 @@ FactoryBot.define do
       end
       after(:create) do |idea, evaluator|
         evaluator.topics_count.times do |i|
-          idea.topics << create(:topic)
+          topic = create(:topic)
+          idea.project.topics << topic
+          idea.topics << topic
         end
       end
     end
