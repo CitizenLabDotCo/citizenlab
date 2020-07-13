@@ -32,30 +32,30 @@ kl:
     sustainability_description: Piujuartitsilluni ineriartorneq
     mobility: Nikerarsinnaaneq
     mobility_description: Nikerarsinnaaneq
-    technology: Teknologi
-    technology_description: Teknologi
-    economy: Sulineq, aningaasaqarneq niuernerlu
-    economy_description: Sulineq, aningaasaqarneq niuernerlu
+    technology: Nukissiuutit aamma teknologi
+    technology_description: Nukissiuutit aamma teknologi
+    economy: Sulineq, aningaasaqarneq takornariaqarnerlu
+    economy_description: Sulineq, aningaasaqarneq takornariaqarnerlu
     housing: Inissiat
     housing_description: Inissiat
-    public_space: Public spaces and buildings
-    public_space_description: Public spaces and buildings
-    safety: Safety
-    safety_description: Safety
+    public_space: Tamanit ornigarneqartut illullu
+    public_space_description: Tamanit ornigarneqartut illullu
+    safety: Isumannaallisaaneq
+    safety_description: Isumannaallisaaneq
     education: Ilinniartitaaneq inuusuttullu
     education_description: Ilinniartitaaneq inuusuttullu
-    culture: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
-    culture_description: Eqqumiitsuliorneq, kulturi aamma aaqqissuussinerit
-    health: Paaqqutarineqarneq atugarissaarnerlu
-    health_description: Paaqqutarineqarneq atugarissaarnerlu
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: Public services
-    services_description: Public services
-    other: Other
-    other_description: Other
+    culture: Kulturi, timersorneq aaqqissuussinerillu
+    culture_description: Kulturi, timersorneq aaqqissuussinerillu
+    health: Peqqinnissaq atugarissaarnerlu
+    health_description: Peqqinnissaq atugarissaarnerlu
+    inclusion: Akuutitsineq
+    inclusion_description: Akuutitsineq
+    community: Najukkamik ineriartortitsineq
+    community_description: Najukkamik ineriartortitsineq
+    services: Pisortat kiffartuussinerat
+    services_description: Pisortat kiffartuussinerat
+    other: Allat
+    other_description: Allat
   pages:
     terms_and_conditions_title: Vilkår og Betingelser
     terms_and_conditions_body: >
