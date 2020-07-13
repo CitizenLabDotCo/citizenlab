@@ -24,7 +24,7 @@ export type TenantSettingsFeatureNames = 'demographic_fields' |
 'verification' | 'idea_custom_fields' | 'user_custom_fields' |
 'volunteering' | 'smart_groups' | 'manual_emailing' | 'automated_emailing_control' |
 'typeform_surveys' | 'surveys' | 'google_forms_surveys' | 'surveymonkey_surveys' |
-'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets';
+'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets' | 'granular_permissions';
 
 export interface ITenantSettings {
   core: {
@@ -143,6 +143,7 @@ export interface ITenantSettings {
   clustering?: TenantFeature;
   geographic_dashboard?: TenantFeature;
   widgets?: TenantFeature;
+  granular_permissions?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
