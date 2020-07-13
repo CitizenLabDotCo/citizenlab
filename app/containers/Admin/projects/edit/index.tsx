@@ -394,7 +394,7 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
   customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
   projectVisibilityEnabled: <GetFeatureFlag name="project_visibility" />,
-  granularPermissionsEnabled: <GetFeatureFlag name="granular" />,
+  granularPermissionsEnabled: <GetFeatureFlag name="granular_permissions" />,
   projectManagementEnabled: <GetFeatureFlag name="project_management" />,
   ideaAssignmentEnabled: <GetFeatureFlag name="idea_assignment" />,
   phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>,
