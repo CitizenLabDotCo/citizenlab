@@ -18,8 +18,7 @@ export type ISuccessStory = {
 export type TenantSettingsFeatureNames = 'demographic_fields' |
 'password_login' | 'facebook_login' | 'google_login' | 'azure_ad_login' | 'franceconnect_login' |
 'manual_project_sorting' | 'admin_project_templates' | 'pages' |
-'groups' | 'projects' | 'projects_phases' | 'projects_pages' |
-'projects_events' | 'projects_info' | 'excel_export' | 'private_projects' |
+'groups' | 'private_projects' |
 'maps' | 'participatory_budgeting' | 'initiatives' | 'fragments' |
 'verification' | 'idea_custom_fields' | 'user_custom_fields' |
 'volunteering' | 'smart_groups' | 'manual_emailing' | 'automated_emailing_control' |
@@ -97,12 +96,6 @@ export interface ITenantSettings {
   admin_project_templates?: TenantFeature;
   pages?: TenantFeature;
   groups?: TenantFeature;
-  projects?: TenantFeature;
-  projects_phases?: TenantFeature;
-  projects_pages?: TenantFeature;
-  projects_events?: TenantFeature;
-  projects_info?: TenantFeature;
-  excel_export?: TenantFeature;
   private_projects?: TenantFeature;
   maps?: TenantMapSettings;
   participatory_budgeting?: TenantFeature;
