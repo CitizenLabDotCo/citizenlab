@@ -38,7 +38,7 @@ class TenantTemplateService
             model.save(validate: false)
           end
           attributes.each do |field_name, field_value| # taking original attributes to get correct object ID
-            if field_name.end_with?('_attributes') # linking attribute refs
+            if field_name.end_with?('_attributes') && (field_value.is_a? Hash) # linking attribute refs (not supported for lists of attributes)
               submodel = model.send(field_name.chomp '_attributes')
               obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
             end
@@ -68,8 +68,12 @@ class TenantTemplateService
           [locale, translation]
         end.to_h
         new_attributes[field_name] = multiloc_value
-      elsif field_name.end_with?('_attributes')  && (field_value.is_a? Hash)
+      elsif field_name.end_with?('_attributes') && (field_value.is_a? Hash)
         new_attributes[field_name] = restore_template_attributes field_value, obj_to_id_and_class
+      elsif field_name.end_with?('_attributes') && (field_value.is_a? Array)
+        new_attributes[field_name] = field_value.map do |v|
+          restore_template_attributes v, obj_to_id_and_class
+        end
       elsif field_name.end_with?('_ref') 
         ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
         if field_value
