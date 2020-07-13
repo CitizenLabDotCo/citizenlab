@@ -45,7 +45,7 @@ pl:
       "threshold_reached_for_admin": Propozycja osiągnęła próg poparcia w głosowaniu
       "welcome": Po rejestracji
       "admin_digest": Tygodniowy przegląd dla administratorów
-      "moderator_digest": Tygodniowy przegląd dla Menadżer Projektu
+      "moderator_digest": Tygodniowy przegląd dla menadżerów projektu
       "assignee_digest": Tygodniowy przegląd przydzielonych pomysłów
       "user_digest": Tygodniowy przegląd
       "your_proposed_initiatives_digest": Tygodniowy przegląd Twoich propozycji
@@ -53,13 +53,13 @@ pl:
       "manual": Oficjalna wiadomość - wszyscy użytkownicy
       "admin_rights_received": Przyznanie uprawnień administratora - administratorzy
       "comment_deleted_by_admin": Usunięcie Twojego komentarza - wszyscy użytkownicy
-      "comment_marked_as_spam": Zgłoszenie spamu - administratorzy i moderatorzy projektów
+      "comment_marked_as_spam": Zgłoszenie spamu - administratorzy i menadżerowie projektu
       "comment_on_your_comment": Odpowiedź na Twój komentarz - wszyscy użytkownicy
       "comment_on_your_idea": Komentowanie Twojego pomysłu - wszyscy użytkownicy
       "comment_on_your_initiative": Komentowanie Twojej propozycji - wszyscy użytkownicy
       "first_idea_published": Publikacja Twojego pierwszego pomysłu - wszyscy użytkownicy
-      "idea_assigned_to_you": Przydzielenie pomysłu - administratorzy i moderatorzy projektu
-      "idea_marked_as_spam": Zgłaszania pomysłu jako spamu - administratorzy i moderatorzy projektów
+      "idea_assigned_to_you": Przydzielenie pomysłu - administratorzy i menadżerowie projektu
+      "idea_marked_as_spam": Zgłaszania pomysłu jako spamu - administratorzy i menadżerowie projektu
       "idea_published": Publikacja Twojego pomysłu - wszyscy użytkownicy
       "initiative_assigned_to_you": Przydzielenie propozycji - administratorzy
       "initiative_marked_as_spam": Zgłaszanie propozycji jako spamu - administratorzy
@@ -68,12 +68,12 @@ pl:
       "invite_reminder": Przypomnienie o zaproszeniu - wszyscy użytkownicy
       "mention_in_comment": Wzmianka w komentarzu - wszyscy użytkownicy
       "mention_in_official_feedback": Wzmianka w aktualizacji - wszyscy użytkownicy
-      "new_comment_for_admin": Nowy komentarz - administratorzy i moderatorzy projektu
+      "new_comment_for_admin": Nowy komentarz - administratorzy i menadżerowie projektu
       "new_comment_on_commented_idea": Nowy komentarz do pomysłu, który skomentowałeś - wszyscy użytkownicy
       "new_comment_on_commented_initiative": Nowy komentarz do propozycji, którą skomentowałeś - wszyscy użytkownicy
       "new_comment_on_voted_idea": Nowy komentarz do pomysłu, na który głosowałeś - wszyscy użytkownicy
       "new_comment_on_voted_initiative": Nowy komentarz do propozycji, na który głosowałeś - wszyscy użytkownicy
-      "new_idea_for_admin": Nowy pomysł - administratorzy i moderatorzy projektów
+      "new_idea_for_admin": Nowy pomysł - administratorzy i menadżerowie projektu
       "new_initiative_for_admin": Nowy wniosek - administratorzy
       "official_feedback_on_commented_idea": Aktualizacja pomysłu, który skomentowałeś - wszyscy użytkownicy
       "official_feedback_on_commented_initiative": Aktualizacja propozycji, którą skomentowałeś - wszyscy użytkownicy
@@ -82,9 +82,9 @@ pl:
       "official_feedback_on_your_idea": Aktualizacja Twojego pomysłu - wszyscy użytkownicy
       "official_feedback_on_your_initiative": Aktualizacja Twojej propozycji - wszyscy użytkownicy
       "password_reset": Zmiana hasła - wszyscy użytkownicy
-      "project_moderation_rights_received": Otrzymanie prawa do moderacji projektu - moderatorzy projektu
+      "project_moderation_rights_received": Otrzymanie prawa do zarządzania projektem - menadżerowie projektu
       "project_phase_started": Nowy etap projektu - wszyscy użytkownicy
-      "project_phase_upcoming": Nowy etap projektu - administratorzy i moderatorzy projektu
+      "project_phase_upcoming": Nowy etap projektu - administratorzy i menadżerowie projektu
       "status_change_of_commented_idea": Zmiana statusu pomysłu, który skomentowałeś - wszyscy użytkownicy
       "status_change_of_commented_initiative": Zmiana statusu propozycji, którą skomentowałeś - wszyscy użytkownicy
       "status_change_of_voted_idea": Zmiana statusu pomysłu, na który głosowałeś - wszyscy użytkownicy
@@ -94,7 +94,7 @@ pl:
       "threshold_reached_for_admin": Propozycja osiągnęła próg poparcia w głosowaniu - administratorzy
       "welcome": Nowy użytkownik - administratorzy
       "admin_digest": Przegląd tygodniowy - administratorzy
-      "moderator_digest": Przegląd tygodniowy - moderatorzy projektów
-      "assignee_digest": Cotygodniowy przegląd przydzielonych pomysłów - administratorzy i moderatorzy projektów
+      "moderator_digest": Przegląd tygodniowy - menadżerowie projektu
+      "assignee_digest": Cotygodniowy przegląd przydzielonych pomysłów - administratorzy i menadżerowie projektu
       "user_digest": Przegląd tygodniowy - wszyscy użytkownicy
       "your_proposed_initiatives_digest": Tygodniowy przegląd własnych propozycji - wszyscy użytkownicy

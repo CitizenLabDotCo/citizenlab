@@ -114,7 +114,7 @@ def object_from_template classname, attributes
   when 'InitiativeStatus'
     InitiativeStatus.where(code: attributes['code']).first unless attributes['code'] == 'custom'
   when 'Topic'  
-    nil
+    Topic.where(code: attributes['code']).first unless attributes['code'] == 'custom'
   when 'Page'
     Page.where(slug: attributes['slug']).first
   when 'Project'
