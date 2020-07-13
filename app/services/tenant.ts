@@ -54,6 +54,7 @@ export interface ITenantSettings {
     allowed: boolean;
     enabled: boolean;
     phone?: boolean;
+    phone_email_pattern?: string;
   };
   facebook_login?: {
     allowed: boolean;
@@ -112,6 +113,8 @@ export interface ITenantSettings {
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
+  workshops?: TenantFeature;
+  ideas_overview?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
