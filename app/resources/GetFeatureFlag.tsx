@@ -3,12 +3,12 @@ import { get } from 'lodash-es';
 import { Subscription } from 'rxjs';
 
 // services
-import { currentTenantStream, ITenant } from 'services/tenant';
+import { currentTenantStream, ITenant, TenantSettingsFeatureNames } from 'services/tenant';
 
 type children = (renderProps: GetFeatureFlagChildProps) => JSX.Element | null;
 
 interface Props {
-  name?: string;
+  name?: TenantSettingsFeatureNames;
   children?: children;
 }
 
