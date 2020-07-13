@@ -22,7 +22,9 @@ export type TenantSettingsFeatureNames = 'demographic_fields' |
 'verification' | 'idea_custom_fields' | 'user_custom_fields' |
 'volunteering' | 'smart_groups' | 'manual_emailing' | 'automated_emailing_control' |
 'typeform_surveys' | 'surveys' | 'google_forms_surveys' | 'surveymonkey_surveys' |
-'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets' | 'ideas_overview' | 'workshops';
+'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets' | 'ideas_overview' | 'workshops' |
+'ideaflow_social_sharing' | 'initiativeflow_social_sharing' | 'machine_translations' | 'custom_topics' |
+'similar_ideas' | 'polls' | 'disable_downvoting';
 
 export interface ITenantSettings {
   core: {
@@ -137,6 +139,14 @@ export interface ITenantSettings {
   clustering?: TenantFeature;
   geographic_dashboard?: TenantFeature;
   widgets?: TenantFeature;
+  ideaflow_social_sharing?: TenantFeature;
+  initiativeflow_social_sharing?: TenantFeature;
+  machine_translations?: TenantFeature;
+  custom_topics?: TenantFeature;
+  similar_ideas?: TenantFeature;
+  polls?: TenantFeature;
+  moderation?: TenantFeature;
+  disable_downvoting?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
