@@ -1275,7 +1275,7 @@
   "app.containers.AdminPage.Topics.deleteTopicLabel": "Eliminar",
   "app.containers.AdminPage.Topics.fewerThanOneTopicWarning": "Se requiere al menos un tema de proyecto. Si no quieres permitir que los usuarios añadan temas a sus ideas, puedes deshabilitar los temas en la pestaña {ideaFormLink}.",
   "app.containers.AdminPage.Topics.ideaForm": "Formulario de la idea",
-  "app.containers.AdminPage.Topics.pageDescription": "You can add and delete the topics that are available for Idea Collection projects here. Topics are selected by users to categorize their ideas.",
+  "app.containers.AdminPage.Topics.pageDescription": "You can add and delete the topics that are available for ideation phases here. Topics are selected by users to categorize their ideas.",
   "app.containers.AdminPage.Topics.remove": "Eliminar",
   "app.containers.AdminPage.Topics.titleDescription": "Temas",
   "app.containers.AdminPage.Topics.topicDeletionConfirmation": "¿Estás seguro de que quieres borrar este tema? Esto también eliminará todas las referencias existentes entre este tema y las ideas existentes con este tema.",
