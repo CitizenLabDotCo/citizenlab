@@ -115,7 +115,7 @@ exports.appGraphqlLocalePairs = {
     klGl: 'kl-GL',
     huHu: 'hu-HU',
     roRo: 'ro-RO',
-    ptBr: 'pt-BR',
+    ptBr: 'pt-BR'
 };
 exports.shortenedAppLocalePairs = {
     en: 'English',
@@ -153,5 +153,5 @@ exports.appLocalesMomentPairs = {
     'kl-GL': 'da',
     'hu-HU': 'hu',
     'ro-RO': 'ro',
-    'pt-BR': 'pt',
+    'pt-BR': 'pt'
 };
