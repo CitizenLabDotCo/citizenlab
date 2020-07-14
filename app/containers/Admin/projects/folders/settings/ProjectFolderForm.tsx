@@ -16,13 +16,12 @@ import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import { SectionField, Section } from 'components/admin/Section';
-import { Label } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-import { IconTooltip, Radio } from 'cl2-component-library';
+import { IconTooltip, Radio, Label } from 'cl2-component-library';
 import FileUploader from 'components/UI/FileUploader';
 import { addProjectFolderFile, deleteProjectFolderFile } from 'services/projectFolderFiles';
 import useProjectFolderFiles from 'hooks/useProjectFolderFiles';

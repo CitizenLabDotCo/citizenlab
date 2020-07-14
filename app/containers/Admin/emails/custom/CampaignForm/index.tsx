@@ -15,13 +15,12 @@ import { isNilOrError } from 'utils/helperUtils';
 import { fontSizes } from 'utils/styleUtils';
 
 // components
-import { IconTooltip } from 'cl2-component-library';
+import { IconTooltip, Label } from 'cl2-component-library';
 import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
 import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formik';
-import { Label } from 'cl2-component-library';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
 import FormikSelect from 'components/UI/FormikSelect';
