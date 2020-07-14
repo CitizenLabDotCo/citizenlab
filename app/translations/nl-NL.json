@@ -184,7 +184,7 @@
   "app.components.InitiativeForm.locationPlaceholder": "Typ een adres",
   "app.components.InitiativeForm.publishButton": "Plaats je initiatief",
   "app.components.InitiativeForm.publishUnknownError": "Er ging iets fout bij het plaatsen van je initiatief, probeer het later nog eens opnieuw.",
-  "app.components.InitiativeForm.titleEmptyError": "Gelieve een titel toe te voegen",
+  "app.components.InitiativeForm.titleEmptyError": "Graag een titel toevoegen",
   "app.components.InitiativeForm.titleLabel": "Titel",
   "app.components.InitiativeForm.titleLabelSubtext": "Kies een beschrijvende maar beknopte titel (min. 10 tekens)",
   "app.components.InitiativeForm.titleLengthError": "De titel van je initiatief moet ten minste 10 tekens lang zijn",
