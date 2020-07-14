@@ -1,20 +1,48 @@
 class WebApi::V1::TopicsController < ApplicationController
-   before_action :set_topic, only: [:show, :update, :reorder, :destroy]
+  before_action :set_topic, only: [:show, :update, :reorder, :destroy]
 
-   def index
-     @topics = policy_scope(Topic)
-       .order(:ordering)
-       .page(params.dig(:page, :number))
-       .per(params.dig(:page, :size))
+  def index
+    @topics = policy_scope(Topic).includes(:projects_topics)
+    @topics = @topics.where(code: params[:code]) if params[:code].present?
+    @topics = @topics.where.not(code: params[:exclude_code]) if params[:exclude_code].present?
 
-     render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: fastjson_params)
-   end
+    if params[:sort].present?
+      @topics = case params[:sort]
+      when 'custom'
+        if params[:project_id].present?
+          @topics.where(projects_topics: {project_id: params[:project_id]})
+            .order('projects_topics.ordering')
+        else
+          @topics.order(:ordering)
+        end
+      when 'new'
+        @topics.order_new
+      when '-new'
+        @topics.order_new(:asc)
+      else
+        raise 'Unsupported sort method'
+      end
+    end
 
-   def show
-     render json: WebApi::V1::TopicSerializer.new(@topic, params: fastjson_params).serialized_json
-   end
+    @topics = if params[:project_id].present?
+      @topics.where(projects_topics: {project_id: params[:project_id]})
+        .order('projects_topics.ordering')
+    else
+      @topics.order(:ordering)
+    end
 
-   def create
+    @topics = @topics
+      .page(params.dig(:page, :number))
+      .per(params.dig(:page, :size))
+
+    render json: linked_json(@topics, WebApi::V1::TopicSerializer, params: fastjson_params)
+  end
+
+  def show
+    render json: WebApi::V1::TopicSerializer.new(@topic, params: fastjson_params).serialized_json
+  end
+
+  def create
     @topic = Topic.new(permitted_attributes(Topic))
     authorize @topic
 
@@ -46,14 +74,11 @@ class WebApi::V1::TopicsController < ApplicationController
   end
 
   def reorder
-    authorize @topic
     SideFxTopicService.new.before_update(@topic, current_user)
-    if @topic.insert_at(permitted_attributes(@topic)[:ordering])
+    ordering = permitted_attributes(@topic)[:ordering]
+    if ordering && @topic.insert_at(ordering)
       SideFxTopicService.new.after_update(@topic, current_user)
-      render json: WebApi::V1::TopicSerializer.new(
-        @topic.reload, 
-        params: fastjson_params
-        ).serialized_json, status: :ok
+      render json: WebApi::V1::TopicSerializer.new(@topic.reload, params: fastjson_params).serialized_json, status: :ok
     else
       render json: { errors: @topic.errors.details }, status: :unprocessable_entity
     end
@@ -70,14 +95,14 @@ class WebApi::V1::TopicsController < ApplicationController
     end
   end
 
-   private
+  private
 
-   def set_topic
-     @topic = Topic.find(params[:id])
-     authorize @topic
-   end
+  def set_topic
+    @topic = Topic.find(params[:id])
+    authorize @topic
+  end
 
-   def secure_controller?
-     false
-   end
+  def secure_controller?
+    false
+  end
 end

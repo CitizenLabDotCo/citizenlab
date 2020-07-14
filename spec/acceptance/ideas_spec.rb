@@ -50,6 +50,7 @@ resource "Ideas" do
       t1 = create(:topic)
 
       i1 = @ideas.first
+      i1.project.update!(topics: Topic.all)
       i1.topics << t1
       i1.save
 
@@ -59,21 +60,40 @@ resource "Ideas" do
       expect(json_response[:data][0][:id]).to eq i1.id
     end
 
+    example "List all ideas for a topic with other filters enabled", document: false do
+      t1 = create(:topic)
+
+      i1 = @ideas.first
+      i1.project.update!(topics: Topic.all)
+      i1.topics << t1
+      i1.save
+
+      do_request topics: [t1.id], sort: 'random'
+      expect(status).to eq(200)
+    end
+
     example "List all ideas which match one of the given topics", document: false do
       t1 = create(:topic)
       t2 = create(:topic)
+      t3 = create(:topic)
 
       i1 = @ideas[0]
-      i1.topics = [t1]
-      i1.save
+      i1.project.update!(topics: Topic.all)
+      i1.topics = [t1,t3]
+      i1.save!
       i2 = @ideas[1]
+      i2.project.update!(topics: Topic.all)
       i2.topics = [t2]
-      i2.save
+      i2.save!
+      i3 = @ideas[3]
+      i3.project.update!(topics: Topic.all)
+      i3.topics = [t3,t1,t2]
+      i3.save!
 
       do_request topics: [t1.id, t2.id]
       json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id]
+      expect(json_response[:data].size).to eq 3
+      expect(json_response[:data].map{|h| h[:id]}).to match_array [i1.id, i2.id, i3.id]
     end
 
 
@@ -82,7 +102,7 @@ resource "Ideas" do
 
       i1 = @ideas.first
       i1.areas << a1
-      i1.save
+      i1.save!
 
       do_request areas: [a1.id]
       json_response = json_parse(response_body)
@@ -191,7 +211,6 @@ resource "Ideas" do
     end
 
     example "Search for ideas" do
-      u = create(:user)
       i1 = create(:idea, title_multiloc: {en: "This idea is uniqque"})
       i2 = create(:idea, title_multiloc: {en: "This one origiinal"})
 
@@ -202,7 +221,6 @@ resource "Ideas" do
     end
 
     example "List all ideas sorted by new" do
-      u = create(:user)
       i1 = create(:idea)
 
       do_request sort: "new"
@@ -212,7 +230,6 @@ resource "Ideas" do
     end
 
     example "List all ideas sorted by baskets count", document: false do
-      u = create(:user)
       i1 = create(:idea)
       baskets = create_list(:basket, 3, ideas: [i1])
       SideFxBasketService.new.update_basket_counts
@@ -224,7 +241,6 @@ resource "Ideas" do
     end
 
     example "List all ideas by random ordering", document: false do
-      u = create(:user)
       i1 = create(:idea)
 
       do_request sort: "random"
@@ -355,10 +371,10 @@ resource "Ideas" do
 
   get "web_api/v1/ideas/filter_counts" do
     before do
-      @project = create(:project)
-      
       @t1 = create(:topic)
       @t2 = create(:topic)
+      @project = create(:project, topics: [@t1, @t2])
+      
       @a1 = create(:area)
       @a2 = create(:area)
       @s1 = create(:idea_status)
@@ -367,7 +383,7 @@ resource "Ideas" do
       @i2 = create(:idea, project: @project, topics: [@t1], areas: [@a1, @a2], idea_status: @s2)
       @i3 = create(:idea, project: @project, topics: [@t2], areas: [], idea_status: @s2)
       @i4 = create(:idea, project: @project, topics: [], areas: [@a1], idea_status: @s2)
-      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1)
+      create(:idea, topics: [@t1, @t2], areas: [@a1, @a2], idea_status: @s1, project: create(:project, topics: [@t1, @t2]))
 
       # a1 -> 3
       # a2 -> 1
@@ -425,7 +441,7 @@ resource "Ideas" do
   get "web_api/v1/ideas/:id" do
     let(:idea) {@ideas.first}
     let!(:baskets) {create_list(:basket, 2, ideas: [idea])}
-    let!(:topic) {create(:topic, ideas: [idea])}
+    let!(:topic) {create(:topic, ideas: [idea], projects: [idea.project])}
     let!(:user_vote) {create(:vote, user: @user, votable: idea)}
     let(:id) {idea.id}
 
@@ -505,7 +521,7 @@ resource "Ideas" do
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
     let(:body_multiloc) { idea.body_multiloc }
-    let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+    let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.11520776293035, 3.921154106874878]} }
     let(:location_description) { "Stanley Road 4" }
@@ -659,13 +675,13 @@ resource "Ideas" do
     response_field :base, "Array containing objects with signature { error: #{ParticipationContextService::POSTING_DISABLED_REASONS.values.join(' | ')} }", scope: :errors
 
     let(:id) { @idea.id }
-    let(:topic_ids) { create_list(:topic, 2).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:location_point_geojson) { {type: "Point", coordinates: [51.4365635, 3.825930459]} }
     let(:location_description) { "Watkins Road 8" }
 
     describe do
       let(:title_multiloc) { {"en" => "Changed title" } }
+      let(:topic_ids) { create_list(:topic, 2, projects: [@project]).map(&:id) }
 
       example_request "Update an idea" do
         expect(status).to be 200
@@ -788,6 +804,21 @@ resource "Ideas" do
           expect(status).to be 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data,:attributes,:budget)).to eq budget
+        end
+      end
+
+      describe do
+        before do 
+          @project.update!(topics: create_list(:topic, 2))
+          @project2 = create(:project, topics: [@project.topics.first])
+          @idea.update!(topics: @project.topics)
+        end
+        let(:project_id) { @project2.id }
+
+        example_request "Change the project (as an admin)" do
+          expect(status).to be 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data,:relationships,:project,:data,:id)).to eq project_id
         end
       end
     end

@@ -206,9 +206,10 @@ resource "Stats - Comments" do
           @topic1 = create(:topic)
           @topic2 = create(:topic)
           topic3 = create(:topic)
-          idea1 = create(:idea, topics: [@topic1])
-          idea2 = create(:idea, topics: [@topic2])
-          idea3 = create(:idea, topics: [@topic1, @topic2])
+          project = create(:project, topics: [@topic1, @topic2, topic3])
+          idea1 = create(:idea, topics: [@topic1], project: project)
+          idea2 = create(:idea, topics: [@topic2], project: project)
+          idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
           idea4 = create(:idea)
           comment1 = create(:comment, post: idea1)
           comment2 = create(:comment, post: idea1)
@@ -318,7 +319,8 @@ resource "Stats - Comments" do
       before do
         travel_to start_at + 17.day do
           @topic = create(:topic)
-          idea1 = create(:idea, topics: [@topic])
+          project = create(:project, topics: [@topic])
+          idea1 = create(:idea, topics: [@topic], project: project)
           idea2 = create(:idea_with_topics)
           create(:comment, post: idea1)
           create(:comment, post: idea2)
