@@ -68,7 +68,7 @@ exports.graphqlLocales = [
     'klGl',
     'huHu',
     'roRo',
-    'ptBR',
+    'ptBr',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
