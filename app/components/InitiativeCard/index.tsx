@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import Card from 'components/UI/Card';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Author from 'components/Author';
 import VoteIndicator from './VoteIndicator';
 

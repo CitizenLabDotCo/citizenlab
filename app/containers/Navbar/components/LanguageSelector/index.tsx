@@ -4,7 +4,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import Dropdown from 'components/UI/Dropdown';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { updateLocale } from 'services/locale';

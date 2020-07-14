@@ -7,7 +7,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // components
-import Icon  from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { IProjectFileData } from 'services/projectFiles';

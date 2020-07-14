@@ -14,7 +14,7 @@ import { adopt } from 'react-adopt';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 import GoBackButton from 'components/UI/GoBackButton';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 import ProjectFolderForm from './ProjectFolderForm';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`

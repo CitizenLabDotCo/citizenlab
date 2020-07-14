@@ -16,7 +16,7 @@ import DateTimePicker from 'components/admin/DateTimePicker';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import { Section, SectionTitle, SectionField } from 'components/admin/Section';
 import FileUploader from 'components/UI/FileUploader';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 // utils
 import unsubscribe from 'utils/unsubscribe';

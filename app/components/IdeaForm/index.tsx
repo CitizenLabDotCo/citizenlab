@@ -10,8 +10,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import Input from 'components/UI/Input';
-import LocationInput from 'components/UI/LocationInput';
+import { Input, LocationInput } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
@@ -42,7 +41,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -116,16 +115,16 @@ interface State {
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
-  titleError: string | JSX.Element | null;
+  titleError: string | null;
   description: string;
-  descriptionError: string | JSX.Element | null;
+  descriptionError: string | null;
   selectedTopics: string[];
-  topicsError: string | JSX.Element | null;
-  locationError: string | JSX.Element | null;
-  imageError: string | JSX.Element | null;
-  attachmentsError: string | JSX.Element | null;
+  topicsError: string | null;
+  locationError: string | null;
+  imageError: string | null;
+  attachmentsError: string | null;
   budget: number | null;
-  budgetError: string | JSX.Element | null;
+  budgetError: string | null;
   address: string;
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
@@ -301,11 +300,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   validateTitle = (title: string | null) => {
     if (!title) {
-      return <FormattedMessage {...messages.titleEmptyError} />;
-    }
-
-    if (title && title.length < 10) {
-      return <FormattedMessage {...messages.titleLengthError} />;
+      return this.props.intl.formatMessage(messages.titleEmptyError);
+    } else if (title && title.length < 10) {
+      return this.props.intl.formatMessage(messages.titleLengthError);
     }
 
     return null;
@@ -313,9 +310,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   validateDescription = (description: string | null) => {
     if (!description) {
-      return <FormattedMessage {...messages.descriptionEmptyError} />;
+      return this.props.intl.formatMessage(messages.descriptionEmptyError);
     } else if (description && description.length < 30) {
-      return <FormattedMessage {...messages.descriptionLengthError} />;
+      return this.props.intl.formatMessage(messages.descriptionLengthError);
     }
 
     return null;
@@ -335,7 +332,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (topicsRequired && selectedTopics.length === 0) {
-        return <FormattedMessage {...messages.noTopicsError} />;
+        return this.props.intl.formatMessage(messages.noTopicsError);
       }
     }
 
@@ -356,7 +353,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (locationRequired && !address) {
-        return <FormattedMessage {...messages.noLocationError} />;
+        return this.props.intl.formatMessage(messages.noLocationError);
       }
     }
 
@@ -377,7 +374,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (imagesRequired && imageFiles.length === 0) {
-        return <FormattedMessage {...messages.noImageError} />;
+        return this.props.intl.formatMessage(messages.noImageError);
       }
     }
 
@@ -398,7 +395,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (attachmentsRequired && ideaFiles.length === 0) {
-        return <FormattedMessage {...messages.noAttachmentsError} />;
+        return this.props.intl.formatMessage(messages.noAttachmentsError);
       }
     }
 
@@ -422,15 +419,15 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const imageError = this.validateImage(imageFiles);
     const attachmentsError = this.validateAttachments(ideaFiles);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
-    let budgetError: JSX.Element | null = null;
+    let budgetError: string | null = null;
 
     if (pbContext) {
       if (budget === null && (pbContext.type === 'project' || (pbContext.type === 'phase' && pastPresentOrFuture([(pbContext as IPhaseData).attributes.start_at, (pbContext as IPhaseData).attributes.end_at]) === 'present'))) {
-        budgetError = <FormattedMessage {...messages.noBudgetError} />;
+        budgetError = this.props.intl.formatMessage(messages.noBudgetError);
       } else if (budget === 0) {
-        budgetError = <FormattedMessage {...messages.budgetIsZeroError} />;
+        budgetError = this.props.intl.formatMessage(messages.budgetIsZeroError);
       } else if (pbMaxBudget && budget && budget > pbMaxBudget) {
-        budgetError = <FormattedMessage {...messages.budgetIsTooBig} />;
+        budgetError = this.props.intl.formatMessage(messages.budgetIsTooBig);
       }
     }
 

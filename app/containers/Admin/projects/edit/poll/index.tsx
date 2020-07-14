@@ -91,7 +91,6 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                   participationContextType="project"
                   participationContextId={project.id}
                   pollQuestions={isError(pollQuestions) ? null : pollQuestions}
-                  locale={locale}
                 />
               )}
             </GetPollQuestions>
@@ -134,7 +133,6 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
                       participationContextType="phase"
                       participationContextId={phase.id}
                       pollQuestions={isError(pollQuestions) ? null : pollQuestions}
-                      locale={locale}
                     />
                   )}
                 </GetPollQuestions>

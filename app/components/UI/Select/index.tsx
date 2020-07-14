@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { isString, get } from 'lodash-es';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { IOption } from 'typings';
 import styled from 'styled-components';
 import { defaultInputStyle, colors } from 'utils/styleUtils';

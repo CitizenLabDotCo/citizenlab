@@ -3,8 +3,7 @@ import React, { PureComponent } from 'react';
 import { forOwn, isEmpty } from 'lodash-es';
 
 // components
-import Input from 'components/UI/Input';
-import FormLocaleSwitcher from 'components/admin/FormLocaleSwitcher';
+import { Input, LocaleSwitcher } from 'cl2-component-library';
 import MentionsTextArea from 'components/UI/MentionsTextArea';
 import { Section } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -50,7 +49,7 @@ const AddOfficialUpdateTitle = styled.h2`
   margin: 0;
 `;
 
-const StyledFormLocaleSwitcher = styled(FormLocaleSwitcher)`
+const StyledLocaleSwitcher = styled(LocaleSwitcher)`
   width: auto;
   flex: 1;
 `;
@@ -297,10 +296,10 @@ class OfficialFeedbackForm extends PureComponent<Props & InjectedIntlProps, Stat
                 </AddOfficialUpdateTitle>
               }
 
-              <StyledFormLocaleSwitcher
+              <StyledLocaleSwitcher
                 locales={tenantLocales}
                 selectedLocale={selectedLocale}
-                onLocaleChange={this.handleOnLocaleChange}
+                onSelectedLocaleChange={this.handleOnLocaleChange}
                 values={formValues as any}
               />
             </FormLabel>

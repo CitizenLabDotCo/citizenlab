@@ -8,7 +8,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import { Helmet } from 'react-helmet';
 import ContentContainer from 'components/ContentContainer';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import Fragment from 'components/Fragment';
 import FileAttachments from 'components/UI/FileAttachments';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -32,7 +32,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes } from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultCardStyle} from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
 const Container = styled.div`
@@ -112,9 +112,7 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
   transition: all 200ms ease;
 
   &:hover {

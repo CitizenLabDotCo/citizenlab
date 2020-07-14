@@ -6,7 +6,7 @@ import { isObject } from 'lodash-es';
 // components
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 
 // services

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import messages from '../../messages';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -130,10 +130,6 @@ class MobileNavigation extends PureComponent<Props & WithRouterProps, State> {
             <NavigationIcon
               ariaHidden
               name="folder"
-              colorTheme={{
-                clIconPrimary: `${colors.clIconPrimary}`,
-                clIconSecondary: `${colors.clIconAccent}`
-              }}
             />
           </NavigationIconWrapper>
           <NavigationLabel>
