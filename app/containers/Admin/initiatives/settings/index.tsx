@@ -23,7 +23,6 @@ import { Toggle, Input } from 'cl2-component-library';
 import Warning from 'components/UI/Warning';
 import Error from 'components/UI/Error';
 import errorMessages from 'components/UI/Error/messages';
-import { Label } from 'cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
