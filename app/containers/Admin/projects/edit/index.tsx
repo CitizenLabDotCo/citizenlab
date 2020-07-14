@@ -63,6 +63,10 @@ interface DataProps {
   customTopicsEnabled: GetFeatureFlagChildProps;
   phases: GetPhasesChildProps;
   project: GetProjectChildProps;
+  projectVisibilityEnabled: GetFeatureFlagChildProps;
+  granularPermissionsEnabled: GetFeatureFlagChildProps;
+  projectManagementEnabled: GetFeatureFlagChildProps;
+  ideaAssignmentEnabled: GetFeatureFlagChildProps;
 }
 
 interface State {
@@ -97,7 +101,16 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
   getTabs = (projectId: string, project: IProjectData) => {
     const baseTabsUrl = `/admin/projects/${projectId}`;
     const { formatMessage } = this.props.intl;
-    const { typeform_enabled, surveys_enabled, phases, customTopicsEnabled } = this.props;
+    const {
+      typeform_enabled,
+      surveys_enabled,
+      phases,
+      customTopicsEnabled,
+      projectVisibilityEnabled,
+      granularPermissionsEnabled,
+      projectManagementEnabled,
+      ideaAssignmentEnabled,
+    } = this.props;
     const processType = project.attributes.process_type;
     const participationMethod = project.attributes.participation_method;
     let tabs: TabProps[] = [
@@ -302,6 +315,15 @@ export class AdminProjectEdition extends PureComponent<Props & InjectedIntlProps
         return false;
       },
       permissions: function isPermissionsTabHidden() {
+        if (
+          !projectVisibilityEnabled &&
+          !granularPermissionsEnabled &&
+          !projectManagementEnabled &&
+          !ideaAssignmentEnabled
+        ) {
+          return true;
+        }
+
         return false;
       }
     };
