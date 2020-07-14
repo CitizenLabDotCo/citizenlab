@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { colors, fontSizes, defaultOutline, media } from 'utils/styleUtils';
-import { HeaderContainer, HeaderTitle, ModalContent } from 'components/UI/Modal';
+import { HeaderContainer, HeaderTitle, ModalContentContainer } from 'components/UI/Modal';
 
 export const Options = styled.div`
   display: flex;
@@ -80,7 +80,7 @@ export const StyledHeaderTitle = styled(HeaderTitle)<{ inModal: boolean }>`
   `}
 `;
 
-export const StyledModalContent = styled(ModalContent)<{
+export const StyledModalContentContainer = styled(ModalContentContainer)<{
   inModal: boolean,
   windowHeight: string,
   headerHeight: string
