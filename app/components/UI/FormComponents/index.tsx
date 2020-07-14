@@ -34,7 +34,7 @@ const FormSectionTitleStyled = styled.h2`
   line-height: 28px;
 `;
 
-const FormSectionSubtitleStyled = styled.p`
+const FormSectionDescriptionStyled = styled.p`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
@@ -51,9 +51,9 @@ export const FormSectionTitle = memo(({ message, values, subtitleMessage }: Form
       <FormattedMessage {...message} values={values} />
     </FormSectionTitleStyled>
     {subtitleMessage &&
-      <FormSectionSubtitleStyled>
+      <FormSectionDescriptionStyled>
         <FormattedMessage {...subtitleMessage} />
-      </FormSectionSubtitleStyled>
+      </FormSectionDescriptionStyled>
     }
   </TitleContainer>
 ));

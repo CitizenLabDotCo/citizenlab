@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
-import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+import { SectionTitle, SectionDescription, SectionField } from 'components/admin/Section';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import Error from 'components/UI/Error';
@@ -92,18 +92,18 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             <SectionTitle>
               {<FormattedMessage {...messages.titleSettingsTab} />}
             </SectionTitle>
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitleSettingsTab} />
-            </SectionSubtitle>
+            </SectionDescription>
           </>
           :
           <Header>
             <SectionTitle >
               {<FormattedMessage {...messages.titleNewFolder} />}
             </SectionTitle >
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitleNewFolder} />
-            </SectionSubtitle>
+            </SectionDescription>
           </Header>
         }
         <ProjectFolderForm

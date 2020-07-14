@@ -9,6 +9,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // services
 import { globalState, IAdminFullWidth, IGlobalStateService } from 'services/globalState';
 import { IProjectData } from 'services/projects';
+import { ITopicData } from 'services/topics';
 
 // resources
 import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
@@ -16,6 +17,7 @@ import GetInitiativeStatuses, { GetInitiativeStatusesChildProps } from 'resource
 import GetIdeas, { GetIdeasChildProps } from 'resources/GetIdeas';
 import GetInitiatives, { GetInitiativesChildProps } from 'resources/GetInitiatives';
 import { GetPhasesChildProps } from 'resources/GetPhases';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // components
 import ActionBar from './components/ActionBar';
@@ -106,6 +108,7 @@ interface InputProps {
 interface DataProps {
   posts: GetIdeasChildProps | GetInitiativesChildProps;
   postStatuses: GetIdeaStatusesChildProps | GetInitiativeStatusesChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps { }
@@ -260,7 +263,7 @@ export class PostManager extends React.PureComponent<Props, State> {
 
   render() {
     const { previewPostId, previewMode, searchTerm, selection, activeFilterMenu } = this.state;
-    const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus } = this.props;
+    const { type, projectId, projects, posts, phases, postStatuses, visibleFilterMenus, topics } = this.props;
     const { list, onChangeTopics, onChangeStatus, queryParameters, onChangeAssignee, onChangeFeedbackFilter, onResetParams } = posts;
 
     const selectedTopics = queryParameters.topics;
@@ -278,138 +281,145 @@ export class PostManager extends React.PureComponent<Props, State> {
       (this.props.type === 'Initiatives' && activeFilterMenu === 'topics')
     );
 
-    return (
-      <>
-        <TopActionBar>
-          <AssigneeFilter
-            assignee={selectedAssignee}
-            projectId={type === 'ProjectIdeas' ? projectId : null}
-            handleAssigneeFilterChange={onChangeAssignee}
-            type={type}
-          />
-          <FeedbackToggle
-            type={type}
-            value={feedbackNeeded}
-            onChange={onChangeFeedbackFilter}
-            project={selectedProject}
-            phase={selectedPhase}
-            topics={selectedTopics}
-            status={selectedStatus}
-            assignee={selectedAssignee}
-            searchTerm={searchTerm}
-          />
-          <StyledExportMenu
-            type={type}
-            selection={selection}
-            selectedProject={selectedProject}
-          />
-        </TopActionBar>
+    if (!isNilOrError(topics)) {
+      const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
-        <ThreeColumns>
-          <LeftColumn>
-            <ActionBar
+      return (
+        <>
+          <TopActionBar>
+            <AssigneeFilter
+              assignee={selectedAssignee}
+              projectId={type === 'ProjectIdeas' ? projectId : null}
+              handleAssigneeFilterChange={onChangeAssignee}
+              type={type}
+            />
+            <FeedbackToggle
+              type={type}
+              value={feedbackNeeded}
+              onChange={onChangeFeedbackFilter}
+              project={selectedProject}
+              phase={selectedPhase}
+              topics={selectedTopics}
+              status={selectedStatus}
+              assignee={selectedAssignee}
+              searchTerm={searchTerm}
+            />
+            <StyledExportMenu
               type={type}
               selection={selection}
-              resetSelection={this.resetSelection}
-              handleClickEdit={this.openPreviewEdit}
+              selectedProject={selectedProject}
             />
-          </LeftColumn>
-          <MiddleColumnTop>
-            {type === 'Initiatives'
-              ? <InitiativesCount
-                feedbackNeeded={feedbackNeeded}
-                topics={selectedTopics}
-                initiativeStatus={selectedStatus}
-                searchTerm={searchTerm}
-                assignee={selectedAssignee}
+          </TopActionBar>
+
+          <ThreeColumns>
+            <LeftColumn>
+              <ActionBar
+                type={type}
+                selection={selection}
+                resetSelection={this.resetSelection}
+                handleClickEdit={this.openPreviewEdit}
               />
-              : type === 'AllIdeas' || type === 'ProjectIdeas'
-                ? <IdeasCount
+            </LeftColumn>
+            <MiddleColumnTop>
+              {type === 'Initiatives'
+                ? <InitiativesCount
                   feedbackNeeded={feedbackNeeded}
-                  project={selectedProject}
-                  phase={selectedPhase}
                   topics={selectedTopics}
-                  ideaStatus={selectedStatus}
+                  initiativeStatus={selectedStatus}
                   searchTerm={searchTerm}
                   assignee={selectedAssignee}
                 />
-                : null
-            }
-            <StyledInput icon="search" onChange={this.handleSearchChange} />
-          </MiddleColumnTop>
-        </ThreeColumns>
-        <ThreeColumns>
-          <LeftColumn>
-            <Sticky>
-              <FilterSidebar
-                activeFilterMenu={activeFilterMenu}
-                visibleFilterMenus={visibleFilterMenus}
-                onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
-                phases={!isNilOrError(phases) ? phases : undefined}
-                projects={!isNilOrError(projects) ? projects : undefined}
-                statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-                selectedPhase={selectedPhase}
-                selectedTopics={selectedTopics}
-                selectedStatus={selectedStatus}
-                selectedProject={selectedProject}
-                onChangePhaseFilter={onChangePhase}
-                onChangeTopicsFilter={onChangeTopics}
-                onChangeStatusFilter={onChangeStatus}
-                onChangeProjectFilter={this.onChangeProjects}
-              />
-              {multipleIdeasSelected && showDragAndDropInfoMessage &&
-                <Message
-                  info={true}
-                  attached="bottom"
-                  icon="info"
-                  content={type === 'AllIdeas' || type === 'ProjectIdeas' ?
-                    <FormattedMessage {...messages.multiDragAndDropHelpIdeas} /> :
-                    <FormattedMessage {...messages.multiDragAndDropHelpInitiatives} />
-                  }
-                />
+                : type === 'AllIdeas' || type === 'ProjectIdeas'
+                  ? <IdeasCount
+                    feedbackNeeded={feedbackNeeded}
+                    project={selectedProject}
+                    phase={selectedPhase}
+                    topics={selectedTopics}
+                    ideaStatus={selectedStatus}
+                    searchTerm={searchTerm}
+                    assignee={selectedAssignee}
+                  />
+                  : null
               }
-            </Sticky>
-          </LeftColumn>
-          <MiddleColumn>
-            <PostTable
-              type={type}
-              activeFilterMenu={activeFilterMenu}
-              sortAttribute={posts.sortAttribute}
-              sortDirection={posts.sortDirection}
-              onChangeSort={posts.onChangeSorting}
-              posts={list || undefined}
-              phases={!isNilOrError(phases) ? phases : undefined}
-              statuses={!isNilOrError(postStatuses) ? postStatuses : []}
-              selection={selection}
-              onChangeSelection={this.handleChangeSelection}
-              currentPageNumber={posts.currentPage}
-              lastPageNumber={posts.lastPage}
-              onChangePage={posts.onChangePage}
-              handleSeeAll={onResetParams}
+              <StyledInput icon="search" onChange={this.handleSearchChange} />
+            </MiddleColumnTop>
+          </ThreeColumns>
+          <ThreeColumns>
+            <LeftColumn>
+              <Sticky>
+                <FilterSidebar
+                  activeFilterMenu={activeFilterMenu}
+                  visibleFilterMenus={visibleFilterMenus}
+                  onChangeActiveFilterMenu={this.handleChangeActiveFilterMenu}
+                  phases={!isNilOrError(phases) ? phases : undefined}
+                  projects={!isNilOrError(projects) ? projects : undefined}
+                  statuses={!isNilOrError(postStatuses) ? postStatuses : []}
+                  topics={filteredTopics}
+                  selectedPhase={selectedPhase}
+                  selectedTopics={selectedTopics}
+                  selectedStatus={selectedStatus}
+                  selectedProject={selectedProject}
+                  onChangePhaseFilter={onChangePhase}
+                  onChangeTopicsFilter={onChangeTopics}
+                  onChangeStatusFilter={onChangeStatus}
+                  onChangeProjectFilter={this.onChangeProjects}
+                />
+                {multipleIdeasSelected && showDragAndDropInfoMessage &&
+                  <Message
+                    info={true}
+                    attached="bottom"
+                    icon="info"
+                    content={type === 'AllIdeas' || type === 'ProjectIdeas' ?
+                      <FormattedMessage {...messages.multiDragAndDropHelpIdeas} /> :
+                      <FormattedMessage {...messages.multiDragAndDropHelpInitiatives} />
+                    }
+                  />
+                }
+              </Sticky>
+            </LeftColumn>
+            <MiddleColumn>
+              <PostTable
+                type={type}
+                activeFilterMenu={activeFilterMenu}
+                sortAttribute={posts.sortAttribute}
+                sortDirection={posts.sortDirection}
+                onChangeSort={posts.onChangeSorting}
+                posts={list || undefined}
+                phases={!isNilOrError(phases) ? phases : undefined}
+                statuses={!isNilOrError(postStatuses) ? postStatuses : []}
+                selection={selection}
+                onChangeSelection={this.handleChangeSelection}
+                currentPageNumber={posts.currentPage}
+                lastPageNumber={posts.lastPage}
+                onChangePage={posts.onChangePage}
+                handleSeeAll={onResetParams}
+                openPreview={this.openPreview}
+              />
+            </MiddleColumn>
+            <InfoSidebar
+              postIds={[...selection]}
               openPreview={this.openPreview}
             />
-          </MiddleColumn>
-          <InfoSidebar
-            postIds={[...selection]}
-            openPreview={this.openPreview}
-          />
-        </ThreeColumns>
-        <Suspense fallback={null}>
-          <LazyPostPreview
-            type={type}
-            postId={previewPostId}
-            mode={previewMode}
-            onClose={this.closePreview}
-            onSwitchPreviewMode={this.switchPreviewMode}
-          />
-        </Suspense>
-        {type === 'Initiatives' &&
+          </ThreeColumns>
           <Suspense fallback={null}>
-            <LazyStatusChangeModal />
+            <LazyPostPreview
+              type={type}
+              postId={previewPostId}
+              mode={previewMode}
+              onClose={this.closePreview}
+              onSwitchPreviewMode={this.switchPreviewMode}
+            />
           </Suspense>
-        }
-      </>
-    );
+          {type === 'Initiatives' &&
+            <Suspense fallback={null}>
+              <LazyStatusChangeModal />
+            </Suspense>
+          }
+        </>
+      );
+    }
+
+    return null;
   }
 }
 
@@ -430,13 +440,30 @@ const Data = adopt<DataProps, InputProps>({
 
     return null;
   },
-  postStatuses: ({ type, render }) => type === 'Initiatives' ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses> : <GetIdeaStatuses>{render}</GetIdeaStatuses>
+  postStatuses: ({ type, render }) => type === 'Initiatives' ? <GetInitiativeStatuses>{render}</GetInitiativeStatuses> : <GetIdeaStatuses>{render}</GetIdeaStatuses>,
+  topics: ({ type, projectId, render }) => {
+    if (type === 'Initiatives') {
+      return <GetTopics exclude_code="custom">{render}</GetTopics>;
+    }
+
+    if (type === 'ProjectIdeas' && projectId) {
+      return <GetTopics projectId={projectId}>{render}</GetTopics>;
+    }
+
+    if (type === 'AllIdeas') {
+      return <GetTopics>{render}</GetTopics>;
+    }
+
+    return null;
+  },
 });
 
 const PostManagerWithDragDropContext = DragDropContext(HTML5Backend)(PostManager);
 
-export default (inputProps: InputProps) => (
-  <Data {...inputProps}>
-    {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
-  </Data>
-);
+export default (inputProps: InputProps) => {
+  return (
+    <Data {...inputProps}>
+      {dataProps => <PostManagerWithDragDropContext {...inputProps} {...dataProps} />}
+    </Data>
+  );
+};

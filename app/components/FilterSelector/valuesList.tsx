@@ -128,6 +128,7 @@ interface Props extends DefaultProps {
   multipleSelectionAllowed?: boolean;
   opened: boolean;
   baseID: string;
+  name: string;
 }
 
 interface State {}
@@ -179,7 +180,8 @@ export default class ValuesList extends PureComponent<Props, State> {
       left,
       mobileLeft,
       right,
-      mobileRight
+      mobileRight,
+      name
     } = this.props;
 
     // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
@@ -230,6 +232,7 @@ export default class ValuesList extends PureComponent<Props, State> {
                         {entry.text}
                       </CheckboxLabel>
                     }
+                    name={name}
                   />
                 </CheckboxListItem>
               ) : (

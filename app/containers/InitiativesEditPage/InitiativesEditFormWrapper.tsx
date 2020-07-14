@@ -6,17 +6,18 @@ import InitiativeForm, { FormValues, SimpleFormValues } from 'components/Initiat
 // services
 import { Locale, Multiloc, UploadFile } from 'typings';
 import { updateInitiative, IInitiativeData, IInitiativeAdd } from 'services/initiatives';
+import { addInitiativeImage, deleteInitiativeImage, IInitiativeImageData } from 'services/initiativeImages';
+import { deleteInitiativeFile, addInitiativeFile } from 'services/initiativeFiles';
+import { ITopicData } from 'services/topics';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
-
-// intl
-import { convertToGeoJson } from 'utils/locationTools';
 import { isEqual, pick, get, omitBy } from 'lodash-es';
-import { Point } from 'geojson';
-import { addInitiativeImage, deleteInitiativeImage, IInitiativeImageData } from 'services/initiativeImages';
-import { deleteInitiativeFile, addInitiativeFile } from 'services/initiativeFiles';
 import { convertUrlToUploadFile } from 'utils/fileTools';
+
+// geoJson
+import { convertToGeoJson } from 'utils/locationTools';
+import { Point } from 'geojson';
 
 interface Props {
   locale: Locale;
@@ -24,6 +25,7 @@ interface Props {
   initiativeImage: IInitiativeImageData | null;
   initiativeFiles: UploadFile[] | null;
   onPublished: () => void;
+  topics: ITopicData[];
 }
 
 interface State extends FormValues {
@@ -255,7 +257,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
 
   render() {
     const { initiativeId, hasBannerChanged, ...otherProps } = this.state;
-    const { locale, initiativeImage } = this.props;
+    const { locale, initiativeImage, topics } = this.props;
 
     if (this.state.image === undefined && initiativeImage) return null;
 
@@ -273,6 +275,7 @@ export default class InitiativesEditFormWrapper extends React.PureComponent<Prop
         onChangeImage={this.onChangeImage}
         onAddFile={this.onAddFile}
         onRemoveFile={this.onRemoveFile}
+        topics={topics}
       />
     );
   }

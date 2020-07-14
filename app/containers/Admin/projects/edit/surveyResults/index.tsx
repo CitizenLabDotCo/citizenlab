@@ -13,7 +13,7 @@ import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
 // Components
 import ExportSurveyButton from './ExportSurveyButton';
 import T from 'components/T';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 // i18n
 import messages from '../messages';
@@ -80,9 +80,9 @@ class SurveyResults extends React.PureComponent<Props> {
         <SectionTitle>
           <FormattedMessage {...messages.titleSurveyResults} />
         </SectionTitle>
-        <SectionSubtitle>
+        <SectionDescription>
           <FormattedMessage {...messages.subtitleSurveyResults} />
-        </SectionSubtitle>
+        </SectionDescription>
         <Container>
           {this.renderButtons()}
         </Container>

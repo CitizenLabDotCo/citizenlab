@@ -11,7 +11,7 @@ import useProject from 'hooks/useProject';
 import { updateProject } from 'services/projects';
 
 // Components
-import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionDescription } from 'components/admin/Section';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
@@ -127,9 +127,9 @@ const ProjectDescription = memo<Props & InjectedIntlProps & WithRouterProps>((pr
         <SectionTitle>
           <FormattedMessage {...messages.titleDescription} />
         </SectionTitle>
-        <SectionSubtitle>
+        <SectionDescription>
           <FormattedMessage {...messages.subtitleDescription} />
-        </SectionSubtitle>
+        </SectionDescription>
 
         <Section>
           <SectionField>

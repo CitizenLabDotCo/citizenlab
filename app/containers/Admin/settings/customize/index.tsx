@@ -9,7 +9,7 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import { Section, SectionTitle, SectionField, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField, SectionDescription, SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
@@ -419,9 +419,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionTitle>
               <FormattedMessage {...messages.titleCustomize} />
             </SectionTitle>
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitleCustomize} />
-            </SectionSubtitle>
+            </SectionDescription>
 
             <SubSectionTitle>
               <FormattedMessage {...messages.titleBranding} />
