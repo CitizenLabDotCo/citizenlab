@@ -37,8 +37,9 @@ class Initiative < ApplicationRecord
   end)
 
   scope :with_some_topics, (Proc.new do |topic_ids|
-    joins(:initiatives_topics)
+    with_dups = joins(:initiatives_topics)
       .where(initiatives_topics: {topic_id: topic_ids})
+    where(id: with_dups)
   end)
 
   scope :with_all_areas, (Proc.new do |area_ids|
@@ -49,8 +50,9 @@ class Initiative < ApplicationRecord
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
-    joins(:areas_initiatives)
+    with_dups = joins(:areas_initiatives)
       .where(areas_initiatives: {area_id: area_ids})
+    where(id: with_dups)
   end)
 
   scope :with_status_code, (Proc.new do |code|
