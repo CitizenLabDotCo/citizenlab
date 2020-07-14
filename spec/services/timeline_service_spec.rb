@@ -19,8 +19,9 @@ describe TimelineService do
     end
 
     it "returns the active phase when we're in the last day of the phase" do
+      now = Time.now.in_time_zone(Tenant.settings('core', 'timezone')).to_date
       project = create(:project)
-      phase = create(:phase, start_at: Time.now.to_date - 1.week, end_at: Time.now.to_date, project: project)
+      phase = create(:phase, start_at: now - 1.week, end_at: now, project: project)
       expect(service.current_phase(project)&.id).to eq (phase.id)
     end
 
@@ -127,9 +128,10 @@ describe TimelineService do
 
 
   def create_active_phase project
+    now = Time.now.in_time_zone(Tenant.settings('core', 'timezone')).to_date
     create(:phase, project: project,
-      start_at: Time.at(Time.now.to_i - rand(100000000)), 
-      end_at: Time.at(Time.now)
+      start_at: now - 2.week,
+      end_at: now
     )
   end
 
