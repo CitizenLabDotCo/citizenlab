@@ -40,6 +40,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.permissionsTab',
     defaultMessage: 'Permissions',
   },
+  topicsTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.topicsTab',
+    defaultMessage: 'Topics',
+  },
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.newProject',
     defaultMessage: 'New Project',
@@ -176,14 +180,6 @@ export default defineMessages({
   limited: {
     id: 'app.containers.AdminPage.ProjectEdit.limited',
     defaultMessage: 'Limited',
-  },
-  allowLocation: {
-    id: 'app.containers.AdminPage.ProjectEdit.allowLocation',
-    defaultMessage: 'Idea location',
-  },
-  allowLocationTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.allowLocationTooltip',
-    defaultMessage: 'Enable or disable the ability to add a location to an idea.',
   },
   anonymousPolling: {
     id: 'app.containers.AdminPage.ProjectEdit.anonymousPolling',

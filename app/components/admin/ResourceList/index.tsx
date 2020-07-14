@@ -121,9 +121,9 @@ export const List: SFC<{ className?: string, id?: string }> = ({ children, class
   </StyledList>
 );
 
-export const Row: SFC<{ className?: string, id?: string, lastItem?: boolean }> = ({ children, className, lastItem }) => (
+export const Row: SFC<{ className?: string, id?: string, isLastItem?: boolean }> = ({ children, className, isLastItem }) => (
   <CSSTransition classNames="list-item" timeout={timeout}>
-    <Container className={`e2e-admin-list-row ${className || ''} ${lastItem && 'last-item'}`}>
+    <Container className={`e2e-admin-list-row ${className || ''} ${isLastItem && 'last-item'}`}>
       {children}
     </Container>
   </CSSTransition>

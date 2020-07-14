@@ -157,10 +157,6 @@ export default defineMessages({
     id: 'app.containers.Projects.noExpenses',
     defaultMessage: "You don't have any expenses yet",
   },
-  byAuthor: {
-    id: 'app.containers.Projects.byAuthor',
-    defaultMessage: 'by {authorName}',
-  },
   removeItem: {
     id: 'app.containers.Projects.removeItem',
     defaultMessage: 'Remove item',

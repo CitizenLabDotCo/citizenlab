@@ -8,6 +8,7 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousInformation/edit",
   "/admin/projects/continuousInformation/description",
+  "/admin/projects/continuousInformation/survey-results",
   "/admin/projects/continuousInformation/events",
   "/admin/projects/continuousInformation/permissions",
 ]
@@ -26,8 +27,8 @@ exports[`<AdminProjectEdition /> renders the correct set of tabs for a continuou
 Array [
   "/admin/projects/continuousTypeform/edit",
   "/admin/projects/continuousTypeform/description",
-  "/admin/projects/continuousTypeform/events",
   "/admin/projects/continuousTypeform/survey-results",
+  "/admin/projects/continuousTypeform/events",
   "/admin/projects/continuousTypeform/permissions",
 ]
 `;
@@ -55,8 +56,8 @@ Array [
   "/admin/projects/timelineIdeation/edit",
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
-  "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/timeline",
+  "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
 ]
 `;
@@ -66,8 +67,8 @@ Array [
   "/admin/projects/timelineInformation/edit",
   "/admin/projects/timelineInformation/description",
   "/admin/projects/timelineInformation/ideas",
-  "/admin/projects/timelineInformation/events",
   "/admin/projects/timelineInformation/timeline",
+  "/admin/projects/timelineInformation/events",
   "/admin/projects/timelineInformation/permissions",
 ]
 `;
@@ -78,8 +79,8 @@ Array [
   "/admin/projects/timelineIdeation/description",
   "/admin/projects/timelineIdeation/ideas",
   "/admin/projects/timelineIdeation/survey-results",
-  "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/timeline",
+  "/admin/projects/timelineIdeation/events",
   "/admin/projects/timelineIdeation/permissions",
 ]
 `;

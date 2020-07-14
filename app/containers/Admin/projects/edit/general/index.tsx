@@ -15,7 +15,7 @@ import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Section, SectionField, SectionTitle, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionDescription, SubSectionTitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
@@ -206,9 +206,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     this.state = {
       processing: false,
       project: undefined,
-      publicationStatus: 'published',
+      publicationStatus: 'draft',
       projectType: 'timeline',
-      projectAttributesDiff: {},
+      projectAttributesDiff: {
+        admin_publication_attributes: {
+          publication_status: 'draft'
+        }
+      },
       projectHeaderImage: null,
       presentationMode: 'card',
       projectImages: [],
@@ -270,7 +274,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               areasOptions,
               presentationMode: (project && project.data.attributes.presentation_mode || state.presentationMode),
               areas: areas.data,
-              projectAttributesDiff: {},
+              projectAttributesDiff: {
+                admin_publication_attributes : {
+                  publication_status : publicationStatus
+                }
+              },
             };
           });
         }
@@ -655,9 +663,9 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <SectionTitle>
                   <FormattedMessage {...messages.titleGeneral} />
                 </SectionTitle>
-                <SectionSubtitle>
+                <SectionDescription>
                   <FormattedMessage {...messages.subtitleGeneral} />
-                </SectionSubtitle>
+                </SectionDescription>
               </>
             }
 

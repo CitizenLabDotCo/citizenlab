@@ -87,14 +87,6 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.addCampaignTitle',
     defaultMessage: 'New campaign',
   },
-  formTitleWho: {
-    id: 'app.containers.Admin.emails.formTitleWho',
-    defaultMessage: 'Who',
-  },
-  formTitleWhat: {
-    id: 'app.containers.Admin.emails.formTitleWhat',
-    defaultMessage: 'What',
-  },
   editCampaignTitle: {
     id: 'app.containers.Admin.emails.editCampaignTitle',
     defaultMessage: 'Edit campaign',
