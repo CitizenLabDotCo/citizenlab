@@ -295,36 +295,43 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
               }
             </StyledSection>
           }
-          <StyledSection>
-            <StyledSectionTitle>
-              <FormattedMessage {...messages.moderationRightsTitle} />
-            </StyledSectionTitle>
 
-            <ModeratorSubSection>
-              <Moderators moderators={this.props.moderators} projectId={projectId} />
-            </ModeratorSubSection>
+          {(projectManagementEnabled || ideaAssignmentEnabled) &&
+            <StyledSection>
+              <StyledSectionTitle>
+                <FormattedMessage {...messages.moderationRightsTitle} />
+              </StyledSectionTitle>
 
-            <SubSection>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
-                <IconTooltip
-                  content={
-                    <FormattedMessage
-                      {...messages.ideaAssignmentTooltipText}
-                      values={{
-                        ideaManagerLink: (
-                          <StyledLink to={`/admin/projects/${projectId}/ideas`}>
-                            <FormattedMessage {...messages.ideaManagerLinkText} />
-                          </StyledLink>
-                        )
-                      }}
+              {projectManagementEnabled &&
+                <ModeratorSubSection>
+                  <Moderators moderators={this.props.moderators} projectId={projectId} />
+                </ModeratorSubSection>
+              }
+
+              {ideaAssignmentEnabled &&
+                <SubSection>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.ideaAssignmentSectionTitle} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.ideaAssignmentTooltipText}
+                          values={{
+                            ideaManagerLink: (
+                              <StyledLink to={`/admin/projects/${projectId}/ideas`}>
+                                <FormattedMessage {...messages.ideaManagerLinkText} />
+                              </StyledLink>
+                            )
+                          }}
+                        />
+                      }
                     />
-                  }
-                />
-              </SubSectionTitle>
-              <IdeaAssignment projectId={projectId} />
-            </SubSection>
-          </StyledSection>
+                  </SubSectionTitle>
+                  <IdeaAssignment projectId={projectId} />
+                </SubSection>
+              }
+            </StyledSection>
+          }
         </>
       );
     }
