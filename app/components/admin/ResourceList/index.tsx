@@ -121,9 +121,9 @@ export const List = memo<{ id?: string, className?: string, children: ReactNode 
   </StyledList>
 ));
 
-export const Row = memo<{ id?: string, className?: string, children: ReactNode, lastItem?: boolean }>(({ id, className, children, lastItem }) => (
+export const Row = memo<{ id?: string, className?: string, children: ReactNode, isLastItem?: boolean }>(({ id, className, children, isLastItem }) => (
   <CSSTransition classNames="list-item" timeout={timeout}>
-    <Container id={id || ''} className={`e2e-admin-list-row ${className || ''} ${lastItem ? 'last-item' : ''}`}>
+    <Container id={id || ''} className={`e2e-admin-list-row ${className || ''} ${isLastItem ? 'last-item' : ''}`}>
       {children}
     </Container>
   </CSSTransition>
