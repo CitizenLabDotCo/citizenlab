@@ -24,7 +24,7 @@ class TenantTemplateService
         image_assignments = {}
         restored_attributes = restore_template_attributes attributes, obj_to_id_and_class
         restored_attributes.each do |field_name, field_value|
-          if !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
+          if field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
             image_assignments[field_name] = field_value
           else
             model.send("#{field_name}=", field_value)
