@@ -1,5 +1,27 @@
 # Changelog
 
+## 2020-07-10
+
+## Added
+- Project topics
+
+## Changed
+- Userid instead of email is used for hidden field in surveys (Leiden)
+- New projects have 'draft' status by default 
+
+## Fixed
+- Topics filter in ideas overview works again
+
+## 2020-07-09 - Workshops
+
+## Fixed
+- Speps are scrollable
+
+## Added
+- Ability to export the inputs as an exel sheet
+- Polish translations
+- Portugese (pt-BR) translations
+
 ## 2020-06-26
 
 ## Fixed

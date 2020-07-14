@@ -136,7 +136,6 @@ describe('Idea form settings', () => {
             cy.visit(`ideas/edit/${ideaId}`);
             // reload so that the new settings are correctly applied
             cy.reload();
-            cy.acceptCookies();
             // without getting the form first, the form gets submitted before the fields are loaded
             cy.get('#idea-form');
             cy.get('#e2e-idea-edit-save-button').click();
