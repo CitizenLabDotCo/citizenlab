@@ -3,28 +3,28 @@ pt:
     campaign_type_description:
       "manual": Mensagens oficiais
       "admin_rights_received": Direitos de administração recebidos
-      "comment_deleted_by_admin": Eliminação do meu comentário
-      "comment_marked_as_spam": Comente o relatório de spam
+      "comment_deleted_by_admin": Excluir meu comentario
+      "comment_marked_as_spam": Comente o relatório de lixo eletrônico
       "comment_on_your_comment": Uma resposta ao meu comentário
       "comment_on_your_idea": Um comentário sobre a minha ideia
       "comment_on_your_initiative": Um comentário sobre a minha proposta
       "first_idea_published": Publicação da minha primeira ideia
       "idea_assigned_to_you": Atribuição de uma idéia para mim
-      "idea_marked_as_spam": Relatório de spam de ideias
+      "idea_marked_as_spam": Relatório de ideias spam
       "idea_published": Publicação da minha ideia
-      "initiative_assigned_to_you": Atribuição de uma proposta a mim
-      "initiative_marked_as_spam": Relatório de spam proposto
+      "initiative_assigned_to_you": Atribuição de uma idéia para mim
+      "initiative_marked_as_spam": Relatório de propostas spam
       "initiative_published": Publicação da minha proposta
       "invite_received": Convite
       "invite_reminder": Lembrete do convite
       "mention_in_comment": Menção em um comentário
       "mention_in_official_feedback": Menção em uma atualização
-      "new_comment_for_admin": Novo comentário em um projeto que modero
+      "new_comment_for_admin": Novo comentário em um projecto que eu dirigi
       "new_comment_on_commented_idea": Novo comentário sobre uma ideia que eu comentei
       "new_comment_on_commented_initiative": Novo comentário sobre uma proposta que eu comentei
       "new_comment_on_voted_idea": Novo comentário sobre uma ideia que eu votei favoravelmente
       "new_comment_on_voted_initiative": Novo comentário sobre uma proposta que eu votei favoravelmente
-      "new_idea_for_admin": Nova idéia em um projeto que modero
+      "new_idea_for_admin": Nova idéia em um projeto que eu dirigi
       "new_initiative_for_admin": Nova proposta
       "official_feedback_on_commented_idea": Actualização sobre uma ideia que comentei
       "official_feedback_on_commented_initiative": Atualização sobre uma proposta que comentei
@@ -32,23 +32,23 @@ pt:
       "official_feedback_on_voted_initiative": Actualização sobre uma proposta que votei
       "official_feedback_on_your_idea": Actualização da minha ideia
       "official_feedback_on_your_initiative": Actualização sobre a minha proposta
-      "password_reset": Redefinição de senha
+      "password_reset": Redefinir a senha
       "project_moderation_rights_received": Direitos de moderação de projetos recebidos
       "project_phase_started": Nova fase do projeto
       "project_phase_upcoming": Próxima nova fase do projeto
-      "status_change_of_commented_idea": Mudança de status de uma idéia que comentei
-      "status_change_of_commented_initiative": Mudança de status de uma proposta que comentei
-      "status_change_of_voted_idea": Mudança de status de uma idéia que votei a favor
-      "status_change_of_voted_initiative": Mudança de status de uma proposta em que votei
-      "status_change_of_your_idea": Mudança de status da minha idéia
-      "status_change_of_your_initiative": Mudança de status da minha proposta
-      "threshold_reached_for_admin": Proposta atingiu o limiar de votação
-      "welcome": Após o registo
-      "admin_digest": Visão geral semanal para os administradores
-      "moderator_digest": Visão geral semanal para gestores de projecto
-      "assignee_digest": Visão geral semanal das ideias atribuídas
-      "user_digest": Visão geral semanal
-      "your_proposed_initiatives_digest": Visão geral semanal das suas propostas
+      "status_change_of_commented_idea": Alteração  de status de uma idéia que comentei
+      "status_change_of_commented_initiative": Alteração  de status de uma proposta que comentei
+      "status_change_of_voted_idea": Alteração  de status de uma idéia que votei a favor
+      "status_change_of_voted_initiative": Alteração  de status de uma proposta pela qual votei
+      "status_change_of_your_idea": Alteração  de status da minha idéia
+      "status_change_of_your_initiative": Alteração  de status da minha proposta
+      "threshold_reached_for_admin": Proposta atingiu o limite de votação
+      "welcome": Após o cadastro
+      "admin_digest": Resumo semanal para gestores
+      "moderator_digest": Resumo semanal para gestores de projecto
+      "assignee_digest": Resumo semanal das ideas atribuídas
+      "user_digest": Resumo semanal
+      "your_proposed_initiatives_digest": Resumo semanal das suas propostas
     admin_campaign_type_description:
       "manual": Official message - all users
       "admin_rights_received": Admin rights received - admins
