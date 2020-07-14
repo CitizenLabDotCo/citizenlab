@@ -10,7 +10,7 @@ import clHistory from 'utils/cl-router/history';
 import InputMultiloc from 'components/UI/InputMultiloc';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
-import Radio from 'components/UI/Radio';
+import { Radio, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
@@ -18,7 +18,6 @@ import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import { Section, SectionField, SectionTitle, SectionDescription, SubSectionTitle } from 'components/admin/Section';
 import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
 import HasPermission from 'components/HasPermission';
-import IconTooltip from 'components/UI/IconTooltip';
 import Warning from 'components/UI/Warning';
 
 import Link from 'utils/cl-router/Link';

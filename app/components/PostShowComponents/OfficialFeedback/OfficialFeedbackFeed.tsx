@@ -136,8 +136,7 @@ class OfficialFeedbackFeed extends PureComponent<Props & InjectedIntlProps, Stat
                 processing={loadingMore}
                 icon="showMore"
                 buttonStyle="secondary-outlined"
-                textColor={colors.clRedError}
-                textHoverColor={colors.clRedError}
+                padding="12px"
               />
             }
           </Container>

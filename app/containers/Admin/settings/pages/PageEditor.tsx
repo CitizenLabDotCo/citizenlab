@@ -9,7 +9,7 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 // Components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import PageForm, { FormValues } from 'components/PageForm';
 
 // Services

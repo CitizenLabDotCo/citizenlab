@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
-import { colors, fontSizes, boxShadowOutline, media } from 'utils/styleUtils';
 import { HeaderContainer, HeaderTitle, ModalContentContainer } from 'components/UI/Modal';
+import { colors, fontSizes, defaultOutline, media } from 'utils/styleUtils';
 
 export const Options = styled.div`
   display: flex;
@@ -43,7 +43,7 @@ export const Option = styled.div`
     outline: none;
 
     &.focus-visible {
-      ${boxShadowOutline};
+      ${defaultOutline};
     }
 
     &:hover {

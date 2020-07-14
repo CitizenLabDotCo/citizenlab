@@ -1,7 +1,7 @@
 import React from 'react';
 
 // components
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';

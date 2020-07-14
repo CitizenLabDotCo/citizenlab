@@ -6,7 +6,7 @@ import { isNilOrError } from 'utils/helperUtils';
 // components
 import Button from 'components/UI/Button';
 import Avatar from 'components/Avatar';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // services
 import { dismissOnboardingCampaign, IOnboardingCampaignNames } from 'services/onboardingCampaigns';

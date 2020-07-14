@@ -7,7 +7,7 @@ import Tippy from '@tippyjs/react';
 
 // components
 import Button from 'components/UI/Button';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import AvatarBubbles from 'components/AvatarBubbles';
 import InitiativeInfoContent from './InitiativeInfoContent';
 

@@ -39,7 +39,7 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 
 import { isCLErrorJSON } from 'utils/errorUtils';
 

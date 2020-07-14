@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import LocationInput, { Props as VanillaLocationInputProps } from 'components/UI/LocationInput';
+import { LocationInput, LocationInputProps } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 
-class FormikLocationInput extends PureComponent<FieldProps & VanillaLocationInputProps> {
+class FormikLocationInput extends PureComponent<FieldProps & LocationInputProps> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
   }

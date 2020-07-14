@@ -5,13 +5,9 @@ import { isFinite, isEqual, omitBy, isNil } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
 // components
-import Input from 'components/UI/Input';
+import { Input, Radio, IconTooltip, Toggle, Label } from 'cl2-component-library';
 import Error from 'components/UI/Error';
-import { Label } from 'cl2-component-library';
-import Radio from 'components/UI/Radio';
-import Toggle from 'components/UI/Toggle';
 import { Section, SectionField, SubSectionTitle } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
 
 // services
 import { projectByIdStream, IProject } from 'services/projects';

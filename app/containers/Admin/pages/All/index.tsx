@@ -85,7 +85,7 @@ class Pages extends React.Component<Props & InjectedIntlProps, State> {
                 <Button onClick={this.handleOnDeleteClick(page.id)} buttonStyle="text" icon="delete">
                   <FormattedMessage {...messages.deleteButtonLabel} />
                 </Button>
-                <Button linkTo={`/pages/${page.attributes.slug}`} buttonStyle="text" icon="search2">
+                <Button linkTo={`/pages/${page.attributes.slug}`} buttonStyle="text" icon="search">
                   <FormattedMessage {...messages.showButtonLabel} />
                 </Button>
                 <Button linkTo={`/admin/pages/${page.id}`} buttonStyle="secondary" icon="edit">

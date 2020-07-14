@@ -5,7 +5,7 @@ import { adopt } from 'react-adopt';
 import { FacebookButton, TwitterButton } from 'react-social';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
