@@ -14,6 +14,7 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
+export type TenantSettingsFeatureNames = keyof ITenantSettings;
 
 export interface ITenantSettings {
   core: {
@@ -74,14 +75,15 @@ export interface ITenantSettings {
     logo_url: string;
     login_mechanism_name: string;
   };
-  manual_project_sorting?: {
+  franceconnect_login?: {
     allowed: boolean;
     enabled: boolean;
+    environment: string;
+    identifier: string;
+    secret: string;
   };
-  admin_project_templates?: {
-    allowed: boolean;
-    enabled: boolean;
-  };
+  manual_project_sorting?: TenantFeature;
+  admin_project_templates?: TenantFeature;
   pages?: TenantFeature;
   groups?: TenantFeature;
   projects?: TenantFeature;
@@ -106,12 +108,31 @@ export interface ITenantSettings {
   fragments?: {
     allowed: boolean,
     enabled: boolean,
-    enabled_fragments: String[]
+    enabled_fragments: string[]
   };
-  verification?: TenantFeature;
+  verification?: {
+    allowed: boolean,
+    enabled: boolean,
+    verification_methods: string[]
+  };
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
+  smart_groups?: TenantFeature;
+  manual_emailing?: TenantFeature;
+  automated_emailing_control?: TenantFeature;
+  typeform_surveys?: {
+    allowed: boolean,
+    enabled: boolean,
+    user_token: string
+  };
+  surveys?: TenantFeature;
+  google_forms_surveys?: TenantFeature;
+  surveymonkey_surveys?: TenantFeature;
+  project_folders?: TenantFeature;
+  clustering?: TenantFeature;
+  geographic_dashboard?: TenantFeature;
+  widgets?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
