@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from 'styled-components';
 import Link from 'utils/cl-router/Link';
 
@@ -44,34 +44,38 @@ interface Props {
   noSuchSearchResult?: boolean;
 }
 
-export default class NoUsers extends React.PureComponent<Props> {
-  render() {
-    if (this.props.noSuchSearchResult) {
-      return (
-        <NoUsersPage>
-          <Icon name="search2" />
-          <FormattedMessage {...messages.noUserMatchesYourSearch} />
-        </NoUsersPage>
-      );
-    }
+const NoUsers = memo(({
+  smartGroup,
+  noSuchSearchResult
+}: Props) => {
+  if (noSuchSearchResult) {
     return (
       <NoUsersPage>
-        <Icon name="blankPage" />
-        <FormattedMessage {...messages.emptyGroup} />
-        {!this.props.smartGroup &&
-          <SFormattedMessage>
-            <FormattedMessage
-              {...messages.goToAllUsers}
-              values={{
-                allUsersLink: (
-                  <Link to="/admin/users/">
-                    <FormattedMessage {...messages.allUsers} />
-                  </Link>),
-              }}
-            />
-          </SFormattedMessage>
-        }
+        <Icon name="search2" />
+        <FormattedMessage {...messages.noUserMatchesYourSearch} />
       </NoUsersPage>
     );
   }
-}
+
+  return (
+    <NoUsersPage>
+      <Icon name="blankPage" />
+      <FormattedMessage {...messages.emptyGroup} />
+      {!smartGroup &&
+        <SFormattedMessage>
+          <FormattedMessage
+            {...messages.goToAllUsers}
+            values={{
+              allUsersLink: (
+                <Link to="/admin/users/">
+                  <FormattedMessage {...messages.allUsers} />
+                </Link>),
+            }}
+          />
+        </SFormattedMessage>
+      }
+    </NoUsersPage>
+  );
+});
+
+export default NoUsers;
