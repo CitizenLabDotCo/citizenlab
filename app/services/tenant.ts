@@ -14,17 +14,7 @@ export type ISuccessStory = {
   location: string;
   page_slug: string;
 };
-
-export type TenantSettingsFeatureNames = 'demographic_fields' |
-'password_login' | 'facebook_login' | 'google_login' | 'azure_ad_login' | 'franceconnect_login' |
-'manual_project_sorting' | 'admin_project_templates' | 'pages' |
-'groups' | 'projects' | 'projects_phases' | 'projects_pages' |
-'projects_events' | 'projects_info' | 'excel_export' | 'private_projects' |
-'maps' | 'participatory_budgeting' | 'initiatives' | 'fragments' |
-'verification' | 'idea_custom_fields' | 'user_custom_fields' |
-'volunteering' | 'smart_groups' | 'manual_emailing' | 'automated_emailing_control' |
-'typeform_surveys' | 'surveys' | 'google_forms_surveys' | 'surveymonkey_surveys' |
-'project_folders' | 'clustering' | 'geographic_dashboard' | 'widgets';
+export type TenantSettingsFeatureNames = keyof ITenantSettings;
 
 export interface ITenantSettings {
   core: {
