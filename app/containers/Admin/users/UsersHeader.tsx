@@ -16,7 +16,6 @@ import messages from './messages';
 import styled from 'styled-components';
 import rgba from 'polished/lib/color/rgba';
 import { colors, fontSizes } from 'utils/styleUtils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 const TitleWrapper = styled.div`
   min-height: 105px;
@@ -105,7 +104,6 @@ const UsersHeader = memo(({
   onDelete,
   onSearch
 }: Props) => {
-  const smartGroupsEnabled = useFeatureFlag('smart_groups');
   const handleSearchChange = (newValue: string) => {
     onSearch(newValue);
   };
@@ -117,16 +115,14 @@ const UsersHeader = memo(({
         <TextAndButtons>
           <T as="h1" value={title} />
           <Buttons>
-            {smartGroupsEnabled && (
-              <EditGroupButton
-                iconTitle={<FormattedMessage {...messages.editGroup} />}
-                hiddenText={<FormattedMessage {...messages.editGroup} />}
-                padding=".65em"
-                icon="edit"
-                buttonStyle="secondary"
-                onClick={onEdit}
-              />
-            )}
+            <EditGroupButton
+              iconTitle={<FormattedMessage {...messages.editGroup} />}
+              hiddenText={<FormattedMessage {...messages.editGroup} />}
+              padding=".65em"
+              icon="edit"
+              buttonStyle="secondary"
+              onClick={onEdit}
+            />
             <DeleteGroupButton
               iconTitle={<FormattedMessage {...messages.deleteGroup} />}
               hiddenText={<FormattedMessage {...messages.deleteGroup} />}
