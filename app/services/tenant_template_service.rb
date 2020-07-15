@@ -38,12 +38,12 @@ class TenantTemplateService
             model.save(validate: false)
           end
           attributes.each do |field_name, field_value| # taking original attributes to get correct object ID
-            if field_name.end_with?('_attributes') && (field_value.is_a? Hash) # linking attribute refs (not supported for lists of attributes)
+            if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
               submodel = model.send(field_name.chomp '_attributes')
               obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
             end
           end
-          ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
+          ImageAssignmentJob.perform_now(model, image_assignments) if image_assignments.present?
         rescue Exception => e
           json_info = {
             error_message: e.message,
@@ -68,9 +68,9 @@ class TenantTemplateService
           [locale, translation]
         end.to_h
         new_attributes[field_name] = multiloc_value
-      elsif field_name.end_with?('_attributes') && (field_value.is_a? Hash)
+      elsif field_name.end_with?('_attributes') && field_value.is_a?(Hash)
         new_attributes[field_name] = restore_template_attributes field_value, obj_to_id_and_class
-      elsif field_name.end_with?('_attributes') && (field_value.is_a? Array)
+      elsif field_name.end_with?('_attributes') && field_value.is_a?(Array) && field_value.all?{|v| v.is_a? Hash}
         new_attributes[field_name] = field_value.map do |v|
           restore_template_attributes v, obj_to_id_and_class
         end
