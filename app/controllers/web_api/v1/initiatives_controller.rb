@@ -70,6 +70,7 @@ class WebApi::V1::InitiativesController < ApplicationController
   end
 
   def index_xlsx
+    authorize :initiative, :index_xlsx?
     I18n.with_locale(current_user&.locale) do
       @initiatives = policy_scope(Initiative)
         .includes(:author, :topics, :areas, :initiative_status)
