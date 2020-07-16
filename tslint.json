@@ -2,7 +2,8 @@
   "extends": [
     "tslint-config-airbnb",
     "tslint-react",
-    "tslint-eslint-rules"
+    "tslint-eslint-rules",
+    "tslint-config-prettier"
   ],
   "linterOptions": {
     "exclude": [
