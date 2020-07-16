@@ -16,6 +16,10 @@ class UserPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?)
   end
 
+  def index_xlsx?
+    user&.active? && (user.admin? || user.project_moderator?)
+  end
+
   def create?
     true
   end
