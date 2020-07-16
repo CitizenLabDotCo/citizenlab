@@ -12,6 +12,10 @@ class InitiativeCommentPolicy < ApplicationPolicy
     end
   end
 
+  def index_xlsx?
+    user&.active? && user.admin?
+  end
+
   def create?
     (
       user&.active? && 
