@@ -133,6 +133,7 @@ export interface ITenantSettings {
   clustering?: TenantFeature;
   geographic_dashboard?: TenantFeature;
   widgets?: TenantFeature;
+  granular_permissions?: TenantFeature;
   ideaflow_social_sharing?: TenantFeature;
   initiativeflow_social_sharing?: TenantFeature;
   machine_translations?: TenantFeature;
@@ -141,6 +142,9 @@ export interface ITenantSettings {
   polls?: TenantFeature;
   moderation?: TenantFeature;
   disable_downvoting?: TenantFeature;
+  project_visibility?: TenantFeature;
+  project_management?: TenantFeature;
+  idea_assignment?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
