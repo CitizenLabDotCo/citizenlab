@@ -193,6 +193,12 @@ resource "Initiatives" do
   end
 
   get "web_api/v1/initiatives/as_xlsx" do
+    before do
+      @admin = create(:admin)
+      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
+    
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
 
     example_request "XLSX export" do
