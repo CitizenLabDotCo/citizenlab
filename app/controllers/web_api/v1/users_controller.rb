@@ -52,6 +52,7 @@ class WebApi::V1::UsersController < ::ApplicationController
   end
 
   def index_xlsx
+    authorize :user, :index_xlsx?
     @users = policy_scope(User).all
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.where(id: params[:users]) if params[:users]

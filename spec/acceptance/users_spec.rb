@@ -18,6 +18,31 @@ resource "Users" do
       end
     end
 
+    get "web_api/v1/users" do
+      with_options scope: :page do
+        parameter :number, "Page number"
+        parameter :size, "Number of users per page"
+      end
+      parameter :search, 'Filter by searching in first_name, last_name and email', required: false
+      parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+      parameter :group, "Filter by group_id", required: false
+      parameter :can_moderate_project, "Filter by users (and admins) who can moderate the project (by id)", required: false
+      parameter :can_moderate, "Filter out admins and moderators", required: false
+
+      example_request "[error] List all users" do
+        expect(status).to eq 401
+      end
+    end
+
+    get "web_api/v1/users/as_xlsx" do
+      parameter :group, "Filter by group_id", required: false
+      parameter :users, "Filter out only users with the provided user ids", required: false
+
+      example_request "[error] XLSX export" do
+        expect(status).to eq 401
+      end
+    end
+
     get "web_api/v1/users/:id" do
       before do
         @user = create(:user)
