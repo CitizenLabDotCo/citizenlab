@@ -398,6 +398,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleTopicsOnChange = (topics: string[] | null) => {
+    trackEventByName(tracks.topicsFilter, {
+      topics
+    });
+
     this.handleIdeaFiltersOnChange({ topics });
   }
 

@@ -277,7 +277,6 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   handleSortOnChange = (sort: Sort) => {
-    // x
     trackEventByName(tracks.sortingFilter, {
       sort
     });
@@ -285,6 +284,9 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   handleTopicsOnChange = (topics: string[]) => {
+    trackEventByName(tracks.topicsFilter, {
+      topics
+    });
     this.props.ideas.onChangeTopics(topics);
   }
 
