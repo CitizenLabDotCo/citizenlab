@@ -70,7 +70,7 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const { locale, tenantLocales, initiative, initiativeImages, goBack, initiativeFiles, topics } = this.props;
+    const { locale, initiative, initiativeImages, goBack, initiativeFiles, topics, tenantLocales } = this.props;
     const { selectedLocale } = this.state;
 
     if (
@@ -119,8 +119,8 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />,
   topics: <GetTopics exclude_code={'custom'} />,
+  tenantLocales: <GetTenantLocales />,
   initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
   initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
   initiativeFiles: ({ initiativeId, render }) => <GetResourceFileObjects resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFileObjects>,

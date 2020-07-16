@@ -10,10 +10,9 @@ import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import { Section, SectionField } from 'components/admin/Section';
 import ErrorComponent from 'components/UI/Error';
-import Label from 'components/UI/Label';
+import { Label, IconTooltip } from 'cl2-component-library';
 import Warning from 'components/UI/Warning';
 import FileUploader from 'components/UI/FileUploader';
-import { IconTooltip } from 'cl2-component-library';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
