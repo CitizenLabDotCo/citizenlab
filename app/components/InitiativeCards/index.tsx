@@ -366,6 +366,10 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleSortOnChange = (sort: Sort) => {
+    // x
+    trackEventByName(tracks.sortingFilter, {
+      sort
+    });
     this.props.initiatives.onChangeSorting(sort);
   }
 
