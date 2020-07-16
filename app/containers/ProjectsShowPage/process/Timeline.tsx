@@ -531,6 +531,8 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
   }
 
   handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (event: FormEvent) => {
+    trackEventByName(tracks.clickOnPhase);
+
     event.preventDefault();
     this.setState({ selectedPhase });
   }
