@@ -1,0 +1,8 @@
+__mocks__
+app/assets/
+app/translations/
+docs
+internals
+storybook-static
+package.json
+package-lock.json
