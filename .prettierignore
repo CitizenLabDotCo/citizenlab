@@ -9,3 +9,5 @@ package-lock.json
 .cache-loader
 .out
 .github
+.vscode
+.storybook
