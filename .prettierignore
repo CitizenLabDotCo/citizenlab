@@ -6,3 +6,8 @@ internals
 storybook-static
 package.json
 package-lock.json
+.cache-loader
+.out
+.github
+.vscode
+.storybook
