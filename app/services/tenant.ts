@@ -55,6 +55,7 @@ export interface ITenantSettings {
     allowed: boolean;
     enabled: boolean;
     phone?: boolean;
+    phone_email_pattern?: string;
   };
   facebook_login?: {
     allowed: boolean;
@@ -85,13 +86,6 @@ export interface ITenantSettings {
   manual_project_sorting?: TenantFeature;
   admin_project_templates?: TenantFeature;
   pages?: TenantFeature;
-  groups?: TenantFeature;
-  projects?: TenantFeature;
-  projects_phases?: TenantFeature;
-  projects_pages?: TenantFeature;
-  projects_events?: TenantFeature;
-  projects_info?: TenantFeature;
-  excel_export?: TenantFeature;
   private_projects?: TenantFeature;
   maps?: TenantMapSettings;
   participatory_budgeting?: TenantFeature;
@@ -118,6 +112,8 @@ export interface ITenantSettings {
   idea_custom_fields?: TenantFeature;
   user_custom_fields?: TenantFeature;
   volunteering?: TenantFeature;
+  workshops?: TenantFeature;
+  ideas_overview?: TenantFeature;
   smart_groups?: TenantFeature;
   manual_emailing?: TenantFeature;
   automated_emailing_control?: TenantFeature;
@@ -133,6 +129,18 @@ export interface ITenantSettings {
   clustering?: TenantFeature;
   geographic_dashboard?: TenantFeature;
   widgets?: TenantFeature;
+  granular_permissions?: TenantFeature;
+  ideaflow_social_sharing?: TenantFeature;
+  initiativeflow_social_sharing?: TenantFeature;
+  machine_translations?: TenantFeature;
+  custom_topics?: TenantFeature;
+  similar_ideas?: TenantFeature;
+  polls?: TenantFeature;
+  moderation?: TenantFeature;
+  disable_downvoting?: TenantFeature;
+  project_visibility?: TenantFeature;
+  project_management?: TenantFeature;
+  idea_assignment?: TenantFeature;
 }
 
 interface TenantMapSettings extends TenantFeature {
