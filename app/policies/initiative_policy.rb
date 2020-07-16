@@ -12,6 +12,10 @@ class InitiativePolicy < ApplicationPolicy
     end
   end
 
+  def index_xlsx?
+    user&.active? && user.admin?
+  end
+
   def create?
     record.draft? ||
     (user&.active? && user.admin?) ||

@@ -129,6 +129,12 @@ resource "Comments" do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false
 
+    before do
+      @admin = create(:admin)
+      token = Knock::AuthToken.new(payload: @admin.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
     example_request "XLSX export of comments on ideas" do
       expect(status).to eq 200
     end
