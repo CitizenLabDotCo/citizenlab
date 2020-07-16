@@ -32,7 +32,7 @@ import messages from './messages';
 
 // styling
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultCardStyle} from 'utils/styleUtils';
+import { media, colors, fontSizes, defaultCardStyle } from 'utils/styleUtils';
 import ResolveTextVariables from 'components/ResolveTextVariables';
 
 const Container = styled.div`

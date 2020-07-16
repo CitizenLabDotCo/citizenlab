@@ -3,8 +3,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 // components
 import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
-import Label from 'components/UI/Label';
-import { IconTooltip, LocaleSwitcher } from 'cl2-component-library';
+import { IconTooltip, LocaleSwitcher, Label } from 'cl2-component-library';
 
 // hooks
 import useLocale from 'hooks/useLocale';
