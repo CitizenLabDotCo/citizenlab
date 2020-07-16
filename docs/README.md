@@ -1,5 +1,17 @@
 # Changelog
 
+## 2020-07-10
+
+## Added
+- Project topics
+
+## Changed
+- Userid instead of email is used for hidden field in surveys (Leiden)
+- New projects have 'draft' status by default 
+
+## Fixed
+- Topics filter in ideas overview works again
+
 ## 2020-07-09 - Workshops
 
 ## Fixed
