@@ -12,7 +12,7 @@ describe('profile deletion', () => {
     cy.visit('/en/password-recovery');
     cy.acceptCookies();
   });
-  it('prints an error if the email doesn\'t exist', () => {
+  it("prints an error if the email doesn't exist", () => {
     tryReset(someEmail);
     cy.get('.e2e-input-error').should('exist');
     cy.get('.e2e-success-reset').should('not.exist');

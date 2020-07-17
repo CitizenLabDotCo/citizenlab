@@ -27,10 +27,10 @@ export interface IAdminPublicationData {
   relationships: {
     publication: {
       data: {
-        id: string,
-        type: 'project' | 'project_folder'
+        id: string;
+        type: 'project' | 'project_folder';
       };
-    }
+    };
   };
 }
 
@@ -52,21 +52,26 @@ interface StreamParamsForProjects extends IStreamParams {
 }
 
 export function adminPublicationByIdStream(id: string) {
-  return streams.get<{ data: IAdminPublicationData }>({ apiEndpoint: `${apiEndpoint}/${id}` });
+  return streams.get<{ data: IAdminPublicationData }>({
+    apiEndpoint: `${apiEndpoint}/${id}`,
+  });
 }
 
 export function listAdminPublications(streamParams: StreamParamsForProjects) {
   return streams.get<IAdminPublications>({ apiEndpoint, ...streamParams });
 }
 
-export async function reorderAdminPublication(orderingId: string, newOrder: number) {
+export async function reorderAdminPublication(
+  orderingId: string,
+  newOrder: number
+) {
   return streams.update<IAdminPublications>(
     `${apiEndpoint}/${orderingId}/reorder`,
     orderingId,
     {
       admin_publication: {
-        ordering: newOrder
-      }
+        ordering: newOrder,
+      },
     }
   );
 }

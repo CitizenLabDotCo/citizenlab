@@ -28,9 +28,13 @@ interface State {
 }
 
 class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
-  reasonCodes: Report['reason_code'][] = ['wrong_content', 'inappropriate', 'other'];
+  reasonCodes: Report['reason_code'][] = [
+    'wrong_content',
+    'inappropriate',
+    'other',
+  ];
 
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       diff: null,
@@ -52,11 +56,14 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
     }
 
     this.setState({ diff, errors: null });
-  }
+  };
 
   handleReasonTextUpdate = (other_reason) => {
-    this.setState({ diff: { ...this.state.diff, other_reason } as Report, errors: null });
-  }
+    this.setState({
+      diff: { ...this.state.diff, other_reason } as Report,
+      errors: null,
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -67,18 +74,29 @@ class SpamReportForm extends PureComponent<Props, State & CRUDParams> {
 
     this.setState({ loading: true });
 
-    sendSpamReport(this.props.resourceType, this.props.resourceId, this.state.diff).then(() => {
-      this.setState({ loading: false, saved: true, errors: null, diff: null });
-    }).catch((e) => {
-      if (isCLErrorJSON(e)) {
-        this.setState({ errors: e.json.errors, loading: false });
-      } else {
-        this.setState({ errors: e, loading: false });
-      }
-    });
-  }
+    sendSpamReport(
+      this.props.resourceType,
+      this.props.resourceId,
+      this.state.diff
+    )
+      .then(() => {
+        this.setState({
+          loading: false,
+          saved: true,
+          errors: null,
+          diff: null,
+        });
+      })
+      .catch((e) => {
+        if (isCLErrorJSON(e)) {
+          this.setState({ errors: e.json.errors, loading: false });
+        } else {
+          this.setState({ errors: e, loading: false });
+        }
+      });
+  };
 
-  render () {
+  render() {
     return (
       <ModalContentContainer>
         <ReportForm

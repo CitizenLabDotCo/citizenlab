@@ -124,7 +124,7 @@ const fileAccept = [
   'video/x-msvideo',
 
   '.mkv',
-  'video/x-matroska'
+  'video/x-matroska',
 ];
 
 interface Props {
@@ -134,12 +134,11 @@ interface Props {
 }
 
 export default class FileInput extends PureComponent<Props> {
-
   onClick = (event: FormEvent<any>) => {
     // reset the value of the input field
     // so we can upload the same file again after deleting it
     event.currentTarget.value = null;
-  }
+  };
 
   onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -149,7 +148,9 @@ export default class FileInput extends PureComponent<Props> {
         const base64 = await getBase64FromFile(file);
         file.base64 = base64;
         file.filename = file.name;
-        file.extension = file.type || base64.substring(base64.indexOf(':') + 1, base64.indexOf(';base64'));
+        file.extension =
+          file.type ||
+          base64.substring(base64.indexOf(':') + 1, base64.indexOf(';base64'));
         if (!fileAccept.includes(file.extension)) {
           file.error = ['incorrect_extension'];
         }
@@ -157,7 +158,7 @@ export default class FileInput extends PureComponent<Props> {
         this.props.onAdd(file);
       });
     }
-  }
+  };
 
   render() {
     const { className, id } = this.props;

@@ -29,8 +29,9 @@ export interface Props {
   builtInField: boolean;
 }
 
-class CustomFieldForm extends React.Component<InjectedFormikProps<Props & InjectedIntlProps, FormValues>> {
-
+class CustomFieldForm extends React.Component<
+  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
+> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
 
@@ -39,18 +40,35 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
     }
 
     return errors;
-  }
+  };
 
   inputTypeOptions = () => {
-    const fieldTypes = ['text', 'number', 'multiline_text', 'select', 'multiselect', 'checkbox', 'date'];
+    const fieldTypes = [
+      'text',
+      'number',
+      'multiline_text',
+      'select',
+      'multiselect',
+      'checkbox',
+      'date',
+    ];
     return fieldTypes.map((inputType) => ({
       value: inputType,
       label: this.props.intl.formatMessage(messages[`inputType_${inputType}`]),
     }));
-  }
+  };
 
   render() {
-    const { isSubmitting, mode, errors, isValid, touched, builtInField, status, intl: { formatMessage } } = this.props;
+    const {
+      isSubmitting,
+      mode,
+      errors,
+      isValid,
+      touched,
+      builtInField,
+      status,
+      intl: { formatMessage },
+    } = this.props;
 
     return (
       <Form>
@@ -60,14 +78,15 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
               <FormattedMessage {...messages.fieldEnabled} />
             </Label>
             <Field
-              className={`e2e-custom-field-enabled-toggle ${this.props.values.enabled ? 'enabled' : 'disabled'}`}
+              className={`e2e-custom-field-enabled-toggle ${
+                this.props.values.enabled ? 'enabled' : 'disabled'
+              }`}
               name="enabled"
               component={FormikToggle}
             />
-            {touched.enabled && <Error
-              fieldName="enabled"
-              apiErrors={errors.enabled as any}
-            />}
+            {touched.enabled && (
+              <Error fieldName="enabled" apiErrors={errors.enabled as any} />
+            )}
           </SectionField>
 
           <SectionField>
@@ -80,10 +99,12 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
               options={this.inputTypeOptions()}
               disabled={mode === 'edit' || builtInField}
             />
-            {touched.input_type && <Error
-              fieldName="input_type"
-              apiErrors={errors.input_type as any}
-            />}
+            {touched.input_type && (
+              <Error
+                fieldName="input_type"
+                apiErrors={errors.input_type as any}
+              />
+            )}
           </SectionField>
 
           <SectionField>
@@ -94,10 +115,12 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
               disabled={builtInField}
             />
-            {touched.title_multiloc && <Error
-              fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc as any}
-            />}
+            {touched.title_multiloc && (
+              <Error
+                fieldName="title_multiloc"
+                apiErrors={errors.title_multiloc as any}
+              />
+            )}
           </SectionField>
 
           <SectionField>
@@ -108,10 +131,12 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
               labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
               disabled={builtInField}
             />
-            {touched.description_multiloc && <Error
-              fieldName="description_multiloc"
-              apiErrors={errors.description_multiloc as any}
-            />}
+            {touched.description_multiloc && (
+              <Error
+                fieldName="description_multiloc"
+                apiErrors={errors.description_multiloc as any}
+              />
+            )}
           </SectionField>
 
           <SectionField>
@@ -119,20 +144,19 @@ class CustomFieldForm extends React.Component<InjectedFormikProps<Props & Inject
               <FormattedMessage {...messages.fieldRequired} />
             </Label>
             <Field
-              className={`e2e-custom-field-required-toggle ${this.props.values.required ? 'enabled' : 'disabled'}`}
+              className={`e2e-custom-field-required-toggle ${
+                this.props.values.required ? 'enabled' : 'disabled'
+              }`}
               name="required"
               component={FormikToggle}
             />
-            {touched.required && <Error
-              fieldName="required"
-              apiErrors={errors.required as any}
-            />}
+            {touched.required && (
+              <Error fieldName="required" apiErrors={errors.required as any} />
+            )}
           </SectionField>
         </Section>
 
-        <FormikSubmitWrapper
-          {...{ isValid, isSubmitting, status, touched }}
-        />
+        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
       </Form>
     );
   }

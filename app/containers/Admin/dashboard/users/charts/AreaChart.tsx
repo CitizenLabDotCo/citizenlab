@@ -25,14 +25,19 @@ interface Props {
 }
 
 const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
-
-  const areaKeyToAreaName = (areas: IUsersByDomicile['areas'], key: string) : string => {
-    const { intl: { formatMessage }, localize } = props;
+  const areaKeyToAreaName = (
+    areas: IUsersByDomicile['areas'],
+    key: string
+  ): string => {
+    const {
+      intl: { formatMessage },
+      localize,
+    } = props;
 
     if (key === '_blank') {
       return formatMessage(messages._blank);
     } else if (key === 'outside') {
-        return formatMessage(messages.outsideArea);
+      return formatMessage(messages.outsideArea);
     } else if (areas[key]) {
       return localize(areas[key].title_multiloc);
     } else {
@@ -43,10 +48,8 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   const convertToGraphFormat = (data: IUsersByDomicile) => {
     if (!isNilOrError(data)) {
       const {
-        series: {
-          users
-        },
-        areas
+        series: { users },
+        areas,
       } = data;
 
       const res = map(users, (value, key) => ({
@@ -72,6 +75,8 @@ const AreaChart = (props: Props & InjectedIntlProps & InjectedLocalized) => {
   );
 };
 
-const WrappedAreaChart = injectIntl<Props>(localize<Props & InjectedIntlProps>(AreaChart));
+const WrappedAreaChart = injectIntl<Props>(
+  localize<Props & InjectedIntlProps>(AreaChart)
+);
 
 export default WrappedAreaChart;

@@ -24,7 +24,7 @@ const Count = styled.div`
   background-color: ${colors.lightGreyishBlue};
   font-size: ${fontSizes.large}px;
   font-weight: 500;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
 `;
 
 const Unit = styled.div`
@@ -32,7 +32,7 @@ const Unit = styled.div`
   align-items: center;
   justify-content: center;
   margin: 5px 0 0 0;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
   font-size: ${fontSizes.small}px;
 `;
 
@@ -51,7 +51,7 @@ class CountDown extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      refresh: Date.now()
+      refresh: Date.now(),
     };
   }
 
@@ -69,7 +69,9 @@ class CountDown extends PureComponent<Props, State> {
     const start = moment();
     const end = moment(this.props.targetTime, 'YYYY-MM-DDThh:mm:ss.SSSZ');
     const durationAsSeconds = moment.duration(end.diff(start)).asSeconds();
-    const formattedDuration = convertSecondsToDDHHMM(durationAsSeconds).split(':');
+    const formattedDuration = convertSecondsToDDHHMM(durationAsSeconds).split(
+      ':'
+    );
     const daysLeft = formattedDuration[0];
     const hoursLeft = formattedDuration[1];
     const minutesLeft = formattedDuration[2];
@@ -78,15 +80,21 @@ class CountDown extends PureComponent<Props, State> {
       <Container className={this.props.className}>
         <TimeComponent>
           <Count>{daysLeft}</Count>
-          <Unit><FormattedMessage {...messages.days} /></Unit>
+          <Unit>
+            <FormattedMessage {...messages.days} />
+          </Unit>
         </TimeComponent>
         <TimeComponent>
           <Count>{hoursLeft}</Count>
-          <Unit><FormattedMessage {...messages.hours} /></Unit>
+          <Unit>
+            <FormattedMessage {...messages.hours} />
+          </Unit>
         </TimeComponent>
         <TimeComponent>
           <Count>{minutesLeft}</Count>
-          <Unit><FormattedMessage {...messages.minutes} /></Unit>
+          <Unit>
+            <FormattedMessage {...messages.minutes} />
+          </Unit>
         </TimeComponent>
       </Container>
     );

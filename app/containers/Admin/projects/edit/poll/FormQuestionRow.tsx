@@ -29,7 +29,7 @@ class FormQuestionRow extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedLocale: props.locale
+      selectedLocale: props.locale,
     };
   }
 
@@ -41,34 +41,32 @@ class FormQuestionRow extends PureComponent<Props, State> {
 
   onChangeLocale = (selectedLocale: Locale) => {
     this.setState({ selectedLocale });
-  }
+  };
 
   onChangeTitle = (value: string, locale: Locale | undefined) => {
     if (locale) {
       const titleMultiloc = {
         ...this.props.titleMultiloc,
-        [locale]: value
+        [locale]: value,
       };
 
       this.props.onChange(titleMultiloc);
     }
-  }
+  };
 
   render() {
     const { selectedLocale } = this.state;
     const { titleMultiloc, onSave, onCancel } = this.props;
     return (
-      <Row
-        className="e2e-form-question-row"
-      >
+      <Row className="e2e-form-question-row">
         <TextCell>
-          {selectedLocale &&
+          {selectedLocale && (
             <FormLocaleSwitcher
               onLocaleChange={this.onChangeLocale}
               selectedLocale={selectedLocale}
               values={{ titleMultiloc }}
             />
-          }
+          )}
         </TextCell>
         <TextCell className="expand">
           <Input

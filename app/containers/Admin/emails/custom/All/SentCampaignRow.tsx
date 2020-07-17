@@ -13,9 +13,7 @@ interface Props {
 }
 
 const SentCampaignRow = ({ campaign }: Props) => (
-  <Row
-    id={campaign.id}
-  >
+  <Row id={campaign.id}>
     <TextCell className="expand">
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
@@ -24,7 +22,10 @@ const SentCampaignRow = ({ campaign }: Props) => (
       &nbsp;
       <FormattedTime value={campaign.attributes.updated_at} />
     </div>
-    <StatusLabel color="clGreenSuccess" text={<FormattedMessage {...messages.sent} />} />
+    <StatusLabel
+      color="clGreenSuccess"
+      text={<FormattedMessage {...messages.sent} />}
+    />
     <Button
       linkTo={`/admin/emails/custom/${campaign.id}`}
       icon="charts"

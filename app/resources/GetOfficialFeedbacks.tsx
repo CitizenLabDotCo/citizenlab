@@ -3,14 +3,20 @@ import { get, isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter, tap } from 'rxjs/operators';
-import { IOfficialFeedbacks, officialFeedbacksForIdeaStream, officialFeedbacksForInitiativeStream } from 'services/officialFeedback';
+import {
+  IOfficialFeedbacks,
+  officialFeedbacksForIdeaStream,
+  officialFeedbacksForInitiativeStream,
+} from 'services/officialFeedback';
 
 export interface InputProps {
   postId: string | null;
   postType: 'idea' | 'initiative';
 }
 
-type children = (renderProps: GetOfficialFeedbacksChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetOfficialFeedbacksChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -27,7 +33,10 @@ interface State {
   loadingMore: boolean;
 }
 
-export default class GetOfficialFeedbacks extends React.Component<Props, State> {
+export default class GetOfficialFeedbacks extends React.Component<
+  Props,
+  State
+> {
   private initialState: State;
   private postId$: BehaviorSubject<string | null>;
   private pageSize$: BehaviorSubject<number>;
@@ -39,7 +48,7 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
       officialFeedbacksList: undefined,
       hasMore: false,
       querying: true,
-      loadingMore: false
+      loadingMore: false,
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -51,46 +60,55 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
   componentDidMount() {
     const { postType } = this.props;
     this.subscriptions = [
-      this.postId$.pipe(
-        distinctUntilChanged(),
-        filter(postId => isString(postId)),
-        tap(() => this.setState(this.initialState)),
-        switchMap((postId: string) => {
-          return this.pageSize$.pipe(
-            distinctUntilChanged(),
-            switchMap((pageSize) => {
-              const isLoadingMore = (pageSize !== 1);
-              const queryParameters = {
-                'page[number]': 1,
-                'page[size]': pageSize
-              };
+      this.postId$
+        .pipe(
+          distinctUntilChanged(),
+          filter((postId) => isString(postId)),
+          tap(() => this.setState(this.initialState)),
+          switchMap((postId: string) => {
+            return this.pageSize$.pipe(
+              distinctUntilChanged(),
+              switchMap((pageSize) => {
+                const isLoadingMore = pageSize !== 1;
+                const queryParameters = {
+                  'page[number]': 1,
+                  'page[size]': pageSize,
+                };
 
-              this.setState({
-                querying: !isLoadingMore,
-                loadingMore: isLoadingMore,
-              });
+                this.setState({
+                  querying: !isLoadingMore,
+                  loadingMore: isLoadingMore,
+                });
 
-              switch (postType) {
-                case 'idea':
-                  return officialFeedbacksForIdeaStream(postId, { queryParameters }).observable;
-                case 'initiative':
-                  return officialFeedbacksForInitiativeStream(postId, { queryParameters }).observable;
-              }
-            })
-          );
-        })
-      ).subscribe((officialFeedbacksList) => {
-        const selfLink = get(officialFeedbacksList, 'links.self');
-        const lastLink = get(officialFeedbacksList, 'links.last');
-        const hasMore = (isString(selfLink) && isString(lastLink) && selfLink !== lastLink);
+                switch (postType) {
+                  case 'idea':
+                    return officialFeedbacksForIdeaStream(postId, {
+                      queryParameters,
+                    }).observable;
+                  case 'initiative':
+                    return officialFeedbacksForInitiativeStream(postId, {
+                      queryParameters,
+                    }).observable;
+                }
+              })
+            );
+          })
+        )
+        .subscribe((officialFeedbacksList) => {
+          const selfLink = get(officialFeedbacksList, 'links.self');
+          const lastLink = get(officialFeedbacksList, 'links.last');
+          const hasMore =
+            isString(selfLink) && isString(lastLink) && selfLink !== lastLink;
 
-        this.setState({
-          hasMore,
-          officialFeedbacksList: !isNilOrError(officialFeedbacksList) ? officialFeedbacksList : null,
-          querying: false,
-          loadingMore: false
-        });
-      })
+          this.setState({
+            hasMore,
+            officialFeedbacksList: !isNilOrError(officialFeedbacksList)
+              ? officialFeedbacksList
+              : null,
+            querying: false,
+            loadingMore: false,
+          });
+        }),
     ];
   }
 
@@ -102,7 +120,7 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   loadMore = () => {
@@ -110,13 +128,13 @@ export default class GetOfficialFeedbacks extends React.Component<Props, State> 
       const pageSize = this.pageSize$.getValue();
       this.pageSize$.next(pageSize + 10);
     }
-  }
+  };
 
   render() {
     const { children } = this.props;
     return (children as children)({
       ...this.state,
-      onLoadMore: this.loadMore
+      onLoadMore: this.loadMore,
     });
   }
 }

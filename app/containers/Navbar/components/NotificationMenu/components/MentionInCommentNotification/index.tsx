@@ -17,7 +17,9 @@ interface Props {
   notification: IMentionInCommentNotificationData;
 }
 
-const mapPostTypeToLink = (notification: IMentionInCommentNotificationData) : string => {
+const mapPostTypeToLink = (
+  notification: IMentionInCommentNotificationData
+): string => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;
@@ -26,10 +28,12 @@ const mapPostTypeToLink = (notification: IMentionInCommentNotificationData) : st
   }
 };
 
-const MentionInCommentNotification = memo<Props>(props => {
+const MentionInCommentNotification = memo<Props>((props) => {
   const { notification } = props;
 
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser =
+    isNilOrError(notification.attributes.initiating_user_first_name) ||
+    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
@@ -41,17 +45,18 @@ const MentionInCommentNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.mentionInComment}
         values={{
-          name: deletedUser ?
+          name: deletedUser ? (
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
-            :
+          ) : (
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={stopPropagation}
             >
               {notification.attributes.initiating_user_first_name}
-            </Link>,
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

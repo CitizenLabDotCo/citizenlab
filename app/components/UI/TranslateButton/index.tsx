@@ -17,11 +17,7 @@ interface Props {
 }
 
 const TranslateButton = (props: Props) => {
-  const {
-    translateButtonClicked,
-    className,
-    onClick
-  } = props;
+  const { translateButtonClicked, className, onClick } = props;
 
   return (
     <Button
@@ -36,11 +32,11 @@ const TranslateButton = (props: Props) => {
       borderColor={colors.separation}
       width="fit-content"
     >
-      {translateButtonClicked ?
+      {translateButtonClicked ? (
         <FormattedMessage {...messages.seeOriginal} />
-        :
+      ) : (
         <FormattedMessage {...messages.seeTranslation} />
-      }
+      )}
     </Button>
   );
 };

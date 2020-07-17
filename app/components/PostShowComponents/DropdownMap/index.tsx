@@ -11,20 +11,19 @@ export interface Props {
   projectId?: string | null;
 }
 
-const DropdownMap = memo<Props>(({ address, position, className, projectId }) => {
-  return (
-    <CollapsibleBox
-      e2eId="e2e-map-toggle"
-      className={className}
-      titleIconName="position"
-      title={address}
-    >
-      <Map
-        position={position}
-        projectId={projectId}
-      />
-    </CollapsibleBox>
-  );
-});
+const DropdownMap = memo<Props>(
+  ({ address, position, className, projectId }) => {
+    return (
+      <CollapsibleBox
+        e2eId="e2e-map-toggle"
+        className={className}
+        titleIconName="position"
+        title={address}
+      >
+        <Map position={position} projectId={projectId} />
+      </CollapsibleBox>
+    );
+  }
+);
 
 export default DropdownMap;

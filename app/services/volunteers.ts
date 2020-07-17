@@ -32,23 +32,38 @@ export interface IVolunteer {
   data: IVolunteerData;
 }
 
-export function volunteersStream(causeId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IVolunteers>({ apiEndpoint: `${API_PATH}/causes/${causeId}/volunteers`, ...streamParams });
+export function volunteersStream(
+  causeId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IVolunteers>({
+    apiEndpoint: `${API_PATH}/causes/${causeId}/volunteers`,
+    ...streamParams,
+  });
 }
 
 export async function addVolunteer(causeId: string) {
-  const stream = await streams.add<IVolunteer>(`${API_PATH}/causes/${causeId}/volunteers`, null);
+  const stream = await streams.add<IVolunteer>(
+    `${API_PATH}/causes/${causeId}/volunteers`,
+    null
+  );
   await streams.fetchAllWith({ dataId: [causeId] });
   return stream;
 }
 
 export async function deleteVolunteer(causeId: string, volunteerId: string) {
-  const stream = await streams.delete(`${API_PATH}/causes/${causeId}/volunteers`, volunteerId);
+  const stream = await streams.delete(
+    `${API_PATH}/causes/${causeId}/volunteers`,
+    volunteerId
+  );
   await streams.fetchAllWith({ dataId: [causeId] });
   return stream;
 }
 
-export async function exportVolunteers(participationContextId: string, participationContextType: IParticipationContextType) {
+export async function exportVolunteers(
+  participationContextId: string,
+  participationContextType: IParticipationContextType
+) {
   const blob = await requestBlob(
     `${API_PATH}/${participationContextType}s/${participationContextId}/volunteers/as_xlsx`,
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

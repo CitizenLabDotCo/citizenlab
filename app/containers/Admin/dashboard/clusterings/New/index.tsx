@@ -10,7 +10,6 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 type Props = {};
 
 export default class New extends PureComponent<Props> {
-
   validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
 
@@ -18,10 +17,13 @@ export default class New extends PureComponent<Props> {
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
-  }
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  };
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     addClustering({
-      ...values
+      ...values,
     })
       .then((clustering) => {
         clHistory.push(`/admin/dashboard/insights/${clustering.data.id}`);
@@ -35,11 +37,11 @@ export default class New extends PureComponent<Props> {
         }
         setSubmitting(false);
       });
-  }
+  };
 
   renderFn = (props) => {
     return <ClusteringForm {...props} />;
-  }
+  };
 
   initialValues = (): FormValues => ({
     title_multiloc: {},
@@ -49,7 +51,7 @@ export default class New extends PureComponent<Props> {
     topics: [],
     areas: [],
     idea_statuses: [],
-  })
+  });
 
   render() {
     return (

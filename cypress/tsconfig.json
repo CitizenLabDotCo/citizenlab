@@ -5,17 +5,8 @@
     "lib": ["es5", "es2015", "dom"],
     "skipLibCheck": true,
     "strict": true,
-    "types": [
-      "cypress"
-    ]
+    "types": ["cypress"]
   },
-  "exclude": [
-    "../node_modules",
-    "../app",
-    "../e2e",
-    "../internals"
-  ],
-  "include": [
-    "../cypress/**/*.ts"
-  ]
+  "exclude": ["../node_modules", "../app", "../e2e", "../internals"],
+  "include": ["../cypress/**/*.ts"]
 }

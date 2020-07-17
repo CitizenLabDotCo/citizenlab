@@ -20,7 +20,7 @@ const Container = styled.div`
   width: 100%;
 `;
 
-interface Props extends GetIdeasInputProps  {
+interface Props extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
@@ -32,21 +32,23 @@ interface Props extends GetIdeasInputProps  {
   invisibleTitleMessage: MessageDescriptor;
 }
 
-const IdeaCards = memo<Props>(({ className, invisibleTitleMessage, ...props }) => {
-  return (
-    <Container className={className}>
-      <ScreenReaderOnly>
-        <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
-      </ScreenReaderOnly>
-      <Suspense fallback={null}>
-        {props.showFiltersSidebar ?
-          <WithFiltersSidebar {...props} />
-        :
-          <WithoutFiltersSidebar {...props} />
-        }
-      </Suspense>
-    </Container>
-  );
-});
+const IdeaCards = memo<Props>(
+  ({ className, invisibleTitleMessage, ...props }) => {
+    return (
+      <Container className={className}>
+        <ScreenReaderOnly>
+          <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
+        </ScreenReaderOnly>
+        <Suspense fallback={null}>
+          {props.showFiltersSidebar ? (
+            <WithFiltersSidebar {...props} />
+          ) : (
+            <WithoutFiltersSidebar {...props} />
+          )}
+        </Suspense>
+      </Container>
+    );
+  }
+);
 
 export default IdeaCards;

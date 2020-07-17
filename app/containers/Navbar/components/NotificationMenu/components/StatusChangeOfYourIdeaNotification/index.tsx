@@ -9,7 +9,7 @@ interface Props {
   notification: IStatusChangeOfYourIdeaNotificationData;
 }
 
-const StatusChangeOfYourIdeaNotification = memo<Props>(props => {
+const StatusChangeOfYourIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -22,8 +22,10 @@ const StatusChangeOfYourIdeaNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.statusChangedOfYourIdea}
         values={{
-          status: <T value={notification.attributes.idea_status_title_multiloc} />,
-          ideaTitle: <T value={notification.attributes.post_title_multiloc} />
+          status: (
+            <T value={notification.attributes.idea_status_title_multiloc} />
+          ),
+          ideaTitle: <T value={notification.attributes.post_title_multiloc} />,
         }}
       />
     </NotificationWrapper>

@@ -18,7 +18,7 @@ import {
   ICommentsByTopic,
   commentsByTopicStream,
   IVotesByTopic,
-  votesByTopicStream
+  votesByTopicStream,
 } from 'services/stats';
 import { IResource } from '..';
 import { IGraphFormat, IOption } from 'typings';
@@ -39,16 +39,18 @@ interface InputProps {
   topicOptions: IOption[];
 }
 
-interface Props extends InputProps, QueryProps { }
+interface Props extends InputProps, QueryProps {}
 
-interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized { }
+interface PropsWithHoCs extends Props, InjectedIntlProps, InjectedLocalized {}
 
 class SelectableResourceByTopicChart extends PureComponent<PropsWithHoCs> {
-
-  convertToGraphFormat = (data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic) => {
+  convertToGraphFormat = (
+    data: IIdeasByTopic | IVotesByTopic | ICommentsByTopic
+  ) => {
     const { series, topics } = data;
     const { localize, currentResourceByTopic } = this.props;
-    const dataKey = currentResourceByTopic === 'votes' ? 'total' : currentResourceByTopic;
+    const dataKey =
+      currentResourceByTopic === 'votes' ? 'total' : currentResourceByTopic;
 
     const mapped = map(series[dataKey], (count: number, topicId: string) => ({
       name: localize(topics[topicId].title_multiloc) as string,
@@ -58,43 +60,48 @@ class SelectableResourceByTopicChart extends PureComponent<PropsWithHoCs> {
     const res = sortBy(mapped, 'name');
 
     return res.length > 0 ? res : null;
-  }
+  };
 
   convertSerie = (serie: IGraphFormat | null) => {
     const {
       currentTopicFilter,
       currentResourceByTopic,
       topicOptions,
-      intl: {
-        formatMessage
-      }
+      intl: { formatMessage },
     } = this.props;
 
     if (serie && currentResourceByTopic) {
-      const selectedTopic = serie.find(item => item.code === currentTopicFilter);
+      const selectedTopic = serie.find(
+        (item) => item.code === currentTopicFilter
+      );
       const selectedCount = selectedTopic ? selectedTopic.value : 0;
 
       let selectedName;
       if (selectedTopic) {
         selectedName = selectedTopic.name;
       } else {
-        const foundOption = topicOptions.find(option => option.value === currentTopicFilter);
-        selectedName = foundOption ? foundOption.label : formatMessage(messages.selectedTopic);
+        const foundOption = topicOptions.find(
+          (option) => option.value === currentTopicFilter
+        );
+        selectedName = foundOption
+          ? foundOption.label
+          : formatMessage(messages.selectedTopic);
       }
 
       const convertedSerie = serie
-      .filter(item => item.code !== currentTopicFilter)
-      .map(item => {
-        const { value, name, ...rest } = item;
-        const shortenedName = name.length > 60 ? `${name.substring(0, 61)}...` : name;
-        return { value: value - selectedCount, name: shortenedName, ...rest };
-      });
+        .filter((item) => item.code !== currentTopicFilter)
+        .map((item) => {
+          const { value, name, ...rest } = item;
+          const shortenedName =
+            name.length > 60 ? `${name.substring(0, 61)}...` : name;
+          return { value: value - selectedCount, name: shortenedName, ...rest };
+        });
 
       return { convertedSerie, selectedCount, selectedName };
     }
 
-    return ({ convertedSerie: serie, selectedCount: null, selectedName: null });
-  }
+    return { convertedSerie: serie, selectedCount: null, selectedName: null };
+  };
 
   getCurrentStream(currentResourceByTopic) {
     if (currentResourceByTopic === 'ideas') {
@@ -110,7 +117,7 @@ class SelectableResourceByTopicChart extends PureComponent<PropsWithHoCs> {
     const {
       currentResourceByTopic,
       currentTopicFilter,
-      onResourceByTopicChange
+      onResourceByTopicChange,
     } = this.props;
 
     return (
@@ -128,4 +135,8 @@ class SelectableResourceByTopicChart extends PureComponent<PropsWithHoCs> {
   }
 }
 
-export default localize<Props>(injectIntl<Props & InjectedLocalized>(SelectableResourceByTopicChart as any) as any);
+export default localize<Props>(
+  injectIntl<Props & InjectedLocalized>(
+    SelectableResourceByTopicChart as any
+  ) as any
+);

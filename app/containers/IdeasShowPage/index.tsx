@@ -21,7 +21,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const IdeaNotFoundWrapper = styled.div`
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +44,7 @@ const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
 
 const StyledIdeasShow = styled(IdeasShow)`
   background: #fff;
-  margin-top: ${props => props.theme.mobileTopBarHeight}px;
+  margin-top: ${(props) => props.theme.mobileTopBarHeight}px;
 
   ${media.biggerThanMaxTablet`
     margin-top: 0px;
@@ -62,16 +62,13 @@ interface Props extends InputProps, DataProps {}
 const goBackToListMessage = <FormattedMessage {...messages.goBackToList} />;
 
 const IdeasShowPage = memo<Props>(({ idea }) => {
-
   if (isError(idea)) {
     return (
       <IdeaNotFoundWrapper>
-        <p><FormattedMessage {...messages.noIdeaFoundHere} /></p>
-        <Button
-          linkTo="/ideas"
-          text={goBackToListMessage}
-          icon="arrow-back"
-        />
+        <p>
+          <FormattedMessage {...messages.noIdeaFoundHere} />
+        </p>
+        <Button linkTo="/ideas" text={goBackToListMessage} icon="arrow-back" />
       </IdeaNotFoundWrapper>
     );
   }
@@ -80,7 +77,10 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
     return (
       <Container>
         <StyledIdeaShowPageTopBar ideaId={idea.id} />
-        <StyledIdeasShow ideaId={idea.id} projectId={idea.relationships.project.data.id} />
+        <StyledIdeasShow
+          ideaId={idea.id}
+          projectId={idea.relationships.project.data.id}
+        />
       </Container>
     );
   }
@@ -89,11 +89,15 @@ const IdeasShowPage = memo<Props>(({ idea }) => {
 });
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  idea: ({ params, render }) => <GetIdea ideaSlug={params.slug}>{render}</GetIdea>
+  idea: ({ params, render }) => (
+    <GetIdea ideaSlug={params.slug}>{render}</GetIdea>
+  ),
 });
 
-export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <IdeasShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter<InputProps>(
+  (inputProps: InputProps & WithRouterProps) => (
+    <Data {...inputProps}>
+      {(dataProps) => <IdeasShowPage {...inputProps} {...dataProps} />}
+    </Data>
+  )
+);

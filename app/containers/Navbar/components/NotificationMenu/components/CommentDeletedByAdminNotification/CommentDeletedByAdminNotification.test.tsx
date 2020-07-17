@@ -16,7 +16,10 @@ describe('<CommentDeletedByAdminNotification />', () => {
   it('renders correctly with an empty idea', () => {
     const wrapper = shallow(
       <CommentDeletedByAdminNotification
-        notification={getNotification('commentDeletedByAdmin', 'comment_deleted_by_admin')}
+        notification={getNotification(
+          'commentDeletedByAdmin',
+          'comment_deleted_by_admin'
+        )}
         idea={null}
       />
     );
@@ -25,7 +28,10 @@ describe('<CommentDeletedByAdminNotification />', () => {
   it('renders correctly with a non empty idea', () => {
     const wrapper = shallow(
       <CommentDeletedByAdminNotification
-        notification={getNotification('commentDeletedByAdmin', 'comment_deleted_by_admin')}
+        notification={getNotification(
+          'commentDeletedByAdmin',
+          'comment_deleted_by_admin'
+        )}
         idea={getIdea('ideaId', 'ideaTitle')}
       />
     );

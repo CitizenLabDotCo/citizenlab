@@ -12,13 +12,13 @@ const serie = [
   {
     name: 'x',
     value: 1,
-    code: 'x'
+    code: 'x',
   },
   {
     name: 'y',
     value: 3,
-    code: 'y'
-  }
+    code: 'y',
+  },
 ];
 
 describe('<BarChartByCategory />', () => {

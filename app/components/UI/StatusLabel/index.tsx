@@ -34,10 +34,7 @@ interface Props {
 
 const StatusLabel: SFC<Props> = (props: Props) => {
   return (
-    <Container
-      color={props.color}
-      className={props['className']}
-    >
+    <Container color={props.color} className={props['className']}>
       {props.icon && <StyledIcon name={props.icon} />}
       {props.text}
     </Container>

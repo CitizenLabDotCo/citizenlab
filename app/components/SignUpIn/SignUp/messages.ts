@@ -151,7 +151,8 @@ export default defineMessages({
   },
   somethingWentWrongText: {
     id: 'app.containers.SignUp.somethingWentWrongText',
-    defaultMessage: 'Something went wrong while trying to create your account. Please try again in a few minutes.',
+    defaultMessage:
+      'Something went wrong while trying to create your account. Please try again in a few minutes.',
   },
   signUpWithEmail: {
     id: 'app.containers.SignUp.signUpWithEmail',
@@ -175,7 +176,8 @@ export default defineMessages({
   },
   emailConsent: {
     id: 'app.containers.SignUp.emailConsent',
-    defaultMessage: 'By signing up, you agree to receive emails from this platform. You can select which emails you wish to receive from your user settings.',
+    defaultMessage:
+      'By signing up, you agree to receive emails from this platform. You can select which emails you wish to receive from your user settings.',
   },
   headerSubtitle: {
     id: 'app.containers.SignUp.headerSubtitle',
@@ -212,5 +214,5 @@ export default defineMessages({
   invitationError: {
     id: 'app.containers.SignUp.invitationError',
     defaultMessage: 'Your invitation has expired or has already been redeemed.',
-  }
+  },
 });

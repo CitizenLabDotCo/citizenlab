@@ -22,14 +22,18 @@ const PageTitle = styled.h1`
 type Props = {};
 
 class New extends React.Component<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     addCustomFieldForUsers({
-      ...values
+      ...values,
     })
       .then((response) => {
         if (this.hasOptions(values.input_type)) {
-          clHistory.push(`/admin/settings/registration/custom_fields/${response.data.id}/options`);
+          clHistory.push(
+            `/admin/settings/registration/custom_fields/${response.data.id}/options`
+          );
         } else {
           clHistory.push('/admin/settings/registration');
         }
@@ -43,23 +47,19 @@ class New extends React.Component<Props> {
         }
         setSubmitting(false);
       });
-  }
+  };
 
   renderFn = (props) => (
-    <CustomFieldForm
-      {...props}
-      mode="new"
-      builtInField={false}
-    />
-  )
+    <CustomFieldForm {...props} mode="new" builtInField={false} />
+  );
 
   hasOptions = (inputType) => {
     return inputType === 'select' || inputType === 'multiselect';
-  }
+  };
 
   goBack = () => {
     clHistory.push('/admin/settings/registration');
-  }
+  };
 
   render() {
     return (

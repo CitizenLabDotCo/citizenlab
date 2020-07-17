@@ -52,7 +52,7 @@ const Container = styled.div`
 
   ${media.smallerThanMaxTablet`
     top: 0;
-    bottom: ${props => props.theme.mobileMenuHeight}px;
+    bottom: ${(props) => props.theme.mobileMenuHeight}px;
     // there is no top navbar at this screen size, so okay
     // that it is higher than the z-index of NavBar here
     z-index: 1005;
@@ -121,30 +121,38 @@ class FullscreenModal extends PureComponent<Props, State> {
     const { locale, url, goBackUrl } = this.props;
 
     if (!isNilOrError(locale) && url) {
-      this.url = `${window.location.origin}/${locale}${removeLocale(url).pathname}`;
-      this.goBackUrl = `${window.location.origin}/${locale}${removeLocale(goBackUrl || window.location.pathname).pathname}`;
+      this.url = `${window.location.origin}/${locale}${
+        removeLocale(url).pathname
+      }`;
+      this.goBackUrl = `${window.location.origin}/${locale}${
+        removeLocale(goBackUrl || window.location.pathname).pathname
+      }`;
       window.history.pushState({ path: this.url }, '', this.url);
       window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
       window.addEventListener('keydown', this.handleKeypress, useCapture);
       this.unlisten = clHistory.listen(() => this.props.close());
       trackPage(this.url, { modal: true });
     }
-  }
+  };
 
   handleKeypress = (event) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.props.close();
     }
-  }
+  };
 
   handlePopstateEvent = () => {
     this.props.close();
-  }
+  };
 
   cleanup = () => {
     if (this.goBackUrl) {
-      window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
+      window.removeEventListener(
+        'popstate',
+        this.handlePopstateEvent,
+        useCapture
+      );
       window.removeEventListener('keydown', this.handleKeypress, useCapture);
 
       if (window.location.href === this.url) {
@@ -159,10 +167,18 @@ class FullscreenModal extends PureComponent<Props, State> {
       this.unlisten();
       this.unlisten = null;
     }
-  }
+  };
 
   render() {
-    const { children, opened, topBar, bottomBar, animateInOut, navbarRef, mobileNavbarRef } = this.props;
+    const {
+      children,
+      opened,
+      topBar,
+      bottomBar,
+      animateInOut,
+      navbarRef,
+      mobileNavbarRef,
+    } = this.props;
     const shards = compact([navbarRef, mobileNavbarRef]);
     const modalPortalElement = document?.getElementById('modal-portal');
     let modalContent: React.ReactChild | null = null;
@@ -175,9 +191,7 @@ class FullscreenModal extends PureComponent<Props, State> {
         >
           <StyledFocusOn shards={shards}>
             {topBar}
-            <Content>
-              {children}
-            </Content>
+            <Content>{children}</Content>
             {bottomBar}
           </StyledFocusOn>
         </Container>
@@ -185,13 +199,13 @@ class FullscreenModal extends PureComponent<Props, State> {
     }
 
     if (animateInOut) {
-      return ReactDOM.createPortal((
+      return ReactDOM.createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}
           timeout={{
             enter: slideInOutTimeout,
-            exit: slideInOutTimeout
+            exit: slideInOutTimeout,
           }}
           mountOnEnter={true}
           unmountOnExit={true}
@@ -199,8 +213,9 @@ class FullscreenModal extends PureComponent<Props, State> {
           exit={true}
         >
           {modalContent}
-        </CSSTransition>
-      ), document.getElementById('modal-portal') as HTMLElement);
+        </CSSTransition>,
+        document.getElementById('modal-portal') as HTMLElement
+      );
     }
 
     if (!animateInOut && opened && modalPortalElement) {
@@ -212,11 +227,11 @@ class FullscreenModal extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, {}>({
-  locale: <GetLocale />
+  locale: <GetLocale />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FullscreenModal {...inputProps} {...dataProps} />}
+    {(dataProps) => <FullscreenModal {...inputProps} {...dataProps} />}
   </Data>
 );

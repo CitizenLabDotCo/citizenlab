@@ -27,5 +27,7 @@ export interface IMapConfig {
 }
 
 export const mapConfigByProjectStream = (projectId: string) => {
-  return streams.get<IMapConfig>({ apiEndpoint: `${API_PATH}/projects/${projectId}/map_config` });
+  return streams.get<IMapConfig>({
+    apiEndpoint: `${API_PATH}/projects/${projectId}/map_config`,
+  });
 };

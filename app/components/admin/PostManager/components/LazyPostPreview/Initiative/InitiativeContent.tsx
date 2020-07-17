@@ -21,9 +21,15 @@ import VoteIndicator from 'components/InitiativeCard/VoteIndicator';
 import { deleteInitiative } from 'services/initiatives';
 
 // resources
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeImages, {
+  GetInitiativeImagesChildProps,
+} from 'resources/GetInitiativeImages';
 
 // i18n
 import injectLocalize, { InjectedLocalized } from 'utils/localize';
@@ -86,7 +92,7 @@ const Right = styled.div`
 
 const VotePreview = styled.div`
   border: 1px solid #e0e0e0;
-  box-shadow: 0px 0px 15px rgba(0,0,0,0.05);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.05);
   border-radius: 3px;
   padding: 20px;
 `;
@@ -112,10 +118,15 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-export class InitiativeContent extends PureComponent<Props & InjectedLocalized & InjectedIntlProps, State> {
+export class InitiativeContent extends PureComponent<
+  Props & InjectedLocalized & InjectedIntlProps,
+  State
+> {
   handleClickDelete = () => {
     const { initiative, closePreview } = this.props;
-    const message = this.props.intl.formatMessage(messages.deleteInitiativeConfirmation);
+    const message = this.props.intl.formatMessage(
+      messages.deleteInitiativeConfirmation
+    );
 
     if (!isNilOrError(initiative)) {
       if (window.confirm(message)) {
@@ -123,7 +134,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
         closePreview();
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -137,9 +148,14 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
     if (!isNilOrError(initiative)) {
       const initiativeId = initiative.id;
       const initiativeTitle = localize(initiative.attributes.title_multiloc);
-      const initiativeImageLarge = !isNilOrError(initiativeImages) && initiativeImages.length > 0 ? get(initiativeImages[0], 'attributes.versions.large', null) : null;
-      const initiativeGeoPosition = (initiative.attributes.location_point_geojson || null);
-      const initiativeAddress = (initiative.attributes.location_description || null);
+      const initiativeImageLarge =
+        !isNilOrError(initiativeImages) && initiativeImages.length > 0
+          ? get(initiativeImages[0], 'attributes.versions.large', null)
+          : null;
+      const initiativeGeoPosition =
+        initiative.attributes.location_point_geojson || null;
+      const initiativeAddress =
+        initiative.attributes.location_description || null;
       const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
 
       return (
@@ -151,7 +167,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
               textColor={colors.adminTextColor}
               onClick={handleClickEdit}
             >
-              <FormattedMessage {...messages.edit}/>
+              <FormattedMessage {...messages.edit} />
             </Button>
             <Button
               icon="delete"
@@ -159,7 +175,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
               textColor={colors.adminTextColor}
               onClick={this.handleClickDelete}
             >
-              <FormattedMessage {...messages.delete}/>
+              <FormattedMessage {...messages.delete} />
             </Button>
           </Top>
           <Content>
@@ -170,12 +186,20 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
             />
             <Row>
               <Left>
-                {initiativeImageLarge &&
-                  <Image src={initiativeImageLarge} alt="" className="e2e-initiativeImage"/>
-                }
+                {initiativeImageLarge && (
+                  <Image
+                    src={initiativeImageLarge}
+                    alt=""
+                    className="e2e-initiativeImage"
+                  />
+                )}
 
                 <PostedBy
-                  authorId={get(initiative, 'relationships.author.data.id', null)}
+                  authorId={get(
+                    initiative,
+                    'relationships.author.data.id',
+                    null
+                  )}
                   showAboutInitiatives={false}
                 />
 
@@ -185,16 +209,16 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                   body={localize(initiative.attributes.body_multiloc)}
                 />
 
-                {initiativeGeoPosition && initiativeAddress &&
+                {initiativeGeoPosition && initiativeAddress && (
                   <StyledMap
                     address={initiativeAddress}
                     position={initiativeGeoPosition}
                   />
-                }
+                )}
 
-                {initiativeFiles && !isNilOrError(initiativeFiles) &&
+                {initiativeFiles && !isNilOrError(initiativeFiles) && (
                   <FileAttachments files={initiativeFiles} />
-                }
+                )}
 
                 <StyledOfficialFeedback
                   postId={initiativeId}
@@ -204,10 +228,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                   permissionToPost
                 />
 
-                <StyledComments
-                  postId={initiativeId}
-                  postType="initiative"
-                />
+                <StyledComments postId={initiativeId} postType="initiative" />
               </Left>
               <Right>
                 <VotePreview>
@@ -220,9 +241,7 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
                   <VoteIndicator initiativeId={initiativeId} />
                 </VotePreview>
 
-                <FeedbackSettings
-                  initiativeId={initiativeId}
-                />
+                <FeedbackSettings initiativeId={initiativeId} />
               </Right>
             </Row>
           </Content>
@@ -234,16 +253,28 @@ export class InitiativeContent extends PureComponent<Props & InjectedLocalized &
 }
 
 const Data = adopt<DataProps, InputProps>({
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
-  initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
+  initiativeFiles: ({ initiativeId, render }) => (
+    <GetResourceFiles resourceId={initiativeId} resourceType="initiative">
+      {render}
+    </GetResourceFiles>
+  ),
+  initiativeImages: ({ initiativeId, render }) => (
+    <GetInitiativeImages initiativeId={initiativeId}>
+      {render}
+    </GetInitiativeImages>
+  ),
 });
 
 const InitiativeContentWithHOCs = injectIntl(injectLocalize(InitiativeContent));
 
 const WrappedInitiativeContent = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativeContentWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <InitiativeContentWithHOCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );
 

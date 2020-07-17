@@ -48,34 +48,45 @@ export default class GetCampaigns extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { campaignNames, withoutCampaignNames, pageSize, pageNumber } = this.props;
+    const {
+      campaignNames,
+      withoutCampaignNames,
+      pageSize,
+      pageNumber,
+    } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ campaignNames, withoutCampaignNames, pageSize });
+    this.inputProps$ = new BehaviorSubject({
+      campaignNames,
+      withoutCampaignNames,
+      pageSize,
+    });
     this.pageChanges$ = new BehaviorSubject(pageNumber || 1);
 
     this.subscriptions = [
-      combineLatest(
-        this.inputProps$,
-        this.pageChanges$,
-      ).pipe(
-        map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
-        distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ campaignNames, withoutCampaignNames, pageSize, pageNumber }) => {
-          return listCampaigns({ queryParameters: {
-            campaign_names: campaignNames,
-            without_campaign_names: withoutCampaignNames,
-            'page[size]': pageSize,
-            'page[number]': pageNumber,
-          }}).observable;
-        })
-      )
-      .subscribe((campaigns) => {
-        this.setState({
-          campaigns: campaigns.data,
-          currentPage: getPageNumberFromUrl(campaigns.links.self) || 1,
-          lastPage: getPageNumberFromUrl(campaigns.links.last) || 1
-        });
-      })
+      combineLatest(this.inputProps$, this.pageChanges$)
+        .pipe(
+          map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
+          distinctUntilChanged((prev, next) => isEqual(prev, next)),
+          switchMap(
+            ({ campaignNames, withoutCampaignNames, pageSize, pageNumber }) => {
+              return listCampaigns({
+                queryParameters: {
+                  campaign_names: campaignNames,
+                  without_campaign_names: withoutCampaignNames,
+                  'page[size]': pageSize,
+                  'page[number]': pageNumber,
+                },
+              }).observable;
+            }
+          )
+        )
+        .subscribe((campaigns) => {
+          this.setState({
+            campaigns: campaigns.data,
+            currentPage: getPageNumberFromUrl(campaigns.links.self) || 1,
+            lastPage: getPageNumberFromUrl(campaigns.links.last) || 1,
+          });
+        }),
     ];
   }
 
@@ -88,12 +99,12 @@ export default class GetCampaigns extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleOnPageChange = (pageNumber: number) => {
     this.pageChanges$.next(pageNumber);
-  }
+  };
 
   render() {
     const { children } = this.props;

@@ -6,7 +6,9 @@ import Label from 'components/UI/Label';
 import IconTooltip from 'components/UI/IconTooltip';
 
 // resources
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -49,20 +51,22 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
 class InputMultiloc extends PureComponent<Props, State> {
-
   handleOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChange) {
-      this.props.onChange({
-        ...this.props.valueMultiloc,
-        [locale]: value
-      }, locale);
+      this.props.onChange(
+        {
+          ...this.props.valueMultiloc,
+          [locale]: value,
+        },
+        locale
+      );
     }
-  }
+  };
 
   render() {
     const {
@@ -78,15 +82,12 @@ class InputMultiloc extends PureComponent<Props, State> {
       disabled,
       ariaLabel,
       className,
-      tenantLocales
+      tenantLocales,
     } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
       return (
-        <Container
-          id={id}
-          className={`${className || ''} e2e-multiloc-input`}
-        >
+        <Container id={id} className={`${className || ''} e2e-multiloc-input`}>
           {tenantLocales.map((tenantLocale, index) => {
             const value = valueMultiloc?.[tenantLocale] || null;
             const error = errorMultiloc?.[tenantLocale] || null;
@@ -97,13 +98,19 @@ class InputMultiloc extends PureComponent<Props, State> {
                 key={tenantLocale}
                 className={`${index === tenantLocales.length - 1 && 'last'}`}
               >
-                {label &&
+                {label && (
                   <Label htmlFor={inputId}>
                     <span>{label}</span>
-                    {tenantLocales.length > 1 && <LanguageExtension>{tenantLocale.toUpperCase()}</LanguageExtension>}
-                    {labelTooltipText && <IconTooltip content={labelTooltipText} />}
+                    {tenantLocales.length > 1 && (
+                      <LanguageExtension>
+                        {tenantLocale.toUpperCase()}
+                      </LanguageExtension>
+                    )}
+                    {labelTooltipText && (
+                      <IconTooltip content={labelTooltipText} />
+                    )}
                   </Label>
-                }
+                )}
 
                 <Input
                   id={inputId}
@@ -131,6 +138,8 @@ class InputMultiloc extends PureComponent<Props, State> {
 
 export default (InputProps: InputProps) => (
   <GetTenantLocales>
-    {tenantLocales => <InputMultiloc {...InputProps} tenantLocales={tenantLocales} />}
+    {(tenantLocales) => (
+      <InputMultiloc {...InputProps} tenantLocales={tenantLocales} />
+    )}
   </GetTenantLocales>
 );

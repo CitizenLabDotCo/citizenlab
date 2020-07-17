@@ -88,5 +88,5 @@ export default defineMessages({
   otherFilesTitle: {
     id: 'app.components.IdeaForm.otherFilesTitle',
     defaultMessage: 'Other files',
-  }
+  },
 });

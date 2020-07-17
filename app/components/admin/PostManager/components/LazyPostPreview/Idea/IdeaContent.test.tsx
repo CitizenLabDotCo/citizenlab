@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { localizeProps } from 'utils/testUtils/localizeProps';
-import { getDummyIntlObject } from 'utils/testUtils/mockedIntl'
+import { getDummyIntlObject } from 'utils/testUtils/mockedIntl';
 import { getIdea } from 'services/__mocks__/ideas';
 
 jest.mock('resources/GetResourceFiles', () => 'GetResourceFiles');
@@ -14,7 +14,10 @@ jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
 jest.mock('components/PostShowComponents/DropdownMap', () => 'DropdownMap');
-jest.mock('components/PostShowComponents/OfficialFeedback', () => 'OfficialFeedback');
+jest.mock(
+  'components/PostShowComponents/OfficialFeedback',
+  () => 'OfficialFeedback'
+);
 jest.mock('components/PostShowComponents/Comments', () => 'Comments');
 jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
 jest.mock('components/UI/Button', () => 'Button');
@@ -26,7 +29,7 @@ jest.mock('components/T', () => 'T');
 jest.mock('../', () => ({
   Top: () => 'Top',
   Content: () => 'Content',
-  Container: () => 'Container'
+  Container: () => 'Container',
 }));
 jest.mock('services/ideas');
 jest.mock('utils/cl-intl');

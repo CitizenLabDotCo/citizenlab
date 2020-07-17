@@ -3,10 +3,13 @@ import { IProjectData } from 'services/projects';
 import { isNilOrError } from 'utils/helperUtils';
 
 const hasRole = (user: IUser, role: IRole['type']) => {
-  return !!(user.data.attributes?.roles && user.data.attributes.roles?.find((r) => r.type === role));
+  return !!(
+    user.data.attributes?.roles &&
+    user.data.attributes.roles?.find((r) => r.type === role)
+  );
 };
 
-export const isAdmin = (user?: IUser | null | undefined | Error)  => {
+export const isAdmin = (user?: IUser | null | undefined | Error) => {
   if (!isNilOrError(user)) {
     return !!user && hasRole(user, 'admin');
   }
@@ -25,9 +28,20 @@ export const isModerator = (user?: IUser | null) => {
   return !!user && hasRole(user, 'project_moderator');
 };
 
-export const isProjectModerator = (user?: IUser | null, projectId?: IProjectData['id'] | null) => {
-  return isModerator(user) && (
-    !projectId ||
-    !!(user && projectId && user.data.attributes?.roles && user.data.attributes?.roles?.find((r: IProjectModerator) => r.project_id === projectId))
+export const isProjectModerator = (
+  user?: IUser | null,
+  projectId?: IProjectData['id'] | null
+) => {
+  return (
+    isModerator(user) &&
+    (!projectId ||
+      !!(
+        user &&
+        projectId &&
+        user.data.attributes?.roles &&
+        user.data.attributes?.roles?.find(
+          (r: IProjectModerator) => r.project_id === projectId
+        )
+      ))
   );
 };

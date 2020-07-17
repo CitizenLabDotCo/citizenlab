@@ -8,7 +8,10 @@ import { stringify } from 'qs';
 import { IParticipationContextType } from 'typings';
 
 // services
-import { getIdeaPostingRules, DisabledReasons } from 'services/ideaPostingRules';
+import {
+  getIdeaPostingRules,
+  DisabledReasons,
+} from 'services/ideaPostingRules';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -48,7 +51,7 @@ const ButtonWrapper = styled.div``;
 const TooltipContent = styled.div<{ inMap?: boolean }>`
   display: flex;
   align-items: center;
-  padding: ${props => props.inMap ? '0px' : '15px'};
+  padding: ${(props) => (props.inMap ? '0px' : '15px')};
 `;
 
 const TooltipContentIcon = styled(Icon)`
@@ -117,14 +120,16 @@ interface State {}
 class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
   locationRef = window.location.href;
 
-  disabledMessages: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
+  disabledMessages: {
+    [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor;
+  } = {
     notPermitted: messages.postingNotPermitted,
     maybeNotPermitted: messages.postingMaybeNotPermitted,
     postingDisabled: messages.postingHereImpossible,
     projectInactive: messages.postingProjectInactive,
     notActivePhase: messages.postingNotActivePhase,
     futureEnabled: messages.postingHereImpossible,
-    notVerified: messages.postingNotVerified
+    notVerified: messages.postingNotVerified,
   };
 
   redirectToIdeaForm = () => {
@@ -135,20 +140,33 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
 
       clHistory.push({
         pathname: `/projects/${project.attributes.slug}/ideas/new`,
-        search: latLng ? stringify({ lat: latLng.lat, lng: latLng.lng }, { addQueryPrefix: true }) : undefined
+        search: latLng
+          ? stringify(
+              { lat: latLng.lat, lng: latLng.lng },
+              { addQueryPrefix: true }
+            )
+          : undefined,
       });
     }
-  }
+  };
 
   onClick = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
     trackEventByName(tracks.postYourIdeaButtonClicked);
 
-    const { project, authUser, participationContextType, phaseId, projectId } = this.props;
+    const {
+      project,
+      authUser,
+      participationContextType,
+      phaseId,
+      projectId,
+    } = this.props;
     const pcType = participationContextType;
     const pcId = pcType === 'phase' ? phaseId : projectId;
-    const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
+    const postingDisabledReason = !isNilOrError(project)
+      ? project.attributes.action_descriptor.posting.disabled_reason
+      : null;
 
     // if not logged in
     if (isNilOrError(authUser) && !isNilOrError(project)) {
@@ -156,46 +174,69 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     // if logged in but not verified and verification required
-    if (!isNilOrError(authUser) && postingDisabledReason === 'not_verified' && pcType && pcId) {
+    if (
+      !isNilOrError(authUser) &&
+      postingDisabledReason === 'not_verified' &&
+      pcType &&
+      pcId
+    ) {
       this.verify();
     }
 
     // if logegd in and posting allowed
-    if (!isNilOrError(authUser) && !isNilOrError(project) && !postingDisabledReason) {
+    if (
+      !isNilOrError(authUser) &&
+      !isNilOrError(project) &&
+      !postingDisabledReason
+    ) {
       this.redirectToIdeaForm();
     }
-  }
+  };
 
   signIn = (event?: React.MouseEvent) => {
     this.signUpIn('signin')(event);
-  }
+  };
 
   signUp = (event?: React.MouseEvent) => {
     this.signUpIn('signup')(event);
-  }
+  };
 
   signUpIn = (flow: 'signup' | 'signin') => (event?: React.MouseEvent) => {
     event?.preventDefault();
 
-    const { project, authUser, participationContextType, phaseId, projectId } = this.props;
+    const {
+      project,
+      authUser,
+      participationContextType,
+      phaseId,
+      projectId,
+    } = this.props;
     const pcType = participationContextType;
     const pcId = pcType === 'phase' ? phaseId : projectId;
-    const postingDisabledReason = !isNilOrError(project) ? project.attributes.action_descriptor.posting.disabled_reason : null;
+    const postingDisabledReason = !isNilOrError(project)
+      ? project.attributes.action_descriptor.posting.disabled_reason
+      : null;
 
     if (isNilOrError(authUser) && !isNilOrError(project)) {
       trackEventByName(tracks.signUpInModalOpened);
       openSignUpInModal({
         flow,
         verification: postingDisabledReason === 'not_verified',
-        verificationContext: !!(postingDisabledReason === 'not_verified' && pcId && pcType) ? {
-          action: 'posting',
-          id: pcId,
-          type: pcType
-        } : undefined,
-        action: () => this.redirectToIdeaForm()
+        verificationContext: !!(
+          postingDisabledReason === 'not_verified' &&
+          pcId &&
+          pcType
+        )
+          ? {
+              action: 'posting',
+              id: pcId,
+              type: pcType,
+            }
+          : undefined,
+        action: () => this.redirectToIdeaForm(),
       });
     }
-  }
+  };
 
   verify = (event?: React.MouseEvent) => {
     event?.preventDefault();
@@ -210,14 +251,21 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
         context: {
           action: 'posting',
           id: pcId,
-          type: pcType
-        }
+          type: pcType,
+        },
       });
     }
-  }
+  };
 
   render() {
-    const { project, phase, authUser, inMap, className, intl: { formatMessage } } = this.props;
+    const {
+      project,
+      phase,
+      authUser,
+      inMap,
+      className,
+      intl: { formatMessage },
+    } = this.props;
     const { show, enabled } = getIdeaPostingRules({ project, phase, authUser });
     let { disabledReason } = getIdeaPostingRules({ project, phase, authUser });
 
@@ -241,15 +289,25 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (show) {
       const isSignedIn = !isNilOrError(authUser);
-      const isButtonDisabled = isSignedIn ? !!disabledReason : (!!disabledReason && disabledReason !== 'notVerified');
-      const tippyContent = (!enabled && !!disabledReason) ? (
-        <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip" inMap={inMap}>
-          <TooltipContentIcon name="lock-outlined" ariaHidden />
-          <TooltipContentText>
-            <FormattedMessage {...this.disabledMessages[disabledReason]} values={{ verificationLink, signUpLink, signInLink }} />
-          </TooltipContentText>
-        </TooltipContent>
-      ) : null;
+      const isButtonDisabled = isSignedIn
+        ? !!disabledReason
+        : !!disabledReason && disabledReason !== 'notVerified';
+      const tippyContent =
+        !enabled && !!disabledReason ? (
+          <TooltipContent
+            id="tooltip-content"
+            className="e2e-disabled-tooltip"
+            inMap={inMap}
+          >
+            <TooltipContentIcon name="lock-outlined" ariaHidden />
+            <TooltipContentText>
+              <FormattedMessage
+                {...this.disabledMessages[disabledReason]}
+                values={{ verificationLink, signUpLink, signInLink }}
+              />
+            </TooltipContentText>
+          </TooltipContent>
+        ) : null;
 
       if (inMap && !enabled && !!disabledReason) {
         if (!authUser && disabledReason === 'notVerified') {
@@ -257,10 +315,17 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
         }
 
         return (
-          <TooltipContent id="tooltip-content" className="e2e-disabled-tooltip" inMap={inMap}>
+          <TooltipContent
+            id="tooltip-content"
+            className="e2e-disabled-tooltip"
+            inMap={inMap}
+          >
             <TooltipContentIcon name="lock-outlined" ariaHidden />
             <TooltipContentText>
-              <FormattedMessage {...this.disabledMessages[disabledReason]} values={{ verificationLink, signUpLink, signInLink }} />
+              <FormattedMessage
+                {...this.disabledMessages[disabledReason]}
+                values={{ verificationLink, signUpLink, signInLink }}
+              />
             </TooltipContentText>
           </TooltipContent>
         );
@@ -278,7 +343,9 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
           >
             <ButtonWrapper
               tabIndex={isButtonDisabled ? 0 : -1}
-              className={`e2e-idea-button ${isButtonDisabled ? 'disabled' : ''} ${disabledReason ? disabledReason : ''}`}
+              className={`e2e-idea-button ${
+                isButtonDisabled ? 'disabled' : ''
+              } ${disabledReason ? disabledReason : ''}`}
             >
               <Button
                 {...this.props}
@@ -301,8 +368,10 @@ class IdeaButton extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render, }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 const IdeaButtonWithHoC = injectIntl(IdeaButton);

@@ -4,18 +4,17 @@ import { FieldProps } from 'formik';
 
 class FormikToggle extends React.PureComponent<FieldProps & Props> {
   handleOnChange = () => {
-    this.props.form.setFieldValue(this.props.field.name, !this.props.field.value);
-  }
+    this.props.form.setFieldValue(
+      this.props.field.name,
+      !this.props.field.value
+    );
+  };
 
   render() {
     const { value } = this.props.field;
 
     return (
-      <Toggle
-        {...this.props}
-        checked={value}
-        onChange={this.handleOnChange}
-      />
+      <Toggle {...this.props} checked={value} onChange={this.handleOnChange} />
     );
   }
 }

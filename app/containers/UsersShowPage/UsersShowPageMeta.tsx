@@ -10,7 +10,9 @@ import { InjectedIntlProps } from 'react-intl';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
@@ -34,34 +36,53 @@ interface DataProps {
   locale: GetLocaleChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({ intl, authUser, tenantLocales, tenant, locale, user }) => {
-  if (!isNilOrError(tenantLocales) && !isNilOrError(locale) && !isNilOrError(tenant)) {
+const UsersShowPageMeta: React.SFC<Props & InjectedIntlProps> = ({
+  intl,
+  authUser,
+  tenantLocales,
+  tenant,
+  locale,
+  user,
+}) => {
+  if (
+    !isNilOrError(tenantLocales) &&
+    !isNilOrError(locale) &&
+    !isNilOrError(tenant)
+  ) {
     const { formatMessage } = intl;
     const { location } = window;
     const firstName = user.attributes.first_name;
     const lastName = user.attributes.last_name;
-    const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
-    const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
+    const organizationNameMultiLoc =
+      tenant.attributes.settings.core.organization_name;
+    const tenantName = getLocalized(
+      organizationNameMultiLoc,
+      locale,
+      tenantLocales
+    );
 
     const usersShowPageIndexTitle = formatMessage(messages.metaTitle, {
       firstName,
-      lastName
+      lastName,
     });
     const usersShowPageDescription = formatMessage(messages.metaDescription, {
       firstName,
       lastName,
-      tenantName
+      tenantName,
     });
 
     return (
       <Helmet>
         <title>
           {`
-            ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
-            ${usersShowPageIndexTitle}`
-          }
+            ${
+              authUser && authUser.attributes.unread_notifications
+                ? `(${authUser.attributes.unread_notifications}) `
+                : ''
+            }
+            ${usersShowPageIndexTitle}`}
         </title>
         {getCanonicalLink()}
         {getAlternateLinks(tenantLocales)}
@@ -88,7 +109,7 @@ const Data = adopt<DataProps, InputProps>({
 
 const WrappedUsersShowPageMeta = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <UsersShowPageMetaWithHoc {...inputProps} {...dataprops} />}
+    {(dataprops) => <UsersShowPageMetaWithHoc {...inputProps} {...dataprops} />}
   </Data>
 );
 

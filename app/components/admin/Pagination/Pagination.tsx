@@ -14,7 +14,7 @@ const ContainerInner = styled.div`
   align-items: center;
 `;
 
-const ChevronIcon = styled(Icon) `
+const ChevronIcon = styled(Icon)`
   height: 12px;
   fill: ${colors.adminTextColor};
 `;
@@ -96,7 +96,7 @@ const Item = styled.button`
     &:not(.active) {
       &:hover,
       &:focus {
-        background: ${rgba(colors.adminTextColor, .2)};
+        background: ${rgba(colors.adminTextColor, 0.2)};
       }
     }
   }
@@ -110,7 +110,6 @@ export interface Props {
 }
 
 class Pagination extends PureComponent<Props> {
-
   calculateMenuItems(currentPage: number, totalPages: number) {
     const current = currentPage;
     const last = totalPages;
@@ -146,15 +145,17 @@ class Pagination extends PureComponent<Props> {
 
   handleItemClick = (item: number) => () => {
     this.props.loadPage(item);
-  }
+  };
 
   goTo = (page: number) => () => {
-    if (page > 0 && page <= this.props.totalPages) { this.props.loadPage(page); }
-  }
+    if (page > 0 && page <= this.props.totalPages) {
+      this.props.loadPage(page);
+    }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   render() {
     const { currentPage, totalPages, className } = this.props;
@@ -177,7 +178,9 @@ class Pagination extends PureComponent<Props> {
               {pageItems.map((item) => (
                 <Item
                   key={item}
-                  className={`${item === currentPage ? 'active' : ''} ${item < 0 ? 'disabled' : ''}`}
+                  className={`${item === currentPage ? 'active' : ''} ${
+                    item < 0 ? 'disabled' : ''
+                  }`}
                   onMouseDown={this.removeFocus}
                   onClick={this.handleItemClick(item)}
                   disabled={item < 0}

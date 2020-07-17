@@ -95,7 +95,7 @@ const MenuLink = styled(Link)`
 
   &.highlight {
     animation-name: highlight;
-    animation-duration: .7s;
+    animation-duration: 0.7s;
   }
 
   &.active {
@@ -114,7 +114,7 @@ const MenuLink = styled(Link)`
     }
 
     30% {
-      background-color: ${rgba(colors.clGreen, .5)};
+      background-color: ${rgba(colors.clGreen, 0.5)};
     }
 
     to {
@@ -175,7 +175,10 @@ interface Tracks {
   trackCreateGroup: Function;
 }
 
-export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> {
+export class GroupsListPanel extends React.PureComponent<
+  Props & Tracks,
+  State
+> {
   subs: Subscription[] = [];
 
   constructor(props) {
@@ -187,35 +190,42 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
 
   componentDidMount() {
     this.subs.push(
-      eventEmitter.observeEvent<MembershipAdd>(events.membershipAdd).subscribe(({ eventValue: { groupsIds } }) => {
-        this.setState({ highlightedGroups: new Set(groupsIds) });
-        setTimeout(this.removeHighlights, 3000);
-      })
+      eventEmitter
+        .observeEvent<MembershipAdd>(events.membershipAdd)
+        .subscribe(({ eventValue: { groupsIds } }) => {
+          this.setState({ highlightedGroups: new Set(groupsIds) });
+          setTimeout(this.removeHighlights, 3000);
+        })
     );
   }
 
   componentWillUnmount() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.subs.forEach((sub) => sub.unsubscribe());
   }
 
   removeHighlights = () => {
     this.setState({ highlightedGroups: new Set([]) });
-  }
+  };
 
   handleCreateGroup = (event) => {
     event.preventDefault();
     this.props.trackCreateGroup();
     this.props.onCreateGroup();
-  }
+  };
 
   render() {
-    const { usercount, groups: { groupsList } } = this.props;
+    const {
+      usercount,
+      groups: { groupsList },
+    } = this.props;
     const { highlightedGroups } = this.state;
 
     return (
       <Container className={this.props.className}>
         <MenuLink to="/admin/users" activeClassName="active" onlyActiveOnIndex>
-          <GroupName><FormattedMessage {...messages.allUsers} /></GroupName>
+          <GroupName>
+            <FormattedMessage {...messages.allUsers} />
+          </GroupName>
           {!isNilOrError(usercount) && <MembersCount>{usercount}</MembersCount>}
         </MenuLink>
         <Separator />
@@ -239,13 +249,25 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
           </ButtonWrapper>
         </MenuTitle>
         <GroupsList className="e2e-groups-list">
-          {!isNilOrError(groupsList) && groupsList.map((group) => (
-            <MenuLink key={group.id} to={`/admin/users/${group.id}`} activeClassName="active" className={highlightedGroups.has(group.id) ? 'highlight' : ''} >
-              {group.attributes.membership_type === 'rules' && <LightningBolt name="lightingBolt2" />}
-              <GroupName><T value={group.attributes.title_multiloc} /></GroupName>
-              <MembersCount className="e2e-group-user-count">{group.attributes.memberships_count}</MembersCount>
-            </MenuLink>
-          ))}
+          {!isNilOrError(groupsList) &&
+            groupsList.map((group) => (
+              <MenuLink
+                key={group.id}
+                to={`/admin/users/${group.id}`}
+                activeClassName="active"
+                className={highlightedGroups.has(group.id) ? 'highlight' : ''}
+              >
+                {group.attributes.membership_type === 'rules' && (
+                  <LightningBolt name="lightingBolt2" />
+                )}
+                <GroupName>
+                  <T value={group.attributes.title_multiloc} />
+                </GroupName>
+                <MembersCount className="e2e-group-user-count">
+                  {group.attributes.memberships_count}
+                </MembersCount>
+              </MenuLink>
+            ))}
         </GroupsList>
       </Container>
     );
@@ -254,7 +276,7 @@ export class GroupsListPanel extends React.PureComponent<Props & Tracks, State> 
 
 const Data = adopt<DataProps, InputProps>({
   groups: <GetGroups />,
-  usercount: <GetUserCount />
+  usercount: <GetUserCount />,
 });
 
 const GroupsListPanelWithHoc = injectTracks<Props>({
@@ -263,6 +285,6 @@ const GroupsListPanelWithHoc = injectTracks<Props>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <GroupsListPanelWithHoc {...inputProps} {...dataProps} />}
+    {(dataProps) => <GroupsListPanelWithHoc {...inputProps} {...dataProps} />}
   </Data>
 );

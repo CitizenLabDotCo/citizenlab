@@ -12,39 +12,44 @@ interface Props {
 }
 
 class FilterSidebarProjects extends React.PureComponent<Props> {
-
   handleItemClick = (id: string) => () => {
     const projectIds = [id];
-    this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(projectIds);
-  }
+    this.props.onChangeProjectFilter &&
+      this.props.onChangeProjectFilter(projectIds);
+  };
 
   clearFilter = () => {
-    this.props.onChangeProjectFilter && this.props.onChangeProjectFilter(undefined);
-  }
+    this.props.onChangeProjectFilter &&
+      this.props.onChangeProjectFilter(undefined);
+  };
 
   isActive = (id) => {
     return this.props.selectedProject && this.props.selectedProject === id;
-  }
+  };
 
   render() {
     return (
       <Menu secondary={true} vertical={true} fluid={true}>
-        {!(this.props.projects && this.props.projects.length === 1) &&
+        {!(this.props.projects && this.props.projects.length === 1) && (
           <>
-            <Menu.Item onClick={this.clearFilter} active={!this.props.selectedProject}>
+            <Menu.Item
+              onClick={this.clearFilter}
+              active={!this.props.selectedProject}
+            >
               <FormattedMessage {...messages.allProjects} />
             </Menu.Item>
             <Divider />
           </>
-        }
-        {this.props.projects && this.props.projects.map((project) => (
-          <FilterSidebarProjectsItem
-            key={project.id}
-            project={project}
-            active={!!this.isActive(project.id)}
-            onClick={this.handleItemClick(project.id)}
-          />
-        ))}
+        )}
+        {this.props.projects &&
+          this.props.projects.map((project) => (
+            <FilterSidebarProjectsItem
+              key={project.id}
+              project={project}
+              active={!!this.isActive(project.id)}
+              onClick={this.handleItemClick(project.id)}
+            />
+          ))}
       </Menu>
     );
   }

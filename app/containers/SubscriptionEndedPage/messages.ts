@@ -7,6 +7,7 @@ export default defineMessages({
   },
   subscriptionEnded: {
     id: 'containers.SubscriptionEndedPage.subscriptionEnded',
-    defaultMessage: 'It appears that you no longer can access this page, since your CitizenLab subscription has ended.',
+    defaultMessage:
+      'It appears that you no longer can access this page, since your CitizenLab subscription has ended.',
   },
 });

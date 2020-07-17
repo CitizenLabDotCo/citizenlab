@@ -29,7 +29,7 @@ describe('<UsersShowPage />', () => {
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly with an erroneous user', () => {
-    const wrapper = shallow(<UsersShowPage user={new Error} />);
+    const wrapper = shallow(<UsersShowPage user={new Error()} />);
 
     expect(wrapper).toMatchSnapshot();
   });

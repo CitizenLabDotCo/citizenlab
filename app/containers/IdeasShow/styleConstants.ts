@@ -7,5 +7,5 @@ export {
   columnsGapDesktop,
   rightColumnWidthDesktop,
   columnsGapTablet,
-  rightColumnWidthTablet
+  rightColumnWidthTablet,
 };

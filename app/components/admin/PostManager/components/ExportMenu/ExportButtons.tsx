@@ -28,7 +28,6 @@ interface Props {
 }
 
 class ExportButtons extends React.PureComponent<Props> {
-
   render() {
     const { exportType, className, exportQueryParameter, type } = this.props;
     return (

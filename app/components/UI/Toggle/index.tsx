@@ -19,7 +19,7 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   ${hideVisually()};
 `;
 
-const StyledToggle = styled.i<{ checked: boolean, disabled: boolean }>`
+const StyledToggle = styled.i<{ checked: boolean; disabled: boolean }>`
   display: inline-block;
   padding: ${padding}px;
   padding-right: ${size}px;
@@ -27,7 +27,7 @@ const StyledToggle = styled.i<{ checked: boolean, disabled: boolean }>`
   background-color: #ccc;
   border: solid 1px transparent;
   transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
-  background-color 80ms ease-out;
+    background-color 80ms ease-out;
 
   &:before {
     display: block;
@@ -40,26 +40,31 @@ const StyledToggle = styled.i<{ checked: boolean, disabled: boolean }>`
   }
 
   &.enabled:hover {
-    background: ${props => props.checked ? darken(0.05, colors.clGreen) : '#bbb'};
+    background: ${(props) =>
+      props.checked ? darken(0.05, colors.clGreen) : '#bbb'};
   }
 
-  ${props => props.checked && css`
-    padding-right: ${padding}px;
-    padding-left: ${size}px;
-    background-color: ${colors.clGreen};
-  `};
+  ${(props) =>
+    props.checked &&
+    css`
+      padding-right: ${padding}px;
+      padding-left: ${size}px;
+      background-color: ${colors.clGreen};
+    `};
 `;
 
-const StyledToggleWrapper = styled.div<{ checked: boolean, disabled: boolean }>`
+const StyledToggleWrapper = styled.div<{ checked: boolean; disabled: boolean }>`
   height: ${size + padding * 2}px;
   display: flex;
   align-items: center;
   cursor: pointer;
 
-  ${props => props.disabled && css`
-    opacity: 0.25;
-    cursor: not-allowed;
-  `};
+  ${(props) =>
+    props.disabled &&
+    css`
+      opacity: 0.25;
+      cursor: not-allowed;
+    `};
 
   ${HiddenCheckbox}.focus-visible + & ${StyledToggle} {
     ${boxShadowOutline};
@@ -94,10 +99,18 @@ export default class Toggle extends React.PureComponent<Props, State> {
       event.preventDefault();
       this.props.onChange(event);
     }
-  }
+  };
 
   render() {
-    const { checked, disabled, label, labelTextColor, className, id, onChange } = this.props;
+    const {
+      checked,
+      disabled,
+      label,
+      labelTextColor,
+      className,
+      id,
+      onChange,
+    } = this.props;
 
     return (
       <Container
@@ -123,14 +136,11 @@ export default class Toggle extends React.PureComponent<Props, State> {
           />
         </StyledToggleWrapper>
 
-        {label &&
-          <Label
-            onClick={this.handleOnClick}
-            labelTextColor={labelTextColor}
-          >
+        {label && (
+          <Label onClick={this.handleOnClick} labelTextColor={labelTextColor}>
             {label}
           </Label>
-        }
+        )}
       </Container>
     );
   }

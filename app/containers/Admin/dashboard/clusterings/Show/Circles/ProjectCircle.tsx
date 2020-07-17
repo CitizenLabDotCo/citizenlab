@@ -18,7 +18,9 @@ const StyledCircle: any = styled.circle`
     stroke-width: 2px;
   }
 
-  ${props => !isNil((props as any).selectionIndex) && `
+  ${(props) =>
+    !isNil((props as any).selectionIndex) &&
+    `
     stroke: black;
     stroke-width: 2px;
     fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
@@ -39,41 +41,40 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class ProjectCircle extends PureComponent<Props, State> {
-
   handleOnClick = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onClick && this.props.onClick(node, event);
-  }
+  };
 
   handleOnMouseEnter = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseEnter && this.props.onMouseEnter(node, event);
-  }
+  };
 
   handleOnMouseLeave = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseLeave && this.props.onMouseLeave(node, event);
-  }
+  };
 
   render() {
     const { node, selectionIndex, hovered, project } = this.props;
 
     if (isNilOrError(project)) return null;
     return (
-        <StyledCircle
-          r={node.r}
-          onClick={this.handleOnClick}
-          onMouseEnter={this.handleOnMouseEnter}
-          onMouseLeave={this.handleOnMouseLeave}
-          selectionIndex={selectionIndex}
-          hovered={hovered}
-          transform={`translate(${node.x},${node.y})`}
-        />
+      <StyledCircle
+        r={node.r}
+        onClick={this.handleOnClick}
+        onMouseEnter={this.handleOnMouseEnter}
+        onMouseLeave={this.handleOnMouseLeave}
+        selectionIndex={selectionIndex}
+        hovered={hovered}
+        transform={`translate(${node.x},${node.y})`}
+      />
     );
   }
 }

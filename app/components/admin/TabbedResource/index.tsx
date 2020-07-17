@@ -36,7 +36,8 @@ const ResourceHeader = styled.div`
 
 const TabbedNav = styled.nav`
   background: #fcfcfc;
-  border-radius: ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0 0;
+  border-radius: ${(props: any) => props.theme.borderRadius}
+    ${(props: any) => props.theme.borderRadius} 0 0;
   padding-left: 44px;
   display: flex;
   border: 1px solid ${colors.separation};
@@ -99,23 +100,23 @@ const ChildWrapper = styled.div`
 `;
 
 export type TabProps = {
-  label: string
-  url: string,
-  active?: boolean,
-  feature?: string,
-  name?: string,
+  label: string;
+  url: string;
+  active?: boolean;
+  feature?: string;
+  name?: string;
 };
 
 type Props = {
   resource: {
-    title: string,
-    publicLink?: string,
+    title: string;
+    publicLink?: string;
     subtitle?: string;
-  },
+  };
   messages?: {
-    viewPublicResource: Message,
-  },
-  tabs?: TabProps[],
+    viewPublicResource: Message;
+  };
+  tabs?: TabProps[];
 };
 
 type State = {};
@@ -124,60 +125,75 @@ function urlMatch(tabUrl: string) {
   return new RegExp(`^\/([a-zA-Z]{2,3}(-[a-zA-Z]{2,3})?)(${tabUrl})(\/)?$`);
 }
 
-class TabbedResource extends React.PureComponent<Props & WithRouterProps, State> {
-
+class TabbedResource extends React.PureComponent<
+  Props & WithRouterProps,
+  State
+> {
   render() {
-    const { children, resource: { title, subtitle, publicLink }, messages, tabs, location } = this.props;
+    const {
+      children,
+      resource: { title, subtitle, publicLink },
+      messages,
+      tabs,
+      location,
+    } = this.props;
 
     return (
       <>
         <ResourceHeader className="e2e-resource-header">
           <div>
             <Title>{title}</Title>
-            {subtitle &&
-              <SectionDescription>
-                {subtitle}
-              </SectionDescription>
-            }
+            {subtitle && <SectionDescription>{subtitle}</SectionDescription>}
           </div>
 
-          {publicLink && messages &&
-            <Button
-              buttonStyle="cl-blue"
-              icon="eye"
-              linkTo={publicLink}
-            >
+          {publicLink && messages && (
+            <Button buttonStyle="cl-blue" icon="eye" linkTo={publicLink}>
               <FormattedMessage {...messages.viewPublicResource} />
             </Button>
-          }
+          )}
         </ResourceHeader>
 
-        {(tabs && tabs.length > 0) &&
+        {tabs && tabs.length > 0 && (
           <TabbedNav className="e2e-resource-tabs">
             {tabs.map((tab) => {
-
               if (tab.feature) {
                 return (
                   <FeatureFlag key={tab.url} name={tab.feature}>
-                    <Tab key={tab.url} className={`${tab.name} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
+                    <Tab
+                      key={tab.url}
+                      className={`${tab.name} ${
+                        location &&
+                        location.pathname &&
+                        urlMatch(tab.url).test(location.pathname)
+                          ? 'active'
+                          : ''
+                      }`}
+                    >
                       <Link to={tab.url}>{tab.label}</Link>
                     </Tab>
                   </FeatureFlag>
                 );
               } else {
                 return (
-                  <Tab key={tab.url} className={`${tab.name} ${location && location.pathname && urlMatch(tab.url).test(location.pathname) ? 'active' : ''}`}>
+                  <Tab
+                    key={tab.url}
+                    className={`${tab.name} ${
+                      location &&
+                      location.pathname &&
+                      urlMatch(tab.url).test(location.pathname)
+                        ? 'active'
+                        : ''
+                    }`}
+                  >
                     <Link to={tab.url}>{tab.label}</Link>
                   </Tab>
                 );
               }
             })}
           </TabbedNav>
-        }
+        )}
 
-        <ChildWrapper>
-          {children}
-        </ChildWrapper>
+        <ChildWrapper>{children}</ChildWrapper>
       </>
     );
   }

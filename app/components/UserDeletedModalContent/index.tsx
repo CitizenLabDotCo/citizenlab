@@ -67,28 +67,29 @@ interface InputProps {
   userActuallyDeleted: boolean;
 }
 
-interface DataProps {
-}
+interface DataProps {}
 
 export interface Props extends InputProps, DataProps {}
 
-export default memo(({ userActuallyDeleted }: Props) => userActuallyDeleted ? (
-  <Container>
-    <img src={illustration} alt="illu" />
-    <Title className="e2e-user-deleted-success-modal-content">
-      <FormattedMessage {...messages.userDeletedTitle} />
-    </Title>
-    <Subtitle>
-      <FormattedAnchor
-        mainMessage={messages.userDeletedSubtitle}
-        mainMessageLinkKey="contactLink"
-        linkTextMessage={messages.userDeletedSubtitleLinkText}
-        urlMessage={messages.userDeletedSubtitleLinkUrl}
-        urlMessageValues={{ url: window.location.href }}
-        target="_blank"
-      />
-    </Subtitle>
-  </Container>
-) : (
-  <FormattedMessage {...messages.userDeletionFailed} />
-));
+export default memo(({ userActuallyDeleted }: Props) =>
+  userActuallyDeleted ? (
+    <Container>
+      <img src={illustration} alt="illu" />
+      <Title className="e2e-user-deleted-success-modal-content">
+        <FormattedMessage {...messages.userDeletedTitle} />
+      </Title>
+      <Subtitle>
+        <FormattedAnchor
+          mainMessage={messages.userDeletedSubtitle}
+          mainMessageLinkKey="contactLink"
+          linkTextMessage={messages.userDeletedSubtitleLinkText}
+          urlMessage={messages.userDeletedSubtitleLinkUrl}
+          urlMessageValues={{ url: window.location.href }}
+          target="_blank"
+        />
+      </Subtitle>
+    </Container>
+  ) : (
+    <FormattedMessage {...messages.userDeletionFailed} />
+  )
+);

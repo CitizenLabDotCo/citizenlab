@@ -19,23 +19,23 @@ interface Props extends InputProps {
 }
 
 interface State {
-  ideaImage: IIdeaImageData | undefined| null;
+  ideaImage: IIdeaImageData | undefined | null;
 }
 
-export type GetIdeaImageChildProps = IIdeaImageData | undefined| null;
+export type GetIdeaImageChildProps = IIdeaImageData | undefined | null;
 
 export default class GetIdeaImage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaImage: undefined
+      ideaImage: undefined,
     };
   }
 
@@ -45,20 +45,23 @@ export default class GetIdeaImage extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ideaId, ideaImageId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ ideaImage: undefined })),
-        switchMap(({ ideaId, ideaImageId }) => {
-          if (isString(ideaId) && isString(ideaImageId)) {
-            return ideaImageStream(ideaId, ideaImageId).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ ideaImage: undefined })),
+          switchMap(({ ideaId, ideaImageId }) => {
+            if (isString(ideaId) && isString(ideaImageId)) {
+              return ideaImageStream(ideaId, ideaImageId).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((ideaImage) => this.setState({
-        ideaImage: !isNilOrError(ideaImage) ? ideaImage.data : ideaImage
-      }))
+            return of(null);
+          })
+        )
+        .subscribe((ideaImage) =>
+          this.setState({
+            ideaImage: !isNilOrError(ideaImage) ? ideaImage.data : ideaImage,
+          })
+        ),
     ];
   }
 
@@ -68,7 +71,7 @@ export default class GetIdeaImage extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

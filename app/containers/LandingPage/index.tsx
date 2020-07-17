@@ -13,7 +13,9 @@ import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 import LoadingBox from 'components/ProjectAndFolderCards/LoadingBox';
-const ProjectAndFolderCards = React.lazy(() => import('components/ProjectAndFolderCards'));
+const ProjectAndFolderCards = React.lazy(() =>
+  import('components/ProjectAndFolderCards')
+);
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -37,7 +39,7 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.main`
   height: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -144,40 +146,51 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State { }
+interface State {}
 
 class LandingPage extends PureComponent<Props, State> {
-
   signUpIn = (event: React.FormEvent) => {
     event.preventDefault();
-    trackEventByName(tracks.clickCreateAccountCTA, { extra: { location: 'footer' } });
+    trackEventByName(tracks.clickCreateAccountCTA, {
+      extra: { location: 'footer' },
+    });
     openSignUpInModal();
-  }
+  };
 
   render() {
     const { locale, tenant, authUser, homepageInfoPage } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(homepageInfoPage)) {
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(homepageInfoPage)
+    ) {
       // custom section
-      const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
-      const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
-      const postingProposalsEnabled = tenant.attributes.settings.initiatives?.posting_enabled;
+      const showCustomSection = !isEmptyMultiloc(
+        homepageInfoPage.attributes.body_multiloc
+      );
+      const customSectionBodyMultiloc =
+        homepageInfoPage.attributes.body_multiloc;
+      const postingProposalsEnabled =
+        tenant.attributes.settings.initiatives?.posting_enabled;
 
       // tranlate header slogan into a h2 wih a fallback
-      const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
-      const genericSlogan = <FormattedMessage tagName="h2" {...messages.subtitleCity} />;
+      const headerSloganMultiLoc =
+        tenant.attributes.settings.core.header_slogan;
+      const genericSlogan = (
+        <FormattedMessage tagName="h2" {...messages.subtitleCity} />
+      );
 
       return (
         <>
           <Container id="e2e-landing-page">
-
-            {!isNilOrError(authUser)
-              ? <SignedInHeader />
-              :
+            {!isNilOrError(authUser) ? (
+              <SignedInHeader />
+            ) : (
               <Fragment name="signed-out-header">
                 <SignedOutHeader />
               </Fragment>
-            }
+            )}
 
             <Content>
               <StyledContentContainer mode="page">
@@ -193,30 +206,42 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
-                {postingProposalsEnabled &&
-                  <StyledInitiativesCTABox />
-                }
+                {postingProposalsEnabled && <StyledInitiativesCTABox />}
               </StyledContentContainer>
 
-              {showCustomSection &&
+              {showCustomSection && (
                 <CustomSectionContentContainer>
                   <QuillEditedContent>
-                    <Fragment name={!isNilOrError(homepageInfoPage) ? `pages/${homepageInfoPage && homepageInfoPage.id}/content` : ''}>
+                    <Fragment
+                      name={
+                        !isNilOrError(homepageInfoPage)
+                          ? `pages/${
+                              homepageInfoPage && homepageInfoPage.id
+                            }/content`
+                          : ''
+                      }
+                    >
                       <T value={customSectionBodyMultiloc} supportHtml={true} />
                     </Fragment>
                   </QuillEditedContent>
                 </CustomSectionContentContainer>
-              }
+              )}
 
-              {!authUser &&
+              {!authUser && (
                 <FooterBanner>
                   {headerSloganMultiLoc ? (
                     <T value={headerSloganMultiLoc}>
-                      {translatedSlogan =>
-                        translatedSlogan ? <h2>{translatedSlogan}</h2> : genericSlogan
+                      {(translatedSlogan) =>
+                        translatedSlogan ? (
+                          <h2>{translatedSlogan}</h2>
+                        ) : (
+                          genericSlogan
+                        )
                       }
                     </T>
-                  ) : genericSlogan}
+                  ) : (
+                    genericSlogan
+                  )}
                   <StyledAvatarBubbles />
                   <Button
                     fontWeight="500"
@@ -226,7 +251,7 @@ class LandingPage extends PureComponent<Props, State> {
                     text={<FormattedMessage {...messages.createAccount} />}
                   />
                 </FooterBanner>
-              }
+              )}
               <CityLogoSection />
             </Content>
           </Container>
@@ -251,6 +276,6 @@ const LandingPageWithHoC = withTheme(LandingPage);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <LandingPageWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <LandingPageWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

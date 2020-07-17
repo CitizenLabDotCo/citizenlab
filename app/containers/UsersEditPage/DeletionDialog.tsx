@@ -70,25 +70,34 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
     super(props);
     this.state = {
       error: false,
-      processing: false
+      processing: false,
     };
   }
 
   deleteProfile = () => {
     signOutAndDeleteAccountPart1();
     this.props.closeDialog();
-  }
+  };
 
   render() {
-    const { tenant, intl: { formatMessage } } = this.props;
+    const {
+      tenant,
+      intl: { formatMessage },
+    } = this.props;
     const { processing, error } = this.state;
-    const tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium', get(tenant.attributes.logo, 'small')) : null;
+    const tenantLogo = !isNilOrError(tenant)
+      ? get(
+          tenant.attributes.logo,
+          'medium',
+          get(tenant.attributes.logo, 'small')
+        )
+      : null;
 
     return (
       <Container>
-        {tenantLogo &&
+        {tenantLogo && (
           <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
-        }
+        )}
         <Styledh1>
           <FormattedMessage {...messages.deleteYourAccount} />
         </Styledh1>
@@ -99,16 +108,19 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
           <FormattedMessage {...messages.reasonsToStayListTitle} />
         </Styledh2>
         <ul>
-          <li><FormattedMessage {...messages.tooManyEmails} /></li>
+          <li>
+            <FormattedMessage {...messages.tooManyEmails} />
+          </li>
           <li>
             <FormattedMessage
               {...messages.privacyReasons}
               values={{
                 conditionsLink: (
-                <Link to="/pages/cookie-policy" target="_blank">
-                  <FormattedMessage {...messages.conditionsLinkText}/>
-                </Link>
-              )}}
+                  <Link to="/pages/cookie-policy" target="_blank">
+                    <FormattedMessage {...messages.conditionsLinkText} />
+                  </Link>
+                ),
+              }}
             />
           </li>
           <li>
@@ -121,7 +133,9 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
               target="_blank"
             />
           </li>
-          <li><FormattedMessage {...messages.noGoingBack} /></li>
+          <li>
+            <FormattedMessage {...messages.noGoingBack} />
+          </li>
         </ul>
         <ButtonsContainer>
           <Button
@@ -145,9 +159,9 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
             <FormattedMessage {...messages.cancel} />
           </Button>
         </ButtonsContainer>
-        {error &&
-          <Error text={<FormattedMessage {...messages.deleteProfileError} />}/>
-        }
+        {error && (
+          <Error text={<FormattedMessage {...messages.deleteProfileError} />} />
+        )}
       </Container>
     );
   }
@@ -155,14 +169,14 @@ class DeletionDialog extends PureComponent<Props & InjectedIntlProps, State> {
 
 const DeletionDialogWithIntl = injectIntl(DeletionDialog);
 
-const Data = adopt<DataProps,  InputProps>({
+const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
 });
 
 const WrappedDeletionDialog = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <DeletionDialogWithIntl {...inputProps} {...dataProps} />}
+    {(dataProps) => <DeletionDialogWithIntl {...inputProps} {...dataProps} />}
   </Data>
 );
 

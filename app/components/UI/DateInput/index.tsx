@@ -57,7 +57,7 @@ const DateInputWrapper = styled.div<{ openOnLeft: boolean | undefined }>`
   }
 
   .SingleDatePicker_picker {
-    left: ${(props) => props.openOnLeft ? '-150px' : '-1px'} !important;
+    left: ${(props) => (props.openOnLeft ? '-150px' : '-1px')} !important;
   }
 `;
 
@@ -81,7 +81,7 @@ interface State {
 }
 
 export default class DateInput extends PureComponent<Props, State> {
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       focused: false,
@@ -90,8 +90,12 @@ export default class DateInput extends PureComponent<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const oldIsoDate = (prevProps.value ? prevProps.value.format('YYYY-MM-DD') : null);
-    const newIsoDate = (this.props.value ? this.props.value.format('YYYY-MM-DD') : null);
+    const oldIsoDate = prevProps.value
+      ? prevProps.value.format('YYYY-MM-DD')
+      : null;
+    const newIsoDate = this.props.value
+      ? this.props.value.format('YYYY-MM-DD')
+      : null;
 
     if (oldIsoDate !== newIsoDate) {
       this.setState({ selectedDate: this.props.value });
@@ -101,29 +105,29 @@ export default class DateInput extends PureComponent<Props, State> {
   updateDateTime = (newMoment: moment.Moment | null) => {
     this.setState({ selectedDate: newMoment });
     this.props.onChange(newMoment);
-  }
+  };
 
   handleDateChange = (newMoment: moment.Moment | null) => {
     this.updateDateTime(newMoment);
-  }
+  };
 
   handleFocusChange = ({ focused }: { focused: boolean }) => {
     this.setState({ focused });
-  }
+  };
 
   isOutsideRange = () => false;
 
-  render () {
+  render() {
     const { id, label, openOnLeft, className, disabled } = this.props;
     const { selectedDate, focused } = this.state;
 
     return (
       <Container className={className}>
-        {label &&
+        {label && (
           <LabelWrapper>
             <Label htmlFor={id}>{label}</Label>
           </LabelWrapper>
-        }
+        )}
 
         <DateInputWrapper openOnLeft={openOnLeft}>
           <SingleDatePicker
