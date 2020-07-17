@@ -114,21 +114,24 @@ class CommentsMoreActions extends PureComponent<
             const actions: IAction[] = [];
 
             // Actions based on permissions
-            if (canReport)
+            if (canReport) {
               actions.push({
                 label: <FormattedMessage {...messages.reportAsSpam} />,
                 handler: this.openSpamModal,
               });
-            if (canDelete)
+            }
+            if (canDelete) {
               actions.push({
                 label: <FormattedMessage {...messages.deleteComment} />,
                 handler: this.openDeleteModal,
               });
-            if (canEdit)
+            }
+            if (canEdit) {
               actions.push({
                 label: <FormattedMessage {...messages.editComment} />,
                 handler: onCommentEdit,
               });
+            }
 
             return actions;
           })
