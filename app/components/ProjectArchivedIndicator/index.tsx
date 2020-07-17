@@ -35,7 +35,10 @@ class ProjectArchivedIndicator extends PureComponent<Props, State> {
   render() {
     const { project, className } = this.props;
 
-    if (!isNilOrError(project) && project.attributes.publication_status === 'archived') {
+    if (
+      !isNilOrError(project) &&
+      project.attributes.publication_status === 'archived'
+    ) {
       return (
         <StyledContentContainer className={className}>
           <Warning text={<FormattedMessage {...messages.archivedProject} />} />
@@ -48,11 +51,13 @@ class ProjectArchivedIndicator extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectArchivedIndicator {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectArchivedIndicator {...inputProps} {...dataProps} />}
   </Data>
 );

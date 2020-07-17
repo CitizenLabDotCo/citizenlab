@@ -93,7 +93,7 @@ const CloseIcon = styled(Icon)`
 
 const LeafletMapContainer = styled.div<{ mapHeight: number }>`
   flex: 1;
-  height: ${props => props.mapHeight}px;
+  height: ${(props) => props.mapHeight}px;
 
   .leaflet-container {
     height: 100%;
@@ -153,7 +153,7 @@ interface DataProps {
   mapConfig: GetMapConfigChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   initiated: boolean;
@@ -198,7 +198,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
   bindMapContainer = (mapContainer: HTMLDivElement) => {
     this.mapElement = mapContainer;
-  }
+  };
 
   calculateMapConfig = () => {
     const { tenant, center, mapConfig, zoom } = this.props;
@@ -206,7 +206,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     const defaultMapConfig = {
       center: initCenter,
       zoom_level: 15,
-      tile_provider: 'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D',
+      tile_provider:
+        'https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D',
     };
 
     const tenantMapConfig = {};
@@ -216,19 +217,13 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       tenant.attributes.settings.maps
     ) {
       const {
-        map_center: {
-          lat,
-          long
-        },
+        map_center: { lat, long },
         zoom_level,
         tile_provider,
       } = tenant.attributes.settings.maps;
 
       if (lat && long) {
-        initCenter = [
-          parseFloat(lat),
-          parseFloat(long),
-        ];
+        initCenter = [parseFloat(lat), parseFloat(long)];
 
         tenantMapConfig['center'] = initCenter;
       }
@@ -268,24 +263,25 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       ...defaultMapConfig,
       ...tenantMapConfig,
       ...dataPropsMapConfig,
-      ...inputPropsMapConfig
+      ...inputPropsMapConfig,
     };
-  }
+  };
 
   initMap = () => {
     const { localize, mapConfig, points } = this.props;
     const { zoom_level, tile_provider, center } = this.calculateMapConfig();
 
     const baseLayer = Leaflet.tileLayer(tile_provider, {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      subdomains: ['a', 'b', 'c']
+      attribution:
+        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      subdomains: ['a', 'b', 'c'],
     });
 
     this.map = Leaflet.map(this.mapElement, {
       center,
       zoom: zoom_level,
       maxZoom: 17,
-      layers: [baseLayer]
+      layers: [baseLayer],
     });
 
     // Handlers
@@ -309,9 +305,9 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       // add default enabled layers to map
       const leafletLayers = createLeafletLayers(layers);
       const overlaysEnabledByDefault = leafletLayers
-        .filter(layer => layer.enabledByDefault === true)
-        .map(layer => layer.leafletGeoJson);
-      overlaysEnabledByDefault.forEach(overlay => overlay.addTo(this.map));
+        .filter((layer) => layer.enabledByDefault === true)
+        .map((layer) => layer.leafletGeoJson);
+      overlaysEnabledByDefault.forEach((overlay) => overlay.addTo(this.map));
 
       // add layers control to map
       const overlayMaps = leafletLayers.reduce((accOverlayMaps, layer) => {
@@ -336,12 +332,15 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     */
     function createLeafletLayers(layers) {
       return layers.map((layer) => {
-        const customLegendMarker = layer.marker_svg_url && require(`${layer.marker_svg_url}`);
+        const customLegendMarker =
+          layer.marker_svg_url && require(`${layer.marker_svg_url}`);
         const geoJsonOptions = {
           useSimpleStyle: true,
           pointToLayer: (_feature, latlng) => {
-            return Leaflet.marker(latlng, { icon: customLegendMarker || fallbackLegendMarker });
-          }
+            return Leaflet.marker(latlng, {
+              icon: customLegendMarker || fallbackLegendMarker,
+            });
+          },
         };
 
         return {
@@ -351,7 +350,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         };
       });
     }
-  }
+  };
 
   convertPoints = (points: Point[]) => {
     const bounds: [number, number][] = [];
@@ -361,14 +360,14 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     this.markers = compact(points).map((point) => {
       const latlng: [number, number] = [
         point.coordinates[1],
-        point.coordinates[0]
+        point.coordinates[0],
       ];
 
       const markerOptions = {
         ...this.markerOptions,
         data: point.data,
         id: point.id,
-        title: point.title ? point.title : ''
+        title: point.title ? point.title : '',
       };
 
       bounds.push(latlng);
@@ -386,7 +385,8 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
       if (
         // If zoom level and center are the default values
         zoom_level === 15 &&
-        (center[0] === 0 && center[1] === 0)
+        center[0] === 0 &&
+        center[1] === 0
       ) {
         this.map.fitBounds(bounds, { maxZoom: 12, padding: [50, 50] });
       }
@@ -394,7 +394,7 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
     }
 
     this.addClusters();
-  }
+  };
 
   addClusters = () => {
     if (this.map && this.markers) {
@@ -410,39 +410,37 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
         this.clusterLayer.on('click', this.handleMarkerClick);
       }
     }
-  }
+  };
 
   handleMapClick = (event: Leaflet.LeafletMouseEvent) => {
     this.props.onMapClick && this.props.onMapClick(this.map, event.latlng);
-  }
+  };
 
   handleMarkerClick = (event) => {
-    this.props.onMarkerClick && this.props.onMarkerClick(event.layer.options.id, event.layer.options.data);
-  }
+    this.props.onMarkerClick &&
+      this.props.onMarkerClick(
+        event.layer.options.id,
+        event.layer.options.data
+      );
+  };
 
   onMapElementResize = () => {
     this.map && this.map.invalidateSize();
-  }
+  };
 
   handleBoxOnClose = (event: FormEvent) => {
     event.preventDefault();
     this.props.onBoxClose && this.props.onBoxClose(event);
-  }
+  };
 
   render() {
-    const {
-      tenant,
-      boxContent,
-      className,
-      mapHeight,
-      projectId
-    } = this.props;
+    const { tenant, boxContent, className, mapHeight, projectId } = this.props;
 
     if (!isNilOrError(tenant)) {
       return (
         <Container className={className}>
           <MapContainer>
-            {!isNil(boxContent) &&
+            {!isNil(boxContent) && (
               <BoxContainer className={className}>
                 <CloseButton onClick={this.handleBoxOnClose}>
                   <CloseIcon name="close" />
@@ -450,23 +448,22 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
                 {boxContent}
               </BoxContainer>
-            }
+            )}
 
             <LeafletMapContainer
               id="e2e-map"
               ref={this.bindMapContainer}
               mapHeight={mapHeight}
             >
-              <ReactResizeDetector handleWidth handleHeight onResize={this.onMapElementResize} />
+              <ReactResizeDetector
+                handleWidth
+                handleHeight
+                onResize={this.onMapElementResize}
+              />
             </LeafletMapContainer>
           </MapContainer>
-          {projectId &&
-            <Legend
-              projectId={projectId}
-            />
-          }
+          {projectId && <Legend projectId={projectId} />}
         </Container>
-
       );
     }
 
@@ -476,38 +473,35 @@ class CLMap extends React.PureComponent<Props & InjectedLocalized, State> {
 
 const CLMapWithHOCs = injectLocalize(CLMap);
 
-export default ({ projectId, ...inputProps }: InputProps) => projectId ? (
-  <GetMapConfig projectId={projectId}>
-    {(mapConfig: GetMapConfigChildProps) => {
-      if (isError(mapConfig) || mapConfig) {
-        return (
-          <GetTenant>
-            {(tenant: GetTenantChildProps) => {
-              return (
-                <CLMapWithHOCs
-                  tenant={tenant}
-                  mapConfig={mapConfig}
-                  projectId={projectId}
-                  {...inputProps}
-                />
-              );
-            }}
-          </GetTenant>
-        );
-      }
+export default ({ projectId, ...inputProps }: InputProps) =>
+  projectId ? (
+    <GetMapConfig projectId={projectId}>
+      {(mapConfig: GetMapConfigChildProps) => {
+        if (isError(mapConfig) || mapConfig) {
+          return (
+            <GetTenant>
+              {(tenant: GetTenantChildProps) => {
+                return (
+                  <CLMapWithHOCs
+                    tenant={tenant}
+                    mapConfig={mapConfig}
+                    projectId={projectId}
+                    {...inputProps}
+                  />
+                );
+              }}
+            </GetTenant>
+          );
+        }
 
-      return null;
-    }}
-  </GetMapConfig>
-) : (
+        return null;
+      }}
+    </GetMapConfig>
+  ) : (
     <GetTenant>
       {(tenant: GetTenantChildProps) => {
         return (
-          <CLMapWithHOCs
-            tenant={tenant}
-            mapConfig={null}
-            {...inputProps}
-          />
+          <CLMapWithHOCs tenant={tenant} mapConfig={null} {...inputProps} />
         );
       }}
     </GetTenant>

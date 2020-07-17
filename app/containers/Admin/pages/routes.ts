@@ -6,13 +6,13 @@ export default () => ({
   component: Loadable({
     loader: () => import('./'),
     loading: LoadableLoadingAdmin,
-    delay: 500
+    delay: 500,
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./All'),
       loading: LoadableLoadingAdmin,
-      delay: 500
+      delay: 500,
     }),
   },
   childRoutes: [
@@ -21,7 +21,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('./New'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
     {
@@ -29,7 +29,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('./Edit'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
   ],

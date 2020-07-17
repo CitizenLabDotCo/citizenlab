@@ -32,7 +32,7 @@ export interface ICampaignData {
     };
     groups: {
       data: IRelationship[];
-    }
+    };
   };
 }
 
@@ -46,7 +46,7 @@ export interface CampaignUpdate {
   enabled?: boolean;
 }
 
-export interface CampaignCreation  {
+export interface CampaignCreation {
   campaign_name: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
@@ -67,7 +67,14 @@ export interface IDeliveryData {
   id: string;
   type: string;
   attributes: {
-    delivery_status: 'sent' | 'bounced' | 'failed' | 'accepted' | 'delivered' | 'opened' | 'clicked';
+    delivery_status:
+      | 'sent'
+      | 'bounced'
+      | 'failed'
+      | 'accepted'
+      | 'delivered'
+      | 'opened'
+      | 'clicked';
     sent_at: string;
     created_at: string;
     updated_at: string;
@@ -95,46 +102,75 @@ export interface ICampaignStats {
 }
 
 export function listCampaigns(streamParams: IStreamParams | null = null) {
-  return streams.get<ICampaignsData>({ apiEndpoint: `${apiEndpoint}`, ...streamParams });
+  return streams.get<ICampaignsData>({
+    apiEndpoint: `${apiEndpoint}`,
+    ...streamParams,
+  });
 }
 
 export function createCampaign(campaignData: CampaignCreation) {
   return streams.add<ICampaign>(`${apiEndpoint}`, { campaign: campaignData });
 }
 
-export function updateCampaign(campaignId: string, campaignData: CampaignUpdate) {
-  return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, { campaign: campaignData });
+export function updateCampaign(
+  campaignId: string,
+  campaignData: CampaignUpdate
+) {
+  return streams.update<ICampaign>(`${apiEndpoint}/${campaignId}`, campaignId, {
+    campaign: campaignData,
+  });
 }
 
 export async function sendCampaign(campaignId: string) {
-  const stream =  await streams.add<ICampaign>(`${apiEndpoint}/${campaignId}/send`, {});
+  const stream = await streams.add<ICampaign>(
+    `${apiEndpoint}/${campaignId}/send`,
+    {}
+  );
   await streams.fetchAllWith({
-    apiEndpoint: [
-      `${apiEndpoint}/${campaignId}`,
-      `${API_PATH}/campaigns`
-    ]
+    apiEndpoint: [`${apiEndpoint}/${campaignId}`, `${API_PATH}/campaigns`],
   });
   return stream;
 }
 
 export function sendCampaignPreview(campaignId: string) {
-  return streams.add<ICampaign>(`${apiEndpoint}/${campaignId}/send_preview`, {});
+  return streams.add<ICampaign>(
+    `${apiEndpoint}/${campaignId}/send_preview`,
+    {}
+  );
 }
 
 export function deleteCampaign(campaignId: string) {
   return streams.delete(`${apiEndpoint}/${campaignId}`, campaignId);
 }
 
-export function campaignByIdStream(campaignId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<ICampaign>({ apiEndpoint: `${apiEndpoint}/${campaignId}`, ...streamParams });
+export function campaignByIdStream(
+  campaignId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<ICampaign>({
+    apiEndpoint: `${apiEndpoint}/${campaignId}`,
+    ...streamParams,
+  });
 }
 
-export function listCampaignDeliveries(campaignId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IDeliveriesData>({ apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`, ...streamParams });
+export function listCampaignDeliveries(
+  campaignId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IDeliveriesData>({
+    apiEndpoint: `${apiEndpoint}/${campaignId}/deliveries`,
+    ...streamParams,
+  });
 }
 
-export function getCampaignStats(campaignId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<ICampaignStats>({ apiEndpoint: `${apiEndpoint}/${campaignId}/stats`, ...streamParams });
+export function getCampaignStats(
+  campaignId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<ICampaignStats>({
+    apiEndpoint: `${apiEndpoint}/${campaignId}/stats`,
+    ...streamParams,
+  });
 }
 
 export function isDraft(campaign: ICampaignData) {

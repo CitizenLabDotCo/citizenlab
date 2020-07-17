@@ -38,38 +38,57 @@ export default class T extends React.PureComponent<Props, State> {
   componentDidMount() {
     const locale$ = localeStream().observable;
     const currentTenantLocales$ = currentTenantStream().observable.pipe(
-      map(currentTenant => currentTenant.data.attributes.settings.core.locales)
+      map(
+        (currentTenant) => currentTenant.data.attributes.settings.core.locales
+      )
     );
 
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenantLocales$
-      ).subscribe(([locale, currentTenantLocales]) => {
-        this.setState({ locale, currentTenantLocales });
-      })
+      combineLatest(locale$, currentTenantLocales$).subscribe(
+        ([locale, currentTenantLocales]) => {
+          this.setState({ locale, currentTenantLocales });
+        }
+      ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
     const { locale, currentTenantLocales } = this.state;
 
     if (locale && currentTenantLocales) {
-      const { value, as, children, maxLength, className, supportHtml } = this.props;
-      const localizedText = getLocalized(value, locale, currentTenantLocales, maxLength);
+      const {
+        value,
+        as,
+        children,
+        maxLength,
+        className,
+        supportHtml,
+      } = this.props;
+      const localizedText = getLocalized(
+        value,
+        locale,
+        currentTenantLocales,
+        maxLength
+      );
 
       if (children) {
-        return ((children as children)(localizedText));
+        return (children as children)(localizedText);
       }
 
       if (supportHtml) {
-          return createElement(as || 'span', { className, dangerouslySetInnerHTML: { __html: localizedText } });
+        return createElement(as || 'span', {
+          className,
+          dangerouslySetInnerHTML: { __html: localizedText },
+        });
       } else {
-          return createElement(as || 'span', { className, children: localizedText });
+        return createElement(as || 'span', {
+          className,
+          children: localizedText,
+        });
       }
     }
 

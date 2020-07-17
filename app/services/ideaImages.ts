@@ -27,22 +27,32 @@ export function ideaImageStream(ideaId: string, imageId: string) {
   return streams.get<IIdeaImage>({ apiEndpoint });
 }
 
-export function ideaImagesStream(ideaId: string, streamParams: IStreamParams | null = null) {
+export function ideaImagesStream(
+  ideaId: string,
+  streamParams: IStreamParams | null = null
+) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
   return streams.get<IIdeaImages>({ apiEndpoint, ...streamParams });
 }
 
 export function deleteIdeaImage(ideaId: string, imageId: string) {
-  return streams.delete(`${API_PATH}/ideas/${ideaId}/images/${imageId}`, imageId);
+  return streams.delete(
+    `${API_PATH}/ideas/${ideaId}/images/${imageId}`,
+    imageId
+  );
 }
 
-export async function addIdeaImage(ideaId: string, base64: string, ordering: number | null = null) {
+export async function addIdeaImage(
+  ideaId: string,
+  base64: string,
+  ordering: number | null = null
+) {
   const apiEndpoint = `${API_PATH}/ideas/${ideaId}/images`;
   const bodyData = {
     image: {
       ordering,
       image: base64,
-    }
+    },
   };
 
   const ideaImage = await streams.add<IIdeaImage>(apiEndpoint, bodyData);

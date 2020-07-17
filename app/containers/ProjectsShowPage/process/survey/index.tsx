@@ -9,7 +9,10 @@ import GoogleFormsSurvey from './GoogleFormsSurvey';
 import Warning from 'components/UI/Warning';
 
 // services
-import { getSurveyTakingRules, DisabledReasons } from 'services/surveyTakingRules';
+import {
+  getSurveyTakingRules,
+  DisabledReasons,
+} from 'services/surveyTakingRules';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -43,9 +46,9 @@ interface DataProps {
   phase: GetPhaseChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class Survey extends PureComponent<Props, State> {
   onVerify = () => {
@@ -58,11 +61,11 @@ class Survey extends PureComponent<Props, State> {
         context: {
           action: 'taking_survey',
           id: pcId,
-          type: pcType
-        }
+          type: pcType,
+        },
       });
     }
-  }
+  };
 
   signUpIn = (flow: 'signin' | 'signup') => {
     const { phaseId, project, projectId } = this.props;
@@ -70,29 +73,38 @@ class Survey extends PureComponent<Props, State> {
     if (!isNilOrError(project)) {
       const pcId = phaseId || projectId;
       const pcType = phaseId ? 'phase' : 'project';
-      const takingSurveyDisabledReason = project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
+      const takingSurveyDisabledReason =
+        project.attributes?.action_descriptor?.taking_survey?.disabled_reason;
 
       openSignUpInModal({
         flow,
         verification: takingSurveyDisabledReason === 'not_verified',
-        verificationContext: !!(takingSurveyDisabledReason === 'not_verified' && pcId && pcType) ? {
-          action: 'taking_survey',
-          id: pcId,
-          type: pcType
-        } : undefined
+        verificationContext: !!(
+          takingSurveyDisabledReason === 'not_verified' &&
+          pcId &&
+          pcType
+        )
+          ? {
+              action: 'taking_survey',
+              id: pcId,
+              type: pcType,
+            }
+          : undefined,
       });
     }
-  }
+  };
 
   signIn = () => {
     this.signUpIn('signin');
-  }
+  };
 
   signUp = () => {
     this.signUpIn('signup');
-  }
+  };
 
-  disabledMessage: { [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor } = {
+  disabledMessage: {
+    [key in DisabledReasons]: ReactIntl.FormattedMessage.MessageDescriptor;
+  } = {
     projectInactive: messages.surveyDisabledProjectInactive,
     maybeNotPermitted: messages.surveyDisabledMaybeNotPermitted,
     notPermitted: messages.surveyDisabledNotPermitted,
@@ -101,44 +113,49 @@ class Survey extends PureComponent<Props, State> {
   };
 
   render() {
-    const { surveyEmbedUrl, surveyService, authUser, project, phase, className } = this.props;
+    const {
+      surveyEmbedUrl,
+      surveyService,
+      authUser,
+      project,
+      phase,
+      className,
+    } = this.props;
 
     if (!isNilOrError(project)) {
       const { enabled, disabledReason } = getSurveyTakingRules({
         project,
         phaseContext: phase,
-        signedIn: !isNilOrError(authUser)
+        signedIn: !isNilOrError(authUser),
       });
 
       if (enabled) {
-        const email = (authUser ? authUser.attributes.email : null);
-        const user_id = (authUser ? authUser.id : null);
+        const email = authUser ? authUser.attributes.email : null;
+        const user_id = authUser ? authUser.id : null;
 
         return (
           <Container className={`${className} e2e-${surveyService}-survey`}>
-            {surveyService === 'typeform' &&
+            {surveyService === 'typeform' && (
               <TypeformSurvey
                 typeformUrl={surveyEmbedUrl}
-                email={(email || null)}
+                email={email || null}
                 user_id={user_id}
               />
-            }
+            )}
 
-            {surveyService === 'survey_monkey' &&
-              <SurveymonkeySurvey
-                surveymonkeyUrl={surveyEmbedUrl}
-              />
-            }
+            {surveyService === 'survey_monkey' && (
+              <SurveymonkeySurvey surveymonkeyUrl={surveyEmbedUrl} />
+            )}
 
-            {surveyService === 'google_forms' &&
-              <GoogleFormsSurvey
-                googleFormsUrl={surveyEmbedUrl}
-              />
-            }
+            {surveyService === 'google_forms' && (
+              <GoogleFormsSurvey googleFormsUrl={surveyEmbedUrl} />
+            )}
           </Container>
         );
       } else {
-        const message = disabledReason ? this.disabledMessage[disabledReason] : messages.surveyDisabledNotPossible;
+        const message = disabledReason
+          ? this.disabledMessage[disabledReason]
+          : messages.surveyDisabledNotPossible;
 
         return (
           <Container className={`warning ${className}`}>
@@ -146,9 +163,21 @@ class Survey extends PureComponent<Props, State> {
               <FormattedMessage
                 {...message}
                 values={{
-                  verificationLink: <button onClick={this.onVerify}><FormattedMessage {...messages.verificationLinkText} /></button>,
-                  signUpLink: <button onClick={this.signUp}><FormattedMessage {...messages.signUpLinkText} /></button>,
-                  logInLink: <button onClick={this.signIn}><FormattedMessage {...messages.logInLinkText} /></button>
+                  verificationLink: (
+                    <button onClick={this.onVerify}>
+                      <FormattedMessage {...messages.verificationLinkText} />
+                    </button>
+                  ),
+                  signUpLink: (
+                    <button onClick={this.signUp}>
+                      <FormattedMessage {...messages.signUpLinkText} />
+                    </button>
+                  ),
+                  logInLink: (
+                    <button onClick={this.signIn}>
+                      <FormattedMessage {...messages.logInLinkText} />
+                    </button>
+                  ),
                 }}
               />
             </Warning>
@@ -163,12 +192,14 @@ class Survey extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <Survey {...inputProps} {...dataProps} />}
+    {(dataProps) => <Survey {...inputProps} {...dataProps} />}
   </Data>
 );

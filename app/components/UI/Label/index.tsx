@@ -1,6 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fontSizes, colors, invisibleA11yText, booleanClass } from 'utils/styleUtils';
+import {
+  fontSizes,
+  colors,
+  invisibleA11yText,
+  booleanClass,
+} from 'utils/styleUtils';
 
 const Container = styled.label`
   color: ${colors.label};
@@ -39,10 +44,9 @@ type Props = {
 type State = {};
 
 export default class Label extends React.PureComponent<Props, State> {
-
   handleOnClick = (event: React.MouseEvent) => {
     this.props.onClick && this.props.onClick(event);
-  }
+  };
 
   render() {
     const { value, htmlFor, children, id, className } = this.props;
@@ -50,7 +54,10 @@ export default class Label extends React.PureComponent<Props, State> {
     return (
       <Container
         id={id}
-        className={`${className} ${booleanClass(className, className)} ${booleanClass(this.props.hidden, 'invisible')}`}
+        className={`${className} ${booleanClass(
+          className,
+          className
+        )} ${booleanClass(this.props.hidden, 'invisible')}`}
         htmlFor={htmlFor}
         onClick={this.handleOnClick}
       >

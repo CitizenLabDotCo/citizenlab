@@ -71,13 +71,15 @@ const Label = styled.label`
 /**
  * If we have a label, an id is required. Otherwise id is optional.
  */
-type LabelProps = {
-  label: string | JSX.Element | null,
-  id: string
-} | {
-  label?: undefined,
-  id?: string | undefined
-};
+type LabelProps =
+  | {
+      label: string | JSX.Element | null;
+      id: string;
+    }
+  | {
+      label?: undefined;
+      id?: string | undefined;
+    };
 
 export type Props = LabelProps & {
   onChange?: { (event): void };
@@ -101,11 +103,10 @@ interface State {
 }
 
 export default class Radio extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
-      inputFocused: false
+      inputFocused: false,
     };
   }
 
@@ -115,23 +116,28 @@ export default class Radio extends PureComponent<Props, State> {
     if (!disabled && onChange) {
       const targetElement = get(event, 'target') as any;
       const parentElement = get(event, 'target.parentElement');
-      const targetElementIsLink = targetElement && targetElement.hasAttribute && targetElement.hasAttribute('href');
-      const parentElementIsLink = parentElement && parentElement.hasAttribute && parentElement.hasAttribute('href');
+      const targetElementIsLink =
+        targetElement &&
+        targetElement.hasAttribute &&
+        targetElement.hasAttribute('href');
+      const parentElementIsLink =
+        parentElement &&
+        parentElement.hasAttribute &&
+        parentElement.hasAttribute('href');
 
       if (!targetElementIsLink && !parentElementIsLink) {
         onChange(value);
       }
     }
-
-  }
+  };
 
   handleOnFocus = () => {
     this.setState({ inputFocused: true });
-  }
+  };
 
   handleOnBlur = () => {
     this.setState({ inputFocused: false });
-  }
+  };
 
   render() {
     const {
@@ -143,10 +149,10 @@ export default class Radio extends PureComponent<Props, State> {
       buttonColor,
       label,
       className,
-      isRequired
+      isRequired,
     } = this.props;
     const { inputFocused } = this.state;
-    const checked = (value === currentValue);
+    const checked = value === currentValue;
 
     return (
       <Label
@@ -154,8 +160,7 @@ export default class Radio extends PureComponent<Props, State> {
         className={`
           ${className || ''}
           text
-          ${disabled ? 'disabled' : 'enabled'}`
-        }
+          ${disabled ? 'disabled' : 'enabled'}`}
       >
         <HiddenRadio
           id={id}
@@ -171,14 +176,14 @@ export default class Radio extends PureComponent<Props, State> {
         />
 
         <CustomRadio
-          className={
-            `${inputFocused ? 'focused' : ''}
+          className={`${inputFocused ? 'focused' : ''}
             ${checked ? 'checked' : ''}
             ${disabled ? 'disabled' : 'enabled'}
-            circle`
-          }
+            circle`}
         >
-          {checked && <Checked aria-hidden color={buttonColor || colors.clGreen} />}
+          {checked && (
+            <Checked aria-hidden color={buttonColor || colors.clGreen} />
+          )}
         </CustomRadio>
         {label}
       </Label>

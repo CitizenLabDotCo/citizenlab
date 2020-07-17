@@ -1,10 +1,17 @@
 import React from 'react';
-import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
+import GetPollOptions, {
+  GetPollOptionsChildProps,
+} from 'resources/GetPollOptions';
 import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
 import styled from 'styled-components';
 import Checkbox from 'components/UI/Checkbox';
-import { QuestionContainer, Question, QuestionNumber, QuestionText } from './PollForm';
+import {
+  QuestionContainer,
+  Question,
+  QuestionNumber,
+  QuestionText,
+} from './PollForm';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -39,22 +46,30 @@ interface DataProps {
   options: GetPollOptionsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const PollMultipleChoice = ({ question, index, options, value, disabled, onChange }: Props) => {
+const PollMultipleChoice = ({
+  question,
+  index,
+  options,
+  value,
+  disabled,
+  onChange,
+}: Props) => {
   return (
     <StyledFieldSet key={question.id}>
       {isNilOrError(options) || options.length === 0 ? null : (
         <QuestionContainer className="e2e-poll-question">
           <Question>
-            <QuestionNumber>
-              {index + 1}
-            </QuestionNumber>
+            <QuestionNumber>{index + 1}</QuestionNumber>
             <QuestionText>
               <T value={question.attributes.title_multiloc} />
               <MaxText>
                 {' ('}
-                <FormattedMessage {...messages.maxOptions} values={{ maxNumber: question.attributes.max_options }} />
+                <FormattedMessage
+                  {...messages.maxOptions}
+                  values={{ maxNumber: question.attributes.max_options }}
+                />
                 {')'}
               </MaxText>
             </QuestionText>
@@ -65,7 +80,11 @@ const PollMultipleChoice = ({ question, index, options, value, disabled, onChang
               key={option.id}
               onChange={onChange(question.id, option.id)}
               checked={!!value?.includes(option.id)}
-              disabled={(disabled === true) || (!value?.includes(option.id) && value?.length === question.attributes.max_options)}
+              disabled={
+                disabled === true ||
+                (!value?.includes(option.id) &&
+                  value?.length === question.attributes.max_options)
+              }
               label={<T value={option.attributes.title_multiloc} />}
             />
           ))}
@@ -76,11 +95,13 @@ const PollMultipleChoice = ({ question, index, options, value, disabled, onChang
 };
 
 const Data = adopt<DataProps, InputProps>({
-  options: ({ question, render }) => <GetPollOptions questionId={question.id}>{render}</GetPollOptions>
+  options: ({ question, render }) => (
+    <GetPollOptions questionId={question.id}>{render}</GetPollOptions>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <PollMultipleChoice {...inputProps} {...dataprops} />}
+    {(dataprops) => <PollMultipleChoice {...inputProps} {...dataprops} />}
   </Data>
 );

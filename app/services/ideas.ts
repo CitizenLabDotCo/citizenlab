@@ -5,9 +5,30 @@ import { first } from 'rxjs/operators';
 import { get } from 'lodash-es';
 
 export type IdeaPublicationStatus = 'draft' | 'published' | 'archived' | 'spam';
-export type IdeaVotingDisabledReason = 'project_inactive' | 'voting_disabled' | 'voting_limited_max_reached' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null | undefined;
-export type IdeaCommentingDisabledReason = 'project_inactive' | 'commenting_disabled' | 'not_permitted' | 'idea_not_in_current_phase' | 'not_verified' | null | undefined;
-export type IdeaBudgetingDisabledReason = 'project_inactive' | 'idea_not_in_current_phase' | 'not_permitted' | 'not_verified' | null | undefined;
+export type IdeaVotingDisabledReason =
+  | 'project_inactive'
+  | 'voting_disabled'
+  | 'voting_limited_max_reached'
+  | 'idea_not_in_current_phase'
+  | 'not_permitted'
+  | 'not_verified'
+  | null
+  | undefined;
+export type IdeaCommentingDisabledReason =
+  | 'project_inactive'
+  | 'commenting_disabled'
+  | 'not_permitted'
+  | 'idea_not_in_current_phase'
+  | 'not_verified'
+  | null
+  | undefined;
+export type IdeaBudgetingDisabledReason =
+  | 'project_inactive'
+  | 'idea_not_in_current_phase'
+  | 'not_permitted'
+  | 'not_verified'
+  | null
+  | undefined;
 
 export interface IIdeaData {
   id: string;
@@ -29,27 +50,27 @@ export interface IIdeaData {
     updated_at: string;
     published_at: string;
     action_descriptor: {
-      voting:{
-        enabled: boolean,
-        future_enabled: string | null,
+      voting: {
+        enabled: boolean;
+        future_enabled: string | null;
         disabled_reason: IdeaVotingDisabledReason;
-        cancelling_enabled: boolean,
-        downvoting_enabled: boolean
-      },
+        cancelling_enabled: boolean;
+        downvoting_enabled: boolean;
+      };
       commenting: {
         enabled: boolean;
         future_enabled: string | null;
         disabled_reason: IdeaCommentingDisabledReason;
-      },
+      };
       comment_voting: {
         enabled: boolean;
-      },
+      };
       budgeting?: {
         enabled: boolean;
         future_enabled: string | null;
         disabled_reason: IdeaBudgetingDisabledReason;
-      }
-    }
+      };
+    };
   };
   relationships: {
     topics?: {
@@ -69,16 +90,16 @@ export interface IIdeaData {
     };
     phases: {
       data: IRelationship[];
-    }
+    };
     project: {
       data: IRelationship;
     };
     idea_status?: {
       data: IRelationship | null;
-    },
+    };
     user_vote?: {
       data: IRelationship;
-    }
+    };
   };
 }
 
@@ -124,7 +145,7 @@ export interface IdeaActivity {
   attributes: {
     action: string;
     acted_at: string;
-    change: string[] | {[key: string]: string}[] | null;
+    change: string[] | { [key: string]: string }[] | null;
   };
   relationships: {
     user: { data: IRelationship };
@@ -165,39 +186,70 @@ export function ideaByIdStream(ideaId: string) {
 }
 
 export function ideaBySlugStream(ideaSlug: string) {
-  return streams.get<IIdea>({ apiEndpoint: `${API_PATH}/ideas/by_slug/${ideaSlug}` });
+  return streams.get<IIdea>({
+    apiEndpoint: `${API_PATH}/ideas/by_slug/${ideaSlug}`,
+  });
 }
 
 export function ideasStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeas>({ apiEndpoint: `${API_PATH}/ideas`, ...streamParams });
+  return streams.get<IIdeas>({
+    apiEndpoint: `${API_PATH}/ideas`,
+    ...streamParams,
+  });
 }
 
-export function ideasFilterCountsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeasFilterCounts>({ apiEndpoint: `${API_PATH}/ideas/filter_counts`, ...streamParams, cacheStream: false });
+export function ideasFilterCountsStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IIdeasFilterCounts>({
+    apiEndpoint: `${API_PATH}/ideas/filter_counts`,
+    ...streamParams,
+    cacheStream: false,
+  });
 }
 
 export function ideasMarkersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IGeotaggedIdeaData[], links: IIdeaLinks}>({ apiEndpoint: `${API_PATH}/ideas/as_markers`, ...streamParams, cacheStream: false });
+  return streams.get<{ data: IGeotaggedIdeaData[]; links: IIdeaLinks }>({
+    apiEndpoint: `${API_PATH}/ideas/as_markers`,
+    ...streamParams,
+    cacheStream: false,
+  });
 }
 
-export function geotaggedIdeasStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IGeotaggedIdeaData[], links: IIdeaLinks }>({ apiEndpoint: `${API_PATH}/ideas/geotagged`, ...streamParams, cacheStream: false });
+export function geotaggedIdeasStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<{ data: IGeotaggedIdeaData[]; links: IIdeaLinks }>({
+    apiEndpoint: `${API_PATH}/ideas/geotagged`,
+    ...streamParams,
+    cacheStream: false,
+  });
 }
 
 export async function addIdea(object: IIdeaAdd) {
-  const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, { idea: object });
+  const response = await streams.add<IIdea>(`${API_PATH}/ideas/`, {
+    idea: object,
+  });
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`]
+    apiEndpoint: [`${API_PATH}/users/${object.author_id}/ideas_count`],
   });
   return response;
 }
 
 export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
-  const response = await streams.update<IIdea>(`${API_PATH}/ideas/${ideaId}`, ideaId, { idea: object });
+  const response = await streams.update<IIdea>(
+    `${API_PATH}/ideas/${ideaId}`,
+    ideaId,
+    { idea: object }
+  );
   streams.fetchAllWith({
     dataId: [response.data.relationships.project.data.id],
-    apiEndpoint: [`${API_PATH}/stats/ideas_count`, `${API_PATH}/ideas`, `${API_PATH}/ideas/${ideaId}/activities`]
+    apiEndpoint: [
+      `${API_PATH}/stats/ideas_count`,
+      `${API_PATH}/ideas`,
+      `${API_PATH}/ideas/${ideaId}/activities`,
+    ],
   });
   return response;
 }
@@ -205,7 +257,7 @@ export async function updateIdea(ideaId: string, object: Partial<IIdeaAdd>) {
 export async function deleteIdea(ideaId: string) {
   const [idea, response] = await Promise.all([
     ideaByIdStream(ideaId).observable.pipe(first()).toPromise(),
-    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId)
+    streams.delete(`${API_PATH}/ideas/${ideaId}`, ideaId),
   ]);
 
   const authorId = get(idea, 'relationships.author.data.id', false);
@@ -213,16 +265,29 @@ export async function deleteIdea(ideaId: string) {
 
   streams.fetchAllWith({
     dataId: [projectId],
-    apiEndpoint: (authorId ? [`${API_PATH}/users/${authorId}/ideas_count`, `${API_PATH}/stats/ideas_count`] : [`${API_PATH}/stats/ideas_count`])
+    apiEndpoint: authorId
+      ? [
+          `${API_PATH}/users/${authorId}/ideas_count`,
+          `${API_PATH}/stats/ideas_count`,
+        ]
+      : [`${API_PATH}/stats/ideas_count`],
   });
 
   return response;
 }
 
 export function ideaActivities(ideaId: string) {
-  return streams.get<{ data: IdeaActivity[] }>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities` });
+  return streams.get<{ data: IdeaActivity[] }>({
+    apiEndpoint: `${API_PATH}/ideas/${ideaId}/activities`,
+  });
 }
 
-export function similarIdeas(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IMinimalIdeaData[]}>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/similar`, ...streamParams });
+export function similarIdeas(
+  ideaId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<{ data: IMinimalIdeaData[] }>({
+    apiEndpoint: `${API_PATH}/ideas/${ideaId}/similar`,
+    ...streamParams,
+  });
 }

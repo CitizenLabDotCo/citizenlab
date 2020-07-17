@@ -6,8 +6,8 @@ import { mockOfficialFeedback } from 'services/__mocks__/officialFeedback';
 import { OfficialFeedbackPost } from './OfficialFeedbackPost';
 
 jest.mock('services/officialFeedback', () => ({
-     deleteOfficialFeedbackFromIdea: jest.fn(),
-     deleteOfficialFeedbackFromInitiative: jest.fn()
+  deleteOfficialFeedbackFromIdea: jest.fn(),
+  deleteOfficialFeedbackFromInitiative: jest.fn(),
 }));
 jest.mock('./OfficialFeedbackForm', () => 'OfficialFeedbackForm');
 jest.mock('components/UI/MoreActionsMenu', () => 'MoreActionsMenu');
@@ -59,10 +59,16 @@ describe('<OfficialFeedbackPost />', () => {
         postType="initiative"
       />
     );
-    const actions = wrapper.find('OfficialFeedbackPost__StyledMoreActionsMenu').prop('actions') as IAction[];
-    actions.forEach(action => action.handler());
-    expect(officialFeedbackSerivce.deleteOfficialFeedbackFromIdea).toHaveBeenCalledTimes(0);
-    expect(officialFeedbackSerivce.deleteOfficialFeedbackFromInitiative).toHaveBeenCalledTimes(1);
+    const actions = wrapper
+      .find('OfficialFeedbackPost__StyledMoreActionsMenu')
+      .prop('actions') as IAction[];
+    actions.forEach((action) => action.handler());
+    expect(
+      officialFeedbackSerivce.deleteOfficialFeedbackFromIdea
+    ).toHaveBeenCalledTimes(0);
+    expect(
+      officialFeedbackSerivce.deleteOfficialFeedbackFromInitiative
+    ).toHaveBeenCalledTimes(1);
     expect(wrapper.find('OfficialFeedbackForm'));
   });
 });

@@ -15,7 +15,6 @@ const __setMockArea = areaServices.__setMockArea;
 jest.mock('services/areas');
 
 describe('<GetArea />', () => {
-
   let child: jest.Mock;
 
   beforeEach(() => {
@@ -34,7 +33,7 @@ describe('<GetArea />', () => {
 
   it('passes the idea data to the child function received from the streams', () => {
     const mockArea = {
-      data: { some: 'data' }
+      data: { some: 'data' },
     };
     __setMockArea(mockArea);
 
@@ -54,5 +53,4 @@ describe('<GetArea />', () => {
     shallow(<GetArea id="someId">{child}</GetArea>);
     expect(child.mock.calls[1][0]).toEqual(error);
   });
-
 });

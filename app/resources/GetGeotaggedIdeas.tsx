@@ -12,7 +12,9 @@ interface InputProps {
   pageSize?: number;
 }
 
-type children = (renderProps: GetGeotaggedIdeasChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetGeotaggedIdeasChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children: children;
@@ -22,7 +24,10 @@ interface State {
   geotaggedIdeas: GetGeotaggedIdeasChildProps;
 }
 
-export type GetGeotaggedIdeasChildProps = IGeotaggedIdeaData[] | undefined | null;
+export type GetGeotaggedIdeasChildProps =
+  | IGeotaggedIdeaData[]
+  | undefined
+  | null;
 
 export default class GetGeotaggedIdeas extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -31,33 +36,42 @@ export default class GetGeotaggedIdeas extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      geotaggedIdeas: undefined
+      geotaggedIdeas: undefined,
     };
   }
 
   componentDidMount() {
     const { projectIds, phaseId, pageNumber, pageSize } = this.props;
 
-    this.inputProps$ = new BehaviorSubject({ projectIds, phaseId, pageNumber, pageSize });
+    this.inputProps$ = new BehaviorSubject({
+      projectIds,
+      phaseId,
+      pageNumber,
+      pageSize,
+    });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ projectIds, phaseId }) => {
-          return geotaggedIdeasStream({
-            queryParameters: {
-              projects: projectIds,
-              phase: phaseId,
-              'page[number]': pageNumber,
-              'page[size]': pageSize,
-            }
-          }).observable;
-        })
-      ).subscribe((geotaggedIdeas) => {
-        this.setState({
-          geotaggedIdeas: (!isNilOrError(geotaggedIdeas) ? geotaggedIdeas.data : null),
-        });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ projectIds, phaseId }) => {
+            return geotaggedIdeasStream({
+              queryParameters: {
+                projects: projectIds,
+                phase: phaseId,
+                'page[number]': pageNumber,
+                'page[size]': pageSize,
+              },
+            }).observable;
+          })
+        )
+        .subscribe((geotaggedIdeas) => {
+          this.setState({
+            geotaggedIdeas: !isNilOrError(geotaggedIdeas)
+              ? geotaggedIdeas.data
+              : null,
+          });
+        }),
     ];
   }
 
@@ -67,7 +81,7 @@ export default class GetGeotaggedIdeas extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

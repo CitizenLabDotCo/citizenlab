@@ -66,7 +66,7 @@ const SectionTitle: any = styled.div`
   display: flex;
   align-items: center;
   h2 {
-    color: ${props => props.color};
+    color: ${(props) => props.color};
     font-size: ${fontSizes.base}px;
     text-transform: uppercase;
     margin: 0;
@@ -114,9 +114,9 @@ const IconWrapper = styled.div`
 `;
 
 type section = {
-  key: IconNames,
-  articles: string[],
-  color: string
+  key: IconNames;
+  articles: string[];
+  color: string;
 };
 
 const content: section[] = [
@@ -128,28 +128,34 @@ const content: section[] = [
   {
     key: 'engage',
     articles: ['invitations', 'invitations', 'manual_emailing'],
-    color: colors.adminOrangeIcons
+    color: colors.adminOrangeIcons,
   },
   {
     key: 'manage',
     articles: ['projects', 'users'],
-    color: colors.clGreen
+    color: colors.clGreen,
   },
   {
     key: 'decide',
     articles: ['ideas', 'dashboard'],
-    color: colors.clRed
+    color: colors.clRed,
   },
 ];
 
-const trackExternal = (section: string) => () => trackEventByName(tracks.externalLink.name, { extra: { section } });
-const trackInternal = (section: string, article: number) => () => trackEventByName(tracks.internalLink.name, { extra: { section, article } });
+const trackExternal = (section: string) => () =>
+  trackEventByName(tracks.externalLink.name, { extra: { section } });
+const trackInternal = (section: string, article: number) => () =>
+  trackEventByName(tracks.internalLink.name, { extra: { section, article } });
 
 export const Onboarding = (props: InjectedIntlProps) => {
   const { formatMessage } = props.intl;
 
   const renderFlags = (section: string, index: number, article: string) => {
-    if (article === 'widgets' || article === 'user_custom_fields' || article === 'manual_emailing') {
+    if (
+      article === 'widgets' ||
+      article === 'user_custom_fields' ||
+      article === 'manual_emailing'
+    ) {
       return (
         <FeatureFlag name={article} key={index}>
           {renderArticle(section, index)}
@@ -161,17 +167,31 @@ export const Onboarding = (props: InjectedIntlProps) => {
   };
 
   const renderArticle = (section: string, i: number) => (
-    <Article to={formatMessage(messages[`${section}Article${i}Link`])} key={i} onClick={trackInternal(section, i)}>
+    <Article
+      to={formatMessage(messages[`${section}Article${i}Link`])}
+      key={i}
+      onClick={trackInternal(section, i)}
+    >
       <div>
-        <FormattedMessage tagName="h3" {...messages[`${section}Article${i}Title`]} />
-        <FormattedMessage tagName="p" {...messages[`${section}Article${i}Description`]} />
+        <FormattedMessage
+          tagName="h3"
+          {...messages[`${section}Article${i}Title`]}
+        />
+        <FormattedMessage
+          tagName="p"
+          {...messages[`${section}Article${i}Description`]}
+        />
       </div>
-      <IconWrapper><Icon name="arrowLeft" /></IconWrapper>
+      <IconWrapper>
+        <Icon name="arrowLeft" />
+      </IconWrapper>
     </Article>
   );
 
   const renderArticles = (section: string, articles: string[]) => {
-    return articles.map((article, index) => renderFlags(section, index + 1, article));
+    return articles.map((article, index) =>
+      renderFlags(section, index + 1, article)
+    );
   };
 
   const renderSection = ({ key, articles, color }: section) => (
@@ -182,32 +202,37 @@ export const Onboarding = (props: InjectedIntlProps) => {
           <FormattedMessage tagName="h2" {...messages[`${key}SectionTitle`]} />
         </SectionTitle>
         {/*tslint:disable-next-line*/}
-        <a href={formatMessage(messages[`${key}SectionLink`])} target="_blank" onClick={trackExternal(key)}>
+        <a
+          href={formatMessage(messages[`${key}SectionLink`])}
+          target="_blank"
+          onClick={trackExternal(key)}
+        >
           <FormattedMessage {...messages.readCompleteGuide} />
         </a>
       </SectionHeader>
-      <SectionContent>
-        {renderArticles(key, articles)}
-      </SectionContent>
+      <SectionContent>{renderArticles(key, articles)}</SectionContent>
     </SectionWrapper>
   );
 
   return (
     <>
-    <Meta>
-      <Helmet>
-        <title>{formatMessage(messages.HTMLTitle)}</title>
-        <meta name="description" content={formatMessage(messages.HTMLDescription)} />
-      </Helmet>
-    </Meta>
+      <Meta>
+        <Helmet>
+          <title>{formatMessage(messages.HTMLTitle)}</title>
+          <meta
+            name="description"
+            content={formatMessage(messages.HTMLDescription)}
+          />
+        </Helmet>
+      </Meta>
 
-    <Container>
-      <HeaderContainer>
-        <PageTitle>{formatMessage(messages.title)}</PageTitle>
-      </HeaderContainer>
+      <Container>
+        <HeaderContainer>
+          <PageTitle>{formatMessage(messages.title)}</PageTitle>
+        </HeaderContainer>
 
-      {content.map(section => renderSection(section))}
-    </Container>
+        {content.map((section) => renderSection(section))}
+      </Container>
     </>
   );
 };

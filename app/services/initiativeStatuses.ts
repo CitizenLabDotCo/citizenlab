@@ -2,7 +2,13 @@ import { API_PATH } from 'containers/App/constants';
 import streams from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export type InitiativeStatusCode = 'proposed' | 'expired' | 'threshold_reached' | 'answered' | 'ineligible' | 'custom';
+export type InitiativeStatusCode =
+  | 'proposed'
+  | 'expired'
+  | 'threshold_reached'
+  | 'answered'
+  | 'ineligible'
+  | 'custom';
 
 export interface IInitiativeStatusData {
   id: string;
@@ -26,9 +32,13 @@ export interface IInitiativeStatus {
 }
 
 export function initiativeStatusStream(initiativeId: string) {
-  return streams.get<IInitiativeStatus>({ apiEndpoint: `${API_PATH}/initiative_statuses/${initiativeId}` });
+  return streams.get<IInitiativeStatus>({
+    apiEndpoint: `${API_PATH}/initiative_statuses/${initiativeId}`,
+  });
 }
 
 export function initiativeStatusesStream() {
-  return streams.get<IInitiativeStatuses>({ apiEndpoint: `${API_PATH}/initiative_statuses` });
+  return streams.get<IInitiativeStatuses>({
+    apiEndpoint: `${API_PATH}/initiative_statuses`,
+  });
 }

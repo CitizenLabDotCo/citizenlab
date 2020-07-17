@@ -5,7 +5,9 @@ import MentionsTextArea from 'components/UI/MentionsTextArea';
 import Label from 'components/UI/Label';
 
 // resources
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 
 // utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -57,20 +59,22 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
 class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
-
   handleOnChange = (locale: Locale) => (value: string) => {
     if (this.props.onChange) {
-      this.props.onChange({
-        ...this.props.valueMultiloc,
-        [locale]: value
-      }, locale);
+      this.props.onChange(
+        {
+          ...this.props.valueMultiloc,
+          [locale]: value,
+        },
+        locale
+      );
     }
-  }
+  };
 
   render() {
     const {
@@ -88,27 +92,35 @@ class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
       backgroundColor,
       ariaLabel,
       className,
-      tenantLocales
+      tenantLocales,
     } = this.props;
 
     if (!isNilOrError(tenantLocales)) {
       return (
-        <Container id={this.props.id} className={`${className || ''} e2e-multiloc-input`} >
+        <Container
+          id={this.props.id}
+          className={`${className || ''} e2e-multiloc-input`}
+        >
           {tenantLocales.map((tenantLocale, index) => {
             const value = valueMultiloc?.[tenantLocale] || null;
             const error = errorMultiloc?.[tenantLocale] || null;
             const id = this.props.id && `${this.props.id}-${tenantLocale}`;
 
             return (
-              <MentionsTextAreaWrapper key={tenantLocale} className={`${index === tenantLocales.length - 1 && 'last'}`}>
-                {label &&
+              <MentionsTextAreaWrapper
+                key={tenantLocale}
+                className={`${index === tenantLocales.length - 1 && 'last'}`}
+              >
+                {label && (
                   <LabelWrapper>
                     <Label htmlFor={id}>{label}</Label>
-                    {tenantLocales.length > 1 &&
-                      <LanguageExtension>{tenantLocale.toUpperCase()}</LanguageExtension>
-                    }
+                    {tenantLocales.length > 1 && (
+                      <LanguageExtension>
+                        {tenantLocale.toUpperCase()}
+                      </LanguageExtension>
+                    )}
                   </LabelWrapper>
-                }
+                )}
 
                 <MentionsTextArea
                   id={id}
@@ -140,6 +152,8 @@ class MentionsTextAreaMultiloc extends React.PureComponent<Props, State> {
 
 export default (InputProps: InputProps) => (
   <GetTenantLocales>
-    {tenantLocales => <MentionsTextAreaMultiloc {...InputProps} tenantLocales={tenantLocales} />}
+    {(tenantLocales) => (
+      <MentionsTextAreaMultiloc {...InputProps} tenantLocales={tenantLocales} />
+    )}
   </GetTenantLocales>
 );

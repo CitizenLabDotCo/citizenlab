@@ -2,14 +2,19 @@ import React from 'react';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { userCustomFieldOptionsStream, IUserCustomFieldOptionsData } from 'services/userCustomFields';
+import {
+  userCustomFieldOptionsStream,
+  IUserCustomFieldOptionsData,
+} from 'services/userCustomFields';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
   customFieldId: string;
 }
 
-type children = (renderProps: GetUserCustomFieldOptionsChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetUserCustomFieldOptionsChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -19,16 +24,23 @@ interface State {
   customFieldOptions: IUserCustomFieldOptionsData[] | undefined | null | Error;
 }
 
-export type GetUserCustomFieldOptionsChildProps = IUserCustomFieldOptionsData[] | undefined | null | Error;
+export type GetUserCustomFieldOptionsChildProps =
+  | IUserCustomFieldOptionsData[]
+  | undefined
+  | null
+  | Error;
 
-export default class GetCustomFieldOptions extends React.Component<Props, State> {
+export default class GetCustomFieldOptions extends React.Component<
+  Props,
+  State
+> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
     this.state = {
-      customFieldOptions: undefined
+      customFieldOptions: undefined,
     };
   }
 
@@ -38,10 +50,21 @@ export default class GetCustomFieldOptions extends React.Component<Props, State>
     this.inputProps$ = new BehaviorSubject({ customFieldId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ customFieldId }) => userCustomFieldOptionsStream(customFieldId).observable)
-      ).subscribe((customFieldOptions) => this.setState({ customFieldOptions: !isNilOrError(customFieldOptions) ? customFieldOptions.data : customFieldOptions }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(
+            ({ customFieldId }) =>
+              userCustomFieldOptionsStream(customFieldId).observable
+          )
+        )
+        .subscribe((customFieldOptions) =>
+          this.setState({
+            customFieldOptions: !isNilOrError(customFieldOptions)
+              ? customFieldOptions.data
+              : customFieldOptions,
+          })
+        ),
     ];
   }
 
@@ -51,7 +74,7 @@ export default class GetCustomFieldOptions extends React.Component<Props, State>
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

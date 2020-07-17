@@ -1,7 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea voting permissions', () => {
-
   describe('a project that requires verification to vote', () => {
     it('sends non-registred user to sign up, verifies the user and votes successfully', () => {
       const firstName = randomString();
@@ -11,7 +10,10 @@ describe('Idea voting permissions', () => {
 
       // try to vote while not signed in
       cy.visit('projects/verified-ideation/ideas');
-      cy.location('pathname').should('eq', '/en-GB/projects/verified-ideation/ideas');
+      cy.location('pathname').should(
+        'eq',
+        '/en-GB/projects/verified-ideation/ideas'
+      );
       cy.get('#e2e-project-ideas-page');
       cy.get('#e2e-ideas-container');
       cy.wait(1000);
@@ -28,12 +30,16 @@ describe('Idea voting permissions', () => {
       cy.get('#e2e-signup-password-button').click();
 
       // verification step check
-      cy.get('#e2e-verification-wizard-method-selection-step #e2e-bogus-button').click();
+      cy.get(
+        '#e2e-verification-wizard-method-selection-step #e2e-bogus-button'
+      ).click();
       cy.get('#e2e-verification-bogus-submit-button').click();
 
       // success check
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
-      cy.get('#e2e-signup-success-container .e2e-signup-success-close-button').click();
+      cy.get(
+        '#e2e-signup-success-container .e2e-signup-success-close-button'
+      ).click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container.e2e-verified');
       cy.get('.e2e-ideacard-upvote-button.active');
@@ -49,7 +55,12 @@ describe('Idea voting permissions', () => {
       const unverifiedEmail = randomEmail();
       const unverifiedPassword = randomString();
 
-      cy.apiSignup(unverifiedFirstName, unverifiedLastName, unverifiedEmail, unverifiedPassword).then(response => {
+      cy.apiSignup(
+        unverifiedFirstName,
+        unverifiedLastName,
+        unverifiedEmail,
+        unverifiedPassword
+      ).then((response) => {
         unverifiedId = response.body.data.id;
         cy.setLoginCookie(unverifiedEmail, unverifiedPassword);
       });
@@ -77,14 +88,22 @@ describe('Idea voting permissions', () => {
       const verifiedEmail = randomEmail();
       const verifiedPassword = randomString();
 
-      cy.apiSignup(verifiedFirstName, verifiedLastName, verifiedEmail, verifiedPassword).then(response => {
-        verifiedId = response.body.data.id;
-        return cy.apiLogin(verifiedEmail, verifiedPassword);
-      }).then((response) => {
-        return cy.apiVerifyBogus(response.body.jwt);
-      }).then(() => {
-        cy.setLoginCookie(verifiedEmail, verifiedPassword);
-      });
+      cy.apiSignup(
+        verifiedFirstName,
+        verifiedLastName,
+        verifiedEmail,
+        verifiedPassword
+      )
+        .then((response) => {
+          verifiedId = response.body.data.id;
+          return cy.apiLogin(verifiedEmail, verifiedPassword);
+        })
+        .then((response) => {
+          return cy.apiVerifyBogus(response.body.jwt);
+        })
+        .then(() => {
+          cy.setLoginCookie(verifiedEmail, verifiedPassword);
+        });
     });
 
     it('lets verified users vote', () => {
@@ -101,7 +120,7 @@ describe('Idea voting permissions', () => {
   });
 
   describe('a project that does not require verification', () => {
-    it('sends signed out user to log in and doesn\'t ask for verification', () => {
+    it("sends signed out user to log in and doesn't ask for verification", () => {
       const firstName = randomString();
       const lastName = randomString();
       const email = randomEmail();
@@ -125,11 +144,14 @@ describe('Idea voting permissions', () => {
 
       // success check
       cy.get('#e2e-signup-success-container', { timeout: 20000 });
-      cy.get('#e2e-signup-success-container .e2e-signup-success-close-button').click();
+      cy.get(
+        '#e2e-signup-success-container .e2e-signup-success-close-button'
+      ).click();
       cy.get('#e2e-sign-up-in-modal').should('not.exist');
       cy.get('#e2e-user-menu-container');
-      cy.get('.e2e-ideacard-upvote-button').first().should('have.class', 'active');
+      cy.get('.e2e-ideacard-upvote-button')
+        .first()
+        .should('have.class', 'active');
     });
   });
-
 });

@@ -1,6 +1,6 @@
 import { Meta, Story, Preview, Props } from '@storybook/addon-docs/blocks';
 import DateInput from 'components/UI/DateInput';
-import { text, boolean } from "@storybook/addon-knobs";
+import { text, boolean } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
 <Meta title="DateInput" component={DateInput} />
@@ -9,10 +9,7 @@ import { action } from '@storybook/addon-actions';
 
 <Preview>
   <Story name="default">
-    <DateInput
-      value={null}
-      onChange={action('on date selected')}
-    />
+    <DateInput value={null} onChange={action('on date selected')} />
   </Story>
 </Preview>
 

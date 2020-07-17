@@ -47,8 +47,10 @@ type State = {
   codeModalOpened: boolean;
 };
 
-class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, State> {
-
+class IdeasWidget extends PureComponent<
+  Props & InjectedIntlProps & ITracks,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -64,7 +66,7 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
   validate = (): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
     return errors;
-  }
+  };
 
   initialValues = (): FormValues => {
     const { formatMessage } = this.props.intl;
@@ -89,32 +91,35 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
       topics: [],
       limit: 5,
     };
-  }
+  };
 
   handleOnSubmit = (values: FormValues, { setSubmitting }) => {
     this.setState(({ widgetParams }) => ({
       widgetParams: {
         ...widgetParams,
-        ...values
-      }
+        ...values,
+      },
     }));
     setSubmitting(false);
-  }
+  };
 
   generateWidgetParams = () => {
     const { widgetParams } = this.state;
-    const cleanedParams = omitBy(widgetParams, (v) => isNil(v) || (isString(v) && isEmpty(v)));
+    const cleanedParams = omitBy(
+      widgetParams,
+      (v) => isNil(v) || (isString(v) && isEmpty(v))
+    );
     return stringify(cleanedParams);
-  }
+  };
 
   handleCloseCodeModal = () => {
     this.setState({ codeModalOpened: false });
-  }
+  };
 
   handleShowCodeClick = () => {
     this.setState({ codeModalOpened: true });
     this.props.clickAdminExportHTML();
-  }
+  };
 
   renderIdeasFormFn = (props) => {
     // This is a hack to react on Formik form changes without submitting,
@@ -123,15 +128,18 @@ class IdeasWidget extends PureComponent<Props & InjectedIntlProps & ITracks, Sta
     this.debouncedSetState({
       widgetParams: {
         ...this.state.widgetParams,
-        ...props.values
-      }
+        ...props.values,
+      },
     });
 
     return <Form {...props} />;
-  }
+  };
 
   render() {
-    const { widgetParams: { width, height }, codeModalOpened } = this.state;
+    const {
+      widgetParams: { width, height },
+      codeModalOpened,
+    } = this.state;
     return (
       <Container>
         <WidgetConfigWrapper>

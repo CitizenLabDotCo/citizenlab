@@ -6,6 +6,9 @@ import { formatTranslationMessages } from './';
 addLocaleData(daLocaleData);
 
 const daDKTranslationMessages = require('translations/da-DK.json');
-const translationMessages = formatTranslationMessages('da-DK', daDKTranslationMessages);
+const translationMessages = formatTranslationMessages(
+  'da-DK',
+  daDKTranslationMessages
+);
 
 export default translationMessages;

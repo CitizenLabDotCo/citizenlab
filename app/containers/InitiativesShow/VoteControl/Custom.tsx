@@ -41,12 +41,12 @@ const VoteText = styled.div`
 
 const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorMain};
+  color: ${(props) => props.theme.colorMain};
 `;
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
 `;
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -65,18 +65,23 @@ interface InputProps {
   userVoted: boolean;
   onVote: () => void;
 }
-interface DataProps { }
+interface DataProps {}
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class Custom extends PureComponent<Props & { theme: any }> {
-
   handleOnVote = () => {
     this.props.onVote();
-  }
+  };
 
   render() {
-    const { initiative, initiativeStatus, initiativeSettings: { voting_threshold }, theme, userVoted } = this.props;
+    const {
+      initiative,
+      initiativeStatus,
+      initiativeSettings: { voting_threshold },
+      theme,
+      userVoted,
+    } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
 
@@ -91,18 +96,24 @@ class Custom extends PureComponent<Props & { theme: any }> {
         <VoteCounter>
           <VoteText aria-hidden={true}>
             <VoteTextLeft>
-              <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: voteCount }}
+              />
             </VoteTextLeft>
-            <VoteTextRight>
-              {voteLimit}
-            </VoteTextRight>
+            <VoteTextRight>{voteLimit}</VoteTextRight>
           </VoteText>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.xVotesOfY}
               values={{
-                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
-                votingThreshold: voteLimit
+                xVotes: (
+                  <FormattedMessage
+                    {...messages.xVotes}
+                    values={{ count: voteCount }}
+                  />
+                ),
+                votingThreshold: voteLimit,
               }}
             />
           </ScreenReaderOnly>
@@ -112,7 +123,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
             bgColor={colors.lightGreyishBlue}
           />
         </VoteCounter>
-        {!userVoted &&
+        {!userVoted && (
           <StyledButton
             icon="upvote"
             buttonStyle="primary"
@@ -120,7 +131,7 @@ class Custom extends PureComponent<Props & { theme: any }> {
           >
             <FormattedMessage {...messages.vote} />
           </StyledButton>
-        }
+        )}
       </Container>
     );
   }

@@ -32,7 +32,7 @@ const StyledA = styled.a`
   }
 `;
 
-class Moderators extends PureComponent<Props & InjectedIntlProps>{
+class Moderators extends PureComponent<Props & InjectedIntlProps> {
   render() {
     const { moderators, projectId } = this.props;
 
@@ -46,10 +46,17 @@ class Moderators extends PureComponent<Props & InjectedIntlProps>{
                 {...messages.moderatorsTooltip}
                 values={{
                   moderationInfoCenterLink: (
-                    <StyledA href={this.props.intl.formatMessage(messages.moreInfoModeratorLink)} target="_blank">
-                      <FormattedMessage {...messages.moderationInfoCenterLinkText} />
+                    <StyledA
+                      href={this.props.intl.formatMessage(
+                        messages.moreInfoModeratorLink
+                      )}
+                      target="_blank"
+                    >
+                      <FormattedMessage
+                        {...messages.moderationInfoCenterLinkText}
+                      />
                     </StyledA>
-                  )
+                  ),
                 }}
               />
             }

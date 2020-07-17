@@ -46,7 +46,7 @@ const StyledIcon: any = styled(Icon)`
   flex: 0 0 22px;
   height: 22px;
   fill: ${colors.label};
-  opacity: ${(props: any) => props.isRead ? '0.4' : '1'};
+  opacity: ${(props: any) => (props.isRead ? '0.4' : '1')};
 `;
 
 const Body = styled.div`
@@ -56,7 +56,7 @@ const Body = styled.div`
 const Message = styled.div<{ isRead: boolean }>`
   color: ${colors.label};
   font-size: ${fontSizes.base}px;
-  font-weight: ${props => props.isRead ? 'normal' : '500'};
+  font-weight: ${(props) => (props.isRead ? 'normal' : '500')};
   text-align: left;
   white-space: normal;
   margin-bottom: 4px;
@@ -85,11 +85,11 @@ const Timing = styled.span`
 `;
 
 type Props = {
-  icon?: string,
-  timing?: string,
-  children: any,
-  linkTo: string,
-  isRead: boolean,
+  icon?: string;
+  timing?: string;
+  children: any;
+  linkTo: string;
+  isRead: boolean;
 };
 
 class NotificationWrapper extends React.PureComponent<Props> {
@@ -99,7 +99,7 @@ class NotificationWrapper extends React.PureComponent<Props> {
       trackEventByName(tracks.clickNotification.name, { extra: { linkTo } });
       clHistory.push(linkTo);
     }
-  }
+  };
 
   render() {
     const { icon, children, timing, isRead } = this.props;
@@ -111,11 +111,11 @@ class NotificationWrapper extends React.PureComponent<Props> {
         </IconContainer>
         <Body>
           <Message isRead={isRead}>{children}</Message>
-          {timing &&
+          {timing && (
             <Timing>
               <FormattedRelative value={timing} />
             </Timing>
-          }
+          )}
         </Body>
       </Container>
     );

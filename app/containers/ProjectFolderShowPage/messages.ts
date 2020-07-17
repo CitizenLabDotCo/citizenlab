@@ -15,7 +15,8 @@ export default defineMessages({
   },
   noFolderFoundHere: {
     id: 'app.containers.ProjectFolderShowPage.noFolderFoundHere',
-    defaultMessage: '{tenantName, select, CQC {Log in to view this folder.} other {There is no folder here.}}',
+    defaultMessage:
+      '{tenantName, select, CQC {Log in to view this folder.} other {There is no folder here.}}',
   },
   goBackToList: {
     id: 'app.containers.ProjectFolderShowPage.goBackToList',

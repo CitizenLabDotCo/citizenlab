@@ -35,7 +35,7 @@ const TextWrapper = styled.div`
 
     &:last-child {
       color: ${colors.label};
-      font-size: ${fontSizes.small}px
+      font-size: ${fontSizes.small}px;
     }
   }
 `;
@@ -47,7 +47,10 @@ interface Props {
 
 const ChangeLogEntry = memo<Props>(({ activity, postType }) => {
   const userId = activity.relationships.user.data.id;
-  const changeLogEntryMessage = (postType === 'idea' ? messages.changeLogEntryIdea : messages.changeLogEntryInitiative);
+  const changeLogEntryMessage =
+    postType === 'idea'
+      ? messages.changeLogEntryIdea
+      : messages.changeLogEntryInitiative;
 
   return (
     <Entry className="e2e-idea-changelog-entry">

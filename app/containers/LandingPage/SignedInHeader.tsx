@@ -9,13 +9,18 @@ import Avatar from 'components/Avatar';
 import Icon from 'components/UI/Icon';
 
 // services
-import { dismissOnboardingCampaign, IOnboardingCampaignNames } from 'services/onboardingCampaigns';
+import {
+  dismissOnboardingCampaign,
+  IOnboardingCampaignNames,
+} from 'services/onboardingCampaigns';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetOnboardingCampaigns, { GetOnboardingCampaignsChildProps } from 'resources/GetOnboardingCampaigns';
+import GetOnboardingCampaigns, {
+  GetOnboardingCampaignsChildProps,
+} from 'resources/GetOnboardingCampaigns';
 
 // utils
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -88,7 +93,8 @@ const HeaderImage = styled.img`
 `;
 
 const HeaderImageOverlay = styled.div`
-  background: ${({ theme }) => theme.signedInHeaderOverlayColor || theme.colorMain};
+  background: ${({ theme }) =>
+    theme.signedInHeaderOverlayColor || theme.colorMain};
   opacity: ${({ theme }) => theme.signedInHeaderOverlayOpacity};
   position: absolute;
   top: 0;
@@ -261,45 +267,76 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-interface State { }
+interface State {}
 
 class SignedInHeader extends PureComponent<Props, State> {
-
   handleSkipButtonClick = (name: IOnboardingCampaignNames) => () => {
-    trackEventByName(tracks.clickSkipButton, { extra: { location: 'signed-in header', context: name } });
+    trackEventByName(tracks.clickSkipButton, {
+      extra: { location: 'signed-in header', context: name },
+    });
     dismissOnboardingCampaign(name);
-  }
+  };
 
   handleVerify = () => {
     openVerificationModal();
-  }
+  };
 
   render() {
-    const { locale, tenant, authUser, className, theme, onboardingCampaigns } = this.props;
+    const {
+      locale,
+      tenant,
+      authUser,
+      className,
+      theme,
+      onboardingCampaigns,
+    } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && !isNilOrError(authUser) && !isNilOrError(onboardingCampaigns)) {
-      const tenantHeaderImage = (tenant.attributes.header_bg ? tenant.attributes.header_bg.large : null);
-      const defaultMessage = tenant.attributes.settings.core.custom_onboarding_fallback_message;
-      const objectFitCoverSupported = (window['CSS'] && CSS.supports('object-fit: cover'));
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
+      !isNilOrError(authUser) &&
+      !isNilOrError(onboardingCampaigns)
+    ) {
+      const tenantHeaderImage = tenant.attributes.header_bg
+        ? tenant.attributes.header_bg.large
+        : null;
+      const defaultMessage =
+        tenant.attributes.settings.core.custom_onboarding_fallback_message;
+      const objectFitCoverSupported =
+        window['CSS'] && CSS.supports('object-fit: cover');
 
       // translate header title into a h1 with a fallback
       const headerTitleMultiLoc = tenant.attributes.settings.core.header_title;
-      const genericTitle = <FormattedMessage tagName="h1" {...messages.titleCity} />;
+      const genericTitle = (
+        <FormattedMessage tagName="h1" {...messages.titleCity} />
+      );
 
       return (
-        <Header className={`e2e-signed-in-header ${className}`} id="hook-header">
+        <Header
+          className={`e2e-signed-in-header ${className}`}
+          id="hook-header"
+        >
           <ScreenReaderOnly>
             {headerTitleMultiLoc ? (
               <T as="h1" value={headerTitleMultiLoc}>
-                {translatedTitle =>
+                {(translatedTitle) =>
                   translatedTitle ? <h1>{translatedTitle}</h1> : genericTitle
                 }
               </T>
-            ) : genericTitle}
+            ) : (
+              genericTitle
+            )}
           </ScreenReaderOnly>
           <HeaderImageContainer>
             <HeaderImageContainerInner>
-              {tenantHeaderImage && <HeaderImage src={tenantHeaderImage} className={objectFitCoverSupported ? 'objectFitCoverSupported' : ''} />}
+              {tenantHeaderImage && (
+                <HeaderImage
+                  src={tenantHeaderImage}
+                  className={
+                    objectFitCoverSupported ? 'objectFitCoverSupported' : ''
+                  }
+                />
+              )}
               <HeaderImageOverlay />
             </HeaderImageContainerInner>
           </HeaderImageContainer>
@@ -308,7 +345,11 @@ class SignedInHeader extends PureComponent<Props, State> {
           <CSSTransition
             classNames="content"
             in={onboardingCampaigns.name === 'complete_profile'}
-            timeout={onboardingCampaigns.name === 'complete_profile' ? contentTimeout + contentDelay : contentTimeout}
+            timeout={
+              onboardingCampaigns.name === 'complete_profile'
+                ? contentTimeout + contentDelay
+                : contentTimeout
+            }
             mountOnEnter={true}
             unmountOnExit={true}
             enter={true}
@@ -327,7 +368,11 @@ class SignedInHeader extends PureComponent<Props, State> {
                   <CompleteProfileIcon name="completeProfile" ariaHidden />
                 </Icons>
                 <Text>
-                  <FormattedMessage {...messages.completeYourProfile} tagName="h2" values={{ firstName: authUser.attributes.first_name }} />
+                  <FormattedMessage
+                    {...messages.completeYourProfile}
+                    tagName="h2"
+                    values={{ firstName: authUser.attributes.first_name }}
+                  />
                 </Text>
               </Left>
 
@@ -358,7 +403,11 @@ class SignedInHeader extends PureComponent<Props, State> {
           <CSSTransition
             classNames="content"
             in={onboardingCampaigns.name === 'verification'}
-            timeout={onboardingCampaigns.name === 'verification' ? contentTimeout + contentDelay : contentTimeout}
+            timeout={
+              onboardingCampaigns.name === 'verification'
+                ? contentTimeout + contentDelay
+                : contentTimeout
+            }
             mountOnEnter={true}
             unmountOnExit={true}
             enter={true}
@@ -367,7 +416,7 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentCompleteProfile id="e2e-singed-in-header-verifiaction">
               <Left>
                 <Icons>
-                  <AvatarAndShield aria-hidden >
+                  <AvatarAndShield aria-hidden>
                     <StyledAvatar
                       userId={authUser?.id}
                       size="50px"
@@ -379,7 +428,10 @@ class SignedInHeader extends PureComponent<Props, State> {
                   </AvatarAndShield>
                 </Icons>
                 <Text>
-                  <FormattedMessage {...messages.verifyYourIdentity} tagName="h2" />
+                  <FormattedMessage
+                    {...messages.verifyYourIdentity}
+                    tagName="h2"
+                  />
                 </Text>
               </Left>
 
@@ -410,7 +462,11 @@ class SignedInHeader extends PureComponent<Props, State> {
           <CSSTransition
             classNames="content"
             in={onboardingCampaigns.name === 'custom_cta'}
-            timeout={onboardingCampaigns.name === 'custom_cta' ? contentTimeout + contentDelay : contentTimeout}
+            timeout={
+              onboardingCampaigns.name === 'custom_cta'
+                ? contentTimeout + contentDelay
+                : contentTimeout
+            }
             mountOnEnter={true}
             unmountOnExit={true}
             enter={true}
@@ -419,7 +475,11 @@ class SignedInHeader extends PureComponent<Props, State> {
             <HeaderContentCustomCta id="e2e-singed-in-header-custom-cta">
               <Left>
                 <Text>
-                  <T as="h2" value={onboardingCampaigns.cta_message_multiloc} supportHtml />
+                  <T
+                    as="h2"
+                    value={onboardingCampaigns.cta_message_multiloc}
+                    supportHtml
+                  />
                 </Text>
               </Left>
 
@@ -448,17 +508,26 @@ class SignedInHeader extends PureComponent<Props, State> {
           <CSSTransition
             classNames="content"
             in={onboardingCampaigns.name === 'default'}
-            timeout={onboardingCampaigns.name === 'default' ? contentTimeout + contentDelay : contentTimeout}
+            timeout={
+              onboardingCampaigns.name === 'default'
+                ? contentTimeout + contentDelay
+                : contentTimeout
+            }
             mountOnEnter={true}
             unmountOnExit={true}
             enter={true}
             exit={true}
           >
             <HeaderContentDefault id="e2e-singed-in-header-default-cta">
-              {defaultMessage && !isEmpty(defaultMessage)
-                ? <T as="h2" value={defaultMessage} supportHtml />
-                : <FormattedMessage {...messages.defaultSignedInMessage} tagName="h2" values={{ firstName: authUser.attributes.first_name }} />
-              }
+              {defaultMessage && !isEmpty(defaultMessage) ? (
+                <T as="h2" value={defaultMessage} supportHtml />
+              ) : (
+                <FormattedMessage
+                  {...messages.defaultSignedInMessage}
+                  tagName="h2"
+                  values={{ firstName: authUser.attributes.first_name }}
+                />
+              )}
             </HeaderContentDefault>
           </CSSTransition>
         </Header>
@@ -473,13 +542,13 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  onboardingCampaigns: <GetOnboardingCampaigns />
+  onboardingCampaigns: <GetOnboardingCampaigns />,
 });
 
 const SignedInHeaderWithHoC = withTheme(SignedInHeader);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SignedInHeaderWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <SignedInHeaderWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

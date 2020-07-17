@@ -15,5 +15,7 @@ export interface PageLink {
 }
 
 export function getPageLink(pageLinkId: string) {
-  return streams.get<{data: PageLink}>({ apiEndpoint: `${apiEndpoint}/${pageLinkId}` });
+  return streams.get<{ data: PageLink }>({
+    apiEndpoint: `${apiEndpoint}/${pageLinkId}`,
+  });
 }

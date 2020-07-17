@@ -2,7 +2,13 @@ import React, { memo, useState } from 'react';
 
 // components
 import Icon from 'components/UI/Icon';
-import { RowContent, RowContentInner, RowTitle, RowButton, ActionsRowContainer } from './StyledComponents';
+import {
+  RowContent,
+  RowContentInner,
+  RowTitle,
+  RowButton,
+  ActionsRowContainer,
+} from './StyledComponents';
 
 // styles
 import styled from 'styled-components';
@@ -20,21 +26,26 @@ const FolderIcon = styled(Icon)`
 `;
 
 // types & services
-import GetAdminPublications, { GetAdminPublicationsChildProps } from 'resources/GetAdminPublications';
+import GetAdminPublications, {
+  GetAdminPublicationsChildProps,
+} from 'resources/GetAdminPublications';
 import { adopt } from 'react-adopt';
 import ProjectRow from './ProjectRow';
 import { isNilOrError } from 'utils/helperUtils';
 import { colors } from 'utils/styleUtils';
 import PublicationStatusLabel from './PublicationStatusLabel';
 
-const ArrowIcon = styled(Icon) <({ expanded: boolean }) >`
+const ArrowIcon = styled(Icon)<{ expanded: boolean }>`
   flex: 0 0 11px;
   height: 11px;
   width: 11px;
   margin-right: 8px;
-  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1), fill 80ms ease-out;
+  transition: transform 350ms cubic-bezier(0.165, 0.84, 0.44, 1),
+    fill 80ms ease-out;
 
-  ${({ expanded }) => expanded && `
+  ${({ expanded }) =>
+    expanded &&
+    `
     transform: rotate(90deg);
   `}
 `;
@@ -45,11 +56,18 @@ const Container = styled.div`
   width: 100%;
 `;
 
-const FolderRowContent = styled(RowContent) <({ expanded: boolean, hasProjects: boolean }) >`
-  ${({ expanded }) => expanded && `
+const FolderRowContent = styled(RowContent)<{
+  expanded: boolean;
+  hasProjects: boolean;
+}>`
+  ${({ expanded }) =>
+    expanded &&
+    `
     padding-bottom: 10px;
   `}
-  ${({ hasProjects }) => hasProjects && `
+  ${({ hasProjects }) =>
+    hasProjects &&
+    `
     cursor: pointer;
   `}
 `;
@@ -76,12 +94,15 @@ interface DataProps {
   adminPublications: GetAdminPublicationsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 const FolderRow = memo<Props>(({ publication, adminPublications }) => {
-  const hasProjects = !isNilOrError(adminPublications) && !!adminPublications.list ?.length && adminPublications.list.length > 0;
+  const hasProjects =
+    !isNilOrError(adminPublications) &&
+    !!adminPublications.list?.length &&
+    adminPublications.list.length > 0;
   const [folderOpen, setFolderOpen] = useState(false);
-  const toggleExpand = () => setFolderOpen(folderOpen => !folderOpen);
+  const toggleExpand = () => setFolderOpen((folderOpen) => !folderOpen);
 
   return (
     <Container>
@@ -93,7 +114,12 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
         onClick={toggleExpand}
       >
         <RowContentInner className="expand primary">
-          {hasProjects && <ArrowIcon expanded={hasProjects && folderOpen} name="chevron-right" />}
+          {hasProjects && (
+            <ArrowIcon
+              expanded={hasProjects && folderOpen}
+              name="chevron-right"
+            />
+          )}
           <FolderIcon name="simpleFolder" />
           <RowTitle value={publication.attributes.publication_title_multiloc} />
           <PublicationStatusLabel
@@ -102,7 +128,9 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
         </RowContentInner>
         <ActionsRowContainer>
           <RowButton
-            className={`e2e-admin-edit-project ${publication.attributes.publication_title_multiloc['en-GB'] || ''}`}
+            className={`e2e-admin-edit-project ${
+              publication.attributes.publication_title_multiloc['en-GB'] || ''
+            }`}
             linkTo={`/admin/projects/folders/${publication.publicationId}`}
             buttonStyle="secondary"
             icon="edit"
@@ -112,23 +140,33 @@ const FolderRow = memo<Props>(({ publication, adminPublications }) => {
         </ActionsRowContainer>
       </FolderRowContent>
 
-      {hasProjects && folderOpen &&
+      {hasProjects && folderOpen && (
         <ProjectRows>
-          {adminPublications ?.list ?.map(publication =>
-            <InFolderProjectRow publication={publication} key={publication.id} />
-          )}
+          {adminPublications?.list?.map((publication) => (
+            <InFolderProjectRow
+              publication={publication}
+              key={publication.id}
+            />
+          ))}
         </ProjectRows>
-      }
+      )}
     </Container>
   );
 });
 
 const Data = adopt<DataProps, InputProps>({
-  adminPublications: ({ publication: { publicationId }, render }) => <GetAdminPublications folderId={publicationId} publicationStatusFilter={['draft', 'published', 'archived']}>{render}</GetAdminPublications>
+  adminPublications: ({ publication: { publicationId }, render }) => (
+    <GetAdminPublications
+      folderId={publicationId}
+      publicationStatusFilter={['draft', 'published', 'archived']}
+    >
+      {render}
+    </GetAdminPublications>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <FolderRow {...inputProps} {...dataprops} />}
+    {(dataprops) => <FolderRow {...inputProps} {...dataprops} />}
   </Data>
 );

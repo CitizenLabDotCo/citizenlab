@@ -12,7 +12,7 @@ const Container = styled.div`
   display: flex;
   padding: 20px;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background-color: ${transparentize(.95, colors.adminTextColor)};
+  background-color: ${transparentize(0.95, colors.adminTextColor)};
   border: 1px solid ${colors.separation};
   margin-bottom: 10px;
 
@@ -77,10 +77,18 @@ interface Props {
   category: string;
   destinations: IDestination[];
   checked: boolean;
-  handleChange: (category: string, value: boolean) => (e: FormEvent<HTMLInputElement>) => (void);
+  handleChange: (
+    category: string,
+    value: boolean
+  ) => (e: FormEvent<HTMLInputElement>) => void;
 }
 
-const CategoryCard = ({ category, destinations, checked, handleChange }: Props) => (
+const CategoryCard = ({
+  category,
+  destinations,
+  checked,
+  handleChange,
+}: Props) => (
   <Container className="e2e-category">
     <TextContainer>
       <FormattedMessage
@@ -108,17 +116,14 @@ const CategoryCard = ({ category, destinations, checked, handleChange }: Props) 
           isRequired
         />
       </StyledFieldset>
-      <FormattedMessage
-        tagName="p"
-        {...messages[`${category}Purpose`]}
-      />
+      <FormattedMessage tagName="p" {...messages[`${category}Purpose`]} />
       <p>
-        <Tools><FormattedMessage {...messages.tools} />:</Tools>
+        <Tools>
+          <FormattedMessage {...messages.tools} />:
+        </Tools>
         {destinations.map((d, index) => (
           <Fragment key={d.id}>
-            {index !== 0 &&
-              <Separator>•</Separator>
-            }
+            {index !== 0 && <Separator>•</Separator>}
             <SSpan>{d.name}</SSpan>
           </Fragment>
         ))}

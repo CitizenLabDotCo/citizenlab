@@ -22,12 +22,14 @@ export default defineMessages({
     defaultMessage: 'Add',
   },
   groupsMultipleSelectPlaceholder: {
-    id: 'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
+    id:
+      'app.containers.AdminPage.groups.permissions.groupsMultipleSelectPlaceholder',
     defaultMessage: 'Select one or more groups',
   },
   members: {
     id: 'app.containers.AdminPage.groups.permissions.members',
-    defaultMessage: '{count, plural, =0 {No members} one {1 member} other {{count} members}}',
+    defaultMessage:
+      '{count, plural, =0 {No members} one {1 member} other {{count} members}}',
   },
   deleteButtonLabel: {
     id: 'app.containers.AdminPage.groups.permissions.deleteButtonLabel',
@@ -39,7 +41,8 @@ export default defineMessages({
   },
   groupDeletionConfirmation: {
     id: 'app.containers.AdminPage.groups.permissions.groupDeletionConfirmation',
-    defaultMessage: 'Are you sure you want to remove this group from the project?',
+    defaultMessage:
+      'Are you sure you want to remove this group from the project?',
   },
   save: {
     id: 'app.containers.AdminPage.groups.permissions.save',
@@ -62,7 +65,8 @@ export default defineMessages({
     defaultMessage: 'What can different users do?',
   },
   permissionAction_commenting: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_commenting',
     defaultMessage: 'Commenting',
   },
   permissionAction_voting: {
@@ -74,20 +78,25 @@ export default defineMessages({
     defaultMessage: 'Posting ideas',
   },
   permissionAction_taking_survey: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_survey',
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_taking_survey',
     defaultMessage: 'Taking the survey',
   },
   permissionAction_taking_poll: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_taking_poll',
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_taking_poll',
     defaultMessage: 'Taking the poll',
   },
   permissionAction_budgeting: {
-    id: 'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
+    id:
+      'app.containers.AdminPage.groups.permissions.permissionAction_budgeting',
     defaultMessage: 'Spending budget',
   },
   noActionsCanBeTakenInThisProject: {
-    id: 'app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject',
-    defaultMessage: 'Nothing is shown, because there are no actions the user can take in this project.'
+    id:
+      'app.containers.AdminPage.groups.permissions.noActionsCanBeTakenInThisProject',
+    defaultMessage:
+      'Nothing is shown, because there are no actions the user can take in this project.',
   },
   pendingInvitation: {
     id: 'app.containers.AdminPage.groups.permissions.pendingInvitation',
@@ -98,7 +107,8 @@ export default defineMessages({
     defaultMessage: 'Unknown name',
   },
   moderatorDeletionConfirmation: {
-    id: 'app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation',
+    id:
+      'app.containers.AdminPage.groups.permissions.moderatorDeletionConfirmation',
     defaultMessage: 'Are you sure?',
   },
   deleteModeratorLabel: {
@@ -115,7 +125,8 @@ export default defineMessages({
   },
   moderatorsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorsTooltip',
-    defaultMessage: 'Moderators can edit the project, manage its ideas and email people who participated. You can {moderationInfoCenterLink} to find more information on moderation rights.',
+    defaultMessage:
+      'Moderators can edit the project, manage its ideas and email people who participated. You can {moderationInfoCenterLink} to find more information on moderation rights.',
   },
   moderationInfoCenterLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText',
@@ -123,7 +134,8 @@ export default defineMessages({
   },
   moreInfoModeratorLink: {
     id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink',
-    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+    defaultMessage:
+      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
   },
   ideaAssignmentSectionTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentSectionTitle',
@@ -131,7 +143,8 @@ export default defineMessages({
   },
   ideaAssignmentTooltipText: {
     id: 'app.containers.AdminPage.ProjectEdit.ideaAssignmentTooltipText',
-    defaultMessage: 'The person responsible for the ideas will get all new ideas in this project assigned to him/her. The assignee can always be changed manually in the {ideaManagerLink}.',
+    defaultMessage:
+      'The person responsible for the ideas will get all new ideas in this project assigned to him/her. The assignee can always be changed manually in the {ideaManagerLink}.',
   },
   ideaManagerLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.ideaManagerLinkText',

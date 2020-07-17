@@ -15,7 +15,7 @@ describe('Project topics', () => {
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published'
+      publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -59,9 +59,7 @@ describe('Project topics', () => {
 
       // and check that our topic is there initially
       cy.visit(`admin/projects/${projectId}/topics`);
-      cy.get('#e2e-project-topic-multiselect')
-      .click()
-      .contains(topicTitle);
+      cy.get('#e2e-project-topic-multiselect').click().contains(topicTitle);
 
       // go to topic manager
       cy.visit('admin/settings/topics');
@@ -71,8 +69,7 @@ describe('Project topics', () => {
         .first()
         .find('#e2e-custom-topic-delete-button')
         .click();
-      cy.get('#e2e-custom-topic-delete-confirmation-button')
-        .click();
+      cy.get('#e2e-custom-topic-delete-confirmation-button').click();
 
       // Go to our project topic settings and check that topic is not available
       cy.visit(`admin/projects/${projectId}/topics`);
@@ -94,9 +91,7 @@ describe('Project topics', () => {
 
       // and check that our topic is there initially
       cy.visit(`admin/projects/${projectId}/topics`);
-      cy.get('#e2e-project-topic-multiselect')
-      .click()
-      .contains(topicTitle);
+      cy.get('#e2e-project-topic-multiselect').click().contains(topicTitle);
 
       // go to topic manager
       cy.visit('admin/settings/topics');
@@ -114,7 +109,7 @@ describe('Project topics', () => {
       cy.get('#e2e-project-topic-multiselect')
         .click()
         .contains(editedTopicTitle);
-      });
+    });
   });
 
   describe('Project topic settings', () => {
@@ -169,10 +164,10 @@ describe('Project topics', () => {
       // Remove our new topic from the project
       cy.get('.e2e-admin-list-row')
         .first()
-        .find('#e2e-project-topic-delete-button').click();
-      // Confirm in the modal
-      cy.get('#e2e-project-topic-delete-confirm-button')
+        .find('#e2e-project-topic-delete-button')
         .click();
+      // Confirm in the modal
+      cy.get('#e2e-project-topic-delete-confirm-button').click();
 
       // Go to idea form for our project
       cy.get('#e2e-new-idea').click();
@@ -194,8 +189,7 @@ describe('Project topics', () => {
       cy.visit(`admin/projects/${projectId}/topics`);
 
       // Add our new topic to the project
-      cy.get('#e2e-project-topic-multiselect')
-        .type('{enter}'); // selects first/top item in the multiselect
+      cy.get('#e2e-project-topic-multiselect').type('{enter}'); // selects first/top item in the multiselect
       cy.get('#e2e-add-project-topic-button').click();
 
       // Go to idea manager for our project
@@ -221,8 +215,7 @@ describe('Project topics', () => {
       cy.visit(`admin/projects/${projectId}/topics`);
 
       // Add our new topic
-      cy.get('#e2e-project-topic-multiselect')
-        .type('{enter}'); // selects first/top item in the multiselect
+      cy.get('#e2e-project-topic-multiselect').type('{enter}'); // selects first/top item in the multiselect
       cy.get('#e2e-add-project-topic-button').click();
 
       // Go to idea manager for our project
@@ -247,8 +240,7 @@ describe('Project topics', () => {
         .click();
 
       // Confirm in modal
-      cy.get('#e2e-project-topic-delete-confirm-button')
-        .click();
+      cy.get('#e2e-project-topic-delete-confirm-button').click();
 
       // Go to idea manager for our project
       cy.visit(`admin/projects/${projectId}/ideas`);
@@ -258,10 +250,9 @@ describe('Project topics', () => {
 
       // Verify the topic is not selectable in the idea manager topics tab
       cy.get('#e2e-idea-manager-topic-filters')
-          .contains(topicTitle)
-          .should('not.exist');
+        .contains(topicTitle)
+        .should('not.exist');
     });
-
   });
 
   afterEach(() => {

@@ -7,7 +7,7 @@ const SurveyContainer = styled.div`
 `;
 
 type Props = {
-  surveymonkeyUrl: string,
+  surveymonkeyUrl: string;
 };
 
 type State = {};
@@ -28,7 +28,7 @@ class SurveymonekySurvey extends React.PureComponent<Props, State> {
 
   setRef = (element) => {
     this.surveyContainer = element;
-  }
+  };
 
   render() {
     return (
@@ -37,7 +37,6 @@ class SurveymonekySurvey extends React.PureComponent<Props, State> {
       </div>
     );
   }
-
 }
 
 export default SurveymonekySurvey;

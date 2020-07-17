@@ -17,8 +17,12 @@ import Button from 'components/UI/Button';
 import InitiativePreview from './InitiativePreview';
 
 // Resources
-import GetInitiativeMarkers, { GetInitiativeMarkersChildProps } from 'resources/GetInitiativeMarkers';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetInitiativeMarkers, {
+  GetInitiativeMarkersChildProps,
+} from 'resources/GetInitiativeMarkers';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
@@ -50,14 +54,17 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedInitiativeId: string | null;
   points: Point[];
 }
 
-export class InitiativesMap extends PureComponent<Props & WithRouterProps, State> {
+export class InitiativesMap extends PureComponent<
+  Props & WithRouterProps,
+  State
+> {
   private addInitiativeButtonElement: HTMLElement;
   private savedPosition: Leaflet.LatLng | null = null;
 
@@ -65,7 +72,7 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
     super(props);
     this.state = {
       selectedInitiativeId: null,
-      points: []
+      points: [],
     };
   }
 
@@ -85,68 +92,83 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
     if (element) {
       this.addInitiativeButtonElement = element;
     }
-  }
+  };
 
-  getPoints = (Initiatives: IGeotaggedInitiativeData[] | null | undefined | Error) => {
+  getPoints = (
+    Initiatives: IGeotaggedInitiativeData[] | null | undefined | Error
+  ) => {
     const InitiativePoints: Point[] = [];
 
     if (!isNilOrError(Initiatives) && Initiatives.length > 0) {
       Initiatives.forEach((Initiative) => {
-        if (Initiative.attributes && Initiative.attributes.location_point_geojson) {
+        if (
+          Initiative.attributes &&
+          Initiative.attributes.location_point_geojson
+        ) {
           InitiativePoints.push({
             ...Initiative.attributes.location_point_geojson,
-            id: Initiative.id
+            id: Initiative.id,
           });
         }
       });
     }
 
     return InitiativePoints;
-  }
+  };
 
   toggleInitiative = (InitiativeId: string) => {
-    trackEventByName(tracks.clickOnInitiativeMapMarker, { extra: { InitiativeId } });
+    trackEventByName(tracks.clickOnInitiativeMapMarker, {
+      extra: { InitiativeId },
+    });
 
     this.setState(({ selectedInitiativeId }) => {
-      return { selectedInitiativeId: (InitiativeId !== selectedInitiativeId ? InitiativeId : null) };
+      return {
+        selectedInitiativeId:
+          InitiativeId !== selectedInitiativeId ? InitiativeId : null,
+      };
     });
-  }
+  };
 
   deselectInitiative = () => {
     this.setState({ selectedInitiativeId: null });
-  }
+  };
 
   onMapClick = (map: Leaflet.Map, position: Leaflet.LatLng) => {
     this.savedPosition = position;
 
     if (this.addInitiativeButtonElement) {
-      Leaflet
-        .popup()
+      Leaflet.popup()
         .setLatLng(position)
         .setContent(this.addInitiativeButtonElement)
         .openOn(map);
     }
 
     return;
-  }
+  };
 
   redirectToInitiativeCreation = () => {
     if (this.savedPosition) {
       const { lat, lng } = this.savedPosition;
 
-      trackEventByName(tracks.createInitiativeFromMap, { position: this.savedPosition });
+      trackEventByName(tracks.createInitiativeFromMap, {
+        position: this.savedPosition,
+      });
 
       clHistory.push({
         pathname: '/initiatives/new',
-        search: stringify({ lat, lng }, { addQueryPrefix: true })
+        search: stringify({ lat, lng }, { addQueryPrefix: true }),
       });
     }
-  }
+  };
 
   getMapHeight = () => {
     const { windowSize } = this.props;
-    const smallerThanMaxTablet = windowSize ? windowSize <= viewportWidths.largeTablet : false;
-    const smallerThanMinTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+    const smallerThanMaxTablet = windowSize
+      ? windowSize <= viewportWidths.largeTablet
+      : false;
+    const smallerThanMinTablet = windowSize
+      ? windowSize <= viewportWidths.smallTablet
+      : false;
     let height = 550;
 
     if (smallerThanMinTablet) {
@@ -158,9 +180,11 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
     }
 
     return height;
-  }
+  };
 
-  noInitiativesWithLocationMessage = <FormattedMessage {...messages.noInitiativesWithLocation} />;
+  noInitiativesWithLocationMessage = (
+    <FormattedMessage {...messages.noInitiativesWithLocation} />
+  );
 
   render() {
     const { initiativeMarkers, className } = this.props;
@@ -169,20 +193,29 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
 
     return (
       <Container className={className}>
-        {initiativeMarkers && initiativeMarkers.length > 0 && points.length === 0 &&
-          <StyledWarning text={this.noInitiativesWithLocationMessage} />
-        }
+        {initiativeMarkers &&
+          initiativeMarkers.length > 0 &&
+          points.length === 0 && (
+            <StyledWarning text={this.noInitiativesWithLocationMessage} />
+          )}
 
         <Map
           points={points}
           onMarkerClick={this.toggleInitiative}
-          boxContent={selectedInitiativeId ? <InitiativePreview initiativeId={selectedInitiativeId} /> : null}
+          boxContent={
+            selectedInitiativeId ? (
+              <InitiativePreview initiativeId={selectedInitiativeId} />
+            ) : null
+          }
           onBoxClose={this.deselectInitiative}
           onMapClick={this.onMapClick}
           mapHeight={mapHeight}
         />
 
-        <div className="create-initiative-wrapper" ref={this.bindInitiativeCreationButton}>
+        <div
+          className="create-initiative-wrapper"
+          ref={this.bindInitiativeCreationButton}
+        >
           <Button
             onClick={this.redirectToInitiativeCreation}
             icon="plus-circle"
@@ -197,13 +230,13 @@ export class InitiativesMap extends PureComponent<Props & WithRouterProps, State
 
 const Data = adopt<DataProps, InputProps>({
   initiativeMarkers: <GetInitiativeMarkers />,
-  windowSize: <GetWindowSize />
+  windowSize: <GetWindowSize />,
 });
 
 const InitiativesMapWithRouter = withRouter(InitiativesMap);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativesMapWithRouter {...inputProps} {...dataProps} />}
+    {(dataProps) => <InitiativesMapWithRouter {...inputProps} {...dataProps} />}
   </Data>
 );

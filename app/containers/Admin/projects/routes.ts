@@ -7,14 +7,14 @@ export default () => ({
   component: Loadable({
     loader: () => import('containers/Admin/projects'),
     loading: LoadableLoadingAdmin,
-    delay: 500
+    delay: 500,
   }),
   indexRoute: {
     name: 'admin projects index',
     component: Loadable({
       loader: () => import('containers/Admin/projects/all'),
       loading: LoadableLoadingAdmin,
-      delay: 500
+      delay: 500,
     }),
   },
   childRoutes: [
@@ -22,8 +22,11 @@ export default () => ({
       path: '/:locale/admin/projects/templates/:projectTemplateId',
       name: 'admin project template preview page',
       component: Loadable({
-        loader: () => import('components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin'),
-        loading: () => null
+        loader: () =>
+          import(
+            'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin'
+          ),
+        loading: () => null,
       }),
     },
     {
@@ -32,7 +35,7 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/projects/folders/settings'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
     },
     {
@@ -41,23 +44,23 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/projects/folders'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
       indexRoute: {
         name: 'admin projects edit folder projects',
         component: Loadable({
           loader: () => import('containers/Admin/projects/folders/projects'),
-          loading: () => null
+          loading: () => null,
         }),
       },
       childRoutes: [
         {
           path: '/:locale/admin/projects/folders/:projectFolderId/settings',
-            name: 'admin projects edit folder settings',
-            component: Loadable({
-              loader: () => import('containers/Admin/projects/folders/settings'),
+          name: 'admin projects edit folder settings',
+          component: Loadable({
+            loader: () => import('containers/Admin/projects/folders/settings'),
             loading: LoadableLoadingAdmin,
-            delay: 500
+            delay: 500,
           }),
         },
       ],
@@ -68,13 +71,13 @@ export default () => ({
       component: Loadable({
         loader: () => import('containers/Admin/projects/edit'),
         loading: LoadableLoadingAdmin,
-        delay: 500
+        delay: 500,
       }),
       indexRoute: {
         name: 'admin projects single edit',
         component: Loadable({
           loader: () => import('containers/Admin/projects/edit/general'),
-          loading: () => null
+          loading: () => null,
         }),
       },
       childRoutes: [
@@ -84,7 +87,7 @@ export default () => ({
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/general'),
             loading: LoadableLoadingAdmin,
-            delay: 500
+            delay: 500,
           }),
         },
         {
@@ -92,7 +95,7 @@ export default () => ({
           name: 'admin projects description',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/description'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
@@ -100,7 +103,7 @@ export default () => ({
           name: 'admin projects ideas manager',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/ideas'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
@@ -108,15 +111,16 @@ export default () => ({
           name: 'admin projects idea form',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/ideaform'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
           path: '/:locale/admin/projects/:projectId/topics',
           name: 'admin projects topics',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/projectTopics'),
-            loading: () => null
+            loader: () =>
+              import('containers/Admin/projects/edit/projectTopics'),
+            loading: () => null,
           }),
         },
         {
@@ -124,31 +128,36 @@ export default () => ({
           name: 'admin projects volunteering',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/volunteering'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
           path: '/:locale/admin/projects/:projectId/volunteering/causes/new',
           name: 'admin projects make a new cause in a project',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/volunteering/NewCause'),
-            loading: () => null
+            loader: () =>
+              import('containers/Admin/projects/edit/volunteering/NewCause'),
+            loading: () => null,
           }),
         },
         {
-          path: '/:locale/admin/projects/:projectId/volunteering/phases/:phaseId/causes/new',
+          path:
+            '/:locale/admin/projects/:projectId/volunteering/phases/:phaseId/causes/new',
           name: 'admin projects make a new cause in a phase',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/volunteering/NewCause'),
-            loading: () => null
+            loader: () =>
+              import('containers/Admin/projects/edit/volunteering/NewCause'),
+            loading: () => null,
           }),
         },
         {
-          path: '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
+          path:
+            '/:locale/admin/projects/:projectId/volunteering/causes/:causeId',
           name: 'admin projects timeline edit',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/volunteering/EditCause'),
-            loading: () => null
+            loader: () =>
+              import('containers/Admin/projects/edit/volunteering/EditCause'),
+            loading: () => null,
           }),
         },
         {
@@ -156,23 +165,25 @@ export default () => ({
           name: 'admin projects timeline',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/timeline'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
           path: '/:locale/admin/projects/:projectId/timeline/new',
           name: 'admin projects timeline create',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/timeline/edit'),
-            loading: () => null
+            loader: () =>
+              import('containers/Admin/projects/edit/timeline/edit'),
+            loading: () => null,
           }),
         },
         {
           path: '/:locale/admin/projects/:projectId/timeline/:id',
           name: 'admin projects timeline edit',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/timeline/edit'),
-            loading: () => null
+            loader: () =>
+              import('containers/Admin/projects/edit/timeline/edit'),
+            loading: () => null,
           }),
         },
         {
@@ -180,7 +191,7 @@ export default () => ({
           name: 'admin projects events',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
@@ -188,7 +199,7 @@ export default () => ({
           name: 'admin projects events create',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events/edit'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
@@ -196,7 +207,7 @@ export default () => ({
           name: 'admin projects events edit',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events/edit'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
@@ -204,7 +215,7 @@ export default () => ({
           name: 'admin projects edit events',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/events'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
@@ -212,15 +223,16 @@ export default () => ({
           name: 'admin projects edit permissions',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/permissions'),
-            loading: () => null
+            loading: () => null,
           }),
         },
         {
           path: '/:locale/admin/projects/:projectId/survey-results',
           name: 'admin projects edit survey results',
           component: Loadable({
-            loader: () => import('containers/Admin/projects/edit/surveyResults'),
-            loading: () => null
+            loader: () =>
+              import('containers/Admin/projects/edit/surveyResults'),
+            loading: () => null,
           }),
         },
         {
@@ -228,7 +240,7 @@ export default () => ({
           name: 'admin projects edit poll',
           component: Loadable({
             loader: () => import('containers/Admin/projects/edit/poll'),
-            loading: () => null
+            loading: () => null,
           }),
         },
       ],

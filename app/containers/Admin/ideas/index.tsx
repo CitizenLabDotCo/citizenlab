@@ -15,7 +15,10 @@ import messages from './messages';
 import styled from 'styled-components';
 
 // resources
-import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
+import GetProjects, {
+  GetProjectsChildProps,
+  PublicationStatus,
+} from 'resources/GetProjects';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -56,27 +59,36 @@ class IdeaDashboard extends PureComponent<Props> {
         </HeaderContainer>
 
         <PageWrapper>
-          {projects && projects.projectsList !== undefined &&
+          {projects && projects.projectsList !== undefined && (
             <PostManager
               type="AllIdeas"
               visibleFilterMenus={['projects', 'topics', 'statuses']}
               projects={projects.projectsList}
             />
-          }
+          )}
         </PageWrapper>
       </>
     );
   }
 }
 
-const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
+const publicationStatuses: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
 
 const Data = adopt<Props>({
-  projects: <GetProjects pageSize={250} sort="new" publicationStatuses={publicationStatuses} filterCanModerate={true} />,
+  projects: (
+    <GetProjects
+      pageSize={250}
+      sort="new"
+      publicationStatuses={publicationStatuses}
+      filterCanModerate={true}
+    />
+  ),
 });
 
 export default () => (
-  <Data>
-    {dataProps => <IdeaDashboard{...dataProps} />}
-  </Data>
+  <Data>{(dataProps) => <IdeaDashboard {...dataProps} />}</Data>
 );

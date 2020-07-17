@@ -36,7 +36,7 @@ const ArrowIcon = styled(Icon)`
   `}
 `;
 
-const MenuItemLink = styled(Link) `
+const MenuItemLink = styled(Link)`
   flex: 0 0 auto;
   width: 210px;
   display: flex;
@@ -109,8 +109,16 @@ export default ({ route }: Props) => {
   const pathname = location.pathname;
   return (
     <HasPermission action="access" item={{ type: 'route', path: route.link }}>
-      <MenuItemLink activeClassName="active" className={`${route.iconName} ${route.isActive(pathname) ? 'selected' : ''}`} to={route.link}>
-        <IconWrapper><Icon name={route.iconName} /></IconWrapper>
+      <MenuItemLink
+        activeClassName="active"
+        className={`${route.iconName} ${
+          route.isActive(pathname) ? 'selected' : ''
+        }`}
+        to={route.link}
+      >
+        <IconWrapper>
+          <Icon name={route.iconName} />
+        </IconWrapper>
         <Text>
           <FormattedMessage {...messages[route.message]} />
           {!!route.count && <CountBadge count={route.count} />}

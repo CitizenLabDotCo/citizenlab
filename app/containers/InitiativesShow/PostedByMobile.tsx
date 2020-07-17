@@ -30,21 +30,30 @@ interface Props {
 }
 
 const PostedBy = memo<Props>(({ authorId, className }) => {
-
   if (authorId) {
-    const authorName = <UserName userId={authorId} emphasize linkToProfile hideLastName color="white" />;
+    const authorName = (
+      <UserName
+        userId={authorId}
+        emphasize
+        linkToProfile
+        hideLastName
+        color="white"
+      />
+    );
 
     return (
       <Container className={`e2e-idea-author ${className || ''}`}>
         <PostedByText>
-          <FormattedMessage {...messages.postedByShort} values={{ authorName }} />
+          <FormattedMessage
+            {...messages.postedByShort}
+            values={{ authorName }}
+          />
         </PostedByText>
       </Container>
     );
   }
 
   return null;
-
 });
 
 export default PostedBy;

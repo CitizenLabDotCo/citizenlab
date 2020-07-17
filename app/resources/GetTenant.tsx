@@ -23,7 +23,7 @@ export default class GetTenant extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenant: undefined
+      tenant: undefined,
     };
   }
 
@@ -33,14 +33,16 @@ export default class GetTenant extends React.Component<Props, State> {
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
         this.setState({
-          tenant: (!isNilOrError(currentTenant) ? currentTenant.data : currentTenant)
+          tenant: !isNilOrError(currentTenant)
+            ? currentTenant.data
+            : currentTenant,
         });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

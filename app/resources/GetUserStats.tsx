@@ -42,17 +42,21 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
     this.subscription = combineLatest(
       this.resourceType$.pipe(distinctUntilChanged()),
       this.userId$.pipe(distinctUntilChanged())
-    ).pipe(
-      switchMap(([resourceType, userId]) => {
-        if (resourceType === 'ideas') {
-          return ideasCountForUser(userId).observable;
-        }
+    )
+      .pipe(
+        switchMap(([resourceType, userId]) => {
+          if (resourceType === 'ideas') {
+            return ideasCountForUser(userId).observable;
+          }
 
-        return commentsCountForUser(userId).observable;
-      })
-    ).subscribe((response) => {
-      this.setState({ count: !isNilOrError(response) ? response.count : response });
-    });
+          return commentsCountForUser(userId).observable;
+        })
+      )
+      .subscribe((response) => {
+        this.setState({
+          count: !isNilOrError(response) ? response.count : response,
+        });
+      });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -64,7 +68,6 @@ export default class GetUserStats extends React.PureComponent<Props, State> {
     if (prevProps.userId !== userId) {
       this.userId$.next(resource);
     }
-
   }
 
   componentWillUnmount() {

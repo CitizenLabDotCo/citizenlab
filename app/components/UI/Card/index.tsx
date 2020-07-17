@@ -19,13 +19,15 @@ const Container = styled(Link)`
   position: relative;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
+    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 
   &.desktop {
     transition: all 150ms ease-out;
 
     &:hover {
-      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3);
+      box-shadow: 0px 4px 12px 0px rgba(152, 162, 179, 0.35),
+        0px 2px 2px -1px rgba(152, 162, 179, 0.3);
       transform: translate(0px, -2px);
     }
   }
@@ -53,7 +55,7 @@ const HeaderContentWrapper = styled.div`
   width: 100%;
 `;
 
-const Title = styled.h3<({ hasHeader: boolean })>`
+const Title = styled.h3<{ hasHeader: boolean }>`
   color: #333;
   max-width: 400px;
   font-size: ${fontSizes.xl}px;
@@ -105,31 +107,36 @@ interface Props {
   className?: string;
 }
 
-export const Card = ({ to, onClick, imageUrl, header, title, body, footer, className }: Props) => (
+export const Card = ({
+  to,
+  onClick,
+  imageUrl,
+  header,
+  title,
+  body,
+  footer,
+  className,
+}: Props) => (
   <Container
     onClick={onClick}
     to={to}
-    className={`e2e-card ${className} ${!(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'}`}
+    className={`e2e-card ${className} ${
+      !(bowser.mobile || bowser.tablet) ? 'desktop' : 'mobile'
+    }`}
   >
-    {imageUrl &&
+    {imageUrl && (
       <ImageWrapper>
         <Image src={imageUrl} alt="" />
       </ImageWrapper>
-    }
+    )}
 
     <Title className="e2e-card-title" hasHeader={!!header}>
       {title}
     </Title>
-    <HeaderContentWrapper>
-      {header}
-    </HeaderContentWrapper>
+    <HeaderContentWrapper>{header}</HeaderContentWrapper>
 
-    <Body>
-      {body}
-    </Body>
-    <Footer aria-live="polite">
-      {footer}
-    </Footer>
+    <Body>{body}</Body>
+    <Footer aria-live="polite">{footer}</Footer>
   </Container>
 );
 

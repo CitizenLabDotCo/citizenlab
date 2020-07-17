@@ -17,7 +17,7 @@ import { SectionField } from 'components/admin/Section';
 
 // Typings
 import { Multiloc } from 'typings';
-export interface Props { }
+export interface Props {}
 export interface NormalFormValues {
   title_multiloc: Multiloc;
 }
@@ -41,16 +41,19 @@ export const FooterContainer = styled.div`
   padding-bottom: 25px;
 `;
 
-export default class NormalGroupForm extends React.Component<InjectedFormikProps<Props, NormalFormValues>> {
-
-  public static validate = (values: NormalFormValues): FormikErrors<NormalFormValues> => {
+export default class NormalGroupForm extends React.Component<
+  InjectedFormikProps<Props, NormalFormValues>
+> {
+  public static validate = (
+    values: NormalFormValues
+  ): FormikErrors<NormalFormValues> => {
     const errors: FormikErrors<NormalFormValues> = {};
 
     if (every(getValues(values.title_multiloc), isEmpty)) {
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
-  }
+  };
 
   render() {
     const { isSubmitting, errors, isValid, touched, status } = this.props;
@@ -65,10 +68,12 @@ export default class NormalGroupForm extends React.Component<InjectedFormikProps
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldGroupName} />}
             />
-            {touched.title_multiloc && <Error
-              fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc as any}
-            />}
+            {touched.title_multiloc && (
+              <Error
+                fieldName="title_multiloc"
+                apiErrors={errors.title_multiloc as any}
+              />
+            )}
           </SectionField>
         </Fill>
 

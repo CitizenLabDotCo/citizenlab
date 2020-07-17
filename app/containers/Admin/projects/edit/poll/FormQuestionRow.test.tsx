@@ -3,7 +3,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 jest.mock('components/admin/FormLocaleSwitcher', () => 'FormLocaleSwitcher');
-jest.mock('components/admin/ResourceList', () => ({ TextCell: 'TextCell', Row: 'Row' }));
+jest.mock('components/admin/ResourceList', () => ({
+  TextCell: 'TextCell',
+  Row: 'Row',
+}));
 jest.mock('components/UI/Input', () => 'Input');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
@@ -26,7 +29,9 @@ describe('<FormQuestionRow />', () => {
     it('shows the passed in locale by default', () => {
       const wrapper = shallow(
         <FormQuestionRow
-          titleMultiloc={getTitleMultiloc('What is your favourite ice cream flavour ?')}
+          titleMultiloc={getTitleMultiloc(
+            'What is your favourite ice cream flavour ?'
+          )}
           onChange={onChange}
           locale="en"
           onSave={onSave}
@@ -34,13 +39,17 @@ describe('<FormQuestionRow />', () => {
         />
       );
       expect(wrapper.find('Input').prop('locale')).toBe('en');
-      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('en');
+      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe(
+        'en'
+      );
     });
 
     it('reacts to locale change', () => {
       const wrapper = shallow(
         <FormQuestionRow
-          titleMultiloc={getTitleMultiloc('What is your favourite ice cream flavour ?')}
+          titleMultiloc={getTitleMultiloc(
+            'What is your favourite ice cream flavour ?'
+          )}
           onChange={onChange}
           locale="en"
           onSave={onSave}
@@ -54,7 +63,9 @@ describe('<FormQuestionRow />', () => {
     it('handles changing field locale', () => {
       const wrapper = shallow(
         <FormQuestionRow
-          titleMultiloc={getTitleMultiloc('What is your favourite ice cream flavour ?')}
+          titleMultiloc={getTitleMultiloc(
+            'What is your favourite ice cream flavour ?'
+          )}
           onChange={onChange}
           locale="en"
           onSave={onSave}
@@ -70,14 +81,18 @@ describe('<FormQuestionRow />', () => {
     it('passes down initial value', () => {
       const wrapper = shallow(
         <FormQuestionRow
-          titleMultiloc={getTitleMultiloc('What is your favourite ice cream flavour ?')}
+          titleMultiloc={getTitleMultiloc(
+            'What is your favourite ice cream flavour ?'
+          )}
           onChange={onChange}
           locale="en"
           onSave={onSave}
           onCancel={onCancel}
         />
       );
-      expect(wrapper.find('Input').prop('value')).toEqual('What is your favourite ice cream flavour ?');
+      expect(wrapper.find('Input').prop('value')).toEqual(
+        'What is your favourite ice cream flavour ?'
+      );
     });
 
     it('reacts to user input', () => {
@@ -90,9 +105,14 @@ describe('<FormQuestionRow />', () => {
           onCancel={onCancel}
         />
       );
-      wrapper.find('Input').prop('onChange')('What is your favourite ice cream flavour ?', 'en');
+      wrapper.find('Input').prop('onChange')(
+        'What is your favourite ice cream flavour ?',
+        'en'
+      );
       expect(onChange).toHaveBeenCalledTimes(1);
-      expect(onChange).toHaveBeenCalledWith({ en: 'What is your favourite ice cream flavour ?' });
+      expect(onChange).toHaveBeenCalledWith({
+        en: 'What is your favourite ice cream flavour ?',
+      });
     });
 
     it('reacts to content changes', () => {
@@ -105,8 +125,14 @@ describe('<FormQuestionRow />', () => {
           onCancel={onCancel}
         />
       );
-      wrapper.setProps({ titleMultiloc: getTitleMultiloc('What is your favourite ice cream flavour ?') });
-      expect(wrapper.find('Input').prop('value')).toEqual('What is your favourite ice cream flavour ?');
+      wrapper.setProps({
+        titleMultiloc: getTitleMultiloc(
+          'What is your favourite ice cream flavour ?'
+        ),
+      });
+      expect(wrapper.find('Input').prop('value')).toEqual(
+        'What is your favourite ice cream flavour ?'
+      );
     });
   });
 

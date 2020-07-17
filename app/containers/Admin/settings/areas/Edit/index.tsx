@@ -25,36 +25,38 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 class Edit extends React.PureComponent<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     const { area } = this.props;
 
     if (isNilOrError(area)) return;
 
     updateArea(area.id, {
-      ...values
+      ...values,
     })
-    .then(() => {
-      clHistory.push('/admin/settings/areas');
-    })
-    .catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+      .then(() => {
+        clHistory.push('/admin/settings/areas');
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   renderFn = (props) => {
     return <AreaForm {...props} />;
-  }
+  };
 
   goBack = () => {
     clHistory.push('/admin/settings/areas');
-  }
+  };
 
   render() {
     const { area } = this.props;
@@ -64,24 +66,24 @@ class Edit extends React.PureComponent<Props> {
         <SectionTitle>
           <FormattedMessage {...messages.editFormTitle} />
         </SectionTitle>
-        {!isNilOrError(area) &&
+        {!isNilOrError(area) && (
           <Formik
             initialValues={{
               title_multiloc: area.attributes.title_multiloc,
-              description_multiloc: area.attributes.description_multiloc
+              description_multiloc: area.attributes.description_multiloc,
             }}
             render={this.renderFn}
             onSubmit={this.handleSubmit}
             validate={(AreaForm as any).validate}
           />
-        }
+        )}
       </Section>
     );
   }
 }
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
-  <GetArea id={inputProps.params.areaId} >
-    {area => (<Edit area={area} />)}
+  <GetArea id={inputProps.params.areaId}>
+    {(area) => <Edit area={area} />}
   </GetArea>
 ));

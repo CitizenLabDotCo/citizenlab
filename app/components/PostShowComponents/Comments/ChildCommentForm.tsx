@@ -20,12 +20,17 @@ import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // services
-import { addCommentToIdeaComment, addCommentToInitiativeComment } from 'services/comments';
+import {
+  addCommentToIdeaComment,
+  addCommentToInitiativeComment,
+} from 'services/comments';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // events
 import { commentReplyButtonClicked$, commentAdded } from './events';
@@ -122,7 +127,7 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       focused: false,
       processing: false,
       errorMessage: null,
-      canSubmit: false
+      canSubmit: false,
     };
   }
 
@@ -130,72 +135,88 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
     window.addEventListener('keydown', this.handleKeypress, useCapture);
 
     this.subscriptions = [
-      commentReplyButtonClicked$.pipe(
-        tap(() => this.setState({ inputValue: '', focused: false })),
-        filter(({ eventValue }) => {
-          const { commentId, parentCommentId } = eventValue;
-          return (commentId === this.props.parentId || parentCommentId === this.props.parentId);
-        })
-      ).subscribe(({ eventValue }) => {
-        const { authorFirstName, authorLastName, authorSlug } = eventValue;
-        const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
+      commentReplyButtonClicked$
+        .pipe(
+          tap(() => this.setState({ inputValue: '', focused: false })),
+          filter(({ eventValue }) => {
+            const { commentId, parentCommentId } = eventValue;
+            return (
+              commentId === this.props.parentId ||
+              parentCommentId === this.props.parentId
+            );
+          })
+        )
+        .subscribe(({ eventValue }) => {
+          const { authorFirstName, authorLastName, authorSlug } = eventValue;
+          const inputValue = `@[${authorFirstName} ${authorLastName}](${authorSlug}) `;
 
-        this.setState({ inputValue, visible: true, focused: true });
+          this.setState({ inputValue, visible: true, focused: true });
 
-        if (this.textareaElement) {
-          setTimeout(() => {
-            this.textareaElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'center',
-              inline: 'center'
-            });
-          }, 100);
+          if (this.textareaElement) {
+            setTimeout(() => {
+              this.textareaElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+                inline: 'center',
+              });
+            }, 100);
 
-          setTimeout(() => {
-            this.textareaElement.focus();
-          }, 300);
+            setTimeout(() => {
+              this.textareaElement.focus();
+            }, 300);
 
-          setTimeout(() => {
-            this.setCaretAtEnd(this.textareaElement);
-          }, 350);
-        }
-      })
+            setTimeout(() => {
+              this.setCaretAtEnd(this.textareaElement);
+            }, 350);
+          }
+        }),
     ];
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.focused && !this.state.focused && isEmpty(this.state.inputValue)) {
+    if (
+      prevState.focused &&
+      !this.state.focused &&
+      isEmpty(this.state.inputValue)
+    ) {
       this.setState({ visible: false });
     }
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeypress, useCapture);
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setCaretAtEnd(element: HTMLTextAreaElement) {
     if (element.setSelectionRange && element.textContent) {
-      element.setSelectionRange(element.textContent.length, element.textContent.length);
+      element.setSelectionRange(
+        element.textContent.length,
+        element.textContent.length
+      );
     }
   }
 
   handleKeypress = (event) => {
-    if (this.state.visible && event.type === 'keydown' && event.key === 'Escape') {
+    if (
+      this.state.visible &&
+      event.type === 'keydown' &&
+      event.key === 'Escape'
+    ) {
       event.preventDefault();
       event.stopImmediatePropagation();
       event.stopPropagation();
       this.setState({ visible: false });
     }
-  }
+  };
 
   handleTextareaOnChange = (inputValue: string) => {
     this.setState(({ focused }) => ({
       inputValue,
       errorMessage: null,
-      canSubmit: !!(focused && trim(inputValue) !== '')
+      canSubmit: !!(focused && trim(inputValue) !== ''),
     }));
-  }
+  };
 
   handleTextareaOnFocus = () => {
     const { postId, postType, parentId } = this.props;
@@ -204,32 +225,40 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
       extra: {
         postId,
         postType,
-        parentId
-      }
+        parentId,
+      },
     });
 
     this.setState({ focused: true });
-  }
+  };
 
   handleTextareaOnBlur = () => {
     this.setState({ focused: false });
-  }
+  };
 
   handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    const { postId, postType, projectId, parentId, waitForChildCommentsRefetch, locale, authUser } = this.props;
+    const {
+      postId,
+      postType,
+      projectId,
+      parentId,
+      waitForChildCommentsRefetch,
+      locale,
+      authUser,
+    } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue, canSubmit } = this.state;
 
     if (!isNilOrError(locale) && !isNilOrError(authUser) && canSubmit) {
       const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
+        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
 
       this.setState({
         processing: true,
-        canSubmit: false
+        canSubmit: false,
       });
 
       trackEventByName(tracks.clickChildCommentPublish, {
@@ -238,16 +267,29 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           postType,
           parentId,
           content: inputValue,
-        }
+        },
       });
 
       try {
         if (postType === 'idea' && projectId) {
-          await addCommentToIdeaComment(postId, projectId, authUser.id, parentId, commentBodyMultiloc, waitForChildCommentsRefetch);
+          await addCommentToIdeaComment(
+            postId,
+            projectId,
+            authUser.id,
+            parentId,
+            commentBodyMultiloc,
+            waitForChildCommentsRefetch
+          );
         }
 
         if (postType === 'initiative') {
-          await addCommentToInitiativeComment(postId, authUser.id, parentId, commentBodyMultiloc, waitForChildCommentsRefetch);
+          await addCommentToInitiativeComment(
+            postId,
+            authUser.id,
+            parentId,
+            commentBodyMultiloc,
+            waitForChildCommentsRefetch
+          );
         }
 
         commentAdded();
@@ -256,35 +298,58 @@ class ChildCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
           inputValue: '',
           processing: false,
           visible: false,
-          focused: false
+          focused: false,
         });
       } catch (error) {
         this.setState({
           errorMessage: formatMessage(messages.addCommentError),
           processing: false,
-          canSubmit: true
+          canSubmit: true,
         });
       }
     }
-  }
+  };
 
   setRef = (element: HTMLTextAreaElement) => {
     this.textareaElement = element;
-  }
+  };
 
-  placeholder = this.props.intl.formatMessage(messages.childCommentBodyPlaceholder);
+  placeholder = this.props.intl.formatMessage(
+    messages.childCommentBodyPlaceholder
+  );
 
   render() {
-    const { postId, postType, parentId, authUser, windowSize, className } = this.props;
+    const {
+      postId,
+      postType,
+      parentId,
+      authUser,
+      windowSize,
+      className,
+    } = this.props;
 
     if (!isNilOrError(authUser)) {
-      const { inputValue, canSubmit, processing, errorMessage, visible, focused } = this.state;
-      const isButtonVisible = (inputValue && inputValue.length > 0 || focused);
-      const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+      const {
+        inputValue,
+        canSubmit,
+        processing,
+        errorMessage,
+        visible,
+        focused,
+      } = this.state;
+      const isButtonVisible = (inputValue && inputValue.length > 0) || focused;
+      const smallerThanSmallTablet = windowSize
+        ? windowSize <= viewportWidths.smallTablet
+        : false;
 
       return (
         <Container className={`${className} e2e-childcomment-form`}>
-          <Form className={`${visible ? 'visible' : 'hidden'} ${focused ? 'focused' : 'blurred'}`} onSubmit={this.handleSubmit}>
+          <Form
+            className={`${visible ? 'visible' : 'hidden'} ${
+              focused ? 'focused' : 'blurred'
+            }`}
+            onSubmit={this.handleSubmit}
+          >
             <label>
               <HiddenLabel>
                 <FormattedMessage {...messages.replyToComment} />
@@ -338,11 +403,11 @@ const ChildCommentFormWithHoCs = injectIntl<Props>(ChildCommentForm);
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  windowSize: <GetWindowSize />
+  windowSize: <GetWindowSize />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ChildCommentFormWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <ChildCommentFormWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );
