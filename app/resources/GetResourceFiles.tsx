@@ -90,13 +90,24 @@ export default class GetResourceFiles extends React.Component<Props, State> {
               resourceType: InputProps['resourceType'];
             }) => {
               let streamFn;
-              if (resourceType === 'project') streamFn = projectFilesStream;
-              if (resourceType === 'phase') streamFn = phaseFilesStream;
-              if (resourceType === 'event') streamFn = eventFilesStream;
-              if (resourceType === 'page') streamFn = pageFilesStream;
-              if (resourceType === 'idea') streamFn = ideaFilesStream;
-              if (resourceType === 'initiative')
+              if (resourceType === 'project') {
+                streamFn = projectFilesStream;
+              }
+              if (resourceType === 'phase') {
+                streamFn = phaseFilesStream;
+              }
+              if (resourceType === 'event') {
+                streamFn = eventFilesStream;
+              }
+              if (resourceType === 'page') {
+                streamFn = pageFilesStream;
+              }
+              if (resourceType === 'idea') {
+                streamFn = ideaFilesStream;
+              }
+              if (resourceType === 'initiative') {
                 streamFn = initiativeFilesStream;
+              }
 
               return streamFn(resourceId).observable as Observable<
                 | IProjectFiles

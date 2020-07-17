@@ -40,7 +40,7 @@ describe('Project topics', () => {
 
       // Add custom topic
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // Go to our project topic settings
@@ -54,7 +54,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // and check that our topic is there initially
@@ -86,7 +86,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // and check that our topic is there initially
@@ -101,7 +101,7 @@ describe('Project topics', () => {
         .first()
         .find('#e2e-custom-topic-edit-button')
         .click();
-      cy.get('#e2e-topic-name-en').type(editedTopicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(editedTopicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // Go to our project topic settings and check that name has chang
@@ -119,7 +119,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // Go to our project topic settings
@@ -142,7 +142,7 @@ describe('Project topics', () => {
       // create a topic
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // Go to our project topic settings
@@ -182,7 +182,7 @@ describe('Project topics', () => {
       // create a topic in the topic manager
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // Go to our project topic settings
@@ -208,7 +208,7 @@ describe('Project topics', () => {
       // create a topic in the topic manager
       cy.visit('admin/settings/topics');
       cy.get('#e2e-add-custom-topic-button').click();
-      cy.get('#e2e-topic-name-en').type(topicTitle);
+      cy.get('#e2e-topic-name-en-GB').type(topicTitle);
       cy.get('.e2e-submit-wrapper-button').click();
 
       // Go to our project topic settings

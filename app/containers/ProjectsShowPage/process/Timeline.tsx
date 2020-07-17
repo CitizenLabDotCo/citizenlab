@@ -12,6 +12,10 @@ import moment from 'moment';
 import bowser from 'bowser';
 import { withRouter, WithRouterProps } from 'react-router';
 
+// tracking
+import tracks from './tracks';
+import { trackEventByName } from 'utils/analytics';
+
 // components
 import Icon from 'components/UI/Icon';
 import Button from 'components/UI/Button';
@@ -572,6 +576,8 @@ class Timeline extends PureComponent<
   handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (
     event: FormEvent
   ) => {
+    trackEventByName(tracks.clickOnPhase);
+
     event.preventDefault();
     this.setState({ selectedPhase });
   };
@@ -581,6 +587,8 @@ class Timeline extends PureComponent<
   };
 
   goToNextPhase = () => {
+    trackEventByName(tracks.clickNextPhaseButton);
+
     const { selectedPhase } = this.state;
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;
@@ -595,6 +603,8 @@ class Timeline extends PureComponent<
   };
 
   goToPreviousPhase = () => {
+    trackEventByName(tracks.clickPreviousPhaseButton);
+
     const { selectedPhase } = this.state;
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;

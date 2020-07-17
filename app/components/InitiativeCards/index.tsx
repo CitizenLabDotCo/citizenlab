@@ -3,6 +3,10 @@ import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // components
 import InitiativeCard from 'components/InitiativeCard';
 import InitiativesMap from 'components/InitiativesMap';
@@ -380,10 +384,14 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   loadMore = () => {
+    trackEventByName(tracks.loadMoreProposals);
     this.props.initiatives.onLoadMore();
   };
 
   handleSortOnChange = (sort: Sort) => {
+    trackEventByName(tracks.sortingFilter, {
+      sort,
+    });
     this.props.initiatives.onChangeSorting(sort);
   };
 
@@ -396,6 +404,9 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
   };
 
   handleTopicsOnChange = (topics: string[] | null) => {
+    trackEventByName(tracks.topicsFilter, {
+      topics,
+    });
     this.handleInitiativeFiltersOnChange({ topics });
   };
 

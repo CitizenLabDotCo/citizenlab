@@ -528,8 +528,8 @@ class Invitations extends React.PureComponent<
             <FormattedMessage
               {...messages.importOptionsInfo}
               values={{
-                // tslint:disable-next-line
                 supportPageLink: (
+                  // tslint:disable-next-line
                   <a
                     href={this.props.intl.formatMessage(
                       messages.invitesSupportPageURL

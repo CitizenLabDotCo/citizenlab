@@ -122,8 +122,8 @@ const ProjectTemplatePreviewPageCitizen = memo<Props & WithRouterProps>(
       if (!isNilOrError(authUser) && isAdmin({ data: authUser })) {
         clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
       } else {
-        // tslint:disable-next-line
         const link = (
+          // tslint:disable-next-line
           <a href="mailto:support@citizenlab.co">
             <FormattedMessage {...messages.citizenlabExpert} />
           </a>
