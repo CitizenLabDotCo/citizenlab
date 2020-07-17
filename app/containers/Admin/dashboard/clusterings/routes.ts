@@ -5,12 +5,12 @@ export default () => ({
   path: 'insights',
   component: Loadable({
     loader: () => import('./'),
-    loading: LoadableLoadingAdmin
+    loading: LoadableLoadingAdmin,
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./All'),
-      loading: LoadableLoadingAdmin
+      loading: LoadableLoadingAdmin,
     }),
   },
   childRoutes: [
@@ -18,7 +18,7 @@ export default () => ({
       path: 'new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: LoadableLoadingAdmin
+        loading: LoadableLoadingAdmin,
       }),
     },
   ],

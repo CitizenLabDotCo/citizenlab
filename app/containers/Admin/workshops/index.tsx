@@ -44,12 +44,13 @@ const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
           <FormattedMessage
             {...messages.pageDescription}
             values={{
-              link:
+              link: (
                 // tslint:disable-next-line:react-a11y-anchors
                 <a href={intl.formatMessage(messages.supportGuideLinkUrl)}>
                   <FormattedMessage {...messages.supportGuideLinkText} />
                 </a>
-              }}
+              ),
+            }}
           />
         </QuillEditedContent>
 
@@ -60,7 +61,9 @@ const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
         </ButtonWrapper>
 
         <QuillEditedContent textColor={colors.label}>
-          <a href={intl.formatMessage(messages.learnHowToCreateWorkshopLinkUrl)}>
+          <a
+            href={intl.formatMessage(messages.learnHowToCreateWorkshopLinkUrl)}
+          >
             {/* // tslint:disable-next-line:react-a11y-anchors */}
             <FormattedMessage {...messages.learnHowToCreateWorkshopLinkText} />
           </a>

@@ -7,7 +7,7 @@ export default () => ({
     name: 'admin topics index',
     component: Loadable({
       loader: () => import('./all'),
-      loading: () => null
+      loading: () => null,
     }),
   },
   childRoutes: [
@@ -16,7 +16,7 @@ export default () => ({
       name: 'admin topics new',
       component: Loadable({
         loader: () => import('./New'),
-        loading: () => null
+        loading: () => null,
       }),
     },
     {
@@ -24,7 +24,7 @@ export default () => ({
       name: 'admin topic edit',
       component: Loadable({
         loader: () => import('./Edit'),
-        loading: () => null
+        loading: () => null,
       }),
     },
   ],

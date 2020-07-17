@@ -65,25 +65,31 @@ interface Props {
   onTranslate: () => void;
 }
 
-export default memo<Props>(({ rightContent, leftContent, showTranslateButton, translateButtonClicked, onTranslate }) => {
-  return (
-    <Container>
-      <Inner>
-        <Left>
-          {leftContent}
-        </Left>
-        <Right>
-          <FeatureFlag name="machine_translations">
-            {showTranslateButton &&
-              <StyledTranslateButton
-                translateButtonClicked={translateButtonClicked}
-                onClick={onTranslate}
-              />
-            }
-          </FeatureFlag>
-          {rightContent}
-        </Right>
-      </Inner>
-    </Container>
-  );
-});
+export default memo<Props>(
+  ({
+    rightContent,
+    leftContent,
+    showTranslateButton,
+    translateButtonClicked,
+    onTranslate,
+  }) => {
+    return (
+      <Container>
+        <Inner>
+          <Left>{leftContent}</Left>
+          <Right>
+            <FeatureFlag name="machine_translations">
+              {showTranslateButton && (
+                <StyledTranslateButton
+                  translateButtonClicked={translateButtonClicked}
+                  onClick={onTranslate}
+                />
+              )}
+            </FeatureFlag>
+            {rightContent}
+          </Right>
+        </Inner>
+      </Container>
+    );
+  }
+);

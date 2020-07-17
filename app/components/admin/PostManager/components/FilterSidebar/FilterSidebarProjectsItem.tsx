@@ -16,7 +16,14 @@ interface Props {
 
 class FilterSidebarProjectsItem extends React.PureComponent<Props> {
   render() {
-    const { project, active, onClick, connectDropTarget, isOver, canDrop } = this.props;
+    const {
+      project,
+      active,
+      onClick,
+      connectDropTarget,
+      isOver,
+      canDrop,
+    } = this.props;
     return connectDropTarget(
       <div>
         <Menu.Item
@@ -35,7 +42,7 @@ const projectTarget = {
   drop(props) {
     return {
       type: 'project',
-      id: props.project.id
+      id: props.project.id,
     };
   },
 };
@@ -46,6 +53,6 @@ const collect = (connect, monitor) => ({
   canDrop: monitor.canDrop(),
 });
 
-export default flow([
-  DropTarget('IDEA', projectTarget, collect),
-])(FilterSidebarProjectsItem);
+export default flow([DropTarget('IDEA', projectTarget, collect)])(
+  FilterSidebarProjectsItem
+);

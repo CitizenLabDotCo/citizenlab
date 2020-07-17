@@ -12,7 +12,7 @@ const Image = styled.img<{ fadeInDuration: number | undefined }>`
   background: ${colors.placeholderBg};
 
   &.fadeIn {
-    transition: opacity ${props => props.fadeInDuration || 150}ms ease-out;
+    transition: opacity ${(props) => props.fadeInDuration || 150}ms ease-out;
     opacity: 0;
 
     &.loaded {
@@ -39,7 +39,7 @@ interface State {
 export default class LazyImage extends PureComponent<Props, State> {
   static defaultProps = {
     alt: '',
-    fadeIn: true
+    fadeIn: true,
   };
 
   constructor(props) {
@@ -50,39 +50,56 @@ export default class LazyImage extends PureComponent<Props, State> {
     };
   }
 
-  handleIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
+  handleIntersection = (
+    event: IntersectionObserverEntry,
+    unobserve: () => void
+  ) => {
     if (event.isIntersecting) {
       this.setState({ visible: true });
       unobserve();
     }
-  }
+  };
 
   handleImageLoaded = () => {
     this.setState({ loaded: true });
-  }
+  };
 
   render() {
-    const { src, alt, role, cover, fadeIn, fadeInDuration, className } = this.props;
+    const {
+      src,
+      alt,
+      role,
+      cover,
+      fadeIn,
+      fadeInDuration,
+      className,
+    } = this.props;
     const { visible, loaded } = this.state;
 
     if (cover && !(window['CSS'] && CSS.supports('object-fit: cover'))) {
       // Legacy browsers, no lazy-loading for you!
-      return <div className={className} style={{ background: `center / cover no-repeat url("${src}")` }} />;
+      return (
+        <div
+          className={className}
+          style={{ background: `center / cover no-repeat url("${src}")` }}
+        />
+      );
     } else {
-      const style = cover ? { objectFit: 'cover', objectPosition: 'center' } as any : undefined;
+      const style = cover
+        ? ({ objectFit: 'cover', objectPosition: 'center' } as any)
+        : undefined;
 
       return (
-        <Observer
-          rootMargin="200px"
-          onChange={this.handleIntersection}
-        >
+        <Observer rootMargin="200px" onChange={this.handleIntersection}>
           <Image
             src={visible ? src : undefined}
             alt={alt}
             role={role}
             style={style}
             fadeInDuration={fadeInDuration}
-            className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${fadeIn ? 'fadeIn' : ''} ${className}`}
+            className={`${visible ? 'visible' : ''} ${loaded ? 'loaded' : ''} ${
+              fadeIn ? 'fadeIn' : ''
+            } ${className}`}
             onLoad={this.handleImageLoaded}
           />
         </Observer>

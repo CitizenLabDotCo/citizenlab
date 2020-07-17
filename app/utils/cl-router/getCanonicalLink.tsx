@@ -11,5 +11,10 @@ import { isPage } from 'utils/helperUtils';
  */
 export default function getCanonicalLink() {
   const pathName = location.pathname;
-  return !isPage('admin', pathName) ? <link rel="canonical" href={`${location.origin}${removeUrlLocale(pathName)}`} /> : null;
+  return !isPage('admin', pathName) ? (
+    <link
+      rel="canonical"
+      href={`${location.origin}${removeUrlLocale(pathName)}`}
+    />
+  ) : null;
 }

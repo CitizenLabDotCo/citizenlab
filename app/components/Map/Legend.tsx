@@ -35,7 +35,7 @@ const Item = styled.li`
 const ColorLabel = styled.div`
   width: 20px;
   height: 20px;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   margin-right: 10px;
 `;
 
@@ -44,29 +44,29 @@ interface Props {
 }
 
 const Legend = memo(({ projectId }: Props) => {
-    const mapConfig = useMapConfig({ projectId });
-    const legend = !isNilOrError(mapConfig) && mapConfig.attributes.legend;
-    const localize = useLocalize();
+  const mapConfig = useMapConfig({ projectId });
+  const legend = !isNilOrError(mapConfig) && mapConfig.attributes.legend;
+  const localize = useLocalize();
 
-    if (legend) {
-      return (
-        <LegendContainer>
-          <LegendItems>
-            {legend.map((legendItem, index) => {
-              const color = legendItem.color;
-              const label = localize(legendItem.title_multiloc);
+  if (legend) {
+    return (
+      <LegendContainer>
+        <LegendItems>
+          {legend.map((legendItem, index) => {
+            const color = legendItem.color;
+            const label = localize(legendItem.title_multiloc);
 
-              return (
-                <Item key={`legend-item-${index}`}>
-                  <ColorLabel color={color} />
-                  {label}
-                </Item>
-              );
-            })}
-          </LegendItems>
-        </LegendContainer>
-      );
-    }
+            return (
+              <Item key={`legend-item-${index}`}>
+                <ColorLabel color={color} />
+                {label}
+              </Item>
+            );
+          })}
+        </LegendItems>
+      </LegendContainer>
+    );
+  }
 
   return null;
 });

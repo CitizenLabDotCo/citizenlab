@@ -17,7 +17,7 @@ import PostManager from 'components/admin/PostManager';
 // resources
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
-import GetProject, { GetProjectChildProps }  from 'resources/GetProject';
+import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 
 const StyledDiv = styled.div`
   margin-bottom: 30px;
@@ -30,13 +30,14 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps {
-}
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, State> {
-
+class AdminProjectIdeas extends React.PureComponent<
+  Props & WithRouterProps,
+  State
+> {
   render() {
     const { project, phases } = this.props;
 
@@ -51,28 +52,34 @@ class AdminProjectIdeas extends React.PureComponent<Props & WithRouterProps, Sta
           </SectionDescription>
         </StyledDiv>
 
-        {!isNilOrError(project) &&
+        {!isNilOrError(project) && (
           <PostManager
             type="ProjectIdeas"
             projectId={project.id}
             phases={phases}
-            visibleFilterMenus={project && project.attributes.process_type === 'timeline'
-              ? ['phases', 'statuses', 'topics']
-              : ['statuses', 'topics']}
+            visibleFilterMenus={
+              project && project.attributes.process_type === 'timeline'
+                ? ['phases', 'statuses', 'topics']
+                : ['statuses', 'topics']
+            }
           />
-        }
+        )}
       </>
     );
   }
 }
 
-const Data =  withRouter(adopt<Props>({
-  phases: ({ params, render }) => <GetPhases projectId={params.projectId}>{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject projectId={params.projectId}>{render}</GetProject>
-}));
+const Data = withRouter(
+  adopt<Props>({
+    phases: ({ params, render }) => (
+      <GetPhases projectId={params.projectId}>{render}</GetPhases>
+    ),
+    project: ({ params, render }) => (
+      <GetProject projectId={params.projectId}>{render}</GetProject>
+    ),
+  })
+);
 
 export default () => (
-  <Data>
-    {dataProps => <AdminProjectIdeas{...dataProps} />}
-  </Data>
+  <Data>{(dataProps) => <AdminProjectIdeas {...dataProps} />}</Data>
 );

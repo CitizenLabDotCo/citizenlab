@@ -29,7 +29,7 @@ export default class GetArea extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      area: undefined
+      area: undefined,
     };
   }
 
@@ -39,12 +39,15 @@ export default class GetArea extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }) => areaByIdStream(id).observable)
-      )
-      .subscribe((area) => this.setState({ area: !isNilOrError(area) ? area.data : area }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ id }) => isString(id)),
+          switchMap(({ id }) => areaByIdStream(id).observable)
+        )
+        .subscribe((area) =>
+          this.setState({ area: !isNilOrError(area) ? area.data : area })
+        ),
     ];
   }
 
@@ -54,7 +57,7 @@ export default class GetArea extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

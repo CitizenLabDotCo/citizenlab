@@ -24,7 +24,7 @@ export default class GetTenantLocales extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantLocales: undefined
+      tenantLocales: undefined,
     };
   }
 
@@ -34,14 +34,16 @@ export default class GetTenantLocales extends React.Component<Props, State> {
     this.subscriptions = [
       currentTenant$.subscribe((currentTenant) => {
         this.setState({
-          tenantLocales: (!isNilOrError(currentTenant) ? currentTenant.data.attributes.settings.core.locales : currentTenant)
+          tenantLocales: !isNilOrError(currentTenant)
+            ? currentTenant.data.attributes.settings.core.locales
+            : currentTenant,
         });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

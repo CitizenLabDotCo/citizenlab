@@ -24,9 +24,9 @@ interface DataProps {
   topic: GetTopicChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class TopicCircleLabel extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
@@ -37,9 +37,9 @@ class TopicCircleLabel extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <T value={topic.attributes.title_multiloc}>
         {(localizedTitle) => {
-          const width = (localizedTitle.length * 7) + 50;
+          const width = localizedTitle.length * 7 + 50;
           const height = 60;
-          const xPos = (-width) / 2;
+          const xPos = -width / 2;
           const yPos = -round(node.r + height + 2);
           const borderRadius = 5;
 
@@ -62,13 +62,10 @@ class TopicCircleLabel extends PureComponent<Props & InjectedIntlProps, State> {
                 strokeWidth="2"
                 fill="#fff"
               />
-              <text
-                fill={borderColor}
-                fontSize="16"
-              >
+              <text fill={borderColor} fontSize="16">
                 <tspan
                   x={width / 2}
-                  y={(height / 2) - 10}
+                  y={height / 2 - 10}
                   fontWeight="bold"
                   textAnchor="middle"
                   alignmentBaseline="central"
@@ -77,7 +74,7 @@ class TopicCircleLabel extends PureComponent<Props & InjectedIntlProps, State> {
                 </tspan>
                 <tspan
                   x={width / 2}
-                  y={(height / 2) + 10}
+                  y={height / 2 + 10}
                   fontWeight="normal"
                   textAnchor="middle"
                   alignmentBaseline="central"

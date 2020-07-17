@@ -101,5 +101,4 @@ describe('<PostPreview />', () => {
     expect(Wrapper.find('LazyIdeaEdit').exists()).toBe(false);
     expect(Wrapper.find('LazyIdeaContent').exists()).toBe(false);
   });
-
 });

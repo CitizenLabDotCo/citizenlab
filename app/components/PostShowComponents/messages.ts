@@ -15,7 +15,7 @@ export default defineMessages({
   },
   linkToHomePage: {
     id: 'app.components.PostComponents.linkToHomePage',
-    defaultMessage: 'Home page'
+    defaultMessage: 'Home page',
   },
   lastUpdated: {
     id: 'app.components.PostComponents.lastUpdated',
@@ -49,10 +49,12 @@ export default defineMessages({
   },
   a11y_numberOfContributors: {
     id: 'app.components.PostComponents.a11y_numberOfParticipantsIdea',
-    defaultMessage: '{numberOfContributors, plural, no {# contributors} one {# contributor} other {# contributors}}'
+    defaultMessage:
+      '{numberOfContributors, plural, no {# contributors} one {# contributor} other {# contributors}}',
   },
   a11y_commentsCount: {
     id: 'app.components.PostComponents.a11y_commentsCount',
-    defaultMessage: '{commentsCount, plural, no {# comments} one {# comment} other {# comments}}'
-  }
+    defaultMessage:
+      '{commentsCount, plural, no {# comments} one {# comment} other {# comments}}',
+  },
 });

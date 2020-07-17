@@ -38,7 +38,11 @@ class PhaseVolunteering extends PureComponent<Props, State> {
       phase.attributes.participation_method === 'volunteering'
     ) {
       return (
-        <Container className={`e2e-timeline-project-volunteering-container ${className || ''}`}>
+        <Container
+          className={`e2e-timeline-project-volunteering-container ${
+            className || ''
+          }`}
+        >
           <VolunteeringSection
             phaseId={phase.id}
             projectId={projectId}
@@ -53,11 +57,11 @@ class PhaseVolunteering extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PhaseVolunteering {...inputProps} {...dataProps} />}
+    {(dataProps) => <PhaseVolunteering {...inputProps} {...dataProps} />}
   </Data>
 );

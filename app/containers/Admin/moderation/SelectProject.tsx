@@ -21,48 +21,51 @@ interface DataProps {
 
 interface Props extends DataProps, InputProps {}
 
-const SelectProject = memo(({ onChange, projects, selectedProjectIds }: Props) => {
-  const localize = useLocalize();
-  const handleOnChange = useCallback((newProjectIds: string[]) => {
-    onChange(newProjectIds);
-  }, []);
+const SelectProject = memo(
+  ({ onChange, projects, selectedProjectIds }: Props) => {
+    const localize = useLocalize();
+    const handleOnChange = useCallback((newProjectIds: string[]) => {
+      onChange(newProjectIds);
+    }, []);
 
-  if (
-    !isNilOrError(projects) &&
-    projects.projectsList &&
-    projects.projectsList.length > 0
-  ) {
-    const projectList = projects.projectsList;
-    const values = projectList.map(project => {
-      return {
-        text: localize(project.attributes.title_multiloc),
-        value: project.id
-      };
-    });
+    if (
+      !isNilOrError(projects) &&
+      projects.projectsList &&
+      projects.projectsList.length > 0
+    ) {
+      const projectList = projects.projectsList;
+      const values = projectList.map((project) => {
+        return {
+          text: localize(project.attributes.title_multiloc),
+          value: project.id,
+        };
+      });
 
-    return (
-      <FilterSelector
-        title={<FormattedMessage {...messages.project} />}
-        name="project"
-        selected={selectedProjectIds}
-        values={values}
-        onChange={handleOnChange}
-        multipleSelectionAllowed={true}
-      />
-    );
+      return (
+        <FilterSelector
+          title={<FormattedMessage {...messages.project} />}
+          name="project"
+          selected={selectedProjectIds}
+          values={values}
+          onChange={handleOnChange}
+          multipleSelectionAllowed={true}
+        />
+      );
+    }
+
+    return null;
   }
-
-  return null;
-
-});
+);
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['published', 'archived', 'draft']} />
+  projects: (
+    <GetProjects publicationStatuses={['published', 'archived', 'draft']} />
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SelectProject {...inputProps} {...dataProps} />}
+    {(dataProps) => <SelectProject {...inputProps} {...dataProps} />}
   </Data>
 );
 

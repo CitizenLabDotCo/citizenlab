@@ -10,8 +10,12 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetProjectImages, {
+  GetProjectImagesChildProps,
+} from 'resources/GetProjectImages';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // i18n
@@ -103,64 +107,84 @@ interface Props extends InputProps, DataProps {
 }
 
 const ProjectInfo = (props: Props & InjectedIntlProps) => {
-  const { project, projectImages, projectFiles, theme, intl: { formatMessage }, authUser } = props;
+  const {
+    project,
+    projectImages,
+    projectFiles,
+    theme,
+    intl: { formatMessage },
+    authUser,
+  } = props;
 
   if (isNilOrError(project)) return null;
 
   const projectUrl = location.href;
-  const utmParams = authUser ? {
-    source:'share_project',
-    campaign:'share_content',
-    content: authUser.id
-  } : {
-    source:'share_project',
-    campaign:'share_content'
-  };
+  const utmParams = authUser
+    ? {
+        source: 'share_project',
+        campaign: 'share_content',
+        content: authUser.id,
+      }
+    : {
+        source: 'share_project',
+        campaign: 'share_content',
+      };
 
   return (
     <Container className="e2e-project-info">
       <Fragment name={`projects/${project.id}/info`}>
         <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
+          <FormattedMessage
+            tagName="h2"
+            {...messages.invisibleTitleMainContent}
+          />
         </ScreenReaderOnly>
         <Left>
           <ProjectDescription>
             <QuillEditedContent textColor={theme.colorText}>
-              <T value={project.attributes.description_multiloc} supportHtml={true}/>
+              <T
+                value={project.attributes.description_multiloc}
+                supportHtml={true}
+              />
             </QuillEditedContent>
           </ProjectDescription>
-          {!isNilOrError(projectFiles) && projectFiles && projectFiles.length > 0 &&
-            <FileAttachments files={projectFiles} />
-          }
+          {!isNilOrError(projectFiles) &&
+            projectFiles &&
+            projectFiles.length > 0 && <FileAttachments files={projectFiles} />}
         </Left>
 
         <Right>
-          {!isNilOrError(projectImages) && projectImages.length > 0 &&
+          {!isNilOrError(projectImages) && projectImages.length > 0 && (
             <ProjectImages className="e2e-project-images">
-              {projectImages.filter(projectImage => projectImage).map((projectImage) => (
-                <ImageZoom
-                  key={projectImage.id}
-                  image={{
-                    src: projectImage.attributes.versions.large,
-                    alt: ''
-                  }}
-                  zoomImage={{
-                    src: projectImage.attributes.versions.large,
-                    alt: ''
-                  }}
-                />
-              ))}
+              {projectImages
+                .filter((projectImage) => projectImage)
+                .map((projectImage) => (
+                  <ImageZoom
+                    key={projectImage.id}
+                    image={{
+                      src: projectImage.attributes.versions.large,
+                      alt: '',
+                    }}
+                    zoomImage={{
+                      src: projectImage.attributes.versions.large,
+                      alt: '',
+                    }}
+                  />
+                ))}
             </ProjectImages>
-          }
-          <T value={project.attributes.title_multiloc} maxLength={50} >
+          )}
+          <T value={project.attributes.title_multiloc} maxLength={50}>
             {(title) => {
               return (
                 <Sharing
                   context="project"
                   url={projectUrl}
-                  twitterMessage={formatMessage(messages.twitterMessage, { title })}
+                  twitterMessage={formatMessage(messages.twitterMessage, {
+                    title,
+                  })}
                   utmParams={utmParams}
-                />);
+                />
+              );
             }}
           </T>
         </Right>
@@ -172,9 +196,17 @@ const ProjectInfo = (props: Props & InjectedIntlProps) => {
 const ProjectInfoWhithHoc = withTheme(injectIntl<Props>(ProjectInfo));
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  projectImages: ({ projectId, render }) => <GetProjectImages projectId={projectId}>{render}</GetProjectImages>,
-  projectFiles: ({ projectId, render }) => <GetResourceFiles resourceId={projectId} resourceType="project">{render}</GetResourceFiles>,
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  projectImages: ({ projectId, render }) => (
+    <GetProjectImages projectId={projectId}>{render}</GetProjectImages>
+  ),
+  projectFiles: ({ projectId, render }) => (
+    <GetResourceFiles resourceId={projectId} resourceType="project">
+      {render}
+    </GetResourceFiles>
+  ),
   authUser: ({ render }) => <GetAuthUser>{render}</GetAuthUser>,
 });
 
@@ -183,12 +215,7 @@ export default (inputProps: InputProps) => (
     {(dataProps) => {
       if (isNilOrError(dataProps.project)) return null;
 
-      return (
-        <ProjectInfoWhithHoc
-          {...inputProps}
-          {...dataProps}
-        />
-      );
+      return <ProjectInfoWhithHoc {...inputProps} {...dataProps} />;
     }}
   </Data>
 );

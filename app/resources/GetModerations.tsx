@@ -2,7 +2,11 @@ import React from 'react';
 import { BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { moderationsStream, IModerationData, TModerationStatuses } from 'services/moderations';
+import {
+  moderationsStream,
+  IModerationData,
+  TModerationStatuses,
+} from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -35,7 +39,7 @@ export default class GetTenant extends React.Component<Props, State> {
 
   static defaultProps = {
     pageNumber: 1,
-    pageSize: 12
+    pageSize: 12,
   };
 
   constructor(props: Props) {
@@ -43,7 +47,7 @@ export default class GetTenant extends React.Component<Props, State> {
     this.state = {
       list: undefined,
       currentPage: 1,
-      lastPage: 1
+      lastPage: 1,
     };
   }
 
@@ -54,28 +58,27 @@ export default class GetTenant extends React.Component<Props, State> {
     this.pageChanges$ = new BehaviorSubject(pageNumber as number);
 
     this.subscriptions = [
-      combineLatest(
-        this.inputProps$,
-        this.pageChanges$
-      ).pipe(
-        map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ pageSize, pageNumber }) => {
-          return moderationsStream({
-            queryParameters: {
-              'page[number]': pageNumber,
-              'page[size]': pageSize,
-              moderation_status: moderationStatus
-            }
-          }).observable;
-        })
-      ).subscribe((response) => {
-        this.setState({
-          list: !isNilOrError(response) ? response.data : response,
-          currentPage: getPageNumberFromUrl(response?.links?.self) || 1,
-          lastPage: getPageNumberFromUrl(response?.links?.last) || 1
-        });
-      })
+      combineLatest(this.inputProps$, this.pageChanges$)
+        .pipe(
+          map(([inputProps, pageNumber]) => ({ ...inputProps, pageNumber })),
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ pageSize, pageNumber }) => {
+            return moderationsStream({
+              queryParameters: {
+                'page[number]': pageNumber,
+                'page[size]': pageSize,
+                moderation_status: moderationStatus,
+              },
+            }).observable;
+          })
+        )
+        .subscribe((response) => {
+          this.setState({
+            list: !isNilOrError(response) ? response.data : response,
+            currentPage: getPageNumberFromUrl(response?.links?.self) || 1,
+            lastPage: getPageNumberFromUrl(response?.links?.last) || 1,
+          });
+        }),
     ];
   }
 
@@ -85,18 +88,18 @@ export default class GetTenant extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleOnPageChange = (pageNumber: number) => {
     this.pageChanges$.next(pageNumber);
-  }
+  };
 
   render() {
     const { children } = this.props;
     return (children as children)({
       ...this.state,
-      onChangePage: this.handleOnPageChange
+      onChangePage: this.handleOnPageChange,
     });
   }
 }

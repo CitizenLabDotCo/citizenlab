@@ -9,27 +9,30 @@ import messages from '../messages';
 import T from 'components/T';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
-import { Section, SectionDescription, SectionTitle } from 'components/admin/Section';
+import {
+  Section,
+  SectionDescription,
+  SectionTitle,
+} from 'components/admin/Section';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import AreaTermConfig from './AreaTermConfig';
 import Collapse from 'components/UI/Collapse';
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   areas: GetAreasChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   terminologyOpened: boolean;
 }
 
-class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
-
+class AreaList extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,21 +41,28 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
   }
 
   handleToggleTerminology = () => {
-    this.setState(({ terminologyOpened }) => ({ terminologyOpened: !terminologyOpened }));
-  }
+    this.setState(({ terminologyOpened }) => ({
+      terminologyOpened: !terminologyOpened,
+    }));
+  };
 
   handleDeleteClick = (areaId: string) => (event: React.FormEvent<any>) => {
-    const deleteMessage = this.props.intl.formatMessage(messages.areaDeletionConfirmation);
+    const deleteMessage = this.props.intl.formatMessage(
+      messages.areaDeletionConfirmation
+    );
     event.preventDefault();
 
     if (window.confirm(deleteMessage)) {
       deleteArea(areaId);
     }
-  }
+  };
 
   render() {
     const { terminologyOpened } = this.state;
-    const { areas, intl: { formatMessage } } = this.props;
+    const {
+      areas,
+      intl: { formatMessage },
+    } = this.props;
 
     if (isNilOrError(areas)) return null;
 
@@ -85,7 +95,7 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
         </ButtonWrapper>
         <List>
           {areas.map((area, index) => (
-            <Row key={area.id} isLastItem={(index === areas.length - 1)}>
+            <Row key={area.id} isLastItem={index === areas.length - 1}>
               <TextCell className="expand">
                 <T value={area.attributes.title_multiloc} />
               </TextCell>
@@ -114,7 +124,5 @@ class AreaList extends React.PureComponent<Props & InjectedIntlProps, State>{
 const AreaListWithHoCs = injectIntl<Props>(AreaList);
 
 export default () => (
-  <GetAreas>
-    {areas => (<AreaListWithHoCs areas={areas} />)}
-  </GetAreas>
+  <GetAreas>{(areas) => <AreaListWithHoCs areas={areas} />}</GetAreas>
 );

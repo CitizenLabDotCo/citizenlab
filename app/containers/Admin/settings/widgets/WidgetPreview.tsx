@@ -1,8 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-const StyledIframe = styled.iframe`
-`;
+const StyledIframe = styled.iframe``;
 
 type Props = {
   path: string;
@@ -14,7 +13,6 @@ type Props = {
 type State = {};
 
 class WidgetPreview extends React.Component<Props, State> {
-
   render() {
     const { path, width, height, className } = this.props;
     return (

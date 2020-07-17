@@ -35,7 +35,7 @@ describe('Project selection page', () => {
           descriptionPreview: randomString(30),
           description: folderDescription,
           publicationStatus: 'published',
-          projectIds: [projectOneId, projectTwoId]
+          projectIds: [projectOneId, projectTwoId],
         }).then((folder) => {
           folderId = folder.body.data.id;
           folderSlug = folder.body.data.attributes.slug;
@@ -58,7 +58,9 @@ describe('Project selection page', () => {
   });
 
   it('shows where you are', () => {
-    cy.get('.e2e-projects-dropdown-link').should('have.class', 'active').should('be.visible');
+    cy.get('.e2e-projects-dropdown-link')
+      .should('have.class', 'active')
+      .should('be.visible');
   });
 
   it('shows the folder title', () => {

@@ -26,8 +26,12 @@ import { lighten } from 'polished';
 
 // resources
 import GetFeatureFlag from 'resources/GetFeatureFlag';
-import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
-import GetInitiativesCount, { GetInitiativesCountChildProps } from 'resources/GetInitiativesCount';
+import GetIdeasCount, {
+  GetIdeasCountChildProps,
+} from 'resources/GetIdeasCount';
+import GetInitiativesCount, {
+  GetInitiativesCountChildProps,
+} from 'resources/GetInitiativesCount';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 const Menu = styled.div`
@@ -98,11 +102,11 @@ const GetStartedLink = styled(Link)`
   margin-bottom: 25px;
   cursor: pointer;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${lighten(.05, colors.adminMenuBackground)};
+  background: ${lighten(0.05, colors.adminMenuBackground)};
   transition: all 100ms ease-out;
 
   &:hover {
-    background: ${lighten(.1, colors.adminMenuBackground)};
+    background: ${lighten(0.1, colors.adminMenuBackground)};
 
     ${Text} {
       color: #fff;
@@ -132,117 +136,181 @@ interface State {
 }
 
 export type NavItem = {
-  id: string,
-  link: string,
-  iconName: IconNames,
-  message: string,
-  featureName?: string,
-  isActive: (pathname: string) => boolean,
-  count?: number,
-  onlyCheckAllowed?: boolean
+  id: string;
+  link: string;
+  iconName: IconNames;
+  message: string;
+  featureName?: string;
+  isActive: (pathname: string) => boolean;
+  count?: number;
+  onlyCheckAllowed?: boolean;
 };
 
 type Tracks = {
   trackFakeDoor: Function;
 };
 
-class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps & Tracks, State> {
+class Sidebar extends PureComponent<
+  Props & InjectedIntlProps & WithRouterProps & Tracks,
+  State
+> {
   constructor(props: Props & InjectedIntlProps & WithRouterProps & Tracks) {
     super(props);
     this.state = {
       navItems: [
-      {
-        id: 'insights',
-        link: '/admin/dashboard',
-        iconName: 'stats',
-        message: 'dashboard',
-        isActive: (pathName) => pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/dashboard`),
-      },
-      {
-        id: 'moderation',
-        link: '/admin/moderation',
-        iconName: 'moderation',
-        message: 'moderation',
-        featureName: 'moderation',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/moderation`))
-      },
-      {
-        id: 'projects',
-        link: '/admin/projects',
-        iconName: 'folder',
-        message: 'projects',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/projects`))
-      },
-      {
-        id: 'workshops',
-        link: '/admin/workshops',
-        iconName: 'workshops',
-        message: 'workshops',
-        featureName: 'workshops',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/workshops`))
-      },
-      {
-        id: 'ideas',
-        link: '/admin/ideas',
-        iconName: 'ideas',
-        message: 'ideas',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/ideas`))
-      },
-      {
-        id: 'initiatives',
-        link: '/admin/initiatives',
-        iconName: 'initiativesAdminMenuIcon',
-        message: 'initiatives',
-        featureName: 'initiatives',
-        onlyCheckAllowed: true,
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/initiatives`))
-      },
-      {
-        id: 'users',
-        link: '/admin/users',
-        iconName: 'users',
-        message: 'users',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/users`))
-      },
-      {
-        id: 'invitations',
-        link: '/admin/invitations',
-        iconName: 'invitations',
-        message: 'invitations',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/invitations`))
-      },
-      {
-        id: 'emails',
-        link: '/admin/emails',
-        iconName: 'emails',
-        message: 'emails',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/emails`))
-      },
-      {
-        id: 'settings',
-        link: '/admin/settings/general',
-        iconName: 'setting',
-        message: 'settings',
-        isActive: (pathName) => (pathName.startsWith(`${getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''}/admin/settings`))
-      },
-    ]};
+        {
+          id: 'insights',
+          link: '/admin/dashboard',
+          iconName: 'stats',
+          message: 'dashboard',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/dashboard`
+            ),
+        },
+        {
+          id: 'moderation',
+          link: '/admin/moderation',
+          iconName: 'moderation',
+          message: 'moderation',
+          featureName: 'moderation',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/moderation`
+            ),
+        },
+        {
+          id: 'projects',
+          link: '/admin/projects',
+          iconName: 'folder',
+          message: 'projects',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/projects`
+            ),
+        },
+        {
+          id: 'workshops',
+          link: '/admin/workshops',
+          iconName: 'workshops',
+          message: 'workshops',
+          featureName: 'workshops',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/workshops`
+            ),
+        },
+        {
+          id: 'ideas',
+          link: '/admin/ideas',
+          iconName: 'ideas',
+          message: 'ideas',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/ideas`
+            ),
+        },
+        {
+          id: 'initiatives',
+          link: '/admin/initiatives',
+          iconName: 'initiativesAdminMenuIcon',
+          message: 'initiatives',
+          featureName: 'initiatives',
+          onlyCheckAllowed: true,
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/initiatives`
+            ),
+        },
+        {
+          id: 'users',
+          link: '/admin/users',
+          iconName: 'users',
+          message: 'users',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/users`
+            ),
+        },
+        {
+          id: 'invitations',
+          link: '/admin/invitations',
+          iconName: 'invitations',
+          message: 'invitations',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/invitations`
+            ),
+        },
+        {
+          id: 'emails',
+          link: '/admin/emails',
+          iconName: 'emails',
+          message: 'emails',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/emails`
+            ),
+        },
+        {
+          id: 'settings',
+          link: '/admin/settings/general',
+          iconName: 'setting',
+          message: 'settings',
+          isActive: (pathName) =>
+            pathName.startsWith(
+              `${
+                getUrlLocale(pathName) ? `/${getUrlLocale(pathName)}` : ''
+              }/admin/settings`
+            ),
+        },
+      ],
+    };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const { ideasCount, initiativesCount } = nextProps;
-    if (!isNilOrError(ideasCount.count) && ideasCount.count !== prevState.navItems.find(item => item.id === 'ideas').count) {
+    if (
+      !isNilOrError(ideasCount.count) &&
+      ideasCount.count !==
+        prevState.navItems.find((item) => item.id === 'ideas').count
+    ) {
       const { navItems } = prevState;
       const nextNavItems = navItems;
-      const ideasIndex = navItems.findIndex(item => item.id === 'ideas');
+      const ideasIndex = navItems.findIndex((item) => item.id === 'ideas');
       nextNavItems[ideasIndex].count = ideasCount.count;
-      return({ navItems: nextNavItems });
+      return { navItems: nextNavItems };
     }
-    if (!isNilOrError(initiativesCount.count) && initiativesCount.count !== prevState.navItems.find(item => item.id === 'initiatives').count) {
+    if (
+      !isNilOrError(initiativesCount.count) &&
+      initiativesCount.count !==
+        prevState.navItems.find((item) => item.id === 'initiatives').count
+    ) {
       const { navItems } = prevState;
       const nextNavItems = navItems;
-      const initiativesIndex = navItems.findIndex(item => item.id === 'initiatives');
+      const initiativesIndex = navItems.findIndex(
+        (item) => item.id === 'initiatives'
+      );
       nextNavItems[initiativesIndex].count = initiativesCount.count;
-      return({ navItems: nextNavItems });
+      return { navItems: nextNavItems };
     }
     return prevState;
   }
@@ -264,10 +332,10 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
                 <GetFeatureFlag name="manual_emailing" key={route.id}>
                   {(manualEmailing) => (
                     <GetFeatureFlag name="automated_emailing_control">
-                      {(automatedEmailing) => manualEmailing || automatedEmailing ?
-                        <MenuItem route={route} key={route.id} />
-                      :
-                        null
+                      {(automatedEmailing) =>
+                        manualEmailing || automatedEmailing ? (
+                          <MenuItem route={route} key={route.id} />
+                        ) : null
                       }
                     </GetFeatureFlag>
                   )}
@@ -275,20 +343,27 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
               );
             } else if (route.featureName) {
               return (
-                <FeatureFlag name={route.featureName} onlyCheckAllowed={route.onlyCheckAllowed} key={route.id}>
+                <FeatureFlag
+                  name={route.featureName}
+                  onlyCheckAllowed={route.onlyCheckAllowed}
+                  key={route.id}
+                >
                   <MenuItem route={route} key={route.id} />
                 </FeatureFlag>
               );
             } else {
-              return (
-                <MenuItem route={route} key={route.id} />
-              );
+              return <MenuItem route={route} key={route.id} />;
             }
           })}
           <Spacer />
-          <HasPermission item={{ type: 'route', path: '/admin/guide' }} action="access">
-            <GetStartedLink to="/admin/guide" >
-              <IconWrapper><Icon name="circleInfo" /></IconWrapper>
+          <HasPermission
+            item={{ type: 'route', path: '/admin/guide' }}
+            action="access"
+          >
+            <GetStartedLink to="/admin/guide">
+              <IconWrapper>
+                <Icon name="circleInfo" />
+              </IconWrapper>
               <Text>{formatMessage({ ...messages.guide })}</Text>
             </GetStartedLink>
           </HasPermission>
@@ -300,14 +375,22 @@ class Sidebar extends PureComponent<Props & InjectedIntlProps & WithRouterProps 
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  ideasCount: ({ authUser, render }) => <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>{render}</GetIdeasCount>,
-  initiativesCount: ({ authUser, render }) => <GetInitiativesCount feedbackNeeded={true} assignee={get(authUser, 'id')}>{render}</GetInitiativesCount>,
+  ideasCount: ({ authUser, render }) => (
+    <GetIdeasCount feedbackNeeded={true} assignee={get(authUser, 'id')}>
+      {render}
+    </GetIdeasCount>
+  ),
+  initiativesCount: ({ authUser, render }) => (
+    <GetInitiativesCount feedbackNeeded={true} assignee={get(authUser, 'id')}>
+      {render}
+    </GetInitiativesCount>
+  ),
 });
 
 const SideBarWithHocs = withRouter<Props>(injectIntl(Sidebar));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <SideBarWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <SideBarWithHocs {...inputProps} {...dataProps} />}
   </Data>
 );

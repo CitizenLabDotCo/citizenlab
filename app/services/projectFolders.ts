@@ -30,35 +30,51 @@ export interface IProjectFolderData {
   };
   relationships: {
     projects: {
-      data: { id: string, type: 'project' }[];
-    },
+      data: { id: string; type: 'project' }[];
+    };
     admin_publication: {
       data: IRelationship | null;
-    }
+    };
   };
 }
 
-export function projectFoldersStream(streamParams: IStreamParams | null = null) {
-  return streams.get<{ data: IProjectFolderData[] }>({ apiEndpoint, ...streamParams });
+export function projectFoldersStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<{ data: IProjectFolderData[] }>({
+    apiEndpoint,
+    ...streamParams,
+  });
 }
 
 export function projectFolderByIdStream(projectFolderId: string) {
-  return streams.get<{ data: IProjectFolderData }>({ apiEndpoint: `${apiEndpoint}/${projectFolderId}` });
+  return streams.get<{ data: IProjectFolderData }>({
+    apiEndpoint: `${apiEndpoint}/${projectFolderId}`,
+  });
 }
 
 export function projectFolderBySlugStream(projectFolderSlug: string) {
-  return streams.get<{ data: IProjectFolderData }>({ apiEndpoint: `${apiEndpoint}/by_slug/${projectFolderSlug}` });
+  return streams.get<{ data: IProjectFolderData }>({
+    apiEndpoint: `${apiEndpoint}/by_slug/${projectFolderSlug}`,
+  });
 }
 
 export async function addProjectFolder(object: Partial<IProjectFolderDiff>) {
-  const response = await streams.add<{ data: IProjectFolderData }>(apiEndpoint, { project_folder: object });
+  const response = await streams.add<{ data: IProjectFolderData }>(
+    apiEndpoint,
+    { project_folder: object }
+  );
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/admin_publications`],
   });
-  return (!isNilOrError(response) ? response.data : response as Error);
+  return !isNilOrError(response) ? response.data : (response as Error);
 }
 
-export async function updateProjectFolder(projectFolderId: string, object: Partial<IProjectFolderDiff>, adminPublicationId?: string) {
+export async function updateProjectFolder(
+  projectFolderId: string,
+  object: Partial<IProjectFolderDiff>,
+  adminPublicationId?: string
+) {
   const response = await streams.update<{ data: IProjectFolderData }>(
     `${apiEndpoint}/${projectFolderId}`,
     projectFolderId,
@@ -66,14 +82,17 @@ export async function updateProjectFolder(projectFolderId: string, object: Parti
   );
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/admin_publications`],
-    dataId: adminPublicationId ? [adminPublicationId] : []
+    dataId: adminPublicationId ? [adminPublicationId] : [],
   });
 
-  return (!isNilOrError(response) ? response.data : response);
+  return !isNilOrError(response) ? response.data : response;
 }
 
 export async function deleteProjectFolder(projectFolderId: string) {
-  const response = await streams.delete(`${apiEndpoint}/${projectFolderId}`, projectFolderId);
+  const response = await streams.delete(
+    `${apiEndpoint}/${projectFolderId}`,
+    projectFolderId
+  );
 
   await streams.fetchAllWith({
     apiEndpoint: [`${API_PATH}/admin_publications`],

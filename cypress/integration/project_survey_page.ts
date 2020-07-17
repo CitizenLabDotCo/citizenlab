@@ -16,7 +16,7 @@ describe('Continuous project with survey', () => {
       publicationStatus: 'published',
       participationMethod: 'survey',
       surveyUrl: 'https://citizenlabco.typeform.com/to/Yv6B7V',
-      surveyService: 'typeform'
+      surveyService: 'typeform',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -58,7 +58,7 @@ describe('Timeline project with survey phase', () => {
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published'
+      publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -94,7 +94,7 @@ describe('Timeline project with survey phase', () => {
     });
   });
 
-   after(() => {
+  after(() => {
     cy.apiRemoveProject(projectId);
-   });
+  });
 });

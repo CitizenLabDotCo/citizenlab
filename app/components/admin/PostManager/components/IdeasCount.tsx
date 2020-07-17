@@ -11,7 +11,9 @@ import messages from '../messages';
 import styled from 'styled-components';
 
 // resources
-import GetIdeasCount, { GetIdeasCountChildProps } from 'resources/GetIdeasCount';
+import GetIdeasCount, {
+  GetIdeasCountChildProps,
+} from 'resources/GetIdeasCount';
 
 const Container = styled.div`
   height: 100%;
@@ -39,7 +41,6 @@ interface Props extends InputProps, DataProps {}
 type State = {};
 
 export class IdeasCount extends React.PureComponent<Props, State> {
-
   componentDidUpdate(prevProps) {
     if (prevProps.searchTerm !== this.props.searchTerm) {
       if (isFunction(this.props.ideasCount.onChangeSearchTerm)) {
@@ -58,18 +59,31 @@ export class IdeasCount extends React.PureComponent<Props, State> {
           If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
           Hence we only show this count when there's at least 1 idea.
         */}
-        {!isNilOrError(ideasMatchingFiltersCount) && ideasMatchingFiltersCount > 0 && (ideasMatchingFiltersCount === 1 ?
-          <FormattedMessage {...messages.oneIdea} />
-        :
-          <FormattedMessage {...messages.multipleIdeas} values={{ ideaCount: ideasMatchingFiltersCount }} />
-        )}
+        {!isNilOrError(ideasMatchingFiltersCount) &&
+          ideasMatchingFiltersCount > 0 &&
+          (ideasMatchingFiltersCount === 1 ? (
+            <FormattedMessage {...messages.oneIdea} />
+          ) : (
+            <FormattedMessage
+              {...messages.multipleIdeas}
+              values={{ ideaCount: ideasMatchingFiltersCount }}
+            />
+          ))}
       </Container>
     );
   }
 }
 
 const Data = adopt({
-  ideasCount: ({ project, phase, topics, ideaStatus, assignee, feedbackNeeded, render }) => {
+  ideasCount: ({
+    project,
+    phase,
+    topics,
+    ideaStatus,
+    assignee,
+    feedbackNeeded,
+    render,
+  }) => {
     const projectIds = [project];
 
     return (
@@ -84,11 +98,13 @@ const Data = adopt({
         {render}
       </GetIdeasCount>
     );
-  }
+  },
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeasCount {...inputProps} ideasCount={dataProps.ideasCount}/>}
+    {(dataProps) => (
+      <IdeasCount {...inputProps} ideasCount={dataProps.ideasCount} />
+    )}
   </Data>
 );

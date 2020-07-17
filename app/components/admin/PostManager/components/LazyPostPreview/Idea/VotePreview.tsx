@@ -5,7 +5,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import Icon from 'components/UI/Icon';
 
 // resources
-import GetIdeaVotesCount, { GetIdeaVotesCountChildProps } from 'resources/GetIdeaVotesCount';
+import GetIdeaVotesCount, {
+  GetIdeaVotesCountChildProps,
+} from 'resources/GetIdeaVotesCount';
 
 // i18n
 import messages from '../messages';
@@ -92,16 +94,12 @@ const VotePreview = memo<Props>(({ votesCount, className }) => {
         </Label>
         <Block>
           <UpvotesContainer>
-            <UpvoteIcon name="upvote"/>
-            <UpvotesCount>
-              {votesCount.up}
-            </UpvotesCount>
+            <UpvoteIcon name="upvote" />
+            <UpvotesCount>{votesCount.up}</UpvotesCount>
           </UpvotesContainer>
           <DownvotesContainer>
-            <DownvoteIcon name="downvote"/>
-            <DownvotesCount>
-              {votesCount.down}
-            </DownvotesCount>
+            <DownvoteIcon name="downvote" />
+            <DownvotesCount>{votesCount.down}</DownvotesCount>
           </DownvotesContainer>
         </Block>
       </Container>
@@ -113,6 +111,6 @@ const VotePreview = memo<Props>(({ votesCount, className }) => {
 
 export default (inputProps: InputProps) => (
   <GetIdeaVotesCount ideaId={inputProps.ideaId}>
-    {votesCount => <VotePreview {...inputProps} votesCount={votesCount} />}
+    {(votesCount) => <VotePreview {...inputProps} votesCount={votesCount} />}
   </GetIdeaVotesCount>
 );

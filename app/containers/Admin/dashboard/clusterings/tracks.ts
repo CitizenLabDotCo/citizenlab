@@ -21,6 +21,6 @@ export default {
     name: 'Normalization switched',
   },
   changeTab: {
-    name: 'Clustering tab switched'
-  }
+    name: 'Clustering tab switched',
+  },
 };

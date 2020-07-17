@@ -19,7 +19,7 @@ const NoUsersPage = styled.div`
   svg {
     margin-bottom: 20px;
     height: 70px;
-    fill: ${colors.clIconAccent}
+    fill: ${colors.clIconAccent};
   }
 `;
 
@@ -44,10 +44,7 @@ interface Props {
   noSuchSearchResult?: boolean;
 }
 
-const NoUsers = memo(({
-  smartGroup,
-  noSuchSearchResult
-}: Props) => {
+const NoUsers = memo(({ smartGroup, noSuchSearchResult }: Props) => {
   if (noSuchSearchResult) {
     return (
       <NoUsersPage>
@@ -61,7 +58,7 @@ const NoUsers = memo(({
     <NoUsersPage>
       <Icon name="blankPage" />
       <FormattedMessage {...messages.emptyGroup} />
-      {!smartGroup &&
+      {!smartGroup && (
         <SFormattedMessage>
           <FormattedMessage
             {...messages.goToAllUsers}
@@ -69,11 +66,12 @@ const NoUsers = memo(({
               allUsersLink: (
                 <Link to="/admin/users/">
                   <FormattedMessage {...messages.allUsers} />
-                </Link>),
+                </Link>
+              ),
             }}
           />
         </SFormattedMessage>
-      }
+      )}
     </NoUsersPage>
   );
 });

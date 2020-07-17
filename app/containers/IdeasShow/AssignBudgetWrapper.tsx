@@ -31,15 +31,21 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
 
   disabledBudgetingClick = () => {
     this.setState({ error: 'budgetingDisabled' });
-  }
+  };
 
   render() {
-    const { ideaId, participationContextId, participationContextType, budgetingDescriptor, projectId } = this.props;
+    const {
+      ideaId,
+      participationContextId,
+      participationContextType,
+      budgetingDescriptor,
+      projectId,
+    } = this.props;
     const { error } = this.state;
 
     return (
       <div aria-live="polite">
-        {!error &&
+        {!error && (
           <AssignBudgetControl
             view="ideaPage"
             ideaId={ideaId}
@@ -48,8 +54,8 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
             disabledAssignBudgetClick={this.disabledBudgetingClick}
             projectId={projectId}
           />
-        }
-        {error === 'budgetingDisabled' &&
+        )}
+        {error === 'budgetingDisabled' && (
           <PopContainer icon="lock-outlined">
             <AssignBudgetDisabled
               participationContextId={participationContextId}
@@ -57,7 +63,7 @@ class AssignBudgetWrapper extends PureComponent<Props, State> {
               budgetingDescriptor={budgetingDescriptor}
             />
           </PopContainer>
-        }
+        )}
       </div>
     );
   }

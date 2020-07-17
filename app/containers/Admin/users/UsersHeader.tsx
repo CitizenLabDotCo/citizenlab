@@ -59,7 +59,7 @@ const TitleIcon = styled(Icon)`
   }
 
   .cl-icon-background {
-    fill: ${rgba(colors.adminOrangeIcons, .1)};
+    fill: ${rgba(colors.adminOrangeIcons, 0.1)};
   }
 `;
 
@@ -97,60 +97,56 @@ interface Props {
   onSearch: (newValue: string) => void;
 }
 
-const UsersHeader = memo(({
-  title,
-  smartGroup,
-  onEdit,
-  onDelete,
-  onSearch
-}: Props) => {
-  const handleSearchChange = (newValue: string) => {
-    onSearch(newValue);
-  };
+const UsersHeader = memo(
+  ({ title, smartGroup, onEdit, onDelete, onSearch }: Props) => {
+    const handleSearchChange = (newValue: string) => {
+      onSearch(newValue);
+    };
 
-  if (title) {
+    if (title) {
+      return (
+        <OnlyRow>
+          {smartGroup && <TitleIcon name="lightingBolt" />}
+          <TextAndButtons>
+            <T as="h1" value={title} />
+            <Buttons>
+              <EditGroupButton
+                iconTitle={<FormattedMessage {...messages.editGroup} />}
+                hiddenText={<FormattedMessage {...messages.editGroup} />}
+                padding=".65em"
+                icon="edit"
+                buttonStyle="secondary"
+                onClick={onEdit}
+              />
+              <DeleteGroupButton
+                iconTitle={<FormattedMessage {...messages.deleteGroup} />}
+                hiddenText={<FormattedMessage {...messages.deleteGroup} />}
+                padding=".65em"
+                icon="delete"
+                buttonStyle="text"
+                onClick={onDelete}
+              />
+            </Buttons>
+          </TextAndButtons>
+          <Spacer />
+          <StyledSearchInput onChange={handleSearchChange} />
+        </OnlyRow>
+      );
+    }
+
     return (
-      <OnlyRow>
-        {smartGroup && <TitleIcon name="lightingBolt" />}
-        <TextAndButtons>
-          <T as="h1" value={title} />
-          <Buttons>
-            <EditGroupButton
-              iconTitle={<FormattedMessage {...messages.editGroup} />}
-              hiddenText={<FormattedMessage {...messages.editGroup} />}
-              padding=".65em"
-              icon="edit"
-              buttonStyle="secondary"
-              onClick={onEdit}
-            />
-            <DeleteGroupButton
-              iconTitle={<FormattedMessage {...messages.deleteGroup} />}
-              hiddenText={<FormattedMessage {...messages.deleteGroup} />}
-              padding=".65em"
-              icon="delete"
-              buttonStyle="text"
-              onClick={onDelete}
-            />
-          </Buttons>
-        </TextAndButtons>
-        <Spacer />
-        <StyledSearchInput onChange={handleSearchChange} />
-      </OnlyRow>
+      <TitleWrapper>
+        <FirstRow>
+          <TextAndButtons>
+            <FormattedMessage tagName="h1" {...messages.allUsers} />
+          </TextAndButtons>
+          <Spacer />
+          <StyledSearchInput onChange={handleSearchChange} />
+        </FirstRow>
+        <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
+      </TitleWrapper>
     );
   }
-
-  return (
-    <TitleWrapper>
-      <FirstRow>
-        <TextAndButtons>
-          <FormattedMessage tagName="h1" {...messages.allUsers} />
-        </TextAndButtons>
-        <Spacer />
-        <StyledSearchInput onChange={handleSearchChange} />
-      </FirstRow>
-      <FormattedMessage tagName="h2" {...messages.usersSubtitle} />
-    </TitleWrapper>
-  );
-});
+);
 
 export default UsersHeader;

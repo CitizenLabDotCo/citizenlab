@@ -11,6 +11,7 @@ export default defineMessages({
   },
   numberOfFolders: {
     id: 'app.components.FolderFolderCard.numberOfFolders',
-    defaultMessage: '{numberOfFolders, plural, no {# folders} one {# folder} other {# folders}}',
-  }
+    defaultMessage:
+      '{numberOfFolders, plural, no {# folders} one {# folder} other {# folders}}',
+  },
 });

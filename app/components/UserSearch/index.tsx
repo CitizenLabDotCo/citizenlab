@@ -72,7 +72,7 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       selection: [],
       loading: false,
-      processing: false
+      processing: false,
     };
   }
 
@@ -97,10 +97,12 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
           value: user.id,
           label: `${user.attributes.first_name} ${user.attributes.last_name}`,
           email: `${user.attributes.email}`,
-          disabled: isModerator(user) ? get(user.attributes, 'is_moderator') : get(user.attributes, 'is_member'),
+          disabled: isModerator(user)
+            ? get(user.attributes, 'is_moderator')
+            : get(user.attributes, 'is_member'),
         };
       });
-  }
+  };
 
   loadOptions = (inputValue: string, callback) => {
     if (inputValue) {
@@ -108,28 +110,30 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
 
       findMembership(this.props.projectId, {
         queryParameters: {
-          search: inputValue
-        }
-      }).observable.pipe(
-        first()
-      ).subscribe((response) => {
-        const options = this.getOptions(response.data);
-        this.setState({ loading: false });
-        callback(options);
-      });
+          search: inputValue,
+        },
+      })
+        .observable.pipe(first())
+        .subscribe((response) => {
+          const options = this.getOptions(response.data);
+          this.setState({ loading: false });
+          callback(options);
+        });
     }
-  }
+  };
 
   handleOnChange = async (selection: IOption[]) => {
     this.setState({ selection });
-  }
+  };
 
   handleOnAddModeratorsClick = async () => {
     const { selection } = this.state;
 
     if (selection && selection.length > 0) {
       this.setState({ processing: true });
-      const promises = selection.map(item => addMembership(this.props.projectId, item.value));
+      const promises = selection.map((item) =>
+        addMembership(this.props.projectId, item.value)
+      );
 
       try {
         await Promise.all(promises);
@@ -138,11 +142,11 @@ class MembersAdd extends PureComponent<Props & InjectedIntlProps, State> {
         this.setState({ selection: [], processing: false });
       }
     }
-  }
+  };
 
   noOptionsMessage = () => {
     return this.props.intl.formatMessage(messages.noOptions);
-  }
+  };
 
   render() {
     const { selection } = this.state;

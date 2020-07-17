@@ -22,9 +22,18 @@ export interface FormValues {
   description_multiloc: Multiloc;
 }
 
-class TopicForm extends React.Component<InjectedFormikProps<Props & InjectedIntlProps, FormValues>> {
+class TopicForm extends React.Component<
+  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
+> {
   render() {
-    const { isSubmitting, errors, isValid, touched, status, intl: { formatMessage } } = this.props;
+    const {
+      isSubmitting,
+      errors,
+      isValid,
+      touched,
+      status,
+      intl: { formatMessage },
+    } = this.props;
 
     return (
       <Form>
@@ -37,16 +46,16 @@ class TopicForm extends React.Component<InjectedFormikProps<Props & InjectedIntl
               labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
               id="e2e-topic-name"
             />
-            {touched.title_multiloc && <Error
-              fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc as any}
-            />}
+            {touched.title_multiloc && (
+              <Error
+                fieldName="title_multiloc"
+                apiErrors={errors.title_multiloc as any}
+              />
+            )}
           </SectionField>
         </Section>
 
-        <FormikSubmitWrapper
-          {...{ isValid, isSubmitting, status, touched }}
-        />
+        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
       </Form>
     );
   }

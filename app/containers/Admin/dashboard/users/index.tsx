@@ -9,11 +9,7 @@ import localize, { InjectedLocalized } from 'utils/localize';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 
 // components
-import {
-  chartTheme,
-  GraphsContainer,
-  ControlBar,
-} from '../';
+import { chartTheme, GraphsContainer, ControlBar } from '../';
 import TimeControl from '../components/TimeControl';
 import ChartFilters from '../components/ChartFilters';
 import RegistrationFieldsToGraphs from './RegistrationFieldsToGraphs';
@@ -45,61 +41,66 @@ interface DataProps {
   groups: GetGroupsChildProps;
 }
 
-interface Props extends DataProps { }
+interface Props extends DataProps {}
 
 interface Tracks {
   trackFilterOnGroup: Function;
 }
 
-export class UsersDashboard extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & Tracks, State> {
+export class UsersDashboard extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized & Tracks,
+  State
+> {
   constructor(props: Props & InjectedIntlProps & InjectedLocalized & Tracks) {
     super(props as any);
     this.state = {
       startAtMoment: undefined,
       endAtMoment: moment(),
-      currentGroupFilter: undefined
+      currentGroupFilter: undefined,
     };
   }
 
-  handleChangeTimeRange = (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => {
+  handleChangeTimeRange = (
+    startAtMoment: Moment | null | undefined,
+    endAtMoment: Moment | null
+  ) => {
     this.setState({ startAtMoment, endAtMoment });
-  }
+  };
 
   handleOnGroupFilter = (filter) => {
     this.props.trackFilterOnGroup({ extra: { group: filter } });
     this.setState({ currentGroupFilter: filter.value });
-  }
+  };
 
   generateGroupFilterOptions = () => {
     const {
       groups,
-      groups: {
-        groupsList
-      },
+      groups: { groupsList },
       localize,
-      intl: {
-        formatMessage
-      }
+      intl: { formatMessage },
     } = this.props;
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
-      filterOptions = groupsList.map((group) => (
-        {
-          value: group.id,
-          label: localize(group.attributes.title_multiloc)
-        }
-      ));
+      filterOptions = groupsList.map((group) => ({
+        value: group.id,
+        label: localize(group.attributes.title_multiloc),
+      }));
     }
 
-    return [{ value: '', label: formatMessage(messages.allGroups) }, ...filterOptions];
-  }
+    return [
+      { value: '', label: formatMessage(messages.allGroups) },
+      ...filterOptions,
+    ];
+  };
 
   render() {
     const { currentGroupFilter, endAtMoment, startAtMoment } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
-    const infoMessage = this.props.intl.formatMessage(messages.top10activeUsersDescription);
+    const infoMessage = this.props.intl.formatMessage(
+      messages.top10activeUsersDescription
+    );
 
     return (
       <>
@@ -115,17 +116,14 @@ export class UsersDashboard extends PureComponent<Props & InjectedIntlProps & In
           configuration={{
             showProjectFilter: false,
             showGroupFilter: true,
-            showTopicFilter: false
+            showTopicFilter: false,
           }}
-
           currentProjectFilter={undefined}
           currentGroupFilter={currentGroupFilter}
           currentTopicFilter={undefined}
-
           projectFilterOptions={null}
           groupFilterOptions={this.generateGroupFilterOptions()}
           topicFilterOptions={null}
-
           onProjectFilter={null}
           onGroupFilter={this.handleOnGroupFilter}
           onTopicFilter={null}
@@ -158,15 +156,15 @@ export class UsersDashboard extends PureComponent<Props & InjectedIntlProps & In
 }
 
 const Data = adopt<DataProps, {}>({
-  groups: <GetGroups />
+  groups: <GetGroups />,
 });
 
-const UsersDashBoardWithHOCs = injectIntl(injectTracks<Props>({
-  trackFilterOnGroup: tracks.filteredOnGroup,
-})(localize<Props & Tracks>(UsersDashboard)));
+const UsersDashBoardWithHOCs = injectIntl(
+  injectTracks<Props>({
+    trackFilterOnGroup: tracks.filteredOnGroup,
+  })(localize<Props & Tracks>(UsersDashboard))
+);
 
 export default () => (
-  <Data>
-    {dataProps => <UsersDashBoardWithHOCs {...dataProps} />}
-  </Data>
+  <Data>{(dataProps) => <UsersDashBoardWithHOCs {...dataProps} />}</Data>
 );

@@ -8,13 +8,13 @@ export interface IIdeaFileData {
   type: string;
   attributes: {
     file: {
-      url: string,
-    }
-    ordering: string | null,
-    name: string,
-    size: number,
-    created_at: string,
-    updated_at: string,
+      url: string;
+    };
+    ordering: string | null;
+    name: string;
+    size: number;
+    created_at: string;
+    updated_at: string;
   };
 }
 
@@ -26,16 +26,36 @@ export interface IIdeaFiles {
   data: IIdeaFileData[];
 }
 
-export function ideaFilesStream(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeaFiles>({ apiEndpoint: `${apiEndpoint}/${ideaId}/files`, ...streamParams });
+export function ideaFilesStream(
+  ideaId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IIdeaFiles>({
+    apiEndpoint: `${apiEndpoint}/${ideaId}/files`,
+    ...streamParams,
+  });
 }
 
-export function ideaFileStream(ideaId: string, fileId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeaFile>({ apiEndpoint: `${apiEndpoint}/${ideaId}/files/${fileId}`, ...streamParams });
+export function ideaFileStream(
+  ideaId: string,
+  fileId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IIdeaFile>({
+    apiEndpoint: `${apiEndpoint}/${ideaId}/files/${fileId}`,
+    ...streamParams,
+  });
 }
 
-export function addIdeaFile(ideaId: string, base64: string, name: string, ordering: number | null = null) {
-  return streams.add<IIdeaFile>(`${apiEndpoint}/${ideaId}/files`, { file: { name, ordering, file: base64 } });
+export function addIdeaFile(
+  ideaId: string,
+  base64: string,
+  name: string,
+  ordering: number | null = null
+) {
+  return streams.add<IIdeaFile>(`${apiEndpoint}/${ideaId}/files`, {
+    file: { name, ordering, file: base64 },
+  });
 }
 
 export function deleteIdeaFile(ideaId: string, fileId: string) {

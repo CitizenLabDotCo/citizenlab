@@ -16,7 +16,12 @@ export interface IProductFeedbackParams {
 // todo resp with error types ?
 export async function postProductFeedback(params: IProductFeedbackParams) {
   try {
-    const response = await request(apiEndpoint, params, { method: 'POST' }, null);
+    const response = await request(
+      apiEndpoint,
+      params,
+      { method: 'POST' },
+      null
+    );
     return response;
   } catch (error) {
     return Promise.reject(error);

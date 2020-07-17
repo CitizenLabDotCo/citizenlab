@@ -17,31 +17,28 @@ interface Props {
 }
 
 const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
-
   const topics = useTopics({ topicIds: selectedTopics });
-  const processedTopics = !isNilOrError(topics) ? topics.filter(topic => !isNilOrError(topic)) as ITopicData[] : null;
+  const processedTopics = !isNilOrError(topics)
+    ? (topics.filter((topic) => !isNilOrError(topic)) as ITopicData[])
+    : null;
 
-  const handleTopicDelete = useCallback((topicId: string) => (event: FormEvent) => {
-    event.stopPropagation();
-    const newSelectedTopics = pull(selectedTopics, topicId);
-    onUpdateTopics(newSelectedTopics);
-  }, [selectedTopics, onUpdateTopics]);
+  const handleTopicDelete = useCallback(
+    (topicId: string) => (event: FormEvent) => {
+      event.stopPropagation();
+      const newSelectedTopics = pull(selectedTopics, topicId);
+      onUpdateTopics(newSelectedTopics);
+    },
+    [selectedTopics, onUpdateTopics]
+  );
 
   if (processedTopics) {
     return (
       <>
-        {processedTopics.map(topic => {
+        {processedTopics.map((topic) => {
           return (
-            <StyledLabel
-              key={topic.id}
-              color="teal"
-              basic={true}
-            >
+            <StyledLabel key={topic.id} color="teal" basic={true}>
               <T value={topic.attributes.title_multiloc} />
-              <Icon
-                name="delete"
-                onClick={handleTopicDelete(topic.id)}
-              />
+              <Icon name="delete" onClick={handleTopicDelete(topic.id)} />
             </StyledLabel>
           );
         })}

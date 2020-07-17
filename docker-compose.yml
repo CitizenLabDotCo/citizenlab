@@ -5,6 +5,6 @@ services:
     ports:
       - 3000:3000
     # volumes:
-      # - '.:/cl2-front'
-      # - './node_modules:/cl2-front/node_modules'
+    # - '.:/cl2-front'
+    # - './node_modules:/cl2-front/node_modules'
     command: npm start

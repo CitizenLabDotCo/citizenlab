@@ -22,7 +22,8 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-enter-active {
       transform: translateY(0);
-      transition: transform ${transitionDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform ${transitionDuration}ms
+        cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 
@@ -31,7 +32,8 @@ const ButtonBarContainer = styled.div`
 
     &.buttonbar-exit-active {
       transform: translateY(64px);
-      transition: transform ${transitionDuration}ms cubic-bezier(0.165, 0.84, 0.44, 1);
+      transition: transform ${transitionDuration}ms
+        cubic-bezier(0.165, 0.84, 0.44, 1);
     }
   }
 `;
@@ -61,9 +63,7 @@ export default class ButtonBar extends React.PureComponent<Props, State> {
     return (
       <CSSTransition classNames="buttonbar" timeout={transitionDuration}>
         <ButtonBarContainer>
-          <Container>
-            {this.props.children}
-          </Container>
+          <Container>{this.props.children}</Container>
         </ButtonBarContainer>
       </CSSTransition>
     );

@@ -21,11 +21,21 @@ const InfoIcon = styled(Icon)`
   }
 `;
 
-export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, handleSortClick }) => (
+export default ({
+  sortAttribute,
+  sortDirection,
+  allSelected,
+  toggleSelectAll,
+  handleSortClick,
+}) => (
   <Table.Header>
     <Table.Row>
       <Table.HeaderCell width={1}>
-        <Checkbox checked={!!allSelected} onChange={toggleSelectAll} size="21px"/>
+        <Checkbox
+          checked={!!allSelected}
+          onChange={toggleSelectAll}
+          size="21px"
+        />
       </Table.HeaderCell>
       <Table.HeaderCell width={4}>
         <TableHeaderCellText>
@@ -56,7 +66,7 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
             <FormattedMessage {...messages.up} />
           </TableHeaderCellText>
         </SortableTableHeader>
-      </Table.HeaderCell >
+      </Table.HeaderCell>
       <Table.HeaderCell width={1}>
         <SortableTableHeader
           direction={sortAttribute === 'downvotes_count' ? sortDirection : null}
@@ -76,7 +86,14 @@ export default ({ sortAttribute, sortDirection, allSelected, toggleSelectAll, ha
             <TableHeaderCellText>
               <FormattedMessage {...messages.participatoryBudgettingPicks} />
             </TableHeaderCellText>
-            <Popup content={<FormattedMessage {...messages.basketsCountTooltip} />} trigger={<button><InfoIcon name="info3" /></button>} />
+            <Popup
+              content={<FormattedMessage {...messages.basketsCountTooltip} />}
+              trigger={
+                <button>
+                  <InfoIcon name="info3" />
+                </button>
+              }
+            />
           </SortableTableHeader>
         </Table.HeaderCell>
       </FeatureFlag>

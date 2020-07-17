@@ -3,7 +3,8 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   subtitleAreas: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleAreas',
-    defaultMessage: 'Define the geographical areas (neighbourhoods, suburbs, …) that you can ask users who register on the platform. Areas can be linked to projects and can be used to create Smart Groups and give particular groups access to certain projects.',
+    defaultMessage:
+      'Define the geographical areas (neighbourhoods, suburbs, …) that you can ask users who register on the platform. Areas can be linked to projects and can be used to create Smart Groups and give particular groups access to certain projects.',
   },
   titleAreas: {
     id: 'app.containers.AdminPage.SettingsPage.titleAreas',
@@ -35,7 +36,8 @@ export default defineMessages({
   },
   fieldTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTitleTooltip',
-    defaultMessage: 'The name you choose for each area will be visible for citizens during signup and when filtering projects.',
+    defaultMessage:
+      'The name you choose for each area will be visible for citizens during signup and when filtering projects.',
   },
   fieldDescription: {
     id: 'app.containers.AdminPage.SettingsPage.fieldDescription',
@@ -43,7 +45,8 @@ export default defineMessages({
   },
   fieldDescriptionTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.fieldDescriptionTooltip',
-    defaultMessage: 'This description is only for internal collaboration with other administrators, to have a clear understanding what is meant by each area.',
+    defaultMessage:
+      'This description is only for internal collaboration with other administrators, to have a clear understanding what is meant by each area.',
   },
   editFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editFormTitle',
@@ -51,7 +54,8 @@ export default defineMessages({
   },
   terminologyTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.terminologyTooltip',
-    defaultMessage: 'How should areas be called towards users? e.g. neighbourhoods, quarters, counties, ...',
+    defaultMessage:
+      'How should areas be called towards users? e.g. neighbourhoods, quarters, counties, ...',
   },
   areaTerm: {
     id: 'app.containers.AdminPage.SettingsPage.areaTerm',
@@ -72,5 +76,5 @@ export default defineMessages({
   areasTermsSave: {
     id: 'app.containers.AdminPage.SettingsPage.areasTermsSave',
     defaultMessage: 'Save',
-  }
+  },
 });

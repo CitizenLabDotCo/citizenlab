@@ -17,7 +17,9 @@ interface Props {
   notification: ICommentOnYourCommentNotificationData;
 }
 
-const mapPostTypeToLink = (notification: ICommentOnYourCommentNotificationData) : string => {
+const mapPostTypeToLink = (
+  notification: ICommentOnYourCommentNotificationData
+): string => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;
@@ -26,10 +28,12 @@ const mapPostTypeToLink = (notification: ICommentOnYourCommentNotificationData) 
   }
 };
 
-const CommentOnYourCommentNotification = memo<Props>(props => {
+const CommentOnYourCommentNotification = memo<Props>((props) => {
   const { notification } = props;
 
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser =
+    isNilOrError(notification.attributes.initiating_user_first_name) ||
+    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
@@ -41,17 +45,18 @@ const CommentOnYourCommentNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.userReactedToYourComment}
         values={{
-          name: deletedUser ?
-          <DeletedUser>
-            <FormattedMessage {...messages.deletedUser} />
-          </DeletedUser>
-          :
-          <Link
-            to={`/profile/${notification.attributes.initiating_user_slug}`}
-            onClick={stopPropagation}
-          >
-            {notification.attributes.initiating_user_first_name}
-          </Link>,
+          name: deletedUser ? (
+            <DeletedUser>
+              <FormattedMessage {...messages.deletedUser} />
+            </DeletedUser>
+          ) : (
+            <Link
+              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              onClick={stopPropagation}
+            >
+              {notification.attributes.initiating_user_first_name}
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

@@ -29,13 +29,13 @@ export default class GetPage extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      page: undefined
+      page: undefined,
     };
   }
 
@@ -45,22 +45,23 @@ export default class GetPage extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug, resetOnChange });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ page: undefined })),
-        switchMap(({ id, slug }) => {
-          if (isString(id)) {
-            return pageByIdStream(id).observable;
-          } else if (isString(slug)) {
-            return pageBySlugStream(slug).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ page: undefined })),
+          switchMap(({ id, slug }) => {
+            if (isString(id)) {
+              return pageByIdStream(id).observable;
+            } else if (isString(slug)) {
+              return pageBySlugStream(slug).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((page) => {
-        this.setState({ page: !isNilOrError(page) ? page.data : page });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((page) => {
+          this.setState({ page: !isNilOrError(page) ? page.data : page });
+        }),
     ];
   }
 
@@ -70,7 +71,7 @@ export default class GetPage extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

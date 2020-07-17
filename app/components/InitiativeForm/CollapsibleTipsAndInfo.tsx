@@ -16,7 +16,6 @@ export interface Props {
 }
 
 const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
-
   return (
     <CollapsibleBox
       className={className}
@@ -27,7 +26,6 @@ const CollapsibleTipsAndInfo = memo<Props>(({ className }) => {
       <TipsContent />
     </CollapsibleBox>
   );
-
 });
 
 export default CollapsibleTipsAndInfo;

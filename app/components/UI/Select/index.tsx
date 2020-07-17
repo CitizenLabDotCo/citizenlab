@@ -74,32 +74,41 @@ export interface Props extends DefaultProps {
 interface State {}
 
 export default class Select extends PureComponent<Props, State> {
-
   static defaultProps: DefaultProps = {
-    canBeEmpty: false
+    canBeEmpty: false,
   };
 
   handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (this.props.options) {
-      const selectedOption = this.props.options.find(option => option.value.toString() === event.target.value.toString()) as IOption;
+      const selectedOption = this.props.options.find(
+        (option) => option.value.toString() === event.target.value.toString()
+      ) as IOption;
       this.props.onChange(selectedOption);
     }
-  }
+  };
 
   handleOnBlur = (event: React.FocusEvent<HTMLSelectElement>) => {
     if (this.props.onBlur) {
       this.props.onBlur(event);
     }
-  }
+  };
 
   render() {
     const { id, disabled, className, options, canBeEmpty } = this.props;
     const defaultValue = 'DEFAULT_SELECT_VALUE';
-    const value = isString(this.props.value) ? this.props.value : get(this.props.value, 'value', null) as string | null;
-    const selectedValue = !!(options && options.find(option => option.value === value)) ? options.find(option => option.value === value)?.value as string : defaultValue;
+    const value = isString(this.props.value)
+      ? this.props.value
+      : (get(this.props.value, 'value', null) as string | null);
+    const selectedValue = !!(
+      options && options.find((option) => option.value === value)
+    )
+      ? (options.find((option) => option.value === value)?.value as string)
+      : defaultValue;
 
     return (
-      <Container className={`${className} ${disabled ? 'disabled' : 'enabled'}`}>
+      <Container
+        className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
+      >
         <CustomSelect
           id={id}
           disabled={disabled}
@@ -115,15 +124,17 @@ export default class Select extends PureComponent<Props, State> {
             disabled={!canBeEmpty}
           />
 
-          {options && options.length > 0 && options.map((option, index) => (
-            <option
-              key={index}
-              value={option.value}
-              aria-selected={selectedValue === option.value}
-            >
-              {option.label}
-            </option>
-          ))}
+          {options &&
+            options.length > 0 &&
+            options.map((option, index) => (
+              <option
+                key={index}
+                value={option.value}
+                aria-selected={selectedValue === option.value}
+              >
+                {option.label}
+              </option>
+            ))}
         </CustomSelect>
         <Arrow
           name="chevron-right"

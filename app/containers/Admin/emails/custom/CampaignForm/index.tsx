@@ -20,7 +20,13 @@ import FormikMultipleSelect from 'components/UI/FormikMultipleSelect';
 import FormikInput from 'components/UI/FormikInput';
 import FormikQuillMultiloc from 'components/UI/QuillEditor/FormikQuillMultiloc';
 import { Section, SectionField, SectionTitle } from 'components/admin/Section';
-import { Form, Field, FastField, InjectedFormikProps, FormikErrors } from 'formik';
+import {
+  Form,
+  Field,
+  FastField,
+  InjectedFormikProps,
+  FormikErrors,
+} from 'formik';
 import Label from 'components/UI/Label';
 import FormikSubmitWrapper from 'components/admin/FormikSubmitWrapper';
 import FormikInputMultiloc from 'components/UI/FormikInputMultiloc';
@@ -49,7 +55,7 @@ export const PageTitle = styled.h1`
   width: 100%;
   font-size: 2rem;
   font-weight: 600;
-  margin: 2rem 0 1rem;;
+  margin: 2rem 0 1rem;
 `;
 
 export interface FormValues {
@@ -69,9 +75,15 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps, InjectedLocalized, InjectedIntlProps { }
+interface Props
+  extends InputProps,
+    DataProps,
+    InjectedLocalized,
+    InjectedIntlProps {}
 
-export const validateCampaignForm = (values: FormValues): FormikErrors<FormValues> => {
+export const validateCampaignForm = (
+  values: FormValues
+): FormikErrors<FormValues> => {
   const errors: FormikErrors<FormValues> = {};
 
   if (every(getValues(values.subject_multiloc), isEmpty)) {
@@ -81,45 +93,52 @@ export const validateCampaignForm = (values: FormValues): FormikErrors<FormValue
   return errors;
 };
 
-class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
-
+class CampaignForm extends React.Component<
+  InjectedFormikProps<Props, FormValues>
+> {
   senderOptions = () => {
     const { user, tenant, localize } = this.props;
     return [
       {
         value: 'author',
-        label: !isNilOrError(user) && `${user.attributes.first_name} ${user.attributes.last_name}`,
+        label:
+          !isNilOrError(user) &&
+          `${user.attributes.first_name} ${user.attributes.last_name}`,
       },
       {
         value: 'organization',
-        label: !isNilOrError(tenant) && localize(tenant.attributes.settings.core.organization_name),
-      }
+        label:
+          !isNilOrError(tenant) &&
+          localize(tenant.attributes.settings.core.organization_name),
+      },
     ];
-  }
+  };
 
   groupsOptions = (groups: GetGroupsChildProps) => {
-    const groupList = (!isNilOrError(groups) && !isNilOrError(groups.groupsList)) ?
-      groups.groupsList.map((group) => ({
-        label: this.props.localize(group.attributes.title_multiloc),
-        value: group.id,
-      }))
-    :
-      [];
+    const groupList =
+      !isNilOrError(groups) && !isNilOrError(groups.groupsList)
+        ? groups.groupsList.map((group) => ({
+            label: this.props.localize(group.attributes.title_multiloc),
+            value: group.id,
+          }))
+        : [];
 
     return groupList;
-  }
+  };
 
   renderFormikQuillMultiloc = (props) => {
     return (
       <FormikQuillMultiloc
         label={this.props.intl.formatMessage(messages.fieldBody)}
-        labelTooltipText={this.props.intl.formatMessage(messages.nameVariablesInfo)}
+        labelTooltipText={this.props.intl.formatMessage(
+          messages.nameVariablesInfo
+        )}
         noVideos
         noAlign
         {...props}
       />
     );
-  }
+  };
 
   render() {
     const { isSubmitting, errors, isValid, touched, status } = this.props;
@@ -132,7 +151,9 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
           <StyledSectionField>
             <Label>
               <FormattedMessage {...messages.fieldSender} />
-              <IconTooltip content={<FormattedMessage {...messages.fieldSenderTooltip} />} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.fieldSenderTooltip} />}
+              />
             </Label>
             <FastField
               name="sender"
@@ -140,47 +161,49 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               options={this.senderOptions()}
               clearable={false}
             />
-            {touched.sender && <Error
-              fieldName="sender"
-              apiErrors={errors.sender as any}
-            />}
+            {touched.sender && (
+              <Error fieldName="sender" apiErrors={errors.sender as any} />
+            )}
           </StyledSectionField>
 
           <StyledSectionField>
             <Label>
               <FormattedMessage {...messages.fieldTo} />
-              <IconTooltip content={<FormattedMessage {...messages.fieldToTooltip} />} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.fieldToTooltip} />}
+              />
             </Label>
             <GetGroups>
-              {(groups) => (isNilOrError(groups)) ? null : (
-                <Field
-                  name="group_ids"
-                  component={FormikMultipleSelect}
-                  options={this.groupsOptions(groups)}
-                  placeholder={<FormattedMessage {...messages.allUsers} />}
-                />
-              )}
+              {(groups) =>
+                isNilOrError(groups) ? null : (
+                  <Field
+                    name="group_ids"
+                    component={FormikMultipleSelect}
+                    options={this.groupsOptions(groups)}
+                    placeholder={<FormattedMessage {...messages.allUsers} />}
+                  />
+                )
+              }
             </GetGroups>
-            {touched.group_ids && <Error
-              fieldName="group_ids"
-              apiErrors={errors.group_ids as any}
-            />}
+            {touched.group_ids && (
+              <Error
+                fieldName="group_ids"
+                apiErrors={errors.group_ids as any}
+              />
+            )}
           </StyledSectionField>
 
           <StyledSectionField>
             <Label>
               <FormattedMessage {...messages.fieldReplyTo} />
-              <IconTooltip content={<FormattedMessage {...messages.fieldReplyToTooltip} />} />
+              <IconTooltip
+                content={<FormattedMessage {...messages.fieldReplyToTooltip} />}
+              />
             </Label>
-            <FastField
-              name="reply_to"
-              component={FormikInput}
-              type="email"
-            />
-            {touched.reply_to && <Error
-              fieldName="reply_to"
-              apiErrors={errors.reply_to as any}
-            />}
+            <FastField name="reply_to" component={FormikInput} type="email" />
+            {touched.reply_to && (
+              <Error fieldName="reply_to" apiErrors={errors.reply_to as any} />
+            )}
           </StyledSectionField>
         </StyledSection>
 
@@ -193,13 +216,21 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               name="subject_multiloc"
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.fieldSubject} />}
-              labelTooltipText={<IconTooltip content={<FormattedMessage {...messages.fieldSubjectTooltip} />} />}
+              labelTooltipText={
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.fieldSubjectTooltip} />
+                  }
+                />
+              }
               maxCharCount={80}
             />
-            {touched.subject_multiloc && <Error
-              fieldName="subject_multiloc"
-              apiErrors={errors.subject_multiloc as any}
-            />}
+            {touched.subject_multiloc && (
+              <Error
+                fieldName="subject_multiloc"
+                apiErrors={errors.subject_multiloc as any}
+              />
+            )}
           </SectionField>
 
           <StyledSectionTitle>
@@ -210,12 +241,13 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
               name="body_multiloc"
               render={this.renderFormikQuillMultiloc}
             />
-            {touched.body_multiloc && <Error
-              fieldName="body_multiloc"
-              apiErrors={errors.body_multiloc as any}
-            />}
+            {touched.body_multiloc && (
+              <Error
+                fieldName="body_multiloc"
+                apiErrors={errors.body_multiloc as any}
+              />
+            )}
           </SectionField>
-
         </StyledSection>
 
         <FormikSubmitWrapper
@@ -225,10 +257,12 @@ class CampaignForm extends React.Component<InjectedFormikProps<Props, FormValues
             buttonError: messages.formErrorButton,
             buttonSuccess: messages.formSuccessButton,
             messageSuccess: messages.formSuccessMessage,
-            messageError: Object.keys(errors).length > 0 ? messages.formErrorMessage : messages.formUnexpectedErrorMessage,
+            messageError:
+              Object.keys(errors).length > 0
+                ? messages.formErrorMessage
+                : messages.formUnexpectedErrorMessage,
           }}
         />
-
       </Form>
     );
   }
@@ -243,6 +277,6 @@ const CampaignFormWithHOCs = injectIntl(localize<InputProps>(CampaignForm));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CampaignFormWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <CampaignFormWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

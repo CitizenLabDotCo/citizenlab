@@ -39,51 +39,60 @@ export interface Props {
   className?: string;
 }
 
-const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(({ params, projectTemplateId, goBack, className }) => {
+const ProjectTemplatePreviewPageAdmin = memo<Props & WithRouterProps>(
+  ({ params, projectTemplateId, goBack, className }) => {
+    const templateId: string | undefined =
+      projectTemplateId || get(params, 'projectTemplateId');
 
-  const templateId: string | undefined = (projectTemplateId || get(params, 'projectTemplateId'));
+    const [modalOpened, setModalOpened] = useState<boolean>(false);
 
-  const [modalOpened, setModalOpened] = useState<boolean>(false);
+    const onOpenModal = useCallback(() => {
+      trackEventByName(tracks.useTemplateButtonClicked, { projectTemplateId });
+      setModalOpened(true);
+    }, []);
 
-  const onOpenModal = useCallback(() => {
-    trackEventByName(tracks.useTemplateButtonClicked, { projectTemplateId });
-    setModalOpened(true);
-  }, []);
+    const onCloseModal = useCallback(() => {
+      trackEventByName(tracks.useTemplateModalClosed, { projectTemplateId });
+      setModalOpened(false);
+    }, []);
 
-  const onCloseModal = useCallback(() => {
-    trackEventByName(tracks.useTemplateModalClosed, { projectTemplateId });
-    setModalOpened(false);
-  }, []);
+    const onGoBack = useCallback(() => {
+      goBack ? goBack() : clHistory.push('/admin/projects');
+    }, []);
 
-  const onGoBack = useCallback(() => {
-    goBack ? goBack() : clHistory.push('/admin/projects');
-  }, []);
+    if (templateId) {
+      return (
+        <Container className={className || ''}>
+          <AdminHeader>
+            {goBack ? (
+              <Button buttonStyle="text" icon="arrow-back" onClick={onGoBack}>
+                <FormattedMessage {...messages.goBack} />
+              </Button>
+            ) : (
+              <Button buttonStyle="text" icon="list" onClick={onGoBack}>
+                <FormattedMessage {...messages.seeMoreTemplates} />
+              </Button>
+            )}
+            <Button onClick={onOpenModal} buttonStyle="admin-dark">
+              <FormattedMessage {...messages.useTemplate} />
+            </Button>
+          </AdminHeader>
 
-  if (templateId) {
-    return (
-      <Container className={className || ''}>
-        <AdminHeader>
-          {goBack
-            ? <Button buttonStyle="text" icon="arrow-back" onClick={onGoBack}><FormattedMessage {...messages.goBack} /></Button>
-            : <Button buttonStyle="text" icon="list" onClick={onGoBack}><FormattedMessage {...messages.seeMoreTemplates} /></Button>
-          }
-          <Button onClick={onOpenModal} buttonStyle="admin-dark"><FormattedMessage {...messages.useTemplate} /></Button>
-        </AdminHeader>
+          <ProjectTemplatePreview projectTemplateId={templateId} />
 
-        <ProjectTemplatePreview projectTemplateId={templateId} />
+          <UseTemplateModal
+            projectTemplateId={projectTemplateId}
+            opened={modalOpened}
+            emitSuccessEvent={true}
+            showGoBackLink={true}
+            close={onCloseModal}
+          />
+        </Container>
+      );
+    }
 
-        <UseTemplateModal
-          projectTemplateId={projectTemplateId}
-          opened={modalOpened}
-          emitSuccessEvent={true}
-          showGoBackLink={true}
-          close={onCloseModal}
-        />
-      </Container>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 export default withRouter(ProjectTemplatePreviewPageAdmin);

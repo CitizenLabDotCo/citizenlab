@@ -35,28 +35,59 @@ export interface INewFeedback {
 }
 
 export function officialFeedbackStream(officialFeedbackId: string) {
-  return streams.get<IOfficialFeedback>({ apiEndpoint: `${API_PATH}/official_feedback/${officialFeedbackId }` });
+  return streams.get<IOfficialFeedback>({
+    apiEndpoint: `${API_PATH}/official_feedback/${officialFeedbackId}`,
+  });
 }
 
-export function updateOfficialFeedback(officialFeedbackId: string, object: INewFeedback) {
-  return streams.update<IOfficialFeedback>(`${API_PATH}/official_feedback/${officialFeedbackId}`, officialFeedbackId, { official_feedback: object });
+export function updateOfficialFeedback(
+  officialFeedbackId: string,
+  object: INewFeedback
+) {
+  return streams.update<IOfficialFeedback>(
+    `${API_PATH}/official_feedback/${officialFeedbackId}`,
+    officialFeedbackId,
+    { official_feedback: object }
+  );
 }
 
 // idea
 
-export function officialFeedbacksForIdeaStream(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IOfficialFeedbacks>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/official_feedback`, ...streamParams });
+export function officialFeedbacksForIdeaStream(
+  ideaId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IOfficialFeedbacks>({
+    apiEndpoint: `${API_PATH}/ideas/${ideaId}/official_feedback`,
+    ...streamParams,
+  });
 }
 
-export async function addOfficialFeedbackToIdea(ideaId: string, feedBack: INewFeedback) {
-  const response = await streams.add<IOfficialFeedback>(`${API_PATH}/ideas/${ideaId}/official_feedback`, { official_feedback: feedBack });
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/stats/ideas_count`] });
+export async function addOfficialFeedbackToIdea(
+  ideaId: string,
+  feedBack: INewFeedback
+) {
+  const response = await streams.add<IOfficialFeedback>(
+    `${API_PATH}/ideas/${ideaId}/official_feedback`,
+    { official_feedback: feedBack }
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/stats/ideas_count`],
+  });
   return response;
 }
 
 export async function deleteOfficialFeedbackFromIdea(ideaId: string) {
-  const response = await streams.delete(`${API_PATH}/official_feedback/${ideaId}`, ideaId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/ideas/${ideaId}/official_feedback`, `${API_PATH}/stats/ideas_count`] });
+  const response = await streams.delete(
+    `${API_PATH}/official_feedback/${ideaId}`,
+    ideaId
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/ideas/${ideaId}/official_feedback`,
+      `${API_PATH}/stats/ideas_count`,
+    ],
+  });
   return response;
 }
 
@@ -64,19 +95,43 @@ export async function deleteOfficialFeedbackFromIdea(ideaId: string) {
 
 // initiative
 
-export function officialFeedbacksForInitiativeStream(initiativeId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IOfficialFeedbacks>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/official_feedback`, ...streamParams });
+export function officialFeedbacksForInitiativeStream(
+  initiativeId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IOfficialFeedbacks>({
+    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
+    ...streamParams,
+  });
 }
 
-export async function addOfficialFeedbackToInitiative(initiativeId: string, feedBack: INewFeedback) {
-  const response = await streams.add<IOfficialFeedback>(`${API_PATH}/initiatives/${initiativeId}/official_feedback`, { official_feedback: feedBack });
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/stats/initiatives_count`] });
+export async function addOfficialFeedbackToInitiative(
+  initiativeId: string,
+  feedBack: INewFeedback
+) {
+  const response = await streams.add<IOfficialFeedback>(
+    `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
+    { official_feedback: feedBack }
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [`${API_PATH}/stats/initiatives_count`],
+  });
   return response;
 }
 
-export async function deleteOfficialFeedbackFromInitiative(initiativeId: string) {
-  const response = await streams.delete(`${API_PATH}/official_feedback/${initiativeId}`, initiativeId);
-  await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/initiatives/${initiativeId}/official_feedback`, `${API_PATH}/stats/initiatives_count`] });
+export async function deleteOfficialFeedbackFromInitiative(
+  initiativeId: string
+) {
+  const response = await streams.delete(
+    `${API_PATH}/official_feedback/${initiativeId}`,
+    initiativeId
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [
+      `${API_PATH}/initiatives/${initiativeId}/official_feedback`,
+      `${API_PATH}/stats/initiatives_count`,
+    ],
+  });
   return response;
 }
 

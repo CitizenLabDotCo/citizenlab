@@ -27,7 +27,10 @@ type State = {
   selectedValues: string[];
 };
 
-class ProjectFilterDropdown extends PureComponent<Props & InjectedLocalized, State> {
+class ProjectFilterDropdown extends PureComponent<
+  Props & InjectedLocalized,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -38,7 +41,7 @@ class ProjectFilterDropdown extends PureComponent<Props & InjectedLocalized, Sta
   handleOnChange = (selectedValues) => {
     this.setState({ selectedValues });
     this.props.onChange(selectedValues);
-  }
+  };
 
   render() {
     const { selectedValues } = this.state;
@@ -46,10 +49,10 @@ class ProjectFilterDropdown extends PureComponent<Props & InjectedLocalized, Sta
     const projectsList = projects.projectsList;
 
     if (projectsList && projectsList.length > 0) {
-      const options = projectsList.map(project => {
+      const options = projectsList.map((project) => {
         return {
-          text:  localize(project.attributes.title_multiloc),
-          value: project.id
+          text: localize(project.attributes.title_multiloc),
+          value: project.id,
         };
       });
 
@@ -75,13 +78,15 @@ class ProjectFilterDropdown extends PureComponent<Props & InjectedLocalized, Sta
 }
 
 const Data = adopt<DataProps, InputProps>({
-  projects: <GetProjects publicationStatuses={['published']} sort="new" />
+  projects: <GetProjects publicationStatuses={['published']} sort="new" />,
 });
 
 const ProjectFilterDropdownWithLocalize = localize(ProjectFilterDropdown);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectFilterDropdownWithLocalize {...dataProps} {...inputProps} />}
+    {(dataProps) => (
+      <ProjectFilterDropdownWithLocalize {...dataProps} {...inputProps} />
+    )}
   </Data>
 );

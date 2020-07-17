@@ -57,52 +57,76 @@ interface Props {
   className?: string;
 }
 
-const ModerationContentCell = memo<Props>(({ contentTitle, contentBody, className }) => {
-  const contentBodyLocales = Object.keys(contentBody) as Locale[];
+const ModerationContentCell = memo<Props>(
+  ({ contentTitle, contentBody, className }) => {
+    const contentBodyLocales = Object.keys(contentBody) as Locale[];
 
-  const [selectedLocale, setSelectedLocale] = useState(contentBodyLocales[0]);
-  const [expanded, setExpanded] = useState(false);
+    const [selectedLocale, setSelectedLocale] = useState(contentBodyLocales[0]);
+    const [expanded, setExpanded] = useState(false);
 
-  const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
-    setSelectedLocale(newSelectedLocale);
-  }, []);
+    const handleOnSelectedLocaleChange = useCallback(
+      (newSelectedLocale: Locale) => {
+        setSelectedLocale(newSelectedLocale);
+      },
+      []
+    );
 
-  const removeFocus = useCallback((event: MouseEvent) => {
-    event.preventDefault();
-  }, []);
+    const removeFocus = useCallback((event: MouseEvent) => {
+      event.preventDefault();
+    }, []);
 
-  const handleOnReadMore = useCallback((event: MouseEvent) => {
-    event.preventDefault();
-    setExpanded(!expanded);
-  }, [expanded]);
+    const handleOnReadMore = useCallback(
+      (event: MouseEvent) => {
+        event.preventDefault();
+        setExpanded(!expanded);
+      },
+      [expanded]
+    );
 
-  return (
-    <Container className={className}>
-      {contentBodyLocales.length > 1 &&
-        <StyledLocaleSwitcher
-          onLocaleChange={handleOnSelectedLocaleChange}
-          locales={contentBodyLocales}
-          selectedLocale={selectedLocale}
-        />
-      }
-      <Content>
-        {contentTitle && contentTitle[selectedLocale] &&
-          <ContentTitle>{contentTitle[selectedLocale]}</ContentTitle>
-        }
+    return (
+      <Container className={className}>
+        {contentBodyLocales.length > 1 && (
+          <StyledLocaleSwitcher
+            onLocaleChange={handleOnSelectedLocaleChange}
+            locales={contentBodyLocales}
+            selectedLocale={selectedLocale}
+          />
+        )}
+        <Content>
+          {contentTitle && contentTitle[selectedLocale] && (
+            <ContentTitle>{contentTitle[selectedLocale]}</ContentTitle>
+          )}
 
-        <ContentBody dangerouslySetInnerHTML={{ __html: expanded ? contentBody[selectedLocale] as string : truncate(contentBody[selectedLocale], { length: 300, separator: ' ' }) }} />
+          <ContentBody
+            dangerouslySetInnerHTML={{
+              __html: expanded
+                ? (contentBody[selectedLocale] as string)
+                : truncate(contentBody[selectedLocale], {
+                    length: 300,
+                    separator: ' ',
+                  }),
+            }}
+          />
 
-        {(contentBody[selectedLocale] as string).length > 300 &&
-          <ReadMoreButton
-            onMouseDown={removeFocus}
-            onClick={handleOnReadMore}
-          >
-            {!expanded ? <><FormattedMessage {...messages.readMore} />...</> : <FormattedMessage {...messages.collapse} />}
-          </ReadMoreButton>
-        }
-      </Content>
-    </Container>
-  );
-});
+          {(contentBody[selectedLocale] as string).length > 300 && (
+            <ReadMoreButton
+              onMouseDown={removeFocus}
+              onClick={handleOnReadMore}
+            >
+              {!expanded ? (
+                <>
+                  <FormattedMessage {...messages.readMore} />
+                  ...
+                </>
+              ) : (
+                <FormattedMessage {...messages.collapse} />
+              )}
+            </ReadMoreButton>
+          )}
+        </Content>
+      </Container>
+    );
+  }
+);
 
 export default ModerationContentCell;

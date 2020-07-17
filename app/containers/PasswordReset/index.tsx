@@ -26,7 +26,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   background: ${colors.background};
 `;
 
@@ -76,7 +76,10 @@ type State = {
   success: boolean;
 };
 
-class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State> {
+class PasswordReset extends React.PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   passwordInputElement: HTMLInputElement | null;
 
   constructor(props) {
@@ -89,7 +92,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
       passwordError: false,
       submitError: false,
       processing: false,
-      success: false
+      success: false,
     };
 
     this.passwordInputElement = null;
@@ -106,7 +109,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
   }
 
   validate = (password: string | null) => {
-    const passwordError = (!password || password.length < 8);
+    const passwordError = !password || password.length < 8;
 
     if (passwordError && this.passwordInputElement) {
       this.passwordInputElement.focus();
@@ -114,20 +117,20 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
 
     this.setState({ passwordError });
 
-    return (!passwordError);
-  }
+    return !passwordError;
+  };
 
   handlePasswordOnChange = (value) => {
     this.setState({
       passwordError: false,
       submitError: false,
-      password: value
+      password: value,
     });
-  }
+  };
 
   handlePasswordInputSetRef = (element: HTMLInputElement) => {
     this.passwordInputElement = element;
-  }
+  };
 
   handleOnSubmit = async (event) => {
     const { password, token } = this.state;
@@ -143,17 +146,25 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
         this.setState({ processing: false, success: false, submitError: true });
       }
     }
-  }
+  };
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { password, passwordError, submitError, processing, success } = this.state;
+    const {
+      password,
+      passwordError,
+      submitError,
+      processing,
+      success,
+    } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
     const passwordPlaceholder = formatMessage(messages.passwordPlaceholder);
     const updatePassword = formatMessage(messages.updatePassword);
-    const successMessage = (success ? formatMessage(messages.successMessage) : null);
+    const successMessage = success
+      ? formatMessage(messages.successMessage)
+      : null;
     let errorMessage: string | null = null;
 
     if (passwordError) {
@@ -166,9 +177,7 @@ class PasswordReset extends React.PureComponent<Props & InjectedIntlProps, State
       <Container>
         <Helmet
           title={helmetTitle}
-          meta={[
-            { name: 'description', content: helmetDescription },
-          ]}
+          meta={[{ name: 'description', content: helmetDescription }]}
         />
 
         <main>

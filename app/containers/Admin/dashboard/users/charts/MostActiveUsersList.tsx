@@ -5,7 +5,13 @@ import { isNilOrError } from 'utils/helperUtils';
 import Link from 'utils/cl-router/Link';
 
 // components
-import { NoDataContainer, GraphCardHeader, GraphCardTitle, GraphCard, GraphCardInner } from '../..';
+import {
+  NoDataContainer,
+  GraphCardHeader,
+  GraphCardTitle,
+  GraphCard,
+  GraphCardInner,
+} from '../..';
 import { Popup } from 'semantic-ui-react';
 import Icon from 'components/UI/Icon';
 import Avatar from 'components/Avatar';
@@ -21,7 +27,10 @@ import { rgba } from 'polished';
 import { media, colors } from 'utils/styleUtils';
 
 // services
-import { userEngagementScoresStream, IUserEngagementScore } from 'services/stats';
+import {
+  userEngagementScoresStream,
+  IUserEngagementScore,
+} from 'services/stats';
 
 // resources
 import GetUser from 'resources/GetUser';
@@ -93,11 +102,11 @@ const UserScore = styled.div<IUserScoreComponent>`
 
   &:hover {
     background-color: ${(props: any) => props.hoverColor};
-    color: ${props => props.theme.chartFill};
+    color: ${(props) => props.theme.chartFill};
   }
 
   ${media.smallerThan1280px`
-    width: ${props => props.value * 4}px;
+    width: ${(props) => props.value * 4}px;
   `}
 `;
 
@@ -113,7 +122,10 @@ interface State {
   engagementScoreList: IUserEngagementScore[] | null;
 }
 
-class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State> {
+class MostActiveUsersList extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   subscription: Subscription;
 
   constructor(props: Props & InjectedIntlProps) {
@@ -128,10 +140,16 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (this.props.startAt !== prevProps.startAt
-      || this.props.endAt !== prevProps.endAt
-      || this.props.currentGroupFilter !== prevProps.currentGroupFilter) {
-      this.resubscribe(this.props.startAt, this.props.endAt, this.props.currentGroupFilter);
+    if (
+      this.props.startAt !== prevProps.startAt ||
+      this.props.endAt !== prevProps.endAt ||
+      this.props.currentGroupFilter !== prevProps.currentGroupFilter
+    ) {
+      this.resubscribe(
+        this.props.startAt,
+        this.props.endAt,
+        this.props.currentGroupFilter
+      );
     }
   }
 
@@ -150,7 +168,7 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
       queryParameters: {
         start_at: startAt,
         end_at: endAt,
-        group: currentGroupFilter
+        group: currentGroupFilter,
       },
     }).observable.subscribe((response) => {
       const engagementScoreList = response.data;
@@ -167,7 +185,7 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
     }
 
     return fullName;
-  }
+  };
 
   maxScore = () => {
     const { engagementScoreList } = this.state;
@@ -176,14 +194,14 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
     } else {
       return undefined;
     }
-  }
+  };
 
   render() {
     const { className, infoMessage } = this.props;
     const { engagementScoreList } = this.state;
     const theme = this.props['theme'];
     const { chartFill } = theme;
-    const barHoverColor = rgba(chartFill, .25);
+    const barHoverColor = rgba(chartFill, 0.25);
     const maxScore = this.maxScore() || 0;
 
     return (
@@ -192,23 +210,25 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
           <GraphCardHeader>
             <GraphCardTitle>
               <FormattedMessage {...messages.mostActiveUsers} />
-              {infoMessage && <Popup
-                basic
-                trigger={
-                  <div>
-                    <InfoIcon name="info" />
-                  </div>
-                }
-                content={infoMessage}
-                position="top left"
-              />}
+              {infoMessage && (
+                <Popup
+                  basic
+                  trigger={
+                    <div>
+                      <InfoIcon name="info" />
+                    </div>
+                  }
+                  content={infoMessage}
+                  position="top left"
+                />
+              )}
             </GraphCardTitle>
           </GraphCardHeader>
-          {!engagementScoreList ?
+          {!engagementScoreList ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
-            :
+          ) : (
             <UserList>
               {engagementScoreList.map((item) => {
                 const itemId = item.id;
@@ -220,31 +240,42 @@ class MostActiveUsersList extends PureComponent<Props & InjectedIntlProps, State
                     <User>
                       <UserImage size="28px" userId={userId} />
                       <GetUser id={userId}>
-                        {user => {
-                          const firstName: string = get(user, 'attributes.first_name', '');
-                          const lastName: string = get(user, 'attributes.last_name', '');
+                        {(user) => {
+                          const firstName: string = get(
+                            user,
+                            'attributes.first_name',
+                            ''
+                          );
+                          const lastName: string = get(
+                            user,
+                            'attributes.last_name',
+                            ''
+                          );
                           const fullName = this.formatName(firstName, lastName);
 
-                          return !isNilOrError(user) ?
+                          return !isNilOrError(user) ? (
                             <UserName to={`/profile/${user.attributes.slug}`}>
                               {fullName}
                             </UserName>
-                          :
+                          ) : (
                             <DeletedUserName>
                               <FormattedMessage {...messages.deletedUser} />
-                            </DeletedUserName>;
-                          }
-                        }
+                            </DeletedUserName>
+                          );
+                        }}
                       </GetUser>
                     </User>
-                    <UserScore hoverColor={barHoverColor} value={userScore / maxScore}>
+                    <UserScore
+                      hoverColor={barHoverColor}
+                      value={userScore / maxScore}
+                    >
                       {userScore}
                     </UserScore>
                   </UserListItem>
                 );
               })}
             </UserList>
-          }
+          )}
         </GraphCardInner>
       </GraphCard>
     );
