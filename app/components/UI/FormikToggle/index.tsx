@@ -1,8 +1,8 @@
 import React from 'react';
-import Toggle, { Props } from 'components/UI/Toggle';
+import { Toggle } from 'cl2-component-library';
 import { FieldProps } from 'formik';
 
-class FormikToggle extends React.PureComponent<FieldProps & Props> {
+class FormikToggle extends React.PureComponent<FieldProps> {
   handleOnChange = () => {
     this.props.form.setFieldValue(this.props.field.name, !this.props.field.value);
   }

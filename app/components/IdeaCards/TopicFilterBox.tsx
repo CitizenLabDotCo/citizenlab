@@ -50,6 +50,8 @@ const TopicFilterBox = memo<Props>(({ selectedTopicIds, topics, onChange, classN
 });
 
 const Data = adopt<DataProps, InputProps>({
+  // currently only used for the idea overview page,
+  // so all possible topics can be displayed
   topics: <GetTopics />
 });
 

@@ -6,7 +6,7 @@ import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import updateLocationDescriptor from './updateLocationDescriptor';
 import { isNilOrError } from 'utils/helperUtils';
 
-interface InputProps extends LinkProps {
+export interface InputProps extends LinkProps {
   to: LocationDescriptor;
 }
 

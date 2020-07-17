@@ -18,8 +18,7 @@ import { IOption } from 'typings';
 import styled from 'styled-components';
 
 // components
-import Label from 'components/UI/Label';
-import { Select } from 'cl2-component-library';
+import { Select, Label } from 'cl2-component-library';
 
 // services
 import { updateIdea } from 'services/ideas';

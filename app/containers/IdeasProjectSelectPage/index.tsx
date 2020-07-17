@@ -15,7 +15,7 @@ import ContentContainer from 'components/ContentContainer';
 import ProjectCard from './ProjectCard';
 import Button from 'components/UI/Button';
 import ButtonBar from 'components/ButtonBar';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';

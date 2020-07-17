@@ -9,7 +9,7 @@ import { InjectedIntlProps } from 'react-intl';
 
 // components
 import { SubSectionTitle } from 'components/admin/Section';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip } from 'cl2-component-library';
 import ModeratorList from './ModeratorList';
 import UserSearch from 'components/UserSearch';
 

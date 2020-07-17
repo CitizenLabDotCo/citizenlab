@@ -41,6 +41,8 @@ exports.locales = [
     'pl-PL',
     'kl-GL',
     'hu-HU',
+    'ro-RO',
+    'pt-BR',
 ];
 exports.graphqlLocales = [
     'en',
@@ -65,6 +67,8 @@ exports.graphqlLocales = [
     'plPl',
     'klGl',
     'huHu',
+    'roRo',
+    'ptBr',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -83,6 +87,8 @@ exports.appLocalePairs = {
     'pl-PL': 'Polski',
     'kl-GL': 'Kalaallisut',
     'hu-HU': 'Magyar',
+    'ro-RO': 'Română',
+    'pt-BR': 'Português (Brasil)',
     ach: 'Acholi'
 };
 exports.appGraphqlLocalePairs = {
@@ -107,7 +113,9 @@ exports.appGraphqlLocalePairs = {
     esCl: 'es-CL',
     plPl: 'pl-PL',
     klGl: 'kl-GL',
-    huHu: 'hu-HU'
+    huHu: 'hu-HU',
+    roRo: 'ro-RO',
+    ptBr: 'pt-BR'
 };
 exports.shortenedAppLocalePairs = {
     en: 'English',
@@ -125,6 +133,8 @@ exports.shortenedAppLocalePairs = {
     'pl-PL': 'Polski',
     'kl-GL': 'Kalaallisut',
     'hu-HU': 'Magyar',
+    'ro-RO': 'Română',
+    'pt-BR': 'Português',
     ach: 'Acholi'
 };
 exports.appLocalesMomentPairs = {
@@ -141,5 +151,7 @@ exports.appLocalesMomentPairs = {
     'es-CL': 'es',
     'pl-PL': 'pl',
     'kl-GL': 'da',
-    'hu-HU': 'hu'
+    'hu-HU': 'hu',
+    'ro-RO': 'ro',
+    'pt-BR': 'pt'
 };

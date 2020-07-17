@@ -92,6 +92,9 @@ export interface IProjectData {
     admin_publication: {
       data: IRelationship | null;
     }
+    topics: {
+      data: IRelationship[] | null;
+    }
   };
 }
 
@@ -111,6 +114,7 @@ export interface IUpdatedProjectProperties {
   voting_limited_max?: number | null;
   downvoting_enabled?: boolean | null;
   presentation_mode?: PresentationMode | null;
+  admin_publication_attributes?: { publication_status?: PublicationStatus };
   publication_status?: PublicationStatus;
   max_budget?: number | null;
   survey_service?: SurveyServices | null;

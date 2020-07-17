@@ -4,8 +4,7 @@ import { get } from 'lodash-es';
 
 // components
 import TextArea from 'components/UI/TextArea';
-import Label from 'components/UI/Label';
-import IconTooltip from 'components/UI/IconTooltip';
+import { Label, IconTooltip } from 'cl2-component-library';
 
 // services
 import { localeStream } from 'services/locale';

@@ -8,13 +8,13 @@ import eventEmitter from 'utils/eventEmitter';
 import { addCause } from 'services/causes';
 
 // Components
-import { Section, SectionField, SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { Section, SectionField, SectionTitle, SectionDescription } from 'components/admin/Section';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Button from 'components/UI/Button';
 import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 
 // i18n
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
@@ -140,9 +140,9 @@ const NewCause = memo<Props & InjectedIntlProps & WithRouterProps>((props) => {
       <SectionTitle>
         <FormattedMessage {...messages.newCauseTitle} />
       </SectionTitle>
-      <SectionSubtitle>
+      <SectionDescription>
         <FormattedMessage {...messages.newCauseSubtitle} />
-      </SectionSubtitle>
+      </SectionDescription>
 
       <Section>
         <SectionField>

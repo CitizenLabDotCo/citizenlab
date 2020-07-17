@@ -22,10 +22,6 @@ export default defineMessages({
     id: 'app.containers.app.navbar.signUp',
     defaultMessage: 'Sign up',
   },
-  register: {
-    id: 'app.containers.app.navbar.register',
-    defaultMessage: 'Register',
-  },
   myProfile: {
     id: 'app.containers.app.navbar.myProfile',
     defaultMessage: 'My profile',

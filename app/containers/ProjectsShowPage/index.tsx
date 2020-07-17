@@ -8,7 +8,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 import ProjectsShowPageMeta from './ProjectsShowPageMeta';
 import Header from './Header';
 import Button from 'components/UI/Button';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

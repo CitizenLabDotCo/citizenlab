@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 import styled, { withTheme } from 'styled-components';
-import { fontSizes, colors, booleanClass, invisibleA11yText, media } from 'utils/styleUtils';
+import { fontSizes, colors, booleanClass, invisibleA11yText, media, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, IMessageInfo } from 'utils/cl-intl';
 // tslint:disable-next-line:no-vanilla-formatted-messages
@@ -15,9 +15,7 @@ export const FormSection = styled.div`
   padding: 40px 40px 30px;
   color: ${({ theme }) => theme.colorText};
   margin-bottom: 15px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 
   ${media.smallerThanMaxTablet`
     min-width: auto;
@@ -34,7 +32,7 @@ const FormSectionTitleStyled = styled.h2`
   line-height: 28px;
 `;
 
-const FormSectionSubtitleStyled = styled.p`
+const FormSectionDescriptionStyled = styled.p`
   color: ${colors.text};
   font-size: ${fontSizes.base}px;
   font-weight: 300;
@@ -51,9 +49,9 @@ export const FormSectionTitle = memo(({ message, values, subtitleMessage }: Form
       <FormattedMessage {...message} values={values} />
     </FormSectionTitleStyled>
     {subtitleMessage &&
-      <FormSectionSubtitleStyled>
+      <FormSectionDescriptionStyled>
         <FormattedMessage {...subtitleMessage} />
-      </FormSectionSubtitleStyled>
+      </FormSectionDescriptionStyled>
     }
   </TitleContainer>
 ));

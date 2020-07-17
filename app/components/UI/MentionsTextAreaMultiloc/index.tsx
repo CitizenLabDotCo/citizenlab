@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import MentionsTextArea from 'components/UI/MentionsTextArea';
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 
 // resources
 import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';

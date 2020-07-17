@@ -4,7 +4,7 @@ import GetCampaigns, { GetCampaignsChildProps } from 'resources/GetCampaigns';
 import { ICampaignData, updateCampaign } from 'services/campaigns';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
-import Toggle from 'components/UI/Toggle';
+import { Toggle } from 'cl2-component-library';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import Warning from 'components/UI/Warning';
 import styled from 'styled-components';

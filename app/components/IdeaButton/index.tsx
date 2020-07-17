@@ -16,7 +16,7 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // components
 import Button, { ButtonContainerProps } from 'components/UI/Button';
 import Tippy from '@tippyjs/react';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';

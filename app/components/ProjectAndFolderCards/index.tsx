@@ -36,7 +36,7 @@ import tracks from './tracks';
 
 // style
 import styled, { withTheme } from 'styled-components';
-import { media, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { rgba } from 'polished';
 
@@ -102,10 +102,8 @@ const EmptyContainer = styled.div`
   text-align: center;
   margin: 0;
   margin-bottom: 43px;
-  border-radius: ${(props: any) => props.theme.borderRadius};
   position: relative;
-  background: #fff;
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 const EmptyProjectsImage = styled.img`

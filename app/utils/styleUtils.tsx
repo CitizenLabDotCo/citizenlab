@@ -13,8 +13,6 @@ export const viewportWidths = {
   largeTablet: 1023
 };
 
-export const postPageContentMaxWidth = '1210px';
-
 export const media = {
   smallPhone: (style: any, ...args) => css`
     @media (max-width: ${viewportWidths.smallPhone}px) {
@@ -104,7 +102,7 @@ export const media = {
 };
 
 export const colors = {
-  background: '#f4f4f5',
+  background: '#f2f3f4',
   text: '#333',
   secondaryText: '#84939E',
   label: '#596B7A',
@@ -213,16 +211,33 @@ export const fontSizes = {
   xxxxxl: 42
 };
 
-export const customOutline = 'solid 2px #000';
+export const defaultStyles = {
+  boxShadow: '0px 1.5px 2px 0px rgba(0, 0, 0, 0.1)',
+  boxShadowHover:
+    '0px 7.4px 15.4px 0px rgba(0, 0, 0, 0.112), 0px 2.2px 4.6px 0px rgba(0, 0, 0, 0.088)',
+  borderColorFocused: colors.label,
+  boxShadowFocused: `0px 0px 0px 1px ${colors.label}`,
+  inputPadding: '12px'
+};
 
-export const boxShadowOutline = css`
-  border-color: #000;
-  box-shadow: 0px 0px 0px 1px #000;
+export const defaultCardStyle = css`
+  background: #fff;
+  border-radius: ${(props: any) => props.theme.borderRadius};
+  box-shadow: ${defaultStyles.boxShadow};
 `;
 
-export const boxShadowOutlineImportant = css`
-  border-color: #000 !important;
-  box-shadow: 0px 0px 0px 1px #000 !important;
+export const defaultCardHoverStyle = css`
+  transition: all 150ms ease-out;
+
+  &:hover {
+    box-shadow: ${defaultStyles.boxShadowHover};
+    transform: translate(0px, -2px);
+  }
+`;
+
+export const defaultOutline = css`
+  border-color: ${defaultStyles.borderColorFocused};
+  box-shadow: ${defaultStyles.boxShadowFocused};
 `;
 
 export const defaultInputStyle = css`
@@ -230,10 +245,9 @@ export const defaultInputStyle = css`
   font-size: ${fontSizes.base}px;
   line-height: normal;
   font-weight: 400;
-  padding: 12px;
+  padding: ${defaultStyles.inputPadding};
   border-radius: ${(props: any) => props.theme.borderRadius};
   border: solid 1px ${colors.border};
-  box-shadow: 0px 0px 0px 1px transparent;
   background: #fff;
   cursor: text;
   outline: none;
@@ -241,7 +255,6 @@ export const defaultInputStyle = css`
   -moz-appearance: none;
   -webkit-appearance: none;
   transition: box-shadow 65ms ease-out, border-color 65ms ease-out;
-  transform: translate3d(0,0,0);
 
   &:not(:disabled):not(.disabled) {
     &:not(.error):hover,
@@ -251,8 +264,7 @@ export const defaultInputStyle = css`
 
     &:not(.error):focus,
     &:not(.error).focus {
-      border-color: #000;
-      box-shadow: 0px 0px 0px 1px #000;
+      ${defaultOutline};
     }
 
     &.error {
