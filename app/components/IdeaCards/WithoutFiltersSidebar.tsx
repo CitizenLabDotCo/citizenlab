@@ -2,6 +2,10 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // components
 import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
@@ -260,6 +264,7 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   loadMore = () => {
+    trackEventByName(tracks.loadMoreIdeas)
     this.props.ideas.onLoadMore();
   }
 
@@ -272,10 +277,16 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   handleSortOnChange = (sort: Sort) => {
+    trackEventByName(tracks.sortingFilter, {
+      sort
+    });
     this.props.ideas.onChangeSorting(sort);
   }
 
   handleTopicsOnChange = (topics: string[]) => {
+    trackEventByName(tracks.topicsFilter, {
+      topics
+    });
     this.props.ideas.onChangeTopics(topics);
   }
 
