@@ -60,7 +60,10 @@ const DropdownListItem = styled.button`
 type Props = {
   startAtMoment?: Moment | null;
   endAtMoment: Moment | null;
-  onChange: (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => void;
+  onChange: (
+    startAtMoment: Moment | null | undefined,
+    endAtMoment: Moment | null
+  ) => void;
 };
 
 type State = {
@@ -110,30 +113,43 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
 
   toggleDropdown = () => {
     this.setState({ dropdownOpened: !this.state.dropdownOpened });
-  }
+  };
 
-  handleDatesChange = ({ startDate, endDate }: { startDate: Moment | null, endDate: Moment | null }) => {
+  handleDatesChange = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: Moment | null;
+    endDate: Moment | null;
+  }) => {
     this.props.onChange(startDate, endDate);
-  }
+  };
 
   findActivePreset = () => {
     const { startAtMoment, endAtMoment } = this.props;
 
     if (!endAtMoment) return null;
 
-    return this.presets.find(preset => {
+    return this.presets.find((preset) => {
       const startAt = preset.startAt();
       if (startAt === undefined) {
-        return startAtMoment === undefined && preset.endAt().isSame(endAtMoment, 'day');
+        return (
+          startAtMoment === undefined &&
+          preset.endAt().isSame(endAtMoment, 'day')
+        );
       } else {
-        return !!startAtMoment && startAt.isSame(startAtMoment, 'day') && preset.endAt().isSame(endAtMoment, 'day');
+        return (
+          !!startAtMoment &&
+          startAt.isSame(startAtMoment, 'day') &&
+          preset.endAt().isSame(endAtMoment, 'day')
+        );
       }
     });
-  }
+  };
 
   handlePresetClick = (preset) => () => {
     this.props.onChange(preset.startAt(), preset.endAt());
-  }
+  };
 
   render() {
     const { dropdownOpened } = this.state;
@@ -149,7 +165,11 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             padding="0px"
             className="e2e-open-time-presets"
           >
-            {activePreset ? activePreset.label : <FormattedMessage {...messages.customDateRange} />}
+            {activePreset ? (
+              activePreset.label
+            ) : (
+              <FormattedMessage {...messages.customDateRange} />
+            )}
             <DropdownItemIcon name="dropdown" />
           </StyledButton>
           <Dropdown
@@ -160,12 +180,16 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
             className="e2e-preset-items"
             content={
               <>
-                {this.presets.map(preset => (
+                {this.presets.map((preset) => (
                   <DropdownListItem
                     key={preset.id}
                     onClick={this.handlePresetClick(preset)}
                     role="navigation"
-                    className={activePreset && activePreset.id === preset.id ? 'selected' : ''}
+                    className={
+                      activePreset && activePreset.id === preset.id
+                        ? 'selected'
+                        : ''
+                    }
                   >
                     {preset.label}
                   </DropdownListItem>
@@ -178,7 +202,7 @@ class TimeControl extends PureComponent<Props & InjectedIntlProps, State> {
         <DateRangePicker
           startDateId={'startAt'}
           endDateId={'endAt'}
-          startDate={(startAtMoment === undefined) ? null : startAtMoment}
+          startDate={startAtMoment === undefined ? null : startAtMoment}
           endDate={endAtMoment}
           onDatesChange={this.handleDatesChange}
         />

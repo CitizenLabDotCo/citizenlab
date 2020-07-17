@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   titleGeneral: {
@@ -17,19 +15,23 @@ export default defineMessages({
   },
   deleteProjectConfirmation: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectConfirmation',
-    defaultMessage: 'Are you sure you want to delete this project? This cannot be undone.',
+    defaultMessage:
+      'Are you sure you want to delete this project? This cannot be undone.',
   },
   deleteProjectError: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectError',
-    defaultMessage: 'There was an error deleting this project, please try again later.',
+    defaultMessage:
+      'There was an error deleting this project, please try again later.',
   },
   statusLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.statusLabel',
     defaultMessage: 'Publication status',
   },
   publicationStatusTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip',
-    defaultMessage: 'Choose whether this project is "draft", "published" or "archived" (not shown, shown and active, shown but inactive)',
+    id:
+      'app.containers.AdminPage.ProjectEdit.generalTab.publicationStatusTooltip',
+    defaultMessage:
+      'Choose whether this project is "draft", "published" or "archived" (not shown, shown and active, shown but inactive)',
   },
   draftStatus: {
     id: 'app.containers.AdminPage.ProjectEdit.draftStatus',
@@ -49,7 +51,8 @@ export default defineMessages({
   },
   titleLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.titleLabelTooltip',
-    defaultMessage: 'Choose a title that is short, engaging and clear. It will be shown in the dropdown overview and on the project cards on the home page.',
+    defaultMessage:
+      'Choose a title that is short, engaging and clear. It will be shown in the dropdown overview and on the project cards on the home page.',
   },
   projectTypeTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.projectTypeTitle',
@@ -61,7 +64,8 @@ export default defineMessages({
   },
   projectTypeTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.projectTypeTooltip',
-    defaultMessage: 'Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
+    defaultMessage:
+      'Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
   },
   continuous: {
     id: 'app.containers.AdminPage.ProjectEdit.continuous',
@@ -77,7 +81,8 @@ export default defineMessages({
   },
   areasLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltip',
-    defaultMessage: 'Indicate on what geographical areas this project applies. The areas can be set {areasLabelTooltipLink}.',
+    defaultMessage:
+      'Indicate on what geographical areas this project applies. The areas can be set {areasLabelTooltipLink}.',
   },
   areasLabelTooltipLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText',
@@ -97,7 +102,8 @@ export default defineMessages({
   },
   headerImageLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageLabelTooltip',
-    defaultMessage: 'This image will be shown on top of the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
+    defaultMessage:
+      'This image will be shown on top of the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
   },
   projectImageLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.projectImageLabel',
@@ -105,7 +111,8 @@ export default defineMessages({
   },
   projectImageLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.projectImageLabelTooltip',
-    defaultMessage: 'The first added project image will be shown on the project card on the home page. All images are shown on the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
+    defaultMessage:
+      'The first added project image will be shown on the project card on the home page. All images are shown on the project page. The ideal dimensions are described in {imageSupportArticleLink}.',
   },
   fileUploadLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabel',
@@ -113,7 +120,8 @@ export default defineMessages({
   },
   fileUploadLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip',
-    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the project information page.',
+    defaultMessage:
+      'Files should not be larger than 50Mb. Added files will be shown on the project information page.',
   },
   deleteProjectLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabel',
@@ -121,7 +129,8 @@ export default defineMessages({
   },
   deleteProjectLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectLabelTooltip',
-    defaultMessage: 'This action will delete the project and all of its content. If you want to keep it but not show it anymore, change its publication status to ‘draft’. Or to ‘archived’ when it should remain visible while blocking participation.',
+    defaultMessage:
+      'This action will delete the project and all of its content. If you want to keep it but not show it anymore, change its publication status to ‘draft’. Or to ‘archived’ when it should remain visible while blocking participation.',
   },
   deleteProjectButton: {
     id: 'app.containers.AdminPage.ProjectEdit.deleteProjectButton',
@@ -141,11 +150,13 @@ export default defineMessages({
   },
   saveErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.saveErrorMessage',
-    defaultMessage: 'An error occurred while saving your data. Please try again.',
+    defaultMessage:
+      'An error occurred while saving your data. Please try again.',
   },
   imageSupportArticleLinkTarget: {
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkTarget',
-    defaultMessage: 'http://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+    defaultMessage:
+      'http://support.citizenlab.co/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   imageSupportArticleLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.imageSupportArticleLinkText',

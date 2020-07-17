@@ -32,40 +32,56 @@ interface InputProps {
 
 interface Props extends InputProps, InjectedIntlProps {}
 
-const AllCauses = ({ participationContextType , participationContextId, projectId, intl } : Props) => {
-  const phaseId = participationContextType === 'phase' ? participationContextId : null;
+const AllCauses = ({
+  participationContextType,
+  participationContextId,
+  projectId,
+  intl,
+}: Props) => {
+  const phaseId =
+    participationContextType === 'phase' ? participationContextId : null;
   const causes = useCauses({ projectId, phaseId });
-  const [itemsWhileDragging, setItemsWhileDragging] = useState<ICauseData[] | null>(null);
+  const [itemsWhileDragging, setItemsWhileDragging] = useState<
+    ICauseData[] | null
+  >(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
   const items = itemsWhileDragging || (isNilOrError(causes) ? [] : causes.data);
 
-  const handleDragRow = useCallback((fromIndex, toIndex) => {
-    if (!isProcessing) {
+  const handleDragRow = useCallback(
+    (fromIndex, toIndex) => {
+      if (!isProcessing) {
+        if (!items) return;
+        const itemsWhileDragging = clone(items);
+        itemsWhileDragging.splice(fromIndex, 1);
+        itemsWhileDragging.splice(toIndex, 0, items[fromIndex]);
+        setItemsWhileDragging(itemsWhileDragging);
+      }
+    },
+    [isProcessing, items]
+  );
+
+  const handleDropRow = useCallback(
+    (causeId: string, toIndex: number) => {
       if (!items) return;
-      const itemsWhileDragging = clone(items);
-      itemsWhileDragging.splice(fromIndex, 1);
-      itemsWhileDragging.splice(toIndex, 0, items[fromIndex]);
-      setItemsWhileDragging(itemsWhileDragging);
-    }
-  }, [isProcessing, items]);
 
-  const handleDropRow = useCallback((causeId: string, toIndex: number) => {
-    if (!items) return;
+      const cause = items.find((item) => item.id === causeId);
 
-    const cause = items.find(item => item.id === causeId);
-
-    if (cause && cause.attributes.ordering !== toIndex) {
-      setIsProcessing(true);
-      reorderCause(causeId, toIndex).finally(() => setIsProcessing(false));
-    } else {
-      setItemsWhileDragging(null);
-    }
-  }, [isProcessing, items]);
+      if (cause && cause.attributes.ordering !== toIndex) {
+        setIsProcessing(true);
+        reorderCause(causeId, toIndex).finally(() => setIsProcessing(false));
+      } else {
+        setItemsWhileDragging(null);
+      }
+    },
+    [isProcessing, items]
+  );
 
   const handleOnClickDelete = (cause) => (event) => {
     if (!isProcessing) {
-      const deleteMessage = intl.formatMessage(messages.causeDeletionConfirmation);
+      const deleteMessage = intl.formatMessage(
+        messages.causeDeletionConfirmation
+      );
       event.preventDefault();
 
       if (window.confirm(deleteMessage)) {
@@ -87,11 +103,7 @@ const AllCauses = ({ participationContextType , participationContextId, projectI
   return (
     <Container>
       <ButtonWrapper>
-        <Button
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          linkTo={newCauseLink}
-        >
+        <Button buttonStyle="cl-blue" icon="plus-circle" linkTo={newCauseLink}>
           <FormattedMessage {...messages.addCauseButton} />
         </Button>
       </ButtonWrapper>
@@ -112,7 +124,10 @@ const AllCauses = ({ participationContextType , participationContextId, projectI
                 <T value={cause.attributes.title_multiloc} />
               </TextCell>
               <div>
-                <FormattedMessage {...messages.xVolunteers} values={{ x: cause.attributes.volunteers_count }} />
+                <FormattedMessage
+                  {...messages.xVolunteers}
+                  values={{ x: cause.attributes.volunteers_count }}
+                />
               </div>
               <Buttons>
                 <Button

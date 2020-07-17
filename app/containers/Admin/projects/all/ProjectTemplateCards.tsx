@@ -75,7 +75,7 @@ const Cards = styled.div`
 
 const StyledProjectTemplateCard = styled(ProjectTemplateCard)`
   flex-grow: 0;
-  width: calc(100% * (1/3) - 18px);
+  width: calc(100% * (1 / 3) - 18px);
   margin-right: 27px;
   margin-bottom: 27px;
 
@@ -111,24 +111,30 @@ interface Props {
   className?: string;
 }
 
-const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className }) => {
+const ProjectTemplateCards = memo<Props & InjectedIntlProps>(
+  ({ intl, className }) => {
+    const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
+    const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
 
-  const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
-  const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
+    const localize = useLocalize();
+    const graphqlTenantLocales = useGraphqlTenantLocales();
+    const tenant = useTenant();
+    const locales = !isNilOrError(tenant)
+      ? tenant.data.attributes.settings.core.locales
+      : null;
+    const organizationTypes = !isNilOrError(tenant)
+      ? tenant.data.attributes.settings.core.organization_type
+      : null;
 
-  const localize = useLocalize();
-  const graphqlTenantLocales = useGraphqlTenantLocales();
-  const tenant = useTenant();
-  const locales = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.locales : null;
-  const organizationTypes = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.organization_type : null;
+    const [departments, setDepartments] = useState<string[] | null>(null);
+    const [purposes, setPurposes] = useState<string[] | null>(null);
+    const [participationLevels, setParticipationLevels] = useState<
+      string[] | null
+    >(null);
+    const [search, setSearch] = useState<string | null>(null);
+    const [loadingMore, setLoadingMore] = useState(false);
 
-  const [departments, setDepartments] = useState<string[] | null>(null);
-  const [purposes, setPurposes] = useState<string[] | null>(null);
-  const [participationLevels, setParticipationLevels] = useState<string[] | null>(null);
-  const [search, setSearch] = useState<string | null>(null);
-  const [loadingMore, setLoadingMore] = useState(false);
-
-  const TEMPLATES_QUERY = gql`
+    const TEMPLATES_QUERY = gql`
     query PublishedProjectTemplatesQuery(
       $cursor: String,
       $departments: [ID!],
@@ -169,138 +175,164 @@ const ProjectTemplateCards = memo<Props & InjectedIntlProps>(({ intl, className 
     }
   `;
 
-  const { loading, data, fetchMore } = useQuery(TEMPLATES_QUERY, {
-    variables: {
-      departments,
-      purposes,
-      participationLevels,
-      search,
-      organizationTypes,
-      cursor: null,
-    },
-  });
+    const { loading, data, fetchMore } = useQuery(TEMPLATES_QUERY, {
+      variables: {
+        departments,
+        purposes,
+        participationLevels,
+        search,
+        organizationTypes,
+        cursor: null,
+      },
+    });
 
-  const templates = get(data, 'publishedProjectTemplates', null);
+    const templates = get(data, 'publishedProjectTemplates', null);
 
-  const handleDepartmentFilterOnChange = useCallback((departments: string[]) => {
-    trackEventByName(tracks.departmentFilterChanged, { departments });
-    setDepartments(departments && departments.length > 0 ? departments : null);
-  }, []);
+    const handleDepartmentFilterOnChange = useCallback(
+      (departments: string[]) => {
+        trackEventByName(tracks.departmentFilterChanged, { departments });
+        setDepartments(
+          departments && departments.length > 0 ? departments : null
+        );
+      },
+      []
+    );
 
-  const handlePurposeFilterOnChange = useCallback((purposes: string[]) => {
-    trackEventByName(tracks.purposeFilterChanged, { purposes });
-    setPurposes(purposes && purposes.length > 0 ? purposes : null);
-  }, []);
+    const handlePurposeFilterOnChange = useCallback((purposes: string[]) => {
+      trackEventByName(tracks.purposeFilterChanged, { purposes });
+      setPurposes(purposes && purposes.length > 0 ? purposes : null);
+    }, []);
 
-  const handleParticipationLevelFilterOnChange = useCallback((participationLevels: string[]) => {
-    trackEventByName(tracks.participationLevelFilterChanged, { participationLevels });
-    setParticipationLevels(participationLevels && participationLevels.length > 0 ? participationLevels : null);
-  }, []);
-
-  const handleSearchOnChange = useCallback((searchValue: string) => {
-    trackEventByName(tracks.projectTemplatesSearchValueChanged, { searchValue });
-    setSearch(!isEmpty(searchValue) ? searchValue : null);
-  }, []);
-
-  const handleLoadMoreTemplatesOnClick = useCallback(async () => {
-    trackEventByName(tracks.templatesLoadMoreButtonClicked);
-    setLoadingMore(true);
-
-    try {
-      await fetchMore({
-        variables: {
-          departments,
-          purposes,
+    const handleParticipationLevelFilterOnChange = useCallback(
+      (participationLevels: string[]) => {
+        trackEventByName(tracks.participationLevelFilterChanged, {
           participationLevels,
-          search,
-          locales,
-          organizationTypes,
-          cursor: templates.pageInfo.endCursor
-        },
-        updateQuery: (previousResult, { fetchMoreResult }: { fetchMoreResult: any }) => {
-          const newEdges = fetchMoreResult.publishedProjectTemplates.edges;
-          const pageInfo = fetchMoreResult.publishedProjectTemplates.pageInfo;
+        });
+        setParticipationLevels(
+          participationLevels && participationLevels.length > 0
+            ? participationLevels
+            : null
+        );
+      },
+      []
+    );
 
-          return newEdges.length
-            ? {
-                publishedProjectTemplates: {
-                  pageInfo,
-                  __typename: templates.__typename,
-                  edges: [...templates.edges, ...newEdges]
-                }
-              }
-            : previousResult;
-        }
+    const handleSearchOnChange = useCallback((searchValue: string) => {
+      trackEventByName(tracks.projectTemplatesSearchValueChanged, {
+        searchValue,
       });
-      setLoadingMore(false);
-    } catch {
-      setLoadingMore(false);
-    }
-  }, [templates]);
+      setSearch(!isEmpty(searchValue) ? searchValue : null);
+    }, []);
 
-  return (
-    <Container className={className}>
-      <Filters>
-        <Left>
-          <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
-          <PurposeFilter onChange={handlePurposeFilterOnChange} />
-          <ParticipationLevelFilter onChange={handleParticipationLevelFilterOnChange} />
-        </Left>
+    const handleLoadMoreTemplatesOnClick = useCallback(async () => {
+      trackEventByName(tracks.templatesLoadMoreButtonClicked);
+      setLoadingMore(true);
 
-        <Spacer />
+      try {
+        await fetchMore({
+          variables: {
+            departments,
+            purposes,
+            participationLevels,
+            search,
+            locales,
+            organizationTypes,
+            cursor: templates.pageInfo.endCursor,
+          },
+          updateQuery: (
+            previousResult,
+            { fetchMoreResult }: { fetchMoreResult: any }
+          ) => {
+            const newEdges = fetchMoreResult.publishedProjectTemplates.edges;
+            const pageInfo = fetchMoreResult.publishedProjectTemplates.pageInfo;
 
-        <Right>
-          <StyledSearchInput
-            placeholder={searchPlaceholder}
-            ariaLabel={searchAriaLabel}
-            onChange={handleSearchOnChange}
-          />
-        </Right>
-      </Filters>
-
-      {loading && !templates &&
-        <SpinnerWrapper>
-          <Spinner />
-        </SpinnerWrapper>
+            return newEdges.length
+              ? {
+                  publishedProjectTemplates: {
+                    pageInfo,
+                    __typename: templates.__typename,
+                    edges: [...templates.edges, ...newEdges],
+                  },
+                }
+              : previousResult;
+          },
+        });
+        setLoadingMore(false);
+      } catch {
+        setLoadingMore(false);
       }
+    }, [templates]);
 
-      {templates && templates.edges && templates.edges.length > 0 &&
-        <>
-          <Cards>
-            {templates.edges.map(({ node: { id, titleMultiloc, subtitleMultiloc, cardImage } }) => {
-              return (
-                <StyledProjectTemplateCard
-                  key={id}
-                  projectTemplateId={id}
-                  imageUrl={cardImage}
-                  title={localize(titleMultiloc)}
-                  body={localize(subtitleMultiloc)}
-                />
-              );
-            })}
-          </Cards>
+    return (
+      <Container className={className}>
+        <Filters>
+          <Left>
+            <DepartmentFilter onChange={handleDepartmentFilterOnChange} />
+            <PurposeFilter onChange={handlePurposeFilterOnChange} />
+            <ParticipationLevelFilter
+              onChange={handleParticipationLevelFilterOnChange}
+            />
+          </Left>
 
-          {get(templates, 'pageInfo.hasNextPage') &&
-            <LoadMoreButtonWrapper>
-              <LoadMoreButton
-                processing={loadingMore}
-                onClick={handleLoadMoreTemplatesOnClick}
-                buttonStyle="secondary"
-              >
-                <FormattedMessage {...messages.loadMoreTemplates} />
-              </LoadMoreButton>
-            </LoadMoreButtonWrapper>
-          }
-        </>
-      }
+          <Spacer />
 
-      {templates && templates.edges && templates.edges.length === 0 &&
-        <NoTemplates>
-          <FormattedMessage {...messages.noTemplatesFound} />
-        </NoTemplates>
-      }
-    </Container>
-  );
-});
+          <Right>
+            <StyledSearchInput
+              placeholder={searchPlaceholder}
+              ariaLabel={searchAriaLabel}
+              onChange={handleSearchOnChange}
+            />
+          </Right>
+        </Filters>
+
+        {loading && !templates && (
+          <SpinnerWrapper>
+            <Spinner />
+          </SpinnerWrapper>
+        )}
+
+        {templates && templates.edges && templates.edges.length > 0 && (
+          <>
+            <Cards>
+              {templates.edges.map(
+                ({
+                  node: { id, titleMultiloc, subtitleMultiloc, cardImage },
+                }) => {
+                  return (
+                    <StyledProjectTemplateCard
+                      key={id}
+                      projectTemplateId={id}
+                      imageUrl={cardImage}
+                      title={localize(titleMultiloc)}
+                      body={localize(subtitleMultiloc)}
+                    />
+                  );
+                }
+              )}
+            </Cards>
+
+            {get(templates, 'pageInfo.hasNextPage') && (
+              <LoadMoreButtonWrapper>
+                <LoadMoreButton
+                  processing={loadingMore}
+                  onClick={handleLoadMoreTemplatesOnClick}
+                  buttonStyle="secondary"
+                >
+                  <FormattedMessage {...messages.loadMoreTemplates} />
+                </LoadMoreButton>
+              </LoadMoreButtonWrapper>
+            )}
+          </>
+        )}
+
+        {templates && templates.edges && templates.edges.length === 0 && (
+          <NoTemplates>
+            <FormattedMessage {...messages.noTemplatesFound} />
+          </NoTemplates>
+        )}
+      </Container>
+    );
+  }
+);
 
 export default injectIntl(ProjectTemplateCards);

@@ -19,7 +19,8 @@ export default defineMessages({
   },
   fileOrImageError: {
     id: 'app.containers.IdeasEditPage.fileOrImageError',
-    defaultMessage: 'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
+    defaultMessage:
+      'Your idea was submitted, but a file failed to be uploaded, please edit your idea to try again.',
   },
   metaTitle: {
     id: 'app.containers.IdeasEditPage.metaTitle',
@@ -27,6 +28,7 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.IdeasEditPage.metaDescription',
-    defaultMessage: 'Edit your idea. Add new and change old information to make it even better.'
+    defaultMessage:
+      'Edit your idea. Add new and change old information to make it even better.',
   },
 });

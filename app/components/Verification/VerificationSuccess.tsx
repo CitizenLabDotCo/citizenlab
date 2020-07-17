@@ -74,11 +74,13 @@ export default memo<Props>(({ onClose, className }) => {
     return (
       <Container id="e2e-verification-success" className={className}>
         <ImageAvatarContainer aria-hidden>
-          <img src={illustration} alt="" role="presentation"/>
-          <StyledAvatar userId={authUser.data.id} size="96px" verified/>
+          <img src={illustration} alt="" role="presentation" />
+          <StyledAvatar userId={authUser.data.id} size="96px" verified />
         </ImageAvatarContainer>
         <Title className="e2e-user-verified-success-modal-content">
-          <strong><FormattedMessage {...messages.userVerifiedTitle} /></strong>
+          <strong>
+            <FormattedMessage {...messages.userVerifiedTitle} />
+          </strong>
         </Title>
         <Subtitle>
           <FormattedMessage {...messages.userVerifiedSubtitle} />

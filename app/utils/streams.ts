@@ -1,6 +1,29 @@
 import { Observer, Observable, Subscription } from 'rxjs';
-import { startWith, scan, filter, distinctUntilChanged, refCount, publishReplay } from 'rxjs/operators';
-import { includes, flatten, forOwn, isArray, isString, isObject, isEmpty, isFunction, cloneDeep, has, omit, forEach, union, uniq, isUndefined } from 'lodash-es';
+import {
+  startWith,
+  scan,
+  filter,
+  distinctUntilChanged,
+  refCount,
+  publishReplay,
+} from 'rxjs/operators';
+import {
+  includes,
+  flatten,
+  forOwn,
+  isArray,
+  isString,
+  isObject,
+  isEmpty,
+  isFunction,
+  cloneDeep,
+  has,
+  omit,
+  forEach,
+  union,
+  uniq,
+  isUndefined,
+} from 'lodash-es';
 import request from 'utils/request';
 import { authApiEndpoint } from 'services/auth';
 import { currentTenantApiEndpoint } from 'services/tenant';
@@ -12,7 +35,9 @@ import { isUUID } from 'utils/helperUtils';
 
 export type pureFn<T> = (arg: T) => T;
 type fetchFn = () => Promise<any>;
-interface IObject{ [key: string]: any; }
+interface IObject {
+  [key: string]: any;
+}
 export type IObserver<T> = Observer<T | pureFn<T> | null>;
 export interface IStreamParams {
   bodyData?: IObject | null;
@@ -44,7 +69,7 @@ export interface IStream<T> {
 }
 
 class Streams {
-  public streams: { [key: string]: IStream<any>};
+  public streams: { [key: string]: IStream<any> };
   public resourcesByDataId: { [key: string]: any };
   public streamIdsByApiEndPointWithQuery: { [key: string]: string[] };
   public streamIdsByApiEndPointWithoutQuery: { [key: string]: string[] };
@@ -68,7 +93,11 @@ class Streams {
     const promises: Promise<any>[] = [];
 
     Object.keys(this.streams).forEach((streamId) => {
-      if (streamId === authApiEndpoint || streamId === currentTenantApiEndpoint || this.isActiveStream(streamId)) {
+      if (
+        streamId === authApiEndpoint ||
+        streamId === currentTenantApiEndpoint ||
+        this.isActiveStream(streamId)
+      ) {
         promises.push(this.streams[streamId].fetch());
       } else {
         this.deleteStream(streamId, this.streams[streamId].params.apiEndpoint);
@@ -95,7 +124,11 @@ class Streams {
         if ((frozenObject as Object).hasOwnProperty(propertyKey)) {
           property = frozenObject[propertyKey];
 
-          if (((typeof property !== 'object') || !(property instanceof Object)) || Object.isFrozen(property)) {
+          if (
+            typeof property !== 'object' ||
+            !(property instanceof Object) ||
+            Object.isFrozen(property)
+          ) {
             continue;
           }
 
@@ -108,7 +141,9 @@ class Streams {
   }
 
   isActiveStream(streamId: string) {
-    const refCount = cloneDeep(this.streams[streamId].observable.source['_refCount']);
+    const refCount = cloneDeep(
+      this.streams[streamId].observable.source['_refCount']
+    );
     const cacheStream = cloneDeep(this.streams[streamId].cacheStream);
 
     if ((cacheStream && refCount > 1) || (!cacheStream && refCount > 0)) {
@@ -120,27 +155,39 @@ class Streams {
 
   deleteStream(streamId: string, apiEndpoint: string) {
     if (includes(this.streamIdsByApiEndPointWithQuery[apiEndpoint], streamId)) {
-      this.streamIdsByApiEndPointWithQuery[apiEndpoint] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
+      this.streamIdsByApiEndPointWithQuery[
+        apiEndpoint
+      ] = this.streamIdsByApiEndPointWithQuery[apiEndpoint].filter((value) => {
         return value !== streamId;
       });
     }
 
-    if (includes(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], streamId)) {
-      this.streamIdsByApiEndPointWithoutQuery[apiEndpoint] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter((value) => {
-        return value !== streamId;
-      });
+    if (
+      includes(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], streamId)
+    ) {
+      this.streamIdsByApiEndPointWithoutQuery[
+        apiEndpoint
+      ] = this.streamIdsByApiEndPointWithoutQuery[apiEndpoint].filter(
+        (value) => {
+          return value !== streamId;
+        }
+      );
     }
 
     if (streamId && this.streams[streamId]) {
       Object.keys(this.streams[streamId].dataIds).forEach((dataId) => {
         if (includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithQuery[dataId] =  this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
+          this.streamIdsByDataIdWithQuery[
+            dataId
+          ] = this.streamIdsByDataIdWithQuery[dataId].filter((value) => {
             return value !== streamId;
           });
         }
 
         if (includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
-          this.streamIdsByDataIdWithoutQuery[dataId] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
+          this.streamIdsByDataIdWithoutQuery[
+            dataId
+          ] = this.streamIdsByDataIdWithoutQuery[dataId].filter((value) => {
             return value !== streamId;
           });
         }
@@ -158,13 +205,21 @@ class Streams {
     const sanitizedQueryParameters = cloneDeep(queryParameters);
 
     forOwn(queryParameters, (value, key) => {
-      if (isUndefined(value) || (isString(value) && isEmpty(value)) || (isArray(value) && isEmpty(value)) || (isObject(value) && isEmpty(value))) {
+      if (
+        isUndefined(value) ||
+        (isString(value) && isEmpty(value)) ||
+        (isArray(value) && isEmpty(value)) ||
+        (isObject(value) && isEmpty(value))
+      ) {
         delete (sanitizedQueryParameters as IObject)[key];
       }
     });
 
-    return (isObject(sanitizedQueryParameters) && !isEmpty(sanitizedQueryParameters) ? sanitizedQueryParameters : null);
-  }
+    return isObject(sanitizedQueryParameters) &&
+      !isEmpty(sanitizedQueryParameters)
+      ? sanitizedQueryParameters
+      : null;
+  };
 
   isSingleItemStream(lastUrlSegment: string, isQueryStream: boolean) {
     if (!isQueryStream) {
@@ -178,7 +233,12 @@ class Streams {
     return apiEndpoint.replace(/\/$/, '');
   }
 
-  getStreamId(apiEndpoint: string, isQueryStream: boolean, queryParameters: IObject | null, cacheStream: boolean) {
+  getStreamId(
+    apiEndpoint: string,
+    isQueryStream: boolean,
+    queryParameters: IObject | null,
+    cacheStream: boolean
+  ) {
     let streamId = apiEndpoint;
 
     if (!cacheStream) {
@@ -192,9 +252,16 @@ class Streams {
     return streamId;
   }
 
-  addStreamIdByDataIdIndex(streamId: string, isQueryStream: boolean, dataId: string) {
+  addStreamIdByDataIdIndex(
+    streamId: string,
+    isQueryStream: boolean,
+    dataId: string
+  ) {
     if (isQueryStream) {
-      if (this.streamIdsByDataIdWithQuery[dataId] && !includes(this.streamIdsByDataIdWithQuery[dataId], streamId)) {
+      if (
+        this.streamIdsByDataIdWithQuery[dataId] &&
+        !includes(this.streamIdsByDataIdWithQuery[dataId], streamId)
+      ) {
         this.streamIdsByDataIdWithQuery[dataId].push(streamId);
       } else if (!this.streamIdsByDataIdWithQuery[dataId]) {
         this.streamIdsByDataIdWithQuery[dataId] = [streamId];
@@ -202,7 +269,10 @@ class Streams {
     }
 
     if (!isQueryStream) {
-      if (this.streamIdsByDataIdWithoutQuery[dataId] && !includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)) {
+      if (
+        this.streamIdsByDataIdWithoutQuery[dataId] &&
+        !includes(this.streamIdsByDataIdWithoutQuery[dataId], streamId)
+      ) {
         this.streamIdsByDataIdWithoutQuery[dataId].push(streamId);
       } else if (!this.streamIdsByDataIdWithoutQuery[dataId]) {
         this.streamIdsByDataIdWithoutQuery[dataId] = [streamId];
@@ -210,7 +280,11 @@ class Streams {
     }
   }
 
-  addStreamIdByApiEndpointIndex(apiEndpoint: string, streamId: string, isQueryStream: boolean) {
+  addStreamIdByApiEndpointIndex(
+    apiEndpoint: string,
+    streamId: string,
+    isQueryStream: boolean
+  ) {
     if (isQueryStream) {
       if (!this.streamIdsByApiEndPointWithQuery[apiEndpoint]) {
         this.streamIdsByApiEndPointWithQuery[apiEndpoint] = [streamId];
@@ -229,37 +303,70 @@ class Streams {
   }
 
   get<T>(inputParams: IInputStreamParams) {
-    const params: IExtendedStreamParams = { bodyData: null, queryParameters: null, ...inputParams };
+    const params: IExtendedStreamParams = {
+      bodyData: null,
+      queryParameters: null,
+      ...inputParams,
+    };
     const apiEndpoint = this.removeTrailingSlash(params.apiEndpoint);
-    const queryParameters = this.sanitizeQueryParameters(params.queryParameters);
-    const isQueryStream = (isObject(queryParameters) && !isEmpty(queryParameters));
-    const isSearchQuery = (isQueryStream && queryParameters && queryParameters['search'] && isString(queryParameters['search']) && !isEmpty(queryParameters['search']));
-    const cacheStream = ((isSearchQuery || inputParams.cacheStream === false) ? false : true);
-    const streamId = this.getStreamId(apiEndpoint, isQueryStream, queryParameters, cacheStream);
+    const queryParameters = this.sanitizeQueryParameters(
+      params.queryParameters
+    );
+    const isQueryStream =
+      isObject(queryParameters) && !isEmpty(queryParameters);
+    const isSearchQuery =
+      isQueryStream &&
+      queryParameters &&
+      queryParameters['search'] &&
+      isString(queryParameters['search']) &&
+      !isEmpty(queryParameters['search']);
+    const cacheStream =
+      isSearchQuery || inputParams.cacheStream === false ? false : true;
+    const streamId = this.getStreamId(
+      apiEndpoint,
+      isQueryStream,
+      queryParameters,
+      cacheStream
+    );
 
     if (!has(this.streams, streamId)) {
       const { bodyData } = params;
-      const lastUrlSegment = apiEndpoint.substr(apiEndpoint.lastIndexOf('/') + 1);
-      const isSingleItemStream = this.isSingleItemStream(lastUrlSegment, isQueryStream);
-      const observer: IObserver<T | null> = (null as any);
+      const lastUrlSegment = apiEndpoint.substr(
+        apiEndpoint.lastIndexOf('/') + 1
+      );
+      const isSingleItemStream = this.isSingleItemStream(
+        lastUrlSegment,
+        isQueryStream
+      );
+      const observer: IObserver<T | null> = null as any;
       // const apiEndPointWithoutCacheParam = apiEndpoint.replace('?cached=false', '');
 
       const fetch = () => {
-        return request<any>(apiEndpoint, bodyData, { method: 'GET' }, queryParameters).then((response) => {
-          this.streams?.[streamId]?.observer?.next(response);
-          return response;
-        }).catch((error) => {
-          if (streamId !== authApiEndpoint && streamId !== currentOnboardingCampaignsApiEndpoint) {
-            this.streams[streamId].observer.next(error);
-            this.deleteStream(streamId, apiEndpoint);
-            reportError(error);
-            throw error;
-          } else if (streamId === authApiEndpoint) {
-            this.streams[streamId].observer.next(null);
-          }
+        return request<any>(
+          apiEndpoint,
+          bodyData,
+          { method: 'GET' },
+          queryParameters
+        )
+          .then((response) => {
+            this.streams?.[streamId]?.observer?.next(response);
+            return response;
+          })
+          .catch((error) => {
+            if (
+              streamId !== authApiEndpoint &&
+              streamId !== currentOnboardingCampaignsApiEndpoint
+            ) {
+              this.streams[streamId].observer.next(error);
+              this.deleteStream(streamId, apiEndpoint);
+              reportError(error);
+              throw error;
+            } else if (streamId === authApiEndpoint) {
+              this.streams[streamId].observer.next(null);
+            }
 
-          return null;
-        });
+            return null;
+          });
       };
 
       const observable = new Observable<T | null>((observer) => {
@@ -269,7 +376,11 @@ class Streams {
           this.streams[streamId].observer = observer;
         }
 
-        if (cacheStream && isSingleItemStream && has(this.resourcesByDataId, dataId)) {
+        if (
+          cacheStream &&
+          isSingleItemStream &&
+          has(this.resourcesByDataId, dataId)
+        ) {
           observer.next(this.resourcesByDataId[dataId]);
         } else {
           fetch();
@@ -287,31 +398,49 @@ class Streams {
           this.streams[streamId].type = 'unknown';
 
           if (data !== 'inital') {
-            data = (isFunction(current) ? current(data) : current);
+            data = isFunction(current) ? current(data) : current;
 
             if (isObject(data) && !isEmpty(data)) {
               const innerData = data['data'];
 
               if (isArray(innerData)) {
                 this.streams[streamId].type = 'arrayOfObjects';
-                innerData.filter(item => has(item, 'id')).forEach((item) => {
-                  const dataId = item.id;
-                  dataIds[dataId] = true;
-                  if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: item }); }
-                  this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
-                });
+                innerData
+                  .filter((item) => has(item, 'id'))
+                  .forEach((item) => {
+                    const dataId = item.id;
+                    dataIds[dataId] = true;
+                    if (cacheStream) {
+                      this.resourcesByDataId[dataId] = this.deepFreeze({
+                        data: item,
+                      });
+                    }
+                    this.addStreamIdByDataIdIndex(
+                      streamId,
+                      isQueryStream,
+                      dataId
+                    );
+                  });
               } else if (isObject(innerData) && has(innerData, 'id')) {
                 const dataId = innerData['id'];
                 this.streams[streamId].type = 'singleObject';
                 dataIds[dataId] = true;
-                if (cacheStream) { this.resourcesByDataId[dataId] = this.deepFreeze({ data: innerData }); }
+                if (cacheStream) {
+                  this.resourcesByDataId[dataId] = this.deepFreeze({
+                    data: innerData,
+                  });
+                }
                 this.addStreamIdByDataIdIndex(streamId, isQueryStream, dataId);
               }
 
               if (has(data, 'included')) {
-                data['included'].filter(item => item.id).forEach((item) => {
-                  this.resourcesByDataId[item.id] = this.deepFreeze({ data: item });
-                });
+                data['included']
+                  .filter((item) => item.id)
+                  .forEach((item) => {
+                    this.resourcesByDataId[item.id] = this.deepFreeze({
+                      data: item,
+                    });
+                  });
 
                 data = omit(data, 'included');
               }
@@ -322,7 +451,7 @@ class Streams {
 
           return this.deepFreeze(data);
         }),
-        filter(data => data !== 'initial'),
+        filter((data) => data !== 'initial'),
         distinctUntilChanged(),
         publishReplay(1),
         refCount()
@@ -339,14 +468,16 @@ class Streams {
         isSingleItemStream,
         cacheStream,
         type: 'unknown',
-        dataIds: {}
+        dataIds: {},
       };
 
       this.addStreamIdByApiEndpointIndex(apiEndpoint, streamId, isQueryStream);
 
       if (cacheStream) {
         // keep stream hot
-        this.streams[streamId].subscription = this.streams[streamId].observable.subscribe();
+        this.streams[streamId].subscription = this.streams[
+          streamId
+        ].observable.subscribe();
       }
 
       return this.streams[streamId] as IStream<T>;
@@ -355,25 +486,39 @@ class Streams {
     return this.streams[streamId] as IStream<T>;
   }
 
-  async add<T>(unsafeApiEndpoint: string, bodyData: object | null, waitForRefetchesToResolve = false) {
+  async add<T>(
+    unsafeApiEndpoint: string,
+    bodyData: object | null,
+    waitForRefetchesToResolve = false
+  ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const promises: Promise<any>[] = [];
-      const response = await request<T>(apiEndpoint, bodyData, { method: 'POST' }, null);
+      const response = await request<T>(
+        apiEndpoint,
+        bodyData,
+        { method: 'POST' },
+        null
+      );
 
-      forEach(this.streamIdsByApiEndPointWithoutQuery[apiEndpoint], (streamId) => {
-        const stream = this.streams[streamId];
+      forEach(
+        this.streamIdsByApiEndPointWithoutQuery[apiEndpoint],
+        (streamId) => {
+          const stream = this.streams[streamId];
 
-        if (!stream.cacheStream) {
-          promises.push(stream.fetch());
-        } else {
-          stream.observer.next((previous) => (this.deepFreeze({
-            ...previous,
-            data: [...previous.data, response['data']]
-          })));
+          if (!stream.cacheStream) {
+            promises.push(stream.fetch());
+          } else {
+            stream.observer.next((previous) =>
+              this.deepFreeze({
+                ...previous,
+                data: [...previous.data, response['data']],
+              })
+            );
+          }
         }
-      });
+      );
 
       forEach(this.streamIdsByApiEndPointWithQuery[apiEndpoint], (streamId) => {
         promises.push(this.streams[streamId].fetch());
@@ -392,12 +537,22 @@ class Streams {
     }
   }
 
-  async update<T>(unsafeApiEndpoint: string, dataId: string, bodyData: object, waitForRefetchesToResolve = false) {
+  async update<T>(
+    unsafeApiEndpoint: string,
+    dataId: string,
+    bodyData: object,
+    waitForRefetchesToResolve = false
+  ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
       const promises: Promise<any>[] = [];
-      const response = await request<T>(apiEndpoint, bodyData, { method: 'PATCH' }, null);
+      const response = await request<T>(
+        apiEndpoint,
+        bodyData,
+        { method: 'PATCH' },
+        null
+      );
 
       union(
         this.streamIdsByDataIdWithoutQuery[dataId],
@@ -411,10 +566,14 @@ class Streams {
         } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(response);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) => (this.deepFreeze({
-            ...previous,
-            data: previous.data.map(child => child.id === dataId ? response['data'] : child)
-          })));
+          stream.observer.next((previous) =>
+            this.deepFreeze({
+              ...previous,
+              data: previous.data.map((child) =>
+                child.id === dataId ? response['data'] : child
+              ),
+            })
+          );
         }
       });
 
@@ -439,7 +598,11 @@ class Streams {
     }
   }
 
-  async delete(unsafeApiEndpoint: string, dataId: string, waitForRefetchesToResolve = false) {
+  async delete(
+    unsafeApiEndpoint: string,
+    dataId: string,
+    waitForRefetchesToResolve = false
+  ) {
     const apiEndpoint = this.removeTrailingSlash(unsafeApiEndpoint);
 
     try {
@@ -459,10 +622,12 @@ class Streams {
         } else if (streamHasDataId && stream.type === 'singleObject') {
           stream.observer.next(undefined);
         } else if (streamHasDataId && stream.type === 'arrayOfObjects') {
-          stream.observer.next((previous) => (this.deepFreeze({
-            ...previous,
-            data: previous.data.filter(child => child.id !== dataId)
-          })));
+          stream.observer.next((previous) =>
+            this.deepFreeze({
+              ...previous,
+              data: previous.data.filter((child) => child.id !== dataId),
+            })
+          );
         }
       });
 
@@ -496,32 +661,34 @@ class Streams {
     apiEndpoint,
     partialApiEndpoint,
     regexApiEndpoint,
-    onlyFetchActiveStreams
+    onlyFetchActiveStreams,
   }: {
-    dataId?: string[],
-    apiEndpoint?: string[],
-    partialApiEndpoint?: string[],
-    regexApiEndpoint?: RegExp[],
-    onlyFetchActiveStreams?: boolean
+    dataId?: string[];
+    apiEndpoint?: string[];
+    partialApiEndpoint?: string[];
+    regexApiEndpoint?: RegExp[];
+    onlyFetchActiveStreams?: boolean;
   }) {
-    const keys = [
-      ...(dataId || []),
-      ...(apiEndpoint || [])
-    ];
+    const keys = [...(dataId || []), ...(apiEndpoint || [])];
     const promises: Promise<any>[] = [];
 
-    const streamIds1 = flatten(keys.map((key) => [
-      ...(this.streamIdsByDataIdWithQuery[key] || []),
-      ...(this.streamIdsByDataIdWithoutQuery[key] || []),
-      ...(this.streamIdsByApiEndPointWithQuery[key] || []),
-      ...(this.streamIdsByApiEndPointWithoutQuery[key] || [])
-    ]));
+    const streamIds1 = flatten(
+      keys.map((key) => [
+        ...(this.streamIdsByDataIdWithQuery[key] || []),
+        ...(this.streamIdsByDataIdWithoutQuery[key] || []),
+        ...(this.streamIdsByApiEndPointWithQuery[key] || []),
+        ...(this.streamIdsByApiEndPointWithoutQuery[key] || []),
+      ])
+    );
 
     const streamIds2: string[] = [];
     if (partialApiEndpoint && partialApiEndpoint.length > 0) {
       forOwn(this.streamIdsByApiEndPointWithQuery, (_value, key) => {
         partialApiEndpoint.forEach((endpoint) => {
-          if (key.includes(endpoint) && this.streamIdsByApiEndPointWithQuery[key]) {
+          if (
+            key.includes(endpoint) &&
+            this.streamIdsByApiEndPointWithQuery[key]
+          ) {
             streamIds2.push(...this.streamIdsByApiEndPointWithQuery[key]);
           }
         });
@@ -529,7 +696,10 @@ class Streams {
 
       forOwn(this.streamIdsByApiEndPointWithoutQuery, (_value, key) => {
         partialApiEndpoint.forEach((endpoint) => {
-          if (key.includes(endpoint) && this.streamIdsByApiEndPointWithoutQuery[key]) {
+          if (
+            key.includes(endpoint) &&
+            this.streamIdsByApiEndPointWithoutQuery[key]
+          ) {
             streamIds2.push(...this.streamIdsByApiEndPointWithoutQuery[key]);
           }
         });

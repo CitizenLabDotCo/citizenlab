@@ -9,7 +9,16 @@ import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 
 // styling
-import { Container, Header, Background, Foreground, ForegroundIconContainer, ForegroundIcon, Title, ButtonContainer } from './modalStyles';
+import {
+  Container,
+  Header,
+  Background,
+  Foreground,
+  ForegroundIconContainer,
+  ForegroundIcon,
+  Title,
+  ButtonContainer,
+} from './modalStyles';
 import { colors } from 'utils/styleUtils';
 
 // svg
@@ -23,17 +32,16 @@ interface Props {
 
 export default memo<Props>(({ opened, onClose, className }) => {
   return (
-    <Modal
-      width={600}
-      opened={opened}
-      close={onClose}
-    >
+    <Modal width={600} opened={opened} close={onClose}>
       <Container className={`e2e-programmtic-vote-success-modal ${className}`}>
         <Header>
-          <Background src={illustration} alt="" role="presentation"/>
+          <Background src={illustration} alt="" role="presentation" />
           <Foreground>
             <ForegroundIconContainer>
-              <ForegroundIcon name="checkmark-full" color={colors.clGreenSuccess} />
+              <ForegroundIcon
+                name="checkmark-full"
+                color={colors.clGreenSuccess}
+              />
             </ForegroundIconContainer>
           </Foreground>
         </Header>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import styled, { css, keyframes } from 'styled-components';
 import Icon, { IconNames } from 'components/UI/Icon';
@@ -45,14 +44,16 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background: #fff;
-  animation: ${css`${enterAnimation} 450ms linear`};
+  animation: ${css`
+    ${enterAnimation} 450ms linear
+  `};
   transform-origin: center center;
 `;
 
 const IconWrapper = styled.div`
   width: 42px;
   height: 42px;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;
@@ -60,7 +61,7 @@ const IconWrapper = styled.div`
   margin-bottom: 15px;
 `;
 
-const StyledIcon = styled(Icon) `
+const StyledIcon = styled(Icon)`
   height: 20px;
   fill: #333;
 `;
@@ -72,11 +73,10 @@ type Props = {
 
 /** A bordered container with an icon that animates in with a bouncy animation */
 export default class PopContainer extends React.PureComponent<Props> {
-
   render() {
     return (
       <Container>
-        {this.props.icon &&
+        {this.props.icon && (
           <IconWrapper>
             {/*
               If you use this component and want to add aria-hidden,
@@ -84,7 +84,7 @@ export default class PopContainer extends React.PureComponent<Props> {
             */}
             <StyledIcon name={this.props.icon} ariaHidden />
           </IconWrapper>
-        }
+        )}
 
         {this.props.children}
       </Container>

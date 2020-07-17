@@ -74,115 +74,151 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const CommentsSection = memo<Props>(({ postId, postType, authUser, post, comments, project, className }) => {
-  const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
-  const [posting, setPosting] = useState(false);
-  const { commentsList, hasMore, onLoadMore, loadingInital, loadingMore, onChangeSort } = comments;
+const CommentsSection = memo<Props>(
+  ({ postId, postType, authUser, post, comments, project, className }) => {
+    const [sortOrder, setSortOrder] = useState<CommentsSort>('-new');
+    const [posting, setPosting] = useState(false);
+    const {
+      commentsList,
+      hasMore,
+      onLoadMore,
+      loadingInital,
+      loadingMore,
+      onChangeSort,
+    } = comments;
 
-  const handleSortOrderChange = useCallback(
-    (sortOrder: CommentsSort) => {
+    const handleSortOrderChange = useCallback((sortOrder: CommentsSort) => {
       onChangeSort(sortOrder);
       setSortOrder(sortOrder);
-    }, []
-  );
+    }, []);
 
-  const handleIntersection = useCallback(
-    (event: IntersectionObserverEntry, unobserve: () => void) => {
-      if (event.isIntersecting) {
-        onLoadMore();
-        unobserve();
-      }
-    }, []
-  );
+    const handleIntersection = useCallback(
+      (event: IntersectionObserverEntry, unobserve: () => void) => {
+        if (event.isIntersecting) {
+          onLoadMore();
+          unobserve();
+        }
+      },
+      []
+    );
 
-  const handleCommentPosting = useCallback(
-    (isPosting: boolean) => {
+    const handleCommentPosting = useCallback((isPosting: boolean) => {
       setPosting(isPosting);
-    }, []
-  );
+    }, []);
 
-  if (!isNilOrError(post)) {
-    const commentingEnabled = get(post, 'attributes.action_descriptor.commenting.enabled', true) as boolean;
-    const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason', null) as IdeaCommentingDisabledReason | null;
-    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data : authUser }) : false;
-    const loaded = (!isNilOrError(post) && !isNilOrError(commentsList) && !isUndefined(project));
-    const phaseId = isNilOrError(project) ? undefined : project.relationships?.current_phase?.data?.id;
+    if (!isNilOrError(post)) {
+      const commentingEnabled = get(
+        post,
+        'attributes.action_descriptor.commenting.enabled',
+        true
+      ) as boolean;
+      const commentingDisabledReason = get(
+        post,
+        'attributes.action_descriptor.commenting.disabled_reason',
+        null
+      ) as IdeaCommentingDisabledReason | null;
+      const userIsAdmin = !isNilOrError(authUser)
+        ? isAdmin({ data: authUser })
+        : false;
+      const loaded =
+        !isNilOrError(post) &&
+        !isNilOrError(commentsList) &&
+        !isUndefined(project);
+      const phaseId = isNilOrError(project)
+        ? undefined
+        : project.relationships?.current_phase?.data?.id;
 
-    return (
-      <Container className={className || ''}>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...messages.invisibleTitleComments} />
-        </ScreenReaderOnly>
+      return (
+        <Container className={className || ''}>
+          <ScreenReaderOnly>
+            <FormattedMessage
+              tagName="h2"
+              {...messages.invisibleTitleComments}
+            />
+          </ScreenReaderOnly>
 
-        {loaded && !isNilOrError(commentsList) ? (
-          <>
-            {/*
+          {loaded && !isNilOrError(commentsList) ? (
+            <>
+              {/*
               Show warning messages when there are no comments and you're logged in as an admin.
               Otherwise the comment section would be empty (because admins don't see the parent comment box), which might look weird or confusing
             */}
-            {isEmpty(commentsList) && userIsAdmin &&
-              <StyledWarning>
-                <FormattedMessage {...messages.noComments} />
-              </StyledWarning>
-            }
+              {isEmpty(commentsList) && userIsAdmin && (
+                <StyledWarning>
+                  <FormattedMessage {...messages.noComments} />
+                </StyledWarning>
+              )}
 
-            <CommentingDisabled
-              commentingEnabled={commentingEnabled}
-              commentingDisabledReason={commentingDisabledReason}
-              projectId={get(post, 'relationships.project.data.id')}
-              phaseId={phaseId}
-              postId={postId}
-              postType={postType}
-            />
+              <CommentingDisabled
+                commentingEnabled={commentingEnabled}
+                commentingDisabledReason={commentingDisabledReason}
+                projectId={get(post, 'relationships.project.data.id')}
+                phaseId={phaseId}
+                postId={postId}
+                postType={postType}
+              />
 
-            <Comments
-              postId={postId}
-              postType={postType}
-              comments={commentsList}
-              sortOrder={sortOrder}
-              loading={loadingInital}
-              onSortOrderChange={handleSortOrderChange}
-            />
+              <Comments
+                postId={postId}
+                postType={postType}
+                comments={commentsList}
+                sortOrder={sortOrder}
+                loading={loadingInital}
+                onSortOrderChange={handleSortOrderChange}
+              />
 
-            {hasMore && !loadingMore &&
-              <Observer onChange={handleIntersection} rootMargin="3000px">
-                <LoadMore />
-              </Observer>
-            }
+              {hasMore && !loadingMore && (
+                <Observer onChange={handleIntersection} rootMargin="3000px">
+                  <LoadMore />
+                </Observer>
+              )}
 
-            {loadingMore && !posting &&
-              <LoadingMore>
-                <LoadingMoreMessage>
-                  <FormattedMessage {...messages.loadingMoreComments} />
-                </LoadingMoreMessage>
-              </LoadingMore>
-            }
+              {loadingMore && !posting && (
+                <LoadingMore>
+                  <LoadingMoreMessage>
+                    <FormattedMessage {...messages.loadingMoreComments} />
+                  </LoadingMoreMessage>
+                </LoadingMore>
+              )}
 
-            <ParentCommentForm
-              postId={postId}
-              postType={postType}
-              postingComment={handleCommentPosting}
-            />
-          </>
-        ) : (
-          <LoadingComments />
-        )}
-      </Container>
-    );
+              <ParentCommentForm
+                postId={postId}
+                postType={postType}
+                postingComment={handleCommentPosting}
+              />
+            </>
+          ) : (
+            <LoadingComments />
+          )}
+        </Container>
+      );
+    }
+
+    return null;
   }
-
-  return null;
-});
+);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>,
-  comments: ({ postId, postType, render }) => <GetComments postId={postId} postType={postType}>{render}</GetComments>,
-  project: ({ post, render }) => <GetProject projectId={get(post, 'relationships.project.data.id')}>{render}</GetProject>
+  post: ({ postId, postType, render }) => (
+    <GetPost id={postId} type={postType}>
+      {render}
+    </GetPost>
+  ),
+  comments: ({ postId, postType, render }) => (
+    <GetComments postId={postId} postType={postType}>
+      {render}
+    </GetComments>
+  ),
+  project: ({ post, render }) => (
+    <GetProject projectId={get(post, 'relationships.project.data.id')}>
+      {render}
+    </GetProject>
+  ),
 });
 
 export default memo<InputProps>((inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CommentsSection {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentsSection {...inputProps} {...dataProps} />}
   </Data>
 ));

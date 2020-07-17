@@ -17,10 +17,12 @@ interface Props {
   notification: ICommentOnYourInitiativeNotificationData;
 }
 
-const CommentOnYourInitiativeNotification = memo<Props>(props => {
+const CommentOnYourInitiativeNotification = memo<Props>((props) => {
   const { notification } = props;
 
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser =
+    isNilOrError(notification.attributes.initiating_user_first_name) ||
+    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
@@ -32,17 +34,18 @@ const CommentOnYourInitiativeNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.userCommentedOnYourInitiative}
         values={{
-          name: deletedUser ?
-          <DeletedUser>
-            <FormattedMessage {...messages.deletedUser} />
-          </DeletedUser>
-          :
-          <Link
-            to={`/profile/${notification.attributes.initiating_user_slug}`}
-            onClick={stopPropagation}
-          >
-            {notification.attributes.initiating_user_first_name}
-          </Link>,
+          name: deletedUser ? (
+            <DeletedUser>
+              <FormattedMessage {...messages.deletedUser} />
+            </DeletedUser>
+          ) : (
+            <Link
+              to={`/profile/${notification.attributes.initiating_user_slug}`}
+              onClick={stopPropagation}
+            >
+              {notification.attributes.initiating_user_first_name}
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

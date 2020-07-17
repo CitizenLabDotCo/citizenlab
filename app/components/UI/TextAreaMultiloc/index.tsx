@@ -50,14 +50,17 @@ type State = {
   currentTenant: ITenant | null;
 };
 
-export default class TextAreaMultiloc extends React.PureComponent<Props, State> {
+export default class TextAreaMultiloc extends React.PureComponent<
+  Props,
+  State
+> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props as any);
     this.state = {
       locale: null,
-      currentTenant: null
+      currentTenant: null,
     };
     this.subscriptions = [];
   }
@@ -67,30 +70,43 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$
-      ).subscribe(([locale, currentTenant]) => {
-        this.setState({ locale, currentTenant });
-      })
+      combineLatest(locale$, currentTenant$).subscribe(
+        ([locale, currentTenant]) => {
+          this.setState({ locale, currentTenant });
+        }
+      ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleOnChange = (locale: Locale) => (value: string) => {
     if (this.props.onChange) {
-      this.props.onChange({
-        ...this.props.valueMultiloc,
-        [locale]: value
-      }, locale);
+      this.props.onChange(
+        {
+          ...this.props.valueMultiloc,
+          [locale]: value,
+        },
+        locale
+      );
     }
-  }
+  };
 
   renderOnce = (currentTenantLocale, index, totalLocales) => {
-    const { label, labelTooltipText, name, placeholder, rows, maxCharCount, valueMultiloc, errorMultiloc, renderPerLocale, disabled } = this.props;
+    const {
+      label,
+      labelTooltipText,
+      name,
+      placeholder,
+      rows,
+      maxCharCount,
+      valueMultiloc,
+      errorMultiloc,
+      renderPerLocale,
+      disabled,
+    } = this.props;
     const value = get(valueMultiloc, [currentTenantLocale], '') as string;
     const error = get(errorMultiloc, [currentTenantLocale], null);
     const id = this.props.id && `${this.props.id}-${currentTenantLocale}`;
@@ -100,13 +116,17 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
         key={currentTenantLocale}
         className={`${index === totalLocales - 1 && 'last'}`}
       >
-        {label &&
+        {label && (
           <Label htmlFor={id}>
             <span>{label}</span>
-            {totalLocales > 1 && <LanguageExtension>{currentTenantLocale.toUpperCase()}</LanguageExtension>}
+            {totalLocales > 1 && (
+              <LanguageExtension>
+                {currentTenantLocale.toUpperCase()}
+              </LanguageExtension>
+            )}
             {labelTooltipText && <IconTooltip content={labelTooltipText} />}
           </Label>
-        }
+        )}
 
         {renderPerLocale && renderPerLocale(currentTenantLocale)}
 
@@ -123,23 +143,28 @@ export default class TextAreaMultiloc extends React.PureComponent<Props, State> 
         />
       </TextAreaContainer>
     );
-  }
+  };
 
   render() {
     const { locale, currentTenant } = this.state;
     const { selectedLocale } = this.props;
 
     if (locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
+      const currentTenantLocales =
+        currentTenant.data.attributes.settings.core.locales;
       const totalLocales = currentTenantLocales.length;
 
       return (
-        <Container id={this.props.id} className={this.props['className']} >
+        <Container id={this.props.id} className={this.props['className']}>
           {selectedLocale
             ? this.renderOnce(selectedLocale, 1, totalLocales)
             : currentTenantLocales.map((currentTenantLocale, index) => {
-              return this.renderOnce(currentTenantLocale, index, totalLocales);
-          })}
+                return this.renderOnce(
+                  currentTenantLocale,
+                  index,
+                  totalLocales
+                );
+              })}
         </Container>
       );
     }

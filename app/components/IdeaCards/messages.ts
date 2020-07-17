@@ -19,7 +19,8 @@ export default defineMessages({
   },
   tryOtherFilter: {
     id: 'app.containers.IdeaCards.tryOtherFilter',
-    defaultMessage: "Try adjusting your search or filter to find what you're looking for",
+    defaultMessage:
+      "Try adjusting your search or filter to find what you're looking for",
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
@@ -79,7 +80,8 @@ export default defineMessages({
   },
   xIdeas: {
     id: 'app.containers.IdeaCards.xIdeas',
-    defaultMessage: '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+    defaultMessage:
+      '{ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
   all: {
     id: 'app.containers.IdeaCards.all',
@@ -95,7 +97,8 @@ export default defineMessages({
   },
   showXIdeas: {
     id: 'app.containers.IdeaCards.showXIdeas',
-    defaultMessage: 'Show {ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+    defaultMessage:
+      'Show {ideasCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
   resetFilters: {
     id: 'app.containers.IdeaCards.resetFilters',
@@ -104,5 +107,5 @@ export default defineMessages({
   a11y_totalIdeas: {
     id: 'app.containers.IdeaCards.a11y_totalIdeas',
     defaultMessage: 'Total ideas: {ideasCount}',
-  }
+  },
 });

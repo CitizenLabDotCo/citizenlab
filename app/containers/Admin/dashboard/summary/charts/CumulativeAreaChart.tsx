@@ -20,7 +20,7 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from 'recharts';
 import {
   IGraphUnit,
@@ -32,7 +32,7 @@ import {
   GraphCardTitle,
   GraphCardFigureContainer,
   GraphCardFigure,
-  GraphCardFigureChange
+  GraphCardFigureChange,
 } from '../..';
 
 // typings
@@ -59,7 +59,10 @@ type Props = {
   stream: (streamParams?: IStreamParams | null) => IStream<IResourceByTime>;
 };
 
-export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps, State> {
+export class CumulativeAreaChart extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   subscription: Subscription;
 
   constructor(props: Props & InjectedIntlProps) {
@@ -85,7 +88,7 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
       resolution,
       currentGroupFilter,
       currentTopicFilter,
-      currentProjectFilter,
+      currentProjectFilter
     );
   }
 
@@ -99,12 +102,13 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
       currentProjectFilter,
     } = this.props;
 
-    if (startAt !== prevProps.startAt
-      || endAt !== prevProps.endAt
-      || resolution !== prevProps.resolution
-      || currentGroupFilter !== prevProps.currentGroupFilter
-      || currentTopicFilter !== prevProps.currentTopicFilter
-      || currentProjectFilter !== prevProps.currentProjectFilter
+    if (
+      startAt !== prevProps.startAt ||
+      endAt !== prevProps.endAt ||
+      resolution !== prevProps.resolution ||
+      currentGroupFilter !== prevProps.currentGroupFilter ||
+      currentTopicFilter !== prevProps.currentTopicFilter ||
+      currentProjectFilter !== prevProps.currentProjectFilter
     ) {
       this.resubscribe(
         startAt,
@@ -112,7 +116,7 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
         resolution,
         currentGroupFilter,
         currentTopicFilter,
-        currentProjectFilter,
+        currentProjectFilter
       );
     }
   }
@@ -128,12 +132,12 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
       return map(data.series[graphUnit], (value, key) => ({
         value,
         name: key,
-        code: key
+        code: key,
       }));
     }
 
     return null;
-  }
+  };
 
   resubscribe(
     startAt: string | null | undefined,
@@ -141,7 +145,7 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
     resolution: IResolution,
     currentGroupFilter: string | undefined,
     currentTopicFilter: string | undefined,
-    currentProjectFilter: string | undefined,
+    currentProjectFilter: string | undefined
   ) {
     const { stream } = this.props;
 
@@ -157,7 +161,7 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
         project: currentProjectFilter,
         group: currentGroupFilter,
         topic: currentTopicFilter,
-      }
+      },
     }).observable.subscribe((serie) => {
       const convertedSerie = this.convertToGraphFormat(serie);
       this.setState({ serie: convertedSerie });
@@ -169,21 +173,21 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
     const { formatDate } = this.props.intl;
 
     return formatDate(date, {
-      day: (resolution === 'month' ? undefined : '2-digit'),
+      day: resolution === 'month' ? undefined : '2-digit',
       month: 'short',
     });
-  }
+  };
 
   formatLabel = (date: string) => {
     const { resolution } = this.props;
     const { formatDate } = this.props.intl;
 
     return formatDate(date, {
-      day: (resolution === 'month' ? undefined : '2-digit'),
+      day: resolution === 'month' ? undefined : '2-digit',
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
     });
-  }
+  };
 
   formatSerieChange = (serieChange: number) => {
     if (serieChange > 0) {
@@ -192,7 +196,7 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
       return `(${serieChange.toString()})`;
     }
     return null;
-  }
+  };
 
   getFormattedNumbers(serie: IGraphFormat | null) {
     if (serie) {
@@ -217,7 +221,7 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
     return {
       totalNumber: null,
       formattedSerieChange: null,
-      typeOfChange: ''
+      typeOfChange: '',
     };
   }
 
@@ -226,19 +230,22 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
       graphTitleMessageKey,
       graphUnit,
       className,
-      intl: { formatMessage } } = this.props;
+      intl: { formatMessage },
+    } = this.props;
     const { serie } = this.state;
-    const { chartFill,
+    const {
+      chartFill,
       chartLabelSize,
       chartLabelColor,
       chartStroke,
       animationBegin,
-      animationDuration } = this.props['theme'];
+      animationDuration,
+    } = this.props['theme'];
     const formattedNumbers = this.getFormattedNumbers(serie);
     const {
       totalNumber,
       formattedSerieChange,
-      typeOfChange
+      typeOfChange,
     } = formattedNumbers;
 
     return (
@@ -249,33 +256,26 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
               <FormattedMessage {...messages[graphTitleMessageKey]} />
             </GraphCardTitle>
             <GraphCardFigureContainer>
-              <GraphCardFigure>
-                {totalNumber}
-              </GraphCardFigure>
-              <GraphCardFigureChange
-                className={typeOfChange}
-              >
+              <GraphCardFigure>{totalNumber}</GraphCardFigure>
+              <GraphCardFigureChange className={typeOfChange}>
                 {formattedSerieChange}
               </GraphCardFigureChange>
             </GraphCardFigureContainer>
           </GraphCardHeader>
-          {!serie ?
+          {!serie ? (
             <NoDataContainer>
               <FormattedMessage {...messages.noData} />
             </NoDataContainer>
-            :
+          ) : (
             <ResponsiveContainer>
-              <AreaChart
-                data={serie}
-                margin={{ right: 40 }}
-              >
+              <AreaChart data={serie} margin={{ right: 40 }}>
                 <CartesianGrid strokeDasharray="5 5" />
                 <Area
                   type="monotone"
                   dataKey="value"
                   name={formatMessage(messages[graphUnit])}
                   dot={false}
-                  fill={rgba(chartFill, .25)}
+                  fill={rgba(chartFill, 0.25)}
                   fillOpacity={1}
                   stroke={chartStroke}
                   animationDuration={animationDuration}
@@ -289,17 +289,14 @@ export class CumulativeAreaChart extends PureComponent<Props & InjectedIntlProps
                   tick={{ transform: 'translate(0, 7)' }}
                   tickFormatter={this.formatTick}
                 />
-                <YAxis
-                  stroke={chartLabelColor}
-                  fontSize={chartLabelSize}
-                />
+                <YAxis stroke={chartLabelColor} fontSize={chartLabelSize} />
                 <Tooltip
                   isAnimationActive={false}
                   labelFormatter={this.formatLabel}
                 />
               </AreaChart>
             </ResponsiveContainer>
-          }
+          )}
         </GraphCardInner>
       </GraphCard>
     );

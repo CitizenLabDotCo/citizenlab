@@ -23,18 +23,20 @@ export default class GetAreas extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      areas: undefined
+      areas: undefined,
     };
   }
 
   componentDidMount() {
     this.subscriptions = [
-      areasStream().observable.subscribe(areas => this.setState({ areas: !isNilOrError(areas) ? areas.data : areas }))
+      areasStream().observable.subscribe((areas) =>
+        this.setState({ areas: !isNilOrError(areas) ? areas.data : areas })
+      ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

@@ -17,9 +17,11 @@ const onLoadMore = jest.fn();
 const mockNotificationsFromResourceComp: GetNotificationsChildProps = {
   onLoadMore,
   list: [getNotification('aminRights', 'admin_rights_received')],
-  hasMore: false
+  hasMore: false,
 };
-const mockUserFromResource: GetAuthUserChildProps = makeUser({ unread_notifications: 0 }).data;
+const mockUserFromResource: GetAuthUserChildProps = makeUser({
+  unread_notifications: 0,
+}).data;
 
 describe('<NotificationMenu />', () => {
   it('renders correctly when everything is there', () => {
@@ -27,7 +29,8 @@ describe('<NotificationMenu />', () => {
       <NotificationMenu
         notifications={mockNotificationsFromResourceComp}
         authUser={mockUserFromResource}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly when there is no user', () => {
@@ -35,20 +38,22 @@ describe('<NotificationMenu />', () => {
       <NotificationMenu
         notifications={mockNotificationsFromResourceComp}
         authUser={undefined}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
   it('renders correctly when there is no notifs', () => {
     const noNotifs = {
       onLoadMore,
       list: null,
-      hasMore: false
+      hasMore: false,
     };
     const wrapper = shallow(
       <NotificationMenu
         notifications={noNotifs}
         authUser={mockUserFromResource}
-      />);
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
 });

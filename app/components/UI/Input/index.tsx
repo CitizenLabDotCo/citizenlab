@@ -72,12 +72,18 @@ export type Props = {
   spellCheck?: boolean;
   readOnly?: boolean;
   required?: boolean;
-  autocomplete?: 'email' | 'given-name' | 'family-name' | 'current-password' | 'new-password' | 'off' | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
+  autocomplete?:
+    | 'email'
+    | 'given-name'
+    | 'family-name'
+    | 'current-password'
+    | 'new-password'
+    | 'off'
+    | 'on'; // https://www.w3.org/TR/WCAG21/#input-purposes
   className?: string;
 };
 
 export class Input extends React.PureComponent<Props> {
-
   handleOnChange = (event: React.FormEvent<HTMLInputElement>) => {
     const { maxCharCount, onChange, locale } = this.props;
 
@@ -86,7 +92,7 @@ export class Input extends React.PureComponent<Props> {
         onChange(event.currentTarget.value, locale);
       }
     }
-  }
+  };
 
   handleOnBlur = (event: React.FormEvent<HTMLInputElement>) => {
     const { onBlur } = this.props;
@@ -94,33 +100,49 @@ export class Input extends React.PureComponent<Props> {
     if (onBlur) {
       onBlur(event);
     }
-  }
+  };
 
   handleRef = (element: HTMLInputElement) => {
     this.props.setRef && this.props.setRef(element);
-  }
+  };
 
   render() {
     const { label, labelTooltipText, ariaLabel, className } = this.props;
-    const { id, type, name, maxCharCount, min, autoFocus, onFocus, disabled, spellCheck, readOnly, required, autocomplete } = this.props;
+    const {
+      id,
+      type,
+      name,
+      maxCharCount,
+      min,
+      autoFocus,
+      onFocus,
+      disabled,
+      spellCheck,
+      readOnly,
+      required,
+      autocomplete,
+    } = this.props;
     const hasError = !isNil(this.props.error) && !isEmpty(this.props.error);
     const optionalProps = isBoolean(spellCheck) ? { spellCheck } : null;
     const value = this.props.value || '';
     const placeholder = this.props.placeholder || '';
     const error = this.props.error || null;
     const currentCharCount = maxCharCount && size(value);
-    const tooManyChars = !!(maxCharCount && currentCharCount && currentCharCount > maxCharCount);
+    const tooManyChars = !!(
+      maxCharCount &&
+      currentCharCount &&
+      currentCharCount > maxCharCount
+    );
     const adminPage = isPage('admin', location.pathname);
 
     return (
       <Container className={className || ''}>
-
-        {label &&
+        {label && (
           <Label htmlFor={id}>
             <span>{label}</span>
             {labelTooltipText && <IconTooltip content={labelTooltipText} />}
           </Label>
-        }
+        )}
 
         <input
           aria-label={ariaLabel}
@@ -147,14 +169,14 @@ export class Input extends React.PureComponent<Props> {
           {...optionalProps}
         />
 
-        {maxCharCount &&
+        {maxCharCount && (
           <>
             <ScreenReaderOnly aria-live="polite">
               <FormattedMessage
                 {...messages.a11y_charactersLeft}
                 values={{
                   currentCharCount,
-                  maxCharCount
+                  maxCharCount,
                 }}
               />
             </ScreenReaderOnly>
@@ -162,10 +184,9 @@ export class Input extends React.PureComponent<Props> {
               {currentCharCount}/{maxCharCount}
             </CharCount>
           </>
-        }
+        )}
 
         <Error className="e2e-input-error" text={error} />
-
       </Container>
     );
   }

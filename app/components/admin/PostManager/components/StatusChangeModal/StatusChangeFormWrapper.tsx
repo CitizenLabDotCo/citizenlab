@@ -11,13 +11,24 @@ import StatusChangeForm from './StatusChangeForm';
 
 // resources
 import { isNilOrError } from 'utils/helperUtils';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
-import GetInitiativeStatus, { GetInitiativeStatusChildProps } from 'resources/GetInitiativeStatus';
-import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
+import GetInitiativeStatus, {
+  GetInitiativeStatusChildProps,
+} from 'resources/GetInitiativeStatus';
+import GetOfficialFeedbacks, {
+  GetOfficialFeedbacksChildProps,
+} from 'resources/GetOfficialFeedbacks';
 
 // services
-import { updateInitiativeStatusWithExistingFeedback, updateInitiativeStatusAddFeedback } from 'services/initiativeStatusChanges';
+import {
+  updateInitiativeStatusWithExistingFeedback,
+  updateInitiativeStatusAddFeedback,
+} from 'services/initiativeStatusChanges';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -53,7 +64,7 @@ interface DataProps {
   officialFeedbacks: GetOfficialFeedbacksChildProps;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 export interface FormValues extends MultilocFormValues {
   author_multiloc: Multiloc;
@@ -68,32 +79,47 @@ interface State {
   error: boolean;
 }
 
-class StatusChangeFormWrapper extends PureComponent<Props & InjectedIntlProps, State> {
+class StatusChangeFormWrapper extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       mode: 'new',
       newOfficialFeedback: {
         author_multiloc: {},
-        body_multiloc: {}
+        body_multiloc: {},
       },
       loading: false,
       touched: false,
-      error: false
+      error: false,
     };
   }
 
   onChangeMode = (event) => {
     this.setState({ mode: event });
-  }
+  };
 
   onChangeBody = (value: Multiloc) => {
-    this.setState((state) => ({ newOfficialFeedback: { ...state.newOfficialFeedback, body_multiloc: value }, touched: true }));
-  }
+    this.setState((state) => ({
+      newOfficialFeedback: {
+        ...state.newOfficialFeedback,
+        body_multiloc: value,
+      },
+      touched: true,
+    }));
+  };
 
   onChangeAuthor = (value: Multiloc) => {
-    this.setState((state) => ({ newOfficialFeedback: { ...state.newOfficialFeedback, author_multiloc: value }, touched: true }));
-  }
+    this.setState((state) => ({
+      newOfficialFeedback: {
+        ...state.newOfficialFeedback,
+        author_multiloc: value,
+      },
+      touched: true,
+    }));
+  };
 
   validate = () => {
     const { tenantLocales } = this.props;
@@ -101,17 +127,23 @@ class StatusChangeFormWrapper extends PureComponent<Props & InjectedIntlProps, S
     let validated = true;
 
     if (!isNilOrError(tenantLocales) && mode === 'new') {
-      validated =  false;
+      validated = false;
 
       tenantLocales.forEach((locale) => {
-        if (!isEmpty(newOfficialFeedback.author_multiloc[locale]) && !isEmpty(newOfficialFeedback.body_multiloc[locale])) {
+        if (
+          !isEmpty(newOfficialFeedback.author_multiloc[locale]) &&
+          !isEmpty(newOfficialFeedback.body_multiloc[locale])
+        ) {
           validated = true;
         }
       });
 
       tenantLocales.forEach((locale) => {
-        if ((!isEmpty(newOfficialFeedback.author_multiloc[locale]) && isEmpty(newOfficialFeedback.body_multiloc[locale])) ||
-            (isEmpty(newOfficialFeedback.author_multiloc[locale]) && !isEmpty(newOfficialFeedback.body_multiloc[locale]))
+        if (
+          (!isEmpty(newOfficialFeedback.author_multiloc[locale]) &&
+            isEmpty(newOfficialFeedback.body_multiloc[locale])) ||
+          (isEmpty(newOfficialFeedback.author_multiloc[locale]) &&
+            !isEmpty(newOfficialFeedback.body_multiloc[locale]))
         ) {
           validated = false;
         }
@@ -119,34 +151,59 @@ class StatusChangeFormWrapper extends PureComponent<Props & InjectedIntlProps, S
     }
 
     return validated;
-  }
+  };
 
   submit = () => {
-    const { initiativeId, newStatusId, closeModal, officialFeedbacks } = this.props;
-    const { mode, newOfficialFeedback: { body_multiloc, author_multiloc } } = this.state;
+    const {
+      initiativeId,
+      newStatusId,
+      closeModal,
+      officialFeedbacks,
+    } = this.props;
+    const {
+      mode,
+      newOfficialFeedback: { body_multiloc, author_multiloc },
+    } = this.state;
     if (this.validate()) {
       if (mode === 'new') {
         this.setState({ loading: true });
-        updateInitiativeStatusAddFeedback(initiativeId, newStatusId, body_multiloc, author_multiloc)
+        updateInitiativeStatusAddFeedback(
+          initiativeId,
+          newStatusId,
+          body_multiloc,
+          author_multiloc
+        )
           .then(() => closeModal())
           .catch(() => {
             this.setState({ loading: false, error: true });
           });
-      } else if (mode === 'latest' && !isNilOrError(officialFeedbacks.officialFeedbacksList)) {
-        updateInitiativeStatusWithExistingFeedback(initiativeId, newStatusId, officialFeedbacks.officialFeedbacksList.data[0].id)
+      } else if (
+        mode === 'latest' &&
+        !isNilOrError(officialFeedbacks.officialFeedbacksList)
+      ) {
+        updateInitiativeStatusWithExistingFeedback(
+          initiativeId,
+          newStatusId,
+          officialFeedbacks.officialFeedbacksList.data[0].id
+        )
           .then(() => closeModal())
           .catch(() => {
             this.setState({ loading: false, error: true });
           });
       }
     }
-  }
+  };
 
   render() {
     const { initiative, newStatus, officialFeedbacks } = this.props;
     const { loading, error, newOfficialFeedback, mode } = this.state;
 
-    if (isNilOrError(initiative) || isNilOrError(newStatus) || officialFeedbacks.officialFeedbacksList === undefined) return null;
+    if (
+      isNilOrError(initiative) ||
+      isNilOrError(newStatus) ||
+      officialFeedbacks.officialFeedbacksList === undefined
+    )
+      return null;
 
     return (
       <Container>
@@ -163,7 +220,7 @@ class StatusChangeFormWrapper extends PureComponent<Props & InjectedIntlProps, S
                 <ColoredText color={newStatus.attributes.color}>
                   <T value={newStatus.attributes.title_multiloc} />
                 </ColoredText>
-              )
+              ),
             }}
           />
         </ContextLine>
@@ -178,7 +235,11 @@ class StatusChangeFormWrapper extends PureComponent<Props & InjectedIntlProps, S
           onChangeAuthor={this.onChangeAuthor}
           onChangeBody={this.onChangeBody}
           onChangeMode={this.onChangeMode}
-          latestOfficialFeedback={get(officialFeedbacks, 'officialFeedbacksList.data[0]', null)}
+          latestOfficialFeedback={get(
+            officialFeedbacks,
+            'officialFeedbacksList.data[0]',
+            null
+          )}
           submit={this.submit}
         />
       </Container>
@@ -188,15 +249,25 @@ class StatusChangeFormWrapper extends PureComponent<Props & InjectedIntlProps, S
 
 const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetTenantLocales />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  newStatus: ({ newStatusId, render }) => <GetInitiativeStatus id={newStatusId}>{render}</GetInitiativeStatus>,
-  officialFeedbacks: ({ initiativeId, render }) => <GetOfficialFeedbacks postId={initiativeId} postType="initiative">{render}</GetOfficialFeedbacks>
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
+  newStatus: ({ newStatusId, render }) => (
+    <GetInitiativeStatus id={newStatusId}>{render}</GetInitiativeStatus>
+  ),
+  officialFeedbacks: ({ initiativeId, render }) => (
+    <GetOfficialFeedbacks postId={initiativeId} postType="initiative">
+      {render}
+    </GetOfficialFeedbacks>
+  ),
 });
 
 const StatusChangeFormWrapperWithHocs = injectIntl(StatusChangeFormWrapper);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <StatusChangeFormWrapperWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <StatusChangeFormWrapperWithHocs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

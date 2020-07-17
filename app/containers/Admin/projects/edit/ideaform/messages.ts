@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   title: {
@@ -49,10 +47,12 @@ export default defineMessages({
   },
   enabledTooltip: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.enabledTooltip',
-    defaultMessage: 'Enable this field for people who want to create an idea for this project.',
+    defaultMessage:
+      'Enable this field for people who want to create an idea for this project.',
   },
   requiredTooltip: {
     id: 'app.containers.AdminPage.ProjectIdeaForm.requiredTooltip',
-    defaultMessage: 'Require people to complete this field when creating an idea.',
+    defaultMessage:
+      'Require people to complete this field when creating an idea.',
   },
 });

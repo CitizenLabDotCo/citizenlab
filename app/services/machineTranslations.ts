@@ -13,7 +13,7 @@ export interface IMachineTranslationData {
   relationships: {
     translatable: {
       data: IRelationship;
-    }
+    };
   };
 }
 
@@ -21,14 +21,32 @@ export interface IMachineTranslation {
   data: IMachineTranslationData;
 }
 
-export function machineTranslationByIdeaIdStream(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/machine_translation`, ...streamParams });
+export function machineTranslationByIdeaIdStream(
+  ideaId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IMachineTranslation>({
+    apiEndpoint: `${API_PATH}/ideas/${ideaId}/machine_translation`,
+    ...streamParams,
+  });
 }
 
-export function machineTranslationByCommentIdStream(commentId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/comments/${commentId}/machine_translation`, ...streamParams });
+export function machineTranslationByCommentIdStream(
+  commentId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IMachineTranslation>({
+    apiEndpoint: `${API_PATH}/comments/${commentId}/machine_translation`,
+    ...streamParams,
+  });
 }
 
-export function machineTranslationByInitiativeIdStream(initiativeId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IMachineTranslation>({ apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/machine_translation`, ...streamParams });
+export function machineTranslationByInitiativeIdStream(
+  initiativeId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IMachineTranslation>({
+    apiEndpoint: `${API_PATH}/initiatives/${initiativeId}/machine_translation`,
+    ...streamParams,
+  });
 }

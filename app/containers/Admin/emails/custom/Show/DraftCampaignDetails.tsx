@@ -26,19 +26,19 @@ interface DataProps {
   campaign: ICampaignData;
 }
 
-interface Props extends InputProps, DataProps, InjectedIntlProps { }
+interface Props extends InputProps, DataProps, InjectedIntlProps {}
 
 class DraftCampaignDetails extends React.Component<Props> {
-
   handleDelete = () => {
-    const deleteMessage = this.props.intl.formatMessage(messages.campaignDeletionConfirmation);
+    const deleteMessage = this.props.intl.formatMessage(
+      messages.campaignDeletionConfirmation
+    );
     if (window.confirm(deleteMessage)) {
-      deleteCampaign(this.props.campaign.id)
-        .then(() => {
-          clHistory.push('/admin/emails/custom');
-        });
+      deleteCampaign(this.props.campaign.id).then(() => {
+        clHistory.push('/admin/emails/custom');
+      });
     }
-  }
+  };
 
   render() {
     const { campaign } = this.props;
@@ -46,7 +46,7 @@ class DraftCampaignDetails extends React.Component<Props> {
       clIconPrimary: '#fff',
       clIconSecondary: '',
       clIconAccent: '#fff',
-      clIconBackground: ''
+      clIconBackground: '',
     };
     return (
       <>
@@ -66,10 +66,16 @@ class DraftCampaignDetails extends React.Component<Props> {
   }
 }
 
-const DraftCampaignDetailsWithHOCs = injectIntl<InputProps & DataProps>(DraftCampaignDetails);
+const DraftCampaignDetailsWithHOCs = injectIntl<InputProps & DataProps>(
+  DraftCampaignDetails
+);
 
 export default (inputProps: InputProps) => (
   <GetCampaign id={inputProps.campaignId}>
-    {campaign => isNilOrError(campaign) ? null : <DraftCampaignDetailsWithHOCs {...inputProps} campaign={campaign} />}
+    {(campaign) =>
+      isNilOrError(campaign) ? null : (
+        <DraftCampaignDetailsWithHOCs {...inputProps} campaign={campaign} />
+      )
+    }
   </GetCampaign>
 );

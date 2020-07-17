@@ -30,5 +30,5 @@ export default defineMessages({
   addPageButton: {
     id: 'app.containers.AdminPage.PagesPage.addPageButton',
     defaultMessage: 'Add page',
-  }
+  },
 });

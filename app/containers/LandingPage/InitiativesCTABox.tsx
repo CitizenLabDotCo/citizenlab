@@ -33,7 +33,8 @@ const BoxContainer = styled.div`
   margin-bottom: 70px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
+    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 
   ${media.smallerThanMaxTablet`
     padding: 60px 50px 50px;
@@ -135,7 +136,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const signUp = useCallback(() => {
     openSignUpInModal({
       flow: 'signup',
-      action: () => clHistory.push('/initiatives/new')
+      action: () => clHistory.push('/initiatives/new'),
     });
   }, []);
 
@@ -160,9 +161,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
             textDecorationHover="underline"
             fullWidth={smallerThanSmallTablet}
             linkTo="/initiatives"
-            text={
-              <FormattedMessage {...messages.browseInitiative} />
-            }
+            text={<FormattedMessage {...messages.browseInitiative} />}
             className="e2e-initiatives-landing-CTA-browse"
           />
           <StartInitiativeButton

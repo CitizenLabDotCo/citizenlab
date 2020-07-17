@@ -9,12 +9,12 @@ export default () => ({
   component: Loadable({
     loader: () => import('./'),
     loading: LoadableLoadingAdmin,
-    delay: 500
+    delay: 500,
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./summary'),
-      loading: () => null
+      loading: () => null,
     }),
   },
   childRoutes: [
@@ -22,7 +22,7 @@ export default () => ({
       path: 'users',
       component: Loadable({
         loader: () => import('./users'),
-        loading: () => null
+        loading: () => null,
       }),
     },
     clusteringsRoutes(),
@@ -30,8 +30,8 @@ export default () => ({
       path: 'map',
       component: Loadable({
         loader: () => import('./map'),
-        loading: () => null
+        loading: () => null,
       }),
-    }
+    },
   ],
 });

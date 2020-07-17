@@ -32,7 +32,7 @@ export default defineMessages({
   },
   /*
    * Basic information
-  */
+   */
   h1: {
     id: 'app.containers.UsersEditPage.h1',
     defaultMessage: 'Basic information',
@@ -70,7 +70,8 @@ export default defineMessages({
   },
   deletionSubtitle: {
     id: 'app.containers.UsersEditPage.deletionSubtitle',
-    defaultMessage: 'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@citizenlab.co.',
+    defaultMessage:
+      'This action can not be undone. The content you published on the platform will be anonymized. If you wish to delete all your content, you can contact us at support@citizenlab.co.',
   },
   deleteMyAccount: {
     id: 'app.containers.UsersEditPage.deleteMyAccount',
@@ -82,7 +83,8 @@ export default defineMessages({
   },
   deleteProfileError: {
     id: 'app.containers.UsersEditPage.deleteProfileError',
-    defaultMessage: 'There was an issue deleting your profile, please try again later.',
+    defaultMessage:
+      'There was an issue deleting your profile, please try again later.',
   },
   logoAltText: {
     id: 'app.containers.UsersEditPage.logoAltText',
@@ -98,11 +100,13 @@ export default defineMessages({
   },
   tooManyEmails: {
     id: 'app.containers.UsersEditPage.tooManyEmails',
-    defaultMessage: 'Receiving too many emails? You can manage your email preferences in your profile settings.',
+    defaultMessage:
+      'Receiving too many emails? You can manage your email preferences in your profile settings.',
   },
   privacyReasons: {
     id: 'app.containers.UsersEditPage.privacyReasons',
-    defaultMessage: 'If you are worried with your privacy, have you read {conditionsLink}?',
+    defaultMessage:
+      'If you are worried with your privacy, have you read {conditionsLink}?',
   },
   conditionsLinkText: {
     id: 'app.containers.UsersEditPage.conditionsLinkText',
@@ -110,7 +114,8 @@ export default defineMessages({
   },
   contactUs: {
     id: 'app.containers.UsersEditPage.contactUs',
-    defaultMessage: 'You can reach out to explain what\'s not going well by clicking {feedbackLink}.',
+    defaultMessage:
+      "You can reach out to explain what's not going well by clicking {feedbackLink}.",
   },
   feedbackLinkText: {
     id: 'app.containers.UsersEditPage.feedbackLinkText',
@@ -122,7 +127,8 @@ export default defineMessages({
   },
   noGoingBack: {
     id: 'app.containers.UsersEditPage.noGoingBack',
-    defaultMessage: 'Once you click this button, we will have no way to restore your account.',
+    defaultMessage:
+      'Once you click this button, we will have no way to restore your account.',
   },
   cancel: {
     id: 'app.containers.UsersEditPage.cancel',
@@ -172,9 +178,9 @@ export default defineMessages({
     defaultMessage: 'When do you want us to send you an email to notify you?',
   },
   /*
-  * VerificationStatus
-  */
- becomeVerifiedTitle: {
+   * VerificationStatus
+   */
+  becomeVerifiedTitle: {
     id: 'app.containers.UsersEditPage.becomeVerifiedTitle',
     defaultMessage: 'Verify your identity',
   },
@@ -192,7 +198,8 @@ export default defineMessages({
   },
   verifiedIdentitySubtitle: {
     id: 'app.containers.UsersEditPage.verifiedIdentitySubtitle',
-    defaultMessage: 'You can participate in projects that are only accessible to verified citizens.',
+    defaultMessage:
+      'You can participate in projects that are only accessible to verified citizens.',
   },
   updateverification: {
     id: 'app.containers.UsersEditPage.updateverification',
@@ -204,17 +211,20 @@ export default defineMessages({
   },
   blockedVerified: {
     id: 'app.containers.UsersEditPage.blockedVerified',
-    defaultMessage: 'You can\'t edit this field because it contains verified information',
+    defaultMessage:
+      "You can't edit this field because it contains verified information",
   },
   /*
-  * Meta
-  */
+   * Meta
+   */
   metaTitle: {
     id: 'app.containers.UsersEditPage.metaTitle',
-    defaultMessage: 'Profile settings page of {firstName} {lastName} | CitizenLab',
+    defaultMessage:
+      'Profile settings page of {firstName} {lastName} | CitizenLab',
   },
   metaDescription: {
     id: 'app.containers.UsersEditPage.metaDescription',
-    defaultMessage: 'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.'
+    defaultMessage:
+      'This is the profile settings page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can verify your identity, edit your account information, delete your account and edit your email preferences.',
   },
 });

@@ -5,7 +5,7 @@ import { D3Node } from './';
 import { CustomNode } from 'services/clusterings';
 
 const StyledText: any = styled.text`
-  font-size: ${props => (props as any).size}px;
+  font-size: ${(props) => (props as any).size}px;
   text-shadow: white 0px 0px 10px;
 `;
 
@@ -18,18 +18,24 @@ interface InputProps {
   onMouseLeave?: (node: D3Node<CustomNode>, event: MouseEvent) => void;
 }
 
-interface DataProps { }
+interface DataProps {}
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class ClusterCircleLabel extends PureComponent<Props, State> {
-
   nodeLabel = () => {
     const nodeData = this.props.node.data;
-    return nodeData.title || (nodeData.keywords && take(nodeData.keywords.map(k => k.name), 1).join(' '));
-  }
+    return (
+      nodeData.title ||
+      (nodeData.keywords &&
+        take(
+          nodeData.keywords.map((k) => k.name),
+          1
+        ).join(' '))
+    );
+  };
 
   render() {
     const { node, selectionIndex, hovered } = this.props;
@@ -40,7 +46,7 @@ class ClusterCircleLabel extends PureComponent<Props, State> {
         textAnchor="middle"
         alignmentBaseline="central"
         show={!isNil(selectionIndex) || hovered}
-        size={12 + (2 * node.height)}
+        size={12 + 2 * node.height}
       >
         {this.nodeLabel()}
       </StyledText>

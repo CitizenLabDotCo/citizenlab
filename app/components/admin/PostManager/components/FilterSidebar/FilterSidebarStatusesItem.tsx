@@ -18,8 +18,8 @@ const ItemWrapper = styled.div`
 const ColorIndicator = styled.div`
   width: 1rem;
   height: 1rem;
-  background-color: ${props => props.color};
-  border-radius: ${props => props.theme.borderRadius};
+  background-color: ${(props) => props.color};
+  border-radius: ${(props) => props.theme.borderRadius};
   margin-right: 0.5rem;
 `;
 
@@ -44,26 +44,30 @@ interface Props {
 
 class FilterSidebarStatusesItem extends React.PureComponent<Props> {
   render() {
-    const { status, active, onClick, connectDropTarget, isOver, canDrop } = this.props;
+    const {
+      status,
+      active,
+      onClick,
+      connectDropTarget,
+      isOver,
+      canDrop,
+    } = this.props;
 
     return connectDropTarget(
       <div>
-        <Menu.Item
-          active={active || (isOver && canDrop)}
-          onClick={onClick}
-        >
+        <Menu.Item active={active || (isOver && canDrop)} onClick={onClick}>
           <ItemWrapper>
             <ColorIndicator color={status.attributes.color} />
             <div>
               <StatusText>
                 <T value={status.attributes.title_multiloc} />
               </StatusText>
-              {get(status, 'attributes.transition_type') === 'automatic' &&
+              {get(status, 'attributes.transition_type') === 'automatic' && (
                 <StyledText>
                   &nbsp;
                   <FormattedMessage {...messages.automatic} />
                 </StyledText>
-              }
+              )}
             </div>
           </ItemWrapper>
         </Menu.Item>
@@ -76,7 +80,7 @@ const statusTarget = {
   drop(props) {
     return {
       type: 'status',
-      id: props.status.id
+      id: props.status.id,
     };
   },
 };
@@ -87,6 +91,6 @@ const collect = (connect, monitor) => ({
   canDrop: monitor.canDrop(),
 });
 
-export default flow([
-  DropTarget('IDEA', statusTarget, collect),
-])(FilterSidebarStatusesItem);
+export default flow([DropTarget('IDEA', statusTarget, collect)])(
+  FilterSidebarStatusesItem
+);

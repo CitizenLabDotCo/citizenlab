@@ -47,7 +47,6 @@ interface State {
 }
 
 class AreaTermConfig extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -68,8 +67,8 @@ class AreaTermConfig extends PureComponent<Props, State> {
             core: {
               areas_term: areasTerm,
               area_term: areaTerm,
-            }
-          }
+            },
+          },
         }).then(() => {
           this.setState({ submitState: 'success' });
         });
@@ -77,28 +76,34 @@ class AreaTermConfig extends PureComponent<Props, State> {
         this.setState({ submitState: 'error' });
       }
     }
-  }
+  };
 
   handleAreaChange = (changedAreaTerm: Multiloc) => {
     this.setState({
       areaTerm: mapValues(changedAreaTerm, lowerCase),
     });
-  }
+  };
 
   handleAreasChange = (changedAreasTerm: Multiloc) => {
     this.setState({
       areasTerm: mapValues(changedAreasTerm, lowerCase),
     });
-  }
+  };
 
   render() {
-    const { tenant, className, intl: { formatMessage } } = this.props;
+    const {
+      tenant,
+      className,
+      intl: { formatMessage },
+    } = this.props;
     const { submitState } = this.state;
 
     if (isNilOrError(tenant)) return null;
 
-    const areasTerm = this.state.areasTerm || tenant.attributes.settings.core.areas_term || {};
-    const areaTerm = this.state.areaTerm || tenant.attributes.settings.core.area_term || {};
+    const areasTerm =
+      this.state.areasTerm || tenant.attributes.settings.core.areas_term || {};
+    const areaTerm =
+      this.state.areaTerm || tenant.attributes.settings.core.area_term || {};
 
     return (
       <Container onSubmit={this.save} className={className}>

@@ -26,9 +26,17 @@ import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 import { MessageDescriptor } from 'typings';
 
 // resources
-import GetInitiatives, { Sort, GetInitiativesChildProps, IQueryParameters } from 'resources/GetInitiatives';
-import GetInitiativesFilterCounts, { GetInitiativesFilterCountsChildProps } from 'resources/GetInitiativesFilterCounts';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetInitiatives, {
+  Sort,
+  GetInitiativesChildProps,
+  IQueryParameters,
+} from 'resources/GetInitiatives';
+import GetInitiativesFilterCounts, {
+  GetInitiativesFilterCountsChildProps,
+} from 'resources/GetInitiativesFilterCounts';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // i18n
 import messages from './messages';
@@ -65,7 +73,8 @@ const InitialLoading = styled.div`
   justify-content: center;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
+    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 
   ${media.smallerThanMinTablet`
     height: 150px;
@@ -155,7 +164,8 @@ const EmptyContainer = styled.div`
   justify-content: center;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
+    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const EmptyContainerInner = styled.div`
@@ -212,18 +222,18 @@ const InitiativesList = styled.div`
 
 const StyledInitiativeCard = styled(InitiativeCard)`
   flex-grow: 0;
-  width: calc(100% * (1/3) - 26px);
+  width: calc(100% * (1 / 3) - 26px);
   margin-left: 13px;
   margin-right: 13px;
 
-  @media (max-width: 1440px) and (min-width: 1279px)  {
-    width: calc(100% * (1/3) - 16px);
+  @media (max-width: 1440px) and (min-width: 1279px) {
+    width: calc(100% * (1 / 3) - 16px);
     margin-left: 8px;
     margin-right: 8px;
   }
 
-  @media (max-width: 1279px) and (min-width: 768px)  {
-    width: calc(100% * (1/2) - 26px);
+  @media (max-width: 1279px) and (min-width: 768px) {
+    width: calc(100% * (1 / 2) - 26px);
   }
 
   ${media.smallerThanMinTablet`
@@ -310,7 +320,7 @@ const Footer = styled.div`
 
 const ShowMoreButton = styled(Button)``;
 
-interface InputProps  {
+interface InputProps {
   className?: string;
   invisibleTitleMessage: MessageDescriptor;
 }
@@ -333,73 +343,89 @@ interface State {
 }
 
 class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
-
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       selectedView: 'card',
       filtersModalOpened: false,
       selectedInitiativeFilters: get(props.initiatives, 'queryParameters', {}),
-      previouslySelectedInitiativeFilters: null
+      previouslySelectedInitiativeFilters: null,
     };
   }
 
   componentDidUpdate(prevProps: Props) {
-    const oldQueryParameters = get(prevProps.initiatives, 'queryParameters', null);
-    const newQueryParameters = get(this.props.initiatives, 'queryParameters', null);
+    const oldQueryParameters = get(
+      prevProps.initiatives,
+      'queryParameters',
+      null
+    );
+    const newQueryParameters = get(
+      this.props.initiatives,
+      'queryParameters',
+      null
+    );
 
     if (newQueryParameters !== oldQueryParameters) {
-      this.setState({ selectedInitiativeFilters: get(this.props.initiatives, 'queryParameters', {}) });
+      this.setState({
+        selectedInitiativeFilters: get(
+          this.props.initiatives,
+          'queryParameters',
+          {}
+        ),
+      });
     }
   }
 
   openFiltersModal = () => {
     this.setState((state) => ({
       filtersModalOpened: true,
-      previouslySelectedInitiativeFilters: state.selectedInitiativeFilters
+      previouslySelectedInitiativeFilters: state.selectedInitiativeFilters,
     }));
-  }
+  };
 
   loadMore = () => {
-    trackEventByName(tracks.loadMoreProposals)
+    trackEventByName(tracks.loadMoreProposals);
     this.props.initiatives.onLoadMore();
-  }
+  };
 
   handleSortOnChange = (sort: Sort) => {
     trackEventByName(tracks.sortingFilter, {
-      sort
+      sort,
     });
     this.props.initiatives.onChangeSorting(sort);
-  }
+  };
 
   handleSearchOnChange = (searchTerm: string) => {
     this.props.initiatives.onChangeSearchTerm(searchTerm);
-  }
+  };
 
   handleStatusOnChange = (initiative_status: string | null) => {
     this.handleInitiativeFiltersOnChange({ initiative_status });
-  }
+  };
 
   handleTopicsOnChange = (topics: string[] | null) => {
     trackEventByName(tracks.topicsFilter, {
-      topics
+      topics,
     });
     this.handleInitiativeFiltersOnChange({ topics });
-  }
+  };
 
   handleStatusOnChangeAndApplyFilter = (initiative_status: string | null) => {
     this.handleInitiativeFiltersOnChange({ initiative_status }, true);
-  }
+  };
 
   handleTopicsOnChangeAndApplyFilter = (topics: string[] | null) => {
     this.handleInitiativeFiltersOnChange({ topics }, true);
-  }
+  };
 
-  handleInitiativeFiltersOnChange = (newSelectedInitiativeFilters: Partial<IQueryParameters>, applyFilter: boolean = false) => {
+  handleInitiativeFiltersOnChange = (
+    newSelectedInitiativeFilters: Partial<IQueryParameters>,
+    applyFilter: boolean = false
+  ) => {
     this.setState((state) => {
       const selectedInitiativeFilters = {
         ...state.selectedInitiativeFilters,
-        ...newSelectedInitiativeFilters
+        ...newSelectedInitiativeFilters,
       };
 
       if (applyFilter) {
@@ -408,7 +434,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
       return { selectedInitiativeFilters };
     });
-  }
+  };
 
   handleInitiativeFiltersOnReset = () => {
     this.setState((state) => {
@@ -416,12 +442,12 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
         ...state.selectedInitiativeFilters,
         initiative_status: null,
         areas: null,
-        topics: null
+        topics: null,
       };
 
       return { selectedInitiativeFilters };
     });
-  }
+  };
 
   handleInitiativeFiltersOnResetAndApply = () => {
     this.setState((state) => {
@@ -430,80 +456,102 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
         search: null,
         initiative_status: null,
         areas: null,
-        topics: null
+        topics: null,
       };
 
       this.props.initiatives.onInitiativeFiltering(selectedInitiativeFilters);
 
       return { selectedInitiativeFilters };
     });
-  }
+  };
 
   closeModalAndApplyFilters = () => {
     this.setState((state) => {
-      this.props.initiatives.onInitiativeFiltering(state.selectedInitiativeFilters);
+      this.props.initiatives.onInitiativeFiltering(
+        state.selectedInitiativeFilters
+      );
 
       return {
         filtersModalOpened: false,
-        previouslySelectedInitiativeFilters: null
+        previouslySelectedInitiativeFilters: null,
       };
     });
-  }
+  };
 
   closeModalAndRevertFilters = () => {
     this.setState((state) => {
-      this.props.initiatives.onInitiativeFiltering(state.previouslySelectedInitiativeFilters || {});
+      this.props.initiatives.onInitiativeFiltering(
+        state.previouslySelectedInitiativeFilters || {}
+      );
 
       return {
         filtersModalOpened: false,
-        selectedInitiativeFilters: state.previouslySelectedInitiativeFilters || {},
-        previouslySelectedInitiativeFilters: null
+        selectedInitiativeFilters:
+          state.previouslySelectedInitiativeFilters || {},
+        previouslySelectedInitiativeFilters: null,
       };
     });
-  }
+  };
 
   selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
-  }
+  };
 
   removeFocus = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-  }
+  };
 
-  filterMessage = <FormattedMessage {...messages.filter} />;
+  filterMessage = (<FormattedMessage {...messages.filter} />);
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
 
   render() {
-    const { selectedView, selectedInitiativeFilters, filtersModalOpened } = this.state;
-    const { initiatives, initiativesFilterCounts, windowSize, className, theme, invisibleTitleMessage } = this.props;
+    const {
+      selectedView,
+      selectedInitiativeFilters,
+      filtersModalOpened,
+    } = this.state;
+    const {
+      initiatives,
+      initiativesFilterCounts,
+      windowSize,
+      className,
+      theme,
+      invisibleTitleMessage,
+    } = this.props;
     const { list, hasMore, querying, loadingMore } = initiatives;
-    const hasInitiatives = (!isNilOrError(list) && list.length > 0);
-    const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
-    const biggerThanSmallTablet = (windowSize && windowSize >= viewportWidths.smallTablet);
-    const filterColumnWidth = (windowSize && windowSize < 1400 ? 340 : 352);
-    const filtersActive = selectedInitiativeFilters.search ||
-                            selectedInitiativeFilters.initiative_status ||
-                            selectedInitiativeFilters.areas ||
-                            selectedInitiativeFilters.topics;
+    const hasInitiatives = !isNilOrError(list) && list.length > 0;
+    const biggerThanLargeTablet =
+      windowSize && windowSize >= viewportWidths.largeTablet;
+    const biggerThanSmallTablet =
+      windowSize && windowSize >= viewportWidths.smallTablet;
+    const filterColumnWidth = windowSize && windowSize < 1400 ? 340 : 352;
+    const filtersActive =
+      selectedInitiativeFilters.search ||
+      selectedInitiativeFilters.initiative_status ||
+      selectedInitiativeFilters.areas ||
+      selectedInitiativeFilters.topics;
 
     const filtersSidebar = (
       <FiltersSidebarContainer className={className}>
-          {filtersActive &&
-            <ClearFiltersButton onMouseDown={this.removeFocus} onClick={this.handleInitiativeFiltersOnResetAndApply}>
-              <ClearFiltersText>
-                <FormattedMessage {...messages.resetFilters} />
-              </ClearFiltersText>
-            </ClearFiltersButton>
-          }
+        {filtersActive && (
+          <ClearFiltersButton
+            onMouseDown={this.removeFocus}
+            onClick={this.handleInitiativeFiltersOnResetAndApply}
+          >
+            <ClearFiltersText>
+              <FormattedMessage {...messages.resetFilters} />
+            </ClearFiltersText>
+          </ClearFiltersButton>
+        )}
 
         <ScreenReaderOnly aria-live="polite">
-          {initiativesFilterCounts &&
+          {initiativesFilterCounts && (
             <FormattedMessage
               {...messages.a11y_totalInitiatives}
               values={{ initiativeCount: initiativesFilterCounts.total }}
             />
-          }
+          )}
         </ScreenReaderOnly>
 
         <StyledSearchInput
@@ -514,11 +562,19 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
         <StyledInitiativesStatusFilter
           selectedStatusId={selectedInitiativeFilters.initiative_status}
           selectedInitiativeFilters={selectedInitiativeFilters}
-          onChange={!biggerThanLargeTablet ? this.handleStatusOnChange : this.handleStatusOnChangeAndApplyFilter}
+          onChange={
+            !biggerThanLargeTablet
+              ? this.handleStatusOnChange
+              : this.handleStatusOnChangeAndApplyFilter
+          }
         />
         <StyledInitiativesTopicsFilter
           selectedTopicIds={selectedInitiativeFilters.topics}
-          onChange={!biggerThanLargeTablet ? this.handleTopicsOnChange : this.handleTopicsOnChangeAndApplyFilter}
+          onChange={
+            !biggerThanLargeTablet
+              ? this.handleTopicsOnChange
+              : this.handleTopicsOnChangeAndApplyFilter
+          }
         />
       </FiltersSidebarContainer>
     );
@@ -526,18 +582,18 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
     return (
       <Container id="e2e-initiatives-container" className={className}>
         <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...invisibleTitleMessage}/>
+          <FormattedMessage tagName="h2" {...invisibleTitleMessage} />
         </ScreenReaderOnly>
 
-        {list === undefined &&
+        {list === undefined && (
           <InitialLoading id="initiatives-loading">
             <Spinner />
           </InitialLoading>
-        }
+        )}
 
-        {list !== undefined &&
+        {list !== undefined && (
           <>
-            {!biggerThanLargeTablet &&
+            {!biggerThanLargeTablet && (
               <>
                 <FullscreenModal
                   opened={filtersModalOpened}
@@ -545,18 +601,39 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   animateInOut={true}
                   topBar={
                     <TopBar
-                      onReset={!biggerThanLargeTablet ? this.handleInitiativeFiltersOnReset : this.handleInitiativeFiltersOnResetAndApply}
+                      onReset={
+                        !biggerThanLargeTablet
+                          ? this.handleInitiativeFiltersOnReset
+                          : this.handleInitiativeFiltersOnResetAndApply
+                      }
                       onClose={this.closeModalAndRevertFilters}
                     />
                   }
                   bottomBar={
-                    <GetInitiativesFilterCounts queryParameters={selectedInitiativeFilters}>
-                      {newInitiativesFilterCounts => {
-                        const bottomBarButtonText = (newInitiativesFilterCounts && isNumber(newInitiativesFilterCounts.total))
-                          ? <FormattedMessage {...messages.showXInitiatives} values={{ initiativesCount: newInitiativesFilterCounts.total }} />
-                          : <FormattedMessage {...messages.showInitiatives} />;
+                    <GetInitiativesFilterCounts
+                      queryParameters={selectedInitiativeFilters}
+                    >
+                      {(newInitiativesFilterCounts) => {
+                        const bottomBarButtonText =
+                          newInitiativesFilterCounts &&
+                          isNumber(newInitiativesFilterCounts.total) ? (
+                            <FormattedMessage
+                              {...messages.showXInitiatives}
+                              values={{
+                                initiativesCount:
+                                  newInitiativesFilterCounts.total,
+                              }}
+                            />
+                          ) : (
+                            <FormattedMessage {...messages.showInitiatives} />
+                          );
 
-                        return <BottomBar buttonText={bottomBarButtonText} onClick={this.closeModalAndApplyFilters} />;
+                        return (
+                          <BottomBar
+                            buttonText={bottomBarButtonText}
+                            onClick={this.closeModalAndApplyFilters}
+                          />
+                        );
                       }}
                     </GetInitiativesFilterCounts>
                   }
@@ -579,7 +656,7 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   text={this.filterMessage}
                 />
               </>
-            }
+            )}
 
             <AboveContent filterColumnWidth={filterColumnWidth}>
               <AboveContentLeft>
@@ -588,39 +665,48 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                   selectedView={selectedView}
                 />
 
-                {!isNilOrError(initiativesFilterCounts) && biggerThanSmallTablet &&
-                  <InitiativesCount>
-                    <FormattedMessage {...messages.xInitiatives} values={{ initiativesCount: initiativesFilterCounts.total }} />
-                  </InitiativesCount>
-                }
+                {!isNilOrError(initiativesFilterCounts) &&
+                  biggerThanSmallTablet && (
+                    <InitiativesCount>
+                      <FormattedMessage
+                        {...messages.xInitiatives}
+                        values={{
+                          initiativesCount: initiativesFilterCounts.total,
+                        }}
+                      />
+                    </InitiativesCount>
+                  )}
               </AboveContentLeft>
 
               <Spacer />
 
-              {selectedView === 'card' &&
+              {selectedView === 'card' && (
                 <AboveContentRight>
                   <SortFilterDropdown
                     onChange={this.handleSortOnChange}
                     alignment="right"
                   />
                 </AboveContentRight>
-              }
+              )}
             </AboveContent>
 
             <Content>
               <ContentLeft>
-                {selectedView === 'card' && !querying && hasInitiatives && list &&
-                  <InitiativesList id="e2e-initiatives-list">
-                    {list.map((initiative) => (
-                      <StyledInitiativeCard
-                        key={initiative.id}
-                        initiativeId={initiative.id}
-                      />
-                    ))}
-                  </InitiativesList>
-                }
+                {selectedView === 'card' &&
+                  !querying &&
+                  hasInitiatives &&
+                  list && (
+                    <InitiativesList id="e2e-initiatives-list">
+                      {list.map((initiative) => (
+                        <StyledInitiativeCard
+                          key={initiative.id}
+                          initiativeId={initiative.id}
+                        />
+                      ))}
+                    </InitiativesList>
+                  )}
 
-                {selectedView === 'card' && !querying && hasMore &&
+                {selectedView === 'card' && !querying && hasMore && (
                   <Footer>
                     <ShowMoreButton
                       id="e2e-initiative-cards-show-more-button"
@@ -637,42 +723,49 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
                       fontWeight="500"
                     />
                   </Footer>
-                }
+                )}
 
-                {selectedView === 'map' &&
-                  <InitiativesMap />
-                }
+                {selectedView === 'map' && <InitiativesMap />}
 
-                {selectedView === 'card' && querying &&
+                {selectedView === 'card' && querying && (
                   <Loading id="initiatives-loading">
                     <Spinner />
                   </Loading>
-                }
+                )}
 
-                {!querying && !hasInitiatives &&
-                  <EmptyContainer id="initiatives-empty" className="e2e-initiative-cards-empty">
+                {!querying && !hasInitiatives && (
+                  <EmptyContainer
+                    id="initiatives-empty"
+                    className="e2e-initiative-cards-empty"
+                  >
                     <EmptyContainerInner>
                       <InitiativeIcon ariaHidden name="initiatives" />
                       <EmptyMessage>
-                        <EmptyMessageMainLine><FormattedMessage {...messages.noInitiativesForFilter} /></EmptyMessageMainLine>
-                        <EmptyMessageSubLine><FormattedMessage {...messages.tryOtherFilter} /></EmptyMessageSubLine>
+                        <EmptyMessageMainLine>
+                          <FormattedMessage
+                            {...messages.noInitiativesForFilter}
+                          />
+                        </EmptyMessageMainLine>
+                        <EmptyMessageSubLine>
+                          <FormattedMessage {...messages.tryOtherFilter} />
+                        </EmptyMessageSubLine>
                       </EmptyMessage>
                     </EmptyContainerInner>
                   </EmptyContainer>
-                }
+                )}
               </ContentLeft>
 
-              {biggerThanLargeTablet &&
+              {biggerThanLargeTablet && (
                 <ContentRight
                   id="e2e-initiatives-filters"
                   filterColumnWidth={filterColumnWidth}
                 >
                   {filtersSidebar}
                 </ContentRight>
-              }
+              )}
             </Content>
           </>
-        }
+        )}
       </Container>
     );
   }
@@ -680,14 +773,24 @@ class InitiativeCards extends PureComponent<Props & InjectedIntlProps, State> {
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
-  initiatives: <GetInitiatives type="load-more" publicationStatus="published" />,
-  initiativesFilterCounts: ({ initiatives, render }) => <GetInitiativesFilterCounts queryParameters={get(initiatives, 'queryParameters', null)}>{render}</GetInitiativesFilterCounts>
+  initiatives: (
+    <GetInitiatives type="load-more" publicationStatus="published" />
+  ),
+  initiativesFilterCounts: ({ initiatives, render }) => (
+    <GetInitiativesFilterCounts
+      queryParameters={get(initiatives, 'queryParameters', null)}
+    >
+      {render}
+    </GetInitiativesFilterCounts>
+  ),
 });
 
 const WithFiltersSidebarWithHoCs = withTheme(injectIntl(InitiativeCards));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <WithFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

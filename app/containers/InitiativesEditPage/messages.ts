@@ -7,6 +7,7 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.InitiativesEditPage.metaDescription',
-    defaultMessage: 'Edit your initiative. Add more information and make it even better.'
+    defaultMessage:
+      'Edit your initiative. Add more information and make it even better.',
   },
 });

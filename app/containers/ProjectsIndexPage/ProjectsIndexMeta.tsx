@@ -14,41 +14,48 @@ import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   authUser: GetAuthUserChildProps;
   tenantLocales: GetTenantLocalesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const ProjectsMeta = React.memo<Props & InjectedIntlProps>(({ intl, authUser, tenantLocales }) => {
-  const { formatMessage } = intl;
-  const { location } = window;
-  const projectsIndexTitle = formatMessage(messages.metaTitle);
-  const projectsIndexDescription = formatMessage(messages.metaDescription);
+const ProjectsMeta = React.memo<Props & InjectedIntlProps>(
+  ({ intl, authUser, tenantLocales }) => {
+    const { formatMessage } = intl;
+    const { location } = window;
+    const projectsIndexTitle = formatMessage(messages.metaTitle);
+    const projectsIndexDescription = formatMessage(messages.metaDescription);
 
-  return (
-    <Helmet>
-      <title>
-        {`
-          ${(authUser && authUser.attributes.unread_notifications) ? `(${authUser.attributes.unread_notifications}) ` : ''}
-          ${projectsIndexTitle}`
-        }
-      </title>
-      {getCanonicalLink()}
-      {getAlternateLinks(tenantLocales)}
-      <meta name="title" content={projectsIndexTitle} />
-      <meta name="description" content={projectsIndexDescription} />
-      <meta property="og:title" content={projectsIndexTitle} />
-      <meta property="og:description" content={projectsIndexDescription} />
-      <meta property="og:url" content={location.href} />
-    </Helmet>
-  );
-});
+    return (
+      <Helmet>
+        <title>
+          {`
+          ${
+            authUser && authUser.attributes.unread_notifications
+              ? `(${authUser.attributes.unread_notifications}) `
+              : ''
+          }
+          ${projectsIndexTitle}`}
+        </title>
+        {getCanonicalLink()}
+        {getAlternateLinks(tenantLocales)}
+        <meta name="title" content={projectsIndexTitle} />
+        <meta name="description" content={projectsIndexDescription} />
+        <meta property="og:title" content={projectsIndexTitle} />
+        <meta property="og:description" content={projectsIndexDescription} />
+        <meta property="og:url" content={location.href} />
+      </Helmet>
+    );
+  }
+);
 
 const ProjectsMetaWithHoc = injectIntl<Props>(ProjectsMeta);
 
@@ -59,6 +66,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <ProjectsMetaWithHoc {...inputProps} {...dataprops} />}
+    {(dataprops) => <ProjectsMetaWithHoc {...inputProps} {...dataprops} />}
   </Data>
 );

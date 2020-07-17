@@ -39,19 +39,23 @@ export default defineMessages({
   },
   commentingDisabledProjectInactive: {
     id: 'app.components.Comments.commentingDisabledProjectInactive',
-    defaultMessage: "Commenting on this idea is not possible because '{projectName}' is currently not active.",
+    defaultMessage:
+      "Commenting on this idea is not possible because '{projectName}' is currently not active.",
   },
   commentingDisabledInContext: {
     id: 'app.components.Comments.commentingDisabledInContext',
-    defaultMessage: "Commenting on ideas in '{projectName}' is currently disabled.",
+    defaultMessage:
+      "Commenting on ideas in '{projectName}' is currently disabled.",
   },
   commentingDisabledIdeaNotInCurrentPhase: {
     id: 'app.components.Comments.commentingDisabledIdeaNotInCurrentPhase',
-    defaultMessage: "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
+    defaultMessage:
+      "Commenting on this idea is not possible since it's no longer or not yet in consideration.",
   },
   commentingDisabledNotVerified: {
     id: 'app.components.Comments.commentingDisabledNotVerified',
-    defaultMessage: 'Commenting on this idea requires verification of your account. {verificationLink}',
+    defaultMessage:
+      'Commenting on this idea requires verification of your account. {verificationLink}',
   },
   commentingNotPermitted: {
     id: 'app.components.Comments.commentingNotPermitted',
@@ -59,7 +63,8 @@ export default defineMessages({
   },
   commentingMaybeNotPermitted: {
     id: 'app.components.Comments.commentingMaybeNotPermitted',
-    defaultMessage: 'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
+    defaultMessage:
+      'Not all users are allowed to comment. Please {signUpLink} or {signInLink} to see whether you comply.',
   },
   signInToComment: {
     id: 'app.containers.Comments.signInToComment',
@@ -99,7 +104,8 @@ export default defineMessages({
   },
   confirmCommentDeletion: {
     id: 'app.containers.Comments.confirmCommentDeletion',
-    defaultMessage: "Are you sure you want to delete this comment? There's no turning back!",
+    defaultMessage:
+      "Are you sure you want to delete this comment? There's no turning back!",
   },
   commentDeletionCancelButton: {
     id: 'app.containers.Comments.commentDeletionCancelButton',
@@ -127,7 +133,7 @@ export default defineMessages({
   },
   upvoteComment: {
     id: 'app.components.Comments.upvoteComment',
-    defaultMessage: 'Upvote this comment'
+    defaultMessage: 'Upvote this comment',
   },
   commentUpvote: {
     id: 'app.containers.Comments.commentUpvote',
@@ -151,7 +157,7 @@ export default defineMessages({
   },
   noComments: {
     id: 'app.components.Comments.noComments',
-    defaultMessage: 'There are no comments yet.'
+    defaultMessage: 'There are no comments yet.',
   },
   loadingMoreComments: {
     id: 'app.containers.Comments.loadingMoreComments',
@@ -159,7 +165,7 @@ export default defineMessages({
   },
   emptyCommentError: {
     id: 'app.containers.Comments.emptyCommentError',
-    defaultMessage: 'The comment can\'t be empty',
+    defaultMessage: "The comment can't be empty",
   },
   loadMoreComments: {
     id: 'app.containers.Comments.loadMoreComments',
@@ -203,11 +209,12 @@ export default defineMessages({
   },
   a11y_commentDeleted: {
     id: 'app.containers.Comments.a11y_commentDeleted',
-    defaultMessage: 'Comment deleted'
+    defaultMessage: 'Comment deleted',
   },
   a11y_upvoteCount: {
     id: 'app.containers.Comments.a11y_upvoteCount',
-    defaultMessage: '{upvoteCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+    defaultMessage:
+      '{upvoteCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
   },
   a11y_undoUpvote: {
     id: 'app.containers.Comments.a11y_undoUpvote',

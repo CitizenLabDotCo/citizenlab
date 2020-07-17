@@ -19,7 +19,11 @@ interface State {
   stats: ICampaignStats | undefined | null | Error;
 }
 
-export type GetCampaignStatsChildProps = ICampaignStats | undefined | null | Error;
+export type GetCampaignStatsChildProps =
+  | ICampaignStats
+  | undefined
+  | null
+  | Error;
 
 export default class GetCampaignStats extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,7 +32,7 @@ export default class GetCampaignStats extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      stats: undefined
+      stats: undefined,
     };
   }
 
@@ -38,11 +42,13 @@ export default class GetCampaignStats extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ campaignId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ campaignId }) => isString(campaignId)),
-        switchMap(({ campaignId }) => getCampaignStats(campaignId).observable)
-      ).subscribe((stats) => this.setState({ stats }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ campaignId }) => isString(campaignId)),
+          switchMap(({ campaignId }) => getCampaignStats(campaignId).observable)
+        )
+        .subscribe((stats) => this.setState({ stats })),
     ];
   }
 
@@ -52,7 +58,7 @@ export default class GetCampaignStats extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

@@ -14,7 +14,12 @@ import messages from './messages';
 import Radio from 'components/UI/Radio';
 import ProjectGroupsList from './ProjectGroupsList';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import { Section, SubSectionTitle, SectionTitle, SectionField } from 'components/admin/Section';
+import {
+  Section,
+  SubSectionTitle,
+  SectionTitle,
+  SectionField,
+} from 'components/admin/Section';
 import Moderators from './Moderators';
 import FeatureFlag from 'components/FeatureFlag';
 import Granular from './Granular';
@@ -24,8 +29,15 @@ import Link from 'utils/cl-router/Link';
 
 // services
 import { projectByIdStream, updateProject, IProject } from 'services/projects';
-import { groupsProjectsByProjectIdStream, addGroupProject, deleteGroupProject, IGroupsProjects } from 'services/groupsProjects';
-import GetModerators, { GetModeratorsChildProps } from 'resources/GetModerators';
+import {
+  groupsProjectsByProjectIdStream,
+  addGroupProject,
+  deleteGroupProject,
+  IGroupsProjects,
+} from 'services/groupsProjects';
+import GetModerators, {
+  GetModeratorsChildProps,
+} from 'resources/GetModerators';
 
 // style
 import styled from 'styled-components';
@@ -93,7 +105,10 @@ interface State {
   status: 'disabled' | 'enabled' | 'error' | 'success';
 }
 
-class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+class ProjectPermissions extends PureComponent<
+  Props & InjectedIntlProps & WithRouterProps,
+  State
+> {
   subscriptions: Subscription[];
 
   constructor(props) {
@@ -106,7 +121,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
       unsavedVisibleTo: 'public',
       loading: true,
       saving: false,
-      status: 'disabled'
+      status: 'disabled',
     };
     this.subscriptions = [];
   }
@@ -114,71 +129,123 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
   componentDidMount() {
     if (this.props.params.projectId) {
       const projectId = this.props.params.projectId;
-      const project$ = projectByIdStream(projectId).observable.pipe(tap((project) => {
-        this.setState({
-          savedVisibleTo: project.data.attributes.visible_to,
-          unsavedVisibleTo: project.data.attributes.visible_to
-        });
-      }));
-
-      this.subscriptions = [
-        project$.pipe(switchMap((project) => {
-          return groupsProjectsByProjectIdStream(project.data.id).observable.pipe(rxMap((groupsProjects) => ({
-            project,
-            groupsProjects
-          })));
-        })).subscribe(({ project, groupsProjects }) => {
-          this.setState((state) => {
-            const oldGroupsProjects = (state.loading ? groupsProjects : state.oldGroupsProjects);
-            const newGroupsProjects = groupsProjects;
-            const status = (state.unsavedVisibleTo === 'groups' && !isEqual(newGroupsProjects, oldGroupsProjects) ? 'enabled' : state.status);
-            const loading = false;
-
-            return {
-              project,
-              oldGroupsProjects,
-              newGroupsProjects,
-              status,
-              loading
-            };
+      const project$ = projectByIdStream(projectId).observable.pipe(
+        tap((project) => {
+          this.setState({
+            savedVisibleTo: project.data.attributes.visible_to,
+            unsavedVisibleTo: project.data.attributes.visible_to,
           });
         })
+      );
+
+      this.subscriptions = [
+        project$
+          .pipe(
+            switchMap((project) => {
+              return groupsProjectsByProjectIdStream(
+                project.data.id
+              ).observable.pipe(
+                rxMap((groupsProjects) => ({
+                  project,
+                  groupsProjects,
+                }))
+              );
+            })
+          )
+          .subscribe(({ project, groupsProjects }) => {
+            this.setState((state) => {
+              const oldGroupsProjects = state.loading
+                ? groupsProjects
+                : state.oldGroupsProjects;
+              const newGroupsProjects = groupsProjects;
+              const status =
+                state.unsavedVisibleTo === 'groups' &&
+                !isEqual(newGroupsProjects, oldGroupsProjects)
+                  ? 'enabled'
+                  : state.status;
+              const loading = false;
+
+              return {
+                project,
+                oldGroupsProjects,
+                newGroupsProjects,
+                status,
+                loading,
+              };
+            });
+          }),
       ];
     }
   }
 
   componentWillUnmount() {
-    const { project, unsavedVisibleTo, oldGroupsProjects, newGroupsProjects } = this.state;
-    const oldGroupsProjectIds = (oldGroupsProjects ? map(oldGroupsProjects.data, groupsProject => groupsProject.id) : []);
-    const newGroupsProjectsIds = (newGroupsProjects ? map(newGroupsProjects.data, groupsProject => groupsProject.id) : []);
+    const {
+      project,
+      unsavedVisibleTo,
+      oldGroupsProjects,
+      newGroupsProjects,
+    } = this.state;
+    const oldGroupsProjectIds = oldGroupsProjects
+      ? map(oldGroupsProjects.data, (groupsProject) => groupsProject.id)
+      : [];
+    const newGroupsProjectsIds = newGroupsProjects
+      ? map(newGroupsProjects.data, (groupsProject) => groupsProject.id)
+      : [];
 
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
 
-    if (project && unsavedVisibleTo === 'groups' && !isEqual(oldGroupsProjectIds, newGroupsProjectsIds)) {
-      const groupsProjectIdsToRemove = difference(newGroupsProjectsIds, oldGroupsProjectIds);
-      const groupsProjectIdsToAdd = difference(oldGroupsProjectIds, newGroupsProjectsIds);
+    if (
+      project &&
+      unsavedVisibleTo === 'groups' &&
+      !isEqual(oldGroupsProjectIds, newGroupsProjectsIds)
+    ) {
+      const groupsProjectIdsToRemove = difference(
+        newGroupsProjectsIds,
+        oldGroupsProjectIds
+      );
+      const groupsProjectIdsToAdd = difference(
+        oldGroupsProjectIds,
+        newGroupsProjectsIds
+      );
 
       Promise.all<any>([
-        ...groupsProjectIdsToRemove.map(groupsProjectId => deleteGroupProject(groupsProjectId)),
-        ...groupsProjectIdsToAdd.map(groupsProjectId => addGroupProject(project.data.id, groupsProjectId))
+        ...groupsProjectIdsToRemove.map((groupsProjectId) =>
+          deleteGroupProject(groupsProjectId)
+        ),
+        ...groupsProjectIdsToAdd.map((groupsProjectId) =>
+          addGroupProject(project.data.id, groupsProjectId)
+        ),
       ]);
     }
   }
 
   saveChanges = async () => {
-    const { project, newGroupsProjects, savedVisibleTo, unsavedVisibleTo } = this.state;
+    const {
+      project,
+      newGroupsProjects,
+      savedVisibleTo,
+      unsavedVisibleTo,
+    } = this.state;
 
     if (project && savedVisibleTo && unsavedVisibleTo) {
       let promises: Promise<any>[] = [];
 
       if (unsavedVisibleTo !== savedVisibleTo) {
-        promises = [updateProject(project.data.id, { visible_to: unsavedVisibleTo })];
+        promises = [
+          updateProject(project.data.id, { visible_to: unsavedVisibleTo }),
+        ];
       }
 
-      if (unsavedVisibleTo !== 'groups' && newGroupsProjects !== null && !isEmpty(newGroupsProjects.data)) {
+      if (
+        unsavedVisibleTo !== 'groups' &&
+        newGroupsProjects !== null &&
+        !isEmpty(newGroupsProjects.data)
+      ) {
         promises = [
           ...promises,
-          ...newGroupsProjects.data.map(groupsProject => deleteGroupProject(groupsProject.id))
+          ...newGroupsProjects.data.map((groupsProject) =>
+            deleteGroupProject(groupsProject.id)
+          ),
         ];
       }
 
@@ -194,18 +261,25 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
         this.setState({ saving: false, status: 'error' });
       }
     }
-  }
+  };
 
-  handlePermissionTypeChange = (unsavedVisibleTo: 'public' | 'groups' | 'admins') => {
+  handlePermissionTypeChange = (
+    unsavedVisibleTo: 'public' | 'groups' | 'admins'
+  ) => {
     this.setState((state) => ({
       unsavedVisibleTo,
-      status: (unsavedVisibleTo === 'groups' && (state.newGroupsProjects === null || isEmpty(state.newGroupsProjects.data))) ? 'disabled' : 'enabled'
+      status:
+        unsavedVisibleTo === 'groups' &&
+        (state.newGroupsProjects === null ||
+          isEmpty(state.newGroupsProjects.data))
+          ? 'disabled'
+          : 'enabled',
     }));
-  }
+  };
 
   handleGroupsAdded = () => {
     this.saveChanges();
-  }
+  };
 
   render() {
     const { formatMessage } = this.props.intl;
@@ -255,11 +329,14 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
                 </RadioButtonsWrapper>
               </StyledSectionField>
 
-              {unsavedVisibleTo === 'groups' &&
-                <ProjectGroupsList projectId={projectId} onAddButtonClicked={this.handleGroupsAdded} />
-              }
+              {unsavedVisibleTo === 'groups' && (
+                <ProjectGroupsList
+                  projectId={projectId}
+                  onAddButtonClicked={this.handleGroupsAdded}
+                />
+              )}
 
-              {unsavedVisibleTo !== 'groups' &&
+              {unsavedVisibleTo !== 'groups' && (
                 <SubmitWrapper
                   loading={saving}
                   status={status}
@@ -271,7 +348,7 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
                     messageSuccess: messages.saveSuccessMessage,
                   }}
                 />
-              }
+              )}
             </SubSection>
             <SubSection>
               <FeatureFlag name="granular_permissions">
@@ -286,7 +363,10 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
             </StyledSectionTitle>
 
             <ModeratorSubSection>
-              <Moderators moderators={this.props.moderators} projectId={projectId} />
+              <Moderators
+                moderators={this.props.moderators}
+                projectId={projectId}
+              />
             </ModeratorSubSection>
 
             <SubSection>
@@ -299,9 +379,11 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
                       values={{
                         ideaManagerLink: (
                           <StyledLink to={`/admin/projects/${projectId}/ideas`}>
-                            <FormattedMessage {...messages.ideaManagerLinkText} />
+                            <FormattedMessage
+                              {...messages.ideaManagerLinkText}
+                            />
                           </StyledLink>
-                        )
+                        ),
                       }}
                     />
                   }
@@ -321,13 +403,19 @@ class ProjectPermissions extends PureComponent<Props & InjectedIntlProps & WithR
 const ProjectPermissionsWithHoC = injectIntl(ProjectPermissions);
 
 const Data = adopt<DataProps, WithRouterProps>({
-  moderators: ({ params, render }) => <GetModerators projectId={params.projectId}>{render}</GetModerators>
+  moderators: ({ params, render }) => (
+    <GetModerators projectId={params.projectId}>{render}</GetModerators>
+  ),
 });
 
-const WrappedProjectPermissions = withRouter((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <ProjectPermissionsWithHoC {...inputProps} {...dataProps} />}
-  </Data>
-));
+const WrappedProjectPermissions = withRouter(
+  (inputProps: InputProps & WithRouterProps) => (
+    <Data {...inputProps}>
+      {(dataProps) => (
+        <ProjectPermissionsWithHoC {...inputProps} {...dataProps} />
+      )}
+    </Data>
+  )
+);
 
 export default WrappedProjectPermissions;

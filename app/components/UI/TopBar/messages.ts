@@ -4,5 +4,5 @@ export default defineMessages({
   goBack: {
     id: 'app.components.TopBar.goBack',
     defaultMessage: 'Go back',
-  }
+  },
 });

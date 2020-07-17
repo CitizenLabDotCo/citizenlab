@@ -17,9 +17,11 @@ interface Props {
   notification: IInviteAcceptedNotificationData;
 }
 
-const InviteAcceptedNotification = memo<Props>(props => {
+const InviteAcceptedNotification = memo<Props>((props) => {
   const { notification } = props;
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_first_name) || isNilOrError(notification.attributes.initiating_user_slug);
+  const deletedUser =
+    isNilOrError(notification.attributes.initiating_user_first_name) ||
+    isNilOrError(notification.attributes.initiating_user_slug);
 
   return (
     <NotificationWrapper
@@ -31,17 +33,18 @@ const InviteAcceptedNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.userAcceptedYourInvitation}
         values={{
-          name: deletedUser ?
+          name: deletedUser ? (
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
-            :
+          ) : (
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={stopPropagation}
             >
               {notification.attributes.initiating_user_first_name}
             </Link>
+          ),
         }}
       />
     </NotificationWrapper>

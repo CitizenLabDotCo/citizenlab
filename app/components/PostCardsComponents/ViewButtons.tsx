@@ -77,43 +77,52 @@ interface Props {
   onClick: (selectedView: 'card' | 'map') => void;
 }
 
-const ViewButtons = memo<Props>(({ className, selectedView, onClick }: Props) => {
-  const showListView = selectedView === 'card';
-  const showMapView = selectedView === 'map';
+const ViewButtons = memo<Props>(
+  ({ className, selectedView, onClick }: Props) => {
+    const showListView = selectedView === 'card';
+    const showMapView = selectedView === 'map';
 
-  const handleOnClick = (selectedView: 'card' | 'map') => (event: React.FormEvent) => {
-    event.preventDefault();
-    onClick(selectedView);
-    trackEventByName(tracks.toggleDisplay, { locationButtonWasClicked: location.pathname, selectedDisplayMode: selectedView });
-  };
+    const handleOnClick = (selectedView: 'card' | 'map') => (
+      event: React.FormEvent
+    ) => {
+      event.preventDefault();
+      onClick(selectedView);
+      trackEventByName(tracks.toggleDisplay, {
+        locationButtonWasClicked: location.pathname,
+        selectedDisplayMode: selectedView,
+      });
+    };
 
-  const removeFocus = useCallback((event: React.MouseEvent) => {
-    event.preventDefault();
-  }, []);
+    const removeFocus = useCallback((event: React.MouseEvent) => {
+      event.preventDefault();
+    }, []);
 
-  return (
-    <Container className={`e2e-list-map-viewbuttons ${className}`} role="tablist">
-      <ListButton
-        role="tab"
-        aria-selected={showListView}
-        onMouseDown={removeFocus}
-        onClick={handleOnClick('card')}
-        className={`${showListView && 'active'}`}
+    return (
+      <Container
+        className={`e2e-list-map-viewbuttons ${className}`}
+        role="tablist"
       >
-        <FormattedMessage {...messages.list} />
-      </ListButton>
-      <MapButton
-        role="tab"
-        aria-selected={showMapView}
-        onMouseDown={removeFocus}
-        onClick={handleOnClick('map')}
-        className={`${showMapView && 'active'}`}
-      >
-        <FormattedMessage {...messages.map} />
-      </MapButton>
-    </Container>
-  );
-
-});
+        <ListButton
+          role="tab"
+          aria-selected={showListView}
+          onMouseDown={removeFocus}
+          onClick={handleOnClick('card')}
+          className={`${showListView && 'active'}`}
+        >
+          <FormattedMessage {...messages.list} />
+        </ListButton>
+        <MapButton
+          role="tab"
+          aria-selected={showMapView}
+          onMouseDown={removeFocus}
+          onClick={handleOnClick('map')}
+          className={`${showMapView && 'active'}`}
+        >
+          <FormattedMessage {...messages.map} />
+        </MapButton>
+      </Container>
+    );
+  }
+);
 
 export default ViewButtons;

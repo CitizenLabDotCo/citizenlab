@@ -16,10 +16,14 @@ describe('Idea Page', () => {
       cy.get('#e2e-idea-show-page-content');
 
       // shows the home page link with correct href
-      cy.get('#e2e-home-page-link').should('have.attr', 'href').and('include', '/en-GB/');
+      cy.get('#e2e-home-page-link')
+        .should('have.attr', 'href')
+        .and('include', '/en-GB/');
 
       // shows the link to the project page with correct href
-      cy.get('#e2e-idea-other-link').should('have.attr', 'href').and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
+      cy.get('#e2e-idea-other-link')
+        .should('have.attr', 'href')
+        .and('include', '/en-GB/projects/an-idea-bring-it-to-your-council');
 
       // shows the idea Title
       cy.get('#e2e-idea-title');
@@ -31,10 +35,14 @@ describe('Idea Page', () => {
       cy.get('#e2e-idea-description');
 
       // shows a link to author profile
-      cy.get('.e2e-idea-author .e2e-author-link').should('have.attr', 'href').and('include', '/en-GB/profile/casey-luettgen');
+      cy.get('.e2e-idea-author .e2e-author-link')
+        .should('have.attr', 'href')
+        .and('include', '/en-GB/profile/casey-luettgen');
 
       // shows the comments content correctly
-      cy.get('.e2e-comments-container').contains('Great idea, we stand behind you! I\'ll come riding a bicycle');
+      cy.get('.e2e-comments-container').contains(
+        "Great idea, we stand behind you! I'll come riding a bicycle"
+      );
       cy.get('.e2e-comments-container').contains('No no no no no');
 
       // shows the idea content footer'
@@ -54,7 +62,10 @@ describe('Idea Page', () => {
     const projectDescription = randomString();
     const ideaTitle = randomString();
     const ideaContent = randomString();
-    const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
+    const locationGeoJSON = {
+      type: 'Point',
+      coordinates: [4.351710300000036, 50.8503396],
+    };
     const locationDescription = 'Brussel, België';
 
     before(() => {
@@ -64,16 +75,24 @@ describe('Idea Page', () => {
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation'
-      }).then((project) => {
-        projectId = project.body.data.id;
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
-      }).then((idea) => {
-        ideaId = idea.body.data.id;
-        cy.visit(`/ideas/${ideaTitle}`);
-        cy.get('#e2e-idea-show-page-content');
-        cy.wait(1000);
-      });
+        participationMethod: 'ideation',
+      })
+        .then((project) => {
+          projectId = project.body.data.id;
+          return cy.apiCreateIdea(
+            projectId,
+            ideaTitle,
+            ideaContent,
+            locationGeoJSON,
+            locationDescription
+          );
+        })
+        .then((idea) => {
+          ideaId = idea.body.data.id;
+          cy.visit(`/ideas/${ideaTitle}`);
+          cy.get('#e2e-idea-show-page-content');
+          cy.wait(1000);
+        });
     });
 
     it('shows the idea map component', () => {
@@ -103,16 +122,18 @@ describe('Idea Page', () => {
         descriptionPreview: projectDescriptionPreview,
         description: projectDescription,
         publicationStatus: 'published',
-        participationMethod: 'ideation'
-      }).then((project) => {
-        projectId = project.body.data.id;
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
-      }).then((idea) => {
-        ideaId = idea.body.data.id;
-        cy.visit(`/ideas/${ideaTitle}`);
-        cy.get('#e2e-idea-show-page-content');
-        cy.wait(1000);
-      });
+        participationMethod: 'ideation',
+      })
+        .then((project) => {
+          projectId = project.body.data.id;
+          return cy.apiCreateIdea(projectId, ideaTitle, ideaContent);
+        })
+        .then((idea) => {
+          ideaId = idea.body.data.id;
+          cy.visit(`/ideas/${ideaTitle}`);
+          cy.get('#e2e-idea-show-page-content');
+          cy.wait(1000);
+        });
     });
 
     it('has a correct initial idea status', () => {
@@ -130,7 +151,10 @@ describe('Idea Page', () => {
     let projectId: string;
     const ideaTitle = randomString();
     const ideaContent = randomString();
-    const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
+    const locationGeoJSON = {
+      type: 'Point',
+      coordinates: [4.351710300000036, 50.8503396],
+    };
     const locationDescription = 'Brussel, België';
     let ideaId: string;
 
@@ -145,12 +169,20 @@ describe('Idea Page', () => {
         description: projectDescription,
         publicationStatus: 'published',
         participationMethod: 'ideation',
-      }).then((project) => {
-        projectId = project.body.data.id;
-        return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription);
-      }).then((idea) => {
-        ideaId = idea.body.data.id;
-      });
+      })
+        .then((project) => {
+          projectId = project.body.data.id;
+          return cy.apiCreateIdea(
+            projectId,
+            ideaTitle,
+            ideaContent,
+            locationGeoJSON,
+            locationDescription
+          );
+        })
+        .then((idea) => {
+          ideaId = idea.body.data.id;
+        });
     });
 
     it('displays the location dropdown on the idea page', () => {

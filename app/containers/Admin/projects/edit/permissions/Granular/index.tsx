@@ -16,7 +16,6 @@ interface Props {
 }
 
 class Granular extends Component<Props> {
-
   render() {
     const { project } = this.props;
     return (
@@ -24,16 +23,12 @@ class Granular extends Component<Props> {
         <SubSectionTitle>
           <FormattedMessage {...messages.granularPermissionsTitle} />
         </SubSectionTitle>
-        {project && project.attributes.process_type === 'timeline' &&
-          <Timeline
-            projectId={project.id}
-          />
-        }
-        {project && project.attributes.process_type === 'continuous' &&
-          <Continuous
-            project={project}
-          />
-        }
+        {project && project.attributes.process_type === 'timeline' && (
+          <Timeline projectId={project.id} />
+        )}
+        {project && project.attributes.process_type === 'continuous' && (
+          <Continuous project={project} />
+        )}
       </StyledSection>
     );
   }

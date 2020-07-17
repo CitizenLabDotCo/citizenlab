@@ -25,8 +25,10 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportSurveyButton extends React.PureComponent<Props, State> {
-
+export default class ExportSurveyButton extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -35,8 +37,10 @@ export default class ExportSurveyButton extends React.PureComponent<Props, State
   }
 
   trackExportSurvey = () => {
-    trackEventByName(tracks.clickExportSurvey.name, { extra: { ...this.props } });
-  }
+    trackEventByName(tracks.clickExportSurvey.name, {
+      extra: { ...this.props },
+    });
+  };
 
   handleExportSurveyResults = () => {
     this.trackExportSurvey();
@@ -44,7 +48,7 @@ export default class ExportSurveyButton extends React.PureComponent<Props, State
     this.setState({ exporting: true });
     exportSurveyResults(this.props);
     this.setState({ exporting: false });
-  }
+  };
 
   render() {
     const { exporting } = this.state;

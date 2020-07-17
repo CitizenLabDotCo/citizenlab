@@ -77,7 +77,7 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {}
 
@@ -89,37 +89,45 @@ class VotingDisabled extends PureComponent<Props, State> {
     const { project } = this.props;
 
     if (!isNilOrError(project)) {
-      const pcType = project.attributes.process_type === 'continuous' ? 'project' : 'phase';
-      const pcId = pcType === 'project' ? project.id : project.relationships?.current_phase?.data?.id;
+      const pcType =
+        project.attributes.process_type === 'continuous' ? 'project' : 'phase';
+      const pcId =
+        pcType === 'project'
+          ? project.id
+          : project.relationships?.current_phase?.data?.id;
 
       if (pcId && pcType) {
         openVerificationModal({
           context: {
             action: 'voting',
             id: pcId,
-            type: pcType
-          }
+            type: pcType,
+          },
         });
       }
     }
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   reasonToMessage = () => {
     const { authUser } = this.props;
     const { disabled_reason, future_enabled } = this.props.votingDescriptor;
 
     if (disabled_reason === 'project_inactive') {
-      return future_enabled ? messages.votingDisabledPossibleLater : messages.votingDisabledProjectInactive;
+      return future_enabled
+        ? messages.votingDisabledPossibleLater
+        : messages.votingDisabledProjectInactive;
     } else if (disabled_reason === 'voting_disabled' && future_enabled) {
       return messages.votingDisabledPossibleLater;
     } else if (disabled_reason === 'voting_limited_max_reached') {
       return messages.votingDisabledMaxReached;
     } else if (disabled_reason === 'idea_not_in_current_phase') {
-      return future_enabled ? messages.votingDisabledPhaseNotYetStarted : messages.votingDisabledPhaseCompleted;
+      return future_enabled
+        ? messages.votingDisabledPhaseNotYetStarted
+        : messages.votingDisabledPhaseCompleted;
     } else if (disabled_reason === 'not_permitted') {
       return messages.votingDisabledNotPermitted;
     } else if (authUser && disabled_reason === 'not_verified') {
@@ -127,7 +135,7 @@ class VotingDisabled extends PureComponent<Props, State> {
     } else {
       return messages.votingDisabled;
     }
-  }
+  };
 
   handleProjectLinkClick = (event: MouseEvent) => {
     event.preventDefault();
@@ -136,7 +144,7 @@ class VotingDisabled extends PureComponent<Props, State> {
     if (!isNilOrError(this.props.project)) {
       clHistory.push(`/projects/${this.props.project.attributes.slug}`);
     }
-  }
+  };
 
   getProjectLink = () => {
     const { project } = this.props;
@@ -155,23 +163,23 @@ class VotingDisabled extends PureComponent<Props, State> {
     }
 
     return null;
-  }
+  };
 
   stopPropagation = (event: MouseEvent | KeyboardEvent) => {
     event.stopPropagation();
-  }
+  };
 
   render() {
     const { votingDescriptor } = this.props;
     const message = this.reasonToMessage();
-    const enabledFromDate = (votingDescriptor.future_enabled ? (
+    const enabledFromDate = votingDescriptor.future_enabled ? (
       <FormattedDate
         value={votingDescriptor.future_enabled}
         year="numeric"
         month="long"
         day="numeric"
       />
-    ) : null);
+    ) : null;
     const projectName = this.getProjectLink();
     const verificationLink = (
       <StyledButton
@@ -190,7 +198,7 @@ class VotingDisabled extends PureComponent<Props, State> {
           values={{
             enabledFromDate,
             projectName,
-            verificationLink
+            verificationLink,
           }}
         />
       </Container>
@@ -200,11 +208,13 @@ class VotingDisabled extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <VotingDisabled {...inputProps} {...dataProps} />}
+    {(dataProps) => <VotingDisabled {...inputProps} {...dataProps} />}
   </Data>
 );

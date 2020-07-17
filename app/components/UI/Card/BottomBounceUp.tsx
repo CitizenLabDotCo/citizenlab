@@ -29,7 +29,9 @@ const doubleBounce = keyframes`
 
 const Container = styled.div`
   position: relative;
-  animation: ${css`${doubleBounce} 500ms linear`};
+  animation: ${css`
+    ${doubleBounce} 500ms linear
+  `};
   transform-origin: bottom;
   border-top: solid 1px ${colors.separation};
   background: #fff;
@@ -50,7 +52,7 @@ const IconWrapper = styled.div`
   background: #f0f0f0;
 `;
 
-const StyledIcon = styled(Icon) `
+const StyledIcon = styled(Icon)`
   height: 20px;
   fill: #333;
 `;
@@ -66,7 +68,7 @@ export default class BottomBounceUp extends PureComponent<Props> {
   render() {
     return (
       <Container>
-        {this.props.icon &&
+        {this.props.icon && (
           <IconWrapper>
             {/*
               If you use this component and want to add aria-hidden,
@@ -74,10 +76,8 @@ export default class BottomBounceUp extends PureComponent<Props> {
             */}
             <StyledIcon name={this.props.icon} ariaHidden />
           </IconWrapper>
-        }
-        <ContentWrapper>
-          {this.props.children}
-        </ContentWrapper>
+        )}
+        <ContentWrapper>{this.props.children}</ContentWrapper>
       </Container>
     );
   }

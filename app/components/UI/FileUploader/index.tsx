@@ -31,44 +31,45 @@ interface Props {
 
 interface State {}
 
-export default class FileUploader extends PureComponent<Props, State>{
-
+export default class FileUploader extends PureComponent<Props, State> {
   handleFileOnAdd = (fileToAdd: UploadFile) => {
     this.props.onFileAdd(fileToAdd);
-  }
+  };
 
   handleFileOnRemove = (fileToRemove: UploadFile) => (event) => {
     event.preventDefault();
     event.stopPropagation();
     this.props.onFileRemove(fileToRemove);
-  }
+  };
 
   render() {
     const { files, errors, id, className } = this.props;
-    const fileNames = Array.isArray(files) && files.map(file => file.filename).join(', ');
+    const fileNames =
+      Array.isArray(files) && files.map((file) => file.filename).join(', ');
     return (
       <Container className={className}>
-        <FileInput
-          onAdd={this.handleFileOnAdd}
-          id={id}
-        />
+        <FileInput onAdd={this.handleFileOnAdd} id={id} />
 
         {errors && <Error fieldName="file" apiErrors={errors.file} />}
 
-        {Array.isArray(files) && files.map(file => (
-          <FileDisplay
-            key={file.id || file.filename}
-            onDeleteClick={this.handleFileOnRemove(file)}
-            file={file}
-          />)
-        )}
+        {Array.isArray(files) &&
+          files.map((file) => (
+            <FileDisplay
+              key={file.id || file.filename}
+              onDeleteClick={this.handleFileOnRemove(file)}
+              file={file}
+            />
+          ))}
         <ScreenReaderOnly aria-live="polite">
-          {Array.isArray(files) && files.length === 0 &&
+          {Array.isArray(files) && files.length === 0 && (
             <FormattedMessage {...messages.a11y_noFiles} />
-          }
-          {Array.isArray(files) && files.length > 0 &&
-            <FormattedMessage {...messages.a11y_filesToBeUploaded} values={{ fileNames }} />
-          }
+          )}
+          {Array.isArray(files) && files.length > 0 && (
+            <FormattedMessage
+              {...messages.a11y_filesToBeUploaded}
+              values={{ fileNames }}
+            />
+          )}
         </ScreenReaderOnly>
       </Container>
     );

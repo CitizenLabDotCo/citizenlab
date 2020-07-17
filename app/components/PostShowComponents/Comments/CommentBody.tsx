@@ -11,7 +11,9 @@ import { updateComment, IUpdatedComment } from 'services/comments';
 
 // Resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetMachineTranslation from 'resources/GetMachineTranslation';
 
@@ -59,7 +61,7 @@ const ButtonsWrapper = styled.div`
   margin-top: 1em;
 
   > * + * {
-    margin-left: .5rem;
+    margin-left: 0.5rem;
   }
 `;
 
@@ -99,7 +101,7 @@ class CommentBody extends PureComponent<Props, State> {
       editableCommentContent: '',
       translateButtonClicked: false,
       processing: false,
-      apiErrors: null
+      apiErrors: null,
     };
   }
 
@@ -108,11 +110,17 @@ class CommentBody extends PureComponent<Props, State> {
     this.setEditableCommentContent();
 
     this.subscriptions = [
-      commentTranslateButtonClicked$.pipe(
-        filter(({ eventValue: commentId }) => commentId === this.props.commentId)
-      ).subscribe(() => {
-        this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
-      })
+      commentTranslateButtonClicked$
+        .pipe(
+          filter(
+            ({ eventValue: commentId }) => commentId === this.props.commentId
+          )
+        )
+        .subscribe(() => {
+          this.setState(({ translateButtonClicked }) => ({
+            translateButtonClicked: !translateButtonClicked,
+          }));
+        }),
     ];
   }
 
@@ -124,40 +132,56 @@ class CommentBody extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   setCommentContent = () => {
     let commentContent = '';
     const { comment, locale, tenantLocales } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(comment)) {
-      commentContent = getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(tenantLocales) &&
+      !isNilOrError(comment)
+    ) {
+      commentContent = getLocalized(
+        comment.attributes.body_multiloc,
+        locale,
+        tenantLocales
+      ).replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
         '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
       );
     }
 
     this.setState({ commentContent });
-  }
+  };
 
   setEditableCommentContent = () => {
     let editableCommentContent = '';
     const { comment, locale, tenantLocales } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenantLocales) && !isNilOrError(comment)) {
-      editableCommentContent = getLocalized(comment.attributes.body_multiloc, locale, tenantLocales).replace(
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(tenantLocales) &&
+      !isNilOrError(comment)
+    ) {
+      editableCommentContent = getLocalized(
+        comment.attributes.body_multiloc,
+        locale,
+        tenantLocales
+      ).replace(
         /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>@([\S\s]*?)<\/span>/gi,
         '@[$3]($2)'
       );
     }
 
     this.setState({ editableCommentContent });
-  }
+  };
 
   onEditableCommentContentChange = (editableCommentContent: string) => {
     this.setState({ editableCommentContent });
-  }
+  };
 
   onSubmit = async (event: FormEvent<any>) => {
     event.preventDefault();
@@ -168,7 +192,10 @@ class CommentBody extends PureComponent<Props, State> {
     if (!isNilOrError(locale) && !isNilOrError(comment)) {
       const updatedComment: IUpdatedComment = {
         body_multiloc: {
-          [locale]: editableCommentContent.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
+          [locale]: editableCommentContent.replace(
+            /\@\[(.*?)\]\((.*?)\)/gi,
+            '@$2'
+          ),
         },
       };
 
@@ -191,29 +218,23 @@ class CommentBody extends PureComponent<Props, State> {
 
       this.setState({ processing: false });
     }
-  }
+  };
 
   cancelEditing = (event: FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.setEditableCommentContent();
     this.props.onCancelEditing();
-  }
+  };
 
   render() {
-    const {
-      editing,
-      commentType,
-      locale,
-      commentId,
-      className
-    } = this.props;
+    const { editing, commentType, locale, commentId, className } = this.props;
 
     const {
       commentContent,
       editableCommentContent,
       translateButtonClicked,
       processing,
-      apiErrors
+      apiErrors,
     } = this.state;
 
     let content: JSX.Element | null = null;
@@ -235,7 +256,7 @@ class CommentBody extends PureComponent<Props, State> {
                     id={commentId}
                     context="comment"
                   >
-                    {translation => {
+                    {(translation) => {
                       let text: string = commentContent;
 
                       if (!isNilOrError(translation)) {
@@ -269,13 +290,12 @@ class CommentBody extends PureComponent<Props, State> {
               />
             </QuillEditedContent>
             <ButtonsWrapper>
-              {apiErrors && apiErrors.body_multiloc && apiErrors.body_multiloc[locale] &&
-                <Error apiErrors={apiErrors.body_multiloc[locale]} />
-              }
-              <Button
-                buttonStyle="secondary"
-                onClick={this.cancelEditing}
-              >
+              {apiErrors &&
+                apiErrors.body_multiloc &&
+                apiErrors.body_multiloc[locale] && (
+                  <Error apiErrors={apiErrors.body_multiloc[locale]} />
+                )}
+              <Button buttonStyle="secondary" onClick={this.cancelEditing}>
                 <FormattedMessage {...messages.cancelCommentEdit} />
               </Button>
               <Button
@@ -290,11 +310,7 @@ class CommentBody extends PureComponent<Props, State> {
         );
       }
 
-      return (
-        <Container className={className}>
-          {content}
-        </Container>
-      );
+      return <Container className={className}>{content}</Container>;
     }
 
     return null;
@@ -304,11 +320,13 @@ class CommentBody extends PureComponent<Props, State> {
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenantLocales: <GetTenantLocales />,
-  comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
+  comment: ({ commentId, render }) => (
+    <GetComment id={commentId}>{render}</GetComment>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CommentBody {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentBody {...inputProps} {...dataProps} />}
   </Data>
 );
