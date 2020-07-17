@@ -6,7 +6,7 @@ import messages from '../messages';
 import { IInviteData, deleteInvite } from 'services/invites';
 import GetUser from 'resources/GetUser';
 import { Table, Button as SemanticButton, Popup } from 'semantic-ui-react';
-import Badge from 'components/admin/Badge';
+import { Badge } from 'cl2-component-library';
 import { isNilOrError } from 'utils/helperUtils';
 
 interface InputProps {
@@ -34,9 +34,9 @@ export default (inputProps: InputProps) => (
           </Table.Cell>
           <Table.Cell textAlign="center">
             {user.attributes.invite_status === 'pending'
-            ?
+              ?
               <Badge><FormattedMessage {...messages.inviteStatusPending} /></Badge>
-            :
+              :
               <Badge color={colors.clGreen}><FormattedMessage {...messages.inviteStatusAccepted} /></Badge>
             }
           </Table.Cell>
