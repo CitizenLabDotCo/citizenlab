@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { colors, boxShadowOutline } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
+import { colors, defaultOutline } from 'utils/styleUtils';
+import { Icon } from 'cl2-component-library';
 import { isBoolean } from 'lodash-es';
 import { darken, hideVisually } from 'polished';
 
@@ -24,6 +24,7 @@ const IndeterminateIcon = styled(Icon)<{ size: string }>`
 `;
 
 const Label = styled.label<{ disabled: boolean }>`
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
@@ -47,7 +48,7 @@ const StyledCheckbox = styled.div<{ checkedOrIndeterminate: boolean, size: strin
   transition: all 120ms ease-out;
 
   ${HiddenCheckbox}.focus-visible + & {
-    ${boxShadowOutline};
+    ${defaultOutline};
   }
 
   &.enabled {
@@ -70,6 +71,7 @@ type Props = DefaultProps & {
   className?: string;
   label?: string | JSX.Element | null;
   id?: string;
+  name?: string;
 };
 
 export default class Checkbox extends PureComponent<Props> {
@@ -88,7 +90,8 @@ export default class Checkbox extends PureComponent<Props> {
       className,
       disabled,
       indeterminate,
-      onChange
+      onChange,
+      name
     } = this.props;
     const hasLabel = !!label;
 
@@ -105,6 +108,7 @@ export default class Checkbox extends PureComponent<Props> {
               checked={checked}
               disabled={disabled}
               tabIndex={0}
+              name={name}
             />
             <StyledCheckbox
               checkedOrIndeterminate={checked || indeterminate}

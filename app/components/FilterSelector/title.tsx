@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 
 // utils
 import { isPage } from 'utils/helperUtils';

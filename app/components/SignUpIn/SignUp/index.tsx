@@ -13,7 +13,7 @@ import CustomFields from 'components/SignUpIn/SignUp/CustomFields';
 import Success from 'components/SignUpIn/SignUp/Success';
 import Error from 'components/UI/Error';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContent } from 'components/SignUpIn/styles';
+import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContentContainer } from 'components/SignUpIn/styles';
 import ReactResizeDetector from 'react-resize-detector';
 
 // resources
@@ -45,6 +45,7 @@ import { HeaderSubtitle } from 'components/UI/Modal';
 
 // typings
 import { ISignUpInMetaData } from 'components/SignUpIn';
+import { Multiloc } from 'typings';
 
 const Container = styled.div`
   width: 100%;
@@ -258,7 +259,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
   render() {
     const { activeStep, error, steps, headerHeight } = this.state;
     const { tenant, metaData, windowHeight, className, intl: { formatMessage } } = this.props;
-    const helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
+    let helperText: Multiloc | null | undefined | Error = null;
     let stepName: string | null = null;
 
     if (activeStep) {
@@ -267,10 +268,12 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
 
       if (activeStep === 'auth-providers' || activeStep === 'password-signup') {
         stepName = formatMessage(messages.createYourAccount);
+        helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.signup_helper_text;
       } else if (activeStep === 'verification') {
         stepName = formatMessage(messages.verifyYourIdentity);
       } else if (activeStep === 'custom-fields') {
         stepName = formatMessage(messages.completeYourProfile);
+        helperText = isNilOrError(tenant) ? null : tenant.attributes.settings.core.custom_fields_signup_helper_text;
       }
 
       const showStepsCount = !!(!error && totalStepsCount > 1 && activeStepNumber > 0 && stepName);
@@ -306,7 +309,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
             </div>
           }
 
-          <StyledModalContent
+          <StyledModalContentContainer
             inModal={!!metaData.inModal}
             windowHeight={`${windowHeight}px`}
             headerHeight={headerHeight}
@@ -320,7 +323,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
               />
             ) : (
               <>
-                {activeStep === 'auth-providers' && !isEmpty(helperText) &&
+                {['auth-providers', 'password-signup', 'custom-fields'].includes(activeStep) && !isEmpty(helperText) &&
                   <SignUpHelperText
                     textColor={colors.text}
                     fontSize="base"
@@ -374,7 +377,7 @@ class SignUp extends PureComponent<Props & InjectedIntlProps, State> {
                 }
               </>
             )}
-          </StyledModalContent>
+          </StyledModalContentContainer>
         </Container>
       );
     }

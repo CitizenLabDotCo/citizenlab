@@ -37,10 +37,6 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.emailListLabel',
     defaultMessage: 'Manually enter the email addresses of the people you want to invite. Seperate each address by a comma.',
   },
-  importLabel: {
-    id: 'app.containers.Admin.Invitations.importLabel',
-    defaultMessage: 'Select an Excel file (.xlsx)',
-  },
   fileRequirements: {
     id: 'app.containers.Admin.Invitations.fileRequirements',
     defaultMessage: 'Important: In order to send the invitations correctly, no column can be removed from the import template. Leave unused columns empty.'
@@ -48,14 +44,6 @@ export default defineMessages({
   visitSupportPage: {
     id: 'app.containers.Admin.Invitations.visitSupportPage',
     defaultMessage: '{supportPageLink} if you want more info about all supported columns in the import template.'
-  },
-  emailColumnName: {
-    id: 'app.containers.Admin.Invitations.emailColumnName',
-    defaultMessage: 'email',
-  },
-  exampleFile: {
-    id: 'app.containers.Admin.Invitations.exampleFile',
-    defaultMessage: 'example file',
   },
   supportPageLinkText: {
     id: 'app.containers.Admin.Invitations.supportPageLinkText',
@@ -215,5 +203,9 @@ export default defineMessages({
   configureInvitations: {
     id: 'app.containers.Admin.Invitations.configureInvitations',
     defaultMessage: '3. Configure the invitations',
+  },
+  required: {
+    id: 'UI.FormComponents.required',
+    defaultMessage: 'required'
   },
 });

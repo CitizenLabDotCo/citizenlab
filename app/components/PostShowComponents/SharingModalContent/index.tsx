@@ -4,7 +4,7 @@ import { adopt } from 'react-adopt';
 
 // components
 import Sharing from 'components/Sharing';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';

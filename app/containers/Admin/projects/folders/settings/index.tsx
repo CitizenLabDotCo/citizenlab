@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
-import { SectionTitle, SectionSubtitle, SectionField } from 'components/admin/Section';
+import { SectionTitle, SectionDescription, SectionField } from 'components/admin/Section';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import Error from 'components/UI/Error';
 import { isNilOrError } from 'utils/helperUtils';
-import Label from 'components/UI/Label';
 import { deleteProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
 import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
@@ -14,7 +13,7 @@ import { adopt } from 'react-adopt';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
 import GoBackButton from 'components/UI/GoBackButton';
-import IconTooltip from 'components/UI/IconTooltip';
+import { IconTooltip, Label } from 'cl2-component-library';
 import ProjectFolderForm from './ProjectFolderForm';
 
 const Container = styled.div<({ mode: 'edit' | 'new' }) >`
@@ -92,18 +91,18 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             <SectionTitle>
               {<FormattedMessage {...messages.titleSettingsTab} />}
             </SectionTitle>
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitleSettingsTab} />
-            </SectionSubtitle>
+            </SectionDescription>
           </>
           :
           <Header>
             <SectionTitle >
               {<FormattedMessage {...messages.titleNewFolder} />}
             </SectionTitle >
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitleNewFolder} />
-            </SectionSubtitle>
+            </SectionDescription>
           </Header>
         }
         <ProjectFolderForm

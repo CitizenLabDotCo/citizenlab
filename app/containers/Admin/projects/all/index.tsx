@@ -24,10 +24,10 @@ import { isAdmin } from 'services/permissions/roles';
 // components
 import CreateProject from './CreateProject';
 import PageWrapper from 'components/admin/PageWrapper';
-import { PageTitle, SectionSubtitle } from 'components/admin/Section';
+import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 const ModeratorProjectList = React.lazy(() => import('./Lists/ModeratorProjectList'));
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
 
@@ -184,14 +184,14 @@ class AdminProjectsList extends PureComponent<Props, State> {
             <FormattedMessage {...messages.overviewPageTitle} />
           </PageTitle>
 
-          <SectionSubtitle>
+          <SectionDescription>
             <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
               <FormattedMessage {...messages.overviewPageSubtitle} />
               <HasPermission.No>
                 <FormattedMessage {...messages.overviewPageSubtitleModerator} />
               </HasPermission.No>
             </HasPermission>
-          </SectionSubtitle>
+          </SectionDescription>
 
           {userIsAdmin && <StyledCreateProject />}
 

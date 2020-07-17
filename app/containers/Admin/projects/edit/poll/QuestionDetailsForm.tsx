@@ -7,8 +7,7 @@ import { IPollQuestion, updatePollQuestion } from 'services/pollQuestions';
 // Components
 import Button from 'components/UI/Button';
 import { Row } from 'components/admin/ResourceList';
-import { Select } from 'cl2-component-library';
-import Input from 'components/UI/Input';
+import { Select, Input } from 'cl2-component-library';
 import WrongMaxChoiceIndicator from './WrongMaxChoiceIndicator';
 
 // Typings
@@ -54,7 +53,8 @@ interface State {
 
 export class QuestionDetailsForm extends PureComponent<Props & InjectedIntlProps, State> {
   typeOptions: IOption[];
-  constructor(props) {
+
+  constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
       maxAnswers: props.question.attributes.max_options,

@@ -4,12 +4,12 @@ import { map, switchMap } from 'rxjs/operators';
 import { forOwn, get, size, has, trim, isEmpty, omitBy } from 'lodash-es';
 
 // components
-import Label from 'components/UI/Label';
+import { Label, IconTooltip } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import ColorPickerInput from 'components/UI/ColorPickerInput';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import { Section, SectionTitle, SectionField, SectionSubtitle, SubSectionTitle } from 'components/admin/Section';
+import { Section, SectionTitle, SectionField, SectionDescription, SubSectionTitle } from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
@@ -39,7 +39,6 @@ import { updatePage } from 'services/pages';
 
 // typings
 import { CLError, UploadFile, Locale, Multiloc } from 'typings';
-import IconTooltip from 'components/UI/IconTooltip';
 
 import { isCLErrorJSON } from 'utils/errorUtils';
 
@@ -419,9 +418,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionTitle>
               <FormattedMessage {...messages.titleCustomize} />
             </SectionTitle>
-            <SectionSubtitle>
+            <SectionDescription>
               <FormattedMessage {...messages.subtitleCustomize} />
-            </SectionSubtitle>
+            </SectionDescription>
 
             <SubSectionTitle>
               <FormattedMessage {...messages.titleBranding} />

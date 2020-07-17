@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabRegistration',
     defaultMessage: 'Registration',
   },
+  tabTopics: {
+    id: 'app.containers.AdminPage.SettingsPage.tabTopics',
+    defaultMessage: 'Topic manager',
+  },
   tabWidgets: {
     id: 'app.containers.AdminPage.SettingsPage.tabWidgets',
     defaultMessage: 'Widgets',
@@ -132,10 +136,6 @@ export default defineMessages({
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
     defaultMessage: 'The provided subtitle exceeds the maximum allowed character limit',
-  },
-  uploadPlaceholder: {
-    id: 'app.containers.AdminPage.SettingsPage.uploadPlaceholder',
-    defaultMessage: 'Drop your files here',
   },
   noLogo: {
     id: 'app.containers.AdminPage.SettingsPage.noLogo',

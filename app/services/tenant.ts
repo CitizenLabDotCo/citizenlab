@@ -30,6 +30,7 @@ export interface ITenantSettings {
     meta_title?: Multiloc | null;
     meta_description?: Multiloc | null;
     signup_helper_text?: Multiloc | null;
+    custom_fields_signup_helper_text?: Multiloc | null;
     color_main: string | null;
     color_secondary: string | null;
     color_text: string | null;
@@ -95,6 +96,7 @@ export interface ITenantSettings {
   initiatives?: {
     allowed: boolean;
     enabled: boolean;
+    posting_enabled: boolean;
     days_limit: number;
     eligibility_criteria: Multiloc;
     success_stories?: ISuccessStory[];

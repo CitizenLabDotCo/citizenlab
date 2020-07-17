@@ -39,6 +39,8 @@ export const locales = [
   'pl-PL',
   'kl-GL',
   'hu-HU',
+  'ro-RO',
+  'pt-BR',
 ];
 
 export const graphqlLocales = [
@@ -64,6 +66,8 @@ export const graphqlLocales = [
   'plPl',
   'klGl',
   'huHu',
+  'roRo',
+  'ptBr',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -83,6 +87,8 @@ export const appLocalePairs = {
   'pl-PL': 'Polski',
   'kl-GL': 'Kalaallisut',
   'hu-HU': 'Magyar',
+  'ro-RO': 'Română',
+  'pt-BR': 'Português (Brasil)',
   ach: 'Acholi',
 };
 
@@ -109,6 +115,8 @@ export const appGraphqlLocalePairs = {
   plPl: 'pl-PL',
   klGl: 'kl-GL',
   huHu: 'hu-HU',
+  roRo: 'ro-RO',
+  ptBr: 'pt-BR',
 };
 
 export const shortenedAppLocalePairs = {
@@ -127,22 +135,26 @@ export const shortenedAppLocalePairs = {
   'pl-PL': 'Polski',
   'kl-GL': 'Kalaallisut',
   'hu-HU': 'Magyar',
+  'ro-RO': 'Română',
+  'pt-BR': 'Português',
   ach: 'Acholi',
 };
 
 export const appLocalesMomentPairs = {
-    'en-GB': 'en-gb',
-    'en-CA': 'en-ca',
-    'fr-BE': 'fr',
-    'fr-FR': 'fr',
-    'nl-BE': 'nl',
-    'nl-NL': 'nl',
-    'de-DE': 'de',
-    'da-DK': 'da',
-    'nb-NO': 'nb',
-    'es-ES': 'es',
-    'es-CL': 'es',
-    'pl-PL': 'pl',
-    'kl-GL': 'da',
-    'hu-HU': 'hu',
+  'en-GB': 'en-gb',
+  'en-CA': 'en-ca',
+  'fr-BE': 'fr',
+  'fr-FR': 'fr',
+  'nl-BE': 'nl',
+  'nl-NL': 'nl',
+  'de-DE': 'de',
+  'da-DK': 'da',
+  'nb-NO': 'nb',
+  'es-ES': 'es',
+  'es-CL': 'es',
+  'pl-PL': 'pl',
+  'kl-GL': 'da',
+  'hu-HU': 'hu',
+  'ro-RO': 'ro',
+  'pt-BR': 'pt',
 };

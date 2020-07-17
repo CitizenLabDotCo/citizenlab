@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { SectionTitle, SectionSubtitle } from 'components/admin/Section';
+import { SectionTitle, SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../messages';
@@ -19,9 +19,9 @@ export default class InitiativesManagePage extends PureComponent {
           <SectionTitle>
             <FormattedMessage {...messages.titleManageTab} />
           </SectionTitle>
-          <SectionSubtitle>
+          <SectionDescription>
             <FormattedMessage {...messages.subtitleManageTab} />
-          </SectionSubtitle>
+          </SectionDescription>
         </StyledDiv>
 
         <PostManager

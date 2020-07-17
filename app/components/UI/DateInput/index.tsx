@@ -8,7 +8,7 @@ import moment from 'moment';
 import { SingleDatePicker } from 'react-dates';
 
 // components
-import Label from 'components/UI/Label';
+import { Label } from 'cl2-component-library';
 
 // styling
 import styled from 'styled-components';

@@ -10,8 +10,7 @@ import scrollToComponent from 'react-scroll-to-component';
 import bowser from 'bowser';
 
 // components
-import Input from 'components/UI/Input';
-import LocationInput from 'components/UI/LocationInput';
+import { Input, LocationInput } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import Error from 'components/UI/Error';
@@ -22,8 +21,8 @@ import { FormSection, FormSectionTitle, FormLabel } from 'components/UI/FormComp
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { topicsStream, ITopics, ITopicData } from 'services/topics';
-import { projectByIdStream, IProjects, IProject, IProjectData } from 'services/projects';
+import { ITopicData } from 'services/topics';
+import { projectByIdStream, IProject, IProjectData } from 'services/projects';
 import { phasesStream, IPhaseData } from 'services/phases';
 import {
   ideaCustomFieldsSchemasStream,
@@ -33,16 +32,16 @@ import {
 
 // resources
 import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 
 // utils
 import eventEmitter from 'utils/eventEmitter';
-import { getLocalized } from 'utils/i18n';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 // typings
@@ -92,7 +91,7 @@ export interface IIdeaFormOutput {
 }
 
 interface InputProps {
-  projectId: string | null;
+  projectId: string;
   title: string | null;
   description: string | null;
   selectedTopics: string[];
@@ -105,6 +104,7 @@ interface InputProps {
 
 interface DataProps {
   pbEnabled: GetFeatureFlagChildProps;
+  topics: GetTopicsChildProps;
 }
 
 interface Props extends InputProps, DataProps {}
@@ -112,20 +112,19 @@ interface Props extends InputProps, DataProps {}
 interface State {
   locale: Locale | null;
   tenant: ITenant | null;
-  topics: IOption[] | null;
   pbContext: IProjectData | IPhaseData | null;
   projects: IOption[] | null;
   title: string;
-  titleError: string | JSX.Element | null;
+  titleError: string | null;
   description: string;
-  descriptionError: string | JSX.Element | null;
+  descriptionError: string | null;
   selectedTopics: string[];
-  topicsError: string | JSX.Element | null;
-  locationError: string | JSX.Element | null;
-  imageError: string | JSX.Element | null;
-  attachmentsError: string | JSX.Element | null;
+  topicsError: string | null;
+  locationError: string | null;
+  imageError: string | null;
+  attachmentsError: string | null;
   budget: number | null;
-  budgetError: string | JSX.Element | null;
+  budgetError: string | null;
   address: string;
   imageFile: UploadFile[];
   ideaFiles: UploadFile[];
@@ -143,7 +142,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     this.state = {
       locale: null,
       tenant: null,
-      topics: null,
       pbContext: null,
       projects: null,
       title: '',
@@ -172,8 +170,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const { projectId } = this.props;
     const locale$ = localeStream().observable;
     const tenant$ = currentTenantStream().observable;
-    const topics$ = topicsStream().observable;
-    const project$: Observable<IProject | null> = (projectId ? projectByIdStream(projectId).observable : of(null));
+    const project$: Observable<IProject | null> = projectByIdStream(projectId).observable;
     const ideaCustomFieldsSchemas$ = ideaCustomFieldsSchemasStream(projectId as string).observable;
     const pbContext$: Observable<IProjectData | IPhaseData | null> = project$.pipe(
       switchMap((project) => {
@@ -202,14 +199,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       combineLatest(
         locale$,
         tenant$,
-        topics$,
-      ).subscribe(([locale, tenant, topics]) => {
-        const tenantLocales = tenant.data.attributes.settings.core.locales;
-
+      ).subscribe(([locale, tenant]) => {
         this.setState({
           locale,
           tenant,
-          topics: this.getOptions(topics, locale, tenantLocales)
         });
       }),
 
@@ -252,17 +245,6 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       title: (title || ''),
       description: (description || ''),
     });
-  }
-
-  getOptions = (list: ITopics | IProjects | null, locale: Locale | null, currentTenantLocales: Locale[]) => {
-    if (list && locale) {
-      return (list.data as (ITopicData | IProjectData)[]).map(item => ({
-        value: item.id,
-        label: getLocalized(item.attributes.title_multiloc, locale, currentTenantLocales)
-      } as IOption));
-    }
-
-    return null;
   }
 
   handleTitleOnChange = (title: string) => {
@@ -318,11 +300,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   validateTitle = (title: string | null) => {
     if (!title) {
-      return <FormattedMessage {...messages.titleEmptyError} />;
-    }
-
-    if (title && title.length < 10) {
-      return <FormattedMessage {...messages.titleLengthError} />;
+      return this.props.intl.formatMessage(messages.titleEmptyError);
+    } else if (title && title.length < 10) {
+      return this.props.intl.formatMessage(messages.titleLengthError);
     }
 
     return null;
@@ -330,9 +310,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   validateDescription = (description: string | null) => {
     if (!description) {
-      return <FormattedMessage {...messages.descriptionEmptyError} />;
+      return this.props.intl.formatMessage(messages.descriptionEmptyError);
     } else if (description && description.length < 30) {
-      return <FormattedMessage {...messages.descriptionLengthError} />;
+      return this.props.intl.formatMessage(messages.descriptionLengthError);
     }
 
     return null;
@@ -352,7 +332,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (topicsRequired && selectedTopics.length === 0) {
-        return <FormattedMessage {...messages.noTopicsError} />;
+        return this.props.intl.formatMessage(messages.noTopicsError);
       }
     }
 
@@ -373,7 +353,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (locationRequired && !address) {
-        return <FormattedMessage {...messages.noLocationError} />;
+        return this.props.intl.formatMessage(messages.noLocationError);
       }
     }
 
@@ -394,7 +374,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (imagesRequired && imageFiles.length === 0) {
-        return <FormattedMessage {...messages.noImageError} />;
+        return this.props.intl.formatMessage(messages.noImageError);
       }
     }
 
@@ -415,7 +395,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       );
 
       if (attachmentsRequired && ideaFiles.length === 0) {
-        return <FormattedMessage {...messages.noAttachmentsError} />;
+        return this.props.intl.formatMessage(messages.noAttachmentsError);
       }
     }
 
@@ -439,15 +419,15 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const imageError = this.validateImage(imageFiles);
     const attachmentsError = this.validateAttachments(ideaFiles);
     const pbMaxBudget = (pbContext && pbContext.attributes.max_budget ? pbContext.attributes.max_budget : null);
-    let budgetError: JSX.Element | null = null;
+    let budgetError: string | null = null;
 
     if (pbContext) {
       if (budget === null && (pbContext.type === 'project' || (pbContext.type === 'phase' && pastPresentOrFuture([(pbContext as IPhaseData).attributes.start_at, (pbContext as IPhaseData).attributes.end_at]) === 'present'))) {
-        budgetError = <FormattedMessage {...messages.noBudgetError} />;
+        budgetError = this.props.intl.formatMessage(messages.noBudgetError);
       } else if (budget === 0) {
-        budgetError = <FormattedMessage {...messages.budgetIsZeroError} />;
+        budgetError = this.props.intl.formatMessage(messages.budgetIsZeroError);
       } else if (pbMaxBudget && budget && budget > pbMaxBudget) {
-        budgetError = <FormattedMessage {...messages.budgetIsTooBig} />;
+        budgetError = this.props.intl.formatMessage(messages.budgetIsTooBig);
       }
     }
 
@@ -557,12 +537,11 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
   render() {
     const className = this.props['className'];
-    const { projectId, pbEnabled } = this.props;
+    const { projectId, pbEnabled, topics } = this.props;
     const { formatMessage } = this.props.intl;
     const {
       locale,
       tenant,
-      topics,
       pbContext,
       title,
       description,
@@ -584,7 +563,8 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
     if (
       !isNilOrError(ideaCustomFieldsSchemas) &&
-      !isNilOrError(locale)
+      !isNilOrError(locale) &&
+      !isNilOrError(topics)
     ) {
       const topicsEnabled = this.isFieldEnabled('topic_ids', ideaCustomFieldsSchemas, locale);
       const locationEnabled = this.isFieldEnabled('location', ideaCustomFieldsSchemas, locale);
@@ -592,6 +572,7 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       const showPBBudget = pbContext && pbEnabled;
       const showTopics = topicsEnabled && topics && topics.length > 0;
       const showLocation = locationEnabled;
+      const filteredTopics = topics.filter(topic => !isNilOrError(topic)) as ITopicData[];
 
       return (
         <Form id="idea-form" className={className}>
@@ -674,9 +655,9 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     subtext={ideaCustomFieldsSchemas?.json_schema_multiloc?.[locale || '']?.properties?.topic_ids?.description}
                   />
                   <TopicsPicker
-                    value={selectedTopics}
+                    selectedTopicIds={selectedTopics}
                     onChange={this.handleTopicsOnChange}
-                    max={2}
+                    availableTopics={filteredTopics}
                   />
                   {topicsError && <Error id="e2e-new-idea-topics-error" text={topicsError} />}
                 </FormElement>
@@ -750,7 +731,10 @@ class IdeaForm extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 }
 
 const Data = adopt<DataProps, InputProps>({
-  pbEnabled: <GetFeatureFlag name="participatory_budgeting" />
+  pbEnabled: <GetFeatureFlag name="participatory_budgeting" />,
+  topics: ({ projectId, render }) => {
+    return <GetTopics projectId={projectId}>{render}</GetTopics>;
+  }
 });
 
 const IdeaFormWitHOCs = withRouter<Props>(injectIntl(IdeaForm));

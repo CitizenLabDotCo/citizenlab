@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { colors, fontSizes } from 'utils/styleUtils';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import { get } from 'lodash-es';
 // https://www.w3.org/TR/2016/WD-wai-aria-practices-1.1-20160317/examples/checkbox/checkbox-2.html
 

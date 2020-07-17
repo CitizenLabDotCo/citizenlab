@@ -7,7 +7,7 @@ import { saveAs } from 'file-saver';
 // Components
 import Checkbox from 'components/UI/Checkbox';
 import Dropdown from 'components/UI/Dropdown';
-import Icon from 'components/UI/Icon';
+import { Icon } from 'cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 

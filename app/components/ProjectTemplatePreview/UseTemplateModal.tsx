@@ -19,10 +19,9 @@ import useTenantLocales from 'hooks/useTenantLocales';
 import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 // components
-import Icon from 'components/UI/Icon';
+import { Input, Icon } from 'cl2-component-library';
 import Button from 'components/UI/Button';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import Input from 'components/UI/Input';
 import Modal from 'components/UI/Modal';
 import Error from 'components/UI/Error';
 import Link from 'utils/cl-router/Link';
@@ -230,7 +229,7 @@ const UseTemplateModal = memo<Props & WithRouterProps & InjectedIntlProps>(({ pa
     setTitleMultiloc(titleMultiloc);
   }, []);
 
-  const onSelectedLocaleChange = useCallback((newSelectedLocale: Locale | null) => {
+  const onSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
     setSelectedLocale(newSelectedLocale);
   }, []);
 

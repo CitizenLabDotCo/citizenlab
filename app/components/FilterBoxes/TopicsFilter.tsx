@@ -8,7 +8,7 @@ import messages from './messages';
 
 // styling
 import { ScreenReaderOnly } from 'utils/a11y';
-import { fontSizes, colors } from 'utils/styleUtils';
+import { fontSizes, colors, defaultCardStyle } from 'utils/styleUtils';
 
 // components
 import T from 'components/T';
@@ -31,9 +31,7 @@ const Container = styled.div`
   align-items: stretch;
   padding: 20px;
   padding-top: 25px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 const Topics = styled.div``;

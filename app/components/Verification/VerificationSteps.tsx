@@ -6,7 +6,7 @@ import VerificationMethods from './VerificationMethods';
 import VerificationFormCOW from './VerificationFormCOW';
 import VerificationFormBogus from './VerificationFormBogus';
 import VerificationFormLookup from './VerificationFormLookup';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 
 // resource hooks
 import useAuthUser from 'hooks/useAuthUser';

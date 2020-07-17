@@ -16,6 +16,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 // styling
 import styled from 'styled-components';
 import { Header, Title } from './styles';
+import { defaultCardStyle } from 'utils/styleUtils';
 
 // typings
 import { IOption } from 'typings';
@@ -27,9 +28,7 @@ const Container = styled.div`
   padding: 20px;
   padding-top: 25px;
   padding-bottom: 25px;
-  background: #fff;
-  border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  ${defaultCardStyle};
 `;
 
 interface InputProps {

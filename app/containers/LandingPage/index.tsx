@@ -12,7 +12,7 @@ import InitiativesCTABox from './InitiativesCTABox';
 import T from 'components/T';
 import Fragment from 'components/Fragment';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import LoadingBox from 'components/ProjectAndFolderCards';
+import LoadingBox from 'components/ProjectAndFolderCards/LoadingBox';
 const ProjectAndFolderCards = React.lazy(() => import('components/ProjectAndFolderCards'));
 
 // resources
@@ -34,9 +34,6 @@ import messages from './messages';
 // style
 import styled, { withTheme } from 'styled-components';
 import { media, fontSizes, colors } from 'utils/styleUtils';
-
-// typings
-import FeatureFlag from 'components/FeatureFlag';
 
 const Container = styled.main`
   height: 100%;
@@ -164,6 +161,7 @@ class LandingPage extends PureComponent<Props, State> {
       // custom section
       const showCustomSection = !isEmptyMultiloc(homepageInfoPage.attributes.body_multiloc);
       const customSectionBodyMultiloc = homepageInfoPage.attributes.body_multiloc;
+      const postingProposalsEnabled = tenant.attributes.settings.initiatives?.posting_enabled;
 
       // tranlate header slogan into a h2 wih a fallback
       const headerSloganMultiLoc = tenant.attributes.settings.core.header_slogan;
@@ -185,7 +183,7 @@ class LandingPage extends PureComponent<Props, State> {
               <StyledContentContainer mode="page">
                 <ProjectSection id="e2e-landing-page-project-section">
                   <SectionContainer>
-                    <Suspense fallback={LoadingBox}>
+                    <Suspense fallback={<LoadingBox />}>
                       <ProjectAndFolderCards
                         publicationStatusFilter={['published', 'archived']}
                         showTitle={true}
@@ -195,9 +193,9 @@ class LandingPage extends PureComponent<Props, State> {
                     </Suspense>
                   </SectionContainer>
                 </ProjectSection>
-                <FeatureFlag name="initiatives">
+                {postingProposalsEnabled &&
                   <StyledInitiativesCTABox />
-                </FeatureFlag>
+                }
               </StyledContentContainer>
 
               {showCustomSection &&
@@ -244,7 +242,7 @@ const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
-  homepageInfoPage: <GetPage slug="homepage-info" />
+  homepageInfoPage: <GetPage slug="homepage-info" />,
 });
 
 const LandingPageWithHoC = withTheme(LandingPage);

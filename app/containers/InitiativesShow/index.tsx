@@ -13,7 +13,7 @@ import { withRouter, WithRouterProps } from 'react-router';
 // components
 import Modal from 'components/UI/Modal';
 import FileAttachments from 'components/UI/FileAttachments';
-import Spinner from 'components/UI/Spinner';
+import { Spinner } from 'cl2-component-library';
 import Sharing from 'components/Sharing';
 import FeatureFlag from 'components/FeatureFlag';
 import SharingModalContent from 'components/PostShowComponents/SharingModalContent';
@@ -58,9 +58,9 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, postPageContentMaxWidth, viewportWidths } from 'utils/styleUtils';
+import { media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet } from './styleConstants';
+import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet, pageContentMaxWidth } from './styleConstants';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -102,7 +102,7 @@ const Container = styled.main`
 
 const InitiativeContainer = styled.div`
   width: 100%;
-  max-width: ${postPageContentMaxWidth};
+  max-width: ${pageContentMaxWidth}px;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -488,7 +488,10 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
           <InitiativeContainer>
             <Content>
               <LeftColumn>
-                <Topics postType="initiative" topicIds={topicIds} />
+                <Topics
+                  postType="initiative"
+                  topicIds={topicIds}
+                />
 
                 {isDesktop &&
                   <InitiativeHeader>

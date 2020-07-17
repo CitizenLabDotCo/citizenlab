@@ -29,10 +29,6 @@ export default defineMessages({
     id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase',
     defaultMessage: 'This survey can only be taken when this phase in the timeline is active.',
   },
-  signUpToTakePoll: {
-    id: 'app.containers.Projects.PollForm.signUpToTakePoll',
-    defaultMessage: 'Please {signUpLink} or {logInLink} to take this poll',
-  },
   signUpLinkText: {
     id: 'app.containers.Projects.PollForm.signUpLinkText',
     defaultMessage: 'sign up',
