@@ -3,6 +3,10 @@ import { adopt } from 'react-adopt';
 import { get, isNumber } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
+// tracking
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // components
 import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
@@ -378,6 +382,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleSortOnChange = (sort: Sort) => {
+    trackEventByName(tracks.sortingFilter, {
+      sort
+    });
+
     this.props.ideas.onChangeSorting(sort);
   }
 
@@ -390,6 +398,10 @@ class IdeaCards extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   handleTopicsOnChange = (topics: string[] | null) => {
+    trackEventByName(tracks.topicsFilter, {
+      topics
+    });
+
     this.handleIdeaFiltersOnChange({ topics });
   }
 
