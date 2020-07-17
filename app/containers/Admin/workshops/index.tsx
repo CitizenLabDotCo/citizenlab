@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 // components
 import Button from 'components/UI/Button';
 import PageWrapper from 'components/admin/PageWrapper';
-import { PageTitle } from 'components/admin/Section';
+import { PageTitle, SectionDescription } from 'components/admin/Section';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 // i18n
@@ -19,6 +19,7 @@ const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  flex-direction: column;
   padding: 0;
   margin: 0;
   margin-bottom: 30px;
@@ -26,7 +27,6 @@ const HeaderContainer = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  margin-top: 25px;
   margin-bottom: 25px;
 `;
 
@@ -37,22 +37,12 @@ const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
         <PageTitle>
           <FormattedMessage {...messages.pageTitle} />
         </PageTitle>
+        <SectionDescription>
+          <FormattedMessage {...messages.pageDescription} />
+        </SectionDescription>
       </HeaderContainer>
 
       <PageWrapper>
-        <QuillEditedContent textColor={colors.label}>
-          <FormattedMessage
-            {...messages.pageDescription}
-            values={{
-              link:
-                // tslint:disable-next-line:react-a11y-anchors
-                <a href={intl.formatMessage(messages.supportGuideLinkUrl)}>
-                  <FormattedMessage {...messages.supportGuideLinkText} />
-                </a>
-              }}
-          />
-        </QuillEditedContent>
-
         <ButtonWrapper>
           <Button linkTo={`${window.location.origin}/workshops`}>
             <FormattedMessage {...messages.manageWorkshops} />
@@ -60,10 +50,21 @@ const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
         </ButtonWrapper>
 
         <QuillEditedContent textColor={colors.label}>
-          <a href={intl.formatMessage(messages.learnHowToCreateWorkshopLinkUrl)}>
-            {/* // tslint:disable-next-line:react-a11y-anchors */}
-            <FormattedMessage {...messages.learnHowToCreateWorkshopLinkText} />
-          </a>
+          <FormattedMessage
+            {...messages.workshopsIntro}
+            values={{
+              readSupportGuideLink:
+                // tslint:disable-next-line:react-a11y-anchors
+                <a href={intl.formatMessage(messages.supportGuideLinkUrl)} target="_blank">
+                  <FormattedMessage {...messages.supportGuideLinkCopy} />
+                </a>,
+              createWorkshopArticleLink:
+                <a href={intl.formatMessage(messages.learnHowToCreateWorkshopLinkUrl)} target="_blank">
+                  {/* // tslint:disable-next-line:react-a11y-anchors */}
+                  <FormattedMessage {...messages.learnHowToCreateWorkshopLinkCopy} />
+                </a>
+              }}
+          />
         </QuillEditedContent>
       </PageWrapper>
     </>
