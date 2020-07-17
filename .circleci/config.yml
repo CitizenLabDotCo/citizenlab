@@ -98,7 +98,7 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "54:03:ca:0f:4e:7a:fc:fa:6e:30:ef:80:2e:da:02:c4"
-      - run: git diff --quiet && git diff --staged --quiet || git commit -m "Translations updated by CI (extract-intl)"
+      - run: git diff --quiet app/translations && git diff --staged --quiet app/translations || git commit -m "Translations updated by CI (extract-intl)"
       - run: git push origin $CIRCLE_BRANCH
 
   deploy_demo:
