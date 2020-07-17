@@ -7,15 +7,19 @@ export default defineMessages({
   },
   pageDescription: {
     id: 'app.containers.Admin.Workshop.pageDescription',
-    defaultMessage: 'Hold live video meetings, facilitate simultaneous group discussions and debates. Gather input, vote and reach consensus, just like you would offline. {link}',
+    defaultMessage: 'Hold live video meetings, facilitate simultaneous group discussions and debates. Gather input, vote and reach consensus, just like you would offline.',
+  },
+  workshopsIntro: {
+    id: 'app.containers.Admin.Workshop.workshopsIntro',
+    defaultMessage: '{readSupportGuideLink} to learn more about Workshops or dive straight in and {createWorkshopArticleLink}.',
   },
   supportGuideLinkUrl: {
     id: 'app.containers.Admin.Workshop.supportGuideLinkUrl',
     defaultMessage: 'http://support.citizenlab.co/articles/4155778-how-do-i-set-up-an-online-workshop',
   },
-  supportGuideLinkText: {
-    id: 'app.containers.Admin.Workshop.supportGuideLinkText',
-    defaultMessage: 'Want to learn more? Check out our support guide.',
+  supportGuideLinkCopy: {
+    id: 'app.containers.Admin.Workshop.supportGuideLinkCopy',
+    defaultMessage: 'Download our support guide',
   },
   manageWorkshops: {
     id: 'app.containers.Admin.Workshop.manageWorkshops',
@@ -25,8 +29,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkUrl',
     defaultMessage: 'http://support.citizenlab.co/en/articles/4155778-how-do-i-set-up-an-online-workshop',
   },
-  learnHowToCreateWorkshopLinkText: {
-    id: 'app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkText',
-    defaultMessage: 'Learn how to create a workshop',
+  learnHowToCreateWorkshopLinkCopy: {
+    id: 'app.containers.Admin.Workshop.learnHowToCreateWorkshopLinkCopy',
+    defaultMessage: 'learn how to create a workshop',
   }
 });
