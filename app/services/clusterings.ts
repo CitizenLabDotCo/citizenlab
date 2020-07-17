@@ -73,7 +73,9 @@ export interface IClustering {
 }
 
 export function clusteringByIdStream(clusteringId: string) {
-  return streams.get<IClustering>({ apiEndpoint: `${apiEndpoint}/${clusteringId}` });
+  return streams.get<IClustering>({
+    apiEndpoint: `${apiEndpoint}/${clusteringId}`,
+  });
 }
 
 export function clusteringsStream(streamParams: IStreamParams | null = null) {
@@ -85,7 +87,11 @@ export function addClustering(object) {
 }
 
 export function updateClustering(clusteringId: string, object) {
-  return streams.update<IClustering>(`${apiEndpoint}/${clusteringId}`, clusteringId, { clustering: object });
+  return streams.update<IClustering>(
+    `${apiEndpoint}/${clusteringId}`,
+    clusteringId,
+    { clustering: object }
+  );
 }
 
 export function deleteClustering(clusteringId: string) {

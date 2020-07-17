@@ -2,7 +2,10 @@ import { captureMessage, captureException, withScope } from '@sentry/browser';
 import { isEmpty, isError, isObject } from 'lodash-es';
 
 function isErrorOrErrorEvent(wat: any) {
-  return isError(wat) || Object.prototype.toString.call(wat) === '[object ErrorEvent]';
+  return (
+    isError(wat) ||
+    Object.prototype.toString.call(wat) === '[object ErrorEvent]'
+  );
 }
 
 function isString(wat: any) {
@@ -19,7 +22,7 @@ export function reportError(error: any) {
   } else if (isString(error)) {
     captureMessage(error);
   } else {
-    withScope(scope => {
+    withScope((scope) => {
       scope.setExtra('error', error);
       captureMessage('Something wrong happened');
     });

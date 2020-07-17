@@ -2,20 +2,27 @@ import React from 'react';
 import { isEmpty, omit } from 'lodash-es';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import messages from './messages';
-import { ButtonStyles, Props as OriginalButtonProps } from 'components/UI/Button';
+import {
+  ButtonStyles,
+  Props as OriginalButtonProps,
+} from 'components/UI/Button';
 import { Omit } from 'typings';
 
-interface Props extends  Omit<OriginalButtonProps, 'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'> {
+interface Props
+  extends Omit<
+    OriginalButtonProps,
+    'className' | 'text' | 'disabled' | 'setSubmitButtonRef' | 'processing'
+  > {
   isValid: boolean;
   isSubmitting: boolean;
   status: any;
   touched: any;
   messages?: {
-    buttonSave: { id: string; defaultMessage?: string; },
-    buttonError: { id: string; defaultMessage?: string; },
-    buttonSuccess: { id: string; defaultMessage?: string; },
-    messageSuccess: { id: string; defaultMessage?: string; },
-    messageError: { id: string; defaultMessage?: string; },
+    buttonSave: { id: string; defaultMessage?: string };
+    buttonError: { id: string; defaultMessage?: string };
+    buttonSuccess: { id: string; defaultMessage?: string };
+    messageSuccess: { id: string; defaultMessage?: string };
+    messageError: { id: string; defaultMessage?: string };
   };
   buttonStyle?: ButtonStyles;
   animate?: boolean;
@@ -24,7 +31,6 @@ interface Props extends  Omit<OriginalButtonProps, 'className' | 'text' | 'disab
 type State = {};
 
 class FormikSubmitWrapper extends React.PureComponent<Props, State> {
-
   getStatus = () => {
     const { isValid, status, touched } = this.props;
 
@@ -37,11 +43,19 @@ class FormikSubmitWrapper extends React.PureComponent<Props, State> {
     if (status === 'error') return 'error';
 
     return 'enabled';
-  }
+  };
 
   render() {
     const { isSubmitting, buttonStyle: style, animate } = this.props;
-    const buttonProps = omit(this.props, ['status', 'isSubmitting', 'isValid', 'messages', 'style', 'status', 'touched']);
+    const buttonProps = omit(this.props, [
+      'status',
+      'isSubmitting',
+      'isValid',
+      'messages',
+      'style',
+      'status',
+      'touched',
+    ]);
 
     return (
       <SubmitWrapper

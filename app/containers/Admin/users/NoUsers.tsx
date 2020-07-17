@@ -19,7 +19,7 @@ const NoUsersPage = styled.div`
   svg {
     margin-bottom: 20px;
     height: 70px;
-    fill: ${colors.clIconAccent}
+    fill: ${colors.clIconAccent};
   }
 `;
 
@@ -58,7 +58,7 @@ export default class NoUsers extends React.PureComponent<Props> {
       <NoUsersPage>
         <Icon name="blankPage" />
         <FormattedMessage {...messages.emptyGroup} />
-        {!this.props.smartGroup &&
+        {!this.props.smartGroup && (
           <SFormattedMessage>
             <FormattedMessage
               {...messages.goToAllUsers}
@@ -66,11 +66,12 @@ export default class NoUsers extends React.PureComponent<Props> {
                 allUsersLink: (
                   <Link to="/admin/users/">
                     <FormattedMessage {...messages.allUsers} />
-                  </Link>),
+                  </Link>
+                ),
               }}
             />
           </SFormattedMessage>
-        }
+        )}
       </NoUsersPage>
     );
   }

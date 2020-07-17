@@ -6,8 +6,12 @@ import { get, isError } from 'lodash-es';
 
 // resources
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetProjectImages, { GetProjectImagesChildProps } from 'resources/GetProjectImages';
-import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetProjectImages, {
+  GetProjectImagesChildProps,
+} from 'resources/GetProjectImages';
+import GetPermission, {
+  GetPermissionChildProps,
+} from 'resources/GetPermission';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // components
@@ -88,10 +92,10 @@ const ProjectImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${props => props.theme.colors.placeholderBg};
+  background: ${(props) => props.theme.colors.placeholderBg};
 `;
 
-const ProjectImagePlaceholderIcon = styled(Icon) `
+const ProjectImagePlaceholderIcon = styled(Icon)`
   width: 50%;
   height: 50%;
   fill: #fff;
@@ -171,12 +175,15 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 class ProjectCard extends PureComponent<Props, State> {
-
   disabledMessage = () => {
     const { project, authUser } = this.props;
 
     if (!isNilOrError(project)) {
-      const { enabled, future_enabled: futureEnabled, disabled_reason: disabledReason } = project.attributes.action_descriptor.posting;
+      const {
+        enabled,
+        future_enabled: futureEnabled,
+        disabled_reason: disabledReason,
+      } = project.attributes.action_descriptor.posting;
       if (enabled) {
         return null;
       } else if (disabledReason === 'not_permitted') {
@@ -193,7 +200,7 @@ class ProjectCard extends PureComponent<Props, State> {
     } else {
       return null;
     }
-  }
+  };
 
   calculateCardState = () => {
     const { permission } = this.props;
@@ -206,31 +213,44 @@ class ProjectCard extends PureComponent<Props, State> {
     } else {
       return 'enabled';
     }
-  }
+  };
 
   handleOnClick = () => {
     if (this.calculateCardState() !== 'disabled') {
       this.props.onClick();
     }
-  }
+  };
 
   render() {
     const { projectId, selected, className } = this.props;
     const { project, projectImages, permission } = this.props;
 
-    if (!isNilOrError(project) && !isNilOrError(permission) && !isNilOrError(projectImages)) {
+    if (
+      !isNilOrError(project) &&
+      !isNilOrError(permission) &&
+      !isNilOrError(projectImages)
+    ) {
       const { title_multiloc: titleMultiloc } = project.attributes;
-      const smallImage = (projectImages.length > 0 ? projectImages[0].attributes.versions.small : null);
+      const smallImage =
+        projectImages.length > 0
+          ? projectImages[0].attributes.versions.small
+          : null;
       const disabledMessage = this.disabledMessage();
       const cardState = this.calculateCardState();
-      const enabled = (cardState === 'enabled' || cardState === 'enabledBecauseAdmin');
-      const futureEnabledDate = project.attributes.action_descriptor.posting.future_enabled;
-      const formattedFutureEnabledDate = (futureEnabledDate ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL') : null);
+      const enabled =
+        cardState === 'enabled' || cardState === 'enabledBecauseAdmin';
+      const futureEnabledDate =
+        project.attributes.action_descriptor.posting.future_enabled;
+      const formattedFutureEnabledDate = futureEnabledDate
+        ? moment(futureEnabledDate, 'YYYY-MM-DD').format('LL')
+        : null;
 
       return (
         <Container
           onClick={this.handleOnClick}
-          className={`${className} ${selected ? 'selected' : ''} ${enabled ? 'enabled' : 'disabled'}`}
+          className={`${className} ${selected ? 'selected' : ''} ${
+            enabled ? 'enabled' : 'disabled'
+          }`}
         >
           <ImageWrapper>
             {smallImage ? (
@@ -243,24 +263,29 @@ class ProjectCard extends PureComponent<Props, State> {
           </ImageWrapper>
 
           <ProjectContent>
-            <ProjectTitle className={`${selected && 'selected'} ${enabled && 'enabled'}`}>
+            <ProjectTitle
+              className={`${selected && 'selected'} ${enabled && 'enabled'}`}
+            >
               <T value={titleMultiloc} />
             </ProjectTitle>
 
-            {cardState === 'disabled' && disabledMessage &&
+            {cardState === 'disabled' && disabledMessage && (
               <PostingDisabledReason>
-                <FormattedMessage {...disabledMessage} values={{ date: formattedFutureEnabledDate }} />
+                <FormattedMessage
+                  {...disabledMessage}
+                  values={{ date: formattedFutureEnabledDate }}
+                />
               </PostingDisabledReason>
-            }
+            )}
 
-            {cardState === 'enabledBecauseAdmin' &&
+            {cardState === 'enabledBecauseAdmin' && (
               <PostingEnabledReason>
                 <AdminIconWrapper>
                   <Icon name="admin" ariaHidden />
                 </AdminIconWrapper>
                 <FormattedMessage {...messages.postingPossibleBecauseAdmin} />
               </PostingEnabledReason>
-            }
+            )}
           </ProjectContent>
 
           <StyledRadio
@@ -282,14 +307,26 @@ class ProjectCard extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectId, render }) => <GetProject projectId={projectId}>{render}</GetProject>,
-  projectImages: ({ project, render }) => <GetProjectImages projectId={get(project, 'id')}>{render}</GetProjectImages>,
-  permission: ({ project, render }) => <GetPermission item="idea" action="create" context={{ project: (!isError(project) ? project : null) }}>{render}</GetPermission>,
+  project: ({ projectId, render }) => (
+    <GetProject projectId={projectId}>{render}</GetProject>
+  ),
+  projectImages: ({ project, render }) => (
+    <GetProjectImages projectId={get(project, 'id')}>{render}</GetProjectImages>
+  ),
+  permission: ({ project, render }) => (
+    <GetPermission
+      item="idea"
+      action="create"
+      context={{ project: !isError(project) ? project : null }}
+    >
+      {render}
+    </GetPermission>
+  ),
   authUser: <GetAuthUser />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectCard {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectCard {...inputProps} {...dataProps} />}
   </Data>
 );

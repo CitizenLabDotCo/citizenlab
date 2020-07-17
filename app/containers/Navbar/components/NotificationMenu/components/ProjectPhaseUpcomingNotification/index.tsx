@@ -14,7 +14,7 @@ interface Props {
   notification: IProjectPhaseUpcomingNotificationData;
 }
 
-const ProjectPhaseUpcomingNotification = memo<Props>(props => {
+const ProjectPhaseUpcomingNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -27,8 +27,12 @@ const ProjectPhaseUpcomingNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.projectPhaseUpcoming}
         values={{
-          projectTitle: <T value={notification.attributes.project_title_multiloc} />,
-          phaseStartAt: <FormattedDate value={notification.attributes.phase_start_at} />
+          projectTitle: (
+            <T value={notification.attributes.project_title_multiloc} />
+          ),
+          phaseStartAt: (
+            <FormattedDate value={notification.attributes.phase_start_at} />
+          ),
         }}
       />
     </NotificationWrapper>

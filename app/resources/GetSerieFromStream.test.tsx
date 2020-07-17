@@ -10,7 +10,7 @@ let mockData: ISupportedDataType | null | undefined = null;
 const stream = jest.fn((_parameters, _customId: string) => {
   const observable = new BehaviorSubject(mockData);
   return {
-    observable
+    observable,
   };
 });
 
@@ -42,8 +42,8 @@ describe('<GetSerieFromStream />', () => {
         group: undefined,
         project: 'testProject',
         start_at: 'startDate',
-        topic: undefined
-      }
+        topic: undefined,
+      },
     });
     component.setProps({ startAt: 'nextDate' });
     expect(stream).toHaveBeenCalledTimes(2);
@@ -53,8 +53,8 @@ describe('<GetSerieFromStream />', () => {
         group: undefined,
         project: 'testProject',
         start_at: 'nextDate',
-        topic: undefined
-      }
+        topic: undefined,
+      },
     });
   });
 
@@ -73,18 +73,21 @@ describe('<GetSerieFromStream />', () => {
         {child}
       </GetSerieFromStream>
     );
-    expect(stream.mock.calls[0]).toEqual([{
-      queryParameters: {
-        start_at: 'startDate',
-        end_at: 'endDate',
-        group: 'groupID',
-        project: 'projectID',
-        topic: 'topicID'
-      }
-    }, 'customId']);
+    expect(stream.mock.calls[0]).toEqual([
+      {
+        queryParameters: {
+          start_at: 'startDate',
+          end_at: 'endDate',
+          group: 'groupID',
+          project: 'projectID',
+          topic: 'topicID',
+        },
+      },
+      'customId',
+    ]);
   });
 
-  it('doesn\'t calls convertToGraphFormat function if there is no data', () => {
+  it("doesn't calls convertToGraphFormat function if there is no data", () => {
     mockData = null;
     shallow(
       <GetSerieFromStream
@@ -104,14 +107,14 @@ describe('<GetSerieFromStream />', () => {
       series: {
         comments: {
           topic1: 25,
-        }
+        },
       },
       topics: {
         topic1: {
           title_multiloc: {
             en: 'Topic 1',
-            'fr-BE': 'Theme 1'
-          }
+            'fr-BE': 'Theme 1',
+          },
         },
       },
     };
@@ -130,7 +133,9 @@ describe('<GetSerieFromStream />', () => {
   });
 
   it('passes down result of convertToGraphFormat to the child', () => {
-    convertToGraphFormat = jest.fn(data => ({ comments: data.series.comments }));
+    convertToGraphFormat = jest.fn((data) => ({
+      comments: data.series.comments,
+    }));
     shallow(
       <GetSerieFromStream
         convertToGraphFormat={convertToGraphFormat}
@@ -145,14 +150,14 @@ describe('<GetSerieFromStream />', () => {
       series: {
         comments: {
           topic1: 25,
-        }
+        },
       },
       topics: {
         topic1: {
           title_multiloc: {
             en: 'Topic 1',
-            'fr-BE': 'Theme 1'
-          }
+            'fr-BE': 'Theme 1',
+          },
         },
       },
     };

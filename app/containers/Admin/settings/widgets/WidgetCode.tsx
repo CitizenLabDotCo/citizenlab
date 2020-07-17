@@ -43,9 +43,9 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
     };
   }
 
-  handleFocus = event => {
+  handleFocus = (event) => {
     event.target.select();
-  }
+  };
 
   copy = (ref) => () => {
     ref.current.select();
@@ -59,7 +59,7 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
         selection.removeAllRanges();
       }
     }
-  }
+  };
 
   render() {
     const { path, tenant, width, height } = this.props;
@@ -82,11 +82,15 @@ class WidgetCode extends PureComponent<Props & DataProps, State> {
           onFocus={this.handleFocus}
           ref={this.snippetRef}
         />
-        <Button onClick={this.copy(this.snippetRef)} buttonStyle={this.state.copied ? 'success' : 'admin-dark'}>
-          {this.state.copied
-            ? <FormattedMessage {...messages.copied} />
-            : <FormattedMessage {...messages.copyToClipboard} />
-          }
+        <Button
+          onClick={this.copy(this.snippetRef)}
+          buttonStyle={this.state.copied ? 'success' : 'admin-dark'}
+        >
+          {this.state.copied ? (
+            <FormattedMessage {...messages.copied} />
+          ) : (
+            <FormattedMessage {...messages.copyToClipboard} />
+          )}
         </Button>
       </>
     );

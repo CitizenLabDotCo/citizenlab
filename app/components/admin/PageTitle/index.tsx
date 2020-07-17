@@ -1,4 +1,3 @@
-
 // style
 import styled from 'styled-components';
 import { fontSizes } from 'utils/styleUtils';

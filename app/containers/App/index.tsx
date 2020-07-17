@@ -14,10 +14,18 @@ import { configureScope } from '@sentry/browser';
 import GlobalStyle from 'global-styles';
 
 // constants
-import { appLocalesMomentPairs, ADMIN_TEMPLATES_GRAPHQL_PATH } from 'containers/App/constants';
+import {
+  appLocalesMomentPairs,
+  ADMIN_TEMPLATES_GRAPHQL_PATH,
+} from 'containers/App/constants';
 
 // graphql
-import { ApolloClient, ApolloLink, InMemoryCache, HttpLink } from 'apollo-boost';
+import {
+  ApolloClient,
+  ApolloLink,
+  InMemoryCache,
+  HttpLink,
+} from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
 // context
@@ -42,7 +50,9 @@ import LoadableModal from 'components/Loadable/Modal';
 import LoadableUserDeleted from 'components/UserDeletedModalContent/LoadableUserDeleted';
 import ErrorBoundary from 'components/ErrorBoundary';
 import { LiveAnnouncer } from 'react-aria-live';
-const VerificationModal = lazy(() => import('components/Verification/VerificationModal'));
+const VerificationModal = lazy(() =>
+  import('components/Verification/VerificationModal')
+);
 const SignUpInModal = lazy(() => import('components/SignUpIn/SignUpInModal'));
 const PostPageFullscreenModal = lazy(() => import('./PostPageFullscreenModal'));
 
@@ -52,7 +62,11 @@ import HasPermission from 'components/HasPermission';
 // services
 import { localeStream } from 'services/locale';
 import { IUser } from 'services/users';
-import { authUserStream, signOut, signOutAndDeleteAccountPart2 } from 'services/auth';
+import {
+  authUserStream,
+  signOut,
+  signOutAndDeleteAccountPart2,
+} from 'services/auth';
 import { currentTenantStream, ITenant, ITenantStyle } from 'services/tenant';
 
 // events
@@ -76,16 +90,18 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  padding-top: ${props => props.theme.menuHeight}px;
+  padding-top: ${(props) => props.theme.menuHeight}px;
   width: 100vw;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px);
   display: flex;
   flex-direction: column;
   align-items: stretch;
 
   ${media.smallerThanMaxTablet`
     padding-top: 0px;
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -132,7 +148,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       signUpInModalMounted: false,
       verificationModalMounted: false,
       navbarRef: null,
-      mobileNavbarRef: null
+      mobileNavbarRef: null,
     };
     this.subscriptions = [];
   }
@@ -144,33 +160,48 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
     this.unlisten = clHistory.listenBefore((newLocation) => {
       const newPreviousPathname = location.pathname;
-      const pathsToIgnore = ['sign-up', 'sign-in', 'complete-signup', 'invite', 'authentication-error'];
-      this.setState((state) => ({ previousPathname: !endsWith(newPreviousPathname, pathsToIgnore) ? newPreviousPathname : state.previousPathname }));
+      const pathsToIgnore = [
+        'sign-up',
+        'sign-in',
+        'complete-signup',
+        'invite',
+        'authentication-error',
+      ];
+      this.setState((state) => ({
+        previousPathname: !endsWith(newPreviousPathname, pathsToIgnore)
+          ? newPreviousPathname
+          : state.previousPathname,
+      }));
       trackPage(newLocation.pathname);
     });
 
     this.subscriptions = [
       combineLatest(
-        authUser$.pipe(tap((authUser) => {
-          if (isNilOrError(authUser)) {
-            signOut();
-          } else {
-            configureScope((scope) => {
-              scope.setUser({
-                id: authUser.data.id,
+        authUser$.pipe(
+          tap((authUser) => {
+            if (isNilOrError(authUser)) {
+              signOut();
+            } else {
+              configureScope((scope) => {
+                scope.setUser({
+                  id: authUser.data.id,
+                });
               });
-            });
-          }
-        })),
+            }
+          })
+        ),
         locale$,
-        tenant$.pipe(tap((tenant) => {
-          moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
+        tenant$.pipe(
+          tap((tenant) => {
+            moment.tz.setDefault(tenant.data.attributes.settings.core.timezone);
 
-          uniq(tenant.data.attributes.settings.core.locales
-            .filter(locale => locale !== 'en' && locale !== 'ach')
-            .map(locale => appLocalesMomentPairs[locale]))
-            .forEach(locale => require(`moment/locale/${locale}.js`));
-        }))
+            uniq(
+              tenant.data.attributes.settings.core.locales
+                .filter((locale) => locale !== 'en' && locale !== 'ach')
+                .map((locale) => appLocalesMomentPairs[locale])
+            ).forEach((locale) => require(`moment/locale/${locale}.js`));
+          })
+        )
       ).subscribe(([authUser, locale, tenant]) => {
         const momentLoc = appLocalesMomentPairs[locale] || 'en';
         moment.locale(momentLoc);
@@ -178,52 +209,79 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }),
 
       tenant$.pipe(first()).subscribe((tenant) => {
-        if (tenant.data.attributes.style && tenant.data.attributes.style.customFontAdobeId) {
+        if (
+          tenant.data.attributes.style &&
+          tenant.data.attributes.style.customFontAdobeId
+        ) {
           import('webfontloader').then((WebfontLoader) => {
             WebfontLoader.load({
               typekit: {
-                id: (tenant.data.attributes.style as ITenantStyle).customFontAdobeId
-              }
+                id: (tenant.data.attributes.style as ITenantStyle)
+                  .customFontAdobeId,
+              },
             });
           });
         }
       }),
 
-      eventEmitter.observeEvent<IOpenPostPageModalEvent>('cardClick').subscribe(({ eventValue: { id, slug, type } }) => {
-        this.openPostPageModal(id, slug, type);
-      }),
+      eventEmitter
+        .observeEvent<IOpenPostPageModalEvent>('cardClick')
+        .subscribe(({ eventValue: { id, slug, type } }) => {
+          this.openPostPageModal(id, slug, type);
+        }),
 
       eventEmitter.observeEvent('closeIdeaModal').subscribe(() => {
         this.closePostPageModal();
       }),
 
       eventEmitter.observeEvent('tryAndDeleteProfile').subscribe(() => {
-        signOutAndDeleteAccountPart2().then(success => {
+        signOutAndDeleteAccountPart2().then((success) => {
           if (success) {
-            this.setState({ userDeletedModalOpened: true, userActuallyDeleted: true });
+            this.setState({
+              userDeletedModalOpened: true,
+              userActuallyDeleted: true,
+            });
           } else {
-            this.setState({ userDeletedModalOpened: true, userActuallyDeleted: false });
+            this.setState({
+              userDeletedModalOpened: true,
+              userActuallyDeleted: false,
+            });
           }
         });
-      })
+      }),
     ];
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    const { authUser, signUpInModalMounted, verificationModalMounted } = this.state;
+    const {
+      authUser,
+      signUpInModalMounted,
+      verificationModalMounted,
+    } = this.state;
     const { pathname, search } = this.props.location;
     const isAuthError = endsWith(pathname, 'authentication-error');
     const isInvitation = endsWith(pathname, '/invite');
 
     if (
-      (!prevState.signUpInModalMounted && signUpInModalMounted && isAuthError) ||
-      (!prevState.signUpInModalMounted && signUpInModalMounted && isInvitation) ||
-      (!prevState.signUpInModalMounted && signUpInModalMounted && !isNilOrError(authUser)) ||
-      (prevState.authUser === undefined && !isNilOrError(authUser) && signUpInModalMounted)
+      (!prevState.signUpInModalMounted &&
+        signUpInModalMounted &&
+        isAuthError) ||
+      (!prevState.signUpInModalMounted &&
+        signUpInModalMounted &&
+        isInvitation) ||
+      (!prevState.signUpInModalMounted &&
+        signUpInModalMounted &&
+        !isNilOrError(authUser)) ||
+      (prevState.authUser === undefined &&
+        !isNilOrError(authUser) &&
+        signUpInModalMounted)
     ) {
-      const urlSearchParams = parse(search, { ignoreQueryPrefix: true }) as any as SSOParams;
+      const urlSearchParams = (parse(search, {
+        ignoreQueryPrefix: true,
+      }) as any) as SSOParams;
       const token = urlSearchParams?.['token'] as string | undefined;
-      const shouldComplete = !authUser?.data?.attributes?.registration_completed_at;
+      const shouldComplete = !authUser?.data?.attributes
+        ?.registration_completed_at;
 
       // see services/singleSignOn.ts
       const {
@@ -233,7 +291,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         sso_verification,
         sso_verification_action,
         sso_verification_id,
-        sso_verification_type
+        sso_verification_type,
       } = urlSearchParams;
 
       if (isAuthError || isInvitation) {
@@ -241,30 +299,48 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       }
 
       if (sso_response || shouldComplete || isInvitation) {
-        const shouldVerify = !authUser?.data?.attributes?.verified && sso_verification;
+        const shouldVerify =
+          !authUser?.data?.attributes?.verified && sso_verification;
 
         if (!isAuthError && sso_pathname) {
           clHistory.replace(sso_pathname);
         }
 
-        if (!endsWith(sso_pathname, ['sign-up', 'sign-in']) && (isAuthError || (isInvitation && shouldComplete) || shouldVerify || shouldComplete)) {
+        if (
+          !endsWith(sso_pathname, ['sign-up', 'sign-in']) &&
+          (isAuthError ||
+            (isInvitation && shouldComplete) ||
+            shouldVerify ||
+            shouldComplete)
+        ) {
           openSignUpInModal({
             isInvitation,
             token,
             flow: isAuthError && sso_flow ? sso_flow : 'signup',
             error: isAuthError,
             verification: !!sso_verification,
-            verificationContext: !!(sso_verification && sso_verification_action && sso_verification_id && sso_verification_type) ? {
-              action: sso_verification_action as any,
-              id: sso_verification_id as any,
-              type: sso_verification_type as any
-            } : undefined
+            verificationContext: !!(
+              sso_verification &&
+              sso_verification_action &&
+              sso_verification_id &&
+              sso_verification_type
+            )
+              ? {
+                  action: sso_verification_action as any,
+                  id: sso_verification_id as any,
+                  type: sso_verification_type as any,
+                }
+              : undefined,
           });
         }
       }
     }
 
-    if (!isNilOrError(authUser) && verificationModalMounted && (prevState.authUser === undefined || !prevState.verificationModalMounted)) {
+    if (
+      !isNilOrError(authUser) &&
+      verificationModalMounted &&
+      (prevState.authUser === undefined || !prevState.verificationModalMounted)
+    ) {
       const urlSearchParams = parse(search, { ignoreQueryPrefix: true });
 
       if (has(urlSearchParams, 'verification_success')) {
@@ -272,13 +348,16 @@ class App extends PureComponent<Props & WithRouterProps, State> {
         openVerificationModal({ step: 'success' });
       }
 
-      if (has(urlSearchParams, 'verification_error') && urlSearchParams.verification_error === 'true') {
+      if (
+        has(urlSearchParams, 'verification_error') &&
+        urlSearchParams.verification_error === 'true'
+      ) {
         window.history.replaceState(null, '', window.location.pathname);
         openVerificationModal({
           step: 'error',
           context: {
-            error: this.props.location.query?.error || null
-          } as ContextShape
+            error: this.props.location.query?.error || null,
+          } as ContextShape,
         });
       }
     }
@@ -286,44 +365,48 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
   componentWillUnmount() {
     this.unlisten();
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  openPostPageModal = (id: string, slug: string, type: 'idea' | 'initiative') => {
+  openPostPageModal = (
+    id: string,
+    slug: string,
+    type: 'idea' | 'initiative'
+  ) => {
     this.setState({
       modalId: id,
       modalSlug: slug,
-      modalType: type
+      modalType: type,
     });
-  }
+  };
 
   closePostPageModal = () => {
     this.setState({
       modalId: null,
       modalSlug: null,
-      modalType: null
+      modalType: null,
     });
-  }
+  };
 
   closeUserDeletedModal = () => {
     this.setState({ userDeletedModalOpened: false });
-  }
+  };
 
   setNavbarRef = (navbarRef: HTMLElement) => {
     this.setState({ navbarRef });
-  }
+  };
 
   setMobileNavigationRef = (mobileNavbarRef: HTMLElement) => {
     this.setState({ mobileNavbarRef });
-  }
+  };
 
   singUpInModalMounted = () => {
     this.setState({ signUpInModalMounted: true });
-  }
+  };
 
   verificationModalMounted = () => {
     this.setState({ verificationModalMounted: true });
-  }
+  };
 
   render() {
     const { location, children } = this.props;
@@ -337,7 +420,7 @@ class App extends PureComponent<Props & WithRouterProps, State> {
       userDeletedModalOpened,
       userActuallyDeleted,
       navbarRef,
-      mobileNavbarRef
+      mobileNavbarRef,
     } = this.state;
     const adminPage = isPage('admin', location.pathname);
     const initiativeFormPage = isPage('initiative_form', location.pathname);
@@ -347,7 +430,8 @@ class App extends PureComponent<Props & WithRouterProps, State> {
     const signInPage = isPage('sign_in', location.pathname);
     const signUpPage = isPage('sign_up', location.pathname);
     const theme = getTheme(tenant);
-    const showFooter = !adminPage &&
+    const showFooter =
+      !adminPage &&
       !ideaFormPage &&
       !initiativeFormPage &&
       !ideaEditPage &&
@@ -383,7 +467,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                       opened={userDeletedModalOpened}
                       close={this.closeUserDeletedModal}
                     >
-                      <LoadableUserDeleted userActuallyDeleted={userActuallyDeleted} />
+                      <LoadableUserDeleted
+                        userActuallyDeleted={userActuallyDeleted}
+                      />
                     </LoadableModal>
                   </ErrorBoundary>
 
@@ -395,7 +481,9 @@ class App extends PureComponent<Props & WithRouterProps, State> {
 
                   <ErrorBoundary>
                     <Suspense fallback={null}>
-                      <VerificationModal onMounted={this.verificationModalMounted} />
+                      <VerificationModal
+                        onMounted={this.verificationModalMounted}
+                      />
                     </Suspense>
                   </ErrorBoundary>
 
@@ -408,23 +496,29 @@ class App extends PureComponent<Props & WithRouterProps, State> {
                   </ErrorBoundary>
 
                   <ErrorBoundary>
-                    <Navbar setRef={this.setNavbarRef} setMobileNavigationRef={this.setMobileNavigationRef} />
+                    <Navbar
+                      setRef={this.setNavbarRef}
+                      setMobileNavigationRef={this.setMobileNavigationRef}
+                    />
                   </ErrorBoundary>
 
                   <InnerContainer>
-                    <HasPermission item={{ type: 'route', path: location.pathname }} action="access">
-                      <ErrorBoundary>
-                        {children}
-                      </ErrorBoundary>
+                    <HasPermission
+                      item={{ type: 'route', path: location.pathname }}
+                      action="access"
+                    >
+                      <ErrorBoundary>{children}</ErrorBoundary>
                       <HasPermission.No>
                         <ForbiddenRoute />
                       </HasPermission.No>
                     </HasPermission>
                   </InnerContainer>
 
-                  {showFooter && <PlatformFooter showShortFeedback={showShortFeedback} />}
+                  {showFooter && (
+                    <PlatformFooter showShortFeedback={showShortFeedback} />
+                  )}
                 </Container>
-                </LiveAnnouncer>
+              </LiveAnnouncer>
             </ThemeProvider>
           </PreviousPathnameContext.Provider>
         )}
@@ -444,8 +538,8 @@ const authLink = new ApolloLink((operation, forward) => {
 
   operation.setContext({
     headers: {
-      authorization: jwt ? `Bearer ${jwt}` : ''
-    }
+      authorization: jwt ? `Bearer ${jwt}` : '',
+    },
   });
 
   return forward(operation);
@@ -453,7 +547,7 @@ const authLink = new ApolloLink((operation, forward) => {
 
 const client = new ApolloClient({
   cache,
-  link: authLink.concat(httpLink)
+  link: authLink.concat(httpLink),
 });
 
 export default (props: Props) => (

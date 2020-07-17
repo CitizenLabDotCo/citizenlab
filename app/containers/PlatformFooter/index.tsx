@@ -28,7 +28,9 @@ import { LEGAL_PAGES } from 'services/pages';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 // style
 import styled from 'styled-components';
@@ -43,13 +45,13 @@ const Container = styled.footer`
   position: relative;
 
   ${media.smallerThanMaxTablet`
-    padding-bottom: ${props => props.theme.mobileMenuHeight}px;
+    padding-bottom: ${(props) => props.theme.mobileMenuHeight}px;
   `}
 `;
 
 const Inner = styled.div`
   width: 100%;
-  min-height: ${props => props.theme.footerHeight}px;
+  min-height: ${(props) => props.theme.footerHeight}px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -301,7 +303,7 @@ interface State {
 
 class PlatformFooter extends PureComponent<Props, State> {
   static defaultProps = {
-    showShortFeedback: true
+    showShortFeedback: true,
   };
 
   constructor(props) {
@@ -310,13 +312,13 @@ class PlatformFooter extends PureComponent<Props, State> {
       shortFeedbackButtonClicked: false,
       feedbackModalOpen: false,
       feedbackSubmitting: false,
-      feedbackSubmitted: false
+      feedbackSubmitted: false,
     };
   }
 
   handleFeedbackButtonClick = (answer: 'yes' | 'no') => () => {
     this.setState({
-      shortFeedbackButtonClicked: true
+      shortFeedbackButtonClicked: true,
     });
 
     // tracking
@@ -326,35 +328,35 @@ class PlatformFooter extends PureComponent<Props, State> {
         question: 'found_what_youre_looking_for?',
         page: removeUrlLocale(location.pathname),
         locale: this.props.locale || undefined,
-        answer: 'yes'
-      }).catch(err => {
+        answer: 'yes',
+      }).catch((err) => {
         reportError(err);
       });
     } else if (answer === 'no') {
       trackEventByName(tracks.clickShortFeedbackNo);
       this.openFeedbackModal();
     }
-  }
+  };
 
   openFeedbackModal = () => {
     this.setState({ feedbackModalOpen: true });
-  }
+  };
 
   closeFeedbackModal = () => {
     this.setState({ feedbackModalOpen: false });
-  }
+  };
 
   closeFeedbackModalSuccess = () => {
     this.setState({ feedbackModalOpen: false });
-  }
+  };
 
   handleFeedbackOnSubmit = (submitting: boolean) => {
     this.setState({ feedbackSubmitting: submitting });
-  }
+  };
 
   handleFeedbackSubmitted = () => {
     this.setState({ feedbackSubmitted: true });
-  }
+  };
 
   closeFeedbackModalCancel = () => {
     this.setState({ feedbackModalOpen: false });
@@ -363,54 +365,65 @@ class PlatformFooter extends PureComponent<Props, State> {
       question: 'found_what_youre_looking_for?',
       page: removeUrlLocale(location.pathname),
       locale: this.props.locale || undefined,
-      answer: 'no'
-    }).catch(err => reportError(err));
-  }
+      answer: 'no',
+    }).catch((err) => reportError(err));
+  };
 
   shortFeedbackFormOnSubmit = () => {
     eventEmitter.emit('ShortFeedbackFormSubmitEvent');
-  }
+  };
 
   openConsentManager = () => {
     eventEmitter.emit('openConsentManager');
-  }
+  };
 
   render() {
-    const { shortFeedbackButtonClicked, feedbackModalOpen, feedbackSubmitting, feedbackSubmitted } = this.state;
+    const {
+      shortFeedbackButtonClicked,
+      feedbackModalOpen,
+      feedbackSubmitting,
+      feedbackSubmitted,
+    } = this.state;
     const { showShortFeedback, className, windowSize } = this.props;
-    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+    const smallerThanSmallTablet = windowSize
+      ? windowSize <= viewportWidths.smallTablet
+      : false;
 
     return (
       <Container id="hook-footer" className={className}>
-        {showShortFeedback &&
+        {showShortFeedback && (
           <>
             <ShortFeedback>
               <ShortFeedbackInner>
-                {shortFeedbackButtonClicked ?
-                  (feedbackModalOpen ?
+                {shortFeedbackButtonClicked ? (
+                  feedbackModalOpen ? (
                     <ThankYouNote>
                       <FormattedMessage {...messages.moreInfo} />
                     </ThankYouNote>
-                    :
+                  ) : (
                     <ThankYouNote>
                       <FormattedMessage {...messages.thanksForFeedback} />
                     </ThankYouNote>
                   )
-                  :
+                ) : (
                   <>
                     <FeedbackQuestion>
                       <FormattedMessage {...messages.feedbackQuestion} />
                     </FeedbackQuestion>
                     <Buttons>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick('yes')}>
+                      <FeedbackButton
+                        onClick={this.handleFeedbackButtonClick('yes')}
+                      >
                         <FormattedMessage {...messages.yes} />
                       </FeedbackButton>
-                      <FeedbackButton onClick={this.handleFeedbackButtonClick('no')}>
+                      <FeedbackButton
+                        onClick={this.handleFeedbackButtonClick('no')}
+                      >
                         <FormattedMessage {...messages.no} />
                       </FeedbackButton>
                     </Buttons>
                   </>
-                }
+                )}
               </ShortFeedbackInner>
             </ShortFeedback>
 
@@ -424,11 +437,17 @@ class PlatformFooter extends PureComponent<Props, State> {
               footer={
                 <ShortFeedbackFormModalFooter>
                   {!feedbackSubmitted ? (
-                    <Button onClick={this.shortFeedbackFormOnSubmit} processing={feedbackSubmitting}>
+                    <Button
+                      onClick={this.shortFeedbackFormOnSubmit}
+                      processing={feedbackSubmitting}
+                    >
                       <FormattedMessage {...messages.submit} />
                     </Button>
                   ) : (
-                    <Button buttonStyle="secondary" onClick={this.closeFeedbackModal}>
+                    <Button
+                      buttonStyle="secondary"
+                      onClick={this.closeFeedbackModal}
+                    >
                       <FormattedMessage {...messages.close} />
                     </Button>
                   )}
@@ -442,13 +461,16 @@ class PlatformFooter extends PureComponent<Props, State> {
               />
             </Modal>
           </>
-        }
+        )}
 
         <Inner className={showShortFeedback ? 'showShortFeedback' : ''}>
           <PagesNav>
             {LEGAL_PAGES.map((slug, index) => (
               <React.Fragment key={slug}>
-                <StyledLink to={`/pages/${slug}`} className={index === 0 ? 'first' : ''}>
+                <StyledLink
+                  to={`/pages/${slug}`}
+                  className={index === 0 ? 'first' : ''}
+                >
                   <FormattedMessage {...messages[slug]} />
                 </StyledLink>
                 <Bullet aria-hidden>•</Bullet>
@@ -469,7 +491,10 @@ class PlatformFooter extends PureComponent<Props, State> {
                 <FormattedMessage {...messages.poweredBy} />
               </PoweredByText>
               <CitizenlabLink href="https://www.citizenlab.co/">
-                 <CitizenLabLogo name="citizenlab-footer-logo" title="CitizenLab" />
+                <CitizenLabLogo
+                  name="citizenlab-footer-logo"
+                  title="CitizenLab"
+                />
               </CitizenlabLink>
             </PoweredBy>
 
@@ -483,11 +508,11 @@ class PlatformFooter extends PureComponent<Props, State> {
 
 const Data = adopt<Props>({
   locale: <GetLocale />,
-  windowSize: <GetWindowSize />
+  windowSize: <GetWindowSize />,
 });
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <PlatformFooter {...inputProps} {...dataProps} />}
+    {(dataProps) => <PlatformFooter {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -15,7 +15,7 @@ import {
   IVotesByTopic,
   IIdeasByProject,
   ICommentsByProject,
-  IVotesByProject
+  IVotesByProject,
 } from 'services/stats';
 import { IGraphFormat } from 'typings';
 
@@ -27,7 +27,8 @@ type children = (renderProps: {
   serie: IGraphFormat | null | undefined;
 }) => JSX.Element | null;
 
-export type ISupportedDataType = IUsersByBirthyear
+export type ISupportedDataType =
+  | IUsersByBirthyear
   | IIdeasByTopic
   | ICommentsByTopic
   | IVotesByTopic
@@ -41,7 +42,10 @@ interface QueryProps {
   currentGroupFilter?: string | null;
   currentProjectFilter?: string | null;
   currentTopicFilter?: string | null;
-  stream: (streamParams?: IStreamParams | null, customId?: string) => IStream<ISupportedDataType>;
+  stream: (
+    streamParams?: IStreamParams | null,
+    customId?: string
+  ) => IStream<ISupportedDataType>;
   customId?: string;
 }
 
@@ -69,7 +73,8 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
       currentTopicFilter,
       stream,
       convertToGraphFormat,
-      customId } = this.props;
+      customId,
+    } = this.props;
 
     this.queryProps$ = new BehaviorSubject({
       startAt,
@@ -77,30 +82,40 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
       currentGroupFilter,
       currentProjectFilter,
       currentTopicFilter,
-      stream
+      stream,
     });
 
     this.subscriptions = [
-      this.queryProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ startAt,
-          endAt,
-          currentGroupFilter,
-          currentProjectFilter,
-          currentTopicFilter,
-          stream }) => stream({
-            queryParameters: {
-              start_at: startAt,
-              end_at: endAt,
-              group: currentGroupFilter,
-              project: currentProjectFilter,
-              topic: currentTopicFilter
-            }
-          }, customId).observable))
+      this.queryProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(
+            ({
+              startAt,
+              endAt,
+              currentGroupFilter,
+              currentProjectFilter,
+              currentTopicFilter,
+              stream,
+            }) =>
+              stream(
+                {
+                  queryParameters: {
+                    start_at: startAt,
+                    end_at: endAt,
+                    group: currentGroupFilter,
+                    project: currentProjectFilter,
+                    topic: currentTopicFilter,
+                  },
+                },
+                customId
+              ).observable
+          )
+        )
         .subscribe((serie) => {
           const convertedSerie = serie && convertToGraphFormat(serie);
           this.setState({ serie: convertedSerie });
-        })
+        }),
     ];
   }
 
@@ -119,13 +134,12 @@ export default class GetSerieFromStream extends PureComponent<Props, State> {
       currentGroupFilter,
       currentTopicFilter,
       currentProjectFilter,
-      stream
+      stream,
     });
-
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

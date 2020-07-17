@@ -29,20 +29,24 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
 
   handleOnChange = (newValue: IOption[]) => {
     const { value, max } = this.props;
-    const nextValue = (max && newValue && newValue.length > max ? value : newValue);
-    this.props.onChange((nextValue || this.emptyArray));
-  }
+    const nextValue =
+      max && newValue && newValue.length > max ? value : newValue;
+    this.props.onChange(nextValue || this.emptyArray);
+  };
 
   //  Needed to keep our API compatible with react-select v1
   //  For a native react-select solution, follow this issue:
   //  https://github.com/JedWatson/react-select/issues/2669
   findFullOptionValue = (value) => {
     if (isString(value)) {
-      return this.props.options && this.props.options.find((option) => option.value === value);
+      return (
+        this.props.options &&
+        this.props.options.find((option) => option.value === value)
+      );
     }
 
     return value;
-  }
+  };
 
   findFullOptionValues = () => {
     const { value } = this.props;
@@ -52,7 +56,7 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     }
 
     return value;
-  }
+  };
 
   render() {
     const { id, className, disabled } = this.props;
@@ -60,10 +64,10 @@ export default class MultipleSelect extends React.PureComponent<Props, State> {
     const { inputId } = this.props;
 
     value = this.findFullOptionValues();
-    placeholder = (placeholder || '');
-    options = (options || this.emptyArray);
-    max = (max || undefined);
-    autoBlur = (isBoolean(autoBlur) ? autoBlur : false);
+    placeholder = placeholder || '';
+    options = options || this.emptyArray;
+    max = max || undefined;
+    autoBlur = isBoolean(autoBlur) ? autoBlur : false;
 
     return (
       <ReactSelect

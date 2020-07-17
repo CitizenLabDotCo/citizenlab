@@ -95,11 +95,7 @@ export default class Table extends PureComponent<Props, State> {
     const { children, className } = this.props;
 
     return (
-      <StyledTable
-        cellSpacing="0"
-        cellPadding="0"
-        className={className}
-      >
+      <StyledTable cellSpacing="0" cellPadding="0" className={className}>
         {children}
       </StyledTable>
     );

@@ -10,7 +10,7 @@ export interface IIdeaStatusData {
     color: string;
     code: string;
     ordering: number;
-    description_multiloc: Multiloc
+    description_multiloc: Multiloc;
   };
 }
 
@@ -23,9 +23,13 @@ export interface IIdeaStatus {
 }
 
 export function ideaStatusStream(ideaId: string) {
-  return streams.get<IIdeaStatus>({ apiEndpoint: `${API_PATH}/idea_statuses/${ideaId}` });
+  return streams.get<IIdeaStatus>({
+    apiEndpoint: `${API_PATH}/idea_statuses/${ideaId}`,
+  });
 }
 
 export function ideaStatusesStream() {
-  return streams.get<IIdeaStatuses>({ apiEndpoint: `${API_PATH}/idea_statuses` });
+  return streams.get<IIdeaStatuses>({
+    apiEndpoint: `${API_PATH}/idea_statuses`,
+  });
 }

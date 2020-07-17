@@ -1,15 +1,16 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   titleVolunteeringTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.titleVolunteeringTab',
     defaultMessage: 'Volunteering',
   },
   subtitleVolunteeringTab: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab',
-    defaultMessage: 'Here, you can set up the causes users can volunteer for and download the volunteers.',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.subtitleVolunteeringTab',
+    defaultMessage:
+      'Here, you can set up the causes users can volunteer for and download the volunteers.',
   },
   exportVolunteers: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.exportVolunteers',
@@ -24,15 +25,18 @@ export default defineMessages({
     defaultMessage: 'Edit',
   },
   deleteButtonLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.deleteButtonLabel',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.deleteButtonLabel',
     defaultMessage: 'Delete',
   },
   xVolunteers: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.xVolunteers',
-    defaultMessage: '{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}',
+    defaultMessage:
+      '{x, plural, =0 {no volunteers} one {# volunteer} other {# volunteers}}',
   },
   causeDeletionConfirmation: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDeletionConfirmation',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDeletionConfirmation',
     defaultMessage: 'Are you sure?',
   },
   newCauseTitle: {
@@ -41,27 +45,33 @@ export default defineMessages({
   },
   newCauseSubtitle: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.newCauseSubtitle',
-    defaultMessage: 'A cause is an action or activity that citizens can volunteer to.',
+    defaultMessage:
+      'A cause is an action or activity that citizens can volunteer to.',
   },
   editCauseTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseTitle',
     defaultMessage: 'Edit cause',
   },
   editCauseSubtitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle',
-    defaultMessage: 'A cause is an action or activity that citizens can volunteer to.',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.editCauseSubtitle',
+    defaultMessage:
+      'A cause is an action or activity that citizens can volunteer to.',
   },
   causeTitleLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeTitleLabel',
     defaultMessage: 'Title',
   },
   causeDescriptionLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDescriptionLabel',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDescriptionLabel',
     defaultMessage: 'Description',
   },
   causeDescriptionTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDescriptionTooltip',
-    defaultMessage: 'Use this explain what is required from volunteers and what they can expect.',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeDescriptionTooltip',
+    defaultMessage:
+      'Use this explain what is required from volunteers and what they can expect.',
   },
   causeImageLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeImageLabel',
@@ -72,7 +82,8 @@ export default defineMessages({
     defaultMessage: 'Save',
   },
   causeErrorMessage: {
-    id: 'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeErrorMessage',
-    defaultMessage: 'Couldn\'t save because the form contains errors.',
+    id:
+      'app.containers.AdminPage.ProjectEdit.VolunteeringTab.causeErrorMessage',
+    defaultMessage: "Couldn't save because the form contains errors.",
   },
 });

@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   titlePollTab: {
@@ -9,7 +7,8 @@ export default defineMessages({
   },
   subtitlePollTab: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.subtitlePollTab',
-    defaultMessage: 'Here, you can set up the polls within this project, and export their results.',
+    defaultMessage:
+      'Here, you can set up the polls within this project, and export their results.',
   },
   deleteQuestion: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.deleteQuestion',
@@ -25,7 +24,8 @@ export default defineMessages({
   },
   noOptionsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.noOptionsTooltip',
-    defaultMessage: 'The poll will not be answerable as it is, all questions must have options',
+    defaultMessage:
+      'The poll will not be answerable as it is, all questions must have options',
   },
   wrongMax: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.wrongMax',
@@ -33,11 +33,13 @@ export default defineMessages({
   },
   maxOverTheMaxTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.maxOverTheMaxTooltip',
-    defaultMessage: 'The maximum number of choices is greater than the number of options',
+    defaultMessage:
+      'The maximum number of choices is greater than the number of options',
   },
   maxUnderTheMinTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.maxUnderTheMinTooltip',
-    defaultMessage: 'A multiple answer question should allow at least two answers.',
+    defaultMessage:
+      'A multiple answer question should allow at least two answers.',
   },
   oneOption: {
     id: 'app.containers.AdminPage.ProjectEdit.PollTab.oneOption',

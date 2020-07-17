@@ -1,9 +1,15 @@
 import useIdeaCustomFields from 'hooks/useIdeaCustomFields';
 import { IIdeaCustomFields } from 'services/ideaCustomFields';
 
-export type GetIdeaCustomFieldsChildProps = IIdeaCustomFields | undefined | null | Error;
+export type GetIdeaCustomFieldsChildProps =
+  | IIdeaCustomFields
+  | undefined
+  | null
+  | Error;
 
-type children = (renderProps: GetIdeaCustomFieldsChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetIdeaCustomFieldsChildProps
+) => JSX.Element | null;
 
 interface Props {
   projectId: string;

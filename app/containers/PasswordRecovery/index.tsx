@@ -25,7 +25,7 @@ import { fontSizes, colors } from 'utils/styleUtils';
 
 const Container = styled.div`
   width: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   background: ${colors.background};
 `;
 
@@ -86,7 +86,10 @@ type State = {
   successEmail: string | null;
 };
 
-class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, State> {
+class PasswordRecovery extends React.PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   emailInputElement: HTMLInputElement | null;
 
   constructor(props: Props) {
@@ -97,7 +100,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
       submitError: false,
       processing: false,
       success: false,
-      successEmail: null
+      successEmail: null,
     };
     this.emailInputElement = null;
   }
@@ -109,7 +112,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
   }
 
   validate = (email: string | null) => {
-    const emailError = (!email || !isValidEmail(email));
+    const emailError = !email || !isValidEmail(email);
 
     if (emailError && this.emailInputElement) {
       this.emailInputElement.focus();
@@ -117,20 +120,20 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
 
     this.setState({ emailError });
 
-    return (!emailError);
-  }
+    return !emailError;
+  };
 
   handleEmailOnChange = (value) => {
     this.setState({
       emailError: false,
       submitError: false,
-      email: value
+      email: value,
     });
-  }
+  };
 
   handleEmailInputSetRef = (element: HTMLInputElement) => {
     this.emailInputElement = element;
-  }
+  };
 
   handleOnSubmit = async (event) => {
     const { email } = this.state;
@@ -141,7 +144,12 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
       try {
         this.setState({ processing: true, success: false });
         await sendPasswordResetMail(email);
-        this.setState({ email: null, processing: false, success: true, successEmail: email });
+        this.setState({
+          email: null,
+          processing: false,
+          success: true,
+          successEmail: email,
+        });
         /* setTimeout(() => this.setState({ success: false }), 8000); */
       } catch {
         this.setState({ processing: false, success: false, submitError: true });
@@ -149,18 +157,27 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
     } else {
       this.setState({ emailError: true });
     }
-  }
+  };
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { email, emailError, submitError, processing, success, successEmail } = this.state;
+    const {
+      email,
+      emailError,
+      submitError,
+      processing,
+      success,
+      successEmail,
+    } = this.state;
     const helmetTitle = formatMessage(messages.helmetTitle);
     const helmetDescription = formatMessage(messages.helmetDescription);
     const title = formatMessage(messages.title);
     const subtitle = formatMessage(messages.subtitle);
     const emailPlaceholder = formatMessage(messages.emailPlaceholder);
     const resetPassword = formatMessage(messages.resetPassword);
-    const successMessage = (success ? formatMessage(messages.successMessage, { email: `${successEmail}` }) : null);
+    const successMessage = success
+      ? formatMessage(messages.successMessage, { email: `${successEmail}` })
+      : null;
     let errorMessage: string | null = null;
 
     if (emailError) {
@@ -173,9 +190,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
       <Container>
         <Helmet
           title={helmetTitle}
-          meta={[
-            { name: 'description', content: helmetDescription },
-          ]}
+          meta={[{ name: 'description', content: helmetDescription }]}
         />
         <main>
           <StyledContentContainer>
@@ -184,10 +199,7 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
             <Subtitle>{subtitle}</Subtitle>
 
             <Form onSubmit={this.handleOnSubmit}>
-              <FormLabel
-                htmlFor="email"
-                labelMessage={messages.emailLabel}
-              />
+              <FormLabel htmlFor="email" labelMessage={messages.emailLabel} />
               <StyledInput
                 id="email"
                 type="text"
@@ -209,7 +221,9 @@ class PasswordRecovery extends React.PureComponent<Props & InjectedIntlProps, St
                 className="e2e-submit-reset"
               />
 
-              {successMessage && <Success text={successMessage} className="e2e-success-reset"/>}
+              {successMessage && (
+                <Success text={successMessage} className="e2e-success-reset" />
+              )}
             </Form>
           </StyledContentContainer>
         </main>

@@ -4,11 +4,24 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { usersStream, IUserData } from 'services/users';
 import shallowCompare from 'utils/shallowCompare';
-import { getPageNumberFromUrl, getSortAttribute, getSortDirection, SortDirection } from 'utils/paginationUtils';
+import {
+  getPageNumberFromUrl,
+  getSortAttribute,
+  getSortDirection,
+  SortDirection,
+} from 'utils/paginationUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
 export type SortAttribute = 'email' | 'last_name' | 'created_at' | 'role';
-export type Sort = 'created_at' | '-created_at' | 'last_name' | '-last_name' | 'email' | '-email' | 'role' | '-role';
+export type Sort =
+  | 'created_at'
+  | '-created_at'
+  | 'last_name'
+  | '-last_name'
+  | 'email'
+  | '-email'
+  | 'role'
+  | '-role';
 
 export interface InputProps {
   pageNumber?: number;
@@ -42,8 +55,8 @@ interface Props extends InputProps {
 type State = {
   queryParameters: IQueryParameters;
   usersList: IUserData[] | undefined | null | Error;
-  sortAttribute: SortAttribute,
-  sortDirection: SortDirection,
+  sortAttribute: SortAttribute;
+  sortDirection: SortDirection;
   currentPage: number;
   lastPage: number;
 };
@@ -71,13 +84,13 @@ export default class GetUsers extends React.Component<Props, State> {
         group: undefined,
         can_moderate_project: undefined,
         can_moderate: undefined,
-        can_admin: undefined
+        can_admin: undefined,
       },
       usersList: undefined,
       sortAttribute: getSortAttribute<Sort, SortAttribute>(initialSort),
       sortDirection: getSortDirection<Sort>(initialSort),
       currentPage: 1,
-      lastPage: 1
+      lastPage: 1,
     };
   }
 
@@ -87,29 +100,37 @@ export default class GetUsers extends React.Component<Props, State> {
     this.queryParameters$ = new BehaviorSubject(queryParameters);
 
     this.subscriptions = [
-      this.queryParameters$.pipe(
-        distinctUntilChanged((x, y) => shallowCompare(x, y)),
-        switchMap((queryParameters) => {
-          const cacheStream = (isBoolean(this.props.cache) ? this.props.cache : true);
-          const oldPageNumber = this.state.queryParameters['page[number]'];
-          const newPageNumber = queryParameters['page[number]'];
-          queryParameters['page[number]'] = (newPageNumber !== oldPageNumber ? newPageNumber : 1);
+      this.queryParameters$
+        .pipe(
+          distinctUntilChanged((x, y) => shallowCompare(x, y)),
+          switchMap((queryParameters) => {
+            const cacheStream = isBoolean(this.props.cache)
+              ? this.props.cache
+              : true;
+            const oldPageNumber = this.state.queryParameters['page[number]'];
+            const newPageNumber = queryParameters['page[number]'];
+            queryParameters['page[number]'] =
+              newPageNumber !== oldPageNumber ? newPageNumber : 1;
 
-          return usersStream({
+            return usersStream({
+              queryParameters,
+              cacheStream,
+            }).observable.pipe(map((users) => ({ users, queryParameters })));
+          })
+        )
+        .subscribe(({ users, queryParameters }) => {
+          this.setState({
             queryParameters,
-            cacheStream
-          }).observable.pipe(map(users => ({ users, queryParameters })));
-        })
-      ).subscribe(({ users, queryParameters }) => {
-        this.setState({
-          queryParameters,
-          usersList: (!isNilOrError(users) ? users.data : users),
-          sortAttribute: getSortAttribute<Sort, SortAttribute>(queryParameters.sort),
-          sortDirection: getSortDirection<Sort>(queryParameters.sort),
-          currentPage: getPageNumberFromUrl(get(users.links, 'self', null)) || 1,
-          lastPage: getPageNumberFromUrl(get(users.links, 'last', null)) || 1
-        });
-      })
+            usersList: !isNilOrError(users) ? users.data : users,
+            sortAttribute: getSortAttribute<Sort, SortAttribute>(
+              queryParameters.sort
+            ),
+            sortDirection: getSortDirection<Sort>(queryParameters.sort),
+            currentPage:
+              getPageNumberFromUrl(get(users.links, 'self', null)) || 1,
+            lastPage: getPageNumberFromUrl(get(users.links, 'last', null)) || 1,
+          });
+        }),
     ];
   }
 
@@ -124,51 +145,61 @@ export default class GetUsers extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getQueryParameters = (state: State, props: Props) => {
     return {
       ...state.queryParameters,
-      ...omitBy({
-        'page[number]': props.pageNumber,
-        'page[size]': props.pageSize,
-        sort: props.sort,
-        search: props.search,
-        group: props.groupId,
-        can_moderate_project: props.canModerateProject,
-        can_moderate: props.canModerate,
-        can_admin: props.canAdmin
-      }, isNil)
+      ...omitBy(
+        {
+          'page[number]': props.pageNumber,
+          'page[size]': props.pageSize,
+          sort: props.sort,
+          search: props.search,
+          group: props.groupId,
+          can_moderate_project: props.canModerateProject,
+          can_moderate: props.canModerate,
+          can_admin: props.canAdmin,
+        },
+        isNil
+      ),
     };
-  }
+  };
 
   handleChangeSorting = (newSortAttribute: SortAttribute) => {
-    const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(this.state.queryParameters.sort);
-    const oldSortDirection = getSortDirection<Sort>(this.state.queryParameters.sort);
-    const newSortDirection = (newSortAttribute === oldSortAttribute && oldSortDirection === 'descending') ? 'ascending' : 'descending';
-    const newSortDirectionSymbol = (newSortDirection === 'descending' ? '-' : '');
+    const oldSortAttribute = getSortAttribute<Sort, SortAttribute>(
+      this.state.queryParameters.sort
+    );
+    const oldSortDirection = getSortDirection<Sort>(
+      this.state.queryParameters.sort
+    );
+    const newSortDirection =
+      newSortAttribute === oldSortAttribute && oldSortDirection === 'descending'
+        ? 'ascending'
+        : 'descending';
+    const newSortDirectionSymbol = newSortDirection === 'descending' ? '-' : '';
     const sort = `${newSortDirectionSymbol}${newSortAttribute}` as Sort;
 
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      sort
+      sort,
     });
-  }
+  };
 
   handleChangeSearchTerm = (search: string) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      search
+      search,
     });
-  }
+  };
 
   handleChangePage = (pageNumber: number) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      'page[number]': pageNumber
+      'page[number]': pageNumber,
     });
-  }
+  };
 
   render() {
     const { children } = this.props;
@@ -176,7 +207,7 @@ export default class GetUsers extends React.Component<Props, State> {
       ...this.state,
       onChangeSorting: this.handleChangeSorting,
       onChangeSearchTerm: this.handleChangeSearchTerm,
-      onChangePage: this.handleChangePage
+      onChangePage: this.handleChangePage,
     });
   }
 }

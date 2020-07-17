@@ -3,7 +3,11 @@ import { keys, pick, isEqual } from 'lodash-es';
 import { CLErrorsJSON } from 'typings';
 import clHistory from 'utils/cl-router/history';
 
-import { IUserCustomFieldData, updateCustomFieldForUsers, isBuiltInField } from 'services/userCustomFields';
+import {
+  IUserCustomFieldData,
+  updateCustomFieldForUsers,
+  isBuiltInField,
+} from 'services/userCustomFields';
 
 import CustomFieldForm, { FormValues } from '../CustomFieldForm';
 import { Formik } from 'formik';
@@ -16,31 +20,35 @@ type Props = {
 type State = {};
 
 class General extends React.Component<Props, State> {
-
   initialValues = () => {
     const { customField } = this.props;
-    return customField && {
-      input_type: customField.attributes.input_type,
-      title_multiloc: customField.attributes.title_multiloc,
-      description_multiloc: customField.attributes.description_multiloc,
-      required: customField.attributes.required,
-      enabled: customField.attributes.enabled,
-    };
-  }
+    return (
+      customField && {
+        input_type: customField.attributes.input_type,
+        title_multiloc: customField.attributes.title_multiloc,
+        description_multiloc: customField.attributes.description_multiloc,
+        required: customField.attributes.required,
+        enabled: customField.attributes.enabled,
+      }
+    );
+  };
 
   changedValues = (initialValues, newValues) => {
-    const changedKeys = keys(newValues).filter((key) => (
-      !isEqual(initialValues[key], newValues[key])
-    ));
+    const changedKeys = keys(newValues).filter(
+      (key) => !isEqual(initialValues[key], newValues[key])
+    );
     return pick(newValues, changedKeys);
-  }
+  };
 
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     const { customField } = this.props;
     if (!customField) return;
 
     updateCustomFieldForUsers(customField.id, {
-      ...this.changedValues(this.initialValues(), values)
+      ...this.changedValues(this.initialValues(), values),
     })
       .then(() => {
         clHistory.push('/admin/settings/registration');
@@ -54,9 +62,9 @@ class General extends React.Component<Props, State> {
         }
         setSubmitting(false);
       });
-  }
+  };
 
-  renderFn = (props) => (
+  renderFn = (props) =>
     this.props.customField && (
       <CustomFieldForm
         {...props}
@@ -64,19 +72,20 @@ class General extends React.Component<Props, State> {
         customFieldId={this.props.customField.id}
         builtInField={isBuiltInField(this.props.customField)}
       />
-    )
-  )
+    );
 
   render() {
     const { customField } = this.props;
 
-    return customField && (
-      <Formik
-        initialValues={this.initialValues()}
-        onSubmit={this.handleSubmit}
-        render={this.renderFn}
-        validate={CustomFieldForm['validate']}
-      />
+    return (
+      customField && (
+        <Formik
+          initialValues={this.initialValues()}
+          onSubmit={this.handleSubmit}
+          render={this.renderFn}
+          validate={CustomFieldForm['validate']}
+        />
+      )
     );
   }
 }

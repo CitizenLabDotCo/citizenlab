@@ -1,12 +1,18 @@
 import React from 'react';
 import { Subscription, of, BehaviorSubject } from 'rxjs';
-import { IConsentData, consentsWithTokenStream, IConsents } from 'services/campaignConsents';
+import {
+  IConsentData,
+  consentsWithTokenStream,
+  IConsents,
+} from 'services/campaignConsents';
 import { isNilOrError } from 'utils/helperUtils';
 import { switchMap } from 'rxjs/operators';
 
-interface InputProps { }
+interface InputProps {}
 
-type children = (renderProps: GetCampaignConsentsWithTokenChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetCampaignConsentsWithTokenChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
@@ -17,16 +23,23 @@ interface State {
   consents: IConsentData[] | undefined | null | Error;
 }
 
-export type GetCampaignConsentsWithTokenChildProps = IConsentData[] | undefined | null | Error;
+export type GetCampaignConsentsWithTokenChildProps =
+  | IConsentData[]
+  | undefined
+  | null
+  | Error;
 
-export default class GetCampaignConsentsWithToken extends React.Component<Props, State> {
+export default class GetCampaignConsentsWithToken extends React.Component<
+  Props,
+  State
+> {
   private subscriptions: Subscription[];
   private token$: BehaviorSubject<string | null> = new BehaviorSubject(null);
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      consents: undefined
+      consents: undefined,
     };
     this.token$.next(props.token);
   }
@@ -34,21 +47,25 @@ export default class GetCampaignConsentsWithToken extends React.Component<Props,
   componentDidMount() {
     this.subscriptions = [
       this.token$
-        .pipe(switchMap((token) => {
-          if (!!token) {
-            return consentsWithTokenStream(token).observable;
-          } else {
-            return of(null);
-          }
-        }))
+        .pipe(
+          switchMap((token) => {
+            if (!!token) {
+              return consentsWithTokenStream(token).observable;
+            } else {
+              return of(null);
+            }
+          })
+        )
         .subscribe((consents: IConsents) => {
-          this.setState({ consents: !isNilOrError(consents) ? consents.data : consents });
-        })
+          this.setState({
+            consents: !isNilOrError(consents) ? consents.data : consents,
+          });
+        }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

@@ -27,23 +27,27 @@ import { media, fontSizes, colors } from 'utils/styleUtils';
 
 const Loading = styled.div`
   width: 100%;
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   align-items: center;
   justify-content: center;
 
   ${media.smallerThanMaxTablet`
-    height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
 const Container = styled.main`
   width: 100%;
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
 `;
 
@@ -165,7 +169,7 @@ const ButtonBarInner = styled.div`
   flex-grow: 1;
   flex-shrink: 0;
   flex-basis: 100%;
-  max-width: ${props => props.theme.maxPageWidth}px;
+  max-width: ${(props) => props.theme.maxPageWidth}px;
   display: flex;
   align-items: center;
 
@@ -198,8 +202,10 @@ interface State {
   selectedProjectId: string | null;
 }
 
-class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, State> {
-
+class IdeasProjectSelectPage extends PureComponent<
+  Props & WithRouterProps,
+  State
+> {
   constructor(props: Props & WithRouterProps) {
     super(props);
     this.state = {
@@ -209,24 +215,27 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
 
   handleProjectClick = (project: IProjectData) => () => {
     this.setState({ selectedProjectId: project.id });
-  }
+  };
 
   redirectTo = (projectSlug: string) => {
-    const queryParams = (this.props.location && this.props.location.search) || '';
+    const queryParams =
+      (this.props.location && this.props.location.search) || '';
     clHistory.push(`/projects/${projectSlug}/ideas/new${queryParams}`);
-  }
+  };
 
   handleOnSubmitClick = () => {
     const { projectsList } = this.props.projects;
 
     if (!isNilOrError(projectsList)) {
-      const project = projectsList.find((project) => project.id === this.state.selectedProjectId);
+      const project = projectsList.find(
+        (project) => project.id === this.state.selectedProjectId
+      );
 
       if (project) {
         this.redirectTo(project.attributes.slug);
       }
     }
-  }
+  };
 
   render() {
     const { projectsList } = this.props.projects;
@@ -241,8 +250,12 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
     }
 
     if (!isNilOrError(projectsList)) {
-      const { open_idea_box: openProjects, null: cityProjects } = groupBy(projectsList, (project) => project.attributes.internal_role);
-      const openProject = openProjects && !isEmpty(openProjects) && openProjects[0];
+      const { open_idea_box: openProjects, null: cityProjects } = groupBy(
+        projectsList,
+        (project) => project.attributes.internal_role
+      );
+      const openProject =
+        openProjects && !isEmpty(openProjects) && openProjects[0];
       const noProjects = isEmpty(projectsList);
 
       return (
@@ -252,23 +265,24 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
               <FormattedMessage {...messages.pageTitle} />
             </PageTitle>
 
-            {noProjects &&
+            {noProjects && (
               <EmptyStateContainer>
                 <FormattedMessage {...messages.noProjects} />
               </EmptyStateContainer>
-            }
+            )}
 
-            {!noProjects &&
+            {!noProjects && (
               <>
                 <ColumnsContainer>
-
-                  {cityProjects &&
+                  {cityProjects && (
                     <LeftColumn className={!openProject ? 'fullWidth' : ''}>
                       <ColumnTitle>
                         <FormattedMessage {...messages.cityProjects} />
                       </ColumnTitle>
                       <ColumnExplanation>
-                        <FormattedMessage {...messages.cityProjectsExplanation} />
+                        <FormattedMessage
+                          {...messages.cityProjectsExplanation}
+                        />
                       </ColumnExplanation>
                       <ProjectsList>
                         {cityProjects.map((project) => (
@@ -276,40 +290,42 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
                             <ProjectCard
                               onClick={this.handleProjectClick(project)}
                               projectId={project.id}
-                              selected={(selectedProjectId === project.id)}
+                              selected={selectedProjectId === project.id}
                               className="e2e-project-card"
                             />
                           </ProjectCardWrapper>
                         ))}
                       </ProjectsList>
                     </LeftColumn>
-                  }
+                  )}
 
-                  {openProject &&
+                  {openProject && (
                     <RightColumn className={!cityProjects ? 'fullWidth' : ''}>
-                      {cityProjects &&
+                      {cityProjects && (
                         <>
                           <ColumnTitle>
                             <FormattedMessage {...messages.openProject} />
                           </ColumnTitle>
                           <ColumnExplanation>
-                            <FormattedMessage {...messages.openProjectExplanation} />
+                            <FormattedMessage
+                              {...messages.openProjectExplanation}
+                            />
                           </ColumnExplanation>
                         </>
-                      }
+                      )}
                       <ProjectsList>
                         <ProjectCardWrapper>
                           <ProjectCard
                             key={openProject.id}
                             onClick={this.handleProjectClick(openProject)}
                             projectId={openProject.id}
-                            selected={(selectedProjectId === openProject.id)}
+                            selected={selectedProjectId === openProject.id}
                             className="e2e-project-card e2e-open-project"
                           />
                         </ProjectCardWrapper>
                       </ProjectsList>
                     </RightColumn>
-                  }
+                  )}
                 </ColumnsContainer>
 
                 <ButtonBar>
@@ -323,7 +339,7 @@ class IdeasProjectSelectPage extends PureComponent<Props & WithRouterProps, Stat
                   </ButtonBarInner>
                 </ButtonBar>
               </>
-            }
+            )}
           </StyledContentContainer>
         </Container>
       );
@@ -337,6 +353,8 @@ const IdeasProjectSelectPageWithHoCs = withRouter(IdeasProjectSelectPage);
 
 export default (inputProps: InputProps) => (
   <GetProjects publicationStatuses={['published']}>
-    {projects => <IdeasProjectSelectPageWithHoCs {...inputProps} projects={projects} />}
+    {(projects) => (
+      <IdeasProjectSelectPageWithHoCs {...inputProps} projects={projects} />
+    )}
   </GetProjects>
 );

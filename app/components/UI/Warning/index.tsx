@@ -68,18 +68,17 @@ interface Props {
 }
 
 export default class Warning extends PureComponent<Props> {
-
   render() {
     const className = this.props['className'];
     const { text, children, icon } = this.props;
     const adminPage = isPage('admin', location.pathname);
 
     return (
-      <Container className={`${className || ''} ${adminPage ? 'adminPage' : ''}`}>
+      <Container
+        className={`${className || ''} ${adminPage ? 'adminPage' : ''}`}
+      >
         <StyledIcon name={icon || 'info'} />
-        <Text>
-          {text || children}
-        </Text>
+        <Text>{text || children}</Text>
       </Container>
     );
   }

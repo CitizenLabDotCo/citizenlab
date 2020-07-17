@@ -6,7 +6,13 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 
 const timeout = 200;
 
-const Container = styled(clickOutside)<{ top: string, left: string, right: string, mobileLeft: string, mobileRight: string }>`
+const Container = styled(clickOutside)<{
+  top: string;
+  left: string;
+  right: string;
+  mobileLeft: string;
+  mobileRight: string;
+}>`
   border-radius: ${(props: any) => props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
@@ -38,7 +44,7 @@ const Container = styled(clickOutside)<{ top: string, left: string, right: strin
   }
 `;
 
-const ContainerInner = styled.div<{ width: string, mobileWidth: string }>`
+const ContainerInner = styled.div<{ width: string; mobileWidth: string }>`
   width: ${(props) => props.width};
 
   ${media.smallerThanMaxTablet`
@@ -46,7 +52,7 @@ const ContainerInner = styled.div<{ width: string, mobileWidth: string }>`
   `}
 `;
 
-const Content = styled.div<{ maxHeight: string, mobileMaxHeight: string }>`
+const Content = styled.div<{ maxHeight: string; mobileMaxHeight: string }>`
   max-height: ${(props) => props.maxHeight};
   display: flex;
   flex-direction: column;
@@ -96,7 +102,7 @@ interface Props {
   maxHeight?: string;
   mobileMaxHeight?: string;
   top?: string;
-  left? : string;
+  left?: string;
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
@@ -121,7 +127,7 @@ export default class Dropdown extends PureComponent<Props, State> {
     left: 'auto',
     mobileLeft: 'auto',
     right: 'auto',
-    mobileRight: 'auto'
+    mobileRight: 'auto',
   };
 
   componentWillUnmount() {
@@ -133,18 +139,18 @@ export default class Dropdown extends PureComponent<Props, State> {
   scrolling = (event: WheelEvent) => {
     // prevent body from scrolling
     if (this.dropdownElement) {
-      const deltaY = (event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY);
+      const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
       this.dropdownElement.scrollTop += deltaY;
       event.preventDefault();
     }
-  }
+  };
 
   setRef = (element: HTMLDivElement | null) => {
     if (element) {
       this.dropdownElement = element;
       this.dropdownElement.addEventListener('wheel', this.scrolling);
     }
-  }
+  };
 
   close = (event: FormEvent) => {
     event.preventDefault();
@@ -152,7 +158,7 @@ export default class Dropdown extends PureComponent<Props, State> {
     if (this.props.opened && this.props.onClickOutside) {
       this.props.onClickOutside(event);
     }
-  }
+  };
 
   render() {
     const {
@@ -169,7 +175,7 @@ export default class Dropdown extends PureComponent<Props, State> {
       content,
       footer,
       id,
-      className
+      className,
     } = this.props;
 
     if (
@@ -203,10 +209,7 @@ export default class Dropdown extends PureComponent<Props, State> {
             onClickOutside={this.close}
             className={className}
           >
-            <ContainerInner
-              width={width}
-              mobileWidth={mobileWidth}
-            >
+            <ContainerInner width={width} mobileWidth={mobileWidth}>
               <Content
                 maxHeight={maxHeight}
                 mobileMaxHeight={mobileMaxHeight}
@@ -215,11 +218,7 @@ export default class Dropdown extends PureComponent<Props, State> {
                 {content}
               </Content>
 
-              {footer &&
-                <Footer>
-                  {footer}
-                </Footer>
-              }
+              {footer && <Footer>{footer}</Footer>}
             </ContainerInner>
           </Container>
         </CSSTransition>

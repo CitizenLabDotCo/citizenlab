@@ -23,11 +23,7 @@ export default (props: { projectId: string }) => (
       if (!project || project instanceof Error) return null;
 
       return (
-        <StyledLabel
-          key={project.id}
-          color="teal"
-          basic={true}
-        >
+        <StyledLabel key={project.id} color="teal" basic={true}>
           <LabelText>
             <T value={project.attributes.title_multiloc} />
           </LabelText>

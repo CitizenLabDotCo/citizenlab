@@ -20,7 +20,11 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isProjectContext } from 'components/Verification/VerificationSteps';
 
 // events
-import { openSignUpInModal$, closeSignUpInModal$, signUpActiveStepChange$ } from 'components/SignUpIn/events';
+import {
+  openSignUpInModal$,
+  closeSignUpInModal$,
+  signUpActiveStepChange$,
+} from 'components/SignUpIn/events';
 
 // style
 import styled from 'styled-components';
@@ -33,21 +37,36 @@ interface Props {
 }
 
 const SignUpInModal = memo<Props>(({ className, onMounted }) => {
-
   const isMounted = useIsMounted();
-  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(undefined);
-  const [signUpActiveStep, setSignUpActiveStep] = useState<TSignUpSteps | null| undefined>(undefined);
+  const [metaData, setMetaData] = useState<ISignUpInMetaData | undefined>(
+    undefined
+  );
+  const [signUpActiveStep, setSignUpActiveStep] = useState<
+    TSignUpSteps | null | undefined
+  >(undefined);
 
   const authUser = useAuthUser();
-  const participationConditions = useParticipationConditions(metaData?.verificationContext && isProjectContext(metaData?.verificationContext) ? metaData?.verificationContext : null);
+  const participationConditions = useParticipationConditions(
+    metaData?.verificationContext &&
+      isProjectContext(metaData?.verificationContext)
+      ? metaData?.verificationContext
+      : null
+  );
   const customFieldsSchema = useUserCustomFieldsSchema();
 
   const opened = !!metaData;
-  const hasParticipationConditions = !isNilOrError(participationConditions) && participationConditions.length > 0;
-  const modalWidth = !!(signUpActiveStep === 'verification' && hasParticipationConditions) ? 820 : 550;
+  const hasParticipationConditions =
+    !isNilOrError(participationConditions) &&
+    participationConditions.length > 0;
+  const modalWidth = !!(
+    signUpActiveStep === 'verification' && hasParticipationConditions
+  )
+    ? 820
+    : 550;
   const modalNoClose = !!(
     metaData?.error !== true &&
-    (signUpActiveStep === 'verification' || signUpActiveStep === 'custom-fields') &&
+    (signUpActiveStep === 'verification' ||
+      signUpActiveStep === 'custom-fields') &&
     !isNilOrError(customFieldsSchema) &&
     customFieldsSchema?.hasRequiredFields
   );
@@ -62,17 +81,21 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
     const subscriptions = [
       openSignUpInModal$.subscribe(({ eventValue: metaData }) => {
         // don't overwrite metaData if already present!
-        !authUser && setMetaData(prevMetaData => prevMetaData ? prevMetaData : metaData);
+        !authUser &&
+          setMetaData((prevMetaData) =>
+            prevMetaData ? prevMetaData : metaData
+          );
       }),
       closeSignUpInModal$.subscribe(() => {
         setMetaData(undefined);
       }),
       signUpActiveStepChange$.subscribe(({ eventValue: activeStep }) => {
         setSignUpActiveStep(activeStep);
-      })
+      }),
     ];
 
-    return () => subscriptions.forEach(subscription => subscription.unsubscribe());
+    return () =>
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
   }, [authUser]);
 
   const onClose = useCallback(() => {
@@ -95,7 +118,8 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
   const onSignUpInCompleted = useCallback(() => {
     const hasAction = isFunction(metaData?.action);
     const requiresVerification = !!metaData?.verification;
-    const authUserIsVerified = !isNilOrError(authUser) && authUser.data.attributes.verified;
+    const authUserIsVerified =
+      !isNilOrError(authUser) && authUser.data.attributes.verified;
 
     if (hasAction && (!requiresVerification || authUserIsVerified)) {
       metaData?.action?.();
@@ -114,12 +138,12 @@ const SignUpInModal = memo<Props>(({ className, onMounted }) => {
       noClose={modalNoClose}
     >
       <Container id="e2e-sign-up-in-modal" className={className}>
-        {opened && metaData &&
+        {opened && metaData && (
           <SignUpIn
             metaData={metaData}
             onSignUpInCompleted={onSignUpInCompleted}
           />
-        }
+        )}
       </Container>
     </Modal>
   );

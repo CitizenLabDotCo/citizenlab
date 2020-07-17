@@ -3,7 +3,10 @@ import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
 jest.mock('resources/GetUserCustomFields');
 jest.mock('services/stats');
-import { RegistrationFieldsToGraphs, Props } from './RegistrationFieldsToGraphs';
+import {
+  RegistrationFieldsToGraphs,
+  Props,
+} from './RegistrationFieldsToGraphs';
 import { mockGetUserCustomFields } from 'resources/__mocks__/GetUserCustomFields';
 import { mockUsersByRegFields } from 'services/__mocks__/stats';
 import { localizeProps } from 'utils/testUtils/localizeProps';
@@ -36,7 +39,9 @@ describe('<RegistrationFieldsToGraphs />', () => {
         {...localizeProps}
       />
     );
-    const convertToGraphFormat = wrapper.find('WrappedBarChartByCategory').prop('convertToGraphFormat') as Function;
+    const convertToGraphFormat = wrapper
+      .find('WrappedBarChartByCategory')
+      .prop('convertToGraphFormat') as Function;
     expect(convertToGraphFormat(mockUsersByRegFields)).toMatchSnapshot();
   });
 });

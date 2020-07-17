@@ -6,6 +6,9 @@ import { formatTranslationMessages } from './';
 addLocaleData(deLocaleData);
 
 const deDETranslationMessages = require('translations/de-DE.json');
-const translationMessages = formatTranslationMessages('de-DE', deDETranslationMessages);
+const translationMessages = formatTranslationMessages(
+  'de-DE',
+  deDETranslationMessages
+);
 
 export default translationMessages;

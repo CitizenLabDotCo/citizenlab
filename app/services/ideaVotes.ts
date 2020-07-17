@@ -6,21 +6,21 @@ export interface IIdeaVoteData {
   id: string;
   type: 'vote';
   attributes: {
-    mode: 'up' | 'down'
+    mode: 'up' | 'down';
   };
   relationships: {
     votable: {
       data: {
         id: string;
         type: 'votable';
-      }
-    },
+      };
+    };
     user: {
       data: {
         id: string;
         type: 'user';
-      }
-    }
+      };
+    };
   };
 }
 
@@ -46,31 +46,60 @@ export interface INewVoteProperties {
   mode: 'up' | 'down';
 }
 
-export function voteStream(voteId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeaVote>({ apiEndpoint: `${API_PATH}/votes/${voteId}`, ...streamParams });
+export function voteStream(
+  voteId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IIdeaVote>({
+    apiEndpoint: `${API_PATH}/votes/${voteId}`,
+    ...streamParams,
+  });
 }
 
-export function votesStream(ideaId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IIdeaVotes>({ apiEndpoint: `${API_PATH}/ideas/${ideaId}/votes`, ...streamParams });
+export function votesStream(
+  ideaId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IIdeaVotes>({
+    apiEndpoint: `${API_PATH}/ideas/${ideaId}/votes`,
+    ...streamParams,
+  });
 }
 
-export async function addVote(ideaId: string, object: INewVoteProperties, refetchAllActiveIdeas = false) {
-  const response = await streams.add<IIdeaVote>(`${API_PATH}/ideas/${ideaId}/votes`, { vote: object });
+export async function addVote(
+  ideaId: string,
+  object: INewVoteProperties,
+  refetchAllActiveIdeas = false
+) {
+  const response = await streams.add<IIdeaVote>(
+    `${API_PATH}/ideas/${ideaId}/votes`,
+    { vote: object }
+  );
 
   if (refetchAllActiveIdeas) {
     const ideaEndpointRegexp = new RegExp(`\/ideas\/${uuidRegExp}$`);
-    streams.fetchAllWith({ regexApiEndpoint: [ideaEndpointRegexp], onlyFetchActiveStreams: true });
+    streams.fetchAllWith({
+      regexApiEndpoint: [ideaEndpointRegexp],
+      onlyFetchActiveStreams: true,
+    });
   }
 
   return response;
 }
 
-export async function deleteVote(_ideaId, voteId: string, refetchAllActiveIdeas = false) {
+export async function deleteVote(
+  _ideaId,
+  voteId: string,
+  refetchAllActiveIdeas = false
+) {
   const response = await streams.delete(`${API_PATH}/votes/${voteId}`, voteId);
 
   if (refetchAllActiveIdeas) {
     const ideaEndpointRegexp = new RegExp(`\/ideas\/${uuidRegExp}$`);
-    streams.fetchAllWith({ regexApiEndpoint: [ideaEndpointRegexp], onlyFetchActiveStreams: true });
+    streams.fetchAllWith({
+      regexApiEndpoint: [ideaEndpointRegexp],
+      onlyFetchActiveStreams: true,
+    });
   }
 
   return response;

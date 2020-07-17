@@ -7,7 +7,7 @@ import { colors, fontSizes, media } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 // components
-import Icon  from 'components/UI/Icon';
+import Icon from 'components/UI/Icon';
 
 // services
 import { IProjectFileData } from 'services/projectFiles';
@@ -21,7 +21,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   color: ${colors.label};
-  border: 1px solid ${lighten(.4, colors.label)};
+  border: 1px solid ${lighten(0.4, colors.label)};
   border-radius: ${(props: any) => props.theme.borderRadius};
   font-size: ${fontSizes.base}px;
   line-height: 24px;
@@ -87,7 +87,12 @@ const StyledIcon = styled(Icon)`
 `;
 
 interface Props {
-  file: IProjectFileData | IPhaseFileData | IPageFileData | IEventFileData | IIdeaFileData;
+  file:
+    | IProjectFileData
+    | IPhaseFileData
+    | IPageFileData
+    | IEventFileData
+    | IIdeaFileData;
   onDeleteClick?: () => void;
   className?: string;
 }
@@ -97,16 +102,21 @@ const FileDisplay = ({ file, onDeleteClick, className }: Props) => {
     return (
       <Container className={className}>
         <Paperclip name="paperclip" />
-        <FileDownloadLink href={file.attributes.file.url} download={file.attributes.name} target="_blank" rel="noopener noreferrer">
+        <FileDownloadLink
+          href={file.attributes.file.url}
+          download={file.attributes.name}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           {file.attributes.name}
         </FileDownloadLink>
         <Spacer />
         <FileSize>({returnFileSize(file.attributes.size)})</FileSize>
-        {onDeleteClick &&
-        <DeleteButton onClick={onDeleteClick}>
-          <StyledIcon name="delete" />
-        </DeleteButton>
-        }
+        {onDeleteClick && (
+          <DeleteButton onClick={onDeleteClick}>
+            <StyledIcon name="delete" />
+          </DeleteButton>
+        )}
       </Container>
     );
   }

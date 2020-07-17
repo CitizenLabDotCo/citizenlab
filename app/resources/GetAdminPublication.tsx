@@ -6,16 +6,18 @@ export interface GetAdminPublicationChildProps {
   adminPublication: IAdminPublicationData | Error | undefined | null;
 }
 
-type Children = (renderProps: GetAdminPublicationChildProps) => JSX.Element | null;
+type Children = (
+  renderProps: GetAdminPublicationChildProps
+) => JSX.Element | null;
 
-interface Props  {
+interface Props {
   adminPublicationId: string | null;
   children: Children;
 }
 
 const GetAdminPublication = memo(({ adminPublicationId, children }: Props) => {
   const adminPublication = useAdminPublication(adminPublicationId);
-  return (children)({ adminPublication });
+  return children({ adminPublication });
 });
 
 export default GetAdminPublication;

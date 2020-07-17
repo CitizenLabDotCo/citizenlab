@@ -1,7 +1,9 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
 import { IntlProvider } from 'react-intl';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 import { isNilOrError } from 'utils/helperUtils';
 import { Locale } from 'typings';
@@ -20,11 +22,10 @@ interface State {
 }
 
 class LanguageProvider extends React.PureComponent<Props, State> {
-
   constructor(props: Props) {
     super(props);
     this.state = {
-      messages: {}
+      messages: {},
     };
   }
 
@@ -46,33 +47,33 @@ class LanguageProvider extends React.PureComponent<Props, State> {
     if (!isNilOrError(tenantLocales)) {
       this.importTenantLocales(tenantLocales);
     }
-  }
+  };
 
   importLocale = (locale: Locale) => {
-    import(`i18n/${locale}`).then(translationMessages => {
-      this.setState(prevState => ({
+    import(`i18n/${locale}`).then((translationMessages) => {
+      this.setState((prevState) => ({
         messages: {
           ...prevState.messages,
-          [locale]: translationMessages.default
-        }
+          [locale]: translationMessages.default,
+        },
       }));
     });
-  }
+  };
 
   importTenantLocales = (tenantLocales: Locale[]) => {
     for (const locale of tenantLocales) {
       if (!this.state.messages[locale]) {
-        import(`i18n/${locale}`).then(translationMessages => {
-          this.setState(prevState => ({
+        import(`i18n/${locale}`).then((translationMessages) => {
+          this.setState((prevState) => ({
             messages: {
               ...prevState.messages,
-              [locale]: translationMessages.default
-            }
+              [locale]: translationMessages.default,
+            },
           }));
         });
       }
     }
-  }
+  };
 
   render() {
     const { locale } = this.props;
@@ -92,11 +93,11 @@ class LanguageProvider extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />
+  tenantLocales: <GetTenantLocales />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <LanguageProvider {...inputProps} {...dataProps} />}
+    {(dataProps) => <LanguageProvider {...inputProps} {...dataProps} />}
   </Data>
 );

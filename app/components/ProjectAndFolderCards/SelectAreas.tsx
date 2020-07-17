@@ -27,22 +27,21 @@ interface DataProps {
 interface Props extends InputProps, DataProps, InjectedLocalized {}
 
 class SelectAreas extends PureComponent<Props> {
-
   handleOnChange = (selectedAreas: string[]) => {
-    this.props.onChange((selectedAreas || []));
-  }
+    this.props.onChange(selectedAreas || []);
+  };
 
-  areasOptions = () : {text: string, value: string}[] => {
+  areasOptions = (): { text: string; value: string }[] => {
     const { areas, localize } = this.props;
     if (!isNilOrError(areas)) {
       return areas.map((area) => ({
         text: localize(area.attributes.title_multiloc),
-        value: area.id
+        value: area.id,
       }));
     } else {
       return [];
     }
-  }
+  };
 
   areasTerm = () => {
     const { tenant, localize } = this.props;
@@ -56,7 +55,7 @@ class SelectAreas extends PureComponent<Props> {
     } else {
       return <FormattedMessage {...messages.areasTitle} />;
     }
-  }
+  };
 
   render() {
     const { selectedAreas } = this.props;
@@ -78,7 +77,6 @@ class SelectAreas extends PureComponent<Props> {
         mobileLeft="-5px"
       />
     );
-
   }
 }
 
@@ -86,7 +84,7 @@ const SelectAreasWithHOCs = injectLocalize<InputProps>(SelectAreas);
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  areas: <GetAreas />
+  areas: <GetAreas />,
 });
 
 export default (inputProps: InputProps) => (

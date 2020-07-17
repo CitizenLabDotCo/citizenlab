@@ -21,20 +21,24 @@ interface State {
   ideas: IMinimalIdeaData[] | undefined | null | Error;
 }
 
-export type GetSimilarIdeasChildProps = IMinimalIdeaData[] | undefined | null | Error;
+export type GetSimilarIdeasChildProps =
+  | IMinimalIdeaData[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetSimilarIdeas extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    pageSize: 5
+    pageSize: 5,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideas: undefined
+      ideas: undefined,
     };
   }
 
@@ -44,22 +48,24 @@ export default class GetSimilarIdeas extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ideaId, pageSize });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        switchMap(({ ideaId, pageSize }) => {
-          if (isString(ideaId)) {
-            return similarIdeas(ideaId, {
-              queryParameters: {
-                'page[size]': pageSize
-              }
-            }).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          switchMap(({ ideaId, pageSize }) => {
+            if (isString(ideaId)) {
+              return similarIdeas(ideaId, {
+                queryParameters: {
+                  'page[size]': pageSize,
+                },
+              }).observable;
+            }
 
-          return of(null);
-        })
-      ).subscribe((ideas) => {
-        this.setState({ ideas: !isNilOrError(ideas) ? ideas.data : ideas });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((ideas) => {
+          this.setState({ ideas: !isNilOrError(ideas) ? ideas.data : ideas });
+        }),
     ];
   }
 
@@ -69,7 +75,7 @@ export default class GetSimilarIdeas extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

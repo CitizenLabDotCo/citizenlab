@@ -38,7 +38,8 @@ const Container = styled.div`
   box-sizing: border-box;
   border: 1px solid #e8e8e8;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
+    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const ParentCommentContainer = styled.div`
@@ -126,35 +127,44 @@ class ParentComment extends PureComponent<Props, State> {
     this.loadMore$ = new BehaviorSubject(false);
 
     this.subscriptions = [
-      this.loadMore$.pipe(
-        distinctUntilChanged(),
-        filter((loadMore) => loadMore),
-        tap(() => this.setState({ isLoadingMore: true })),
-        switchMap(() => {
-          return childCommentsStream(this.props.commentId, {
-            queryParameters: {
-              'page[number]': 1,
-              'page[size]': 500
-            }
-          }).observable;
-        })
-      )
-      .subscribe((childComments) => {
-        this.setState({ childComments, isLoadingMore: false, hasLoadedMore: true });
-      })
+      this.loadMore$
+        .pipe(
+          distinctUntilChanged(),
+          filter((loadMore) => loadMore),
+          tap(() => this.setState({ isLoadingMore: true })),
+          switchMap(() => {
+            return childCommentsStream(this.props.commentId, {
+              queryParameters: {
+                'page[number]': 1,
+                'page[size]': 500,
+              },
+            }).observable;
+          })
+        )
+        .subscribe((childComments) => {
+          this.setState({
+            childComments,
+            isLoadingMore: false,
+            hasLoadedMore: true,
+          });
+        }),
     ];
   }
 
   componentDidUpdate(_prevProps: Props) {
     const currentComment = this.props.comment;
 
-    if (!isNilOrError(currentComment) && currentComment.attributes.children_count > 5 && !this.state.canLoadMore) {
+    if (
+      !isNilOrError(currentComment) &&
+      currentComment.attributes.children_count > 5 &&
+      !this.state.canLoadMore
+    ) {
       this.setState({ canLoadMore: true });
     }
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   loadMore = (event: FormEvent<any>) => {
@@ -163,32 +173,67 @@ class ParentComment extends PureComponent<Props, State> {
       trackEventByName(tracks.clickParentCommentLoadMoreButton);
       this.loadMore$.next(true);
     }
-  }
+  };
 
   removeFocus = (event: MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   render() {
-    const { postId, postType, commentId, authUser, comment, post, className } = this.props;
-    const { canLoadMore, isLoadingMore, hasLoadedMore, childComments } = this.state;
+    const {
+      postId,
+      postType,
+      commentId,
+      authUser,
+      comment,
+      post,
+      className,
+    } = this.props;
+    const {
+      canLoadMore,
+      isLoadingMore,
+      hasLoadedMore,
+      childComments,
+    } = this.state;
 
     if (!isNilOrError(comment) && !isNilOrError(post)) {
-      const projectId: string | null = get(post, 'relationships.project.data.id', null);
-      const commentDeleted = (comment.attributes.publication_status === 'deleted');
-      const commentingEnabled = get(post, 'attributes.action_descriptor.commenting.enabled', true);
-      const showCommentForm = (authUser && commentingEnabled && !commentDeleted);
-      const hasChildComments = (this.props.childCommentIds && this.props.childCommentIds.length > 0);
-      const childCommentIds = (!isNilOrError(childComments) ? childComments.data.filter((comment) => comment.attributes.publication_status !== 'deleted').map(comment => comment.id) : this.props.childCommentIds);
-      const canReply = (comment.attributes.publication_status !== 'deleted');
+      const projectId: string | null = get(
+        post,
+        'relationships.project.data.id',
+        null
+      );
+      const commentDeleted =
+        comment.attributes.publication_status === 'deleted';
+      const commentingEnabled = get(
+        post,
+        'attributes.action_descriptor.commenting.enabled',
+        true
+      );
+      const showCommentForm = authUser && commentingEnabled && !commentDeleted;
+      const hasChildComments =
+        this.props.childCommentIds && this.props.childCommentIds.length > 0;
+      const childCommentIds = !isNilOrError(childComments)
+        ? childComments.data
+            .filter(
+              (comment) => comment.attributes.publication_status !== 'deleted'
+            )
+            .map((comment) => comment.id)
+        : this.props.childCommentIds;
+      const canReply = comment.attributes.publication_status !== 'deleted';
 
       // hide parent comments that are deleted when they have no children
-      if (comment.attributes.publication_status === 'deleted' && !hasChildComments) {
+      if (
+        comment.attributes.publication_status === 'deleted' &&
+        !hasChildComments
+      ) {
         return null;
       }
 
       return (
-        <Container id="e2e-parent-and-childcomments" className={className || ''}>
+        <Container
+          id="e2e-parent-and-childcomments"
+          className={className || ''}
+        >
           <ParentCommentContainer className={commentDeleted ? 'deleted' : ''}>
             <Comment
               postId={postId}
@@ -202,7 +247,7 @@ class ParentComment extends PureComponent<Props, State> {
             />
           </ParentCommentContainer>
 
-          {canLoadMore && !hasLoadedMore &&
+          {canLoadMore && !hasLoadedMore && (
             <LoadMore
               onMouseDown={this.removeFocus}
               onClick={this.loadMore}
@@ -216,22 +261,24 @@ class ParentComment extends PureComponent<Props, State> {
                 <Spinner size="25px" />
               )}
             </LoadMore>
-          }
+          )}
 
-          {childCommentIds && childCommentIds.length > 0 && childCommentIds.map((childCommentId, index) => (
-            <Comment
-              postId={postId}
-              postType={postType}
-              projectId={projectId}
-              key={childCommentId}
-              commentId={childCommentId}
-              commentType="child"
-              last={index === childCommentIds.length - 1}
-              canReply={canReply}
-            />
-          ))}
+          {childCommentIds &&
+            childCommentIds.length > 0 &&
+            childCommentIds.map((childCommentId, index) => (
+              <Comment
+                postId={postId}
+                postType={postType}
+                projectId={projectId}
+                key={childCommentId}
+                commentId={childCommentId}
+                commentType="child"
+                last={index === childCommentIds.length - 1}
+                canReply={canReply}
+              />
+            ))}
 
-          {showCommentForm &&
+          {showCommentForm && (
             <ChildCommentForm
               postId={postId}
               postType={postType}
@@ -239,7 +286,7 @@ class ParentComment extends PureComponent<Props, State> {
               parentId={commentId}
               waitForChildCommentsRefetch={!isNilOrError(childComments)}
             />
-          }
+          )}
         </Container>
       );
     }
@@ -249,13 +296,19 @@ class ParentComment extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser/>,
-  comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  post: ({ comment, postType, render }) => <GetPost id={get(comment, 'relationships.post.data.id')} type={postType}>{render}</GetPost>
+  authUser: <GetAuthUser />,
+  comment: ({ commentId, render }) => (
+    <GetComment id={commentId}>{render}</GetComment>
+  ),
+  post: ({ comment, postType, render }) => (
+    <GetPost id={get(comment, 'relationships.post.data.id')} type={postType}>
+      {render}
+    </GetPost>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ParentComment {...inputProps} {...dataProps} />}
+    {(dataProps) => <ParentComment {...inputProps} {...dataProps} />}
   </Data>
 );

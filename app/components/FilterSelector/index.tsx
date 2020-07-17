@@ -1,5 +1,13 @@
 import React, { PureComponent } from 'react';
-import { isArray, find, isEmpty, isString, cloneDeep, includes, without } from 'lodash-es';
+import {
+  isArray,
+  find,
+  isEmpty,
+  isString,
+  cloneDeep,
+  includes,
+  without,
+} from 'lodash-es';
 
 // components
 import Title from './title';
@@ -41,7 +49,7 @@ interface DefaultProps {
   maxHeight?: string;
   mobileMaxHeight?: string;
   top?: string;
-  left? : string;
+  left?: string;
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
@@ -74,13 +82,13 @@ export default class FilterSelector extends PureComponent<Props, State> {
     left: undefined,
     mobileLeft: undefined,
     right: undefined,
-    mobileRight:undefined
+    mobileRight: undefined,
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      opened: false
+      opened: false,
     };
     this.baseID = `filter-${Math.floor(Math.random() * 10000000)}`;
   }
@@ -88,7 +96,11 @@ export default class FilterSelector extends PureComponent<Props, State> {
   getTitle = (selection, values, multipleSelectionAllowed, title) => {
     let newTitle: any = '';
 
-    if (!multipleSelectionAllowed && isArray(selection) && !isEmpty(selection)) {
+    if (
+      !multipleSelectionAllowed &&
+      isArray(selection) &&
+      !isEmpty(selection)
+    ) {
       const selected = find(values, { value: selection[0] });
       newTitle = selected ? selected['text'] : '';
     } else if (isArray(selection) && !isEmpty(selection)) {
@@ -98,7 +110,9 @@ export default class FilterSelector extends PureComponent<Props, State> {
         newTitle = [
           title,
           ' ',
-          <span key={Math.floor(Math.random() * 10000000)}>({selection.length})</span>
+          <span key={Math.floor(Math.random() * 10000000)}>
+            ({selection.length})
+          </span>,
         ];
       }
     } else {
@@ -106,15 +120,15 @@ export default class FilterSelector extends PureComponent<Props, State> {
     }
 
     return newTitle;
-  }
+  };
 
   toggleExpanded = () => {
-    this.setState(state => ({ opened: !state.opened }));
-  }
+    this.setState((state) => ({ opened: !state.opened }));
+  };
 
   closeExpanded = () => {
     this.setState({ opened: false });
-  }
+  };
 
   selectionChange = (value: string) => {
     let newSelection = cloneDeep(this.props.selected);
@@ -134,11 +148,11 @@ export default class FilterSelector extends PureComponent<Props, State> {
     if (!this.props.multipleSelectionAllowed) {
       this.closeExpanded();
     }
-  }
+  };
 
   handleClickOutside = () => {
     this.closeExpanded();
-  }
+  };
 
   render() {
     const className = this.props['className'];
@@ -159,14 +173,21 @@ export default class FilterSelector extends PureComponent<Props, State> {
       right,
       mobileRight,
       last,
-      name
+      name,
     } = this.props;
-    const currentTitle = this.getTitle(selected, values, multipleSelectionAllowed, title);
+    const currentTitle = this.getTitle(
+      selected,
+      values,
+      multipleSelectionAllowed,
+      title
+    );
 
     return (
       <Container
         id={id}
-        className={`e2e-filter-selector-${this.props.name} ${className} ${last ? 'last' : ''}`}
+        className={`e2e-filter-selector-${this.props.name} ${className} ${
+          last ? 'last' : ''
+        }`}
       >
         <Title
           key={this.baseID}

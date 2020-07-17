@@ -10,7 +10,9 @@ const StyledCircle: any = styled.circle`
   fill-opacity: 0.2;
   cursor: pointer;
 
-  ${props => !isNil((props as any).selectionIndex) && `
+  ${(props) =>
+    !isNil((props as any).selectionIndex) &&
+    `
     stroke: black;
     stroke-width: 2px;
     fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
@@ -26,28 +28,27 @@ interface InputProps {
   onMouseLeave?: (node: D3Node<CustomNode>, event: MouseEvent) => void;
 }
 
-interface DataProps { }
+interface DataProps {}
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class ClusterCircle extends PureComponent<Props, State> {
-
   handleOnClick = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onClick && this.props.onClick(node, event);
-  }
+  };
 
   handleOnMouseEnter = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseEnter && this.props.onMouseEnter(node, event);
-  }
+  };
 
   handleOnMouseLeave = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseLeave && this.props.onMouseLeave(node, event);
-  }
+  };
 
   render() {
     const { node, selectionIndex } = this.props;

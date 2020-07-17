@@ -4,9 +4,7 @@
  * This contains all the text for the AdminPage.SettingsPage component.
  */
 
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
@@ -27,7 +25,8 @@ export default defineMessages({
   },
   subtitleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleBasic',
-    defaultMessage: 'Add the name of your organisation or city, a url to your website and the languages in which this platform should be made available.',
+    defaultMessage:
+      'Add the name of your organisation or city, a url to your website and the languages in which this platform should be made available.',
   },
   tabCustomize: {
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
@@ -35,7 +34,8 @@ export default defineMessages({
   },
   subtitleCustomize: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleCustomize',
-    defaultMessage: 'Define how your homepage looks like and pick the colour for the action buttons.',
+    defaultMessage:
+      'Define how your homepage looks like and pick the colour for the action buttons.',
   },
   titleCustomize: {
     id: 'app.containers.AdminPage.SettingsPage.titleCustomize',
@@ -67,7 +67,8 @@ export default defineMessages({
   },
   languagesTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.languagesTooltip',
-    defaultMessage: 'Select the languages in which your platform is made available to users. They can easily choose their preferred language from this list via a button in the navbar.',
+    defaultMessage:
+      'Select the languages in which your platform is made available to users. They can easily choose their preferred language from this list via a button in the navbar.',
   },
   color_main: {
     id: 'app.containers.AdminPage.SettingsPage.color_main',
@@ -103,7 +104,8 @@ export default defineMessages({
   },
   header_bgTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
-    defaultMessage: 'Shown on the home page. Recommended dimensions are 1440x480.',
+    defaultMessage:
+      'Shown on the home page. Recommended dimensions are 1440x480.',
   },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
@@ -119,11 +121,13 @@ export default defineMessages({
   },
   headerTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.headerTitleTooltip',
-    defaultMessage: 'Shown on the header image on the home page. Tell your users what this platform is about.',
+    defaultMessage:
+      'Shown on the header image on the home page. Tell your users what this platform is about.',
   },
   titleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.titleMaxCharError',
-    defaultMessage: 'The provided title exceeds the maximum allowed character limit',
+    defaultMessage:
+      'The provided title exceeds the maximum allowed character limit',
   },
   headerSubtitleLabel: {
     id: 'app.containers.AdminPage.SettingsPage.headerSubtitleLabel',
@@ -131,11 +135,13 @@ export default defineMessages({
   },
   headerSubtitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.headerSubtitleTooltip',
-    defaultMessage: 'Shown below the header title on the home page. Tell your users why they should register on your platform.',
+    defaultMessage:
+      'Shown below the header title on the home page. Tell your users why they should register on your platform.',
   },
   subtitleMaxCharError: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleMaxCharError',
-    defaultMessage: 'The provided subtitle exceeds the maximum allowed character limit',
+    defaultMessage:
+      'The provided subtitle exceeds the maximum allowed character limit',
   },
   noLogo: {
     id: 'app.containers.AdminPage.SettingsPage.noLogo',
@@ -167,7 +173,8 @@ export default defineMessages({
   },
   subtitleRegistrationFields: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleRegistrationFields',
-    defaultMessage: 'Define what specific information you want to ask people while creating an account. Use this information to create Smart Groups and give particular user groups access to certain projects.',
+    defaultMessage:
+      'Define what specific information you want to ask people while creating an account. Use this information to create Smart Groups and give particular user groups access to certain projects.',
   },
   tabAreas: {
     id: 'app.containers.AdminPage.SettingsPage.tabAreas',
@@ -183,7 +190,8 @@ export default defineMessages({
   },
   urlTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.urlTitleTooltip',
-    defaultMessage: 'Add the URL of the website you want to link this platform with. Used in the footer on the home page.',
+    defaultMessage:
+      'Add the URL of the website you want to link this platform with. Used in the footer on the home page.',
   },
   homePageCustomSection: {
     id: 'app.components.AdminPage.SettingsPage.homePageCustomSection',
@@ -195,10 +203,12 @@ export default defineMessages({
   },
   customSectionInfo: {
     id: 'app.components.AdminPage.SettingsPage.customSectionInfo',
-    defaultMessage: 'The content of this field will be shown at the bottom of the platform\'s home page, visible to all visitors.',
+    defaultMessage:
+      "The content of this field will be shown at the bottom of the platform's home page, visible to all visitors.",
   },
   contrastRatioTooLow: {
     id: 'app.components.AdminPage.SettingsPage.contrastRatioTooLow',
-     defaultMessage: 'The color you selected doesn\'t have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. {lineBreak} {lineBreak} Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether. {lineBreak} {lineBreak} A ratio of at least 4.5 to 1 is needed to comply. Current ratio: {contrastRatio} to 1. Choose a darker color to increase the ratio.',
+    defaultMessage:
+      "The color you selected doesn't have a high enough contrast (to a white background) to comply with the {wcagLink} accessibility standard. {lineBreak} {lineBreak} Not meeting this ratio may impair the user experience of users with visual disabilities, or even make it impossible to use the platform altogether. {lineBreak} {lineBreak} A ratio of at least 4.5 to 1 is needed to comply. Current ratio: {contrastRatio} to 1. Choose a darker color to increase the ratio.",
   },
 });

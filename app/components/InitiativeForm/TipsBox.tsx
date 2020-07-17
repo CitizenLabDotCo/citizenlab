@@ -21,7 +21,7 @@ const Container = styled.div`
   color: ${({ theme }) => theme.colorText};
   font-size: ${fontSizes.base}px;
   line-height: 20px;
-  border: 1px solid #E7E7E7;
+  border: 1px solid #e7e7e7;
 `;
 
 const TipsTitle = styled.h2`
@@ -32,7 +32,6 @@ const TipsTitle = styled.h2`
 `;
 
 const TipsBox = memo(({ className }: Props) => {
-
   return (
     <Container className={`${className} e2e-tips`}>
       <TipsTitle>

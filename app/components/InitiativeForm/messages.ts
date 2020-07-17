@@ -4,36 +4,42 @@ export default defineMessages({
   // Header Messages
   header: {
     id: 'app.containers.InitiativesNewPage.header',
-    defaultMessage: 'Start your own initiative and make your voice heard by {styledOrgName}'
+    defaultMessage:
+      'Start your own initiative and make your voice heard by {styledOrgName}',
   },
   orgName: {
     id: 'app.containers.InitiativesNewPage.orgName',
-    defaultMessage: '{orgName}'
+    defaultMessage: '{orgName}',
   },
   // Tips Box Messages
   tipsTitle: {
     id: 'app.containers.InitiativesNewPage.tipsTitle',
-    defaultMessage: 'Tips and tricks for a successful initiative'
+    defaultMessage: 'Tips and tricks for a successful initiative',
   },
   elaborate: {
     id: 'app.containers.InitiativesNewPage.elaborate',
-    defaultMessage: 'Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.'
+    defaultMessage:
+      'Take the time to elaborate on your proposal. If necessary, type a draft first and then copy-paste it here. As soon as you post it, others will be able to read it and the time will start running.',
   },
   meaningfulTitle: {
     id: 'app.containers.InitiativesNewPage.meaningfulTitle',
-    defaultMessage: 'Choose a meaningful title that explains clearly what your proposal entails.'
+    defaultMessage:
+      'Choose a meaningful title that explains clearly what your proposal entails.',
   },
   visualise: {
     id: 'app.containers.InitiativesNewPage.visualise',
-    defaultMessage: 'Make sure to visualise your proposal with a fitting image, so that it stands out more.'
+    defaultMessage:
+      'Make sure to visualise your proposal with a fitting image, so that it stands out more.',
   },
   relevantAttachments: {
     id: 'app.containers.InitiativesNewPage.relevantAttachments',
-    defaultMessage: 'Add relevant attachments, such as videos, inspiring examples, technical details or plans.'
+    defaultMessage:
+      'Add relevant attachments, such as videos, inspiring examples, technical details or plans.',
   },
   shareSocialMedia: {
     id: 'app.containers.InitiativesNewPage.shareSocialMedia',
-    defaultMessage: 'Share your idea on social media and other channels to gather support from others.'
+    defaultMessage:
+      'Share your idea on social media and other channels to gather support from others.',
   },
   // Form Messages
   formGeneralSectionTitle: {
@@ -54,7 +60,8 @@ export default defineMessages({
   },
   titleLabelSubtext: {
     id: 'app.components.InitiativeForm.titleLabelSubtext',
-    defaultMessage: 'Choose a descriptive, yet concise title (min. 10 characters)',
+    defaultMessage:
+      'Choose a descriptive, yet concise title (min. 10 characters)',
   },
   descriptionLabel: {
     id: 'app.components.InitiativeForm.descriptionLabel',
@@ -70,7 +77,8 @@ export default defineMessages({
   },
   descriptionLengthError: {
     id: 'app.components.InitiativeForm.descriptionLengthError',
-    defaultMessage: 'The initiative description must be at least 500 characters long',
+    defaultMessage:
+      'The initiative description must be at least 500 characters long',
   },
   formDetailsSectionTitle: {
     id: 'app.components.InitiativeForm.formDetailsSectionTitle',
@@ -110,7 +118,8 @@ export default defineMessages({
   },
   bannerUploadLabelSubtext: {
     id: 'app.components.InitiativeForm.bannerUploadLabelSubtext',
-    defaultMessage: 'This cover will be used at the top of your initiative page',
+    defaultMessage:
+      'This cover will be used at the top of your initiative page',
   },
   imageDropzonePlaceholder: {
     id: 'app.container.InitiativeForm.imageDropzonePlaceholder',
@@ -142,6 +151,7 @@ export default defineMessages({
   },
   publishUnknownError: {
     id: 'app.components.InitiativeForm.publishUnknownError',
-    defaultMessage: 'There was an issue publishing your initiative, please try again later.',
+    defaultMessage:
+      'There was an issue publishing your initiative, please try again later.',
   },
 });

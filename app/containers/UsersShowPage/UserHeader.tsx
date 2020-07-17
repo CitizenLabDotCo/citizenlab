@@ -10,7 +10,9 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import Button from 'components/UI/Button';
 
 // resources
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
@@ -55,7 +57,7 @@ const FullName = styled.h1`
   font-size: ${fontSizes.xl}px;
   font-weight: 600;
   text-align: center;
-  color:  ${({ theme }) => theme.colorText};
+  color: ${({ theme }) => theme.colorText};
   padding: 0px;
   margin: 0px;
   margin-bottom: 5px;
@@ -94,67 +96,78 @@ interface DataProps {
 interface Props extends InputProps, DataProps {}
 
 export const UserHeader = memo<Props>((props) => {
-    const { user, authUser, windowSize } = props;
-    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+  const { user, authUser, windowSize } = props;
+  const smallerThanSmallTablet = windowSize
+    ? windowSize <= viewportWidths.smallTablet
+    : false;
 
-    if (!isNilOrError(user)) {
-      const memberSinceMoment = moment(user.attributes.created_at).format('LL');
-      let hasDescription = false;
+  if (!isNilOrError(user)) {
+    const memberSinceMoment = moment(user.attributes.created_at).format('LL');
+    let hasDescription = false;
 
-      forOwn(user.attributes.bio_multiloc, (value, _key) => {
-        if (!isEmpty(value) && value !== '<p></p>' && value !== '<p><br></p>') {
-          hasDescription = true;
-        }
-      });
+    forOwn(user.attributes.bio_multiloc, (value, _key) => {
+      if (!isEmpty(value) && value !== '<p></p>' && value !== '<p><br></p>') {
+        hasDescription = true;
+      }
+    });
 
-      return (
-        <Container>
-          <UserAvatar>
-            <Avatar userId={user.id} size={smallerThanSmallTablet ? '120px' : '150px'} />
-          </UserAvatar>
+    return (
+      <Container>
+        <UserAvatar>
+          <Avatar
+            userId={user.id}
+            size={smallerThanSmallTablet ? '120px' : '150px'}
+          />
+        </UserAvatar>
 
-          <UserInfo>
-            <FullName id="e2e-usersshowpage-fullname">{user.attributes.first_name} {user.attributes.last_name}</FullName>
-            <JoinedAt>
-              <FormattedMessage {...messages.memberSince} values={{ date: memberSinceMoment }} />
-            </JoinedAt>
-            {!isEmpty(user.attributes.bio_multiloc) && hasDescription &&
-              <Bio>
-                <QuillEditedContent>
-                  {user.attributes.bio_multiloc && <T value={user.attributes.bio_multiloc} supportHtml={true} />}
-                </QuillEditedContent>
-              </Bio>
-            }
-            {!isNilOrError(authUser) && authUser.id === user.id &&
-              <EditProfileButton
-                linkTo="/profile/edit"
-                buttonStyle="text"
-                icon="pencil"
-                iconAriaHidden
-                className="e2e-edit-profile"
-                bgHoverColor={colors.background}
-              >
-                <FormattedMessage {...messages.editProfile} />
-              </EditProfileButton>
-            }
-          </UserInfo>
-        </Container>
-      );
-    }
-
-    return null;
+        <UserInfo>
+          <FullName id="e2e-usersshowpage-fullname">
+            {user.attributes.first_name} {user.attributes.last_name}
+          </FullName>
+          <JoinedAt>
+            <FormattedMessage
+              {...messages.memberSince}
+              values={{ date: memberSinceMoment }}
+            />
+          </JoinedAt>
+          {!isEmpty(user.attributes.bio_multiloc) && hasDescription && (
+            <Bio>
+              <QuillEditedContent>
+                {user.attributes.bio_multiloc && (
+                  <T value={user.attributes.bio_multiloc} supportHtml={true} />
+                )}
+              </QuillEditedContent>
+            </Bio>
+          )}
+          {!isNilOrError(authUser) && authUser.id === user.id && (
+            <EditProfileButton
+              linkTo="/profile/edit"
+              buttonStyle="text"
+              icon="pencil"
+              iconAriaHidden
+              className="e2e-edit-profile"
+              bgHoverColor={colors.background}
+            >
+              <FormattedMessage {...messages.editProfile} />
+            </EditProfileButton>
+          )}
+        </UserInfo>
+      </Container>
+    );
   }
-);
+
+  return null;
+});
 
 const Data = adopt<DataProps, InputProps>({
   windowSize: <GetWindowSize />,
   authUser: <GetAuthUser />,
-  user: ({ userSlug, render }) => <GetUser slug={userSlug}>{render}</GetUser>
+  user: ({ userSlug, render }) => <GetUser slug={userSlug}>{render}</GetUser>,
 });
 
 const WrappedUserHeader = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <UserHeader {...inputProps} {...dataProps} />}
+    {(dataProps) => <UserHeader {...inputProps} {...dataProps} />}
   </Data>
 );
 

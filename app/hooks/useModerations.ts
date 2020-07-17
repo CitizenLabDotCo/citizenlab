@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { moderationsStream, IModerationData, TModerationStatuses, TModeratableTypes } from 'services/moderations';
+import {
+  moderationsStream,
+  IModerationData,
+  TModerationStatuses,
+  TModeratableTypes,
+} from 'services/moderations';
 import { isNilOrError } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
@@ -15,11 +20,17 @@ interface InputProps {
 export default function useModerations(props: InputProps) {
   const [pageNumber, setPageNumber] = useState(props.pageNumber);
   const [pageSize, setPageSize] = useState(props.pageNumber);
-  const [moderationStatus, setModerationStatus] = useState(props.moderationStatus);
-  const [list, setList] = useState<IModerationData[] | undefined | null | Error>(undefined);
+  const [moderationStatus, setModerationStatus] = useState(
+    props.moderationStatus
+  );
+  const [list, setList] = useState<
+    IModerationData[] | undefined | null | Error
+  >(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
-  const [moderatableTypes, setModeratableTypes] = useState(props.moderatableTypes);
+  const [moderatableTypes, setModeratableTypes] = useState(
+    props.moderatableTypes
+  );
   const [projectIds, setProjectIds] = useState(props.projectIds);
   const [searchTerm, setSearchTerm] = useState(props.searchTerm);
 
@@ -32,13 +43,19 @@ export default function useModerations(props: InputProps) {
     setPageNumber(1);
   }, []);
 
-  const onModerationStatusChange = useCallback((newModerationStatus: TModerationStatuses) => {
-    setModerationStatus(newModerationStatus);
-  }, []);
+  const onModerationStatusChange = useCallback(
+    (newModerationStatus: TModerationStatuses) => {
+      setModerationStatus(newModerationStatus);
+    },
+    []
+  );
 
-  const onModeratableTypesChange = useCallback((newModeratableTypes: TModeratableTypes[]) => {
-    setModeratableTypes([...newModeratableTypes]);
-  }, []);
+  const onModeratableTypesChange = useCallback(
+    (newModeratableTypes: TModeratableTypes[]) => {
+      setModeratableTypes([...newModeratableTypes]);
+    },
+    []
+  );
 
   const onProjectIdsChange = useCallback((projectIds: string[]) => {
     setProjectIds([...projectIds]);
@@ -62,8 +79,8 @@ export default function useModerations(props: InputProps) {
         moderation_status: moderationStatus,
         moderatable_types: moderatableTypes,
         project_ids: projectIds,
-        search: searchTerm
-      }
+        search: searchTerm,
+      },
     }).observable.subscribe((response) => {
       const list = !isNilOrError(response) ? response.data : response;
       const currentPage = getPageNumberFromUrl(response?.links?.self) || 1;
@@ -74,7 +91,14 @@ export default function useModerations(props: InputProps) {
     });
 
     return () => subscription.unsubscribe();
-  }, [pageNumber, pageSize, moderationStatus, moderatableTypes, projectIds, searchTerm]);
+  }, [
+    pageNumber,
+    pageSize,
+    moderationStatus,
+    moderatableTypes,
+    projectIds,
+    searchTerm,
+  ]);
 
   return {
     list,

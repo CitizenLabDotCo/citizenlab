@@ -2,7 +2,10 @@ import React from 'react';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IInitiativeImageData, initiativeImageStream } from 'services/initiativeImages';
+import {
+  IInitiativeImageData,
+  initiativeImageStream,
+} from 'services/initiativeImages';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -12,30 +15,35 @@ interface InputProps {
   resetOnChange?: boolean;
 }
 
-type children = (renderProps: GetInitiativeImageChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetInitiativeImageChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  initiativeImage: IInitiativeImageData | undefined| null;
+  initiativeImage: IInitiativeImageData | undefined | null;
 }
 
-export type GetInitiativeImageChildProps = IInitiativeImageData | undefined| null;
+export type GetInitiativeImageChildProps =
+  | IInitiativeImageData
+  | undefined
+  | null;
 
 export default class GetInitiativeImage extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      initiativeImage: undefined
+      initiativeImage: undefined,
     };
   }
 
@@ -45,20 +53,28 @@ export default class GetInitiativeImage extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ initiativeId, initiativeImageId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ initiativeImage: undefined })),
-        switchMap(({ initiativeId, initiativeImageId }) => {
-          if (isString(initiativeId) && isString(initiativeImageId)) {
-            return initiativeImageStream(initiativeId, initiativeImageId).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(
+            () => resetOnChange && this.setState({ initiativeImage: undefined })
+          ),
+          switchMap(({ initiativeId, initiativeImageId }) => {
+            if (isString(initiativeId) && isString(initiativeImageId)) {
+              return initiativeImageStream(initiativeId, initiativeImageId)
+                .observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((initiativeImage) => this.setState({
-        initiativeImage: !isNilOrError(initiativeImage) ? initiativeImage.data : initiativeImage
-      }))
+            return of(null);
+          })
+        )
+        .subscribe((initiativeImage) =>
+          this.setState({
+            initiativeImage: !isNilOrError(initiativeImage)
+              ? initiativeImage.data
+              : initiativeImage,
+          })
+        ),
     ];
   }
 
@@ -68,7 +84,7 @@ export default class GetInitiativeImage extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

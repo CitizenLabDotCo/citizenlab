@@ -29,50 +29,64 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const ActionBar = memo<Props>(({ project, onTranslateIdea, translateButtonClicked, idea, authUser, locale }) => {
+const ActionBar = memo<Props>(
+  ({
+    project,
+    onTranslateIdea,
+    translateButtonClicked,
+    idea,
+    authUser,
+    locale,
+  }) => {
+    const showTranslateButton =
+      !isNilOrError(idea) &&
+      !isNilOrError(locale) &&
+      !idea.attributes.title_multiloc[locale];
 
-  const showTranslateButton = (
-    !isNilOrError(idea) &&
-    !isNilOrError(locale) &&
-    !idea.attributes.title_multiloc[locale]
-  );
+    const leftContent = !isNilOrError(project) ? (
+      <BreadCrumbs
+        postType="idea"
+        links={[
+          {
+            text: project.attributes.title_multiloc,
+            to: `/projects/${project.attributes.slug}`,
+          },
+        ]}
+      />
+    ) : null;
 
-  const leftContent = !isNilOrError(project) ? (
-    <BreadCrumbs
-      postType="idea"
-      links={[{
-        text: project.attributes.title_multiloc,
-        to: `/projects/${project.attributes.slug}`
-      }]}
-    />
-  ) : null;
+    const rightContent =
+      !isNilOrError(authUser) && !isNilOrError(idea) ? (
+        <IdeaMoreActions idea={idea} hasLeftMargin={showTranslateButton} />
+      ) : null;
 
-  const rightContent = !isNilOrError(authUser) && !isNilOrError(idea)
-    ? <IdeaMoreActions idea={idea} hasLeftMargin={showTranslateButton} />
-    : null;
-
-  return (
-    <ActionBarLayout
-      leftContent={leftContent}
-      rightContent={rightContent}
-      showTranslateButton={showTranslateButton}
-      onTranslate={onTranslateIdea}
-      translateButtonClicked={translateButtonClicked}
-    />
-  );
-});
+    return (
+      <ActionBarLayout
+        leftContent={leftContent}
+        rightContent={rightContent}
+        showTranslateButton={showTranslateButton}
+        onTranslate={onTranslateIdea}
+        translateButtonClicked={translateButtonClicked}
+      />
+    );
+  }
+);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  project: ({ idea, render }) => <GetProject projectId={get(idea, 'relationships.project.data.id')}>{render}</GetProject>
+  project: ({ idea, render }) => (
+    <GetProject projectId={get(idea, 'relationships.project.data.id')}>
+      {render}
+    </GetProject>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ActionBar {...inputProps} {...dataProps} />}
+    {(dataProps) => <ActionBar {...inputProps} {...dataProps} />}
   </Data>
 );

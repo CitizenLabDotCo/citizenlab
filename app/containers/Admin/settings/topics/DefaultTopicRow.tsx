@@ -47,7 +47,6 @@ const DefaultTopicRow = memo((props: Props) => {
   }
 
   return null;
-
 });
 
 export default DefaultTopicRow;
