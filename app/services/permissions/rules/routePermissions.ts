@@ -28,6 +28,7 @@ definePermissionRule(
       }
 
       if (
+        isModerator(user) &&
         item.path === '/admin/dashboard' ||
         (item.path === '/admin/projects' ||
           item.path === '/admin/emails' ||
