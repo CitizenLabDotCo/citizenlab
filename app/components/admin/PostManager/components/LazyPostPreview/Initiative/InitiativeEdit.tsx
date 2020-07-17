@@ -92,8 +92,9 @@ export class InitiativesEditPage extends React.PureComponent<Props, State> {
       initiativeFiles === undefined ||
       isError(initiativeFiles) ||
       isNilOrError(topics)
-    )
+    ) {
       return null;
+    }
     const initiativeTopics = topics.filter(
       (topic) => !isNilOrError(topic)
     ) as ITopicData[];

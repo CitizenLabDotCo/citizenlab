@@ -202,8 +202,9 @@ class StatusChangeFormWrapper extends PureComponent<
       isNilOrError(initiative) ||
       isNilOrError(newStatus) ||
       officialFeedbacks.officialFeedbacksList === undefined
-    )
+    ) {
       return null;
+    }
 
     return (
       <Container>
