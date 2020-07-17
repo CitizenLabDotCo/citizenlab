@@ -23,7 +23,10 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportVolunteersButton extends React.PureComponent<Props, State> {
+export default class ExportVolunteersButton extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -33,9 +36,12 @@ export default class ExportVolunteersButton extends React.PureComponent<Props, S
 
   handleExportVolunteers = async () => {
     this.setState({ exporting: true });
-    await exportVolunteers(this.props.participationContextId, this.props.participationContextType);
+    await exportVolunteers(
+      this.props.participationContextId,
+      this.props.participationContextType
+    );
     this.setState({ exporting: false });
-  }
+  };
 
   render() {
     const { className } = this.props;

@@ -40,11 +40,20 @@ export interface Props {
   onClickCancel: () => void;
 }
 
-class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>> {
-
+class OptionForm extends React.Component<
+  InjectedFormikProps<Props, FormValues>
+> {
   render() {
-
-    const { mode, errors, onClickDelete, onClickCancel, isSubmitting, isValid, touched, status } = this.props;
+    const {
+      mode,
+      errors,
+      onClickDelete,
+      onClickCancel,
+      isSubmitting,
+      isValid,
+      touched,
+      status,
+    } = this.props;
 
     return (
       <Form>
@@ -58,12 +67,9 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
               component={FormikInput}
               disabled={mode === 'edit'}
             />
-            {touched.key &&
-              <Error
-                fieldName="key"
-                apiErrors={errors.key as any}
-              />
-            }
+            {touched.key && (
+              <Error fieldName="key" apiErrors={errors.key as any} />
+            )}
           </SectionField>
 
           <SectionField>
@@ -72,15 +78,15 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
               component={FormikInputMultiloc}
               label={<FormattedMessage {...messages.optionTitle} />}
             />
-            {touched.title_multiloc &&
+            {touched.title_multiloc && (
               <Error
                 fieldName="title_multiloc"
                 apiErrors={errors.title_multiloc as any}
               />
-            }
+            )}
           </SectionField>
 
-          {mode === 'edit' &&
+          {mode === 'edit' && (
             <ButtonContainer>
               <Button
                 onClick={onClickDelete}
@@ -90,8 +96,8 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
                 <FormattedMessage {...messages.optionDeleteButton} />
               </Button>
             </ButtonContainer>
-          }
-          {mode === 'new' &&
+          )}
+          {mode === 'new' && (
             <ButtonContainer>
               <Button
                 onClick={onClickCancel}
@@ -101,12 +107,11 @@ class OptionForm extends React.Component<InjectedFormikProps<Props, FormValues>>
                 <FormattedMessage {...messages.optionCancelButton} />
               </Button>
             </ButtonContainer>
-          }
+          )}
 
           <FormikSubmitWrapper
             {...{ isValid, isSubmitting, status, touched }}
           />
-
         </OptionRow>
       </Form>
     );

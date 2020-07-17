@@ -1,9 +1,15 @@
 import useVerificationMethods from 'hooks/useVerificationMethods';
 import { IVerificationMethods } from 'services/verificationMethods';
 
-export type GetVerificationMethodsChildProps = IVerificationMethods | undefined | null | Error;
+export type GetVerificationMethodsChildProps =
+  | IVerificationMethods
+  | undefined
+  | null
+  | Error;
 
-type children = (renderProps: GetVerificationMethodsChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetVerificationMethodsChildProps
+) => JSX.Element | null;
 
 interface Props {
   children?: children;

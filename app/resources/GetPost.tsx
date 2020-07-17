@@ -5,7 +5,11 @@ import { Subscription, BehaviorSubject, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
 import { IIdeaData, ideaByIdStream, ideaBySlugStream } from 'services/ideas';
-import { IInitiativeData, initiativeByIdStream, initiativeBySlugStream } from 'services/initiatives';
+import {
+  IInitiativeData,
+  initiativeByIdStream,
+  initiativeBySlugStream,
+} from 'services/initiatives';
 import { GetIdeaChildProps } from 'resources/GetIdea';
 import { GetInitiativeChildProps } from 'resources/GetInitiative';
 
@@ -18,7 +22,7 @@ interface InputProps {
 
 type children = (renderProps: GetPostChildProps) => JSX.Element | null;
 
-export type GetPostChildProps =  GetIdeaChildProps | GetInitiativeChildProps;
+export type GetPostChildProps = GetIdeaChildProps | GetInitiativeChildProps;
 
 interface Props extends InputProps {
   children?: children;
@@ -33,13 +37,13 @@ export default class GetPost extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      post: undefined
+      post: undefined,
     };
   }
 
@@ -49,32 +53,33 @@ export default class GetPost extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id, slug, type });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ post: undefined })),
-        switchMap(({ id, slug, type }) => {
-          if (isString(id) && type === 'idea') {
-            return ideaByIdStream(id).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ post: undefined })),
+          switchMap(({ id, slug, type }) => {
+            if (isString(id) && type === 'idea') {
+              return ideaByIdStream(id).observable;
+            }
 
-          if (isString(id) && type === 'initiative') {
-            return initiativeByIdStream(id).observable;
-          }
+            if (isString(id) && type === 'initiative') {
+              return initiativeByIdStream(id).observable;
+            }
 
-          if (isString(slug) && type === 'idea') {
-            return ideaBySlugStream(slug).observable;
-          }
+            if (isString(slug) && type === 'idea') {
+              return ideaBySlugStream(slug).observable;
+            }
 
-          if (isString(slug) && type === 'initiative') {
-            return initiativeBySlugStream(slug).observable;
-          }
+            if (isString(slug) && type === 'initiative') {
+              return initiativeBySlugStream(slug).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((post) => {
-        this.setState({ post: !isNilOrError(post) ? post.data : post });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((post) => {
+          this.setState({ post: !isNilOrError(post) ? post.data : post });
+        }),
     ];
   }
 
@@ -84,7 +89,7 @@ export default class GetPost extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

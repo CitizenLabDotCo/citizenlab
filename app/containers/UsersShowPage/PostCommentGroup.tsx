@@ -40,7 +40,8 @@ const Container = styled.div`
   flex-direction: column;
   padding: 20px 40px 40px;
   background: #fff;
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
+    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
   border-radius: ${(props: any) => props.theme.borderRadius};
 
   &:not(:last-child) {
@@ -63,7 +64,7 @@ const PostLink = styled(Link)`
 
   &:hover,
   &:focus {
-    background: ${darken(.02, colors.background)};
+    background: ${darken(0.02, colors.background)};
   }
 `;
 
@@ -145,7 +146,6 @@ const nothingHappens = () => {};
 interface Props extends InputProps, DataProps {}
 
 export class PostCommentGroup extends PureComponent<Props> {
-
   onIdeaLinkClick = (event: FormEvent<any>) => {
     event.preventDefault();
 
@@ -155,45 +155,49 @@ export class PostCommentGroup extends PureComponent<Props> {
       eventEmitter.emit<IOpenPostPageModalEvent>('cardClick', {
         id: post.id,
         slug: post.attributes.slug,
-        type: postType
+        type: postType,
       });
     }
-  }
+  };
 
   render() {
     const { postType, post, comments, userId, user } = this.props;
 
     if (!isNilOrError(post) && !isNilOrError(user)) {
       const { slug, title_multiloc } = post.attributes;
-      const projectId: string | null = get(post, 'relationships.project.data.id', null);
+      const projectId: string | null = get(
+        post,
+        'relationships.project.data.id',
+        null
+      );
 
       return (
         <Container>
           <ScreenReaderOnly>
-            {postType === 'idea' ?
+            {postType === 'idea' ? (
               <FormattedMessage {...messages.a11y_ideaPostedIn} />
-              :
+            ) : (
               <FormattedMessage {...messages.a11y_initiativePostedIn} />
-            }
+            )}
           </ScreenReaderOnly>
-          <PostLink
-            to={`/${postType}s/${slug}`}
-            onClick={this.onIdeaLinkClick}
-          >
+          <PostLink to={`/${postType}s/${slug}`} onClick={this.onIdeaLinkClick}>
             <PostLinkLeft>
-              <StyledIcon ariaHidden name={postType === 'idea' ? 'idea2' : 'initiatives'} />
+              <StyledIcon
+                ariaHidden
+                name={postType === 'idea' ? 'idea2' : 'initiatives'}
+              />
               <T value={title_multiloc} className="text" />
             </PostLinkLeft>
             <PostLinkRight>
-              {postType === 'idea' ?
+              {postType === 'idea' ? (
                 <FormattedMessage {...messages.seeIdea} />
-                :
+              ) : (
                 <FormattedMessage {...messages.seeInitiative} />
-              }
+              )}
             </PostLinkRight>
           </PostLink>
 
-          {comments.map(comment => {
+          {comments.map((comment) => {
             return (
               <CommentContainer key={comment.id}>
                 <CommentHeader
@@ -212,7 +216,7 @@ export class PostCommentGroup extends PureComponent<Props> {
                   onCancelEditing={nothingHappens}
                 />
                 <VotesContainer>
-                  <VoteIcon ariaHidden name="upvote"/>
+                  <VoteIcon ariaHidden name="upvote" />
                   <VoteCount aria-hidden>
                     {comment.attributes.upvotes_count}
                   </VoteCount>
@@ -220,7 +224,7 @@ export class PostCommentGroup extends PureComponent<Props> {
                     <FormattedMessage
                       {...messages.a11y_upvotesCount}
                       values={{
-                        upvotesCount: comment.attributes.upvotes_count
+                        upvotesCount: comment.attributes.upvotes_count,
                       }}
                     />
                   </ScreenReaderOnly>
@@ -237,13 +241,17 @@ export class PostCommentGroup extends PureComponent<Props> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>,
-  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>
+  post: ({ postId, postType, render }) => (
+    <GetPost id={postId} type={postType}>
+      {render}
+    </GetPost>
+  ),
+  user: ({ userId, render }) => <GetUser id={userId}>{render}</GetUser>,
 });
 
 const WrappedPostComments = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PostCommentGroup {...inputProps} {...dataProps} />}
+    {(dataProps) => <PostCommentGroup {...inputProps} {...dataProps} />}
   </Data>
 );
 

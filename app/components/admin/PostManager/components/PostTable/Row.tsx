@@ -17,7 +17,7 @@ const InitiativeRow = lazy(() => import('./InitiativeRow'));
 
 export const StyledRow = styled.tr<{ undraggable: boolean }>`
   height: 5.7rem !important;
-  cursor: ${({ undraggable }) => undraggable ? 'pointer' : 'move'};
+  cursor: ${({ undraggable }) => (undraggable ? 'pointer' : 'move')};
 `;
 
 export const FilterCell = styled.td`
@@ -39,7 +39,8 @@ export const TitleLink = styled.a`
   text-overflow: ellipsis;
   cursor: pointer;
   color: black;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     text-decoration: underline;
   }
 `;
@@ -51,13 +52,13 @@ function nothingHappens(event) {
 
 type Props = {
   type: ManagerType;
-  post: IIdeaData | IInitiativeData,
-  phases?: IPhaseData[],
-  statuses?: IIdeaStatusData[],
+  post: IIdeaData | IInitiativeData;
+  phases?: IPhaseData[];
+  statuses?: IIdeaStatusData[];
   /** A set of ids of ideas/initiatives that are currently selected */
-  selection: Set<string>,
-  onUnselect: () => void,
-  onToggleSelect: () => void,
+  selection: Set<string>;
+  onUnselect: () => void;
+  onToggleSelect: () => void;
   onSingleSelect: () => void;
   activeFilterMenu: TFilterMenu;
   openPreview: (ideaId: string) => void;
@@ -68,17 +69,25 @@ export default class Row extends React.PureComponent<Props> {
   onClickCheckbox = (event) => {
     event.stopPropagation();
     this.props.onToggleSelect();
-  }
+  };
 
   onClickTitle = (event) => {
     event.preventDefault();
     event.stopPropagation();
     const { post, openPreview } = this.props;
     openPreview(post.id);
-  }
+  };
 
   render() {
-    const { type, post, selection, activeFilterMenu, phases, statuses, className } = this.props;
+    const {
+      type,
+      post,
+      selection,
+      activeFilterMenu,
+      phases,
+      statuses,
+      className,
+    } = this.props;
 
     if (type === 'AllIdeas' || type === 'ProjectIdeas') {
       return (
@@ -96,7 +105,6 @@ export default class Row extends React.PureComponent<Props> {
             nothingHappens={nothingHappens}
           />
         </Suspense>
-
       );
     } else if (type === 'Initiatives') {
       return (

@@ -18,21 +18,18 @@ const StyledWarning = styled(Warning)`
   margin-bottom: 30px;
 `;
 
-type DataProps = GetCampaignsChildProps & {
+type DataProps = GetCampaignsChildProps & {};
 
-};
+type Props = DataProps & {};
 
-type Props = DataProps & {
-
-};
-
-class AutomatedCampaigns extends React.PureComponent<Props & InjectedIntlProps> {
-
+class AutomatedCampaigns extends React.PureComponent<
+  Props & InjectedIntlProps
+> {
   handleOnEnabledToggle = (campaign: ICampaignData) => () => {
     updateCampaign(campaign.id, {
       enabled: !campaign.attributes.enabled,
     });
-  }
+  };
 
   render() {
     const { campaigns } = this.props;
@@ -49,11 +46,18 @@ class AutomatedCampaigns extends React.PureComponent<Props & InjectedIntlProps> 
             <Row key={campaign.id}>
               <Toggle
                 disabled={isUndefined(campaign.attributes.enabled)}
-                checked={isUndefined(campaign.attributes.enabled) || campaign.attributes.enabled}
+                checked={
+                  isUndefined(campaign.attributes.enabled) ||
+                  campaign.attributes.enabled
+                }
                 onChange={this.handleOnEnabledToggle(campaign)}
               />
               <TextCell className="expand">
-                <T value={campaign.attributes.admin_campaign_description_multiloc} />
+                <T
+                  value={
+                    campaign.attributes.admin_campaign_description_multiloc
+                  }
+                />
               </TextCell>
               {/* <div>
                 <T value={campaign.attributes.schedule_multiloc} />
@@ -70,6 +74,8 @@ const AutomatedCampaignsWithIntl = injectIntl<Props>(AutomatedCampaigns);
 
 export default (inputProps: Props) => (
   <GetCampaigns withoutCampaignNames={['manual']} pageSize={250}>
-    {campaigns => <AutomatedCampaignsWithIntl {...inputProps} {...campaigns} />}
+    {(campaigns) => (
+      <AutomatedCampaignsWithIntl {...inputProps} {...campaigns} />
+    )}
   </GetCampaigns>
 );

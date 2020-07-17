@@ -18,7 +18,9 @@ import { addPageFile, deletePageFile } from 'services/pageFiles';
 
 // Resources
 import GetPage, { GetPageChildProps } from 'resources/GetPage';
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetResourceFileObjects, {
+  GetResourceFileObjectsChildProps,
+} from 'resources/GetResourceFileObjects';
 
 // Utils
 import { isNilOrError } from 'utils/helperUtils';
@@ -44,7 +46,7 @@ const EditorWrapper = styled.div`
   }
 `;
 
-const DeployIcon = styled(Icon) `
+const DeployIcon = styled(Icon)`
   height: 12px;
   width: 8px;
   fill: ${colors.adminSecondaryTextColor};
@@ -119,20 +121,19 @@ interface State {
   pageFilesToRemove: UploadFile[];
 }
 
-class PageEditor extends PureComponent<Props, State>{
-
+class PageEditor extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       expanded: false,
       pageFiles: [],
-      pageFilesToRemove: []
+      pageFilesToRemove: [],
     };
   }
 
   toggleDeploy = () => {
     this.setState(({ expanded }) => ({ expanded: !expanded }));
-  }
+  };
 
   initialValues = () => {
     const { page, remotePageFiles, slug } = this.props;
@@ -147,7 +148,7 @@ class PageEditor extends PureComponent<Props, State>{
     } else {
       initialValues = {
         title_multiloc: {
-          en: slug
+          en: slug,
         },
         body_multiloc: {},
       };
@@ -160,7 +161,7 @@ class PageEditor extends PureComponent<Props, State>{
     }
 
     return initialValues;
-  }
+  };
 
   getFilesToAddPromises = (values: FormValues) => {
     const { local_page_files } = values;
@@ -176,16 +177,22 @@ class PageEditor extends PureComponent<Props, State>{
       // remotePageFiles = last saved state of files (remote)
 
       filesToAdd = localPageFiles.filter((localPageFile) => {
-        return !remotePageFiles.some(remotePageFile => remotePageFile ? remotePageFile.filename === localPageFile.filename : true);
+        return !remotePageFiles.some((remotePageFile) =>
+          remotePageFile
+            ? remotePageFile.filename === localPageFile.filename
+            : true
+        );
       });
     }
 
     if (pageId && !isNilOrError(filesToAdd) && filesToAdd.length > 0) {
-      filesToAddPromises = filesToAdd.map((fileToAdd: any) => addPageFile(pageId as string, fileToAdd.base64, fileToAdd.name));
+      filesToAddPromises = filesToAdd.map((fileToAdd: any) =>
+        addPageFile(pageId as string, fileToAdd.base64, fileToAdd.name)
+      );
     }
 
     return filesToAddPromises;
-  }
+  };
 
   getFilesToRemovePromises = (values: FormValues) => {
     const { local_page_files } = values;
@@ -201,28 +208,39 @@ class PageEditor extends PureComponent<Props, State>{
       // remotePageFiles = last saved state of files (remote)
 
       filesToRemove = remotePageFiles.filter((remotePageFile) => {
-        return !localPageFiles.some(localPageFile => remotePageFile ? localPageFile.filename === remotePageFile.filename : true);
+        return !localPageFiles.some((localPageFile) =>
+          remotePageFile
+            ? localPageFile.filename === remotePageFile.filename
+            : true
+        );
       });
     }
 
     if (pageId && !isNilOrError(filesToRemove) && filesToRemove.length > 0) {
-      filesToRemovePromises = filesToRemove.map((fileToRemove: any) => deletePageFile(pageId as string, fileToRemove.id));
+      filesToRemovePromises = filesToRemove.map((fileToRemove: any) =>
+        deletePageFile(pageId as string, fileToRemove.id)
+      );
     }
 
     return filesToRemovePromises;
-  }
+  };
 
-  handleSubmit = async (values: FormValues, { setSubmitting, setErrors, setStatus, resetForm }) => {
+  handleSubmit = async (
+    values: FormValues,
+    { setSubmitting, setErrors, setStatus, resetForm }
+  ) => {
     const { page } = this.props;
 
     if (page !== undefined) {
       try {
-        const { slug, title_multiloc, body_multiloc  } = values;
+        const { slug, title_multiloc, body_multiloc } = values;
         const fieldValues = { slug, title_multiloc, body_multiloc };
         const filesToAddPromises = this.getFilesToAddPromises(values);
         const filesToRemovePromises = this.getFilesToRemovePromises(values);
         const filePromises = [...filesToAddPromises, ...filesToRemovePromises];
-        await (isNilOrError(page) ? createPage(fieldValues) : updatePage(page.id, fieldValues));
+        await (isNilOrError(page)
+          ? createPage(fieldValues)
+          : updatePage(page.id, fieldValues));
         await Promise.all(filePromises);
         setTimeout(() => {
           resetForm();
@@ -238,7 +256,7 @@ class PageEditor extends PureComponent<Props, State>{
         setSubmitting(false);
       }
     }
-  }
+  };
 
   render() {
     const { expanded } = this.state;
@@ -246,30 +264,33 @@ class PageEditor extends PureComponent<Props, State>{
 
     return (
       <EditorWrapper className={`${className} e2e-page-editor editor-${slug}`}>
-        <Toggle onClick={this.toggleDeploy} className={`${expanded && 'deployed'}`}>
+        <Toggle
+          onClick={this.toggleDeploy}
+          className={`${expanded && 'deployed'}`}
+        >
           <DeployIcon name="chevron-right" />
           {messages[slug] ? <FormattedMessage {...messages[slug]} /> : slug}
         </Toggle>
 
-          <CSSTransition
-            in={expanded}
-            timeout={timeout}
-            mountOnEnter={true}
-            unmountOnExit={true}
-            enter={true}
-            exit={true}
-            classNames="page"
-          >
-            <EditionForm>
-              {page !== undefined &&
-                <Formik
-                  initialValues={this.initialValues() as any}
-                  enableReinitialize={true}
-                  validateOnChange={false}
-                  validateOnBlur={false}
-                  onSubmit={this.handleSubmit}
-                  validate={PageForm.validate}
-                >
+        <CSSTransition
+          in={expanded}
+          timeout={timeout}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          enter={true}
+          exit={true}
+          classNames="page"
+        >
+          <EditionForm>
+            {page !== undefined && (
+              <Formik
+                initialValues={this.initialValues() as any}
+                enableReinitialize={true}
+                validateOnChange={false}
+                validateOnBlur={false}
+                onSubmit={this.handleSubmit}
+                validate={PageForm.validate}
+              >
                 {(props: FormikProps<FormValues>) => {
                   return (
                     <PageForm
@@ -280,10 +301,10 @@ class PageEditor extends PureComponent<Props, State>{
                     />
                   );
                 }}
-                </Formik>
-              }
-            </EditionForm>
-          </CSSTransition>
+              </Formik>
+            )}
+          </EditionForm>
+        </CSSTransition>
       </EditorWrapper>
     );
   }
@@ -291,11 +312,18 @@ class PageEditor extends PureComponent<Props, State>{
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   page: ({ slug, render }) => <GetPage slug={slug}>{render}</GetPage>,
-  remotePageFiles: ({ page, render }) => <GetResourceFileObjects resourceId={!isNilOrError(page) ? page.id : null} resourceType="page">{render}</GetResourceFileObjects>
+  remotePageFiles: ({ page, render }) => (
+    <GetResourceFileObjects
+      resourceId={!isNilOrError(page) ? page.id : null}
+      resourceType="page"
+    >
+      {render}
+    </GetResourceFileObjects>
+  ),
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <PageEditor {...inputProps} {...dataProps} />}
+    {(dataProps) => <PageEditor {...inputProps} {...dataProps} />}
   </Data>
 ));

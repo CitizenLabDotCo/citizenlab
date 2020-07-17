@@ -24,9 +24,14 @@ interface DataProps {
   project: GetProjectChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const Project = ({ adminPublication, hightestTitle, events, project }: Props) => {
+const Project = ({
+  adminPublication,
+  hightestTitle,
+  events,
+  project,
+}: Props) => {
   const TitleComponent = hightestTitle === 'h3' ? H3 : H4;
   return (
     <>
@@ -35,16 +40,19 @@ const Project = ({ adminPublication, hightestTitle, events, project }: Props) =>
       </TitleComponent>
       <ul>
         <li>
-          <Link to={`/projects/${adminPublication.attributes.publication_slug}/info`}>
+          <Link
+            to={`/projects/${adminPublication.attributes.publication_slug}/info`}
+          >
             <FormattedMessage {...messages.projectInfo} />
           </Link>
         </li>
-        {!isNilOrError(project) &&
+        {!isNilOrError(project) && (
           <>
-            {project.attributes.process_type === 'continuous'
-              ? <ContinuousProject key={project.id} project={project} />
-              : <TimelineProject key={project.id} project={project} />
-            }
+            {project.attributes.process_type === 'continuous' ? (
+              <ContinuousProject key={project.id} project={project} />
+            ) : (
+              <TimelineProject key={project.id} project={project} />
+            )}
             {!isNilOrError(events) && events.length > 0 && (
               <li>
                 <Link to={`/projects/${project.attributes.slug}/events`}>
@@ -53,19 +61,23 @@ const Project = ({ adminPublication, hightestTitle, events, project }: Props) =>
               </li>
             )}
           </>
-        }
+        )}
       </ul>
     </>
   );
 };
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ adminPublication, render }) => <GetProject projectId={adminPublication.publicationId}>{render}</GetProject>,
-  events: ({ adminPublication, render }) => <GetEvents projectId={adminPublication.publicationId}>{render}</GetEvents>
+  project: ({ adminPublication, render }) => (
+    <GetProject projectId={adminPublication.publicationId}>{render}</GetProject>
+  ),
+  events: ({ adminPublication, render }) => (
+    <GetEvents projectId={adminPublication.publicationId}>{render}</GetEvents>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <Project {...inputProps} {...dataprops} />}
+    {(dataprops) => <Project {...inputProps} {...dataprops} />}
   </Data>
 );

@@ -15,14 +15,14 @@ export interface IModerationData {
     content_body_multiloc: Multiloc;
     content_slug: string | null;
     created_at: string;
-    moderation_status?: TModerationStatuses,
+    moderation_status?: TModerationStatuses;
     belongs_to: {
       [key: string]: {
-        id: string,
-        slug: string,
-        title_multiloc: Multiloc
-      }
-    }
+        id: string;
+        slug: string;
+        title_multiloc: Multiloc;
+      };
+    };
   };
 }
 
@@ -36,17 +36,29 @@ export interface IModerations {
 }
 
 export function moderationsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IModerations>({ apiEndpoint: `${API_PATH}/moderations`, ...streamParams, cacheStream: false });
+  return streams.get<IModerations>({
+    apiEndpoint: `${API_PATH}/moderations`,
+    ...streamParams,
+    cacheStream: false,
+  });
 }
 
-export async function updateModerationStatus(moderationId: string, moderatableType: TModeratableTypes, moderationStatus: TModerationStatuses) {
+export async function updateModerationStatus(
+  moderationId: string,
+  moderatableType: TModeratableTypes,
+  moderationStatus: TModerationStatuses
+) {
   const apiEndpoint = `${API_PATH}/moderations/${moderatableType}/${moderationId}`;
   const updateObject = {
     moderation: {
-      moderation_status: moderationStatus
-    }
+      moderation_status: moderationStatus,
+    },
   };
-  const response = await streams.update<IModeration>(apiEndpoint, moderationId, updateObject);
+  const response = await streams.update<IModeration>(
+    apiEndpoint,
+    moderationId,
+    updateObject
+  );
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/moderations`] });
   return response;
 }

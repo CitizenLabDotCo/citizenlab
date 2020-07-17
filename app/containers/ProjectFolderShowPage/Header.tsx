@@ -6,7 +6,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import ContentContainer from 'components/ContentContainer';
 
 // resources
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProjectFolder, {
+  GetProjectFolderChildProps,
+} from 'resources/GetProjectFolder';
 
 // i18n
 import T from 'components/T';
@@ -84,14 +86,15 @@ interface DataProps {
   projectFolder: GetProjectFolderChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class ProjectFolderShowPageHeader extends PureComponent<Props> {
   render() {
     const { projectFolder } = this.props;
 
     if (!isNilOrError(projectFolder)) {
-      const projectHeaderImageLarge = projectFolder ?.attributes ?.header_bg ?.large;
+      const projectHeaderImageLarge =
+        projectFolder?.attributes?.header_bg?.large;
 
       return (
         <Container className="e2e-header-folder">
@@ -113,11 +116,17 @@ class ProjectFolderShowPageHeader extends PureComponent<Props> {
 // TODO refactor to memo + hooks
 
 const Data = adopt<DataProps, InputProps>({
-  projectFolder: ({ projectFolderId, render }) => <GetProjectFolder projectFolderId={projectFolderId}>{render}</GetProjectFolder>,
+  projectFolder: ({ projectFolderId, render }) => (
+    <GetProjectFolder projectFolderId={projectFolderId}>
+      {render}
+    </GetProjectFolder>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectFolderShowPageHeader {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <ProjectFolderShowPageHeader {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

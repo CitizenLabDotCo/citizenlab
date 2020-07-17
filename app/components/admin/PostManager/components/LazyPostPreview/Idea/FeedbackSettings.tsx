@@ -26,7 +26,9 @@ import { updateIdea } from 'services/ideas';
 
 // resources
 import GetUsers, { GetUsersChildProps } from 'resources/GetUsers';
-import GetIdeaStatuses, { GetIdeaStatusesChildProps } from 'resources/GetIdeaStatuses';
+import GetIdeaStatuses, {
+  GetIdeaStatusesChildProps,
+} from 'resources/GetIdeaStatuses';
 import GetIdea, { GetIdeaChildProps } from 'resources/GetIdea';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
@@ -59,17 +61,17 @@ interface Props extends InputProps, DataProps {}
 interface PropsWithHoCs extends Props, InjectedLocalized, InjectedIntlProps {}
 
 class FeedbackSettings extends PureComponent<PropsWithHoCs> {
-
-  getStatusOptions = memoize(
-    (statuses) => {
-      const { localize } = this.props;
-      if (!isNilOrError(statuses)) {
-        return statuses.map(status => ({ value: status.id, label: localize(status.attributes.title_multiloc) }));
-      }
-
-      return [];
+  getStatusOptions = memoize((statuses) => {
+    const { localize } = this.props;
+    if (!isNilOrError(statuses)) {
+      return statuses.map((status) => ({
+        value: status.id,
+        label: localize(status.attributes.title_multiloc),
+      }));
     }
-  );
+
+    return [];
+  });
 
   getIdeaStatusOption = memoize(
     (idea: GetIdeaChildProps, statuses) => {
@@ -80,12 +82,15 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
         idea.relationships.idea_status.data &&
         !isNilOrError(statuses)
       ) {
-        const ideaStatus = statuses.find(status => status.id === get(idea, 'relationships.idea_status.data.id'));
+        const ideaStatus = statuses.find(
+          (status) =>
+            status.id === get(idea, 'relationships.idea_status.data.id')
+        );
         if (ideaStatus) {
           return {
             value: ideaStatus.id,
             label: localize(ideaStatus.attributes.title_multiloc),
-            color: ideaStatus.attributes.color
+            color: ideaStatus.attributes.color,
           };
         }
 
@@ -93,50 +98,62 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
       }
 
       return null;
-    }, (idea: GetIdeaChildProps, statuses) => (JSON.stringify({
-      ideaId: isNilOrError(idea) ? undefined : get(idea, 'relationships.idea_status.data.id'),
-      statusesId: isNilOrError(statuses) ? undefined : statuses.map(status => status.id)
-    }))
+    },
+    (idea: GetIdeaChildProps, statuses) =>
+      JSON.stringify({
+        ideaId: isNilOrError(idea)
+          ? undefined
+          : get(idea, 'relationships.idea_status.data.id'),
+        statusesId: isNilOrError(statuses)
+          ? undefined
+          : statuses.map((status) => status.id),
+      })
   );
 
-  getAssigneeOptions = memoize(
-    (prospectAssignees) => {
-      const {  intl: { formatMessage } } = this.props;
-      if (!isNilOrError(prospectAssignees.usersList)) {
-        const assigneeOptions = prospectAssignees.usersList.map(assignee => ({ value: assignee.id, label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}` }));
-        assigneeOptions.push({ value: 'unassigned', label: formatMessage(messages.noOne) });
-        return assigneeOptions;
-      }
-
-      return [];
+  getAssigneeOptions = memoize((prospectAssignees) => {
+    const {
+      intl: { formatMessage },
+    } = this.props;
+    if (!isNilOrError(prospectAssignees.usersList)) {
+      const assigneeOptions = prospectAssignees.usersList.map((assignee) => ({
+        value: assignee.id,
+        label: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
+      }));
+      assigneeOptions.push({
+        value: 'unassigned',
+        label: formatMessage(messages.noOne),
+      });
+      return assigneeOptions;
     }
-  );
+
+    return [];
+  });
 
   onStatusChange = (statusOption: IOption) => {
-    const { tenant, ideaId, authUser }  = this.props;
+    const { tenant, ideaId, authUser } = this.props;
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
     updateIdea(this.props.ideaId, {
-      idea_status_id: statusOption.value
+      idea_status_id: statusOption.value,
     });
 
     trackEventByName(tracks.ideaStatusChange, {
       tenant: tenantId,
       location: 'Idea preview/popup',
       idea: ideaId,
-      adminAtWork: adminAtWorkId
+      adminAtWork: adminAtWorkId,
     });
-  }
+  };
 
   onAssigneeChange = (assigneeOption: IOption | null) => {
-    const { tenant, ideaId, authUser }  = this.props;
+    const { tenant, ideaId, authUser } = this.props;
     const assigneeId = assigneeOption ? assigneeOption.value : null;
     const adminAtWorkId = authUser ? authUser.id : null;
     const tenantId = !isNilOrError(tenant) && tenant.id;
 
     updateIdea(ideaId, {
-      assignee_id: assigneeId
+      assignee_id: assigneeId,
     });
 
     trackEventByName(tracks.changeIdeaAssignment, {
@@ -144,9 +161,9 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
       location: 'Idea preview',
       idea: ideaId,
       assignee: assigneeId,
-      adminAtWork: adminAtWorkId
+      adminAtWork: adminAtWorkId,
     });
-  }
+  };
 
   render() {
     const { idea, className, statuses, prospectAssignees } = this.props;
@@ -154,20 +171,29 @@ class FeedbackSettings extends PureComponent<PropsWithHoCs> {
     const statusOptions = this.getStatusOptions(statuses);
     const ideaStatusOption = this.getIdeaStatusOption(idea, statuses);
     const assigneeOptions = this.getAssigneeOptions(prospectAssignees);
-    const ideaAssigneeOption = get(idea, 'relationships.assignee.data.id', 'unassigned');
+    const ideaAssigneeOption = get(
+      idea,
+      'relationships.assignee.data.id',
+      'unassigned'
+    );
 
     if (!isNilOrError(idea)) {
       return (
         <Container className={`${className} e2e-idea-settings`}>
-
-          <StyledLabel value={<FormattedMessage {...messages.currentStatus}/>} htmlFor="idea-preview-select-status"/>
+          <StyledLabel
+            value={<FormattedMessage {...messages.currentStatus} />}
+            htmlFor="idea-preview-select-status"
+          />
           <Select
             id="idea-preview-select-status"
             options={statusOptions}
             onChange={this.onStatusChange}
             value={ideaStatusOption}
           />
-          <StyledLabel value={<FormattedMessage {...messages.assignee}/>} htmlFor="idea-preview-select-assignee"/>
+          <StyledLabel
+            value={<FormattedMessage {...messages.assignee} />}
+            htmlFor="idea-preview-select-assignee"
+          />
           <Select
             id="idea-preview-select-assignee"
             options={assigneeOptions}
@@ -185,14 +211,18 @@ const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
-  statuses: <GetIdeaStatuses/>,
-  prospectAssignees: ({ idea, render }) => <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>{render}</GetUsers>
+  statuses: <GetIdeaStatuses />,
+  prospectAssignees: ({ idea, render }) => (
+    <GetUsers canModerateProject={get(idea, 'relationships.project.data.id')}>
+      {render}
+    </GetUsers>
+  ),
 });
 
 const FeedbackSettingsWithHOCs = injectIntl(injectLocalize(FeedbackSettings));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <FeedbackSettingsWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <FeedbackSettingsWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -15,19 +15,30 @@ describe('Idea edit page', () => {
   let ideaSlug: string;
 
   before(() => {
-    cy.apiSignup(firstName, lastName, email, password).then(() => {
-      return cy.apiLogin(email, password);
-    }).then((user) => {
-      jwt = user.body.jwt;
-      return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
-    }).then((project) => {
-      projectId = project.body.data.id;
-      return cy.apiCreateIdea(projectId, ideaTitle, ideaContent, undefined, undefined, jwt);
-    }).then((idea) => {
-      ideaId = idea.body.data.id;
-      ideaSlug = idea.body.data.attributes.slug;
-      cy.wait(2000);
-    });
+    cy.apiSignup(firstName, lastName, email, password)
+      .then(() => {
+        return cy.apiLogin(email, password);
+      })
+      .then((user) => {
+        jwt = user.body.jwt;
+        return cy.getProjectBySlug('an-idea-bring-it-to-your-council');
+      })
+      .then((project) => {
+        projectId = project.body.data.id;
+        return cy.apiCreateIdea(
+          projectId,
+          ideaTitle,
+          ideaContent,
+          undefined,
+          undefined,
+          jwt
+        );
+      })
+      .then((idea) => {
+        ideaId = idea.body.data.id;
+        ideaSlug = idea.body.data.attributes.slug;
+        cy.wait(2000);
+      });
   });
 
   it('has a working idea edit form', () => {
@@ -56,13 +67,24 @@ describe('Idea edit page', () => {
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // verify that the topic has been selected
-    cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
+    cy.get('.e2e-topics-picker')
+      .find('button.selected')
+      .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type('Boulevard Anspach Brussels{enter}');
-    cy.get('.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div').first().click();
+    cy.get('.e2e-idea-form-location-input-field input').type(
+      'Boulevard Anspach Brussels{enter}'
+    );
+    cy.get(
+      '.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div'
+    )
+      .first()
+      .click();
     cy.wait(500);
-    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Belgium');
+    cy.get('.e2e-idea-form-location-input-field input').should(
+      'contain.value',
+      'Belgium'
+    );
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -76,20 +98,30 @@ describe('Idea edit page', () => {
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show #e2e-idea-title').contains(newIdeaTitle);
     cy.get('#e2e-idea-show #e2e-idea-description').contains(newIdeaContent);
-    cy.get('#e2e-idea-show #e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
+    cy.get('#e2e-idea-show #e2e-idea-topics')
+      .find('.e2e-idea-topic')
+      .should('have.length', 1);
     cy.get('#e2e-idea-show #e2e-map-toggle').contains('Boulevard Anspach');
-    cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
-    cy.get('#e2e-idea-show .e2e-post-last-modified-button').contains('modified');
+    cy.get('#e2e-idea-show .e2e-author-link .e2e-username').contains(
+      `${firstName} ${lastName}`
+    );
+    cy.get('#e2e-idea-show .e2e-post-last-modified-button').contains(
+      'modified'
+    );
 
     // verify modal with edit changelog
     cy.get('#e2e-idea-show .e2e-post-last-modified-button');
-    cy.get('#e2e-idea-show').find('.e2e-post-last-modified-button').first().click();
+    cy.get('#e2e-idea-show')
+      .find('.e2e-post-last-modified-button')
+      .first()
+      .click();
     cy.wait(1000);
-    cy.get('.e2e-activities-changelog').find('.e2e-idea-changelog-entry').should('have.length', 2);
+    cy.get('.e2e-activities-changelog')
+      .find('.e2e-idea-changelog-entry')
+      .should('have.length', 2);
   });
 
   after(() => {
     cy.apiRemoveIdea(ideaId);
   });
-
 });

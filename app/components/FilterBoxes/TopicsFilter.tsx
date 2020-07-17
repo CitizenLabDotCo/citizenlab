@@ -33,7 +33,8 @@ const Container = styled.div`
   padding-top: 25px;
   background: #fff;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3);
+  box-shadow: 0px 2px 2px -1px rgba(152, 162, 179, 0.3),
+    0px 1px 5px -2px rgba(152, 162, 179, 0.3);
 `;
 
 const Topics = styled.div``;
@@ -83,62 +84,81 @@ interface Props {
   className?: string;
 }
 
-const TopicsFilter = memo<Props & InjectedLocalized>(({ topics, selectedTopicIds, onChange, className, localize }) => {
+const TopicsFilter = memo<Props & InjectedLocalized>(
+  ({ topics, selectedTopicIds, onChange, className, localize }) => {
+    const handleOnClick = useCallback(
+      (event: MouseEvent<HTMLElement>) => {
+        const topicId = event.currentTarget.dataset.id as string;
+        let output: string[] = [];
 
-  const handleOnClick = useCallback((event: MouseEvent<HTMLElement>) => {
-    const topicId = event.currentTarget.dataset.id as string;
-    let output: string[] = [];
+        if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
+          output = selectedTopicIds.filter(
+            (selectedTopicId) => selectedTopicId !== topicId
+          );
+        } else {
+          output = [...(selectedTopicIds || []), topicId];
+        }
 
-    if (selectedTopicIds && includes(selectedTopicIds, topicId)) {
-      output = selectedTopicIds.filter(selectedTopicId => selectedTopicId !== topicId);
-    } else {
-      output = [...(selectedTopicIds || []), topicId];
+        onChange(output.length > 0 ? output : null);
+      },
+      [selectedTopicIds]
+    );
+
+    const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+    }, []);
+
+    if (!isNilOrError(topics) && topics.length > 0) {
+      const selectedTopics = topics.filter((topic) =>
+        includes(selectedTopicIds, topic.id)
+      );
+      const numberOfSelectedTopics = selectedTopics.length;
+      const selectedTopicNames = selectedTopics
+        .map((topic) => {
+          return (
+            !isNilOrError(topic) && localize(topic.attributes.title_multiloc)
+          );
+        })
+        .join(', ');
+
+      return (
+        <Container className={className}>
+          <Header>
+            <Title>
+              <FormattedMessage {...messages.topicsTitle} />
+            </Title>
+          </Header>
+
+          <Topics className="e2e-topics-filters">
+            {topics
+              .filter((topic) => !isError(topic))
+              .map((topic: ITopicData) => (
+                <Topic
+                  key={topic.id}
+                  data-id={topic.id}
+                  onMouseDown={removeFocus}
+                  onClick={handleOnClick}
+                  className={`e2e-topic ${
+                    includes(selectedTopicIds, topic.id) ? 'selected' : ''
+                  }`}
+                >
+                  <T value={topic.attributes.title_multiloc} />
+                </Topic>
+              ))}
+          </Topics>
+          <ScreenReaderOnly aria-live="polite">
+            {/* Pronounces numbers of selected topics + selected topic names */}
+            <FormattedMessage
+              {...messages.a11y_selectedTopicFilters}
+              values={{ numberOfSelectedTopics, selectedTopicNames }}
+            />
+          </ScreenReaderOnly>
+        </Container>
+      );
     }
 
-    onChange(output.length > 0 ? output : null);
-  }, [selectedTopicIds]);
-
-  const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-  }, []);
-
-  if (!isNilOrError(topics) && topics.length > 0) {
-    const selectedTopics = topics.filter(topic => includes(selectedTopicIds, topic.id));
-    const numberOfSelectedTopics = selectedTopics.length;
-    const selectedTopicNames = selectedTopics.map(topic => {
-      return !isNilOrError(topic) && localize(topic.attributes.title_multiloc);
-    }).join(', ');
-
-    return (
-      <Container className={className}>
-        <Header>
-          <Title>
-            <FormattedMessage {...messages.topicsTitle} />
-          </Title>
-        </Header>
-
-        <Topics className="e2e-topics-filters">
-          {topics.filter(topic => !isError(topic)).map((topic: ITopicData) => (
-            <Topic
-              key={topic.id}
-              data-id={topic.id}
-              onMouseDown={removeFocus}
-              onClick={handleOnClick}
-              className={`e2e-topic ${includes(selectedTopicIds, topic.id) ? 'selected' : ''}`}
-            >
-              <T value={topic.attributes.title_multiloc} />
-            </Topic>
-          ))}
-        </Topics>
-        <ScreenReaderOnly aria-live="polite">
-          {/* Pronounces numbers of selected topics + selected topic names */}
-          <FormattedMessage {...messages.a11y_selectedTopicFilters} values={{ numberOfSelectedTopics, selectedTopicNames }} />
-        </ScreenReaderOnly>
-      </Container>
-    );
+    return null;
   }
-
-  return null;
-});
+);
 
 export default injectLocalize(TopicsFilter);

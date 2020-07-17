@@ -2,7 +2,9 @@ import React, { memo } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import GetMachineTranslation, { GetMachineTranslationChildProps } from 'resources/GetMachineTranslation';
+import GetMachineTranslation, {
+  GetMachineTranslationChildProps,
+} from 'resources/GetMachineTranslation';
 
 // typings
 import { Locale } from 'typings';
@@ -12,10 +14,13 @@ import styled from 'styled-components';
 import { media, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div<{ align: 'left' | 'center' }>`
-  width: ${({ align }) => align === 'left' ? '100%' : 'auto'};
+  width: ${({ align }) => (align === 'left' ? '100%' : 'auto')};
 `;
 
-const Title = styled.h1<{ color: string | undefined, align: 'left' | 'center' }>`
+const Title = styled.h1<{
+  color: string | undefined;
+  align: 'left' | 'center';
+}>`
   width: 100%;
   color: ${({ color, theme }) => color || theme.colorText};
   font-size: ${fontSizes.xxxl}px;
@@ -44,7 +49,10 @@ interface Props {
   align?: 'left' | 'center';
 }
 
-const parseTranslation = (translation: GetMachineTranslationChildProps, title) => {
+const parseTranslation = (
+  translation: GetMachineTranslationChildProps,
+  title
+) => {
   if (!isNilOrError(translation)) {
     return translation.attributes.translation;
   }
@@ -52,33 +60,40 @@ const parseTranslation = (translation: GetMachineTranslationChildProps, title) =
   return title;
 };
 
-const PostTitle = memo<Props>(({ postId, postType, title, locale, translateButtonClicked, className, color, align = 'center' }) => {
-  return (
-    <Container className={className} align={align}>
-      {(locale && translateButtonClicked) ? (
-        <GetMachineTranslation
-          attributeName="title_multiloc"
-          localeTo={locale}
-          id={postId}
-          context={postType}
-        >
-          {translation => (
-            <Title color={color} align={align} aria-live="polite">
-              {parseTranslation(translation, title)}
-            </Title>
-          )}
-        </GetMachineTranslation>
-      ) : (
-        <Title
-          id={`e2e-${postType}-title`}
-          color={color}
-          align={align}
-        >
-          {title}
-        </Title>
-      )}
-    </Container>
-  );
-});
+const PostTitle = memo<Props>(
+  ({
+    postId,
+    postType,
+    title,
+    locale,
+    translateButtonClicked,
+    className,
+    color,
+    align = 'center',
+  }) => {
+    return (
+      <Container className={className} align={align}>
+        {locale && translateButtonClicked ? (
+          <GetMachineTranslation
+            attributeName="title_multiloc"
+            localeTo={locale}
+            id={postId}
+            context={postType}
+          >
+            {(translation) => (
+              <Title color={color} align={align} aria-live="polite">
+                {parseTranslation(translation, title)}
+              </Title>
+            )}
+          </GetMachineTranslation>
+        ) : (
+          <Title id={`e2e-${postType}-title`} color={color} align={align}>
+            {title}
+          </Title>
+        )}
+      </Container>
+    );
+  }
+);
 
 export default PostTitle;

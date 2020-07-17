@@ -32,13 +32,13 @@ export interface IPhaseData {
   relationships: {
     permissions: {
       data: IRelationship[];
-    }
+    };
     project: {
       data: IRelationship;
-    }
+    };
     user_basket?: {
       data: IRelationship | null;
-    }
+    };
   };
 }
 
@@ -70,23 +70,48 @@ export interface IUpdatedPhaseProperties {
   poll_anonymous?: boolean;
 }
 
-export function phasesStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IPhases>({ apiEndpoint: `${API_PATH}/projects/${projectId}/phases`, ...streamParams });
+export function phasesStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IPhases>({
+    apiEndpoint: `${API_PATH}/projects/${projectId}/phases`,
+    ...streamParams,
+  });
 }
 
-export function phaseStream(phaseID: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IPhase>({ apiEndpoint: `${apiEndpoint}/${phaseID}`, ...streamParams });
+export function phaseStream(
+  phaseID: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IPhase>({
+    apiEndpoint: `${apiEndpoint}/${phaseID}`,
+    ...streamParams,
+  });
 }
 
-export async function updatePhase(phaseId: string, object: IUpdatedPhaseProperties) {
-  const response = await streams.update<IPhase>(`${apiEndpoint}/${phaseId}`, phaseId, { phase: object });
+export async function updatePhase(
+  phaseId: string,
+  object: IUpdatedPhaseProperties
+) {
+  const response = await streams.update<IPhase>(
+    `${apiEndpoint}/${phaseId}`,
+    phaseId,
+    { phase: object }
+  );
   const projectId = response.data.relationships.project.data.id;
   streams.fetchAllWith({ dataId: [phaseId, projectId] });
   return response;
 }
 
-export async function addPhase(projectId: string, object: IUpdatedPhaseProperties) {
-  const response = await streams.add<IPhase>(`${API_PATH}/projects/${projectId}/phases`, { phase: object });
+export async function addPhase(
+  projectId: string,
+  object: IUpdatedPhaseProperties
+) {
+  const response = await streams.add<IPhase>(
+    `${API_PATH}/projects/${projectId}/phases`,
+    { phase: object }
+  );
   const phaseId = response.data.id;
   streams.fetchAllWith({ dataId: [phaseId, projectId] });
   return response;
@@ -105,8 +130,14 @@ export function canContainIdeas(phase: IPhaseData) {
 
 export function getCurrentPhase(phases: IPhaseData[] | null) {
   if (phases) {
-    const currentPhase = phases.find((phase) => pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]) === 'present');
-    return (currentPhase || null);
+    const currentPhase = phases.find(
+      (phase) =>
+        pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]) === 'present'
+    );
+    return currentPhase || null;
   }
 
   return null;

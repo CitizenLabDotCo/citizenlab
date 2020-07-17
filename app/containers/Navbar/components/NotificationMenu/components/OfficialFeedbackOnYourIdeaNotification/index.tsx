@@ -15,7 +15,7 @@ interface Props {
   notification: IOfficialFeedbackOnYourIdeaNotificationData;
 }
 
-const OfficialFeedbackOnYourIdeaNotification = memo<Props>(props => {
+const OfficialFeedbackOnYourIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -28,12 +28,14 @@ const OfficialFeedbackOnYourIdeaNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.officialFeedbackOnYourIdea}
         values={{
-          officialName: <T value={notification.attributes.official_feedback_author} />,
-          idea: <Link
-            to={`/ideas/${notification.attributes.post_slug}`}
-          >
-            <T value={notification.attributes.post_title_multiloc} />
-          </Link>
+          officialName: (
+            <T value={notification.attributes.official_feedback_author} />
+          ),
+          idea: (
+            <Link to={`/ideas/${notification.attributes.post_slug}`}>
+              <T value={notification.attributes.post_title_multiloc} />
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

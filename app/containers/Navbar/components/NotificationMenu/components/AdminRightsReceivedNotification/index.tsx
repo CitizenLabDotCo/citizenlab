@@ -8,7 +8,7 @@ interface Props {
   notification: IAdminRightsReceivedNotificationData;
 }
 
-const AdminRightsReceivedNotification = memo<Props>(props => {
+const AdminRightsReceivedNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -18,9 +18,7 @@ const AdminRightsReceivedNotification = memo<Props>(props => {
       icon="admin"
       isRead={!!notification.attributes.read_at}
     >
-      <FormattedMessage
-        {...messages.adminRightsReceived}
-      />
+      <FormattedMessage {...messages.adminRightsReceived} />
     </NotificationWrapper>
   );
 });

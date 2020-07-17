@@ -3,7 +3,8 @@ import { defineMessages } from 'react-intl';
 export default defineMessages({
   topicManagerDescription: {
     id: 'app.containers.AdminPage.SettingsPage.topicManagerDescription',
-    defaultMessage: 'Topics are selected by users to categorize their ideas. Here you can add and delete the topics available on your platform. Go to the {adminProjectsLink} to manage the available topics for each project.'
+    defaultMessage:
+      'Topics are selected by users to categorize their ideas. Here you can add and delete the topics available on your platform. Go to the {adminProjectsLink} to manage the available topics for each project.',
   },
   titleTopicManager: {
     id: 'app.containers.AdminPage.SettingsPage.titleTopicManager',
@@ -27,7 +28,8 @@ export default defineMessages({
   },
   fieldTopicTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleTooltip',
-    defaultMessage: 'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
+    defaultMessage:
+      'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
   },
   editTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.editTopicFormTitle',
@@ -39,22 +41,24 @@ export default defineMessages({
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.SettingsPage.confirmHeader',
-    defaultMessage: 'Are you sure you want to delete this topic?'
+    defaultMessage: 'Are you sure you want to delete this topic?',
   },
   topicDeletionConfirmationMessage: {
-    id: 'app.containers.AdminPage.SettingsPage.topicDeletionConfirmationMessage',
-     defaultMessage: 'This will also remove all existing references to that topic for ideas. This change will apply to all of your projects.',
+    id:
+      'app.containers.AdminPage.SettingsPage.topicDeletionConfirmationMessage',
+    defaultMessage:
+      'This will also remove all existing references to that topic for ideas. This change will apply to all of your projects.',
   },
   cancel: {
     id: 'app.containers.AdminPage.SettingsPage.cancel',
-    defaultMessage: 'Cancel'
+    defaultMessage: 'Cancel',
   },
   delete: {
     id: 'app.containers.AdminPage.SettingsPage.delete',
-    defaultMessage: 'Delete'
+    defaultMessage: 'Delete',
   },
   projectsSettings: {
     id: 'app.containers.AdminPage.SettingsPage.projectsSettings',
-    defaultMessage: 'project settings'
-  }
+    defaultMessage: 'project settings',
+  },
 });

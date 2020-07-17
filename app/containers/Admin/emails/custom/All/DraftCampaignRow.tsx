@@ -12,14 +12,19 @@ interface Props {
 }
 
 const DraftCampaignRow = ({ campaign }: Props) => (
-  <Row
-    id={campaign.id}
-  >
+  <Row id={campaign.id}>
     <TextCell className="expand">
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
-    <StatusLabel color={'draftYellow'} text={<FormattedMessage {...messages.draft} />} />
-    <Button linkTo={`/admin/emails/custom/${campaign.id}`} buttonStyle="secondary" icon="edit">
+    <StatusLabel
+      color={'draftYellow'}
+      text={<FormattedMessage {...messages.draft} />}
+    />
+    <Button
+      linkTo={`/admin/emails/custom/${campaign.id}`}
+      buttonStyle="secondary"
+      icon="edit"
+    >
       <FormattedMessage {...messages.manageButtonLabel} />
     </Button>
   </Row>

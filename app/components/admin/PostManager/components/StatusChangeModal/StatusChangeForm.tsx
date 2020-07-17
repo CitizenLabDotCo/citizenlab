@@ -71,12 +71,17 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedLocale: props.intl.locale as Locale
+      selectedLocale: props.intl.locale as Locale,
     };
   }
 
   renderFullForm = () => {
-    const { latestOfficialFeedback, mode, onChangeMode, intl: { formatMessage } } = this.props;
+    const {
+      latestOfficialFeedback,
+      mode,
+      onChangeMode,
+      intl: { formatMessage },
+    } = this.props;
 
     if (!latestOfficialFeedback) return null;
 
@@ -90,9 +95,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           label={formatMessage(messages.newFeedbackMode)}
         />
 
-        {mode === 'new' &&
-          this.renderFeedbackForm()
-        }
+        {mode === 'new' && this.renderFeedbackForm()}
 
         <StyledRadio
           onChange={onChangeMode}
@@ -102,41 +105,44 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           label={formatMessage(messages.latestFeedbackMode)}
         />
 
-        {mode === 'latest' &&
+        {mode === 'latest' && (
           <OfficialFeedbackPost
             editingAllowed={false}
             officialFeedbackPost={latestOfficialFeedback}
             postType="initiative"
           />
-        }
+        )}
       </>
     );
-  }
+  };
 
   onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
-  }
+  };
 
   handleBodyOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChangeBody) {
       this.props.onChangeBody({
         ...this.props.newOfficialFeedback.body_multiloc,
-        [locale]: value
+        [locale]: value,
       });
     }
-  }
+  };
 
   handleAuthorOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChangeAuthor) {
       this.props.onChangeAuthor({
         ...this.props.newOfficialFeedback.author_multiloc,
-        [locale]: value
+        [locale]: value,
       });
     }
-  }
+  };
 
   renderFeedbackForm = () => {
-    const { intl: { formatMessage }, newOfficialFeedback } = this.props;
+    const {
+      intl: { formatMessage },
+      newOfficialFeedback,
+    } = this.props;
     const { selectedLocale } = this.state;
 
     return (
@@ -169,26 +175,34 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
         />
       </StyledSection>
     );
-  }
+  };
 
   render() {
-    const { latestOfficialFeedback, intl: { formatMessage }, submit, loading, error, valid } = this.props;
+    const {
+      latestOfficialFeedback,
+      intl: { formatMessage },
+      submit,
+      loading,
+      error,
+      valid,
+    } = this.props;
 
     return (
       <>
         {latestOfficialFeedback
           ? this.renderFullForm()
-          : this.renderFeedbackForm()
-        }
+          : this.renderFeedbackForm()}
         <ChangeStatusButton
           processing={loading}
           disabled={!valid}
           onClick={submit}
           bgColor={colors.clBlue}
         >
-          <FormattedMessage {...messages.statusChangeSave}/>
+          <FormattedMessage {...messages.statusChangeSave} />
         </ChangeStatusButton>
-        {error && <Error text={formatMessage(messages.statusChangeGenericError)}/>}
+        {error && (
+          <Error text={formatMessage(messages.statusChangeGenericError)} />
+        )}
       </>
     );
   }

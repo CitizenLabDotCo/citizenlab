@@ -18,7 +18,7 @@ const Container = styled.div``;
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${props => props.theme.colorText};
+    fill: ${(props) => props.theme.colorText};
   }
   width: 40px;
   height: 40px;
@@ -27,7 +27,7 @@ const StatusIcon = styled(Icon)`
 
 const VoteText = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
   margin-top: 20px;
 `;
 
@@ -49,21 +49,20 @@ interface InputProps {
   onVote: () => void;
   onScrollToOfficialFeedback: () => void;
 }
-interface DataProps { }
+interface DataProps {}
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class Answered extends PureComponent<Props, State> {
-
   handleOnVote = () => {
     this.props.onVote();
-  }
+  };
 
   handleOnReadAnswer = () => {
     this.props.onScrollToOfficialFeedback();
-  }
+  };
 
   render() {
     const { initiative, initiativeStatus, userVoted } = this.props;
@@ -86,7 +85,7 @@ class Answered extends PureComponent<Props, State> {
                     {...messages.answeredStatusExplanationBold}
                   />
                 </b>
-              )
+              ),
             }}
           />
         </StatusExplanation>
@@ -94,7 +93,14 @@ class Answered extends PureComponent<Props, State> {
           <FormattedMessage
             {...messages.xPeopleVoted}
             values={{
-              xPeople: <b><FormattedMessage {...messages.xPeople} values={{ count: voteCount }} /></b>
+              xPeople: (
+                <b>
+                  <FormattedMessage
+                    {...messages.xPeople}
+                    values={{ count: voteCount }}
+                  />
+                </b>
+              ),
             }}
           />
         </VoteText>
@@ -102,14 +108,11 @@ class Answered extends PureComponent<Props, State> {
           <Button onClick={this.handleOnReadAnswer}>
             <FormattedMessage {...messages.readAnswer} />
           </Button>
-          {!userVoted &&
-            <Button
-              buttonStyle="primary-outlined"
-              onClick={this.handleOnVote}
-            >
+          {!userVoted && (
+            <Button buttonStyle="primary-outlined" onClick={this.handleOnVote}>
               <FormattedMessage {...messages.vote} />
             </Button>
-          }
+          )}
         </Buttons>
       </Container>
     );

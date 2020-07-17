@@ -52,85 +52,102 @@ const StyledMultipleSelect = styled(MultipleSelect)`
 
 interface Props {}
 
-const ProjectTopicSelector = memo((props: Props & InjectedIntlProps & WithRouterProps & InjectedLocalized) => {
-  const {
-    intl: { formatMessage },
-    localize,
-    params: { projectId }
-  } = props;
-  const topics = useTopics({});
-  const projectTopics = useTopics({ projectId });
-  const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>([]);
-  const [processing, setProcessing] = useState(false);
+const ProjectTopicSelector = memo(
+  (props: Props & InjectedIntlProps & WithRouterProps & InjectedLocalized) => {
+    const {
+      intl: { formatMessage },
+      localize,
+      params: { projectId },
+    } = props;
+    const topics = useTopics({});
+    const projectTopics = useTopics({ projectId });
+    const [selectedTopicOptions, setSelectedTopicOptions] = useState<IOption[]>(
+      []
+    );
+    const [processing, setProcessing] = useState(false);
 
-  const handleTopicSelectionChange = (newSelectedTopicOptions: IOption[]) => {
-    setSelectedTopicOptions(newSelectedTopicOptions);
-  };
+    const handleTopicSelectionChange = (newSelectedTopicOptions: IOption[]) => {
+      setSelectedTopicOptions(newSelectedTopicOptions);
+    };
 
-  const handleOnAddTopicsClick = async (_event: React.FormEvent) => {
-    const topicIdsToAdd = selectedTopicOptions.map(topicOption => topicOption.value) as string[];
+    const handleOnAddTopicsClick = async (_event: React.FormEvent) => {
+      const topicIdsToAdd = selectedTopicOptions.map(
+        (topicOption) => topicOption.value
+      ) as string[];
 
-    setProcessing(true);
+      setProcessing(true);
 
-    const promises = topicIdsToAdd.map(topicId => addProjectTopic(projectId, topicId));
+      const promises = topicIdsToAdd.map((topicId) =>
+        addProjectTopic(projectId, topicId)
+      );
 
-    try {
-      await Promise.all(promises);
-      setProcessing(false);
-      setSelectedTopicOptions([]);
-    } catch {
-      setProcessing(false);
-    }
-  };
+      try {
+        await Promise.all(promises);
+        setProcessing(false);
+        setSelectedTopicOptions([]);
+      } catch {
+        setProcessing(false);
+      }
+    };
 
-  const getOptions = () => {
-    if (
-      !isNilOrError(topics) &&
-      !isNilOrError(projectTopics)
-    ) {
-      const allTopics = topics.filter(topicId => !isNilOrError(topicId)) as ITopicData[];
-      const selectedInProjectTopics = projectTopics
-        .filter(topic => !isNilOrError(topic)) as ITopicData[];
-      const selectedInProjectTopicIds = selectedInProjectTopics.map(topic => topic.id);
-      const selectableTopics = allTopics.filter(topic => !selectedInProjectTopicIds.includes(topic.id));
+    const getOptions = () => {
+      if (!isNilOrError(topics) && !isNilOrError(projectTopics)) {
+        const allTopics = topics.filter(
+          (topicId) => !isNilOrError(topicId)
+        ) as ITopicData[];
+        const selectedInProjectTopics = projectTopics.filter(
+          (topic) => !isNilOrError(topic)
+        ) as ITopicData[];
+        const selectedInProjectTopicIds = selectedInProjectTopics.map(
+          (topic) => topic.id
+        );
+        const selectableTopics = allTopics.filter(
+          (topic) => !selectedInProjectTopicIds.includes(topic.id)
+        );
 
-      return selectableTopics.map(topic => {
-        return ({
-          value: topic.id,
-          label: localize(
-            topic.attributes.title_multiloc
-          )
+        return selectableTopics.map((topic) => {
+          return {
+            value: topic.id,
+            label: localize(topic.attributes.title_multiloc),
+          };
         });
-      });
-    }
+      }
 
-    return [];
-  };
+      return [];
+    };
 
-  const multiSelectOptions = useMemo(() => getOptions(), [topics, projectTopics]);
+    const multiSelectOptions = useMemo(() => getOptions(), [
+      topics,
+      projectTopics,
+    ]);
 
-  return (
-    <Container>
-      <SelectGroupsContainer>
-        <StyledMultipleSelect
-          value={selectedTopicOptions}
-          options={multiSelectOptions}
-          onChange={handleTopicSelectionChange}
-          id="e2e-project-topic-multiselect"
-        />
+    return (
+      <Container>
+        <SelectGroupsContainer>
+          <StyledMultipleSelect
+            value={selectedTopicOptions}
+            options={multiSelectOptions}
+            onChange={handleTopicSelectionChange}
+            id="e2e-project-topic-multiselect"
+          />
 
-        <AddTopicButton
-          text={formatMessage(messages.addTopics)}
-          buttonStyle="cl-blue"
-          icon="plus-circle"
-          onClick={handleOnAddTopicsClick}
-          disabled={!selectedTopicOptions || selectedTopicOptions.length === 0}
-          processing={processing}
-          id="e2e-add-project-topic-button"
-        />
-      </SelectGroupsContainer>
-    </Container>
-  );
-});
+          <AddTopicButton
+            text={formatMessage(messages.addTopics)}
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            onClick={handleOnAddTopicsClick}
+            disabled={
+              !selectedTopicOptions || selectedTopicOptions.length === 0
+            }
+            processing={processing}
+            id="e2e-add-project-topic-button"
+          />
+        </SelectGroupsContainer>
+      </Container>
+    );
+  }
+);
 
-export default injectIntl<Props>(withRouter(injectLocalize(ProjectTopicSelector)));
+export default injectIntl<Props>(
+  withRouter(injectLocalize(ProjectTopicSelector))
+);

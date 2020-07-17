@@ -57,7 +57,7 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class AssignBudgetDisabled extends PureComponent<Props, State> {
   onVerify = (event: React.MouseEvent) => {
@@ -70,14 +70,14 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
       context: {
         action: 'budgeting',
         id: participationContextId,
-        type: participationContextType
-      }
+        type: participationContextType,
+      },
     });
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   reasonToMessage = () => {
     const { budgetingDescriptor, authUser } = this.props;
@@ -92,16 +92,17 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
       } else if (disabled_reason === 'not_permitted') {
         return messages.budgetingDisabledNotPermitted;
       }
-
     }
 
     return messages.budgetingDisabled;
-  }
+  };
 
   render() {
     const { budgetingDescriptor } = this.props;
     const message = this.reasonToMessage();
-    const enabledFromDate = (budgetingDescriptor?.future_enabled ? moment(budgetingDescriptor.future_enabled).format('LL') : null);
+    const enabledFromDate = budgetingDescriptor?.future_enabled
+      ? moment(budgetingDescriptor.future_enabled).format('LL')
+      : null;
     const verificationLink = (
       <StyledButton onClick={this.onVerify} onMouseDown={this.removeFocus}>
         <FormattedMessage {...messages.verificationLinkText} />
@@ -110,18 +111,21 @@ class AssignBudgetDisabled extends PureComponent<Props, State> {
 
     return (
       <Container className="e2e-assign-disabled">
-        <FormattedMessage {...message} values={{ enabledFromDate, verificationLink }} />
+        <FormattedMessage
+          {...message}
+          values={{ enabledFromDate, verificationLink }}
+        />
       </Container>
     );
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <AssignBudgetDisabled {...inputProps} {...dataProps} />}
+    {(dataProps) => <AssignBudgetDisabled {...inputProps} {...dataProps} />}
   </Data>
 );

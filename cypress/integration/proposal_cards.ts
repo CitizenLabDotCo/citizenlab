@@ -6,12 +6,18 @@ describe('InitiativeCards without filter sidebar component', () => {
   let initiativeId: string;
 
   before(() => {
-    cy.getTopics().then((topics) => {
-      const topicIds = [topics.body.data[0].id];
-      return cy.apiCreateInitiative({ initiativeTitle, initiativeContent, topicIds });
-    }).then((initiaitve) => {
-      initiativeId = initiaitve.body.data.id;
-    });
+    cy.getTopics()
+      .then((topics) => {
+        const topicIds = [topics.body.data[0].id];
+        return cy.apiCreateInitiative({
+          initiativeTitle,
+          initiativeContent,
+          topicIds,
+        });
+      })
+      .then((initiaitve) => {
+        initiativeId = initiaitve.body.data.id;
+      });
   });
 
   beforeEach(() => {
@@ -25,7 +31,10 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.wait(1000);
     cy.get('.e2e-search-input input').should('have.value', initiativeTitle);
     cy.get('#e2e-initiatives-list');
-    cy.get('#e2e-initiatives-list').find('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
+    cy.get('#e2e-initiatives-list')
+      .find('.e2e-initiative-card')
+      .should('have.length', 1)
+      .contains(initiativeTitle);
   });
 
   it('lets you sort the initiatives', () => {
@@ -48,7 +57,9 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.get('.e2e-topic').first().click();
     cy.wait(1000);
     cy.get('#e2e-initiatives-list');
-    cy.get('.e2e-initiative-card').should('have.length', 1).contains(initiativeTitle);
+    cy.get('.e2e-initiative-card')
+      .should('have.length', 1)
+      .contains(initiativeTitle);
   });
 
   it('lets you filter the initiatives by status', () => {
@@ -58,13 +69,19 @@ describe('InitiativeCards without filter sidebar component', () => {
     cy.wait(1000);
 
     // should contain the generated initiative as first card when the status 'Proposed' is selected
-    cy.get('.e2e-statuses-filters').find('.e2e-status').contains('Proposed').click();
+    cy.get('.e2e-statuses-filters')
+      .find('.e2e-status')
+      .contains('Proposed')
+      .click();
     cy.wait(1000);
     cy.get('#e2e-initiatives-list');
     cy.get('.e2e-initiative-card').first().contains(initiativeTitle);
 
     // should be empty when the 'Threshold reached' status is selected
-    cy.get('.e2e-statuses-filters').find('.e2e-status').contains('Threshold reached').click();
+    cy.get('.e2e-statuses-filters')
+      .find('.e2e-status')
+      .contains('Threshold reached')
+      .click();
     cy.wait(1000);
     cy.get('.e2e-initiative-cards-empty');
   });
@@ -72,5 +89,4 @@ describe('InitiativeCards without filter sidebar component', () => {
   after(() => {
     cy.apiRemoveInitiative(initiativeId);
   });
-
 });

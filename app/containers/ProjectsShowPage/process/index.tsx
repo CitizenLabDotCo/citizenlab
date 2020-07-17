@@ -26,7 +26,9 @@ import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 // style
 import styled from 'styled-components';
 import { colors, media, viewportWidths } from 'utils/styleUtils';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
 
 const Container = styled.div`
   display: flex;
@@ -127,19 +129,22 @@ interface DataProps {
   windowSize: GetWindowSizeChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedPhase: IPhaseData | null;
 }
 
-class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> {
+class ProjectTimelinePage extends PureComponent<
+  Props & WithRouterProps,
+  State
+> {
   subscription: Subscription;
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedPhase: null
+      selectedPhase: null,
     };
   }
 
@@ -160,12 +165,22 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
   }
 
   render() {
-    const { project, className, params: { slug }, windowSize } = this.props;
+    const {
+      project,
+      className,
+      params: { slug },
+      windowSize,
+    } = this.props;
     const { selectedPhase } = this.state;
-    const selectedPhaseId = (selectedPhase ? selectedPhase.id : null);
-    const isPBPhase = selectedPhase?.attributes?.participation_method === 'budgeting';
-    const participationMethod = (!isNilOrError(selectedPhase) ? selectedPhase.attributes.participation_method : null);
-    const smallerThanBigTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+    const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
+    const isPBPhase =
+      selectedPhase?.attributes?.participation_method === 'budgeting';
+    const participationMethod = !isNilOrError(selectedPhase)
+      ? selectedPhase.attributes.participation_method
+      : null;
+    const smallerThanBigTablet = windowSize
+      ? windowSize <= viewportWidths.smallTablet
+      : false;
 
     if (!isNilOrError(project) && selectedPhase !== undefined) {
       if (project.attributes.process_type !== 'timeline') {
@@ -179,13 +194,13 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
             <StyledProjectArchivedIndicator projectId={project.id} />
             <ContentContainer>
               <StyledPhaseAbout phaseId={selectedPhaseId} />
-              {isPBPhase &&
+              {isPBPhase && (
                 <StyledPBExpenses
                   participationContextId={selectedPhaseId}
                   participationContextType="phase"
                   viewMode={smallerThanBigTablet ? 'column' : 'row'}
                 />
-              }
+              )}
               <StyledPhaseSurvey
                 projectId={project.id}
                 phaseId={selectedPhaseId}
@@ -205,14 +220,19 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
             </SecondRowContentContainer>
           </SecondRow>
 
-          {(participationMethod === 'ideation' || participationMethod === 'budgeting') && selectedPhaseId &&
-            <SecondRow>
-              <SecondRowContentContainer>
-                <StyledPhaseIdeas projectId={project.id} phaseId={selectedPhaseId} />
-              </SecondRowContentContainer>
-              <EventsPreview projectId={project.id} />
-            </SecondRow>
-          }
+          {(participationMethod === 'ideation' ||
+            participationMethod === 'budgeting') &&
+            selectedPhaseId && (
+              <SecondRow>
+                <SecondRowContentContainer>
+                  <StyledPhaseIdeas
+                    projectId={project.id}
+                    phaseId={selectedPhaseId}
+                  />
+                </SecondRowContentContainer>
+                <EventsPreview projectId={project.id} />
+              </SecondRow>
+            )}
         </Container>
       );
     }
@@ -222,12 +242,14 @@ class ProjectTimelinePage extends PureComponent<Props & WithRouterProps, State> 
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
-  windowSize: <GetWindowSize />
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
+  windowSize: <GetWindowSize />,
 });
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectTimelinePage {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectTimelinePage {...inputProps} {...dataProps} />}
   </Data>
 ));

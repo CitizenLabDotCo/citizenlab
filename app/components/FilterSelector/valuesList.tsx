@@ -111,7 +111,7 @@ interface DefaultProps {
   maxHeight?: string;
   mobileMaxHeight?: string;
   top?: string;
-  left? : string;
+  left?: string;
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
@@ -143,27 +143,32 @@ export default class ValuesList extends PureComponent<Props, State> {
     left: undefined,
     mobileLeft: undefined,
     right: undefined,
-    mobileRight:undefined
+    mobileRight: undefined,
   };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   handleOnToggleCheckbox = (entry) => (_event: React.ChangeEvent) => {
     this.props.onChange(entry.value);
-  }
+  };
 
-  handleOnSelectSingleValue = (entry) => (event: React.MouseEvent | React.KeyboardEvent) => {
-    if (event.type === 'click' || (event.type === 'keydown' && event['key'] === 'Enter')) {
+  handleOnSelectSingleValue = (entry) => (
+    event: React.MouseEvent | React.KeyboardEvent
+  ) => {
+    if (
+      event.type === 'click' ||
+      (event.type === 'keydown' && event['key'] === 'Enter')
+    ) {
       event.preventDefault();
       this.props.onChange(entry.value);
     }
-  }
+  };
 
   handleOnClickOutside = (event: React.FormEvent) => {
     this.props.onClickOutside && this.props.onClickOutside(event);
-  }
+  };
 
   render() {
     const {
@@ -181,7 +186,7 @@ export default class ValuesList extends PureComponent<Props, State> {
       mobileLeft,
       right,
       mobileRight,
-      name
+      name,
     } = this.props;
 
     // ARIA reference example: https://www.w3.org/TR/wai-aria-practices/examples/listbox/listbox-collapsible.html
@@ -198,64 +203,63 @@ export default class ValuesList extends PureComponent<Props, State> {
         mobileRight={mobileRight}
         opened={opened}
         onClickOutside={this.handleOnClickOutside}
-        content={(
+        content={
           <List
             className="e2e-sort-items"
             tabIndex={-1}
             role="listbox"
             aria-multiselectable={multipleSelectionAllowed}
           >
-            {values && values.map((entry, index) => {
-              const checked = includes(selected, entry.value);
-              const last = (index === values.length - 1);
-              const classNames = [
-                `e2e-sort-item-${entry.value !== '-new' ? entry.value : 'old'}`,
-                !multipleSelectionAllowed && checked ? 'selected' : '',
-                last ? 'last' : '',
-              ].filter(item => !isNil(item)).join(' ');
+            {values &&
+              values.map((entry, index) => {
+                const checked = includes(selected, entry.value);
+                const last = index === values.length - 1;
+                const classNames = [
+                  `e2e-sort-item-${
+                    entry.value !== '-new' ? entry.value : 'old'
+                  }`,
+                  !multipleSelectionAllowed && checked ? 'selected' : '',
+                  last ? 'last' : '',
+                ]
+                  .filter((item) => !isNil(item))
+                  .join(' ');
 
-              return multipleSelectionAllowed ? (
-                <CheckboxListItem
-                  id={`${baseID}-${index}`}
-                  role="option"
-                  aria-posinset={index + 1}
-                  aria-selected={checked}
-                  key={entry.value}
-                  onMouseDown={this.removeFocus}
-                  className={classNames}
-                >
-                  <Checkbox
-                    checked={checked}
-                    onChange={this.handleOnToggleCheckbox(entry)}
-                    label={
-                      <CheckboxLabel>
-                        {entry.text}
-                      </CheckboxLabel>
-                    }
-                    name={name}
-                  />
-                </CheckboxListItem>
-              ) : (
-                <ListItem
-                  id={`${baseID}-${index}`}
-                  role="option"
-                  aria-posinset={index + 1}
-                  aria-selected={checked}
-                  key={entry.value}
-                  onMouseDown={this.removeFocus}
-                  className={classNames}
-                  onClick={this.handleOnSelectSingleValue(entry)}
-                  onKeyDown={this.handleOnSelectSingleValue(entry)}
-                  tabIndex={0}
-                >
-                  <ListItemText>
-                    {entry.text}
-                  </ListItemText>
-                </ListItem>
-              );
-            })}
+                return multipleSelectionAllowed ? (
+                  <CheckboxListItem
+                    id={`${baseID}-${index}`}
+                    role="option"
+                    aria-posinset={index + 1}
+                    aria-selected={checked}
+                    key={entry.value}
+                    onMouseDown={this.removeFocus}
+                    className={classNames}
+                  >
+                    <Checkbox
+                      checked={checked}
+                      onChange={this.handleOnToggleCheckbox(entry)}
+                      label={<CheckboxLabel>{entry.text}</CheckboxLabel>}
+                      name={name}
+                    />
+                  </CheckboxListItem>
+                ) : (
+                  <ListItem
+                    id={`${baseID}-${index}`}
+                    role="option"
+                    aria-posinset={index + 1}
+                    aria-selected={checked}
+                    key={entry.value}
+                    onMouseDown={this.removeFocus}
+                    className={classNames}
+                    onClick={this.handleOnSelectSingleValue(entry)}
+                    onKeyDown={this.handleOnSelectSingleValue(entry)}
+                    tabIndex={0}
+                  >
+                    <ListItemText>{entry.text}</ListItemText>
+                  </ListItem>
+                );
+              })}
           </List>
-        )}
+        }
       />
     );
   }

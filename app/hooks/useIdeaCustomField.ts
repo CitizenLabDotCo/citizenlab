@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { ideaCustomFieldStream, IIdeaCustomField, IIdeaCustomFieldData, CustomFieldCodes } from 'services/ideaCustomFields';
+import {
+  ideaCustomFieldStream,
+  IIdeaCustomField,
+  IIdeaCustomFieldData,
+  CustomFieldCodes,
+} from 'services/ideaCustomFields';
 import { Observable, of } from 'rxjs';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -8,8 +13,13 @@ interface Props {
   customFieldCode: CustomFieldCodes;
 }
 
-export default function useIdeaCustomFields({ projectId, customFieldCode }: Props) {
-  const [ideaCustomField, setIdeaCustomField] = useState<IIdeaCustomFieldData | undefined | null | Error>(undefined);
+export default function useIdeaCustomFields({
+  projectId,
+  customFieldCode,
+}: Props) {
+  const [ideaCustomField, setIdeaCustomField] = useState<
+    IIdeaCustomFieldData | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
     let observable: Observable<IIdeaCustomField | null> = of(null);
@@ -19,7 +29,9 @@ export default function useIdeaCustomFields({ projectId, customFieldCode }: Prop
     }
 
     const subscription = observable.subscribe((response) => {
-      const ideaCustomField = !isNilOrError(response) ? response.data : response;
+      const ideaCustomField = !isNilOrError(response)
+        ? response.data
+        : response;
       setIdeaCustomField(ideaCustomField);
     });
 

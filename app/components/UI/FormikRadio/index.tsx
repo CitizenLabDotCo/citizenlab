@@ -11,7 +11,6 @@ export interface Props {
 export interface State {}
 
 class FormikRadio extends React.Component<Props & VanillaProps, State> {
-
   constructor(props) {
     super(props);
     this.state = {};
@@ -19,12 +18,12 @@ class FormikRadio extends React.Component<Props & VanillaProps, State> {
 
   handleOnChange = (formikContext: FormikContext<any>) => (value: string) => {
     formikContext.setFieldValue(this.props.name, value);
-  }
+  };
 
   render() {
     return (
       <FormikConsumer>
-        {formikContext => (
+        {(formikContext) => (
           <Radio
             {...this.props}
             currentValue={formikContext.values[this.props.name] || ''}

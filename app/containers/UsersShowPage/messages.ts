@@ -64,7 +64,8 @@ export default defineMessages({
   },
   metaDescription: {
     id: 'app.containers.UsersShowPage.metaDescription',
-    defaultMessage: 'This is the profile page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can find an overview of the ideas this user.',
+    defaultMessage:
+      'This is the profile page of {firstName} {lastName} on the online participation platform of {tenantName}. Here you can find an overview of the ideas this user.',
   },
   a11y_ideaPostedIn: {
     id: 'app.containers.UsersShowPage.a11y_ideaPostedIn',
@@ -76,6 +77,7 @@ export default defineMessages({
   },
   a11y_upvotesCount: {
     id: 'app.containers.UsersShowPage.a11y_upvotesCount',
-    defaultMessage: '{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
-  }
+    defaultMessage:
+      '{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
+  },
 });

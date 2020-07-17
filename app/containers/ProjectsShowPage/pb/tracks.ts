@@ -19,5 +19,5 @@ export default {
   },
   expensesDropdownOpened: {
     name: 'PB expenses dropdown opened',
-  }
+  },
 };

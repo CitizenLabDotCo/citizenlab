@@ -27,7 +27,7 @@ export const NoPostPage = styled.div`
   svg {
     margin-bottom: 20px;
     height: 50px;
-    fill: ${colors.clIconAccent}
+    fill: ${colors.clIconAccent};
   }
 
   transition: all 200ms ease;
@@ -82,18 +82,16 @@ export default (props: Props) => (
   <NoPostPage>
     <Icon name="blankPage" />
     <NoPostHeader>
-      {props.type === 'Initiatives'
-      ? <FormattedMessage {...messages.noInitiativesHere} />
-      : <FormattedMessage {...messages.noIdeasHere} />
-    }
+      {props.type === 'Initiatives' ? (
+        <FormattedMessage {...messages.noInitiativesHere} />
+      ) : (
+        <FormattedMessage {...messages.noIdeasHere} />
+      )}
     </NoPostHeader>
     <NoPostDescription>
       <FormattedMessage {...messages.resetFiltersDescription} />
     </NoPostDescription>
-    <Button
-      buttonStyle="cl-blue"
-      onClick={props.handleSeeAll}
-    >
+    <Button buttonStyle="cl-blue" onClick={props.handleSeeAll}>
       <FormattedMessage {...messages.resetFiltersButton} />
     </Button>
   </NoPostPage>

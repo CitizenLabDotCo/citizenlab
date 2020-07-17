@@ -39,7 +39,8 @@ const InitiativeInfoContent = memo(() => {
   const tenant = useTenant();
 
   if (!isNilOrError(tenant)) {
-    const voteThreshold = tenant.data.attributes.settings.initiatives?.voting_threshold;
+    const voteThreshold =
+      tenant.data.attributes.settings.initiatives?.voting_threshold;
     const daysLimit = tenant.data.attributes.settings.initiatives?.days_limit;
 
     return (
@@ -56,12 +57,16 @@ const InitiativeInfoContent = memo(() => {
                   {...messages.constraints}
                   values={{
                     voteThreshold,
-                    daysLimit
+                    daysLimit,
                   }}
                 />
               </Bold>
             ),
-            link: <Link to="/pages/initiatives"><FormattedMessage {...messages.readMore} /></Link>
+            link: (
+              <Link to="/pages/initiatives">
+                <FormattedMessage {...messages.readMore} />
+              </Link>
+            ),
           }}
         />
       </Content>

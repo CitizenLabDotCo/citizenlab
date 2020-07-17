@@ -1,4 +1,4 @@
-import React, { memo,  useCallback, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 
 // components
 import Link from 'utils/cl-router/Link';
@@ -56,74 +56,86 @@ interface Props {
   className?: string;
 }
 
-const Consent = memo<Props & InjectedIntlProps>(({
-  className,
-  intl: { formatMessage },
-  tacError,
-  privacyError,
-  onTacAcceptedChange,
-  onPrivacyAcceptedChange
-}) => {
-  const [tacAccepted, setTacAccepted] = useState(false);
-  const [privacyAccepted, setPrivacyAccepted] = useState(false);
+const Consent = memo<Props & InjectedIntlProps>(
+  ({
+    className,
+    intl: { formatMessage },
+    tacError,
+    privacyError,
+    onTacAcceptedChange,
+    onPrivacyAcceptedChange,
+  }) => {
+    const [tacAccepted, setTacAccepted] = useState(false);
+    const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
-  const toggleTacAccepted = useCallback(() => {
-    onTacAcceptedChange(!tacAccepted);
-    setTacAccepted(!tacAccepted);
-  }, [tacAccepted, onTacAcceptedChange]);
+    const toggleTacAccepted = useCallback(() => {
+      onTacAcceptedChange(!tacAccepted);
+      setTacAccepted(!tacAccepted);
+    }, [tacAccepted, onTacAcceptedChange]);
 
-  const togglePrivacyAccepted = useCallback(() => {
-    onPrivacyAcceptedChange(!privacyAccepted);
-    setPrivacyAccepted(!privacyAccepted);
-  }, [privacyAccepted, onPrivacyAcceptedChange]);
+    const togglePrivacyAccepted = useCallback(() => {
+      onPrivacyAcceptedChange(!privacyAccepted);
+      setPrivacyAccepted(!privacyAccepted);
+    }, [privacyAccepted, onPrivacyAcceptedChange]);
 
-  return (
-    <Container className={className}>
-      <CheckboxWrapper id="e2e-terms-and-conditions-container">
-        <Checkbox
-          className="e2e-terms-and-conditions"
-          size="20px"
-          checked={tacAccepted}
-          onChange={toggleTacAccepted}
-          label={
-            <ConsentText>
-              <FormattedMessage
-                {...messages.iHaveReadAndAgreeTo}
-                values={{
-                  link: <Link target="_blank" to="/pages/terms-and-conditions"><FormattedMessage {...messages.theTermsAndConditions} /></Link>
-                }}
-              />
-            </ConsentText>
-          }
-        />
-        <Error text={tacError ? formatMessage(messages.tacError) : null} />
-      </CheckboxWrapper>
+    return (
+      <Container className={className}>
+        <CheckboxWrapper id="e2e-terms-and-conditions-container">
+          <Checkbox
+            className="e2e-terms-and-conditions"
+            size="20px"
+            checked={tacAccepted}
+            onChange={toggleTacAccepted}
+            label={
+              <ConsentText>
+                <FormattedMessage
+                  {...messages.iHaveReadAndAgreeTo}
+                  values={{
+                    link: (
+                      <Link target="_blank" to="/pages/terms-and-conditions">
+                        <FormattedMessage {...messages.theTermsAndConditions} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </ConsentText>
+            }
+          />
+          <Error text={tacError ? formatMessage(messages.tacError) : null} />
+        </CheckboxWrapper>
 
-      <CheckboxWrapper id="e2e-privacy-container">
-        <Checkbox
-          className="e2e-privacy-checkbox"
-          size="20px"
-          checked={privacyAccepted}
-          onChange={togglePrivacyAccepted}
-          label={
-            <ConsentText>
-              <FormattedMessage
-                {...messages.iHaveReadAndAgreeTo}
-                values={{
-                  link: <Link target="_blank" to="/pages/privacy-policy"><FormattedMessage {...messages.thePrivacyPolicy} /></Link>
-                }}
-              />
-            </ConsentText>
-          }
-        />
-        <Error text={privacyError ? formatMessage(messages.privacyError) : null} />
-      </CheckboxWrapper>
+        <CheckboxWrapper id="e2e-privacy-container">
+          <Checkbox
+            className="e2e-privacy-checkbox"
+            size="20px"
+            checked={privacyAccepted}
+            onChange={togglePrivacyAccepted}
+            label={
+              <ConsentText>
+                <FormattedMessage
+                  {...messages.iHaveReadAndAgreeTo}
+                  values={{
+                    link: (
+                      <Link target="_blank" to="/pages/privacy-policy">
+                        <FormattedMessage {...messages.thePrivacyPolicy} />
+                      </Link>
+                    ),
+                  }}
+                />
+              </ConsentText>
+            }
+          />
+          <Error
+            text={privacyError ? formatMessage(messages.privacyError) : null}
+          />
+        </CheckboxWrapper>
 
-      <ConsentText>
-        <FormattedMessage {...messages.emailConsent} />
-      </ConsentText>
-    </Container>
-  );
-});
+        <ConsentText>
+          <FormattedMessage {...messages.emailConsent} />
+        </ConsentText>
+      </Container>
+    );
+  }
+);
 
 export default injectIntl(Consent);

@@ -5,7 +5,7 @@ import { TSignUpSteps } from 'components/SignUpIn/SignUp';
 enum events {
   openSignUpInModal = 'openSignUpInModal',
   closeSignUpInModal = 'closeSignUpInModal',
-  signUpActiveStepChange = 'signUpActiveStepChange'
+  signUpActiveStepChange = 'signUpActiveStepChange',
 }
 
 // ---------
@@ -20,13 +20,18 @@ export function openSignUpInModal(metaData?: Partial<ISignUpInMetaData>) {
     isInvitation: !!metaData?.isInvitation,
     token: metaData?.token,
     inModal: true,
-    action: metaData?.action || undefined
+    action: metaData?.action || undefined,
   };
 
-  eventEmitter.emit<ISignUpInMetaData>(events.openSignUpInModal, emittedMetaData);
+  eventEmitter.emit<ISignUpInMetaData>(
+    events.openSignUpInModal,
+    emittedMetaData
+  );
 }
 
-export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInMetaData>(events.openSignUpInModal);
+export const openSignUpInModal$ = eventEmitter.observeEvent<ISignUpInMetaData>(
+  events.openSignUpInModal
+);
 
 // ---------
 
@@ -34,14 +39,23 @@ export function closeSignUpInModal() {
   eventEmitter.emit(events.closeSignUpInModal);
 }
 
-export const closeSignUpInModal$ = eventEmitter.observeEvent(events.closeSignUpInModal);
+export const closeSignUpInModal$ = eventEmitter.observeEvent(
+  events.closeSignUpInModal
+);
 
 // ---------
 
-export function signUpActiveStepChange(newActiveStep: TSignUpSteps | null | undefined) {
-  eventEmitter.emit<TSignUpSteps | null | undefined>(events.signUpActiveStepChange, newActiveStep);
+export function signUpActiveStepChange(
+  newActiveStep: TSignUpSteps | null | undefined
+) {
+  eventEmitter.emit<TSignUpSteps | null | undefined>(
+    events.signUpActiveStepChange,
+    newActiveStep
+  );
 }
 
-export const signUpActiveStepChange$ = eventEmitter.observeEvent<TSignUpSteps | null | undefined>(events.signUpActiveStepChange);
+export const signUpActiveStepChange$ = eventEmitter.observeEvent<
+  TSignUpSteps | null | undefined
+>(events.signUpActiveStepChange);
 
 // ---------

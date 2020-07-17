@@ -69,7 +69,10 @@ const StoriesContainer = styled.div`
 
 const SuccessStories = memo(({ tenant }: Props) => {
   if (isNilOrError(tenant)) return null;
-  const successStories = get(tenant, 'attributes.settings.initiatives.success_stories');
+  const successStories = get(
+    tenant,
+    'attributes.settings.initiatives.success_stories'
+  );
 
   if (successStories && successStories.length === 3) {
     return (
@@ -79,7 +82,7 @@ const SuccessStories = memo(({ tenant }: Props) => {
           <FormattedMessage tagName="h2" {...messages.successStoryTitle} />
         </SuccessTitle>
         <StoriesContainer>
-          {successStories.map(story => (
+          {successStories.map((story) => (
             <SuccessCard
               key={story.page_slug}
               location={story.location}
@@ -100,6 +103,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <SuccessStories {...inputProps} {...dataprops} />}
+    {(dataprops) => <SuccessStories {...inputProps} {...dataprops} />}
   </Data>
 );

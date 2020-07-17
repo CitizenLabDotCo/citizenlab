@@ -11,10 +11,9 @@ type Props = {
 type State = {};
 
 class DateValueSelector extends React.PureComponent<Props, State> {
-
   handleOnChange = (moment: Moment) => {
     this.props.onChange(moment.format('YYYY-MM-DD'));
-  }
+  };
 
   render() {
     const { value } = this.props;

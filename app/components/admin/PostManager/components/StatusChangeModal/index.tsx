@@ -34,19 +34,21 @@ class StatusChangeModal extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-      eventEmitter.observeEvent<StatusChangeModalOpen>(events.statusChangeModalOpen).subscribe(({ eventValue: { initiativeId,  newStatusId } }) => {
-        this.setState({ initiativeId, newStatusId });
-      })
+      eventEmitter
+        .observeEvent<StatusChangeModalOpen>(events.statusChangeModalOpen)
+        .subscribe(({ eventValue: { initiativeId, newStatusId } }) => {
+          this.setState({ initiativeId, newStatusId });
+        }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   close = () => {
     this.setState({ initiativeId: null, newStatusId: null });
-  }
+  };
 
   render() {
     const { initiativeId, newStatusId } = this.state;
@@ -58,13 +60,13 @@ class StatusChangeModal extends PureComponent<Props, State> {
         closeOnClickOutside={false}
         header={<FormattedMessage {...messages.changeStatusModalTitle} />}
       >
-        {!!(initiativeId && newStatusId) &&
+        {!!(initiativeId && newStatusId) && (
           <StatusChangeFormWrapper
             initiativeId={initiativeId}
             newStatusId={newStatusId}
             closeModal={this.close}
           />
-        }
+        )}
       </Modal>
     );
   }

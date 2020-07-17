@@ -29,7 +29,7 @@ export const ButtonWrapper = styled.div`
   }
 `;
 
-export default class PageWrapper extends PureComponent<{className?: string}>{
+export default class PageWrapper extends PureComponent<{ className?: string }> {
   render() {
     return (
       <Wrapper className={this.props.className}>{this.props.children}</Wrapper>

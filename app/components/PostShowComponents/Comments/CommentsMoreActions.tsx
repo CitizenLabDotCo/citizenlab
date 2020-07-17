@@ -66,7 +66,10 @@ export interface State {
   actions: IAction[] | null;
 }
 
-class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
+class CommentsMoreActions extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   private comment$: BehaviorSubject<ICommentData>;
   private subscriptions: Subscription[];
 
@@ -86,27 +89,53 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     this.comment$ = new BehaviorSubject(comment);
 
     this.subscriptions = [
-      this.comment$.pipe(
-        switchMap((comment) => {
-          return combineLatest([
-            hasPermission({ item: comment, action: 'markAsSpam', context: { projectId } }),
-            hasPermission({ item: comment, action: 'delete', context: { projectId } }),
-            hasPermission({ item: comment, action: 'edit', context: { projectId } }),
-          ]);
+      this.comment$
+        .pipe(
+          switchMap((comment) => {
+            return combineLatest([
+              hasPermission({
+                item: comment,
+                action: 'markAsSpam',
+                context: { projectId },
+              }),
+              hasPermission({
+                item: comment,
+                action: 'delete',
+                context: { projectId },
+              }),
+              hasPermission({
+                item: comment,
+                action: 'edit',
+                context: { projectId },
+              }),
+            ]);
+          }),
+          map(([canReport, canDelete, canEdit]) => {
+            const actions: IAction[] = [];
+
+            // Actions based on permissions
+            if (canReport)
+              actions.push({
+                label: <FormattedMessage {...messages.reportAsSpam} />,
+                handler: this.openSpamModal,
+              });
+            if (canDelete)
+              actions.push({
+                label: <FormattedMessage {...messages.deleteComment} />,
+                handler: this.openDeleteModal,
+              });
+            if (canEdit)
+              actions.push({
+                label: <FormattedMessage {...messages.editComment} />,
+                handler: onCommentEdit,
+              });
+
+            return actions;
+          })
+        )
+        .subscribe((actions) => {
+          this.setState({ actions });
         }),
-        map(([canReport, canDelete, canEdit]) => {
-          const actions: IAction[] = [];
-
-          // Actions based on permissions
-          if (canReport) actions.push({ label: <FormattedMessage {...messages.reportAsSpam} />, handler: this.openSpamModal });
-          if (canDelete) actions.push({ label: <FormattedMessage {...messages.deleteComment} />, handler: this.openDeleteModal });
-          if (canEdit) actions.push({ label: <FormattedMessage {...messages.editComment} />, handler: onCommentEdit });
-
-          return actions;
-        })
-      ).subscribe((actions) => {
-        this.setState({ actions });
-      })
     ];
   }
 
@@ -117,18 +146,18 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   openDeleteModal = () => {
     this.setState({ modalVisible_delete: true });
-  }
+  };
 
   closeDeleteModal = (event?: FormEvent) => {
     event && event.preventDefault();
     this.setState({ modalVisible_delete: false });
     deleteCommentModalClosed();
-  }
+  };
 
   deleteComment = async (reason) => {
     const { projectId, comment } = this.props;
@@ -139,19 +168,24 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
     await markForDeletion(commentId, authorId, projectId, reasonObj);
     deleteCommentModalClosed();
     commentDeleted();
-  }
+  };
 
   openSpamModal = () => {
     this.setState({ modalVisible_spam: true });
-  }
+  };
 
   closeSpamModal = () => {
     this.setState({ modalVisible_spam: false });
-  }
+  };
 
   render() {
     const { projectId, ariaLabel, comment, className } = this.props;
-    const { actions, modalVisible_delete, loading_deleteComment, modalVisible_spam } = this.state;
+    const {
+      actions,
+      modalVisible_delete,
+      loading_deleteComment,
+      modalVisible_spam,
+    } = this.state;
 
     if (!comment || !actions) {
       return null;
@@ -171,9 +205,16 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
           className="e2e-comment-deletion-modal"
           header={<FormattedMessage {...messages.confirmCommentDeletion} />}
         >
-          <HasPermission item={comment} action="justifyDeletion" context={{ projectId }}>
+          <HasPermission
+            item={comment}
+            action="justifyDeletion"
+            context={{ projectId }}
+          >
             {/* Justification required for the deletion */}
-            <CommentsAdminDeletionModal onCloseDeleteModal={this.closeDeleteModal} onDeleteComment={this.deleteComment} />
+            <CommentsAdminDeletionModal
+              onCloseDeleteModal={this.closeDeleteModal}
+              onDeleteComment={this.deleteComment}
+            />
 
             {/* No justification required */}
             <HasPermission.No>
@@ -190,7 +231,9 @@ class CommentsMoreActions extends PureComponent<Props & InjectedIntlProps, State
                   className="e2e-confirm-deletion"
                   onClick={this.deleteComment}
                 >
-                  <FormattedMessage {...messages.commentDeletionConfirmButton} />
+                  <FormattedMessage
+                    {...messages.commentDeletionConfirmButton}
+                  />
                 </AcceptButton>
               </ButtonsWrapper>
             </HasPermission.No>

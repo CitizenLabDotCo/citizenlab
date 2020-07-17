@@ -91,6 +91,7 @@ export default defineMessages({
   },
   helpTooltipText: {
     id: 'app.containers.Admin.Moderation.helpTooltipText',
-    defaultMessage: "This page allows you to quickly check all new input that has been placed on your platform: ideas, comments & initiatives. Everything that you checked, can be marked as 'Viewed'. This makes sure you keep an easy overview of what has been checked by you or your colleagues and what not.",
-  }
+    defaultMessage:
+      "This page allows you to quickly check all new input that has been placed on your platform: ideas, comments & initiatives. Everything that you checked, can be marked as 'Viewed'. This makes sure you keep an easy overview of what has been checked by you or your colleagues and what not.",
+  },
 });

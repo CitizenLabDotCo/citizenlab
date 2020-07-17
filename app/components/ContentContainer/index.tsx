@@ -24,7 +24,8 @@ const Outer = styled.div`
 
 const Inner: any = styled.div<{ maxWidth?: string }>`
   width: 100%;
-  max-width: ${({ maxWidth }) => isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};
+  max-width: ${({ maxWidth }) =>
+    isNumber(maxWidth) ? `${maxWidth}px` : maxWidth};
   z-index: 1;
 
   &.ie {
@@ -44,7 +45,7 @@ interface Props {
 interface State {}
 
 export default class ContentContainer extends PureComponent<Props, State> {
-  render () {
+  render() {
     const { mode, id, className, children } = this.props;
     let maxWidth = this.props.maxWidth;
 
@@ -61,8 +62,14 @@ export default class ContentContainer extends PureComponent<Props, State> {
     }
 
     return (
-      <Outer id={id || ''} className={`${className} ${bowser.msie ? 'ie' : ''}`}>
-        <Inner className={`inner ${bowser.msie ? 'ie' : ''}`} maxWidth={maxWidth} >
+      <Outer
+        id={id || ''}
+        className={`${className} ${bowser.msie ? 'ie' : ''}`}
+      >
+        <Inner
+          className={`inner ${bowser.msie ? 'ie' : ''}`}
+          maxWidth={maxWidth}
+        >
           {children}
         </Inner>
       </Outer>

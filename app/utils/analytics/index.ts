@@ -5,20 +5,24 @@ import { isNilOrError } from 'utils/helperUtils';
 import { currentTenantStream, ITenantData } from 'services/tenant';
 import { authUserStream } from 'services/auth';
 import snippet from '@segment/snippet';
-import { isAdmin, isSuperAdmin, isProjectModerator } from 'services/permissions/roles';
+import {
+  isAdmin,
+  isSuperAdmin,
+  isProjectModerator,
+} from 'services/permissions/roles';
 import { IUser } from 'services/users';
 
 export interface IEvent {
   name: string;
   properties?: {
-    [key: string]: any,
+    [key: string]: any;
   };
 }
 
 export interface IPageChange {
   path: string;
   properties?: {
-    [key: string]: any,
+    [key: string]: any;
   };
 }
 
@@ -27,34 +31,46 @@ const authUser$ = authUserStream().observable;
 const events$ = new Subject<IEvent>();
 const pageChanges$ = new Subject<IPageChange>();
 
-combineLatest(tenant$, authUser$, events$).subscribe(([tenant, user, event]) => {
-  if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
-    analytics.track(
-      event.name,
-      { ...tenantInfo(tenant.data), location: window?.location?.pathname, ...event.properties },
-      { integrations: integrations(user) },
-    );
+combineLatest(tenant$, authUser$, events$).subscribe(
+  ([tenant, user, event]) => {
+    if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.track'))) {
+      analytics.track(
+        event.name,
+        {
+          ...tenantInfo(tenant.data),
+          location: window?.location?.pathname,
+          ...event.properties,
+        },
+        { integrations: integrations(user) }
+      );
+    }
   }
-});
+);
 
-combineLatest(tenant$, authUser$, pageChanges$).subscribe(([tenant, user, pageChange]) => {
-  if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
-    analytics.page(
-      '',
-      {
-        path: pageChange.path,
-        url: `https://${tenant.data.attributes.host}${pageChange.path}`,
-        title: null,
-        ...tenantInfo(tenant.data),
-        ...pageChange.properties,
-      },
-      { integrations: integrations(user) },
-    );
+combineLatest(tenant$, authUser$, pageChanges$).subscribe(
+  ([tenant, user, pageChange]) => {
+    if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.page'))) {
+      analytics.page(
+        '',
+        {
+          path: pageChange.path,
+          url: `https://${tenant.data.attributes.host}${pageChange.path}`,
+          title: null,
+          ...tenantInfo(tenant.data),
+          ...pageChange.properties,
+        },
+        { integrations: integrations(user) }
+      );
+    }
   }
-});
+);
 
 combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
-  if (!isNilOrError(tenant) && isFunction(get(window, 'analytics.identify')) && isFunction(get(window, 'analytics.group'))) {
+  if (
+    !isNilOrError(tenant) &&
+    isFunction(get(window, 'analytics.identify')) &&
+    isFunction(get(window, 'analytics.group'))
+  ) {
     if (user) {
       analytics.identify(
         user.data.id,
@@ -64,7 +80,9 @@ combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
           firstName: user.data.attributes.first_name,
           lastName: user.data.attributes.last_name,
           createdAt: user.data.attributes.created_at,
-          avatar: user.data.attributes.avatar ? user.data.attributes.avatar.large : null,
+          avatar: user.data.attributes.avatar
+            ? user.data.attributes.avatar.large
+            : null,
           birthday: user.data.attributes.birthyear,
           gender: user.data.attributes.gender,
           locale: user.data.attributes.locale,
@@ -75,7 +93,7 @@ combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
         },
         {
           integrations: integrations(user),
-          Intercom: { hideDefaultLauncher: !isAdmin(user) }
+          Intercom: { hideDefaultLauncher: !isAdmin(user) },
         } as any
       );
       analytics.group(
@@ -84,19 +102,18 @@ combineLatest(tenant$, authUser$).subscribe(([tenant, user]) => {
           ...tenantInfo(tenant.data),
           name: tenant.data.attributes.name,
           website: tenant.data.attributes.settings.core.organization_site,
-          avatar: tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
+          avatar:
+            tenant.data.attributes.logo && tenant.data.attributes.logo.medium,
           tenantLocales: tenant.data.attributes.settings.core.locales,
         },
-        { integrations: integrations(user) },
+        { integrations: integrations(user) }
       );
-    } else { // no user
-      analytics.identify(
-        tenantInfo(tenant.data),
-        {
-          integrations: integrations(user),
-          Intercom: { hideDefaultLauncher: true }
-        } as any
-      );
+    } else {
+      // no user
+      analytics.identify(tenantInfo(tenant.data), {
+        integrations: integrations(user),
+        Intercom: { hideDefaultLauncher: true },
+      } as any);
     }
   }
 });
@@ -106,8 +123,10 @@ export function tenantInfo(tenant: ITenantData) {
     tenantId: tenant && tenant.id,
     tenantName: tenant && tenant.attributes.name,
     tenantHost: tenant && tenant.attributes.host,
-    tenantOrganizationType: tenant && tenant.attributes.settings.core.organization_type,
-    tenantLifecycleStage: tenant && tenant.attributes.settings.core.lifecycle_stage,
+    tenantOrganizationType:
+      tenant && tenant.attributes.settings.core.organization_type,
+    tenantLifecycleStage:
+      tenant && tenant.attributes.settings.core.lifecycle_stage,
   };
 }
 
@@ -118,8 +137,10 @@ export function integrations(user: IUser | null) {
   };
   if (user) {
     const highestRole = user.data.attributes.highest_role;
-    output['Intercom'] = highestRole === 'admin' || highestRole === 'project_moderator';
-    output['SatisMeter'] = highestRole === 'admin' || highestRole === 'project_moderator';
+    output['Intercom'] =
+      highestRole === 'admin' || highestRole === 'project_moderator';
+    output['SatisMeter'] =
+      highestRole === 'admin' || highestRole === 'project_moderator';
   }
   return output;
 }
@@ -127,7 +148,7 @@ export function integrations(user: IUser | null) {
 export function trackPage(path: string, properties: {} = {}) {
   pageChanges$.next({
     properties,
-    path
+    path,
   });
 }
 
@@ -141,23 +162,23 @@ export function trackEventByName(eventName: string, properties: {} = {}) {
 
 export function trackEvent(event: IEvent) {
   events$.next({
-    properties: (event.properties || {}),
+    properties: event.properties || {},
     name: event.name,
   });
 }
 
-export const injectTracks = <P>(events: {[key: string]: IEvent}) => (component: React.ComponentClass<P>) => {
+export const injectTracks = <P>(events: { [key: string]: IEvent }) => (
+  component: React.ComponentClass<P>
+) => {
   return (props: P) => {
-    const eventFunctions = mapValues(events, (event) => (
-      (extra) => {
-        const extraProps = extra && extra.extra;
-        trackEventByName(event.name, { ...event.properties, ...extraProps });
-      }
-    ));
+    const eventFunctions = mapValues(events, (event) => (extra) => {
+      const extraProps = extra && extra.extra;
+      trackEventByName(event.name, { ...event.properties, ...extraProps });
+    });
 
     const propsWithEvents = {
       ...eventFunctions,
-      ...props as any,
+      ...(props as any),
     };
 
     const wrappedComponent = React.createElement(component, propsWithEvents);

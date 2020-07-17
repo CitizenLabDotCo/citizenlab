@@ -10,20 +10,13 @@ type Props = {
 type State = {};
 
 class NumberValueSelector extends React.PureComponent<Props, State> {
-
   handleOnChange = (value: string) => {
     this.props.onChange(parseInt(value, 10));
-  }
+  };
 
   render() {
     const { value } = this.props;
-    return (
-      <Input
-        type="number"
-        value={value}
-        onChange={this.handleOnChange}
-      />
-    );
+    return <Input type="number" value={value} onChange={this.handleOnChange} />;
   }
 }
 

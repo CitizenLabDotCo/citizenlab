@@ -86,7 +86,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
     super(props);
     this.state = {
       style: null,
-      mentionStyle: null
+      mentionStyle: null,
     };
   }
 
@@ -100,7 +100,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
           margin: 0,
           border: 'none',
           appearance: 'none',
-          WebkitAppearance: 'none'
+          WebkitAppearance: 'none',
         },
         input: {
           margin: 0,
@@ -109,14 +109,16 @@ class MentionsTextArea extends PureComponent<Props, State> {
           fontSize: this.props.fontSize,
           fontWeight: this.props.fontWeight,
           lineHeight: this.props.lineHeight,
-          minHeight: `${rows * parseInt(this.props.lineHeight as string, 10)}px`,
+          minHeight: `${
+            rows * parseInt(this.props.lineHeight as string, 10)
+          }px`,
           outline: 'none',
           border: this.props.border,
           borderRadius: this.props.borderRadius,
           boxShadow: this.props.boxShadow,
           background: this.props.background,
           appearance: 'none',
-          WebkitAppearance: 'none'
+          WebkitAppearance: 'none',
         },
         suggestions: {
           list: {
@@ -124,7 +126,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
             border: '1px solid #ccc',
             borderRadius: '3px',
             overflow: 'hidden',
-            boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)'
+            boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)',
           },
           item: {
             fontSize: '15px',
@@ -133,11 +135,11 @@ class MentionsTextArea extends PureComponent<Props, State> {
             borderBottom: '1px solid #ccc',
 
             '&focused': {
-              backgroundColor: '#f4f4f4'
-            }
-          }
-        }
-      }
+              backgroundColor: '#f4f4f4',
+            },
+          },
+        },
+      },
     };
 
     const mentionStyle = {
@@ -146,7 +148,7 @@ class MentionsTextArea extends PureComponent<Props, State> {
       paddingLeft: '0px',
       paddingRight: '1px',
       borderRadius: '3px',
-      backgroundColor: transparentize(0.9, this.props.theme.colorText)
+      backgroundColor: transparentize(0.9, this.props.theme.colorText),
     };
 
     this.setState({ style, mentionStyle });
@@ -154,31 +156,37 @@ class MentionsTextArea extends PureComponent<Props, State> {
 
   mentionDisplayTransform = (_id, display) => {
     return `@${display}`;
-  }
+  };
 
   handleOnChange = (event) => {
     if (this.props.onChange) {
       this.props.onChange(event.target.value, this.props.locale);
     }
-  }
+  };
 
   handleOnFocus = () => {
     if (this.props.onFocus) {
       this.props.onFocus();
     }
-  }
+  };
 
   handleOnBlur = () => {
     if (this.props.onBlur) {
       this.props.onBlur();
     }
-  }
+  };
 
   setRef = () => {
-    if (this.textareaElement && this.textareaElement.current && this.props.getTextareaRef) {
-      this.props.getTextareaRef(this.textareaElement.current as HTMLTextAreaElement);
+    if (
+      this.textareaElement &&
+      this.textareaElement.current &&
+      this.props.getTextareaRef
+    ) {
+      this.props.getTextareaRef(
+        this.textareaElement.current as HTMLTextAreaElement
+      );
     }
-  }
+  };
 
   getUsers = async (query: string, callback) => {
     let users: any[] = [];
@@ -193,22 +201,36 @@ class MentionsTextArea extends PureComponent<Props, State> {
         queryParameters['post_type'] = capitalize(postType);
       }
 
-      const response = await mentionsStream({ queryParameters }).observable.pipe(first()).toPromise();
+      const response = await mentionsStream({ queryParameters })
+        .observable.pipe(first())
+        .toPromise();
 
       if (response && response.data && response.data.length > 0) {
         users = response.data.map((user) => ({
-          display: `${user.attributes.first_name} ${user.attributes.last_name ? user.attributes.last_name : ''}`,
-          id: user.attributes.slug
+          display: `${user.attributes.first_name} ${
+            user.attributes.last_name ? user.attributes.last_name : ''
+          }`,
+          id: user.attributes.slug,
         }));
       }
     }
 
     callback(users);
-  }
+  };
 
   render() {
     const { style, mentionStyle } = this.state;
-    const { name, placeholder, value, error, children, rows, id, className, ariaLabel } = this.props;
+    const {
+      name,
+      placeholder,
+      value,
+      error,
+      children,
+      rows,
+      id,
+      className,
+      ariaLabel,
+    } = this.props;
 
     if (style) {
       return (
@@ -216,7 +238,9 @@ class MentionsTextArea extends PureComponent<Props, State> {
           <MentionsInput
             id={id}
             style={style}
-            className={`textareaWrapper ${this.props.border !== 'none' ? 'hasBorder' : 'noBorder'}`}
+            className={`textareaWrapper ${
+              this.props.border !== 'none' ? 'hasBorder' : 'noBorder'
+            }`}
             name={name || ''}
             rows={rows}
             value={value || ''}

@@ -16,7 +16,6 @@ const Container = styled.div`
 `;
 
 class IdeaDetails extends PureComponent<Props> {
-
   render() {
     const { idea } = this.props;
 

@@ -14,27 +14,32 @@ interface Props {
 }
 
 const SelectType = memo(({ onChange, selectedTypes }: Props) => {
-  const handleOnChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
-    onChange(newSelectedTypes);
-  }, []);
+  const handleOnChange = useCallback(
+    (newSelectedTypes: TModeratableTypes[]) => {
+      onChange(newSelectedTypes);
+    },
+    []
+  );
 
   return (
     <FilterSelector
       title={<FormattedMessage {...messages.type} />}
       name="type"
       selected={selectedTypes}
-      values={[{
-        text: <FormattedMessage {...messages.comment} />,
-        value: 'Comment'
-      },
-      {
-        text: <FormattedMessage {...messages.idea} />,
-        value: 'Idea'
-      },
-      {
-        text: <FormattedMessage {...messages.initiative} />,
-        value: 'Initiative'
-      }]}
+      values={[
+        {
+          text: <FormattedMessage {...messages.comment} />,
+          value: 'Comment',
+        },
+        {
+          text: <FormattedMessage {...messages.idea} />,
+          value: 'Idea',
+        },
+        {
+          text: <FormattedMessage {...messages.initiative} />,
+          value: 'Initiative',
+        },
+      ]}
       onChange={handleOnChange}
       multipleSelectionAllowed={true}
     />

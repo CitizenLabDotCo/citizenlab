@@ -35,7 +35,7 @@ interface DataProps {
   ideas: GetIdeasChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 type State = {
   svgSize: number | null;
@@ -72,7 +72,7 @@ class Circles extends PureComponent<Props, State> {
       nodes: [],
       hoveredNode: null,
       ctrlKeyPressed: false,
-      showLegend: false
+      showLegend: false,
     };
     this.containerRef = null;
   }
@@ -95,7 +95,13 @@ class Circles extends PureComponent<Props, State> {
   calculateNodePositions = () => {
     if (this.containerRef) {
       const ideasById = keyBy(this.props.ideas.list, 'id');
-      const rootNode = hierarchy(this.props.structure).sum((d) => ideasById[d.id] ? (ideasById[d.id].attributes.upvotes_count + ideasById[d.id].attributes.downvotes_count + 1) : 1);
+      const rootNode = hierarchy(this.props.structure).sum((d) =>
+        ideasById[d.id]
+          ? ideasById[d.id].attributes.upvotes_count +
+            ideasById[d.id].attributes.downvotes_count +
+            1
+          : 1
+      );
       const svgWidth = this.containerRef.offsetWidth;
       const svgHeight = this.containerRef.offsetHeight;
       const svgSize = (svgWidth >= svgHeight ? svgHeight : svgWidth) - 30;
@@ -108,15 +114,15 @@ class Circles extends PureComponent<Props, State> {
         nodes: rootNode.descendants(),
       });
     }
-  }
+  };
 
   comparisonSet = () => {
     return this.props.selectedNodes[this.props.activeComparison];
-  }
+  };
 
   setContainerRef = (ref: HTMLDivElement) => {
     this.containerRef = ref;
-  }
+  };
 
   handleOnClickNode = (node: D3Node, event: MouseEvent) => {
     if (event.shiftKey) {
@@ -126,7 +132,7 @@ class Circles extends PureComponent<Props, State> {
     } else {
       this.props.onClickNode(node.data);
     }
-  }
+  };
 
   handleContextMenu = (event: Event) => {
     event.preventDefault();
@@ -136,41 +142,42 @@ class Circles extends PureComponent<Props, State> {
     if (this.state.hoveredNode) {
       this.props.onCtrlClickNode(this.state.hoveredNode.data);
     }
-  }
+  };
 
   handleOnKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Control') {
       this.setState({ ctrlKeyPressed: true });
     }
-  }
+  };
 
   handleOnKeyUp = (event: KeyboardEvent) => {
     if (event.key === 'Control') {
       this.setState({ ctrlKeyPressed: false });
     }
-  }
+  };
 
   handleOnMouseEnter = (hoveredNode: D3Node, _event: MouseEvent) => {
     this.setState({ hoveredNode });
-  }
+  };
 
   handleOnMouseLeave = (_node: D3Node, _event: MouseEvent) => {
     this.setState({ hoveredNode: null });
-  }
+  };
 
   selectionIndex = (node: D3Node) => {
-    const index = findIndex(this.props.selectedNodes, (nodes) => (
-      !!find(nodes, { id: node.data.id })
-    ));
+    const index = findIndex(
+      this.props.selectedNodes,
+      (nodes) => !!find(nodes, { id: node.data.id })
+    );
     return index === -1 ? null : index;
-  }
+  };
 
   onShowLegend = () => {
     this.setState({ showLegend: true });
-  }
+  };
   onHideLegend = () => {
     this.setState({ showLegend: false });
-  }
+  };
 
   render() {
     const { nodes, svgSize, hoveredNode, showLegend } = this.state;
@@ -282,30 +289,28 @@ class Circles extends PureComponent<Props, State> {
     });
     return (
       <Container ref={this.setContainerRef} className={this.props['className']}>
-        {svgSize &&
+        {svgSize && (
           <svg
             width={svgSize}
             height={svgSize}
             preserveAspectRatio="xMidYMid meet"
             style={{ overflow: 'visible' }}
           >
-            <g className="circles">
-              {CirclesElements}
-            </g>
-            <g
-              className="labels"
-            >
+            <g className="circles">{CirclesElements}</g>
+            <g className="labels">
               {CustomLabelElements}
               {HoverLabelElements}
             </g>
           </svg>
-        }
+        )}
         <LegendCorner>
           {!showLegend ? (
             <button onClick={this.onShowLegend}>
               <StyledIcon name="info" />
             </button>
-          ) : <LegendPanel onClickOutside={this.onHideLegend} />}
+          ) : (
+            <LegendPanel onClickOutside={this.onHideLegend} />
+          )}
         </LegendCorner>
       </Container>
     );
@@ -313,6 +318,8 @@ class Circles extends PureComponent<Props, State> {
 }
 export default (inputProps: InputProps) => (
   <GetIdeas type="load-more" pageSize={1000} sort="new">
-    {(ideasProps) => ideasProps.list ? <Circles {...inputProps} ideas={ideasProps} /> : null}
+    {(ideasProps) =>
+      ideasProps.list ? <Circles {...inputProps} ideas={ideasProps} /> : null
+    }
   </GetIdeas>
 );

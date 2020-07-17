@@ -29,7 +29,9 @@ import { InjectedIntlProps } from 'react-intl';
 
 // Resources
 import GetGroup, { GetGroupChildProps } from 'resources/GetGroup';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // Services
 import { deleteGroup, updateGroup, MembershipType } from 'services/groups';
@@ -43,14 +45,14 @@ import tracks from './tracks';
 import { CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
-export interface InputProps { }
+export interface InputProps {}
 
 interface DataProps {
   group: GetGroupChildProps;
   verificationActive: GetFeatureFlagChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 export interface State {
   groupEditionModal: false | MembershipType;
@@ -61,7 +63,10 @@ interface Tracks {
   trackEditGroup: Function;
 }
 
-export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & Tracks, State> {
+export class UsersGroup extends React.PureComponent<
+  Props & InjectedIntlProps & Tracks,
+  State
+> {
   constructor(props: Props & InjectedIntlProps & Tracks) {
     super(props);
     this.state = {
@@ -72,83 +77,100 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
 
   closeGroupEditionModal = () => {
     this.setState({ groupEditionModal: false });
-  }
+  };
 
   renderForm = (type: 'normal' | 'rules') => (props) => {
     if (type === 'normal') return <NormalGroupForm {...props} />;
     if (type === 'rules') return <RulesGroupForm {...props} />;
     return null;
-  }
+  };
 
   openGroupEditionModal = () => {
     const { group, trackEditGroup } = this.props;
 
     if (!isNilOrError(group)) {
-      const groupType =  group.attributes.membership_type;
+      const groupType = group.attributes.membership_type;
       trackEditGroup({
         extra: {
           groupType,
-        }
+        },
       });
       this.setState({ groupEditionModal: groupType });
     }
-  }
+  };
 
-  handleSubmitForm = (groupId: string) => (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting, setStatus }) => {
-    updateGroup(groupId, { ...values }).then(() => {
-      streams.fetchAllWith({
-        dataId: [groupId],
-        apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
-        onlyFetchActiveStreams: true
+  handleSubmitForm = (groupId: string) => (
+    values: NormalFormValues | RulesFormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
+    updateGroup(groupId, { ...values })
+      .then(() => {
+        streams.fetchAllWith({
+          dataId: [groupId],
+          apiEndpoint: [`${API_PATH}/users`, `${API_PATH}/groups`],
+          onlyFetchActiveStreams: true,
+        });
+        this.closeGroupEditionModal();
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
       });
-      this.closeGroupEditionModal();
-    }).catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+  };
 
   deleteGroup = (groupId: string) => () => {
-    const deleteMessage = this.props.intl.formatMessage(messages.groupDeletionConfirmation);
+    const deleteMessage = this.props.intl.formatMessage(
+      messages.groupDeletionConfirmation
+    );
 
     if (window.confirm(deleteMessage)) {
       deleteGroup(groupId);
     }
-  }
+  };
 
   searchGroup = (searchTerm: string) => {
     this.setState({
-      search: (isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '')
+      search: isString(searchTerm) && !isEmpty(searchTerm) ? searchTerm : '',
     });
-  }
+  };
 
   deleteUsersFromGroup = async (userIds: string[]) => {
-    if (!isNilOrError(this.props.group) && this.props.group.attributes.membership_type === 'manual') {
-      const deleteMessage = this.props.intl.formatMessage(messages.membershipDeleteConfirmation);
+    if (
+      !isNilOrError(this.props.group) &&
+      this.props.group.attributes.membership_type === 'manual'
+    ) {
+      const deleteMessage = this.props.intl.formatMessage(
+        messages.membershipDeleteConfirmation
+      );
 
       if (window.confirm(deleteMessage)) {
         const groupId = this.props.group.id;
         const promises: Promise<any>[] = [];
 
-        userIds.forEach(userId => promises.push(deleteMembershipByUserId(groupId, userId)));
+        userIds.forEach((userId) =>
+          promises.push(deleteMembershipByUserId(groupId, userId))
+        );
 
         try {
           await Promise.all(promises);
           await streams.fetchAllWith({
             dataId: [groupId],
-            apiEndpoint: [`${API_PATH}/groups`]
+            apiEndpoint: [`${API_PATH}/groups`],
           });
         } catch (error) {
-          eventEmitter.emit<JSX.Element>(events.membershipDeleteFailed, <FormattedMessage {...messages.membershipDeleteFailed} />);
+          eventEmitter.emit<JSX.Element>(
+            events.membershipDeleteFailed,
+            <FormattedMessage {...messages.membershipDeleteFailed} />
+          );
         }
       }
     }
-  }
+  };
 
   validateRulesWithFeatureFlag = (values: RulesFormValues) => {
     const errors: FormikErrors<RulesFormValues> = {};
@@ -157,13 +179,15 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
 
-    if (!this.props.verificationActive
-      && values.rules.find(rule => rule.ruleType === 'verified')) {
+    if (
+      !this.props.verificationActive &&
+      values.rules.find((rule) => rule.ruleType === 'verified')
+    ) {
       errors.rules = 'verificationDisabled' as any;
     }
 
     return errors;
-  }
+  };
 
   render() {
     const { group } = this.props;
@@ -204,23 +228,23 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
             close={this.closeGroupEditionModal}
           >
             <>
-              {groupEditionModal === 'manual' &&
+              {groupEditionModal === 'manual' && (
                 <Formik
                   initialValues={group.attributes}
                   validate={NormalGroupForm.validate}
                   render={this.renderForm('normal')}
                   onSubmit={this.handleSubmitForm(group.id)}
                 />
-              }
+              )}
 
-              {groupEditionModal === 'rules' &&
+              {groupEditionModal === 'rules' && (
                 <Formik
                   initialValues={group.attributes}
                   validate={this.validateRulesWithFeatureFlag}
                   render={this.renderForm('rules')}
                   onSubmit={this.handleSubmitForm(group.id)}
                 />
-              }
+              )}
             </>
           </Modal>
         </>
@@ -231,17 +255,21 @@ export class UsersGroup extends React.PureComponent<Props & InjectedIntlProps & 
   }
 }
 
-const UsersGroupWithHoCs = withRouter(injectTracks<Props>({
-  trackEditGroup: tracks.editGroup,
-})(injectIntl<Props>(UsersGroup)));
+const UsersGroupWithHoCs = withRouter(
+  injectTracks<Props>({
+    trackEditGroup: tracks.editGroup,
+  })(injectIntl<Props>(UsersGroup))
+);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  group: ({ params, render }) => <GetGroup id={params.groupId}>{render}</GetGroup>,
-  verificationActive: <GetFeatureFlag name="verification" />
+  group: ({ params, render }) => (
+    <GetGroup id={params.groupId}>{render}</GetGroup>
+  ),
+  verificationActive: <GetFeatureFlag name="verification" />,
 });
 
 export default (inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <UsersGroupWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

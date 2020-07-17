@@ -10,14 +10,21 @@ import { mockOption } from 'services/__mocks__/pollOptions';
 jest.mock('components/T', () => 'T');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('semantic-ui-react', () => ({ Icon: 'Icon' }));
-jest.mock('components/admin/ResourceList', () => ({ Row: 'Row', TextCell: 'TextCell', List: 'List' }));
+jest.mock('components/admin/ResourceList', () => ({
+  Row: 'Row',
+  TextCell: 'TextCell',
+  List: 'List',
+}));
 jest.mock('./FormOptionRow', () => 'FormOptionRow');
 jest.mock('./OptionRow', () => 'OptionRow');
 jest.mock('./QuestionDetailsForm', () => 'QuestionDetailsForm');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
 
 const mockOptions: IPollQuestion[];
-const question = mockQuestion('questionId', 'What is your favourite ice cream flavour ?');
+const question = mockQuestion(
+  'questionId',
+  'What is your favourite ice cream flavour ?'
+);
 
 describe('<OptionForm/>', () => {
   it('clicking done calls the collapse handler', () => {
@@ -48,7 +55,6 @@ describe('<OptionForm/>', () => {
       expect(wrapper.find('.e2e-add-option').exists()).toBe(true);
     });
     it('renders correctly with when pollOptions is []', () => {
-
       const wrapper = shallow(
         <OptionForm
           question={question}
@@ -63,8 +69,11 @@ describe('<OptionForm/>', () => {
   });
   describe('displays question settings form', () => {
     it('displays', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
+      const pollOptions = [
+        'Vanilla',
+        'Pistachio',
+        'Raspberry',
+      ].map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}
@@ -79,8 +88,11 @@ describe('<OptionForm/>', () => {
   });
   describe('displays passed in options', () => {
     it('shows the right amount', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
+      const pollOptions = [
+        'Vanilla',
+        'Pistachio',
+        'Raspberry',
+      ].map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}
@@ -100,11 +112,18 @@ describe('<OptionForm/>', () => {
           pollOptions={[mockOption('vanillaId', 'Vanilla')]}
         />
       );
-      expect(wrapper.find('OptionRow').find(item => item.prop('pollOptionId') === 'vanillaId')).toBeTruthy();
+      expect(
+        wrapper
+          .find('OptionRow')
+          .find((item) => item.prop('pollOptionId') === 'vanillaId')
+      ).toBeTruthy();
     });
     it('List reacts to addition', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
+      const pollOptions = [
+        'Vanilla',
+        'Pistachio',
+        'Raspberry',
+      ].map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}
@@ -113,12 +132,17 @@ describe('<OptionForm/>', () => {
           pollOptions={pollOptions}
         />
       );
-      wrapper.setProps({ pollOptions: [...pollOptions, mockOption('chocolateId', 'Chocolate')] });
+      wrapper.setProps({
+        pollOptions: [...pollOptions, mockOption('chocolateId', 'Chocolate')],
+      });
       expect(wrapper.find('OptionRow').length).toBe(4);
     });
     it('List reacts to deletion', () => {
-      const pollOptions = ['Vanilla', 'Pistachio', 'Raspberry']
-        .map((item, index) => mockOption(index, item));
+      const pollOptions = [
+        'Vanilla',
+        'Pistachio',
+        'Raspberry',
+      ].map((item, index) => mockOption(index, item));
       const wrapper = shallow(
         <OptionForm
           question={question}

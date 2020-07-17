@@ -5,7 +5,13 @@ import moment, { Moment } from 'moment';
 import { ThemeProvider } from 'styled-components';
 
 // components
-import { chartTheme, GraphsContainer, ControlBar, Column, IResolution } from '../';
+import {
+  chartTheme,
+  GraphsContainer,
+  ControlBar,
+  Column,
+  IResolution,
+} from '../';
 import BarChartActiveUsersByTime from './charts/BarChartActiveUsersByTime';
 import ChartFilters from '../components/ChartFilters';
 import CumulativeAreaChart from './charts/CumulativeAreaChart';
@@ -29,7 +35,10 @@ import { InjectedIntlProps } from 'react-intl';
 import localize, { InjectedLocalized } from 'utils/localize';
 
 // resources
-import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
+import GetProjects, {
+  GetProjectsChildProps,
+  PublicationStatus,
+} from 'resources/GetProjects';
 import GetGroups, { GetGroupsChildProps } from 'resources/GetGroups';
 import GetTopics, { GetTopicsChildProps } from 'resources/GetTopics';
 import { isNilOrError } from 'utils/helperUtils';
@@ -53,7 +62,7 @@ interface DataProps {
   topics: GetTopicsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   resolution: IResolution;
@@ -76,7 +85,11 @@ interface Tracks {
   trackResourceChange: Function;
 }
 
-interface PropsHithHoCs extends Props, InjectedIntlProps, InjectedLocalized, Tracks { }
+interface PropsHithHoCs
+  extends Props,
+    InjectedIntlProps,
+    InjectedLocalized,
+    Tracks {}
 
 class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   resourceOptions: IOption[];
@@ -92,7 +105,9 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       startAtMoment: undefined,
       endAtMoment: moment(),
       currentProjectFilter: onlyModerator
-        ? (projectsList && projectsList.length > 0 ? projectsList[0].id : undefined)
+        ? projectsList && projectsList.length > 0
+          ? projectsList[0].id
+          : undefined
         : undefined,
       currentGroupFilter: undefined,
       currentTopicFilter: undefined,
@@ -106,17 +121,27 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
     this.resourceOptions = [
       { value: 'ideas', label: formatMessage(messages.ideas) },
       { value: 'comments', label: formatMessage(messages.comments) },
-      { value: 'votes', label: formatMessage(messages.ideaVotes) }
+      { value: 'votes', label: formatMessage(messages.ideaVotes) },
     ];
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { projects: { projectsList }, topics, groups, onlyModerator } = this.props;
+    const {
+      projects: { projectsList },
+      topics,
+      groups,
+      onlyModerator,
+    } = this.props;
 
     if (projectsList !== prevProps.projects.projectsList) {
       this.setState({ projectFilterOptions: this.generateProjectOptions() });
       if (onlyModerator && this.state.currentProjectFilter === null) {
-        this.setState({ currentProjectFilter: (projectsList && projectsList.length > 0 ? projectsList[0].id : undefined) });
+        this.setState({
+          currentProjectFilter:
+            projectsList && projectsList.length > 0
+              ? projectsList[0].id
+              : undefined,
+        });
       }
     }
 
@@ -131,45 +156,54 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
 
   handleChangeResolution = (resolution: IResolution) => {
     this.setState({ resolution });
-  }
+  };
 
-  handleChangeTimeRange = (startAtMoment: Moment | null | undefined, endAtMoment: Moment | null) => {
-    const timeDiff = endAtMoment && startAtMoment && moment.duration(endAtMoment.diff(startAtMoment));
-    const resolution = timeDiff ? (timeDiff.asMonths() > 6 ? 'month' : timeDiff.asWeeks() > 4 ? 'week' : 'day')
+  handleChangeTimeRange = (
+    startAtMoment: Moment | null | undefined,
+    endAtMoment: Moment | null
+  ) => {
+    const timeDiff =
+      endAtMoment &&
+      startAtMoment &&
+      moment.duration(endAtMoment.diff(startAtMoment));
+    const resolution = timeDiff
+      ? timeDiff.asMonths() > 6
+        ? 'month'
+        : timeDiff.asWeeks() > 4
+        ? 'week'
+        : 'day'
       : 'month';
     this.setState({ startAtMoment, endAtMoment, resolution });
-  }
+  };
 
   handleOnProjectFilter = (filter) => {
     this.props.trackFilterOnProject({ extra: { project: filter } });
     this.setState({ currentProjectFilter: filter.value });
-  }
+  };
 
   handleOnGroupFilter = (filter) => {
     this.props.trackFilterOnGroup({ extra: { group: filter } });
     this.setState({ currentGroupFilter: filter.value });
-  }
+  };
 
   handleOnTopicFilter = (filter) => {
     this.props.trackFilterOnTopic({ extra: { topic: filter } });
     this.setState({ currentTopicFilter: filter.value });
-  }
+  };
 
   onResourceByTopicChange = (option) => {
     this.props.trackResourceChange({
-      extra:
-        { newResource: option, graph: 'resourceByTopic' }
+      extra: { newResource: option, graph: 'resourceByTopic' },
     });
     this.setState({ currentResourceByTopic: option.value });
-  }
+  };
 
   onResourceByProjectChange = (option) => {
     this.props.trackResourceChange({
-      extra:
-        { newResource: option, graph: 'resourceByProject' }
+      extra: { newResource: option, graph: 'resourceByProject' },
     });
     this.setState({ currentResourceByProject: option.value });
-  }
+  };
 
   generateProjectOptions = () => {
     const {
@@ -177,66 +211,61 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       projects: { projectsList },
       localize,
       onlyModerator,
-      intl: {
-        formatMessage
-      }
+      intl: { formatMessage },
     } = this.props;
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(projects) && !isNilOrError(projectsList)) {
-      filterOptions = projectsList.map((project) => (
-        {
-          value: project.id,
-          label: localize(project.attributes.title_multiloc),
-        }
-      ));
+      filterOptions = projectsList.map((project) => ({
+        value: project.id,
+        label: localize(project.attributes.title_multiloc),
+      }));
     }
 
     if (!onlyModerator) {
-      filterOptions = [{ value: '', label: formatMessage(messages.allProjects) }, ...filterOptions];
+      filterOptions = [
+        { value: '', label: formatMessage(messages.allProjects) },
+        ...filterOptions,
+      ];
     }
 
     return filterOptions;
-  }
+  };
 
   generateGroupsOptions = () => {
     const {
       groups,
-      groups: {
-        groupsList
-      },
-      intl: {
-        formatMessage
-      },
-      localize
+      groups: { groupsList },
+      intl: { formatMessage },
+      localize,
     } = this.props;
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(groups) && !isNilOrError(groupsList)) {
-      filterOptions = groupsList.map((group) => (
-        {
-          value: group.id,
-          label: localize(group.attributes.title_multiloc)
-        }
-      ));
+      filterOptions = groupsList.map((group) => ({
+        value: group.id,
+        label: localize(group.attributes.title_multiloc),
+      }));
     }
 
-    return [{ value: '', label: formatMessage(messages.allGroups) }, ...filterOptions];
-  }
+    return [
+      { value: '', label: formatMessage(messages.allGroups) },
+      ...filterOptions,
+    ];
+  };
 
   generateTopicOptions = () => {
     const {
       topics,
       localize,
-      intl: {
-        formatMessage
-      }
+      intl: { formatMessage },
     } = this.props;
     let filterOptions: IOption[] = [];
 
     if (!isNilOrError(topics)) {
-      filterOptions = topics.filter(topic =>
-        !isNilOrError(topic)).map((topic: ITopicData) => {
+      filterOptions = topics
+        .filter((topic) => !isNilOrError(topic))
+        .map((topic: ITopicData) => {
           return {
             value: topic.id,
             label: localize(topic.attributes.title_multiloc),
@@ -244,8 +273,11 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
         });
     }
 
-    return [{ value: '', label: formatMessage(messages.allTopics) }, ...filterOptions];
-  }
+    return [
+      { value: '', label: formatMessage(messages.allTopics) },
+      ...filterOptions,
+    ];
+  };
 
   render() {
     const {
@@ -257,12 +289,16 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
       currentTopicFilter,
       projectFilterOptions,
       groupFilterOptions,
-      topicFilterOptions
+      topicFilterOptions,
     } = this.state;
     const startAt = startAtMoment && startAtMoment.toISOString();
     const endAt = endAtMoment && endAtMoment.toISOString();
 
-    const { projects, projects: { projectsList }, intl: { formatMessage } } = this.props;
+    const {
+      projects,
+      projects: { projectsList },
+      intl: { formatMessage },
+    } = this.props;
 
     const infoMessage = formatMessage(messages.activeUsersDescription);
 
@@ -285,17 +321,14 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
             configuration={{
               showProjectFilter: true,
               showGroupFilter: true,
-              showTopicFilter: true
+              showTopicFilter: true,
             }}
-
             currentProjectFilter={currentProjectFilter}
             currentGroupFilter={currentGroupFilter}
             currentTopicFilter={currentTopicFilter}
-
             projectFilterOptions={projectFilterOptions}
             groupFilterOptions={groupFilterOptions}
             topicFilterOptions={topicFilterOptions}
-
             onProjectFilter={this.handleOnProjectFilter}
             onGroupFilter={this.handleOnGroupFilter}
             onTopicFilter={this.handleOnTopicFilter}
@@ -378,12 +411,21 @@ class DashboardPageSummary extends PureComponent<PropsHithHoCs, State> {
   }
 }
 
-const publicationStatuses: PublicationStatus[] = ['draft', 'published', 'archived'];
+const publicationStatuses: PublicationStatus[] = [
+  'draft',
+  'published',
+  'archived',
+];
 
 const Data = adopt<DataProps, InputProps>({
   groups: <GetGroups />,
   topics: <GetTopics />,
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />
+  projects: (
+    <GetProjects
+      publicationStatuses={publicationStatuses}
+      filterCanModerate={true}
+    />
+  ),
 });
 
 const DashboardPageSummaryWithHOCs = injectTracks<Props>({
@@ -395,6 +437,8 @@ const DashboardPageSummaryWithHOCs = injectTracks<Props>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <DashboardPageSummaryWithHOCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

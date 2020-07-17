@@ -20,20 +20,26 @@ describe('Idea new page', () => {
   it('shows an error when no title is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message').contains('Please provide a title');
+    cy.get('#e2e-idea-title-input .e2e-error-message').contains(
+      'Please provide a title'
+    );
   });
 
   it('shows an error when no description is provided', () => {
     cy.get('#idea-form');
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message').contains('Please provide a description');
+    cy.get('#e2e-idea-description-input .e2e-error-message').contains(
+      'Please provide a description'
+    );
   });
 
   it('shows an error when the title is less than 10 characters long', () => {
     cy.get('#idea-form');
     cy.get('#e2e-idea-title-input #title').type(randomString(9));
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-title-input .e2e-error-message').contains('The idea title must be at least 10 characters long');
+    cy.get('#e2e-idea-title-input .e2e-error-message').contains(
+      'The idea title must be at least 10 characters long'
+    );
   });
 
   it('shows an error when the description is less than 30 characters long', () => {
@@ -42,7 +48,9 @@ describe('Idea new page', () => {
     cy.get('#e2e-idea-description-input .ql-editor').blur();
     cy.wait(200);
     cy.get('.e2e-submit-idea-form').click();
-    cy.get('#e2e-idea-description-input .e2e-error-message').contains('The idea description must be at least 30 characters long');
+    cy.get('#e2e-idea-description-input .e2e-error-message').contains(
+      'The idea description must be at least 30 characters long'
+    );
   });
 
   it('has a working idea form', () => {
@@ -64,13 +72,24 @@ describe('Idea new page', () => {
     cy.get('.e2e-topics-picker').find('button').eq(4).click();
 
     // verify that the topic has been selected
-    cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
+    cy.get('.e2e-topics-picker')
+      .find('button.selected')
+      .should('have.length', 1);
 
     // add a location
-    cy.get('.e2e-idea-form-location-input-field input').type('Boulevard Anspach Brussels{enter}');
-    cy.get('.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div').first().click();
+    cy.get('.e2e-idea-form-location-input-field input').type(
+      'Boulevard Anspach Brussels{enter}'
+    );
+    cy.get(
+      '.e2e-idea-form-location-input-field #PlacesAutocomplete__autocomplete-container div'
+    )
+      .first()
+      .click();
     cy.wait(500);
-    cy.get('.e2e-idea-form-location-input-field input').should('contain.value', 'Belgium');
+    cy.get('.e2e-idea-form-location-input-field input').should(
+      'contain.value',
+      'Belgium'
+    );
 
     // verify that image and file upload components are present
     cy.get('#e2e-idea-image-upload');
@@ -84,10 +103,18 @@ describe('Idea new page', () => {
     cy.location('pathname').should('eq', `/en-GB/ideas/${ideaTitle}`);
     cy.get('#e2e-idea-show');
     cy.get('#e2e-idea-show').find('#e2e-idea-title').contains(ideaTitle);
-    cy.get('#e2e-idea-show').find('#e2e-idea-description').contains(ideaContent);
-    cy.get('#e2e-idea-show').find('#e2e-idea-topics').find('.e2e-idea-topic').should('have.length', 1);
-    cy.get('#e2e-idea-show').find('#e2e-map-toggle').contains('Boulevard Anspach');
-    cy.get('#e2e-idea-show').find('.e2e-author-link .e2e-username').contains(`${firstName} ${lastName}`);
+    cy.get('#e2e-idea-show')
+      .find('#e2e-idea-description')
+      .contains(ideaContent);
+    cy.get('#e2e-idea-show')
+      .find('#e2e-idea-topics')
+      .find('.e2e-idea-topic')
+      .should('have.length', 1);
+    cy.get('#e2e-idea-show')
+      .find('#e2e-map-toggle')
+      .contains('Boulevard Anspach');
+    cy.get('#e2e-idea-show')
+      .find('.e2e-author-link .e2e-username')
+      .contains(`${firstName} ${lastName}`);
   });
-
 });

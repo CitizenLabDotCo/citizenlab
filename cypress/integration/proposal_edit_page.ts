@@ -14,12 +14,18 @@ describe('Initiative form page', () => {
 
   before(() => {
     cy.apiSignup(firstName, lastName, email, password);
-    cy.apiLogin(email, password).then((user) => {
-      jwt = user.body.jwt;
-      return cy.apiCreateInitiative({ initiativeTitle, initiativeContent, jwt });
-    }).then((initiative) => {
-      initiativeId = initiative.body.data.id;
-    });
+    cy.apiLogin(email, password)
+      .then((user) => {
+        jwt = user.body.jwt;
+        return cy.apiCreateInitiative({
+          initiativeTitle,
+          initiativeContent,
+          jwt,
+        });
+      })
+      .then((initiative) => {
+        initiativeId = initiative.body.data.id;
+      });
   });
 
   beforeEach(() => {
@@ -32,7 +38,9 @@ describe('Initiative form page', () => {
   it('has a working initiative edit form', () => {
     cy.get('#initiative-form');
     cy.get('#e2e-initiative-title-input').as('titleInput');
-    cy.get('#e2e-initiative-form-description-section .ql-editor').as('descriptionInput');
+    cy.get('#e2e-initiative-form-description-section .ql-editor').as(
+      'descriptionInput'
+    );
 
     // check initial values
     cy.get('@titleInput').should('have.value', initiativeTitle);
@@ -50,25 +58,37 @@ describe('Initiative form page', () => {
     cy.get('.e2e-topics-picker').find('button').eq(3).click();
 
     // verify that the topic has been selected
-    cy.get('.e2e-topics-picker').find('button.selected').should('have.length', 1);
+    cy.get('.e2e-topics-picker')
+      .find('button.selected')
+      .should('have.length', 1);
 
     // add a location
     cy.get('.e2e-initiative-location-input input').type('antwerp{enter}');
-    cy.get('.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div').first().click();
+    cy.get(
+      '.e2e-initiative-location-input #PlacesAutocomplete__autocomplete-container div'
+    )
+      .first()
+      .click();
 
     // verify location
-    cy.get('.e2e-initiative-location-input input').should('contain.value', 'Antwerp');
-    cy.get('.e2e-initiative-location-input input').should('not.have.value', 'antwerp');
+    cy.get('.e2e-initiative-location-input input').should(
+      'contain.value',
+      'Antwerp'
+    );
+    cy.get('.e2e-initiative-location-input input').should(
+      'not.have.value',
+      'antwerp'
+    );
 
     // verify that image and file upload components are present
     cy.get('#e2e-initiative-file-upload');
 
     // add an image
     cy.get('#e2e-iniatiative-banner-dropzone');
-    cy.fixture('cy.png', 'base64').then(fileContent => {
+    cy.fixture('cy.png', 'base64').then((fileContent) => {
       cy.get('#e2e-iniatiative-img-dropzone').upload(
         { fileContent, fileName: 'cy.png', mimeType: 'image/png' },
-        { subjectType: 'drag-n-drop' },
+        { subjectType: 'drag-n-drop' }
       );
       cy.get('#e2e-iniatiative-img-dropzone input').should('have.length', 0);
     });
@@ -90,5 +110,4 @@ describe('Initiative form page', () => {
   after(() => {
     cy.apiRemoveInitiative(initiativeId);
   });
-
 });

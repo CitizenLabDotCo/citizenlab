@@ -1,7 +1,13 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { indexOf, isString, forEach, findIndex } from 'lodash-es';
 import { Subscription, BehaviorSubject, combineLatest } from 'rxjs';
-import { tap, filter, switchMap, distinctUntilChanged, map } from 'rxjs/operators';
+import {
+  tap,
+  filter,
+  switchMap,
+  distinctUntilChanged,
+  map,
+} from 'rxjs/operators';
 import moment from 'moment';
 import bowser from 'bowser';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -18,7 +24,12 @@ import IdeaButton from 'components/IdeaButton';
 // services
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
-import { phasesStream, IPhases, IPhaseData, getCurrentPhase } from 'services/phases';
+import {
+  phasesStream,
+  IPhases,
+  IPhaseData,
+  getCurrentPhase,
+} from 'services/phases';
 
 // i18n
 import messages from '../messages';
@@ -202,7 +213,7 @@ const HeaderTitle = styled.h2`
 `;
 
 const MobileDate = styled.div`
-   color: ${colors.label};
+  color: ${colors.label};
   font-size: ${fontSizes.base}px;
   line-height: 21px;
   font-weight: 400;
@@ -287,7 +298,7 @@ const phaseBarHeight = '25px';
 
 const PhaseBar = styled.button`
   width: 100%;
-  height: calc( ${phaseBarHeight} - 1px );
+  height: calc(${phaseBarHeight} - 1px);
   color: ${greyOpaque};
   font-size: ${fontSizes.small}px;
   font-weight: 400;
@@ -315,7 +326,7 @@ const PhaseArrow = styled(Icon)`
   z-index: 2;
 `;
 
-const PhaseText = styled.div<{ current: boolean, selected: boolean }>`
+const PhaseText = styled.div<{ current: boolean; selected: boolean }>`
   color: ${greyOpaque};
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -341,9 +352,11 @@ const PhaseText = styled.div<{ current: boolean, selected: boolean }>`
 const selectedPhaseBar = css`
   ${PhaseBar} {
     background: ${greyOpaque};
-    color: #fff
+    color: #fff;
   }
-  ${PhaseText} { color: ${greyOpaque}; }
+  ${PhaseText} {
+    color: ${greyOpaque};
+  }
 `;
 
 const currentPhaseBar = css`
@@ -361,7 +374,9 @@ const currentSelectedPhaseBar = css`
     background: ${greenOpaque};
     color: #fff;
   }
-  ${PhaseText} { color: ${greenOpaque}; }
+  ${PhaseText} {
+    color: ${greenOpaque};
+  }
 `;
 
 const PhaseContainer = styled.div<{ width: number }>`
@@ -371,14 +386,16 @@ const PhaseContainer = styled.div<{ width: number }>`
   flex-direction: column;
   position: relative;
   cursor: pointer;
-  margin-right:  ${(props: any) => !props.last ? '1px' : '0px' };
+  margin-right: ${(props: any) => (!props.last ? '1px' : '0px')};
 
   &.first ${PhaseBar} {
-    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px ${(props: any) => props.theme.borderRadius};
+    border-radius: ${(props: any) => props.theme.borderRadius} 0px 0px
+      ${(props: any) => props.theme.borderRadius};
   }
 
   &.last ${PhaseBar} {
-    border-radius: 0px ${(props: any) => props.theme.borderRadius} ${(props: any) => props.theme.borderRadius} 0px;
+    border-radius: 0px ${(props: any) => props.theme.borderRadius}
+      ${(props: any) => props.theme.borderRadius} 0px;
   }
 
   &:focus,
@@ -405,10 +422,12 @@ const PhaseContainer = styled.div<{ width: number }>`
 
 const SelectedPhaseEventName = 'SelectedPhaseChangeEvent';
 type ISelectedPhase = IPhaseData | null;
-export const selectedPhase$ = eventEmitter.observeEvent<ISelectedPhase>(SelectedPhaseEventName).pipe(
-  map(event => event.eventValue),
-  distinctUntilChanged((x, y) => x?.id === y?.id)
-);
+export const selectedPhase$ = eventEmitter
+  .observeEvent<ISelectedPhase>(SelectedPhaseEventName)
+  .pipe(
+    map((event) => event.eventValue),
+    distinctUntilChanged((x, y) => x?.id === y?.id)
+  );
 
 interface Props {
   projectId: string;
@@ -424,7 +443,10 @@ interface State {
   loaded: boolean;
 }
 
-class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+class Timeline extends PureComponent<
+  Props & InjectedIntlProps & WithRouterProps,
+  State
+> {
   initialState: State;
   projectId$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -437,7 +459,7 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       phases: null,
       currentPhaseId: null,
       selectedPhase: null,
-      loaded: false
+      loaded: false,
     };
     this.initialState = initialState;
     this.state = initialState;
@@ -458,50 +480,68 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       projectId$
         .pipe(
           tap(() => this.setState(this.initialState)),
-          filter(projectId => isString(projectId)),
+          filter((projectId) => isString(projectId)),
           switchMap((projectId: string) => {
             const phases$ = phasesStream(projectId).observable;
 
-            return combineLatest(
-              locale$,
-              currentTenant$,
-              phases$
-            );
+            return combineLatest(locale$, currentTenant$, phases$);
           })
         )
         .subscribe(([locale, currentTenant, phases]) => {
           const currentPhase = getCurrentPhase(phases.data);
           const currentPhaseId = currentPhase ? currentPhase.id : null;
-          const selectedPhase = this.getDefaultSelectedPhase(currentPhase, phases);
-          this.setState({ locale, currentTenant, phases, currentPhaseId, selectedPhase, loaded: true });
-        })
+          const selectedPhase = this.getDefaultSelectedPhase(
+            currentPhase,
+            phases
+          );
+          this.setState({
+            locale,
+            currentTenant,
+            phases,
+            currentPhaseId,
+            selectedPhase,
+            loaded: true,
+          });
+        }),
     ];
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
     this.projectId$.next(this.props.projectId);
 
-    const oldSelectedPhaseId = prevState.selectedPhase ? prevState.selectedPhase.id : null;
-    const newSelectedPhaseId = this.state.selectedPhase ? this.state.selectedPhase.id : null;
+    const oldSelectedPhaseId = prevState.selectedPhase
+      ? prevState.selectedPhase.id
+      : null;
+    const newSelectedPhaseId = this.state.selectedPhase
+      ? this.state.selectedPhase.id
+      : null;
 
     if (newSelectedPhaseId !== oldSelectedPhaseId) {
-      eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventName, this.state.selectedPhase);
+      eventEmitter.emit<ISelectedPhase>(
+        SelectedPhaseEventName,
+        this.state.selectedPhase
+      );
     }
   }
 
   componentWillUnmount() {
     eventEmitter.emit<ISelectedPhase>(SelectedPhaseEventName);
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  getDefaultSelectedPhase(currentPhase: ISelectedPhase, phases: IPhases | null) {
+  getDefaultSelectedPhase(
+    currentPhase: ISelectedPhase,
+    phases: IPhases | null
+  ) {
     let selectedPhase: ISelectedPhase = null;
     const { location } = this.props;
 
     // if, coming from the siteMap, a phase url parameter was passed in, we pick that phase as the default phase,
     // then remove the param so that when the user navigates to other phases there is no mismatch
     if (location.query.phase && typeof location.query.phase === 'string') {
-      const phase = phases ? phases.data.find(phase => phase.id === location.query.phase) : null;
+      const phase = phases
+        ? phases.data.find((phase) => phase.id === location.query.phase)
+        : null;
       if (phase) {
         window.history.replaceState(null, '', location.pathname);
         return phase;
@@ -512,7 +552,10 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
       selectedPhase = currentPhase;
     } else if (phases && phases.data.length > 0) {
       forEach(phases.data, (phase) => {
-        const phaseTime = pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]);
+        const phaseTime = pastPresentOrFuture([
+          phase.attributes.start_at,
+          phase.attributes.end_at,
+        ]);
 
         if (phaseTime === 'present' || phaseTime === 'future') {
           selectedPhase = phase;
@@ -530,16 +573,18 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     return selectedPhase;
   }
 
-  handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (event: FormEvent) => {
+  handleOnPhaseSelection = (selectedPhase: ISelectedPhase) => (
+    event: FormEvent
+  ) => {
     trackEventByName(tracks.clickOnPhase);
 
     event.preventDefault();
     this.setState({ selectedPhase });
-  }
+  };
 
   handleOnPhaseSelectionFromDropdown = (selectedPhase: ISelectedPhase) => {
     this.setState({ selectedPhase });
-  }
+  };
 
   goToNextPhase = () => {
     trackEventByName(tracks.clickNextPhaseButton);
@@ -547,11 +592,15 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const { selectedPhase } = this.state;
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;
-    const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
-    const nextPhaseIndex = phases.data.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
+    const selectedPhaseIndex = findIndex(
+      phases.data,
+      (phase) => phase.id === selectedPhaseId
+    );
+    const nextPhaseIndex =
+      phases.data.length >= selectedPhaseIndex + 2 ? selectedPhaseIndex + 1 : 0;
     const nextPhase = phases.data[nextPhaseIndex];
-   this.setState({ selectedPhase: nextPhase });
-  }
+    this.setState({ selectedPhase: nextPhase });
+  };
 
   goToPreviousPhase = () => {
     trackEventByName(tracks.clickPreviousPhaseButton);
@@ -559,53 +608,81 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
     const { selectedPhase } = this.state;
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
     const phases = this.state.phases as IPhases;
-    const selectedPhaseIndex = findIndex(phases.data, phase => phase.id === selectedPhaseId);
-    const prevPhaseIndex = selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.data.length - 1;
+    const selectedPhaseIndex = findIndex(
+      phases.data,
+      (phase) => phase.id === selectedPhaseId
+    );
+    const prevPhaseIndex =
+      selectedPhaseIndex > 0 ? selectedPhaseIndex - 1 : phases.data.length - 1;
     const prevPhase = phases.data[prevPhaseIndex];
     this.setState({ selectedPhase: prevPhase });
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   render() {
     const { className } = this.props;
-    const { locale, currentTenant, phases, currentPhaseId, selectedPhase } = this.state;
+    const {
+      locale,
+      currentTenant,
+      phases,
+      currentPhaseId,
+      selectedPhase,
+    } = this.state;
     const selectedPhaseId = selectedPhase ? selectedPhase.id : null;
 
     if (locale && currentTenant && phases && phases.data.length > 0) {
-      const phaseIds = (phases ? phases.data.map(phase => phase.id) : null);
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const selectedPhase = (selectedPhaseId ? phases.data.find(phase => phase.id === selectedPhaseId) : null);
-      const selectedPhaseStart = (selectedPhase
+      const phaseIds = phases ? phases.data.map((phase) => phase.id) : null;
+      const currentTenantLocales =
+        currentTenant.data.attributes.settings.core.locales;
+      const selectedPhase = selectedPhaseId
+        ? phases.data.find((phase) => phase.id === selectedPhaseId)
+        : null;
+      const selectedPhaseStart = selectedPhase
         ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('LL')
-        : null);
-      const selectedPhaseEnd = (selectedPhase
+        : null;
+      const selectedPhaseEnd = selectedPhase
         ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('LL')
-        : null);
-      const mobileSelectedPhaseStart = (selectedPhase
+        : null;
+      const mobileSelectedPhaseStart = selectedPhase
         ? moment(selectedPhase.attributes.start_at, 'YYYY-MM-DD').format('ll')
-        : null);
-      const mobileSelectedPhaseEnd = (selectedPhase
+        : null;
+      const mobileSelectedPhaseEnd = selectedPhase
         ? moment(selectedPhase.attributes.end_at, 'YYYY-MM-DD').format('ll')
-        : null);
-      const selectedPhaseTitle = (selectedPhase
-        ? getLocalized(selectedPhase.attributes.title_multiloc, locale, currentTenantLocales) : null);
-      const selectedPhaseNumber = (selectedPhase ? indexOf(phaseIds, selectedPhaseId) + 1 : null);
-      const isSelected = (selectedPhaseId !== null);
-      const phaseStatus = (selectedPhase && pastPresentOrFuture([selectedPhase.attributes.start_at, selectedPhase.attributes.end_at]));
+        : null;
+      const selectedPhaseTitle = selectedPhase
+        ? getLocalized(
+            selectedPhase.attributes.title_multiloc,
+            locale,
+            currentTenantLocales
+          )
+        : null;
+      const selectedPhaseNumber = selectedPhase
+        ? indexOf(phaseIds, selectedPhaseId) + 1
+        : null;
+      const isSelected = selectedPhaseId !== null;
+      const phaseStatus =
+        selectedPhase &&
+        pastPresentOrFuture([
+          selectedPhase.attributes.start_at,
+          selectedPhase.attributes.end_at,
+        ]);
       const lastPhaseIndex = phases.data.length - 1;
-      const totalNumberOfDays = phases.data.map((phaseData) => {
-        const startIsoDate = getIsoDate(phaseData.attributes.start_at);
-        const endIsoDate = getIsoDate(phaseData.attributes.end_at);
-        const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
-        const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-        const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-        return numberOfDays;
-      }).reduce((accumulator, numberOfDays) => {
-        return accumulator + numberOfDays;
-      });
+      const totalNumberOfDays = phases.data
+        .map((phaseData) => {
+          const startIsoDate = getIsoDate(phaseData.attributes.start_at);
+          const endIsoDate = getIsoDate(phaseData.attributes.end_at);
+          const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
+          const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
+          const numberOfDays =
+            Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+          return numberOfDays;
+        })
+        .reduce((accumulator, numberOfDays) => {
+          return accumulator + numberOfDays;
+        });
 
       return (
         <Container className={className}>
@@ -614,38 +691,59 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               <HeaderRows>
                 <HeaderFirstRow aria-live="polite">
                   <HeaderLeftSection>
-                    {isSelected &&
-                      <PhaseNumberWrapper aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                        <PhaseNumber className={`${isSelected && 'selected'} ${phaseStatus}`}>
+                    {isSelected && (
+                      <PhaseNumberWrapper
+                        aria-hidden
+                        className={`${isSelected && 'selected'} ${phaseStatus}`}
+                      >
+                        <PhaseNumber
+                          className={`${
+                            isSelected && 'selected'
+                          } ${phaseStatus}`}
+                        >
                           {selectedPhaseNumber}
                         </PhaseNumber>
                       </PhaseNumberWrapper>
-                    }
+                    )}
 
                     <HeaderTitleWrapper className={bowser.msie ? 'ie' : ''}>
-                      <HeaderTitle aria-hidden className={`${isSelected && 'selected'} ${phaseStatus}`}>
-                        {selectedPhaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
+                      <HeaderTitle
+                        aria-hidden
+                        className={`${isSelected && 'selected'} ${phaseStatus}`}
+                      >
+                        {selectedPhaseTitle || (
+                          <FormattedMessage {...messages.noPhaseSelected} />
+                        )}
                       </HeaderTitle>
                       <ScreenReaderOnly>
                         <FormattedMessage
                           {...messages.a11y_selectedPhaseX}
                           values={{
                             selectedPhaseNumber,
-                            selectedPhaseTitle
+                            selectedPhaseTitle,
                           }}
                         />
                       </ScreenReaderOnly>
                       <MobileDate>
                         {phaseStatus === 'past' && (
-                          <FormattedMessage {...messages.endedOn} values={{ date: mobileSelectedPhaseEnd }} />
+                          <FormattedMessage
+                            {...messages.endedOn}
+                            values={{ date: mobileSelectedPhaseEnd }}
+                          />
                         )}
 
                         {phaseStatus === 'present' && (
-                          <FormattedMessage {...messages.endsOn} values={{ date: mobileSelectedPhaseEnd }} />
+                          <FormattedMessage
+                            {...messages.endsOn}
+                            values={{ date: mobileSelectedPhaseEnd }}
+                          />
                         )}
 
                         {phaseStatus === 'future' && (
-                          <FormattedMessage {...messages.startsOn} values={{ date: mobileSelectedPhaseStart }} />
+                          <FormattedMessage
+                            {...messages.startsOn}
+                            values={{ date: mobileSelectedPhaseStart }}
+                          />
                         )}
                       </MobileDate>
                     </HeaderTitleWrapper>
@@ -653,21 +751,30 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
 
                   <HeaderRightSection>
                     <HeaderDate>
-                      {isSelected &&
+                      {isSelected && (
                         <HeaderSubtitle>
                           {phaseStatus === 'past' && (
-                            <FormattedMessage {...messages.endedOn} values={{ date: selectedPhaseEnd }} />
+                            <FormattedMessage
+                              {...messages.endedOn}
+                              values={{ date: selectedPhaseEnd }}
+                            />
                           )}
 
                           {phaseStatus === 'present' && (
-                            <FormattedMessage {...messages.endsOn} values={{ date: selectedPhaseEnd }} />
+                            <FormattedMessage
+                              {...messages.endsOn}
+                              values={{ date: selectedPhaseEnd }}
+                            />
                           )}
 
                           {phaseStatus === 'future' && (
-                            <FormattedMessage {...messages.startsOn} values={{ date: selectedPhaseStart }} />
+                            <FormattedMessage
+                              {...messages.startsOn}
+                              values={{ date: selectedPhaseStart }}
+                            />
                           )}
                         </HeaderSubtitle>
-                      }
+                      )}
                     </HeaderDate>
 
                     <IdeaButtonDesktop
@@ -684,7 +791,9 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                         buttonStyle="secondary"
                         padding="10px"
                         disabled={selectedPhaseId === phases.data[0].id}
-                        ariaLabel={this.props.intl.formatMessage(messages.goToPreviousPhase)}
+                        ariaLabel={this.props.intl.formatMessage(
+                          messages.goToPreviousPhase
+                        )}
                         className="e2e-previous-phase"
                       />
                       <NextPhaseButton
@@ -693,8 +802,12 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                         iconSize="15px"
                         buttonStyle="secondary"
                         padding="10px"
-                        disabled={selectedPhaseId === phases.data[lastPhaseIndex].id}
-                        ariaLabel={this.props.intl.formatMessage(messages.goToNextPhase)}
+                        disabled={
+                          selectedPhaseId === phases.data[lastPhaseIndex].id
+                        }
+                        ariaLabel={this.props.intl.formatMessage(
+                          messages.goToNextPhase
+                        )}
                       />
                     </PhaseNavigation>
                   </HeaderRightSection>
@@ -717,24 +830,33 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
               </ScreenReaderOnly>
               {phases.data.map((phase, index) => {
                 const phaseNumber = index + 1;
-                const phaseTitle = getLocalized(phase.attributes.title_multiloc, locale, currentTenantLocales);
-                const isFirst = (index === 0);
-                const isLast = (index === phases.data.length - 1);
-                const isCurrentPhase = (phase.id === currentPhaseId);
-                const isSelectedPhase = (phase.id === selectedPhaseId);
+                const phaseTitle = getLocalized(
+                  phase.attributes.title_multiloc,
+                  locale,
+                  currentTenantLocales
+                );
+                const isFirst = index === 0;
+                const isLast = index === phases.data.length - 1;
+                const isCurrentPhase = phase.id === currentPhaseId;
+                const isSelectedPhase = phase.id === selectedPhaseId;
                 const startIsoDate = getIsoDate(phase.attributes.start_at);
                 const endIsoDate = getIsoDate(phase.attributes.end_at);
                 const startMoment = moment(startIsoDate, 'YYYY-MM-DD');
                 const endMoment = moment(endIsoDate, 'YYYY-MM-DD');
-                const numberOfDays = Math.abs(startMoment.diff(endMoment, 'days')) + 1;
-                const width = Math.round(numberOfDays / totalNumberOfDays * 100);
+                const numberOfDays =
+                  Math.abs(startMoment.diff(endMoment, 'days')) + 1;
+                const width = Math.round(
+                  (numberOfDays / totalNumberOfDays) * 100
+                );
                 // const width = Math.round(100 / phases.data.length);
                 const classNames = [
                   isFirst ? 'first' : null,
                   isLast ? 'last' : null,
                   isCurrentPhase ? 'currentPhase' : null,
-                  isSelectedPhase ? 'selectedPhase' : null
-                ].filter(className => className).join(' ');
+                  isSelectedPhase ? 'selectedPhase' : null,
+                ]
+                  .filter((className) => className)
+                  .join(' ');
 
                 return (
                   <PhaseContainer
@@ -745,15 +867,13 @@ class Timeline extends PureComponent<Props & InjectedIntlProps & WithRouterProps
                     onClick={this.handleOnPhaseSelection(phase)}
                   >
                     <PhaseBar>
-                      <PhaseBarText aria-hidden>
-                        {phaseNumber}
-                      </PhaseBarText>
+                      <PhaseBarText aria-hidden>{phaseNumber}</PhaseBarText>
                       <ScreenReaderOnly>
                         <FormattedMessage
                           {...messages.a11y_phaseX}
                           values={{
                             phaseNumber,
-                            phaseTitle
+                            phaseTitle,
                           }}
                         />
                       </ScreenReaderOnly>

@@ -25,7 +25,7 @@ const Container = styled.div`
 `;
 const PhaseContainer = styled.div`
   &:not(:last-child) {
-    margin-bottom: 50px
+    margin-bottom: 50px;
   }
 `;
 
@@ -42,23 +42,23 @@ const Left = styled.div`
   margin-right: 80px;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   project: GetProjectChildProps;
   phases: GetPhasesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 export class AdminProjectVolunteering extends React.PureComponent<Props> {
-
   render() {
     const { project, phases } = this.props;
     if (isNilOrError(project)) return null;
 
-    if (project.attributes.process_type === 'continuous'
-      && project.attributes.participation_method === 'volunteering'
+    if (
+      project.attributes.process_type === 'continuous' &&
+      project.attributes.participation_method === 'volunteering'
     ) {
       return (
         <Container>
@@ -76,17 +76,22 @@ export class AdminProjectVolunteering extends React.PureComponent<Props> {
               participationContextId={project.id}
             />
           </HeaderContainer>
-            <AllCauses
-              projectId={project.id}
-              participationContextType="project"
-              participationContextId={project.id}
-            />
+          <AllCauses
+            projectId={project.id}
+            participationContextType="project"
+            participationContextId={project.id}
+          />
         </Container>
       );
     }
 
-    if (project.attributes.process_type === 'timeline' && !isNilOrError(phases)) {
-      const volunteeringPhases = phases.filter(phase => phase.attributes.participation_method === 'volunteering');
+    if (
+      project.attributes.process_type === 'timeline' &&
+      !isNilOrError(phases)
+    ) {
+      const volunteeringPhases = phases.filter(
+        (phase) => phase.attributes.participation_method === 'volunteering'
+      );
       if (volunteeringPhases.length === 0) return null;
       return (
         <Container>
@@ -96,7 +101,7 @@ export class AdminProjectVolunteering extends React.PureComponent<Props> {
           <SectionDescription>
             <FormattedMessage {...messages.subtitleVolunteeringTab} />
           </SectionDescription>
-          {volunteeringPhases.map(phase => (
+          {volunteeringPhases.map((phase) => (
             <PhaseContainer key={phase.id}>
               <HeaderContainer>
                 <Left>
@@ -124,12 +129,20 @@ export class AdminProjectVolunteering extends React.PureComponent<Props> {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject projectId={params.projectId} >{render}</GetProject>,
+  phases: ({ params, render }) => (
+    <GetPhases projectId={params.projectId}>{render}</GetPhases>
+  ),
+  project: ({ params, render }) => (
+    <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
 });
 
-export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <AdminProjectVolunteering {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter<InputProps>(
+  (inputProps: InputProps & WithRouterProps) => (
+    <Data {...inputProps}>
+      {(dataProps) => (
+        <AdminProjectVolunteering {...inputProps} {...dataProps} />
+      )}
+    </Data>
+  )
+);

@@ -22,7 +22,6 @@ const Mobile = memo<Props>(({ className }: Props) => {
       <InitiatiativeInfoContent />
     </CollapsibleBox>
   );
-
 });
 
 export default Mobile;

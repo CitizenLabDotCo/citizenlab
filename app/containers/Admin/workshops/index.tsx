@@ -53,17 +53,29 @@ const WorkshopPage = memo<InjectedIntlProps>(({ intl }) => {
           <FormattedMessage
             {...messages.workshopsIntro}
             values={{
-              readSupportGuideLink:
+              readSupportGuideLink: (
                 // tslint:disable-next-line:react-a11y-anchors
-                <a href={intl.formatMessage(messages.supportGuideLinkUrl)} target="_blank">
+                <a
+                  href={intl.formatMessage(messages.supportGuideLinkUrl)}
+                  target="_blank"
+                >
                   <FormattedMessage {...messages.supportGuideLinkCopy} />
-                </a>,
-              createWorkshopArticleLink:
-                <a href={intl.formatMessage(messages.learnHowToCreateWorkshopLinkUrl)} target="_blank">
-                  {/* // tslint:disable-next-line:react-a11y-anchors */}
-                  <FormattedMessage {...messages.learnHowToCreateWorkshopLinkCopy} />
                 </a>
-              }}
+              ),
+              createWorkshopArticleLink: (
+                <a
+                  href={intl.formatMessage(
+                    messages.learnHowToCreateWorkshopLinkUrl
+                  )}
+                  target="_blank"
+                >
+                  {/* // tslint:disable-next-line:react-a11y-anchors */}
+                  <FormattedMessage
+                    {...messages.learnHowToCreateWorkshopLinkCopy}
+                  />
+                </a>
+              ),
+            }}
           />
         </QuillEditedContent>
       </PageWrapper>

@@ -2,7 +2,15 @@ import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Subscription, combineLatest } from 'rxjs';
 import { isEqual, forOwn, get, isEmpty, each } from 'lodash-es';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ReferenceLine,
+  ResponsiveContainer,
+} from 'recharts';
 import { votesByBirthyearStream, IVotesByBirthyear } from 'services/stats';
 import styled, { withTheme } from 'styled-components';
 
@@ -24,7 +32,6 @@ type State = {
 const Container = styled.div``;
 
 class AgeChart extends PureComponent<Props & InjectedIntlProps, State> {
-
   subscription: Subscription;
 
   constructor(props: Props) {
@@ -39,7 +46,10 @@ class AgeChart extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(this.props.ideaIdsComparisons, prevProps.ideaIdsComparisons) || !isEqual(this.props.normalization, prevProps.normalization)) {
+    if (
+      !isEqual(this.props.ideaIdsComparisons, prevProps.ideaIdsComparisons) ||
+      !isEqual(this.props.normalization, prevProps.normalization)
+    ) {
       this.resubscribe();
     }
   }
@@ -51,7 +61,14 @@ class AgeChart extends PureComponent<Props & InjectedIntlProps, State> {
   convertToGraphFormat = (series: IVotesByBirthyear[]) => {
     const currentYear = moment().year();
 
-    const ageBucketRecords = [[0,  20], [20, 30], [30, 40], [40, 50], [50, 60], [60, 100]].map(([minAge, maxAge]) => {
+    const ageBucketRecords = [
+      [0, 20],
+      [20, 30],
+      [30, 40],
+      [40, 50],
+      [50, 60],
+      [60, 100],
+    ].map(([minAge, maxAge]) => {
       const record = {
         label: `${minAge}-${maxAge}`,
       };
@@ -64,7 +81,8 @@ class AgeChart extends PureComponent<Props & InjectedIntlProps, State> {
               if (!record[`${mode} ${serieIndex + 1}`]) {
                 record[`${mode} ${serieIndex + 1}`] = 0;
               }
-              record[`${mode} ${serieIndex + 1}`] += (mode === 'down' ? -1 : 1) * voteCount;
+              record[`${mode} ${serieIndex + 1}`] +=
+                (mode === 'down' ? -1 : 1) * voteCount;
             }
           });
         });
@@ -73,25 +91,30 @@ class AgeChart extends PureComponent<Props & InjectedIntlProps, State> {
     });
 
     const blankRecord = {
-       label: this.props.intl.formatMessage(messages['_blank'])
+      label: this.props.intl.formatMessage(messages['_blank']),
     };
     each(series, (serie, serieIndex) => {
       ['up', 'down', 'total'].forEach((mode) => {
-        blankRecord[`${mode} ${serieIndex + 1}`] = (mode === 'down' ? -1 : 1) * get(serie.series, `${mode}._blank`);
+        blankRecord[`${mode} ${serieIndex + 1}`] =
+          (mode === 'down' ? -1 : 1) * get(serie.series, `${mode}._blank`);
       });
     });
 
     return [...ageBucketRecords, blankRecord];
-  }
+  };
 
   resubscribe() {
     if (this.subscription) this.subscription.unsubscribe();
     this.subscription = combineLatest(
-      this.props.ideaIdsComparisons.map((ideaIds) => (
-        votesByBirthyearStream({
-          queryParameters: { ideas: ideaIds, normalization: this.props.normalization }
-        }).observable
-      ))
+      this.props.ideaIdsComparisons.map(
+        (ideaIds) =>
+          votesByBirthyearStream({
+            queryParameters: {
+              ideas: ideaIds,
+              normalization: this.props.normalization,
+            },
+          }).observable
+      )
     ).subscribe((series) => {
       this.setState({ series: this.convertToGraphFormat(series) });
     });
@@ -114,16 +137,44 @@ class AgeChart extends PureComponent<Props & InjectedIntlProps, State> {
             <YAxis />
             <Tooltip />
             <ReferenceLine y={0} stroke="#000" />
-            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar key={`up ${index + 1}`} dataKey={`up ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-            ))}
-            {ideaIdsComparisons.length > 1 && ideaIdsComparisons.map((_, index) => (
-              <Bar key={`down ${index + 1}`} dataKey={`down ${index + 1}`} fill={theme.comparisonColors[index]} stackId={`votes ${index}`} maxBarSize={20} />
-            ))}
-            {ideaIdsComparisons.length === 1 &&
-              <Bar key="up 1" dataKey="up 1" fill={theme.upvotes} stackId="votes 1" maxBarSize={20} />}
-            {ideaIdsComparisons.length === 1 &&
-              <Bar key="down 1" dataKey="down 1" fill={theme.downvotes} stackId="votes 1" maxBarSize={20} />}
+            {ideaIdsComparisons.length > 1 &&
+              ideaIdsComparisons.map((_, index) => (
+                <Bar
+                  key={`up ${index + 1}`}
+                  dataKey={`up ${index + 1}`}
+                  fill={theme.comparisonColors[index]}
+                  stackId={`votes ${index}`}
+                  maxBarSize={20}
+                />
+              ))}
+            {ideaIdsComparisons.length > 1 &&
+              ideaIdsComparisons.map((_, index) => (
+                <Bar
+                  key={`down ${index + 1}`}
+                  dataKey={`down ${index + 1}`}
+                  fill={theme.comparisonColors[index]}
+                  stackId={`votes ${index}`}
+                  maxBarSize={20}
+                />
+              ))}
+            {ideaIdsComparisons.length === 1 && (
+              <Bar
+                key="up 1"
+                dataKey="up 1"
+                fill={theme.upvotes}
+                stackId="votes 1"
+                maxBarSize={20}
+              />
+            )}
+            {ideaIdsComparisons.length === 1 && (
+              <Bar
+                key="down 1"
+                dataKey="down 1"
+                fill={theme.downvotes}
+                stackId="votes 1"
+                maxBarSize={20}
+              />
+            )}
           </BarChart>
         </ResponsiveContainer>
       </Container>

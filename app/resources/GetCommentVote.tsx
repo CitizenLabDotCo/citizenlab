@@ -21,20 +21,24 @@ interface State {
   commentVote: ICommentVoteData | undefined | null | Error;
 }
 
-export type GetCommentVoteChildProps = ICommentVoteData | undefined | null | Error;
+export type GetCommentVoteChildProps =
+  | ICommentVoteData
+  | undefined
+  | null
+  | Error;
 
 export default class GetCommentVote extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      commentVote: undefined
+      commentVote: undefined,
     };
   }
 
@@ -44,18 +48,25 @@ export default class GetCommentVote extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ voteId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ commentVote: undefined })),
-        switchMap(({ voteId }) => {
-          if (isString(voteId)) {
-            return commentVoteStream(voteId).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ commentVote: undefined })),
+          switchMap(({ voteId }) => {
+            if (isString(voteId)) {
+              return commentVoteStream(voteId).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((commentVote) => this.setState({ commentVote: !isNilOrError(commentVote) ? commentVote.data : commentVote }))
+            return of(null);
+          })
+        )
+        .subscribe((commentVote) =>
+          this.setState({
+            commentVote: !isNilOrError(commentVote)
+              ? commentVote.data
+              : commentVote,
+          })
+        ),
     ];
   }
 
@@ -65,7 +76,7 @@ export default class GetCommentVote extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

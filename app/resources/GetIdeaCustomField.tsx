@@ -1,9 +1,18 @@
 import useIdeaCustomField from 'hooks/useIdeaCustomField';
-import { IIdeaCustomFieldData, CustomFieldCodes } from 'services/ideaCustomFields';
+import {
+  IIdeaCustomFieldData,
+  CustomFieldCodes,
+} from 'services/ideaCustomFields';
 
-export type GetIdeaCustomFieldChildProps = IIdeaCustomFieldData | undefined | null | Error;
+export type GetIdeaCustomFieldChildProps =
+  | IIdeaCustomFieldData
+  | undefined
+  | null
+  | Error;
 
-type children = (renderProps: GetIdeaCustomFieldChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetIdeaCustomFieldChildProps
+) => JSX.Element | null;
 
 interface Props {
   projectId: string | null;

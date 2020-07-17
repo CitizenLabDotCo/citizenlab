@@ -19,17 +19,20 @@ interface Props extends InputProps, DataProps {}
 interface State {}
 
 /*
-* This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
-*/
+ * This link override doesn't support url parameters, because updateLocationDescriptor doesn't parse them
+ */
 export class Link extends PureComponent<Props, State> {
   render() {
     const { to, locale, ...otherProps } = this.props;
-    return <RouterLink to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'} {...otherProps} />;
+    return (
+      <RouterLink
+        to={!isNilOrError(locale) ? updateLocationDescriptor(to, locale) : '#'}
+        {...otherProps}
+      />
+    );
   }
 }
 
 export default (inputProps: InputProps) => (
-  <GetLocale>
-    {locale => <Link {...inputProps} locale={locale} />}
-  </GetLocale>
+  <GetLocale>{(locale) => <Link {...inputProps} locale={locale} />}</GetLocale>
 );
