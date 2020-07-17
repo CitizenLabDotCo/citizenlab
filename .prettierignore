@@ -11,3 +11,5 @@ package-lock.json
 .github
 .vscode
 .storybook
+custom.d.ts
+.circleci
