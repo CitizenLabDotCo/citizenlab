@@ -68,10 +68,15 @@ class SanitizationService
   def sanitize text, features
     scrubber = IframeScrubber.new(features)
 
-    @@sanitizer.sanitize(
+    sanitized = @@sanitizer.sanitize(
       text,
       scrubber: scrubber
     )
+    if sanitized == text
+      sanitized
+    else
+      sanitize sanitized, features
+    end
   end
 
   def sanitize_multiloc multiloc, features
