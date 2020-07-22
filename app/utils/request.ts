@@ -1,7 +1,6 @@
 import 'whatwg-fetch';
 import { stringify } from 'qs';
 import { getJwt } from 'utils/auth/jwt';
-import { isString } from 'lodash-es';
 
 export default function request<T>(url, data, options, queryParameters): Promise<T> {
   const urlParams = stringify(queryParameters, { arrayFormat: 'brackets', addQueryPrefix: true });
@@ -36,11 +35,14 @@ export default function request<T>(url, data, options, queryParameters): Promise
     if (response.ok || response.status === 200) {
       return json;
     }
-
-    const errorMessage = isString(json?.error) ? json.error : (response.statusText || 'unknown error');
-    throw new Error(`error for ${urlWithParams}: ${errorMessage}`);
-  }).catch((error) => {
-    throw new Error(`error for ${urlWithParams}: ${error || 'unknown error'}`);
+    const error = new Error(`error for ${urlWithParams}: ${json?.error || response.statusText || 'unknown error'}`);
+    if (!!json) {
+      // The error reasons may be encoded in the
+      // json content (this happens e.g. for
+      // xlsx invites).
+      Object.assign(error, { json });
+    }
+    throw error;
   });
 }
 
