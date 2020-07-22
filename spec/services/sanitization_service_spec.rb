@@ -153,6 +153,14 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
+    it "sanitizes invalid elements within invalid elements" do
+      input = <<~HTML
+        <p>Test</p><script> Hello! <script>This should be removed!</script></script> Bye!
+      HTML
+      features = []
+      expect(service.sanitize(input, features)).to eq "<p>Test</p> Hello! This should be removed! Bye!\n"
+    end
+
   end
 
   describe "remove_empty_paragraphs" do
