@@ -3,6 +3,14 @@ module EmailCampaigns
 
     belongs_to :author, class_name: 'User', optional: true
 
+    # accepts_nested_attributes_for does not work for concerns
+    # (see https://github.com/rails/rails/issues/15253). Doing
+    # so results in a NoMethodError for text_images_attributes=.
+    # Otherwise, we would include the part below in the
+    # ContentConfigurable concern.
+    has_many :text_images, as: :imageable, dependent: :destroy
+    accepts_nested_attributes_for :text_images
+
     before_validation :set_enabled, on: :create
 
 
