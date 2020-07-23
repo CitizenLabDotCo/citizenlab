@@ -5,9 +5,6 @@ module EmailCampaigns
     MAX_SUBJECT_LEN = 80
 
     included do
-      has_many :text_images, as: :imageable, dependent: :destroy
-      accepts_nested_attributes_for :text_images
-
       validates :subject_multiloc, presence: true, multiloc: {presence: true, length: {maximum: MAX_SUBJECT_LEN}}
       validates :body_multiloc, presence: true, multiloc: {presence: true}
 
