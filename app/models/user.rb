@@ -87,6 +87,7 @@ class User < ApplicationRecord
 
   before_validation :set_cl1_migrated, on: :create
   before_validation :generate_slug
+  before_validation :sanitize_bio_multiloc, if: :bio_multiloc
 
   scope :order_role, -> (direction=:asc) {
     joins("LEFT OUTER JOIN (SELECT jsonb_array_elements(roles) as ro, id FROM users) as r ON users.id = r.id")
@@ -274,6 +275,16 @@ class User < ApplicationRecord
     if !self.slug && self.first_name.present?
       self.slug = SlugService.new.generate_slug self, self.display_name
     end
+  end
+
+  def sanitize_bio_multiloc
+    service = SanitizationService.new
+    self.bio_multiloc = service.sanitize_multiloc(
+      self.bio_multiloc,
+      %i{title alignment list decoration link video}
+    )
+    self.bio_multiloc = service.remove_empty_paragraphs_multiloc(self.bio_multiloc)
+    self.bio_multiloc = service.linkify_multiloc(self.bio_multiloc)
   end
 
   def set_cl1_migrated
