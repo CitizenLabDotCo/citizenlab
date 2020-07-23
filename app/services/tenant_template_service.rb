@@ -24,7 +24,7 @@ class TenantTemplateService
         image_assignments = {}
         restored_attributes = restore_template_attributes attributes, obj_to_id_and_class
         restored_attributes.each do |field_name, field_value|
-          if !model_name.include?('image') && field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
+          if field_name.start_with?('remote_') && field_name.end_with?('_url') && !field_name.include?('file')
             image_assignments[field_name] = field_value
           else
             model.send("#{field_name}=", field_value)
@@ -38,12 +38,12 @@ class TenantTemplateService
             model.save(validate: false)
           end
           attributes.each do |field_name, field_value| # taking original attributes to get correct object ID
-            if field_name.end_with?('_attributes') # linking attribute refs
+            if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
               submodel = model.send(field_name.chomp '_attributes')
               obj_to_id_and_class[field_value.object_id] = [submodel.id, submodel.class]
             end
           end
-          ImageAssignmentJob.perform_later(model, image_assignments) if image_assignments.present?
+          ImageAssignmentJob.perform_now(model, image_assignments) if image_assignments.present?
         rescue Exception => e
           json_info = {
             error_message: e.message,
@@ -68,8 +68,12 @@ class TenantTemplateService
           [locale, translation]
         end.to_h
         new_attributes[field_name] = multiloc_value
-      elsif field_name.end_with?('_attributes')  && (field_value.is_a? Hash)
+      elsif field_name.end_with?('_attributes') && field_value.is_a?(Hash)
         new_attributes[field_name] = restore_template_attributes field_value, obj_to_id_and_class
+      elsif field_name.end_with?('_attributes') && field_value.is_a?(Array) && field_value.all?{|v| v.is_a? Hash}
+        new_attributes[field_name] = field_value.map do |v|
+          restore_template_attributes v, obj_to_id_and_class
+        end
       elsif field_name.end_with?('_ref') 
         ref_suffix = field_name.end_with?('_attributes_ref') ? '_attributes_ref' : '_ref' # linking attribute refs
         if field_value
@@ -505,6 +509,15 @@ class TenantTemplateService
           'publication_status'         => p.admin_publication.publication_status,
           'ordering'                   => p.admin_publication.ordering,
           'parent_ref'                 => lookup_ref(p.admin_publication.parent_id, :admin_publication_attributes)
+        },
+        'text_images_attributes'       => p.text_images.map{ |ti|
+          {
+            'imageable_field'          => ti.imageable_field,
+            'remote_image_url'         => ti.image_url,
+            'text_reference'           => ti.text_reference,
+            'created_at'               => ti.created_at.to_s,
+            'updated_at'               => ti.updated_at.to_s
+          }
         }
       })
       store_ref yml_project, p.id, :project
@@ -553,13 +566,22 @@ class TenantTemplateService
     Phase.all.map do |p|
       yml_phase = yml_participation_context p
       yml_phase.merge!({
-        'project_ref'          => lookup_ref(p.project_id, :project),
-        'title_multiloc'       => p.title_multiloc,
-        'description_multiloc' => p.description_multiloc,
-        'start_at'             => p.start_at.to_s,
-        'end_at'               => p.end_at.to_s,
-        'created_at'           => p.created_at.to_s,
-        'updated_at'           => p.updated_at.to_s
+        'project_ref'            => lookup_ref(p.project_id, :project),
+        'title_multiloc'         => p.title_multiloc,
+        'description_multiloc'   => p.description_multiloc,
+        'start_at'               => p.start_at.to_s,
+        'end_at'                 => p.end_at.to_s,
+        'created_at'             => p.created_at.to_s,
+        'updated_at'             => p.updated_at.to_s,
+        'text_images_attributes' => p.text_images.map{ |ti|
+          {
+            'imageable_field'    => ti.imageable_field,
+            'remote_image_url'   => ti.image_url,
+            'text_reference'     => ti.text_reference,
+            'created_at'         => ti.created_at.to_s,
+            'updated_at'         => ti.updated_at.to_s
+          }
+        }
       })
       store_ref yml_phase, p.id, :phase
       yml_phase
@@ -612,14 +634,23 @@ class TenantTemplateService
   def yml_campaigns
     EmailCampaigns::Campaign.where(type: "EmailCampaigns::Campaigns::Manual").map do |c|
       yml_campaign = {
-        'type'             => c.type,
-        'author_ref'       => lookup_ref(c.author_id, :user),
-        'enabled'          => c.enabled,
-        'sender'           => c.sender,
-        'subject_multiloc' => c.subject_multiloc,
-        'body_multiloc'    => c.body_multiloc,
-        'created_at'       => c.created_at.to_s,
-        'updated_at'       => c.updated_at.to_s,
+        'type'                   => c.type,
+        'author_ref'             => lookup_ref(c.author_id, :user),
+        'enabled'                => c.enabled,
+        'sender'                 => c.sender,
+        'subject_multiloc'       => c.subject_multiloc,
+        'body_multiloc'          => c.body_multiloc,
+        'created_at'             => c.created_at.to_s,
+        'updated_at'             => c.updated_at.to_s,
+        'text_images_attributes' => c.text_images.map{ |ti|
+          {
+            'imageable_field'    => ti.imageable_field,
+            'remote_image_url'   => ti.image_url,
+            'text_reference'     => ti.text_reference,
+            'created_at'         => ti.created_at.to_s,
+            'updated_at'         => ti.updated_at.to_s
+          }
+        }
       }
       store_ref yml_campaign, c.id, :email_campaign
       yml_campaign
@@ -655,14 +686,23 @@ class TenantTemplateService
   def yml_events
     Event.all.map do |e|
       yml_event = {
-        'project_ref'          => lookup_ref(e.project_id, :project),
-        'title_multiloc'       => e.title_multiloc,
-        'description_multiloc' => e.description_multiloc,
-        'location_multiloc'    => e.location_multiloc,
-        'start_at'             => e.start_at.to_s,
-        'end_at'               => e.end_at.to_s,
-        'created_at'           => e.created_at.to_s,
-        'updated_at'           => e.updated_at.to_s
+        'project_ref'            => lookup_ref(e.project_id, :project),
+        'title_multiloc'         => e.title_multiloc,
+        'description_multiloc'   => e.description_multiloc,
+        'location_multiloc'      => e.location_multiloc,
+        'start_at'               => e.start_at.to_s,
+        'end_at'                 => e.end_at.to_s,
+        'created_at'             => e.created_at.to_s,
+        'updated_at'             => e.updated_at.to_s,
+        'text_images_attributes' => e.text_images.map{ |ti|
+          {
+            'imageable_field'    => ti.imageable_field,
+            'remote_image_url'   => ti.image_url,
+            'text_reference'     => ti.text_reference,
+            'created_at'         => ti.created_at.to_s,
+            'updated_at'         => ti.updated_at.to_s
+          }
+        }
       }
       store_ref yml_event, e.id, :event
       yml_event
@@ -749,13 +789,22 @@ class TenantTemplateService
   def yml_pages
     Page.all.map do |p|
       yml_page = {
-        'title_multiloc'     => p.title_multiloc,
-        'body_multiloc'      => p.body_multiloc,
-        'slug'               => p.slug,
-        'created_at'         => p.created_at.to_s,
-        'updated_at'         => p.updated_at.to_s,
-        'project_ref'        => lookup_ref(p.project_id, :project),
-        'publication_status' => p.publication_status
+        'title_multiloc'         => p.title_multiloc,
+        'body_multiloc'          => p.body_multiloc,
+        'slug'                   => p.slug,
+        'created_at'             => p.created_at.to_s,
+        'updated_at'             => p.updated_at.to_s,
+        'project_ref'            => lookup_ref(p.project_id, :project),
+        'publication_status'     => p.publication_status,
+        'text_images_attributes' => p.text_images.map{ |ti|
+          {
+            'imageable_field'    => ti.imageable_field,
+            'remote_image_url'   => ti.image_url,
+            'text_reference'     => ti.text_reference,
+            'created_at'         => ti.created_at.to_s,
+            'updated_at'         => ti.updated_at.to_s
+          }
+        }
       }
       store_ref yml_page, p.id, :page
       yml_page
@@ -916,7 +965,16 @@ class TenantTemplateService
         'created_at'             => i.created_at.to_s,
         'updated_at'             => i.updated_at.to_s,
         'location_point_geojson' => i.location_point_geojson,
-        'location_description'   => i.location_description
+        'location_description'   => i.location_description,
+        'text_images_attributes' => i.text_images.map{ |ti|
+          {
+            'imageable_field'    => ti.imageable_field,
+            'remote_image_url'   => ti.image_url,
+            'text_reference'     => ti.text_reference,
+            'created_at'         => ti.created_at.to_s,
+            'updated_at'         => ti.updated_at.to_s
+          }
+        }
       }
       store_ref yml_initiative, i.id, :initiative
       yml_initiative

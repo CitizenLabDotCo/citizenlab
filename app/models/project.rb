@@ -20,6 +20,7 @@ class Project < ApplicationRecord
   has_many :pages, dependent: :destroy
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   before_destroy :remove_notifications
   has_many :notifications, foreign_key: :project_id, dependent: :nullify
@@ -70,9 +71,8 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_areas, (Proc.new do |area_ids|
-    joins(:areas_projects)
-      .where(areas_projects: {area_id: area_ids})
-      .distinct
+    with_dups = joins(:areas_projects).where(areas_projects: {area_id: area_ids})
+    where(id: with_dups)
   end)
 
   scope :without_areas, -> {

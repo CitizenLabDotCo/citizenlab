@@ -24,8 +24,8 @@ fr:
     ineligible: inéligible
     ineligible_description: inéligible
   topics:
-    nature: Nature et animaux
-    nature_description: Nature and animals
+    nature: Nature et biodiversité
+    nature_description: Nature et biodiversité
     waste: Propreté et déchets
     waste_description: Propreté et déchets
     sustainability: Développement durable
@@ -34,26 +34,26 @@ fr:
     mobility_description: Mobilité
     technology: Énergie et technologie
     technology_description: Énergie et technologie
-    economy: Emploi, economie et commerce
-    economy_description: Emploi, economie et commerce
+    economy: Emploi, economie et tourisme
+    economy_description: Emploi, economie et tourisme
     housing: Logement
     housing_description: Logement
-    public_space: Espace public
-    public_space_description: Espace public
+    public_space: Espaces et bâtiments publics
+    public_space_description: Espaces et bâtiments publics
     safety: Sécurité
     safety_description: Sécurité
     education: Éducation et jeunesse
     education_description: Éducation et jeunesse
-    culture: Culture, sport et événements
-    culture_description: Culture, sport et événements
-    health: Santé
-    health_description: Santé
+    culture: Culture, sports et événements
+    culture_description: Culture, sports et événements
+    health: Santé et bien-être
+    health_description: Santé et bien-être
     inclusion: Social
     inclusion_description: Social
-    community: Community development
-    community_description: Community development
-    services: Services publiques
-    services_description: Services publiques
+    community: Développement communautaire
+    community_description: Développement communautaire
+    services: Services publics
+    services_description: Services publics
     other: Autres
     other_description: Autres
   pages:

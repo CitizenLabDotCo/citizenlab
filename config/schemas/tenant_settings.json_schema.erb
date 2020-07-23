@@ -7,7 +7,8 @@
     {
       "core": {
         "type": "object",
-        "description": "The core of the system. Container for general settings. Always enabled",
+        "title": "Core system",
+        "description": "The container for general settings. The core system should always be enabled.",
         "required-settings": ["organization_type", "timezone", "currency", "locales", "color_main", "color_secondary","color_text", "lifecycle_stage"],
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -15,24 +16,29 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
           "organization_type": {
-            "description": "For a city: <40k small, >40k medium, >120k large. Otherwise: generic",
+            "title": "Organisation Type",
+            "description": "Based on city's population: <40k small, 40-120k medium, >120k large. Otherwise, select 'generic'.",
             "type": "string",
             "enum": ["small_city", "medium_city", "large_city", "generic"],
             "default": "medium_city"
           },
           "lifecycle_stage": {
-            "description": "The lifecycle stage the customer is currently at",
+            "title": "Lifecycle Stage",
+            "description": "The lifecycle stage of the customer.",
             "type": "string",
             "enum": ["trial", "expired_trial", "demo", "active", "churned", "not_applicable"],
             "default": "demo"
           },
           "timezone": {
+            "title": "Time Zone",
             "type": "string",
             "default": "Brussels",
             "enum": [<%= ActiveSupport::TimeZone.all.sort_by{|tz| TimezoneService.new.display_timezone(tz)}.map(&:name).map{|l| "\"#{l}\""}.join(",") %>],
             "enumNames": [<%= ActiveSupport::TimeZone.all.map{|tz| TimezoneService.new.display_timezone(tz)}.sort.map{|l| "\"#{l}\""}.join(",") %>]
           },
           "currency": {
+            "title": "Currency",
+            "description": "Currency used by the organisation, for projects like participatory budgeting that have budget fields.",
             "type": "string",
             "default": "EUR",
             "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>]
@@ -43,6 +49,8 @@
             "minimum": 0
           },
           "locales": {
+            "title": "Platform Languages",
+            "description": "Select all of the languages that will be in use on the platform.",
             "type": "array",
             "items": {
               "type": "string",
@@ -50,93 +58,106 @@
             },
             "uniqueItems": true,
             "minItems": 1,
-            "default": "en"
+            "default": ["en"]
           },
           "organization_name": {
-            "description": "The name of the city or organization, used throughout the platform",
+            "title": "Organisation Name",
+            "description": "How the city or organisation is referred to throughout the platform.",
             "$ref": "#/definitions/multiloc_string"
           },
           "organization_site": {
-            "description": "The URL to the website of the orginization",
+            "title": "Organisation Website",
+            "description": "The city or organisation's official website.",
             "type": "string",
             "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
           },
           "header_title": {
-            "description": "The main title shown on the homepage (max 45 characters)",
+            "title": "Homepage Title",
+            "description": "The header (title) shown on the main banner of the homepage (max 45 characters).",
             "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 45}" }.join(",") %>
-            }
+            "allOf": [{"$ref": "#/definitions/multiloc_string"}],
+            "additionalProperties": {"maxLength": 45}
           },
           "header_slogan": {
-            "description": "The subtitle shown on the homepage (max 90 characters)",
+            "title": "Homepage Subtitle",
+            "description": "The sub-title shown on the main banner of the homepage (max 90 characters).",
             "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              <%= CL2_SUPPORTED_LOCALES.map{|l| "\"#{l.to_s}\": {\"type\": \"string\", \"maxLength\": 90}" }.join(",") %>
-            }
+            "allOf": [{"$ref": "#/definitions/multiloc_string"}],
+            "additionalProperties": {"maxLength": 90}
           },
           "meta_title": {
-            "description": "The title of the homepage, shown on the browser tab and in search engine results",
+            "title": "Page Title",
+            "description": "The title of the homepage displayed on the browser tab in search engine results and when shared on social media.",
             "$ref": "#/definitions/multiloc_string"
           },
           "meta_description": {
-            "description": "The description of the platform shown on links on social media",
+            "title": "Social Media Description",
+            "description": "The description of the platform shown in search engine results and when shared on some social media platforms.",
             "$ref": "#/definitions/multiloc_string"
           },
           "color_main": {
-            "description": "The main brand color as a hexadecimal value including the anchor character",
+            "title": "Main Colour",
+            "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             "default": "#163A7D"
           },
           "color_secondary": {
-            "description": "The secondary brand color as a hexadecimal value including the anchor character",
+            "title": "Secondary Colour",
+            "description": "Secondary colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #ff672f).",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             "default": "#CF4040"
           },
           "color_text": {
-            "description": "The text brand color as a hexadecimal value including the anchor character",
+            "title": "Text Colour",
+            "description": "Colour of platform text. Input as a 6-digit HEX color, including the # sign (e.g. #7fbbca).",
             "type": "string",
             "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
             "default": "#163A7D"
           },
           "signup_helper_text": {
-            "description": "An optional short text, shown on top of the sign up form. Keep it short. Supports HTML",
+            "title": "Sign-up Helper Text (Step 1)",
+            "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "custom_fields_signup_helper_text":  {
-            "description": "An optional short text, shown on top of the sign up form at custom fields step. Keep it short. Supports HTML",
+            "title": "Sign-up Helper Text (Step 2)",
+            "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "custom_onboarding_message": {
-            "description": "Optional text that is shown with buttons for a user that's signed in",
+            "title": "Header Banner Call-to-Action Text",
+            "description": "Optional Call-to-Action text for signed in users, shown on a banner on the top of the homepage. Accompanied by a Call-to-Action (CTA) button. If this field is left blank, 'Header banner non-call to action' text is shown in the banner.",
             "$ref": "#/definitions/multiloc_string",
             "private": true
           },
           "custom_onboarding_button": {
-            "description": "Text on the CTA button next to the custom onboarding message",
+            "title": "Header Banner CTA Button",
+            "description": "Text for the CTA button in the header banner for signed-in users. Accompanies the 'Header banner call to action text' field.",
             "$ref": "#/definitions/multiloc_string",
             "private": true
           },
           "custom_onboarding_link": {
-            "description": "The location the CTA button links to. Should be a relative link (start with /)",
+            "title": "Header Banner CTA Link",
+            "description": "Web location that the CTA button links to. This should be a relative link on the platform starting with (e.g., platform.citizenlab.co/initiatives should be inputted here as /initiatives).",
             "type": "string",
             "pattern": "^$|^/.*$",
             "private": true
           },
           "custom_onboarding_fallback_message": {
-            "description": "Optional text that is shown when there's nothing to report for a user that's signed in",
+            "title": "Header Banner Non-CTA Text",
+            "description": "Optional text shown on a banner on the top of the homepage for signed in users. If this field and the 'Header Banner Call-to-Action Text' field are both left blank, the banner text defaults to \"{orgName} is listening to you. It's your turn to make your voice heard!\".",
             "$ref": "#/definitions/multiloc_string"
           },
           "currently_working_on_text": {
-            "description": "Text shown on top of the project cards, leave empty for default",
+            "title": "Project Overview Header Title",
+            "description": "Header title shown at the top of all of the projects on the homepage. If left blank, this field defaults to \"{orgName} is currently working on\".",
             "$ref": "#/definitions/multiloc_string"
           },
           "segment_destinations_blacklist": {
-            "description": "An optional list of segment destinations to disable",
+            "title": "Blacklisting of Segment destinations",
+            "description": "An optional list of segment destinations to disable.",
             "type": "array",
             "items": {
               "type": "string",
@@ -144,11 +165,13 @@
             }
           },
           "areas_term": {
-            "description": "How should the areas be called on this platform? (e.g. neighbourhoods, quarters, counties, ...). Fully lowercase",
+            "title": "Geographic Units",
+            "description": "What a geographic unit should be called on this platform (e.g., neighbourhoods, districts, etc.). Input the plural form here with all lowercase letters. If left blank, this field defaults to 'areas'.",
             "$ref": "#/definitions/multiloc_string"
           },
           "area_term": {
-            "description": "How should one area be called on this platform? Singular version of `areas_term`. Fully lowercase.",
+            "title": "Geographic Unit",
+            "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
           }
         }
@@ -156,7 +179,8 @@
 
       "pages": {
         "type": "object",
-        "description":	"Allow custom pages to be made, and potentially be added to the navigation",
+        "title": "Custom Pages",
+        "description":	"Allow custom pages to be made and added to the platform's navigation.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -167,7 +191,8 @@
 
       "password_login": {
         "type": "object",
-        "description":  "Allow signing in with normal email/password",
+        "title": "Password Login",
+        "description":  "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["phone"],
@@ -175,12 +200,14 @@
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
           "phone": {
-            "description": "Optionally allows users to register using a phone number if they have no email address. Currently a hack and not advised.",
+            "title": "Phone",
+            "description": "Allow users to register with a phone number. This option is not advised, please check with development team before enabling this field.",
             "type": "boolean",
             "default": false
           },
           "phone_email_pattern": {
-            "description": "How to store the phone number in the email (e.g. `phone+__PHONE__@test.com` stores phone number as `phone+32478637483@test.com`)",
+            "title": "Phone Number Format",
+            "description": "Specify how phone numbers should be stored in the database (needs to be in email format - e.g., 'phone+_PHONE_@test.com' stores the phone number as 'phone+32478637483@test.com'.",
             "type": "string",
             "format": "email",
             "pattern": "^.*__PHONE__.*@.*$",
@@ -191,7 +218,8 @@
 
       "facebook_login": {
         "type": "object",
-        "description":	"Allow signing in and registering through a facebook account",
+        "title": "Facebook Login",
+        "description":	"Allow users to register and sign in through their Facebook account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["app_id"],
@@ -199,9 +227,11 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "app_id": {
+            "title": "App ID",
             "type": "string"
           },
           "app_secret": {
+            "title": "App Secret",
             "type": "string",
             "private": true
           }
@@ -210,7 +240,8 @@
 
       "google_login": {
         "type": "object",
-        "description":  "Allow signing in and registering through a google account",
+        "title": "Google Login",
+        "description":  "Allow users to register and sign in through their Google account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["client_id", "client_secret"],
@@ -218,9 +249,11 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "client_id": {
+            "title": "Client ID",
             "type": "string"
           },
           "client_secret": {
+            "title": "Client Secret",
             "type": "string",
             "private": true
           }
@@ -229,7 +262,8 @@
 
       "azure_ad_login": {
         "type": "object",
-        "description":  "Allow signing in and registering with Azure Active Directory (used for e.g. VUB)",
+        "title": "Azure Login",
+        "description":  "Allow users to register and sign in with Azure Active Directory.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["tenant", "client_id", "logo_url", "login_mechanism_name"],
@@ -237,29 +271,34 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "tenant": {
+            "title": "Tenant",
             "type": "string",
             "private": true
           },
           "client_id": {
+            "title": "Client ID",
             "description": "Sometimes also called 'application_id'",
             "type": "string",
             "private": true
           },
           "logo_url": {
+            "title": "Logo",
             "type": "string",
             "pattern": "^https:\/\/.+",
-            "description": "The full url to a logo image, that will be shown on the authentication button. Should be approximately 25px in height."
+            "description": "The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height."
           },
           "login_mechanism_name": {
+            "title": "Login Mechanism Name",
             "type": "string",
-            "description": "The name of the login mechanism. Will be used in copy like 'Sign up with {login_mechanism_name}'"
+            "description": "The Login Mechanism Name is used for user-facing copy. For instance, \"Sign up with {login_mechanism_name}.\"."
           }
         }
       },
 
       "franceconnect_login": {
         "type": "object",
-        "description":  "Allow signing in and registering through a FranceConnect account.",
+        "title": "FranceConnect Login",
+        "description":  "Allow users to register and sign in with a FranceConnect account.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["environment", "identifier", "secret"],
@@ -268,40 +307,24 @@
           "enabled": { "type": "boolean", "default": false},
           "environment": {
             "type": "string",
-            "description": "Are we live on the production FranceConnect environment, or still testing on their integration environment?",
+            "title": "Environment",
+            "description": "Live on the production FranceConnect environment or still testing on their integration environment?",
             "enum": ["production", "integration"],
             "default": "production",
             "private": true
           },
           "identifier": {
+            "title": "Identifier",
             "type": "string",
             "private": true
           },
           "secret": {
+            "title": "Secret Key",
             "type": "string",
             "private": true
           }
         }
       },
-
-      /* "twitter_login": {
-        "type": "object",
-        "description":  "Allow signing in and registering through a twitter account",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["client_id", "client_secret"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "api_key": {
-            "type": "string"
-          },
-          "api_secret": {
-            "type": "string",
-            "private": true
-          }
-        }
-      }, */
 
       "integration_onze_stad_app": {
         "type": "object",
@@ -313,10 +336,12 @@
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "app_id": {
+            "title": "App ID",
             "type": "string",
             "private": true
           },
           "api_key": {
+            "title": "API Key",
             "type": "string",
             "private": true
           }
@@ -335,8 +360,9 @@
       },
 
       "workshops": {
+        "title": "Workshops",
         "type": "object",
-        "description":	"Shows the workshops page and menu item in the back-office",
+        "description":	"Allow workshops.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -347,7 +373,7 @@
 
       "ideas_overview": {
         "type": "object",
-        "description":  "Show a menu item for the ideas overview page in the navigation bar (mobile & desktop)",
+        "description":  "Show a menu item for the ideas overview page in the navigation bar (mobile & desktop).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -410,6 +436,7 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "groups": {
         "type": "object",
         "description":  "Assemble users in groups",
@@ -420,6 +447,7 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "private_projects": {
         "type": "object",
         "description":  "Make projects visible to certain groups only",
@@ -430,9 +458,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "surveys": {
         "type": "object",
-        "description":  "Allow the embedding of surveys from Typeform, Survey Monkey and Google Forms",
+        "title": "Surveys",
+        "description":  "Allow Typeform surveys to be embedded.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -440,25 +470,30 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "typeform_surveys": {
         "type": "object",
-        "description":  "Allow the embedding of surveys from Typeform",
+        "title": "Typeform Surveys",
+        "description":  "Allow Typeform surveys to be embedded.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
           "user_token": {
-            "description": "The user token that can be generated from your typeform profile. Survey results will only be downloadable for this typeform profile",
+            "title": "User Token",
+            "description": "The user token is generated from the tenant's typeform profile. Survey results are only downloadable for this token.",
             "type": "string",
             "private": true,
             "default": "<%= ENV.fetch('DEFAULT_TYPEFORM_USER_TOKEN', '') %>"
           }
         }
       },
+
       "google_forms_surveys": {
         "type": "object",
-        "description":  "Allow the embedding of Google Form surveys",
+        "title": "Google Forms Surveys",
+        "description":  "Allow Google Form surveys to be embedded.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -466,9 +501,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "surveymonkey_surveys": {
         "type": "object",
-        "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile",
+        "title": "Surveymonkey Surveys",
+        "description":  "Allow the embedding of Surveymonkey surveys. Deprecated, since not supported on mobile.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -476,30 +513,36 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
+
       "maps": {
         "type": "object",
-        "description":  "Show maps throughout the platform",
+        "title": "Maps",
+        "description":  "Enable maps for all projects.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
           "tile_provider": {
-            "description": "The OSM compatible tile provider URL pattern. Https is required.",
+            "title": "Tile provider",
+            "description": "The OSM compatible tile provider URL pattern (https is required).",
             "type": "string",
             "pattern": "^https:\/\/.+",
             "default": "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D"
           },
           "map_center": {
-            "description": "The default center point of the map. Use a dot as decimal separator.",
+            "title": "Map Center",
+            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator.",
             "type": "object",
             "additionalProperties": false,
             "properties": {
               "lat": {
+                "title": "Latitude",
                 "type": "string",
                 "default": "50.8503"
               },
               "long": {
+                "title": "Longitude",
                 "type": "string",
                 "default": "4.3517"
               }
@@ -507,18 +550,22 @@
           },
           "zoom_level": {
             "type": "number",
-            "description": "The default zoom level of the map. A number from 0 to 19. See https://wiki.openstreetmap.org/wiki/Zoom_levels",
+            "title": "Map Zoom Level",
+            "description": "The zoom level of the platform maps. The Zoom Level should be a number between 0 - 19. The default zoom level is 12 (town). See https://wiki.openstreetmap.org/wiki/Zoom_levels for more information about zoom levels.",
             "default": 12
           },
           "osm_relation_id": {
             "type": "integer",
-            "description": "The relation identifier that encloses the region of the tenant. You can find this through https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the relation id if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If the no correct relation is present amongst the results (e.g. Scheveningen), search for the smallest enclosing region (e.g. The Hague)"
+            "title": "OSM Relation ID",
+            "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
           }
         }
       },
+
       "user_custom_fields": {
         "type": "object",
-        "description":  "Allows admin to define their own form fields that users can fill out at sign up",
+        "title": "Custom Registration Fields",
+        "description":  "Allow admin to define custom registration fields.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -526,9 +573,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "idea_custom_fields": {
         "type": "object",
-        "description":  "Allows admins and moderators to customize the form fields for ideas, per project",
+        "title": "Custom Idea Fields",
+        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -536,9 +585,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "clustering": {
         "type": "object",
-        "description":  "Allows admins to analyze ideas by creating clustered visualizations",
+        "title": "Clustering",
+        "description":  "Allows admins to analyze ideas by creating clustered visualizations.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -546,9 +597,11 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
+
       "widgets": {
         "type": "object",
-        "description":  "Allows admins to generate platform content widgets, embeddable on external websites",
+        "title": "Widgets",
+        "description":  "Admins can generate platform widgets to embed on external websites.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -556,9 +609,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "admin_project_templates": {
         "type": "object",
-        "description":  "Create a project based on a template",
+        "title": "Project Templates",
+        "description":  "Enable the template library for admin to create new projects.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -566,9 +621,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "ideaflow_social_sharing": {
         "type": "object",
-        "description":  "A social sharing option is presented after posting an idea",
+        "title": "Share Proposals on Social Media",
+        "description":  "After posting a proposal, users receive a pop-up to share their proposal on social media.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -576,9 +633,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "initiativeflow_social_sharing": {
         "type": "object",
-        "description":  "A social sharing option is presented after posting an initiative",
+        "title": "Share Initiative on Social Media",
+        "description": "After posting an initiative, users receive a pop-up to share their proposal on social media.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -586,9 +645,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "granular_permissions": {
         "type": "object",
-        "description":  "Choose which users are permitted to take which actions (e.g. posting, voting) in which projects/phases",
+        "title": "Granular Permissions",
+        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, vote, etc.).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -596,9 +657,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "participatory_budgeting": {
         "type": "object",
-        "description":  "Participation methods where citizens can spend a limited budget on ideas that have a cost",
+        "title": "Participatory Budgeting",
+        "description":  "Allow participatory budgeting.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -606,9 +669,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "manual_emailing": {
         "type": "object",
-        "description":  "Allows admins and moderators to send out direct email to groups of citizens",
+        "title": "Manual Emails",
+        "description":  "Admin and project managers can email users through the platform.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -616,9 +681,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "automated_emailing_control": {
         "type": "object",
-        "description":  "Allows admins to control which automated e-mail campaigns are active",
+        "title": "Automated Emails",
+        "description":  "Admin can set and control automated e-mail campaigns and notifications.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -626,8 +693,10 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "machine_translations": {
         "type": "object",
+        "title": "Machine Translations",
         "description":  "Allows users to see translated content.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -636,9 +705,11 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "similar_ideas": {
         "type": "object",
-        "description":  "Show links to similar ideas on the idea page. PoC, not yet stable.",
+        "title": "Similar Ideas",
+        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -646,8 +717,10 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "geographic_dashboard": {
         "type": "object",
+        "title": "Geographic Dashboard",
         "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -656,9 +729,11 @@
           "enabled": { "type": "boolean", "default": false}
         }
       },
+
       "initiatives": {
         "type": "object",
-        "description":  "Initiatives are citizen-originating proposals that need to reach a number of votes in a limited time for the organization to take action",
+        "title": "Proposals",
+        "description":  "Allow proposals.",
         "additionalProperties": false,
         "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
         "required": ["allowed", "enabled"],
@@ -667,19 +742,22 @@
           "enabled": { "type": "boolean", "default": true },
           "posting_enabled": { "type": "boolean", "default": true },
           "voting_threshold": {
-            "description": "The number of votes an initiative needs to reach to be accepted",
+            "title": "Voting Threshold",
+            "description": "Default value for how many votes a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
             "type": "integer",
             "minimum": 2,
             "default": 300
           },
           "days_limit": {
-            "description": "Number of days a proposed initiative has to reach its voting_threshold",
+            "title": "Time Limit (in days)",
+            "description": "Default value for how many days a proposal has to meet the voting threshold and move to the next stage. This value can be changed in the admin panel on the platform.",
             "type": "integer",
             "minimum": 1,
             "default": 90
           },
           "threshold_reached_message": {
-            "description": "Message shown to users when an initiative reached the threshold. Supports HTML paragraphs and breaks",
+            "title": "Proposal Success Message",
+            "description": "Default text that users receive when their proposal reaches the voting threshold. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
             "$ref": "#/definitions/multiloc_string",
             "default": <%= MultilocService.new.i18n_to_multiloc(
               'initiatives.default_threshold_reached_message',
@@ -687,7 +765,8 @@
             %>
           },
           "eligibility_criteria": {
-            "description": "Criteria to which an initiative should comply, shown to users when posting. Supports HTML paragraphs and breaks",
+            "title": "Proposal Criteria",
+            "description": "Default text specifying criteria that proposals should meet. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
             "$ref": "#/definitions/multiloc_string",
             "default": <%= MultilocService.new.i18n_to_multiloc(
               'initiatives.default_eligibility_criteria',
@@ -696,6 +775,8 @@
           },
           "success_stories": {
             "type": "array",
+            "title": "Proposal Success Stories",
+            "description": "Link to other pages that highlight prior success stories and examples that users can refer to.",
             "default": [],
             "items": {
               "type": "object",
@@ -710,9 +791,11 @@
           }
         }
       },
+
       "polls": {
         "type": "object",
-        "description": "Participation methods that allows citizens to answer multiple questions with predefined answers",
+        "title": "Polls",
+        "description": "Allow polls.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -720,33 +803,39 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
+
       "fragments": {
         "type": "object",
-        "description":  "Internal system to allow specific pieces of UI to be overriden with custom HTML for this tenant only",
+        "title": "Fragments",
+        "description":  "Internal system to allow specific pieces of UI to be overridden with custom HTML.",
         "additionalProperties": false,
         "required": ["allowed", "enabled", "enabled_fragments"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "enabled_fragments": {
+            "title": "Enabled Fragments",
             "type": "array",
             "default": [],
-            "description": "List of fragment names that should be enabled. (e.g. `signed-out-header`)",
+            "description": "List of fragment names that should be enabled (e.g., 'signed-out-header').",
             "items": {
               "type": "string"
             }
           }
         }
       },
+
       "verification": {
         "type": "object",
-        "description": "Let's users prove that they are real citizens, in order to unlock some actions",
+        "title": "Verification",
+        "description": "Use a pre-defined list to verify user identities during registration.",
         "additionalProperties": false,
         "required": ["allowed", "enabled","verification_methods"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
           "verification_methods": {
+            "title": "Verification Methods",
             "private": true,
             "type": "array",
             "default": [],
@@ -773,7 +862,8 @@
       },
       "moderation": {
         "type": "object",
-        "description": "Moderations are pieces of user-generated content that need to be moderated",
+        "title": "Moderation",
+        "description": "Moderations are pieces of user-generated content that need to be moderated.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -783,7 +873,8 @@
       },
       "project_folders": {
         "type": "object",
-        "description": "Project folders are used to group projects together",
+        "title": "Project Folders",
+        "description": "Allow project folders.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -793,7 +884,8 @@
       },
       "disable_downvoting": {
         "type": "object",
-        "description": "Restrict chosen participation contexts to hide and forbid downvoting",
+        "title": "Disable Downvoting",
+        "description": "Ideas and proposals cannot be downvoted, only upvoted.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -803,7 +895,8 @@
       },
       "volunteering": {
         "type": "object",
-        "description": "Participation method to let citizens volunteer",
+        "title": "Volunteering",
+        "description": "Allow volunteering.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -813,12 +906,13 @@
       },
       "custom_topics": {
         "type": "object",
-        "description": "Customize the platform topics",
+        "title": "Custom Topics",
+        "description": "Admin and project managers can customize idea topics.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       }
     },
