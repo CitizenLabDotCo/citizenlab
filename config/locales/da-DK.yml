@@ -32,30 +32,30 @@ da:
     sustainability_description: Bæredygtig udvikling
     mobility: Mobilitet
     mobility_description: Mobilitet
-    technology: Teknologi
-    technology_description: Teknologi
-    economy: Arbejde, økonomi og handel
-    economy_description: Arbejde, økonomi og handel
+    technology: Energi og teknologi
+    technology_description: Energi og teknologi
+    economy: Arbejde, økonomi og turisme
+    economy_description: Arbejde, økonomi og turisme
     housing: Boliger
     housing_description: Boliger
-    public_space: Public space
-    public_space_description: Public space
-    safety: Safety
-    safety_description: Safety
+    public_space: Offentlige rum og bygninger
+    public_space_description: Offentlige rum og bygninger
+    safety: Sikkerhed
+    safety_description: Sikkerhed
     education: Uddannelse og ungdom
     education_description: Uddannelse og ungdom
-    culture: Kunst, kultur og arrangementer
-    culture_description: Kunst, kultur og arrangementer
-    health: Pleje og velfærd
-    health_description: Pleje og velfærd
-    inclusion: Social integration
-    inclusion_description: Social integration
-    community: Community development
-    community_description: Community development
-    services: City services
-    services_description: City services
-    other: Other
-    other_description: Other
+    culture: Kultur, idræt og arrangementer
+    culture_description: Kultur, idræt og arrangementer
+    health: Helse og velfærd
+    health_description: Helse og velfærd
+    inclusion: Social inklusion
+    inclusion_description: Social inklusion
+    community: Udvikling af lokale fællesskaber
+    community_description: Udvikling af lokale fællesskaber
+    services: Offentlige tjenester
+    services_description: Offentlige tjenester
+    other: Andet
+    other_description: Andet
   pages:
     terms_and_conditions_title: Vilkår og Betingelser
     terms_and_conditions_body: >

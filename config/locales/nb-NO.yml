@@ -24,38 +24,38 @@ nb:
     ineligible: ikke kvalifisert
     ineligible_description: ikke kvalifisert
   topics:
-    nature: Nature and animals
-    nature_description: Nature and animals
-    waste: Cleanliness and waste
-    waste_description: Cleanliness and waste
-    sustainability: Sustainable development
-    sustainability_description: Sustainable development
-    mobility: Mobility
-    mobility_description: Mobility
-    technology: Energy and technology
-    technology_description: Energy and technology
-    economy: Work, economy and tourism
-    economy_description: Work, economy and tourism
-    housing: Housing
-    housing_description: Housing
-    public_space: Public space
-    public_space_description: Public space
-    safety: Safety
-    safety_description: Safety
-    education: Education and youth
-    education_description: Education and youth
-    culture: Culture, sports and events
-    culture_description: Culture, sports and events
-    health: Health and welfare
-    health_description: Health and welfare
-    inclusion: Social inclusion
-    inclusion_description: Social inclusion
-    community: Community development
-    community_description: Community development
-    services: City services
-    services_description: City services
-    other: Other
-    other_description: Other
+    nature: Natur og biologisk mangfold
+    nature_description: Natur og biologisk mangfold
+    waste: Renhold og avfall
+    waste_description: Renhold og avfall
+    sustainability: Bærekraftig utvikling
+    sustainability_description: Bærekraftig utvikling
+    mobility: Mobilitet
+    mobility_description: Mobilitet
+    technology: Energi og teknologi
+    technology_description: Energi og teknologi
+    economy: Arbeid, økonomi og turisme
+    economy_description: Arbeid, økonomi og turisme
+    housing: Bolig
+    housing_description: Bolig
+    public_space: Offentlige rom og bygninger
+    public_space_description: Offentlige rom og bygninger
+    safety: Sikkerhet
+    safety_description: Sikkerhet
+    education: Utdanning og ungdom
+    education_description: Utdanning og ungdom
+    culture: Kultur, idrett og arrangementer
+    culture_description: Kultur, idrett og arrangementer
+    health: Helse og velferd
+    health_description: Helse og velferd
+    inclusion: Sosial inkludering
+    inclusion_description: Sosial inkludering
+    community: Samfunnsutvikling
+    community_description: Samfunnsutvikling
+    services: Offentlige tjenester
+    services_description: Offentlige tjenester
+    other: Annet
+    other_description: Annet
   pages:
     terms_and_conditions_title: Vilkår og betingelser
     terms_and_conditions_body: >

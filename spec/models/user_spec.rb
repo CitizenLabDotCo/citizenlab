@@ -66,6 +66,15 @@ RSpec.describe User, type: :model do
     end
   end
 
+  describe "bio sanitizer" do
+    it "sanitizes script tags in the body" do
+      user = create(:user, bio_multiloc: {
+        "en" => "<p>Test</p><script>This should be removed!</script>"
+      })
+      expect(user.bio_multiloc).to eq({"en" => "<p>Test</p>This should be removed!"})
+    end
+  end
+
   describe "roles" do
     it "is valid without roles" do
       u = build(:user, roles: [])
