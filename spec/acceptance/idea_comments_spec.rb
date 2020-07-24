@@ -129,6 +129,12 @@ resource "Comments" do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false
 
+    before do 
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
     example_request "XLSX export of comments on ideas" do
       expect(status).to eq 200
     end
@@ -169,7 +175,7 @@ resource "Comments" do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      let(:project) { @project }
+      let(:project) { @project.id }
       
       example_request 'XLSX export by a project moderator', document: false do
         expect(status).to eq 200
@@ -183,7 +189,7 @@ resource "Comments" do
         token = Knock::AuthToken.new(payload: @user.to_token_payload).token
         header 'Authorization', "Bearer #{token}"
       end
-      let(:project) { @project }
+      let(:project) { @project.id }
       
       example_request '[error] XLSX export by a moderator of a different project', document: false do
         expect(status).to eq 401
