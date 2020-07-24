@@ -43,11 +43,6 @@
             "default": "EUR",
             "enum": [<%= CL2_SUPPORTED_CURRENCIES.map{|l| "\"#{l}\""}.join(",") %>]
           },
-          "total_population": {
-            "description": "The population number of city/municipality's inhabitants",
-            "type": "integer",
-            "minimum": 0
-          },
           "locales": {
             "title": "Platform Languages",
             "description": "Select all of the languages that will be in use on the platform.",
@@ -386,17 +381,6 @@
         }
       },
 
-      "projects": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "workshops": {
         "title": "Workshops",
         "type": "object",
@@ -417,72 +401,6 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
-      "projects_phases": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "projects_pages": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "projects_events": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "projects_info": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "excel_export": {
-        "type": "object",
-        "description":	"",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "groups": {
-        "type": "object",
-        "description":  "Assemble users in groups",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       },
 
@@ -955,11 +873,6 @@
       }
     },
   "dependencies": {
-    "projects_info": ["projects"],
-    "projects_pages": ["projects"],
-    "projects_events": ["projects"],
-    "projects_phases": ["projects"],
-    "private_projects": ["groups"],
     "typeform_surveys": ["surveys"],
     "google_forms_surveys": ["surveys"],
     "surveymonkey_surveys": ["surveys"]
