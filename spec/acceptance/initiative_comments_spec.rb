@@ -125,6 +125,11 @@ resource "Comments" do
 
   get "web_api/v1/initiatives/comments/as_xlsx" do
     parameter :initiatives, 'Filter by a given list of initiative ids', required: false
+    before do 
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
 
     describe do
       before do 
