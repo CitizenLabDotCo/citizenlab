@@ -189,10 +189,48 @@
         }
       },
 
+      "project_visibility": {
+        "type": "object",
+        "title": "Project Visibility Settings",
+        "description": "Allow to tune the visibility of projects.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_management": {
+        "type": "object",
+        "title": "Project Managers",
+        "description": "Allow to define a list of project managers for a given project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "idea_assignment": {
+        "type": "object",
+        "title": "Idea Assignment Settings",
+        "description": "Allow to define a default assignee responsible for new ideas in a given project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+
+
       "password_login": {
         "type": "object",
         "title": "Password Login",
-        "description":  "Allow users to register with an email and password.",
+        "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "required-settings": ["phone"],
