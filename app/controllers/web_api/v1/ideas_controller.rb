@@ -89,6 +89,12 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_xlsx
+    if params[:project].present?
+      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+    else
+      authorize :idea, :index_xlsx?
+    end
+
     I18n.with_locale(current_user&.locale) do
       @ideas = policy_scope(Idea)
         .includes(:author, :topics, :areas, :project, :idea_status, :idea_files)
