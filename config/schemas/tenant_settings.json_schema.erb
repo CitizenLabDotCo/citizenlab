@@ -765,7 +765,8 @@
         "title": "Fragments",
         "description":  "Internal system to allow specific pieces of UI to be overridden with custom HTML.",
         "additionalProperties": false,
-        "required": ["allowed", "enabled", "enabled_fragments"],
+        "required": ["allowed", "enabled"],
+        "required-settings": ["enabled_fragments"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
@@ -786,7 +787,8 @@
         "title": "Verification",
         "description": "Use a pre-defined list to verify user identities during registration.",
         "additionalProperties": false,
-        "required": ["allowed", "enabled","verification_methods"],
+        "required": ["allowed", "enabled"],
+        "required-settings": ["verification_methods"],
         "properties": {
           "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false},
