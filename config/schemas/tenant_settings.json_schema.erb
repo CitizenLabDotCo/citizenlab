@@ -15,6 +15,17 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
+          "organization_name": {
+            "title": "Organisation Name",
+            "description": "How the city or organisation is referred to throughout the platform.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "organization_site": {
+            "title": "Organisation Website",
+            "description": "The city or organisation's official website.",
+            "type": "string",
+            "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
+          },
           "organization_type": {
             "title": "Organisation Type",
             "description": "Based on city's population: <40k small, 40-120k medium, >120k large. Otherwise, select 'generic'.",
@@ -55,16 +66,26 @@
             "minItems": 1,
             "default": ["en"]
           },
-          "organization_name": {
-            "title": "Organisation Name",
-            "description": "How the city or organisation is referred to throughout the platform.",
-            "$ref": "#/definitions/multiloc_string"
-          },
-          "organization_site": {
-            "title": "Organisation Website",
-            "description": "The city or organisation's official website.",
+          "color_main": {
+            "title": "Main Colour",
+            "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
             "type": "string",
-            "pattern": "^$|^((http:\/\/.+)|(https:\/\/.+))"
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#163A7D"
+          },
+          "color_secondary": {
+            "title": "Secondary Colour",
+            "description": "Secondary colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #ff672f).",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#CF4040"
+          },
+          "color_text": {
+            "title": "Text Colour",
+            "description": "Colour of platform text. Input as a 6-digit HEX color, including the # sign (e.g. #7fbbca).",
+            "type": "string",
+            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
+            "default": "#163A7D"
           },
           "header_title": {
             "title": "Homepage Title",
@@ -88,37 +109,6 @@
           "meta_description": {
             "title": "Social Media Description",
             "description": "The description of the platform shown in search engine results and when shared on some social media platforms.",
-            "$ref": "#/definitions/multiloc_string"
-          },
-          "color_main": {
-            "title": "Main Colour",
-            "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#163A7D"
-          },
-          "color_secondary": {
-            "title": "Secondary Colour",
-            "description": "Secondary colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #ff672f).",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#CF4040"
-          },
-          "color_text": {
-            "title": "Text Colour",
-            "description": "Colour of platform text. Input as a 6-digit HEX color, including the # sign (e.g. #7fbbca).",
-            "type": "string",
-            "pattern": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$",
-            "default": "#163A7D"
-          },
-          "signup_helper_text": {
-            "title": "Sign-up Helper Text (Step 1)",
-            "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
-            "$ref": "#/definitions/multiloc_string"
-          },
-          "custom_fields_signup_helper_text":  {
-            "title": "Sign-up Helper Text (Step 2)",
-            "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "custom_onboarding_message": {
@@ -150,14 +140,15 @@
             "description": "Header title shown at the top of all of the projects on the homepage. If left blank, this field defaults to \"{orgName} is currently working on\".",
             "$ref": "#/definitions/multiloc_string"
           },
-          "segment_destinations_blacklist": {
-            "title": "Blacklisting of Segment destinations",
-            "description": "An optional list of segment destinations to disable.",
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
-            }
+          "signup_helper_text": {
+            "title": "Sign-up Helper Text (Step 1)",
+            "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "custom_fields_signup_helper_text":  {
+            "title": "Sign-up Helper Text (Step 2)",
+            "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
           },
           "areas_term": {
             "title": "Geographic Units",
@@ -168,14 +159,23 @@
             "title": "Geographic Unit",
             "description": "What a geographic unit should be called on this platform (e.g., neighbourhood, district, etc.)? Input the singular form here with all lowercase letters. If left blank, this field defaults to 'area'.",
             "$ref": "#/definitions/multiloc_string"
+          },
+          "segment_destinations_blacklist": {
+            "title": "Blacklisting of Segment destinations",
+            "description": "An optional list of segment destinations to disable.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["Google Analytics", "Google Tag Manager", "Facebook Pixel", "AdWords"]
+            }
           }
         }
       },
 
-      "pages": {
+      "user_custom_fields": {
         "type": "object",
-        "title": "Custom Pages",
-        "description":	"Allow custom pages to be made and added to the platform's navigation.",
+        "title": "Custom Registration Fields",
+        "description":  "Allow admin to define custom registration fields.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -183,44 +183,6 @@
           "enabled": { "type": "boolean", "default": true}
         }
       },
-
-      "project_visibility": {
-        "type": "object",
-        "title": "Project Visibility Settings",
-        "description": "Allow to tune the visibility of projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "project_management": {
-        "type": "object",
-        "title": "Project Managers",
-        "description": "Allow to define a list of project managers for a given project.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "idea_assignment": {
-        "type": "object",
-        "title": "Idea Assignment Settings",
-        "description": "Allow to define a default assignee responsible for new ideas in a given project.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-
 
       "password_login": {
         "type": "object",
@@ -381,37 +343,186 @@
         }
       },
 
-      "workshops": {
-        "title": "Workshops",
+      "verification": {
         "type": "object",
-        "description":	"Allow workshops.",
+        "title": "Verification",
+        "description": "Use a pre-defined list to verify user identities during registration.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
+        "required-settings": ["verification_methods"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false},
+          "verification_methods": {
+            "title": "Verification Methods",
+            "private": true,
+            "type": "array",
+            "default": [],
+            "items": {
+              "anyOf":
+                <%= Verification::VerificationService.new.all_methods.map do |method|
+                    {
+                      type: "object",
+                      title: method.name,
+                      required: ["name", *method.config_parameters],
+                      properties: {
+                        name: {type: "string", enum: [method.name], default: method.name, readOnly: true},
+                        **method.config_parameters.map do |cp|
+                          parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
+                          [cp, parameter_schema || {type: "string", private: "true"}]
+                        end.to_h
+                      }
+                    }
+                  end.to_json
+                %>
+            }
+          }
         }
       },
 
-      "ideas_overview": {
+      "maps": {
         "type": "object",
-        "description":  "Show a menu item for the ideas overview page in the navigation bar (mobile & desktop).",
+        "title": "Maps",
+        "description":  "Enable maps for all projects.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true},
+          "tile_provider": {
+            "title": "Tile provider",
+            "description": "The OSM compatible tile provider URL pattern (https is required).",
+            "type": "string",
+            "pattern": "^https:\/\/.+",
+            "default": "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D"
+          },
+          "map_center": {
+            "title": "Map Center",
+            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "lat": {
+                "title": "Latitude",
+                "type": "string",
+                "default": "50.8503"
+              },
+              "long": {
+                "title": "Longitude",
+                "type": "string",
+                "default": "4.3517"
+              }
+            }
+          },
+          "zoom_level": {
+            "type": "number",
+            "title": "Map Zoom Level",
+            "description": "The zoom level of the platform maps. The Zoom Level should be a number between 0 - 19. The default zoom level is 12 (town). See https://wiki.openstreetmap.org/wiki/Zoom_levels for more information about zoom levels.",
+            "default": 12
+          },
+          "osm_relation_id": {
+            "type": "integer",
+            "title": "OSM Relation ID",
+            "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
+          }
+        }
+      },
+
+      "geographic_dashboard": {
+        "type": "object",
+        "title": "Geographic Dashboard",
+        "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
           "enabled": { "type": "boolean", "default": false}
         }
       },
 
-      "private_projects": {
+      "participatory_budgeting": {
         "type": "object",
-        "description":  "Make projects visible to certain groups only",
+        "title": "Participatory Budgeting",
+        "description":  "Allow participatory budgeting.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "polls": {
+        "type": "object",
+        "title": "Polls",
+        "description": "Allow polls.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "initiatives": {
+        "type": "object",
+        "title": "Proposals",
+        "description":  "Allow proposals.",
+        "additionalProperties": false,
+        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true },
+          "posting_enabled": { "type": "boolean", "default": true },
+          "voting_threshold": {
+            "title": "Voting Threshold",
+            "description": "Default value for how many votes a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
+            "type": "integer",
+            "minimum": 2,
+            "default": 300
+          },
+          "days_limit": {
+            "title": "Time Limit (in days)",
+            "description": "Default value for how many days a proposal has to meet the voting threshold and move to the next stage. This value can be changed in the admin panel on the platform.",
+            "type": "integer",
+            "minimum": 1,
+            "default": 90
+          },
+          "threshold_reached_message": {
+            "title": "Proposal Success Message",
+            "description": "Default text that users receive when their proposal reaches the voting threshold. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
+            "$ref": "#/definitions/multiloc_string",
+            "default": <%= MultilocService.new.i18n_to_multiloc(
+            'initiatives.default_threshold_reached_message',
+            locales: CL2_SUPPORTED_LOCALES).to_json
+            %>
+          },
+          "eligibility_criteria": {
+            "title": "Proposal Criteria",
+            "description": "Default text specifying criteria that proposals should meet. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
+            "$ref": "#/definitions/multiloc_string",
+            "default": <%= MultilocService.new.i18n_to_multiloc(
+            'initiatives.default_eligibility_criteria',
+            locales: CL2_SUPPORTED_LOCALES).to_json
+            %>
+          },
+          "success_stories": {
+            "type": "array",
+            "title": "Proposal Success Stories",
+            "description": "Link to other pages that highlight prior success stories and examples that users can refer to.",
+            "default": [],
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["page_slug", "location", "image_url"],
+              "properties": {
+                "page_slug": {"type": "string"},
+                "location": {"type": "string"},
+                "image_url": {"type": "string", "format": "uri"}
+              }
+            }
+          }
         }
       },
 
@@ -470,58 +581,10 @@
         }
       },
 
-      "maps": {
+      "volunteering": {
         "type": "object",
-        "title": "Maps",
-        "description":  "Enable maps for all projects.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "tile_provider": {
-            "title": "Tile provider",
-            "description": "The OSM compatible tile provider URL pattern (https is required).",
-            "type": "string",
-            "pattern": "^https:\/\/.+",
-            "default": "https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=DIZiuhfkZEQ5EgsaTk6D"
-          },
-          "map_center": {
-            "title": "Map Center",
-            "description": "The default center point of the platform maps (latitude/longitude). Use a dot as a decimal separator.",
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "lat": {
-                "title": "Latitude",
-                "type": "string",
-                "default": "50.8503"
-              },
-              "long": {
-                "title": "Longitude",
-                "type": "string",
-                "default": "4.3517"
-              }
-            }
-          },
-          "zoom_level": {
-            "type": "number",
-            "title": "Map Zoom Level",
-            "description": "The zoom level of the platform maps. The Zoom Level should be a number between 0 - 19. The default zoom level is 12 (town). See https://wiki.openstreetmap.org/wiki/Zoom_levels for more information about zoom levels.",
-            "default": 12
-          },
-          "osm_relation_id": {
-            "type": "integer",
-            "title": "OSM Relation ID",
-            "description": "The boundary of the municipality/organisation is specified by its Relation ID in OpenStreetMap (OSM). You can find the Relation ID at https://www.openstreetmap.org. Search for the place, click on the correct result and you'll find the Relation ID if the result is a relation (e.g. \"Relation: Knokke-Heist (4569)\"). If there is no relation defined for the place (e.g. Scheveningen), search for the next largest administrative territory (e.g. The Hague)."
-          }
-        }
-      },
-
-      "user_custom_fields": {
-        "type": "object",
-        "title": "Custom Registration Fields",
-        "description":  "Allow admin to define custom registration fields.",
+        "title": "Volunteering",
+        "description": "Allow volunteering.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -530,10 +593,22 @@
         }
       },
 
-      "idea_custom_fields": {
+      "workshops": {
+        "title": "Workshops",
         "type": "object",
-        "title": "Custom Idea Fields",
-        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
+        "description":	"Allow workshops.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "machine_translations": {
+        "type": "object",
+        "title": "Machine Translations",
+        "description":  "Allows users to see translated content.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -554,10 +629,10 @@
         }
       },
 
-      "widgets": {
+      "similar_ideas": {
         "type": "object",
-        "title": "Widgets",
-        "description":  "Admins can generate platform widgets to embed on external websites.",
+        "title": "Similar Ideas",
+        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -575,6 +650,78 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_folders": {
+        "type": "object",
+        "title": "Project Folders",
+        "description": "Allow project folders.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "custom_topics": {
+        "type": "object",
+        "title": "Custom Topics",
+        "description": "Admin and project managers can customize idea topics.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "idea_assignment": {
+        "type": "object",
+        "title": "Assign Ideas",
+        "description": "Ideas can be assigned to specific admin and project managers to respond to.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "idea_custom_fields": {
+        "type": "object",
+        "title": "Custom Idea Fields",
+        "description":  "Admin and project managers can specify which idea form fields to enable/disable or make mandatory.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "ideas_overview": {
+        "type": "object",
+        "title": "Idea Overview",
+        "description":  "Create a page with all the ideas in a single overview page (mobile and desktop).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "disable_downvoting": {
+        "type": "object",
+        "title": "Disable Downvoting",
+        "description": "Ideas and proposals cannot be downvoted, only upvoted.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 
@@ -602,22 +749,10 @@
         }
       },
 
-      "granular_permissions": {
+      "widgets": {
         "type": "object",
-        "title": "Granular Permissions",
-        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, vote, etc.).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
-      "participatory_budgeting": {
-        "type": "object",
-        "title": "Participatory Budgeting",
-        "description":  "Allow participatory budgeting.",
+        "title": "Widgets",
+        "description":  "Admins can generate platform widgets to embed on external websites.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -650,10 +785,10 @@
         }
       },
 
-      "machine_translations": {
+      "pages": {
         "type": "object",
-        "title": "Machine Translations",
-        "description":  "Allows users to see translated content.",
+        "title": "Custom Pages",
+        "description":	"Allow custom pages to be made and added to the platform's navigation.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -662,10 +797,10 @@
         }
       },
 
-      "similar_ideas": {
+      "moderation": {
         "type": "object",
-        "title": "Similar Ideas",
-        "description":  "Show links to similar ideas when viewing an idea. Still in beta.",
+        "title": "Moderation",
+        "description": "Moderations are pieces of user-generated content that need to be moderated.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -674,84 +809,46 @@
         }
       },
 
-      "geographic_dashboard": {
+      "project_management": {
         "type": "object",
-        "title": "Geographic Dashboard",
-        "description":  "Shows a map with automatically detected idea locations. PoC, not yet stable.",
+        "title": "Project Managers",
+        "description": "Enable the project manager role (users who have some administrative rights at a project level).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
 
-      "initiatives": {
+      "granular_permissions": {
         "type": "object",
-        "title": "Proposals",
-        "description":  "Allow proposals.",
+        "title": "Granular Permissions",
+        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, vote, etc.).",
         "additionalProperties": false,
-        "required-settings": ["voting_threshold", "days_limit", "threshold_reached_message", "eligibility_criteria","success_stories"],
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true },
-          "posting_enabled": { "type": "boolean", "default": true },
-          "voting_threshold": {
-            "title": "Voting Threshold",
-            "description": "Default value for how many votes a proposal needs to move to the next stage. This value can be changed in the admin panel on the platform.",
-            "type": "integer",
-            "minimum": 2,
-            "default": 300
-          },
-          "days_limit": {
-            "title": "Time Limit (in days)",
-            "description": "Default value for how many days a proposal has to meet the voting threshold and move to the next stage. This value can be changed in the admin panel on the platform.",
-            "type": "integer",
-            "minimum": 1,
-            "default": 90
-          },
-          "threshold_reached_message": {
-            "title": "Proposal Success Message",
-            "description": "Default text that users receive when their proposal reaches the voting threshold. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
-            "$ref": "#/definitions/multiloc_string",
-            "default": <%= MultilocService.new.i18n_to_multiloc(
-              'initiatives.default_threshold_reached_message',
-              locales: CL2_SUPPORTED_LOCALES).to_json
-            %>
-          },
-          "eligibility_criteria": {
-            "title": "Proposal Criteria",
-            "description": "Default text specifying criteria that proposals should meet. Supports HTML paragraphs and breaks. This text can be changed in the admin panel on the platform.",
-            "$ref": "#/definitions/multiloc_string",
-            "default": <%= MultilocService.new.i18n_to_multiloc(
-              'initiatives.default_eligibility_criteria',
-              locales: CL2_SUPPORTED_LOCALES).to_json
-            %>
-          },
-          "success_stories": {
-            "type": "array",
-            "title": "Proposal Success Stories",
-            "description": "Link to other pages that highlight prior success stories and examples that users can refer to.",
-            "default": [],
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": ["page_slug", "location", "image_url"],
-              "properties": {
-                "page_slug": {"type": "string"},
-                "location": {"type": "string"},
-                "image_url": {"type": "string", "format": "uri"}
-              }
-            }
-          }
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
         }
       },
 
-      "polls": {
+      "project_visibility": {
         "type": "object",
-        "title": "Polls",
-        "description": "Allow polls.",
+        "title": "Project Visibility",
+        "description": "Admin can make projects visible only to certain groups of users (e.g., admin only, smart groups).",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true},
+          "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "private_projects": {
+        "type": "object",
+        "title": "Private projects",
+        "description":  "Make projects visible to certain groups only (Access Rights tab in the Admin panel).",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -779,98 +876,6 @@
               "type": "string"
             }
           }
-        }
-      },
-
-      "verification": {
-        "type": "object",
-        "title": "Verification",
-        "description": "Use a pre-defined list to verify user identities during registration.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["verification_methods"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "verification_methods": {
-            "title": "Verification Methods",
-            "private": true,
-            "type": "array",
-            "default": [],
-            "items": {
-              "anyOf":
-                <%= Verification::VerificationService.new.all_methods.map do |method|
-                    {
-                      type: "object",
-                      title: method.name,
-                      required: ["name", *method.config_parameters],
-                      properties: {
-                        name: {type: "string", enum: [method.name], default: method.name, readOnly: true},
-                        **method.config_parameters.map do |cp|
-                          parameter_schema = method.respond_to?(:config_parameters_schema) && method.config_parameters_schema[cp]
-                          [cp, parameter_schema || {type: "string", private: "true"}]
-                        end.to_h
-                      }
-                    }
-                  end.to_json
-                %>
-            }
-          }
-        }
-      },
-      "moderation": {
-        "type": "object",
-        "title": "Moderation",
-        "description": "Moderations are pieces of user-generated content that need to be moderated.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-      "project_folders": {
-        "type": "object",
-        "title": "Project Folders",
-        "description": "Allow project folders.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-      "disable_downvoting": {
-        "type": "object",
-        "title": "Disable Downvoting",
-        "description": "Ideas and proposals cannot be downvoted, only upvoted.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-      "volunteering": {
-        "type": "object",
-        "title": "Volunteering",
-        "description": "Allow volunteering.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-      "custom_topics": {
-        "type": "object",
-        "title": "Custom Topics",
-        "description": "Admin and project managers can customize idea topics.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
         }
       }
     },
