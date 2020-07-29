@@ -6,8 +6,7 @@ import { saveAs } from 'file-saver';
 
 // Components
 import Checkbox from 'components/UI/Checkbox';
-import Dropdown from 'components/UI/Dropdown';
-import { Icon } from 'cl2-component-library';
+import { Icon, Dropdown } from 'cl2-component-library';
 import T from 'components/T';
 import Button from 'components/UI/Button';
 
@@ -368,8 +367,8 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     }
 
     const exportType = selectedUsers === 'none' && !groupId ? 'exportAllUsers'
-    : selectedUsers === 'none' && groupId ? 'exportGroup'
-    : 'exportSelectedUsers';
+      : selectedUsers === 'none' && groupId ? 'exportGroup'
+        : 'exportSelectedUsers';
 
     return (
       <TableOptions>
