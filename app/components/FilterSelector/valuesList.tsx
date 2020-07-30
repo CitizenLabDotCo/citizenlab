@@ -3,7 +3,7 @@ import { includes, isNil } from 'lodash-es';
 
 // components
 import Checkbox from 'components/UI/Checkbox';
-import Dropdown from 'components/UI/Dropdown';
+import { Dropdown } from 'cl2-component-library';
 
 // style
 import styled from 'styled-components';
@@ -111,7 +111,7 @@ interface DefaultProps {
   maxHeight?: string;
   mobileMaxHeight?: string;
   top?: string;
-  left? : string;
+  left?: string;
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
@@ -131,7 +131,7 @@ interface Props extends DefaultProps {
   name: string;
 }
 
-interface State {}
+interface State { }
 
 export default class ValuesList extends PureComponent<Props, State> {
   static defaultProps: DefaultProps = {
@@ -143,7 +143,7 @@ export default class ValuesList extends PureComponent<Props, State> {
     left: undefined,
     mobileLeft: undefined,
     right: undefined,
-    mobileRight:undefined
+    mobileRight: undefined
   };
 
   removeFocus = (event: React.MouseEvent) => {
@@ -236,23 +236,23 @@ export default class ValuesList extends PureComponent<Props, State> {
                   />
                 </CheckboxListItem>
               ) : (
-                <ListItem
-                  id={`${baseID}-${index}`}
-                  role="option"
-                  aria-posinset={index + 1}
-                  aria-selected={checked}
-                  key={entry.value}
-                  onMouseDown={this.removeFocus}
-                  className={classNames}
-                  onClick={this.handleOnSelectSingleValue(entry)}
-                  onKeyDown={this.handleOnSelectSingleValue(entry)}
-                  tabIndex={0}
-                >
-                  <ListItemText>
-                    {entry.text}
-                  </ListItemText>
-                </ListItem>
-              );
+                  <ListItem
+                    id={`${baseID}-${index}`}
+                    role="option"
+                    aria-posinset={index + 1}
+                    aria-selected={checked}
+                    key={entry.value}
+                    onMouseDown={this.removeFocus}
+                    className={classNames}
+                    onClick={this.handleOnSelectSingleValue(entry)}
+                    onKeyDown={this.handleOnSelectSingleValue(entry)}
+                    tabIndex={0}
+                  >
+                    <ListItemText>
+                      {entry.text}
+                    </ListItemText>
+                  </ListItem>
+                );
             })}
           </List>
         )}

@@ -20,8 +20,7 @@ import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // components
 import Button from 'components/UI/Button';
-import Dropdown from 'components/UI/Dropdown';
-import { Icon } from 'cl2-component-library';
+import { Dropdown, Icon } from 'cl2-component-library';
 import PBBasket from './PBBasket';
 
 // tracking
