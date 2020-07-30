@@ -1,7 +1,6 @@
 require './lib/carrierwave/file_base64/adapter.rb'
 
 CarrierWave.configure do |config|
-  config.fog_provider = 'fog/aws'
   config.fog_public     = true              # optional, defaults to true
 
   config.fog_credentials = {
