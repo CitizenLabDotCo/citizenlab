@@ -14,8 +14,7 @@ import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from '
 // components
 import { FormLabelValue } from 'components/UI/FormComponents';
 import TextArea from 'components/UI/TextArea';
-import { Input, IconTooltip } from 'cl2-component-library';
-import DateInput from 'components/UI/DateInput';
+import { Input, IconTooltip, DateInput } from 'cl2-component-library';
 import Select from 'components/UI/Select';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import Checkbox from 'components/UI/Checkbox';
