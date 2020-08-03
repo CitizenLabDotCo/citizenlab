@@ -1,4 +1,11 @@
-import React, { memo, useState, useCallback, useEffect, useMemo, MouseEvent } from 'react';
+import React, {
+  memo,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  MouseEvent,
+} from 'react';
 import { isEmpty } from 'lodash-es';
 import { LiveMessage } from 'react-aria-live';
 
@@ -77,80 +84,82 @@ interface Props {
   className?: string;
 }
 
-const SearchInput = memo<Props & InjectedIntlProps>(({ onChange, placeholder, ariaLabel, className, intl }) => {
+const SearchInput = memo<Props & InjectedIntlProps>(
+  ({ onChange, placeholder, ariaLabel, className, intl }) => {
+    const [searchTerm, setSearchTerm] = useState<string | null>(null);
 
-  const [searchTerm, setSearchTerm] = useState<string | null>(null);
+    const handleOnChange = useCallback((value: string) => {
+      const newValue = !isEmpty(value) ? value : null;
+      setSearchTerm(newValue);
+    }, []);
 
-  const handleOnChange = useCallback((value: string) => {
-    const newValue = !isEmpty(value) ? value : null;
-    setSearchTerm(newValue);
-  }, []);
+    const handleOnReset = useCallback(
+      (event: MouseEvent<HTMLElement>) => {
+        event.preventDefault();
 
-  const handleOnReset = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-
-    if (!isEmpty(searchTerm)) {
-      setSearchTerm(null);
-    }
-  }, [searchTerm]);
-
-  useEffect(() => {
-    // debounce input
-    const handler = setTimeout(() => {
-      onChange(searchTerm);
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [searchTerm]);
-
-  const searchPlaceholder = useMemo(() => {
-    return (placeholder || intl.formatMessage(messages.searchPlaceholder));
-  }, [placeholder]);
-
-  const searchAriaLabel = useMemo(() => {
-    return (ariaLabel || intl.formatMessage(messages.searchAriaLabel));
-  }, [ariaLabel]);
-
-  return (
-    <Container className={className || ''}>
-      <StyledInput
-        className="e2e-search-input"
-        type="text"
-        aria-label={searchAriaLabel}
-        placeholder={searchPlaceholder}
-        value={searchTerm || ''}
-        onChange={handleOnChange}
-      />
-
-      <ScreenReaderOnly aria-live="polite">
-        <FormattedMessage {...messages.searchTerm} values={{ searchTerm }} />
-      </ScreenReaderOnly>
-
-      <IconContainer>
-        {isEmpty(searchTerm) ?
-          <SearchIcon ariaHidden name="search2" />
-          :
-          <CloseButton
-            onClick={handleOnReset}
-          >
-            <CloseIcon
-              title={intl.formatMessage(messages.removeSearchTerm)}
-              name="close"
-            />
-          </CloseButton>
+        if (!isEmpty(searchTerm)) {
+          setSearchTerm(null);
         }
-      </IconContainer>
+      },
+      [searchTerm]
+    );
 
-      <LiveMessage
-        message={searchTerm ?
-          intl.formatMessage(messages.a11y_searchTerm, { searchTerm })
-          :
-          intl.formatMessage(messages.a11y_searchTermBlank)
-        }
-        aria-live="polite"
-      />
-    </Container>
-  );
-});
+    useEffect(() => {
+      // debounce input
+      const handler = setTimeout(() => {
+        onChange(searchTerm);
+      }, 500);
+
+      return () => clearTimeout(handler);
+    }, [searchTerm]);
+
+    const searchPlaceholder = useMemo(() => {
+      return placeholder || intl.formatMessage(messages.searchPlaceholder);
+    }, [placeholder]);
+
+    const searchAriaLabel = useMemo(() => {
+      return ariaLabel || intl.formatMessage(messages.searchAriaLabel);
+    }, [ariaLabel]);
+
+    return (
+      <Container className={className || ''}>
+        <StyledInput
+          className="e2e-search-input"
+          type="text"
+          aria-label={searchAriaLabel}
+          placeholder={searchPlaceholder}
+          value={searchTerm || ''}
+          onChange={handleOnChange}
+        />
+
+        <ScreenReaderOnly aria-live="polite">
+          <FormattedMessage {...messages.searchTerm} values={{ searchTerm }} />
+        </ScreenReaderOnly>
+
+        <IconContainer>
+          {isEmpty(searchTerm) ? (
+            <SearchIcon ariaHidden name="search2" />
+          ) : (
+            <CloseButton onClick={handleOnReset}>
+              <CloseIcon
+                title={intl.formatMessage(messages.removeSearchTerm)}
+                name="close"
+              />
+            </CloseButton>
+          )}
+        </IconContainer>
+
+        <LiveMessage
+          message={
+            searchTerm
+              ? intl.formatMessage(messages.a11y_searchTerm, { searchTerm })
+              : intl.formatMessage(messages.a11y_searchTermBlank)
+          }
+          aria-live="polite"
+        />
+      </Container>
+    );
+  }
+);
 
 export default injectIntl(SearchInput);

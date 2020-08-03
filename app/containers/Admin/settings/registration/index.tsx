@@ -1,7 +1,11 @@
 import React, { PureComponent } from 'react';
 import AllCustomFields from './CustomFields/All';
 import messages from '../messages';
-import { Section, SectionTitle, SectionDescription } from 'components/admin/Section';
+import {
+  Section,
+  SectionTitle,
+  SectionDescription,
+} from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 
 type Props = {};

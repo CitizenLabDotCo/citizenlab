@@ -18,7 +18,9 @@ import messages from './messages';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { markAllAsRead } from 'services/notifications';
-import GetNotifications, { GetNotificationsChildProps } from 'resources/GetNotifications';
+import GetNotifications, {
+  GetNotificationsChildProps,
+} from 'resources/GetNotifications';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // illustrations
@@ -100,7 +102,7 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
 
       return { dropdownOpened: !dropdownOpened };
     });
-  }
+  };
 
   render() {
     const { dropdownOpened } = this.state;
@@ -135,26 +137,32 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
                   </LoadingContainer>
                 }
               >
-                {!isNilOrError(notifications?.list) && notifications.list.length > 0 &&
-                  <NotificationsWrapper>
-                    {notifications.list.map((notification) => (
-                      <Notification
-                        key={notification.id}
-                        notification={notification}
-                      />
-                    ))}
-                  </NotificationsWrapper>
-                }
-                {(notifications?.list === null || notifications?.list?.length === 0) &&
+                {!isNilOrError(notifications?.list) &&
+                  notifications.list.length > 0 && (
+                    <NotificationsWrapper>
+                      {notifications.list.map((notification) => (
+                        <Notification
+                          key={notification.id}
+                          notification={notification}
+                        />
+                      ))}
+                    </NotificationsWrapper>
+                  )}
+                {(notifications?.list === null ||
+                  notifications?.list?.length === 0) && (
                   <EmptyStateContainer>
                     <EmptyStateImageWrapper>
-                      <EmptyStateImage src={EmptyStateImg} role="presentation" alt="" />
+                      <EmptyStateImage
+                        src={EmptyStateImg}
+                        role="presentation"
+                        alt=""
+                      />
                     </EmptyStateImageWrapper>
                     <EmptyStateText>
                       <FormattedMessage {...messages.noNotifications} />
                     </EmptyStateText>
                   </EmptyStateContainer>
-                }
+                )}
               </InfiniteScroll>
             }
           />
@@ -168,11 +176,11 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   notifications: <GetNotifications />,
-  authUser: <GetAuthUser />
+  authUser: <GetAuthUser />,
 });
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <NotificationMenu {...inputProps} {...dataProps} />}
+    {(dataProps) => <NotificationMenu {...inputProps} {...dataProps} />}
   </Data>
 );

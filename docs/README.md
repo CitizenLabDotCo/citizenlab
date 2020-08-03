@@ -1,48 +1,57 @@
 # Changelog
 
+## 2020-07-30
+
+### Added
+- Pricing plans in AdminHQ (Pricing plan limitations are not enforced).
+- Showing the number of deviations from the pricing plan defaults in the tenant listing of AdminHQ.  
+
+### Changed
+- Tidying up the form for creating new tenants in AdminHQ (removing unused features, adding titles and descriptions, reordering features, adding new feature flags, removing fields for non-relevant locales).
+
 ## 2020-07-10
 
-## Added
+### Added
 - Project topics
 
-## Changed
+### Changed
 - Userid instead of email is used for hidden field in surveys (Leiden)
 - New projects have 'draft' status by default 
 
-## Fixed
+### Fixed
 - Topics filter in ideas overview works again
 
 ## 2020-07-09 - Workshops
 
-## Fixed
+### Fixed
 - Speps are scrollable
 
-## Added
+### Added
 - Ability to export the inputs as an exel sheet
 - Polish translations
 - Portugese (pt-BR) translations
 
 ## 2020-06-26
 
-## Fixed
+### Fixed
 - No longer possible to invite a project manager without selecting a project
 - The button on the homepage now also respects the 'disable posting' setting in proposals
 - Using project copy or a tenant template that contains a draft initiative no longer fails
 
-## Added
+### Added
 - Romanian
 
 ## 2020-06-19
 
-## Fixed
+### Fixed
 - Polish characters not being rendered correctly
 
-## Added
+### Added
 - Back-office toggle to turn on/off the ability to add new proposals to the platform
 
 ## 2020-06-17
 
-## Fixed
+### Fixed
 - It's no longer needed to manually refresh after deleting your account for a consistent UI
 - It's no longer needed to manually refresh after using the admin toggle in the user overview
 - The sign-in/up flow now correctly asks the user to verify if the smart group has other rules besides verification
@@ -52,11 +61,11 @@
 - A general issue with storing cookies if fixed, noticable by missing data in GA, Intercom not showing and the cookie consent repeatedly appearing
 - Accessibility fix for the search field
 - The `signup_helper_text` setting in admin HQ is again displayed in step 1 of the sign up flow
-## Added
+### Added
 - There's a new field in admin HQ to configure custom copy in step 2 of the sign up flow called `custom_fields_signup_helper_text`
 - `workshops` can be turned on/off in admin HQ, displayed as a new page in the admin interface
 
-## Changed
+### Changed
 - The copy for `project moderator` has changed to `project manager` everywhere
 - The info image in the proposals header has changed
 

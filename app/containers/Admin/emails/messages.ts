@@ -13,7 +13,8 @@ export default defineMessages({
   },
   subtitleEmails: {
     id: 'app.containers.Admin.emails.subtitleEmails',
-    defaultMessage: 'Compose your own emails to be sent out to all users or to particular groups. And control what automated emails your users receive.',
+    defaultMessage:
+      'Compose your own emails to be sent out to all users or to particular groups. And control what automated emails your users receive.',
   },
   helmetTitle: {
     id: 'app.containers.Admin.emails.helmetTitle',
@@ -21,7 +22,8 @@ export default defineMessages({
   },
   helmetDescription: {
     id: 'app.containers.Admin.emails.helmetDescription',
-    defaultMessage: 'Send out manual emails to certain citizen group and active automated campaigns',
+    defaultMessage:
+      'Send out manual emails to certain citizen group and active automated campaigns',
   },
   campaignDeletionConfirmation: {
     id: 'app.containers.Admin.emails.campaignDeletionConfirmation',
@@ -61,7 +63,8 @@ export default defineMessages({
   },
   fieldReplyToTooltip: {
     id: 'app.containers.Admin.emails.fieldReplyToTooltip',
-    defaultMessage: 'Choose what email address should receive direct replies from users on your email.',
+    defaultMessage:
+      'Choose what email address should receive direct replies from users on your email.',
   },
   fieldTo: {
     id: 'app.containers.Admin.emails.fieldTo',
@@ -77,7 +80,8 @@ export default defineMessages({
   },
   fieldSubjectTooltip: {
     id: 'app.containers.Admin.emails.fieldSubjectTooltip',
-    defaultMessage: 'This will be shown in the subject line of the email and in the user’s inbox overview. Make it clear and engaging.',
+    defaultMessage:
+      'This will be shown in the subject line of the email and in the user’s inbox overview. Make it clear and engaging.',
   },
   fieldBody: {
     id: 'app.containers.Admin.emails.fieldBody',
@@ -109,7 +113,8 @@ export default defineMessages({
   },
   sendTestEmailTooltip: {
     id: 'app.containers.Admin.emails.sendTestEmailTooltip',
-    defaultMessage: 'Send this draft email to the email address with which you are logged in, to check how it looks like in ‘real life’.',
+    defaultMessage:
+      'Send this draft email to the email address with which you are logged in, to check how it looks like in ‘real life’.',
   },
   previewSentConfirmation: {
     id: 'app.containers.Admin.emails.previewSentConfirmation',
@@ -173,7 +178,8 @@ export default defineMessages({
   },
   deliveryStatus_clickedTooltip: {
     id: 'app.containers.Admin.Campaigns.deliveryStatus_clickedTooltip',
-    defaultMessage: 'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
+    defaultMessage:
+      'When you added one or more links to your email, the number of users who clicked a link will be shown here.',
   },
   tabCustom: {
     id: 'app.containers.Admin.Campaigns.tabCustom',
@@ -193,7 +199,8 @@ export default defineMessages({
   },
   noAccess: {
     id: 'app.containers.Admin.Campaigns.noAccess',
-    defaultMessage: 'We\'re sorry, but it seems like you don\'t have access to the emails section',
+    defaultMessage:
+      "We're sorry, but it seems like you don't have access to the emails section",
   },
   deleteCampaignButton: {
     id: 'app.containers.Admin.emails.deleteCampaignButton',
@@ -205,42 +212,45 @@ export default defineMessages({
   },
   noCampaignsDescription: {
     id: 'app.containers.Admin.emails.noCampaignsDescription',
-    defaultMessage: 'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
+    defaultMessage:
+      'Custom email campaigns are emails created from scratch. Their content and recipients can be chosen and you can follow up on their results through statistics.',
   },
   automatedEmailCampaignsInfo: {
     id: 'app.containers.Admin.emails.automatedEmailCampaignsInfo',
-    defaultMessage: 'Automated email campaigns are sent out by default and are triggered by a user’s actions. Some of them can be turned off. Others are an inherent part of user interactions with the platform and therefore can’t be turned off.'
+    defaultMessage:
+      'Automated email campaigns are sent out by default and are triggered by a user’s actions. Some of them can be turned off. Others are an inherent part of user interactions with the platform and therefore can’t be turned off.',
   },
   allUsers: {
     id: 'app.containers.Admin.emails.allUsers',
-    defaultMessage: 'All users'
+    defaultMessage: 'All users',
   },
   groups: {
     id: 'app.containers.Admin.emails.groups',
-    defaultMessage: 'Groups'
+    defaultMessage: 'Groups',
   },
   nameVariablesInfo: {
     id: 'app.containers.Admin.emails.nameVariablesInfo',
-    defaultMessage: 'You can speak directly to citizens using the variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. "Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ..."'
+    defaultMessage:
+      'You can speak directly to citizens using the variables \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}. E.g. "Dear \\{\\{first_name\\}\\} \\{\\{last_name\\}\\}, ..."',
   },
   changeRecipientsButton: {
     id: 'app.containers.Admin.emails.changeRecipientsButton',
-    defaultMessage: 'Change recipients'
+    defaultMessage: 'Change recipients',
   },
   send: {
     id: 'app.containers.Admin.emails.send',
-    defaultMessage: 'Send'
+    defaultMessage: 'Send',
   },
   confirmSendHeader: {
     id: 'app.containers.Admin.emails.confirmSendHeader',
-    defaultMessage: 'Email to all users?'
+    defaultMessage: 'Email to all users?',
   },
   toAllUsers: {
     id: 'app.containers.Admin.emails.toAllUsers',
-    defaultMessage: 'Do you want to send this email to all users?'
+    defaultMessage: 'Do you want to send this email to all users?',
   },
   senderRecipients: {
     id: 'app.containers.Admin.emails.senderRecipients',
-    defaultMessage: 'Sender and recipients'
+    defaultMessage: 'Sender and recipients',
   },
 });

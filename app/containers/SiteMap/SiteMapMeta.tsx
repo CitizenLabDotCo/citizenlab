@@ -6,7 +6,10 @@ import messages from './messages';
 const SiteMapMeta = ({ intl }) => (
   <Helmet>
     <title>{intl.formatMessage(messages.siteMapTitle)}</title>
-    <meta name="description" content={intl.formatMessage(messages.siteMapDescription)} />
+    <meta
+      name="description"
+      content={intl.formatMessage(messages.siteMapDescription)}
+    />
   </Helmet>
 );
 

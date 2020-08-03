@@ -19,37 +19,39 @@ import { isCLErrorJSON } from 'utils/errorUtils';
 type Props = {};
 
 export default class New extends React.Component<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     addArea({
-      ...values
+      ...values,
     })
-    .then(() => {
-      clHistory.push('/admin/settings/areas');
-    })
-    .catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+      .then(() => {
+        clHistory.push('/admin/settings/areas');
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   renderFn = (props) => {
     return <AreaForm {...props} />;
-  }
+  };
 
   goBack = () => {
     clHistory.push('/admin/settings/areas');
-  }
+  };
 
   initialValues = () => ({
     title_multiloc: {},
-    description_multiloc: {}
-  })
+    description_multiloc: {},
+  });
 
   render() {
     return (

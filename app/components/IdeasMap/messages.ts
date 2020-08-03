@@ -7,7 +7,8 @@ export default defineMessages({
   },
   noIdeasWithLocation: {
     id: 'app.components.IdeasMap.noIdeasWithLocation',
-    defaultMessage: "The ideas in this project don't have any location information.",
+    defaultMessage:
+      "The ideas in this project don't have any location information.",
   },
   postingHereImpossible: {
     id: 'app.components.IdeasMap.postingHereImpossible',
@@ -15,11 +16,13 @@ export default defineMessages({
   },
   postingNotPermitted: {
     id: 'app.components.IdeasMap.postingNotPermitted',
-    defaultMessage: 'Unfortunately, You don\'t have the rights to post ideas here.',
+    defaultMessage:
+      "Unfortunately, You don't have the rights to post ideas here.",
   },
   postingMaybeNotPermitted: {
     id: 'app.components.IdeasMap.postingMaybeNotPermitted',
-    defaultMessage: 'Only certain users can post ideas here. Please {signUpLink} or {signInLink} first.',
+    defaultMessage:
+      'Only certain users can post ideas here. Please {signUpLink} or {signInLink} first.',
   },
   signUpLinkText: {
     id: 'app.components.IdeasMap.signUpLinkText',
@@ -35,7 +38,7 @@ export default defineMessages({
   },
   postingNotActivePhase: {
     id: 'app.components.IdeasMap.postingNotActivePhase',
-    defaultMessage: 'You can\'t post ideas in a past or future phase.',
+    defaultMessage: "You can't post ideas in a past or future phase.",
   },
   mapTitle: {
     id: 'app.components.IdeasMap.mapTitle',

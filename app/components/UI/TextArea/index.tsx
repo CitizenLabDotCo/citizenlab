@@ -33,7 +33,7 @@ const CharacterCount = styled.p`
   bottom: 0;
   color: ${colors.label};
   margin: 0;
-  padding: .5rem;
+  padding: 0.5rem;
   position: absolute;
   right: 0;
 
@@ -75,7 +75,12 @@ export default class TextArea extends React.PureComponent<Props, State> {
   componentDidUpdate(prevProps: Props) {
     const { focusOnError, error } = this.props;
 
-    if (focusOnError && error && error !== prevProps.error && this.textareaElement !== null) {
+    if (
+      focusOnError &&
+      error &&
+      error !== prevProps.error &&
+      this.textareaElement !== null
+    ) {
       setTimeout(() => {
         if (this.textareaElement) {
           this.textareaElement.focus();
@@ -85,38 +90,53 @@ export default class TextArea extends React.PureComponent<Props, State> {
   }
 
   handleOnChange = (event: React.FormEvent<HTMLTextAreaElement>) => {
-    const value = this.props.maxCharCount ? event.currentTarget.value.substr(0, this.props.maxCharCount) : event.currentTarget.value;
+    const value = this.props.maxCharCount
+      ? event.currentTarget.value.substr(0, this.props.maxCharCount)
+      : event.currentTarget.value;
 
     if (this.props.onChange) {
       this.props.onChange(value, this.props.locale);
     }
-  }
+  };
 
   handleOnFocus = () => {
     if (this.props.onFocus) {
       this.props.onFocus();
     }
-  }
+  };
 
   handleOnBlur = () => {
     if (this.props.onBlur) {
       this.props.onBlur();
     }
-  }
+  };
 
-  noop = () => { };
+  noop = () => {};
 
   render() {
-    const { id, name, label, labelTooltipText, value, rows, placeholder, error, children, maxCharCount, disabled, className } = this.props;
+    const {
+      id,
+      name,
+      label,
+      labelTooltipText,
+      value,
+      rows,
+      placeholder,
+      error,
+      children,
+      maxCharCount,
+      disabled,
+      className,
+    } = this.props;
 
     return (
       <Container className={className}>
-        {label &&
+        {label && (
           <Label htmlFor={id}>
             <span>{label}</span>
             {labelTooltipText && <IconTooltip content={labelTooltipText} />}
           </Label>
-        }
+        )}
 
         <TextAreaContainer className="TextArea">
           <TextareaAutosize
@@ -131,11 +151,13 @@ export default class TextArea extends React.PureComponent<Props, State> {
             onBlur={this.handleOnBlur}
             disabled={disabled}
           />
-          {value && maxCharCount &&
-            <CharacterCount className={value.length === maxCharCount ? 'error' : ''}>
+          {value && maxCharCount && (
+            <CharacterCount
+              className={value.length === maxCharCount ? 'error' : ''}
+            >
               {value.length} / {maxCharCount}
             </CharacterCount>
-          }
+          )}
           {children}
         </TextAreaContainer>
         <Error text={error} />

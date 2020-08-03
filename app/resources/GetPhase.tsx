@@ -27,13 +27,13 @@ export default class GetPhase extends React.Component<Props, State> {
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      phase: undefined
+      phase: undefined,
     };
   }
 
@@ -43,14 +43,16 @@ export default class GetPhase extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ phase: undefined })),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }: { id: string }) => phaseStream(id).observable)
-      ).subscribe((phase) => {
-        this.setState({ phase: phase.data });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ phase: undefined })),
+          filter(({ id }) => isString(id)),
+          switchMap(({ id }: { id: string }) => phaseStream(id).observable)
+        )
+        .subscribe((phase) => {
+          this.setState({ phase: phase.data });
+        }),
     ];
   }
 
@@ -60,7 +62,7 @@ export default class GetPhase extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

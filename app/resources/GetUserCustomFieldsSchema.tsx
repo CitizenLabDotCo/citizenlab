@@ -1,8 +1,12 @@
-import useUserCustomFieldsSchema, { UserCustomFieldsSchema } from 'hooks/useUserCustomFieldsSchema';
+import useUserCustomFieldsSchema, {
+  UserCustomFieldsSchema,
+} from 'hooks/useUserCustomFieldsSchema';
 
 interface InputProps {}
 
-type children = (renderProps: GetUserCustomFieldsSchemaChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetUserCustomFieldsSchemaChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;

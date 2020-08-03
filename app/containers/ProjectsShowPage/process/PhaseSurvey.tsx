@@ -65,11 +65,11 @@ class PhaseSurvey extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PhaseSurvey {...inputProps} {...dataProps} />}
+    {(dataProps) => <PhaseSurvey {...inputProps} {...dataProps} />}
   </Data>
 );

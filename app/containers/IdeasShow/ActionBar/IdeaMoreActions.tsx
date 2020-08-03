@@ -50,41 +50,42 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   spamModalVisible: boolean;
 }
 
-class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
-
+class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
-      spamModalVisible: false
+      spamModalVisible: false,
     };
   }
 
   openSpamModal = () => {
     this.setState({ spamModalVisible: true });
-  }
+  };
 
   closeSpamModal = () => {
     this.setState({ spamModalVisible: false });
-  }
+  };
 
   onEditIdea = () => {
     clHistory.push(`/ideas/edit/${this.props.idea.id}`);
-  }
+  };
 
   onDeleteIdea = (ideaId: string) => () => {
-    const message = this.props.intl.formatMessage(messages.deleteIdeaConfirmation);
+    const message = this.props.intl.formatMessage(
+      messages.deleteIdeaConfirmation
+    );
 
     if (window.confirm(message)) {
       deleteIdea(ideaId);
       clHistory.goBack();
     }
-  }
+  };
 
   render() {
     const { idea, hasLeftMargin, className, authUser } = this.props;
@@ -93,7 +94,9 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
     if (!isNilOrError(authUser) && !isNilOrError(idea)) {
       return (
         <Container className={className}>
-          <MoreActionsMenuWrapper className={hasLeftMargin ? 'hasLeftMargin' : ''}>
+          <MoreActionsMenuWrapper
+            className={hasLeftMargin ? 'hasLeftMargin' : ''}
+          >
             <HasPermission item={idea} action="edit" context={idea}>
               <MoreActionsMenu
                 label={<FormattedMessage {...messages.moreOptions} />}
@@ -110,16 +113,18 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
                   {
                     label: <FormattedMessage {...messages.deleteIdea} />,
                     handler: this.onDeleteIdea(idea.id),
-                  }
+                  },
                 ]}
               />
               <HasPermission.No>
                 <MoreActionsMenu
                   id="e2e-idea-more-actions"
-                  actions={[{
-                    label: <FormattedMessage {...messages.reportAsSpam} />,
-                    handler: this.openSpamModal,
-                  }]}
+                  actions={[
+                    {
+                      label: <FormattedMessage {...messages.reportAsSpam} />,
+                      handler: this.openSpamModal,
+                    },
+                  ]}
                   label={<FormattedMessage {...messages.moreOptions} />}
                 />
               </HasPermission.No>
@@ -130,10 +135,7 @@ class IdeaMoreActions extends PureComponent<Props & InjectedIntlProps, State>{
             close={this.closeSpamModal}
             header={<FormattedMessage {...messages.reportAsSpamModalTitle} />}
           >
-            <SpamReportForm
-              resourceId={idea.id}
-              resourceType="ideas"
-            />
+            <SpamReportForm resourceId={idea.id} resourceType="ideas" />
           </Modal>
         </Container>
       );
@@ -151,6 +153,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <IdeaMoreActionsWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <IdeaMoreActionsWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

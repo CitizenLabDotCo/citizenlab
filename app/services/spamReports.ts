@@ -23,11 +23,18 @@ export interface SpamReportResponse {
     attributes: Report;
   };
   relationships: {
-    [key: string]: IRelationship[]
+    [key: string]: IRelationship[];
   };
   links: ILinks;
 }
 
-export function sendSpamReport(targetType: 'comments' | 'ideas' | 'initiatives', targetId: string, spamReport: Report) {
-  return streams.add<SpamReportResponse>(`${API_PATH}/${targetType}/${targetId}/spam_reports`, { spam_report: spamReport });
+export function sendSpamReport(
+  targetType: 'comments' | 'ideas' | 'initiatives',
+  targetId: string,
+  spamReport: Report
+) {
+  return streams.add<SpamReportResponse>(
+    `${API_PATH}/${targetType}/${targetId}/spam_reports`,
+    { spam_report: spamReport }
+  );
 }

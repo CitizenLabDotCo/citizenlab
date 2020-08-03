@@ -78,9 +78,9 @@ interface InputProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, GetUsersChildProps { }
+interface Props extends InputProps, GetUsersChildProps {}
 
-interface State { }
+interface State {}
 
 interface Tracks {
   trackPagination: Function;
@@ -90,10 +90,9 @@ interface Tracks {
 }
 
 class UsersTable extends PureComponent<Props & Tracks, State> {
-
   isUserAdmin = (user: IUserData) => {
     return isAdmin({ data: user });
-  }
+  };
 
   handleAdminRoleOnChange = (user: IUserData) => () => {
     let newRoles: IRole[] = [];
@@ -102,49 +101,58 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
     trackAdminToggle();
 
     if (authUser && authUser.id === user.id) {
-      eventEmitter.emit<JSX.Element>(events.userRoleChangeFailed, <FormattedMessage {...messages.youCantUnadminYourself} />);
+      eventEmitter.emit<JSX.Element>(
+        events.userRoleChangeFailed,
+        <FormattedMessage {...messages.youCantUnadminYourself} />
+      );
     } else {
       if (user.attributes.roles && isAdmin({ data: user })) {
-        newRoles = user.attributes.roles.filter(role => role.type !== 'admin');
+        newRoles = user.attributes.roles.filter(
+          (role) => role.type !== 'admin'
+        );
       } else {
-        newRoles = [
-          ...get(user, 'attributes.roles', []),
-          { type: 'admin' }
-        ];
+        newRoles = [...get(user, 'attributes.roles', []), { type: 'admin' }];
       }
 
       updateUser(user.id, { roles: newRoles }).then(() => {
         setTimeout(() => {
           streams.fetchAllWith({
             dataId: [user.id],
-            apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`]
+            apiEndpoint: [`${API_PATH}/groups`, `${API_PATH}/users`],
           });
         }, 2000);
       });
     }
-  }
+  };
 
   handleSortingOnChange = (sortAttribute: SortAttribute) => () => {
     this.props.trackSortChange({
       extra: {
         sortAttribute,
-      }
+      },
     });
     this.props.onChangeSorting(sortAttribute);
-  }
+  };
 
   handlePaginationClick = (pageNumber: number) => {
     this.props.trackPagination();
     this.props.onChangePage(pageNumber);
-  }
+  };
 
   handleUserToggle = (userId) => () => {
     this.props.trackToggleOneUser();
     this.props.handleSelect(userId);
-  }
+  };
 
   render() {
-    const { usersList, sortAttribute, sortDirection, currentPage, lastPage, selectedUsers } = this.props;
+    const {
+      usersList,
+      sortAttribute,
+      sortDirection,
+      currentPage,
+      lastPage,
+      selectedUsers,
+    } = this.props;
     const usersCount = isArray(usersList) && usersList.length;
 
     if (isArray(usersList) && usersCount && usersCount > 0) {
@@ -159,7 +167,9 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
                   <SortableTableHeaderCell
                     value={<FormattedMessage {...messages.name} />}
                     onClick={this.handleSortingOnChange('last_name')}
-                    sorted={sortAttribute === 'last_name' ? sortDirection : null}
+                    sorted={
+                      sortAttribute === 'last_name' ? sortDirection : null
+                    }
                   />
                 </th>
                 <th>
@@ -173,7 +183,9 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
                   <SortableTableHeaderCell
                     value={<FormattedMessage {...messages.since} />}
                     onClick={this.handleSortingOnChange('created_at')}
-                    sorted={sortAttribute === 'created_at' ? sortDirection : null}
+                    sorted={
+                      sortAttribute === 'created_at' ? sortDirection : null
+                    }
                   />
                 </th>
                 <th>
@@ -193,7 +205,9 @@ class UsersTable extends PureComponent<Props & Tracks, State> {
                 <UserTableRow
                   key={user.id}
                   user={user}
-                  selected={selectedUsers === 'all' || includes(selectedUsers, user.id)}
+                  selected={
+                    selectedUsers === 'all' || includes(selectedUsers, user.id)
+                  }
                   toggleSelect={this.handleUserToggle(user.id)}
                   toggleAdmin={this.handleAdminRoleOnChange(user)}
                   authUser={this.props.authUser}

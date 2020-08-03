@@ -8,7 +8,7 @@ import Spinner from 'components/UI/Spinner';
 import Icon, { Props as IconProps, clColorTheme } from 'components/UI/Icon';
 
 export type ButtonStyles =
-  'primary'
+  | 'primary'
   | 'primary-inverse'
   | 'primary-outlined'
   | 'secondary'
@@ -111,7 +111,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       textColor: '#fff',
       textHoverColor: '#fff',
       iconColor: '#fff',
-      iconHoverColor: '#fff'
+      iconHoverColor: '#fff',
     },
     'primary-outlined': {
       bgColor: 'transparent',
@@ -122,13 +122,13 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     'primary-inverse': {
       bgColor: '#fff',
       textColor: get(props.theme, 'colorText'),
-      textHoverColor: get(props.theme, 'colorText')
+      textHoverColor: get(props.theme, 'colorText'),
     },
     secondary: {
       bgColor: colors.lightGreyishBlue,
       textColor: darken(0.1, colors.label),
       borderColor: 'transparent',
-      bgHoverColor: darken(0.05, colors.lightGreyishBlue)
+      bgHoverColor: darken(0.05, colors.lightGreyishBlue),
     },
     'secondary-outlined': {
       bgColor: 'transparent',
@@ -142,7 +142,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       textColor: get(props.theme, 'colorText'),
       borderColor: '#ddd',
       borderHoverColor: darken(0.3, '#ddd'),
-      iconColor: get(props.theme, 'colorMain')
+      iconColor: get(props.theme, 'colorMain'),
     },
     text: {
       bgColor: 'transparent',
@@ -151,14 +151,14 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     },
     success: {
       bgColor: colors.clGreenSuccessBackground,
-      textColor: colors.clGreenSuccess
+      textColor: colors.clGreenSuccess,
     },
     'cl-blue': {
       bgColor: colors.clBlueDark,
       textColor: '#fff',
       textHoverColor: '#fff',
       iconColor: '#fff',
-      iconHoverColor: '#fff'
+      iconHoverColor: '#fff',
     },
     'cl-blue-outlined': {
       bgColor: 'transparent',
@@ -171,7 +171,7 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
       textColor: '#fff',
       textHoverColor: '#fff',
       iconColor: '#fff',
-      iconHoverColor: '#fff'
+      iconHoverColor: '#fff',
     },
     'admin-dark-outlined': {
       bgColor: 'transparent',
@@ -181,34 +181,81 @@ function getButtonStyle(props: ButtonContainerProps & { theme: any }) {
     },
     'admin-dark-text': {
       bgColor: 'transparent',
-      textColor: colors.adminTextColor
+      textColor: colors.adminTextColor,
     },
     delete: {
       bgColor: colors.clRedError,
       textColor: '#fff',
       textHoverColor: '#fff',
       iconColor: '#fff',
-      iconHoverColor: '#fff'
-    }
+      iconHoverColor: '#fff',
+    },
   };
 
-  const backgroundColor = props.bgColor || get(defaultStyleValues, `${props.buttonStyle}.bgColor`);
-  const backgroundHoverColor = props.bgHoverColor || get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) || darken(0.12, backgroundColor);
-  const backgroundDisabledColor = props.bgDisabledColor || get(defaultStyleValues, `${props.buttonStyle}.bgDisabledColor`) || backgroundColor;
-  const textColor = props.textColor || get(defaultStyleValues, `${props.buttonStyle}.textColor`);
-  const textHoverColor = props.textHoverColor || get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) || darken(0.2, textColor);
-  const iconColor = props.iconColor || get(defaultStyleValues, `${props.buttonStyle}.iconColor`) || textColor;
-  const iconHoverColor = props.iconHoverColor || get(defaultStyleValues, `${props.buttonStyle}.iconHoverColor`) || darken(0.2, iconColor);
-  const textDisabledColor = props.textDisabledColor || get(defaultStyleValues, `${props.buttonStyle}.textDisabledColor`) || textColor;
-  const borderColor = props.borderColor || get(defaultStyleValues, `${props.buttonStyle}.borderColor`) || 'transparent';
-  const borderHoverColor = props.borderHoverColor || get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) || darken(0.2, borderColor);
-  const borderDisabledColor = props.borderDisabledColor || get(defaultStyleValues, `${props.buttonStyle}.borderDisabledColor`) || borderColor;
-  const boxShadow = props.boxShadow || get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) || 'none';
-  const boxShadowHover = props.boxShadowHover || get(defaultStyleValues, `${props.buttonStyle}.boxShadowHover`) || 'none';
-  const borderRadius = props.borderRadius || get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) || props.theme.borderRadius;
-  const textDecoration = props.textDecoration || get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) || 'none';
-  const textDecorationHover = props.textDecorationHover || get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) || 'none';
-  const padding = get(defaultStyleValues, `${props.buttonStyle}.padding`) || getPadding(props);
+  const backgroundColor =
+    props.bgColor || get(defaultStyleValues, `${props.buttonStyle}.bgColor`);
+  const backgroundHoverColor =
+    props.bgHoverColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) ||
+    darken(0.12, backgroundColor);
+  const backgroundDisabledColor =
+    props.bgDisabledColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.bgDisabledColor`) ||
+    backgroundColor;
+  const textColor =
+    props.textColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.textColor`);
+  const textHoverColor =
+    props.textHoverColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.textHoverColor`) ||
+    darken(0.2, textColor);
+  const iconColor =
+    props.iconColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.iconColor`) ||
+    textColor;
+  const iconHoverColor =
+    props.iconHoverColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.iconHoverColor`) ||
+    darken(0.2, iconColor);
+  const textDisabledColor =
+    props.textDisabledColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.textDisabledColor`) ||
+    textColor;
+  const borderColor =
+    props.borderColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.borderColor`) ||
+    'transparent';
+  const borderHoverColor =
+    props.borderHoverColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.borderHoverColor`) ||
+    darken(0.2, borderColor);
+  const borderDisabledColor =
+    props.borderDisabledColor ||
+    get(defaultStyleValues, `${props.buttonStyle}.borderDisabledColor`) ||
+    borderColor;
+  const boxShadow =
+    props.boxShadow ||
+    get(defaultStyleValues, `${props.buttonStyle}.boxShadow`) ||
+    'none';
+  const boxShadowHover =
+    props.boxShadowHover ||
+    get(defaultStyleValues, `${props.buttonStyle}.boxShadowHover`) ||
+    'none';
+  const borderRadius =
+    props.borderRadius ||
+    get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) ||
+    props.theme.borderRadius;
+  const textDecoration =
+    props.textDecoration ||
+    get(defaultStyleValues, `${props.buttonStyle}.textDecoration`) ||
+    'none';
+  const textDecorationHover =
+    props.textDecorationHover ||
+    get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) ||
+    'none';
+  const padding =
+    get(defaultStyleValues, `${props.buttonStyle}.padding`) ||
+    getPadding(props);
   const fontSize = getFontSize(props);
   const lineHeight = getLineHeight(props);
   const iconSize = getIconHeight(props);
@@ -422,7 +469,6 @@ export interface Props extends ButtonContainerProps {
 interface State {}
 
 export class Button extends PureComponent<Props, State> {
-
   handleOnClick = (event) => {
     const { onClick, processing, disabled } = this.props;
 
@@ -434,11 +480,11 @@ export class Button extends PureComponent<Props, State> {
         onClick(event);
       }
     }
-  }
+  };
 
   removeFocus = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-  }
+  };
 
   getSpinnerSize = (size) => {
     switch (size) {
@@ -451,10 +497,13 @@ export class Button extends PureComponent<Props, State> {
       default:
         return '24px';
     }
-  }
+  };
 
   getSpinnerColor = (buttonStyle: ButtonStyles) => {
-    if (buttonStyle === 'primary-outlined' || buttonStyle === 'secondary-outlined') {
+    if (
+      buttonStyle === 'primary-outlined' ||
+      buttonStyle === 'secondary-outlined'
+    ) {
       const theme = this.props.theme as object;
       return theme['colorMain'];
     }
@@ -465,7 +514,7 @@ export class Button extends PureComponent<Props, State> {
     }
 
     return '#fff';
-  }
+  };
 
   render() {
     const {
@@ -515,36 +564,45 @@ export class Button extends PureComponent<Props, State> {
       ariaDescribedby,
       ariaDisabled,
       opacityDisabled,
-      className
+      className,
     } = this.props;
 
     const id = this.props.id || '';
     const size = this.props.size || '1';
-    const processing = isBoolean(this.props.processing) ? this.props.processing : false;
+    const processing = isBoolean(this.props.processing)
+      ? this.props.processing
+      : false;
     const buttonStyle = this.props.buttonStyle || 'primary';
-    const disabled = isBoolean(this.props.disabled) ? this.props.disabled : false;
+    const disabled = isBoolean(this.props.disabled)
+      ? this.props.disabled
+      : false;
     const iconPos = this.props.iconPos || 'left';
     const spinnerSize = this.getSpinnerSize(size);
-    const spinnerColor = this.props.spinnerColor || textColor || this.getSpinnerColor(buttonStyle);
-    const hasText = (!isNil(text) || !isNil(children));
+    const spinnerColor =
+      this.props.spinnerColor || textColor || this.getSpinnerColor(buttonStyle);
+    const hasText = !isNil(text) || !isNil(children);
     const containerClassNames = [
       className,
       disabled ? 'disabled' : null,
       processing ? 'processing' : null,
-      fullWidth ? 'fullWidth' : null
-    ].filter(item => !isNil(item)).join(' ');
+      fullWidth ? 'fullWidth' : null,
+    ]
+      .filter((item) => !isNil(item))
+      .join(' ');
     const buttonClassNames = [
       'button',
       'Button',
       buttonStyle,
       disabled ? 'disabled' : null,
       processing ? 'processing' : null,
-      fullWidth ? 'fullWidth' : null
-    ].filter(item => !isNil(item)).join(' ');
+      fullWidth ? 'fullWidth' : null,
+    ]
+      .filter((item) => !isNil(item))
+      .join(' ');
 
     const childContent = (
       <>
-        {icon && iconPos === 'left' &&
+        {icon && iconPos === 'left' && (
           <StyledIcon
             name={icon}
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
@@ -552,10 +610,12 @@ export class Button extends PureComponent<Props, State> {
             colorTheme={iconTheme}
             ariaHidden={iconAriaHidden}
           />
-        }
-        {hasText && <ButtonText className="buttonText">{text || children}</ButtonText>}
+        )}
+        {hasText && (
+          <ButtonText className="buttonText">{text || children}</ButtonText>
+        )}
         {hiddenText && <HiddenText>{hiddenText}</HiddenText>}
-        {icon && iconPos === 'right' &&
+        {icon && iconPos === 'right' && (
           <StyledIcon
             name={icon}
             className={`buttonIcon ${iconPos} ${hasText && 'hasText'}`}
@@ -563,12 +623,12 @@ export class Button extends PureComponent<Props, State> {
             colorTheme={iconTheme}
             ariaHidden={iconAriaHidden}
           />
-        }
-        {processing &&
+        )}
+        {processing && (
           <SpinnerWrapper>
             <Spinner size={spinnerSize} color={spinnerColor} />
           </SpinnerWrapper>
-        }
+        )}
       </>
     );
 
@@ -613,7 +673,7 @@ export class Button extends PureComponent<Props, State> {
         opacityDisabled={opacityDisabled}
       >
         {linkTo && !disabled ? (
-          (isString(linkTo) && linkTo.startsWith('http')) ? (
+          isString(linkTo) && linkTo.startsWith('http') ? (
             <StyledA
               ref={this.props.setSubmitButtonRef}
               href={linkTo}

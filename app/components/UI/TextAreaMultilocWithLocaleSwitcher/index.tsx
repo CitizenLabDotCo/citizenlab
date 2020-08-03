@@ -69,18 +69,24 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     !isNilOrError(locale) && setSelectedLocale(locale);
   }, [locale]);
 
-  const handleValueOnChange = useCallback((value: string, locale: Locale) => {
-    const newValueMultiloc = {
-      ...(valueMultiloc || {}),
-      [locale]: value
-    } as Multiloc;
+  const handleValueOnChange = useCallback(
+    (value: string, locale: Locale) => {
+      const newValueMultiloc = {
+        ...(valueMultiloc || {}),
+        [locale]: value,
+      } as Multiloc;
 
-    onChange(newValueMultiloc, locale);
-  }, [valueMultiloc, onChange]);
+      onChange(newValueMultiloc, locale);
+    },
+    [valueMultiloc, onChange]
+  );
 
-  const handleOnSelectedLocaleChange = useCallback((newSelectedLocale: Locale) => {
-    setSelectedLocale(newSelectedLocale);
-  }, []);
+  const handleOnSelectedLocaleChange = useCallback(
+    (newSelectedLocale: Locale) => {
+      setSelectedLocale(newSelectedLocale);
+    },
+    []
+  );
 
   if (selectedLocale) {
     const id = `${props.id}-${selectedLocale}`;
@@ -88,12 +94,14 @@ const TextAreaMultilocWithLocaleSwitcher = memo<Props>((props) => {
     return (
       <Container className={className}>
         <LabelContainer>
-          {(label || labelTextElement) ? (
+          {label || labelTextElement ? (
             <StyledLabel htmlFor={id}>
               {labelTextElement || <LabelText>{label}</LabelText>}
               {labelTooltipText && <IconTooltip content={labelTooltipText} />}
             </StyledLabel>
-          ) : <Spacer />}
+          ) : (
+            <Spacer />
+          )}
 
           <StyledFormLocaleSwitcher
             onLocaleChange={handleOnSelectedLocaleChange}

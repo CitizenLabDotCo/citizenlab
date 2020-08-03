@@ -9,7 +9,9 @@ if (process.env.CROWDIN_PLUGIN_ENABLED) {
   const achTranslationMessages = require('translations/ach-UG.json');
 
   const formatTranslationMessages = (messages) => {
-    const defaultFormattedMessages = formatTranslationMessages(achTranslationMessages);
+    const defaultFormattedMessages = formatTranslationMessages(
+      achTranslationMessages
+    );
 
     return Object.keys(messages).reduce((formattedMessages, key) => {
       let message = messages[key];
@@ -21,8 +23,12 @@ if (process.env.CROWDIN_PLUGIN_ENABLED) {
   };
 
   translationMessages = formatTranslationMessages(achTranslationMessages);
-  document.write('<script type="text/javascript">var _jipt = [];_jipt.push(["project", "cl2-front"]);</script>');
-  document.write('<script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>');
+  document.write(
+    '<script type="text/javascript">var _jipt = [];_jipt.push(["project", "cl2-front"]);</script>'
+  );
+  document.write(
+    '<script type="text/javascript" src="//cdn.crowdin.com/jipt/jipt.js"></script>'
+  );
 }
 
 export default translationMessages;

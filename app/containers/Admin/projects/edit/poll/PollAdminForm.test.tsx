@@ -12,16 +12,33 @@ jest.mock('./FormQuestionRow', () => 'FormQuestionRow');
 jest.mock('./OptionForm', () => 'OptionForm');
 
 jest.mock('services/pollQuestions', () => ({
-  addPollQuestion: jest.fn((_id, _type, title) => { return new Promise((resolve) => resolve({ data: mockQuestion('newQuestion', title) })); }),
-  updatePollQuestion: jest.fn(() => { return new Promise((resolve) => resolve); }),
-  reorderPollQuestion: jest.fn(() => { return new Promise((resolve) => resolve); }),
-  deletePollQuestion: jest.fn()
+  addPollQuestion: jest.fn((_id, _type, title) => {
+    return new Promise((resolve) =>
+      resolve({ data: mockQuestion('newQuestion', title) })
+    );
+  }),
+  updatePollQuestion: jest.fn(() => {
+    return new Promise((resolve) => resolve);
+  }),
+  reorderPollQuestion: jest.fn(() => {
+    return new Promise((resolve) => resolve);
+  }),
+  deletePollQuestion: jest.fn(),
 }));
 import * as pollQuestionsService from 'services/pollQuestions';
 const addPollQuestionSpy = jest.spyOn(pollQuestionsService, 'addPollQuestion');
-const updatePollQuestionSpy = jest.spyOn(pollQuestionsService, 'updatePollQuestion');
-const deletePollQuestionSpy = jest.spyOn(pollQuestionsService, 'deletePollQuestion');
-const reorderPollQuestionSpy = jest.spyOn(pollQuestionsService, 'reorderPollQuestion');
+const updatePollQuestionSpy = jest.spyOn(
+  pollQuestionsService,
+  'updatePollQuestion'
+);
+const deletePollQuestionSpy = jest.spyOn(
+  pollQuestionsService,
+  'deletePollQuestion'
+);
+const reorderPollQuestionSpy = jest.spyOn(
+  pollQuestionsService,
+  'reorderPollQuestion'
+);
 
 let mockQuestions: IPollQuestion[];
 
@@ -38,8 +55,11 @@ describe('<PollAdminForm/>', () => {
   });
   describe('displays passed in questions', () => {
     it('shows the right amount', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
@@ -51,7 +71,9 @@ describe('<PollAdminForm/>', () => {
       expect(wrapper.find('QuestionRow').length).toBe(3);
     });
     it('passes down questions', () => {
-      const pollQuestions = [mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')];
+      const pollQuestions = [
+        mockQuestion('questionId', "What's your favourite ice cream flavor?"),
+      ];
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
@@ -60,10 +82,14 @@ describe('<PollAdminForm/>', () => {
           locale="en"
         />
       );
-      expect(wrapper.find('QuestionRow').prop('question')).toEqual(pollQuestions[0]);
+      expect(wrapper.find('QuestionRow').prop('question')).toEqual(
+        pollQuestions[0]
+      );
     });
     it('List reacts to addition', () => {
-      const pollQuestions = [mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')];
+      const pollQuestions = [
+        mockQuestion('questionId', "What's your favourite ice cream flavor?"),
+      ];
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
@@ -79,8 +105,11 @@ describe('<PollAdminForm/>', () => {
       expect(wrapper.find('QuestionRow').length).toBe(2);
     });
     it('List reacts to deletion', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
 
       const wrapper = shallow(
         <PollAdminForm
@@ -137,7 +166,9 @@ describe('<PollAdminForm/>', () => {
       const getFormQuestionRow = () => wrapper.find('FormQuestionRow');
 
       getFormQuestionRow().props().onChange({ en: 'How are you?' });
-      expect(getFormQuestionRow().props().titleMultiloc).toEqual({ en: 'How are you?' });
+      expect(getFormQuestionRow().props().titleMultiloc).toEqual({
+        en: 'How are you?',
+      });
     });
     it('handles saving it', () => {
       const wrapper = shallow(
@@ -154,7 +185,9 @@ describe('<PollAdminForm/>', () => {
 
       getFormQuestionRow().props().onSave();
       expect(addPollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(addPollQuestionSpy).toHaveBeenCalledWith('id', 'project', { en: 'How are you?' });
+      expect(addPollQuestionSpy).toHaveBeenCalledWith('id', 'project', {
+        en: 'How are you?',
+      });
     });
     it('handles closing it', () => {
       const wrapper = shallow(
@@ -177,13 +210,22 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="id"
           participationContextType="project"
-          pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
+          pollQuestions={[
+            mockQuestion(
+              'questionId',
+              "What's your favourite ice cream flavor?"
+            ),
+          ]}
           locale="en"
         />
       );
       wrapper.find('QuestionRow').props().onDelete();
       expect(deletePollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(deletePollQuestionSpy).toHaveBeenCalledWith('questionId', 'id', 'project');
+      expect(deletePollQuestionSpy).toHaveBeenCalledWith(
+        'questionId',
+        'id',
+        'project'
+      );
     });
   });
   describe('handles the edit question form', () => {
@@ -192,7 +234,12 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="id"
           participationContextType="project"
-          pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
+          pollQuestions={[
+            mockQuestion(
+              'questionId',
+              "What's your favourite ice cream flavor?"
+            ),
+          ]}
           locale="en"
         />
       );
@@ -208,7 +255,12 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="id"
           participationContextType="project"
-          pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
+          pollQuestions={[
+            mockQuestion(
+              'questionId',
+              "What's your favourite ice cream flavor?"
+            ),
+          ]}
           locale="en"
         />
       );
@@ -216,14 +268,21 @@ describe('<PollAdminForm/>', () => {
       const getFormQuestionRow = () => wrapper.find('FormQuestionRow');
 
       getFormQuestionRow().props().onChange({ en: 'How are you?' });
-      expect(getFormQuestionRow().props().titleMultiloc).toEqual({ en: 'How are you?' });
+      expect(getFormQuestionRow().props().titleMultiloc).toEqual({
+        en: 'How are you?',
+      });
     });
     it('handles saving it', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
           participationContextType="project"
-          pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
+          pollQuestions={[
+            mockQuestion(
+              'questionId',
+              "What's your favourite ice cream flavor?"
+            ),
+          ]}
           locale="en"
         />
       );
@@ -233,14 +292,21 @@ describe('<PollAdminForm/>', () => {
 
       getFormQuestionRow().props().onSave();
       expect(updatePollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', { title_multiloc: { en: 'How are you?' } });
+      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', {
+        title_multiloc: { en: 'How are you?' },
+      });
     });
     it('handles closing it', () => {
       const wrapper = shallow(
         <PollAdminForm
           participationContextId="id"
           participationContextType="project"
-          pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
+          pollQuestions={[
+            mockQuestion(
+              'questionId',
+              "What's your favourite ice cream flavor?"
+            ),
+          ]}
           locale="en"
         />
       );
@@ -256,7 +322,12 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="id"
           participationContextType="project"
-          pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
+          pollQuestions={[
+            mockQuestion(
+              'questionId',
+              "What's your favourite ice cream flavor?"
+            ),
+          ]}
           locale="en"
         />
       );
@@ -271,7 +342,12 @@ describe('<PollAdminForm/>', () => {
         <PollAdminForm
           participationContextId="id"
           participationContextType="project"
-          pollQuestions={[mockQuestion('questionId', 'What\'s your favourite ice cream flavor?')]}
+          pollQuestions={[
+            mockQuestion(
+              'questionId',
+              "What's your favourite ice cream flavor?"
+            ),
+          ]}
           locale="en"
         />
       );
@@ -281,8 +357,11 @@ describe('<PollAdminForm/>', () => {
       expect(reorderPollQuestionSpy).toHaveBeenCalledWith('questionId', 1);
     });
     it('shuffles the items in the list to show expected update while dragging', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
 
       const wrapper = shallow(
         <PollAdminForm
@@ -293,7 +372,10 @@ describe('<PollAdminForm/>', () => {
         />
       );
 
-      const getQuestionOrder = () => wrapper.find('QuestionRow').map(QuestionRow => QuestionRow.props().question.id);
+      const getQuestionOrder = () =>
+        wrapper
+          .find('QuestionRow')
+          .map((QuestionRow) => QuestionRow.props().question.id);
       expect(getQuestionOrder()).toStrictEqual([0, 1, 2]);
       wrapper.find('QuestionRow').at(2).props().handleDragRow(2, 1);
       expect(getQuestionOrder()).toStrictEqual([0, 2, 1]);

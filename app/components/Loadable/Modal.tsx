@@ -8,7 +8,7 @@ const LoadableModal = Loadable({
   render(loaded, props: InputProps) {
     const Modal = loaded.default;
     return <Modal {...props} />;
-  }
+  },
 });
 
 export default LoadableModal;

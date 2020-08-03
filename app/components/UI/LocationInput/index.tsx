@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
-import PlacesAutocomplete, { geocodeByPlaceId, } from 'react-places-autocomplete';
+import PlacesAutocomplete, {
+  geocodeByPlaceId,
+} from 'react-places-autocomplete';
 import styled from 'styled-components';
 import { fontSizes, defaultInputStyle, colors } from 'utils/styleUtils';
 
@@ -23,7 +25,8 @@ const StyledAutocompleteItem = styled.div<{ inCitizen: boolean | undefined }>`
 
   strong {
     font-weight: 600;
-    color: ${(props: any) => props.inCitizen ? props.theme.colorText : '#000'};
+    color: ${(props: any) =>
+      props.inCitizen ? props.theme.colorText : '#000'};
   }
 
   &:hover {
@@ -53,15 +56,15 @@ export default class LocationInput extends PureComponent<Props, State> {
 
     onChange(adress);
     onBlur && onBlur();
-    return geocodeByPlaceId(placeId).then(results => results);
-  }
+    return geocodeByPlaceId(placeId).then((results) => results);
+  };
 
   render() {
     const { id, className, onChange, inCitizen } = this.props;
     let { value, placeholder } = this.props;
 
-    value = (value || '');
-    placeholder = (placeholder || '');
+    value = value || '';
+    placeholder = placeholder || '';
 
     const inputProps = {
       value,
@@ -84,12 +87,16 @@ export default class LocationInput extends PureComponent<Props, State> {
       },
       autocompleteItemActive: {
         backgroundColor: '#eee',
-      }
+      },
     };
 
     const AutocompleteItem = ({ formattedSuggestion }) => (
-      <StyledAutocompleteItem className="autocompleteItemInner" inCitizen={inCitizen}>
-        <strong>{formattedSuggestion.mainText}</strong>{' '}{formattedSuggestion.secondaryText}
+      <StyledAutocompleteItem
+        className="autocompleteItemInner"
+        inCitizen={inCitizen}
+      >
+        <strong>{formattedSuggestion.mainText}</strong>{' '}
+        {formattedSuggestion.secondaryText}
       </StyledAutocompleteItem>
     );
 

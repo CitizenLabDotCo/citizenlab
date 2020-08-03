@@ -8,9 +8,11 @@ exports.GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
 exports.CL_GA_TRACKING_ID = 'UA-65562281-44';
 exports.CL_GA_TRACKER_NAME = 'CitizenLab2';
 exports.CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
-exports.API_HOST = process.env.API_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
+exports.API_HOST = process.env.API_HOST ||
+    (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 exports.API_PORT = process.env.API_PORT || 4000;
-exports.GRAPHQL_HOST = process.env.GRAPHQL_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
+exports.GRAPHQL_HOST = process.env.GRAPHQL_HOST ||
+    (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 exports.GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 exports.DEFAULT_LOCALE = 'en';
 // the locales we "support" :
@@ -42,6 +44,7 @@ exports.locales = [
     'kl-GL',
     'hu-HU',
     'ro-RO',
+    'pt-BR',
 ];
 exports.graphqlLocales = [
     'en',
@@ -66,7 +69,8 @@ exports.graphqlLocales = [
     'plPl',
     'klGl',
     'huHu',
-    'roRo'
+    'roRo',
+    'ptBr',
 ];
 // the locales we really support, ie we have translations for these ect
 exports.appLocalePairs = {
@@ -86,6 +90,7 @@ exports.appLocalePairs = {
     'kl-GL': 'Kalaallisut',
     'hu-HU': 'Magyar',
     'ro-RO': 'Română',
+    'pt-BR': 'Português (Brasil)',
     ach: 'Acholi'
 };
 exports.appGraphqlLocalePairs = {
@@ -111,7 +116,8 @@ exports.appGraphqlLocalePairs = {
     plPl: 'pl-PL',
     klGl: 'kl-GL',
     huHu: 'hu-HU',
-    roRo: 'ro-RO'
+    roRo: 'ro-RO',
+    ptBr: 'pt-BR'
 };
 exports.shortenedAppLocalePairs = {
     en: 'English',
@@ -130,6 +136,7 @@ exports.shortenedAppLocalePairs = {
     'kl-GL': 'Kalaallisut',
     'hu-HU': 'Magyar',
     'ro-RO': 'Română',
+    'pt-BR': 'Português',
     ach: 'Acholi'
 };
 exports.appLocalesMomentPairs = {
@@ -147,5 +154,6 @@ exports.appLocalesMomentPairs = {
     'pl-PL': 'pl',
     'kl-GL': 'da',
     'hu-HU': 'hu',
-    'ro-RO': 'ro'
+    'ro-RO': 'ro',
+    'pt-BR': 'pt'
 };

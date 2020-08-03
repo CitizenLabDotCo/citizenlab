@@ -6,7 +6,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IIdeasFilterCounts, ideasFilterCountsStream } from 'services/ideas';
 import { IQueryParameters } from './GetIdeas';
 
-type children = (renderProps: GetIdeasFilterCountsChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetIdeasFilterCountsChildProps
+) => JSX.Element | null;
 
 interface Props {
   queryParameters: Partial<IQueryParameters> | null;
@@ -14,19 +16,25 @@ interface Props {
 }
 
 interface State {
-  ideasFilterCounts: IIdeasFilterCounts | undefined| null;
+  ideasFilterCounts: IIdeasFilterCounts | undefined | null;
 }
 
-export type GetIdeasFilterCountsChildProps = IIdeasFilterCounts | undefined| null;
+export type GetIdeasFilterCountsChildProps =
+  | IIdeasFilterCounts
+  | undefined
+  | null;
 
-export default class GetIdeasFilterCounts extends React.Component<Props, State> {
+export default class GetIdeasFilterCounts extends React.Component<
+  Props,
+  State
+> {
   private queryParameters$: BehaviorSubject<Partial<IQueryParameters> | null>;
   private subscriptions: Subscription[];
 
   constructor(props) {
     super(props);
     this.state = {
-      ideasFilterCounts: undefined
+      ideasFilterCounts: undefined,
     };
   }
 
@@ -34,21 +42,27 @@ export default class GetIdeasFilterCounts extends React.Component<Props, State> 
     this.queryParameters$ = new BehaviorSubject(this.props.queryParameters);
 
     this.subscriptions = [
-      this.queryParameters$.pipe(
-        map(queryParameters => queryParameters ? omitBy(queryParameters, isNil) : queryParameters),
-        distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap((queryParameters) => {
-          if (queryParameters) {
-            return ideasFilterCountsStream({ queryParameters }).observable;
-          }
+      this.queryParameters$
+        .pipe(
+          map((queryParameters) =>
+            queryParameters ? omitBy(queryParameters, isNil) : queryParameters
+          ),
+          distinctUntilChanged((prev, next) => isEqual(prev, next)),
+          switchMap((queryParameters) => {
+            if (queryParameters) {
+              return ideasFilterCountsStream({ queryParameters }).observable;
+            }
 
-          return of(null);
-        })
-      ).subscribe((ideasFilterCounts) => {
-        this.setState({
-          ideasFilterCounts: (!isNilOrError(ideasFilterCounts) ? ideasFilterCounts : null),
-        });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((ideasFilterCounts) => {
+          this.setState({
+            ideasFilterCounts: !isNilOrError(ideasFilterCounts)
+              ? ideasFilterCounts
+              : null,
+          });
+        }),
     ];
   }
 
@@ -57,7 +71,7 @@ export default class GetIdeasFilterCounts extends React.Component<Props, State> 
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

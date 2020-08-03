@@ -21,7 +21,12 @@ import SearchInput from 'components/UI/SearchInput';
 import useModerations from 'hooks/useModerations';
 
 // services
-import { updateModerationStatus, IModerationData, TModerationStatuses, TModeratableTypes } from 'services/moderations';
+import {
+  updateModerationStatus,
+  IModerationData,
+  TModerationStatuses,
+  TModeratableTypes,
+} from 'services/moderations';
 
 // i18n
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -143,7 +148,7 @@ const Empty = styled.div`
 
 const EmptyIcon = styled(Icon)`
   height: 60px;
-  fill: #BFE7EB;
+  fill: #bfe7eb;
   margin-bottom: 18px;
 `;
 
@@ -166,35 +171,34 @@ interface Props {
 }
 
 const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-
   const moderationStatuses = [
     {
       value: 'unread',
-      label: intl.formatMessage(messages.unread)
+      label: intl.formatMessage(messages.unread),
     },
     {
       value: 'read',
-      label: intl.formatMessage(messages.read)
-    }
+      label: intl.formatMessage(messages.read),
+    },
   ];
 
   const pageSizes = [
     {
       value: 10,
-      label: '10'
+      label: '10',
     },
     {
       value: 25,
-      label: '25'
+      label: '25',
     },
     {
       value: 50,
-      label: '50'
+      label: '50',
     },
     {
       value: 100,
-      label: '100'
-    }
+      label: '100',
+    },
   ];
 
   const {
@@ -208,13 +212,13 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     onPageSizeChange,
     onModeratableTypesChange,
     onProjectIdsChange,
-    onSearchTermChange
+    onSearchTermChange,
   } = useModerations({
     pageSize: pageSizes[1].value,
     moderationStatus: 'unread',
     moderatableTypes: [],
     projectIds: [],
-    searchTerm: ''
+    searchTerm: '',
   });
 
   const [moderationItems, setModerationItems] = useState(list);
@@ -223,74 +227,119 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   const [selectedTypes, setSelectedTypes] = useState<TModeratableTypes[]>([]);
   const [selectedProjectIds, setSelectedProjectIds] = useState<string[]>([]);
 
-  const handleOnSelectAll = useCallback((_event: React.ChangeEvent) => {
-    if (!isNilOrError(moderationItems) && !processing) {
-      const newSelectedRows = selectedRows.length < moderationItems.length ? moderationItems.map(item => item.id) : [];
-      setSelectedRows(newSelectedRows);
-    }
-  }, [moderationItems, selectedRows, processing]);
+  const handleOnSelectAll = useCallback(
+    (_event: React.ChangeEvent) => {
+      if (!isNilOrError(moderationItems) && !processing) {
+        const newSelectedRows =
+          selectedRows.length < moderationItems.length
+            ? moderationItems.map((item) => item.id)
+            : [];
+        setSelectedRows(newSelectedRows);
+      }
+    },
+    [moderationItems, selectedRows, processing]
+  );
 
-  const handleOnModerationStatusChange = useCallback((value: TModerationStatuses) => {
-    trackEventByName(value === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked);
-    onModerationStatusChange(value);
-  }, [onModerationStatusChange]);
-
-  const handePageNumberChange = useCallback((pageNumber: number) => {
-    trackEventByName(tracks.pageNumberClicked);
-    onPageNumberChange(pageNumber);
-  }, [onPageNumberChange]);
-
-  const handleOnPageSizeChange = useCallback((option: IOption) => {
-    onPageSizeChange(option.value);
-  }, [onPageSizeChange]);
-
-  const handleModeratableTypesChange = useCallback((newSelectedTypes: TModeratableTypes[]) => {
-    setSelectedTypes(newSelectedTypes);
-    onModeratableTypesChange(newSelectedTypes);
-    trackEventByName(tracks.typeFilterUsed);
-  }, [onModeratableTypesChange]);
-
-  const handleProjectIdsChange = useCallback((newProjectIds: string[]) => {
-    setSelectedProjectIds(newProjectIds);
-    onProjectIdsChange(newProjectIds);
-    trackEventByName(tracks.projectFilterUsed);
-  }, [onModeratableTypesChange]);
-
-  const handleSearchTermChange = useCallback((searchTerm: string) => {
-    onSearchTermChange(searchTerm);
-    trackEventByName(tracks.searchUsed, {
-      searchTerm
-    });
-  }, [onSearchTermChange]);
-
-  const handleRowOnSelect = useCallback((selectedModerationId: string) => {
-    if (!processing) {
-      const newSelectedRows = includes(selectedRows, selectedModerationId) ?
-        selectedRows.filter(id => id !== selectedModerationId)
-        :
-        [...selectedRows, selectedModerationId];
-      setSelectedRows(newSelectedRows);
-    }
-  }, [selectedRows, processing]);
-
-  const markAs = useCallback(async (event: React.FormEvent) => {
-    if (selectedRows.length > 0 && !isNilOrError(moderationItems) && moderationStatus && !processing) {
-      event.preventDefault();
-      trackEventByName(moderationStatus === 'read' ?
-        tracks.markedAsNotViewedButtonClicked
-        :
-        tracks.markedAsNotViewedButtonClicked, { selectedItemsCount: selectedRows.length });
-      setProcessing(true);
-      const moderations = selectedRows.map((moderationId) => moderationItems.find(item => item.id === moderationId)) as IModerationData[];
-      const updatedModerationStatus = (moderationStatus === 'read' ? 'unread' : 'read');
-      const promises = moderations.map((moderation) => updateModerationStatus(
-        moderation.id, moderation.attributes.moderatable_type, updatedModerationStatus)
+  const handleOnModerationStatusChange = useCallback(
+    (value: TModerationStatuses) => {
+      trackEventByName(
+        value === 'read' ? tracks.viewedTabClicked : tracks.notViewedTabClicked
       );
-      await Promise.all(promises);
-      setProcessing(false);
-      setSelectedRows([]);
-    }
-  }, [selectedRows, moderationItems, moderationStatus]);
+      onModerationStatusChange(value);
+    },
+    [onModerationStatusChange]
+  );
+
+  const handePageNumberChange = useCallback(
+    (pageNumber: number) => {
+      trackEventByName(tracks.pageNumberClicked);
+      onPageNumberChange(pageNumber);
+    },
+    [onPageNumberChange]
+  );
+
+  const handleOnPageSizeChange = useCallback(
+    (option: IOption) => {
+      onPageSizeChange(option.value);
+    },
+    [onPageSizeChange]
+  );
+
+  const handleModeratableTypesChange = useCallback(
+    (newSelectedTypes: TModeratableTypes[]) => {
+      setSelectedTypes(newSelectedTypes);
+      onModeratableTypesChange(newSelectedTypes);
+      trackEventByName(tracks.typeFilterUsed);
+    },
+    [onModeratableTypesChange]
+  );
+
+  const handleProjectIdsChange = useCallback(
+    (newProjectIds: string[]) => {
+      setSelectedProjectIds(newProjectIds);
+      onProjectIdsChange(newProjectIds);
+      trackEventByName(tracks.projectFilterUsed);
+    },
+    [onModeratableTypesChange]
+  );
+
+  const handleSearchTermChange = useCallback(
+    (searchTerm: string) => {
+      onSearchTermChange(searchTerm);
+      trackEventByName(tracks.searchUsed, {
+        searchTerm,
+      });
+    },
+    [onSearchTermChange]
+  );
+
+  const handleRowOnSelect = useCallback(
+    (selectedModerationId: string) => {
+      if (!processing) {
+        const newSelectedRows = includes(selectedRows, selectedModerationId)
+          ? selectedRows.filter((id) => id !== selectedModerationId)
+          : [...selectedRows, selectedModerationId];
+        setSelectedRows(newSelectedRows);
+      }
+    },
+    [selectedRows, processing]
+  );
+
+  const markAs = useCallback(
+    async (event: React.FormEvent) => {
+      if (
+        selectedRows.length > 0 &&
+        !isNilOrError(moderationItems) &&
+        moderationStatus &&
+        !processing
+      ) {
+        event.preventDefault();
+        trackEventByName(
+          moderationStatus === 'read'
+            ? tracks.markedAsNotViewedButtonClicked
+            : tracks.markedAsNotViewedButtonClicked,
+          { selectedItemsCount: selectedRows.length }
+        );
+        setProcessing(true);
+        const moderations = selectedRows.map((moderationId) =>
+          moderationItems.find((item) => item.id === moderationId)
+        ) as IModerationData[];
+        const updatedModerationStatus =
+          moderationStatus === 'read' ? 'unread' : 'read';
+        const promises = moderations.map((moderation) =>
+          updateModerationStatus(
+            moderation.id,
+            moderation.attributes.moderatable_type,
+            updatedModerationStatus
+          )
+        );
+        await Promise.all(promises);
+        setProcessing(false);
+        setSelectedRows([]);
+      }
+    },
+    [selectedRows, moderationItems, moderationStatus]
+  );
 
   useEffect(() => {
     if (!processing) {
@@ -319,20 +368,28 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </PageTitleWrapper>
 
         <Filters>
-          {selectedRows.length > 0 &&
+          {selectedRows.length > 0 && (
             <MarkAsButton
               icon="label"
               buttonStyle="cl-blue"
               processing={processing}
               onClick={markAs}
             >
-              {moderationStatus === 'unread' ?
-                <FormattedMessage {...messages.markAsViewed} values={{ selectedItemsCount: selectedRows.length }} />
-                : <FormattedMessage {...messages.markAsNotViewed} values={{ selectedItemsCount: selectedRows.length }} />}
+              {moderationStatus === 'unread' ? (
+                <FormattedMessage
+                  {...messages.markAsViewed}
+                  values={{ selectedItemsCount: selectedRows.length }}
+                />
+              ) : (
+                <FormattedMessage
+                  {...messages.markAsNotViewed}
+                  values={{ selectedItemsCount: selectedRows.length }}
+                />
+              )}
             </MarkAsButton>
-          }
+          )}
 
-          {selectedRows.length === 0 &&
+          {selectedRows.length === 0 && (
             <>
               <StyledTabs
                 items={moderationStatuses}
@@ -347,12 +404,9 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 selectedProjectIds={selectedProjectIds}
                 onChange={handleProjectIdsChange}
               />
-
             </>
-          }
-          <StyledSearch
-            onChange={handleSearchTermChange}
-          />
+          )}
+          <StyledSearch onChange={handleSearchTermChange} />
         </Filters>
 
         <StyledTable>
@@ -360,8 +414,14 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
             <tr>
               <th className="checkbox">
                 <StyledCheckbox
-                  checked={moderationItems.length > 0 && selectedRows.length === moderationItems.length}
-                  indeterminate={selectedRows.length > 0 && selectedRows.length < moderationItems.length}
+                  checked={
+                    moderationItems.length > 0 &&
+                    selectedRows.length === moderationItems.length
+                  }
+                  indeterminate={
+                    selectedRows.length > 0 &&
+                    selectedRows.length < moderationItems.length
+                  }
                   disabled={moderationItems.length === 0}
                   onChange={handleOnSelectAll}
                 />
@@ -378,14 +438,12 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <th className="content">
                 <FormattedMessage {...messages.content} />
               </th>
-              <th className="goto">
-                &nbsp;
-              </th>
+              <th className="goto">&nbsp;</th>
             </tr>
           </thead>
-          {moderationItems.length > 0 &&
+          {moderationItems.length > 0 && (
             <tbody>
-              {moderationItems.map(moderationItem => (
+              {moderationItems.map((moderationItem) => (
                 <ModerationRow
                   key={moderationItem.id}
                   moderation={moderationItem}
@@ -394,10 +452,10 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                 />
               ))}
             </tbody>
-          }
+          )}
         </StyledTable>
 
-        {moderationItems.length > 0 &&
+        {moderationItems.length > 0 && (
           <Footer>
             <StyledPagination
               currentPage={currentPage}
@@ -414,24 +472,24 @@ const Moderation = memo<Props & InjectedIntlProps>(({ className, intl }) => {
               <PageSizeSelect
                 options={pageSizes}
                 onChange={handleOnPageSizeChange}
-                value={pageSizes.find(item => item.value === pageSize)}
+                value={pageSizes.find((item) => item.value === pageSize)}
               />
             </RowsPerPage>
           </Footer>
-        }
+        )}
 
-        {moderationItems.length === 0 &&
+        {moderationItems.length === 0 && (
           <Empty>
             <EmptyIcon name="inbox" />
             <EmptyMessage>
-              {moderationStatus === 'read' ?
+              {moderationStatus === 'read' ? (
                 <FormattedMessage {...messages.noViewedItems} />
-                :
+              ) : (
                 <FormattedMessage {...messages.noUnviewedItems} />
-              }
+              )}
             </EmptyMessage>
           </Empty>
-        }
+        )}
       </Container>
     );
   }

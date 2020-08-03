@@ -14,7 +14,9 @@ import { InjectedIntlProps } from 'react-intl';
 import { injectIntl } from 'utils/cl-intl';
 
 // resources
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 import { reject } from 'lodash-es';
 
 export interface InputProps {}
@@ -26,9 +28,12 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
-class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+class SettingsPage extends React.PureComponent<
+  Props & InjectedIntlProps & WithRouterProps,
+  State
+> {
   getTabs = () => {
     const { widgetsEnabled, customTopicsEnabled } = this.props;
     const { formatMessage } = this.props.intl;
@@ -53,7 +58,7 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
       {
         label: formatMessage(messages.tabTopics),
         url: '/admin/settings/topics',
-        name: 'topics'
+        name: 'topics',
       },
       {
         label: formatMessage(messages.tabAreas),
@@ -62,8 +67,8 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
       {
         label: formatMessage(messages.tabWidgets),
         url: '/admin/settings/widgets',
-        name: 'widgets'
-      }
+        name: 'widgets',
+      },
     ];
 
     const tabHideConditions = {
@@ -80,27 +85,26 @@ class SettingsPage extends React.PureComponent<Props & InjectedIntlProps & WithR
         }
 
         return false;
-      }
+      },
     };
 
-    const tabNames = tabs.map(tab => tab.name);
+    const tabNames = tabs.map((tab) => tab.name);
 
-    tabNames.forEach(tabName => {
+    tabNames.forEach((tabName) => {
       if (tabName && tabHideConditions[tabName]()) {
         tabs = reject(tabs, { name: tabName });
       }
     });
 
     return tabs;
-
-  }
+  };
 
   render() {
     const { children } = this.props;
     const { formatMessage } = this.props.intl;
 
     const resource = {
-      title: formatMessage(messages.pageTitle)
+      title: formatMessage(messages.pageTitle),
     };
 
     return (
@@ -124,11 +128,11 @@ const SettingsPageWithHocs = withRouter(injectIntl(SettingsPage));
 
 const Data = adopt<DataProps, InputProps>({
   widgetsEnabled: <GetFeatureFlag name="widgets" />,
-  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />
+  customTopicsEnabled: <GetFeatureFlag name="custom_topics" />,
 });
 
 export default (inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <SettingsPageWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <SettingsPageWithHocs {...inputProps} {...dataProps} />}
   </Data>
 );

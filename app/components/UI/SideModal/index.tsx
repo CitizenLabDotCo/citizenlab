@@ -146,7 +146,9 @@ const ModalContent = styled.div`
   -webkit-overflow-scrolling: touch;
 `;
 
-const HiddenSpan = styled.span`${hideVisually()}`;
+const HiddenSpan = styled.span`
+  ${hideVisually()}
+`;
 
 type Props = {
   opened: boolean;
@@ -157,7 +159,7 @@ type Props = {
 };
 
 type State = {
-  innerModalOpened: boolean
+  innerModalOpened: boolean;
 };
 
 export default class SideModal extends PureComponent<Props, State> {
@@ -168,7 +170,7 @@ export default class SideModal extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      innerModalOpened: false
+      innerModalOpened: false,
     };
     this.el = document.createElement('div');
     this.subscriptions = [];
@@ -176,7 +178,9 @@ export default class SideModal extends PureComponent<Props, State> {
 
   componentDidMount() {
     if (!this.ModalPortal) {
-      console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
+      console.log(
+        'There was no Portal to insert the modal. Please make sure you have a Portal root'
+      );
     } else {
       this.ModalPortal.appendChild(this.el);
     }
@@ -187,46 +191,48 @@ export default class SideModal extends PureComponent<Props, State> {
       }),
       eventEmitter.observeEvent('modalClosed').subscribe(() => {
         this.setState({ innerModalOpened: false });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
     if (!this.ModalPortal) {
-      console.log('There was no Portal to insert the modal. Please make sure you have a Portal root');
+      console.log(
+        'There was no Portal to insert the modal. Please make sure you have a Portal root'
+      );
     } else {
       this.ModalPortal.removeChild(this.el);
     }
 
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   manuallyCloseModal = () => {
     this.props.close();
-  }
+  };
 
   clickOutsideModal = () => {
     this.props.close();
-  }
+  };
 
   clickCloseButton = (event) => {
     event.preventDefault();
     event.stopPropagation();
     this.props.close();
-  }
+  };
 
   render() {
     const { children, opened, label } = this.props;
     const modalPortalElement = document?.getElementById('modal-portal');
 
     if (modalPortalElement) {
-      return ReactDOM.createPortal((
+      return ReactDOM.createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}
           timeout={{
             enter: enterTimeout + enterDelay,
-            exit: exitTimeout + exitDelay
+            exit: exitTimeout + exitDelay,
           }}
           mountOnEnter={true}
           unmountOnExit={true}
@@ -258,11 +264,12 @@ export default class SideModal extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.closeButtonAria} />
                 </HiddenSpan>
                 <CloseIcon name="close" />
-              </CloseButton >
+              </CloseButton>
             </FocusOn>
           </Overlay>
-        </CSSTransition>
-      ), modalPortalElement);
+        </CSSTransition>,
+        modalPortalElement
+      );
     }
 
     return null;

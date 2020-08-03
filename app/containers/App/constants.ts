@@ -4,10 +4,15 @@ export const ADMIN_TEMPLATES_GRAPHQL_PATH = '/admin_templates_api/graphql';
 export const GOOGLE_MAPS_API_KEY = 'AIzaSyDRtFe1KRBnGfDy_ijw6yCYsYnEkQRl9Cw';
 export const CL_GA_TRACKING_ID = 'UA-65562281-44';
 export const CL_GA_TRACKER_NAME = 'CitizenLab2';
-export const CL_SEGMENT_API_KEY = process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
-export const API_HOST = process.env.API_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
+export const CL_SEGMENT_API_KEY =
+  process.env.SEGMENT_API_KEY || 'sIoYsVoTTCBmrcs7yAz1zRFRGhAofBlg';
+export const API_HOST =
+  process.env.API_HOST ||
+  (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 export const API_PORT = process.env.API_PORT || 4000;
-export const GRAPHQL_HOST = process.env.GRAPHQL_HOST || (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
+export const GRAPHQL_HOST =
+  process.env.GRAPHQL_HOST ||
+  (typeof window === 'undefined' ? 'localhost' : window.location.hostname);
 export const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 export const DEFAULT_LOCALE = 'en';
 
@@ -40,6 +45,7 @@ export const locales = [
   'kl-GL',
   'hu-HU',
   'ro-RO',
+  'pt-BR',
 ];
 
 export const graphqlLocales = [
@@ -65,7 +71,8 @@ export const graphqlLocales = [
   'plPl',
   'klGl',
   'huHu',
-  'roRo'
+  'roRo',
+  'ptBr',
 ];
 
 // the locales we really support, ie we have translations for these ect
@@ -86,6 +93,7 @@ export const appLocalePairs = {
   'kl-GL': 'Kalaallisut',
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
+  'pt-BR': 'Português (Brasil)',
   ach: 'Acholi',
 };
 
@@ -113,6 +121,7 @@ export const appGraphqlLocalePairs = {
   klGl: 'kl-GL',
   huHu: 'hu-HU',
   roRo: 'ro-RO',
+  ptBr: 'pt-BR',
 };
 
 export const shortenedAppLocalePairs = {
@@ -132,6 +141,7 @@ export const shortenedAppLocalePairs = {
   'kl-GL': 'Kalaallisut',
   'hu-HU': 'Magyar',
   'ro-RO': 'Română',
+  'pt-BR': 'Português',
   ach: 'Acholi',
 };
 
@@ -150,5 +160,6 @@ export const appLocalesMomentPairs = {
   'pl-PL': 'pl',
   'kl-GL': 'da',
   'hu-HU': 'hu',
-  'ro-RO': 'ro'
+  'ro-RO': 'ro',
+  'pt-BR': 'pt',
 };

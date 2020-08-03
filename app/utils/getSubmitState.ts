@@ -2,9 +2,13 @@ import { CLError } from 'typings';
 import { isEmpty, isError } from 'lodash-es';
 
 interface Options {
-  errors: {
-    [fieldName: string]: CLError[]
-  } | null | {} | Error;
+  errors:
+    | {
+        [fieldName: string]: CLError[];
+      }
+    | null
+    | {}
+    | Error;
   saved: boolean;
   diff: object | null;
 }

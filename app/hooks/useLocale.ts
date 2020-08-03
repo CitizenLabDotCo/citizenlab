@@ -3,7 +3,9 @@ import { Locale } from 'typings';
 import { localeStream } from 'services/locale';
 
 export default function useLocale() {
-  const [locale, setLocale] = useState<Locale | undefined | null | Error>(undefined);
+  const [locale, setLocale] = useState<Locale | undefined | null | Error>(
+    undefined
+  );
 
   useEffect(() => {
     const subscription = localeStream().observable.subscribe((locale) => {

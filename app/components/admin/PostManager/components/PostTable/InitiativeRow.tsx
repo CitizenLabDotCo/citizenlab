@@ -8,7 +8,11 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // services
-import { IInitiativeData, updateInitiative, initiativeByIdStream } from 'services/initiatives';
+import {
+  IInitiativeData,
+  updateInitiative,
+  initiativeByIdStream,
+} from 'services/initiatives';
 import { IInitiativeStatusData } from 'services/initiativeStatuses';
 
 // components
@@ -38,12 +42,16 @@ import SubRow from './SubRow';
 
 // resources
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
-import GetInitiativeAllowedTransitions, { GetInitiativeAllowedTransitionsChildProps } from 'resources/GetInitiativeAllowedTransitions';
+import GetInitiativeAllowedTransitions, {
+  GetInitiativeAllowedTransitionsChildProps,
+} from 'resources/GetInitiativeAllowedTransitions';
 import { getDaysRemainingUntil } from 'utils/dateUtils';
 
 // events
 import eventEmitter from 'utils/eventEmitter';
-import events, { StatusChangeModalOpen } from 'components/admin/PostManager/events';
+import events, {
+  StatusChangeModalOpen,
+} from 'components/admin/PostManager/events';
 
 interface DataProps {
   tenant: GetTenantChildProps;
@@ -67,31 +75,36 @@ interface Props extends InputProps, DataProps {
   connectDragSource: any;
 }
 
-class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & InjectedLocalized> {
+class InitiativeRow extends React.PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized
+> {
   onUpdateInitiativePhases = (selectedPhases) => {
     updateInitiative(this.props.initiative.id, {
       phase_ids: selectedPhases,
     });
-  }
+  };
 
   onUpdateInitiativeTopics = (selectedTopics) => {
     updateInitiative(this.props.initiative.id, {
       topic_ids: selectedTopics,
     });
-  }
+  };
 
   onUpdateInitiativeStatus = (statusId) => {
     const { initiative } = this.props;
     const initiativeId = initiative.id;
 
-    eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, { initiativeId, newStatusId: statusId });
+    eventEmitter.emit<StatusChangeModalOpen>(events.statusChangeModalOpen, {
+      initiativeId,
+      newStatusId: statusId,
+    });
 
     trackEventByName(tracks.initiativeStatusChange, {
       location: 'Initiative overview',
       method: 'Clicked on the squares representing the statuses',
-      initiative: initiativeId
+      initiative: initiativeId,
     });
-  }
+  };
 
   onUpdateInitiativeAssignee = (assigneeId) => {
     const { initiative } = this.props;
@@ -104,21 +117,25 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
     trackEventByName(tracks.changeInitiativeAssignment, {
       location: 'Initiative Manager',
       method: 'Changed through the dropdown in the table overview',
-      initiative: initiativeId
+      initiative: initiativeId,
     });
-  }
+  };
 
   renderTimingCell = () => {
-    const {
+    const { initiative, tenant, statuses } = this.props;
+
+    const selectedStatus: string | undefined = get(
       initiative,
-      tenant,
-      statuses
-    } = this.props;
+      'relationships.initiative_status.data.id'
+    );
+    const selectedStatusObject =
+      statuses && statuses.find((status) => status.id === selectedStatus);
 
-    const selectedStatus: string | undefined = get(initiative, 'relationships.initiative_status.data.id');
-    const selectedStatusObject = statuses && statuses.find(status => status.id === selectedStatus);
-
-    if (selectedStatusObject && !isNilOrError(tenant) && tenant.attributes.settings.initiatives) {
+    if (
+      selectedStatusObject &&
+      !isNilOrError(tenant) &&
+      tenant.attributes.settings.initiatives
+    ) {
       if (selectedStatusObject.attributes.code === 'proposed') {
         return getDaysRemainingUntil(initiative.attributes.expires_at);
       } else {
@@ -131,7 +148,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
       }
     }
     return null;
-  }
+  };
 
   render() {
     const {
@@ -144,11 +161,16 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
       onClickCheckbox,
       onClickTitle,
       nothingHappens,
-      allowedTransitions
+      allowedTransitions,
     } = this.props;
 
-    const selectedStatus: string | undefined = get(initiative, 'relationships.initiative_status.data.id');
-    const selectedTopics = initiative.relationships.topics.data.map((p) => p.id);
+    const selectedStatus: string | undefined = get(
+      initiative,
+      'relationships.initiative_status.data.id'
+    );
+    const selectedTopics = initiative.relationships.topics.data.map(
+      (p) => p.id
+    );
     const attrs = initiative.attributes;
     const active = selection.has(initiative.id);
     const assigneeId = get(initiative, 'relationships.assignee.data.id');
@@ -160,13 +182,24 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
           as={StyledRow}
           active={active}
           undraggable={activeFilterMenu === 'statuses'}
-          ref={(instance) => { instance && activeFilterMenu !== 'statuses' && connectDragSource(findDOMNode(instance)); }}
+          ref={(instance) => {
+            instance &&
+              activeFilterMenu !== 'statuses' &&
+              connectDragSource(findDOMNode(instance));
+          }}
         >
           <Table.Cell collapsing={true}>
-            <Checkbox checked={!!active} onChange={onClickCheckbox} size="21px" />
+            <Checkbox
+              checked={!!active}
+              onChange={onClickCheckbox}
+              size="21px"
+            />
           </Table.Cell>
           <Table.Cell>
-            <TitleLink className="e2e-initiative-manager-initiative-title" onClick={onClickTitle}>
+            <TitleLink
+              className="e2e-initiative-manager-initiative-title"
+              onClick={onClickTitle}
+            >
               <T value={attrs.title_multiloc} />
             </TitleLink>
           </Table.Cell>
@@ -176,16 +209,12 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
               assigneeId={assigneeId}
             />
           </Table.Cell>
-          <Table.Cell>
-            {this.renderTimingCell()}
-          </Table.Cell>
+          <Table.Cell>{this.renderTimingCell()}</Table.Cell>
           <Table.Cell singleLine>
             <Icon name="thumbs up" />
             {attrs.upvotes_count}
           </Table.Cell>
-          <Table.Cell>
-            {attrs.comments_count}
-          </Table.Cell>
+          <Table.Cell>{attrs.comments_count}</Table.Cell>
         </WrappedRow>
         <SubRow
           {...{
@@ -195,7 +224,7 @@ class InitiativeRow extends React.PureComponent<Props & InjectedIntlProps & Inje
             selectedTopics,
             statuses,
             selectedStatus,
-            allowedTransitions
+            allowedTransitions,
           }}
           onUpdatePhases={this.onUpdateInitiativePhases}
           onUpdateTopics={this.onUpdateInitiativeTopics}
@@ -220,43 +249,51 @@ const initiativeSource = {
     const { selection } = props;
 
     if (dropResult && dropResult.type) {
-
       const observables = selection.has(item.id)
         ? [...selection].map((id) => initiativeByIdStream(id).observable)
         : [initiativeByIdStream(item.id).observable];
 
       if (dropResult.type === 'topic') {
-        combineLatest(observables).pipe(take(1)).subscribe((initiatives) => {
-          initiatives.map((initiative) => {
-            const currentTopics = initiative.data.relationships.topics.data.map((d) => d.id);
-            const newTopics = uniq(currentTopics.concat(dropResult.id));
-            updateInitiative(initiative.data.id, {
-              topic_ids: newTopics,
+        combineLatest(observables)
+          .pipe(take(1))
+          .subscribe((initiatives) => {
+            initiatives.map((initiative) => {
+              const currentTopics = initiative.data.relationships.topics.data.map(
+                (d) => d.id
+              );
+              const newTopics = uniq(currentTopics.concat(dropResult.id));
+              updateInitiative(initiative.data.id, {
+                topic_ids: newTopics,
+              });
             });
           });
-        });
       }
-
     }
-  }
+  },
 };
 
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
   };
 }
 
-const InitiativesRowWithHocs = injectIntl(localize(DragSource('IDEA', initiativeSource, collect)(InitiativeRow)));
+const InitiativesRowWithHocs = injectIntl(
+  localize(DragSource('IDEA', initiativeSource, collect)(InitiativeRow))
+);
 
 const Data = adopt<DataProps, InputProps>({
   tenant: <GetTenant />,
-  allowedTransitions: ({ initiative, render }) => <GetInitiativeAllowedTransitions id={initiative.id}>{render}</GetInitiativeAllowedTransitions>
+  allowedTransitions: ({ initiative, render }) => (
+    <GetInitiativeAllowedTransitions id={initiative.id}>
+      {render}
+    </GetInitiativeAllowedTransitions>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativesRowWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <InitiativesRowWithHocs {...inputProps} {...dataProps} />}
   </Data>
 );

@@ -15,7 +15,8 @@ export default defineMessages({
   },
   taken: {
     id: 'app.errors.generics.taken',
-    defaultMessage: 'This field should be unique. Another instance with the same value already exists.',
+    defaultMessage:
+      'This field should be unique. Another instance with the same value already exists.',
   },
   title_multiloc_blank: {
     id: 'app.errors.title_multiloc_blank',
@@ -27,7 +28,8 @@ export default defineMessages({
   },
   email_taken_by_invite: {
     id: 'app.errors.email_taken_by_invite',
-    defaultMessage: 'An invitation has already been sent to {value}. Please check your mailbox. Chances are it landed in your spam folder. If you can’t find the invitation, leave us a message at support@citizenlab.co and we’ll make sure you get access.',
+    defaultMessage:
+      'An invitation has already been sent to {value}. Please check your mailbox. Chances are it landed in your spam folder. If you can’t find the invitation, leave us a message at support@citizenlab.co and we’ll make sure you get access.',
   },
   locale_blank: {
     id: 'app.errors.locale_blank',
@@ -63,7 +65,8 @@ export default defineMessages({
   },
   key_invalid: {
     id: 'app.errors.key_invalid',
-    defaultMessage: 'The key can only contain letters, numbers and underscores(_)',
+    defaultMessage:
+      'The key can only contain letters, numbers and underscores(_)',
   },
   unparseable_excel: {
     id: 'app.errors.unparseable_excel',
@@ -91,27 +94,33 @@ export default defineMessages({
   },
   unknown_locale: {
     id: 'app.errors.unknown_locale',
-    defaultMessage: 'The language {value} found in row {row} is not a configured language',
+    defaultMessage:
+      'The language {value} found in row {row} is not a configured language',
   },
   invalid_email: {
     id: 'app.errors.invalid_email',
-    defaultMessage: 'The email {value} found in row {row} is not a valid email address',
+    defaultMessage:
+      'The email {value} found in row {row} is not a valid email address',
   },
   invalid_row: {
     id: 'app.errors.invalid_row',
-    defaultMessage: 'An unknown error occured while trying to process row {row}',
+    defaultMessage:
+      'An unknown error occured while trying to process row {row}',
   },
   email_already_invited: {
     id: 'app.errors.email_already_invited',
-    defaultMessage: 'The email address {value} found in row {row} was already invited',
+    defaultMessage:
+      'The email address {value} found in row {row} was already invited',
   },
   email_already_active: {
     id: 'app.errors.email_already_active',
-    defaultMessage: 'The email address {value} found in row {row} already belongs to a registered user',
+    defaultMessage:
+      'The email address {value} found in row {row} already belongs to a registered user',
   },
   emails_duplicate: {
     id: 'app.errors.emails_duplicate',
-    defaultMessage: 'One or more duplicate values for the email address {value} were found in the following row(s): {rows}',
+    defaultMessage:
+      'One or more duplicate values for the email address {value} were found in the following row(s): {rows}',
   },
   is_not_timeline_project: {
     id: 'app.errors.is_not_timeline_project',
@@ -123,19 +132,23 @@ export default defineMessages({
   },
   group_ids_unauthorized_choice_moderator: {
     id: 'app.errors.group_ids_unauthorized_choice_moderator',
-    defaultMessage: 'As a project moderator, you can only email to people that can access your project(s)',
+    defaultMessage:
+      'As a project moderator, you can only email to people that can access your project(s)',
   },
   file_extension_whitelist_error: {
     id: 'app.errors.file_extension_whitelist_error',
-    defaultMessage: 'The format of the file you tried to upload is not supported.',
+    defaultMessage:
+      'The format of the file you tried to upload is not supported.',
   },
   cant_change_after_first_response: {
     id: 'app.errors.cant_change_after_first_response',
-    defaultMessage: 'You can no longer change this, since some users already responded',
+    defaultMessage:
+      'You can no longer change this, since some users already responded',
   },
   cannot_contain_ideas: {
     id: 'app.errors.cannot_contain_ideas',
-    defaultMessage: 'This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you\'re trying to change it to doesn\'t support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.',
+    defaultMessage:
+      "This phase contains {ideasCount, plural, one {one idea} other {{ideasCount} ideas}} and the participation method you're trying to change it to doesn't support ideas. Please remove {ideasCount, plural, one {the idea} other {the ideas}} from the phase and try again.",
   },
   error: {
     id: 'app.errors.error',

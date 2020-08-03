@@ -9,7 +9,9 @@ import CommentVote from './CommentVote';
 import CommentsMoreActions from './CommentsMoreActions';
 
 // resources
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 import GetComment, { GetCommentChildProps } from 'resources/GetComment';
 import GetPost, { GetPostChildProps } from 'resources/GetPost';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
@@ -17,7 +19,10 @@ import GetUser, { GetUserChildProps } from 'resources/GetUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // events
-import { commentReplyButtonClicked, commentTranslateButtonClicked } from './events';
+import {
+  commentReplyButtonClicked,
+  commentTranslateButtonClicked,
+} from './events';
 import { openSignUpInModal } from 'components/SignUpIn/events';
 import { openVerificationModal } from 'components/Verification/verificationModalEvents';
 
@@ -128,7 +133,7 @@ interface State {
 
 class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
   static defaultProps = {
-    canReply: true
+    canReply: true,
   };
 
   constructor(props) {
@@ -143,35 +148,60 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
 
     if (!isNilOrError(comment)) {
       const { translateButtonClicked } = this.state;
-      const { clickGoBackToOriginalCommentButton, clickTranslateCommentButton } = tracks;
-      const eventName = translateButtonClicked ? clickGoBackToOriginalCommentButton : clickTranslateCommentButton;
+      const {
+        clickGoBackToOriginalCommentButton,
+        clickTranslateCommentButton,
+      } = tracks;
+      const eventName = translateButtonClicked
+        ? clickGoBackToOriginalCommentButton
+        : clickTranslateCommentButton;
       trackEventByName(eventName);
-      this.setState(({ translateButtonClicked }) => ({ translateButtonClicked: !translateButtonClicked }));
+      this.setState(({ translateButtonClicked }) => ({
+        translateButtonClicked: !translateButtonClicked,
+      }));
       commentTranslateButtonClicked(comment.id);
     }
-  }
+  };
 
   onCommentEdit = () => {
     this.props.onEditing();
-  }
+  };
 
   onReply = () => {
     const { post, comment } = this.props;
 
     if (!isNilOrError(post) && !isNilOrError(comment)) {
       const { authUser, author, commentType } = this.props;
-      const { clickChildCommentReplyButton, clickParentCommentReplyButton } = tracks;
-      const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason');
-      const authUserIsVerified = !isNilOrError(authUser) && authUser.attributes.verified;
+      const {
+        clickChildCommentReplyButton,
+        clickParentCommentReplyButton,
+      } = tracks;
+      const commentingDisabledReason = get(
+        post,
+        'attributes.action_descriptor.commenting.disabled_reason'
+      );
+      const authUserIsVerified =
+        !isNilOrError(authUser) && authUser.attributes.verified;
       const commentId = !isNilOrError(comment) ? comment.id : null;
-      const parentCommentId = !isNilOrError(comment) ? (comment.relationships.parent.data?.id || null) : null;
-      const authorFirstName = !isNilOrError(author) ? author.attributes.first_name : null;
-      const authorLastName = !isNilOrError(author) ? author.attributes.last_name : null;
+      const parentCommentId = !isNilOrError(comment)
+        ? comment.relationships.parent.data?.id || null
+        : null;
+      const authorFirstName = !isNilOrError(author)
+        ? author.attributes.first_name
+        : null;
+      const authorLastName = !isNilOrError(author)
+        ? author.attributes.last_name
+        : null;
       const authorSlug = !isNilOrError(author) ? author.attributes.slug : null;
 
-      trackEventByName(commentType === 'child' ? clickChildCommentReplyButton : clickParentCommentReplyButton, {
-        loggedIn: !!authUser
-      });
+      trackEventByName(
+        commentType === 'child'
+          ? clickChildCommentReplyButton
+          : clickParentCommentReplyButton,
+        {
+          loggedIn: !!authUser,
+        }
+      );
 
       if (!isNilOrError(authUser) && !commentingDisabledReason) {
         commentReplyButtonClicked({
@@ -179,38 +209,78 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
           parentCommentId,
           authorFirstName,
           authorLastName,
-          authorSlug
+          authorSlug,
         });
-      } else if (!isNilOrError(authUser) && !authUserIsVerified && commentingDisabledReason === 'not_verified') {
+      } else if (
+        !isNilOrError(authUser) &&
+        !authUserIsVerified &&
+        commentingDisabledReason === 'not_verified'
+      ) {
         openVerificationModal();
       } else if (!authUser) {
         openSignUpInModal({
           verification: commentingDisabledReason === 'not_verified',
-          action: () => this.onReply()
+          action: () => this.onReply(),
         });
       }
     }
-  }
+  };
 
   render() {
-    const { authUser, commentType, postId, postType, projectId, commentId, className, comment, tenantLocales, locale, post, canReply, intl: { formatMessage } } = this.props;
+    const {
+      authUser,
+      commentType,
+      postId,
+      postType,
+      projectId,
+      commentId,
+      className,
+      comment,
+      tenantLocales,
+      locale,
+      post,
+      canReply,
+      intl: { formatMessage },
+    } = this.props;
     const { translateButtonClicked } = this.state;
 
-    if (!isNilOrError(post) && !isNilOrError(comment) && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
+    if (
+      !isNilOrError(post) &&
+      !isNilOrError(comment) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(tenantLocales)
+    ) {
       const commentBodyMultiloc = comment.attributes.body_multiloc;
-      const commentingDisabledReason = get(post, 'attributes.action_descriptor.commenting.disabled_reason');
-      const commentingDisabled = commentingDisabledReason && (commentingDisabledReason !== 'not_verified' || (!authUser && commentingDisabledReason !== 'not_permitted'));
-      const commentingVotingDisabledReason = get(post, 'attributes.action_descriptor.comment_voting.disabled_reason');
-      const commentVotingDisabled = commentingVotingDisabledReason && (commentingVotingDisabledReason !== 'not_verified' || (!authUser && commentingVotingDisabledReason !== 'not_permitted'));
+      const commentingDisabledReason = get(
+        post,
+        'attributes.action_descriptor.commenting.disabled_reason'
+      );
+      const commentingDisabled =
+        commentingDisabledReason &&
+        (commentingDisabledReason !== 'not_verified' ||
+          (!authUser && commentingDisabledReason !== 'not_permitted'));
+      const commentingVotingDisabledReason = get(
+        post,
+        'attributes.action_descriptor.comment_voting.disabled_reason'
+      );
+      const commentVotingDisabled =
+        commentingVotingDisabledReason &&
+        (commentingVotingDisabledReason !== 'not_verified' ||
+          (!authUser && commentingVotingDisabledReason !== 'not_permitted'));
       const upvoteCount = comment.attributes.upvotes_count;
-      const showVoteComponent = commentingDisabledReason !== 'commenting_disabled' || upvoteCount > 0;
+      const showVoteComponent =
+        commentingDisabledReason !== 'commenting_disabled' || upvoteCount > 0;
       const showReplyButton = canReply && !commentingDisabled;
-      const showTranslateButton = !!(commentBodyMultiloc && !commentBodyMultiloc[locale] && tenantLocales.length > 1);
+      const showTranslateButton = !!(
+        commentBodyMultiloc &&
+        !commentBodyMultiloc[locale] &&
+        tenantLocales.length > 1
+      );
 
       return (
         <Container className={className}>
           <Left>
-            {showVoteComponent &&
+            {showVoteComponent && (
               <>
                 <CommentVote
                   postId={postId}
@@ -221,33 +291,44 @@ class CommentFooter extends PureComponent<Props & InjectedIntlProps, State> {
                   commentingDisabledReason={commentingDisabledReason}
                 />
                 {/* // Make sure there's a next item before adding a separator */}
-                {showReplyButton
-                  ? <Separator className="vote">•</Separator>
-                  : showTranslateButton ? <FeatureFlag name="machine_translations"><Separator>•</Separator></FeatureFlag> : null
-                }
+                {showReplyButton ? (
+                  <Separator className="vote">•</Separator>
+                ) : showTranslateButton ? (
+                  <FeatureFlag name="machine_translations">
+                    <Separator>•</Separator>
+                  </FeatureFlag>
+                ) : null}
               </>
-            }
+            )}
 
-            {showReplyButton &&
+            {showReplyButton && (
               <>
-                <ReplyButton onClick={this.onReply} className="e2e-comment-reply-button">
+                <ReplyButton
+                  onClick={this.onReply}
+                  className="e2e-comment-reply-button"
+                >
                   <FormattedMessage {...messages.commentReplyButton} />
                 </ReplyButton>
                 {/* // Make sure there's a next item before adding a separator */}
-                {showTranslateButton && <FeatureFlag name="machine_translations"><Separator>•</Separator></FeatureFlag>}
+                {showTranslateButton && (
+                  <FeatureFlag name="machine_translations">
+                    <Separator>•</Separator>
+                  </FeatureFlag>
+                )}
               </>
-            }
+            )}
 
-            {showTranslateButton &&
+            {showTranslateButton && (
               <FeatureFlag name="machine_translations">
                 <TranslateButton onClick={this.translateComment}>
-                  {!translateButtonClicked
-                    ? <FormattedMessage {...messages.seeTranslation} />
-                    : <FormattedMessage {...messages.seeOriginal} />
-                  }
+                  {!translateButtonClicked ? (
+                    <FormattedMessage {...messages.seeTranslation} />
+                  ) : (
+                    <FormattedMessage {...messages.seeOriginal} />
+                  )}
                 </TranslateButton>
               </FeatureFlag>
-            }
+            )}
           </Left>
 
           <Right>
@@ -270,15 +351,25 @@ const Data = adopt<DataProps, InputProps>({
   tenantLocales: <GetTenantLocales />,
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>,
-  comment: ({ commentId, render }) => <GetComment id={commentId}>{render}</GetComment>,
-  author: ({ comment, render }) => <GetUser id={get(comment, 'relationships.author.data.id')}>{render}</GetUser>
+  post: ({ postId, postType, render }) => (
+    <GetPost id={postId} type={postType}>
+      {render}
+    </GetPost>
+  ),
+  comment: ({ commentId, render }) => (
+    <GetComment id={commentId}>{render}</GetComment>
+  ),
+  author: ({ comment, render }) => (
+    <GetUser id={get(comment, 'relationships.author.data.id')}>
+      {render}
+    </GetUser>
+  ),
 });
 
 const CommentFooterWithHoCs = injectIntl<Props>(CommentFooter);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <CommentFooterWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <CommentFooterWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

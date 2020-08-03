@@ -21,7 +21,7 @@ const Color = styled.div`
   border-radius: ${({ theme }) => theme.borderRadius};
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  background: ${props => props.color};
+  background: ${(props) => props.color};
   cursor: pointer;
   position: absolute;
   top: 0px;
@@ -68,7 +68,7 @@ class ColorPickerInput extends PureComponent<Props, State> {
     super(props);
     this.state = {
       opened: false,
-      value: props.value
+      value: props.value,
     };
   }
 
@@ -85,25 +85,25 @@ class ColorPickerInput extends PureComponent<Props, State> {
   open = (event: React.FormEvent) => {
     event.preventDefault();
     this.setState({ opened: true });
-  }
+  };
 
   close = (event: React.FormEvent) => {
     event.preventDefault();
     this.setState({ opened: false });
     this.props.onChange(this.state.value);
-  }
+  };
 
   change = (ColorDescription: ColorResult) => {
     const hexColor = ColorDescription.hex;
     this.setState({ value: hexColor });
-  }
+  };
 
   render() {
     const { opened, value } = this.state;
 
     return (
       <Container>
-        {opened &&
+        {opened && (
           <Popover>
             <Cover onClick={this.close} />
             <ChromePicker
@@ -113,7 +113,7 @@ class ColorPickerInput extends PureComponent<Props, State> {
               onChangeComplete={this.change}
             />
           </Popover>
-        }
+        )}
         <InputWrapper>
           <StyledInput
             readOnly
@@ -122,10 +122,7 @@ class ColorPickerInput extends PureComponent<Props, State> {
             onFocus={this.open}
             spellCheck={false}
           />
-          <Color
-            onClick={this.open}
-            color={value}
-          />
+          <Color onClick={this.open} color={value} />
         </InputWrapper>
       </Container>
     );

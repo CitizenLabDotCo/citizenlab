@@ -10,14 +10,14 @@ const ProgressBarOuter = styled.div<{ background: string }>`
   width: 100%;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${props => props.background};
+  background: ${(props) => props.background};
 `;
 
-const ProgressBarInner: any = styled.div<{ progress: number, color: string }>`
+const ProgressBarInner: any = styled.div<{ progress: number; color: string }>`
   width: 0px;
   height: 100%;
   border-radius: ${(props: any) => props.theme.borderRadius};
-  background: ${props => props.color};
+  background: ${(props) => props.color};
   transition: width 1000ms cubic-bezier(0.19, 1, 0.22, 1);
   will-change: width;
 
@@ -41,20 +41,22 @@ interface State {
 }
 
 class ProgressBar extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
     };
   }
 
-  handleIntersection = (event: IntersectionObserverEntry, unobserve: () => void) => {
+  handleIntersection = (
+    event: IntersectionObserverEntry,
+    unobserve: () => void
+  ) => {
     if (event.isIntersecting) {
       this.setState({ visible: true });
       unobserve();
     }
-  }
+  };
 
   render() {
     const { progress, color, bgColor, className, bgShaded } = this.props;
@@ -63,8 +65,16 @@ class ProgressBar extends PureComponent<Props, State> {
     return (
       <Container className={className} aria-hidden>
         <Observer onChange={this.handleIntersection}>
-          <ProgressBarOuter background={bgShaded === true ? `url("${warningPattern}")` : bgColor}>
-            <ProgressBarInner progress={clamp(progress, 0, 1)} className={visible ? 'visible' : ''} color={color} />
+          <ProgressBarOuter
+            background={
+              bgShaded === true ? `url("${warningPattern}")` : bgColor
+            }
+          >
+            <ProgressBarInner
+              progress={clamp(progress, 0, 1)}
+              className={visible ? 'visible' : ''}
+              color={color}
+            />
           </ProgressBarOuter>
         </Observer>
       </Container>

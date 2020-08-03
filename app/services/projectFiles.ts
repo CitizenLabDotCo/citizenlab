@@ -8,13 +8,13 @@ export interface IProjectFileData {
   type: string;
   attributes: {
     file: {
-      url: string,
-    }
-    ordering: string | null,
-    name: string,
-    size: number,
-    created_at: string,
-    updated_at: string,
+      url: string;
+    };
+    ordering: string | null;
+    name: string;
+    size: number;
+    created_at: string;
+    updated_at: string;
   };
 }
 
@@ -26,18 +26,41 @@ export interface IProjectFiles {
   data: IProjectFileData[];
 }
 
-export function projectFilesStream(projectId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IProjectFiles | null>({ apiEndpoint: `${apiEndpoint}/${projectId}/files`, ...streamParams });
+export function projectFilesStream(
+  projectId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IProjectFiles | null>({
+    apiEndpoint: `${apiEndpoint}/${projectId}/files`,
+    ...streamParams,
+  });
 }
 
-export function projectFileStream(projectId: string, fileId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IProjectFile>({ apiEndpoint: `${apiEndpoint}/${projectId}/files/${fileId}`, ...streamParams });
+export function projectFileStream(
+  projectId: string,
+  fileId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IProjectFile>({
+    apiEndpoint: `${apiEndpoint}/${projectId}/files/${fileId}`,
+    ...streamParams,
+  });
 }
 
-export async function addProjectFile(projectId: string, base64: string, name: string, ordering: number | null = null) {
-  return await streams.add<IProjectFile>(`${apiEndpoint}/${projectId}/files`, { file: { name, ordering, file: base64 } });
+export async function addProjectFile(
+  projectId: string,
+  base64: string,
+  name: string,
+  ordering: number | null = null
+) {
+  return await streams.add<IProjectFile>(`${apiEndpoint}/${projectId}/files`, {
+    file: { name, ordering, file: base64 },
+  });
 }
 
 export async function deleteProjectFile(projectId: string, fileId: string) {
-  return await streams.delete(`${apiEndpoint}/${projectId}/files/${fileId}`, fileId);
+  return await streams.delete(
+    `${apiEndpoint}/${projectId}/files/${fileId}`,
+    fileId
+  );
 }

@@ -15,7 +15,8 @@ export default defineMessages({
   },
   initiativeOgDescription: {
     id: 'app.containers.InitiativesShow.initiativeOgDescription',
-    defaultMessage: 'What do you think of this initiative? Join the discussion and vote to make your voice heard.',
+    defaultMessage:
+      'What do you think of this initiative? Join the discussion and vote to make your voice heard.',
   },
   learnMore: {
     id: 'app.containers.InitiativesShow.learnMore',
@@ -39,11 +40,12 @@ export default defineMessages({
   },
   emailSharingBody: {
     id: 'app.containers.InitiativesShow.emailSharingBody',
-    defaultMessage: 'What do you think of this initiative? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!',
+    defaultMessage:
+      'What do you think of this initiative? Vote on it and share the discussion at {initiativeUrl} to make your voice heard!',
   },
   allInitiatives: {
     id: 'app.containers.InitiativesShow.allInitiatives',
-    defaultMessage: 'All Initiatves'
+    defaultMessage: 'All Initiatves',
   },
   moreOptions: {
     id: 'app.components.InitiativesShow.moreOptions',
@@ -79,7 +81,8 @@ export default defineMessages({
   },
   shareSubtitle: {
     id: 'app.components.InitiativesShow.shareSubtitle',
-    defaultMessage: 'Share your initiative to reach {votingThreshold} votes in {daysLimit} days.',
+    defaultMessage:
+      'Share your initiative to reach {votingThreshold} votes in {daysLimit} days.',
   },
   a11y_voteControl: {
     id: 'app.containers.InitiativesShow.a11y_voteControl',

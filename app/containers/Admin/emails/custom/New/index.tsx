@@ -4,7 +4,11 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import GoBackButton from 'components/UI/GoBackButton';
-import CampaignForm, { FormValues, validateCampaignForm, PageTitle } from '../CampaignForm';
+import CampaignForm, {
+  FormValues,
+  validateCampaignForm,
+  PageTitle,
+} from '../CampaignForm';
 import { Formik } from 'formik';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -17,11 +21,13 @@ type Props = {
 };
 
 class New extends React.Component<Props> {
-
-  handleSubmit = (values: FormValues, { setErrors, setSubmitting, setStatus }) => {
+  handleSubmit = (
+    values: FormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
     createCampaign({
       campaign_name: 'manual',
-      ...values
+      ...values,
     })
       .then((response) => {
         clHistory.push(`/admin/emails/custom/${response.data.id}`);
@@ -34,29 +40,24 @@ class New extends React.Component<Props> {
         setStatus('error');
         setSubmitting(false);
       });
-  }
+  };
 
   initialValues = (): FormValues => {
     const { authUser } = this.props;
     return {
       sender: 'author',
-      reply_to: (!isNilOrError(authUser) && authUser.attributes.email) ||  '',
+      reply_to: (!isNilOrError(authUser) && authUser.attributes.email) || '',
       subject_multiloc: {},
       body_multiloc: {},
-      group_ids: []
+      group_ids: [],
     };
-  }
+  };
 
-  renderFn = (props) => (
-    <CampaignForm
-      {...props}
-      mode="new"
-    />
-  )
+  renderFn = (props) => <CampaignForm {...props} mode="new" />;
 
   goBack = () => {
     clHistory.push('/admin/emails/custom');
-  }
+  };
 
   render() {
     return (
@@ -78,6 +79,6 @@ class New extends React.Component<Props> {
 
 export default () => (
   <GetAuthUser>
-    {(user) => isNilOrError(user) ? null : <New authUser={user} />}
+    {(user) => (isNilOrError(user) ? null : <New authUser={user} />)}
   </GetAuthUser>
 );

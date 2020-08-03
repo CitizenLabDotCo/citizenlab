@@ -7,6 +7,7 @@ export default defineMessages({
   },
   slogan: {
     id: 'app.components.CityLogoSection.slogan',
-    defaultMessage: '{type, select, generic {This website is an initiative from {name}} other {This website is an initiative from the city of {name}}}',
+    defaultMessage:
+      '{type, select, generic {This website is an initiative from {name}} other {This website is an initiative from the city of {name}}}',
   },
 });
