@@ -20,8 +20,14 @@ jest.mock('./components/PostTable', () => 'PostTable');
 jest.mock('./components/InfoSidebar', () => 'InfoSidebar');
 jest.mock('./components/IdeasCount', () => 'IdeasCount');
 jest.mock('./components/InitiativesCount', () => 'InitiativesCount');
-jest.mock('./components/TopLevelFilters/AssigneeFilter', () => 'AssigneeFilter');
-jest.mock('./components/TopLevelFilters/FeedbackToggle', () => 'FeedbackToggle');
+jest.mock(
+  './components/TopLevelFilters/AssigneeFilter',
+  () => 'AssigneeFilter'
+);
+jest.mock(
+  './components/TopLevelFilters/FeedbackToggle',
+  () => 'FeedbackToggle'
+);
 jest.mock('./components/LazyPostPreview', () => 'LazyPostPreview');
 
 import { PostManager } from './';
@@ -31,13 +37,13 @@ describe('<PostManager />', () => {
     { id: 'idea1', enTitle: 'Idea One' },
     { id: 'idea2', enTitle: 'Idea Two' },
     { id: 'idea3', enTitle: 'Idea Three' },
-  ].map(ideaInfo => getIdea(ideaInfo.id, ideaInfo.enTitle));
+  ].map((ideaInfo) => getIdea(ideaInfo.id, ideaInfo.enTitle));
 
   let posts;
 
   beforeEach(() => {
     posts = {
-      list: ideasList
+      list: ideasList,
     };
     posts.onChangeTopics = jest.fn();
     posts.onChangeStatus = jest.fn();
@@ -48,10 +54,9 @@ describe('<PostManager />', () => {
   });
 
   it('Handles the state of the Preview', () => {
-
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
-    const Wrapper = shallow((
+    const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
         visibleFilterMenus={['projects', 'statuses', 'topics']}
@@ -59,7 +64,7 @@ describe('<PostManager />', () => {
         postStatuses={postStatuses}
         topics={topics}
       />
-    ));
+    );
 
     const getPreviewProps = () => Wrapper.find('LazyPostPreview').props();
     expect(getPreviewProps().postId).toBeNull;
@@ -90,7 +95,7 @@ describe('<PostManager />', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
 
-    const Wrapper = shallow((
+    const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
         visibleFilterMenus={['projects', 'statuses', 'topics']}
@@ -98,7 +103,7 @@ describe('<PostManager />', () => {
         postStatuses={postStatuses}
         topics={topics}
       />
-    ));
+    );
     const mockSet = Wrapper.instance().globalState.set;
 
     expect(mockSet).toBeCalledTimes(1);
@@ -113,7 +118,7 @@ describe('<PostManager />', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
 
-    const Wrapper = shallow((
+    const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
         visibleFilterMenus={['projects', 'statuses', 'topics']}
@@ -121,7 +126,7 @@ describe('<PostManager />', () => {
         postStatuses={postStatuses}
         topics={topics}
       />
-    ));
+    );
 
     const getSelection = () => Wrapper.find('PostTable').prop('selection');
 
@@ -129,7 +134,9 @@ describe('<PostManager />', () => {
     expect(getSelection().size).toEqual(0);
 
     // passes in to the table a function to freely change the selection
-    Wrapper.find('PostTable').prop('onChangeSelection')(new Set(['post42', 'post3']));
+    Wrapper.find('PostTable').prop('onChangeSelection')(
+      new Set(['post42', 'post3'])
+    );
     expect(getSelection()).toEqual(new Set(['post42', 'post3']));
 
     // passes to the ActionBar a function to reset the seletion
@@ -141,7 +148,7 @@ describe('<PostManager />', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
 
-    const Wrapper = shallow((
+    const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
         visibleFilterMenus={['topics', 'statuses', 'projects']}
@@ -149,9 +156,10 @@ describe('<PostManager />', () => {
         postStatuses={postStatuses}
         topics={topics}
       />
-    ));
+    );
 
-    const getActiveFilter = () => Wrapper.find('FilterSidebar').prop('activeFilterMenu');
+    const getActiveFilter = () =>
+      Wrapper.find('FilterSidebar').prop('activeFilterMenu');
 
     // initially sets it to the first item of the visibleFilterMenus prop
     expect(getActiveFilter()).toEqual('topics');
@@ -170,7 +178,7 @@ describe('<PostManager />', () => {
     const topics = [mockTopicData];
     const postStatuses = [mockIdeaStatusData];
 
-    const Wrapper = shallow((
+    const Wrapper = shallow(
       <PostManager
         type="AllIdeas"
         visibleFilterMenus={['topics', 'statuses', 'projects']}
@@ -178,22 +186,24 @@ describe('<PostManager />', () => {
         postStatuses={postStatuses}
         topics={topics}
       />
-    ));
+    );
 
-    Wrapper.find('PostManager__StyledInput').prop('onChange')({ target: { value: 'searchString' } });
+    Wrapper.find('PostManager__StyledInput').prop('onChange')({
+      target: { value: 'searchString' },
+    });
 
     // initially sets it to the first item of the visibleFilterMenus prop
     expect(onChangeSearchTerm).toHaveBeenCalledWith('searchString');
   });
 
-  it('Gets and sets the selected status from the query parameters of posts when it\'s handling initiatives', () => {
+  it("Gets and sets the selected status from the query parameters of posts when it's handling initiatives", () => {
     posts.queryParameters = { initiative_status: 'Some Status' };
     const onChangeStatus = jest.fn();
     posts.onChangeStatus = onChangeStatus;
     const topics = [mockTopicData];
     const postStatuses = [mockProposalStatusData];
 
-    const Wrapper = shallow((
+    const Wrapper = shallow(
       <PostManager
         type="Initiatives"
         visibleFilterMenus={['topics', 'statuses', 'projects']}
@@ -201,14 +211,16 @@ describe('<PostManager />', () => {
         postStatuses={postStatuses}
         topics={topics}
       />
-    ));
+    );
 
     const selectedStatus = Wrapper.find('FilterSidebar').prop('selectedStatus');
 
     // initially sets it to the first item of the visibleFilterMenus prop
     expect(selectedStatus).toBe('Some Status');
 
-    Wrapper.find('FilterSidebar').prop('onChangeStatusFilter')('Some other status');
+    Wrapper.find('FilterSidebar').prop('onChangeStatusFilter')(
+      'Some other status'
+    );
     expect(onChangeStatus).toHaveBeenCalledWith('Some other status');
   });
 });

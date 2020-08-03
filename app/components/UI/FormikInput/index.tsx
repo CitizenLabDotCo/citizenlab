@@ -6,7 +6,7 @@ import { Locale } from 'typings';
 class FormikInput extends PureComponent<FieldProps & Props> {
   handleOnChange = (newValue: string, _locale: Locale | undefined) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
-  }
+  };
 
   render() {
     const { name, value } = this.props.field;

@@ -58,6 +58,9 @@ describe('Sign in page', () => {
     cy.get('#email').type(email);
     cy.get('#password').type(password);
     cy.get('.e2e-submit-signin').click();
-    cy.get('.e2e-error-message').should('contain', 'The provided information is not correct');
+    cy.get('.e2e-error-message').should(
+      'contain',
+      'The provided information is not correct'
+    );
   });
 });

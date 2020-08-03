@@ -22,55 +22,63 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 import WrongOptionsIndicator from './WrongOptionsIndicator';
 
-const QuestionRow = ({ question, isLastItem, index, onDelete, onEdit, onEditOptions, handleDropRow, handleDragRow }: {
-  question: IPollQuestion,
-  isLastItem: boolean,
-  index: number,
-  onDelete: () => void,
-  onEdit: () => void,
-  onEditOptions: () => void,
+const QuestionRow = ({
+  question,
+  isLastItem,
+  index,
+  onDelete,
+  onEdit,
+  onEditOptions,
+  handleDropRow,
   handleDragRow,
-  handleDropRow
+}: {
+  question: IPollQuestion;
+  isLastItem: boolean;
+  index: number;
+  onDelete: () => void;
+  onEdit: () => void;
+  onEditOptions: () => void;
+  handleDragRow;
+  handleDropRow;
 }) => (
-    <SortableRow
-      key={question.id}
-      id={question.id}
-      className="e2e-question-row"
-      index={index}
-      lastItem={isLastItem}
-      moveRow={handleDragRow}
-      dropRow={handleDropRow}
-    >
-
-      <TextCell className="expand">
-        <T value={question.attributes.title_multiloc} />
-        <EditTitleButton
-          className="e2e-edit-question"
-          onClick={onEdit}
-          buttonStyle="text"
-          icon="edit"
-          ariaLabel="edit"
-        />
-      </TextCell>
-
-      <WrongOptionsIndicator questionId={question.id}/>
-
-      <Button
-        className="e2e-delete-question"
-        onClick={onDelete}
+  <SortableRow
+    key={question.id}
+    id={question.id}
+    className="e2e-question-row"
+    index={index}
+    lastItem={isLastItem}
+    moveRow={handleDragRow}
+    dropRow={handleDropRow}
+  >
+    <TextCell className="expand">
+      <T value={question.attributes.title_multiloc} />
+      <EditTitleButton
+        className="e2e-edit-question"
+        onClick={onEdit}
         buttonStyle="text"
-        icon="delete"
-      >
-        <FormattedMessage {...messages.deleteQuestion} />
-      </Button>
-      <Button
-        className="e2e-edit-options"
-        onClick={onEditOptions}
-        buttonStyle="secondary"
-      >
-        <FormattedMessage {...messages.editOptions} />
-      </Button>
-    </SortableRow>
-  );
+        icon="edit"
+        ariaLabel="edit"
+      />
+    </TextCell>
+
+    <WrongOptionsIndicator questionId={question.id} />
+
+    <Button
+      className="e2e-delete-question"
+      onClick={onDelete}
+      buttonStyle="text"
+      icon="delete"
+    >
+      <FormattedMessage {...messages.deleteQuestion} />
+    </Button>
+    <Button
+      className="e2e-edit-options"
+      onClick={onEditOptions}
+      buttonStyle="secondary"
+    >
+      <FormattedMessage {...messages.editOptions} />
+    </Button>
+  </SortableRow>
+);
 
 export default QuestionRow;

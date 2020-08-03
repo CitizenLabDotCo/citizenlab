@@ -18,19 +18,13 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "incremental": true,
-    "plugins": [{
-      "name": "typescript-styled-plugin"
-    }]
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
   },
-  "files": [
-    "custom.d.ts"
-  ],
-  "include": [
-    "**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*.test.tsx",
-    "**/*.test.ts"
-  ]
+  "files": ["custom.d.ts"],
+  "include": ["**/*"],
+  "exclude": ["node_modules", "**/*.test.tsx", "**/*.test.ts"]
 }

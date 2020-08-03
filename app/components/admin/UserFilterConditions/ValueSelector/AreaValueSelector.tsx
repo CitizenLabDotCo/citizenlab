@@ -16,26 +16,26 @@ type Props = {
 
 type State = {};
 
-class AreaValueSelector extends React.PureComponent<Props & InjectedLocalized, State> {
-
+class AreaValueSelector extends React.PureComponent<
+  Props & InjectedLocalized,
+  State
+> {
   generateOptions = (): IOption[] => {
     const { areas, localize } = this.props;
 
     if (!isNilOrError(areas)) {
-      return areas.map((area) => (
-        {
-          value: area.id,
-          label: localize(area.attributes.title_multiloc),
-        }
-      ));
+      return areas.map((area) => ({
+        value: area.id,
+        label: localize(area.attributes.title_multiloc),
+      }));
     } else {
       return [];
     }
-  }
+  };
 
   handleOnChange = (option: IOption) => {
     this.props.onChange(option.value);
-  }
+  };
 
   render() {
     const { value } = this.props;

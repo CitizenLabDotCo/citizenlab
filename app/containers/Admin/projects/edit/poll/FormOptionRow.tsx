@@ -18,9 +18,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 /*
-* edit mode : titleMultiloc and optionId defined, question Id not used
-* new mode : question Id defined, titleMultiloc and optionId not used
-*/
+ * edit mode : titleMultiloc and optionId defined, question Id not used
+ * new mode : question Id defined, titleMultiloc and optionId not used
+ */
 interface Props {
   titleMultiloc?: Multiloc;
   locale: Locale;
@@ -40,7 +40,7 @@ class FormOptionRow extends PureComponent<Props, State> {
     super(props);
     this.state = {
       selectedLocale: props.locale,
-      titleMultiloc: props.titleMultiloc || {}
+      titleMultiloc: props.titleMultiloc || {},
     };
   }
 
@@ -58,18 +58,18 @@ class FormOptionRow extends PureComponent<Props, State> {
 
   onSelectedLocaleChange = (selectedLocale: Locale) => {
     this.setState({ selectedLocale });
-  }
+  };
 
   onChangeTitle = (value: string, locale: Locale | undefined) => {
     if (locale) {
       this.setState((state) => ({
         titleMultiloc: {
           ...state.titleMultiloc,
-          [locale]: value
-        }
+          [locale]: value,
+        },
       }));
     }
-  }
+  };
 
   onSave = () => {
     const { mode, questionId, closeRow, optionId } = this.props;
@@ -86,7 +86,7 @@ class FormOptionRow extends PureComponent<Props, State> {
         closeRow();
       });
     }
-  }
+  };
 
   render() {
     const { selectedLocale, titleMultiloc } = this.state;
@@ -95,13 +95,13 @@ class FormOptionRow extends PureComponent<Props, State> {
     return (
       <Row className="e2e-form-option-row">
         <TextCell>
-          {selectedLocale &&
+          {selectedLocale && (
             <FormLocaleSwitcher
               onLocaleChange={this.onSelectedLocaleChange}
               selectedLocale={selectedLocale}
               values={{ titleMultiloc }}
             />
-          }
+          )}
         </TextCell>
 
         <TextCell className="expand">

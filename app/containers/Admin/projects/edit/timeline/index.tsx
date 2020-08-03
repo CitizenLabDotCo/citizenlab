@@ -56,7 +56,7 @@ const OrderLabel = styled.div`
   flex: 0 0 3rem;
 
   &.present {
-    background: #32B67A;
+    background: #32b67a;
   }
 
   &.past {
@@ -78,15 +78,23 @@ interface Props extends InputProps, DataProps {}
 
 interface State {}
 
-class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
-
-  createDeleteClickHandler = (projectId: string, phaseId: string) => (event: React.FormEvent<any>) => {
+class AdminProjectTimelineIndex extends React.PureComponent<
+  Props & WithRouterProps & InjectedIntlProps,
+  State
+> {
+  createDeleteClickHandler = (projectId: string, phaseId: string) => (
+    event: React.FormEvent<any>
+  ) => {
     event.preventDefault();
 
-    if (window.confirm(this.props.intl.formatMessage(messages.deletePhaseConfirmation))) {
+    if (
+      window.confirm(
+        this.props.intl.formatMessage(messages.deletePhaseConfirmation)
+      )
+    ) {
       deletePhase(projectId, phaseId);
     }
-  }
+  };
 
   render() {
     const { phases } = this.props;
@@ -100,16 +108,25 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
         <SectionDescription>
           <FormattedMessage {...messages.subtitleTimeline} />
         </SectionDescription>
-        <AddButton className="e2e-add-phase-button" icon="plus-circle" buttonStyle="cl-blue" linkTo={`/admin/projects/${projectId}/timeline/new`}>
+        <AddButton
+          className="e2e-add-phase-button"
+          icon="plus-circle"
+          buttonStyle="cl-blue"
+          linkTo={`/admin/projects/${projectId}/timeline/new`}
+        >
           <FormattedMessage {...messages.addPhaseButton} />
         </AddButton>
 
-        {!isNilOrError(phases) && phases.length > 0 &&
+        {!isNilOrError(phases) && phases.length > 0 && (
           <div className={'e2e-phases-table'}>
             <StyledList>
               <HeadRow>
-                <OrderHeader><FormattedMessage {...messages.orderColumnTitle} /></OrderHeader>
-                <div className="expand"><FormattedMessage {...messages.nameColumnTitle} /></div>
+                <OrderHeader>
+                  <FormattedMessage {...messages.orderColumnTitle} />
+                </OrderHeader>
+                <div className="expand">
+                  <FormattedMessage {...messages.nameColumnTitle} />
+                </div>
               </HeadRow>
 
               {phases.map((phase, index) => {
@@ -117,18 +134,46 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
                 const endAt = moment(phase.attributes.end_at).format('LL');
 
                 return (
-                  <Row className={`e2e-phase-line ${phases.length === index + 1 ? 'last' : ''}`} id={`e2e-phase_${phase.id}`} key={phase.id}>
-                    <OrderLabel className={pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at])}>
+                  <Row
+                    className={`e2e-phase-line ${
+                      phases.length === index + 1 ? 'last' : ''
+                    }`}
+                    id={`e2e-phase_${phase.id}`}
+                    key={phase.id}
+                  >
+                    <OrderLabel
+                      className={pastPresentOrFuture([
+                        phase.attributes.start_at,
+                        phase.attributes.end_at,
+                      ])}
+                    >
                       {index + 1}
                     </OrderLabel>
                     <div className="expand">
-                      <h1 className="e2e-phase-title"><T value={phase.attributes.title_multiloc} /></h1>
-                      <p>{startAt}  →  {endAt}</p>
+                      <h1 className="e2e-phase-title">
+                        <T value={phase.attributes.title_multiloc} />
+                      </h1>
+                      <p>
+                        {startAt} → {endAt}
+                      </p>
                     </div>
-                    <Button className="e2e-delete-phase" icon="delete" buttonStyle="text" onClick={this.createDeleteClickHandler(projectId, phase.id)}>
+                    <Button
+                      className="e2e-delete-phase"
+                      icon="delete"
+                      buttonStyle="text"
+                      onClick={this.createDeleteClickHandler(
+                        projectId,
+                        phase.id
+                      )}
+                    >
                       <FormattedMessage {...messages.deletePhaseButton} />
                     </Button>
-                    <Button className="e2e-edit-phase" icon="edit" buttonStyle="secondary" linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}>
+                    <Button
+                      className="e2e-edit-phase"
+                      icon="edit"
+                      buttonStyle="secondary"
+                      linkTo={`/admin/projects/${projectId}/timeline/${phase.id}`}
+                    >
                       <FormattedMessage {...messages.editPhaseButton} />
                     </Button>
                   </Row>
@@ -136,14 +181,18 @@ class AdminProjectTimelineIndex extends React.PureComponent<Props & WithRouterPr
               })}
             </StyledList>
           </div>
-        }
+        )}
       </ListWrapper>
     );
   }
 }
 
-export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-  <GetPhases projectId={inputProps.params.projectId}>
-    {phases => <AdminProjectTimelineIndex {...inputProps} phases={phases} />}
-  </GetPhases>
-)));
+export default withRouter(
+  injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+    <GetPhases projectId={inputProps.params.projectId}>
+      {(phases) => (
+        <AdminProjectTimelineIndex {...inputProps} phases={phases} />
+      )}
+    </GetPhases>
+  ))
+);

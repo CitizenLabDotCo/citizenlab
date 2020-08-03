@@ -77,7 +77,8 @@ const HeaderContent = styled.div`
 
 const HeaderTitle = styled.h2`
   color: ${({ theme }) => theme.colorText};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
+  font-size: ${({ theme }) =>
+    theme.signedOutHeaderTitleFontSize || fontSizes.xxxxl}px;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   line-height: normal;
   text-align: center;
@@ -180,51 +181,73 @@ interface DataProps {
   tenant: GetTenantChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class InitiativesHeader extends PureComponent<Props, State> {
   startInitiative = () => {
     const { authUser } = this.props;
 
-    trackEventByName(tracks.clickStartInitiativesCTA, { extra: { location: 'initiatives header' } });
+    trackEventByName(tracks.clickStartInitiativesCTA, {
+      extra: { location: 'initiatives header' },
+    });
 
     if (!isNilOrError(authUser)) {
       clHistory.push('/initiatives/new');
     } else {
       openSignUpInModal({
-        action: () => this.startInitiative()
+        action: () => this.startInitiative(),
       });
     }
-  }
+  };
 
   render() {
     const { className, tenant } = this.props;
 
     if (isNilOrError(tenant)) return null;
 
-    const postingProposalEnabled = tenant.attributes.settings.initiatives?.posting_enabled;
+    const postingProposalEnabled =
+      tenant.attributes.settings.initiatives?.posting_enabled;
 
     return (
       <Container className={`e2e-initiatives-header ${className || ''}`}>
         <Header>
           <ScreenReaderOnly>
-            <FormattedMessage tagName="h1" {...messages.invisibleInitiativesPageTitle} />
+            <FormattedMessage
+              tagName="h1"
+              {...messages.invisibleInitiativesPageTitle}
+            />
           </ScreenReaderOnly>
           <HeaderContent>
             <HeaderTitle>
-              {postingProposalEnabled ?
+              {postingProposalEnabled ? (
                 <FormattedMessage
                   {...messages.header}
-                  values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
+                  values={{
+                    styledOrgName: (
+                      <T
+                        value={
+                          tenant.attributes.settings.core.organization_name
+                        }
+                      />
+                    ),
+                  }}
                 />
-                :
+              ) : (
                 <FormattedMessage
                   {...messages.headerPostingProposalDisabled}
-                  values={{ styledOrgName: <T value={tenant.attributes.settings.core.organization_name} /> }}
+                  values={{
+                    styledOrgName: (
+                      <T
+                        value={
+                          tenant.attributes.settings.core.organization_name
+                        }
+                      />
+                    ),
+                  }}
                 />
-              }
+              )}
             </HeaderTitle>
             <StyledAvatarBubbles />
             <div aria-live="polite">
@@ -236,16 +259,16 @@ class InitiativesHeader extends PureComponent<Props, State> {
                   <TooltipContent id="tooltip-content">
                     <TooltipContentIcon name="lock-outlined" ariaHidden />
                     <TooltipContentText>
-                      <FormattedMessage {...messages.postingDisabledExplanation} />
+                      <FormattedMessage
+                        {...messages.postingDisabledExplanation}
+                      />
                     </TooltipContentText>
                   </TooltipContent>
                 }
                 theme="dark"
                 hideOnClick={false}
               >
-                <div
-                  tabIndex={postingProposalEnabled ? -1 : 0}
-                >
+                <div tabIndex={postingProposalEnabled ? -1 : 0}>
                   <StartInitiativeButton
                     fontWeight="500"
                     padding="13px 22px"
@@ -260,7 +283,6 @@ class InitiativesHeader extends PureComponent<Props, State> {
                 </div>
               </Tippy>
             </div>
-
           </HeaderContent>
         </Header>
         <InitiativeInfo>
@@ -276,11 +298,11 @@ class InitiativesHeader extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <InitiativesHeader {...inputProps} {...dataProps} />}
+    {(dataProps) => <InitiativesHeader {...inputProps} {...dataProps} />}
   </Data>
 );

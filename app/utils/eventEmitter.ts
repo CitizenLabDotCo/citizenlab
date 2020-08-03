@@ -24,7 +24,7 @@ class EventEmitter {
 
     if (!this.stream[streamName]) {
       this.stream[streamName] = this.subject.pipe(
-        filter(data => data.eventName === eventName),
+        filter((data) => data.eventName === eventName),
         share()
       );
     }

@@ -21,20 +21,24 @@ interface State {
   projectImages: IProjectImageData[] | undefined | null | Error;
 }
 
-export type GetProjectImagesChildProps = IProjectImageData[] | undefined | null | Error;
+export type GetProjectImagesChildProps =
+  | IProjectImageData[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetProjectImages extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      projectImages: undefined
+      projectImages: undefined,
     };
   }
 
@@ -44,15 +48,25 @@ export default class GetProjectImages extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ projectId });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ projectImages: undefined })),
-        filter(({ projectId }) => isString(projectId)),
-        switchMap(({ projectId }: { projectId: string }) => projectImagesStream(projectId).observable)
-      )
-      .subscribe((projectImages) => {
-        this.setState({ projectImages: (!isNilOrError(projectImages) ? projectImages.data : projectImages) });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(
+            () => resetOnChange && this.setState({ projectImages: undefined })
+          ),
+          filter(({ projectId }) => isString(projectId)),
+          switchMap(
+            ({ projectId }: { projectId: string }) =>
+              projectImagesStream(projectId).observable
+          )
+        )
+        .subscribe((projectImages) => {
+          this.setState({
+            projectImages: !isNilOrError(projectImages)
+              ? projectImages.data
+              : projectImages,
+          });
+        }),
     ];
   }
 
@@ -62,7 +76,7 @@ export default class GetProjectImages extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

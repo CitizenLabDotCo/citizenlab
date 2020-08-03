@@ -11,30 +11,29 @@ const Container = styled.div`
 const ColorIndicator = styled.div<{ active: boolean }>`
   width: 1rem;
   height: 1rem;
-  border: 1px solid ${props => props.color};
-  border-radius: ${props => props.theme.borderRadius};
+  border: 1px solid ${(props) => props.color};
+  border-radius: ${(props) => props.theme.borderRadius};
   margin-right: 0.5rem;
   cursor: pointer;
   margin: 0 0.25rem;
-  ${props => props.active ? `background-color: ${props.color};` : ''}
+  ${(props) => (props.active ? `background-color: ${props.color};` : '')}
 `;
 
 type Props = {
-  selectedStatus?: string,
-  statuses: IIdeaStatusData[],
+  selectedStatus?: string;
+  statuses: IIdeaStatusData[];
   onUpdateStatus: (statusId: string) => void;
 };
 
 class IdeasStatusSelector extends React.PureComponent<Props> {
-
   isActive = (statusId) => {
     return this.props.selectedStatus === statusId;
-  }
+  };
 
   handleStatusClick = (statusId) => (event) => {
     event.stopPropagation();
     this.props.onUpdateStatus(statusId);
-  }
+  };
 
   render() {
     const { statuses } = this.props;

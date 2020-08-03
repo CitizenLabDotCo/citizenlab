@@ -2,7 +2,10 @@ import React from 'react';
 import { BehaviorSubject, Subscription, of } from 'rxjs';
 import { distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
 import shallowCompare from 'utils/shallowCompare';
-import { IInitiativeAllowedTransitions, initiativeAllowedTransitionsStream } from 'services/initiatives';
+import {
+  IInitiativeAllowedTransitions,
+  initiativeAllowedTransitionsStream,
+} from 'services/initiatives';
 import { isString } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 
@@ -10,26 +13,37 @@ interface InputProps {
   id: string | null;
 }
 
-type children = (renderProps: GetInitiativeAllowedTransitionsChildProps) => JSX.Element | null;
+type children = (
+  renderProps: GetInitiativeAllowedTransitionsChildProps
+) => JSX.Element | null;
 
 interface Props extends InputProps {
   children?: children;
 }
 
 interface State {
-  initiativeAllowedTransitions: IInitiativeAllowedTransitions | undefined | null;
+  initiativeAllowedTransitions:
+    | IInitiativeAllowedTransitions
+    | undefined
+    | null;
 }
 
-export type GetInitiativeAllowedTransitionsChildProps = IInitiativeAllowedTransitions | undefined | null;
+export type GetInitiativeAllowedTransitionsChildProps =
+  | IInitiativeAllowedTransitions
+  | undefined
+  | null;
 
-export default class GetInitiativeAllowedTransitions extends React.Component<Props, State> {
+export default class GetInitiativeAllowedTransitions extends React.Component<
+  Props,
+  State
+> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      initiativeAllowedTransitions: undefined
+      initiativeAllowedTransitions: undefined,
     };
   }
 
@@ -39,19 +53,27 @@ export default class GetInitiativeAllowedTransitions extends React.Component<Pro
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }: { id: string}) => {
-          if (isString(id)) {
-            return initiativeAllowedTransitionsStream(id).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ id }) => isString(id)),
+          switchMap(({ id }: { id: string }) => {
+            if (isString(id)) {
+              return initiativeAllowedTransitionsStream(id).observable;
+            }
 
-          return of(null);
-        })
-      ).subscribe((initiativeAllowedTransitions) => this.setState({
-        initiativeAllowedTransitions: !isNilOrError(initiativeAllowedTransitions) ? initiativeAllowedTransitions : null
-      }))
+            return of(null);
+          })
+        )
+        .subscribe((initiativeAllowedTransitions) =>
+          this.setState({
+            initiativeAllowedTransitions: !isNilOrError(
+              initiativeAllowedTransitions
+            )
+              ? initiativeAllowedTransitions
+              : null,
+          })
+        ),
     ];
   }
 
@@ -61,7 +83,7 @@ export default class GetInitiativeAllowedTransitions extends React.Component<Pro
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

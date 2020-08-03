@@ -32,11 +32,10 @@ const ListItem = styled.li`
 `;
 
 class ClusterDetails extends PureComponent<Props> {
-
-  keywords = () : {name: string}[] => {
+  keywords = (): { name: string }[] => {
     const { node } = this.props;
     return (node.type === 'custom' && node.keywords) || [];
-  }
+  };
 
   render() {
     const { ideaIds, node } = this.props;
@@ -47,27 +46,31 @@ class ClusterDetails extends PureComponent<Props> {
 
     return (
       <Container className={this.props['className']}>
-        {!isEmpty(keywords) &&
+        {!isEmpty(keywords) && (
           <>
-            <h4><FormattedMessage {...messages.keywords} /></h4>
+            <h4>
+              <FormattedMessage {...messages.keywords} />
+            </h4>
             <List>
-              {keywords.map(kw => (
-                <ListItem key={kw.name}>
-                  {kw.name}
-                </ListItem>
+              {keywords.map((kw) => (
+                <ListItem key={kw.name}>{kw.name}</ListItem>
               ))}
             </List>
           </>
-        }
-        <h4><FormattedMessage {...messages.clusterContains} /></h4>
+        )}
+        <h4>
+          <FormattedMessage {...messages.clusterContains} />
+        </h4>
         <List>
           {ideaIds.map((id) => (
             <GetIdea key={id} ideaId={id}>
-              {(idea) => isNilOrError(idea) ? null : (
-                <ListItem key={idea.id}>
-                  <T value={idea.attributes.title_multiloc} />
-                </ListItem>
-              )}
+              {(idea) =>
+                isNilOrError(idea) ? null : (
+                  <ListItem key={idea.id}>
+                    <T value={idea.attributes.title_multiloc} />
+                  </ListItem>
+                )
+              }
             </GetIdea>
           ))}
         </List>

@@ -5,7 +5,7 @@ enum UsersEvents {
   membershipAddFailed = 'UserAddedToGroupFailed',
   userDeletionFailed = 'UserDeleteFailed',
   membershipDeleteFailed = 'UserDeletedFromGroupFailed',
-  userRoleChangeFailed = 'UserRoleChangedFailed'
+  userRoleChangeFailed = 'UserRoleChangedFailed',
 }
 
 export interface MembershipAdd {

@@ -21,7 +21,7 @@ const PublicationStatusLabel = memo<Props>(({ publicationStatus }) => {
   if (publicationStatus !== 'published') {
     const publicationStatusColor = {
       draft: 'orangered',
-      archived: colors.clRedError
+      archived: colors.clRedError,
     }[publicationStatus];
 
     return (

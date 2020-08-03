@@ -5,9 +5,15 @@ import { shallow } from 'enzyme';
 import { mockOption } from 'services/__mocks__/pollOptions';
 
 jest.mock('services/pollOptions', () => ({
-  addPollOption: jest.fn((_id, _type, title) => { return new Promise((resolve) => resolve({ data: mockOption('newOption', title) })); }),
-  updatePollOption: jest.fn(() => { return new Promise((resolve) => resolve); }),
-  deletePollOption: jest.fn()
+  addPollOption: jest.fn((_id, _type, title) => {
+    return new Promise((resolve) =>
+      resolve({ data: mockOption('newOption', title) })
+    );
+  }),
+  updatePollOption: jest.fn(() => {
+    return new Promise((resolve) => resolve);
+  }),
+  deletePollOption: jest.fn(),
 }));
 import * as pollOptionsService from 'services/pollOptions';
 const addPollOptionSpy = jest.spyOn(pollOptionsService, 'addPollOption');
@@ -17,10 +23,15 @@ const deletePollOptionSpy = jest.spyOn(pollOptionsService, 'deletePollOption');
 // jest.mock('resources/GetTenantLocales');
 // import { mockGetTenantLocales } from 'resources/__mocks__/GetTenantLocales';
 
-jest.mock('resources/GetTenantLocales', ({ children }) => children(['en', 'fr-BE']));
+jest.mock('resources/GetTenantLocales', ({ children }) =>
+  children(['en', 'fr-BE'])
+);
 
 jest.mock('components/admin/FormLocaleSwitcher', () => 'FormLocaleSwitcher');
-jest.mock('components/admin/ResourceList', () => ({ TextCell: 'TextCell', Row: 'Row' }));
+jest.mock('components/admin/ResourceList', () => ({
+  TextCell: 'TextCell',
+  Row: 'Row',
+}));
 jest.mock('components/UI/InputMultiloc', () => 'InputMultiloc');
 jest.mock('components/UI/Button', () => 'Button');
 jest.mock('utils/cl-intl', () => ({ FormattedMessage: 'FormattedMessage' }));
@@ -50,7 +61,10 @@ describe('<FormOptionRow />', () => {
           optionId="optionId"
         />
       );
-      wrapper.setProps({ titleMultiloc: getTitleMultiloc('Pistachio'), optionId: 'anotherOption' });
+      wrapper.setProps({
+        titleMultiloc: getTitleMultiloc('Pistachio'),
+        optionId: 'anotherOption',
+      });
       expect(wrapper.find('Input').prop('value')).toEqual('Pistachio');
     });
   });
@@ -66,7 +80,9 @@ describe('<FormOptionRow />', () => {
         />
       );
       expect(wrapper.find('Input').prop('locale')).toBe('en');
-      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('en');
+      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe(
+        'en'
+      );
     });
 
     it('reacts to locale change', () => {
@@ -80,7 +96,9 @@ describe('<FormOptionRow />', () => {
       );
       wrapper.setProps({ locale: 'fr-BE' });
       expect(wrapper.find('Input').prop('locale')).toBe('fr-BE');
-      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe('fr-BE');
+      expect(wrapper.find('FormLocaleSwitcher').prop('selectedLocale')).toBe(
+        'fr-BE'
+      );
     });
 
     it('handles changing field locale', () => {
@@ -144,7 +162,9 @@ describe('<FormOptionRow />', () => {
             optionId="optionId"
           />
         );
-        expect(wrapper.find('Input').prop('value')).toEqual(titleMultiloc['en']);
+        expect(wrapper.find('Input').prop('value')).toEqual(
+          titleMultiloc['en']
+        );
       });
 
       it('reacts to user input', () => {
@@ -178,7 +198,9 @@ describe('<FormOptionRow />', () => {
         );
         wrapper.find('.e2e-form-option-save').simulate('click');
         expect(addPollOptionSpy).toHaveBeenCalledTimes(1);
-        expect(addPollOptionSpy).toHaveBeenCalledWith('questionId', { en: 'Vani' });
+        expect(addPollOptionSpy).toHaveBeenCalledWith('questionId', {
+          en: 'Vani',
+        });
         // resolve the promise the test the callback
         return pollOptionsService.addPollOption().then(() => {
           expect(closeRow).toHaveBeenCalledTimes(1);
@@ -200,7 +222,9 @@ describe('<FormOptionRow />', () => {
         wrapper.setState({ titleMultiloc: getTitleMultiloc('Vanilla') });
         wrapper.find('.e2e-form-option-save').simulate('click');
         expect(updatePollOptionSpy).toHaveBeenCalledTimes(1);
-        expect(updatePollOptionSpy).toHaveBeenCalledWith('optionId', { en: 'Vanilla' });
+        expect(updatePollOptionSpy).toHaveBeenCalledWith('optionId', {
+          en: 'Vanilla',
+        });
       });
     });
   });

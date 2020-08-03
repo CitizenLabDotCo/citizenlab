@@ -7,8 +7,7 @@ type State = {
   hasMore: boolean;
 };
 
-export interface InputProps {
-}
+export interface InputProps {}
 
 type children = (renderProps: GetNotificationsChildProps) => JSX.Element | null;
 
@@ -42,22 +41,24 @@ export default class GetNotifications extends React.Component<Props, State> {
 
     this.subscriptions.push(
       notifications$.subscribe((response) => {
-        const list = this.state.list ? this.state.list.concat(response.data) : response.data;
+        const list = this.state.list
+          ? this.state.list.concat(response.data)
+          : response.data;
         const hasMore = !!response.links.next;
         this.setState({ list, hasMore });
       })
     );
-  }
+  };
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
     const { children } = this.props;
     return (children as children)({
       ...this.state,
-      onLoadMore: this.loadNextPage
+      onLoadMore: this.loadNextPage,
     });
   }
 }

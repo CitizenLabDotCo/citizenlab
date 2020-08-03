@@ -3,6 +3,6 @@ export default {
     name: 'Clicked Idea marker on map',
   },
   clickedIdeaLink: {
-    name: 'Clicked idea link in panel'
-  }
+    name: 'Clicked idea link in panel',
+  },
 };

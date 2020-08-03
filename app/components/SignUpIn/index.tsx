@@ -19,7 +19,11 @@ const Container = styled.div``;
 
 export type ISignUpInActionType = 'upvote' | 'downvote' | 'comment' | 'post';
 
-export type ISignUpInActionContextType = 'idea' | 'initiative' | 'project' | 'phase';
+export type ISignUpInActionContextType =
+  | 'idea'
+  | 'initiative'
+  | 'project'
+  | 'phase';
 
 export type TSignUpInFlow = 'signup' | 'signin';
 
@@ -41,11 +45,7 @@ interface Props {
   className?: string;
 }
 
-const SignUpIn = memo<Props>(({
-  metaData,
-  onSignUpInCompleted,
-  className
-}) => {
+const SignUpIn = memo<Props>(({ metaData, onSignUpInCompleted, className }) => {
   const tenant = useTenant();
   const { windowHeight } = useWindowSize();
 
@@ -62,7 +62,9 @@ const SignUpIn = memo<Props>(({
   }, [onSignUpInCompleted]);
 
   const onToggleSelectedMethod = useCallback(() => {
-    setSelectedFlow(prevSelectedFlow => prevSelectedFlow === 'signup' ? 'signin' : 'signup');
+    setSelectedFlow((prevSelectedFlow) =>
+      prevSelectedFlow === 'signup' ? 'signin' : 'signup'
+    );
   }, []);
 
   if (!isNilOrError(tenant)) {

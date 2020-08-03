@@ -18,7 +18,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
+  height: ${(props) => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
 
@@ -105,35 +105,36 @@ interface Props {
   className?: string;
 }
 
-const InitiativeShowPageTopBar = memo<Props>(({ initiativeId, insideModal, className }) => {
+const InitiativeShowPageTopBar = memo<Props>(
+  ({ initiativeId, insideModal, className }) => {
+    const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
+      event.preventDefault();
 
-  const onGoBack = useCallback((event: MouseEvent<HTMLElement>) => {
-    event.preventDefault();
+      if (insideModal) {
+        eventEmitter.emit('closeIdeaModal');
+      } else {
+        clHistory.push('/');
+      }
+    }, []);
 
-    if (insideModal) {
-      eventEmitter.emit('closeIdeaModal');
-    } else {
-      clHistory.push('/');
-    }
-  }, []);
-
-  return (
-    <Container className={className}>
-      <TopBarInner>
-        <Left>
-          <GoBackButton onClick={onGoBack}>
-            <GoBackIcon name="arrow-back" />
-          </GoBackButton>
-          <GoBackLabel>
-            <FormattedMessage {...messages.goBack} />
-          </GoBackLabel>
-        </Left>
-        <Right>
-          <VoteIndicator initiativeId={initiativeId} />
-        </Right>
-      </TopBarInner>
-    </Container>
-  );
-});
+    return (
+      <Container className={className}>
+        <TopBarInner>
+          <Left>
+            <GoBackButton onClick={onGoBack}>
+              <GoBackIcon name="arrow-back" />
+            </GoBackButton>
+            <GoBackLabel>
+              <FormattedMessage {...messages.goBack} />
+            </GoBackLabel>
+          </Left>
+          <Right>
+            <VoteIndicator initiativeId={initiativeId} />
+          </Right>
+        </TopBarInner>
+      </Container>
+    );
+  }
+);
 
 export default InitiativeShowPageTopBar;

@@ -1,6 +1,11 @@
 import React, { PureComponent, FormEvent } from 'react';
 import { Subscription, BehaviorSubject, combineLatest, of } from 'rxjs';
-import { switchMap, map, filter as rxFilter, distinctUntilChanged } from 'rxjs/operators';
+import {
+  switchMap,
+  map,
+  filter as rxFilter,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { isEmpty, get, isString } from 'lodash-es';
 
 // router
@@ -15,8 +20,16 @@ import Button from 'components/UI/Button';
 import MultipleSelect from 'components/UI/MultipleSelect';
 import FileUploader from 'components/UI/FileUploader';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import { Section, SectionField, SectionTitle, SectionDescription, SubSectionTitle } from 'components/admin/Section';
-import ParticipationContext, { IParticipationContextConfig } from '../participationContext';
+import {
+  Section,
+  SectionField,
+  SectionTitle,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
+import ParticipationContext, {
+  IParticipationContextConfig,
+} from '../participationContext';
 import HasPermission from 'components/HasPermission';
 import IconTooltip from 'components/UI/IconTooltip';
 import Warning from 'components/UI/Warning';
@@ -39,10 +52,18 @@ import {
   projectByIdStream,
   addProject,
   updateProject,
-  deleteProject
+  deleteProject,
 } from 'services/projects';
-import { projectFilesStream, addProjectFile, deleteProjectFile } from 'services/projectFiles';
-import { projectImagesStream, addProjectImage, deleteProjectImage } from 'services/projectImages';
+import {
+  projectFilesStream,
+  addProjectFile,
+  deleteProjectFile,
+} from 'services/projectFiles';
+import {
+  projectImagesStream,
+  addProjectImage,
+  deleteProjectImage,
+} from 'services/projectImages';
 import { areasStream, IAreaData } from 'services/areas';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
@@ -78,7 +99,6 @@ const ProjectType = styled.div`
   &:first-letter {
     text-transform: uppercase;
   }
-
 `;
 
 const StyledSectionField = styled(SectionField)`
@@ -167,8 +187,8 @@ const StyledWarning = styled(Warning)`
 
 type Props = {
   params?: {
-    projectId: string
-  }
+    projectId: string;
+  };
 };
 
 interface State {
@@ -196,7 +216,10 @@ interface State {
   deleteError: string | null;
 }
 
-class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, State> {
+class AdminProjectEditGeneral extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   projectId$: BehaviorSubject<string | null>;
   processing$: BehaviorSubject<boolean>;
   subscriptions: Subscription[] = [];
@@ -210,8 +233,8 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       projectType: 'timeline',
       projectAttributesDiff: {
         admin_publication_attributes: {
-          publication_status: 'draft'
-        }
+          publication_status: 'draft',
+        },
       },
       projectHeaderImage: null,
       presentationMode: 'card',
@@ -242,131 +265,196 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     const areas$ = areasStream().observable;
     const project$ = this.projectId$.pipe(
       distinctUntilChanged(),
-      switchMap(projectId => projectId ? projectByIdStream(projectId).observable : of(null))
+      switchMap((projectId) =>
+        projectId ? projectByIdStream(projectId).observable : of(null)
+      )
     );
 
-    this.projectId$.next(get(this.props, 'params.projectId', null) as string | null);
+    this.projectId$.next(
+      get(this.props, 'params.projectId', null) as string | null
+    );
 
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$,
-        areas$,
-        project$
-      ).subscribe(([locale, currentTenant, areas, project]) => {
-        if (!this.state.processingDelete) {
-          this.setState((state) => {
-            const publicationStatus = (project ? project.data.attributes.publication_status : state.publicationStatus);
-            const projectType = (project ? project.data.attributes.process_type : state.projectType);
-            const areaType = ((project && project.data.relationships.areas.data.length > 0) ? 'selection' : 'all');
-            const areasOptions = areas.data.map((area) => ({
-              value: area.id,
-              label: getLocalized(area.attributes.title_multiloc, locale, currentTenant.data.attributes.settings.core.locales)
-            }));
+      combineLatest(locale$, currentTenant$, areas$, project$).subscribe(
+        ([locale, currentTenant, areas, project]) => {
+          if (!this.state.processingDelete) {
+            this.setState((state) => {
+              const publicationStatus = project
+                ? project.data.attributes.publication_status
+                : state.publicationStatus;
+              const projectType = project
+                ? project.data.attributes.process_type
+                : state.projectType;
+              const areaType =
+                project && project.data.relationships.areas.data.length > 0
+                  ? 'selection'
+                  : 'all';
+              const areasOptions = areas.data.map((area) => ({
+                value: area.id,
+                label: getLocalized(
+                  area.attributes.title_multiloc,
+                  locale,
+                  currentTenant.data.attributes.settings.core.locales
+                ),
+              }));
 
-            return {
-              locale,
-              currentTenant,
-              project,
-              publicationStatus,
-              projectType,
-              areaType,
-              areasOptions,
-              presentationMode: (project && project.data.attributes.presentation_mode || state.presentationMode),
-              areas: areas.data,
-              projectAttributesDiff: {
-                admin_publication_attributes : {
-                  publication_status : publicationStatus
-                }
-              },
-            };
-          });
-        }
-      }),
-
-      project$.pipe(
-        switchMap((project) => {
-          if (project) {
-            const headerUrl = project.data.attributes.header_bg.large;
-            const projectHeaderImage$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
-
-            const projectFiles$ = (project ? projectFilesStream(project.data.id).observable.pipe(
-              switchMap((projectFiles) => {
-                if (projectFiles && projectFiles.data && projectFiles.data.length > 0) {
-                  return combineLatest(
-                    projectFiles.data.map((projectFile) => {
-                      const url = projectFile.attributes.file.url;
-                      const filename = projectFile.attributes.name;
-                      const id = projectFile.id;
-                      return convertUrlToUploadFileObservable(url, id, filename);
-                    })
-                  );
-                }
-
-                return of([]);
-              })
-            ) : of([]));
-
-            const projectImages$ = (project ? projectImagesStream(project.data.id).observable.pipe(
-              switchMap((projectImages) => {
-                if (projectImages && projectImages.data && projectImages.data.length > 0) {
-                  return combineLatest(projectImages.data.filter((projectImage) => {
-                    return !!(projectImage.attributes.versions && projectImage.attributes.versions.large);
-                  }).map((projectImage) => {
-                    const url = projectImage.attributes.versions.large as string;
-                    return convertUrlToUploadFileObservable(url, projectImage.id, null);
-                  }));
-                }
-
-                return of([]);
-              })
-            ) : of([]));
-
-            return combineLatest(
-              this.processing$,
-              projectHeaderImage$,
-              projectFiles$,
-              projectImages$
-            ).pipe(
-              rxFilter(([processing]) => !processing),
-              map(([_processing, projectHeaderImage, projectFiles, projectImages]) => ({
-                projectHeaderImage,
-                projectFiles,
-                projectImages
-              }))
-            );
+              return {
+                locale,
+                currentTenant,
+                project,
+                publicationStatus,
+                projectType,
+                areaType,
+                areasOptions,
+                presentationMode:
+                  (project && project.data.attributes.presentation_mode) ||
+                  state.presentationMode,
+                areas: areas.data,
+                projectAttributesDiff: {
+                  admin_publication_attributes: {
+                    publication_status: publicationStatus,
+                  },
+                },
+              };
+            });
           }
-
-          return of({
-            projectHeaderImage: null,
-            projectFiles: [],
-            projectImages: []
-          });
-        })
-      ).subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
-        if (!this.state.processingDelete) {
-          this.setState({
-            projectFiles: projectFiles ? projectFiles.filter((file) => !isNilOrError(file)) as UploadFile[] : [],
-            projectImages: projectImages ? projectImages.filter(image => !isNilOrError(image)) as UploadFile[] : [],
-            projectHeaderImage: projectHeaderImage ? [projectHeaderImage] : null
-          });
         }
-      }),
+      ),
+
+      project$
+        .pipe(
+          switchMap((project) => {
+            if (project) {
+              const headerUrl = project.data.attributes.header_bg.large;
+              const projectHeaderImage$ = headerUrl
+                ? convertUrlToUploadFileObservable(headerUrl, null, null)
+                : of(null);
+
+              const projectFiles$ = project
+                ? projectFilesStream(project.data.id).observable.pipe(
+                    switchMap((projectFiles) => {
+                      if (
+                        projectFiles &&
+                        projectFiles.data &&
+                        projectFiles.data.length > 0
+                      ) {
+                        return combineLatest(
+                          projectFiles.data.map((projectFile) => {
+                            const url = projectFile.attributes.file.url;
+                            const filename = projectFile.attributes.name;
+                            const id = projectFile.id;
+                            return convertUrlToUploadFileObservable(
+                              url,
+                              id,
+                              filename
+                            );
+                          })
+                        );
+                      }
+
+                      return of([]);
+                    })
+                  )
+                : of([]);
+
+              const projectImages$ = project
+                ? projectImagesStream(project.data.id).observable.pipe(
+                    switchMap((projectImages) => {
+                      if (
+                        projectImages &&
+                        projectImages.data &&
+                        projectImages.data.length > 0
+                      ) {
+                        return combineLatest(
+                          projectImages.data
+                            .filter((projectImage) => {
+                              return !!(
+                                projectImage.attributes.versions &&
+                                projectImage.attributes.versions.large
+                              );
+                            })
+                            .map((projectImage) => {
+                              const url = projectImage.attributes.versions
+                                .large as string;
+                              return convertUrlToUploadFileObservable(
+                                url,
+                                projectImage.id,
+                                null
+                              );
+                            })
+                        );
+                      }
+
+                      return of([]);
+                    })
+                  )
+                : of([]);
+
+              return combineLatest(
+                this.processing$,
+                projectHeaderImage$,
+                projectFiles$,
+                projectImages$
+              ).pipe(
+                rxFilter(([processing]) => !processing),
+                map(
+                  ([
+                    _processing,
+                    projectHeaderImage,
+                    projectFiles,
+                    projectImages,
+                  ]) => ({
+                    projectHeaderImage,
+                    projectFiles,
+                    projectImages,
+                  })
+                )
+              );
+            }
+
+            return of({
+              projectHeaderImage: null,
+              projectFiles: [],
+              projectImages: [],
+            });
+          })
+        )
+        .subscribe(({ projectHeaderImage, projectFiles, projectImages }) => {
+          if (!this.state.processingDelete) {
+            this.setState({
+              projectFiles: projectFiles
+                ? (projectFiles.filter(
+                    (file) => !isNilOrError(file)
+                  ) as UploadFile[])
+                : [],
+              projectImages: projectImages
+                ? (projectImages.filter(
+                    (image) => !isNilOrError(image)
+                  ) as UploadFile[])
+                : [],
+              projectHeaderImage: projectHeaderImage
+                ? [projectHeaderImage]
+                : null,
+            });
+          }
+        }),
 
       this.processing$.subscribe((processing) => {
         this.setState({ processing });
-      })
+      }),
     ];
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (get(this.props, 'params.projectId') !== get(prevProps, 'params.projectId')) {
+    if (
+      get(this.props, 'params.projectId') !== get(prevProps, 'params.projectId')
+    ) {
       this.projectId$.next(get(this.props, 'params.projectId', null));
     }
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   handleTitleMultilocOnChange = (titleMultiloc: Multiloc, locale: Locale) => {
@@ -374,24 +462,26 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       submitState: 'enabled',
       noTitleError: {
         ...noTitleError,
-        [locale]: null
+        [locale]: null,
       },
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        title_multiloc: titleMultiloc
-      }
+        title_multiloc: titleMultiloc,
+      },
     }));
-  }
+  };
 
-  handleParticipationContextOnChange = (participationContextConfig: IParticipationContextConfig) => {
+  handleParticipationContextOnChange = (
+    participationContextConfig: IParticipationContextConfig
+  ) => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        ...participationContextConfig
-      }
+        ...participationContextConfig,
+      },
     }));
-  }
+  };
 
   handeProjectTypeOnChange = (projectType: 'continuous' | 'timeline') => {
     this.setState(({ projectAttributesDiff }) => ({
@@ -399,74 +489,76 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        process_type: projectType
-      }
+        process_type: projectType,
+      },
     }));
-  }
+  };
 
   handleHeaderOnAdd = (newHeader: UploadFile[]) => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        header_bg: newHeader[0].base64
+        header_bg: newHeader[0].base64,
       },
-      projectHeaderImage: [newHeader[0]]
+      projectHeaderImage: [newHeader[0]],
     }));
-  }
+  };
 
   handleHeaderOnRemove = async () => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        header_bg: null
+        header_bg: null,
       },
-      projectHeaderImage: null
+      projectHeaderImage: null,
     }));
-  }
+  };
 
   handleProjectFileOnAdd = (newProjectFile: UploadFile) => {
     this.setState((prevState) => {
-      const isDuplicate = prevState.projectFiles.some(file => file.base64 === newProjectFile.base64);
-      const projectFiles = (isDuplicate ? prevState.projectFiles : [...prevState.projectFiles, newProjectFile]);
-      const submitState = (isDuplicate ? prevState.submitState : 'enabled');
+      const isDuplicate = prevState.projectFiles.some(
+        (file) => file.base64 === newProjectFile.base64
+      );
+      const projectFiles = isDuplicate
+        ? prevState.projectFiles
+        : [...prevState.projectFiles, newProjectFile];
+      const submitState = isDuplicate ? prevState.submitState : 'enabled';
 
       return {
         projectFiles,
-        submitState
+        submitState,
       };
     });
-  }
+  };
 
   handleProjectFileOnRemove = (projectFileToRemove: UploadFile) => {
     this.setState(({ projectFiles, projectFilesToRemove }) => ({
       submitState: 'enabled',
-      projectFiles: projectFiles.filter(file => file.base64 !== projectFileToRemove.base64),
-      projectFilesToRemove: [
-        ...projectFilesToRemove,
-        projectFileToRemove
-      ],
+      projectFiles: projectFiles.filter(
+        (file) => file.base64 !== projectFileToRemove.base64
+      ),
+      projectFilesToRemove: [...projectFilesToRemove, projectFileToRemove],
     }));
-  }
+  };
 
   handleProjectImagesOnAdd = (projectImages: UploadFile[]) => {
     this.setState({
       projectImages,
-      submitState: 'enabled'
+      submitState: 'enabled',
     });
-  }
+  };
 
   handleProjectImageOnRemove = (projectImageToRemove: UploadFile) => {
     this.setState(({ projectImages, projectImagesToRemove }) => ({
       submitState: 'enabled',
-      projectImages: projectImages.filter(image => image.base64 !== projectImageToRemove.base64),
-      projectImagesToRemove: [
-        ...projectImagesToRemove,
-        projectImageToRemove
-      ]
+      projectImages: projectImages.filter(
+        (image) => image.base64 !== projectImageToRemove.base64
+      ),
+      projectImagesToRemove: [...projectImagesToRemove, projectImageToRemove],
     }));
-  }
+  };
 
   handleAreaTypeChange = (value: 'all' | 'selection') => {
     this.setState(({ projectAttributesDiff }) => ({
@@ -474,20 +566,20 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       areaType: value,
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        area_ids: (value === 'all' ? [] : projectAttributesDiff.area_ids)
-      }
+        area_ids: value === 'all' ? [] : projectAttributesDiff.area_ids,
+      },
     }));
-  }
+  };
 
   handleAreaSelectionChange = (values: IOption[]) => {
     this.setState(({ projectAttributesDiff }) => ({
       submitState: 'enabled',
       projectAttributesDiff: {
         ...projectAttributesDiff,
-        area_ids: values.map((value) => (value.value))
-      }
+        area_ids: values.map((value) => value.value),
+      },
     }));
-  }
+  };
 
   onSubmit = (event: FormEvent<any>) => {
     event.preventDefault();
@@ -500,11 +592,13 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     } else {
       this.save();
     }
-  }
+  };
 
-  handleParcticipationContextOnSubmit = (participationContextConfig: IParticipationContextConfig) => {
+  handleParcticipationContextOnSubmit = (
+    participationContextConfig: IParticipationContextConfig
+  ) => {
     this.save(participationContextConfig);
-  }
+  };
 
   handleStatusChange = (value: 'draft' | 'published' | 'archived') => {
     this.setState(({ projectAttributesDiff }) => ({
@@ -513,18 +607,23 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       projectAttributesDiff: {
         ...projectAttributesDiff,
         admin_publication_attributes: {
-          publication_status: value
-        }
-      }
+          publication_status: value,
+        },
+      },
     }));
-  }
+  };
 
   validate = () => {
     let hasErrors = false;
     const { formatMessage } = this.props.intl;
     const { currentTenant, projectAttributesDiff, project } = this.state;
-    const currentTenantLocales = (currentTenant ? currentTenant.data.attributes.settings.core.locales : null);
-    const projectAttrs = { ...(project ? project.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
+    const currentTenantLocales = currentTenant
+      ? currentTenant.data.attributes.settings.core.locales
+      : null;
+    const projectAttrs = {
+      ...(project ? project.data.attributes : {}),
+      ...projectAttributesDiff,
+    } as IUpdatedProjectProperties;
     const noTitleError = {} as Multiloc;
 
     if (currentTenantLocales) {
@@ -532,26 +631,37 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         const title = get(projectAttrs.title_multiloc, currentTenantLocale);
 
         if (isEmpty(title)) {
-          noTitleError[currentTenantLocale] = formatMessage(messages.noTitleErrorMessage);
+          noTitleError[currentTenantLocale] = formatMessage(
+            messages.noTitleErrorMessage
+          );
           hasErrors = true;
         }
       });
     }
 
     this.setState({
-      noTitleError: (!noTitleError || isEmpty(noTitleError) ? null : noTitleError)
+      noTitleError:
+        !noTitleError || isEmpty(noTitleError) ? null : noTitleError,
     });
 
     return !hasErrors;
-  }
+  };
 
-  save = async (participationContextConfig: IParticipationContextConfig | null = null) => {
+  save = async (
+    participationContextConfig: IParticipationContextConfig | null = null
+  ) => {
     if (this.validate() && !this.state.processing) {
       const { formatMessage } = this.props.intl;
-      const { project, projectImages, projectImagesToRemove, projectFiles, projectFilesToRemove } = this.state;
+      const {
+        project,
+        projectImages,
+        projectImagesToRemove,
+        projectFiles,
+        projectFilesToRemove,
+      } = this.state;
       const projectAttributesDiff: IUpdatedProjectProperties = {
         ...this.state.projectAttributesDiff,
-        ...participationContextConfig
+        ...participationContextConfig,
       };
 
       try {
@@ -559,7 +669,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         this.processing$.next(true);
 
         let isNewProject = false;
-        let projectId = (project ? project.data.id : null);
+        let projectId = project ? project.data.id : null;
 
         if (!isEmpty(projectAttributesDiff)) {
           if (project) {
@@ -572,16 +682,30 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
         }
 
         if (isString(projectId)) {
-          const imagesToAddPromises = projectImages.filter(file => !file.remote).map(file => addProjectImage(projectId as string, file.base64));
-          const imagesToRemovePromises = projectImagesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectImage(projectId as string, file.id as string));
-          const filesToAddPromises = projectFiles.filter(file => !file.remote).map(file => addProjectFile(projectId as string, file.base64, file.name));
-          const filesToRemovePromises = projectFilesToRemove.filter(file => file.remote === true && isString(file.id)).map(file => deleteProjectFile(projectId as string, file.id as string));
+          const imagesToAddPromises = projectImages
+            .filter((file) => !file.remote)
+            .map((file) => addProjectImage(projectId as string, file.base64));
+          const imagesToRemovePromises = projectImagesToRemove
+            .filter((file) => file.remote === true && isString(file.id))
+            .map((file) =>
+              deleteProjectImage(projectId as string, file.id as string)
+            );
+          const filesToAddPromises = projectFiles
+            .filter((file) => !file.remote)
+            .map((file) =>
+              addProjectFile(projectId as string, file.base64, file.name)
+            );
+          const filesToRemovePromises = projectFilesToRemove
+            .filter((file) => file.remote === true && isString(file.id))
+            .map((file) =>
+              deleteProjectFile(projectId as string, file.id as string)
+            );
 
           await Promise.all([
             ...imagesToAddPromises,
             ...imagesToRemovePromises,
             ...filesToAddPromises,
-            ...filesToRemovePromises
+            ...filesToRemovePromises,
           ] as Promise<any>[]);
         }
 
@@ -589,23 +713,29 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
           saved: true,
           submitState: 'success',
           projectImagesToRemove: [],
-          projectFilesToRemove: []
+          projectFilesToRemove: [],
         });
 
         this.processing$.next(false);
 
         if (isNewProject && projectId) {
-          eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', { projectId });
+          eventEmitter.emit<INewProjectCreatedEvent>('NewProjectCreated', {
+            projectId,
+          });
         }
       } catch (errors) {
         // const cannotContainIdeasError = get(errors, 'json.errors.base', []).some((item) => get(item, 'error') === 'cannot_contain_ideas');
-        const apiErrors = get(errors, 'json.errors', formatMessage(messages.saveErrorMessage));
+        const apiErrors = get(
+          errors,
+          'json.errors',
+          formatMessage(messages.saveErrorMessage)
+        );
         const submitState = 'error';
         this.setState({ apiErrors, submitState });
         this.processing$.next(false);
       }
     }
-  }
+  };
 
   deleteProject = async (event: FormEvent<any>) => {
     event.preventDefault();
@@ -613,7 +743,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
     const { project } = this.state;
     const { formatMessage } = this.props.intl;
 
-    if (project && window.confirm(formatMessage(messages.deleteProjectConfirmation))) {
+    if (
+      project &&
+      window.confirm(formatMessage(messages.deleteProjectConfirmation))
+    ) {
       try {
         this.setState({ processingDelete: true });
         await deleteProject(project.data.id);
@@ -621,11 +754,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       } catch {
         this.setState({
           processingDelete: false,
-          deleteError: formatMessage(messages.deleteProjectError)
+          deleteError: formatMessage(messages.deleteProjectError),
         });
       }
     }
-  }
+  };
 
   render() {
     const {
@@ -642,23 +775,42 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
       areaType,
       submitState,
       apiErrors,
-      processingDelete
+      processingDelete,
     } = this.state;
-    const { intl: { formatMessage } } = this.props;
+    const {
+      intl: { formatMessage },
+    } = this.props;
 
-    if (!get(this.props, 'params.projectId') || (get(this.props, 'params.projectId') && project !== undefined)) {
-      const projectAttrs = { ...(project ? project.data.attributes : {}), ...projectAttributesDiff } as IUpdatedProjectProperties;
-      const areaIds = projectAttrs.area_ids || (project && project.data.relationships.areas.data.map((area) => (area.id))) || [];
-      const areasValues = areaIds.filter((id) => {
-        return areasOptions.some(areaOption => areaOption.value === id);
-      }).map((id) => {
-        return areasOptions.find(areaOption => areaOption.value === id) as IOption;
-      });
+    if (
+      !get(this.props, 'params.projectId') ||
+      (get(this.props, 'params.projectId') && project !== undefined)
+    ) {
+      const projectAttrs = {
+        ...(project ? project.data.attributes : {}),
+        ...projectAttributesDiff,
+      } as IUpdatedProjectProperties;
+      const areaIds =
+        projectAttrs.area_ids ||
+        (project &&
+          project.data.relationships.areas.data.map((area) => area.id)) ||
+        [];
+      const areasValues = areaIds
+        .filter((id) => {
+          return areasOptions.some((areaOption) => areaOption.value === id);
+        })
+        .map((id) => {
+          return areasOptions.find(
+            (areaOption) => areaOption.value === id
+          ) as IOption;
+        });
 
       return (
-        <StyledForm className="e2e-project-general-form" onSubmit={this.onSubmit}>
+        <StyledForm
+          className="e2e-project-general-form"
+          onSubmit={this.onSubmit}
+        >
           <Section>
-            {get(this.props, 'params.projectId') &&
+            {get(this.props, 'params.projectId') && (
               <>
                 <SectionTitle>
                   <FormattedMessage {...messages.titleGeneral} />
@@ -667,12 +819,16 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   <FormattedMessage {...messages.subtitleGeneral} />
                 </SectionDescription>
               </>
-            }
+            )}
 
             <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.statusLabel} />
-                <IconTooltip content={<FormattedMessage {...messages.publicationStatusTooltip} />} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.publicationStatusTooltip} />
+                  }
+                />
               </SubSectionTitle>
               <Radio
                 onChange={this.handleStatusChange}
@@ -716,7 +872,10 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 onChange={this.handleTitleMultilocOnChange}
                 errorMultiloc={noTitleError}
               />
-              <Error fieldName="title_multiloc" apiErrors={this.state.apiErrors.title_multiloc} />
+              <Error
+                fieldName="title_multiloc"
+                apiErrors={this.state.apiErrors.title_multiloc}
+              />
             </StyledSectionField>
 
             <StyledSectionField>
@@ -724,9 +883,15 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 <>
                   <SubSectionTitle>
                     <FormattedMessage {...messages.projectTypeTitle} />
-                    <IconTooltip content={<FormattedMessage {...messages.projectTypeTooltip} />} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage {...messages.projectTypeTooltip} />
+                      }
+                    />
                   </SubSectionTitle>
-                  <StyledWarning text={<FormattedMessage {...messages.projectTypeWarning} />} />
+                  <StyledWarning
+                    text={<FormattedMessage {...messages.projectTypeWarning} />}
+                  />
                   <Radio
                     className="e2e-project-type-timeline"
                     onChange={this.handeProjectTypeOnChange}
@@ -747,18 +912,20 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   />
                 </>
               ) : (
-                  <>
-                    <SubSectionTitle>
-                      <FormattedMessage {...messages.projectTypeTitle} />
-                    </SubSectionTitle>
-                    <ProjectType>{<FormattedMessage {...messages[projectType]} />}</ProjectType>
-                  </>
-                )}
+                <>
+                  <SubSectionTitle>
+                    <FormattedMessage {...messages.projectTypeTitle} />
+                  </SubSectionTitle>
+                  <ProjectType>
+                    {<FormattedMessage {...messages[projectType]} />}
+                  </ProjectType>
+                </>
+              )}
 
-              {!project &&
+              {!project && (
                 <CSSTransition
                   classNames="participationcontext"
-                  in={(projectType === 'continuous')}
+                  in={projectType === 'continuous'}
                   timeout={timeout}
                   mountOnEnter={true}
                   unmountOnExit={true}
@@ -773,17 +940,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                     />
                   </ParticipationContextWrapper>
                 </CSSTransition>
-              }
+              )}
             </StyledSectionField>
 
-            {project && projectType === 'continuous' &&
+            {project && projectType === 'continuous' && (
               <ParticipationContext
                 projectId={project.data.id}
                 onSubmit={this.handleParcticipationContextOnSubmit}
                 onChange={this.handleParticipationContextOnChange}
                 apiErrors={apiErrors}
               />
-            }
+            )}
 
             <StyledSectionField>
               <SubSectionTitle>
@@ -795,9 +962,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                       values={{
                         areasLabelTooltipLink: (
                           <Link to="/admin/settings/areas">
-                            <FormattedMessage {...messages.areasLabelTooltipLinkText} />
+                            <FormattedMessage
+                              {...messages.areasLabelTooltipLinkText}
+                            />
                           </Link>
-                        )
+                        ),
                       }}
                     />
                   }
@@ -821,7 +990,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                 label={<FormattedMessage {...messages.areasSelectionLabel} />}
               />
 
-              {areaType === 'selection' &&
+              {areaType === 'selection' && (
                 <StyledMultipleSelect
                   id="e2e-area-selector"
                   options={areasOptions}
@@ -830,7 +999,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   placeholder=""
                   disabled={areaType !== 'selection'}
                 />
-              }
+              )}
             </StyledSectionField>
 
             <StyledSectionField>
@@ -843,10 +1012,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                       values={{
                         imageSupportArticleLink: (
                           // tslint:disable-next-line:react-a11y-anchors
-                          <a target="_blank" href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}>
-                            <FormattedMessage {...messages.imageSupportArticleLinkText} />
+                          <a
+                            target="_blank"
+                            href={this.props.intl.formatMessage(
+                              messages.imageSupportArticleLinkTarget
+                            )}
+                          >
+                            <FormattedMessage
+                              {...messages.imageSupportArticleLinkText}
+                            />
                           </a>
-                        )
+                        ),
                       }}
                     />
                   }
@@ -874,10 +1050,17 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                       values={{
                         imageSupportArticleLink: (
                           // tslint:disable-next-line:react-a11y-anchors
-                          <a target="_blank" href={this.props.intl.formatMessage(messages.imageSupportArticleLinkTarget)}>
-                            <FormattedMessage {...messages.imageSupportArticleLinkText} />
+                          <a
+                            target="_blank"
+                            href={this.props.intl.formatMessage(
+                              messages.imageSupportArticleLinkTarget
+                            )}
+                          >
+                            <FormattedMessage
+                              {...messages.imageSupportArticleLinkText}
+                            />
                           </a>
-                        )
+                        ),
                       }}
                     />
                   }
@@ -898,7 +1081,11 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
             <StyledSectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.fileUploadLabel} />
-                <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
+                <IconTooltip
+                  content={
+                    <FormattedMessage {...messages.fileUploadLabelTooltip} />
+                  }
+                />
               </SubSectionTitle>
               <StyledFileUploader
                 onFileAdd={this.handleProjectFileOnAdd}
@@ -908,12 +1095,18 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
               />
             </StyledSectionField>
 
-            {project &&
+            {project && (
               <HasPermission item={project.data} action="delete">
                 <DeleteProjectSectionField>
                   <SubSectionTitle>
                     <FormattedMessage {...messages.deleteProjectLabel} />
-                    <IconTooltip content={<FormattedMessage {...messages.deleteProjectLabelTooltip} />} />
+                    <IconTooltip
+                      content={
+                        <FormattedMessage
+                          {...messages.deleteProjectLabelTooltip}
+                        />
+                      }
+                    />
                   </SubSectionTitle>
                   <ButtonWrapper>
                     <Button
@@ -929,7 +1122,7 @@ class AdminProjectEditGeneral extends PureComponent<Props & InjectedIntlProps, S
                   <Error text={this.state.deleteError} />
                 </DeleteProjectSectionField>
               </HasPermission>
-            }
+            )}
 
             <SubmitWrapper
               loading={processing}

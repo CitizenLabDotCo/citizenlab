@@ -8,7 +8,9 @@ import Summary from './summary';
 
 // resource
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // permissions
 import { isAdmin, isProjectModerator } from 'services/permissions/roles';
@@ -154,7 +156,9 @@ export const GraphCardHeader = styled.div`
 
 export const PieChartStyleFixesDiv = styled.div`
   overflow: hidden;
-  .recharts-surface, .recharts-wrapper, .recharts-responsive-container {
+  .recharts-surface,
+  .recharts-wrapper,
+  .recharts-responsive-container {
     height: 195px !important;
     min-width: 190px;
     overflow: visible;
@@ -184,7 +188,7 @@ export const GraphCardFigureContainer = styled.div`
 
 export const GraphCardFigure = styled.span`
   margin-right: 5px;
-  font-weight: 600  ;
+  font-weight: 600;
 `;
 
 export const GraphCardFigureChange = styled.span`
@@ -219,72 +223,86 @@ export const chartTheme = (theme) => {
     chartFill: colors.clIconAccent,
     barFill: colors.adminContentBackground,
     chartLabelColor: colors.adminSecondaryTextColor,
-    barHoverColor: rgba(colors.clIconAccent, .25),
+    barHoverColor: rgba(colors.clIconAccent, 0.25),
     chartLabelSize: 13,
     animationBegin: 50,
-    animationDuration: 500
+    animationDuration: 500,
   };
 };
 
-export const DashboardsPage = memo(({
-  insightsEnabled,
-  geographicDashboardEnabled,
-  authUser,
-  children,
-  intl: { formatMessage }
-}: Props & InjectedIntlProps) => {
-  const staticTabs = [
-    { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
-    { label: formatMessage(messages.tabUsers), url: '/admin/dashboard/users' },
-  ];
-
-  const resource = {
-    title: formatMessage(messages.titleDashboard),
-    subtitle: formatMessage(messages.subtitleDashboard)
-  };
-
-  const tabs = useCallback(() => {
-    return [
-      ...staticTabs,
-      ...(insightsEnabled ? [{ label: formatMessage(messages.tabInsights), url: '/admin/dashboard/insights' }] : []),
-      ...(geographicDashboardEnabled ? [{ label: formatMessage(messages.tabMap), url: '/admin/dashboard/map' }] : [])
+export const DashboardsPage = memo(
+  ({
+    insightsEnabled,
+    geographicDashboardEnabled,
+    authUser,
+    children,
+    intl: { formatMessage },
+  }: Props & InjectedIntlProps) => {
+    const staticTabs = [
+      { label: formatMessage(messages.tabSummary), url: '/admin/dashboard' },
+      {
+        label: formatMessage(messages.tabUsers),
+        url: '/admin/dashboard/users',
+      },
     ];
-  }, [insightsEnabled, geographicDashboardEnabled])();
 
-  if (authUser) {
-    if (isAdmin({ data: authUser })) {
-      return (
-        <TabbedResource
-          resource={resource}
-          tabs={tabs}
-        >
-          <HelmetIntl
-            title={messages.helmetTitle}
-            description={messages.helmetDescription}
-          />
-          {children}
-        </TabbedResource>
-      );
-    } else if (isProjectModerator({ data: authUser })) {
-      return (
-        <Summary onlyModerator />
-      );
+    const resource = {
+      title: formatMessage(messages.titleDashboard),
+      subtitle: formatMessage(messages.subtitleDashboard),
+    };
+
+    const tabs = useCallback(() => {
+      return [
+        ...staticTabs,
+        ...(insightsEnabled
+          ? [
+              {
+                label: formatMessage(messages.tabInsights),
+                url: '/admin/dashboard/insights',
+              },
+            ]
+          : []),
+        ...(geographicDashboardEnabled
+          ? [
+              {
+                label: formatMessage(messages.tabMap),
+                url: '/admin/dashboard/map',
+              },
+            ]
+          : []),
+      ];
+    }, [insightsEnabled, geographicDashboardEnabled])();
+
+    if (authUser) {
+      if (isAdmin({ data: authUser })) {
+        return (
+          <TabbedResource resource={resource} tabs={tabs}>
+            <HelmetIntl
+              title={messages.helmetTitle}
+              description={messages.helmetDescription}
+            />
+            {children}
+          </TabbedResource>
+        );
+      } else if (isProjectModerator({ data: authUser })) {
+        return <Summary onlyModerator />;
+      }
     }
-  }
 
-  return null;
-});
+    return null;
+  }
+);
 
 const DashboardsPageWithHoC = injectIntl(DashboardsPage);
 
 const Data = adopt({
   authUser: <GetAuthUser />,
   insightsEnabled: <GetFeatureFlag name="clustering" />,
-  geographicDashboardEnabled: <GetFeatureFlag name="geographic_dashboard" />
+  geographicDashboardEnabled: <GetFeatureFlag name="geographic_dashboard" />,
 });
 
 export default (props) => (
   <Data {...props}>
-    {dataProps => <DashboardsPageWithHoC {...dataProps} {...props} />}
+    {(dataProps) => <DashboardsPageWithHoC {...dataProps} {...props} />}
   </Data>
 );

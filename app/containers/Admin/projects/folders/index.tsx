@@ -19,7 +19,9 @@ import injectLocalize, { InjectedLocalized } from 'utils/localize';
 import messages from './messages';
 
 // Resources
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProjectFolder, {
+  GetProjectFolderChildProps,
+} from 'resources/GetProjectFolder';
 
 // style
 import styled from 'styled-components';
@@ -34,27 +36,37 @@ const TopContainer = styled.div`
   position: relative;
 `;
 
-export interface InputProps { }
+export interface InputProps {}
 
 interface DataProps {
   projectFolder: GetProjectFolderChildProps;
 }
 
-interface State { }
+interface State {}
 
-export interface Props extends InputProps, DataProps { }
+export interface Props extends InputProps, DataProps {}
 
-export class AdminProjectFolderEdition extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
+export class AdminProjectFolderEdition extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  State
+> {
   goBack = () => {
     clHistory.push('/admin/projects');
-  }
+  };
 
   render() {
     const { projectFolderId } = this.props.params;
-    const { intl: { formatMessage }, localize, projectFolder, children } = this.props;
+    const {
+      intl: { formatMessage },
+      localize,
+      projectFolder,
+      children,
+    } = this.props;
     const tabbedProps = {
       resource: {
-        title: !isNilOrError(projectFolder) ? localize(projectFolder.attributes.title_multiloc) : '',
+        title: !isNilOrError(projectFolder)
+          ? localize(projectFolder.attributes.title_multiloc)
+          : '',
       },
       tabs: [
         {
@@ -64,15 +76,15 @@ export class AdminProjectFolderEdition extends PureComponent<Props & InjectedInt
         {
           label: formatMessage(messages.projectFolderSettingsTab),
           url: `/admin/projects/folders/${projectFolderId}/settings`,
-        }
-      ]
+        },
+      ],
     };
 
     return (
       <>
         <TopContainer>
           <GoBackButton onClick={this.goBack} />
-          {!isNilOrError(projectFolder) &&
+          {!isNilOrError(projectFolder) && (
             <Button
               buttonStyle="cl-blue"
               icon="eye"
@@ -81,24 +93,30 @@ export class AdminProjectFolderEdition extends PureComponent<Props & InjectedInt
             >
               <FormattedMessage {...messages.viewPublicProjectFolder} />
             </Button>
-          }
+          )}
         </TopContainer>
-        <TabbedResource {...tabbedProps}>
-          {children}
-        </TabbedResource>
+        <TabbedResource {...tabbedProps}>{children}</TabbedResource>
       </>
     );
   }
 }
 
-const AdminProjectFolderEditionWithHoCs = withRouter(injectIntl<Props & WithRouterProps>(injectLocalize(AdminProjectFolderEdition)));
+const AdminProjectFolderEditionWithHoCs = withRouter(
+  injectIntl<Props & WithRouterProps>(injectLocalize(AdminProjectFolderEdition))
+);
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
+  projectFolder: ({ params, render }) => (
+    <GetProjectFolder projectFolderId={params.projectFolderId}>
+      {render}
+    </GetProjectFolder>
+  ),
 });
 
 export default (inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <AdminProjectFolderEditionWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <AdminProjectFolderEditionWithHoCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

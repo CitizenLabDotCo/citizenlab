@@ -45,7 +45,7 @@ const StyledSection = styled(Section)`
   background: #fff;
 `;
 
-export interface Props { }
+export interface Props {}
 
 export interface FormValues {
   width: number;
@@ -73,8 +73,13 @@ interface State {
   openedCollapse: 'dimensions' | 'ideas' | 'style' | 'headerAndFooter' | null;
 }
 
-class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlProps & InjectedLocalized, FormValues>, State> {
-
+class WidgetForm extends PureComponent<
+  InjectedFormikProps<
+    Props & InjectedIntlProps & InjectedLocalized,
+    FormValues
+  >,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,28 +88,31 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
   }
 
   resourcesToOptionList = (resources) => {
-    return resources && resources.map((resource) => ({
-      label: this.props.localize(resource.attributes.title_multiloc),
-      value: resource.id,
-    }));
-  }
+    return (
+      resources &&
+      resources.map((resource) => ({
+        label: this.props.localize(resource.attributes.title_multiloc),
+        value: resource.id,
+      }))
+    );
+  };
 
   sortOptions = () => {
     return [
       {
         value: 'trending',
-        label: this.props.intl.formatMessage(messages.sortTrending)
+        label: this.props.intl.formatMessage(messages.sortTrending),
       },
       {
         value: 'popular',
-        label: this.props.intl.formatMessage(messages.sortPopular)
+        label: this.props.intl.formatMessage(messages.sortPopular),
       },
       {
         value: 'new',
-        label: this.props.intl.formatMessage(messages.sortNewest)
+        label: this.props.intl.formatMessage(messages.sortNewest),
       },
     ];
-  }
+  };
 
   relativeLinkOptions = (projects?: IProjectData[] | null) => {
     return [
@@ -112,22 +120,24 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
         value: '/',
         label: this.props.intl.formatMessage(messages.homepage),
       },
-      ...(!projects ? [] : projects.map((project) => ({
-        value: `/projects/${project.attributes.slug}`,
-        label: this.props.localize(project.attributes.title_multiloc),
-      })))
+      ...(!projects
+        ? []
+        : projects.map((project) => ({
+            value: `/projects/${project.attributes.slug}`,
+            label: this.props.localize(project.attributes.title_multiloc),
+          }))),
     ];
-  }
+  };
 
   handleCollapseToggle = (collapse) => () => {
     this.setState({
       openedCollapse: this.state.openedCollapse === collapse ? null : collapse,
     });
-  }
+  };
 
   handleSubmit = () => {
     this.props.handleSubmit();
-  }
+  };
 
   render() {
     const { errors, touched, values } = this.props;
@@ -135,61 +145,48 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
 
     return (
       <Form>
-
         <StyledCollapse
           opened={openedCollapse === 'dimensions'}
           onToggle={this.handleCollapseToggle('dimensions')}
           label={<FormattedMessage {...messages.titleDimensions} />}
         >
           <StyledSection>
-
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldWidth} />
               </Label>
-                <Field
-                  name="width"
-                  component={FormikInput}
-                  type="number"
-                />
-              {touched.width && <ErrorxBox
-                fieldName="width"
-                apiErrors={errors.width as any}
-              />}
+              <Field name="width" component={FormikInput} type="number" />
+              {touched.width && (
+                <ErrorxBox fieldName="width" apiErrors={errors.width as any} />
+              )}
             </SectionField>
 
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldHeight} />
               </Label>
-              <Field
-                name="height"
-                component={FormikInput}
-                type="number"
-              />
-              {touched.height && <ErrorxBox
-                fieldName="height"
-                apiErrors={errors.height as any}
-              />}
+              <Field name="height" component={FormikInput} type="number" />
+              {touched.height && (
+                <ErrorxBox
+                  fieldName="height"
+                  apiErrors={errors.height as any}
+                />
+              )}
             </SectionField>
 
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldFontSize} />
               </Label>
-              <Field
-                name="fontSize"
-                component={FormikInput}
-                type="number"
-              />
-              {touched.fontSize && <ErrorxBox
-                fieldName="fontSize"
-                apiErrors={errors.fontSize as any}
-              />}
+              <Field name="fontSize" component={FormikInput} type="number" />
+              {touched.fontSize && (
+                <ErrorxBox
+                  fieldName="fontSize"
+                  apiErrors={errors.fontSize as any}
+                />
+              )}
             </SectionField>
-
           </StyledSection>
-
         </StyledCollapse>
 
         <StyledCollapse
@@ -202,72 +199,70 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
               <Label>
                 <FormattedMessage {...messages.fieldSiteBackgroundColor} />
               </Label>
-              <Field
-                name="siteBgColor"
-                component={FormikColorPickerInput}
-              />
-              {touched.siteBgColor && <ErrorxBox
-                fieldName="siteBgColor"
-                apiErrors={errors.siteBgColor as any}
-              />}
+              <Field name="siteBgColor" component={FormikColorPickerInput} />
+              {touched.siteBgColor && (
+                <ErrorxBox
+                  fieldName="siteBgColor"
+                  apiErrors={errors.siteBgColor as any}
+                />
+              )}
             </SectionField>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldBackgroundColor} />
               </Label>
-              <Field
-                name="bgColor"
-                component={FormikColorPickerInput}
-              />
-              {touched.bgColor && <ErrorxBox
-                fieldName="bgColor"
-                apiErrors={errors.bgColor as any}
-              />}
+              <Field name="bgColor" component={FormikColorPickerInput} />
+              {touched.bgColor && (
+                <ErrorxBox
+                  fieldName="bgColor"
+                  apiErrors={errors.bgColor as any}
+                />
+              )}
             </SectionField>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldTextColor} />
               </Label>
-              <Field
-                name="textColor"
-                component={FormikColorPickerInput}
-              />
-              {touched.textColor && <ErrorxBox
-                fieldName="textColor"
-                apiErrors={errors.textColor as any}
-              />}
+              <Field name="textColor" component={FormikColorPickerInput} />
+              {touched.textColor && (
+                <ErrorxBox
+                  fieldName="textColor"
+                  apiErrors={errors.textColor as any}
+                />
+              )}
             </SectionField>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldAccentColor} />
               </Label>
-              <Field
-                name="accentColor"
-                component={FormikColorPickerInput}
-              />
-              {touched.accentColor && <ErrorxBox
-                fieldName="accentColor"
-                apiErrors={errors.accentColor as any}
-              />}
+              <Field name="accentColor" component={FormikColorPickerInput} />
+              {touched.accentColor && (
+                <ErrorxBox
+                  fieldName="accentColor"
+                  apiErrors={errors.accentColor as any}
+                />
+              )}
             </SectionField>
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldFont} />
               </Label>
-              <Field
-                name="font"
-                component={FormikInput}
-              />
+              <Field name="font" component={FormikInput} />
               <p>
                 <FormattedMessage
                   {...messages.fieldFontDescription}
-                  values={{ googleFontsLink: <a href="https://fonts.google.com" target="_blank">Google Fonts</a> }}
+                  values={{
+                    googleFontsLink: (
+                      <a href="https://fonts.google.com" target="_blank">
+                        Google Fonts
+                      </a>
+                    ),
+                  }}
                 />
               </p>
-              {touched.font && <ErrorxBox
-                fieldName="font"
-                apiErrors={errors.font as any}
-              />}
+              {touched.font && (
+                <ErrorxBox fieldName="font" apiErrors={errors.font as any} />
+              )}
             </SectionField>
           </StyledSection>
         </StyledCollapse>
@@ -279,26 +274,31 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
         >
           <>
             <StyledSection>
-
               <SectionField>
                 <Label>
                   <FormattedMessage {...messages.fieldRelativeLink} />
                 </Label>
                 <GetProjects publicationStatuses={['published', 'archived']}>
-                  {(projects) => (projects && isNilOrError(projects)) ? null : (
-                    <Field
-                      name="relativeLink"
-                      component={FormikSelect}
-                      options={this.relativeLinkOptions(projects.projectsList)}
-                      clearable={false}
-                      disabled={!values.showHeader && !values.showFooter}
-                    />
-                  )}
+                  {(projects) =>
+                    projects && isNilOrError(projects) ? null : (
+                      <Field
+                        name="relativeLink"
+                        component={FormikSelect}
+                        options={this.relativeLinkOptions(
+                          projects.projectsList
+                        )}
+                        clearable={false}
+                        disabled={!values.showHeader && !values.showFooter}
+                      />
+                    )
+                  }
                 </GetProjects>
-                {touched.relativeLink && <ErrorxBox
-                  fieldName="relativeLink"
-                  apiErrors={errors.relativeLink as any}
-                />}
+                {touched.relativeLink && (
+                  <ErrorxBox
+                    fieldName="relativeLink"
+                    apiErrors={errors.relativeLink as any}
+                  />
+                )}
               </SectionField>
 
               <SectionField>
@@ -307,13 +307,15 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
                   component={FormikToggle}
                   label={<FormattedMessage {...messages.fieldShowHeader} />}
                 />
-                {touched.showHeader && <ErrorxBox
-                  fieldName="showHeader"
-                  apiErrors={errors.showHeader as any}
-                />}
+                {touched.showHeader && (
+                  <ErrorxBox
+                    fieldName="showHeader"
+                    apiErrors={errors.showHeader as any}
+                  />
+                )}
               </SectionField>
 
-              {values.showHeader &&
+              {values.showHeader && (
                 <SubSection>
                   <SectionField>
                     <Field
@@ -321,10 +323,12 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
                       component={FormikToggle}
                       label={<FormattedMessage {...messages.fieldShowLogo} />}
                     />
-                    {touched.showLogo && <ErrorxBox
-                      fieldName="showLogo"
-                      apiErrors={errors.showLogo as any}
-                    />}
+                    {touched.showLogo && (
+                      <ErrorxBox
+                        fieldName="showLogo"
+                        apiErrors={errors.showLogo as any}
+                      />
+                    )}
                   </SectionField>
                   <SectionField>
                     <Label>
@@ -335,28 +339,31 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
                       component={FormikInput}
                       type="text"
                     />
-                    {touched.headerText && <ErrorxBox
-                      fieldName="headerText"
-                      apiErrors={errors.headerText as any}
-                    />}
+                    {touched.headerText && (
+                      <ErrorxBox
+                        fieldName="headerText"
+                        apiErrors={errors.headerText as any}
+                      />
+                    )}
                   </SectionField>
-                <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.fieldHeaderSubText} />
-                  </Label>
-                  <Field
-                    name="headerSubText"
-                    component={FormikInput}
-                    type="text"
-                  />
-                  {touched.headerSubText && <ErrorxBox
-                    fieldName="headerSubText"
-                    apiErrors={errors.headerSubText as any}
-                  />}
-                </SectionField>
+                  <SectionField>
+                    <Label>
+                      <FormattedMessage {...messages.fieldHeaderSubText} />
+                    </Label>
+                    <Field
+                      name="headerSubText"
+                      component={FormikInput}
+                      type="text"
+                    />
+                    {touched.headerSubText && (
+                      <ErrorxBox
+                        fieldName="headerSubText"
+                        apiErrors={errors.headerSubText as any}
+                      />
+                    )}
+                  </SectionField>
                 </SubSection>
-              }
-
+              )}
             </StyledSection>
 
             <StyledSection>
@@ -366,13 +373,15 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
                   component={FormikToggle}
                   label={<FormattedMessage {...messages.fieldShowFooter} />}
                 />
-                {touched.showFooter && <ErrorxBox
-                  fieldName="showFooter"
-                  apiErrors={errors.showFooter as any}
-                />}
+                {touched.showFooter && (
+                  <ErrorxBox
+                    fieldName="showFooter"
+                    apiErrors={errors.showFooter as any}
+                  />
+                )}
               </SectionField>
 
-              {values.showFooter &&
+              {values.showFooter && (
                 <SubSection>
                   <SectionField>
                     <Label>
@@ -383,16 +392,17 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
                       component={FormikInput}
                       type="text"
                     />
-                    {touched.buttonText && <ErrorxBox
-                      fieldName="buttonText"
-                      apiErrors={errors.buttonText as any}
-                    />}
+                    {touched.buttonText && (
+                      <ErrorxBox
+                        fieldName="buttonText"
+                        apiErrors={errors.buttonText as any}
+                      />
+                    )}
                   </SectionField>
                 </SubSection>
-              }
+              )}
             </StyledSection>
           </>
-
         </StyledCollapse>
 
         <StyledCollapse
@@ -401,19 +411,22 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
           label={<FormattedMessage {...messages.titleIdeaContent} />}
         >
           <StyledSection>
-
             <SectionField>
               <Label>
                 <FormattedMessage {...messages.fieldProjects} />
               </Label>
               <GetProjects publicationStatuses={['published', 'archived']}>
-                {(projects) => (projects && isNilOrError(projects)) ? null : (
-                  <Field
-                    name="projects"
-                    component={FormikMultipleSelect}
-                    options={this.resourcesToOptionList(projects.projectsList)}
-                  />
-                )}
+                {(projects) =>
+                  projects && isNilOrError(projects) ? null : (
+                    <Field
+                      name="projects"
+                      component={FormikMultipleSelect}
+                      options={this.resourcesToOptionList(
+                        projects.projectsList
+                      )}
+                    />
+                  )
+                }
               </GetProjects>
             </SectionField>
 
@@ -422,13 +435,15 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
                 <FormattedMessage {...messages.fieldTopics} />
               </Label>
               <GetTopics>
-                {(topics) => (topics && isNilOrError(topics)) ? null : (
-                  <Field
-                    name="topics"
-                    component={FormikMultipleSelect}
-                    options={this.resourcesToOptionList(topics)}
-                  />
-                )}
+                {(topics) =>
+                  topics && isNilOrError(topics) ? null : (
+                    <Field
+                      name="topics"
+                      component={FormikMultipleSelect}
+                      options={this.resourcesToOptionList(topics)}
+                    />
+                  )
+                }
               </GetTopics>
             </SectionField>
 
@@ -448,21 +463,13 @@ class WidgetForm extends PureComponent<InjectedFormikProps<Props & InjectedIntlP
               <Label>
                 <FormattedMessage {...messages.fieldLimit} />
               </Label>
-              <Field
-                name="limit"
-                component={FormikInput}
-                type="number"
-              />
-              {touched.limit && <ErrorxBox
-                fieldName="limit"
-                apiErrors={errors.limit as any}
-              />}
+              <Field name="limit" component={FormikInput} type="number" />
+              {touched.limit && (
+                <ErrorxBox fieldName="limit" apiErrors={errors.limit as any} />
+              )}
             </SectionField>
-
           </StyledSection>
-
         </StyledCollapse>
-
       </Form>
     );
   }

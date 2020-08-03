@@ -24,23 +24,27 @@ interface Props {
   className?: string;
 }
 
-const InitialUnsubscribeFeedback = memo<Props>(({ status, unsubscribedCampaignMultiloc, className }) => {
-  return (
-    <FormSection className={className || ''}>
-      <Message status={status} aria-live="polite">
-        {status === 'success' && unsubscribedCampaignMultiloc ? (
-          <FormattedMessage
-            {...messages.initialUnsubscribeSuccess}
-            values={{ campaignTitle: <T value={unsubscribedCampaignMultiloc} /> }}
-          />
-        ) : status === 'error' ? (
-          <FormattedMessage {...messages.initialUnsubscribeError} />
-        ) : status === 'loading' ? (
-          <FormattedMessage {...messages.initialUnsubscribeLoading} />
-        ) : null}
-      </Message>
-    </FormSection>
-  );
-});
+const InitialUnsubscribeFeedback = memo<Props>(
+  ({ status, unsubscribedCampaignMultiloc, className }) => {
+    return (
+      <FormSection className={className || ''}>
+        <Message status={status} aria-live="polite">
+          {status === 'success' && unsubscribedCampaignMultiloc ? (
+            <FormattedMessage
+              {...messages.initialUnsubscribeSuccess}
+              values={{
+                campaignTitle: <T value={unsubscribedCampaignMultiloc} />,
+              }}
+            />
+          ) : status === 'error' ? (
+            <FormattedMessage {...messages.initialUnsubscribeError} />
+          ) : status === 'loading' ? (
+            <FormattedMessage {...messages.initialUnsubscribeLoading} />
+          ) : null}
+        </Message>
+      </FormSection>
+    );
+  }
+);
 
 export default InitialUnsubscribeFeedback;

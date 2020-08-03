@@ -104,7 +104,10 @@ interface State {
   errorMessage: string | null;
 }
 
-class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> {
+class ParentCommentForm extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -125,9 +128,9 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     this.setState({
       inputValue,
       focused: true,
-      errorMessage: null
+      errorMessage: null,
     });
-  }
+  };
 
   onFocus = () => {
     const { postId, postType } = this.props;
@@ -135,16 +138,16 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     trackEventByName(tracks.focusParentCommentEditor, {
       extra: {
         postId,
-        postType
-      }
+        postType,
+      },
     });
 
     this.setState({ focused: true });
-  }
+  };
 
   onBlur = () => {
     this.setState({ focused: false });
-  }
+  };
 
   onSubmit = async (event: MouseEvent<any>) => {
     event.preventDefault();
@@ -152,36 +155,49 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
     const { locale, authUser, postId, postType, post } = this.props;
     const { formatMessage } = this.props.intl;
     const { inputValue } = this.state;
-    const projectId: string | null = get(post, 'relationships.project.data.id', null);
+    const projectId: string | null = get(
+      post,
+      'relationships.project.data.id',
+      null
+    );
 
     this.setState({
       focused: false,
       processing: true,
-      errorMessage: null
+      errorMessage: null,
     });
 
     if (locale && authUser && isString(inputValue) && trim(inputValue) !== '') {
       const commentBodyMultiloc = {
-        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2')
+        [locale]: inputValue.replace(/\@\[(.*?)\]\((.*?)\)/gi, '@$2'),
       };
 
       trackEventByName(tracks.clickParentCommentPublish, {
         extra: {
           postId,
           postType,
-          content: inputValue
-        }
+          content: inputValue,
+        },
       });
 
       try {
         this.setState({ processing: true });
 
         if (postType === 'idea' && projectId) {
-          await addCommentToIdea(postId, projectId, authUser.id, commentBodyMultiloc);
+          await addCommentToIdea(
+            postId,
+            projectId,
+            authUser.id,
+            commentBodyMultiloc
+          );
         }
 
         if (postType === 'initiative') {
-          await addCommentToInitiative(postId, authUser.id, commentBodyMultiloc);
+          await addCommentToInitiative(
+            postId,
+            authUser.id,
+            commentBodyMultiloc
+          );
         }
 
         commentAdded();
@@ -196,22 +212,42 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
       const errorMessage = formatMessage(messages.emptyCommentError);
       this.setState({ errorMessage, processing: false });
     }
-  }
+  };
 
   render() {
-    const { authUser, post, postId, postType, className, intl: { formatMessage } } = this.props;
+    const {
+      authUser,
+      post,
+      postId,
+      postType,
+      className,
+      intl: { formatMessage },
+    } = this.props;
     const { inputValue, focused, processing, errorMessage } = this.state;
-    const commentingEnabled =  get(post, 'attributes.action_descriptor.commenting.enabled', true);
-    const projectId: string | null = get(post, 'relationships.project.data.id', null);
-    const commentButtonDisabled = (!inputValue || inputValue === '');
-    const isModerator = !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
-    const canComment = (authUser && commentingEnabled);
-    const placeholder = formatMessage(messages[`${postType}CommentBodyPlaceholder`]);
+    const commentingEnabled = get(
+      post,
+      'attributes.action_descriptor.commenting.enabled',
+      true
+    );
+    const projectId: string | null = get(
+      post,
+      'relationships.project.data.id',
+      null
+    );
+    const commentButtonDisabled = !inputValue || inputValue === '';
+    const isModerator =
+      !isNilOrError(authUser) && canModerate(projectId, { data: authUser });
+    const canComment = authUser && commentingEnabled;
+    const placeholder = formatMessage(
+      messages[`${postType}CommentBodyPlaceholder`]
+    );
 
     return (
       <Container className={className}>
-        {(authUser && canComment) &&
-          <CommentContainer className={`ideaCommentForm ${focused ? 'focused' : ''}`}>
+        {authUser && canComment && (
+          <CommentContainer
+            className={`ideaCommentForm ${focused ? 'focused' : ''}`}
+          >
             <AuthorWrapper>
               <StyledAuthor
                 authorId={authUser.id}
@@ -260,7 +296,7 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
               </label>
             </Form>
           </CommentContainer>
-        }
+        )}
       </Container>
     );
   }
@@ -269,13 +305,19 @@ class ParentCommentForm extends PureComponent<Props & InjectedIntlProps, State> 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   authUser: <GetAuthUser />,
-  post: ({ postId, postType, render }) => <GetPost id={postId} type={postType}>{render}</GetPost>
+  post: ({ postId, postType, render }) => (
+    <GetPost id={postId} type={postType}>
+      {render}
+    </GetPost>
+  ),
 });
 
 const ParentCommentFormWithHoCs = injectIntl<Props>(ParentCommentForm);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ParentCommentFormWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <ParentCommentFormWithHoCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

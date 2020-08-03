@@ -80,12 +80,14 @@ const Title = styled.h2`
   }
 `;
 
-const TitleIcon = styled(Icon) <({ viewMode: 'row' | 'column' }) >`
+const TitleIcon = styled(Icon)<{ viewMode: 'row' | 'column' }>`
   flex: 0 0 18px;
   height: 18px;
   margin-right: 10px;
 
-  ${({ viewMode }) => viewMode === 'column' && `
+  ${({ viewMode }) =>
+    viewMode === 'column' &&
+    `
     display: none;
   `}
 `;
@@ -120,15 +122,23 @@ const BudgetAmount = styled.span`
   }
 `;
 
-const ProgressBar = styled.div<({ viewMode: 'row' | 'column' }) >`
+const ProgressBar = styled.div<{ viewMode: 'row' | 'column' }>`
   width: 100%;
   height: 30px;
   border-radius: ${(props: any) => props.theme.borderRadius};
   margin-top: 30px;
   margin-bottom: 30px;
-  background: repeating-linear-gradient(-45deg, #eff1f2, #eff1f2 10px, #e6e9ec 10px, #e6e9ec 20px);
+  background: repeating-linear-gradient(
+    -45deg,
+    #eff1f2,
+    #eff1f2 10px,
+    #e6e9ec 10px,
+    #e6e9ec 20px
+  );
 
-  ${({ viewMode }) => viewMode === 'column' && `
+  ${({ viewMode }) =>
+    viewMode === 'column' &&
+    `
     margin-top: 20px;
     margin-bottom: 20px;
   `}
@@ -163,14 +173,18 @@ const ProgressBarPercentage = styled.span`
   }
 `;
 
-const Footer = styled.div<({ viewMode: 'row' | 'column' }) >`
+const Footer = styled.div<{ viewMode: 'row' | 'column' }>`
   display: flex;
 
-  ${({ viewMode }) => viewMode === 'row' && `
+  ${({ viewMode }) =>
+    viewMode === 'row' &&
+    `
     align-items: center;
   `}
 
-  ${({ viewMode }) => viewMode === 'column' && `
+  ${({ viewMode }) =>
+    viewMode === 'column' &&
+    `
     flex-direction: column;
   `}
 `;
@@ -188,10 +202,12 @@ const TotalBudgetColumn = styled(Budget)`
   margin-top: 10px;
 `;
 
-const Buttons = styled.div<({ viewMode: 'row' | 'column' }) >`
+const Buttons = styled.div<{ viewMode: 'row' | 'column' }>`
   display: flex;
 
-  ${({ viewMode }) => viewMode === 'column' && `
+  ${({ viewMode }) =>
+    viewMode === 'column' &&
+    `
     margin-top: 20px;
     flex-direction: column;
   `}
@@ -214,10 +230,12 @@ const DropdownWrapper = styled.div`
   justify-content: center;
 `;
 
-const SubmitExpensesButton = styled(Button) <({ viewMode: 'row' | 'column' }) >`
+const SubmitExpensesButton = styled(Button)<{ viewMode: 'row' | 'column' }>`
   margin-left: 10px;
 
-  ${({ viewMode }) => viewMode === 'column' && `
+  ${({ viewMode }) =>
+    viewMode === 'column' &&
+    `
     margin-left: 0px;
     margin-top: 12px;
   `}
@@ -245,19 +263,22 @@ interface Tracks {
   expensesDropdownOpened: () => void;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   dropdownOpened: boolean;
   processing: boolean;
 }
 
-class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State> {
+class PBExpenses extends PureComponent<
+  Props & InjectedIntlProps & Tracks,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
       dropdownOpened: false,
-      processing: false
+      processing: false,
     };
   }
 
@@ -269,7 +290,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
 
       return { dropdownOpened: !dropdownOpened };
     });
-  }
+  };
 
   handleSubmitExpensesOnClick = async () => {
     const { basket } = this.props;
@@ -281,7 +302,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
       this.props.basketSubmitted();
       this.setState({ processing: false });
     }
-  }
+  };
 
   render() {
     const {
@@ -294,24 +315,32 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
       basket,
       className,
       viewMode,
-      intl: { formatMessage }
+      intl: { formatMessage },
     } = this.props;
     const { processing, dropdownOpened } = this.state;
 
-    if (!isNilOrError(locale) &&
+    if (
+      !isNilOrError(locale) &&
       !isNilOrError(tenant) &&
-      (
-        (participationContextType === 'project' && !isNilOrError(project)) ||
-        (participationContextType === 'phase' && !isNilOrError(phase))
-      )
+      ((participationContextType === 'project' && !isNilOrError(project)) ||
+        (participationContextType === 'phase' && !isNilOrError(phase)))
     ) {
       const currency = tenant.attributes.settings.core.currency;
-      const spentBudget = (!isNilOrError(basket) ? basket.attributes.total_budget : 0);
-      const budgetExceedsLimit = (!isNilOrError(basket) ? basket.attributes['budget_exceeds_limit?'] as boolean : false);
-      const submittedAt = (!isNilOrError(basket) ? basket.attributes.submitted_at : null);
+      const spentBudget = !isNilOrError(basket)
+        ? basket.attributes.total_budget
+        : 0;
+      const budgetExceedsLimit = !isNilOrError(basket)
+        ? (basket.attributes['budget_exceeds_limit?'] as boolean)
+        : false;
+      const submittedAt = !isNilOrError(basket)
+        ? basket.attributes.submitted_at
+        : null;
       let totalBudget = 0;
       let progress = 0;
-      let validationStatus: 'notValidated' | 'validationSuccess' | 'validationError' = 'notValidated';
+      let validationStatus:
+        | 'notValidated'
+        | 'validationSuccess'
+        | 'validationError' = 'notValidated';
       let validationStatusMessage: string = '';
       let progressBarColor: 'green' | 'red' | '' = '';
 
@@ -348,29 +377,36 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
           <InnerContainer>
             <Header>
               <Title className={validationStatus}>
-                {validationStatus === 'notValidated' &&
+                {validationStatus === 'notValidated' && (
                   <FormattedMessage {...messages.yourExpenses} />
-                }
-                {validationStatus === 'validationError' &&
+                )}
+                {validationStatus === 'validationError' && (
                   <>
                     <TitleIcon name="error" ariaHidden viewMode={viewMode} />
                     <FormattedMessage {...messages.budgetExceeded} />
                   </>
-                }
-                {validationStatus === 'validationSuccess' &&
+                )}
+                {validationStatus === 'validationSuccess' && (
                   <>
-                    <TitleIcon name="checkmark" ariaHidden viewMode={viewMode} />
+                    <TitleIcon
+                      name="checkmark"
+                      ariaHidden
+                      viewMode={viewMode}
+                    />
                     <FormattedMessage {...messages.budgetValidated} />
                   </>
-                }
-                <LiveMessage message={validationStatusMessage} aria-live="polite" />
+                )}
+                <LiveMessage
+                  message={validationStatusMessage}
+                  aria-live="polite"
+                />
               </Title>
               <Spacer />
-              {viewMode === 'row' &&
+              {viewMode === 'row' && (
                 <TotalBudgetRow aria-hidden>
                   <BudgetLabel>
                     <FormattedMessage {...messages.totalBudget} />:
-                </BudgetLabel>
+                  </BudgetLabel>
                   <BudgetAmount>
                     <FormattedNumber
                       value={totalBudget}
@@ -381,7 +417,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                     />
                   </BudgetAmount>
                 </TotalBudgetRow>
-              }
+              )}
             </Header>
 
             <ProgressBar aria-hidden viewMode={viewMode}>
@@ -389,7 +425,11 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                 className={progressBarColor}
                 progress={budgetExceedsLimit ? 100 : progress}
               >
-                <ProgressBarPercentage className={progress === 0 ? 'hidden' : ''}>{progress}%</ProgressBarPercentage>
+                <ProgressBarPercentage
+                  className={progress === 0 ? 'hidden' : ''}
+                >
+                  {progress}%
+                </ProgressBarPercentage>
               </ProgressBarOverlay>
             </ProgressBar>
 
@@ -409,11 +449,11 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                     />
                   </BudgetAmount>
                 </Budget>
-                {viewMode === 'column' &&
+                {viewMode === 'column' && (
                   <TotalBudgetColumn aria-hidden>
                     <BudgetLabel>
                       <FormattedMessage {...messages.totalBudget} />:
-                  </BudgetLabel>
+                    </BudgetLabel>
                     <BudgetAmount>
                       <FormattedNumber
                         value={totalBudget}
@@ -424,7 +464,7 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                       />
                     </BudgetAmount>
                   </TotalBudgetColumn>
-                }
+                )}
                 <ScreenReaderOnly aria-live="polite">
                   <FormattedMessage {...messages.totalBudget} />:
                   {`${totalBudget} ${currency}`}
@@ -471,7 +511,11 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
                   iconAriaHidden
                   iconPos="right"
                   bgColor={colors.adminTextColor}
-                  disabled={validationStatus === 'validationSuccess' || budgetExceedsLimit || spentBudget === 0}
+                  disabled={
+                    validationStatus === 'validationSuccess' ||
+                    budgetExceedsLimit ||
+                    spentBudget === 0
+                  }
                   processing={processing}
                   viewMode={viewMode}
                 >
@@ -491,30 +535,52 @@ class PBExpenses extends PureComponent<Props & InjectedIntlProps & Tracks, State
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
-  project: ({ participationContextType, participationContextId, render }) => <GetProject projectId={participationContextType === 'project' ? participationContextId : null}>{render}</GetProject>,
-  phase: ({ participationContextType, participationContextId, render }) => <GetPhase id={participationContextType === 'phase' ? participationContextId : null}>{render}</GetPhase>,
+  project: ({ participationContextType, participationContextId, render }) => (
+    <GetProject
+      projectId={
+        participationContextType === 'project' ? participationContextId : null
+      }
+    >
+      {render}
+    </GetProject>
+  ),
+  phase: ({ participationContextType, participationContextId, render }) => (
+    <GetPhase
+      id={participationContextType === 'phase' ? participationContextId : null}
+    >
+      {render}
+    </GetPhase>
+  ),
   basket: ({ participationContextType, project, phase, render }) => {
     let basketId: string | null = null;
 
     if (participationContextType === 'project') {
-      basketId = (!isNilOrError(project) && project.relationships.user_basket ? get(project.relationships.user_basket.data, 'id', null) : null);
+      basketId =
+        !isNilOrError(project) && project.relationships.user_basket
+          ? get(project.relationships.user_basket.data, 'id', null)
+          : null;
     } else {
-      basketId = (!isNilOrError(phase) && phase.relationships.user_basket ? get(phase.relationships.user_basket.data, 'id', null) : null);
+      basketId =
+        !isNilOrError(phase) && phase.relationships.user_basket
+          ? get(phase.relationships.user_basket.data, 'id', null)
+          : null;
     }
 
     return <GetBasket id={basketId}>{render}</GetBasket>;
-  }
+  },
 });
 
-const PBExpensesWithHoCs = injectIntl(injectTracks<Props>({
-  ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
-  ideaAddedToBasket: tracks.ideaAddedToBasket,
-  basketSubmitted: tracks.basketSubmitted,
-  expensesDropdownOpened: tracks.expensesDropdownOpened
-})(PBExpenses));
+const PBExpensesWithHoCs = injectIntl(
+  injectTracks<Props>({
+    ideaRemovedFromBasket: tracks.ideaRemovedFromBasket,
+    ideaAddedToBasket: tracks.ideaAddedToBasket,
+    basketSubmitted: tracks.basketSubmitted,
+    expensesDropdownOpened: tracks.expensesDropdownOpened,
+  })(PBExpenses)
+);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <PBExpensesWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <PBExpensesWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

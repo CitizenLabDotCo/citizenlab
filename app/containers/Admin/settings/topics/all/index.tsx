@@ -11,21 +11,30 @@ import messages from '../messages';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 
 // components
-import { Section, SectionDescription, SectionTitle, StyledLink } from 'components/admin/Section';
+import {
+  Section,
+  SectionDescription,
+  SectionTitle,
+  StyledLink,
+} from 'components/admin/Section';
 import { List } from 'components/admin/ResourceList';
 import Button from 'components/UI/Button';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import DefaultTopicRow from '../DefaultTopicRow';
 import CustomTopicRow from '../CustomTopicRow';
-import Modal, { ModalContentContainer, ButtonsWrapper, Content } from 'components/UI/Modal';
+import Modal, {
+  ModalContentContainer,
+  ButtonsWrapper,
+  Content,
+} from 'components/UI/Modal';
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   topics: GetTopicsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   showConfirmationModal: boolean;
@@ -33,14 +42,13 @@ interface State {
   processingDeletion: boolean;
 }
 
-class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
-
+class TopicList extends React.PureComponent<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = {
       processingDeletion: false,
       showConfirmationModal: false,
-      topicIdToDelete: null
+      topicIdToDelete: null,
     };
   }
 
@@ -49,47 +57,44 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
 
     this.setState({
       showConfirmationModal: true,
-      topicIdToDelete: topicId
+      topicIdToDelete: topicId,
     });
-  }
+  };
 
   closeSendConfirmationModal = () => {
     this.setState({
       showConfirmationModal: false,
-      topicIdToDelete: null
+      topicIdToDelete: null,
     });
-  }
+  };
 
   handleTopicDeletionConfirm = () => {
     const { topicIdToDelete } = this.state;
 
     if (topicIdToDelete) {
       this.setState({
-        processingDeletion: true
+        processingDeletion: true,
       });
 
       deleteTopic(topicIdToDelete)
-      .then(() => {
-        this.setState({
-          processingDeletion: false,
-          showConfirmationModal: false,
-          topicIdToDelete: null
+        .then(() => {
+          this.setState({
+            processingDeletion: false,
+            showConfirmationModal: false,
+            topicIdToDelete: null,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            processingDeletion: false,
+          });
         });
-      })
-      .catch(() => {
-        this.setState({
-          processingDeletion: false,
-        });
-      });
     }
-  }
+  };
 
   render() {
     const { topics } = this.props;
-    const {
-      showConfirmationModal,
-      processingDeletion
-    } = this.state;
+    const { showConfirmationModal, processingDeletion } = this.state;
 
     if (!isNilOrError(topics)) {
       return (
@@ -101,10 +106,11 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
             <FormattedMessage
               {...messages.topicManagerDescription}
               values={{
-                adminProjectsLink:
+                adminProjectsLink: (
                   <StyledLink to="/admin/projects/">
                     <FormattedMessage {...messages.projectsSettings} />
                   </StyledLink>
+                ),
               }}
             />
           </SectionDescription>
@@ -120,33 +126,30 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
             </Button>
           </ButtonWrapper>
           <List key={topics.length}>
-            {
-              topics.map((topic, index) => {
-                const isLastItem = (index === topics.length - 1);
+            {topics.map((topic, index) => {
+              const isLastItem = index === topics.length - 1;
 
-                if (!isNilOrError(topic)) {
-                  const isDefaultTopic = topic.attributes.code !== 'custom';
+              if (!isNilOrError(topic)) {
+                const isDefaultTopic = topic.attributes.code !== 'custom';
 
-                  return (
-                    isDefaultTopic ?
-                      <DefaultTopicRow
-                        topic={topic}
-                        isLastItem={isLastItem}
-                        key={topic.id}
-                      />
-                    :
-                      <CustomTopicRow
-                        topic={topic}
-                        isLastItem={isLastItem}
-                        handleDeleteClick={this.handleDeleteClick}
-                        key={topic.id}
-                      />
-                  );
-                }
+                return isDefaultTopic ? (
+                  <DefaultTopicRow
+                    topic={topic}
+                    isLastItem={isLastItem}
+                    key={topic.id}
+                  />
+                ) : (
+                  <CustomTopicRow
+                    topic={topic}
+                    isLastItem={isLastItem}
+                    handleDeleteClick={this.handleDeleteClick}
+                    key={topic.id}
+                  />
+                );
+              }
 
-                return null;
-              })
-            }
+              return null;
+            })}
           </List>
           <Modal
             opened={showConfirmationModal}
@@ -155,7 +158,9 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
           >
             <ModalContentContainer>
               <Content>
-                <FormattedMessage {...messages.topicDeletionConfirmationMessage} />
+                <FormattedMessage
+                  {...messages.topicDeletionConfirmationMessage}
+                />
               </Content>
               <ButtonsWrapper>
                 <Button
@@ -183,10 +188,10 @@ class TopicList extends React.PureComponent<Props & InjectedIntlProps, State>{
   }
 }
 
-const TopicListWithHoCs = DragDropContext(HTML5Backend)(injectIntl<Props>(TopicList));
+const TopicListWithHoCs = DragDropContext(HTML5Backend)(
+  injectIntl<Props>(TopicList)
+);
 
 export default () => (
-  <GetTopics>
-    {topics => <TopicListWithHoCs topics={topics} />}
-  </GetTopics>
+  <GetTopics>{(topics) => <TopicListWithHoCs topics={topics} />}</GetTopics>
 );

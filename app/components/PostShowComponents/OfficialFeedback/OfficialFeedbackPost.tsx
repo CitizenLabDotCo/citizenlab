@@ -24,11 +24,17 @@ import { FormattedDate, InjectedIntlProps } from 'react-intl';
 import { getLocalized } from 'utils/i18n';
 
 // services
-import { IOfficialFeedbackData, deleteOfficialFeedbackFromIdea, deleteOfficialFeedbackFromInitiative } from 'services/officialFeedback';
+import {
+  IOfficialFeedbackData,
+  deleteOfficialFeedbackFromIdea,
+  deleteOfficialFeedbackFromInitiative,
+} from 'services/officialFeedback';
 
 // resources
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 
 const Container = styled.div`
   display: flex;
@@ -140,61 +146,85 @@ interface State {
   showEditForm: boolean;
 }
 
-export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProps, State> {
+export class OfficialFeedbackPost extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
-      showEditForm: false
+      showEditForm: false,
     };
   }
 
   showEditForm = () => {
     this.setState({ showEditForm: true });
-  }
+  };
 
   closeEditForm = () => {
     this.setState({ showEditForm: false });
-  }
+  };
 
   deletePost = (postId: string) => () => {
     const { postType } = this.props;
 
-    if (window.confirm(this.props.intl.formatMessage(messages.deletionConfirmation))) {
+    if (
+      window.confirm(
+        this.props.intl.formatMessage(messages.deletionConfirmation)
+      )
+    ) {
       switch (postType) {
         case 'idea':
           deleteOfficialFeedbackFromIdea(postId);
         case 'initiative':
           deleteOfficialFeedbackFromInitiative(postId);
-        }
+      }
     }
-  }
+  };
 
-  getActions = (postId: string) => [
-    {
-      label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
-      handler: this.showEditForm,
-      name: 'edit'
-    },
-    {
-      label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
-      handler: this.deletePost(postId),
-      name: 'delete'
-    }
-  ] as IAction[]
+  getActions = (postId: string) =>
+    [
+      {
+        label: <FormattedMessage {...messages.editOfficialFeedbackPost} />,
+        handler: this.showEditForm,
+        name: 'edit',
+      },
+      {
+        label: <FormattedMessage {...messages.deleteOfficialFeedbackPost} />,
+        handler: this.deletePost(postId),
+        name: 'delete',
+      },
+    ] as IAction[];
 
-  getPostBodyText = (postBodyMultiloc: Multiloc, locale: Locale, tenantLocales: Locale[]) => {
+  getPostBodyText = (
+    postBodyMultiloc: Multiloc,
+    locale: Locale,
+    tenantLocales: Locale[]
+  ) => {
     const postBodyText = getLocalized(postBodyMultiloc, locale, tenantLocales);
     const processedPostBodyText = postBodyText.replace(
       /<span\sclass="cl-mention-user"[\S\s]*?data-user-id="([\S\s]*?)"[\S\s]*?data-user-slug="([\S\s]*?)"[\S\s]*?>([\S\s]*?)<\/span>/gi,
       '<a class="mention" data-link="/profile/$2" href="/profile/$2">$3</a>'
     );
     return processedPostBodyText;
-  }
+  };
 
   render() {
-    const { editingAllowed, officialFeedbackPost, locale, tenantLocales, className, a11y_pronounceLatestOfficialFeedbackPost } = this.props;
+    const {
+      editingAllowed,
+      officialFeedbackPost,
+      locale,
+      tenantLocales,
+      className,
+      a11y_pronounceLatestOfficialFeedbackPost,
+    } = this.props;
     const { showEditForm } = this.state;
-    const { body_multiloc, author_multiloc, created_at, updated_at } = officialFeedbackPost.attributes;
+    const {
+      body_multiloc,
+      author_multiloc,
+      created_at,
+      updated_at,
+    } = officialFeedbackPost.attributes;
 
     if (showEditForm && !isNilOrError(locale) && !isNilOrError(tenantLocales)) {
       return (
@@ -230,21 +260,35 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
       );
 
       return (
-        <PostContainer key={officialFeedbackPost.id} className={`e2e-official-feedback-post ${className || ''}`}>
-          {editingAllowed &&
+        <PostContainer
+          key={officialFeedbackPost.id}
+          className={`e2e-official-feedback-post ${className || ''}`}
+        >
+          {editingAllowed && (
             <StyledMoreActionsMenu
-              ariaLabel={this.props.intl.formatMessage(messages.showMoreActions)}
+              ariaLabel={this.props.intl.formatMessage(
+                messages.showMoreActions
+              )}
               actions={this.getActions(officialFeedbackPost.id)}
             />
-          }
+          )}
 
           <ScreenReaderOnly aria-live="polite">
-            {a11y_pronounceLatestOfficialFeedbackPost && this.getPostBodyText(body_multiloc, locale, tenantLocales)}
+            {a11y_pronounceLatestOfficialFeedbackPost &&
+              this.getPostBodyText(body_multiloc, locale, tenantLocales)}
           </ScreenReaderOnly>
 
           <QuillEditedContent fontWeight={300}>
             <Body className="e2e-official-feedback-post-body">
-              <div dangerouslySetInnerHTML={{ __html: this.getPostBodyText(body_multiloc, locale, tenantLocales) }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: this.getPostBodyText(
+                    body_multiloc,
+                    locale,
+                    tenantLocales
+                  ),
+                }}
+              />
             </Body>
             <Footer>
               <Author className="e2e-official-feedback-post-author">
@@ -253,16 +297,22 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
 
               <DatesPostedEdited>
                 <DatePosted>
-                  <FormattedMessage {...messages.postedOn} values={{ date: formattedPostedOnDate }} />
+                  <FormattedMessage
+                    {...messages.postedOn}
+                    values={{ date: formattedPostedOnDate }}
+                  />
                 </DatePosted>
-                {updated_at && updated_at !== created_at &&
+                {updated_at && updated_at !== created_at && (
                   <>
                     <DatesSpacer>-</DatesSpacer>
                     <DateEdited>
-                      <FormattedMessage {...messages.lastEdition} values={{ date: formattedUpdatedAtDate }} />
+                      <FormattedMessage
+                        {...messages.lastEdition}
+                        values={{ date: formattedUpdatedAtDate }}
+                      />
                     </DateEdited>
                   </>
-                }
+                )}
               </DatesPostedEdited>
             </Footer>
           </QuillEditedContent>
@@ -276,13 +326,15 @@ export class OfficialFeedbackPost extends PureComponent<Props & InjectedIntlProp
 
 const Data = adopt<DataProps, {}>({
   locale: <GetLocale />,
-  tenantLocales: <GetTenantLocales />
+  tenantLocales: <GetTenantLocales />,
 });
 
 const OfficialFeedbackPostWithIntl = injectIntl<Props>(OfficialFeedbackPost);
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <OfficialFeedbackPostWithIntl {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

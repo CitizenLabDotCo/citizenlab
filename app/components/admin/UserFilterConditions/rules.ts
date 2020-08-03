@@ -21,7 +21,7 @@ import IdeaStatusValueSelector from './ValueSelector/IdeaStatusValueSelector';
 /**
  * Schema for validating the rules used in smart groups
  */
-export type TRule = (
+export type TRule =
   | {
       ruleType?: 'custom_field_text';
       /**
@@ -189,7 +189,7 @@ export type TRule = (
         | 'budgeted_in'
         | 'not_budgeted_in'
         | 'volunteered_in'
-        | 'not_volunteered_in'
+        | 'not_volunteered_in';
 
       /**
        * The id of a project
@@ -208,7 +208,7 @@ export type TRule = (
         | 'voted_idea_in'
         | 'not_voted_idea_in'
         | 'voted_comment_in'
-        | 'not_voted_comment_in'
+        | 'not_voted_comment_in';
       /**
        * The id of a topic
        */
@@ -226,18 +226,16 @@ export type TRule = (
         | 'voted_idea_in'
         | 'not_voted_idea_in'
         | 'voted_comment_in'
-        | 'not_voted_comment_in'
+        | 'not_voted_comment_in';
       /**
        * The id of an idea status
        */
       value?: string;
     }
   | {
-    ruleType?: 'verified';
-    predicate?:
-      | 'is_verified'
-      | 'not_is_verified'
-  });
+      ruleType?: 'verified';
+      predicate?: 'is_verified' | 'not_is_verified';
+    };
 
 export const ruleTypeConstraints = {
   custom_field_text: {
@@ -267,7 +265,7 @@ export const ruleTypeConstraints = {
     is_exactly: DateValueSelector,
     is_after: DateValueSelector,
     is_empty: null,
-    not_is_empty: null
+    not_is_empty: null,
   },
   custom_field_number: {
     is_equal: NumberValueSelector,
@@ -277,7 +275,7 @@ export const ruleTypeConstraints = {
     is_smaller_than: NumberValueSelector,
     is_smaller_than_or_equal: NumberValueSelector,
     is_empty: null,
-    not_is_empty: null
+    not_is_empty: null,
   },
   email: {
     is: TextValueSelector,
@@ -300,7 +298,7 @@ export const ruleTypeConstraints = {
     is_exactly: DateValueSelector,
     is_after: DateValueSelector,
     is_empty: null,
-    not_is_empty: null
+    not_is_empty: null,
   },
   role: {
     is_admin: null,
@@ -352,6 +350,6 @@ export const ruleTypeConstraints = {
   },
   verified: {
     is_verified: null,
-    not_is_verified: null
-  }
+    not_is_verified: null,
+  },
 };

@@ -20,20 +20,24 @@ interface State {
   pbContext: IProjectData | IPhaseData | undefined | null;
 }
 
-export type GetPBContextChildProps = IProjectData | IPhaseData | undefined | null;
+export type GetPBContextChildProps =
+  | IProjectData
+  | IPhaseData
+  | undefined
+  | null;
 
 export default class GetPBContext extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
   private subscriptions: Subscription[];
 
   static defaultProps = {
-    resetOnChange: true
+    resetOnChange: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      pbContext: undefined
+      pbContext: undefined,
     };
   }
 
@@ -42,14 +46,18 @@ export default class GetPBContext extends React.Component<Props, State> {
 
     this.inputProps$ = new BehaviorSubject({ projectId });
 
-    const fn: (project: IProject | null) => Observable<IProjectData | IPhaseData | null> = (project) => {
+    const fn: (
+      project: IProject | null
+    ) => Observable<IProjectData | IPhaseData | null> = (project) => {
       if (project) {
         if (project.data.attributes.participation_method === 'budgeting') {
           return of(project.data);
         } else if (project.data.attributes.process_type === 'timeline') {
           return phasesStream(project.data.id).observable.pipe(
             map((phases) => {
-              const pbPhase = phases.data.find(phase => phase.attributes.participation_method === 'budgeting');
+              const pbPhase = phases.data.find(
+                (phase) => phase.attributes.participation_method === 'budgeting'
+              );
               return pbPhase || null;
             })
           );
@@ -60,14 +68,18 @@ export default class GetPBContext extends React.Component<Props, State> {
     };
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ pbContext: undefined })),
-        switchMap(({ projectId }) => (projectId ? projectByIdStream(projectId).observable : of(null))),
-        switchMap(fn)
-      ).subscribe((pbContext) => {
-        this.setState({ pbContext });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ pbContext: undefined })),
+          switchMap(({ projectId }) =>
+            projectId ? projectByIdStream(projectId).observable : of(null)
+          ),
+          switchMap(fn)
+        )
+        .subscribe((pbContext) => {
+          this.setState({ pbContext });
+        }),
     ];
   }
 
@@ -77,7 +89,7 @@ export default class GetPBContext extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

@@ -17,29 +17,31 @@ type Props = {
 
 type State = {};
 
-export default class InitiativeAssignedToYouNotification extends React.PureComponent<Props, State> {
-
+export default class InitiativeAssignedToYouNotification extends React.PureComponent<
+  Props,
+  State
+> {
   onClickUserName = (event) => {
     event.stopPropagation();
-  }
+  };
 
-  getNotificationMessage = () : JSX.Element => {
+  getNotificationMessage = (): JSX.Element => {
     const { notification } = this.props;
     const sharedValues = {
-      postTitle: <T value={notification.attributes.post_title_multiloc} />
+      postTitle: <T value={notification.attributes.post_title_multiloc} />,
     };
 
     if (isNilOrError(notification.attributes.initiating_user_slug)) {
-      return(
+      return (
         <FormattedMessage
           {...messages.postAssignedToYou}
           values={{
-            ...sharedValues
+            ...sharedValues,
           }}
         />
       );
     } else {
-      return(
+      return (
         <FormattedMessage
           {...messages.xAssignedPostToYou}
           values={{
@@ -51,12 +53,12 @@ export default class InitiativeAssignedToYouNotification extends React.PureCompo
               >
                 {notification.attributes.initiating_user_first_name}
               </Link>
-              ),
+            ),
           }}
         />
       );
     }
-  }
+  };
 
   render() {
     const { notification } = this.props;
