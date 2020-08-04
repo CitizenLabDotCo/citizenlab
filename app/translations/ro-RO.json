@@ -1986,7 +1986,7 @@
   "app.containers.landing.initiativesBoxTitle": "Care este propunerea dumneavoastră?",
   "app.containers.landing.new": "Nou",
   "app.containers.landing.startInitiative": "Postează propunerea dvs.",
-  "app.containers.landing.subtitleCity": "Începeți o idee!",
+  "app.containers.landing.subtitleCity": "Bine aţi venit pe platforma de bugetare participativă a {orgName}",
   "app.containers.landing.titleCity": "Haideţi să modelăm viitorul {orgName} împreună",
   "app.containers.landing.twitterMessage": "Vot pentru {ideaTitle} pe",
   "app.containers.landing.userDeletedSubtitle": "Puteți crea un nou cont în orice moment sau {contactLink} pentru a ne informa cu privire la ceea ce am putea îmbunătăți.",
