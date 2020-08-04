@@ -71,6 +71,16 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def index_xlsx
+    if (@post_type == 'Idea') && params[:project].present?
+      authorize Project.find_by!(id: params[:project]), :index_xlsx?
+    elsif @post_type == 'Idea'
+      authorize :idea_comment, :index_xlsx?
+    elsif @post_type == 'Initiative'
+      authorize :initiative_comment, :index_xlsx?
+    else
+      raise "#{@post_type} has no comment policy defined"
+    end
+
     I18n.with_locale(current_user&.locale) do
       post_ids = params[@post_type.underscore.pluralize.to_sym]
       @comments = policy_scope(Comment, policy_scope_class: @policy_class::Scope)

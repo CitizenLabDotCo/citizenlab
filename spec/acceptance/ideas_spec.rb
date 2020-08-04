@@ -333,6 +333,12 @@ resource "Ideas" do
     parameter :project, 'Filter by project', required: false
     parameter :ideas, 'Filter by a given list of idea ids', required: false
 
+    before do 
+      @user = create(:admin)
+      token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+      header 'Authorization', "Bearer #{token}"
+    end
+
     example_request "XLSX export" do
       expect(status).to eq 200
     end
@@ -364,6 +370,18 @@ resource "Ideas" do
         expect(status).to eq 200
         worksheet = RubyXL::Parser.parse_buffer(response_body).worksheets[0]
         expect(worksheet.count).to eq (@selected_ideas.size + 1)
+      end
+    end
+
+    describe do
+      before do 
+        @user = create(:user)
+        token = Knock::AuthToken.new(payload: @user.to_token_payload).token
+        header 'Authorization', "Bearer #{token}"
+      end
+      
+      example_request '[error] XLSX export by a normal user', document: false do
+        expect(status).to eq 401
       end
     end
   end
