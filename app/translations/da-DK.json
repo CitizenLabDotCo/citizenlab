@@ -1986,7 +1986,7 @@
   "app.containers.landing.initiativesBoxTitle": "Hvad er dit borgerforslag?",
   "app.containers.landing.new": "ny",
   "app.containers.landing.startInitiative": "Aflever dit borgerforslag",
-  "app.containers.landing.subtitleCity": "Del din ide!",
+  "app.containers.landing.subtitleCity": "Velkommen til borgerinddragelsesplatformen for {orgName}",
   "app.containers.landing.titleCity": "Lad os forme fremtiden for {orgName} sammen",
   "app.containers.landing.twitterMessage": "Stem på {ideaTitle} på",
   "app.containers.landing.userDeletedSubtitle": "Du kan oprette en ny konto når som helst eller {contactLink} og fortælle os hvad vi kan forbedre. ",
