@@ -1986,7 +1986,7 @@
   "app.containers.landing.initiativesBoxTitle": "Was ist dein Vorschlag?",
   "app.containers.landing.new": "neu",
   "app.containers.landing.startInitiative": "Deinen Vorschlag veröffentlichen",
-  "app.containers.landing.subtitleCity": "{orgName, select, München {Melden Sie einen Mangel!} other {Starten Sie eine Idee!}}",
+  "app.containers.landing.subtitleCity": "Herzlich wilkommen auf der Beteiligungsplattform von {orgName}",
   "app.containers.landing.titleCity": "Lassen Sie uns die Zukunft von {orgName} zusammen gestalten",
   "app.containers.landing.twitterMessage": "Stimmen Sie für {ideaTitle} auf",
   "app.containers.landing.userDeletedSubtitle": "Du kannst jederzeit einen neuen Account erstellen oder {contactLink}, um uns wissen zu lassen, was wir verbessern können",
