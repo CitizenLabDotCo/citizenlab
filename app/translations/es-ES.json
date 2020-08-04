@@ -1986,7 +1986,7 @@
   "app.containers.landing.initiativesBoxTitle": "¿Cuál es tu propuesta?",
   "app.containers.landing.new": "nuevo",
   "app.containers.landing.startInitiative": "Envía tu propuesta",
-  "app.containers.landing.subtitleCity": "¡Empieza una idea!",
+  "app.containers.landing.subtitleCity": "Les damos la bienvenida a la plataforma de participación oficial de {orgName}",
   "app.containers.landing.titleCity": "Construyamos el futuro de {orgName} juntos",
   "app.containers.landing.twitterMessage": "Vota por {ideaTitle} en",
   "app.containers.landing.userDeletedSubtitle": "Puedes crear una nueva cuenta en cualquier momento o {contactLink} hacernos saber en qué podemos mejorar.",
