@@ -150,10 +150,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         allowed: true,
         enabled: true
       },
-      groups: {
-        enabled: true,
-        allowed:true
-      },
       ideas_overview: {
         enabled: true,
         allowed: true
@@ -172,10 +168,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         },
         zoom_level: 12,
         osm_relation_id: 2404021
-      },
-      excel_export: {
-       enabled: true,
-       allowed: true,
       },
       user_custom_fields: {
         enabled: true,
@@ -355,10 +347,6 @@ if ['public','example_org'].include? Apartment::Tenant.current
         enabled: true,
         app_id: '307796929633098',
         app_secret: '28082a4c201d7cee136dbe35236e44cb'
-      },
-      groups: {
-        enabled: true,
-        allowed:true
       },
       private_projects: {
         enabled: true,
