@@ -8,7 +8,7 @@ import {
   ButtonStyles as ComponentLibraryButtonStyles
 } from 'cl2-component-library';
 
-interface Props extends Omit<ButtonProps, 'locale'> {};
+interface Props extends Omit<ButtonProps, 'locale'> {}
 
 interface ButtonContainerProps extends ComponentLibraryButtonContainerProps {}
 
