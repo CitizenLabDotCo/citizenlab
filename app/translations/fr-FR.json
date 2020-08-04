@@ -1987,7 +1987,7 @@
   "app.containers.landing.new": "nouveau",
   "app.containers.landing.startInitiative": "Postez votre proposition",
   "app.containers.landing.subtitleCity": "Lancez une idée !",
-  "app.containers.landing.titleCity": "Co-créez {orgName}",
+  "app.containers.landing.titleCity": "Ensemble, définissons l'avenir de {orgName}",
   "app.containers.landing.twitterMessage": "Votez pour {ideaTitle} sur",
   "app.containers.landing.userDeletedSubtitle": "Vous pouvez créer un nouveau compte à tout moment ou {contactLink} pour nous indiquer ce que nous devriez améliorer.",
   "app.containers.landing.userDeletedSubtitleLinkText": "envoyer un message",
