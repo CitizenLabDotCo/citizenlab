@@ -21,6 +21,10 @@ class IdeaPolicy < ApplicationPolicy
     end
   end
 
+  def index_xlsx?
+    user&.admin?
+  end
+
   def create?
     pcs = ParticipationContextService.new 
     record.draft? ||
