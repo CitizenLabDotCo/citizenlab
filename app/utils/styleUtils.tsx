@@ -214,8 +214,8 @@ export const fontSizes = {
 };
 
 export const defaultStyles = {
-  boxShadow: '0px 2px 2px -1px rgba(152, 162, 179, 0.3), 0px 1px 5px -2px rgba(152, 162, 179, 0.3)',
-  boxShadowHover: '0px 4px 12px 0px rgba(152, 162, 179, 0.35), 0px 2px 2px -1px rgba(152, 162, 179, 0.3)',
+  boxShadow: '0px 2px 4px -1px rgba(0,0,0,0.06)',
+  boxShadowHover: '0px 4px 12px -1px rgba(0,0,0,0.12)',
   borderColorFocused: colors.label,
   boxShadowFocused: `0px 0px 0px 1px ${colors.label}`,
   inputPadding: '12px'

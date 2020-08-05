@@ -14,7 +14,7 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, defaultStyles } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled, { withTheme } from 'styled-components';
 
@@ -37,7 +37,7 @@ const ProjectNavbarWrapper = styled.div`
   top: ${({ theme }) => theme.menuHeight}px;
   z-index: 1002;
   background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#171717'};
-  box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: ${defaultStyles.boxShadow};
 
   ${media.smallerThanMinTablet`
     overflow-x: scroll;
