@@ -3,7 +3,11 @@ import { ISignUpInMetaData } from 'components/SignUpIn';
 import { stringify } from 'qs';
 import { omitBy, isNil } from 'lodash-es';
 
-export type SSOProvider = 'google' | 'facebook' | 'azureactivedirectory' | 'franceconnect';
+export type SSOProvider =
+  | 'google'
+  | 'facebook'
+  | 'azureactivedirectory'
+  | 'franceconnect';
 
 export interface SSOParams {
   sso_response: 'true';
@@ -15,7 +19,10 @@ export interface SSOParams {
   sso_verification_type?: string;
 }
 
-export const handleOnSSOClick = (provider: SSOProvider, metaData: ISignUpInMetaData) => {
+export const handleOnSSOClick = (
+  provider: SSOProvider,
+  metaData: ISignUpInMetaData
+) => {
   const { pathname, verification, verificationContext } = metaData;
   const ssoParams: SSOParams = {
     sso_response: 'true',
@@ -24,7 +31,7 @@ export const handleOnSSOClick = (provider: SSOProvider, metaData: ISignUpInMetaD
     sso_verification: verification === true ? 'true' : undefined,
     sso_verification_action: verificationContext?.action,
     sso_verification_id: verificationContext?.id,
-    sso_verification_type: verificationContext?.type
+    sso_verification_type: verificationContext?.type,
   };
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
   window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;

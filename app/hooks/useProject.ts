@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
-import { projectByIdStream, projectBySlugStream, IProject, IProjectData } from 'services/projects';
+import {
+  projectByIdStream,
+  projectBySlugStream,
+  IProject,
+  IProjectData,
+} from 'services/projects';
 
 interface Parameters {
   projectId?: string | null;
@@ -9,7 +14,9 @@ interface Parameters {
 }
 
 export default function useProject({ projectId, projectSlug }: Parameters) {
-  const [project, setProject] = useState<IProjectData | undefined | null | Error>(undefined);
+  const [project, setProject] = useState<
+    IProjectData | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
     setProject(undefined);

@@ -19,15 +19,12 @@ type Props = {
 };
 
 export default class GoogleFormsSurvey extends PureComponent<Props> {
-
   render() {
     const { googleFormsUrl, className } = this.props;
 
     return (
       <Container className={className}>
-        <StyledIframe
-          src={googleFormsUrl}
-        />
+        <StyledIframe src={googleFormsUrl} />
       </Container>
     );
   }

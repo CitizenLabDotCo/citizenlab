@@ -11,7 +11,7 @@ interface Props {
   notification: IThresholdReachedForAdminNotificationData;
 }
 
-const ThresholdReachedForAdminNotification = memo<Props>(props => {
+const ThresholdReachedForAdminNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -24,12 +24,14 @@ const ThresholdReachedForAdminNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.thresholdReachedForAdmin}
         values={{
-          post: <Link
-            to={`/initiatives/${notification.attributes.post_slug}`}
-            onClick={stopPropagation}
-          >
-            <T value={notification.attributes.post_title_multiloc} />
-          </Link>
+          post: (
+            <Link
+              to={`/initiatives/${notification.attributes.post_slug}`}
+              onClick={stopPropagation}
+            >
+              <T value={notification.attributes.post_title_multiloc} />
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

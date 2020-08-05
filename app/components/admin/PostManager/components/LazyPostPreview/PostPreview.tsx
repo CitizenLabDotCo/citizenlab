@@ -73,7 +73,7 @@ export default class PostPreview extends PureComponent<Props, State> {
     super(props);
     this.state = {
       postId: props.postId,
-      opened: false
+      opened: false,
     };
   }
 
@@ -90,15 +90,16 @@ export default class PostPreview extends PureComponent<Props, State> {
       this.setState({ postId: null });
       this.props.onClose();
     }, 450);
-  }
+  };
 
   previewComponent = () => {
     const { type, onSwitchPreviewMode, mode } = this.props;
-    const postType = (type === 'AllIdeas' || type === 'ProjectIdeas') ? 'idea' : 'initiative';
+    const postType =
+      type === 'AllIdeas' || type === 'ProjectIdeas' ? 'idea' : 'initiative';
     const { postId } = this.state;
 
     if (postId) {
-      return ({
+      return {
         view: {
           idea: (
             <LazyIdeaContent
@@ -113,36 +114,28 @@ export default class PostPreview extends PureComponent<Props, State> {
               closePreview={this.onClose}
               handleClickEdit={onSwitchPreviewMode}
             />
-          )
+          ),
         },
         edit: {
-          idea: (
-            <LazyIdeaEdit
-              ideaId={postId}
-              goBack={onSwitchPreviewMode}
-            />
-          ),
+          idea: <LazyIdeaEdit ideaId={postId} goBack={onSwitchPreviewMode} />,
           initiative: (
             <LazyInitiativeEdit
               initiativeId={postId}
               goBack={onSwitchPreviewMode}
             />
-          )
-        }
-      }[mode][postType]);
+          ),
+        },
+      }[mode][postType];
     }
 
     return null;
-  }
+  };
 
   render() {
     const { opened } = this.state;
 
     return (
-      <SideModal
-        opened={opened}
-        close={this.onClose}
-      >
+      <SideModal opened={opened} close={this.onClose}>
         <Suspense fallback={<FullPageSpinner />}>
           {this.previewComponent()}
         </Suspense>

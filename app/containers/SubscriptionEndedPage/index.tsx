@@ -6,13 +6,15 @@ import styled from 'styled-components';
 import { media, colors, fontSizes } from 'utils/styleUtils';
 
 const Container = styled.div`
-  min-height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  min-height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
   `}
   padding-top: 60px;
 `;
@@ -33,12 +35,14 @@ const Title = styled.h1`
 `;
 
 export default React.memo(() => (
-    <Container>
-      <ContentContainer>
-        <Title><FormattedMessage {...messages.accessDenied} /></Title>
-        <div>
-          <FormattedMessage {...messages.subscriptionEnded} />
-        </div>
-      </ContentContainer>
-    </Container>
+  <Container>
+    <ContentContainer>
+      <Title>
+        <FormattedMessage {...messages.accessDenied} />
+      </Title>
+      <div>
+        <FormattedMessage {...messages.subscriptionEnded} />
+      </div>
+    </ContentContainer>
+  </Container>
 ));

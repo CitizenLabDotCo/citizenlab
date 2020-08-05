@@ -22,7 +22,10 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportCommentsButton extends React.PureComponent<Props, State> {
+export default class ExportCommentsButton extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -42,7 +45,11 @@ export default class ExportCommentsButton extends React.PureComponent<Props, Sta
 
     try {
       this.setState({ exporting: true });
-      const blob = await requestBlob(`${API_PATH}/initiatives/comments/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
+      const blob = await requestBlob(
+        `${API_PATH}/initiatives/comments/as_xlsx`,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        queryParametersObject
+      );
       saveAs(blob, 'comments-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
@@ -51,7 +58,7 @@ export default class ExportCommentsButton extends React.PureComponent<Props, Sta
 
     // track this click for user analytics
     trackEventByName(tracks.clickExportComments.name);
-  }
+  };
 
   render() {
     const { exportType } = this.props;
@@ -64,8 +71,12 @@ export default class ExportCommentsButton extends React.PureComponent<Props, Sta
         padding="0"
         fontSize={`${fontSizes.small}px`}
       >
-        {exportType === 'all' && <FormattedMessage {...messages.exportInitiativesComments} />}
-        {exportType === 'selected_posts' && <FormattedMessage {...messages.exportSelectedInitiativesComments} />}
+        {exportType === 'all' && (
+          <FormattedMessage {...messages.exportInitiativesComments} />
+        )}
+        {exportType === 'selected_posts' && (
+          <FormattedMessage {...messages.exportSelectedInitiativesComments} />
+        )}
       </Button>
     );
   }

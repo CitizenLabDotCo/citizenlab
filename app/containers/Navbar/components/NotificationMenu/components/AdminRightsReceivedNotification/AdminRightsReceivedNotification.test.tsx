@@ -12,7 +12,11 @@ import { getNotification } from 'services/__mocks__/notifications';
 
 describe('<AdminRightsReceivedNotification />', () => {
   it('renders correctly', () => {
-    const wrapper = shallow(<AdminRightsReceivedNotification notification={getNotification('aminRights', 'admin_rights_received')} />);
+    const wrapper = shallow(
+      <AdminRightsReceivedNotification
+        notification={getNotification('aminRights', 'admin_rights_received')}
+      />
+    );
     expect(wrapper).toMatchSnapshot();
   });
 });

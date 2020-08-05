@@ -3,20 +3,24 @@ import { shallow } from 'enzyme';
 jest.mock('utils/cl-intl');
 import { intl } from 'utils/cl-intl';
 import { CumulativeAreaChart } from './CumulativeAreaChart';
-import { usersByTimeCumulativeStream, __setMockUsersByTimeCumulativeStream, mockUsersByTimeCumulative } from 'services/__mocks__/stats';
+import {
+  usersByTimeCumulativeStream,
+  __setMockUsersByTimeCumulativeStream,
+  mockUsersByTimeCumulative,
+} from 'services/__mocks__/stats';
 import { chartTheme } from '../..';
 
 const serie = [
   {
     name: 'x',
     value: 1,
-    code: 'x'
+    code: 'x',
   },
   {
     name: 'y',
     value: 3,
-    code: 'y'
-  }
+    code: 'y',
+  },
 ];
 
 describe('<CumulativeAreaChart />', () => {

@@ -9,7 +9,13 @@ import Modal from 'components/UI/Modal';
 import Button from 'components/UI/Button';
 
 // styling
-import { Container, ForegroundIcon, Title, Subtitle, ButtonContainer } from './modalStyles';
+import {
+  Container,
+  ForegroundIcon,
+  Title,
+  Subtitle,
+  ButtonContainer,
+} from './modalStyles';
 import { colors } from 'utils/styleUtils';
 
 interface Props {
@@ -20,11 +26,7 @@ interface Props {
 
 export default memo<Props>(({ opened, onClose, className }) => {
   return (
-    <Modal
-      width={600}
-      opened={opened}
-      close={onClose}
-    >
+    <Modal width={600} opened={opened} close={onClose}>
       <Container className={className}>
         <ForegroundIcon name="error" color={colors.clRedError} />
 

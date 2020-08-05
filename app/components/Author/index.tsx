@@ -88,7 +88,7 @@ interface State {}
 
 class Author extends PureComponent<Props, State> {
   static defaultProps = {
-    showAvatar: true
+    showAvatar: true,
   };
 
   goToUserProfile = () => {
@@ -97,11 +97,26 @@ class Author extends PureComponent<Props, State> {
     if (!isNilOrError(author)) {
       clHistory.push(`/profile/${author.attributes.slug}`);
     }
-  }
+  };
 
   render() {
-    const { authorId, createdAt, size, notALink, projectId, showAvatar, showModeration, className, author, avatarBadgeBgColor, emphasize } = this.props;
-    const authorCanModerate = !isNilOrError(author) && showModeration && canModerate(projectId, { data: author });
+    const {
+      authorId,
+      createdAt,
+      size,
+      notALink,
+      projectId,
+      showAvatar,
+      showModeration,
+      className,
+      author,
+      avatarBadgeBgColor,
+      emphasize,
+    } = this.props;
+    const authorCanModerate =
+      !isNilOrError(author) &&
+      showModeration &&
+      canModerate(projectId, { data: author });
     const authorName = (
       <UserName
         userId={authorId}
@@ -114,7 +129,7 @@ class Author extends PureComponent<Props, State> {
     return (
       <Container className={className}>
         <AuthorContainer authorCanModerate={authorCanModerate}>
-          {showAvatar &&
+          {showAvatar && (
             <StyledAvatar
               userId={authorId}
               size={size}
@@ -122,7 +137,7 @@ class Author extends PureComponent<Props, State> {
               moderator={authorCanModerate}
               bgColor={avatarBadgeBgColor}
             />
-          }
+          )}
 
           <AuthorMeta>
             <AuthorNameContainer>
@@ -132,11 +147,11 @@ class Author extends PureComponent<Props, State> {
               {authorName}
             </AuthorNameContainer>
 
-            {createdAt &&
+            {createdAt && (
               <TimeAgo>
                 <FormattedRelative value={createdAt} />
               </TimeAgo>
-            }
+            )}
           </AuthorMeta>
         </AuthorContainer>
       </Container>
@@ -145,11 +160,11 @@ class Author extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  author: ({ authorId, render }) => <GetUser id={authorId}>{render}</GetUser>
+  author: ({ authorId, render }) => <GetUser id={authorId}>{render}</GetUser>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <Author {...inputProps} {...dataProps} />}
+    {(dataProps) => <Author {...inputProps} {...dataProps} />}
   </Data>
 );

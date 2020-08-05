@@ -133,7 +133,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
   const signUp = useCallback(() => {
     openSignUpInModal({
       flow: 'signup',
-      action: () => clHistory.push('/initiatives/new')
+      action: () => clHistory.push('/initiatives/new'),
     });
   }, []);
 
@@ -158,9 +158,7 @@ const InitiativesCTABox = memo<Props>(({ theme, className }) => {
             textDecorationHover="underline"
             fullWidth={smallerThanSmallTablet}
             linkTo="/initiatives"
-            text={
-              <FormattedMessage {...messages.browseInitiative} />
-            }
+            text={<FormattedMessage {...messages.browseInitiative} />}
             className="e2e-initiatives-landing-CTA-browse"
           />
           <StartInitiativeButton

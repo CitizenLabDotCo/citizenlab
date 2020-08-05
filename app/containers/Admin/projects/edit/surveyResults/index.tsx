@@ -25,7 +25,7 @@ const Container = styled.div`
   max-width: 500px;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   project: GetProjectChildProps;
@@ -34,37 +34,37 @@ interface DataProps {
   phases: GetPhasesChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 class SurveyResults extends React.PureComponent<Props> {
-
   renderButtons = () => {
     const { project, surveys_enabled, typeform_enabled, phases } = this.props;
     if (!isNilOrError(project) && surveys_enabled && typeform_enabled) {
-      if (project.attributes.process_type === 'continuous'
-        && project.attributes.participation_method === 'survey'
-        && project.attributes.survey_service === 'typeform'
+      if (
+        project.attributes.process_type === 'continuous' &&
+        project.attributes.participation_method === 'survey' &&
+        project.attributes.survey_service === 'typeform'
       ) {
-        return (
-          <ExportSurveyButton
-            type="project"
-            id={project.id}
-          />
-        );
+        return <ExportSurveyButton type="project" id={project.id} />;
       }
 
-      if (project.attributes.process_type === 'timeline' && !isNilOrError(phases)) {
-        return phases.filter(phase => phase.attributes.participation_method === 'survey'
-          && phase.attributes.survey_service === 'typeform').map(phase => {
+      if (
+        project.attributes.process_type === 'timeline' &&
+        !isNilOrError(phases)
+      ) {
+        return phases
+          .filter(
+            (phase) =>
+              phase.attributes.participation_method === 'survey' &&
+              phase.attributes.survey_service === 'typeform'
+          )
+          .map((phase) => {
             return (
               <Fragment key={phase.id}>
                 <h3>
                   <T value={phase.attributes.title_multiloc} />
                 </h3>
-                <ExportSurveyButton
-                  id={phase.id}
-                  type="phase"
-                />
+                <ExportSurveyButton id={phase.id} type="phase" />
               </Fragment>
             );
           });
@@ -72,7 +72,7 @@ class SurveyResults extends React.PureComponent<Props> {
       return null;
     }
     return null;
-  }
+  };
 
   render() {
     return (
@@ -83,9 +83,7 @@ class SurveyResults extends React.PureComponent<Props> {
         <SectionDescription>
           <FormattedMessage {...messages.subtitleSurveyResults} />
         </SectionDescription>
-        <Container>
-          {this.renderButtons()}
-        </Container>
+        <Container>{this.renderButtons()}</Container>
       </>
     );
   }
@@ -94,12 +92,18 @@ class SurveyResults extends React.PureComponent<Props> {
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   surveys_enabled: <GetFeatureFlag name="surveys" />,
   typeform_enabled: <GetFeatureFlag name="typeform_surveys" />,
-  phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject projectId={params.projectId} >{render}</GetProject>,
+  phases: ({ params, render }) => (
+    <GetPhases projectId={params.projectId}>{render}</GetPhases>
+  ),
+  project: ({ params, render }) => (
+    <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
 });
 
-export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <SurveyResults {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter<InputProps>(
+  (inputProps: InputProps & WithRouterProps) => (
+    <Data {...inputProps}>
+      {(dataProps) => <SurveyResults {...inputProps} {...dataProps} />}
+    </Data>
+  )
+);

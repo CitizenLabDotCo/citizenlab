@@ -30,35 +30,40 @@ export default class GetBasket extends React.Component<Props, State> {
 
   static defaultProps = {
     resetOnChange: true,
-    cache: true
+    cache: true,
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      basket: undefined
+      basket: undefined,
     };
   }
 
   componentDidMount() {
     const { id, cache, resetOnChange } = this.props;
-    const cacheStream = (isBoolean(cache) ? cache : true);
+    const cacheStream = isBoolean(cache) ? cache : true;
 
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        tap(() => resetOnChange && this.setState({ basket: undefined })),
-        switchMap(({ id }) => {
-          if (isString(id)) {
-            return basketByIdStream(id, { cacheStream }).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          tap(() => resetOnChange && this.setState({ basket: undefined })),
+          switchMap(({ id }) => {
+            if (isString(id)) {
+              return basketByIdStream(id, { cacheStream }).observable;
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((basket) => this.setState({ basket: !isNilOrError(basket) ? basket.data : basket }))
+            return of(null);
+          })
+        )
+        .subscribe((basket) =>
+          this.setState({
+            basket: !isNilOrError(basket) ? basket.data : basket,
+          })
+        ),
     ];
   }
 
@@ -68,7 +73,7 @@ export default class GetBasket extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

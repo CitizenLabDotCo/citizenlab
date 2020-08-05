@@ -18,7 +18,9 @@ interface Props {
   notification: IMentionInOfficialFeedbackNotificationData;
 }
 
-const mapPostTypeToLink = (notification: IMentionInOfficialFeedbackNotificationData) : string => {
+const mapPostTypeToLink = (
+  notification: IMentionInOfficialFeedbackNotificationData
+): string => {
   switch (notification.attributes.post_type) {
     case 'Idea':
       return `/ideas/${notification.attributes.post_slug}`;
@@ -27,11 +29,14 @@ const mapPostTypeToLink = (notification: IMentionInOfficialFeedbackNotificationD
   }
 };
 
-const MentionInCommentNotification = memo<Props>(props => {
+const MentionInCommentNotification = memo<Props>((props) => {
   const { notification } = props;
 
-  const officialFeedbackAuthorMultiloc = notification.attributes.official_feedback_author;
-  const deletedUser = isNilOrError(notification.attributes.initiating_user_slug);
+  const officialFeedbackAuthorMultiloc =
+    notification.attributes.official_feedback_author;
+  const deletedUser = isNilOrError(
+    notification.attributes.initiating_user_slug
+  );
 
   return (
     <NotificationWrapper
@@ -43,17 +48,18 @@ const MentionInCommentNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.mentionInOfficialFeedback}
         values={{
-          officialName: deletedUser ?
+          officialName: deletedUser ? (
             <DeletedUser>
               <FormattedMessage {...messages.deletedUser} />
             </DeletedUser>
-            :
+          ) : (
             <Link
               to={`/profile/${notification.attributes.initiating_user_slug}`}
               onClick={stopPropagation}
             >
               <T value={officialFeedbackAuthorMultiloc} />
-            </Link>,
+            </Link>
+          ),
         }}
       />
     </NotificationWrapper>

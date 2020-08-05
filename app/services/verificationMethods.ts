@@ -21,7 +21,7 @@ type IGenericMethod = {
   id: string;
   type: 'verification_method';
   attributes: {
-    name: VerificationMethodNames
+    name: VerificationMethodNames;
   };
 };
 
@@ -32,5 +32,7 @@ export interface IVerificationMethods {
 }
 
 export function verificationMethodsStream() {
-  return streams.get<IVerificationMethods>({ apiEndpoint: `${API_PATH}/verification_methods` });
+  return streams.get<IVerificationMethods>({
+    apiEndpoint: `${API_PATH}/verification_methods`,
+  });
 }

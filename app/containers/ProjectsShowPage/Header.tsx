@@ -56,7 +56,7 @@ const ArchivedLabel = styled.span`
   text-transform: uppercase;
   border-radius: ${(props: any) => props.theme.borderRadius};
   padding: 6px 12px;
-  background: rgba(255, 255, 255, .45);
+  background: rgba(255, 255, 255, 0.45);
   margin-top: 15px;
 `;
 
@@ -135,7 +135,7 @@ class ProjectsShowPageHeader extends PureComponent<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedProjectPhaseId: null
+      selectedProjectPhaseId: null,
     };
   }
 
@@ -161,7 +161,10 @@ class ProjectsShowPageHeader extends PureComponent<Props, State> {
 
       return (
         <>
-          <ProjectNavbar projectSlug={projectSlug} phaseId={selectedProjectPhaseId} />
+          <ProjectNavbar
+            projectSlug={projectSlug}
+            phaseId={selectedProjectPhaseId}
+          />
           <Container className={`${projectType} e2e-project-header-content`}>
             <HeaderImage src={projectHeaderImageLarge || null} />
             <HeaderOverlay />
@@ -169,29 +172,31 @@ class ProjectsShowPageHeader extends PureComponent<Props, State> {
               <HeaderTitle>
                 <T value={project.attributes.title_multiloc} />
               </HeaderTitle>
-              {projectPublicationStatus === 'archived' &&
+              {projectPublicationStatus === 'archived' && (
                 <ArchivedLabelWrapper>
                   <ArchivedLabel>
                     <FormattedMessage {...messages.archived} />
                   </ArchivedLabel>
                 </ArchivedLabelWrapper>
-              }
+              )}
               {/* Continuous Ideation Idea Button Desktop*/}
-              {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
-                <ButtonWrapper>
-                  <StyledIdeaButton
-                    participationContextType="project"
-                    projectId={project.id}
-                    bgColor="#fff"
-                    textColor={theme.colorMain}
-                    opacityDisabled="1"
-                    bgDisabledColor={colors.disabledPrimaryButtonBg}
-                    textDisabledColor="#fff"
-                    fontWeight="500"
-                    padding="13px 22px"
-                  />
-                </ButtonWrapper>
-              }
+              {projectType === 'continuous' &&
+                projectMethod === 'ideation' &&
+                projectPublicationStatus !== 'archived' && (
+                  <ButtonWrapper>
+                    <StyledIdeaButton
+                      participationContextType="project"
+                      projectId={project.id}
+                      bgColor="#fff"
+                      textColor={theme.colorMain}
+                      opacityDisabled="1"
+                      bgDisabledColor={colors.disabledPrimaryButtonBg}
+                      textDisabledColor="#fff"
+                      fontWeight="500"
+                      padding="13px 22px"
+                    />
+                  </ButtonWrapper>
+                )}
             </HeaderContent>
           </Container>
         </>
@@ -203,13 +208,17 @@ class ProjectsShowPageHeader extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
+  project: ({ projectSlug, render }) => (
+    <GetProject projectSlug={projectSlug}>{render}</GetProject>
+  ),
 });
 
 const ProjectsShowPageHeaderWithHoC = withTheme(ProjectsShowPageHeader);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectsShowPageHeaderWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <ProjectsShowPageHeaderWithHoC {...inputProps} {...dataProps} />
+    )}
   </Data>
 );

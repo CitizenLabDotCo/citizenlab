@@ -13,7 +13,7 @@ import { media, colors, fontSizes } from 'utils/styleUtils';
 import { lighten } from 'polished';
 
 const Container = styled.div`
-  height: ${props => props.theme.mobileTopBarHeight}px;
+  height: ${(props) => props.theme.mobileTopBarHeight}px;
   background: #fff;
   border-bottom: solid 1px ${lighten(0.4, colors.label)};
 `;
@@ -53,7 +53,7 @@ const Center = styled.h1`
 const Right = styled.div``;
 
 const CloseIcon = styled(Icon)`
-  flex:  0 0 12px;
+  flex: 0 0 12px;
   width: 12px;
   height: 12px;
   fill: ${colors.label};
@@ -97,7 +97,10 @@ const TopBar = memo<Props>(({ onClose, onReset, className }) => {
       <TopBarInner>
         <Left>
           <CloseButton onClick={onClose}>
-            <CloseIcon title={<FormattedMessage {...messages.a11y_closeFilterPanel} />} name="close" />
+            <CloseIcon
+              title={<FormattedMessage {...messages.a11y_closeFilterPanel} />}
+              name="close"
+            />
           </CloseButton>
         </Left>
         <Center>

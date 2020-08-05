@@ -35,12 +35,14 @@ const Container = styled.div`
   background: ${colors.background};
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${props =>
+      props.theme.mobileMenuHeight}px - ${props =>
+    props.theme.mobileTopBarHeight}px);
   `}
 `;
 
 const StyledContentContainer = styled(ContentContainer)`
-  max-width: calc(${(props) => props.theme.maxPageWidth}px - 100px);
+  max-width: calc(${props => props.theme.maxPageWidth}px - 100px);
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
@@ -70,8 +72,7 @@ const PageTitle = styled.h1`
   `}
 `;
 
-const PageDescription = styled.div`
-`;
+const PageDescription = styled.div``;
 
 const StyledButton = styled.button`
   color: ${colors.clBlueDark};
@@ -137,7 +138,10 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
     <Container className="e2e-page-cookie-policy">
       <Helmet>
         <title>{formatMessage(messages.cookiePolicyTitle)}</title>
-        <meta name="description" content={formatMessage(messages.cookiePolicyDescription)} />
+        <meta
+          name="description"
+          content={formatMessage(messages.cookiePolicyDescription)}
+        />
       </Helmet>
 
       <PageContent>
@@ -154,8 +158,13 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   {...messages.changePreferencesText}
                   values={{
                     changePreferencesButton: (
-                      <StyledButton onClick={openConsentManager} className="changePreferencesButton">
-                        <FormattedMessage {...messages.changePreferencesButtonText} />
+                      <StyledButton
+                        onClick={openConsentManager}
+                        className="changePreferencesButton"
+                      >
+                        <FormattedMessage
+                          {...messages.changePreferencesButtonText}
+                        />
                       </StyledButton>
                     )
                   }}
@@ -166,33 +175,50 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   {...messages.whoAreWeContent}
                   values={{
                     citizenLabLink: (
-                      <a target="_blank" href={formatMessage(messages.citizenLabHref)}>
+                      <a
+                        target="_blank"
+                        href={formatMessage(messages.citizenLabHref)}
+                      >
                         CitizenLab
                       </a>
                     )
                   }}
                 />
-                <FormattedMessage tagName="h2" {...messages.whatAreCookiesTitle} />
+                <FormattedMessage
+                  tagName="h2"
+                  {...messages.whatAreCookiesTitle}
+                />
                 <FormattedMessage
                   tagName="p"
                   {...messages.whatAreCookiesContent}
                   values={{
                     wikipediaCookieLink: (
-                      <a target="_blank" href={props.intl.formatMessage(messages.wikipediaCookieLinkHref)}>
+                      <a
+                        target="_blank"
+                        href={props.intl.formatMessage(
+                          messages.wikipediaCookieLinkHref
+                        )}
+                      >
                         {formatMessage(messages.wikipediaCookieLinkText)}
                       </a>
                     )
                   }}
                 />
                 <FormattedMessage tagName="h2" {...messages.whatCookiesTitle} />
-                <FormattedMessage tagName="p" {...messages.whatCookiesContent} />
+                <FormattedMessage
+                  tagName="p"
+                  {...messages.whatCookiesContent}
+                />
                 <FormattedMessage tagName="h3" {...messages.analyticsTitle} />
                 <FormattedMessage
                   tagName="p"
                   {...messages.analyticsContent}
                   values={{
                     analyticsLink: (
-                      <a target="_blank" href={formatMessage(messages.analyticsHref)}>
+                      <a
+                        target="_blank"
+                        href={formatMessage(messages.analyticsHref)}
+                      >
                         {formatMessage(messages.analyticsLinkText)}
                       </a>
                     )
@@ -204,7 +230,10 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   {...messages.advertisingContent}
                   values={{
                     advertisingLink: (
-                      <a target="_blank" href={formatMessage(messages.advertisingHref)}>
+                      <a
+                        target="_blank"
+                        href={formatMessage(messages.advertisingHref)}
+                      >
                         {formatMessage(messages.advertisingLinkText)}
                       </a>
                     )
@@ -216,7 +245,10 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   {...messages.functionalContent}
                   values={{
                     functionalLink: (
-                      <a target="_blank" href={formatMessage(messages.functionalHref)}>
+                      <a
+                        target="_blank"
+                        href={formatMessage(messages.functionalHref)}
+                      >
                         {formatMessage(messages.functionalLinkText)}
                       </a>
                     )
@@ -227,7 +259,10 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
                   {...messages.cookiesListText}
                   values={{
                     cookiesListButton: (
-                      <StyledButton onClick={openConsentManager} className="cookieList" >
+                      <StyledButton
+                        onClick={openConsentManager}
+                        className="cookieList"
+                      >
                         {formatMessage(messages.cookiesListButtonText)}
                       </StyledButton>
                     )
@@ -253,7 +288,7 @@ const CookiePolicy = memo((props: InjectedIntlProps) => {
       <PagesNavWrapper>
         <PagesNav>
           <StyledContentContainer>
-            {LEGAL_PAGES.map((pageSlug) => (
+            {LEGAL_PAGES.map(pageSlug => (
               <StyledLink to={`/pages/${pageSlug}`} key={pageSlug}>
                 <FormattedMessage {...messages[`${pageSlug}PageName`]} />
                 <LinkIcon name="chevron-right" />

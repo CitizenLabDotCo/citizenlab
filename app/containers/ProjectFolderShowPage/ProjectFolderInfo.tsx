@@ -97,66 +97,89 @@ interface Props extends InputProps {
   theme: any;
 }
 
-const ProjectFolderInfo = ({ projectFolderId, theme, intl: { formatMessage } }: Props & InjectedIntlProps) => {
+const ProjectFolderInfo = ({
+  projectFolderId,
+  theme,
+  intl: { formatMessage },
+}: Props & InjectedIntlProps) => {
   const projectFolder = useProjectFolder({ projectFolderId });
   const projectFolderImages = useProjectFolderImages(projectFolderId);
   const projectFolderFiles = useProjectFolderFiles(projectFolderId);
   const authUser = useAuthUser();
 
   const folderUrl = location.href;
-  const utmParams = !isNilOrError(authUser) ? {
-    source: 'share_folder',
-    campaign: 'share_content',
-    content: authUser.data.id
-  } : {
-      source: 'share_folder',
-      campaign: 'share_content'
-    };
+  const utmParams = !isNilOrError(authUser)
+    ? {
+        source: 'share_folder',
+        campaign: 'share_content',
+        content: authUser.data.id,
+      }
+    : {
+        source: 'share_folder',
+        campaign: 'share_content',
+      };
 
   if (!isNilOrError(projectFolder)) {
     return (
       <Container>
         <ScreenReaderOnly>
-          <FormattedMessage tagName="h2" {...messages.invisibleTitleMainContent} />
+          <FormattedMessage
+            tagName="h2"
+            {...messages.invisibleTitleMainContent}
+          />
         </ScreenReaderOnly>
         <Left>
           <Description>
-            <QuillEditedContent textColor={theme.colorText} className="e2e-folder-description">
-              <T value={projectFolder.attributes.description_multiloc} supportHtml={true} />
+            <QuillEditedContent
+              textColor={theme.colorText}
+              className="e2e-folder-description"
+            >
+              <T
+                value={projectFolder.attributes.description_multiloc}
+                supportHtml={true}
+              />
             </QuillEditedContent>
           </Description>
-          {!isNilOrError(projectFolderFiles) && projectFolderFiles && projectFolderFiles.data.length > 0 &&
-            <FileAttachments files={projectFolderFiles.data} />
-          }
+          {!isNilOrError(projectFolderFiles) &&
+            projectFolderFiles &&
+            projectFolderFiles.data.length > 0 && (
+              <FileAttachments files={projectFolderFiles.data} />
+            )}
         </Left>
 
         <Right>
-          {!isNilOrError(projectFolderImages) && projectFolderImages.data.length > 0 &&
-            <ProjectFolderImages className="e2e-projectFolder-images">
-              {projectFolderImages.data.filter(projectFolderImage => projectFolderImage).map((projectFolderImage) => (
-                <ImageZoom
-                  key={projectFolderImage.id}
-                  image={{
-                    src: projectFolderImage.attributes.versions.large,
-                    alt: ''
-                  }}
-                  zoomImage={{
-                    src: projectFolderImage.attributes.versions.large,
-                    alt: ''
-                  }}
-                />
-              ))}
-            </ProjectFolderImages>
-          }
-          <T value={projectFolder.attributes.title_multiloc} maxLength={50} >
+          {!isNilOrError(projectFolderImages) &&
+            projectFolderImages.data.length > 0 && (
+              <ProjectFolderImages className="e2e-projectFolder-images">
+                {projectFolderImages.data
+                  .filter((projectFolderImage) => projectFolderImage)
+                  .map((projectFolderImage) => (
+                    <ImageZoom
+                      key={projectFolderImage.id}
+                      image={{
+                        src: projectFolderImage.attributes.versions.large,
+                        alt: '',
+                      }}
+                      zoomImage={{
+                        src: projectFolderImage.attributes.versions.large,
+                        alt: '',
+                      }}
+                    />
+                  ))}
+              </ProjectFolderImages>
+            )}
+          <T value={projectFolder.attributes.title_multiloc} maxLength={50}>
             {(title) => {
               return (
                 <Sharing
                   context="folder"
                   url={folderUrl}
-                  twitterMessage={formatMessage(messages.twitterMessage, { title })}
+                  twitterMessage={formatMessage(messages.twitterMessage, {
+                    title,
+                  })}
                   utmParams={utmParams}
-                />);
+                />
+              );
             }}
           </T>
         </Right>

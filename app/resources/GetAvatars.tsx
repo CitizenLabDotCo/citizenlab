@@ -19,7 +19,11 @@ interface State {
   avatars: (IAvatarData | Error)[] | undefined | null | Error;
 }
 
-export type GetAvatarsChildProps = (IAvatarData | Error)[] | undefined | null | Error;
+export type GetAvatarsChildProps =
+  | (IAvatarData | Error)[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetAvatars extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,7 +32,7 @@ export default class GetAvatars extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      avatars: undefined
+      avatars: undefined,
     };
   }
 
@@ -38,18 +42,25 @@ export default class GetAvatars extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ids });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        filter(({ ids }) => !!(ids && ids.length > 0)),
-        switchMap(({ ids }: { ids: string[] }) => {
-          return combineLatest(
-            ids.map(id => avatarByIdStream(id).observable.pipe(map(avatar => (!isNilOrError(avatar) ? avatar.data : avatar))))
-          );
-        })
-      )
-      .subscribe((avatars) => {
-        this.setState({ avatars });
-      })
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => isEqual(prev, next)),
+          filter(({ ids }) => !!(ids && ids.length > 0)),
+          switchMap(({ ids }: { ids: string[] }) => {
+            return combineLatest(
+              ids.map((id) =>
+                avatarByIdStream(id).observable.pipe(
+                  map((avatar) =>
+                    !isNilOrError(avatar) ? avatar.data : avatar
+                  )
+                )
+              )
+            );
+          })
+        )
+        .subscribe((avatars) => {
+          this.setState({ avatars });
+        }),
     ];
   }
 
@@ -58,7 +69,7 @@ export default class GetAvatars extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

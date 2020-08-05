@@ -85,7 +85,6 @@ interface Props {
 }
 
 const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
-
   const removeFocus = useCallback((event: MouseEvent<HTMLElement>) => {
     event.preventDefault();
   }, []);
@@ -96,11 +95,8 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
   }, []);
 
   return (
-    <Container
-      className={className}
-      role="tablist"
-    >
-      {items.map((item: ITabItem, index) =>
+    <Container className={className} role="tablist">
+      {items.map((item: ITabItem, index) => (
         <Tab
           id={item.value}
           index={index + 1}
@@ -108,7 +104,9 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
           aria-selected={selectedValue === item.value}
           aria-controls={item.value}
           key={item.value}
-          className={`${selectedValue === item.value ? 'selected' : ''} ${index === 0 ? 'first' : ''} ${index + 1 === items.length ? 'last' : ''}`}
+          className={`${selectedValue === item.value ? 'selected' : ''} ${
+            index === 0 ? 'first' : ''
+          } ${index + 1 === items.length ? 'last' : ''}`}
           onMouseDown={removeFocus}
           onClick={handleTabOnClick}
           data-itemvalue={item.value}
@@ -116,7 +114,7 @@ const Tabs = memo<Props>(({ items, selectedValue, onClick, className }) => {
           <TabText>{item.label}</TabText>
           {item.icon && <TabIcon name={item.icon} />}
         </Tab>
-      )}
+      ))}
     </Container>
   );
 });

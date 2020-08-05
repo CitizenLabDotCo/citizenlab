@@ -15,7 +15,7 @@ const Container = styled.div`
   display: inline-block;
 `;
 
-const MoreOptionsIcon = styled(Icon)<{color?: string}>`
+const MoreOptionsIcon = styled(Icon)<{ color?: string }>`
   width: 20px;
   height: 6px;
   fill: ${({ color }) => color || colors.label};
@@ -90,7 +90,7 @@ const ListItem = styled.button`
   &:hover,
   &:focus {
     color: white;
-    background: ${lighten(.12, colors.adminMenuBackground)};
+    background: ${lighten(0.12, colors.adminMenuBackground)};
   }
 `;
 
@@ -130,22 +130,24 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
   hideMenu = (event) => {
     event.preventDefault();
     this.setState({ visible: false });
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   toggleMenu = (event: React.MouseEvent) => {
     event.preventDefault();
     this.setState(({ visible }) => ({ visible: !visible }));
-  }
+  };
 
-  handleListItemOnClick = (handler: () => void) => (event: React.MouseEvent) => {
+  handleListItemOnClick = (handler: () => void) => (
+    event: React.MouseEvent
+  ) => {
     event.preventDefault();
     this.setState({ visible: false });
     handler();
-  }
+  };
 
   render() {
     const { actions, ariaLabel, color, label, className, id } = this.props;
@@ -189,7 +191,12 @@ export default class MoreActionsMenu extends PureComponent<Props, State> {
             id={id}
             className="e2e-more-actions"
           >
-            <MoreOptionsIcon title={label || ariaLabel} name="more-options" color={color} ariaHidden={!!label} />
+            <MoreOptionsIcon
+              title={label || ariaLabel}
+              name="more-options"
+              color={color}
+              ariaHidden={!!label}
+            />
             {label && <MoreOptionsLabel>{label}</MoreOptionsLabel>}
           </MoreOptionsButton>
         </Tippy>

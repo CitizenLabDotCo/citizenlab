@@ -36,14 +36,26 @@ import VoteControl from './VoteControl';
 import InitiativeMoreActions from './ActionBar/InitiativeMoreActions';
 
 // resources
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetResourceFiles, {
+  GetResourceFilesChildProps
+} from 'resources/GetResourceFiles';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetInitiativeImages, { GetInitiativeImagesChildProps } from 'resources/GetInitiativeImages';
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
+import GetInitiativeImages, {
+  GetInitiativeImagesChildProps
+} from 'resources/GetInitiativeImages';
+import GetInitiative, {
+  GetInitiativeChildProps
+} from 'resources/GetInitiative';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import GetOfficialFeedbacks, { GetOfficialFeedbacksChildProps } from 'resources/GetOfficialFeedbacks';
-import GetPermission, { GetPermissionChildProps } from 'resources/GetPermission';
+import GetWindowSize, {
+  GetWindowSizeChildProps
+} from 'resources/GetWindowSize';
+import GetOfficialFeedbacks, {
+  GetOfficialFeedbacksChildProps
+} from 'resources/GetOfficialFeedbacks';
+import GetPermission, {
+  GetPermissionChildProps
+} from 'resources/GetPermission';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 
 // i18n
@@ -60,7 +72,13 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
 import { media, viewportWidths } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
-import { columnsGapDesktop, rightColumnWidthDesktop, columnsGapTablet, rightColumnWidthTablet, pageContentMaxWidth } from './styleConstants';
+import {
+  columnsGapDesktop,
+  rightColumnWidthDesktop,
+  columnsGapTablet,
+  rightColumnWidthTablet,
+  pageContentMaxWidth
+} from './styleConstants';
 
 const contentFadeInDuration = 250;
 const contentFadeInEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
@@ -83,7 +101,9 @@ const Container = styled.main`
   min-height: calc(100vh - ${props => props.theme.menuHeight}px);
 
   ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${props => props.theme.mobileMenuHeight}px - ${props => props.theme.mobileTopBarHeight}px);
+    min-height: calc(100vh - ${props =>
+      props.theme.mobileMenuHeight}px - ${props =>
+    props.theme.mobileTopBarHeight}px);
   `}
 
   &.content-enter {
@@ -91,7 +111,8 @@ const Container = styled.main`
 
     &.content-enter-active {
       opacity: 1;
-      transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing} ${contentFadeInDelay}ms;
+      transition: opacity ${contentFadeInDuration}ms ${contentFadeInEasing}
+        ${contentFadeInDelay}ms;
     }
   }
 
@@ -195,7 +216,12 @@ const InitiativeHeaderOverlay = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%), linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.5) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
 `;
 
 const InitiativeBannerContent = styled.div`
@@ -269,8 +295,8 @@ const StyledOfficialFeedback = styled(OfficialFeedback)`
 `;
 
 const StyledVoteControl = styled(VoteControl)`
-  box-shadow: 1px 0px 15px rgba(0,0,0,0.06);
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 1px 0px 15px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   padding: 25px;
 `;
 
@@ -292,7 +318,7 @@ interface InputProps {
   className?: string;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 interface State {
   loaded: boolean;
@@ -302,7 +328,10 @@ interface State {
   a11y_pronounceLatestOfficialFeedbackPost: boolean;
 }
 
-export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & InjectedLocalized & WithRouterProps, State> {
+export class InitiativesShow extends PureComponent<
+  Props & InjectedIntlProps & InjectedLocalized & WithRouterProps,
+  State
+> {
   officialFeedbackElement = createRef<HTMLDivElement>();
   timeoutRef: number;
 
@@ -343,14 +372,19 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     const { loaded } = this.state;
     const { initiative, initiativeImages, officialFeedbacks } = this.props;
 
-    if (!loaded && !isNilOrError(initiative) && !isUndefined(initiativeImages) && !isUndefined(officialFeedbacks.officialFeedbacksList)) {
+    if (
+      !loaded &&
+      !isNilOrError(initiative) &&
+      !isUndefined(initiativeImages) &&
+      !isUndefined(officialFeedbacks.officialFeedbacksList)
+    ) {
       this.setState({ loaded: true });
     }
-  }
+  };
 
   closeInitiativeSocialSharingModal = () => {
     this.setState({ initiativeIdForSocialSharing: null });
-  }
+  };
 
   onTranslateInitiative = () => {
     this.setState(prevState => {
@@ -361,11 +395,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
         trackEvent(tracks.clickTranslateInitiativeButton);
       }
 
-      return ({
+      return {
         translateButtonClicked: !prevState.translateButtonClicked
-      });
+      };
     });
-  }
+  };
 
   onScrollToOfficialFeedback = () => {
     if (this.officialFeedbackElement.current) {
@@ -377,8 +411,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
     }
 
     this.setState({ a11y_pronounceLatestOfficialFeedbackPost: true });
-    this.timeoutRef = setTimeout(() => this.setState({ a11y_pronounceLatestOfficialFeedbackPost: false }), 2000);
-  }
+    this.timeoutRef = setTimeout(
+      () => this.setState({ a11y_pronounceLatestOfficialFeedbackPost: false }),
+      2000
+    );
+  };
 
   render() {
     const {
@@ -393,59 +430,84 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
       postOfficialFeedbackPermission,
       tenant
     } = this.props;
-    const { loaded, initiativeIdForSocialSharing, translateButtonClicked, a11y_pronounceLatestOfficialFeedbackPost } = this.state;
+    const {
+      loaded,
+      initiativeIdForSocialSharing,
+      translateButtonClicked,
+      a11y_pronounceLatestOfficialFeedbackPost
+    } = this.state;
     const { formatMessage } = this.props.intl;
-    const initiativeSettings = !isNilOrError(tenant) ? tenant.attributes.settings.initiatives : null;
-    const votingThreshold = initiativeSettings ? initiativeSettings.voting_threshold : null;
+    const initiativeSettings = !isNilOrError(tenant)
+      ? tenant.attributes.settings.initiatives
+      : null;
+    const votingThreshold = initiativeSettings
+      ? initiativeSettings.voting_threshold
+      : null;
     const daysLimit = initiativeSettings ? initiativeSettings.days_limit : null;
     let content: JSX.Element | null = null;
 
-    if (initiativeSettings && !isNilOrError(initiative) && !isNilOrError(locale) && loaded) {
-      const initiativeHeaderImageLarge = initiative?.attributes?.header_bg?.large;
+    if (
+      initiativeSettings &&
+      !isNilOrError(initiative) &&
+      !isNilOrError(locale) &&
+      loaded
+    ) {
+      const initiativeHeaderImageLarge =
+        initiative?.attributes?.header_bg?.large;
       const authorId = initiative?.relationships?.author?.data?.id;
       const initiativePublishedAt = initiative?.attributes?.published_at;
       const initiativeTitle = localize(initiative?.attributes?.title_multiloc);
-      const initiativeImageLarge = initiativeImages?.[0]?.attributes?.versions?.large;
-      const initiativeGeoPosition = initiative?.attributes?.location_point_geojson;
+      const initiativeImageLarge =
+        initiativeImages?.[0]?.attributes?.versions?.large;
+      const initiativeGeoPosition =
+        initiative?.attributes?.location_point_geojson;
       const initiativeAddress = initiative?.attributes?.location_description;
-      const topicIds = initiative?.relationships?.topics?.data?.map(item => item.id) || [];
+      const topicIds =
+        initiative?.relationships?.topics?.data?.map(item => item.id) || [];
       const initiativeUrl = location.href;
       const initiativeId = initiative?.id;
       const initiativeBody = localize(initiative?.attributes?.body_multiloc);
-      const isDesktop = windowSize ? windowSize > viewportWidths.largeTablet : true;
-      const isNotDesktop = windowSize ? windowSize <= viewportWidths.largeTablet : false;
-      const utmParams = !isNilOrError(authUser) ? {
-        source: 'share_initiative',
-        campaign: 'share_content',
-        content: authUser.id
-      } : {
-        source: 'share_initiative',
-        campaign: 'share_content'
-      };
-      const showTranslateButton = (
+      const isDesktop = windowSize
+        ? windowSize > viewportWidths.largeTablet
+        : true;
+      const isNotDesktop = windowSize
+        ? windowSize <= viewportWidths.largeTablet
+        : false;
+      const utmParams = !isNilOrError(authUser)
+        ? {
+            source: 'share_initiative',
+            campaign: 'share_content',
+            content: authUser.id
+          }
+        : {
+            source: 'share_initiative',
+            campaign: 'share_content'
+          };
+      const showTranslateButton =
         !isNilOrError(initiative) &&
         !isNilOrError(locale) &&
-        !initiative.attributes.title_multiloc[locale]
-      );
+        !initiative.attributes.title_multiloc[locale];
 
       content = (
         <>
           <InitiativeMeta initiativeId={initiativeId} />
 
-          {isDesktop && initiativeHeaderImageLarge &&
+          {isDesktop && initiativeHeaderImageLarge && (
             <InitiativeBannerContainer>
-              {initiativeHeaderImageLarge && <InitiativeBannerImage src={initiativeHeaderImageLarge} />}
+              {initiativeHeaderImageLarge && (
+                <InitiativeBannerImage src={initiativeHeaderImageLarge} />
+              )}
             </InitiativeBannerContainer>
-          }
+          )}
 
-          {isNotDesktop &&
+          {isNotDesktop && (
             <InitiativeBannerContainer>
-              {initiativeHeaderImageLarge &&
+              {initiativeHeaderImageLarge && (
                 <>
                   <InitiativeBannerImage src={initiativeHeaderImageLarge} />
                   <InitiativeHeaderOverlay />
                 </>
-              }
+              )}
               <InitiativeBannerContent>
                 <MobileMoreActionContainer>
                   <InitiativeMoreActions
@@ -463,37 +525,32 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   color="white"
                   align="left"
                 />
-                <PostedByMobile
-                  authorId={authorId}
-                />
-                </InitiativeBannerContent>
+                <PostedByMobile authorId={authorId} />
+              </InitiativeBannerContent>
             </InitiativeBannerContainer>
-          }
+          )}
 
-          {isDesktop &&
+          {isDesktop && (
             <ActionBar
               initiativeId={initiativeId}
               translateButtonClicked={translateButtonClicked}
               onTranslateInitiative={this.onTranslateInitiative}
             />
-          }
+          )}
 
-          {isNotDesktop &&
+          {isNotDesktop && (
             <StyledVoteControl
               initiativeId={initiativeId}
               onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
             />
-          }
+          )}
 
           <InitiativeContainer>
             <Content>
               <LeftColumn>
-                <Topics
-                  postType="initiative"
-                  topicIds={topicIds}
-                />
+                <Topics postType="initiative" topicIds={topicIds} />
 
-                {isDesktop &&
+                {isDesktop && (
                   <InitiativeHeader>
                     <Title
                       postType="initiative"
@@ -503,41 +560,41 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                       translateButtonClicked={translateButtonClicked}
                     />
                   </InitiativeHeader>
-                }
+                )}
 
-                {isDesktop &&
-                  <PostedBy
-                    authorId={authorId}
-                    showAboutInitiatives
-                  />
-                }
+                {isDesktop && (
+                  <PostedBy authorId={authorId} showAboutInitiatives />
+                )}
 
-                {initiativeImageLarge &&
+                {initiativeImageLarge && (
                   <Image
                     src={initiativeImageLarge}
                     alt=""
                     id="e2e-initiative-image"
                   />
-                }
+                )}
 
-                {isNotDesktop && showTranslateButton &&
+                {isNotDesktop && showTranslateButton && (
                   <FeatureFlag name="machine_translations">
                     <StyledTranslateButtonMobile
                       translateButtonClicked={translateButtonClicked}
                       onClick={this.onTranslateInitiative}
                     />
                   </FeatureFlag>
-                }
+                )}
 
-                {initiativeGeoPosition && initiativeAddress &&
+                {initiativeGeoPosition && initiativeAddress && (
                   <StyledDropdownMap
                     address={initiativeAddress}
                     position={initiativeGeoPosition}
                   />
-                }
+                )}
 
                 <ScreenReaderOnly>
-                  <FormattedMessage tagName="h2" {...messages.invisibleTitleContent} />
+                  <FormattedMessage
+                    tagName="h2"
+                    {...messages.invisibleTitleContent}
+                  />
                 </ScreenReaderOnly>
 
                 <Body
@@ -548,16 +605,19 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   translateButtonClicked={translateButtonClicked}
                 />
 
-                {!isNilOrError(initiativeFiles) && initiativeFiles.length > 0 &&
-                  <FileAttachments files={initiativeFiles} />
-                }
+                {!isNilOrError(initiativeFiles) &&
+                  initiativeFiles.length > 0 && (
+                    <FileAttachments files={initiativeFiles} />
+                  )}
 
                 <div ref={this.officialFeedbackElement}>
                   <StyledOfficialFeedback
                     postId={initiativeId}
                     postType="initiative"
                     permissionToPost={postOfficialFeedbackPermission}
-                    a11y_pronounceLatestOfficialFeedbackPost={a11y_pronounceLatestOfficialFeedbackPost}
+                    a11y_pronounceLatestOfficialFeedbackPost={
+                      a11y_pronounceLatestOfficialFeedbackPost
+                    }
                   />
                 </div>
 
@@ -568,27 +628,39 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                   commentsCount={initiative.attributes.comments_count}
                 />
 
-                {isNotDesktop &&
+                {isNotDesktop && (
                   <SharingMobile
                     context="initiative"
                     url={initiativeUrl}
-                    twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
-                    emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
-                    emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
+                    twitterMessage={formatMessage(messages.twitterMessage, {
+                      initiativeTitle
+                    })}
+                    emailSubject={formatMessage(messages.emailSharingSubject, {
+                      initiativeTitle
+                    })}
+                    emailBody={formatMessage(messages.emailSharingBody, {
+                      initiativeUrl,
+                      initiativeTitle
+                    })}
                     utmParams={utmParams}
                   />
-                }
+                )}
               </LeftColumn>
 
-              {isDesktop &&
+              {isDesktop && (
                 <RightColumnDesktop>
                   <MetaContent>
                     <ScreenReaderOnly>
-                      <FormattedMessage tagName="h2" {...messages.a11y_voteControl} />
+                      <FormattedMessage
+                        tagName="h2"
+                        {...messages.a11y_voteControl}
+                      />
                     </ScreenReaderOnly>
                     <VoteControl
                       initiativeId={initiative.id}
-                      onScrollToOfficialFeedback={this.onScrollToOfficialFeedback}
+                      onScrollToOfficialFeedback={
+                        this.onScrollToOfficialFeedback
+                      }
                       id="e2e-initiative-vote-control"
                     />
                     <SharingWrapper>
@@ -596,15 +668,23 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
                         id="e2e-initiative-sharing-component"
                         context="initiative"
                         url={initiativeUrl}
-                        twitterMessage={formatMessage(messages.twitterMessage, { initiativeTitle })}
-                        emailSubject={formatMessage(messages.emailSharingSubject, { initiativeTitle })}
-                        emailBody={formatMessage(messages.emailSharingBody, { initiativeUrl, initiativeTitle })}
+                        twitterMessage={formatMessage(messages.twitterMessage, {
+                          initiativeTitle
+                        })}
+                        emailSubject={formatMessage(
+                          messages.emailSharingSubject,
+                          { initiativeTitle }
+                        )}
+                        emailBody={formatMessage(messages.emailSharingBody, {
+                          initiativeUrl,
+                          initiativeTitle
+                        })}
                         utmParams={utmParams}
                       />
                     </SharingWrapper>
                   </MetaContent>
                 </RightColumnDesktop>
-              }
+              )}
             </Content>
           </InitiativeContainer>
 
@@ -617,11 +697,11 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
 
     return (
       <>
-        {!loaded &&
+        {!loaded && (
           <Loading>
             <Spinner />
           </Loading>
-        }
+        )}
 
         <CSSTransition
           classNames="content"
@@ -645,14 +725,17 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
             hasSkipButton={true}
             skipText={<FormattedMessage {...messages.skipSharing} />}
           >
-            {initiativeIdForSocialSharing &&
+            {initiativeIdForSocialSharing && (
               <SharingModalContent
                 postType="initiative"
                 postId={initiativeIdForSocialSharing}
                 title={formatMessage(messages.shareTitle)}
-                subtitle={formatMessage(messages.shareSubtitle, { votingThreshold, daysLimit })}
+                subtitle={formatMessage(messages.shareSubtitle, {
+                  votingThreshold,
+                  daysLimit
+                })}
               />
-            }
+            )}
           </Modal>
         </FeatureFlag>
       </>
@@ -660,18 +743,41 @@ export class InitiativesShow extends PureComponent<Props & InjectedIntlProps & I
   }
 }
 
-const InitiativesShowWithHOCs = injectLocalize<Props>(injectIntl(withRouter(InitiativesShow)));
+const InitiativesShowWithHOCs = injectLocalize<Props>(
+  injectIntl(withRouter(InitiativesShow))
+);
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
   tenant: <GetTenant />,
   authUser: <GetAuthUser />,
   windowSize: <GetWindowSize />,
-  initiative: ({ initiativeId, render }) => <GetInitiative id={initiativeId}>{render}</GetInitiative>,
-  initiativeImages: ({ initiativeId, render }) => <GetInitiativeImages initiativeId={initiativeId}>{render}</GetInitiativeImages>,
-  initiativeFiles: ({ initiativeId, render }) => <GetResourceFiles resourceId={initiativeId} resourceType="initiative">{render}</GetResourceFiles>,
-  officialFeedbacks: ({ initiativeId, render }) => <GetOfficialFeedbacks postId={initiativeId} postType="initiative">{render}</GetOfficialFeedbacks>,
-  postOfficialFeedbackPermission: ({ initiative, render }) => <GetPermission item={!isNilOrError(initiative) ? initiative : null} action="moderate" >{render}</GetPermission>
+  initiative: ({ initiativeId, render }) => (
+    <GetInitiative id={initiativeId}>{render}</GetInitiative>
+  ),
+  initiativeImages: ({ initiativeId, render }) => (
+    <GetInitiativeImages initiativeId={initiativeId}>
+      {render}
+    </GetInitiativeImages>
+  ),
+  initiativeFiles: ({ initiativeId, render }) => (
+    <GetResourceFiles resourceId={initiativeId} resourceType="initiative">
+      {render}
+    </GetResourceFiles>
+  ),
+  officialFeedbacks: ({ initiativeId, render }) => (
+    <GetOfficialFeedbacks postId={initiativeId} postType="initiative">
+      {render}
+    </GetOfficialFeedbacks>
+  ),
+  postOfficialFeedbackPermission: ({ initiative, render }) => (
+    <GetPermission
+      item={!isNilOrError(initiative) ? initiative : null}
+      action="moderate"
+    >
+      {render}
+    </GetPermission>
+  )
 });
 
 export default (inputProps: InputProps) => (

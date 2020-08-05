@@ -19,9 +19,9 @@ const SortableTableHeader: FC<Props> = ({ children, ...props }) => {
   return (
     <SortableLink onClick={onToggle}>
       {children}
-      {direction &&
+      {direction && (
         <Icon name={direction === 'ascending' ? 'caret up' : 'caret down'} />
-      }
+      )}
     </SortableLink>
   );
 };

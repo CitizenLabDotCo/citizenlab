@@ -19,7 +19,11 @@ interface State {
   ideaList: (IIdeaData | Error)[] | undefined | null | Error;
 }
 
-export type GetIdeaListChildProps = (IIdeaData | Error)[] | undefined | null | Error;
+export type GetIdeaListChildProps =
+  | (IIdeaData | Error)[]
+  | undefined
+  | null
+  | Error;
 
 export default class GetIdeaList extends React.Component<Props, State> {
   private inputProps$: BehaviorSubject<InputProps>;
@@ -28,7 +32,7 @@ export default class GetIdeaList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaList: undefined
+      ideaList: undefined,
     };
   }
 
@@ -38,21 +42,26 @@ export default class GetIdeaList extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ ids });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ ids }) => {
-          if (ids && ids.length > 0) {
-            return combineLatest(
-              ids.map(id => ideaByIdStream(id).observable.pipe(map(idea => (!isNilOrError(idea) ? idea.data : idea))))
-            );
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => isEqual(prev, next)),
+          switchMap(({ ids }) => {
+            if (ids && ids.length > 0) {
+              return combineLatest(
+                ids.map((id) =>
+                  ideaByIdStream(id).observable.pipe(
+                    map((idea) => (!isNilOrError(idea) ? idea.data : idea))
+                  )
+                )
+              );
+            }
 
-          return of(null);
-        })
-      )
-      .subscribe((ideaList) => {
-        this.setState({ ideaList });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((ideaList) => {
+          this.setState({ ideaList });
+        }),
     ];
   }
 
@@ -61,7 +70,7 @@ export default class GetIdeaList extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

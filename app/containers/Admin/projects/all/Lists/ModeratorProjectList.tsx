@@ -5,7 +5,10 @@ import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
 // resources
-import GetProjects, { GetProjectsChildProps, PublicationStatus } from 'resources/GetProjects';
+import GetProjects, {
+  GetProjectsChildProps,
+  PublicationStatus,
+} from 'resources/GetProjects';
 
 // components
 import { List, Row } from 'components/admin/ResourceList';
@@ -21,7 +24,7 @@ interface DataProps {
   projects: GetProjectsChildProps;
 }
 
-interface Props extends DataProps { }
+interface Props extends DataProps {}
 
 const ModeratorProjectList = memo<Props>(({ projects }) => {
   if (
@@ -46,15 +49,28 @@ const ModeratorProjectList = memo<Props>(({ projects }) => {
                 <Row
                   key={index}
                   id={project.id}
-                  isLastItem={(index === projectsList.length - 1)}
+                  isLastItem={index === projectsList.length - 1}
                 >
-                  <GetAdminPublication adminPublicationId={project.relationships.admin_publication ?.data ?.id || null}>
-                    {({ adminPublication }) => !isNilOrError(adminPublication) ? <ProjectRow publication={{ ...adminPublication, publicationId: project.id, publicationType: 'project' }} /> : null}
+                  <GetAdminPublication
+                    adminPublicationId={
+                      project.relationships.admin_publication?.data?.id || null
+                    }
+                  >
+                    {({ adminPublication }) =>
+                      !isNilOrError(adminPublication) ? (
+                        <ProjectRow
+                          publication={{
+                            ...adminPublication,
+                            publicationId: project.id,
+                            publicationType: 'project',
+                          }}
+                        />
+                      ) : null
+                    }
                   </GetAdminPublication>
                 </Row>
               );
-            }
-            )}
+            })}
           </List>
         </>
       );
@@ -64,14 +80,21 @@ const ModeratorProjectList = memo<Props>(({ projects }) => {
   return null;
 });
 
-const publicationStatuses: PublicationStatus[] = ['published', 'draft', 'archived'];
+const publicationStatuses: PublicationStatus[] = [
+  'published',
+  'draft',
+  'archived',
+];
 
 const Data = adopt<DataProps>({
-  projects: <GetProjects publicationStatuses={publicationStatuses} filterCanModerate={true} />,
+  projects: (
+    <GetProjects
+      publicationStatuses={publicationStatuses}
+      filterCanModerate={true}
+    />
+  ),
 });
 
 export default () => (
-  <Data>
-    {dataProps => <ModeratorProjectList {...dataProps} />}
-  </Data>
+  <Data>{(dataProps) => <ModeratorProjectList {...dataProps} />}</Data>
 );

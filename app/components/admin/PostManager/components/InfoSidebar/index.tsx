@@ -39,13 +39,16 @@ const RightColumn = styled.div`
 
 export const StyledLink = styled.a`
   cursor: pointer;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     text-decoration: underline;
   }
 `;
 
 export function handlePreviewCLick(id, openPreview) {
-  return function () { openPreview(id); };
+  return function () {
+    openPreview(id);
+  };
 }
 
 interface Props {
@@ -63,10 +66,11 @@ export default ({ postIds, openPreview }: Props) => (
   >
     <RightColumn>
       <Sticky>
-        {postIds.length > 1
-          ? <InfoSidebarMulti postIds={postIds} openPreview={openPreview}/>
-          : <InfoSidebarSingle postId={postIds[0]} openPreview={openPreview}/>
-        }
+        {postIds.length > 1 ? (
+          <InfoSidebarMulti postIds={postIds} openPreview={openPreview} />
+        ) : (
+          <InfoSidebarSingle postId={postIds[0]} openPreview={openPreview} />
+        )}
       </Sticky>
     </RightColumn>
   </CSSTransition>

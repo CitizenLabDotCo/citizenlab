@@ -15,20 +15,23 @@ export interface Props {
 
 const InvitationsPage = React.memo((props: Props & InjectedIntlProps) => {
   const tabs = [
-    { label: props.intl.formatMessage(messages.tabInviteUsers), url: '/admin/invitations' },
-    { label: props.intl.formatMessage(messages.tabAllInvitations), url: '/admin/invitations/all' },
+    {
+      label: props.intl.formatMessage(messages.tabInviteUsers),
+      url: '/admin/invitations',
+    },
+    {
+      label: props.intl.formatMessage(messages.tabAllInvitations),
+      url: '/admin/invitations/all',
+    },
   ];
   const resource = {
     title: props.intl.formatMessage(messages.invitePeople),
-    subtitle: props.intl.formatMessage(messages.invitationSubtitle)
+    subtitle: props.intl.formatMessage(messages.invitationSubtitle),
   };
 
   const { children } = props;
   return (
-    <TabbedResource
-      resource={resource}
-      tabs={tabs}
-    >
+    <TabbedResource resource={resource} tabs={tabs}>
       <HelmetIntl
         title={messages.helmetTitle}
         description={messages.helmetDescription}

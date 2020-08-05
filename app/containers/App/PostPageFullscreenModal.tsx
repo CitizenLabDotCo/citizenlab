@@ -22,67 +22,66 @@ interface Props {
   close: () => void;
 }
 
-const PostPageFullscreenModal = memo<Props>(({ postId, slug, type, navbarRef, mobileNavbarRef, close }) => {
-  const onClose = useCallback(() => {
-    close();
-  }, [close]);
+const PostPageFullscreenModal = memo<Props>(
+  ({ postId, slug, type, navbarRef, mobileNavbarRef, close }) => {
+    const onClose = useCallback(() => {
+      close();
+    }, [close]);
 
-  // Far from ideal to always try to load the idea, but
-  // has to happen for hooks to work.
-  // It shows that we're putting 2 components in 1
-  const idea = useIdea({ ideaId: postId });
+    // Far from ideal to always try to load the idea, but
+    // has to happen for hooks to work.
+    // It shows that we're putting 2 components in 1
+    const idea = useIdea({ ideaId: postId });
 
-  const topBar = useMemo(() => {
-    if (postId && type === 'idea') {
-      return <IdeaShowPageTopBar ideaId={postId} insideModal={true} />;
-    }
+    const topBar = useMemo(() => {
+      if (postId && type === 'idea') {
+        return <IdeaShowPageTopBar ideaId={postId} insideModal={true} />;
+      }
 
-    if (postId && type === 'initiative') {
-      return <InitiativeShowPageTopBar initiativeId={postId} insideModal={true} />;
-    }
-
-    return null;
-  }, [postId, type]);
-
-  const content = useMemo(() => {
-    if (postId) {
-      if (type === 'idea' && !isNilOrError(idea)) {
-        const projectId = idea.relationships.project.data.id;
-
+      if (postId && type === 'initiative') {
         return (
-          <IdeasShow
-            ideaId={postId}
-            projectId={projectId}
-            insideModal={true}
-          />
+          <InitiativeShowPageTopBar initiativeId={postId} insideModal={true} />
         );
       }
 
-      if (type === 'initiative') {
-        return (
-          <InitiativesShow
-            initiativeId={postId}
-            insideModal={true}
-          />
-        );
+      return null;
+    }, [postId, type]);
+
+    const content = useMemo(() => {
+      if (postId) {
+        if (type === 'idea' && !isNilOrError(idea)) {
+          const projectId = idea.relationships.project.data.id;
+
+          return (
+            <IdeasShow
+              ideaId={postId}
+              projectId={projectId}
+              insideModal={true}
+            />
+          );
+        }
+
+        if (type === 'initiative') {
+          return <InitiativesShow initiativeId={postId} insideModal={true} />;
+        }
       }
-    }
 
-    return null;
-  }, [postId, idea]);
+      return null;
+    }, [postId, idea]);
 
-  return (
-    <FullscreenModal
-      opened={!!(postId && slug && type)}
-      close={onClose}
-      url={slug ? `/${type}s/${slug}` : null}
-      topBar={topBar}
-      navbarRef={navbarRef}
-      mobileNavbarRef={mobileNavbarRef}
-    >
-      {content}
-    </FullscreenModal>
-  );
-});
+    return (
+      <FullscreenModal
+        opened={!!(postId && slug && type)}
+        close={onClose}
+        url={slug ? `/${type}s/${slug}` : null}
+        topBar={topBar}
+        navbarRef={navbarRef}
+        mobileNavbarRef={mobileNavbarRef}
+      >
+        {content}
+      </FullscreenModal>
+    );
+  }
+);
 
 export default PostPageFullscreenModal;

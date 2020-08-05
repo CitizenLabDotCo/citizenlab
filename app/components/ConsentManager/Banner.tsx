@@ -139,7 +139,7 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
     const {
       onAccept,
       onChangePreferences,
-      intl: { formatMessage }
+      intl: { formatMessage },
     } = this.props;
 
     const policyLink = (
@@ -151,33 +151,40 @@ class Banner extends PureComponent<Props & InjectedIntlProps> {
     return (
       <Container role="dialog" id="e2e-cookie-banner">
         <ContentContainer mode="page">
-        <ContentContainerInner>
-          <Left>
-            <Line className="first"><FormattedMessage {...messages.mainText} values={{ policyLink }} /></Line>
-            <Line className="second"><FormattedMessage {...messages.subText} /></Line>
-          </Left>
-          <ButtonContainer>
-            <PreferencesButton
-              borderColor="transparent"
-              textColor="#fff"
-              bgColor={colors.adminTextColor}
-              bgHoverColor={rgba(255, 255, 255, 0.15)}
-              onClick={onChangePreferences}
-              className="integration-open-modal"
-            >
-              <FormattedMessage {...messages.manage} />
-            </PreferencesButton>
-            <AcceptButton
-              className="e2e-accept-cookies-btn"
-              buttonStyle="primary-inverse"
-              textColor={colors.adminTextColor}
-              textHoverColor={colors.adminTextColor}
-              onClick={onAccept}
-            >
-              <FormattedMessage {...messages.accept} />
-            </AcceptButton>
-          </ButtonContainer>
-        </ContentContainerInner>
+          <ContentContainerInner>
+            <Left>
+              <Line className="first">
+                <FormattedMessage
+                  {...messages.mainText}
+                  values={{ policyLink }}
+                />
+              </Line>
+              <Line className="second">
+                <FormattedMessage {...messages.subText} />
+              </Line>
+            </Left>
+            <ButtonContainer>
+              <PreferencesButton
+                borderColor="transparent"
+                textColor="#fff"
+                bgColor={colors.adminTextColor}
+                bgHoverColor={rgba(255, 255, 255, 0.15)}
+                onClick={onChangePreferences}
+                className="integration-open-modal"
+              >
+                <FormattedMessage {...messages.manage} />
+              </PreferencesButton>
+              <AcceptButton
+                className="e2e-accept-cookies-btn"
+                buttonStyle="primary-inverse"
+                textColor={colors.adminTextColor}
+                textHoverColor={colors.adminTextColor}
+                onClick={onAccept}
+              >
+                <FormattedMessage {...messages.accept} />
+              </AcceptButton>
+            </ButtonContainer>
+          </ContentContainerInner>
         </ContentContainer>
 
         <CloseButton

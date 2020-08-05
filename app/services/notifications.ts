@@ -11,7 +11,8 @@ interface IBaseNotificationData {
   type: string;
 }
 
-export interface IAdminRightsReceivedNotificationData extends IBaseNotificationData {
+export interface IAdminRightsReceivedNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'admin_rights_received';
     read_at: string | null;
@@ -19,7 +20,8 @@ export interface IAdminRightsReceivedNotificationData extends IBaseNotificationD
   };
 }
 
-export interface ICommentDeletedByAdminNotificationData extends IBaseNotificationData {
+export interface ICommentDeletedByAdminNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'comment_deleted_by_admin';
     read_at: string | null;
@@ -32,7 +34,8 @@ export interface ICommentDeletedByAdminNotificationData extends IBaseNotificatio
   };
 }
 
-export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationData {
+export interface ICommentMarkedAsSpamNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'comment_marked_as_spam';
     read_at: string | null;
@@ -46,7 +49,8 @@ export interface ICommentMarkedAsSpamNotificationData extends IBaseNotificationD
   };
 }
 
-export interface ICommentOnYourCommentNotificationData extends IBaseNotificationData {
+export interface ICommentOnYourCommentNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'comment_on_your_comment';
     read_at: string | null;
@@ -60,7 +64,8 @@ export interface ICommentOnYourCommentNotificationData extends IBaseNotification
   };
 }
 
-export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationData {
+export interface ICommentOnYourIdeaNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'comment_on_your_idea';
     read_at: string | null;
@@ -73,7 +78,8 @@ export interface ICommentOnYourIdeaNotificationData extends IBaseNotificationDat
   };
 }
 
-export interface ICommentOnYourInitiativeNotificationData extends IBaseNotificationData {
+export interface ICommentOnYourInitiativeNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'comment_on_your_initiative';
     read_at: string | null;
@@ -86,7 +92,8 @@ export interface ICommentOnYourInitiativeNotificationData extends IBaseNotificat
   };
 }
 
-export interface IIdeaAssignedToYouNotificationData extends IBaseNotificationData {
+export interface IIdeaAssignedToYouNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'idea_assigned_to_you';
     read_at: string | null;
@@ -99,7 +106,8 @@ export interface IIdeaAssignedToYouNotificationData extends IBaseNotificationDat
   };
 }
 
-export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData {
+export interface IIdeaMarkedAsSpamNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'idea_marked_as_spam';
     read_at: string | null;
@@ -112,7 +120,8 @@ export interface IIdeaMarkedAsSpamNotificationData extends IBaseNotificationData
   };
 }
 
-export interface IInitiativeAssignedToYouNotificationData extends IBaseNotificationData {
+export interface IInitiativeAssignedToYouNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'initiative_assigned_to_you';
     read_at: string | null;
@@ -125,7 +134,8 @@ export interface IInitiativeAssignedToYouNotificationData extends IBaseNotificat
   };
 }
 
-export interface IInitiativeMarkedAsSpamNotificationData extends IBaseNotificationData {
+export interface IInitiativeMarkedAsSpamNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'initiative_marked_as_spam';
     read_at: string | null;
@@ -149,7 +159,8 @@ export interface IInviteAcceptedNotificationData extends IBaseNotificationData {
   };
 }
 
-export interface IMentionInCommentNotificationData extends IBaseNotificationData {
+export interface IMentionInCommentNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'mention_in_comment';
     read_at: string | null;
@@ -163,7 +174,8 @@ export interface IMentionInCommentNotificationData extends IBaseNotificationData
   };
 }
 
-export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotificationData {
+export interface IMentionInOfficialFeedbackNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'mention_in_official_feedback';
     read_at: string | null;
@@ -178,7 +190,8 @@ export interface IMentionInOfficialFeedbackNotificationData extends IBaseNotific
   };
 }
 
-export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseNotificationData {
+export interface IOfficialFeedbackOnCommentedIdeaNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_commented_idea';
     read_at: string | null;
@@ -189,7 +202,8 @@ export interface IOfficialFeedbackOnCommentedIdeaNotificationData extends IBaseN
   };
 }
 
-export interface IOfficialFeedbackOnCommentedInitiativeNotificationData extends IBaseNotificationData {
+export interface IOfficialFeedbackOnCommentedInitiativeNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_commented_initiative';
     read_at: string | null;
@@ -200,7 +214,8 @@ export interface IOfficialFeedbackOnCommentedInitiativeNotificationData extends 
   };
 }
 
-export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotificationData {
+export interface IOfficialFeedbackOnVotedIdeaNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_voted_idea';
     read_at: string | null;
@@ -211,7 +226,8 @@ export interface IOfficialFeedbackOnVotedIdeaNotificationData extends IBaseNotif
   };
 }
 
-export interface IOfficialFeedbackOnVotedInitiativeNotificationData extends IBaseNotificationData {
+export interface IOfficialFeedbackOnVotedInitiativeNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_voted_initiative';
     read_at: string | null;
@@ -222,7 +238,8 @@ export interface IOfficialFeedbackOnVotedInitiativeNotificationData extends IBas
   };
 }
 
-export interface IOfficialFeedbackOnYourIdeaNotificationData extends IBaseNotificationData {
+export interface IOfficialFeedbackOnYourIdeaNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_your_idea';
     read_at: string | null;
@@ -233,7 +250,8 @@ export interface IOfficialFeedbackOnYourIdeaNotificationData extends IBaseNotifi
   };
 }
 
-export interface IOfficialFeedbackOnYourInitiativeNotificationData extends IBaseNotificationData {
+export interface IOfficialFeedbackOnYourInitiativeNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'official_feedback_on_your_initiative';
     read_at: string | null;
@@ -244,7 +262,8 @@ export interface IOfficialFeedbackOnYourInitiativeNotificationData extends IBase
   };
 }
 
-export interface IProjectModerationRightsReceivedNotificationData extends IBaseNotificationData {
+export interface IProjectModerationRightsReceivedNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'project_moderation_rights_received';
     read_at: string | null;
@@ -254,7 +273,8 @@ export interface IProjectModerationRightsReceivedNotificationData extends IBaseN
   };
 }
 
-export interface IProjectPhaseStartedNotificationData extends IBaseNotificationData {
+export interface IProjectPhaseStartedNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'project_phase_started';
     read_at: string | null;
@@ -266,7 +286,8 @@ export interface IProjectPhaseStartedNotificationData extends IBaseNotificationD
   };
 }
 
-export interface IProjectPhaseUpcomingNotificationData extends IBaseNotificationData {
+export interface IProjectPhaseUpcomingNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'project_phase_upcoming';
     read_at: string | null;
@@ -278,7 +299,8 @@ export interface IProjectPhaseUpcomingNotificationData extends IBaseNotification
   };
 }
 
-export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificationData {
+export interface IStatusChangeOfYourIdeaNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'status_change_of_your_idea';
     read_at: string | null;
@@ -289,7 +311,8 @@ export interface IStatusChangeOfYourIdeaNotificationData extends IBaseNotificati
   };
 }
 
-export interface IStatusChangeOfYourInitiativeNotificationData extends IBaseNotificationData {
+export interface IStatusChangeOfYourInitiativeNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'status_change_of_your_initiative';
     read_at: string | null;
@@ -300,7 +323,8 @@ export interface IStatusChangeOfYourInitiativeNotificationData extends IBaseNoti
   };
 }
 
-export interface IStatusChangeOnCommentedIdeaNotificationData extends IBaseNotificationData {
+export interface IStatusChangeOnCommentedIdeaNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'status_change_on_commented_idea';
     read_at: string | null;
@@ -311,7 +335,8 @@ export interface IStatusChangeOnCommentedIdeaNotificationData extends IBaseNotif
   };
 }
 
-export interface IStatusChangeOnCommentedInitiativeNotificationData extends IBaseNotificationData {
+export interface IStatusChangeOnCommentedInitiativeNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'status_change_on_commented_initiative';
     read_at: string | null;
@@ -322,7 +347,8 @@ export interface IStatusChangeOnCommentedInitiativeNotificationData extends IBas
   };
 }
 
-export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificationData {
+export interface IStatusChangeOnVotedIdeaNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'status_change_on_voted_idea';
     read_at: string | null;
@@ -333,7 +359,8 @@ export interface IStatusChangeOnVotedIdeaNotificationData extends IBaseNotificat
   };
 }
 
-export interface IStatusChangeOnVotedInitiativeNotificationData extends IBaseNotificationData {
+export interface IStatusChangeOnVotedInitiativeNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'status_change_on_voted_initiative';
     read_at: string | null;
@@ -344,7 +371,8 @@ export interface IStatusChangeOnVotedInitiativeNotificationData extends IBaseNot
   };
 }
 
-export interface IThresholdReachedForAdminNotificationData extends IBaseNotificationData {
+export interface IThresholdReachedForAdminNotificationData
+  extends IBaseNotificationData {
   attributes: {
     type: 'threshold_reached_for_admin';
     read_at: string | null;
@@ -355,35 +383,35 @@ export interface IThresholdReachedForAdminNotificationData extends IBaseNotifica
 }
 
 export type TNotificationData =
-  IAdminRightsReceivedNotificationData |
-  ICommentDeletedByAdminNotificationData |
-  ICommentMarkedAsSpamNotificationData |
-  ICommentOnYourCommentNotificationData |
-  ICommentOnYourIdeaNotificationData |
-  ICommentOnYourInitiativeNotificationData |
-  IIdeaAssignedToYouNotificationData |
-  IIdeaMarkedAsSpamNotificationData |
-  IInitiativeAssignedToYouNotificationData |
-  IInitiativeMarkedAsSpamNotificationData |
-  IInviteAcceptedNotificationData |
-  IMentionInCommentNotificationData |
-  IMentionInOfficialFeedbackNotificationData |
-  IOfficialFeedbackOnCommentedIdeaNotificationData |
-  IOfficialFeedbackOnCommentedInitiativeNotificationData |
-  IOfficialFeedbackOnVotedIdeaNotificationData |
-  IOfficialFeedbackOnVotedInitiativeNotificationData |
-  IOfficialFeedbackOnYourIdeaNotificationData |
-  IOfficialFeedbackOnYourInitiativeNotificationData |
-  IProjectModerationRightsReceivedNotificationData |
-  IProjectPhaseStartedNotificationData |
-  IProjectPhaseUpcomingNotificationData |
-  IStatusChangeOfYourIdeaNotificationData |
-  IStatusChangeOfYourInitiativeNotificationData |
-  IStatusChangeOnCommentedIdeaNotificationData |
-  IStatusChangeOnCommentedInitiativeNotificationData |
-  IStatusChangeOnVotedIdeaNotificationData |
-  IStatusChangeOnVotedInitiativeNotificationData |
-  IThresholdReachedForAdminNotificationData;
+  | IAdminRightsReceivedNotificationData
+  | ICommentDeletedByAdminNotificationData
+  | ICommentMarkedAsSpamNotificationData
+  | ICommentOnYourCommentNotificationData
+  | ICommentOnYourIdeaNotificationData
+  | ICommentOnYourInitiativeNotificationData
+  | IIdeaAssignedToYouNotificationData
+  | IIdeaMarkedAsSpamNotificationData
+  | IInitiativeAssignedToYouNotificationData
+  | IInitiativeMarkedAsSpamNotificationData
+  | IInviteAcceptedNotificationData
+  | IMentionInCommentNotificationData
+  | IMentionInOfficialFeedbackNotificationData
+  | IOfficialFeedbackOnCommentedIdeaNotificationData
+  | IOfficialFeedbackOnCommentedInitiativeNotificationData
+  | IOfficialFeedbackOnVotedIdeaNotificationData
+  | IOfficialFeedbackOnVotedInitiativeNotificationData
+  | IOfficialFeedbackOnYourIdeaNotificationData
+  | IOfficialFeedbackOnYourInitiativeNotificationData
+  | IProjectModerationRightsReceivedNotificationData
+  | IProjectPhaseStartedNotificationData
+  | IProjectPhaseUpcomingNotificationData
+  | IStatusChangeOfYourIdeaNotificationData
+  | IStatusChangeOfYourInitiativeNotificationData
+  | IStatusChangeOnCommentedIdeaNotificationData
+  | IStatusChangeOnCommentedInitiativeNotificationData
+  | IStatusChangeOnVotedIdeaNotificationData
+  | IStatusChangeOnVotedInitiativeNotificationData
+  | IThresholdReachedForAdminNotificationData;
 
 export interface INotificationLinks {
   self: string;

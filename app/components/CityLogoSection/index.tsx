@@ -82,17 +82,16 @@ class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$
-      ).subscribe(([locale, currentTenant]) => {
-        this.setState({ locale, currentTenant });
-      })
+      combineLatest(locale$, currentTenant$).subscribe(
+        ([locale, currentTenant]) => {
+          this.setState({ locale, currentTenant });
+        }
+      ),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
@@ -100,27 +99,48 @@ class CityLogoSection extends PureComponent<Props & InjectedIntlProps, State> {
     const { formatMessage } = this.props.intl;
 
     if (locale && currentTenant) {
-      const currentTenantLocales = currentTenant.data.attributes.settings.core.locales;
-      const currentTenantLogo = currentTenant.data.attributes.logo ? currentTenant.data.attributes.logo.medium : false;
-      const tenantSite = currentTenant.data.attributes.settings.core.organization_site;
-      const organizationNameMulitiLoc = currentTenant.data.attributes.settings.core.organization_name;
-      const currentTenantName = getLocalized(organizationNameMulitiLoc, locale, currentTenantLocales);
-      const organizationType = currentTenant.data.attributes.settings.core.organization_type;
-      const slogan = currentTenantName ? <FormattedMessage tagName="h2" {...messages.slogan} values={{ name: currentTenantName, type: organizationType }} /> : '';
+      const currentTenantLocales =
+        currentTenant.data.attributes.settings.core.locales;
+      const currentTenantLogo = currentTenant.data.attributes.logo
+        ? currentTenant.data.attributes.logo.medium
+        : false;
+      const tenantSite =
+        currentTenant.data.attributes.settings.core.organization_site;
+      const organizationNameMulitiLoc =
+        currentTenant.data.attributes.settings.core.organization_name;
+      const currentTenantName = getLocalized(
+        organizationNameMulitiLoc,
+        locale,
+        currentTenantLocales
+      );
+      const organizationType =
+        currentTenant.data.attributes.settings.core.organization_type;
+      const slogan = currentTenantName ? (
+        <FormattedMessage
+          tagName="h2"
+          {...messages.slogan}
+          values={{ name: currentTenantName, type: organizationType }}
+        />
+      ) : (
+        ''
+      );
       const footerLocale = `footer-city-logo-${locale}`;
 
       return (
-        <Fragment title={formatMessage(messages.iframeTitle)} name={footerLocale}>
+        <Fragment
+          title={formatMessage(messages.iframeTitle)}
+          name={footerLocale}
+        >
           <Container id="hook-footer-logo">
-            {currentTenantLogo && tenantSite &&
+            {currentTenantLogo && tenantSite && (
               <LogoLink href={tenantSite} target="_blank">
                 <TenantLogo src={currentTenantLogo} alt="Organization logo" />
               </LogoLink>
-            }
+            )}
 
-            {currentTenantLogo && !tenantSite &&
+            {currentTenantLogo && !tenantSite && (
               <TenantLogo src={currentTenantLogo} alt="Organization logo" />
-            }
+            )}
 
             <TenantSlogan>{slogan}</TenantSlogan>
           </Container>

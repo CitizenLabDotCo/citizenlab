@@ -30,26 +30,28 @@ const GroupAvatarWrapper: any = styled.div`
   justify-content: center;
   position: relative;
 
-  ${(props: any) => props.count > 1 ? css`
+  ${(props: any) =>
+    props.count > 1
+      ? css`
+          ${AvatarWrapper} {
+            position: absolute;
 
-    ${AvatarWrapper} {
-      position: absolute;
+            &:nth-child(1) {
+              left: 0px;
+            }
 
-      &:nth-child(1) {
-        left: 0px;
-      }
+            &:nth-child(2) {
+              z-index: 1;
+              left: 15px;
+            }
 
-      &:nth-child(2) {
-        z-index: 1;
-        left: 15px;
-      }
-
-      &:nth-child(3) {
-        z-index: 2;
-        left: 30px;
-      }
-    }
-  ` : css``};
+            &:nth-child(3) {
+              z-index: 2;
+              left: 30px;
+            }
+          }
+        `
+      : css``};
 `;
 
 // Typings
@@ -67,7 +69,7 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      users: null
+      users: null,
     };
     this.subscriptions = [];
   }
@@ -78,32 +80,38 @@ export default class GroupAvatar extends React.PureComponent<Props, State> {
       queryParameters: {
         page: {
           size: 3,
-          number: 1
-        }
-      }
+          number: 1,
+        },
+      },
     };
 
     const memberships$ = getGroupMemberships(groupId, streamParams).observable;
 
     this.subscriptions = [
-      memberships$.pipe(
-        switchMap((memberships) => {
-          if (!isNilOrError(memberships) && memberships.data.length > 0) {
-            return combineLatest(
-              take(memberships.data, 3).map(membership => userByIdStream(membership.relationships.user.data.id).observable)
-            );
-          }
+      memberships$
+        .pipe(
+          switchMap((memberships) => {
+            if (!isNilOrError(memberships) && memberships.data.length > 0) {
+              return combineLatest(
+                take(memberships.data, 3).map(
+                  (membership) =>
+                    userByIdStream(membership.relationships.user.data.id)
+                      .observable
+                )
+              );
+            }
 
-          return of(null);
-        })
-      ).subscribe((users) => {
-        this.setState({ users });
-      })
+            return of(null);
+          })
+        )
+        .subscribe((users) => {
+          this.setState({ users });
+        }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

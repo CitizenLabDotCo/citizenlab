@@ -31,11 +31,11 @@ import { CLError, UploadFile } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 const MainDropzone = styled(ImagesDropzone)`
-  margin-top : 20px;
+  margin-top: 20px;
 `;
 
 const Preview = styled(ImagesDropzone)`
-  margin-top : 20px;
+  margin-top: 20px;
 
   .remove-button {
     display: none;
@@ -56,7 +56,7 @@ interface Props {
 
 type State = {
   attributesDiff: IAttributesDiff;
-  errors: { [fieldName: string]:CLError[] };
+  errors: { [fieldName: string]: CLError[] };
   favicon: UploadFile[] | null;
   faviconError: string | null;
   saved: boolean;
@@ -94,15 +94,15 @@ class Favicon extends PureComponent<Props, State> {
   handleUploadOnAdd = (newImage: UploadFile[]) => {
     this.setState({
       attributesDiff: {
-      favicon: newImage[0].base64
+        favicon: newImage[0].base64,
       },
-      favicon: [newImage[0]]
+      favicon: [newImage[0]],
     });
-  }
+  };
 
   handleUploadOnRemove = () => {
     this.setState({ attributesDiff: {}, favicon: null });
-  }
+  };
 
   save = async (event) => {
     event.preventDefault();
@@ -112,7 +112,10 @@ class Favicon extends PureComponent<Props, State> {
       this.setState({ loading: true, saved: false });
 
       try {
-        await updateTenant(tenant.id, this.state.attributesDiff as IUpdatedTenantProperties);
+        await updateTenant(
+          tenant.id,
+          this.state.attributesDiff as IUpdatedTenantProperties
+        );
         this.setState({ loading: false, saved: true, attributesDiff: {} });
       } catch (error) {
         if (isCLErrorJSON(error)) {
@@ -122,7 +125,7 @@ class Favicon extends PureComponent<Props, State> {
         }
       }
     }
-  }
+  };
 
   render() {
     const { errors, saved } = this.state;
@@ -133,11 +136,10 @@ class Favicon extends PureComponent<Props, State> {
 
       return (
         <form onSubmit={this.save}>
-
           <Section>
             <SectionField key={'favicon'}>
               <Label>Favicon</Label>
-              <FormattedMessage  {...messages.faviconExplaination}/>
+              <FormattedMessage {...messages.faviconExplaination} />
               <MainDropzone
                 acceptedFileTypes="image/png"
                 maxNumberOfImages={1}
@@ -190,7 +192,6 @@ class Favicon extends PureComponent<Props, State> {
               messageSuccess: messages.saveSuccessMessage,
             }}
           />
-
         </form>
       );
     }
@@ -199,4 +200,6 @@ class Favicon extends PureComponent<Props, State> {
   }
 }
 
-export default () => (<GetTenant>{tenant => (<Favicon tenant={tenant} />)}</GetTenant>);
+export default () => (
+  <GetTenant>{(tenant) => <Favicon tenant={tenant} />}</GetTenant>
+);

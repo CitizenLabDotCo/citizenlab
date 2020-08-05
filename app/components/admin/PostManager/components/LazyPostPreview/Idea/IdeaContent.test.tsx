@@ -8,7 +8,10 @@ jest.mock('containers/IdeasShow/IdeaAuthor', () => 'IdeaAuthor');
 jest.mock('components/PostShowComponents/Title', () => 'Title');
 jest.mock('components/PostShowComponents/Body', () => 'Body');
 jest.mock('components/PostShowComponents/DropdownMap', () => 'DropdownMap');
-jest.mock('components/PostShowComponents/OfficialFeedback', () => 'OfficialFeedback');
+jest.mock(
+  'components/PostShowComponents/OfficialFeedback',
+  () => 'OfficialFeedback'
+);
 jest.mock('components/PostShowComponents/Comments', () => 'Comments');
 jest.mock('components/UI/FileAttachments', () => 'FileAttachments');
 jest.mock('components/UI/Button', () => 'Button');

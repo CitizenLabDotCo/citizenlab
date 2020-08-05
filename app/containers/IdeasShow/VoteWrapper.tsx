@@ -29,17 +29,23 @@ class VoteWrapper extends PureComponent<Props, State> {
     };
   }
 
-  componentDidUpdate(prevProps : Props) {
+  componentDidUpdate(prevProps: Props) {
     const { idea } = this.props;
     const prevIdea = prevProps.idea;
 
     if (!isNilOrError(idea) && !isNilOrError(prevIdea)) {
       const votingEnabled = idea.attributes.action_descriptor.voting.enabled;
-      const prevVotingEnabled = prevIdea.attributes.action_descriptor.voting.enabled;
-      const votingDisabledReason = idea.attributes.action_descriptor.voting.disabled_reason;
-      const prevVotingDisabledReason = prevIdea.attributes.action_descriptor.voting.disabled_reason;
+      const prevVotingEnabled =
+        prevIdea.attributes.action_descriptor.voting.enabled;
+      const votingDisabledReason =
+        idea.attributes.action_descriptor.voting.disabled_reason;
+      const prevVotingDisabledReason =
+        prevIdea.attributes.action_descriptor.voting.disabled_reason;
 
-      if ((votingEnabled !== prevVotingEnabled) || (votingDisabledReason !== prevVotingDisabledReason)) {
+      if (
+        votingEnabled !== prevVotingEnabled ||
+        votingDisabledReason !== prevVotingDisabledReason
+      ) {
         this.setState({ error: null });
       }
     }
@@ -47,45 +53,47 @@ class VoteWrapper extends PureComponent<Props, State> {
 
   disabledVoteClick = () => {
     this.setState({ error: 'votingDisabled' });
-  }
+  };
 
   render() {
     const { ideaId, projectId, idea } = this.props;
     const { error } = this.state;
 
-    const votingDescriptor = isNilOrError(idea) ? null : idea.attributes.action_descriptor.voting;
+    const votingDescriptor = isNilOrError(idea)
+      ? null
+      : idea.attributes.action_descriptor.voting;
 
     if (!ideaId || !votingDescriptor) return null;
 
     return (
       <>
-        {!error &&
+        {!error && (
           <VoteControl
             ideaId={ideaId}
             disabledVoteClick={this.disabledVoteClick}
             size="3"
             showDownvote={votingDescriptor.downvoting_enabled}
           />
-        }
-        {error === 'votingDisabled' &&
+        )}
+        {error === 'votingDisabled' && (
           <PopContainer icon="lock-outlined">
             <VotingDisabled
               votingDescriptor={votingDescriptor}
               projectId={projectId}
             />
           </PopContainer>
-        }
+        )}
       </>
     );
   }
 }
 
 const Data = adopt<DataProps, InputProps>({
-  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>
+  idea: ({ ideaId, render }) => <GetIdea ideaId={ideaId}>{render}</GetIdea>,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <VoteWrapper {...inputProps} {...dataProps} />}
+    {(dataProps) => <VoteWrapper {...inputProps} {...dataProps} />}
   </Data>
 );

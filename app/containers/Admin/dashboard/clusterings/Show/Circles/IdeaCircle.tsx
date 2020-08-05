@@ -10,16 +10,20 @@ const borderColor = '#00a2b1';
 
 const StyledCircle: any = styled.circle`
   position: relative;
-  fill: ${props => mix((props as any).upvoteRatio, 'green', 'red')};
+  fill: ${(props) => mix((props as any).upvoteRatio, 'green', 'red')};
   fill-opacity: 0.75;
   cursor: pointer;
 
-  ${props => (props as any).hovered && `
+  ${(props) =>
+    (props as any).hovered &&
+    `
     stroke: ${borderColor};
     stroke-width: 2px;
   `}
 
-  ${props => !isNil((props as any).selectionIndex) && `
+  ${(props) =>
+    !isNil((props as any).selectionIndex) &&
+    `
     stroke: black;
     stroke-width: 2px;
     fill: ${props.theme.comparisonColors[(props as any).selectionIndex]};
@@ -40,30 +44,29 @@ interface DataProps {
   idea: GetIdeaChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class IdeaCircle extends PureComponent<Props, State> {
-
   upvoteRatio = (up: number, down: number) => {
     return up / (up + down);
-  }
+  };
 
   handleOnClick = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onClick(node, event);
-  }
+  };
 
   handleOnMouseEnter = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseEnter(node, event);
-  }
+  };
 
   handleOnMouseLeave = (event: MouseEvent) => {
     const { node } = this.props;
     this.props.onMouseLeave(node, event);
-  }
+  };
 
   render() {
     const { node, selectionIndex, hovered, idea } = this.props;
@@ -79,7 +82,10 @@ class IdeaCircle extends PureComponent<Props, State> {
         onMouseLeave={this.handleOnMouseLeave}
         selectionIndex={selectionIndex}
         hovered={hovered}
-        upvoteRatio={this.upvoteRatio(idea.attributes.upvotes_count, idea.attributes.downvotes_count)}
+        upvoteRatio={this.upvoteRatio(
+          idea.attributes.upvotes_count,
+          idea.attributes.downvotes_count
+        )}
       />
     );
   }

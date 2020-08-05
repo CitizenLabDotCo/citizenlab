@@ -8,9 +8,9 @@ export interface IBasketData {
   id: string;
   type: string;
   attributes: {
-    submitted_at: string,
-    total_budget: number,
-    'budget_exceeds_limit?': false
+    submitted_at: string;
+    total_budget: number;
+    'budget_exceeds_limit?': false;
   };
   relationships: {
     participation_context: {
@@ -21,7 +21,7 @@ export interface IBasketData {
     };
     ideas: {
       data: IRelationship[];
-    }
+    };
   };
 }
 
@@ -45,8 +45,14 @@ export function basketsStream(streamParams: IStreamParams | null = null) {
   return streams.get<IBaskets>({ apiEndpoint, ...streamParams });
 }
 
-export function basketByIdStream(basketId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<IBasket>({ apiEndpoint: `${apiEndpoint}/${basketId}`, ...streamParams });
+export function basketByIdStream(
+  basketId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IBasket>({
+    apiEndpoint: `${apiEndpoint}/${basketId}`,
+    ...streamParams,
+  });
 }
 
 export async function addBasket(object: INewBasket) {
@@ -56,7 +62,9 @@ export async function addBasket(object: INewBasket) {
 }
 
 export function updateBasket(basketId: string, object: Partial<INewBasket>) {
-  return streams.update<IBasket>(`${apiEndpoint}/${basketId}`, basketId, { basket: object });
+  return streams.update<IBasket>(`${apiEndpoint}/${basketId}`, basketId, {
+    basket: object,
+  });
 }
 
 export function deleteBasket(basketId: string) {

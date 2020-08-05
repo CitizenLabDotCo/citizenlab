@@ -68,73 +68,98 @@ interface DataProps {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
+  events: ({ project, render }) => (
+    <GetEvents projectId={!isNilOrError(project) ? project.id : null}>
+      {render}
+    </GetEvents>
+  ),
 });
 
-export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => {
-      const className = inputProps['className'];
-      const { project, events } = dataProps;
+export default withRouter<InputProps>(
+  (inputProps: InputProps & WithRouterProps) => (
+    <Data {...inputProps}>
+      {(dataProps) => {
+        const className = inputProps['className'];
+        const { project, events } = dataProps;
 
-      if (project !== null && events !== null) {
-        const pastEvents = (events ? events.filter((event) => {
-          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
-          return eventTime === 'past';
-        }) : null);
+        if (project !== null && events !== null) {
+          const pastEvents = events
+            ? events.filter((event) => {
+                const eventTime = pastPresentOrFuture([
+                  event.attributes.start_at,
+                  event.attributes.end_at,
+                ]);
+                return eventTime === 'past';
+              })
+            : null;
 
-        const upcomingEvents = (events ? events.filter((event) => {
-          const eventTime = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
-          return (eventTime === 'present' || eventTime === 'future');
-        }) : null);
+          const upcomingEvents = events
+            ? events.filter((event) => {
+                const eventTime = pastPresentOrFuture([
+                  event.attributes.start_at,
+                  event.attributes.end_at,
+                ]);
+                return eventTime === 'present' || eventTime === 'future';
+              })
+            : null;
 
-        return (
-          <>
-            {!isNilOrError(project) &&
-              <>
-                <StyledProjectArchivedIndicator projectId={project.id} />
-              </>
-            }
+          return (
+            <>
+              {!isNilOrError(project) && (
+                <>
+                  <StyledProjectArchivedIndicator projectId={project.id} />
+                </>
+              )}
 
-            <EventsContainer>
-              <Events>
-                <Title>
-                  <FormattedMessage tagName="h2" {...messages.upcomingEvents} />
-                </Title>
+              <EventsContainer>
+                <Events>
+                  <Title>
+                    <FormattedMessage
+                      tagName="h2"
+                      {...messages.upcomingEvents}
+                    />
+                  </Title>
 
-                {(upcomingEvents && upcomingEvents.length > 0) ? (
-                  <EventList className={className}>
-                    {upcomingEvents.map(event => <Event key={event.id} event={event} />)}
-                  </EventList>
-                ) : (
-                  <NoEvents>
-                    <FormattedMessage {...messages.noUpcomingEvents} />
-                  </NoEvents>
-                )}
-              </Events>
+                  {upcomingEvents && upcomingEvents.length > 0 ? (
+                    <EventList className={className}>
+                      {upcomingEvents.map((event) => (
+                        <Event key={event.id} event={event} />
+                      ))}
+                    </EventList>
+                  ) : (
+                    <NoEvents>
+                      <FormattedMessage {...messages.noUpcomingEvents} />
+                    </NoEvents>
+                  )}
+                </Events>
 
-              <Events>
-                <Title>
-                  <FormattedMessage tagName="h2" {...messages.pastEvents} />
-                </Title>
+                <Events>
+                  <Title>
+                    <FormattedMessage tagName="h2" {...messages.pastEvents} />
+                  </Title>
 
-                {(pastEvents && pastEvents.length > 0) ? (
-                  <EventList className={className}>
-                    {pastEvents.map(event => <Event key={event.id} event={event} />)}
-                  </EventList>
-                ) : (
-                  <NoEvents>
-                    <FormattedMessage {...messages.noPastEvents} />
-                  </NoEvents>
-                )}
-              </Events>
-            </EventsContainer>
-          </>
-        );
-      }
+                  {pastEvents && pastEvents.length > 0 ? (
+                    <EventList className={className}>
+                      {pastEvents.map((event) => (
+                        <Event key={event.id} event={event} />
+                      ))}
+                    </EventList>
+                  ) : (
+                    <NoEvents>
+                      <FormattedMessage {...messages.noPastEvents} />
+                    </NoEvents>
+                  )}
+                </Events>
+              </EventsContainer>
+            </>
+          );
+        }
 
-      return null;
-    }}
-  </Data>
-));
+        return null;
+      }}
+    </Data>
+  )
+);

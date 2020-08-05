@@ -16,9 +16,12 @@ interface Props {
 }
 
 class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
-
   handleClickDeleteIdea = () => {
-    const { postId, resetSelection, intl: { formatMessage } } = this.props;
+    const {
+      postId,
+      resetSelection,
+      intl: { formatMessage },
+    } = this.props;
     const message = formatMessage(messages.deleteIdeaConfirmation);
 
     if (window.confirm(message)) {
@@ -26,9 +29,13 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     }
 
     resetSelection();
-  }
+  };
   handleClickDeleteInitiative = () => {
-    const { postId, resetSelection, intl: { formatMessage } } = this.props;
+    const {
+      postId,
+      resetSelection,
+      intl: { formatMessage },
+    } = this.props;
     const message = formatMessage(messages.deleteInitiativeConfirmation);
 
     if (window.confirm(message)) {
@@ -36,7 +43,7 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
     }
 
     resetSelection();
-  }
+  };
 
   render() {
     const { type, handleClickEdit } = this.props;
@@ -47,7 +54,11 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
             <Icon name="edit" />
             <FormattedMessage {...messages.edit} />
           </Button>
-          <Button negative={true} basic={true} onClick={this.handleClickDeleteIdea}>
+          <Button
+            negative={true}
+            basic={true}
+            onClick={this.handleClickDeleteIdea}
+          >
             <Icon name="trash" />
             <FormattedMessage {...messages.delete} />
           </Button>
@@ -60,7 +71,11 @@ class ActionBarSingle extends React.PureComponent<Props & InjectedIntlProps> {
             <Icon name="edit" />
             <FormattedMessage {...messages.edit} />
           </Button>
-          <Button negative={true} basic={true} onClick={this.handleClickDeleteInitiative}>
+          <Button
+            negative={true}
+            basic={true}
+            onClick={this.handleClickDeleteInitiative}
+          >
             <Icon name="trash" />
             <FormattedMessage {...messages.delete} />
           </Button>

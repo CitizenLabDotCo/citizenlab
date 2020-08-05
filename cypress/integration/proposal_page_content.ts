@@ -12,11 +12,15 @@ describe('when logged out', () => {
   });
 
   it('shows the home page link with correct href', () => {
-    cy.get('#e2e-home-page-link').should('have.attr', 'href').and('include', '/en-GB/');
+    cy.get('#e2e-home-page-link')
+      .should('have.attr', 'href')
+      .and('include', '/en-GB/');
   });
 
   it('shows the link to the initiatives overview page with correct href', () => {
-    cy.get('#e2e-initiative-other-link').should('have.attr', 'href').and('include', '/en-GB/initiatives');
+    cy.get('#e2e-initiative-other-link')
+      .should('have.attr', 'href')
+      .and('include', '/en-GB/initiatives');
   });
 
   it('shows the initiative title', () => {
@@ -51,7 +55,6 @@ describe('when logged out', () => {
   it('shows the initiative content footer', () => {
     cy.get('#e2e-initiative-content-footer');
   });
-
 });
 
 describe('when logged in as an admin', () => {

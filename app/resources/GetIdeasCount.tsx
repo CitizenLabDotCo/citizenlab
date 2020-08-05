@@ -1,7 +1,20 @@
 import React from 'react';
 import { isString, isEmpty, isEqual } from 'lodash-es';
-import { Subscription, Subject, BehaviorSubject, combineLatest, merge } from 'rxjs';
-import { map, startWith, distinctUntilChanged, tap, debounceTime, switchMap } from 'rxjs/operators';
+import {
+  Subscription,
+  Subject,
+  BehaviorSubject,
+  combineLatest,
+  merge,
+} from 'rxjs';
+import {
+  map,
+  startWith,
+  distinctUntilChanged,
+  tap,
+  debounceTime,
+  switchMap,
+} from 'rxjs/operators';
 import { ideasCount } from 'services/stats';
 import { PublicationStatus as ProjectPublicationStatus } from 'services/projects';
 import shallowCompare from 'utils/shallowCompare';
@@ -49,7 +62,9 @@ export type GetIdeasCountChildProps = State & {
   onChangeTopics: (topics: string[]) => void;
   onChangeAreas: (areas: string[]) => void;
   onChangeIdeaStatus: (ideaStatus: string) => void;
-  onChangeProjectPublicationStatus: (ProjectPublicationStatus: ProjectPublicationStatus) => void;
+  onChangeProjectPublicationStatus: (
+    ProjectPublicationStatus: ProjectPublicationStatus
+  ) => void;
   onChangeAssignee: (assignee: string | undefined) => void;
   onChangeFeedbackFilter: (feedbackNeeded: boolean) => void;
 };
@@ -81,7 +96,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
         project_publication_status: undefined,
         bounding_box: undefined,
         assignee: undefined,
-        feedback_needed: undefined
+        feedback_needed: undefined,
       },
       searchValue: undefined,
       count: undefined,
@@ -96,23 +111,25 @@ export default class GetIdeasCount extends React.Component<Props, State> {
   componentDidMount() {
     const queryParameters = this.getQueryParameters(this.state, this.props);
     const queryParametersInput$ = this.queryParameters$.pipe(
-      distinctUntilChanged((x, y) => shallowCompare(x, y)),
+      distinctUntilChanged((x, y) => shallowCompare(x, y))
     );
     const queryParametersSearch$ = queryParametersInput$.pipe(
-      map(queryParameters => queryParameters.search),
+      map((queryParameters) => queryParameters.search),
       distinctUntilChanged()
     );
     const search$ = merge(
       this.search$.pipe(
-        tap(searchValue => this.setState({ searchValue })),
+        tap((searchValue) => this.setState({ searchValue })),
         debounceTime(500)
       ),
       queryParametersSearch$.pipe(
-        tap(searchValue => this.setState({ searchValue }))
+        tap((searchValue) => this.setState({ searchValue }))
       )
     ).pipe(
       startWith(queryParameters.search),
-      map(searchValue => ((isString(searchValue) && !isEmpty(searchValue)) ? searchValue : undefined)),
+      map((searchValue) =>
+        isString(searchValue) && !isEmpty(searchValue) ? searchValue : undefined
+      ),
       distinctUntilChanged()
     );
 
@@ -124,22 +141,23 @@ export default class GetIdeasCount extends React.Component<Props, State> {
     );
 
     this.subscriptions = [
-      queryParametersOutput$.pipe(
-        switchMap((queryParameters) => {
-          return ideasCount({
+      queryParametersOutput$
+        .pipe(
+          switchMap((queryParameters) => {
+            return ideasCount({
+              queryParameters,
+            }).observable.pipe(
+              map((ideasCount) => ({ queryParameters, ideasCount }))
+            );
+          })
+        )
+        .subscribe(({ ideasCount, queryParameters }) => {
+          this.setState({
             queryParameters,
-          }).observable.pipe(
-            map(ideasCount => ({ queryParameters, ideasCount }))
-          );
-        })
-      )
-      .subscribe(({ ideasCount, queryParameters }) => {
-        this.setState({
-          queryParameters,
-          count: isNilOrError(ideasCount) ? ideasCount : ideasCount.count,
-          querying: false
-        });
-      })
+            count: isNilOrError(ideasCount) ? ideasCount : ideasCount.count,
+            querying: false,
+          });
+        }),
     ];
   }
 
@@ -154,7 +172,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   getQueryParameters = (state: State, props: Props) => {
@@ -169,67 +187,69 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       project_publication_status: props.projectPublicationStatus,
       bounding_box: props.boundingBox,
       assignee: props.assignee,
-      feedback_needed: props.feedbackNeeded
+      feedback_needed: props.feedbackNeeded,
     };
 
     return {
       ...state.queryParameters,
-      ...inputPropsQueryParameters
+      ...inputPropsQueryParameters,
     };
-  }
+  };
 
   handleProjectOnChange = (projectIds: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      projects: projectIds
+      projects: projectIds,
     });
-  }
+  };
 
   handlePhaseOnChange = (phaseId: string) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      phase: phaseId
+      phase: phaseId,
     });
-  }
+  };
 
   handleSearchOnChange = (search: string) => {
     this.search$.next(search);
-  }
+  };
 
   handleTopicsOnChange = (topics: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      topics
+      topics,
     });
-  }
+  };
 
   handleAreasOnchange = (areas: string[]) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
-      areas
+      areas,
     });
-  }
+  };
 
   handleIdeaStatusOnChange = (ideaStatus: string) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       idea_status: ideaStatus,
     });
-  }
+  };
 
-  handleProjectPublicationStatusOnChange = (projectPublicationStatus: ProjectPublicationStatus) => {
+  handleProjectPublicationStatusOnChange = (
+    projectPublicationStatus: ProjectPublicationStatus
+  ) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       project_publication_status: projectPublicationStatus,
     });
-  }
+  };
 
   handleAssigneeOnChange = (assignee: string | undefined) => {
     this.queryParameters$.next({
       ...this.state.queryParameters,
       assignee,
     });
-  }
+  };
 
   handleFeedbackFilterOnChange = (feedbackNeeded: boolean) => {
     if (feedbackNeeded === true) {
@@ -243,7 +263,7 @@ export default class GetIdeasCount extends React.Component<Props, State> {
         feedback_needed: undefined,
       });
     }
-  }
+  };
 
   render() {
     const { children } = this.props;
@@ -255,7 +275,8 @@ export default class GetIdeasCount extends React.Component<Props, State> {
       onChangeTopics: this.handleTopicsOnChange,
       onChangeAreas: this.handleAreasOnchange,
       onChangeIdeaStatus: this.handleIdeaStatusOnChange,
-      onChangeProjectPublicationStatus: this.handleProjectPublicationStatusOnChange,
+      onChangeProjectPublicationStatus: this
+        .handleProjectPublicationStatusOnChange,
       onChangeAssignee: this.handleAssigneeOnChange,
       onChangeFeedbackFilter: this.handleFeedbackFilterOnChange,
     });

@@ -34,24 +34,33 @@ const StyledList = styled(List)`
   margin-top: 30px;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   events: GetEventsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
-class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProps & InjectedIntlProps, State> {
-  createDeleteClickHandler = (eventId: string) => (event: React.FormEvent<any>) => {
+class AdminProjectEventsIndex extends React.PureComponent<
+  Props & WithRouterProps & InjectedIntlProps,
+  State
+> {
+  createDeleteClickHandler = (eventId: string) => (
+    event: React.FormEvent<any>
+  ) => {
     event.preventDefault();
 
-    if (window.confirm(this.props.intl.formatMessage(messages.deleteConfirmationModal))) {
+    if (
+      window.confirm(
+        this.props.intl.formatMessage(messages.deleteConfirmationModal)
+      )
+    ) {
       deleteEvent(eventId);
     }
-  }
+  };
 
   render() {
     const { events } = this.props;
@@ -66,14 +75,20 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
           <FormattedMessage {...messages.subtitleEvents} />
         </SectionDescription>
         <ListWrapper className="e2e-projects-events">
-          <AddButton buttonStyle="cl-blue" icon="plus-circle" linkTo={`/admin/projects/${projectId}/events/new`}>
+          <AddButton
+            buttonStyle="cl-blue"
+            icon="plus-circle"
+            linkTo={`/admin/projects/${projectId}/events/new`}
+          >
             <FormattedMessage {...messages.addEventButton} />
           </AddButton>
 
-          {!isNilOrError(events) && events.length > 0 &&
+          {!isNilOrError(events) && events.length > 0 && (
             <StyledList>
               <HeadRow>
-                <div className="expand"><FormattedMessage {...messages.titleColumnHeader} /></div>
+                <div className="expand">
+                  <FormattedMessage {...messages.titleColumnHeader} />
+                </div>
               </HeadRow>
               {events.map((event) => {
                 const startAt = moment(event.attributes.start_at).format('LLL');
@@ -89,28 +104,38 @@ class AdminProjectEventsIndex extends React.PureComponent<Props & WithRouterProp
                         <T value={event.attributes.location_multiloc} />
                       </p>
                       <p>
-                        {startAt}  →  {endAt}
+                        {startAt} → {endAt}
                       </p>
                     </div>
-                    <Button buttonStyle="text" icon="delete" onClick={this.createDeleteClickHandler(event.id)}>
+                    <Button
+                      buttonStyle="text"
+                      icon="delete"
+                      onClick={this.createDeleteClickHandler(event.id)}
+                    >
                       <FormattedMessage {...messages.deleteButtonLabel} />
                     </Button>
-                    <Button buttonStyle="secondary" icon="edit" linkTo={`/admin/projects/${projectId}/events/${event.id}`}>
+                    <Button
+                      buttonStyle="secondary"
+                      icon="edit"
+                      linkTo={`/admin/projects/${projectId}/events/${event.id}`}
+                    >
                       <FormattedMessage {...messages.editButtonLabel} />
                     </Button>
                   </Row>
                 );
               })}
             </StyledList>
-          }
+          )}
         </ListWrapper>
       </>
     );
   }
 }
 
-export default withRouter(injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
-  <GetEvents projectId={inputProps.params.projectId}>
-    {events => <AdminProjectEventsIndex {...inputProps} events={events} />}
-  </GetEvents>
-)));
+export default withRouter(
+  injectIntl((inputProps: InputProps & WithRouterProps & InjectedIntlProps) => (
+    <GetEvents projectId={inputProps.params.projectId}>
+      {(events) => <AdminProjectEventsIndex {...inputProps} events={events} />}
+    </GetEvents>
+  ))
+);
