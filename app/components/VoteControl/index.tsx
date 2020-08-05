@@ -1,6 +1,12 @@
 import React, { PureComponent } from 'react';
 import { isString, get, isEmpty, last, sortBy } from 'lodash-es';
-import { BehaviorSubject, Subscription, Observable, combineLatest, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  Subscription,
+  Observable,
+  combineLatest,
+  of,
+} from 'rxjs';
 import { filter, map, switchMap, distinctUntilChanged } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
 import { withRouter, WithRouterProps } from 'react-router';
@@ -16,7 +22,11 @@ import { Icon } from 'cl2-component-library';
 
 // services
 import { authUserStream } from 'services/auth';
-import { ideaByIdStream, IIdea, IdeaVotingDisabledReason } from 'services/ideas';
+import {
+  ideaByIdStream,
+  IIdea,
+  IdeaVotingDisabledReason,
+} from 'services/ideas';
 import { IUser } from 'services/users';
 import { voteStream, addVote, deleteVote } from 'services/ideaVotes';
 import { projectByIdStream, IProject } from 'services/projects';
@@ -61,7 +71,10 @@ const Container = styled.div`
   }
 `;
 
-const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boolean | null }>`
+const VoteIconContainer = styled.div<{
+  size: '1' | '2' | '3';
+  votingEnabled: boolean | null;
+}>`
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -71,46 +84,70 @@ const VoteIconContainer = styled.div<{ size: '1' | '2' | '3', votingEnabled: boo
   border: solid 1px ${lighten(0.2, colors.label)};
   transition: all 60ms ease-out;
 
-  ${(props) => !props.votingEnabled ? css`
-    margin-left: 5px;
-  ` : css``}
+  ${(props) =>
+    !props.votingEnabled
+      ? css`
+          margin-left: 5px;
+        `
+      : css``}
 
-  ${(props) => props.size === '1' && props.votingEnabled ? css`
-    width: 45px;
-    height: 45px;
-  ` : css``}
+  ${(props) =>
+    props.size === '1' && props.votingEnabled
+      ? css`
+          width: 45px;
+          height: 45px;
+        `
+      : css``}
 
-  ${(props) => props.size === '2' && props.votingEnabled ? css`
-    width: 48px;
-    height: 48px;
-  ` : css``}
+  ${(props) =>
+    props.size === '2' && props.votingEnabled
+      ? css`
+          width: 48px;
+          height: 48px;
+        `
+      : css``}
 
-  ${(props) => props.size === '3' && props.votingEnabled ? css`
-    width: 50px;
-    height: 50px;
-  ` : css``}
+  ${(props) =>
+    props.size === '3' && props.votingEnabled
+      ? css`
+          width: 50px;
+          height: 50px;
+        `
+      : css``}
 `;
 
-const VoteIcon = styled(Icon) <{ size: '1' | '2' | '3', enabled: boolean | null }>`
+const VoteIcon = styled(Icon)<{
+  size: '1' | '2' | '3';
+  enabled: boolean | null;
+}>`
   width: 19px;
   height: 19px;
   fill: ${colors.label};
   transition: all 100ms ease-out;
 
-  ${(props) => props.size === '1' ? css`
-    width: 18px;
-    height: 18px;
-  ` : css``}
+  ${(props) =>
+    props.size === '1'
+      ? css`
+          width: 18px;
+          height: 18px;
+        `
+      : css``}
 
-  ${(props) => props.size === '2' ? css`
-    width: 20px;
-    height: 20px;
-  ` : css``}
+  ${(props) =>
+    props.size === '2'
+      ? css`
+          width: 20px;
+          height: 20px;
+        `
+      : css``}
 
-  ${(props) => props.size === '3' ? css`
-    width: 21px;
-    height: 21px;
-  ` : css``}
+  ${(props) =>
+    props.size === '3'
+      ? css`
+          width: 21px;
+          height: 21px;
+        `
+      : css``}
 `;
 
 const VoteCount = styled.div`
@@ -136,7 +173,9 @@ const Vote = styled.button<IVoteComponent>`
   border: none;
 
   &.voteClick ${VoteIconContainer} {
-    animation: ${css`${vote} 350ms`};
+    animation: ${css`
+      ${vote} 350ms
+    `};
   }
 
   &:not(.enabled) {
@@ -167,60 +206,67 @@ const Upvote = styled(Vote)`
   }
 
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${colors.clGreen}; background: ${colors.clGreen};`}
+    ${(props) =>
+      props.active &&
+      `border-color: ${colors.clGreen}; background: ${colors.clGreen};`}
   }
 
   ${VoteIcon} {
     margin-bottom: 4px;
-    ${props => props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clGreen}`)}
+    ${(props) =>
+      props.active &&
+      (props.enabled ? 'fill: #fff;' : `fill: ${colors.clGreen}`)}
   }
 
   ${VoteCount} {
     min-width: 20px;
     margin-right: 5px;
-    ${props => props.active && `color: ${colors.clGreen};`}
+    ${(props) => props.active && `color: ${colors.clGreen};`}
   }
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: ${colors.clGreen};`}
+      ${(props) => !props.active && `border-color: ${colors.clGreen};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: ${colors.clGreen};`}
+      ${(props) => !props.active && `fill: ${colors.clGreen};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: ${colors.clGreen};`}
+      ${(props) => !props.active && `color: ${colors.clGreen};`}
     }
   }
 `;
 
 const Downvote = styled(Vote)`
   ${VoteIconContainer} {
-    ${props => props.active && `border-color: ${colors.clRed}; background: ${colors.clRed};`}
+    ${(props) =>
+      props.active &&
+      `border-color: ${colors.clRed}; background: ${colors.clRed};`}
   }
 
   ${VoteIcon} {
     margin-top: 4px;
-    ${props => props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
+    ${(props) =>
+      props.active && (props.enabled ? 'fill: #fff;' : `fill: ${colors.clRed}`)}
   }
 
   ${VoteCount} {
-    ${props => props.active && `color: ${colors.clRed};`}
+    ${(props) => props.active && `color: ${colors.clRed};`}
   }
 
   &:hover.enabled {
     ${VoteIconContainer} {
-      ${props => !props.active && `border-color: ${colors.clRed};`}
+      ${(props) => !props.active && `border-color: ${colors.clRed};`}
     }
 
     ${VoteIcon} {
-      ${props => !props.active && `fill: ${colors.clRed};`}
+      ${(props) => !props.active && `fill: ${colors.clRed};`}
     }
 
     ${VoteCount} {
-      ${props => !props.active && `color: ${colors.clRed};`}
+      ${(props) => !props.active && `color: ${colors.clRed};`}
     }
   }
 `;
@@ -250,7 +296,10 @@ interface State {
   loaded: boolean;
 }
 
-class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterProps, State> {
+class VoteControl extends PureComponent<
+  Props & InjectedIntlProps & WithRouterProps,
+  State
+> {
   voting$: BehaviorSubject<'up' | 'down' | null>;
   id$: BehaviorSubject<string | null>;
   subscriptions: Subscription[];
@@ -258,7 +307,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   downvoteElement: HTMLButtonElement | null;
 
   static defaultProps = {
-    ariaHidden: false
+    ariaHidden: false,
   };
 
   constructor(props) {
@@ -275,7 +324,7 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       idea: null,
       project: null,
       phases: undefined,
-      loaded: false
+      loaded: false,
     };
     this.voting$ = new BehaviorSubject(null);
     this.id$ = new BehaviorSubject(null);
@@ -288,22 +337,25 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     const authUser$ = authUserStream().observable;
     const voting$ = this.voting$.pipe(distinctUntilChanged());
     const id$ = this.id$.pipe(
-      filter(ideaId => isString(ideaId)),
+      filter((ideaId) => isString(ideaId)),
       distinctUntilChanged()
     ) as Observable<string>;
 
     this.id$.next(this.props.ideaId);
-    this.upvoteElement?.addEventListener('animationend', this.votingAnimationDone);
-    this.downvoteElement?.addEventListener('animationend', this.votingAnimationDone);
+    this.upvoteElement?.addEventListener(
+      'animationend',
+      this.votingAnimationDone
+    );
+    this.downvoteElement?.addEventListener(
+      'animationend',
+      this.votingAnimationDone
+    );
 
     const idea$ = id$.pipe(
       switchMap((ideaId: string) => {
         const idea$ = ideaByIdStream(ideaId).observable;
 
-        return combineLatest(
-          idea$,
-          voting$
-        );
+        return combineLatest(idea$, voting$);
       }),
       filter(([_idea, voting]) => {
         return voting === null;
@@ -313,19 +365,18 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       })
     );
 
-    const myVote$ = combineLatest(
-      authUser$,
-      idea$
-    ).pipe(
+    const myVote$ = combineLatest(authUser$, idea$).pipe(
       switchMap(([authUser, idea]) => {
-        if (authUser && idea && idea.data.relationships.user_vote && idea.data.relationships.user_vote.data !== null) {
+        if (
+          authUser &&
+          idea &&
+          idea.data.relationships.user_vote &&
+          idea.data.relationships.user_vote.data !== null
+        ) {
           const voteId = idea.data.relationships.user_vote.data.id;
           const vote$ = voteStream(voteId).observable;
 
-          return combineLatest(
-            vote$,
-            voting$
-          ).pipe(
+          return combineLatest(vote$, voting$).pipe(
             filter(([_vote, voting]) => {
               return voting === null;
             }),
@@ -343,63 +394,120 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
       voting$.subscribe((voting) => {
         this.setState((state) => ({
           voting,
-          votingAnimation: (voting !== null && state.voting === null ? voting : state.votingAnimation)
+          votingAnimation:
+            voting !== null && state.voting === null
+              ? voting
+              : state.votingAnimation,
         }));
       }),
 
-      idea$.pipe(
-        switchMap((idea) => {
-          let project$: Observable<IProject | null> = of(null);
-          let phases$: Observable<IPhase[] | null> = of(null);
-          const hasPhases = !isEmpty(get(idea.data.relationships.phases, 'data', null));
-
-          if (!hasPhases && idea.data.relationships.project.data) {
-            project$ = projectByIdStream(idea.data.relationships.project.data.id).observable;
-          }
-
-          if (hasPhases && idea.data.relationships.phases.data.length > 0) {
-            phases$ = combineLatest(
-              idea.data.relationships.phases.data.map(phase => phaseStream(phase.id).observable)
+      idea$
+        .pipe(
+          switchMap((idea) => {
+            let project$: Observable<IProject | null> = of(null);
+            let phases$: Observable<IPhase[] | null> = of(null);
+            const hasPhases = !isEmpty(
+              get(idea.data.relationships.phases, 'data', null)
             );
-          }
 
-          return combineLatest(
-            project$,
-            phases$
-          ).pipe(
-            map(([project, phases]) => ({ idea, project, phases }))
+            if (!hasPhases && idea.data.relationships.project.data) {
+              project$ = projectByIdStream(
+                idea.data.relationships.project.data.id
+              ).observable;
+            }
+
+            if (hasPhases && idea.data.relationships.phases.data.length > 0) {
+              phases$ = combineLatest(
+                idea.data.relationships.phases.data.map(
+                  (phase) => phaseStream(phase.id).observable
+                )
+              );
+            }
+
+            return combineLatest(project$, phases$).pipe(
+              map(([project, phases]) => ({ idea, project, phases }))
+            );
+          })
+        )
+        .subscribe(({ idea, project, phases }) => {
+          const upvotesCount = idea.data.attributes.upvotes_count;
+          const downvotesCount = idea.data.attributes.downvotes_count;
+          const votingEnabled =
+            idea.data.attributes.action_descriptor.voting.enabled;
+          const cancellingEnabled =
+            idea.data.attributes.action_descriptor.voting.cancelling_enabled;
+          const votingDisabledReason =
+            idea.data.attributes.action_descriptor.voting.disabled_reason;
+          const votingFutureEnabled =
+            idea.data.attributes.action_descriptor.voting.future_enabled;
+          const projectProcessType = get(
+            project,
+            'data.attributes.process_type'
           );
-        })
-      ).subscribe(({ idea, project, phases }) => {
-        const upvotesCount = idea.data.attributes.upvotes_count;
-        const downvotesCount = idea.data.attributes.downvotes_count;
-        const votingEnabled = idea.data.attributes.action_descriptor.voting.enabled;
-        const cancellingEnabled = idea.data.attributes.action_descriptor.voting.cancelling_enabled;
-        const votingDisabledReason = idea.data.attributes.action_descriptor.voting.disabled_reason;
-        const votingFutureEnabled = idea.data.attributes.action_descriptor.voting.future_enabled;
-        const projectProcessType = get(project, 'data.attributes.process_type');
-        const projectParticipationMethod = get(project, 'data.attributes.participation_method');
-        const pbProject = (project && projectProcessType === 'continuous' && projectParticipationMethod === 'budgeting' ? project : null);
-        const pbPhase = (!pbProject && phases ? phases.find(phase => phase.data.attributes.participation_method === 'budgeting') : null);
-        const pbPhaseIsActive = (pbPhase && pastPresentOrFuture([pbPhase.data.attributes.start_at, pbPhase.data.attributes.end_at]) === 'present');
-        const lastPhase = (!isNilOrError(phases) ? last(sortBy(phases, [phase => phase.data.attributes.end_at])) : null);
-        const lastPhaseHasPassed = (lastPhase ? pastPresentOrFuture([lastPhase.data.attributes.start_at, lastPhase.data.attributes.end_at]) === 'past' : false);
-        const pbPhaseIsLast = (pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id);
-        const showBudgetControl = !!(pbProject || (pbPhase && (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast))));
-        const shouldVerify = !votingEnabled && votingDisabledReason === 'not_verified';
-        const verifiedButNotPermitted = !shouldVerify && votingDisabledReason === 'not_permitted';
-        const showVoteControl = !!(!showBudgetControl && (votingEnabled || cancellingEnabled || votingFutureEnabled || upvotesCount > 0 || downvotesCount > 0 || shouldVerify || verifiedButNotPermitted));
+          const projectParticipationMethod = get(
+            project,
+            'data.attributes.participation_method'
+          );
+          const pbProject =
+            project &&
+            projectProcessType === 'continuous' &&
+            projectParticipationMethod === 'budgeting'
+              ? project
+              : null;
+          const pbPhase =
+            !pbProject && phases
+              ? phases.find(
+                  (phase) =>
+                    phase.data.attributes.participation_method === 'budgeting'
+                )
+              : null;
+          const pbPhaseIsActive =
+            pbPhase &&
+            pastPresentOrFuture([
+              pbPhase.data.attributes.start_at,
+              pbPhase.data.attributes.end_at,
+            ]) === 'present';
+          const lastPhase = !isNilOrError(phases)
+            ? last(sortBy(phases, [(phase) => phase.data.attributes.end_at]))
+            : null;
+          const lastPhaseHasPassed = lastPhase
+            ? pastPresentOrFuture([
+                lastPhase.data.attributes.start_at,
+                lastPhase.data.attributes.end_at,
+              ]) === 'past'
+            : false;
+          const pbPhaseIsLast =
+            pbPhase && lastPhase && lastPhase.data.id === pbPhase.data.id;
+          const showBudgetControl = !!(
+            pbProject ||
+            (pbPhase &&
+              (pbPhaseIsActive || (lastPhaseHasPassed && pbPhaseIsLast)))
+          );
+          const shouldVerify =
+            !votingEnabled && votingDisabledReason === 'not_verified';
+          const verifiedButNotPermitted =
+            !shouldVerify && votingDisabledReason === 'not_permitted';
+          const showVoteControl = !!(
+            !showBudgetControl &&
+            (votingEnabled ||
+              cancellingEnabled ||
+              votingFutureEnabled ||
+              upvotesCount > 0 ||
+              downvotesCount > 0 ||
+              shouldVerify ||
+              verifiedButNotPermitted)
+          );
 
-        this.setState({
-          idea,
-          project,
-          phases,
-          showVoteControl,
-          upvotesCount,
-          downvotesCount,
-          loaded: true
-        });
-      }),
+          this.setState({
+            idea,
+            project,
+            phases,
+            showVoteControl,
+            upvotesCount,
+            downvotesCount,
+            loaded: true,
+          });
+        }),
 
       authUser$.subscribe((authUser) => {
         this.setState({ authUser });
@@ -407,10 +515,10 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
 
       myVote$.subscribe((myVote) => {
         this.setState({
-          myVoteId: (myVote ? myVote.data.id : null),
-          myVoteMode: (myVote ? myVote.data.attributes.mode : null)
+          myVoteId: myVote ? myVote.data.id : null,
+          myVoteMode: myVote ? myVote.data.attributes.mode : null,
         });
-      })
+      }),
     ];
   }
 
@@ -419,63 +527,101 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
   }
 
   componentWillUnmount() {
-    this.upvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
-    this.downvoteElement?.removeEventListener('animationend', this.votingAnimationDone);
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.upvoteElement?.removeEventListener(
+      'animationend',
+      this.votingAnimationDone
+    );
+    this.downvoteElement?.removeEventListener(
+      'animationend',
+      this.votingAnimationDone
+    );
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   votingAnimationDone = () => {
     this.setState({ votingAnimation: null });
-  }
+  };
 
   onClickUpvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     this.vote('up');
-  }
+  };
 
   onClickDownvote = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
     this.vote('down');
-  }
+  };
 
   vote = async (voteMode: 'up' | 'down') => {
-    const { authUser, myVoteId, myVoteMode, voting, idea, project, phases } = this.state;
+    const {
+      authUser,
+      myVoteId,
+      myVoteMode,
+      voting,
+      idea,
+      project,
+      phases,
+    } = this.state;
     const { ideaId, disabledVoteClick } = this.props;
-    const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
-    const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
-    const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
+    const votingEnabled =
+      idea?.data.attributes.action_descriptor.voting.enabled;
+    const cancellingEnabled =
+      idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
+    const votingDisabledReason =
+      idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const isSignedIn = !isNilOrError(authUser);
     const isTryingToUndoVote = !!(myVoteMode && voteMode === myVoteMode);
-    const isVerified = !isNilOrError(authUser) && authUser.data.attributes.verified;
+    const isVerified =
+      !isNilOrError(authUser) && authUser.data.attributes.verified;
 
     if (!voting) {
-      if (!isNilOrError(authUser) && (votingEnabled || (cancellingEnabled && isTryingToUndoVote))) {
+      if (
+        !isNilOrError(authUser) &&
+        (votingEnabled || (cancellingEnabled && isTryingToUndoVote))
+      ) {
         try {
           this.voting$.next(voteMode);
 
-          const currentPhase = getCurrentPhase(phases ? phases.map(phase => phase.data) : null);
+          const currentPhase = getCurrentPhase(
+            phases ? phases.map((phase) => phase.data) : null
+          );
           const participationContext = project ? project.data : currentPhase;
-          const refetchIdeas = participationContext?.attributes?.voting_method === 'limited';
+          const refetchIdeas =
+            participationContext?.attributes?.voting_method === 'limited';
 
           // Change vote (up -> down or down -> up)
           if (myVoteId && myVoteMode && myVoteMode !== voteMode) {
             this.setState((state) => ({
-              upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount - 1),
-              downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount - 1),
-              myVoteMode: voteMode
+              upvotesCount:
+                voteMode === 'up'
+                  ? state.upvotesCount + 1
+                  : state.upvotesCount - 1,
+              downvotesCount:
+                voteMode === 'down'
+                  ? state.downvotesCount + 1
+                  : state.downvotesCount - 1,
+              myVoteMode: voteMode,
             }));
             await deleteVote(ideaId, myVoteId, refetchIdeas);
-            await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode }, refetchIdeas);
+            await addVote(
+              ideaId,
+              { user_id: authUser.data.id, mode: voteMode },
+              refetchIdeas
+            );
           }
 
           // Cancel vote
           if (myVoteId && myVoteMode && myVoteMode === voteMode) {
             this.setState((state) => ({
-              upvotesCount: (voteMode === 'up' ? state.upvotesCount - 1 : state.upvotesCount),
-              downvotesCount: (voteMode === 'down' ? state.downvotesCount - 1 : state.downvotesCount),
-              myVoteMode: null
+              upvotesCount:
+                voteMode === 'up' ? state.upvotesCount - 1 : state.upvotesCount,
+              downvotesCount:
+                voteMode === 'down'
+                  ? state.downvotesCount - 1
+                  : state.downvotesCount,
+              myVoteMode: null,
             }));
             await deleteVote(ideaId, myVoteId, refetchIdeas);
           }
@@ -483,11 +629,19 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           // Vote
           if (!myVoteMode) {
             this.setState((state) => ({
-              upvotesCount: (voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount),
-              downvotesCount: (voteMode === 'down' ? state.downvotesCount + 1 : state.downvotesCount),
-              myVoteMode: voteMode
+              upvotesCount:
+                voteMode === 'up' ? state.upvotesCount + 1 : state.upvotesCount,
+              downvotesCount:
+                voteMode === 'down'
+                  ? state.downvotesCount + 1
+                  : state.downvotesCount,
+              myVoteMode: voteMode,
             }));
-            await addVote(ideaId, { user_id: authUser.data.id, mode: voteMode }, refetchIdeas);
+            await addVote(
+              ideaId,
+              { user_id: authUser.data.id, mode: voteMode },
+              refetchIdeas
+            );
           }
 
           await ideaByIdStream(ideaId).fetch();
@@ -499,21 +653,38 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
           await ideaByIdStream(ideaId).fetch();
           throw 'error';
         }
-      } else if (isSignedIn && !isVerified && votingDisabledReason === 'not_verified') {
+      } else if (
+        isSignedIn &&
+        !isVerified &&
+        votingDisabledReason === 'not_verified'
+      ) {
         openVerificationModal();
-      } else if (!isSignedIn && (votingEnabled || votingDisabledReason === 'not_verified' || votingDisabledReason === 'not_permitted')) {
-        const currentPhase = getCurrentPhase(phases ? phases.map(phase => phase.data) : null);
+      } else if (
+        !isSignedIn &&
+        (votingEnabled ||
+          votingDisabledReason === 'not_verified' ||
+          votingDisabledReason === 'not_permitted')
+      ) {
+        const currentPhase = getCurrentPhase(
+          phases ? phases.map((phase) => phase.data) : null
+        );
         const pcType = phases ? 'phase' : 'project';
         const pcId = phases ? currentPhase?.id : project?.data?.id;
 
         openSignUpInModal({
           verification: votingDisabledReason === 'not_verified',
-          verificationContext: !!(votingDisabledReason === 'not_verified' && pcId && pcType) ? {
-            action: 'voting',
-            id: pcId,
-            type: pcType
-          } : undefined,
-          action: () => this.vote(voteMode)
+          verificationContext: !!(
+            votingDisabledReason === 'not_verified' &&
+            pcId &&
+            pcType
+          )
+            ? {
+                action: 'voting',
+                id: pcId,
+                type: pcType,
+              }
+            : undefined,
+          action: () => this.vote(voteMode),
         });
       } else if (votingDisabledReason) {
         disabledVoteClick?.(votingDisabledReason);
@@ -521,46 +692,72 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
     }
 
     return;
-  }
+  };
 
   setUpvoteRef = (element: HTMLButtonElement) => {
     this.upvoteElement = element;
-  }
+  };
 
   setDownvoteRef = (element: HTMLButtonElement) => {
     this.downvoteElement = element;
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   render() {
-    const { size, className, intl: { formatMessage }, ariaHidden, showDownvote } = this.props;
-    const { idea, authUser, showVoteControl, myVoteMode, votingAnimation, upvotesCount, downvotesCount } = this.state;
-    const votingEnabled = idea?.data.attributes.action_descriptor.voting.enabled;
-    const cancellingEnabled = idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
-    const votingDisabledReason = idea?.data.attributes.action_descriptor.voting.disabled_reason;
+    const {
+      size,
+      className,
+      intl: { formatMessage },
+      ariaHidden,
+      showDownvote,
+    } = this.props;
+    const {
+      idea,
+      authUser,
+      showVoteControl,
+      myVoteMode,
+      votingAnimation,
+      upvotesCount,
+      downvotesCount,
+    } = this.state;
+    const votingEnabled =
+      idea?.data.attributes.action_descriptor.voting.enabled;
+    const cancellingEnabled =
+      idea?.data.attributes.action_descriptor.voting.cancelling_enabled;
+    const votingDisabledReason =
+      idea?.data.attributes.action_descriptor.voting.disabled_reason;
     const isSignedIn = !isNilOrError(authUser);
-    const isVerified = !isNilOrError(authUser) && authUser.data.attributes.verified;
-    const upvotingEnabled = (myVoteMode !== 'up' && votingEnabled) ||
-                            (myVoteMode === 'up' && cancellingEnabled) ||
-                            (!isVerified && votingDisabledReason === 'not_verified') ||
-                            (!isSignedIn && votingDisabledReason === 'not_permitted');
-    const downvotingEnabled = (myVoteMode !== 'down' && votingEnabled) ||
-                              (myVoteMode === 'down' && cancellingEnabled) ||
-                              (!isVerified && votingDisabledReason === 'not_verified') ||
-                              (!isSignedIn && votingDisabledReason === 'not_permitted');
+    const isVerified =
+      !isNilOrError(authUser) && authUser.data.attributes.verified;
+    const upvotingEnabled =
+      (myVoteMode !== 'up' && votingEnabled) ||
+      (myVoteMode === 'up' && cancellingEnabled) ||
+      (!isVerified && votingDisabledReason === 'not_verified') ||
+      (!isSignedIn && votingDisabledReason === 'not_permitted');
+    const downvotingEnabled =
+      (myVoteMode !== 'down' && votingEnabled) ||
+      (myVoteMode === 'down' && cancellingEnabled) ||
+      (!isVerified && votingDisabledReason === 'not_verified') ||
+      (!isSignedIn && votingDisabledReason === 'not_permitted');
 
     if (!showVoteControl) return null;
 
     const screenreaderContent = (
       <>
         <ScreenReaderOnly>
-          <FormattedMessage {...messages.a11y_upvotesDownvotes} values={{ upvotesCount, downvotesCount }} />
+          <FormattedMessage
+            {...messages.a11y_upvotesDownvotes}
+            values={{ upvotesCount, downvotesCount }}
+          />
         </ScreenReaderOnly>
         <LiveMessage
-          message={formatMessage(messages.a11y_upvotesDownvotes, { upvotesCount, downvotesCount })}
+          message={formatMessage(messages.a11y_upvotesDownvotes, {
+            upvotesCount,
+            downvotesCount,
+          })}
           aria-live="polite"
         />
       </>
@@ -574,7 +771,9 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
             className,
             'e2e-vote-controls',
             myVoteMode === null ? 'neutral' : myVoteMode,
-          ].filter(item => item).join(' ')}
+          ]
+            .filter((item) => item)
+            .join(' ')}
           aria-hidden={ariaHidden}
         >
           <Upvote
@@ -586,21 +785,28 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
               'e2e-ideacard-upvote-button',
               votingAnimation === 'up' ? 'voteClick' : 'upvote',
               upvotingEnabled ? 'enabled' : 'disabled',
-              myVoteMode === 'up' ? 'active' : ''
+              myVoteMode === 'up' ? 'active' : '',
             ].join(' ')}
             enabled={upvotingEnabled}
             tabIndex={ariaHidden ? -1 : 0}
           >
             <VoteIconContainer size={size} votingEnabled={upvotingEnabled}>
-              <VoteIcon name="upvote" size={size} enabled={upvotingEnabled} ariaHidden />
+              <VoteIcon
+                name="upvote"
+                size={size}
+                enabled={upvotingEnabled}
+                ariaHidden
+              />
               <ScreenReaderOnly>
                 <FormattedMessage {...messages.upvote} />
               </ScreenReaderOnly>
             </VoteIconContainer>
-            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{upvotesCount}</VoteCount>
+            <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>
+              {upvotesCount}
+            </VoteCount>
           </Upvote>
 
-          {showDownvote &&
+          {showDownvote && (
             <Downvote
               active={myVoteMode === 'down'}
               onMouseDown={this.removeFocus}
@@ -609,20 +815,27 @@ class VoteControl extends PureComponent<Props & InjectedIntlProps & WithRouterPr
               className={[
                 'e2e-ideacard-downvote-button',
                 votingAnimation === 'down' ? 'voteClick' : 'downvote',
-                downvotingEnabled ? 'enabled' : 'disabled'
+                downvotingEnabled ? 'enabled' : 'disabled',
               ].join(' ')}
               enabled={downvotingEnabled}
               tabIndex={ariaHidden ? -1 : 0}
             >
               <VoteIconContainer size={size} votingEnabled={downvotingEnabled}>
-                <VoteIcon name="downvote" size={size} enabled={downvotingEnabled} ariaHidden />
+                <VoteIcon
+                  name="downvote"
+                  size={size}
+                  enabled={downvotingEnabled}
+                  ariaHidden
+                />
                 <ScreenReaderOnly>
                   <FormattedMessage {...messages.downvote} />
                 </ScreenReaderOnly>
               </VoteIconContainer>
-              <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>{downvotesCount}</VoteCount>
+              <VoteCount aria-hidden className={votingEnabled ? 'enabled' : ''}>
+                {downvotesCount}
+              </VoteCount>
             </Downvote>
-          }
+          )}
         </Container>
       </>
     );

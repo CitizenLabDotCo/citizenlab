@@ -1,7 +1,6 @@
 import { randomString, randomEmail } from '../support/commands';
 
 describe('Idea posting permissions', () => {
-
   const unverifiedFirstName = randomString();
   const unverifiedLastName = randomString();
   const unverifiedEmail = randomEmail();
@@ -16,16 +15,29 @@ describe('Idea posting permissions', () => {
 
   before(() => {
     // create verified user
-    cy.apiSignup(verifiedFirstName, verifiedLastName, verifiedEmail, verifiedPassword).then((response) => {
-      verifiedId = response.body.data.id;
-      // create unverified user
-      return cy.apiSignup(unverifiedFirstName, unverifiedLastName, unverifiedEmail, unverifiedPassword);
-    }).then((response) => {
-      unverifiedId = response.body.data.id;
-      return cy.apiLogin(verifiedEmail, verifiedPassword);
-    }).then((response) => {
-      cy.apiVerifyBogus(response.body.jwt);
-    });
+    cy.apiSignup(
+      verifiedFirstName,
+      verifiedLastName,
+      verifiedEmail,
+      verifiedPassword
+    )
+      .then((response) => {
+        verifiedId = response.body.data.id;
+        // create unverified user
+        return cy.apiSignup(
+          unverifiedFirstName,
+          unverifiedLastName,
+          unverifiedEmail,
+          unverifiedPassword
+        );
+      })
+      .then((response) => {
+        unverifiedId = response.body.data.id;
+        return cy.apiLogin(verifiedEmail, verifiedPassword);
+      })
+      .then((response) => {
+        cy.apiVerifyBogus(response.body.jwt);
+      });
   });
 
   describe('a project that requires verification', () => {

@@ -8,7 +8,9 @@ import PostCommentGroup from './PostCommentGroup';
 import Button from 'components/UI/Button';
 
 // resources
-import GetCommentsForUser, { GetCommentsForUserChildProps } from 'resources/GetCommentsForUser';
+import GetCommentsForUser, {
+  GetCommentsForUserChildProps,
+} from 'resources/GetCommentsForUser';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // style
@@ -52,6 +54,8 @@ const MessageContainer = styled.div`
   font-weight: 400;
 `;
 
+const LoadMoreButton = styled(Button)``;
+
 interface InputProps {
   userId: string;
 }
@@ -65,97 +69,112 @@ interface Props extends InputProps, DataProps {
   theme: any;
 }
 
-export const UserComments = memo<Props>(({ comments, userId, theme, authUser }) => {
+export const UserComments = memo<Props>(
+  ({ comments, userId, theme, authUser }) => {
+    if (!isNilOrError(comments)) {
+      const { commentsList } = comments;
 
-  if (!isNilOrError(comments)) {
-    const { commentsList } = comments;
-
-    if (commentsList === undefined) {
-      return (
-        <MessageContainer>
-          <FormattedMessage {...messages.loadingComments} />
-        </MessageContainer>
-      );
-    }
-
-    if (commentsList === null || !isNilOrError(commentsList) && commentsList.length === 0) {
-      if (!isNilOrError(authUser) && userId === authUser.id) {
+      if (commentsList === undefined) {
         return (
           <MessageContainer>
-            <FormattedMessage {...messages.noCommentsForYou} />
+            <FormattedMessage {...messages.loadingComments} />
           </MessageContainer>
         );
       }
 
-      return (
-        <MessageContainer>
-          <FormattedMessage {...messages.noCommentsForUser} />
-        </MessageContainer>
-      );
+      if (
+        commentsList === null ||
+        (!isNilOrError(commentsList) && commentsList.length === 0)
+      ) {
+        if (!isNilOrError(authUser) && userId === authUser.id) {
+          return (
+            <MessageContainer>
+              <FormattedMessage {...messages.noCommentsForYou} />
+            </MessageContainer>
+          );
+        }
+
+        return (
+          <MessageContainer>
+            <FormattedMessage {...messages.noCommentsForUser} />
+          </MessageContainer>
+        );
+      }
+
+      if (!isNilOrError(commentsList) && commentsList.length > 0) {
+        const commentGroups = groupBy(
+          commentsList,
+          (comment) => comment.relationships.post.data.id
+        );
+
+        return (
+          <Container className="e2e-profile-comments">
+            <ScreenReaderOnly>
+              <FormattedMessage
+                tagName="h2"
+                {...messages.invisibleTitleUserComments}
+              />
+            </ScreenReaderOnly>
+            <>
+              {Object.keys(commentGroups).map((postId) => {
+                const commentGroup = commentGroups[postId];
+                const postType = commentGroup[0].relationships.post.data
+                  .type as 'idea' | 'initiative';
+
+                return (
+                  <PostCommentGroup
+                    key={postId}
+                    postId={postId}
+                    postType={postType}
+                    comments={commentGroup}
+                    userId={userId}
+                  />
+                );
+              })}
+            </>
+
+            {comments.hasMore && (
+              <Footer>
+                <LoadMoreButton
+                  onClick={comments.loadMore}
+                  processing={comments.loadingMore}
+                  icon="showMore"
+                  iconAriaHidden
+                  textColor={theme.colorText}
+                  textHoverColor={darken(0.1, theme.colorText)}
+                  bgColor={rgba(theme.colorText, 0.08)}
+                  bgHoverColor={rgba(theme.colorText, 0.12)}
+                  height="50px"
+                >
+                  <FormattedMessage {...messages.loadMoreComments} />
+                </LoadMoreButton>
+              </Footer>
+            )}
+          </Container>
+        );
+      }
     }
 
-    if (!isNilOrError(commentsList) && commentsList.length > 0) {
-      const commentGroups = groupBy(commentsList, (comment) => comment.relationships.post.data.id);
-
-      return (
-        <Container className="e2e-profile-comments">
-          <ScreenReaderOnly>
-            <FormattedMessage tagName="h2" {...messages.invisibleTitleUserComments} />
-          </ScreenReaderOnly>
-          <>
-            {Object.keys(commentGroups).map((postId) => {
-              const commentGroup = commentGroups[postId];
-              const postType = commentGroup[0].relationships.post.data.type as 'idea' | 'initiative';
-
-              return <PostCommentGroup
-                key={postId}
-                postId={postId}
-                postType={postType}
-                comments={commentGroup}
-                userId={userId}
-              />;
-            })}
-          </>
-
-          {comments.hasMore &&
-            <Footer>
-              <Button
-                onClick={comments.loadMore}
-                processing={comments.loadingMore}
-                icon="showMore"
-                iconAriaHidden
-                textColor={theme.colorText}
-                textHoverColor={darken(0.1, theme.colorText)}
-                bgColor={rgba(theme.colorText, 0.08)}
-                bgHoverColor={rgba(theme.colorText, 0.12)}
-                height="50px"
-              >
-                <FormattedMessage {...messages.loadMoreComments} />
-              </Button>
-            </Footer>
-          }
-        </Container>
-      );
-    }
+    return (
+      <MessageContainer>
+        <FormattedMessage {...messages.tryAgain} />
+      </MessageContainer>
+    );
   }
-
-  return (
-    <MessageContainer>
-      <FormattedMessage {...messages.tryAgain} />
-    </MessageContainer>
-  );
-});
+);
 
 const Data = adopt<DataProps, InputProps>({
-  comments: ({ userId, render }) => <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>,
-  authUser: <GetAuthUser />
+  comments: ({ userId, render }) => (
+    <GetCommentsForUser userId={userId}>{render}</GetCommentsForUser>
+  ),
+  authUser: <GetAuthUser />,
 });
 
 const UserCommentsWithHocs = withTheme(UserComments);
 
 const WrappedUserComments = (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <UserCommentsWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <UserCommentsWithHocs {...inputProps} {...dataProps} />}
   </Data>
 );
 

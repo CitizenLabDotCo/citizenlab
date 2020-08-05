@@ -14,8 +14,8 @@ const Container: any = styled.span`
   align-items: center;
   justify-content: center;
 
-  color: #FFFFFF;
-  background: ${(props: any) => props.bgColor ? props.bgColor : colors.clRed};
+  color: #ffffff;
+  background: ${(props: any) => (props.bgColor ? props.bgColor : colors.clRed)};
 `;
 
 interface Props {
@@ -23,15 +23,11 @@ interface Props {
   bgColor?: string;
 }
 
-export default memo<Props>(props => {
+export default memo<Props>((props) => {
   const { count, bgColor } = props;
   if (count > 0) {
-    return (
-      <Container bgColor={bgColor}>
-        {count}
-      </Container>
-    );
+    return <Container bgColor={bgColor}>{count}</Container>;
   } else {
-     return null;
+    return null;
   }
 });

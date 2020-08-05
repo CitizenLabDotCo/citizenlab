@@ -30,7 +30,9 @@ export default class GetUserCount extends React.PureComponent<Props, State> {
 
   componentDidMount() {
     this.subscription = usersCount().observable.subscribe((response) => {
-      this.setState({ count: !isNilOrError(response) ? response.count : response });
+      this.setState({
+        count: !isNilOrError(response) ? response.count : response,
+      });
     });
   }
 

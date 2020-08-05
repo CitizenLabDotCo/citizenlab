@@ -35,8 +35,8 @@ describe('<PostTable />', () => {
       { id: 'idea1', enTitle: 'Idea One' },
       { id: 'idea2', enTitle: 'Idea Two' },
       { id: 'idea3', enTitle: 'Idea Three' },
-    ].map(ideaInfo => getIdea(ideaInfo.id, ideaInfo.enTitle));
-    ideaStatusList = ['one', 'two', 'tree'].map(id => makeStatus(id));
+    ].map((ideaInfo) => getIdea(ideaInfo.id, ideaInfo.enTitle));
+    ideaStatusList = ['one', 'two', 'tree'].map((id) => makeStatus(id));
   });
 
   it('Prints the right header row', () => {
@@ -136,7 +136,8 @@ describe('<PostTable />', () => {
       />
     );
 
-    const getAllSelected = () => Wrapper.find('IdeaHeaderRow').prop('allSelected');
+    const getAllSelected = () =>
+      Wrapper.find('IdeaHeaderRow').prop('allSelected');
 
     expect(getAllSelected).toBeFalsy;
 
@@ -174,8 +175,12 @@ describe('<PostTable />', () => {
       />
     );
 
-    const Idea2Row = Wrapper.find('Row').findWhere(node => node.prop('post').id === 'idea2');
-    const Idea3Row = Wrapper.find('Row').findWhere(node => node.prop('post').id === 'idea3');
+    const Idea2Row = Wrapper.find('Row').findWhere(
+      (node) => node.prop('post').id === 'idea2'
+    );
+    const Idea3Row = Wrapper.find('Row').findWhere(
+      (node) => node.prop('post').id === 'idea3'
+    );
     let expectedSelection;
 
     // single select...
@@ -227,12 +232,14 @@ describe('<PostTable />', () => {
       />
     );
 
-    const toggleSelectAll = Wrapper.find('IdeaHeaderRow').prop('toggleSelectAll');
+    const toggleSelectAll = Wrapper.find('IdeaHeaderRow').prop(
+      'toggleSelectAll'
+    );
 
     expect(Wrapper.find('IdeaHeaderRow').prop('allSelected')).toBe(false);
 
     // selects all when called on a non-full selection
-    const expectedSelection = new Set(ideasList.map(idea => idea.id));
+    const expectedSelection = new Set(ideasList.map((idea) => idea.id));
     toggleSelectAll();
     expect(handleChangeSelection).toHaveBeenCalledTimes(1);
     expect(handleChangeSelection).toHaveBeenCalledWith(expectedSelection);

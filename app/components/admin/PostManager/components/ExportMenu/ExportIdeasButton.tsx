@@ -23,7 +23,10 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportIdeasButton extends React.PureComponent<Props, State> {
+export default class ExportIdeasButton extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -43,7 +46,11 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
 
     try {
       this.setState({ exporting: true });
-      const blob = await requestBlob(`${API_PATH}/ideas/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
+      const blob = await requestBlob(
+        `${API_PATH}/ideas/as_xlsx`,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        queryParametersObject
+      );
       saveAs(blob, 'ideas-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
@@ -53,7 +60,7 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
 
     // track this click for user analytics
     trackEventByName(tracks.clickExportIdeas.name);
-  }
+  };
 
   render() {
     const { exportType } = this.props;
@@ -67,8 +74,12 @@ export default class ExportIdeasButton extends React.PureComponent<Props, State>
         fontSize={`${fontSizes.small}px`}
       >
         {exportType === 'all' && <FormattedMessage {...messages.exportIdeas} />}
-        {exportType === 'project' && <FormattedMessage {...messages.exportIdeasProjects} />}
-        {exportType === 'selected_posts' && <FormattedMessage {...messages.exportSelectedIdeas} />}
+        {exportType === 'project' && (
+          <FormattedMessage {...messages.exportIdeasProjects} />
+        )}
+        {exportType === 'selected_posts' && (
+          <FormattedMessage {...messages.exportSelectedIdeas} />
+        )}
       </Button>
     );
   }

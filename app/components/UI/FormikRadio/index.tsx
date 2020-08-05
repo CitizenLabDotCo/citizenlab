@@ -4,14 +4,14 @@ import { FormikConsumer, FormikContext } from 'formik';
 import { Radio, RadioProps } from 'cl2-component-library';
 
 // Typings
-type Props  = RadioProps & {
+type Props = RadioProps & {
   name: string;
 };
 
 class FormikRadio extends PureComponent<Props> {
   handleOnChange = (formikContext: FormikContext<any>) => (value: string) => {
     formikContext.setFieldValue(this.props.name, value);
-  }
+  };
 
   render() {
     return (

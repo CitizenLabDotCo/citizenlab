@@ -6,8 +6,12 @@ import streams from 'utils/streams';
 
 // services
 import { updateUser, mapUserToDiff } from 'services/users';
-import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
-import GetLockedFields, { GetLockedFieldsChildProps } from 'resources/GetLockedFields';
+import GetUserCustomFieldsSchema, {
+  GetUserCustomFieldsSchemaChildProps,
+} from 'resources/GetUserCustomFieldsSchema';
+import GetLockedFields, {
+  GetLockedFieldsChildProps,
+} from 'resources/GetLockedFields';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 
 // utils
@@ -19,7 +23,11 @@ import Error from 'components/UI/Error';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import { convertUrlToUploadFile } from 'utils/fileTools';
 import { SectionField } from 'components/admin/Section';
-import { FormSection, FormLabel, FormSectionTitle } from 'components/UI/FormComponents';
+import {
+  FormSection,
+  FormLabel,
+  FormSectionTitle,
+} from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
 import { Input, IconTooltip, Select } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
@@ -40,8 +48,7 @@ import { IOption, UploadFile, CLErrorsJSON } from 'typings';
 import { isCLErrorJSON } from 'utils/errorUtils';
 
 // Types
-interface InputProps {
-}
+interface InputProps {}
 
 interface DataProps {
   userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
@@ -72,7 +79,7 @@ class ProfileForm extends PureComponent<Props, State> {
     super(props as any);
     this.state = {
       avatar: null,
-      userCustomFieldsFormData: null
+      userCustomFieldsFormData: null,
     };
   }
 
@@ -88,18 +95,19 @@ class ProfileForm extends PureComponent<Props, State> {
       value: locale,
       label: appLocalePairs[locale],
     }));
-  }
+  };
 
   transformAPIAvatar = () => {
     const { authUser } = this.props;
     if (isNilOrError(authUser)) return;
-    const avatarUrl = authUser.attributes.avatar && authUser.attributes.avatar.medium;
+    const avatarUrl =
+      authUser.attributes.avatar && authUser.attributes.avatar.medium;
     if (avatarUrl) {
-      convertUrlToUploadFile(avatarUrl, null, null).then(fileAvatar => {
+      convertUrlToUploadFile(avatarUrl, null, null).then((fileAvatar) => {
         this.setState({ avatar: fileAvatar ? [fileAvatar] : null });
       });
     }
-  }
+  };
 
   componentDidUpdate(prevProps: Props) {
     const { tenantLocales, authUser } = this.props;
@@ -109,7 +117,10 @@ class ProfileForm extends PureComponent<Props, State> {
       this.setLocaleOptions();
     }
 
-    if (authUser?.attributes.avatar?.medium !== prevProps.authUser?.attributes.avatar?.medium) {
+    if (
+      authUser?.attributes.avatar?.medium !==
+      prevProps.authUser?.attributes.avatar?.medium
+    ) {
       this.transformAPIAvatar();
     }
   }
@@ -121,10 +132,13 @@ class ProfileForm extends PureComponent<Props, State> {
 
     if (isNilOrError(authUser)) return;
 
-    if (!isNilOrError(userCustomFieldsSchema) && userCustomFieldsSchema.hasCustomFields) {
+    if (
+      !isNilOrError(userCustomFieldsSchema) &&
+      userCustomFieldsSchema.hasCustomFields
+    ) {
       newValues = {
         ...values,
-        custom_field_values: this.state.userCustomFieldsFormData
+        custom_field_values: this.state.userCustomFieldsFormData,
       };
     }
 
@@ -132,7 +146,9 @@ class ProfileForm extends PureComponent<Props, State> {
 
     try {
       await updateUser(authUser.id, newValues);
-      streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`] });
+      streams.fetchAllWith({
+        apiEndpoint: [`${API_PATH}/onboarding_campaigns/current`],
+      });
       resetForm();
       setStatus('success');
     } catch (errorResponse) {
@@ -144,20 +160,37 @@ class ProfileForm extends PureComponent<Props, State> {
       }
       setSubmitting(false);
     }
-  }
+  };
 
   formikRender = (props) => {
-    const { values, errors, setFieldValue, setFieldTouched, setStatus, isSubmitting, submitForm, isValid, status, touched } = props;
+    const {
+      values,
+      errors,
+      setFieldValue,
+      setFieldTouched,
+      setStatus,
+      isSubmitting,
+      submitForm,
+      isValid,
+      status,
+      touched,
+    } = props;
     const { userCustomFieldsSchema, lockedFields, authUser } = this.props;
 
     // Won't be called with a nil or error user.
     if (isNilOrError(authUser)) return null;
 
-    const hasCustomFields = !isNilOrError(userCustomFieldsSchema) && userCustomFieldsSchema.hasCustomFields;
+    const hasCustomFields =
+      !isNilOrError(userCustomFieldsSchema) &&
+      userCustomFieldsSchema.hasCustomFields;
 
-    const customFieldsValues = this.state.userCustomFieldsFormData || authUser.attributes.custom_field_values;
+    const customFieldsValues =
+      this.state.userCustomFieldsFormData ||
+      authUser.attributes.custom_field_values;
 
-    const lockedFieldsNames = isNilOrError(lockedFields) ? [] : lockedFields.map(field => field.attributes.name);
+    const lockedFieldsNames = isNilOrError(lockedFields)
+      ? []
+      : lockedFields.map((field) => field.attributes.name);
 
     const { formatMessage } = this.props.intl;
 
@@ -166,7 +199,7 @@ class ProfileForm extends PureComponent<Props, State> {
 
       if (isSubmitting) {
         returnValue = 'disabled';
-      } else if (!isEmpty(touched) && !isValid || status === 'error') {
+      } else if ((!isEmpty(touched) && !isValid) || status === 'error') {
         returnValue = 'error';
       } else if (isEmpty(touched) && status === 'success') {
         returnValue = 'success';
@@ -193,7 +226,7 @@ class ProfileForm extends PureComponent<Props, State> {
       }
     };
 
-    const createChangeHandler = (fieldName: string) => value => {
+    const createChangeHandler = (fieldName: string) => (value) => {
       if (fieldName.endsWith('_multiloc')) {
         setFieldValue(fieldName, { [this.props.locale]: value });
       } else if (value && value.value) {
@@ -222,7 +255,10 @@ class ProfileForm extends PureComponent<Props, State> {
     return (
       <FormSection>
         <form className="e2e-profile-edit-form">
-          <FormSectionTitle message={messages.h1} subtitleMessage={messages.h1sub} />
+          <FormSectionTitle
+            message={messages.h1}
+            subtitleMessage={messages.h1sub}
+          />
 
           <SectionField>
             <ImagesDropzone
@@ -236,17 +272,16 @@ class ProfileForm extends PureComponent<Props, State> {
               onAdd={handleAvatarOnAdd}
               onRemove={handleAvatarOnRemove}
               label={formatMessage(messages.imageDropzonePlaceholder)}
-              removeIconAriaTitle={formatMessage(messages.a11y_imageDropzoneRemoveIconAriaTitle)}
+              removeIconAriaTitle={formatMessage(
+                messages.a11y_imageDropzoneRemoveIconAriaTitle
+              )}
               borderRadius="50%"
             />
             <Error apiErrors={errors.avatar} />
           </SectionField>
 
           <SectionField>
-            <FormLabel
-              htmlFor="firstName"
-              labelMessage={messages.firstNames}
-            />
+            <FormLabel htmlFor="firstName" labelMessage={messages.firstNames} />
             <InputContainer>
               <Input
                 type="text"
@@ -257,21 +292,18 @@ class ProfileForm extends PureComponent<Props, State> {
                 onBlur={createBlurHandler('first_name')}
                 disabled={lockedFieldsNames.includes('first_name')}
               />
-              {lockedFieldsNames.includes('first_name') &&
+              {lockedFieldsNames.includes('first_name') && (
                 <StyledIconTooltip
                   content={<FormattedMessage {...messages.blockedVerified} />}
                   icon="lock"
                 />
-              }
+              )}
             </InputContainer>
             <Error apiErrors={errors.first_name} />
           </SectionField>
 
           <SectionField>
-            <FormLabel
-              htmlFor="lastName"
-              labelMessage={messages.lastName}
-            />
+            <FormLabel htmlFor="lastName" labelMessage={messages.lastName} />
             <InputContainer id="e2e-last-name-input">
               <Input
                 type="text"
@@ -282,12 +314,12 @@ class ProfileForm extends PureComponent<Props, State> {
                 onBlur={createBlurHandler('last_name')}
                 disabled={lockedFieldsNames.includes('last_name')}
               />
-              {lockedFieldsNames.includes('last_name') &&
+              {lockedFieldsNames.includes('last_name') && (
                 <StyledIconTooltip
                   content={<FormattedMessage {...messages.blockedVerified} />}
                   icon="lock"
                 />
-              }
+              )}
             </InputContainer>
             <Error apiErrors={errors.last_name} />
           </SectionField>
@@ -304,13 +336,13 @@ class ProfileForm extends PureComponent<Props, State> {
                 onBlur={createBlurHandler('email')}
                 disabled={lockedFieldsNames.includes('email')}
               />
-              {lockedFieldsNames.includes('email') &&
+              {lockedFieldsNames.includes('email') && (
                 <StyledIconTooltip
                   content={<FormattedMessage {...messages.blockedVerified} />}
                   icon="lock"
                   className="e2e-last-name-lock"
                 />
-              }
+              )}
             </InputContainer>
             <Error apiErrors={errors.email} />
           </SectionField>
@@ -322,7 +354,11 @@ class ProfileForm extends PureComponent<Props, State> {
               noImages={true}
               noVideos={true}
               limitedTextFormatting={true}
-              value={values.bio_multiloc ? this.props.localize(values.bio_multiloc) : ''}
+              value={
+                values.bio_multiloc
+                  ? this.props.localize(values.bio_multiloc)
+                  : ''
+              }
               placeholder={formatMessage({ ...messages.bio_placeholder })}
               onChange={createChangeHandler('bio_multiloc')}
               onBlur={createBlurHandler('bio_multiloc')}
@@ -356,13 +392,13 @@ class ProfileForm extends PureComponent<Props, State> {
           </SectionField>
         </form>
 
-        {hasCustomFields &&
+        {hasCustomFields && (
           <UserCustomFieldsForm
             formData={customFieldsValues}
             onChange={handleCustomFieldsFormOnChange}
             onSubmit={handleCustomFieldsFormOnSubmit}
           />
-        }
+        )}
 
         <SubmitWrapper
           status={getStatus()}
@@ -378,7 +414,7 @@ class ProfileForm extends PureComponent<Props, State> {
         />
       </FormSection>
     );
-  }
+  };
 
   render() {
     const { authUser } = this.props;
@@ -402,11 +438,11 @@ const ProfileFormWithHocs = injectIntl<InputProps>(localize(ProfileForm));
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   lockedFields: <GetLockedFields />,
-  userCustomFieldsSchema: <GetUserCustomFieldsSchema />
+  userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProfileFormWithHocs {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProfileFormWithHocs {...inputProps} {...dataProps} />}
   </Data>
 );

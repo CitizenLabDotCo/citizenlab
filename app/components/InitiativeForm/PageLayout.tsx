@@ -55,7 +55,8 @@ const HeaderTitle: any = styled.h1`
   width: 100%;
   max-width: 600px;
   color: ${({ theme }) => theme.colorMain};
-  font-size: ${({ theme }) => theme.signedOutHeaderTitleFontSize || (fontSizes.xxxl + 1)}px;
+  font-size: ${({ theme }) =>
+    theme.signedOutHeaderTitleFontSize || fontSizes.xxxl + 1}px;
   line-height: normal;
   font-weight: ${({ theme }) => theme.signedOutHeaderTitleFontWeight || 600};
   text-align: center;
@@ -125,7 +126,7 @@ interface Props {
 export default class PageLayout extends React.PureComponent<Props> {
   goBack = () => {
     clHistory.goBack();
-  }
+  };
 
   render() {
     const { children, className } = this.props;
@@ -139,7 +140,13 @@ export default class PageLayout extends React.PureComponent<Props> {
           <HeaderTitle>
             <FormattedMessage
               {...messages.header}
-              values={{ styledOrgName: <ColoredText><FormattedMessage {...messages.orgName} /></ColoredText> }}
+              values={{
+                styledOrgName: (
+                  <ColoredText>
+                    <FormattedMessage {...messages.orgName} />
+                  </ColoredText>
+                )
+              }}
             />
           </HeaderTitle>
         </Header>

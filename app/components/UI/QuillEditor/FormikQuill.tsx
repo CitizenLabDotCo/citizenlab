@@ -2,17 +2,21 @@ import React, { PureComponent } from 'react';
 import { FieldProps } from 'formik';
 
 // components
-import QuillEditor, { Props as QuillEditorProps } from 'components/UI/QuillEditor';
+import QuillEditor, {
+  Props as QuillEditorProps,
+} from 'components/UI/QuillEditor';
 
-export default class FormikQuill extends PureComponent<FieldProps & QuillEditorProps> {
+export default class FormikQuill extends PureComponent<
+  FieldProps & QuillEditorProps
+> {
   handleOnChange = (newValue: string) => {
     this.props.form.setFieldValue(this.props.field.name, newValue);
     this.props.form.setStatus('enabled');
-  }
+  };
 
   handleOnBlur = () => {
     this.props.form.setFieldTouched(this.props.field.name);
-  }
+  };
 
   render() {
     const { field } = this.props;

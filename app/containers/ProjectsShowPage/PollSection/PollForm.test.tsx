@@ -7,21 +7,35 @@ import { PollForm } from './PollForm';
 
 import { mockQuestion } from 'services/__mocks__/pollQuestions';
 
-jest.mock('services/pollResponses', () => ({ addPollResponse: jest.fn(() => { return new Promise((resolve) => resolve); }) }));
+jest.mock('services/pollResponses', () => ({
+  addPollResponse: jest.fn(() => {
+    return new Promise((resolve) => resolve);
+  }),
+}));
 import * as responseServices from 'services/pollResponses';
 const addPollResponseSpy = jest.spyOn(responseServices, 'addPollResponse');
 
-jest.mock('utils/cl-intl', () => ({ FormattedMessage: () => 'FormattedMessage' }));
+jest.mock('utils/cl-intl', () => ({
+  FormattedMessage: () => 'FormattedMessage',
+}));
 jest.mock('./PollSingleChoice', () => 'PollSingleChoice');
 jest.mock('./PollMultipleChoice', () => 'PollMultipleChoice');
 jest.mock('components/UI/Button', () => 'Button');
 
-const singleOptionQuestion = mockQuestion('questionSId', 'What is your favourite ice cream flavour ?');
-const multipleOptionsQuestion = mockQuestion('questionMId', 'What is your favourite ice cream flavour ?', 'multiple_options', 2);
+const singleOptionQuestion = mockQuestion(
+  'questionSId',
+  'What is your favourite ice cream flavour ?'
+);
+const multipleOptionsQuestion = mockQuestion(
+  'questionMId',
+  'What is your favourite ice cream flavour ?',
+  'multiple_options',
+  2
+);
 
-const getSingleChoiceForm = Wrapper => Wrapper.find('PollSingleChoice');
-const getMultipleChoiceForm = Wrapper => Wrapper.find('PollMultipleChoice');
-const getSaveButton = Wrapper => Wrapper.find('.e2e-send-poll');
+const getSingleChoiceForm = (Wrapper) => Wrapper.find('PollSingleChoice');
+const getMultipleChoiceForm = (Wrapper) => Wrapper.find('PollMultipleChoice');
+const getSaveButton = (Wrapper) => Wrapper.find('.e2e-send-poll');
 
 describe('<PollForm/>', () => {
   it('renders correclty', () => {
@@ -41,7 +55,9 @@ describe('<PollForm/>', () => {
 
     const MultipleChoiceForm = getMultipleChoiceForm(Wrapper);
     expect(MultipleChoiceForm.prop('index')).toBe(1);
-    expect(MultipleChoiceForm.prop('question')).toEqual(multipleOptionsQuestion);
+    expect(MultipleChoiceForm.prop('question')).toEqual(
+      multipleOptionsQuestion
+    );
 
     const SaveButton = getSaveButton(Wrapper);
     expect(SaveButton.prop('disabled')).toBe(true);
@@ -96,17 +112,33 @@ describe('<PollForm/>', () => {
 
       expect(getMultipleChoiceForm(Wrapper).prop('value')).toBe(undefined);
 
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option1')();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option1'
+      )();
 
-      expect(getMultipleChoiceForm(Wrapper).prop('value')).toStrictEqual(['option1']);
+      expect(getMultipleChoiceForm(Wrapper).prop('value')).toStrictEqual([
+        'option1',
+      ]);
 
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option2')();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option2'
+      )();
 
-      expect(getMultipleChoiceForm(Wrapper).prop('value')).toStrictEqual(['option1', 'option2']);
+      expect(getMultipleChoiceForm(Wrapper).prop('value')).toStrictEqual([
+        'option1',
+        'option2',
+      ]);
 
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option2')();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option2'
+      )();
 
-      expect(getMultipleChoiceForm(Wrapper).prop('value')).toStrictEqual(['option1']);
+      expect(getMultipleChoiceForm(Wrapper).prop('value')).toStrictEqual([
+        'option1',
+      ]);
     });
   });
   describe('validate', () => {
@@ -121,7 +153,10 @@ describe('<PollForm/>', () => {
         />
       );
 
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option1')();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option1'
+      )();
       expect(getSaveButton(Wrapper).prop('disabled')).toBe(true);
     });
     it('is not valid when there is an unanswered multiple option question', () => {
@@ -149,9 +184,18 @@ describe('<PollForm/>', () => {
         />
       );
 
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option1')();
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option2')();
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option3')();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option1'
+      )();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option2'
+      )();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option3'
+      )();
       expect(getSaveButton(Wrapper).prop('disabled')).toBe(true);
     });
     it('is valid with one answer to each question', () => {
@@ -165,7 +209,10 @@ describe('<PollForm/>', () => {
         />
       );
 
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option1')();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option1'
+      )();
       getSingleChoiceForm(Wrapper).prop('onChange')('questionSId', 'option1')();
 
       expect(getSaveButton(Wrapper).prop('disabled')).toBe(false);
@@ -184,7 +231,10 @@ describe('<PollForm/>', () => {
         />
       );
 
-      getMultipleChoiceForm(Wrapper).prop('onChange')('questionMId', 'option1')();
+      getMultipleChoiceForm(Wrapper).prop('onChange')(
+        'questionMId',
+        'option1'
+      )();
       getSingleChoiceForm(Wrapper).prop('onChange')('questionSId', 'option2')();
 
       expect(getSaveButton(Wrapper).prop('disabled')).toBe(false);
@@ -192,7 +242,12 @@ describe('<PollForm/>', () => {
       getSaveButton(Wrapper).prop('onClick')();
 
       expect(addPollResponseSpy).toHaveBeenCalledTimes(1);
-      expect(addPollResponseSpy).toHaveBeenCalledWith('projectId', 'project', ['option1', 'option2'], 'projectId');
+      expect(addPollResponseSpy).toHaveBeenCalledWith(
+        'projectId',
+        'project',
+        ['option1', 'option2'],
+        'projectId'
+      );
     });
   });
 });

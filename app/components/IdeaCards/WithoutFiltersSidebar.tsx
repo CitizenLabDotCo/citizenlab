@@ -2,6 +2,10 @@ import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { isNilOrError } from 'utils/helperUtils';
 
+// tracks
+import { trackEventByName } from 'utils/analytics';
+import tracks from './tracks';
+
 // components
 import IdeaCard from 'components/IdeaCard';
 import IdeasMap from 'components/IdeasMap';
@@ -14,10 +18,18 @@ import Button from 'components/UI/Button';
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 // resources
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
-import GetIdeas, { Sort, GetIdeasChildProps, InputProps as GetIdeasInputProps } from 'resources/GetIdeas';
+import GetWindowSize, {
+  GetWindowSizeChildProps,
+} from 'resources/GetWindowSize';
+import GetIdeas, {
+  Sort,
+  GetIdeasChildProps,
+  InputProps as GetIdeasInputProps,
+} from 'resources/GetIdeas';
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
-import GetIdeaCustomFieldsSchemas, { GetIdeaCustomFieldsSchemasChildProps } from 'resources/GetIdeaCustomFieldsSchemas';
+import GetIdeaCustomFieldsSchemas, {
+  GetIdeaCustomFieldsSchemasChildProps,
+} from 'resources/GetIdeaCustomFieldsSchemas';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // i18n
@@ -34,9 +46,7 @@ import { rgba } from 'polished';
 import { ParticipationMethod } from 'services/participationContexts';
 import { IParticipationContextType } from 'typings';
 import { withRouter, WithRouterProps } from 'react-router';
-import {
-  CustomFieldCodes,
-} from 'services/ideaCustomFields';
+import { CustomFieldCodes } from 'services/ideaCustomFields';
 
 const Container = styled.div`
   width: 100%;
@@ -147,7 +157,7 @@ const IdeasList: any = styled.div`
 
 const StyledIdeaCard = styled(IdeaCard)`
   flex-grow: 0;
-  width: calc(100% * (1/3) - 26px);
+  width: calc(100% * (1 / 3) - 26px);
   margin-left: 13px;
   margin-right: 13px;
 
@@ -210,7 +220,7 @@ const ShowMoreButton = styled(Button)``;
 
 const ListView = styled.div``;
 
-interface InputProps extends GetIdeasInputProps  {
+interface InputProps extends GetIdeasInputProps {
   showViewToggle?: boolean | undefined;
   defaultView?: 'card' | 'map' | null | undefined;
   participationMethod?: ParticipationMethod | null;
@@ -236,15 +246,18 @@ interface State {
   selectedView: 'card' | 'map';
 }
 
-class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, State> {
+class WithoutFiltersSidebar extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   static defaultProps = {
-    showViewToggle: false
+    showViewToggle: false,
   };
 
   constructor(props: Props & InjectedIntlProps) {
     super(props);
     this.state = {
-      selectedView: (props.defaultView || 'card')
+      selectedView: props.defaultView || 'card',
     };
   }
 
@@ -255,32 +268,37 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
   }
 
   loadMore = () => {
+    trackEventByName(tracks.loadMoreIdeas);
     this.props.ideas.onLoadMore();
-  }
+  };
 
   handleSearchOnChange = (search: string) => {
     this.props.ideas.onChangeSearchTerm(search);
-  }
+  };
 
   handleProjectsOnChange = (projects: string[]) => {
     this.props.ideas.onChangeProjects(projects);
-  }
+  };
 
   handleSortOnChange = (sort: Sort) => {
+    trackEventByName(tracks.sortingFilter, {
+      sort,
+    });
     this.props.ideas.onChangeSorting(sort);
-  }
+  };
 
   handleTopicsOnChange = (topics: string[]) => {
+    trackEventByName(tracks.topicsFilter, {
+      topics,
+    });
     this.props.ideas.onChangeTopics(topics);
-  }
+  };
 
   selectView = (selectedView: 'card' | 'map') => {
     this.setState({ selectedView });
-  }
+  };
 
-  isFieldEnabled = (
-    fieldCode: CustomFieldCodes,
-  ) => {
+  isFieldEnabled = (fieldCode: CustomFieldCodes) => {
     /*
       If IdeaCards are used in a location that's not inside a project,
       and has no ideaCustomFields settings as such,
@@ -290,11 +308,15 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
     const { ideaCustomFieldsSchemas, locale } = this.props;
 
     if (!isNilOrError(ideaCustomFieldsSchemas) && !isNilOrError(locale)) {
-      return ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode]['ui:widget'] !== 'hidden';
+      return (
+        ideaCustomFieldsSchemas.ui_schema_multiloc[locale][fieldCode][
+          'ui:widget'
+        ] !== 'hidden'
+      );
     }
 
     return true;
-  }
+  };
 
   searchPlaceholder = this.props.intl.formatMessage(messages.searchPlaceholder);
   searchAriaLabel = this.props.intl.formatMessage(messages.searchPlaceholder);
@@ -311,26 +333,25 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
       theme,
       allowProjectsFilter,
       showViewToggle,
-      project
+      project,
     } = this.props;
-    const {
-      queryParameters,
-      list,
-      hasMore,
-      querying,
-      loadingMore
-    } = ideas;
-    const hasIdeas = (!isNilOrError(list) && list.length > 0);
+    const { queryParameters, list, hasMore, querying, loadingMore } = ideas;
+    const hasIdeas = !isNilOrError(list) && list.length > 0;
     const locationEnabled = this.isFieldEnabled('location');
     const topicsEnabled = this.isFieldEnabled('topic_ids');
     const showViewButtons = !!(locationEnabled && showViewToggle);
-    const showListView = !locationEnabled || (locationEnabled && selectedView === 'card');
-    const showMapView = (locationEnabled && selectedView === 'map');
-    const biggerThanLargeTablet = (windowSize && windowSize >= viewportWidths.largeTablet);
+    const showListView =
+      !locationEnabled || (locationEnabled && selectedView === 'card');
+    const showMapView = locationEnabled && selectedView === 'map';
+    const biggerThanLargeTablet =
+      windowSize && windowSize >= viewportWidths.largeTablet;
 
     return (
       <Container id="e2e-ideas-container" className={className}>
-        <FiltersArea id="e2e-ideas-filters" className={`${showMapView && 'mapView'}`}>
+        <FiltersArea
+          id="e2e-ideas-filters"
+          className={`${showMapView && 'mapView'}`}
+        >
           <LeftFilterArea className={`${showMapView && 'hidden'}`}>
             <StyledSearchInput
               className="e2e-search-ideas-input"
@@ -339,9 +360,18 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
           </LeftFilterArea>
 
           <RightFilterArea>
-            <DropdownFilters className={`${showMapView ? 'hidden' : 'visible'} ${showViewButtons ? 'hasViewButtons' : ''}`}>
-              <SelectSort onChange={this.handleSortOnChange} alignment={biggerThanLargeTablet ? 'right' : 'left'} />
-              {allowProjectsFilter && <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />}
+            <DropdownFilters
+              className={`${showMapView ? 'hidden' : 'visible'} ${
+                showViewButtons ? 'hasViewButtons' : ''
+              }`}
+            >
+              <SelectSort
+                onChange={this.handleSortOnChange}
+                alignment={biggerThanLargeTablet ? 'right' : 'left'}
+              />
+              {allowProjectsFilter && (
+                <ProjectFilterDropdown onChange={this.handleProjectsOnChange} />
+              )}
               {topicsEnabled && (
                 <TopicFilterDropdown
                   onChange={this.handleTopicsOnChange}
@@ -351,24 +381,24 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
               )}
             </DropdownFilters>
 
-            {showViewButtons &&
+            {showViewButtons && (
               <StyledViewButtons
                 selectedView={selectedView}
                 onClick={this.selectView}
               />
-            }
+            )}
           </RightFilterArea>
         </FiltersArea>
 
-        {showListView &&
+        {showListView && (
           <ListView>
-            {querying ?
+            {querying ? (
               <Loading id="ideas-loading">
                 <Spinner />
               </Loading>
-            :
+            ) : (
               <>
-                {hasIdeas && list ?
+                {hasIdeas && list ? (
                   <IdeasList id="e2e-ideas-list">
                     {list.map((idea) => (
                       <StyledIdeaCard
@@ -377,9 +407,10 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
                         participationMethod={participationMethod}
                         participationContextId={participationContextId}
                         participationContextType={participationContextType}
-                      />))}
+                      />
+                    ))}
                   </IdeasList>
-                  :
+                ) : (
                   <EmptyContainer id="ideas-empty">
                     <IdeaIcon ariaHidden name="idea" />
                     <EmptyMessage>
@@ -388,8 +419,8 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
                       </EmptyMessageLine>
                     </EmptyMessage>
                   </EmptyContainer>
-                }
-                {hasMore &&
+                )}
+                {hasMore && (
                   <Footer>
                     <ShowMoreButton
                       id="e2e-idea-cards-show-more-button"
@@ -406,15 +437,18 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
                       fontWeight="500"
                     />
                   </Footer>
-                }
+                )}
               </>
-            }
+            )}
           </ListView>
-        }
+        )}
 
-        {showMapView &&
-          <IdeasMap projectIds={queryParameters.projects} phaseId={queryParameters.phase} />
-        }
+        {showMapView && (
+          <IdeasMap
+            projectIds={queryParameters.projects}
+            phaseId={queryParameters.phase}
+          />
+        )}
       </Container>
     );
   }
@@ -423,8 +457,14 @@ class WithoutFiltersSidebar extends PureComponent<Props & InjectedIntlProps, Sta
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
   locale: <GetLocale />,
   windowSize: <GetWindowSize />,
-  ideas: ({ render, ...getIdeasInputProps }) => <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">{render}</GetIdeas>,
-  project: ({ params, render }) => <GetProject projectSlug={params.slug}>{render}</GetProject>,
+  ideas: ({ render, ...getIdeasInputProps }) => (
+    <GetIdeas {...getIdeasInputProps} pageSize={12} sort="random">
+      {render}
+    </GetIdeas>
+  ),
+  project: ({ params, render }) => (
+    <GetProject projectSlug={params.slug}>{render}</GetProject>
+  ),
   ideaCustomFieldsSchemas: ({ project, render }) => {
     return (
       <GetIdeaCustomFieldsSchemas
@@ -433,13 +473,17 @@ const Data = adopt<DataProps, InputProps & WithRouterProps>({
         {render}
       </GetIdeaCustomFieldsSchemas>
     );
-  }
+  },
 });
 
-const WithoutFiltersSidebarWithHoCs = withTheme(injectIntl(WithoutFiltersSidebar));
+const WithoutFiltersSidebarWithHoCs = withTheme(
+  injectIntl(WithoutFiltersSidebar)
+);
 
 export default withRouter((inputProps: InputProps & WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <WithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => (
+      <WithoutFiltersSidebarWithHoCs {...inputProps} {...dataProps} />
+    )}
   </Data>
 ));

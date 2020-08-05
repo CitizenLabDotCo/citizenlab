@@ -24,7 +24,9 @@ export interface FormValues {
   description_multiloc: Multiloc;
 }
 
-class AreaForm extends React.Component<InjectedFormikProps<Props & InjectedIntlProps, FormValues>> {
+class AreaForm extends React.Component<
+  InjectedFormikProps<Props & InjectedIntlProps, FormValues>
+> {
   public static validate = (values: FormValues): FormikErrors<FormValues> => {
     const errors: FormikErrors<FormValues> = {};
 
@@ -32,10 +34,17 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & InjectedIntlP
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
     return errors;
-  }
+  };
 
   render() {
-    const { isSubmitting, errors, isValid, touched, status, intl: { formatMessage } } = this.props;
+    const {
+      isSubmitting,
+      errors,
+      isValid,
+      touched,
+      status,
+      intl: { formatMessage },
+    } = this.props;
 
     return (
       <Form>
@@ -47,10 +56,12 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & InjectedIntlP
               label={<FormattedMessage {...messages.fieldTitle} />}
               labelTooltipText={formatMessage(messages.fieldTitleTooltip)}
             />
-            {touched.title_multiloc && <Error
-              fieldName="title_multiloc"
-              apiErrors={errors.title_multiloc as any}
-            />}
+            {touched.title_multiloc && (
+              <Error
+                fieldName="title_multiloc"
+                apiErrors={errors.title_multiloc as any}
+              />
+            )}
           </SectionField>
           <SectionField>
             <Field
@@ -60,16 +71,16 @@ class AreaForm extends React.Component<InjectedFormikProps<Props & InjectedIntlP
               labelTooltipText={formatMessage(messages.fieldDescriptionTooltip)}
               withCTAButton
             />
-            {touched.description_multiloc && <Error
-              fieldName="description_multiloc"
-              apiErrors={errors.description_multiloc as any}
-            />}
+            {touched.description_multiloc && (
+              <Error
+                fieldName="description_multiloc"
+                apiErrors={errors.description_multiloc as any}
+              />
+            )}
           </SectionField>
         </Section>
 
-        <FormikSubmitWrapper
-          {...{ isValid, isSubmitting, status, touched }}
-        />
+        <FormikSubmitWrapper {...{ isValid, isSubmitting, status, touched }} />
       </Form>
     );
   }

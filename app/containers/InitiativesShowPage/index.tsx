@@ -10,7 +10,9 @@ import Button from 'components/UI/Button';
 import InitiativeShowPageTopBar from './InitiativeShowPageTopBar';
 
 // resources
-import GetInitiative, { GetInitiativeChildProps } from 'resources/GetInitiative';
+import GetInitiative, {
+  GetInitiativeChildProps,
+} from 'resources/GetInitiative';
 
 // i18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -21,7 +23,7 @@ import styled from 'styled-components';
 import { fontSizes, colors, media } from 'utils/styleUtils';
 
 const InitiativeNotFoundWrapper = styled.div`
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,7 +45,7 @@ const StyledInitiativeShowPageTopBar = styled(InitiativeShowPageTopBar)`
 `;
 
 const StyledInitiativesShow = styled(InitiativesShow)`
-  margin-top: ${props => props.theme.mobileTopBarHeight}px;
+  margin-top: ${(props) => props.theme.mobileTopBarHeight}px;
 
   ${media.biggerThanMaxTablet`
     margin-top: 0px;
@@ -64,7 +66,9 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
   if (isError(initiative)) {
     return (
       <InitiativeNotFoundWrapper>
-        <p><FormattedMessage {...messages.noInitiativeFoundHere} /></p>
+        <p>
+          <FormattedMessage {...messages.noInitiativeFoundHere} />
+        </p>
         <Button
           linkTo="/initiatives"
           text={goBackToListMessage}
@@ -87,11 +91,15 @@ const InitiativesShowPage = memo<Props>(({ initiative }) => {
 });
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  initiative: ({ params, render }) => <GetInitiative slug={params.slug}>{render}</GetInitiative>
+  initiative: ({ params, render }) => (
+    <GetInitiative slug={params.slug}>{render}</GetInitiative>
+  ),
 });
 
-export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <InitiativesShowPage {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter<InputProps>(
+  (inputProps: InputProps & WithRouterProps) => (
+    <Data {...inputProps}>
+      {(dataProps) => <InitiativesShowPage {...inputProps} {...dataProps} />}
+    </Data>
+  )
+);

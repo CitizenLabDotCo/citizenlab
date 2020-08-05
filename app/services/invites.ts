@@ -9,21 +9,21 @@ export interface IInviteData {
     accepted_at: string;
     updated_at: string;
     created_at: string;
-    activate_invite_url: string
+    activate_invite_url: string;
   };
   relationships: {
     invitee: {
       data: {
         id: string;
         type: 'votable';
-      }
-    },
+      };
+    };
     inviter: {
       data: {
         id: string;
         type: 'user';
-      }
-    }
+      };
+    };
   };
 }
 
@@ -56,7 +56,7 @@ type AdminRole = {
 
 type ProjectModeratorRole = {
   type: 'project_moderator';
-  project_id: string
+  project_id: string;
 };
 
 type Roles = (AdminRole | ProjectModeratorRole)[] | null | undefined;
@@ -77,17 +77,26 @@ export interface INewBulkXLSXInviteXLSX extends INewBulkInvite {
 }
 
 export function invitesStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IInvites>({ apiEndpoint: `${API_PATH}/invites`, ...streamParams });
+  return streams.get<IInvites>({
+    apiEndpoint: `${API_PATH}/invites`,
+    ...streamParams,
+  });
 }
 
 export async function bulkInviteEmails(object: INewBulkInviteEmails) {
-  const response = await streams.add<IInvites>(`${API_PATH}/invites/bulk_create`, { invites: object });
+  const response = await streams.add<IInvites>(
+    `${API_PATH}/invites/bulk_create`,
+    { invites: object }
+  );
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
   return response;
 }
 
 export async function bulkInviteXLSX(object: INewBulkXLSXInviteXLSX) {
-  const response = await streams.add<IInvites>(`${API_PATH}/invites/bulk_create_xlsx`, { invites: object });
+  const response = await streams.add<IInvites>(
+    `${API_PATH}/invites/bulk_create_xlsx`,
+    { invites: object }
+  );
   await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/invites`] });
   return response;
 }

@@ -93,11 +93,11 @@ interface State {
 }
 
 class DateTimePicker extends React.PureComponent<Props, State> {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       focused: false,
-      selectedMoment: (props.value ? moment(props.value) : moment().second(0)),
+      selectedMoment: props.value ? moment(props.value) : moment().second(0),
     };
   }
 
@@ -115,7 +115,7 @@ class DateTimePicker extends React.PureComponent<Props, State> {
   updateDateTime = (newMoment: moment.Moment) => {
     this.setState({ selectedMoment: newMoment });
     this.props.onChange(newMoment);
-  }
+  };
 
   handleDateChange = (dateMoment: moment.Moment | null) => {
     if (dateMoment) {
@@ -123,28 +123,28 @@ class DateTimePicker extends React.PureComponent<Props, State> {
         dateMoment.set({
           hour: this.state.selectedMoment.get('hour'),
           minute: this.state.selectedMoment.get('minute'),
-          second: this.state.selectedMoment.get('second')
+          second: this.state.selectedMoment.get('second'),
         })
       );
     }
-  }
+  };
 
   createTimeChangeHandler = (unit: 'hour' | 'minute') => (event) => {
     const { value } = event.target;
     const newMoment = this.state.selectedMoment.clone();
     newMoment.set(unit, value);
     this.updateDateTime(newMoment);
-  }
+  };
 
   handleFocusChange = ({ focused }) => {
     this.setState({ focused });
-  }
+  };
 
   isOutsideRange = () => {
     return false;
-  }
+  };
 
-  render () {
+  render() {
     const { selectedMoment, focused } = this.state;
     const hours = parseInt(selectedMoment.format('HH'), 10);
     const minutes = parseInt(selectedMoment.format('mm'), 10);

@@ -29,7 +29,7 @@ export default class GetIdeaStatus extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      ideaStatus: undefined
+      ideaStatus: undefined,
     };
   }
 
@@ -39,19 +39,23 @@ export default class GetIdeaStatus extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }: { id: string}) => {
-          if (isString(id)) {
-            return ideaStatusStream(id).observable;
-          }
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ id }) => isString(id)),
+          switchMap(({ id }: { id: string }) => {
+            if (isString(id)) {
+              return ideaStatusStream(id).observable;
+            }
 
-          return of(null);
-        })
-      ).subscribe((ideaStatus) => this.setState({
-        ideaStatus: !isNilOrError(ideaStatus) ? ideaStatus.data : null
-      }))
+            return of(null);
+          })
+        )
+        .subscribe((ideaStatus) =>
+          this.setState({
+            ideaStatus: !isNilOrError(ideaStatus) ? ideaStatus.data : null,
+          })
+        ),
     ];
   }
 
@@ -61,7 +65,7 @@ export default class GetIdeaStatus extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

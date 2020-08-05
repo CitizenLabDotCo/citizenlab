@@ -65,8 +65,12 @@ type Props = InputProps & DataProps;
 type State = {};
 
 class CampaignStats extends React.Component<Props, State> {
-
-  relevantsStats = ['sent', 'delivered', 'opened', 'clicked'] as IRelevantStats[];
+  relevantsStats = [
+    'sent',
+    'delivered',
+    'opened',
+    'clicked',
+  ] as IRelevantStats[];
 
   render() {
     const { stats, className } = this.props;
@@ -76,26 +80,36 @@ class CampaignStats extends React.Component<Props, State> {
       <Container className={className}>
         <GraphCard key="failed">
           <GraphCardPercentage>
-            <FormattedNumber style="percent" value={(stats.failed + stats.bounced) / stats['total']} />
+            <FormattedNumber
+              style="percent"
+              value={(stats.failed + stats.bounced) / stats['total']}
+            />
           </GraphCardPercentage>
-          <GraphCardCount>
-            {stats.failed + stats.bounced}
-          </GraphCardCount>
+          <GraphCardCount>{stats.failed + stats.bounced}</GraphCardCount>
           <GraphCardTitle>
             <FormattedMessage {...messages.deliveryStatus_failed} />
           </GraphCardTitle>
         </GraphCard>
         {this.relevantsStats.map((status) => (
           <GraphCard key={status}>
-            <GraphCardPercentage>
-              {stats[status]}
-            </GraphCardPercentage>
+            <GraphCardPercentage>{stats[status]}</GraphCardPercentage>
             <GraphCardCount>
-              <FormattedNumber style="percent" value={stats[status] / stats['total']} />
+              <FormattedNumber
+                style="percent"
+                value={stats[status] / stats['total']}
+              />
             </GraphCardCount>
             <GraphCardTitle>
               <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
-              {status === 'clicked' && <IconTooltip content={<FormattedMessage {...messages.deliveryStatus_clickedTooltip} />} />}
+              {status === 'clicked' && (
+                <IconTooltip
+                  content={
+                    <FormattedMessage
+                      {...messages.deliveryStatus_clickedTooltip}
+                    />
+                  }
+                />
+              )}
             </GraphCardTitle>
           </GraphCard>
         ))}

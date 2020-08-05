@@ -28,7 +28,9 @@ import { PageTitle, SectionDescription } from 'components/admin/Section';
 import HasPermission from 'components/HasPermission';
 import ProjectTemplatePreviewPageAdmin from 'components/ProjectTemplatePreview/ProjectTemplatePreviewPageAdmin';
 import { Spinner } from 'cl2-component-library';
-const ModeratorProjectList = React.lazy(() => import('./Lists/ModeratorProjectList'));
+const ModeratorProjectList = React.lazy(() =>
+  import('./Lists/ModeratorProjectList')
+);
 const AdminProjectList = React.lazy(() => import('./Lists/AdminProjectList'));
 
 // style
@@ -76,7 +78,7 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   selectedProjectTemplateId: string | null;
@@ -100,32 +102,49 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.subscriptions = [
-      eventEmitter.observeEvent<string>('ProjectTemplateCardClicked').subscribe(({ eventValue }) => {
-        if (isString(eventValue)) {
-          const selectedProjectTemplateId = eventValue;
-          const { locale } = this.props;
-          const url = `/admin/projects/templates/${selectedProjectTemplateId}`;
+      eventEmitter
+        .observeEvent<string>('ProjectTemplateCardClicked')
+        .subscribe(({ eventValue }) => {
+          if (isString(eventValue)) {
+            const selectedProjectTemplateId = eventValue;
+            const { locale } = this.props;
+            const url = `/admin/projects/templates/${selectedProjectTemplateId}`;
 
-          if (!isNilOrError(locale) && url) {
-            this.url = `${window.location.origin}/${locale}${url}`;
-            this.goBackUrl = 'window.location.href';
-            this.goBackUrl = `${window.location.origin}/${locale}${removeLocale(window.location.pathname).pathname}`;
-            window.history.pushState({ path: this.url }, '', this.url);
-            window.addEventListener('popstate', this.handlePopstateEvent, useCapture);
-            window.addEventListener('keydown', this.handleKeypress, useCapture);
-            this.unlisten = clHistory.listen(() => this.closeTemplatePreview());
-            trackPage(this.url);
+            if (!isNilOrError(locale) && url) {
+              this.url = `${window.location.origin}/${locale}${url}`;
+              this.goBackUrl = 'window.location.href';
+              this.goBackUrl = `${window.location.origin}/${locale}${
+                removeLocale(window.location.pathname).pathname
+              }`;
+              window.history.pushState({ path: this.url }, '', this.url);
+              window.addEventListener(
+                'popstate',
+                this.handlePopstateEvent,
+                useCapture
+              );
+              window.addEventListener(
+                'keydown',
+                this.handleKeypress,
+                useCapture
+              );
+              this.unlisten = clHistory.listen(() =>
+                this.closeTemplatePreview()
+              );
+              trackPage(this.url);
+            }
+
+            window.scrollTo(0, 0);
+            this.setState({ selectedProjectTemplateId });
           }
-
-          window.scrollTo(0, 0);
-          this.setState({ selectedProjectTemplateId });
-        }
-      })
+        })
     ];
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.selectedProjectTemplateId && !this.state.selectedProjectTemplateId) {
+    if (
+      prevState.selectedProjectTemplateId &&
+      !this.state.selectedProjectTemplateId
+    ) {
       this.cleanup();
     }
   }
@@ -137,11 +156,15 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
   closeTemplatePreview = () => {
     this.setState({ selectedProjectTemplateId: null });
-  }
+  };
 
   cleanup = () => {
     if (this.goBackUrl) {
-      window.removeEventListener('popstate', this.handlePopstateEvent, useCapture);
+      window.removeEventListener(
+        'popstate',
+        this.handlePopstateEvent,
+        useCapture
+      );
       window.removeEventListener('keydown', this.handleKeypress, useCapture);
 
       if (window.location.href === this.url) {
@@ -156,36 +179,40 @@ class AdminProjectsList extends PureComponent<Props, State> {
       this.unlisten();
       this.unlisten = null;
     }
-  }
+  };
 
   handlePopstateEvent = () => {
     this.closeTemplatePreview();
-  }
+  };
 
   handleKeypress = (event: KeyboardEvent) => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.closeTemplatePreview();
     }
-  }
+  };
 
   render() {
     const { selectedProjectTemplateId } = this.state;
-    const {
-      authUser,
-      className,
-    } = this.props;
-    const userIsAdmin = !isNilOrError(authUser) ? isAdmin({ data: authUser }) : false;
+    const { authUser, className } = this.props;
+    const userIsAdmin = !isNilOrError(authUser)
+      ? isAdmin({ data: authUser })
+      : false;
 
     return (
       <Container className={className}>
-        <CreateAndEditProjectsContainer className={selectedProjectTemplateId ? 'hidden' : ''}>
+        <CreateAndEditProjectsContainer
+          className={selectedProjectTemplateId ? 'hidden' : ''}
+        >
           <PageTitle>
             <FormattedMessage {...messages.overviewPageTitle} />
           </PageTitle>
 
           <SectionDescription>
-            <HasPermission item={{ type: 'route', path: '/admin/projects/new' }} action="access">
+            <HasPermission
+              item={{ type: 'route', path: '/admin/projects/new' }}
+              action="access"
+            >
               <FormattedMessage {...messages.overviewPageSubtitle} />
               <HasPermission.No>
                 <FormattedMessage {...messages.overviewPageSubtitleModerator} />
@@ -204,13 +231,15 @@ class AdminProjectsList extends PureComponent<Props, State> {
           </PageWrapper>
         </CreateAndEditProjectsContainer>
 
-        <ProjectTemplatePreviewContainer className={!selectedProjectTemplateId ? 'hidden' : ''}>
-          {selectedProjectTemplateId &&
+        <ProjectTemplatePreviewContainer
+          className={!selectedProjectTemplateId ? 'hidden' : ''}
+        >
+          {selectedProjectTemplateId && (
             <ProjectTemplatePreviewPageAdmin
               projectTemplateId={selectedProjectTemplateId}
               goBack={this.closeTemplatePreview}
             />
-          }
+          )}
         </ProjectTemplatePreviewContainer>
       </Container>
     );
@@ -219,7 +248,7 @@ class AdminProjectsList extends PureComponent<Props, State> {
 
 const Data = adopt<DataProps, InputProps>({
   locale: <GetLocale />,
-  authUser: <GetAuthUser />,
+  authUser: <GetAuthUser />
 });
 
 export default (inputProps: InputProps) => (

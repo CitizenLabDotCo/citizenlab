@@ -15,7 +15,6 @@ jest.mock('utils/locationTools');
 jest.mock('services/users');
 
 describe('InitiativesNewPage', () => {
-
   it('redirects unauthenticated users', () => {
     const topics = [mockTopicData];
 
@@ -25,13 +24,13 @@ describe('InitiativesNewPage', () => {
         topics={topics}
         authUser={null}
         location={{
-          query: {}
+          query: {},
         }}
       />
-     );
+    );
 
-     expect(clHistory.replace).toHaveBeenCalledTimes(1);
-     expect(clHistory.replace).toHaveBeenNthCalledWith(1, '/sign-up');
+    expect(clHistory.replace).toHaveBeenCalledTimes(1);
+    expect(clHistory.replace).toHaveBeenNthCalledWith(1, '/sign-up');
   });
 
   it('renders the initiatives formwrapper', () => {
@@ -43,11 +42,11 @@ describe('InitiativesNewPage', () => {
         topics={topics}
         authUser={makeUser()}
         location={{
-          query: {}
+          query: {},
         }}
       />
-     );
+    );
 
-     expect(Wrapper.find('InitiativesNewFormWrapper').exists()).toBe(true);
+    expect(Wrapper.find('InitiativesNewFormWrapper').exists()).toBe(true);
   });
 });

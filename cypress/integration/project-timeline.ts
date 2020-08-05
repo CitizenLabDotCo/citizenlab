@@ -26,15 +26,44 @@ describe('Project timeline page', () => {
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published'
+      publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
       // create new phases
-      cy.apiCreatePhase(projectId, phasePastTitle, twoMonthsAgo, twoDaysAgo, 'ideation', true, true, true, `description ${phasePastTitle}`);
-      cy.apiCreatePhase(projectId, phaseCurrentTitle, today, today, 'ideation', true, true, true, `description ${phaseCurrentTitle}`);
-      cy.apiCreatePhase(projectId, phaseFutureTitle, inTwoDays, inTwoMonths, 'ideation', true, true, true, `description ${phaseFutureTitle}`);
-
+      cy.apiCreatePhase(
+        projectId,
+        phasePastTitle,
+        twoMonthsAgo,
+        twoDaysAgo,
+        'ideation',
+        true,
+        true,
+        true,
+        `description ${phasePastTitle}`
+      );
+      cy.apiCreatePhase(
+        projectId,
+        phaseCurrentTitle,
+        today,
+        today,
+        'ideation',
+        true,
+        true,
+        true,
+        `description ${phaseCurrentTitle}`
+      );
+      cy.apiCreatePhase(
+        projectId,
+        phaseFutureTitle,
+        inTwoDays,
+        inTwoMonths,
+        'ideation',
+        true,
+        true,
+        true,
+        `description ${phaseFutureTitle}`
+      );
     });
   });
 
@@ -50,8 +79,13 @@ describe('Project timeline page', () => {
     // shows the current phase's title
     cy.get('.selected.present').contains(phaseCurrentTitle);
     // shows the current phase in the timeline as active, with its title
-    cy.get('.e2e-phases').find('.currentPhase').should('have.class', 'selectedPhase').contains(phaseCurrentTitle);
-    cy.get('.e2e-project-process-page').contains(`description ${phaseCurrentTitle}`);
+    cy.get('.e2e-phases')
+      .find('.currentPhase')
+      .should('have.class', 'selectedPhase')
+      .contains(phaseCurrentTitle);
+    cy.get('.e2e-project-process-page').contains(
+      `description ${phaseCurrentTitle}`
+    );
   });
 
   it('shows the previous phase', () => {
@@ -60,8 +94,13 @@ describe('Project timeline page', () => {
     // shows the current phase's title
     cy.get('.selected.past').contains(phasePastTitle);
     // shows the current phase in the timeline as active, with its title
-    cy.get('.e2e-phases').find('.selectedPhase').should('have.class', 'first').contains(phasePastTitle);
-    cy.get('.e2e-project-process-page').contains(`description ${phasePastTitle}`);
+    cy.get('.e2e-phases')
+      .find('.selectedPhase')
+      .should('have.class', 'first')
+      .contains(phasePastTitle);
+    cy.get('.e2e-project-process-page').contains(
+      `description ${phasePastTitle}`
+    );
   });
 
   it('shows the next phase', () => {
@@ -69,8 +108,13 @@ describe('Project timeline page', () => {
     // shows the current phase's title
     cy.get('.selected.future').contains(phaseFutureTitle);
     // shows the current phase in the timeline as active, with its title
-    cy.get('.e2e-phases').find('.selectedPhase').should('have.class', 'last').contains(phaseFutureTitle);
-    cy.get('.e2e-project-process-page').contains(`description ${phaseFutureTitle}`);
+    cy.get('.e2e-phases')
+      .find('.selectedPhase')
+      .should('have.class', 'last')
+      .contains(phaseFutureTitle);
+    cy.get('.e2e-project-process-page').contains(
+      `description ${phaseFutureTitle}`
+    );
   });
 
   after(() => {

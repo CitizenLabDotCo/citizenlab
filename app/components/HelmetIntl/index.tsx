@@ -10,7 +10,10 @@ type Props = {
 
 type State = {};
 
-export class HelmetIntl extends React.PureComponent<Props & InjectedIntlProps, State> {
+export class HelmetIntl extends React.PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   render() {
     const { formatMessage } = this.props.intl;
     const { title, description } = this.props;
@@ -19,9 +22,7 @@ export class HelmetIntl extends React.PureComponent<Props & InjectedIntlProps, S
       <>
         <Helmet
           title={formatMessage(title)}
-          meta={[
-            { name: 'description', content: formatMessage(description) },
-          ]}
+          meta={[{ name: 'description', content: formatMessage(description) }]}
         />
       </>
     );

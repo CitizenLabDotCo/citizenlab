@@ -4,7 +4,9 @@ import { Formik, FormikErrors } from 'formik';
 import { isEmpty, values as getValues, every } from 'lodash-es';
 
 // Resources
-import GetFeatureFlag, { GetFeatureFlagChildProps } from 'resources/GetFeatureFlag';
+import GetFeatureFlag, {
+  GetFeatureFlagChildProps,
+} from 'resources/GetFeatureFlag';
 
 // components
 import HelmetIntl from 'components/HelmetIntl';
@@ -15,14 +17,18 @@ import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
 import RulesGroupForm, { RulesFormValues } from './RulesGroupForm';
 
 // Global state
-import { globalState, IAdminNoPadding, IGlobalStateService } from 'services/globalState';
+import {
+  globalState,
+  IAdminNoPadding,
+  IGlobalStateService,
+} from 'services/globalState';
 
 // Styling
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
 
 const Wrapper = styled.div`
-  height: calc(100vh - ${props => props.theme.menuHeight}px - 1px);
+  height: calc(100vh - ${(props) => props.theme.menuHeight}px - 1px);
   display: flex;
   background: #fff;
 `;
@@ -61,7 +67,10 @@ export interface Props {
 }
 
 export interface State {
-  groupCreationModal: false | 'step1' | IGroupData['attributes']['membership_type'];
+  groupCreationModal:
+    | false
+    | 'step1'
+    | IGroupData['attributes']['membership_type'];
 }
 
 class UsersPage extends PureComponent<Props & WithRouterProps, State> {
@@ -85,35 +94,40 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
 
   openGroupCreationModal = () => {
     this.setState({ groupCreationModal: 'step1' });
-  }
+  };
 
   closeGroupCreationModal = () => {
     this.setState({ groupCreationModal: false });
-  }
+  };
 
   openStep2 = (groupType: IGroupData['attributes']['membership_type']) => {
     this.setState({ groupCreationModal: groupType });
-  }
+  };
 
   renderForm = (type: 'normal' | 'rules') => (props) => {
     if (type === 'normal') return <NormalGroupForm {...props} />;
     if (type === 'rules') return <RulesGroupForm {...props} />;
     return null;
-  }
+  };
 
-  handleSubmitForm = (values: NormalFormValues | RulesFormValues, { setErrors, setSubmitting, setStatus }) => {
-    addGroup({ ...values }).then(() => {
-      this.closeGroupCreationModal();
-    }).catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+  handleSubmitForm = (
+    values: NormalFormValues | RulesFormValues,
+    { setErrors, setSubmitting, setStatus }
+  ) => {
+    addGroup({ ...values })
+      .then(() => {
+        this.closeGroupCreationModal();
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   validateRulesWithFeatureFlag = (values: RulesFormValues) => {
     const errors: FormikErrors<RulesFormValues> = {};
@@ -122,13 +136,15 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
       errors.title_multiloc = [{ error: 'blank' }] as any;
     }
 
-    if (!this.props.verificationActive
-      && values.rules.find(rule => rule.ruleType === 'verified')) {
+    if (
+      !this.props.verificationActive &&
+      values.rules.find((rule) => rule.ruleType === 'verified')
+    ) {
       errors.rules = 'verificationDisabled' as any;
     }
 
     return errors;
-  }
+  };
 
   render() {
     if (!this.props.location) return null;
@@ -156,7 +172,10 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
         />
 
         <Wrapper>
-          <LeftPanel className="e2e-left-panel" onCreateGroup={this.openGroupCreationModal} />
+          <LeftPanel
+            className="e2e-left-panel"
+            onCreateGroup={this.openGroupCreationModal}
+          />
           <ChildWrapper>{this.props.children}</ChildWrapper>
         </Wrapper>
 
@@ -166,27 +185,31 @@ class UsersPage extends PureComponent<Props & WithRouterProps, State> {
           close={this.closeGroupCreationModal}
         >
           <>
-            {groupCreationModal === 'step1' &&
+            {groupCreationModal === 'step1' && (
               <GroupCreationStep1 onOpenStep2={this.openStep2} />
-            }
+            )}
 
-            {groupCreationModal === 'manual' &&
+            {groupCreationModal === 'manual' && (
               <Formik
                 initialValues={{ title_multiloc: {} }}
                 validate={NormalGroupForm.validate}
                 render={this.renderForm('normal')}
                 onSubmit={this.handleSubmitForm}
               />
-            }
+            )}
 
-            {groupCreationModal === 'rules' &&
+            {groupCreationModal === 'rules' && (
               <Formik
-                initialValues={{ title_multiloc: {}, rules: [{}], membership_type: 'rules' }}
+                initialValues={{
+                  title_multiloc: {},
+                  rules: [{}],
+                  membership_type: 'rules',
+                }}
                 validate={this.validateRulesWithFeatureFlag}
                 render={this.renderForm('rules')}
                 onSubmit={this.handleSubmitForm}
               />
-            }
+            )}
           </>
         </Modal>
       </>
@@ -198,8 +221,8 @@ const UsersPageWithHocs = withRouter<Props>(UsersPage);
 
 export default (props) => (
   <GetFeatureFlag name="verification">
-    {verificationActive =>
+    {(verificationActive) => (
       <UsersPageWithHocs {...props} verificationActive={verificationActive} />
-    }
+    )}
   </GetFeatureFlag>
 );

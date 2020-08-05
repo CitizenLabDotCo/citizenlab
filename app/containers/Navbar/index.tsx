@@ -10,9 +10,8 @@ import bowser from 'bowser';
 import NotificationMenu from './components/NotificationMenu';
 import MobileNavigation from './components/MobileNavigation';
 import UserMenu from './components/UserMenu';
-import { Icon } from 'cl2-component-library';
+import { Icon, Dropdown } from 'cl2-component-library';
 import Link from 'utils/cl-router/Link';
-import Dropdown from 'components/UI/Dropdown';
 import LoadableLanguageSelector from 'components/Loadable/LanguageSelector';
 import FeatureFlag from 'components/FeatureFlag';
 import Fragment from 'components/Fragment';
@@ -25,7 +24,9 @@ import tracks from './tracks';
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
-import GetAdminPublications, { GetAdminPublicationsChildProps } from 'resources/GetAdminPublications';
+import GetAdminPublications, {
+  GetAdminPublicationsChildProps,
+} from 'resources/GetAdminPublications';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 // services
@@ -45,7 +46,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import { colors, media, fontSizes, defaultStyles } from 'utils/styleUtils';
 
 const Container = styled.header`
   width: 100vw;
@@ -56,7 +57,7 @@ const Container = styled.header`
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: ${defaultStyles.boxShadow};
   z-index: 1004;
 
   &.hideNavbar {
@@ -152,13 +153,16 @@ const NavigationItem = styled(Link)`
     text-decoration: underline;
 
     ${NavigationItemBorder} {
-      background: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
+      background: ${({ theme }) =>
+        theme.navbarActiveItemBorderColor
+          ? rgba(theme.navbarActiveItemBorderColor, 0.3)
+          : rgba(theme.colorMain, 0.3)};
     }
   }
 
   &.active {
     &:before {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
       top: 0;
@@ -166,12 +170,14 @@ const NavigationItem = styled(Link)`
       height: 100%;
       width: 100%;
       z-index: -1;
-      background-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
+      background-color: ${({ theme }) =>
+        theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
       pointer-events: none;
     }
 
     ${NavigationItemBorder} {
-      background: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
+      background: ${({ theme }) =>
+        theme.navbarActiveItemBorderColor || theme.colorMain};
     }
   }
 `;
@@ -207,13 +213,16 @@ const NavigationDropdownItem = styled.button`
     text-decoration: underline;
 
     ${NavigationItemBorder} {
-      background: ${({ theme }) => theme.navbarActiveItemBorderColor ? rgba(theme.navbarActiveItemBorderColor, 0.3) : rgba(theme.colorMain, 0.3)};
+      background: ${({ theme }) =>
+        theme.navbarActiveItemBorderColor
+          ? rgba(theme.navbarActiveItemBorderColor, 0.3)
+          : rgba(theme.colorMain, 0.3)};
     }
   }
 
   &.active {
     &:after {
-      content: "";
+      content: '';
       display: block;
       position: absolute;
       top: 0;
@@ -221,12 +230,14 @@ const NavigationDropdownItem = styled.button`
       height: 100%;
       width: 100%;
       z-index: -1;
-      background-color: ${({ theme }) => theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
+      background-color: ${({ theme }) =>
+        theme.navbarActiveItemBackgroundColor || rgba(theme.colorMain, 0.05)};
       pointer-events: none;
     }
 
     ${NavigationItemBorder} {
-      background: ${({ theme }) => theme.navbarActiveItemBorderColor || theme.colorMain};
+      background: ${({ theme }) =>
+        theme.navbarActiveItemBorderColor || theme.colorMain};
     }
   }
 `;
@@ -366,13 +377,18 @@ const SignUpMenuItem = styled.button`
   cursor: pointer;
   border: none;
   border-radius: 0px;
-  background-color: ${({ theme }) => theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
+  background-color: ${({ theme }) =>
+    theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary};
   transition: all 100ms ease-out;
 
   &:hover {
     color: #fff;
     text-decoration: underline;
-    background-color: ${({ theme }) => darken(0.12, theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary)};
+    background-color: ${({ theme }) =>
+      darken(
+        0.12,
+        theme.navbarHighlightedItemBackgroundColor || theme.colorSecondary
+      )};
   }
 
   ${media.smallerThanMinTablet`
@@ -396,17 +412,20 @@ interface DataProps {
   adminPublications: GetAdminPublicationsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   projectsDropdownOpened: boolean;
 }
 
-class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps & InjectedLocalized, State> {
+class Navbar extends PureComponent<
+  Props & WithRouterProps & InjectedIntlProps & InjectedLocalized,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
-      projectsDropdownOpened: false
+      projectsDropdownOpened: false,
     };
   }
 
@@ -418,36 +437,39 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
   toggleProjectsDropdown = (event: FormEvent) => {
     event.preventDefault();
-    this.setState(({ projectsDropdownOpened }) => ({ projectsDropdownOpened: !projectsDropdownOpened }));
-  }
+    this.setState(({ projectsDropdownOpened }) => ({
+      projectsDropdownOpened: !projectsDropdownOpened,
+    }));
+  };
 
   trackSignUpLinkClick = () => {
     trackEventByName(tracks.clickSignUpLink.name);
-  }
+  };
 
   removeFocus = (event: MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   preloadLanguageSelector = () => {
     LoadableLanguageSelector.preload();
-  }
+  };
 
   handleRef = (element: HTMLElement) => {
     this.props.setRef && this.props.setRef(element);
-  }
+  };
 
   handleMobileNavigationRef = (element: HTMLElement) => {
-    this.props.setMobileNavigationRef && this.props.setMobileNavigationRef(element);
-  }
+    this.props.setMobileNavigationRef &&
+      this.props.setMobileNavigationRef(element);
+  };
 
   signIn = () => {
     openSignUpInModal({ flow: 'signin' });
-  }
+  };
 
   signUp = () => {
     openSignUpInModal({ flow: 'signup' });
-  }
+  };
 
   render() {
     const {
@@ -460,24 +482,44 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
       adminPublications,
     } = this.props;
     const { projectsDropdownOpened } = this.state;
-    const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : [];
-    let tenantLogo = !isNilOrError(tenant) ? get(tenant.attributes.logo, 'medium') : null;
+    const tenantLocales = !isNilOrError(tenant)
+      ? tenant.attributes.settings.core.locales
+      : [];
+    let tenantLogo = !isNilOrError(tenant)
+      ? get(tenant.attributes.logo, 'medium')
+      : null;
     // Avoids caching issue when an admin changes platform logo (I guess)
-    tenantLogo = isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) && tenantLogo ? `${tenantLogo}?${Date.now()}` : tenantLogo;
+    tenantLogo =
+      isAdmin(!isNilOrError(authUser) ? { data: authUser } : undefined) &&
+      tenantLogo
+        ? `${tenantLogo}?${Date.now()}`
+        : tenantLogo;
     const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
     const firstUrlSegment = urlSegments[0];
     const secondUrlSegment = urlSegments[1];
     const lastUrlSegment = urlSegments[urlSegments.length - 1];
-    const onIdeaPage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'ideas' && lastUrlSegment !== 'new');
-    const onInitiativePage = (urlSegments.length === 3 && includes(locales, firstUrlSegment) && secondUrlSegment === 'initiatives' && lastUrlSegment !== 'new');
+    const onIdeaPage =
+      urlSegments.length === 3 &&
+      includes(locales, firstUrlSegment) &&
+      secondUrlSegment === 'ideas' &&
+      lastUrlSegment !== 'new';
+    const onInitiativePage =
+      urlSegments.length === 3 &&
+      includes(locales, firstUrlSegment) &&
+      secondUrlSegment === 'initiatives' &&
+      lastUrlSegment !== 'new';
     const adminPage = isPage('admin', location.pathname);
     const initiativeFormPage = isPage('initiative_form', location.pathname);
     const ideaFormPage = isPage('idea_form', location.pathname);
     const ideaEditPage = isPage('idea_edit', location.pathname);
     const initiativeEditPage = isPage('initiative_edit', location.pathname);
     const emailSettingsPage = isPage('email-settings', location.pathname);
-    const totalProjectsListLength = (!isNilOrError(adminPublications) && adminPublications.list ? adminPublications.list.length : 0);
-    const showMobileNav = !adminPage &&
+    const totalProjectsListLength =
+      !isNilOrError(adminPublications) && adminPublications.list
+        ? adminPublications.list.length
+        : 0;
+    const showMobileNav =
+      !adminPage &&
       !ideaFormPage &&
       !initiativeFormPage &&
       !ideaEditPage &&
@@ -485,77 +527,103 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
 
     return (
       <>
-        {showMobileNav &&
+        {showMobileNav && (
           <MobileNavigation setRef={this.handleMobileNavigationRef} />
-        }
+        )}
 
         <Container
           id="e2e-navbar"
-          className={`${adminPage ? 'admin' : 'citizenPage'} ${'alwaysShowBorder'} ${onIdeaPage || onInitiativePage ? 'hideNavbar' : ''}`}
+          className={`${
+            adminPage ? 'admin' : 'citizenPage'
+          } ${'alwaysShowBorder'} ${
+            onIdeaPage || onInitiativePage ? 'hideNavbar' : ''
+          }`}
           ref={this.handleRef}
         >
           <ContainerInner>
             <Left>
-              {tenantLogo &&
+              {tenantLogo && (
                 <LogoLink to="/" onlyActiveOnIndex={true}>
-                  <Logo src={tenantLogo} alt={formatMessage(messages.logoAltText)} />
+                  <Logo
+                    src={tenantLogo}
+                    alt={formatMessage(messages.logoAltText)}
+                  />
                 </LogoLink>
-              }
+              )}
 
               <NavigationItems>
-                <NavigationItem to="/" activeClassName="active" onlyActiveOnIndex={true}>
+                <NavigationItem
+                  to="/"
+                  activeClassName="active"
+                  onlyActiveOnIndex={true}
+                >
                   <NavigationItemBorder />
                   <NavigationItemText>
                     <FormattedMessage {...messages.pageOverview} />
                   </NavigationItemText>
                 </NavigationItem>
 
-                {!isNilOrError(adminPublications) && adminPublications.list && adminPublications.list.length > 0 &&
-                  <NavigationDropdown>
-                    <NavigationDropdownItem
-                      tabIndex={0}
-                      className={`e2e-projects-dropdown-link ${projectsDropdownOpened ? 'opened' : 'closed'} ${secondUrlSegment === 'projects' || secondUrlSegment === 'folders' ? 'active' : ''}`}
-                      aria-expanded={projectsDropdownOpened}
-                      onMouseDown={this.removeFocus}
-                      onClick={this.toggleProjectsDropdown}
-                    >
-                      <NavigationItemBorder />
-                      <NavigationItemText>
-                        <FormattedMessage {...messages.pageProjects} />
-                      </NavigationItemText>
-                      <NavigationDropdownItemIcon name="dropdown" />
-                    </NavigationDropdownItem>
-                    <Dropdown
-                      top="68px"
-                      left="10px"
-                      opened={projectsDropdownOpened}
-                      onClickOutside={this.toggleProjectsDropdown}
-                      content={(
-                        <ProjectsList>
-                          {adminPublications.list.map(
-                            (item: IAdminPublicationContent) => (
-                              <ProjectsListItem
-                                key={item.publicationId}
-                                to={`/${item.publicationType === 'project' ? 'projects' : 'folders'}/${item.attributes.publication_slug}`}
-                              >
-                                {localize(item.attributes.publication_title_multiloc)}
-                              </ProjectsListItem>
-                            )
-                          )}
-                        </ProjectsList>
-                      )}
-                      footer={
-                        <>
-                          {totalProjectsListLength > 9 &&
-                            <ProjectsListFooter to={'/projects'}>
-                              <FormattedMessage {...messages.allProjects} />
-                            </ProjectsListFooter>
-                          }
-                        </>
-                      }
-                    />
-                  </NavigationDropdown>
-                }
+                {!isNilOrError(adminPublications) &&
+                  adminPublications.list &&
+                  adminPublications.list.length > 0 && (
+                    <NavigationDropdown>
+                      <NavigationDropdownItem
+                        tabIndex={0}
+                        className={`e2e-projects-dropdown-link ${
+                          projectsDropdownOpened ? 'opened' : 'closed'
+                        } ${
+                          secondUrlSegment === 'projects' ||
+                          secondUrlSegment === 'folders'
+                            ? 'active'
+                            : ''
+                        }`}
+                        aria-expanded={projectsDropdownOpened}
+                        onMouseDown={this.removeFocus}
+                        onClick={this.toggleProjectsDropdown}
+                      >
+                        <NavigationItemBorder />
+                        <NavigationItemText>
+                          <FormattedMessage {...messages.pageProjects} />
+                        </NavigationItemText>
+                        <NavigationDropdownItemIcon name="dropdown" />
+                      </NavigationDropdownItem>
+                      <Dropdown
+                        top="68px"
+                        left="10px"
+                        opened={projectsDropdownOpened}
+                        onClickOutside={this.toggleProjectsDropdown}
+                        content={
+                          <ProjectsList>
+                            {adminPublications.list.map(
+                              (item: IAdminPublicationContent) => (
+                                <ProjectsListItem
+                                  key={item.publicationId}
+                                  to={`/${
+                                    item.publicationType === 'project'
+                                      ? 'projects'
+                                      : 'folders'
+                                  }/${item.attributes.publication_slug}`}
+                                >
+                                  {localize(
+                                    item.attributes.publication_title_multiloc
+                                  )}
+                                </ProjectsListItem>
+                              )
+                            )}
+                          </ProjectsList>
+                        }
+                        footer={
+                          <>
+                            {totalProjectsListLength > 9 && (
+                              <ProjectsListFooter to={'/projects'}>
+                                <FormattedMessage {...messages.allProjects} />
+                              </ProjectsListFooter>
+                            )}
+                          </>
+                        }
+                      />
+                    </NavigationDropdown>
+                  )}
 
                 <FeatureFlag name="ideas_overview">
                   <NavigationItem
@@ -574,7 +642,9 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   <NavigationItem
                     to="/initiatives"
                     activeClassName="active"
-                    className={secondUrlSegment === 'initiatives' ? 'active' : ''}
+                    className={
+                      secondUrlSegment === 'initiatives' ? 'active' : ''
+                    }
                   >
                     <NavigationItemBorder />
                     <NavigationItemText>
@@ -583,7 +653,10 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
                   </NavigationItem>
                 </FeatureFlag>
 
-                <NavigationItem to="/pages/information" activeClassName="active">
+                <NavigationItem
+                  to="/pages/information"
+                  activeClassName="active"
+                >
                   <NavigationItemBorder />
                   <NavigationItemText>
                     <FormattedMessage {...messages.pageInformation} />
@@ -595,46 +668,58 @@ class Navbar extends PureComponent<Props & WithRouterProps & InjectedIntlProps &
               <Right className={bowser.msie ? 'ie' : ''}>
                 {!emailSettingsPage && (
                   <>
-                    {isNilOrError(authUser) &&
+                    {isNilOrError(authUser) && (
                       <RightItem className="login noLeftMargin">
-                        <LogInMenuItem id="e2e-navbar-login-menu-item" onClick={this.signIn}>
+                        <LogInMenuItem
+                          id="e2e-navbar-login-menu-item"
+                          onClick={this.signIn}
+                        >
                           <NavigationItemBorder />
                           <NavigationItemText>
                             <FormattedMessage {...messages.logIn} />
                           </NavigationItemText>
                         </LogInMenuItem>
                       </RightItem>
-                    }
+                    )}
 
-                    {isNilOrError(authUser) &&
-                      <RightItem onClick={this.trackSignUpLinkClick} className="signup noLeftMargin">
-                        <SignUpMenuItem id="e2e-navbar-signup-menu-item" onClick={this.signUp}>
+                    {isNilOrError(authUser) && (
+                      <RightItem
+                        onClick={this.trackSignUpLinkClick}
+                        className="signup noLeftMargin"
+                      >
+                        <SignUpMenuItem
+                          id="e2e-navbar-signup-menu-item"
+                          onClick={this.signUp}
+                        >
                           <NavigationItemText className="sign-up-span">
                             <FormattedMessage {...messages.signUp} />
                           </NavigationItemText>
                         </SignUpMenuItem>
                       </RightItem>
-                    }
+                    )}
 
-                    {!isNilOrError(authUser) &&
+                    {!isNilOrError(authUser) && (
                       <RightItem className="notification">
                         <NotificationMenu />
                       </RightItem>
-                    }
+                    )}
 
-                    {!isNilOrError(authUser) &&
+                    {!isNilOrError(authUser) && (
                       <RightItem className="usermenu">
                         <UserMenu />
                       </RightItem>
-                    }
+                    )}
                   </>
                 )}
 
-                {tenantLocales.length > 1 && locale &&
-                  <RightItem onMouseOver={this.preloadLanguageSelector} className="noLeftMargin">
+                {tenantLocales.length > 1 && locale && (
+                  <RightItem
+                    onMouseOver={this.preloadLanguageSelector}
+                    className="noLeftMargin"
+                  >
                     <StyledLoadableLanguageSelector />
                   </RightItem>
-                }
+                )}
               </Right>
             </StyledRightFragment>
           </ContainerInner>
@@ -648,13 +733,19 @@ const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
   tenant: <GetTenant />,
   locale: <GetLocale />,
-  adminPublications: <GetAdminPublications publicationStatusFilter={['published', 'archived']} noEmptyFolder folderId={null} />,
+  adminPublications: (
+    <GetAdminPublications
+      publicationStatusFilter={['published', 'archived']}
+      noEmptyFolder
+      folderId={null}
+    />
+  ),
 });
 
 const NavbarWithHOCs = injectLocalize<Props>(withRouter(injectIntl(Navbar)));
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <NavbarWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <NavbarWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

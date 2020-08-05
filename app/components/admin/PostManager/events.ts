@@ -4,7 +4,7 @@ export interface StatusChangeModalOpen {
 }
 
 enum ModalEvents {
-  statusChangeModalOpen = 'initiatiateStatusChange'
+  statusChangeModalOpen = 'initiatiateStatusChange',
 }
 
 export default ModalEvents;

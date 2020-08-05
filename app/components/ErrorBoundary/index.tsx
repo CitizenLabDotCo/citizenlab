@@ -22,7 +22,8 @@ const Container = styled.div`
 const StyledButton = styled.button`
   outline: none;
   color: ${colors.clBlue};
-  &.hover, &.focus {
+  &.hover,
+  &.focus {
     text-decoration: underline;
   }
 `;
@@ -34,10 +35,10 @@ interface DataProps {
 interface Props extends DataProps {}
 
 type State = {
-  hasError: boolean,
+  hasError: boolean;
 };
 
-class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
+class ErrorBoundary extends Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = { hasError: false };
@@ -48,8 +49,8 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
     this.setState({ hasError: true });
 
     // Report to Sentry
-    withScope(scope => {
-      Object.keys(errorInfo).forEach(key => {
+    withScope((scope) => {
+      Object.keys(errorInfo).forEach((key) => {
         scope.setExtra(key, errorInfo[key]);
         scope.setExtra('from', 'ErrorBoundary');
       });
@@ -58,7 +59,10 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
   }
 
   openDialog = () => {
-    const { authUser, intl: { formatMessage } } = this.props;
+    const {
+      authUser,
+      intl: { formatMessage },
+    } = this.props;
     const title = formatMessage(messages.errorFormTitle);
     const subtitle = formatMessage(messages.errorFormSubtitle);
     const subtitle2 = formatMessage(messages.errorFormSubtitle2);
@@ -85,14 +89,16 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
     };
     if (!isNilOrError(authUser)) {
       const { first_name, last_name, email } = authUser.attributes;
-      Object.assign(reportDialogProperties, { user: {
-        email,
-        name: `${first_name} ${last_name}`
-      }});
+      Object.assign(reportDialogProperties, {
+        user: {
+          email,
+          name: `${first_name} ${last_name}`,
+        },
+      });
     }
 
     showReportDialog(reportDialogProperties);
-  }
+  };
 
   render() {
     if (this.state.hasError) {
@@ -104,7 +110,8 @@ class ErrorBoundary extends Component<Props & InjectedIntlProps, State>  {
               openForm: (
                 <StyledButton onClick={this.openDialog}>
                   <FormattedMessage {...messages.openFormText} />
-                </StyledButton>)
+                </StyledButton>
+              ),
             }}
           />
         </Container>
@@ -118,6 +125,6 @@ const ErrorBoundaryWithIntl = injectIntl(ErrorBoundary);
 
 export default (props) => (
   <GetAuthUser>
-    {authUser => <ErrorBoundaryWithIntl authUser={authUser} {...props} />}
+    {(authUser) => <ErrorBoundaryWithIntl authUser={authUser} {...props} />}
   </GetAuthUser>
 );

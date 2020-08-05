@@ -9,7 +9,9 @@ import { isError } from 'lodash-es';
 // Services / Data loading
 import GetProject, { GetProjectChildProps } from 'resources/GetProject';
 import GetPhases, { GetPhasesChildProps } from 'resources/GetPhases';
-import GetPollQuestions, { GetPollQuestionsChildProps } from 'resources/GetPollQuestions';
+import GetPollQuestions, {
+  GetPollQuestionsChildProps,
+} from 'resources/GetPollQuestions';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
 // Components
@@ -29,7 +31,7 @@ const Container = styled.div`
 `;
 const PhaseContainer = styled.div`
   &:not(:last-child) {
-    margin-bottom: 50px
+    margin-bottom: 50px;
   }
 `;
 
@@ -46,7 +48,7 @@ const Left = styled.div`
   margin-right: 80px;
 `;
 
-interface InputProps { }
+interface InputProps {}
 
 interface DataProps {
   project: GetProjectChildProps;
@@ -54,16 +56,16 @@ interface DataProps {
   locale: GetLocaleChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 export class AdminProjectPoll extends React.PureComponent<Props> {
-
   render() {
     const { project, phases, locale } = this.props;
     if (isNilOrError(project) || isNilOrError(locale)) return null;
 
-    if (project.attributes.process_type === 'continuous'
-      && project.attributes.participation_method === 'poll'
+    if (
+      project.attributes.process_type === 'continuous' &&
+      project.attributes.participation_method === 'poll'
     ) {
       return (
         <FeatureFlag name="polls">
@@ -99,8 +101,13 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
       );
     }
 
-    if (project.attributes.process_type === 'timeline' && !isNilOrError(phases)) {
-      const pollPhases = phases.filter(phase => phase.attributes.participation_method === 'poll');
+    if (
+      project.attributes.process_type === 'timeline' &&
+      !isNilOrError(phases)
+    ) {
+      const pollPhases = phases.filter(
+        (phase) => phase.attributes.participation_method === 'poll'
+      );
       if (pollPhases.length === 0) return null;
       return (
         <FeatureFlag name="polls">
@@ -111,7 +118,7 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
             <SectionDescription>
               <FormattedMessage {...messages.subtitlePollTab} />
             </SectionDescription>
-            {pollPhases.map(phase => (
+            {pollPhases.map((phase) => (
               <PhaseContainer key={phase.id}>
                 <HeaderContainer>
                   <Left>
@@ -147,13 +154,19 @@ export class AdminProjectPoll extends React.PureComponent<Props> {
 }
 
 const Data = adopt<DataProps, InputProps & WithRouterProps>({
-  phases: ({ params, render }) => <GetPhases projectId={params.projectId} >{render}</GetPhases>,
-  project: ({ params, render }) => <GetProject projectId={params.projectId} >{render}</GetProject>,
-  locale: <GetLocale />
+  phases: ({ params, render }) => (
+    <GetPhases projectId={params.projectId}>{render}</GetPhases>
+  ),
+  project: ({ params, render }) => (
+    <GetProject projectId={params.projectId}>{render}</GetProject>
+  ),
+  locale: <GetLocale />,
 });
 
-export default withRouter<InputProps>((inputProps: InputProps & WithRouterProps) => (
-  <Data {...inputProps}>
-    {dataProps => <AdminProjectPoll {...inputProps} {...dataProps} />}
-  </Data>
-));
+export default withRouter<InputProps>(
+  (inputProps: InputProps & WithRouterProps) => (
+    <Data {...inputProps}>
+      {(dataProps) => <AdminProjectPoll {...inputProps} {...dataProps} />}
+    </Data>
+  )
+);

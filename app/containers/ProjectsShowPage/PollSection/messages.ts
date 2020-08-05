@@ -11,15 +11,18 @@ export default defineMessages({
   },
   pollDisabledProjectInactive: {
     id: 'app.containers.Projects.PollForm.pollDisabledProjectInactive',
-    defaultMessage: 'The poll is no longer available, since this project is no longer active.',
+    defaultMessage:
+      'The poll is no longer available, since this project is no longer active.',
   },
   pollDisabledNotPermitted: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotPermitted',
-    defaultMessage: 'Unfortunately, you don\'t have the rights to take this poll.',
+    defaultMessage:
+      "Unfortunately, you don't have the rights to take this poll.",
   },
   pollDisabledMaybeNotPermitted: {
     id: 'app.containers.Projects.PollForm.pollDisabledMaybeNotPermitted',
-    defaultMessage: 'Only certain users can take this poll. Please {signUpLink} or {logInLink} first.',
+    defaultMessage:
+      'Only certain users can take this poll. Please {signUpLink} or {logInLink} first.',
   },
   pollDisabledNotPossible: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotPossible',
@@ -27,7 +30,8 @@ export default defineMessages({
   },
   pollDisabledNotActivePhase: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotActivePhase',
-    defaultMessage: 'This survey can only be taken when this phase in the timeline is active.',
+    defaultMessage:
+      'This survey can only be taken when this phase in the timeline is active.',
   },
   signUpLinkText: {
     id: 'app.containers.Projects.PollForm.signUpLinkText',
@@ -43,7 +47,8 @@ export default defineMessages({
   },
   pollDisabledNotVerified: {
     id: 'app.containers.Projects.PollForm.pollDisabledNotVerified',
-    defaultMessage: 'Taking this poll requires verification of your account. {verificationLink}',
+    defaultMessage:
+      'Taking this poll requires verification of your account. {verificationLink}',
   },
   maxOptions: {
     id: 'app.containers.Projects.PollForm.maxOptions',

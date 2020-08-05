@@ -32,7 +32,7 @@ export default class GetRandomAvatars extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      avatars: undefined
+      avatars: undefined,
     };
   }
 
@@ -41,26 +41,30 @@ export default class GetRandomAvatars extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ limit, context });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => isEqual(prev, next)),
-        switchMap(({ limit, context }) => {
-          if (context) {
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => isEqual(prev, next)),
+          switchMap(({ limit, context }) => {
+            if (context) {
+              return randomAvatarsStream({
+                queryParameters: {
+                  limit,
+                  context_type: context.type,
+                  context_id: context.id,
+                },
+              }).observable;
+            }
+
             return randomAvatarsStream({
               queryParameters: {
                 limit,
-                context_type: context.type,
-                context_id: context.id
-              }
+              },
             }).observable;
-          }
-
-          return randomAvatarsStream({
-            queryParameters: {
-              limit
-            }
-          }).observable;
-        })
-      ).subscribe((avatars) => this.setState({ avatars: (!isNilOrError(avatars) ? avatars : null) }))
+          })
+        )
+        .subscribe((avatars) =>
+          this.setState({ avatars: !isNilOrError(avatars) ? avatars : null })
+        ),
     ];
   }
 
@@ -70,7 +74,7 @@ export default class GetRandomAvatars extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

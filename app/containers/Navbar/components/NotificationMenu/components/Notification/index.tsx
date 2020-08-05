@@ -59,7 +59,7 @@ import {
   IStatusChangeOnCommentedInitiativeNotificationData,
   IStatusChangeOnVotedIdeaNotificationData,
   IStatusChangeOnVotedInitiativeNotificationData,
-  IThresholdReachedForAdminNotificationData
+  IThresholdReachedForAdminNotificationData,
 } from 'services/notifications';
 import styled from 'styled-components';
 
@@ -68,7 +68,7 @@ export const DeletedUser = styled.span`
 `;
 
 type Props = {
-  notification: TNotificationData,
+  notification: TNotificationData;
 };
 
 export default class Notification extends PureComponent<Props> {
@@ -77,64 +77,219 @@ export default class Notification extends PureComponent<Props> {
 
     switch (notification.attributes.type) {
       case 'admin_rights_received':
-        return <AdminRightsReceivedNotification notification={notification as IAdminRightsReceivedNotificationData} />;
+        return (
+          <AdminRightsReceivedNotification
+            notification={notification as IAdminRightsReceivedNotificationData}
+          />
+        );
       case 'comment_deleted_by_admin':
-        return <CommentDeletedByAdminNotification notification={notification as ICommentDeletedByAdminNotificationData} />;
+        return (
+          <CommentDeletedByAdminNotification
+            notification={
+              notification as ICommentDeletedByAdminNotificationData
+            }
+          />
+        );
       case 'comment_marked_as_spam':
-        return <CommentMarkedAsSpamNotification notification={notification as ICommentMarkedAsSpamNotificationData} />;
+        return (
+          <CommentMarkedAsSpamNotification
+            notification={notification as ICommentMarkedAsSpamNotificationData}
+          />
+        );
       case 'comment_on_your_comment':
-        return <CommentOnYourCommentNotification notification={notification as ICommentOnYourCommentNotificationData} />;
+        return (
+          <CommentOnYourCommentNotification
+            notification={notification as ICommentOnYourCommentNotificationData}
+          />
+        );
       case 'comment_on_your_idea':
-        return <CommentOnYourIdeaNotification notification={notification as ICommentOnYourIdeaNotificationData} />;
+        return (
+          <CommentOnYourIdeaNotification
+            notification={notification as ICommentOnYourIdeaNotificationData}
+          />
+        );
       case 'comment_on_your_initiative':
-        return <CommentOnYourInitiativeNotification notification={notification as ICommentOnYourInitiativeNotificationData} />;
+        return (
+          <CommentOnYourInitiativeNotification
+            notification={
+              notification as ICommentOnYourInitiativeNotificationData
+            }
+          />
+        );
       case 'idea_assigned_to_you':
-        return <IdeaAssignedToYouNotification notification={notification as IIdeaAssignedToYouNotificationData} />;
+        return (
+          <IdeaAssignedToYouNotification
+            notification={notification as IIdeaAssignedToYouNotificationData}
+          />
+        );
       case 'idea_marked_as_spam':
-        return <IdeaMarkedAsSpamNotification notification={notification as IIdeaMarkedAsSpamNotificationData} />;
+        return (
+          <IdeaMarkedAsSpamNotification
+            notification={notification as IIdeaMarkedAsSpamNotificationData}
+          />
+        );
       case 'initiative_assigned_to_you':
-        return <InitiativeAssignedToYouNotification notification={notification as IInitiativeAssignedToYouNotificationData} />;
+        return (
+          <InitiativeAssignedToYouNotification
+            notification={
+              notification as IInitiativeAssignedToYouNotificationData
+            }
+          />
+        );
       case 'initiative_marked_as_spam':
-        return <InitiativeMarkedAsSpamNotification notification={notification as IInitiativeMarkedAsSpamNotificationData} />;
+        return (
+          <InitiativeMarkedAsSpamNotification
+            notification={
+              notification as IInitiativeMarkedAsSpamNotificationData
+            }
+          />
+        );
       case 'invite_accepted':
-        return <InviteAcceptedNotification notification={notification as IInviteAcceptedNotificationData} />;
+        return (
+          <InviteAcceptedNotification
+            notification={notification as IInviteAcceptedNotificationData}
+          />
+        );
       case 'mention_in_comment':
-        return <MentionInCommentNotification notification={notification as IMentionInCommentNotificationData} />;
+        return (
+          <MentionInCommentNotification
+            notification={notification as IMentionInCommentNotificationData}
+          />
+        );
       case 'mention_in_official_feedback':
-        return <MentionInOfficialFeedbackNotification notification={notification as IMentionInOfficialFeedbackNotificationData} />;
+        return (
+          <MentionInOfficialFeedbackNotification
+            notification={
+              notification as IMentionInOfficialFeedbackNotificationData
+            }
+          />
+        );
       case 'official_feedback_on_commented_idea':
-        return <OfficialFeedbackOnCommentedIdeaNotification notification={notification as IOfficialFeedbackOnCommentedIdeaNotificationData} />;
+        return (
+          <OfficialFeedbackOnCommentedIdeaNotification
+            notification={
+              notification as IOfficialFeedbackOnCommentedIdeaNotificationData
+            }
+          />
+        );
       case 'official_feedback_on_commented_initiative':
-        return <OfficialFeedbackOnCommentedInitiativeNotification notification={notification as IOfficialFeedbackOnCommentedInitiativeNotificationData} />;
+        return (
+          <OfficialFeedbackOnCommentedInitiativeNotification
+            notification={
+              notification as IOfficialFeedbackOnCommentedInitiativeNotificationData
+            }
+          />
+        );
       case 'official_feedback_on_voted_idea':
-        return <OfficialFeedbackOnVotedIdeaNotification notification={notification as IOfficialFeedbackOnVotedIdeaNotificationData} />;
+        return (
+          <OfficialFeedbackOnVotedIdeaNotification
+            notification={
+              notification as IOfficialFeedbackOnVotedIdeaNotificationData
+            }
+          />
+        );
       case 'official_feedback_on_voted_initiative':
-        return <OfficialFeedbackOnVotedInitiativeNotification notification={notification as IOfficialFeedbackOnVotedInitiativeNotificationData} />;
+        return (
+          <OfficialFeedbackOnVotedInitiativeNotification
+            notification={
+              notification as IOfficialFeedbackOnVotedInitiativeNotificationData
+            }
+          />
+        );
       case 'official_feedback_on_your_idea':
-        return <OfficialFeedbackOnYourIdeaNotification notification={notification as IOfficialFeedbackOnYourIdeaNotificationData} />;
+        return (
+          <OfficialFeedbackOnYourIdeaNotification
+            notification={
+              notification as IOfficialFeedbackOnYourIdeaNotificationData
+            }
+          />
+        );
       case 'official_feedback_on_your_initiative':
-        return <OfficialFeedbackOnYourInitiativeNotification notification={notification as IOfficialFeedbackOnYourInitiativeNotificationData} />;
+        return (
+          <OfficialFeedbackOnYourInitiativeNotification
+            notification={
+              notification as IOfficialFeedbackOnYourInitiativeNotificationData
+            }
+          />
+        );
       case 'project_moderation_rights_received':
-        return <ProjectModerationRightsReceivedNotification notification={notification as IProjectModerationRightsReceivedNotificationData} />;
+        return (
+          <ProjectModerationRightsReceivedNotification
+            notification={
+              notification as IProjectModerationRightsReceivedNotificationData
+            }
+          />
+        );
       case 'project_phase_started':
-        return <ProjectPhaseStartedNotification notification={notification as IProjectPhaseStartedNotificationData} />;
+        return (
+          <ProjectPhaseStartedNotification
+            notification={notification as IProjectPhaseStartedNotificationData}
+          />
+        );
       case 'project_phase_upcoming':
-        return <ProjectPhaseUpcomingNotification notification={notification as IProjectPhaseUpcomingNotificationData} />;
+        return (
+          <ProjectPhaseUpcomingNotification
+            notification={notification as IProjectPhaseUpcomingNotificationData}
+          />
+        );
       case 'status_change_of_your_idea':
-        return <StatusChangeOfYourIdeaNotification notification={notification as IStatusChangeOfYourIdeaNotificationData} />;
+        return (
+          <StatusChangeOfYourIdeaNotification
+            notification={
+              notification as IStatusChangeOfYourIdeaNotificationData
+            }
+          />
+        );
       case 'status_change_of_your_initiative':
-        return <StatusChangeOfYourInitiativeNotification notification={notification as IStatusChangeOfYourInitiativeNotificationData} />;
+        return (
+          <StatusChangeOfYourInitiativeNotification
+            notification={
+              notification as IStatusChangeOfYourInitiativeNotificationData
+            }
+          />
+        );
       case 'status_change_on_commented_idea':
-        return <StatusChangeOnCommentedIdeaNotification notification={notification as IStatusChangeOnCommentedIdeaNotificationData} />;
+        return (
+          <StatusChangeOnCommentedIdeaNotification
+            notification={
+              notification as IStatusChangeOnCommentedIdeaNotificationData
+            }
+          />
+        );
       case 'status_change_on_commented_initiative':
-        return <StatusChangeOnCommentedInitiativeNotification notification={notification as IStatusChangeOnCommentedInitiativeNotificationData} />;
+        return (
+          <StatusChangeOnCommentedInitiativeNotification
+            notification={
+              notification as IStatusChangeOnCommentedInitiativeNotificationData
+            }
+          />
+        );
       case 'status_change_on_voted_idea':
-        return <StatusChangeOnVotedIdeaNotification notification={notification as IStatusChangeOnVotedIdeaNotificationData} />;
+        return (
+          <StatusChangeOnVotedIdeaNotification
+            notification={
+              notification as IStatusChangeOnVotedIdeaNotificationData
+            }
+          />
+        );
       case 'status_change_on_voted_initiative':
-        return <StatusChangeOnVotedInitiativeNotification notification={notification as IStatusChangeOnVotedInitiativeNotificationData} />;
+        return (
+          <StatusChangeOnVotedInitiativeNotification
+            notification={
+              notification as IStatusChangeOnVotedInitiativeNotificationData
+            }
+          />
+        );
       case 'threshold_reached_for_admin':
-        return <ThresholdReachedForAdminNotification notification={notification as IThresholdReachedForAdminNotificationData} />;
-      default: return null;
+        return (
+          <ThresholdReachedForAdminNotification
+            notification={
+              notification as IThresholdReachedForAdminNotificationData
+            }
+          />
+        );
+      default:
+        return null;
     }
   }
 }

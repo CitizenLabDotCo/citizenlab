@@ -9,9 +9,11 @@ import {
   updateUserCustomFieldOption,
   deleteUserCustomFieldOption,
   addUserCustomFieldOption,
-  IUserCustomFieldData
+  IUserCustomFieldData,
 } from 'services/userCustomFields';
-import GetUserCustomFieldOptions, { GetUserCustomFieldOptionsChildProps } from 'resources/GetUserCustomFieldOptions';
+import GetUserCustomFieldOptions, {
+  GetUserCustomFieldOptionsChildProps,
+} from 'resources/GetUserCustomFieldOptions';
 
 import { Formik, FormikErrors } from 'formik';
 import OptionForm, { FormValues } from './OptionForm';
@@ -38,7 +40,6 @@ interface State {
 }
 
 class OptionsForm extends React.Component<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -51,17 +52,17 @@ class OptionsForm extends React.Component<Props, State> {
       key: option.attributes.key,
       title_multiloc: option.attributes.title_multiloc,
     };
-  }
+  };
 
   initialValuesForNew = () => {
     return {
       key: '',
       title_multiloc: {},
     };
-  }
+  };
 
   validate = (values: FormValues) => {
-    const errors : FormikErrors<FormValues> = {};
+    const errors: FormikErrors<FormValues> = {};
 
     if (isEmpty(values.key)) {
       errors.key = [{ error: 'blank' }] as any;
@@ -76,52 +77,59 @@ class OptionsForm extends React.Component<Props, State> {
     }
 
     return errors;
-  }
+  };
 
   handleDelete = (option) => () => {
     deleteUserCustomFieldOption(this.props.customField.id, option.id);
-  }
+  };
 
   handleCancel = () => {
     this.setState({
       addingOption: false,
     });
-  }
+  };
 
-  handleUpdateSubmit = (option) => (values, { setErrors, setSubmitting, resetForm, setStatus }) => {
-    updateUserCustomFieldOption(this.props.customField.id, option.id, values).then(() => {
-      resetForm();
-    }).catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+  handleUpdateSubmit = (option) => (
+    values,
+    { setErrors, setSubmitting, resetForm, setStatus }
+  ) => {
+    updateUserCustomFieldOption(this.props.customField.id, option.id, values)
+      .then(() => {
+        resetForm();
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   handleCreateSubmit = (values, { setErrors, setSubmitting, setStatus }) => {
-    addUserCustomFieldOption(this.props.customField.id, values).then(() => {
-      setSubmitting(false);
-      this.setState({ addingOption: false });
-    }).catch((errorResponse) => {
-      if (isCLErrorJSON(errorResponse)) {
-        const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
-        setErrors(apiErrors);
-      } else {
-        setStatus('error');
-      }
-      setSubmitting(false);
-    });
-  }
+    addUserCustomFieldOption(this.props.customField.id, values)
+      .then(() => {
+        setSubmitting(false);
+        this.setState({ addingOption: false });
+      })
+      .catch((errorResponse) => {
+        if (isCLErrorJSON(errorResponse)) {
+          const apiErrors = (errorResponse as CLErrorsJSON).json.errors;
+          setErrors(apiErrors);
+        } else {
+          setStatus('error');
+        }
+        setSubmitting(false);
+      });
+  };
 
   addOption = () => {
     this.setState({
       addingOption: true,
     });
-  }
+  };
 
   renderFn = (option: IUserCustomFieldOptionsData | null = null) => (props) => (
     <OptionForm
@@ -130,51 +138,52 @@ class OptionsForm extends React.Component<Props, State> {
       mode={option ? 'edit' : 'new'}
       {...props}
     />
-  )
+  );
 
   render() {
     const { customFieldOptions } = this.props;
     const { addingOption } = this.state;
 
-    return !isNilOrError(customFieldOptions) && (
-      <>
-        {customFieldOptions.map((customFieldOption) => (
-          <OptionContainer key={customFieldOption.id}>
-            <Formik
-              initialValues={this.initialValuesForEdit(customFieldOption)}
-              onSubmit={this.handleUpdateSubmit(customFieldOption)}
-              render={this.renderFn(customFieldOption)}
-              validate={this.validate}
-            />
-          </OptionContainer>
-        ))}
+    return (
+      !isNilOrError(customFieldOptions) && (
+        <>
+          {customFieldOptions.map((customFieldOption) => (
+            <OptionContainer key={customFieldOption.id}>
+              <Formik
+                initialValues={this.initialValuesForEdit(customFieldOption)}
+                onSubmit={this.handleUpdateSubmit(customFieldOption)}
+                render={this.renderFn(customFieldOption)}
+                validate={this.validate}
+              />
+            </OptionContainer>
+          ))}
 
-        {addingOption &&
-          <OptionContainer>
-            <Formik
-              initialValues={this.initialValuesForNew()}
-              onSubmit={this.handleCreateSubmit}
-              render={this.renderFn()}
-              validate={this.validate}
-            />
-          </OptionContainer>
-        }
+          {addingOption && (
+            <OptionContainer>
+              <Formik
+                initialValues={this.initialValuesForNew()}
+                onSubmit={this.handleCreateSubmit}
+                render={this.renderFn()}
+                validate={this.validate}
+              />
+            </OptionContainer>
+          )}
 
-        {!addingOption &&
-          <Button
-            onClick={this.addOption}
-            icon="plus"
-          >
-            <FormattedMessage {...messages.addOptionButton} />
-          </Button>
-        }
-      </>
+          {!addingOption && (
+            <Button onClick={this.addOption} icon="plus">
+              <FormattedMessage {...messages.addOptionButton} />
+            </Button>
+          )}
+        </>
+      )
     );
   }
 }
 
 export default (inputProps: InputProps) => (
   <GetUserCustomFieldOptions customFieldId={inputProps.customField.id}>
-    {customField => <OptionsForm {...inputProps} customFieldOptions={customField} />}
+    {(customField) => (
+      <OptionsForm {...inputProps} customFieldOptions={customField} />
+    )}
   </GetUserCustomFieldOptions>
 );

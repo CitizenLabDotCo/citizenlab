@@ -13,7 +13,11 @@ import useAuthUser from 'hooks/useAuthUser';
 import useWindowSize from 'hooks/useWindowSize';
 
 // events
-import { openVerificationModal$, closeVerificationModal$, closeVerificationModal } from 'components/Verification/verificationModalEvents';
+import {
+  openVerificationModal$,
+  closeVerificationModal$,
+  closeVerificationModal,
+} from 'components/Verification/verificationModalEvents';
 
 // style
 import styled from 'styled-components';
@@ -32,7 +36,11 @@ const Container = styled.div`
   padding-right: 20px;
 `;
 
-export type ProjectContext = { id: string, type: IParticipationContextType, action: ICitizenAction };
+export type ProjectContext = {
+  id: string;
+  type: IParticipationContextType;
+  action: ICitizenAction;
+};
 
 export type ErrorContext = { error: 'taken' | 'not_entitled' | null };
 
@@ -56,7 +64,12 @@ export function isProjectOrErrorContext(obj: ContextShape) {
   }
 }
 
-export type VerificationModalSteps = 'method-selection' | 'success' | 'error' | null | IVerificationMethod['attributes']['name'];
+export type VerificationModalSteps =
+  | 'method-selection'
+  | 'success'
+  | 'error'
+  | null
+  | IVerificationMethod['attributes']['name'];
 
 export interface Props {
   className?: string;
@@ -64,7 +77,6 @@ export interface Props {
 }
 
 const VerificationModal = memo<Props>(({ className, onMounted }) => {
-
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
@@ -92,10 +104,11 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
       closeVerificationModal$.subscribe(() => {
         setActiveStep(null);
         setContext(null);
-      })
+      }),
     ];
 
-    return () => subscriptions.forEach(subscription => subscription.unsubscribe());
+    return () =>
+      subscriptions.forEach((subscription) => subscription.unsubscribe());
   }, [authUser]);
 
   const onClose = useCallback(() => {
@@ -120,11 +133,8 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
       close={onClose}
       closeOnClickOutside={false}
     >
-      <Container
-        id="e2e-verification-modal"
-        className={className || ''}
-      >
-        {activeStep && activeStep !== 'success' && activeStep !== 'error' &&
+      <Container id="e2e-verification-modal" className={className || ''}>
+        {activeStep && activeStep !== 'success' && activeStep !== 'error' && (
           <VerificationSteps
             context={context}
             inModal={true}
@@ -133,15 +143,14 @@ const VerificationModal = memo<Props>(({ className, onMounted }) => {
             onComplete={onComplete}
             onError={onError}
           />
-        }
+        )}
 
-        {activeStep === 'success' &&
-          <VerificationSuccess onClose={onClose} />
-        }
+        {activeStep === 'success' && <VerificationSuccess onClose={onClose} />}
 
-        {activeStep === 'error' && (context === null || isErrorContext(context)) &&
-          <VerificationError context={context} />
-        }
+        {activeStep === 'error' &&
+          (context === null || isErrorContext(context)) && (
+            <VerificationError context={context} />
+          )}
       </Container>
     </Modal>
   );

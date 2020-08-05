@@ -6,7 +6,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import { IOfficialFeedbackData } from 'services/officialFeedback';
 
 // resources
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps
+} from 'resources/GetTenantLocales';
 
 // intl
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
@@ -70,7 +72,7 @@ interface DataProps {
   tenantLocales: GetTenantLocalesChildProps;
 }
 
-interface Props extends DataProps, InputProps { }
+interface Props extends DataProps, InputProps {}
 
 interface State {
   selectedLocale: Locale;
@@ -85,7 +87,12 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
   }
 
   renderFullForm = () => {
-    const { latestOfficialFeedback, mode, onChangeMode, intl: { formatMessage } } = this.props;
+    const {
+      latestOfficialFeedback,
+      mode,
+      onChangeMode,
+      intl: { formatMessage }
+    } = this.props;
 
     if (!latestOfficialFeedback) return null;
 
@@ -99,9 +106,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           label={formatMessage(messages.newFeedbackMode)}
         />
 
-        {mode === 'new' &&
-          this.renderFeedbackForm()
-        }
+        {mode === 'new' && this.renderFeedbackForm()}
 
         <StyledRadio
           onChange={onChangeMode}
@@ -111,20 +116,20 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
           label={formatMessage(messages.latestFeedbackMode)}
         />
 
-        {mode === 'latest' &&
+        {mode === 'latest' && (
           <OfficialFeedbackPost
             editingAllowed={false}
             officialFeedbackPost={latestOfficialFeedback}
             postType="initiative"
           />
-        }
+        )}
       </>
     );
-  }
+  };
 
   onLocaleChange = (locale: Locale) => {
     this.setState({ selectedLocale: locale });
-  }
+  };
 
   handleBodyOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChangeBody) {
@@ -133,7 +138,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
         [locale]: value
       });
     }
-  }
+  };
 
   handleAuthorOnChange = (value: string, locale: Locale | undefined) => {
     if (locale && this.props.onChangeAuthor) {
@@ -142,10 +147,14 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
         [locale]: value
       });
     }
-  }
+  };
 
   renderFeedbackForm = () => {
-    const { intl: { formatMessage }, newOfficialFeedback, tenantLocales } = this.props;
+    const {
+      intl: { formatMessage },
+      newOfficialFeedback,
+      tenantLocales
+    } = this.props;
     const { selectedLocale } = this.state;
 
     if (!isNilOrError(tenantLocales)) {
@@ -183,26 +192,34 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     return null;
-  }
+  };
 
   render() {
-    const { latestOfficialFeedback, intl: { formatMessage }, submit, loading, error, valid } = this.props;
+    const {
+      latestOfficialFeedback,
+      intl: { formatMessage },
+      submit,
+      loading,
+      error,
+      valid
+    } = this.props;
 
     return (
       <>
         {latestOfficialFeedback
           ? this.renderFullForm()
-          : this.renderFeedbackForm()
-        }
+          : this.renderFeedbackForm()}
         <ChangeStatusButton
           processing={loading}
           disabled={!valid}
           onClick={submit}
           bgColor={colors.clBlue}
         >
-          <FormattedMessage {...messages.statusChangeSave}/>
+          <FormattedMessage {...messages.statusChangeSave} />
         </ChangeStatusButton>
-        {error && <Error text={formatMessage(messages.statusChangeGenericError)}/>}
+        {error && (
+          <Error text={formatMessage(messages.statusChangeGenericError)} />
+        )}
       </>
     );
   }
@@ -211,7 +228,7 @@ class StatusChangeForm extends PureComponent<Props & InjectedIntlProps, State> {
 const StatusChangeFormWithHoC = injectIntl(StatusChangeForm);
 
 const Data = adopt<DataProps, InputProps>({
-  tenantLocales: <GetTenantLocales />,
+  tenantLocales: <GetTenantLocales />
 });
 
 const StatusChangeFormWithData = (inputProps: InputProps) => (

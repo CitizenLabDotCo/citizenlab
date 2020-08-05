@@ -53,7 +53,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
       authorId,
       commentType,
       commentCreatedAt,
-      moderator
+      moderator,
     } = this.props;
 
     return (
@@ -70,11 +70,7 @@ export default class CommentHeader extends PureComponent<Props, State> {
           />
         </Left>
 
-        <Right>
-          {moderator &&
-            <AdminBadge />
-          }
-        </Right>
+        <Right>{moderator && <AdminBadge />}</Right>
       </Container>
     );
   }

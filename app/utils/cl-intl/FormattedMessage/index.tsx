@@ -16,7 +16,10 @@ type State = {
 
 type Props = OriginalFormattedMessage.Props;
 
-export default class FormattedMessage extends React.PureComponent<Props, State> {
+export default class FormattedMessage extends React.PureComponent<
+  Props,
+  State
+> {
   subscriptions: Subscription[];
 
   constructor(props: Props) {
@@ -25,7 +28,7 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
       tenantName: null,
       orgType: null,
       orgName: null,
-      loaded: false
+      loaded: false,
     };
   }
 
@@ -34,23 +37,25 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
     const currentTenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$
-      ).subscribe(([locale, tenant]) => {
+      combineLatest(locale$, currentTenant$).subscribe(([locale, tenant]) => {
         if (!isNilOrError(locale) && !isNilOrError(tenant)) {
           const tenantLocales = tenant.data.attributes.settings.core.locales;
           const tenantName = tenant.data.attributes.name;
-          const orgName = getLocalized(tenant.data.attributes.settings.core.organization_name, locale, tenantLocales);
-          const orgType = tenant.data.attributes.settings.core.organization_type;
+          const orgName = getLocalized(
+            tenant.data.attributes.settings.core.organization_name,
+            locale,
+            tenantLocales
+          );
+          const orgType =
+            tenant.data.attributes.settings.core.organization_type;
           this.setState({ tenantName, orgName, orgType, loaded: true });
         }
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {
@@ -70,9 +75,7 @@ export default class FormattedMessage extends React.PureComponent<Props, State> 
         values.orgName = orgName;
       }
 
-      return (
-        <OriginalFormattedMessage {...this.props} values={values} />
-      );
+      return <OriginalFormattedMessage {...this.props} values={values} />;
     }
 
     return null;

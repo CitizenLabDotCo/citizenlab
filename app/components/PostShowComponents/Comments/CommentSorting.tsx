@@ -14,21 +14,22 @@ interface Props {
   className?: string;
 }
 
-interface State {
-}
+interface State {}
 
 export default class CommentSorting extends PureComponent<Props, State> {
-
   handleOnChange = (selectedValue: [CommentsSort]) => {
     this.setState({ selectedValue });
     this.props.onChange(selectedValue[0]);
-  }
+  };
 
-  title = <FormattedMessage {...messages.commentsSortTitle} />;
+  title = (<FormattedMessage {...messages.commentsSortTitle} />);
 
   sortOptions = [
     { text: <FormattedMessage {...messages.oldestToNewest} />, value: '-new' },
-    { text: <FormattedMessage {...messages.mostUpvoted} />, value: '-upvotes_count' },
+    {
+      text: <FormattedMessage {...messages.mostUpvoted} />,
+      value: '-upvotes_count',
+    },
   ];
 
   render() {

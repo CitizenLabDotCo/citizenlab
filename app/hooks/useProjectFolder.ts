@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
-import { projectFolderByIdStream, projectFolderBySlugStream, IProjectFolderData } from 'services/projectFolders';
+import {
+  projectFolderByIdStream,
+  projectFolderBySlugStream,
+  IProjectFolderData,
+} from 'services/projectFolders';
 
 interface Props {
   projectFolderId?: string | null;
   projectFolderSlug?: string | null;
 }
 
-export default function useProjectFolder({ projectFolderId, projectFolderSlug }: Props) {
-  const [projectFolder, setProjectFolder] = useState<IProjectFolderData | undefined | null | Error>(undefined);
+export default function useProjectFolder({
+  projectFolderId,
+  projectFolderSlug,
+}: Props) {
+  const [projectFolder, setProjectFolder] = useState<
+    IProjectFolderData | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
     setProjectFolder(undefined);

@@ -14,7 +14,7 @@ import GetEvents, { GetEventsChildProps } from 'resources/GetEvents';
 import GetPhase, { GetPhaseChildProps } from 'resources/GetPhase';
 
 // styles
-import { fontSizes, media } from 'utils/styleUtils';
+import { fontSizes, media, defaultStyles } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import styled, { withTheme } from 'styled-components';
 
@@ -37,7 +37,7 @@ const ProjectNavbarWrapper = styled.div`
   top: ${({ theme }) => theme.menuHeight}px;
   z-index: 1002;
   background: ${({ theme }) => theme.projectNavbarBackgroundColor || '#171717'};
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: ${defaultStyles.boxShadow};
 
   ${media.smallerThanMinTablet`
     overflow-x: scroll;
@@ -119,7 +119,8 @@ const ProjectNavbarLink = styled(Link)`
   }
 
   &.active {
-    border-bottom-color: ${({ theme }) => theme.projectNavbarTextColor || '#fff'};
+    border-bottom-color: ${({ theme }) =>
+      theme.projectNavbarTextColor || '#fff'};
   }
 
   &:first-of-type {
@@ -192,8 +193,11 @@ class ProjectNavbar extends PureComponent<Props, State> {
       const projectType = project.attributes.process_type;
       const projectMethod = project.attributes.participation_method;
       const projectPublicationStatus = project.attributes.publication_status;
-      const isPBProject = (projectType === 'continuous' && project.attributes.participation_method === 'budgeting');
-      const isPBPhase = (phase && phase.attributes.participation_method === 'budgeting');
+      const isPBProject =
+        projectType === 'continuous' &&
+        project.attributes.participation_method === 'budgeting';
+      const isPBPhase =
+        phase && phase.attributes.participation_method === 'budgeting';
       let participationContextType: IParticipationContextType | null = null;
       let participationContextId: string | null = null;
 
@@ -217,9 +221,8 @@ class ProjectNavbar extends PureComponent<Props, State> {
           <ProjectNavbarWrapper>
             <StyledContentContainer>
               <ProjectNavbarItems>
-
                 {/* Process link */}
-                {projectType === 'timeline' &&
+                {projectType === 'timeline' && (
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/process`}
                     activeClassName="active"
@@ -228,7 +231,7 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     <ProjectNavbarIcon name="timeline" ariaHidden />
                     <FormattedMessage {...messages.navProcess} />
                   </ProjectNavbarLink>
-                }
+                )}
 
                 {/* Information link */}
                 <ProjectNavbarLink
@@ -241,19 +244,25 @@ class ProjectNavbar extends PureComponent<Props, State> {
                 </ProjectNavbarLink>
 
                 {/* Ideas link */}
-                {projectType === 'continuous' && (projectMethod === 'ideation' || projectMethod === 'budgeting') &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/ideas`}
-                    activeClassName="active"
-                    className="e2e-project-ideas-link"
-                  >
-                    <ProjectNavbarIcon name="idea2" className="idea" ariaHidden />
-                    <FormattedMessage {...messages.navIdeas} />
-                  </ProjectNavbarLink>
-                }
+                {projectType === 'continuous' &&
+                  (projectMethod === 'ideation' ||
+                    projectMethod === 'budgeting') && (
+                    <ProjectNavbarLink
+                      to={`/projects/${projectSlug}/ideas`}
+                      activeClassName="active"
+                      className="e2e-project-ideas-link"
+                    >
+                      <ProjectNavbarIcon
+                        name="idea2"
+                        className="idea"
+                        ariaHidden
+                      />
+                      <FormattedMessage {...messages.navIdeas} />
+                    </ProjectNavbarLink>
+                  )}
 
                 {/* Survey link */}
-                {projectType === 'continuous' && projectMethod === 'survey' &&
+                {projectType === 'continuous' && projectMethod === 'survey' && (
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/survey`}
                     activeClassName="active"
@@ -262,10 +271,10 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     <ProjectNavbarIcon name="survey" ariaHidden />
                     <FormattedMessage {...messages.navSurvey} />
                   </ProjectNavbarLink>
-                }
+                )}
 
                 {/* Poll link */}
-                {projectType === 'continuous' && projectMethod === 'poll' &&
+                {projectType === 'continuous' && projectMethod === 'poll' && (
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/poll`}
                     activeClassName="active"
@@ -274,55 +283,58 @@ class ProjectNavbar extends PureComponent<Props, State> {
                     <ProjectNavbarIcon name="survey" />
                     <FormattedMessage {...messages.navPoll} />
                   </ProjectNavbarLink>
-                }
+                )}
 
                 {/* Volunteering link */}
-                {projectType === 'continuous' && projectMethod === 'volunteering' &&
-                  <ProjectNavbarLink
-                    to={`/projects/${projectSlug}/volunteering`}
-                    activeClassName="active"
-                    className="e2e-project-volunteering-link"
-                  >
-                    <ProjectNavbarIcon name="volunteer-hand" />
-                    <FormattedMessage {...messages.navVolunteering} />
-                  </ProjectNavbarLink>
-                }
+                {projectType === 'continuous' &&
+                  projectMethod === 'volunteering' && (
+                    <ProjectNavbarLink
+                      to={`/projects/${projectSlug}/volunteering`}
+                      activeClassName="active"
+                      className="e2e-project-volunteering-link"
+                    >
+                      <ProjectNavbarIcon name="volunteer-hand" />
+                      <FormattedMessage {...messages.navVolunteering} />
+                    </ProjectNavbarLink>
+                  )}
 
                 {/* Events link */}
-                {hasEvents &&
+                {hasEvents && (
                   <ProjectNavbarLink
                     to={`/projects/${projectSlug}/events`}
                     activeClassName="active"
                     className="e2e-project-event-link"
                   >
-                    <ProjectNavbarIcon name="calendar" ariaHidden/>
+                    <ProjectNavbarIcon name="calendar" ariaHidden />
                     <FormattedMessage {...messages.navEvents} />
                   </ProjectNavbarLink>
-                }
+                )}
 
                 <Spacer />
 
                 {/* PB basket button */}
-                {participationContextType && participationContextId &&
+                {participationContextType && participationContextId && (
                   <StyledPBNavbarButton
                     participationContextType={participationContextType}
                     participationContextId={participationContextId}
                     className="e2e-project-pb-button"
                   />
-                }
+                )}
 
                 {/* Continuous Ideation Idea Button desktop */}
-                {projectType === 'continuous' && projectMethod === 'ideation' && projectPublicationStatus !== 'archived' &&
-                  <StyledIdeaButton
-                    projectId={project.id}
-                    height="58px"
-                    bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
-                    textColor={theme.projectNavbarIdeaButtonTextColor}
-                    opacityDisabled="0.5"
-                    borderRadius="0px"
-                    participationContextType="project"
-                  />
-                }
+                {projectType === 'continuous' &&
+                  projectMethod === 'ideation' &&
+                  projectPublicationStatus !== 'archived' && (
+                    <StyledIdeaButton
+                      projectId={project.id}
+                      height="58px"
+                      bgColor={theme.projectNavbarIdeaButtonBackgroundColor}
+                      textColor={theme.projectNavbarIdeaButtonTextColor}
+                      opacityDisabled="0.5"
+                      borderRadius="0px"
+                      participationContextType="project"
+                    />
+                  )}
               </ProjectNavbarItems>
             </StyledContentContainer>
           </ProjectNavbarWrapper>
@@ -335,15 +347,21 @@ class ProjectNavbar extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  project: ({ projectSlug, render }) => <GetProject projectSlug={projectSlug}>{render}</GetProject>,
-  events: ({ project, render }) => <GetEvents projectId={(!isNilOrError(project) ? project.id : null)}>{render}</GetEvents>,
-  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>
+  project: ({ projectSlug, render }) => (
+    <GetProject projectSlug={projectSlug}>{render}</GetProject>
+  ),
+  events: ({ project, render }) => (
+    <GetEvents projectId={!isNilOrError(project) ? project.id : null}>
+      {render}
+    </GetEvents>
+  ),
+  phase: ({ phaseId, render }) => <GetPhase id={phaseId}>{render}</GetPhase>,
 });
 
 const ProjectNavbarWithHoC = withTheme(ProjectNavbar);
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <ProjectNavbarWithHoC {...inputProps} {...dataProps} />}
+    {(dataProps) => <ProjectNavbarWithHoC {...inputProps} {...dataProps} />}
   </Data>
 );

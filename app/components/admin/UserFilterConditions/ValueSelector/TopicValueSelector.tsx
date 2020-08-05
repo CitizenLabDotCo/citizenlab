@@ -14,27 +14,30 @@ type Props = {
 
 type State = {};
 
-class TopicValueSelector extends React.PureComponent<Props & InjectedLocalized, State> {
-
+class TopicValueSelector extends React.PureComponent<
+  Props & InjectedLocalized,
+  State
+> {
   generateOptions = (): IOption[] => {
     const { topics, localize } = this.props;
 
     if (!isNilOrError(topics)) {
-      return topics.filter(topic => !isNilOrError(topic))
-      .map((topic: ITopicData) => {
-        return ({
-          value: topic.id,
-          label: localize(topic.attributes.title_multiloc),
+      return topics
+        .filter((topic) => !isNilOrError(topic))
+        .map((topic: ITopicData) => {
+          return {
+            value: topic.id,
+            label: localize(topic.attributes.title_multiloc),
+          };
         });
-      });
     } else {
       return [];
     }
-  }
+  };
 
   handleOnChange = (option: IOption) => {
     this.props.onChange(option.value);
-  }
+  };
 
   render() {
     const { value } = this.props;
@@ -53,6 +56,6 @@ const TopicValueSelectorWithHOC = localize(TopicValueSelector);
 
 export default (inputProps) => (
   <GetTopics>
-    {topics => <TopicValueSelectorWithHOC {...inputProps} topics={topics} />}
+    {(topics) => <TopicValueSelectorWithHOC {...inputProps} topics={topics} />}
   </GetTopics>
 );

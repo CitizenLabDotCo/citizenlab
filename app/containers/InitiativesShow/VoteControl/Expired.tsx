@@ -61,15 +61,20 @@ interface InputProps {
   initiativeSettings: NonNullable<ITenantSettings['initiatives']>;
   userVoted: boolean;
 }
-interface DataProps { }
+interface DataProps {}
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-interface State { }
+interface State {}
 
 class Expired extends PureComponent<Props, State> {
   render() {
-    const { initiative, initiativeSettings: { voting_threshold }, initiativeStatus, userVoted } = this.props;
+    const {
+      initiative,
+      initiativeSettings: { voting_threshold },
+      initiativeStatus,
+      userVoted,
+    } = this.props;
 
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
@@ -91,25 +96,31 @@ class Expired extends PureComponent<Props, State> {
                     values={{ votingThreshold: voting_threshold }}
                   />
                 </b>
-              )
+              ),
             }}
           />
         </StatusExplanation>
         <VoteCounter>
           <VoteTexts aria-hidden={true}>
             <VoteText>
-              <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: voteCount }}
+              />
             </VoteText>
-            <VoteText>
-              {voteLimit}
-            </VoteText>
+            <VoteText>{voteLimit}</VoteText>
           </VoteTexts>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.xVotesOfY}
               values={{
-                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
-                votingThreshold: voteLimit
+                xVotes: (
+                  <FormattedMessage
+                    {...messages.xVotes}
+                    values={{ count: voteCount }}
+                  />
+                ),
+                votingThreshold: voteLimit,
               }}
             />
           </ScreenReaderOnly>
@@ -120,15 +131,12 @@ class Expired extends PureComponent<Props, State> {
             bgShaded
           />
         </VoteCounter>
-        <StyledButton
-          icon="halt"
-          disabled
-        >
-          {userVoted ?
+        <StyledButton icon="halt" disabled>
+          {userVoted ? (
             <FormattedMessage {...messages.cancelVote} />
-          :
+          ) : (
             <FormattedMessage {...messages.vote} />
-          }
+          )}
         </StyledButton>
       </Container>
     );

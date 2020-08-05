@@ -40,21 +40,26 @@ interface Props {
   onProjectFilter: ((filter: IOption) => void) | null;
   onGroupFilter: ((filter: IOption) => void) | null;
   onTopicFilter: ((filter: IOption) => void) | null;
-
 }
 
 export default class ChartFilters extends PureComponent<Props> {
   render() {
     const {
       configuration: { showProjectFilter, showGroupFilter, showTopicFilter },
-      currentProjectFilter, currentGroupFilter, currentTopicFilter,
-      projectFilterOptions, groupFilterOptions, topicFilterOptions,
-      onProjectFilter, onGroupFilter, onTopicFilter
+      currentProjectFilter,
+      currentGroupFilter,
+      currentTopicFilter,
+      projectFilterOptions,
+      groupFilterOptions,
+      topicFilterOptions,
+      onProjectFilter,
+      onGroupFilter,
+      onTopicFilter,
     } = this.props;
 
     return (
       <Container>
-        {showProjectFilter && onProjectFilter &&
+        {showProjectFilter && onProjectFilter && (
           <FilterContainer>
             <HiddenLabel>
               <FormattedMessage {...messages.hiddenLabelProjectFilter} />
@@ -66,9 +71,9 @@ export default class ChartFilters extends PureComponent<Props> {
               />
             </HiddenLabel>
           </FilterContainer>
-        }
+        )}
 
-        {showGroupFilter && onGroupFilter &&
+        {showGroupFilter && onGroupFilter && (
           <FilterContainer>
             <HiddenLabel>
               <FormattedMessage {...messages.hiddenLabelGroupFilter} />
@@ -78,11 +83,11 @@ export default class ChartFilters extends PureComponent<Props> {
                 value={currentGroupFilter || ''}
                 options={groupFilterOptions}
               />
-            </HiddenLabel >
+            </HiddenLabel>
           </FilterContainer>
-        }
+        )}
 
-        {showTopicFilter && onTopicFilter &&
+        {showTopicFilter && onTopicFilter && (
           <FilterContainer>
             <HiddenLabel>
               <FormattedMessage {...messages.hiddenLabelTopicFilter} />
@@ -94,7 +99,7 @@ export default class ChartFilters extends PureComponent<Props> {
               />
             </HiddenLabel>
           </FilterContainer>
-        }
+        )}
       </Container>
     );
   }

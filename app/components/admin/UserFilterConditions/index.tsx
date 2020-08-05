@@ -64,25 +64,24 @@ interface Tracks {
 }
 
 class UserFilterConditions extends React.PureComponent<Props & Tracks, State> {
-
   handleOnChangeRule = (index) => (rule: TRule) => {
     const newRules = clone(this.props.rules);
     newRules.splice(index, 1, rule);
     this.props.onChange(newRules);
-  }
+  };
 
   handleOnRemoveRule = (index) => () => {
     const newRules = clone(this.props.rules);
     newRules.splice(index, 1);
     this.props.onChange(newRules);
-  }
+  };
 
   handleOnAddRule = () => {
     this.props.trackConditionAdd();
     const newRules = clone(this.props.rules);
     newRules.push({});
     this.props.onChange(newRules);
-  }
+  };
 
   render() {
     const { rules } = this.props;
@@ -122,11 +121,13 @@ export default UserFilterConditionsWithHoc;
 
 import { FieldProps } from 'formik';
 
-export class FormikUserFilterConditions extends React.Component<Props & FieldProps> {
+export class FormikUserFilterConditions extends React.Component<
+  Props & FieldProps
+> {
   handleOnChange = (newValue) => {
     this.props.form.setFieldTouched(this.props.field.name, true);
     this.props.form.setFieldValue(this.props.field.name, newValue);
-  }
+  };
 
   render() {
     const { value } = this.props.field;

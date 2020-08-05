@@ -43,62 +43,67 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const AreaFilter = memo<Props & InjectedLocalized>(({ selectedAreaIds, onChange, className, localize, areas }) => {
+const AreaFilter = memo<Props & InjectedLocalized>(
+  ({ selectedAreaIds, onChange, className, localize, areas }) => {
+    const tenant = useTenant();
 
-  const tenant = useTenant();
+    const selectedOptions = useMemo(() => {
+      if (!isNilOrError(areas) && selectedAreaIds) {
+        return selectedAreaIds.map((selectedAreaId) => {
+          const area = areas.find(
+            (area) => area.id === selectedAreaId
+          ) as IAreaData;
 
-  const selectedOptions = useMemo(() => {
-    if (!isNilOrError(areas) && selectedAreaIds) {
-      return selectedAreaIds.map((selectedAreaId) => {
-        const area = areas.find(area => area.id === selectedAreaId) as IAreaData;
+          return {
+            value: selectedAreaId,
+            label: localize(area.attributes.title_multiloc),
+          };
+        });
+      }
 
-        return {
-          value: selectedAreaId,
-          label: localize(area.attributes.title_multiloc)
-        };
-      });
-    }
+      return [];
+    }, [areas, selectedAreaIds]);
 
-    return [];
-  }, [areas, selectedAreaIds]);
+    const options = useMemo(() => {
+      if (!isNilOrError(areas)) {
+        return areas.map((area) => ({
+          value: area.id,
+          label: localize(area.attributes.title_multiloc),
+        }));
+      }
 
-  const options = useMemo(() => {
-    if (!isNilOrError(areas)) {
-      return areas.map((area) => ({
-        value: area.id,
-        label: localize(area.attributes.title_multiloc)
-      }));
-    }
+      return [];
+    }, [areas]);
 
-    return [];
-  }, [areas]);
+    const handleOnChange = useCallback((options: IOption[]) => {
+      const output = options.map((area) => area.value);
+      onChange(output.length > 0 ? output : null);
+    }, []);
 
-  const handleOnChange = useCallback((options: IOption[]) => {
-    const output = options.map(area => area.value);
-    onChange(output.length > 0 ? output : null);
-  }, []);
+    const areasTerm =
+      !isNilOrError(tenant) && tenant.data.attributes.settings.core.areas_term;
 
-  const areasTerm = !isNilOrError(tenant) && tenant.data.attributes.settings.core.areas_term;
+    return (
+      <Container className={className}>
+        <Header>
+          <Title>
+            {areasTerm && !isEmptyMultiloc(areasTerm) ? (
+              <T value={areasTerm} />
+            ) : (
+              <FormattedMessage {...messages.areas} />
+            )}
+          </Title>
+        </Header>
 
-  return (
-    <Container className={className}>
-      <Header>
-        <Title>
-          {areasTerm && !isEmptyMultiloc(areasTerm)
-            ? <T value={areasTerm} />
-            : <FormattedMessage {...messages.areas} />
-          }
-        </Title>
-      </Header>
-
-      <MultipleSelect
-        value={selectedOptions}
-        options={options}
-        onChange={handleOnChange}
-      />
-    </Container>
-  );
-});
+        <MultipleSelect
+          value={selectedOptions}
+          options={options}
+          onChange={handleOnChange}
+        />
+      </Container>
+    );
+  }
+);
 
 const AreaFilterWithHoC = localize(AreaFilter);
 

@@ -14,7 +14,9 @@ import { completeRegistration } from 'services/users';
 
 // resources
 import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
-import GetUserCustomFieldsSchema, { GetUserCustomFieldsSchemaChildProps } from 'resources/GetUserCustomFieldsSchema';
+import GetUserCustomFieldsSchema, {
+  GetUserCustomFieldsSchemaChildProps,
+} from 'resources/GetUserCustomFieldsSchema';
 
 // i18n
 import { InjectedIntlProps } from 'react-intl';
@@ -89,7 +91,7 @@ interface DataProps {
   userCustomFieldsSchema: GetUserCustomFieldsSchemaChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 type State = {
   processing: boolean;
@@ -103,7 +105,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
     this.state = {
       processing: false,
       unknownError: null,
-      apiErrors: null
+      apiErrors: null,
     };
   }
 
@@ -118,7 +120,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
   handleOnSubmitButtonClick = (event: FormEvent) => {
     event.preventDefault();
     eventEmitter.emit('customFieldsSubmitEvent');
-  }
+  };
 
   handleCustomFieldsFormOnSubmit = async (formData) => {
     const { formatMessage } = this.props.intl;
@@ -128,7 +130,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
       try {
         this.setState({
           processing: true,
-          unknownError: null
+          unknownError: null,
         });
 
         await completeRegistration(formData);
@@ -140,11 +142,11 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
         trackEventByName(tracks.signUpCustomFieldsStepFailed, { error });
         this.setState({
           processing: false,
-          unknownError: formatMessage(messages.unknownError)
+          unknownError: formatMessage(messages.unknownError),
         });
       }
     }
-  }
+  };
 
   skipStep = async (event: FormEvent) => {
     event.preventDefault();
@@ -158,7 +160,7 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
     }
 
     this.props.onCompleted();
-  }
+  };
 
   render() {
     const { formatMessage } = this.props.intl;
@@ -188,14 +190,14 @@ class CustomFields extends PureComponent<Props & InjectedIntlProps, State> {
               text={formatMessage(messages.completeSignUp)}
               onClick={this.handleOnSubmitButtonClick}
             />
-            {!userCustomFieldsSchema.hasRequiredFields &&
+            {!userCustomFieldsSchema.hasRequiredFields && (
               <SkipButton
                 className="e2e-signup-custom-fields-skip-btn"
                 onClick={this.skipStep}
               >
                 {formatMessage(messages.skip)}
               </SkipButton>
-            }
+            )}
           </ButtonWrapper>
           <Error text={unknownError} />
         </Container>
@@ -210,11 +212,11 @@ const CustomFieldsWithHoC = injectIntl<Props>(CustomFields);
 
 const Data = adopt<DataProps, InputProps>({
   authUser: <GetAuthUser />,
-  userCustomFieldsSchema: <GetUserCustomFieldsSchema />
+  userCustomFieldsSchema: <GetUserCustomFieldsSchema />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <CustomFieldsWithHoC {...inputProps} {...dataprops} />}
+    {(dataprops) => <CustomFieldsWithHoC {...inputProps} {...dataprops} />}
   </Data>
 );

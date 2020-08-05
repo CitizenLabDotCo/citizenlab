@@ -7,7 +7,8 @@ export default defineMessages({
   },
   subtitlePages: {
     id: 'app.containers.AdminPage.PagesEdition.subtitlePages',
-    defaultMessage: 'Personalise the general ‘About’ page by adding titles, images, videos, lists, hyperlinks. You can change the content whenever you like.',
+    defaultMessage:
+      'Personalise the general ‘About’ page by adding titles, images, videos, lists, hyperlinks. You can change the content whenever you like.',
   },
   titleLabel: {
     id: 'app.containers.AdminPage.PagesEdition.titleLabel',

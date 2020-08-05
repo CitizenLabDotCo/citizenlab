@@ -1,7 +1,6 @@
 import { randomString } from '../../../support/commands';
 
 describe('Admin: add project', () => {
-
   beforeEach(() => {
     cy.setAdminLoginCookie();
     cy.visit('/admin/projects/');
@@ -73,7 +72,7 @@ describe('Admin: add project', () => {
         // Project should appear on top of the Published projects
         cy.get('#e2e-admin-archived-projects-list').contains(projectTitleEN);
       });
-  });
+    });
 
     context('Areas: Selection', () => {
       it('creates a published project with the correct area', () => {
@@ -91,7 +90,11 @@ describe('Admin: add project', () => {
         cy.get('.e2e-areas-selection').click();
 
         // Pick (only) area
-        cy.get('#e2e-area-selector').click().find('input').type('Carrotgem').trigger('keydown', { keyCode: 13, which: 13 });
+        cy.get('#e2e-area-selector')
+          .click()
+          .find('input')
+          .type('Carrotgem')
+          .trigger('keydown', { keyCode: 13, which: 13 });
 
         // Submit project
         cy.get('.e2e-submit-wrapper-button').click();
@@ -100,21 +103,26 @@ describe('Admin: add project', () => {
 
         // Get projectId, then areaId and look up area to compare
         cy.get('#e2e-admin-published-projects-list').contains(projectTitleEN);
-        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`).find('a').then((manageProjectButtonLinks) => {
-          const manageProjectButtonLink = manageProjectButtonLinks[0];
-          const href = manageProjectButtonLink.href;
-          const hrefSegments = href && href.split('/');
-          const projectId = hrefSegments[hrefSegments.length - 2];
-          return projectId;
-        }).then((projectId) => {
-          return cy.getProjectById(projectId);
-        }).then((projectData) => {
-          const areaId = projectData.body.data.relationships.areas.data[0].id;
-          return cy.getArea(areaId);
-        }).then((areaData) => {
-          const area = areaData.body.data.attributes.title_multiloc['en-GB'];
-          expect(area).to.eq('Carrotgem');
-        });
+        cy.get(`.e2e-admin-edit-project.${projectTitleEN}`)
+          .find('a')
+          .then((manageProjectButtonLinks) => {
+            const manageProjectButtonLink = manageProjectButtonLinks[0];
+            const href = manageProjectButtonLink.href;
+            const hrefSegments = href && href.split('/');
+            const projectId = hrefSegments[hrefSegments.length - 2];
+            return projectId;
+          })
+          .then((projectId) => {
+            return cy.getProjectById(projectId);
+          })
+          .then((projectData) => {
+            const areaId = projectData.body.data.relationships.areas.data[0].id;
+            return cy.getArea(areaId);
+          })
+          .then((areaData) => {
+            const area = areaData.body.data.attributes.title_multiloc['en-GB'];
+            expect(area).to.eq('Carrotgem');
+          });
       });
     });
   });

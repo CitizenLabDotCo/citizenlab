@@ -26,7 +26,10 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportPollButton extends React.PureComponent<Props, State> {
+export default class ExportPollButton extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -36,15 +39,18 @@ export default class ExportPollButton extends React.PureComponent<Props, State> 
 
   trackExportPoll = () => {
     trackEventByName(tracks.clickExportPoll.name, { extra: { ...this.props } });
-  }
+  };
 
   handleExportPollResults = async () => {
     this.trackExportPoll();
 
     this.setState({ exporting: true });
-    await exportPollResponses(this.props.participationContextId, this.props.participationContextType);
+    await exportPollResponses(
+      this.props.participationContextId,
+      this.props.participationContextType
+    );
     this.setState({ exporting: false });
-  }
+  };
 
   render() {
     const { className } = this.props;

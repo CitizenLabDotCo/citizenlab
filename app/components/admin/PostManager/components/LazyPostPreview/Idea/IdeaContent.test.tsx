@@ -26,6 +26,16 @@ jest.mock('resources/GetTenant', () => 'GetTenant');
 jest.mock('resources/GetProject', () => 'GetProject');
 jest.mock('resources/GetPermission', () => 'GetPermission');
 jest.mock('utils/cl-intl');
+jest.mock('utils/styleUtils', () => ({
+  colors: {
+    label: '#000',
+    separation: '#000',
+    adminTextColor: '#000'
+  },
+  fontSizes: {
+    base: 16
+  }
+}));
 
 import { IdeaContent } from './IdeaContent';
 
