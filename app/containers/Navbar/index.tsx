@@ -46,7 +46,7 @@ import { InjectedIntlProps } from 'react-intl';
 // style
 import styled from 'styled-components';
 import { rgba, darken } from 'polished';
-import { colors, media, fontSizes } from 'utils/styleUtils';
+import { colors, media, fontSizes, defaultStyles } from 'utils/styleUtils';
 
 const Container = styled.header`
   width: 100vw;
@@ -57,7 +57,7 @@ const Container = styled.header`
   top: 0;
   left: 0;
   background: ${({ theme }) => theme.navbarBackgroundColor || '#fff'};
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: ${defaultStyles.boxShadow};
   z-index: 1004;
 
   &.hideNavbar {
