@@ -113,8 +113,8 @@ const StyledLink = styled(Link)`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 20px 23px;
+  transition: all 80ms ease-out;
   ${defaultCardStyle};
-  transition: all 200ms ease;
 
   &:hover {
     color: #000;
@@ -123,8 +123,7 @@ const StyledLink = styled(Link)`
 `;
 
 const LinkIcon = styled(Icon)`
-  width: 11px;
-  height: 1em;
+  width: 10px;
 `;
 
 const CookiePolicy = memo((props: InjectedIntlProps) => {

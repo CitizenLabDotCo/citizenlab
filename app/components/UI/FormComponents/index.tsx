@@ -3,7 +3,6 @@ import styled, { withTheme } from 'styled-components';
 import {
   fontSizes,
   colors,
-  booleanClass,
   invisibleA11yText,
   media,
   defaultCardStyle
@@ -134,10 +133,9 @@ export const FormLabel = memo<FormLabelProps>(
   }) => (
     <FormLabelStyled
       id={id}
-      className={`${booleanClass(className, className)}${booleanClass(
-        hidden,
-        'invisible'
-      )}`}
+      className={[className, hidden ? 'hidden' : null, 'invisible']
+        .filter(item => item)
+        .join(' ')}
       htmlFor={htmlFor}
     >
       <FormattedMessage {...labelMessage} values={labelMessageValues} />
@@ -184,10 +182,9 @@ export const FormLabelValue = memo(
   }: FormLabelValueProps) => (
     <FormLabelStyled
       id={id}
-      className={`${booleanClass(className, className)}${booleanClass(
-        hidden,
-        'invisible'
-      )}`}
+      className={[className, hidden ? 'hidden' : null, 'invisible']
+        .filter(item => item)
+        .join(' ')}
       htmlFor={htmlFor}
     >
       {labelValue}
