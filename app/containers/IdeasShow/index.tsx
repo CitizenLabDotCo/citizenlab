@@ -83,7 +83,7 @@ import CSSTransition from 'react-transition-group/CSSTransition';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, viewportWidths } from 'utils/styleUtils';
+import { media, colors, fontSizes, viewportWidths, defaultCardStyle } from 'utils/styleUtils';
 import { ScreenReaderOnly } from 'utils/a11y';
 import {
   columnsGapDesktop,
@@ -279,9 +279,8 @@ const ControlWrapper = styled.div`
   flex-direction: column;
   margin-bottom: 45px;
   padding: 35px;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: ${(props: any) => props.theme.borderRadius};
+  border: 1px solid #e0e0e0;
+  ${defaultCardStyle};
 `;
 
 const ControlWrapperHorizontalRule = styled.hr`
