@@ -32,7 +32,7 @@ const CountDownWrapper = styled.div`
 
 const StatusIcon = styled(Icon)`
   path {
-    fill: ${props => props.theme.colorMain};
+    fill: ${(props) => props.theme.colorMain};
   }
   width: 31px;
   height: 31px;
@@ -55,12 +55,12 @@ const VoteText = styled.div`
 
 const VoteTextLeft = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorMain};
+  color: ${(props) => props.theme.colorMain};
 `;
 
 const VoteTextRight = styled.div`
   font-size: ${fontSizes.base}px;
-  color: ${props => props.theme.colorText};
+  color: ${(props) => props.theme.colorText};
 `;
 
 const StyledProgressBar = styled(ProgressBar)`
@@ -100,16 +100,19 @@ interface InputProps {
   onVote: () => void;
 }
 
-interface Props extends InputProps { }
+interface Props extends InputProps {}
 
 class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
-
   handleOnVote = () => {
     this.props.onVote();
-  }
+  };
 
   render() {
-    const { initiative, initiativeSettings: { voting_threshold, threshold_reached_message }, theme } = this.props;
+    const {
+      initiative,
+      initiativeSettings: { voting_threshold, threshold_reached_message },
+      theme,
+    } = this.props;
     const voteCount = initiative.attributes.upvotes_count;
     const voteLimit = voting_threshold;
     const daysLeft = getDaysRemainingUntil(initiative.attributes.expires_at);
@@ -120,11 +123,11 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         iconColor={this.props.theme.colorText}
         theme="light"
         placement="bottom"
-        content={
-          <T value={threshold_reached_message} supportHtml />
-        }
+        content={<T value={threshold_reached_message} supportHtml />}
       />
-    ) : <></>;
+    ) : (
+      <></>
+    );
 
     return (
       <Container>
@@ -140,9 +143,11 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                 votingThreshold: voting_threshold,
                 proposedStatusExplanationBold: (
                   <b>
-                    <FormattedMessage {...messages.proposedStatusExplanationBold} />
+                    <FormattedMessage
+                      {...messages.proposedStatusExplanationBold}
+                    />
                   </b>
-                )
+                ),
               }}
             />
             {thresholdReachedTooltip}
@@ -155,9 +160,11 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
                 votingThreshold: voting_threshold,
                 proposedStatusExplanationMobileBold: (
                   <b>
-                    <FormattedMessage {...messages.proposedStatusExplanationMobileBold} />
+                    <FormattedMessage
+                      {...messages.proposedStatusExplanationMobileBold}
+                    />
                   </b>
-                )
+                ),
               }}
             />
             {thresholdReachedTooltip}
@@ -166,18 +173,24 @@ class ProposedNotVoted extends PureComponent<Props & { theme: any }> {
         <VoteCounter>
           <VoteText aria-hidden={true}>
             <VoteTextLeft id="e2e-initiative-not-voted-vote-count">
-              <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />
+              <FormattedMessage
+                {...messages.xVotes}
+                values={{ count: voteCount }}
+              />
             </VoteTextLeft>
-            <VoteTextRight>
-              {voteLimit}
-            </VoteTextRight>
+            <VoteTextRight>{voteLimit}</VoteTextRight>
           </VoteText>
           <ScreenReaderOnly>
             <FormattedMessage
               {...messages.xVotesOfY}
               values={{
-                xVotes: <FormattedMessage {...messages.xVotes} values={{ count: voteCount }} />,
-                votingThreshold: voteLimit
+                xVotes: (
+                  <FormattedMessage
+                    {...messages.xVotes}
+                    values={{ count: voteCount }}
+                  />
+                ),
+                votingThreshold: voteLimit,
               }}
             />
           </ScreenReaderOnly>

@@ -19,11 +19,13 @@ export default defineMessages({
   },
   a11y_numberOfIdeas: {
     id: 'app.components.FilterBoxes.a11y_numberOfIdeas',
-    defaultMessage: '{ideaCount, plural, no {# ideas} one {# idea} other {# ideas}}',
+    defaultMessage:
+      '{ideaCount, plural, no {# ideas} one {# idea} other {# ideas}}',
   },
   a11y_numberOfInitiatives: {
     id: 'app.components.FilterBoxes.a11y_numberOfInitiatives',
-    defaultMessage: '{initiativeCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
+    defaultMessage:
+      '{initiativeCount, plural, no {# initiatives} one {# initiative} other {# initiatives}}',
   },
   a11y_removeFilter: {
     id: 'app.components.FilterBoxes.a11y_removeFilter',
@@ -39,6 +41,7 @@ export default defineMessages({
   },
   a11y_selectedTopicFilters: {
     id: 'app.components.FilterBoxes.a11y_selectedTopicFilters',
-    defaultMessage: 'Selected {numberOfSelectedTopics, plural, =0 {zero topic filters} one {one topic filter} other {# topic filters}}. {selectedTopicNames}',
+    defaultMessage:
+      'Selected {numberOfSelectedTopics, plural, =0 {zero topic filters} one {one topic filter} other {# topic filters}}. {selectedTopicNames}',
   },
 });

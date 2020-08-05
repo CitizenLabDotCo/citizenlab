@@ -16,7 +16,9 @@ import { Icon } from 'cl2-component-library';
 import clickOutside from 'utils/containers/clickOutside';
 
 // resources
-import GetWindowSize, { GetWindowSizeChildProps } from 'resources/GetWindowSize';
+import GetWindowSize, {
+  GetWindowSizeChildProps
+} from 'resources/GetWindowSize';
 
 // animations
 import CSSTransition from 'react-transition-group/CSSTransition';
@@ -27,7 +29,13 @@ import tracks from './tracks';
 
 // style
 import styled from 'styled-components';
-import { media, colors, fontSizes, defaultOutline, viewportWidths } from 'utils/styleUtils';
+import {
+  media,
+  colors,
+  fontSizes,
+  defaultOutline,
+  viewportWidths
+} from 'utils/styleUtils';
 
 const desktopOpacityTimeout = 500;
 const mobileOpacityTimeout = 250;
@@ -41,7 +49,9 @@ const mobileTranslateY = '300px';
 const desktopEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
-export const ModalContentContainer = styled.div<{ padding?: string | undefined }>`
+export const ModalContentContainer = styled.div<{
+  padding?: string | undefined;
+}>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
@@ -187,7 +197,7 @@ const Overlay = styled.div`
         opacity: 1;
         transform: translateY(0px);
         transition: opacity ${desktopOpacityTimeout}ms ${desktopEasing},
-                    transform ${desktopTransformTimeout}ms ${desktopEasing};
+          transform ${desktopTransformTimeout}ms ${desktopEasing};
 
         ${media.smallerThanMinTablet`
           transition: opacity ${mobileOpacityTimeout}ms ${mobileEasing},
@@ -275,15 +285,15 @@ const Skip = styled.div`
 `;
 
 export const ButtonsWrapper = styled.div`
-display: flex;
-justify-content: flex-start;
-flex-wrap: wrap;
-width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  width: 100%;
 
-.Button {
-  margin-right: 1rem;
-  margin-bottom: 0.5rem;
-}
+  .Button {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const Content = styled.p`
@@ -337,15 +347,14 @@ class Modal extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.subscription = fromEvent(window, 'resize').pipe(
-      debounceTime(50),
-      distinctUntilChanged()
-    ).subscribe((event) => {
-      if (event.target) {
-        const height = event.target['innerHeight'] as number;
-        this.setState({ windowHeight: `${height}px` });
-      }
-    });
+    this.subscription = fromEvent(window, 'resize')
+      .pipe(debounceTime(50), distinctUntilChanged())
+      .subscribe(event => {
+        if (event.target) {
+          const height = event.target['innerHeight'] as number;
+          this.setState({ windowHeight: `${height}px` });
+        }
+      });
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -366,24 +375,24 @@ class Modal extends PureComponent<Props, State> {
     window.addEventListener('keydown', this.handleKeypress);
     eventEmitter.emit('modalOpened');
     this.unlisten = clHistory.listen(() => this.closeModal());
-  }
+  };
 
   closeModal = () => {
     if (!this.props.noClose) {
       this.props.close();
     }
-  }
+  };
 
   handlePopstateEvent = () => {
     this.closeModal();
-  }
+  };
 
-  handleKeypress = (event) => {
+  handleKeypress = event => {
     if (event.type === 'keydown' && event.key === 'Escape') {
       event.preventDefault();
       this.closeModal();
     }
-  }
+  };
 
   cleanup = () => {
     window.removeEventListener('popstate', this.handlePopstateEvent);
@@ -391,31 +400,43 @@ class Modal extends PureComponent<Props, State> {
     eventEmitter.emit('modalClosed');
     this.unlisten && this.unlisten();
     this.unlisten = null;
-  }
+  };
 
   clickOutsideModal = () => {
     if (this.props.closeOnClickOutside !== false) {
       trackEventByName(tracks.clickOutsideModal);
       this.closeModal();
     }
-  }
+  };
 
   clickCloseButton = (event: React.MouseEvent<any>) => {
     event.preventDefault();
     event.stopPropagation();
     trackEventByName(tracks.clickCloseButton);
     this.closeModal();
-  }
+  };
 
   removeFocus = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-  }
+  };
 
   render() {
     const { windowHeight } = this.state;
-    const { windowSize, width, children, opened, header, footer, hasSkipButton, skipText, noClose } = this.props;
+    const {
+      windowSize,
+      width,
+      children,
+      opened,
+      header,
+      footer,
+      hasSkipButton,
+      skipText,
+      noClose
+    } = this.props;
     const hasFixedHeight = this.props.fixedHeight;
-    const smallerThanSmallTablet = windowSize ? windowSize <= viewportWidths.smallTablet : false;
+    const smallerThanSmallTablet = windowSize
+      ? windowSize <= viewportWidths.smallTablet
+      : false;
     const modalPortalElement = document?.getElementById('modal-portal');
     let padding: string | undefined = undefined;
 
@@ -426,44 +447,50 @@ class Modal extends PureComponent<Props, State> {
     }
 
     if (modalPortalElement && width) {
-      return ReactDOM.createPortal((
+      return ReactDOM.createPortal(
         <CSSTransition
           classNames="modal"
           in={opened}
-          timeout={smallerThanSmallTablet ? mobileTransformTimeout : desktopTransformTimeout}
+          timeout={
+            smallerThanSmallTablet
+              ? mobileTransformTimeout
+              : desktopTransformTimeout
+          }
           mountOnEnter={true}
           unmountOnExit={true}
           enter={true}
           exit={false}
         >
-          <Overlay
-            id="e2e-modal-container"
-            className={this.props.className}
-          >
+          <Overlay id="e2e-modal-container" className={this.props.className}>
             <StyledFocusOn width={width}>
               <ModalContainer
-                className={`modalcontent ${hasFixedHeight ? 'fixedHeight' : ''}`}
+                className={`modalcontent ${
+                  hasFixedHeight ? 'fixedHeight' : ''
+                }`}
                 onClickOutside={this.clickOutsideModal}
                 windowHeight={windowHeight}
                 ariaLabelledBy="modal-header"
                 aria-modal="true"
                 role="dialog"
               >
-                {!noClose &&
+                {!noClose && (
                   <CloseButton
                     className="e2e-modal-close-button"
                     onMouseDown={this.removeFocus}
                     onClick={this.clickCloseButton}
                   >
-                    <CloseIcon title={<FormattedMessage {...messages.closeModal} />} name="close" />
-                  </CloseButton >
-                }
+                    <CloseIcon
+                      title={<FormattedMessage {...messages.closeModal} />}
+                      name="close"
+                    />
+                  </CloseButton>
+                )}
 
-                {header &&
+                {header && (
                   <HeaderContainer>
                     <HeaderTitle id="modal-header">{header}</HeaderTitle>
                   </HeaderContainer>
-                }
+                )}
 
                 <ModalContentContainer padding={padding}>
                   {children}
@@ -471,14 +498,15 @@ class Modal extends PureComponent<Props, State> {
 
                 {footer && <FooterContainer>{footer}</FooterContainer>}
 
-                {hasSkipButton && skipText &&
+                {hasSkipButton && skipText && (
                   <Skip onClick={this.clickCloseButton}>{skipText}</Skip>
-                }
+                )}
               </ModalContainer>
             </StyledFocusOn>
           </Overlay>
-        </CSSTransition>
-      ), modalPortalElement);
+        </CSSTransition>,
+        modalPortalElement
+      );
     }
 
     return null;

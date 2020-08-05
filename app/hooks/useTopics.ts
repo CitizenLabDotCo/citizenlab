@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { projectTopicsStream } from 'services/projectTopics';
-import { ITopicData, topicByIdStream, topicsStream, Code } from 'services/topics';
+import {
+  ITopicData,
+  topicByIdStream,
+  topicsStream,
+  Code,
+} from 'services/topics';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { isNilOrError } from 'utils/helperUtils';
@@ -14,14 +19,10 @@ interface Parameters {
 }
 
 export default function useTopics(parameters: Parameters) {
-  const {
-    projectId,
-    topicIds,
-    code,
-    exclude_code,
-    sort
-  } = parameters;
-  const [topics, setTopics] = useState<(ITopicData | Error)[] | undefined | null | Error>(undefined);
+  const { projectId, topicIds, code, exclude_code, sort } = parameters;
+  const [topics, setTopics] = useState<
+    (ITopicData | Error)[] | undefined | null | Error
+  >(undefined);
   const queryParameters = { code, exclude_code, sort };
 
   useEffect(() => {
@@ -29,21 +30,35 @@ export default function useTopics(parameters: Parameters) {
 
     if (projectId) {
       observable = projectTopicsStream(projectId).observable.pipe(
-        map(topics => topics.data.filter(topic => topic).map(topic => topic.relationships.topic.data.id)),
+        map((topics) =>
+          topics.data
+            .filter((topic) => topic)
+            .map((topic) => topic.relationships.topic.data.id)
+        ),
         switchMap((topicIds) => {
           return combineLatest(
-            topicIds.map(topicId => topicByIdStream(topicId).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
+            topicIds.map((topicId) =>
+              topicByIdStream(topicId).observable.pipe(
+                map((topic) => (!isNilOrError(topic) ? topic.data : topic))
+              )
+            )
           );
-        }),
+        })
       );
     } else if (topicIds) {
       if (topicIds.length > 0) {
         observable = combineLatest(
-          topicIds.map(id => topicByIdStream(id).observable.pipe(map(topic => (!isNilOrError(topic) ? topic.data : topic))))
+          topicIds.map((id) =>
+            topicByIdStream(id).observable.pipe(
+              map((topic) => (!isNilOrError(topic) ? topic.data : topic))
+            )
+          )
         );
       }
     } else {
-      observable = topicsStream({ queryParameters }).observable.pipe(map(topics => topics.data));
+      observable = topicsStream({ queryParameters }).observable.pipe(
+        map((topics) => topics.data)
+      );
     }
 
     const subscription = observable.subscribe((topics) => {

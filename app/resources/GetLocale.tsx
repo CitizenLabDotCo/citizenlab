@@ -23,7 +23,7 @@ export default class GetLocale extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      locale: undefined
+      locale: undefined,
     };
   }
 
@@ -33,12 +33,12 @@ export default class GetLocale extends React.Component<Props, State> {
     this.subscriptions = [
       locale$.subscribe((locale) => {
         this.setState({ locale });
-      })
+      }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

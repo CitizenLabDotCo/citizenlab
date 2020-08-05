@@ -8,7 +8,9 @@ import { Icon } from 'cl2-component-library';
 import FileAttachments from 'components/UI/FileAttachments';
 
 // resources
-import GetResourceFiles, { GetResourceFilesChildProps } from 'resources/GetResourceFiles';
+import GetResourceFiles, {
+  GetResourceFilesChildProps,
+} from 'resources/GetResourceFiles';
 
 // services
 import { IEventData } from 'services/events';
@@ -63,7 +65,7 @@ const EventDates = styled.div`
   border-radius: ${(props: any) => props.theme.borderRadius};
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  background: #DF3300;
+  background: #df3300;
 
   &.past {
     background: ${colors.grey};
@@ -214,7 +216,12 @@ interface State {}
 
 class Event extends React.PureComponent<Props & InjectedIntlProps, State> {
   render() {
-    const { event, eventFiles, className, intl: { formatMessage } } = this.props;
+    const {
+      event,
+      eventFiles,
+      className,
+      intl: { formatMessage },
+    } = this.props;
 
     if (!isNilOrError(event)) {
       const startAtMoment = moment(event.attributes.start_at);
@@ -226,10 +233,17 @@ class Event extends React.PureComponent<Props & InjectedIntlProps, State> {
       const startAtMonth = startAtMoment.format('MMM');
       const endAtMonth = endAtMoment.format('MMM');
       const startAtYear = startAtMoment.format('YYYY');
-      const isMultiDayEvent = (startAtIsoDate !== endAtIsoDate);
-      const startAtTime = (isMultiDayEvent ? startAtMoment.format('D MMM LT') : startAtMoment.format('LT'));
-      const endAtTime = (isMultiDayEvent ? endAtMoment.format('D MMM LT') : endAtMoment.format('LT'));
-      const eventStatus = pastPresentOrFuture([event.attributes.start_at, event.attributes.end_at]);
+      const isMultiDayEvent = startAtIsoDate !== endAtIsoDate;
+      const startAtTime = isMultiDayEvent
+        ? startAtMoment.format('D MMM LT')
+        : startAtMoment.format('LT');
+      const endAtTime = isMultiDayEvent
+        ? endAtMoment.format('D MMM LT')
+        : endAtMoment.format('LT');
+      const eventStatus = pastPresentOrFuture([
+        event.attributes.start_at,
+        event.attributes.end_at,
+      ]);
       const hasLocation = !every(event.attributes.location_multiloc, isEmpty);
 
       return (
@@ -243,9 +257,7 @@ class Event extends React.PureComponent<Props & InjectedIntlProps, State> {
 
               {isMultiDayEvent && (
                 <>
-                  <EventDatesSeparator>
-                    -
-                  </EventDatesSeparator>
+                  <EventDatesSeparator>-</EventDatesSeparator>
                   <EventDate>
                     <span>{endAtDay}</span>
                     <span>{endAtMonth}</span>
@@ -270,25 +282,31 @@ class Event extends React.PureComponent<Props & InjectedIntlProps, State> {
 
             <EventDescription>
               <QuillEditedContent>
-                <T value={event.attributes.description_multiloc} supportHtml={true} />
+                <T
+                  value={event.attributes.description_multiloc}
+                  supportHtml={true}
+                />
               </QuillEditedContent>
             </EventDescription>
 
-            {!isNilOrError(eventFiles) && eventFiles.length > 0 &&
+            {!isNilOrError(eventFiles) && eventFiles.length > 0 && (
               <FileAttachments files={eventFiles} />
-            }
+            )}
           </EventInformation>
 
-          {hasLocation &&
+          {hasLocation && (
             <EventLocationWrapper className={eventStatus}>
               <EventLocation>
-                <MapIcon title={formatMessage(messages.location)} name="mapmarker" />
+                <MapIcon
+                  title={formatMessage(messages.location)}
+                  name="mapmarker"
+                />
                 <EventLocationAddress>
                   <T value={event.attributes.location_multiloc} />
                 </EventLocationAddress>
               </EventLocation>
             </EventLocationWrapper>
-          }
+          )}
         </Container>
       );
     }
@@ -301,6 +319,6 @@ const EventWithIntl = injectIntl(Event);
 
 export default (inputProps: InputProps) => (
   <GetResourceFiles resourceType="event" resourceId={inputProps.event.id}>
-    {eventFiles => <EventWithIntl eventFiles={eventFiles} {...inputProps} />}
+    {(eventFiles) => <EventWithIntl eventFiles={eventFiles} {...inputProps} />}
   </GetResourceFiles>
 );

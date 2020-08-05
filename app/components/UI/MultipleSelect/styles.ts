@@ -17,25 +17,27 @@ export function getSelectStyles(borderColor = colors.border) {
       borderRadius: '3px',
       minHeight: '48px',
       backgroundColor: '#fff',
-      boxShadow: isFocused ? `0px 0px 0px 1px ${transparentize(0.4, colors.focussedBorder)}` : 'none',
+      boxShadow: isFocused
+        ? `0px 0px 0px 1px ${transparentize(0.4, colors.focussedBorder)}`
+        : 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: isFocused ? colors.focussedBorder : colors.hoveredBorder
-      }
+        borderColor: isFocused ? colors.focussedBorder : colors.hoveredBorder,
+      },
     }),
     indicatorSeparator: () => ({
-      display: 'none'
+      display: 'none',
     }),
     dropdownIndicator: (base, { isFocused }) => ({
       ...base,
       color: isFocused ? colors.focussedBorder : `${borderColor}`,
       '&:hover': {
-        color: isFocused ? colors.focussedBorder : colors.hoveredBorder
-      }
+        color: isFocused ? colors.focussedBorder : colors.hoveredBorder,
+      },
     }),
     placeholder: (base) => ({
       ...base,
-      color: '#999'
+      color: '#999',
     }),
     option: (base, { isFocused }) => ({
       ...base,
@@ -43,7 +45,7 @@ export function getSelectStyles(borderColor = colors.border) {
       fontSize: `${fontSizes.base}px`,
       color: isFocused ? colors.text : colors.label,
       backgroundColor: isFocused ? colors.clDropdownHoverBackground : '#fff',
-      cursor: 'pointer'
+      cursor: 'pointer',
     }),
     multiValue: (base) => ({
       ...base,
@@ -53,15 +55,15 @@ export function getSelectStyles(borderColor = colors.border) {
       ...base,
       fontSize: `${fontSizes.base}px`,
       padding: '6px',
-      paddingLeft: '10px'
+      paddingLeft: '10px',
     }),
     multiValueRemove: (base) => ({
       ...base,
       fontSize: `${fontSizes.large}px`,
       ':hover': {
-        background: '#ccc'
-      }
-    })
+        background: '#ccc',
+      },
+    }),
   };
 }
 

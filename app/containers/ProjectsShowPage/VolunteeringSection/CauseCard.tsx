@@ -147,7 +147,6 @@ interface Props {
 }
 
 const CauseCard = memo<Props>(({ cause, className }) => {
-
   const authUser = useAuthUser();
   const { windowWidth } = useWindowSize();
 
@@ -162,21 +161,29 @@ const CauseCard = memo<Props>(({ cause, className }) => {
   const signIn = useCallback(() => {
     openSignUpInModal({
       flow: 'signin',
-      action: () => handleOnVolunteerButtonClick()
+      action: () => handleOnVolunteerButtonClick(),
     });
   }, []);
 
   const signUp = useCallback(() => {
     openSignUpInModal({
       flow: 'signup',
-      action: () => handleOnVolunteerButtonClick()
+      action: () => handleOnVolunteerButtonClick(),
     });
   }, []);
 
   const isVolunteer = !!cause.relationships?.user_volunteer?.data;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.smallTablet;
-  const signUpLink = <button onClick={signUp}><FormattedMessage {...messages.signUpLinkText} /></button>;
-  const signInLink = <button onClick={signIn}><FormattedMessage {...messages.signInLinkText} /></button>;
+  const signUpLink = (
+    <button onClick={signUp}>
+      <FormattedMessage {...messages.signUpLinkText} />
+    </button>
+  );
+  const signInLink = (
+    <button onClick={signIn}>
+      <FormattedMessage {...messages.signInLinkText} />
+    </button>
+  );
 
   return (
     <Container className={className}>
@@ -187,7 +194,10 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
               <VolunteersCountText>
-                <FormattedMessage {...messages.xVolunteers} values={{ x: cause.attributes.volunteers_count }}/>
+                <FormattedMessage
+                  {...messages.xVolunteers}
+                  values={{ x: cause.attributes.volunteers_count }}
+                />
               </VolunteersCountText>
             </VolunteersCount>
           </ImageWrapper>
@@ -197,7 +207,10 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <VolunteersCount>
               <VolunteersCountIcon name="volunteer-hand" />
               <VolunteersCountText>
-                <FormattedMessage {...messages.xVolunteers} values={{ x: cause.attributes.volunteers_count }}/>
+                <FormattedMessage
+                  {...messages.xVolunteers}
+                  values={{ x: cause.attributes.volunteers_count }}
+                />
               </VolunteersCountText>
             </VolunteersCount>
           </ImageWrapper>
@@ -210,19 +223,22 @@ const CauseCard = memo<Props>(({ cause, className }) => {
             <T value={cause.attributes.title_multiloc} />
           </Title>
 
-          {!isEmptyMultiloc(cause.attributes.description_multiloc) &&
+          {!isEmptyMultiloc(cause.attributes.description_multiloc) && (
             <Description>
               <QuillEditedContent>
                 <T value={cause.attributes.description_multiloc} supportHtml />
               </QuillEditedContent>
             </Description>
-          }
+          )}
         </Content>
 
         <ActionWrapper>
           {!authUser ? (
             <Warning>
-              <FormattedMessage {...messages.notLoggedIn} values={{ signUpLink, signInLink }} />
+              <FormattedMessage
+                {...messages.notLoggedIn}
+                values={{ signUpLink, signInLink }}
+              />
             </Warning>
           ) : (
             <Button
@@ -232,9 +248,11 @@ const CauseCard = memo<Props>(({ cause, className }) => {
               buttonStyle={!isVolunteer ? 'primary' : 'secondary'}
               fullWidth={smallerThanSmallTablet}
             >
-              {isVolunteer
-                ? <FormattedMessage {...messages.withdrawVolunteerButton} />
-                : <FormattedMessage {...messages.becomeVolunteerButton} />}
+              {isVolunteer ? (
+                <FormattedMessage {...messages.withdrawVolunteerButton} />
+              ) : (
+                <FormattedMessage {...messages.becomeVolunteerButton} />
+              )}
             </Button>
           )}
         </ActionWrapper>

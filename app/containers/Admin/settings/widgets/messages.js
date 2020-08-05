@@ -11,7 +11,8 @@ export default defineMessages({
   },
   subtitleWidgets: {
     id: 'app.containers.AdminPage.widgets.subtitleWidgets',
-    defaultMessage: 'Generate as many widgets as you like, and add the html-code to your website.',
+    defaultMessage:
+      'Generate as many widgets as you like, and add the html-code to your website.',
   },
   titleIdeaContent: {
     id: 'app.containers.AdminPage.widgets.titleIdeaContent',
@@ -63,7 +64,8 @@ export default defineMessages({
   },
   fieldFontDescription: {
     id: 'app.containers.AdminPage.widgets.fieldFontDescription',
-    defaultMessage: 'Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.',
+    defaultMessage:
+      'Must be a valid font name available through {googleFontsLink}. Leave empty to use the default font.',
   },
   fieldRelativeLink: {
     id: 'app.containers.AdminPage.widgets.fieldRelativeLink',
@@ -151,7 +153,8 @@ export default defineMessages({
   },
   htmlCodeExplanation: {
     id: 'app.containers.AdminPage.widgets.htmlCodeExplanation',
-    defaultMessage: 'Copy the following snippet of HTML code and paste it on the website where you want the widget to appear.',
+    defaultMessage:
+      'Copy the following snippet of HTML code and paste it on the website where you want the widget to appear.',
   },
   homepage: {
     id: 'app.containers.AdminPage.widgets.homepage',

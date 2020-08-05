@@ -80,7 +80,9 @@ describe('<FeedbackToggle />', () => {
         onChange={onChange}
       />
     );
-    wrapper.find('FeedbackToggle__ToggleContainer').simulate('click', { preventDefault() { }, stopPropagation() { } });
+    wrapper
+      .find('FeedbackToggle__ToggleContainer')
+      .simulate('click', { preventDefault() {}, stopPropagation() {} });
 
     expect(onChange).toHaveBeenCalled();
   });
@@ -89,7 +91,7 @@ describe('<FeedbackToggle />', () => {
     const onChangeSearchTerm = jest.fn();
     const ideasCount = {
       count: 6,
-      onChangeSearchTerm
+      onChangeSearchTerm,
     };
 
     const wrapper = shallow(

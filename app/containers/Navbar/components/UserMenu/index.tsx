@@ -60,7 +60,10 @@ const DropdownButton = styled.button`
   &:focus {
     ${StyledAvatar} {
       .avatarIcon {
-        fill: ${({ theme }) => theme.navbarTextColor ? darken(0.2, theme.navbarTextColor) : colors.text};
+        fill: ${({ theme }) =>
+          theme.navbarTextColor
+            ? darken(0.2, theme.navbarTextColor)
+            : colors.text};
       }
     }
   }
@@ -77,37 +80,36 @@ interface DataProps {
   authUser: GetAuthUserChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   opened: boolean;
 }
 
 class UserMenu extends PureComponent<Props, State> {
-
   constructor(props) {
     super(props);
     this.state = {
-      opened: false
+      opened: false,
     };
   }
 
   toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
     this.setState(({ opened }) => ({ opened: !opened }));
-  }
+  };
 
   closeDropdown = () => {
     this.setState({ opened: false });
-  }
+  };
 
   signOut = () => {
     signOut();
-  }
+  };
 
   removeFocus = (event: React.MouseEvent) => {
     event.preventDefault();
-  }
+  };
 
   render() {
     const { theme, authUser } = this.props;
@@ -120,7 +122,9 @@ class UserMenu extends PureComponent<Props, State> {
       return (
         <Container
           id="e2e-user-menu-container"
-          className={authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'}
+          className={
+            authUser.attributes.verified ? 'e2e-verified' : 'e2e-not-verified'
+          }
         >
           <DropdownButton
             onMouseDown={this.removeFocus}
@@ -137,7 +141,11 @@ class UserMenu extends PureComponent<Props, State> {
               userId={userId}
               size="30px"
               hasHoverEffect={false}
-              fillColor={theme && theme.navbarTextColor ? theme.navbarTextColor : colors.label}
+              fillColor={
+                theme && theme.navbarTextColor
+                  ? theme.navbarTextColor
+                  : colors.label
+              }
               verified
             />
           </DropdownButton>
@@ -151,9 +159,12 @@ class UserMenu extends PureComponent<Props, State> {
             mobileRight="-5px"
             opened={opened}
             onClickOutside={this.toggleDropdown}
-            content={(
+            content={
               <>
-                <HasPermission item={{ type: 'route', path: '/admin/dashboard' }} action="access">
+                <HasPermission
+                  item={{ type: 'route', path: '/admin/dashboard' }}
+                  action="access"
+                >
                   <DropdownListItem
                     id="admin-link"
                     linkTo={'/admin/dashboard'}
@@ -218,7 +229,7 @@ class UserMenu extends PureComponent<Props, State> {
                   <FormattedMessage {...messages.signOut} />
                 </DropdownListItem>
               </>
-            )}
+            }
           />
         </Container>
       );
@@ -229,13 +240,13 @@ class UserMenu extends PureComponent<Props, State> {
 }
 
 const Data = adopt<DataProps, InputProps>({
-  authUser: <GetAuthUser/>
+  authUser: <GetAuthUser />,
 });
 
-const UserMenuWithHOCs =  withTheme(UserMenu);
+const UserMenuWithHOCs = withTheme(UserMenu);
 
 export default (inputProps: InputProps) => (
   <Data>
-    {dataProps => <UserMenuWithHOCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <UserMenuWithHOCs {...inputProps} {...dataProps} />}
   </Data>
 );

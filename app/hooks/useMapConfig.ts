@@ -8,12 +8,15 @@ export interface Props {
 
 export type IOutput = IMapConfigData | undefined | null | Error;
 
-export default ({ projectId } : Props) : IOutput => {
-
-  const [mapConfig, setMapConfig] = useState<IMapConfigData | undefined | null | Error>(undefined);
+export default ({ projectId }: Props): IOutput => {
+  const [mapConfig, setMapConfig] = useState<
+    IMapConfigData | undefined | null | Error
+  >(undefined);
 
   useEffect(() => {
-    const subscription = mapConfigByProjectStream(projectId).observable.subscribe((mapConfig) => {
+    const subscription = mapConfigByProjectStream(
+      projectId
+    ).observable.subscribe((mapConfig) => {
       setMapConfig(!isNilOrError(mapConfig) ? mapConfig.data : mapConfig);
     });
 

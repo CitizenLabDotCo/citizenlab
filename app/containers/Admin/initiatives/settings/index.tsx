@@ -15,7 +15,7 @@ import {
   Section,
   SectionField,
   SubSectionTitle,
-  SubSectionTitleWithDescription
+  SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Button from 'components/UI/Button';
 import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
@@ -103,7 +103,10 @@ interface State {
   success: boolean;
 }
 
-class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, State> {
+class InitiativesSettingsPage extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -111,36 +114,45 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
       touched: false,
       processing: false,
       error: false,
-      success: false
+      success: false,
     };
   }
 
   componentDidMount() {
     const { locale, tenant } = this.props;
 
-    if (!isNilOrError(locale) && !isNilOrError(tenant) && tenant?.attributes?.settings?.initiatives) {
+    if (
+      !isNilOrError(locale) &&
+      !isNilOrError(tenant) &&
+      tenant?.attributes?.settings?.initiatives
+    ) {
       const initiativesSettings = tenant.attributes.settings.initiatives;
 
       this.setState({
         formValues: {
           days_limit: initiativesSettings.days_limit,
           eligibility_criteria: initiativesSettings.eligibility_criteria,
-          threshold_reached_message: initiativesSettings.threshold_reached_message,
+          threshold_reached_message:
+            initiativesSettings.threshold_reached_message,
           voting_threshold: initiativesSettings.voting_threshold,
           enabled: initiativesSettings.enabled,
           posting_enabled: initiativesSettings.posting_enabled,
-        }
+        },
       });
     }
   }
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    if (prevState.formValues && this.state.formValues && prevState.formValues !== this.state.formValues) {
+    if (
+      prevState.formValues &&
+      this.state.formValues &&
+      prevState.formValues !== this.state.formValues
+    ) {
       this.setState({
         touched: true,
         processing: false,
         success: false,
-        error: false
+        error: false,
       });
     }
   }
@@ -148,29 +160,35 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
   validate = () => {
     const { tenant } = this.props;
     const { touched, processing, formValues } = this.state;
-    const tenantLocales = !isNilOrError(tenant) ? tenant.attributes.settings.core.locales : null;
+    const tenantLocales = !isNilOrError(tenant)
+      ? tenant.attributes.settings.core.locales
+      : null;
     let validated = false;
 
     if (touched && !processing && tenantLocales && !isEmpty(formValues)) {
       validated = true;
 
-      if (isNaN(formValues.voting_threshold) ||
-          formValues.voting_threshold < 2 ||
-          isNaN(formValues.days_limit) ||
-          formValues.days_limit < 1
+      if (
+        isNaN(formValues.voting_threshold) ||
+        formValues.voting_threshold < 2 ||
+        isNaN(formValues.days_limit) ||
+        formValues.days_limit < 1
       ) {
         validated = false;
       }
 
       tenantLocales.forEach((locale) => {
-        if (isEmpty(formValues.eligibility_criteria[locale]) || isEmpty(formValues.threshold_reached_message[locale])) {
+        if (
+          isEmpty(formValues.eligibility_criteria[locale]) ||
+          isEmpty(formValues.threshold_reached_message[locale])
+        ) {
           validated = false;
         }
       });
     }
 
     return validated;
-  }
+  };
 
   handleSubmit = async () => {
     const { tenant } = this.props;
@@ -182,24 +200,24 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
       try {
         await updateTenant(tenant.id, {
           settings: {
-            initiatives: formValues
-          }
+            initiatives: formValues,
+          },
         });
 
         this.setState({
           touched: false,
           processing: false,
           success: true,
-          error: false
+          error: false,
         });
       } catch (error) {
         this.setState({
           processing: false,
-          error: true
+          error: true,
         });
       }
     }
-  }
+  };
 
   handleEnabledOnChange = (event: React.FormEvent) => {
     event.preventDefault();
@@ -207,15 +225,15 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
     this.setState(({ formValues }) => {
       const { enabled } = formValues;
 
-      return ({
+      return {
         formValues: {
           ...formValues,
           enabled: !enabled,
-          posting_enabled: !enabled
-        }
-      });
+          posting_enabled: !enabled,
+        },
+      };
     });
-  }
+  };
 
   handlePostingEnabledOnChange = (event: React.FormEvent) => {
     event.preventDefault();
@@ -223,57 +241,63 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
     this.setState(({ formValues }) => {
       const { posting_enabled, enabled } = formValues;
 
-      return ({
+      return {
         formValues: {
           ...formValues,
           // if proposal submission is turned on,
           // posting of new proposals is automatically as well
           enabled: posting_enabled === false ? true : enabled,
-          posting_enabled: !posting_enabled
-        }
-      });
+          posting_enabled: !posting_enabled,
+        },
+      };
     });
-  }
+  };
 
   handleVotingTresholdOnChange = (value: string) => {
     this.setState(({ formValues }) => ({
       formValues: {
         ...formValues,
-        voting_threshold: parseInt(value, 10)
-      }
+        voting_threshold: parseInt(value, 10),
+      },
     }));
-  }
+  };
 
   handleDaysLimitOnChange = (value: string) => {
     this.setState(({ formValues }) => ({
       formValues: {
         ...formValues,
-        days_limit: parseInt(value, 10)
-      }
+        days_limit: parseInt(value, 10),
+      },
     }));
-  }
+  };
 
-  handleEligibilityCriteriaOnChange = (valueMultiloc: Multiloc, locale: Locale | undefined) => {
+  handleEligibilityCriteriaOnChange = (
+    valueMultiloc: Multiloc,
+    locale: Locale | undefined
+  ) => {
     if (locale) {
       this.setState(({ formValues }) => ({
         formValues: {
           ...formValues,
-          eligibility_criteria: valueMultiloc
-        }
+          eligibility_criteria: valueMultiloc,
+        },
       }));
     }
-  }
+  };
 
-  handleThresholdReachedMessageOnChange = (valueMultiloc: Multiloc, locale: Locale | undefined) => {
+  handleThresholdReachedMessageOnChange = (
+    valueMultiloc: Multiloc,
+    locale: Locale | undefined
+  ) => {
     if (locale) {
       this.setState(({ formValues }) => ({
         formValues: {
           ...formValues,
-          threshold_reached_message: valueMultiloc
-        }
+          threshold_reached_message: valueMultiloc,
+        },
       }));
     }
-  }
+  };
 
   render() {
     const { locale, tenant, className, intl } = this.props;
@@ -308,21 +332,22 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 <FormattedMessage {...messages.fieldPostingEnabled} />
               </SubSectionTitleWithDescription>
               <StyledSectionDescription>
-                <FormattedMessage {...messages.showProposalPostingEnabledInfo} />
-              </StyledSectionDescription>
-                <StyledToggle
-                  checked={formValues.posting_enabled}
-                  onChange={this.handlePostingEnabledOnChange}
-                  label={<FormattedMessage {...messages.enabledToggle} />}
+                <FormattedMessage
+                  {...messages.showProposalPostingEnabledInfo}
                 />
-
+              </StyledSectionDescription>
+              <StyledToggle
+                checked={formValues.posting_enabled}
+                onChange={this.handlePostingEnabledOnChange}
+                label={<FormattedMessage {...messages.enabledToggle} />}
+              />
             </SectionField>
             <SectionField>
               <SubSectionTitle>
                 <FormattedMessage {...messages.fieldVotingThreshold} />
               </SubSectionTitle>
               <StyledWarning>
-                <FormattedMessage {...messages.warningTresholdSettings}/>
+                <FormattedMessage {...messages.warningTresholdSettings} />
               </StyledWarning>
               <Input
                 className="e2e-voting-threshold"
@@ -334,13 +359,18 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 onChange={this.handleVotingTresholdOnChange}
               />
 
-              {isNaN(formValues.voting_threshold) &&
+              {isNaN(formValues.voting_threshold) && (
                 <Error text={intl.formatMessage(errorMessages.blank)} />
-              }
+              )}
 
-              {!isNaN(formValues.voting_threshold) && formValues.voting_threshold < 2 &&
-                <Error text={intl.formatMessage(messages.initiativeSettingsVotingThresholdError)} />
-              }
+              {!isNaN(formValues.voting_threshold) &&
+                formValues.voting_threshold < 2 && (
+                  <Error
+                    text={intl.formatMessage(
+                      messages.initiativeSettingsVotingThresholdError
+                    )}
+                  />
+                )}
             </SectionField>
 
             <SectionField>
@@ -348,7 +378,7 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 <FormattedMessage {...messages.fieldVotingDaysLimit} />
               </SubSectionTitle>
               <StyledWarning>
-                <FormattedMessage {...messages.warningTresholdSettings}/>
+                <FormattedMessage {...messages.warningTresholdSettings} />
               </StyledWarning>
               <Input
                 className="e2e-days-limit"
@@ -359,9 +389,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 value={formValues.days_limit.toString()}
                 onChange={this.handleDaysLimitOnChange}
               />
-              {isNaN(formValues.days_limit) &&
+              {isNaN(formValues.days_limit) && (
                 <Error text={intl.formatMessage(errorMessages.blank)} />
-              }
+              )}
             </SectionField>
 
             <StyledSectionField>
@@ -387,7 +417,9 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
                 <FormattedMessage {...messages.proposalEligibilityCriteria} />
               </SubSectionTitleWithDescription>
               <StyledSectionDescription>
-                <FormattedMessage {...messages.proposalEligibilityCriteriaInfo} />
+                <FormattedMessage
+                  {...messages.proposalEligibilityCriteriaInfo}
+                />
               </StyledSectionDescription>
               <QuillMultilocWithLocaleSwitcher
                 id="eligibility_criteria"
@@ -408,23 +440,24 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
               disabled={!this.validate()}
               processing={processing}
             >
-              {success
-                ? <FormattedMessage {...messages.initiativeSettingsFormSaved} />
-                : <FormattedMessage {...messages.initiativeSettingsFormSave} />
-              }
+              {success ? (
+                <FormattedMessage {...messages.initiativeSettingsFormSaved} />
+              ) : (
+                <FormattedMessage {...messages.initiativeSettingsFormSave} />
+              )}
             </Button>
 
-            {error &&
+            {error && (
               <ErrorMessage>
                 <FormattedMessage {...messages.initiativeSettingsFormError} />
               </ErrorMessage>
-            }
+            )}
 
-            {success &&
+            {success && (
               <SuccessMessage>
                 <FormattedMessage {...messages.initiativeSettingsFormSuccess} />
               </SuccessMessage>
-            }
+            )}
           </ButtonContainer>
         </Container>
       );
@@ -436,14 +469,16 @@ class InitiativesSettingsPage extends PureComponent<Props & InjectedIntlProps, S
 
 const Data = adopt<DataProps>({
   locale: <GetLocale />,
-  tenant: <GetTenant />
+  tenant: <GetTenant />,
 });
 
-const InitiativesSettingsPageWithHoC = injectIntl<Props>(InitiativesSettingsPage);
+const InitiativesSettingsPageWithHoC = injectIntl<Props>(
+  InitiativesSettingsPage
+);
 
 const WrappedInitiativesSettingsPage = () => (
   <Data>
-    {dataProps => <InitiativesSettingsPageWithHoC {...dataProps} />}
+    {(dataProps) => <InitiativesSettingsPageWithHoC {...dataProps} />}
   </Data>
 );
 

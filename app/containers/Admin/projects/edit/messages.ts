@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // edit - index
@@ -79,7 +77,8 @@ export default defineMessages({
   },
   informationDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.informationDescription',
-    defaultMessage: 'Users can only read the information you provide, they cannot participate actively.',
+    defaultMessage:
+      'Users can only read the information you provide, they cannot participate actively.',
   },
   ideation: {
     id: 'app.containers.AdminPage.ProjectEdit.ideation',
@@ -95,15 +94,18 @@ export default defineMessages({
   },
   surveyDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyDescription',
-    defaultMessage: 'You integrate a survey in which the users can participate.',
+    defaultMessage:
+      'You integrate a survey in which the users can participate.',
   },
   participatoryBudgeting: {
     id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgeting',
     defaultMessage: 'Participatory Budgeting',
   },
   participatoryBudgetingDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.participatoryBudgetingDescription',
-    defaultMessage: 'Users can select ideas until their selection reaches a predefined budget threshold.',
+    id:
+      'app.containers.AdminPage.ProjectEdit.participatoryBudgetingDescription',
+    defaultMessage:
+      'Users can select ideas until their selection reaches a predefined budget threshold.',
   },
   poll: {
     id: 'app.containers.AdminPage.ProjectEdit.poll',
@@ -143,7 +145,8 @@ export default defineMessages({
   },
   votingMethodTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.votingMethodTooltip',
-    defaultMessage: 'The option ‘Limited’ lets you define what maximum number of votes one user can cast. ‘Unlimited’ allows to vote on as many ideas as wanted.',
+    defaultMessage:
+      'The option ‘Limited’ lets you define what maximum number of votes one user can cast. ‘Unlimited’ allows to vote on as many ideas as wanted.',
   },
   votingLimit: {
     id: 'app.containers.AdminPage.ProjectEdit.votingLimit',
@@ -155,7 +158,8 @@ export default defineMessages({
   },
   downvotingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingTooltip',
-    defaultMessage: 'By disabling, people can only upvote an idea. As a consequence, you\'ll have less information on what people think about that idea.',
+    defaultMessage:
+      "By disabling, people can only upvote an idea. As a consequence, you'll have less information on what people think about that idea.",
   },
   downvotingDisabled: {
     id: 'app.containers.AdminPage.ProjectEdit.downvotingDisabled',
@@ -171,7 +175,8 @@ export default defineMessages({
   },
   phasePermissionsTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.phasePermissionsTooltip',
-    defaultMessage: 'Select what participative action users can take during this ideation phase.',
+    defaultMessage:
+      'Select what participative action users can take during this ideation phase.',
   },
   unlimited: {
     id: 'app.containers.AdminPage.ProjectEdit.unlimited',
@@ -187,7 +192,8 @@ export default defineMessages({
   },
   anonymousPollingTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.anonymousPollingTooltip',
-    defaultMessage: 'When enabled it\'s impossible to see who voted on what. Users still need an account and can only vote once.',
+    defaultMessage:
+      "When enabled it's impossible to see who voted on what. Users still need an account and can only vote once.",
   },
   enabled: {
     id: 'app.containers.AdminPage.ProjectEdit.enabled',
@@ -203,7 +209,8 @@ export default defineMessages({
   },
   presentationModeTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.presentationModeTooltip',
-    defaultMessage: 'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.',
+    defaultMessage:
+      'You can choose how the ideas are presented by default: as cards in a list or as pins on a map.',
   },
   cardDisplay: {
     id: 'app.containers.AdminPage.ProjectEdit.cardDisplay',
@@ -219,11 +226,13 @@ export default defineMessages({
   },
   surveyServiceTooltipLink: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink',
-    defaultMessage: 'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/faq-s/how-do-i-add-a-survey-to-my-platform',
+    defaultMessage:
+      'http://support.citizenlab.co/en-your-citizenlab-platform-step-by-step/faq-s/how-do-i-add-a-survey-to-my-platform',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
-    defaultMessage: 'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink}.',
+    defaultMessage:
+      'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink}.',
   },
   surveyServiceTooltipLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText',
@@ -250,15 +259,18 @@ export default defineMessages({
     defaultMessage: 'Consult the survey answers',
   },
   subtitleSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults',
-    defaultMessage: 'Here, you can download the results of the surveys within this project as an exel file. For now, you can only see here the typeform surveys.',
+    id:
+      'app.containers.AdminPage.ProjectEdit.SurveyResults.subtitleSurveyResults',
+    defaultMessage:
+      'Here, you can download the results of the surveys within this project as an exel file. For now, you can only see here the typeform surveys.',
   },
   surveyResultsTab: {
     id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.surveyResultsTab',
     defaultMessage: 'Survey Results',
   },
   exportSurveyResults: {
-    id: 'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
+    id:
+      'app.containers.AdminPage.ProjectEdit.SurveyResults.exportSurveyResults',
     defaultMessage: 'Export survey results',
   },
   titleIdeas: {
@@ -267,6 +279,7 @@ export default defineMessages({
   },
   subtitleIdeas: {
     id: 'app.components.admin.PostManager.subtitleIdeas',
-    defaultMessage: 'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
+    defaultMessage:
+      'Get an overview of all the ideas inside your project. Add themes and change the status by dragging and dropping ideas to one of the left columns, or edit the ideas.',
   },
 });

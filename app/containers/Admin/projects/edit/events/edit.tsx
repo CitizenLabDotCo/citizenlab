@@ -28,11 +28,19 @@ import messages from './messages';
 import { localeStream } from 'services/locale';
 import { currentTenantStream, ITenant } from 'services/tenant';
 import { IProjectData } from 'services/projects';
-import { eventStream, updateEvent, addEvent, IEvent, IUpdatedEventProperties } from 'services/events';
+import {
+  eventStream,
+  updateEvent,
+  addEvent,
+  IEvent,
+  IUpdatedEventProperties,
+} from 'services/events';
 import { addEventFile, deleteEventFile } from 'services/eventFiles';
 
 // resources
-import GetResourceFileObjects, { GetResourceFileObjectsChildProps } from 'resources/GetResourceFileObjects';
+import GetResourceFileObjects, {
+  GetResourceFileObjectsChildProps,
+} from 'resources/GetResourceFileObjects';
 
 // typings
 import { Multiloc, CLError, Locale, UploadFile } from 'typings';
@@ -44,8 +52,8 @@ interface DataProps {
 
 interface Props extends DataProps {
   params: {
-    id: string | null,
-    projectId: string | null,
+    id: string | null;
+    projectId: string | null;
   };
   project: IProjectData | null;
 }
@@ -55,9 +63,11 @@ interface State {
   currentTenant: ITenant | null;
   event: IEvent | null;
   attributeDiff: IUpdatedEventProperties;
-  errors: {
-    [fieldName: string]: CLError[]
-  } | Error;
+  errors:
+    | {
+        [fieldName: string]: CLError[];
+      }
+    | Error;
   saving: boolean;
   focusedInput: 'startDate' | 'endDate' | null;
   saved: boolean;
@@ -93,31 +103,35 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
     const { remoteEventFiles } = this.props;
     const locale$ = localeStream().observable;
     const currentTenant$ = currentTenantStream().observable;
-    const event$ = (this.props.params.id ? eventStream(this.props.params.id).observable : of(null));
+    const event$ = this.props.params.id
+      ? eventStream(this.props.params.id).observable
+      : of(null);
 
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        currentTenant$,
-        event$
-      ).subscribe(([locale, currentTenant, event]) => {
-        this.setState({
-          locale,
-          currentTenant,
-          event,
-          loaded: true
-        });
-      })
+      combineLatest(locale$, currentTenant$, event$).subscribe(
+        ([locale, currentTenant, event]) => {
+          this.setState({
+            locale,
+            currentTenant,
+            event,
+            loaded: true,
+          });
+        }
+      ),
     ];
 
-    this.setState({ eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [] });
+    this.setState({
+      eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [],
+    });
   }
 
   componentDidUpdate(prevProps: Props) {
     const { remoteEventFiles } = this.props;
 
     if (prevProps.remoteEventFiles !== remoteEventFiles) {
-      this.setState({ eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [] });
+      this.setState({
+        eventFiles: !isNilOrError(remoteEventFiles) ? remoteEventFiles : [],
+      });
     }
   }
 
@@ -130,62 +144,60 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
       submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
-        title_multiloc: titleMultiloc
-      }
+        title_multiloc: titleMultiloc,
+      },
     }));
-  }
+  };
 
   handleLocationMultilocOnChange = (locationMultiloc: Multiloc) => {
     this.setState((state) => ({
       submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
-        location_multiloc: locationMultiloc
-      }
+        location_multiloc: locationMultiloc,
+      },
     }));
-  }
+  };
 
   handleDescriptionMultilocOnChange = (descriptionMultiloc: Multiloc) => {
     this.setState((state) => ({
       submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
-        description_multiloc: descriptionMultiloc
-      }
+        description_multiloc: descriptionMultiloc,
+      },
     }));
-  }
+  };
 
-  handleDateTimePickerOnChange = (name: 'start_at' | 'end_at') => (moment: moment.Moment) => {
+  handleDateTimePickerOnChange = (name: 'start_at' | 'end_at') => (
+    moment: moment.Moment
+  ) => {
     this.setState((state) => ({
       submitState: 'enabled',
       attributeDiff: {
         ...state.attributeDiff,
-        [name]: moment.toISOString()
+        [name]: moment.toISOString(),
       },
-      errors: {}
+      errors: {},
     }));
-  }
+  };
 
   handleEventFileOnAdd = (newFile: UploadFile) => {
     this.setState((prevState) => ({
       submitState: 'enabled',
-      eventFiles: [
-        ...prevState.eventFiles,
-        newFile
-      ]
+      eventFiles: [...prevState.eventFiles, newFile],
     }));
-  }
+  };
 
   handleEventFileOnRemove = (eventFileToRemove: UploadFile) => {
     this.setState((prevState) => ({
       submitState: 'enabled',
-      eventFiles: prevState.eventFiles.filter(eventFile => eventFile.base64 !== eventFileToRemove.base64),
-      eventFilesToRemove: [
-        ...prevState.eventFilesToRemove,
-        eventFileToRemove
-      ]
+      eventFiles: prevState.eventFiles.filter(
+        (eventFile) => eventFile.base64 !== eventFileToRemove.base64
+      ),
+      eventFilesToRemove: [...prevState.eventFilesToRemove, eventFileToRemove],
     }));
-  }
+  };
 
   handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -203,11 +215,14 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
         if (!isEmpty(this.state.attributeDiff)) {
           // event already exists (in the state)
           if (event) {
-            eventResponse = await updateEvent(event.data.id, this.state.attributeDiff);
+            eventResponse = await updateEvent(
+              event.data.id,
+              this.state.attributeDiff
+            );
             this.setState({ event: eventResponse, attributeDiff: {} });
           } else if (projectId) {
             // event doesn't exist, create with project id
-            eventResponse =  await addEvent(projectId, this.state.attributeDiff);
+            eventResponse = await addEvent(projectId, this.state.attributeDiff);
             this.setState({ event: eventResponse, attributeDiff: {} });
             redirect = true;
           }
@@ -215,38 +230,54 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
 
         if (eventResponse) {
           const { id: eventId } = eventResponse.data;
-          const filesToAddPromises = eventFiles.filter(file => !file.remote).map(file => addEventFile(eventId, file.base64, file.name));
-          const filesToRemovePromises = eventFilesToRemove.filter(file => !!(file.remote && file.id)).map(file => deleteEventFile(eventId, file.id as string));
+          const filesToAddPromises = eventFiles
+            .filter((file) => !file.remote)
+            .map((file) => addEventFile(eventId, file.base64, file.name));
+          const filesToRemovePromises = eventFilesToRemove
+            .filter((file) => !!(file.remote && file.id))
+            .map((file) => deleteEventFile(eventId, file.id as string));
 
           await Promise.all([
             ...filesToAddPromises,
-            ...filesToRemovePromises
+            ...filesToRemovePromises,
           ] as Promise<any>[]);
         }
 
-        this.setState({ saving: false, saved: true, errors: {}, submitState: 'success', eventFilesToRemove: [] });
+        this.setState({
+          saving: false,
+          saved: true,
+          errors: {},
+          submitState: 'success',
+          eventFilesToRemove: [],
+        });
 
         if (redirect && projectId) {
           clHistory.push(`/admin/projects/${projectId}/events/`);
         }
       } catch (errors) {
         if (isCLErrorJSON(errors)) {
-          this.setState({ saving: false, errors: errors.json.errors, submitState: 'error' });
+          this.setState({
+            saving: false,
+            errors: errors.json.errors,
+            submitState: 'error',
+          });
         } else {
           this.setState({ saving: false, submitState: 'error' });
         }
       }
     }
-  }
+  };
 
-  descriptionLabel = <FormattedMessage {...messages.descriptionLabel} />;
+  descriptionLabel = (<FormattedMessage {...messages.descriptionLabel} />);
 
   render() {
     const { locale, currentTenant, loaded, submitState } = this.state;
 
     if (locale && currentTenant && loaded) {
       const { errors, event, attributeDiff, saving, eventFiles } = this.state;
-      const eventAttrs = event ?  { ...event.data.attributes, ...attributeDiff } : { ...attributeDiff };
+      const eventAttrs = event
+        ? { ...event.data.attributes, ...attributeDiff }
+        : { ...attributeDiff };
 
       return (
         <>
@@ -255,7 +286,10 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
             {!event && <FormattedMessage {...messages.newEventTitle} />}
           </SectionTitle>
 
-          <form className="e2e-project-event-edit" onSubmit={this.handleOnSubmit}>
+          <form
+            className="e2e-project-event-edit"
+            onSubmit={this.handleOnSubmit}
+          >
             <Section>
               <SectionField>
                 <InputMultiloc
@@ -280,14 +314,24 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
               </SectionField>
 
               <SectionField>
-                <Label><FormattedMessage {...messages.dateStartLabel} /></Label>
-                <DateTimePicker value={eventAttrs.start_at} onChange={this.handleDateTimePickerOnChange('start_at')} />
+                <Label>
+                  <FormattedMessage {...messages.dateStartLabel} />
+                </Label>
+                <DateTimePicker
+                  value={eventAttrs.start_at}
+                  onChange={this.handleDateTimePickerOnChange('start_at')}
+                />
                 <ErrorComponent apiErrors={get(errors, 'start_at')} />
               </SectionField>
 
               <SectionField>
-                <Label><FormattedMessage {...messages.datesEndLabel} /></Label>
-                <DateTimePicker value={eventAttrs.end_at} onChange={this.handleDateTimePickerOnChange('end_at')} />
+                <Label>
+                  <FormattedMessage {...messages.datesEndLabel} />
+                </Label>
+                <DateTimePicker
+                  value={eventAttrs.end_at}
+                  onChange={this.handleDateTimePickerOnChange('end_at')}
+                />
                 <ErrorComponent apiErrors={get(errors, 'end_at')} />
               </SectionField>
 
@@ -299,14 +343,20 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
                   onChange={this.handleDescriptionMultilocOnChange}
                   withCTAButton
                 />
-                <ErrorComponent apiErrors={get(errors, 'description_multiloc')} />
+                <ErrorComponent
+                  apiErrors={get(errors, 'description_multiloc')}
+                />
               </SectionField>
 
               <SectionField>
-                  <Label>
-                    <FormattedMessage {...messages.fileUploadLabel} />
-                    <IconTooltip content={<FormattedMessage {...messages.fileUploadLabelTooltip} />} />
-                  </Label>
+                <Label>
+                  <FormattedMessage {...messages.fileUploadLabel} />
+                  <IconTooltip
+                    content={
+                      <FormattedMessage {...messages.fileUploadLabelTooltip} />
+                    }
+                  />
+                </Label>
                 <FileUploader
                   onFileAdd={this.handleEventFileOnAdd}
                   onFileRemove={this.handleEventFileOnRemove}
@@ -337,6 +387,8 @@ class AdminProjectEventEdit extends PureComponent<Props, State> {
 
 export default (props: Props) => (
   <GetResourceFileObjects resourceId={props.params.id} resourceType="event">
-    {remoteEventFiles => <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />}
+    {(remoteEventFiles) => (
+      <AdminProjectEventEdit remoteEventFiles={remoteEventFiles} {...props} />
+    )}
   </GetResourceFileObjects>
 );

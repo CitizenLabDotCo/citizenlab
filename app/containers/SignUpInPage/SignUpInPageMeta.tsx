@@ -10,7 +10,9 @@ import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 
 // resources
-import GetTenantLocales, { GetTenantLocalesChildProps } from 'resources/GetTenantLocales';
+import GetTenantLocales, {
+  GetTenantLocalesChildProps,
+} from 'resources/GetTenantLocales';
 import GetTenant, { GetTenantChildProps } from 'resources/GetTenant';
 import GetLocale, { GetLocaleChildProps } from 'resources/GetLocale';
 
@@ -26,46 +28,62 @@ interface DataProps {
   locale: GetLocaleChildProps;
 }
 
-interface Props extends DataProps { }
+interface Props extends DataProps {}
 
-const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(({ intl, location: { pathname }, tenantLocales, tenant, locale }) => {
-  if (!isNilOrError(tenantLocales) && !isNilOrError(locale) && !isNilOrError(tenant)) {
-    const { formatMessage } = intl;
-    const method = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
-    const organizationNameMultiLoc = tenant.attributes.settings.core.organization_name;
-    const tenantName = getLocalized(organizationNameMultiLoc, locale, tenantLocales);
-    const pageMetaTitle = formatMessage(method === 'signin' ? messages.signInMetaTitle : messages.signUpMetaTitle, { tenantName });
-    const pageMetaDescription = formatMessage(method === 'signin' ? messages.signInMetaDescription : messages.signUpMetaDescription);
+const SignUpInPageMeta = memo<Props & InjectedIntlProps & WithRouterProps>(
+  ({ intl, location: { pathname }, tenantLocales, tenant, locale }) => {
+    if (
+      !isNilOrError(tenantLocales) &&
+      !isNilOrError(locale) &&
+      !isNilOrError(tenant)
+    ) {
+      const { formatMessage } = intl;
+      const method = endsWith(pathname, 'sign-in') ? 'signin' : 'signup';
+      const organizationNameMultiLoc =
+        tenant.attributes.settings.core.organization_name;
+      const tenantName = getLocalized(
+        organizationNameMultiLoc,
+        locale,
+        tenantLocales
+      );
+      const pageMetaTitle = formatMessage(
+        method === 'signin'
+          ? messages.signInMetaTitle
+          : messages.signUpMetaTitle,
+        { tenantName }
+      );
+      const pageMetaDescription = formatMessage(
+        method === 'signin'
+          ? messages.signInMetaDescription
+          : messages.signUpMetaDescription
+      );
 
-    return (
-      <Helmet>
-        <title>
-          {pageMetaTitle}
-        </title>
-        {getCanonicalLink()}
-        {getAlternateLinks(tenantLocales)}
-        <meta name="title" content={pageMetaTitle} />
-        <meta name="description" content={pageMetaDescription} />
-        <meta property="og:title" content={pageMetaTitle} />
-        <meta property="og:description" content={pageMetaDescription} />
-        <meta property="og:url" content={window.location.href} />
-      </Helmet>
-    );
+      return (
+        <Helmet>
+          <title>{pageMetaTitle}</title>
+          {getCanonicalLink()}
+          {getAlternateLinks(tenantLocales)}
+          <meta name="title" content={pageMetaTitle} />
+          <meta name="description" content={pageMetaDescription} />
+          <meta property="og:title" content={pageMetaTitle} />
+          <meta property="og:description" content={pageMetaDescription} />
+          <meta property="og:url" content={window.location.href} />
+        </Helmet>
+      );
+    }
+
+    return null;
   }
-
-  return null;
-});
+);
 
 const SignUpInPageMetaWithHoC = withRouter(injectIntl(SignUpInPageMeta));
 
 const Data = adopt<DataProps>({
   tenantLocales: <GetTenantLocales />,
   tenant: <GetTenant />,
-  locale: <GetLocale />
+  locale: <GetLocale />,
 });
 
 export default () => (
-  <Data>
-    {dataprops => <SignUpInPageMetaWithHoC {...dataprops} />}
-  </Data>
+  <Data>{(dataprops) => <SignUpInPageMetaWithHoC {...dataprops} />}</Data>
 );

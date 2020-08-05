@@ -10,7 +10,7 @@ export const viewportWidths = {
   phone: 360,
   largePhone: 415,
   smallTablet: 767,
-  largeTablet: 1023
+  largeTablet: 1023,
 };
 
 export const media = {
@@ -45,12 +45,14 @@ export const media = {
     }
   `,
   tabletLandscape: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) and (orientation : landscape) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet +
+      1}px) and (orientation: landscape) {
       ${css(style, ...args)}
     }
   `,
   tabletPortrait: (style: any, ...args) => css`
-    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet + 1}px) and (orientation : portrait) {
+    @media (min-width: ${viewportWidths.smallTablet}px) and (max-width: ${viewportWidths.largeTablet +
+      1}px) and (orientation: portrait) {
       ${css(style, ...args)}
     }
   `,
@@ -115,38 +117,38 @@ export const colors = {
   focussedBorder: '#333',
 
   /**
-  * this is the first grey to get 3.0 contrast ratio on a white background, needed for non-text contrast such as button/label borders
-  */
+   * this is the first grey to get 3.0 contrast ratio on a white background, needed for non-text contrast such as button/label borders
+   */
   separationDark: '#949494',
   /**
-  * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
-  */
+   * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
+   */
   separationDarkOnGreyBackground: '#8D8D8D',
   /**
-  * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
-  */
+   * first grey to get 3.0 contrast ratio on the beige/greyish background color we use (#F4F4F5)
+   */
   clGreyOnGreyBackground: '#707070',
   /**
-  * background color of dropdown items (e.g. in the navbar)
-  */
+   * background color of dropdown items (e.g. in the navbar)
+   */
   clDropdownHoverBackground: '#e9e9e9',
   /**
-  * Green that has a contrast ratio of >=4.5 on a white background
-  */
+   * Green that has a contrast ratio of >=4.5 on a white background
+   */
   clGreen: '#04884C',
   /**
-  * darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
-  */
+   * darker green than clGreen for when we have a light green background (clGreenSuccessBackground)
+   */
   clGreenSuccess: '#008040',
   clGreenSuccessBackground: '#e4f7ef',
   /**
-  * Red that has a contrast ratio of >=4.5 on a white background
-  */
+   * Red that has a contrast ratio of >=4.5 on a white background
+   */
   clRed: '#E52516',
   clRed2: '#FC3C2D',
   /**
-  * darker red than clRed for when we have a light red background (clRedErrorBackground)
-  */
+   * darker red than clRed for when we have a light red background (clRedErrorBackground)
+   */
   clRedError: '#D61607',
   clRedErrorBackground: '#fde9e8',
   draftYellow: '#8C680D',
@@ -195,7 +197,7 @@ export const colors = {
 
   // buttons
   disabledPrimaryButtonBg: '#cfcfcf',
-  clBlueButtonText: '#1391A1'
+  clBlueButtonText: '#1391A1',
 };
 
 export const fontSizes = {
@@ -208,7 +210,7 @@ export const fontSizes = {
   xxl: 25,
   xxxl: 30,
   xxxxl: 34,
-  xxxxxl: 42
+  xxxxxl: 42,
 };
 
 export const defaultStyles = {
@@ -296,7 +298,7 @@ export const stylingConsts = {
   bannerWidth: 1340,
   pageWidth: 1150,
   textWidth: 720,
-  borderRadius: '3px'
+  borderRadius: '3px',
 };
 
 // Reusable text styling
@@ -306,7 +308,7 @@ export function quillEditedContent(
   textColor = colors.text,
   mentionColor = colors.text,
   fontSize: 'small' | 'base' | 'medium' | 'large' = 'base',
-  fontWeight: 300 | 400 = 400,
+  fontWeight: 300 | 400 = 400
 ) {
   let lineHeight = 25;
 
@@ -326,7 +328,7 @@ export function quillEditedContent(
     word-break: break-word;
   `;
 
-  return`
+  return `
     ${defaultFontStyle}
 
     a, li, p {
@@ -468,22 +470,36 @@ export function quillEditedContent(
 // Main theme passed through any styled component
 export function getTheme(tenant: ITenant | null) {
   const core = !isNilOrError(tenant) && tenant.data.attributes.settings.core;
-  const fontFamily = get(tenant, 'data.attributes.style.customFontName', 'larsseit');
-  const signedOutHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity');
-  const signedInHeaderOverlayOpacity = get(tenant, 'data.attributes.style.signedInHeaderOverlayOpacity');
+  const fontFamily = get(
+    tenant,
+    'data.attributes.style.customFontName',
+    'larsseit'
+  );
+  const signedOutHeaderOverlayOpacity = get(
+    tenant,
+    'data.attributes.style.signedOutHeaderOverlayOpacity'
+  );
+  const signedInHeaderOverlayOpacity = get(
+    tenant,
+    'data.attributes.style.signedInHeaderOverlayOpacity'
+  );
 
-  return ({
+  return {
     colors,
     fontFamily,
     fontSizes,
-    colorMain: (core ? core.color_main : '#ef0071'),
-    colorSecondary: (core ? core.color_secondary : '#000000'),
-    colorText: (core ? core.color_text : '#000000'),
+    colorMain: core ? core.color_main : '#ef0071',
+    colorSecondary: core ? core.color_secondary : '#000000',
+    colorText: core ? core.color_text : '#000000',
     ...get(tenant, 'data.attributes.style'),
-    signedOutHeaderOverlayOpacity: (!isNil(signedOutHeaderOverlayOpacity) ? signedOutHeaderOverlayOpacity / 100.0 : 0.9),
-    signedInHeaderOverlayOpacity: (!isNil(signedInHeaderOverlayOpacity) ? signedInHeaderOverlayOpacity / 100.0 : 0.9),
-    ...stylingConsts
-  });
+    signedOutHeaderOverlayOpacity: !isNil(signedOutHeaderOverlayOpacity)
+      ? signedOutHeaderOverlayOpacity / 100.0
+      : 0.9,
+    signedInHeaderOverlayOpacity: !isNil(signedInHeaderOverlayOpacity)
+      ? signedInHeaderOverlayOpacity / 100.0
+      : 0.9,
+    ...stylingConsts,
+  };
 }
 
 // Utils
@@ -508,33 +524,41 @@ export function invisibleA11yText() {
 
 // Calculus
 export function remCalc(desiredSize: number) {
-  return `${(desiredSize / fontSizes.small).toString().substring(0, 6).trim()}rem`;
+  return `${(desiredSize / fontSizes.small)
+    .toString()
+    .substring(0, 6)
+    .trim()}rem`;
 }
 
-export function calculateContrastRatio(backgroundColor: number[], textColor: number[]) {
+export function calculateContrastRatio(
+  backgroundColor: number[],
+  textColor: number[]
+) {
   function luminanace(r: number, g: number, b: number) {
     const a: any = [r, g, b].map((val: number) => {
       let v = val;
       v /= 255;
 
-      return v <= 0.03928
-        ? v / 12.92
-        : Math.pow((v + 0.055) / 1.055, 2.4);
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
     });
     return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
   }
 
-  const contrastRatio = (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) + 0.05)
-    / (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
+  const contrastRatio =
+    (luminanace(backgroundColor[0], backgroundColor[1], backgroundColor[2]) +
+      0.05) /
+    (luminanace(textColor[0], textColor[1], textColor[2]) + 0.05);
 
   return contrastRatio;
 }
 
 export function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16)
-  } : null;
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
 }

@@ -171,7 +171,8 @@ export default defineMessages({
   },
   a11y_selectedPhaseX: {
     id: 'app.containers.Projects.a11y_selectedPhaseX',
-    defaultMessage: 'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
+    defaultMessage:
+      'Selected phase. Phase {selectedPhaseNumber}: {selectedPhaseTitle}',
   },
   a11y_projectNav: {
     id: 'app.containers.Projects.a11y_projectNav',

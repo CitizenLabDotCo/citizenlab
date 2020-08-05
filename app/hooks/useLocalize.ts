@@ -10,7 +10,7 @@ export default function useLocalize() {
 
   const localize = (multiloc: Multiloc, maxChar?: number) => {
     if (!isNilOrError(locale) && !isNilOrError(tenantLocales)) {
-        return getLocalized(multiloc, locale, tenantLocales, maxChar);
+      return getLocalized(multiloc, locale, tenantLocales, maxChar);
     }
 
     return '';

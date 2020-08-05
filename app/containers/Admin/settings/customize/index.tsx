@@ -8,7 +8,13 @@ import { Label, IconTooltip, ColorPickerInput } from 'cl2-component-library';
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import RangeInput from 'components/UI/RangeInput';
 import InputMultiloc from 'components/UI/InputMultiloc';
-import { Section, SectionTitle, SectionField, SectionDescription, SubSectionTitle } from 'components/admin/Section';
+import {
+  Section,
+  SectionTitle,
+  SectionField,
+  SectionDescription,
+  SubSectionTitle,
+} from 'components/admin/Section';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import Warning from 'components/UI/Warning';
 import QuillMultiloc from 'components/UI/QuillEditor/QuillMultiloc';
@@ -33,7 +39,13 @@ import messages from '../messages';
 
 // services
 import { localeStream } from 'services/locale';
-import { currentTenantStream, updateTenant, IUpdatedTenantProperties, ITenant, ITenantSettings } from 'services/tenant';
+import {
+  currentTenantStream,
+  updateTenant,
+  IUpdatedTenantProperties,
+  ITenant,
+  ITenantSettings,
+} from 'services/tenant';
 import { updatePage } from 'services/pages';
 
 // typings
@@ -87,15 +99,18 @@ interface State {
     color_text: boolean;
   };
   contrastRatio: {
-     color_main: number | null;
-     color_secondary: number| null;
-     color_text: number| null;
+    color_main: number | null;
+    color_secondary: number | null;
+    color_text: number | null;
   };
 }
 
 type TenantColors = 'color_main' | 'color_secondary' | 'color_text';
 
-class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, State> {
+class SettingsCustomizeTab extends PureComponent<
+  Props & InjectedIntlProps,
+  State
+> {
   titleMaxCharCount: number;
   subtitleMaxCharCount: number;
   subscriptions: Subscription[];
@@ -119,13 +134,13 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       contrastRatioWarning: {
         color_main: false,
         color_secondary: false,
-        color_text: false
+        color_text: false,
       },
       contrastRatio: {
         color_main: null,
         color_secondary: null,
-        color_text: null
-      }
+        color_text: null,
+      },
     };
     this.titleMaxCharCount = 45;
     this.subtitleMaxCharCount = 90;
@@ -137,65 +152,73 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
     const tenant$ = currentTenantStream().observable;
 
     this.subscriptions = [
-      combineLatest(
-        locale$,
-        tenant$
-      ).pipe(
-        switchMap(([locale, tenant]) => {
-          const logoUrl = get(tenant, 'data.attributes.logo.large', null);
-          const headerUrl = get(tenant, 'data.attributes.header_bg.large', null);
-          const logo$ = (logoUrl ? convertUrlToUploadFileObservable(logoUrl, null, null) : of(null));
-          const headerBg$ = (headerUrl ? convertUrlToUploadFileObservable(headerUrl, null, null) : of(null));
-
-          return combineLatest(
-            logo$,
-            headerBg$,
-          ).pipe(
-            map(([tenantLogo, tenantHeaderBg]) => ({
-              locale,
+      combineLatest(locale$, tenant$)
+        .pipe(
+          switchMap(([locale, tenant]) => {
+            const logoUrl = get(tenant, 'data.attributes.logo.large', null);
+            const headerUrl = get(
               tenant,
-              tenantLogo,
-              tenantHeaderBg
-            }))
-          );
-        })
-      ).subscribe(({ locale, tenant, tenantLogo, tenantHeaderBg }) => {
-        const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
-        const header_bg = !isNilOrError(tenantHeaderBg) ? [tenantHeaderBg] : [];
-        this.setState({ locale, tenant, logo, header_bg });
-      })
+              'data.attributes.header_bg.large',
+              null
+            );
+            const logo$ = logoUrl
+              ? convertUrlToUploadFileObservable(logoUrl, null, null)
+              : of(null);
+            const headerBg$ = headerUrl
+              ? convertUrlToUploadFileObservable(headerUrl, null, null)
+              : of(null);
+
+            return combineLatest(logo$, headerBg$).pipe(
+              map(([tenantLogo, tenantHeaderBg]) => ({
+                locale,
+                tenant,
+                tenantLogo,
+                tenantHeaderBg,
+              }))
+            );
+          })
+        )
+        .subscribe(({ locale, tenant, tenantLogo, tenantHeaderBg }) => {
+          const logo = !isNilOrError(tenantLogo) ? [tenantLogo] : [];
+          const header_bg = !isNilOrError(tenantHeaderBg)
+            ? [tenantHeaderBg]
+            : [];
+          this.setState({ locale, tenant, logo, header_bg });
+        }),
     ];
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subsription => subsription.unsubscribe());
+    this.subscriptions.forEach((subsription) => subsription.unsubscribe());
   }
 
-  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (newImage: UploadFile[]) => {
+  handleUploadOnAdd = (name: 'logo' | 'header_bg' | 'favicon') => (
+    newImage: UploadFile[]
+  ) => {
     this.setState((state) => ({
       ...state,
-      logoError: (name === 'logo' ? null : state.logoError),
-      headerError: (name === 'header_bg' ? null : state.headerError),
+      logoError: name === 'logo' ? null : state.logoError,
+      headerError: name === 'header_bg' ? null : state.headerError,
       [name]: [newImage[0]],
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        [name]: newImage[0].base64
-      }
+        [name]: newImage[0].base64,
+      },
     }));
-  }
+  };
 
   handleUploadOnRemove = (name: 'logo' | 'header_bg') => () => {
     this.setState((state) => ({
       ...state,
-      logoError: (name === 'logo' ? null : state.logoError),
-      headerError: (name === 'header_bg' ? null : state.headerError),
+      logoError: name === 'logo' ? null : state.logoError,
+      headerError: name === 'header_bg' ? null : state.headerError,
       [name]: null,
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        [name]: null
-      }
+        [name]: null,
+      },
     }));
-  }
+  };
 
   handleTitleOnChange = (titleMultiloc: Multiloc) => {
     this.setState((state) => {
@@ -216,13 +239,13 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             ...get(state.attributesDiff, 'settings', {}),
             core: {
               ...get(state.attributesDiff, 'settings.core', {}),
-              header_title: titleMultiloc
-            }
-          }
-        }
+              header_title: titleMultiloc,
+            },
+          },
+        },
       };
     });
-  }
+  };
 
   handleSubtitleOnChange = (subtitleMultiloc: Multiloc) => {
     this.setState((state) => {
@@ -243,15 +266,17 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             ...get(state.attributesDiff, 'settings', {}),
             core: {
               ...get(state.attributesDiff, 'settings.core', {}),
-              header_slogan: subtitleMultiloc
-            }
-          }
-        }
+              header_slogan: subtitleMultiloc,
+            },
+          },
+        },
       };
     });
-  }
+  };
 
-  handleColorPickerOnChange = (colorName: TenantColors) => (hexColor: string) => {
+  handleColorPickerOnChange = (colorName: TenantColors) => (
+    hexColor: string
+  ) => {
     this.setState((state) => {
       let contrastRatio: number | null = null;
       const rgbColor = hexToRgb(hexColor);
@@ -264,11 +289,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       return {
         contrastRatioWarning: {
           ...state.contrastRatioWarning,
-          [colorName]: (contrastRatio && contrastRatio < 4.50 ? true : false)
+          [colorName]: contrastRatio && contrastRatio < 4.5 ? true : false,
         },
         contrastRatio: {
           ...state.contrastRatio,
-          [colorName]: contrastRatio
+          [colorName]: contrastRatio,
         },
         attributesDiff: {
           ...state.attributesDiff,
@@ -276,13 +301,13 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             ...get(state.attributesDiff, 'settings', {}),
             core: {
               ...get(state.attributesDiff, 'settings.core', {}),
-              [colorName]: hexColor
-            }
-          }
-        }
+              [colorName]: hexColor,
+            },
+          },
+        },
       };
     });
-  }
+  };
 
   handleHeaderOverlayColorOnChange = (hexColor: string) => {
     this.setState((state) => {
@@ -291,12 +316,12 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           ...state.attributesDiff,
           style: {
             ...get(state.attributesDiff, 'style', {}),
-            signedOutHeaderOverlayColor: hexColor
-          }
-        }
+            signedOutHeaderOverlayColor: hexColor,
+          },
+        },
       };
     });
-  }
+  };
 
   handleHeaderOverlayOpacityOnChange = (opacity: number) => {
     this.setState((state) => {
@@ -305,30 +330,39 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
           ...state.attributesDiff,
           style: {
             ...get(state.attributesDiff, 'style', {}),
-            signedOutHeaderOverlayOpacity: opacity
-          }
-        }
+            signedOutHeaderOverlayOpacity: opacity,
+          },
+        },
       };
     });
-  }
+  };
 
   validate = (tenant: ITenant, attributesDiff: IAttributesDiff) => {
     const { formatMessage } = this.props.intl;
     const hasRemoteLogo = has(tenant, 'data.attributes.logo.large');
     const localLogoIsNotSet = !has(attributesDiff, 'logo');
     const localLogoIsNull = !localLogoIsNotSet && attributesDiff.logo === null;
-    const logoError = (!localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet) ? null : formatMessage(messages.noLogo));
+    const logoError =
+      !localLogoIsNull || (hasRemoteLogo && localLogoIsNotSet)
+        ? null
+        : formatMessage(messages.noLogo);
     const hasRemoteHeader = has(tenant, 'data.attributes.header_bg.large');
     const localHeaderIsNotSet = !has(attributesDiff, 'header_bg');
-    const localHeaderIsNull = !localHeaderIsNotSet && attributesDiff.header_bg === null;
-    const headerError = (!localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet) ? null : formatMessage(messages.noHeader));
+    const localHeaderIsNull =
+      !localHeaderIsNotSet && attributesDiff.header_bg === null;
+    const headerError =
+      !localHeaderIsNull || (hasRemoteHeader && localHeaderIsNotSet)
+        ? null
+        : formatMessage(messages.noHeader);
     const hasTitleError = !isEmpty(omitBy(this.state.titleError, isEmpty));
-    const hasSubtitleError = !isEmpty(omitBy(this.state.subtitleError, isEmpty));
+    const hasSubtitleError = !isEmpty(
+      omitBy(this.state.subtitleError, isEmpty)
+    );
 
     this.setState({ logoError, headerError });
 
-    return (!logoError && !headerError && !hasTitleError && !hasSubtitleError);
-  }
+    return !logoError && !headerError && !hasTitleError && !hasSubtitleError;
+  };
 
   save = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -341,13 +375,18 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
       const homepageInfoPageMultiloc = attributesDiff.homepage_info;
 
       try {
-        await updateTenant(tenant.data.id, attributesDiff as IUpdatedTenantProperties);
+        await updateTenant(
+          tenant.data.id,
+          attributesDiff as IUpdatedTenantProperties
+        );
 
         if (!isNilOrError(homepageInfoPage)) {
           const homepageInfoPageId = homepageInfoPage.id;
 
           if (attributesDiff.homepage_info) {
-            await updatePage(homepageInfoPageId, { body_multiloc: homepageInfoPageMultiloc });
+            await updatePage(homepageInfoPageId, {
+              body_multiloc: homepageInfoPageMultiloc,
+            });
           }
         }
         this.setState({ loading: false, saved: true, attributesDiff: {} });
@@ -359,24 +398,26 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         }
       }
     }
-  }
+  };
 
   handleColorPickerOnClick = () => {
     this.setState({ colorPickerOpened: true });
-  }
+  };
 
   handleColorPickerOnClose = () => {
     this.setState({ colorPickerOpened: false });
-  }
+  };
 
-  handleCustomSectionMultilocOnChange = (homepageInfoPageMultiloc: Multiloc) => {
+  handleCustomSectionMultilocOnChange = (
+    homepageInfoPageMultiloc: Multiloc
+  ) => {
     this.setState((state) => ({
       attributesDiff: {
         ...(state.attributesDiff || {}),
-        homepage_info: homepageInfoPageMultiloc
-      }
+        homepage_info: homepageInfoPageMultiloc,
+      },
     }));
-  }
+  };
 
   /*
   Below values are intentionally defined outside of render() for better performance
@@ -387,9 +428,11 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   handleHeaderBgOnAdd = this.handleUploadOnAdd('header_bg');
   handleLogoOnRemove = this.handleUploadOnRemove('logo');
   handleHeaderBgOnRemove = this.handleUploadOnRemove('header_bg');
-  headerTitleLabel = <FormattedMessage {...messages.headerTitleLabel} />;
-  headerSubtitleLabel = <FormattedMessage {...messages.headerSubtitleLabel} />;
-  customSectionLabel = <FormattedMessage {...messages.customSectionLabel} />;
+  headerTitleLabel = (<FormattedMessage {...messages.headerTitleLabel} />);
+  headerSubtitleLabel = (
+    <FormattedMessage {...messages.headerSubtitleLabel} />
+  );
+  customSectionLabel = (<FormattedMessage {...messages.customSectionLabel} />);
 
   render() {
     const { locale, tenant } = this.state;
@@ -408,7 +451,7 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
         errors,
         contrastRatioWarning,
         saved,
-        contrastRatio
+        contrastRatio,
       } = this.state;
 
       return (
@@ -425,37 +468,53 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               <FormattedMessage {...messages.titleBranding} />
             </SubSectionTitle>
 
-            {['color_main', 'color_secondary', 'color_text'].map((colorName: TenantColors) => {
-              const contrastRatioOfColor = contrastRatio[colorName];
-              const contrastRatioWarningOfColor = contrastRatioWarning[colorName];
+            {['color_main', 'color_secondary', 'color_text'].map(
+              (colorName: TenantColors) => {
+                const contrastRatioOfColor = contrastRatio[colorName];
+                const contrastRatioWarningOfColor =
+                  contrastRatioWarning[colorName];
 
-              return (
-                <ColorPickerSectionField key={colorName}>
-                  <Label>
-                    <FormattedMessage {...messages[colorName]} />
-                  </Label>
-                  <ColorPickerInput
-                    type="text"
-                    value={get(attributesDiff, `settings.core.${colorName}`) || get(tenant, `data.attributes.settings.core.${colorName}`)}
-                    onChange={this.handleColorPickerOnChange(colorName)}
-                  />
-                  {contrastRatioWarningOfColor && contrastRatioOfColor &&
-                    <ContrastWarning
-                      text={
-                        <FormattedMessage
-                          {...messages.contrastRatioTooLow}
-                          values={{
-                            wcagLink: <a href="https://www.w3.org/TR/WCAG21/" target="_blank">WCAG 2.1 AA</a>,
-                            lineBreak: <br />,
-                            contrastRatio: contrastRatioOfColor.toFixed(2)
-                          }}
-                        />
+                return (
+                  <ColorPickerSectionField key={colorName}>
+                    <Label>
+                      <FormattedMessage {...messages[colorName]} />
+                    </Label>
+                    <ColorPickerInput
+                      type="text"
+                      value={
+                        get(attributesDiff, `settings.core.${colorName}`) ||
+                        get(
+                          tenant,
+                          `data.attributes.settings.core.${colorName}`
+                        )
                       }
+                      onChange={this.handleColorPickerOnChange(colorName)}
                     />
-                  }
-                </ColorPickerSectionField>
-              );
-            })}
+                    {contrastRatioWarningOfColor && contrastRatioOfColor && (
+                      <ContrastWarning
+                        text={
+                          <FormattedMessage
+                            {...messages.contrastRatioTooLow}
+                            values={{
+                              wcagLink: (
+                                <a
+                                  href="https://www.w3.org/TR/WCAG21/"
+                                  target="_blank"
+                                >
+                                  WCAG 2.1 AA
+                                </a>
+                              ),
+                              lineBreak: <br />,
+                              contrastRatio: contrastRatioOfColor.toFixed(2),
+                            }}
+                          />
+                        }
+                      />
+                    )}
+                  </ColorPickerSectionField>
+                );
+              }
+            )}
 
             <ColorPickerSectionField>
               <Label>
@@ -463,7 +522,14 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
               </Label>
               <ColorPickerInput
                 type="text"
-                value={get(attributesDiff, 'style.signedOutHeaderOverlayColor') || get(tenant, 'data.attributes.style.signedOutHeaderOverlayColor') || this.props.theme.colorMain}
+                value={
+                  get(attributesDiff, 'style.signedOutHeaderOverlayColor') ||
+                  get(
+                    tenant,
+                    'data.attributes.style.signedOutHeaderOverlayColor'
+                  ) ||
+                  this.props.theme.colorMain
+                }
                 onChange={this.handleHeaderOverlayColorOnChange}
               />
             </ColorPickerSectionField>
@@ -476,13 +542,22 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 step={1}
                 min={0}
                 max={100}
-                value={get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') || get(tenant, 'data.attributes.style.signedOutHeaderOverlayOpacity') || 90}
+                value={
+                  get(attributesDiff, 'style.signedOutHeaderOverlayOpacity') ||
+                  get(
+                    tenant,
+                    'data.attributes.style.signedOutHeaderOverlayOpacity'
+                  ) ||
+                  90
+                }
                 onChange={this.handleHeaderOverlayOpacityOnChange}
               />
             </SectionField>
 
             <SectionField key={'logo'}>
-              <Label htmlFor="tenant-logo-dropzone"><FormattedMessage {...messages.logo} /></Label>
+              <Label htmlFor="tenant-logo-dropzone">
+                <FormattedMessage {...messages.logo} />
+              </Label>
               <ImagesDropzone
                 id="tenant-logo-dropzone"
                 acceptedFileTypes="image/jpg, image/jpeg, image/png, image/gif"
@@ -507,7 +582,9 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField key={'header_bg'}>
               <Label htmlFor="landingpage-header-dropzone">
                 <FormattedMessage {...messages.header_bg} />
-                <IconTooltip content={<FormattedMessage {...messages.header_bgTooltip} />} />
+                <IconTooltip
+                  content={<FormattedMessage {...messages.header_bgTooltip} />}
+                />
               </Label>
               <ImagesDropzone
                 id="landingpage-header-dropzone"
@@ -526,7 +603,10 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(attributesDiff, 'settings.core.header_title') || get(tenant, 'data.attributes.settings.core.header_title')}
+                valueMultiloc={
+                  get(attributesDiff, 'settings.core.header_title') ||
+                  get(tenant, 'data.attributes.settings.core.header_title')
+                }
                 label={this.headerTitleLabel}
                 labelTooltipText={formatMessage(messages.headerTitleTooltip)}
                 maxCharCount={this.titleMaxCharCount}
@@ -538,7 +618,10 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
             <SectionField>
               <InputMultiloc
                 type="text"
-                valueMultiloc={get(attributesDiff, 'settings.core.header_slogan') || get(tenant, 'data.attributes.settings.core.header_slogan')}
+                valueMultiloc={
+                  get(attributesDiff, 'settings.core.header_slogan') ||
+                  get(tenant, 'data.attributes.settings.core.header_slogan')
+                }
                 label={this.headerSubtitleLabel}
                 labelTooltipText={formatMessage(messages.headerSubtitleTooltip)}
                 maxCharCount={this.subtitleMaxCharCount}
@@ -558,11 +641,17 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
                 id="custom-section"
                 label={this.customSectionLabel}
                 labelTooltipText={formatMessage(messages.customSectionInfo)}
-                valueMultiloc={attributesDiff.homepage_info || get(homepageInfoPage, 'attributes.body_multiloc')}
+                valueMultiloc={
+                  attributesDiff.homepage_info ||
+                  get(homepageInfoPage, 'attributes.body_multiloc')
+                }
                 onChange={this.handleCustomSectionMultilocOnChange}
                 withCTAButton
               />
-              <ErrorMessage fieldName="homepage-info" apiErrors={errors['homepage-info']} />
+              <ErrorMessage
+                fieldName="homepage-info"
+                apiErrors={errors['homepage-info']}
+              />
             </WideSectionField>
           </Section>
 
@@ -584,10 +673,14 @@ class SettingsCustomizeTab extends PureComponent<Props & InjectedIntlProps, Stat
   }
 }
 
-const SettingsCustomizeTabWithHOCs = withTheme(injectIntl<Props>(SettingsCustomizeTab));
+const SettingsCustomizeTabWithHOCs = withTheme(
+  injectIntl<Props>(SettingsCustomizeTab)
+);
 
 export default (inputProps: Props) => (
   <GetPage slug="homepage-info">
-    {page => <SettingsCustomizeTabWithHOCs homepageInfoPage={page} {...inputProps} />}
+    {(page) => (
+      <SettingsCustomizeTabWithHOCs homepageInfoPage={page} {...inputProps} />
+    )}
   </GetPage>
 );

@@ -14,7 +14,10 @@ import { Multiloc, Locale } from 'typings';
 import { isNilOrError } from './helperUtils';
 
 export interface InjectedLocalized {
-  localize: (multiloc: Multiloc | null | undefined, maxChar?: number | undefined) => string;
+  localize: (
+    multiloc: Multiloc | null | undefined,
+    maxChar?: number | undefined
+  ) => string;
   locale: Locale;
   tenantLocales: Locale[];
 }
@@ -24,7 +27,9 @@ export interface State {
   tenantLocales: Locale[];
 }
 
-export default function injectLocalize<P>(Component: React.ComponentType<P & InjectedLocalized>) {
+export default function injectLocalize<P>(
+  Component: React.ComponentType<P & InjectedLocalized>
+) {
   return class Localized extends PureComponent<P, State> {
     subscriptions: Subscription[];
     static displayName = `WithLocalize(${getDisplayName(Component)})`;
@@ -43,29 +48,34 @@ export default function injectLocalize<P>(Component: React.ComponentType<P & Inj
       const currentTenant$ = currentTenantStream().observable;
 
       this.subscriptions = [
-        combineLatest(
-          locale$,
-          currentTenant$
-        ).subscribe(([locale, currentTenant]) => {
-          if (!isNilOrError(locale) && !isNilOrError(currentTenant)) {
-            const tenantLocales = currentTenant.data.attributes.settings.core.locales;
-            this.setState({ locale, tenantLocales });
+        combineLatest(locale$, currentTenant$).subscribe(
+          ([locale, currentTenant]) => {
+            if (!isNilOrError(locale) && !isNilOrError(currentTenant)) {
+              const tenantLocales =
+                currentTenant.data.attributes.settings.core.locales;
+              this.setState({ locale, tenantLocales });
+            }
           }
-        })
+        ),
       ];
     }
 
     componentWillUnmount() {
-      this.subscriptions.forEach(subscription => subscription.unsubscribe());
+      this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     }
 
     localize = (multiloc: Multiloc | undefined | null, maxChar?: number) => {
       if (this.state.locale && multiloc) {
-        return getLocalized(multiloc, this.state.locale, this.state.tenantLocales, maxChar);
+        return getLocalized(
+          multiloc,
+          this.state.locale,
+          this.state.tenantLocales,
+          maxChar
+        );
       }
 
       return '';
-    }
+    };
 
     render() {
       const { locale, tenantLocales } = this.state;

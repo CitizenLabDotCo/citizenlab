@@ -1,4 +1,7 @@
-import { appLocalePairs, appGraphqlLocalePairs } from 'containers/App/constants';
+import {
+  appLocalePairs,
+  appGraphqlLocalePairs,
+} from 'containers/App/constants';
 
 declare global {
   interface Function {
@@ -17,14 +20,20 @@ export interface IHttpMethod {
 
 export type IParticipationContextType = 'project' | 'phase';
 
-export type ICitizenAction = 'commenting' | 'voting' | 'posting' | 'taking_poll' | 'taking_survey' | 'budgeting';
+export type ICitizenAction =
+  | 'commenting'
+  | 'voting'
+  | 'posting'
+  | 'taking_poll'
+  | 'taking_survey'
+  | 'budgeting';
 
 export interface ITheme {
   theme: {
     color: {
       main: string;
       menuBg: string;
-    }
+    };
   };
 }
 
@@ -69,7 +78,7 @@ export const isLocale = (test: any) => {
 };
 
 export type Multiloc = {
-  [key in Locale]?: string
+  [key in Locale]?: string;
 };
 
 export type GraphqlMultiloc = {
@@ -99,7 +108,7 @@ export interface CLErrors {
 
 export interface CLErrorsJSON {
   json: {
-    errors: CLErrors
+    errors: CLErrors;
   };
 }
 
@@ -119,9 +128,9 @@ export interface CRUDParams {
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
 export type IGraphPoint = {
-  name: string,
-  value: number,
-  code: string
+  name: string;
+  value: number;
+  code: string;
 };
 
 export type IGraphFormat = IGraphPoint[];

@@ -28,35 +28,44 @@ interface DataProps {
 
 interface Props extends InputProps, DataProps {}
 
-const TopicFilterBox = memo<Props>(({ selectedTopicIds, topics, onChange, className }) => {
-
-  const handleOnChange = useCallback((newsSelectedTopicIds: string[] | null) => {
-    onChange(newsSelectedTopicIds);
-  }, []);
-
-  if (!isNilOrError(topics) && topics.filter(topic => !isNilOrError(topic)).length > 0) {
-    return (
-      <Container className={className}>
-        <TopicsFilter
-          topics={topics.filter(topic => !isNilOrError(topic)) as ITopicData[]}
-          selectedTopicIds={selectedTopicIds}
-          onChange={handleOnChange}
-        />
-      </Container>
+const TopicFilterBox = memo<Props>(
+  ({ selectedTopicIds, topics, onChange, className }) => {
+    const handleOnChange = useCallback(
+      (newsSelectedTopicIds: string[] | null) => {
+        onChange(newsSelectedTopicIds);
+      },
+      []
     );
-  }
 
-  return null;
-});
+    if (
+      !isNilOrError(topics) &&
+      topics.filter((topic) => !isNilOrError(topic)).length > 0
+    ) {
+      return (
+        <Container className={className}>
+          <TopicsFilter
+            topics={
+              topics.filter((topic) => !isNilOrError(topic)) as ITopicData[]
+            }
+            selectedTopicIds={selectedTopicIds}
+            onChange={handleOnChange}
+          />
+        </Container>
+      );
+    }
+
+    return null;
+  }
+);
 
 const Data = adopt<DataProps, InputProps>({
   // currently only used for the idea overview page,
   // so all possible topics can be displayed
-  topics: <GetTopics />
+  topics: <GetTopics />,
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataProps => <TopicFilterBox {...inputProps} {...dataProps} />}
+    {(dataProps) => <TopicFilterBox {...inputProps} {...dataProps} />}
   </Data>
 );

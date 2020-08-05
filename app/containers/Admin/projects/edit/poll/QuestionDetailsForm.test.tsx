@@ -15,20 +15,35 @@ jest.mock('./WrongMaxChoiceIndicator', () => 'WrongMaxChoiceIndicator');
 jest.mock('components/admin/ResourceList', () => ({ Row: 'Row' }));
 
 jest.mock('services/pollQuestions', () => ({
-  updatePollQuestion: jest.fn(() => { return new Promise((resolve) => resolve); }),
+  updatePollQuestion: jest.fn(() => {
+    return new Promise((resolve) => resolve);
+  }),
 }));
 import * as pollQuestionsService from 'services/pollQuestions';
-const updatePollQuestionSpy = jest.spyOn(pollQuestionsService, 'updatePollQuestion');
+const updatePollQuestionSpy = jest.spyOn(
+  pollQuestionsService,
+  'updatePollQuestion'
+);
 
 import { QuestionDetailsForm } from './QuestionDetailsForm';
 
 const getSelect = (Wrapper) => Wrapper.find('Select');
 const getInput = (Wrapper) => Wrapper.find('QuestionDetailsForm__StyledInput');
-const getWarningIndicator = (Wrapper) => Wrapper.find('WrongMaxChoiceIndicator');
-const getSaveButton = (Wrapper) => Wrapper.find('.e2e-form-question-settings-save');
+const getWarningIndicator = (Wrapper) =>
+  Wrapper.find('WrongMaxChoiceIndicator');
+const getSaveButton = (Wrapper) =>
+  Wrapper.find('.e2e-form-question-settings-save');
 
-const singleOptionQuestion = mockQuestion('questionId', 'What is your favourite ice cream flavour ?');
-const multipleOptionsQuestion = mockQuestion('questionId', 'What is your favourite ice cream flavour ?', 'multiple_options', 2);
+const singleOptionQuestion = mockQuestion(
+  'questionId',
+  'What is your favourite ice cream flavour ?'
+);
+const multipleOptionsQuestion = mockQuestion(
+  'questionId',
+  'What is your favourite ice cream flavour ?',
+  'multiple_options',
+  2
+);
 
 describe('<QuestionDetailsForm/>', () => {
   describe('display', () => {
@@ -60,7 +75,10 @@ describe('<QuestionDetailsForm/>', () => {
       const Wrapper = shallow(
         <QuestionDetailsForm question={singleOptionQuestion} intl={intl} />
       );
-      getSelect(Wrapper).prop('onChange')({ value: 'multiple_options', label: 'Multiple Option' });
+      getSelect(Wrapper).prop('onChange')({
+        value: 'multiple_options',
+        label: 'Multiple Option',
+      });
       expect(getSelect(Wrapper).prop('value')).toBe('multiple_options');
       expect(getInput(Wrapper).prop('value')).toBe('2');
     });
@@ -68,27 +86,39 @@ describe('<QuestionDetailsForm/>', () => {
       const Wrapper = shallow(
         <QuestionDetailsForm question={singleOptionQuestion} intl={intl} />
       );
-      getSelect(Wrapper).prop('onChange')({ value: 'multiple_options', label: 'Multiple Option' });
+      getSelect(Wrapper).prop('onChange')({
+        value: 'multiple_options',
+        label: 'Multiple Option',
+      });
       expect(getSelect(Wrapper).prop('value')).toBe('multiple_options');
       expect(getSaveButton(Wrapper).prop('disabled')).toBe(false);
 
       getSaveButton(Wrapper).simulate('click');
 
       expect(updatePollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', { max_options: 2, question_type: 'multiple_options' });
+      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', {
+        max_options: 2,
+        question_type: 'multiple_options',
+      });
     });
     it('can change and save a multiple choice question to a single choice', () => {
       const Wrapper = shallow(
         <QuestionDetailsForm question={multipleOptionsQuestion} intl={intl} />
       );
-      getSelect(Wrapper).prop('onChange')({ value: 'single_option', label: 'Single Option' });
+      getSelect(Wrapper).prop('onChange')({
+        value: 'single_option',
+        label: 'Single Option',
+      });
       expect(getSelect(Wrapper).prop('value')).toBe('single_option');
       expect(getSaveButton(Wrapper).prop('disabled')).toBe(false);
 
       getSaveButton(Wrapper).simulate('click');
 
       expect(updatePollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', { max_options: null, question_type: 'single_option' });
+      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', {
+        max_options: null,
+        question_type: 'single_option',
+      });
     });
     it('can change and save the maximum number of choices', () => {
       const Wrapper = shallow(
@@ -101,7 +131,9 @@ describe('<QuestionDetailsForm/>', () => {
       getSaveButton(Wrapper).simulate('click');
 
       expect(updatePollQuestionSpy).toHaveBeenCalledTimes(1);
-      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', { max_options: 10 });
+      expect(updatePollQuestionSpy).toHaveBeenCalledWith('questionId', {
+        max_options: 10,
+      });
     });
     describe('validations', () => {
       it('cannot save multiple choice question with less than two options', () => {

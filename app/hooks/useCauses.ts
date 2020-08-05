@@ -7,7 +7,9 @@ interface Input {
 }
 
 export default function useCauses(input: Input) {
-  const [causes, setCauses] = useState<ICauses | undefined | null | Error>(undefined);
+  const [causes, setCauses] = useState<ICauses | undefined | null | Error>(
+    undefined
+  );
 
   useEffect(() => {
     let subscription;

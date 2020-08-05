@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import { isNilOrError } from 'utils/helperUtils';
 import { Observable, of } from 'rxjs';
-import { ideaByIdStream, ideaBySlugStream, IIdea, IIdeaData } from 'services/ideas';
+import {
+  ideaByIdStream,
+  ideaBySlugStream,
+  IIdea,
+  IIdeaData,
+} from 'services/ideas';
 
 interface Props {
   ideaId?: string | null;
@@ -9,7 +14,9 @@ interface Props {
 }
 
 export default function useIdea({ ideaId, ideaSlug }: Props) {
-  const [idea, setIdea] = useState<IIdeaData | undefined | null | Error>(undefined);
+  const [idea, setIdea] = useState<IIdeaData | undefined | null | Error>(
+    undefined
+  );
 
   useEffect(() => {
     setIdea(undefined);

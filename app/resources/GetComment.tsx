@@ -29,7 +29,7 @@ export default class GetComment extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      comment: undefined
+      comment: undefined,
     };
   }
 
@@ -39,12 +39,17 @@ export default class GetComment extends React.Component<Props, State> {
     this.inputProps$ = new BehaviorSubject({ id });
 
     this.subscriptions = [
-      this.inputProps$.pipe(
-        distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
-        filter(({ id }) => isString(id)),
-        switchMap(({ id }: { id: string }) => commentStream(id).observable)
-      )
-      .subscribe((comment) => this.setState({ comment: !isNilOrError(comment) ? comment.data : comment }))
+      this.inputProps$
+        .pipe(
+          distinctUntilChanged((prev, next) => shallowCompare(prev, next)),
+          filter(({ id }) => isString(id)),
+          switchMap(({ id }: { id: string }) => commentStream(id).observable)
+        )
+        .subscribe((comment) =>
+          this.setState({
+            comment: !isNilOrError(comment) ? comment.data : comment,
+          })
+        ),
     ];
   }
 
@@ -54,7 +59,7 @@ export default class GetComment extends React.Component<Props, State> {
   }
 
   componentWillUnmount() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   render() {

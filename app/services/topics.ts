@@ -4,9 +4,23 @@ import { Multiloc } from 'typings';
 
 const apiEndpoint = `${API_PATH}/topics`;
 
-type DefaultTopicCodes = 'nature' | 'waste' | 'sustainability' | 'mobility' |
- 'technology' | 'economy' | 'housing' | 'public_space' | 'safety' | 'education' |
- 'culture' | 'health' | 'inclusion' | 'community' | 'services' | 'other' ;
+type DefaultTopicCodes =
+  | 'nature'
+  | 'waste'
+  | 'sustainability'
+  | 'mobility'
+  | 'technology'
+  | 'economy'
+  | 'housing'
+  | 'public_space'
+  | 'safety'
+  | 'education'
+  | 'culture'
+  | 'health'
+  | 'inclusion'
+  | 'community'
+  | 'services'
+  | 'other';
 export type Code = 'custom' | DefaultTopicCodes;
 
 export interface ITopicData {
@@ -44,7 +58,9 @@ export async function addTopic(object) {
 }
 
 export function updateTopic(topicId: string, object) {
-  return streams.update<ITopic>(`${apiEndpoint}/${topicId}`, topicId, { topic: object });
+  return streams.update<ITopic>(`${apiEndpoint}/${topicId}`, topicId, {
+    topic: object,
+  });
 }
 
 export function reorderTopic(topicId: string, index: number) {
@@ -53,8 +69,8 @@ export function reorderTopic(topicId: string, index: number) {
     topicId,
     {
       topic: {
-        ordering: index
-      }
+        ordering: index,
+      },
     }
   );
 }

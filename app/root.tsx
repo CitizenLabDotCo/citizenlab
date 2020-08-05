@@ -26,10 +26,13 @@ const rootRoute = {
 const Root = () => {
   return (
     <GetTenant>
-      {tenant => {
+      {(tenant) => {
         if (isError(tenant) && tenant.message === 'Not Found') {
           window.location.href = 'https://www.citizenlab.co/gone';
-        } else if (!isError(tenant) && tenant?.attributes.settings.core.lifecycle_stage === 'expired_trial') {
+        } else if (
+          !isError(tenant) &&
+          tenant?.attributes.settings.core.lifecycle_stage === 'expired_trial'
+        ) {
           window.location.href = 'https://www.citizenlab.co/expired-trial';
         }
         return (
@@ -56,9 +59,7 @@ if (process.env.NODE_ENV === 'production') {
       dsn: process.env.SENTRY_DSN,
       environment: process.env.NODE_ENV,
       release: process.env.CIRCLE_BUILD_NUM,
-      integrations: [
-        new Integrations.RewriteFrames()
-      ]
+      integrations: [new Integrations.RewriteFrames()],
     });
   });
 }

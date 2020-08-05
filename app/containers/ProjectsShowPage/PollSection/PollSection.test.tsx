@@ -17,8 +17,11 @@ import { PollSection } from './';
 describe('<PollSection/>', () => {
   describe('boundaries', () => {
     it('renders null when project is null', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollSection
           type="project"
@@ -33,8 +36,11 @@ describe('<PollSection/>', () => {
       expect(wrapper.type()).toBe(null);
     });
     it('renders null when project is undefined', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollSection
           type="phase"
@@ -49,15 +55,18 @@ describe('<PollSection/>', () => {
       expect(wrapper.type()).toBe(null);
     });
     it('renders null when project is error', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
       const wrapper = shallow(
         <PollSection
           type="phase"
           phaseId="MockPhasePollId"
           projectId="projectId"
           authUser={null}
-          project={new Error}
+          project={new Error()}
           phase={mockPhasePollData}
           pollQuestions={pollQuestions}
         />
@@ -102,14 +111,17 @@ describe('<PollSection/>', () => {
           authUser={null}
           project={null}
           phase={null}
-          pollQuestions={new Error}
+          pollQuestions={new Error()}
         />
       );
       expect(wrapper.type()).toBe(null);
     });
     it('renders null when type is phase and phase is null', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <PollSection
@@ -125,8 +137,11 @@ describe('<PollSection/>', () => {
       expect(wrapper.type()).toBe(null);
     });
     it('renders null when type is phase and phase is undefined', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <PollSection
@@ -142,8 +157,11 @@ describe('<PollSection/>', () => {
       expect(wrapper.type()).toBe(null);
     });
     it('renders null when type is phase and phase is error', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
       const mockProject = getMockProject('projectId', 'continuous', 'poll');
       const wrapper = shallow(
         <PollSection
@@ -152,7 +170,7 @@ describe('<PollSection/>', () => {
           projectId="projectId"
           authUser={null}
           project={mockProject}
-          phase={new Error}
+          phase={new Error()}
           pollQuestions={pollQuestions}
         />
       );
@@ -161,10 +179,20 @@ describe('<PollSection/>', () => {
   });
   describe('permissions', () => {
     it('shows maybe permitted if user is not logged in', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
-      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: true } } } };
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject(
+        'projectId',
+        'continuous',
+        'poll'
+      );
+      const mockProject = {
+        ...mockProjectGeneric,
+        attributes: { action_descriptor: { taking_poll: { enabled: true } } },
+      };
       const wrapper = shallow(
         <PollSection
           type="project"
@@ -177,14 +205,30 @@ describe('<PollSection/>', () => {
         />
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
-      const splitMessageId = wrapper.find('PollSection__StyledWarning').find('FormattedMessage').prop('id').split('.');
-      expect(splitMessageId[splitMessageId.length - 1]).toBe('pollDisabledMaybeNotPermitted');
+      const splitMessageId = wrapper
+        .find('PollSection__StyledWarning')
+        .find('FormattedMessage')
+        .prop('id')
+        .split('.');
+      expect(splitMessageId[splitMessageId.length - 1]).toBe(
+        'pollDisabledMaybeNotPermitted'
+      );
     });
     it('is enabled if user can anwser', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
-      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: true } } } };
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject(
+        'projectId',
+        'continuous',
+        'poll'
+      );
+      const mockProject = {
+        ...mockProjectGeneric,
+        attributes: { action_descriptor: { taking_poll: { enabled: true } } },
+      };
       const mockUser = makeUser();
       const wrapper = shallow(
         <PollSection
@@ -201,10 +245,27 @@ describe('<PollSection/>', () => {
       expect(wrapper.find('PollSection__StyledWarning').length).toBe(0);
     });
     it('shows already responded if user already responded', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
-      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: false, disabled_reason: 'already_responded' } } } };
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject(
+        'projectId',
+        'continuous',
+        'poll'
+      );
+      const mockProject = {
+        ...mockProjectGeneric,
+        attributes: {
+          action_descriptor: {
+            taking_poll: {
+              enabled: false,
+              disabled_reason: 'already_responded',
+            },
+          },
+        },
+      };
       const mockUser = makeUser();
       const wrapper = shallow(
         <PollSection
@@ -222,12 +283,25 @@ describe('<PollSection/>', () => {
       expect(wrapper.find('FormCompleted').exists()).toBe(true);
     });
     it('shows a matching explicative message if the phase is not active', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
-      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: true } } } };
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject(
+        'projectId',
+        'continuous',
+        'poll'
+      );
+      const mockProject = {
+        ...mockProjectGeneric,
+        attributes: { action_descriptor: { taking_poll: { enabled: true } } },
+      };
       const mockUser = makeUser();
-      const mockPastPollPhase = { ...mockPhasePollData, attributes: { start_at: '2019-05-10', end_at: '2019-05-30' } };
+      const mockPastPollPhase = {
+        ...mockPhasePollData,
+        attributes: { start_at: '2019-05-10', end_at: '2019-05-30' },
+      };
       const wrapper = shallow(
         <PollSection
           type="phase"
@@ -240,14 +314,37 @@ describe('<PollSection/>', () => {
         />
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
-      const splitMessageId = wrapper.find('PollSection__StyledWarning').find('FormattedMessage').prop('id').split('.');
-      expect(splitMessageId[splitMessageId.length - 1]).toBe('pollDisabledNotActivePhase');
+      const splitMessageId = wrapper
+        .find('PollSection__StyledWarning')
+        .find('FormattedMessage')
+        .prop('id')
+        .split('.');
+      expect(splitMessageId[splitMessageId.length - 1]).toBe(
+        'pollDisabledNotActivePhase'
+      );
     });
     it('shows a matching explicative message if the project is not active', () => {
-      const pollQuestions = ['How are you today?', 'What is on the menu for dinner tonight?', 'What\'s your favourite ice cream flavor?']
-        .map((item, index) => mockQuestion(index, item));
-      const mockProjectGeneric = getMockProject('projectId', 'continuous', 'poll');
-      const mockProject = { ...mockProjectGeneric, attributes: { action_descriptor: { taking_poll: { enabled: false, disabled_reason: 'project_inactive' } } } };
+      const pollQuestions = [
+        'How are you today?',
+        'What is on the menu for dinner tonight?',
+        "What's your favourite ice cream flavor?",
+      ].map((item, index) => mockQuestion(index, item));
+      const mockProjectGeneric = getMockProject(
+        'projectId',
+        'continuous',
+        'poll'
+      );
+      const mockProject = {
+        ...mockProjectGeneric,
+        attributes: {
+          action_descriptor: {
+            taking_poll: {
+              enabled: false,
+              disabled_reason: 'project_inactive',
+            },
+          },
+        },
+      };
       const mockUser = makeUser();
       const wrapper = shallow(
         <PollSection
@@ -261,8 +358,14 @@ describe('<PollSection/>', () => {
         />
       );
       expect(wrapper.find('PollForm').prop('disabled')).toBe(true);
-      const splitMessageId = wrapper.find('PollSection__StyledWarning').find('FormattedMessage').prop('id').split('.');
-      expect(splitMessageId[splitMessageId.length - 1]).toBe('pollDisabledProjectInactive');
+      const splitMessageId = wrapper
+        .find('PollSection__StyledWarning')
+        .find('FormattedMessage')
+        .prop('id')
+        .split('.');
+      expect(splitMessageId[splitMessageId.length - 1]).toBe(
+        'pollDisabledProjectInactive'
+      );
     });
     // this is not exhaustive
   });

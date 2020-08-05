@@ -14,7 +14,8 @@ export default defineMessages({
     defaultMessage: 'Lives in',
   },
   field_registration_completed_at: {
-    id: 'app.components.admin.UserFilterConditions.field_registration_completed_at',
+    id:
+      'app.components.admin.UserFilterConditions.field_registration_completed_at',
     defaultMessage: 'Registration date',
   },
   field_role: {
@@ -22,7 +23,8 @@ export default defineMessages({
     defaultMessage: 'Role',
   },
   field_participated_in_project: {
-    id: 'app.components.admin.UserFilterConditions.field_participated_in_project',
+    id:
+      'app.components.admin.UserFilterConditions.field_participated_in_project',
     defaultMessage: 'Contributed to project',
   },
   field_participated_in_topic: {
@@ -118,7 +120,8 @@ export default defineMessages({
     defaultMessage: 'is larger than',
   },
   predicate_is_larger_than_or_equal: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_larger_than_or_equal',
+    id:
+      'app.components.admin.UserFilterConditions.predicate_is_larger_than_or_equal',
     defaultMessage: 'is larger than or equal to',
   },
   predicate_is_smaller_than: {
@@ -126,7 +129,8 @@ export default defineMessages({
     defaultMessage: 'is smaller than',
   },
   predicate_is_smaller_than_or_equal: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_smaller_than_or_equal',
+    id:
+      'app.components.admin.UserFilterConditions.predicate_is_smaller_than_or_equal',
     defaultMessage: 'is smaller than or equal to',
   },
   predicate_is_admin: {
@@ -138,11 +142,13 @@ export default defineMessages({
     defaultMessage: 'is not an admin',
   },
   predicate_is_project_moderator: {
-    id: 'app.components.admin.UserFilterConditions.predicate_is_project_moderator',
+    id:
+      'app.components.admin.UserFilterConditions.predicate_is_project_moderator',
     defaultMessage: 'is a moderator',
   },
   predicate_not_is_project_moderator: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_is_project_moderator',
+    id:
+      'app.components.admin.UserFilterConditions.predicate_not_is_project_moderator',
     defaultMessage: 'is not a moderator',
   },
   predicate_is_normal_user: {
@@ -150,7 +156,8 @@ export default defineMessages({
     defaultMessage: 'is a normal user',
   },
   predicate_not_is_normal_user: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_is_normal_user',
+    id:
+      'app.components.admin.UserFilterConditions.predicate_not_is_normal_user',
     defaultMessage: 'is not a normal user',
   },
 
@@ -160,7 +167,7 @@ export default defineMessages({
   },
   predicate_not_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_in',
-    defaultMessage: 'didn\'t contribute',
+    defaultMessage: "didn't contribute",
   },
   predicate_posted_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_posted_in',
@@ -168,7 +175,7 @@ export default defineMessages({
   },
   predicate_not_posted_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_posted_in',
-    defaultMessage: 'didn\'t post',
+    defaultMessage: "didn't post",
   },
   predicate_commented_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_commented_in',
@@ -176,7 +183,7 @@ export default defineMessages({
   },
   predicate_not_commented_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_commented_in',
-    defaultMessage: 'didn\'t comment',
+    defaultMessage: "didn't comment",
   },
   predicate_voted_idea_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_voted_idea_in',
@@ -184,15 +191,16 @@ export default defineMessages({
   },
   predicate_not_voted_idea_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_voted_idea_in',
-    defaultMessage: 'didn\'t vote on idea',
+    defaultMessage: "didn't vote on idea",
   },
   predicate_voted_comment_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_voted_comment_in',
     defaultMessage: 'voted on comment',
   },
   predicate_not_voted_comment_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_voted_comment_in',
-    defaultMessage: 'didn\'t vote on comment',
+    id:
+      'app.components.admin.UserFilterConditions.predicate_not_voted_comment_in',
+    defaultMessage: "didn't vote on comment",
   },
   predicate_budgeted_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_budgeted_in',
@@ -200,15 +208,16 @@ export default defineMessages({
   },
   predicate_not_budgeted_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_not_budgeted_in',
-    defaultMessage: 'didn\'t spend budget',
+    defaultMessage: "didn't spend budget",
   },
   predicate_volunteered_in: {
     id: 'app.components.admin.UserFilterConditions.predicate_volunteered_in',
     defaultMessage: 'volunteered',
   },
   predicate_not_volunteered_in: {
-    id: 'app.components.admin.UserFilterConditions.predicate_not_volunteered_in',
-    defaultMessage: 'didn\'t volunteer',
+    id:
+      'app.components.admin.UserFilterConditions.predicate_not_volunteered_in',
+    defaultMessage: "didn't volunteer",
   },
   predicate_is_verified: {
     id: 'app.components.admin.UserFilterConditions.predicate_is_verified',
@@ -218,7 +227,6 @@ export default defineMessages({
     id: 'app.components.admin.UserFilterConditions.predicate_not_is_verified',
     defaultMessage: 'is not verified',
   },
-
 
   rulesFormLabelField: {
     id: 'app.components.admin.UserFilterConditions.rulesFormLabelField',

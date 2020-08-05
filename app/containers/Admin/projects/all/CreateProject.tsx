@@ -1,4 +1,11 @@
-import React, { memo, useState, useCallback, useEffect, useRef, MouseEvent } from 'react';
+import React, {
+  memo,
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  MouseEvent,
+} from 'react';
 import { get } from 'lodash-es';
 import { isNilOrError } from 'utils/helperUtils';
 import clHistory from 'utils/cl-router/history';
@@ -11,7 +18,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { Icon } from 'cl2-component-library';
 import Tabs, { ITabItem } from 'components/UI/Tabs';
 import ProjectTemplateCards from './ProjectTemplateCards';
-import AdminProjectEditGeneral  from 'containers/Admin/projects/edit/general';
+import AdminProjectEditGeneral from 'containers/Admin/projects/edit/general';
 import { HeaderTitle } from './StyledComponents';
 
 // hooks
@@ -161,24 +168,29 @@ interface Props {
 }
 
 const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
-
   const tabs: ITabItem[] = [
     {
       value: 'template',
       label: intl.formatMessage(messages.fromATemplate),
-      icon: 'template'
+      icon: 'template',
     },
     {
       value: 'scratch',
       label: intl.formatMessage(messages.fromScratch),
-      icon: 'scratch'
-    }
+      icon: 'scratch',
+    },
   ];
 
   const graphqlTenantLocales = useGraphqlTenantLocales();
   const tenant = useTenant();
-  const organizationTypes = !isNilOrError(tenant) ? tenant.data.attributes.settings.core.organization_type : null;
-  const projectTemplatesEnabled: boolean = get(tenant, 'data.attributes.settings.admin_project_templates.enabled', false);
+  const organizationTypes = !isNilOrError(tenant)
+    ? tenant.data.attributes.settings.core.organization_type
+    : null;
+  const projectTemplatesEnabled: boolean = get(
+    tenant,
+    'data.attributes.settings.admin_project_templates.enabled',
+    false
+  );
 
   const [expanded, setExpanded] = useState(false);
   const [selectedTabValue, setSelectedTabValue] = useState(tabs[0].value);
@@ -240,17 +252,19 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   });
 
   useEffect(() => {
-    const subscription = eventEmitter.observeEvent<INewProjectCreatedEvent>('NewProjectCreated').subscribe(({ eventValue }) => {
-      const projectId = eventValue?.projectId;
+    const subscription = eventEmitter
+      .observeEvent<INewProjectCreatedEvent>('NewProjectCreated')
+      .subscribe(({ eventValue }) => {
+        const projectId = eventValue?.projectId;
 
-      if (projectId) {
-        setTimeout(() => {
-          clHistory.push({
-            pathname: `/admin/projects/${projectId}/edit`
-          });
-        }, 1000);
-      }
-    });
+        if (projectId) {
+          setTimeout(() => {
+            clHistory.push({
+              pathname: `/admin/projects/${projectId}/edit`,
+            });
+          }, 1000);
+        }
+      });
 
     return () => subscription.unsubscribe();
   }, []);
@@ -269,9 +283,12 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
     setExpanded(!expanded);
   }, [expanded]);
 
-  const handleTabOnClick = useCallback((newSelectedTabValue: string) => {
-    setSelectedTabValue(newSelectedTabValue);
-  }, [selectedTabValue]);
+  const handleTabOnClick = useCallback(
+    (newSelectedTabValue: string) => {
+      setSelectedTabValue(newSelectedTabValue);
+    },
+    [selectedTabValue]
+  );
 
   useEffect(() => {
     if (isFirstRun.current) {
@@ -289,7 +306,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
   return (
     <Container className={className}>
       <CreateProjectButton
-        className={`e2e-create-project-expand-collapse-button ${expanded ? 'expanded' : 'collapsed'}`}
+        className={`e2e-create-project-expand-collapse-button ${
+          expanded ? 'expanded' : 'collapsed'
+        }`}
         aria-label={intl.formatMessage(messages.createAProjectFromATemplate)}
         onMouseDown={removeFocus}
         onClick={handleExpandCollapse}
@@ -299,7 +318,10 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         </HeaderTitle>
         <Expand>
           <ExpandIconWrapper>
-            <ExpandIcon name="chevron-right" className={expanded ? 'expanded' : 'collapsed'} />
+            <ExpandIcon
+              name="chevron-right"
+              className={expanded ? 'expanded' : 'collapsed'}
+            />
           </ExpandIconWrapper>
         </Expand>
       </CreateProjectButton>
@@ -311,7 +333,9 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
         unmountOnExit={true}
         enter={true}
       >
-        <CreateProjectContent className={`${expanded ? 'expanded' : 'collapsed'}`}>
+        <CreateProjectContent
+          className={`${expanded ? 'expanded' : 'collapsed'}`}
+        >
           <CreateProjectContentInner>
             {projectTemplatesEnabled ? (
               <>
@@ -321,7 +345,11 @@ const CreateProject = memo<Props & InjectedIntlProps>(({ className, intl }) => {
                   selectedValue={selectedTabValue}
                   onClick={handleTabOnClick}
                 />
-                {selectedTabValue === 'template' ? <ProjectTemplateCards /> : <AdminProjectEditGeneral />}
+                {selectedTabValue === 'template' ? (
+                  <ProjectTemplateCards />
+                ) : (
+                  <AdminProjectEditGeneral />
+                )}
               </>
             ) : (
               <AdminProjectEditGeneral />

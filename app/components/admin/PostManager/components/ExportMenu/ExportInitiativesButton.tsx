@@ -23,7 +23,10 @@ interface State {
   exporting: boolean;
 }
 
-export default class ExportInitiativesButton extends React.PureComponent<Props, State> {
+export default class ExportInitiativesButton extends React.PureComponent<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -43,7 +46,11 @@ export default class ExportInitiativesButton extends React.PureComponent<Props, 
 
     try {
       this.setState({ exporting: true });
-      const blob = await requestBlob(`${API_PATH}/initiatives/as_xlsx`, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', queryParametersObject);
+      const blob = await requestBlob(
+        `${API_PATH}/initiatives/as_xlsx`,
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        queryParametersObject
+      );
       saveAs(blob, 'initiatives-export.xlsx');
       this.setState({ exporting: false });
     } catch (error) {
@@ -53,7 +60,7 @@ export default class ExportInitiativesButton extends React.PureComponent<Props, 
 
     // track this click for user analytics
     trackEventByName(tracks.clickExportInitiatives.name);
-  }
+  };
 
   render() {
     const { exportType } = this.props;
@@ -66,9 +73,15 @@ export default class ExportInitiativesButton extends React.PureComponent<Props, 
         padding="0"
         fontSize={`${fontSizes.small}px`}
       >
-        {exportType === 'all' && <FormattedMessage {...messages.exportInitiatives} />}
-        {exportType === 'project' && <FormattedMessage {...messages.exportInitiativesProjects} />}
-        {exportType === 'selected_posts' && <FormattedMessage {...messages.exportSelectedInitiatives} />}
+        {exportType === 'all' && (
+          <FormattedMessage {...messages.exportInitiatives} />
+        )}
+        {exportType === 'project' && (
+          <FormattedMessage {...messages.exportInitiativesProjects} />
+        )}
+        {exportType === 'selected_posts' && (
+          <FormattedMessage {...messages.exportSelectedInitiatives} />
+        )}
       </Button>
     );
   }

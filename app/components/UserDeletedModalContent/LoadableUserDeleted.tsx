@@ -11,7 +11,7 @@ const LoadableUserDeleted = Loadable({
     const UserDeleted = loaded.default;
 
     return <UserDeleted {...props} />;
-  }
+  },
 });
 
 export default LoadableUserDeleted;

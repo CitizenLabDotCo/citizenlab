@@ -24,7 +24,7 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      tenantSettings: null
+      tenantSettings: null,
     };
     this.subscription = null;
   }
@@ -32,7 +32,7 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   componentDidMount() {
     const currentTenant$ = currentTenantStream().observable;
 
-    this.subscription = currentTenant$.subscribe(currentTenant => {
+    this.subscription = currentTenant$.subscribe((currentTenant) => {
       this.setState({ tenantSettings: currentTenant.data.attributes.settings });
     });
   }
@@ -45,10 +45,10 @@ export default class GetFeatureFlag extends PureComponent<Props, State> {
   render() {
     const { tenantSettings } = this.state;
     const { name, children } = this.props;
-    const showFeature = (!name || (
-      get(tenantSettings, `${name}.allowed`) === true &&
-      get(tenantSettings, `${name}.enabled`) === true
-    ));
+    const showFeature =
+      !name ||
+      (get(tenantSettings, `${name}.allowed`) === true &&
+        get(tenantSettings, `${name}.enabled`) === true);
     return (children as children)(showFeature);
 
     // return children ? children(showFeature) : null;

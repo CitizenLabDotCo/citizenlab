@@ -23,7 +23,7 @@ const Container = styled.div`
 const InitiativesIcon = styled(Icon)`
   width: 42px;
   height: 42px;
-  background-color: rgba(4, 77, 108, 0.06);;
+  background-color: rgba(4, 77, 108, 0.06);
   fill: ${colors.adminTextColor};
   border-radius: 50%;
   padding: 10px;
@@ -58,32 +58,35 @@ interface Props {
   showAboutInitiatives: boolean;
 }
 
-const PostedBy = memo<Props>(({ authorId, className, showAboutInitiatives }) => {
+const PostedBy = memo<Props>(
+  ({ authorId, className, showAboutInitiatives }) => {
+    if (authorId) {
+      const authorName = (
+        <UserName userId={authorId} emphasize linkToProfile hideLastName />
+      );
 
-  if (authorId) {
-    const authorName = <UserName userId={authorId} emphasize linkToProfile hideLastName />;
+      return (
+        <Container id="e2e-initiative-posted-by" className={className || ''}>
+          <InitiativesIcon name="initiatives" />
+          <PostedByWrapper>
+            <PostedByText>
+              <FormattedMessage
+                {...messages.postedBy}
+                values={{ authorName }}
+              />
+            </PostedByText>
+            {showAboutInitiatives && (
+              <AboutInitiativesLink to="/pages/initiatives">
+                <FormattedMessage {...messages.learnMore} />
+              </AboutInitiativesLink>
+            )}
+          </PostedByWrapper>
+        </Container>
+      );
+    }
 
-    return (
-      <Container id="e2e-initiative-posted-by" className={className || ''}>
-        <InitiativesIcon name="initiatives"/>
-        <PostedByWrapper>
-          <PostedByText>
-            <FormattedMessage {...messages.postedBy} values={{ authorName }} />
-          </PostedByText>
-          {showAboutInitiatives &&
-            <AboutInitiativesLink
-              to="/pages/initiatives"
-            >
-              <FormattedMessage {...messages.learnMore} />
-            </AboutInitiativesLink>
-          }
-        </PostedByWrapper>
-      </Container>
-    );
+    return null;
   }
-
-  return null;
-
-});
+);
 
 export default PostedBy;

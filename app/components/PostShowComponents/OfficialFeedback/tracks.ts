@@ -1,3 +1,3 @@
 export default {
-  officialFeedbackGiven: 'Official feedback was given.'
+  officialFeedbackGiven: 'Official feedback was given.',
 };

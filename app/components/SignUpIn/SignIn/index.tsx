@@ -4,7 +4,11 @@ import React, { memo, useCallback, useState, useEffect } from 'react';
 import PasswordSignin from 'components/SignUpIn/SignIn/PasswordSignin';
 import AuthProviders, { AuthProvider } from 'components/SignUpIn/AuthProviders';
 import Error from 'components/UI/Error';
-import { StyledHeaderContainer, StyledHeaderTitle, StyledModalContentContainer } from 'components/SignUpIn/styles';
+import {
+  StyledHeaderContainer,
+  StyledHeaderTitle,
+  StyledModalContentContainer,
+} from 'components/SignUpIn/styles';
 
 // utils
 import { handleOnSSOClick } from 'services/singleSignOn';
@@ -35,86 +39,90 @@ export interface Props {
   className?: string;
 }
 
-const SignIn = memo<Props>(({
-  metaData,
-  windowHeight,
-  onSignInCompleted,
-  onGoToSignUp,
-  className
-}) => {
-  const [activeStep, setActiveStep] = useState<TSignInSteps>('auth-providers');
+const SignIn = memo<Props>(
+  ({ metaData, windowHeight, onSignInCompleted, onGoToSignUp, className }) => {
+    const [activeStep, setActiveStep] = useState<TSignInSteps>(
+      'auth-providers'
+    );
 
-  useEffect(() => {
-    trackEventByName(tracks.signInFlowEntered);
+    useEffect(() => {
+      trackEventByName(tracks.signInFlowEntered);
 
-    return () => {
-      trackEventByName(tracks.signInFlowExited);
-    };
-  }, []);
+      return () => {
+        trackEventByName(tracks.signInFlowExited);
+      };
+    }, []);
 
-  const handleOnAuthProviderSelected = useCallback((selectedMethod: AuthProvider) => {
-    if (selectedMethod === 'email') {
-      setActiveStep('password-signin');
-    } else {
-      handleOnSSOClick(selectedMethod, metaData);
-    }
-  }, []);
+    const handleOnAuthProviderSelected = useCallback(
+      (selectedMethod: AuthProvider) => {
+        if (selectedMethod === 'email') {
+          setActiveStep('password-signin');
+        } else {
+          handleOnSSOClick(selectedMethod, metaData);
+        }
+      },
+      []
+    );
 
-  const handleGoToSignUpFlow = useCallback(() => {
-    onGoToSignUp();
-  }, [onGoToSignUp]);
+    const handleGoToSignUpFlow = useCallback(() => {
+      onGoToSignUp();
+    }, [onGoToSignUp]);
 
-  const handleOnSignInCompleted = useCallback((userId: string) => {
-    trackEventByName(tracks.signInFlowCompleted);
-    onSignInCompleted(userId);
-  }, [onSignInCompleted]);
+    const handleOnSignInCompleted = useCallback(
+      (userId: string) => {
+        trackEventByName(tracks.signInFlowCompleted);
+        onSignInCompleted(userId);
+      },
+      [onSignInCompleted]
+    );
 
-  const handleGoToLogInOptions = useCallback(() => {
-    setActiveStep('auth-providers');
-  }, []);
+    const handleGoToLogInOptions = useCallback(() => {
+      setActiveStep('auth-providers');
+    }, []);
 
-  return (
-    <Container id="e2e-sign-in-container" className={className}>
-      <StyledHeaderContainer inModal={!!metaData.inModal}>
-        <StyledHeaderTitle inModal={!!metaData.inModal}>
-          <FormattedMessage {...messages.logIn} />
-        </StyledHeaderTitle>
-      </StyledHeaderContainer>
+    return (
+      <Container id="e2e-sign-in-container" className={className}>
+        <StyledHeaderContainer inModal={!!metaData.inModal}>
+          <StyledHeaderTitle inModal={!!metaData.inModal}>
+            <FormattedMessage {...messages.logIn} />
+          </StyledHeaderTitle>
+        </StyledHeaderContainer>
 
-      <StyledModalContentContainer
-        inModal={!!metaData.inModal}
-        windowHeight={`${windowHeight}px`}
-        headerHeight="68px"
-      >
-        {metaData.error ? (
-          <Error
-            text={<FormattedMessage {...messages.somethingWentWrongText} />}
-            animate={false}
-            marginBottom="30px"
-          />
-        ) : (
-          <>
-            {activeStep === 'auth-providers' &&
-              <AuthProviders
-                metaData={metaData}
-                onAuthProviderSelected={handleOnAuthProviderSelected}
-                goToOtherFlow={handleGoToSignUpFlow}
-              />
-            }
+        <StyledModalContentContainer
+          inModal={!!metaData.inModal}
+          windowHeight={`${windowHeight}px`}
+          headerHeight="68px"
+        >
+          {metaData.error ? (
+            <Error
+              text={<FormattedMessage {...messages.somethingWentWrongText} />}
+              animate={false}
+              marginBottom="30px"
+            />
+          ) : (
+            <>
+              {activeStep === 'auth-providers' && (
+                <AuthProviders
+                  metaData={metaData}
+                  onAuthProviderSelected={handleOnAuthProviderSelected}
+                  goToOtherFlow={handleGoToSignUpFlow}
+                />
+              )}
 
-            {activeStep === 'password-signin' &&
-              <PasswordSignin
-                metaData={metaData}
-                onSignInCompleted={handleOnSignInCompleted}
-                onGoToLogInOptions={handleGoToLogInOptions}
-                onGoToSignUp={onGoToSignUp}
-              />
-            }
-          </>
-        )}
-      </StyledModalContentContainer>
-    </Container>
-  );
-});
+              {activeStep === 'password-signin' && (
+                <PasswordSignin
+                  metaData={metaData}
+                  onSignInCompleted={handleOnSignInCompleted}
+                  onGoToLogInOptions={handleGoToLogInOptions}
+                  onGoToSignUp={onGoToSignUp}
+                />
+              )}
+            </>
+          )}
+        </StyledModalContentContainer>
+      </Container>
+    );
+  }
+);
 
 export default SignIn;

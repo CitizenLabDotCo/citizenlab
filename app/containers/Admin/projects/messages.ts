@@ -1,6 +1,4 @@
-import {
-  defineMessages
-} from 'react-intl';
+import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   helmetTitle: {
@@ -13,7 +11,8 @@ export default defineMessages({
   },
   xGroupsHaveAccess: {
     id: 'app.containers.AdminPage.ProjectEdit.xGroupsHaveAccess',
-    defaultMessage: '{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}',
+    defaultMessage:
+      '{groupCount, plural, no {# groups can view} one {# group can view} other {# groups can view}}',
   },
   onlyAdminsCanView: {
     id: 'app.containers.AdminPage.ProjectEdit.onlyAdminsCanView',

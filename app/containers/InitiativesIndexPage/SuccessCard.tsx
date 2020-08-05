@@ -124,7 +124,7 @@ interface DataProps {
   page: GetPageChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 const SuccessCard = memo(({ page, imageUrl, pageSlug, location }: Props) => {
   if (isNilOrError(page)) return null;
@@ -141,13 +141,7 @@ const SuccessCard = memo(({ page, imageUrl, pageSlug, location }: Props) => {
           {location}
         </LocationIndication>
 
-        {imageUrl &&
-          <SuccessImage
-            src={imageUrl}
-            alt=""
-            cover={true}
-          />
-        }
+        {imageUrl && <SuccessImage src={imageUrl} alt="" cover={true} />}
       </SuccessImageContainer>
       <SuccessIndication>
         <FormattedMessage {...messages.success} />
@@ -165,6 +159,6 @@ const Data = adopt<DataProps, InputProps>({
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <SuccessCard {...inputProps} {...dataprops} />}
+    {(dataprops) => <SuccessCard {...inputProps} {...dataprops} />}
   </Data>
 );

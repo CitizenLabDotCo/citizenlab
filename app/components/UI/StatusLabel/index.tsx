@@ -33,12 +33,9 @@ interface Props {
   className?: string;
 }
 
-const StatusLabel: FC<Props> = (props) => {
+const StatusLabel: FC<Props> = props => {
   return (
-    <Container
-      color={props.color}
-      className={props?.className || ''}
-    >
+    <Container color={props.color} className={props?.className || ''}>
       {props.icon && <StyledIcon name={props.icon} />}
       {props.text}
     </Container>

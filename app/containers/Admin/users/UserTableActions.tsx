@@ -12,7 +12,10 @@ import Button from 'components/UI/Button';
 
 // Services
 import { IGroupData } from 'services/groups';
-import { addGroupMembership, IGroupMembership } from 'services/groupMemberships';
+import {
+  addGroupMembership,
+  IGroupMembership,
+} from 'services/groupMemberships';
 
 // Utils
 import { requestBlob } from 'utils/request';
@@ -28,7 +31,10 @@ import { injectTracks } from 'utils/analytics';
 import tracks from './tracks';
 
 // Resources
-import GetGroups, { GetGroupsChildProps, MembershipType } from 'resources/GetGroups';
+import GetGroups, {
+  GetGroupsChildProps,
+  MembershipType,
+} from 'resources/GetGroups';
 
 // I18n
 import { FormattedMessage } from 'utils/cl-intl';
@@ -69,7 +75,7 @@ const SelectAllCheckbox = styled(Checkbox)`
 
   &:hover,
   &:focus {
-    background: ${rgba(colors.adminTextColor, .1)};
+    background: ${rgba(colors.adminTextColor, 0.1)};
     color: ${colors.adminTextColor};
     outline: none;
   }
@@ -117,7 +123,7 @@ const ActionButton = styled.button`
 
   &:hover,
   &:focus {
-    background: ${rgba(colors.adminTextColor, .1)};
+    background: ${rgba(colors.adminTextColor, 0.1)};
     color: ${colors.adminTextColor};
     outline: none;
   }
@@ -206,7 +212,7 @@ interface DataProps {
   manualGroups: GetGroupsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
 interface State {
   dropdownOpened: boolean;
@@ -226,75 +232,99 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     this.state = {
       dropdownOpened: false,
       selectedGroupIds: [],
-      processing: false
+      processing: false,
     };
   }
 
   toggleAllUsers = () => {
     this.props.trackToggleAllUsers();
     this.props.toggleSelectAll();
-  }
+  };
 
   exportUsers = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
       const { allUsersIds, selectedUsers, groupId } = this.props;
-      const usersIds = (selectedUsers === 'all' ? allUsersIds : selectedUsers);
+      const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const apiPath = `${API_PATH}/users/as_xlsx`;
-      const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+      const fileType =
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
       const group = groupId;
-      const users = (isArray(usersIds) ? usersIds : null);
+      const users = isArray(usersIds) ? usersIds : null;
       const queryParameters = omitBy({ group, users }, isNil);
       const blob = await requestBlob(apiPath, fileType, queryParameters);
       saveAs(blob, 'users-export.xlsx');
     } catch (error) {
       throw error;
     }
-  }
+  };
 
   getchoices = (groupsList: IGroupData[]) => {
-    return groupsList.map((group) => ({ text: group.attributes.title_multiloc, id: group.id }));
-  }
+    return groupsList.map((group) => ({
+      text: group.attributes.title_multiloc,
+      id: group.id,
+    }));
+  };
 
   toggleDropdown = (event: React.FormEvent) => {
     event.preventDefault();
     event.stopPropagation();
     this.setState(({ dropdownOpened }) => ({
       selectedGroupIds: [],
-      dropdownOpened: !dropdownOpened
+      dropdownOpened: !dropdownOpened,
     }));
-  }
+  };
 
-  toggleGroup = (groupId: string) => (event: React.ChangeEvent | React.MouseEvent) => {
+  toggleGroup = (groupId: string) => (
+    event: React.ChangeEvent | React.MouseEvent
+  ) => {
     event.preventDefault();
 
     const { selectedGroupIds } = this.state;
 
     if (!includes(selectedGroupIds, groupId)) {
-      this.setState({ selectedGroupIds: [...this.state.selectedGroupIds, groupId] });
+      this.setState({
+        selectedGroupIds: [...this.state.selectedGroupIds, groupId],
+      });
     } else {
       this.setState({
-        selectedGroupIds: selectedGroupIds.filter((selectedGroupId) => selectedGroupId !== groupId)
+        selectedGroupIds: selectedGroupIds.filter(
+          (selectedGroupId) => selectedGroupId !== groupId
+        ),
       });
     }
-  }
+  };
 
   addUsersToGroups = async () => {
     const { selectedGroupIds } = this.state;
 
     if (selectedGroupIds && selectedGroupIds.length > 0) {
-      const { allUsersIds, selectedUsers, trackAddUsersToGroups, trackAddedRedundantUserToGroup } = this.props;
-      const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
+      const {
+        allUsersIds,
+        selectedUsers,
+        trackAddUsersToGroups,
+        trackAddedRedundantUserToGroup,
+      } = this.props;
+      const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
       const promises: Promise<IGroupMembership | CLErrorsJSON>[] = [];
-      const timeout = ms => new Promise(res => setTimeout(res, ms));
+      const timeout = (ms) => new Promise((res) => setTimeout(res, ms));
       const success = () => {
-        eventEmitter.emit<MembershipAdd>(events.membershipAdd, { groupsIds: selectedGroupIds });
+        eventEmitter.emit<MembershipAdd>(events.membershipAdd, {
+          groupsIds: selectedGroupIds,
+        });
         this.props.unselectAll();
-        this.setState({ selectedGroupIds: [], processing: false, dropdownOpened: false });
+        this.setState({
+          selectedGroupIds: [],
+          processing: false,
+          dropdownOpened: false,
+        });
       };
       const failed = () => {
-        eventEmitter.emit<JSX.Element>(events.membershipAddFailed, <FormattedMessage {...messages.membershipAddFailed} />);
+        eventEmitter.emit<JSX.Element>(
+          events.membershipAddFailed,
+          <FormattedMessage {...messages.membershipAddFailed} />
+        );
         this.setState({ processing: false });
       };
 
@@ -302,7 +332,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
         extra: {
           usersIds,
           selectedGroupIds,
-        }
+        },
       });
 
       if (isArray(usersIds)) {
@@ -323,12 +353,17 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       } catch (error) {
         trackAddedRedundantUserToGroup({
           extra: {
-            errorResponse: error
-          }
+            errorResponse: error,
+          },
         });
 
         // if error because users already part of group(s)
-        if (isCLErrorJSON(error) && error.json.errors.user.filter(val => val.error !== 'taken').length === 0 && !error.json.errors.group) {
+        if (
+          isCLErrorJSON(error) &&
+          error.json.errors.user.filter((val) => val.error !== 'taken')
+            .length === 0 &&
+          !error.json.errors.group
+        ) {
           await streams.fetchAllWith({ apiEndpoint: [`${API_PATH}/groups`] });
           success();
           return true;
@@ -340,16 +375,16 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
     }
 
     return;
-  }
+  };
 
   handleGroupsDeleteClick = () => {
     const { deleteUsersFromGroup, selectedUsers, allUsersIds } = this.props;
-    const usersIds = (selectedUsers === 'all') ? allUsersIds : selectedUsers;
+    const usersIds = selectedUsers === 'all' ? allUsersIds : selectedUsers;
 
     if (Array.isArray(usersIds) && deleteUsersFromGroup) {
       deleteUsersFromGroup(usersIds);
     }
-  }
+  };
 
   render() {
     const { selectedUsers, groupType, groupId, allUsersIds } = this.props;
@@ -366,8 +401,11 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
       selectedCount = selectedUsers.length;
     }
 
-    const exportType = selectedUsers === 'none' && !groupId ? 'exportAllUsers'
-      : selectedUsers === 'none' && groupId ? 'exportGroup'
+    const exportType =
+      selectedUsers === 'none' && !groupId
+        ? 'exportAllUsers'
+        : selectedUsers === 'none' && groupId
+        ? 'exportGroup'
         : 'exportSelectedUsers';
 
     return (
@@ -376,21 +414,24 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
           label={
             <SelectAllCheckboxLabel>
               <FormattedMessage {...messages.select} />
-              {selectedCount > 0 &&
+              {selectedCount > 0 && (
                 <UserCount className="e2e-selected-count">
                   ({selectedCount})
                 </UserCount>
-              }
+              )}
             </SelectAllCheckboxLabel>
           }
-          checked={(selectedUsers === 'all')}
+          checked={selectedUsers === 'all'}
           indeterminate={isArray(selectedUsers) && selectedUsers.length > 0}
           onChange={this.toggleAllUsers}
         />
         <ActionButtons>
-          {selectedUsers !== 'none' && !isNilOrError(groupsList) &&
+          {selectedUsers !== 'none' && !isNilOrError(groupsList) && (
             <ActionButtonWrapper>
-              <ActionButton className="e2e-move-users" onClick={this.toggleDropdown}>
+              <ActionButton
+                className="e2e-move-users"
+                onClick={this.toggleDropdown}
+              >
                 <StyledIcon name="moveFolder" />
                 <FormattedMessage {...messages.moveUsersTableAction} />
               </ActionButton>
@@ -401,7 +442,7 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                 left="0px"
                 opened={dropdownOpened}
                 onClickOutside={this.toggleDropdown}
-                content={(
+                content={
                   <DropdownList>
                     {groupsList.map((group) => (
                       <DropdownListItem
@@ -419,8 +460,8 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                       </DropdownListItem>
                     ))}
                   </DropdownList>
-                )}
-                footer={(
+                }
+                footer={
                   <DropdownFooterButton
                     className="e2e-dropdown-submit"
                     buttonStyle="cl-blue"
@@ -429,23 +470,31 @@ class UserTableActions extends PureComponent<Props & Tracks, State> {
                     fullWidth={true}
                     padding="12px"
                     whiteSpace="normal"
-                    disabled={!selectedGroupIds || selectedGroupIds.length === 0}
+                    disabled={
+                      !selectedGroupIds || selectedGroupIds.length === 0
+                    }
                   >
                     <FormattedMessage {...messages.moveUsersButton} />
                   </DropdownFooterButton>
-                )}
+                }
               />
             </ActionButtonWrapper>
-          }
+          )}
 
-          {groupType === 'manual' && selectedUsers !== 'none' &&
-            <ActionButton onClick={this.handleGroupsDeleteClick} className="hasLeftMargin">
+          {groupType === 'manual' && selectedUsers !== 'none' && (
+            <ActionButton
+              onClick={this.handleGroupsDeleteClick}
+              className="hasLeftMargin"
+            >
               <StyledIcon name="trash" />
               <FormattedMessage {...messages.membershipDelete} />
             </ActionButton>
-          }
+          )}
 
-          <ActionButton onClick={this.exportUsers} className={`export e2e-${exportType} hasLeftMargin`}>
+          <ActionButton
+            onClick={this.exportUsers}
+            className={`export e2e-${exportType} hasLeftMargin`}
+          >
             <StyledIcon name="userExport" />
             <FormattedMessage {...messages[exportType]} />
           </ActionButton>
@@ -463,6 +512,8 @@ const UserTableActionsWithHocs = injectTracks<Props>({
 
 export default (inputProps: InputProps) => (
   <GetGroups membershipType="manual">
-    {manualGroups => <UserTableActionsWithHocs {...inputProps} manualGroups={manualGroups} />}
+    {(manualGroups) => (
+      <UserTableActionsWithHocs {...inputProps} manualGroups={manualGroups} />
+    )}
   </GetGroups>
 );

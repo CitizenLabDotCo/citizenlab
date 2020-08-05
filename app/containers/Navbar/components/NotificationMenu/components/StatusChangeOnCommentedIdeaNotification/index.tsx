@@ -9,7 +9,7 @@ interface Props {
   notification: IStatusChangeOnCommentedIdeaNotificationData;
 }
 
-const StatusChangeOnCommentedIdeaNotification = memo<Props>(props => {
+const StatusChangeOnCommentedIdeaNotification = memo<Props>((props) => {
   const { notification } = props;
 
   return (
@@ -22,7 +22,9 @@ const StatusChangeOnCommentedIdeaNotification = memo<Props>(props => {
       <FormattedMessage
         {...messages.statusChangeOnCommentedIdea}
         values={{
-          status: <T value={notification.attributes.idea_status_title_multiloc} />
+          status: (
+            <T value={notification.attributes.idea_status_title_multiloc} />
+          ),
         }}
       />
     </NotificationWrapper>

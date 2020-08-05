@@ -9,7 +9,9 @@ import { gql } from 'apollo-boost';
 import { useQuery } from '@apollo/react-hooks';
 
 // components
-import FilterSelector, { IFilterSelectorValue } from 'components/FilterSelector';
+import FilterSelector, {
+  IFilterSelectorValue,
+} from 'components/FilterSelector';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -20,12 +22,12 @@ interface Props {
   onChange: (value: string[]) => void;
 }
 
-const DepartmentFilter = memo<Props & InjectedIntlProps>(({ intl: { formatMessage }, onChange }) => {
+const DepartmentFilter = memo<Props & InjectedIntlProps>(
+  ({ intl: { formatMessage }, onChange }) => {
+    const localize = useLocalize();
+    const graphqlTenantLocales = useGraphqlTenantLocales();
 
-  const localize = useLocalize();
-  const graphqlTenantLocales = useGraphqlTenantLocales();
-
-  const DEPARTMENTS_QUERY = gql`
+    const DEPARTMENTS_QUERY = gql`
     {
       departments {
         nodes {
@@ -38,37 +40,38 @@ const DepartmentFilter = memo<Props & InjectedIntlProps>(({ intl: { formatMessag
     }
   `;
 
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+    const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-  const { data } = useQuery(DEPARTMENTS_QUERY);
+    const { data } = useQuery(DEPARTMENTS_QUERY);
 
-  let options: IFilterSelectorValue[] = [];
+    let options: IFilterSelectorValue[] = [];
 
-  if (data) {
-    options = data.departments.nodes.map((node) => ({
-      value: node.id,
-      text: localize(node.titleMultiloc)
-    }));
+    if (data) {
+      options = data.departments.nodes.map((node) => ({
+        value: node.id,
+        text: localize(node.titleMultiloc),
+      }));
+    }
+
+    const handleOnChange = useCallback((selectedValues: string[]) => {
+      setSelectedValues(selectedValues);
+      onChange(selectedValues);
+    }, []);
+
+    return (
+      <FilterSelector
+        title={formatMessage(messages.departments)}
+        name={formatMessage(messages.departments)}
+        selected={selectedValues}
+        values={options}
+        onChange={handleOnChange}
+        multipleSelectionAllowed={true}
+        last={false}
+        left="-5px"
+        mobileLeft="-5px"
+      />
+    );
   }
-
-  const handleOnChange = useCallback((selectedValues: string[]) => {
-    setSelectedValues(selectedValues);
-    onChange(selectedValues);
-  }, []);
-
-  return (
-    <FilterSelector
-      title={formatMessage(messages.departments)}
-      name={formatMessage(messages.departments)}
-      selected={selectedValues}
-      values={options}
-      onChange={handleOnChange}
-      multipleSelectionAllowed={true}
-      last={false}
-      left="-5px"
-      mobileLeft="-5px"
-    />
-  );
-});
+);
 
 export default injectIntl(DepartmentFilter);

@@ -1,10 +1,17 @@
 import React from 'react';
-import GetPollOptions, { GetPollOptionsChildProps } from 'resources/GetPollOptions';
+import GetPollOptions, {
+  GetPollOptionsChildProps,
+} from 'resources/GetPollOptions';
 import { adopt } from 'react-adopt';
 import { IPollQuestion } from 'services/pollQuestions';
 import styled from 'styled-components';
 import { Radio } from 'cl2-component-library';
-import { QuestionContainer, Question, QuestionNumber, QuestionText } from './PollForm';
+import {
+  QuestionContainer,
+  Question,
+  QuestionNumber,
+  QuestionText,
+} from './PollForm';
 import { isNilOrError } from 'utils/helperUtils';
 import T from 'components/T';
 
@@ -32,17 +39,22 @@ interface DataProps {
   options: GetPollOptionsChildProps;
 }
 
-interface Props extends InputProps, DataProps { }
+interface Props extends InputProps, DataProps {}
 
-const PollSingleChoice = ({ question, index, options, value, disabled, onChange }: Props) => {
+const PollSingleChoice = ({
+  question,
+  index,
+  options,
+  value,
+  disabled,
+  onChange,
+}: Props) => {
   return (
     <StyledFieldSet key={question.id}>
       {isNilOrError(options) || options.length === 0 ? null : (
         <QuestionContainer className="e2e-poll-question">
           <Question>
-            <QuestionNumber>
-              {index + 1}
-            </QuestionNumber>
+            <QuestionNumber>{index + 1}</QuestionNumber>
             <QuestionText>
               <T value={question.attributes.title_multiloc} />
             </QuestionText>
@@ -67,11 +79,13 @@ const PollSingleChoice = ({ question, index, options, value, disabled, onChange 
 };
 
 const Data = adopt<DataProps, InputProps>({
-  options: ({ question, render }) => <GetPollOptions questionId={question.id}>{render}</GetPollOptions>
+  options: ({ question, render }) => (
+    <GetPollOptions questionId={question.id}>{render}</GetPollOptions>
+  ),
 });
 
 export default (inputProps: InputProps) => (
   <Data {...inputProps}>
-    {dataprops => <PollSingleChoice {...inputProps} {...dataprops} />}
+    {(dataprops) => <PollSingleChoice {...inputProps} {...dataprops} />}
   </Data>
 );

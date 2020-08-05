@@ -19,7 +19,8 @@ export default defineMessages({
   },
   deleteConfirmationModal: {
     id: 'app.containers.AdminPage.ProjectEvents.deleteConfirmationModal',
-    defaultMessage: 'Are you sure you want to delete this event? There is no way to undo this!',
+    defaultMessage:
+      'Are you sure you want to delete this event? There is no way to undo this!',
   },
   editEventTitle: {
     id: 'app.containers.AdminPage.ProjectEvents.editEventTitle',
@@ -71,7 +72,8 @@ export default defineMessages({
   },
   fileUploadLabelTooltip: {
     id: 'app.containers.AdminPage.ProjectEvents.fileUploadLabelTooltip',
-    defaultMessage: 'Files should not be larger than 50Mb. Added files will be shown on the event card directly.',
+    defaultMessage:
+      'Files should not be larger than 50Mb. Added files will be shown on the event card directly.',
   },
   titleEvents: {
     id: 'app.containers.AdminPage.ProjectEvents.titleEvents',
@@ -79,6 +81,7 @@ export default defineMessages({
   },
   subtitleEvents: {
     id: 'app.containers.AdminPage.ProjectEvents.subtitleEvents',
-    defaultMessage: 'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
+    defaultMessage:
+      'Add offline events or meetings that are linked to your project here. Upcoming and past events are always shown immediately under your project.',
   },
 });

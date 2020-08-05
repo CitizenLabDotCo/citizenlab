@@ -1,5 +1,7 @@
 import React from 'react';
-import GetCampaignRecipients, { GetCampaignDeliveriesChildProps } from 'resources/GetCampaignDeliveries';
+import GetCampaignRecipients, {
+  GetCampaignDeliveriesChildProps,
+} from 'resources/GetCampaignDeliveries';
 import { isNilOrError } from 'utils/helperUtils';
 import { List, Row, TextCell } from 'components/admin/ResourceList';
 import GetUser from 'resources/GetUser';
@@ -11,7 +13,9 @@ import messages from '../../messages';
 import Pagination from 'components/admin/Pagination';
 import Avatar from 'components/Avatar';
 
-const statusColorMapping: { [k in IDeliveryData['attributes']['delivery_status']]: keyof typeof colors } = {
+const statusColorMapping: {
+  [k in IDeliveryData['attributes']['delivery_status']]: keyof typeof colors;
+} = {
   sent: 'lightGreyishBlue',
   bounced: 'clRedError',
   failed: 'clRedError',
@@ -31,7 +35,6 @@ interface DataProps extends GetCampaignDeliveriesChildProps {}
 interface Props extends InputProps, DataProps {}
 
 class RecipientsTable extends React.PureComponent<Props> {
-
   render() {
     const { deliveries, className, currentPage, lastPage } = this.props;
     if (isNilOrError(deliveries)) {
@@ -39,30 +42,37 @@ class RecipientsTable extends React.PureComponent<Props> {
     }
 
     return (
-      <List className={className} key={deliveries.map(d => d.id).join()}>
+      <List className={className} key={deliveries.map((d) => d.id).join()}>
         {deliveries.map((recipient) => (
           <Row key={recipient.id}>
             <GetUser id={recipient.relationships.user.data.id}>
-              {(user) => isNilOrError(user) ? null : (
-                <>
-                  <TextCell>
-                    <Avatar
-                      userId={user.id}
-                      size="30px"
+              {(user) =>
+                isNilOrError(user) ? null : (
+                  <>
+                    <TextCell>
+                      <Avatar userId={user.id} size="30px" />
+                    </TextCell>
+                    <TextCell>
+                      {user.attributes.first_name} {user.attributes.last_name}
+                    </TextCell>
+                    <TextCell className="expand">
+                      {user.attributes.email}
+                    </TextCell>
+                    <StatusLabel
+                      color={
+                        statusColorMapping[recipient.attributes.delivery_status]
+                      }
+                      text={
+                        <FormattedMessage
+                          {...messages[
+                            `deliveryStatus_${recipient.attributes.delivery_status}`
+                          ]}
+                        />
+                      }
                     />
-                  </TextCell>
-                  <TextCell>
-                    {user.attributes.first_name} {user.attributes.last_name}
-                  </TextCell>
-                  <TextCell className="expand">
-                    {user.attributes.email}
-                  </TextCell>
-                  <StatusLabel
-                    color={statusColorMapping[recipient.attributes.delivery_status]}
-                    text={<FormattedMessage {...messages[`deliveryStatus_${recipient.attributes.delivery_status}`]} />}
-                  />
-                </>
-              )}
+                  </>
+                )
+              }
             </GetUser>
           </Row>
         ))}

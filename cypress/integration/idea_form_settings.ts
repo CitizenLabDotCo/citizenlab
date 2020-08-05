@@ -15,7 +15,7 @@ describe('Idea form settings', () => {
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
       description: projectDescription,
-      publicationStatus: 'published'
+      publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
@@ -33,7 +33,7 @@ describe('Idea form settings', () => {
       });
     });
     describe('Location disabled', () => {
-      it('Doesn\'t show a disabled field in the idea form', () => {
+      it("Doesn't show a disabled field in the idea form", () => {
         // check that location field is in the project's idea form initially
         cy.visit(`projects/${projectSlug}/ideas/new`);
         cy.get('.e2e-idea-form-location-input-field').should('exist');
@@ -51,14 +51,23 @@ describe('Idea form settings', () => {
         cy.get('.e2e-idea-form-location-input-field').should('not.exist');
       });
 
-      it('Doesn\'t show disabled field on idea show page', () => {
+      it("Doesn't show disabled field on idea show page", () => {
         // post idea with location
         const ideaTitle = randomString();
         const ideaContent = randomString();
-        const locationGeoJSON = { type: 'Point', coordinates: [4.351710300000036, 50.8503396] };
+        const locationGeoJSON = {
+          type: 'Point',
+          coordinates: [4.351710300000036, 50.8503396],
+        };
         const locationDescription = 'Brussel, België';
 
-        cy.apiCreateIdea(projectId, ideaTitle, ideaContent, locationGeoJSON, locationDescription).then(() => {
+        cy.apiCreateIdea(
+          projectId,
+          ideaTitle,
+          ideaContent,
+          locationGeoJSON,
+          locationDescription
+        ).then(() => {
           cy.visit(`/ideas/${ideaTitle}`);
           cy.get('#e2e-idea-show-page-content');
           cy.wait(1000);
@@ -83,7 +92,7 @@ describe('Idea form settings', () => {
         cy.get('#e2e-map-toggle').should('not.exist');
       });
 
-      it('Doesn\'t show the list/view toggle above the idea cards', () => {
+      it("Doesn't show the list/view toggle above the idea cards", () => {
         // check that the list/view toggle is initially above the idea cards
         cy.visit(`projects/${projectTitle}/ideas`);
         cy.get('#e2e-ideas-container');
@@ -106,11 +115,9 @@ describe('Idea form settings', () => {
   });
 
   describe('Required setting', () => {
-
     describe('Required topics field', () => {
       describe('Existing idea', () => {
         it('Requires field in idea edit form after it became required', () => {
-
           // post idea without topic
           const ideaTitle = randomString();
           const ideaContent = randomString(30);
@@ -144,12 +151,10 @@ describe('Idea form settings', () => {
             cy.get('#e2e-new-idea-topics-error');
             cy.location('pathname').should('eq', `/en-GB/ideas/edit/${ideaId}`);
           });
-
         });
       });
 
       describe('New idea', () => {
-
         it('The idea form reports an error when a required field is missing', () => {
           // go to idea form settings of our newly created project
           cy.visit(`admin/projects/${projectId}/ideaform`);
@@ -171,12 +176,13 @@ describe('Idea form settings', () => {
           // verify that we got an error for the topics field
           // and check we stay on the idea form page
           cy.get('#e2e-new-idea-topics-error');
-          cy.location('pathname').should('eq', `/en-GB/projects/${projectSlug}/ideas/new`);
+          cy.location('pathname').should(
+            'eq',
+            `/en-GB/projects/${projectSlug}/ideas/new`
+          );
         });
       });
-
     });
-
   });
 
   afterEach(() => {

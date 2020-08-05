@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 import { withRouter, WithRouterProps } from 'react-router';
 import styled from 'styled-components';
-import { SectionTitle, SectionDescription, SectionField } from 'components/admin/Section';
+import {
+  SectionTitle,
+  SectionDescription,
+  SectionField,
+} from 'components/admin/Section';
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import Error from 'components/UI/Error';
 import { isNilOrError } from 'utils/helperUtils';
 import { deleteProjectFolder } from 'services/projectFolders';
 import clHistory from 'utils/cl-router/history';
-import GetProjectFolder, { GetProjectFolderChildProps } from 'resources/GetProjectFolder';
+import GetProjectFolder, {
+  GetProjectFolderChildProps,
+} from 'resources/GetProjectFolder';
 import { adopt } from 'react-adopt';
 import Button from 'components/UI/Button';
 import { InjectedIntlProps } from 'react-intl';
@@ -16,17 +22,20 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { IconTooltip, Label } from 'cl2-component-library';
 import ProjectFolderForm from './ProjectFolderForm';
 
-const Container = styled.div<({ mode: 'edit' | 'new' }) >`
+const Container = styled.div<{ mode: 'edit' | 'new' }>`
   display: flex;
   flex-direction: column;
-  ${({ mode }) => mode === 'new' ? `
+  ${({ mode }) =>
+    mode === 'new'
+      ? `
     background: #fff;
     border-radius: 3px;
     border: 1px solid #e0e0e0;
     box-sizing: border-box;
     padding: 3.5rem 4rem;
     margin-bottom: 60px;
-  ` : ''}
+  `
+      : ''}
 `;
 
 const Header = styled.div`
@@ -58,7 +67,11 @@ interface DataProps {
   projectFolder: GetProjectFolderChildProps;
 }
 
-const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: WithRouterProps & DataProps & InjectedIntlProps) => {
+const FolderSettings = ({
+  params,
+  projectFolder,
+  intl: { formatMessage },
+}: WithRouterProps & DataProps & InjectedIntlProps) => {
   const { projectFolderId } = params;
   const mode = projectFolderId ? 'edit' : 'new';
 
@@ -69,13 +82,15 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
   const deleteFolder = () => {
     if (window.confirm(formatMessage(messages.deleteFolderConfirmation))) {
       setProcessingDelete(true);
-      deleteProjectFolder(projectFolderId).then(() => {
-        setProcessingDelete(false);
-        clHistory.replace('/admin/projects');
-      }).catch(() => {
-        setProcessingDelete(false);
-        setDeletionError(true);
-      });
+      deleteProjectFolder(projectFolderId)
+        .then(() => {
+          setProcessingDelete(false);
+          clHistory.replace('/admin/projects');
+        })
+        .catch(() => {
+          setProcessingDelete(false);
+          setDeletionError(true);
+        });
     }
   };
 
@@ -86,7 +101,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
     <>
       {mode === 'new' && <StyledGoBackButton onClick={goBack} />}
       <Container mode={mode}>
-        {mode === 'edit' ?
+        {mode === 'edit' ? (
           <>
             <SectionTitle>
               {<FormattedMessage {...messages.titleSettingsTab} />}
@@ -95,25 +110,26 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
               <FormattedMessage {...messages.subtitleSettingsTab} />
             </SectionDescription>
           </>
-          :
+        ) : (
           <Header>
-            <SectionTitle >
+            <SectionTitle>
               {<FormattedMessage {...messages.titleNewFolder} />}
-            </SectionTitle >
+            </SectionTitle>
             <SectionDescription>
               <FormattedMessage {...messages.subtitleNewFolder} />
             </SectionDescription>
           </Header>
-        }
-        <ProjectFolderForm
-          mode={mode}
-          projectFolderId={projectFolderId}
-        />
-        {(mode === 'edit' && !isNilOrError(projectFolder)) &&
+        )}
+        <ProjectFolderForm mode={mode} projectFolderId={projectFolderId} />
+        {mode === 'edit' && !isNilOrError(projectFolder) && (
           <DeleteFolderSectionField>
             <Label>
               <FormattedMessage {...messages.deleteFolderLabel} />
-              <IconTooltip content={<FormattedMessage {...messages.deleteFolderLabelTooltip} />} />
+              <IconTooltip
+                content={
+                  <FormattedMessage {...messages.deleteFolderLabelTooltip} />
+                }
+              />
             </Label>
             <ButtonWrapper>
               <Button
@@ -128,7 +144,7 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
             </ButtonWrapper>
             {deletionError && <Error message={messages.deleteFolderError} />}
           </DeleteFolderSectionField>
-        }
+        )}
       </Container>
     </>
   );
@@ -137,11 +153,15 @@ const FolderSettings = ({ params, projectFolder, intl: { formatMessage } }: With
 const FolderSettingsWithHoCs = withRouter(injectIntl(FolderSettings));
 
 const Data = adopt<DataProps, WithRouterProps>({
-  projectFolder: ({ params, render }) => <GetProjectFolder projectFolderId={params.projectFolderId}>{render}</GetProjectFolder>,
+  projectFolder: ({ params, render }) => (
+    <GetProjectFolder projectFolderId={params.projectFolderId}>
+      {render}
+    </GetProjectFolder>
+  ),
 });
 
 export default (inputProps: WithRouterProps) => (
   <Data {...inputProps}>
-    {dataProps => <FolderSettingsWithHoCs {...inputProps} {...dataProps} />}
+    {(dataProps) => <FolderSettingsWithHoCs {...inputProps} {...dataProps} />}
   </Data>
 );

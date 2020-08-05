@@ -2,7 +2,11 @@ import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { Multiloc } from 'typings';
 
-export type IOnboardingCampaignNames = 'complete_profile' | 'custom_cta' | 'default' | 'verification';
+export type IOnboardingCampaignNames =
+  | 'complete_profile'
+  | 'custom_cta'
+  | 'default'
+  | 'verification';
 export const currentOnboardingCampaignsApiEndpoint = `${API_PATH}/onboarding_campaigns/current`;
 
 export type IOnboardingCampaigns = {
@@ -19,12 +23,24 @@ export interface IOnboardingCampaignsData {
   };
 }
 
-export function currentOnboardingCampaignsStream(streamParams: IStreamParams | null = null) {
-  return streams.get<IOnboardingCampaignsData>({ apiEndpoint: currentOnboardingCampaignsApiEndpoint, ...streamParams });
+export function currentOnboardingCampaignsStream(
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<IOnboardingCampaignsData>({
+    apiEndpoint: currentOnboardingCampaignsApiEndpoint,
+    ...streamParams,
+  });
 }
 
-export async function dismissOnboardingCampaign(name: IOnboardingCampaignNames) {
-  const response = await streams.add<IOnboardingCampaignsData>(`${API_PATH}/onboarding_campaigns/${name}/dismissal`, {});
-  await streams.fetchAllWith({ apiEndpoint: [currentOnboardingCampaignsApiEndpoint] });
+export async function dismissOnboardingCampaign(
+  name: IOnboardingCampaignNames
+) {
+  const response = await streams.add<IOnboardingCampaignsData>(
+    `${API_PATH}/onboarding_campaigns/${name}/dismissal`,
+    {}
+  );
+  await streams.fetchAllWith({
+    apiEndpoint: [currentOnboardingCampaignsApiEndpoint],
+  });
   return response;
 }

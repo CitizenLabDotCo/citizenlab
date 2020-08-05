@@ -7,12 +7,12 @@ export default () => ({
   component: Loadable({
     loader: () => import('./'),
     loading: LoadableLoadingAdmin,
-    delay: 500
+    delay: 500,
   }),
   indexRoute: {
     component: Loadable({
       loader: () => import('./settings'),
-      loading: () => null
+      loading: () => null,
     }),
   },
   childRoutes: [
@@ -20,7 +20,7 @@ export default () => ({
       path: 'manage',
       component: Loadable({
         loader: () => import('./manage'),
-        loading: () => null
+        loading: () => null,
       }),
     },
   ],

@@ -19,13 +19,13 @@ export interface ICauseData {
       data: {
         type: 'project' | 'phase';
         id: string;
-      }
-    }
+      };
+    };
     user_volunteer?: {
       data: null | {
         id: string;
-      }
-    }
+      };
+    };
   };
 }
 
@@ -50,8 +50,15 @@ export function causeByIdStream(causeId: string) {
   return streams.get<ICause>({ apiEndpoint: `${apiEndpoint}/${causeId}` });
 }
 
-export function causesStream(participationContextType: 'project' | 'phase', participationContextId: string, streamParams: IStreamParams | null = null) {
-  return streams.get<ICauses>({ apiEndpoint: `${API_PATH}/${participationContextType}s/${participationContextId}/causes`, ...streamParams });
+export function causesStream(
+  participationContextType: 'project' | 'phase',
+  participationContextId: string,
+  streamParams: IStreamParams | null = null
+) {
+  return streams.get<ICauses>({
+    apiEndpoint: `${API_PATH}/${participationContextType}s/${participationContextId}/causes`,
+    ...streamParams,
+  });
 }
 
 export async function addCause(object) {
@@ -61,7 +68,9 @@ export async function addCause(object) {
 }
 
 export async function updateCause(causeId: string, object) {
-  const stream = streams.update<ICause>(`${apiEndpoint}/${causeId}`, causeId, { cause: object });
+  const stream = streams.update<ICause>(`${apiEndpoint}/${causeId}`, causeId, {
+    cause: object,
+  });
   await streams.fetchAllWith({ dataId: [causeId] });
   return stream;
 }
@@ -71,5 +80,7 @@ export function deleteCause(causeId: string) {
 }
 
 export function reorderCause(causeId: string, ordering: number) {
-  return streams.update<ICause>(`${apiEndpoint}/${causeId}/reorder`, causeId, { cause: { ordering } });
+  return streams.update<ICause>(`${apiEndpoint}/${causeId}/reorder`, causeId, {
+    cause: { ordering },
+  });
 }

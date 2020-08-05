@@ -35,7 +35,10 @@ export default withRouter((props: WithRouterProps) => (
           <>
             <ContentContainer>
               <ScreenReaderOnly>
-                <FormattedMessage tagName="h2" {...messages.invisibleTitleSurvey} />
+                <FormattedMessage
+                  tagName="h2"
+                  {...messages.invisibleTitleSurvey}
+                />
               </ScreenReaderOnly>
               <SurveyContainer id="e2e-continuous-project-survey-container">
                 <Survey

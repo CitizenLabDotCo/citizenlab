@@ -59,7 +59,10 @@ describe('<FormOptionRow />', () => {
           tenantLocales={['en', 'fr-BE']}
         />
       );
-      wrapper.setProps({ titleMultiloc: getTitleMultiloc('Pistachio'), optionId: 'anotherOption' });
+      wrapper.setProps({
+        titleMultiloc: getTitleMultiloc('Pistachio'),
+        optionId: 'anotherOption',
+      });
       expect(wrapper.find('Input').prop('value')).toEqual('Pistachio');
     });
   });
@@ -144,7 +147,9 @@ describe('<FormOptionRow />', () => {
             tenantLocales={['en', 'fr-BE']}
           />
         );
-        expect(wrapper.find('Input').prop('value')).toEqual(titleMultiloc['en']);
+        expect(wrapper.find('Input').prop('value')).toEqual(
+          titleMultiloc['en']
+        );
       });
 
       it('reacts to user input', () => {
@@ -205,7 +210,9 @@ describe('<FormOptionRow />', () => {
         wrapper.setState({ titleMultiloc: getTitleMultiloc('Vanilla') });
         wrapper.find('.e2e-form-option-save').simulate('click');
         expect(updatePollOptionSpy).toHaveBeenCalledTimes(1);
-        expect(updatePollOptionSpy).toHaveBeenCalledWith('optionId', { en: 'Vanilla' });
+        expect(updatePollOptionSpy).toHaveBeenCalledWith('optionId', {
+          en: 'Vanilla',
+        });
       });
     });
   });
