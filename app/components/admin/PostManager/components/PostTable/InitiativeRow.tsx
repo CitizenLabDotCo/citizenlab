@@ -141,7 +141,7 @@ class InitiativeRow extends React.PureComponent<
         return (
           <StatusLabel
             text={<T value={selectedStatusObject.attributes.title_multiloc} />}
-            color={selectedStatusObject.attributes.color}
+            backgroundColor={selectedStatusObject.attributes.color}
           />
         );
       }
