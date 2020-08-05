@@ -29,8 +29,7 @@ import {
   FormSectionTitle,
 } from 'components/UI/FormComponents';
 import UserCustomFieldsForm from 'components/UserCustomFieldsForm';
-import { Input, IconTooltip } from 'cl2-component-library';
-import Select from 'components/UI/Select';
+import { Input, IconTooltip, Select } from 'cl2-component-library';
 import QuillEditor from 'components/UI/QuillEditor';
 
 // i18n

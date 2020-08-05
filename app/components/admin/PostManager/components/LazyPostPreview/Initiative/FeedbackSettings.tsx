@@ -17,8 +17,7 @@ import { IOption } from 'typings';
 import styled from 'styled-components';
 
 // components
-import { Label } from 'cl2-component-library';
-import Select from 'components/UI/Select';
+import { Select, Label } from 'cl2-component-library';
 
 // services
 import { updateInitiative } from 'services/initiatives';
