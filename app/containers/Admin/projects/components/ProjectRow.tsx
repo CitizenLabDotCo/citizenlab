@@ -14,14 +14,13 @@ import {
   RowButton,
   ActionsRowContainer,
 } from './StyledComponents';
-import StatusLabel from 'components/UI/StatusLabel';
+import { IconNames, StatusLabel } from 'cl2-component-library';
 import PublicationStatusLabel from './PublicationStatusLabel';
 
 // resources
 import GetProjectGroups from 'resources/GetProjectGroups';
 
 // types
-import { IconNames } from 'cl2-component-library';
 import { IAdminPublicationContent } from 'hooks/useAdminPublications';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -87,7 +86,7 @@ export default ({
                         <FormattedMessage {...messages.onlyAdminsCanView} />
                       )
                     }
-                    color="clBlue"
+                    backgroundColor="clBlue"
                     icon="lock"
                   />
                 );
@@ -100,7 +99,7 @@ export default ({
         {publication.attributes?.publication_visible_to === 'admins' && (
           <StyledStatusLabel
             text={<FormattedMessage {...messages.onlyAdminsCanView} />}
-            color="clBlue"
+            backgroundColor="clBlue"
             icon="lock"
           />
         )}
