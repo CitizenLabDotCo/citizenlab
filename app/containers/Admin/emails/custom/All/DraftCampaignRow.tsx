@@ -3,9 +3,9 @@ import { Row, TextCell } from 'components/admin/ResourceList';
 import { ICampaignData } from 'services/campaigns';
 import T from 'components/T';
 import Button from 'components/UI/Button';
+import { StatusLabel } from 'cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
-import StatusLabel from 'components/UI/StatusLabel';
 
 interface Props {
   campaign: ICampaignData;
@@ -17,7 +17,7 @@ const DraftCampaignRow = ({ campaign }: Props) => (
       <T value={campaign.attributes.subject_multiloc} />
     </TextCell>
     <StatusLabel
-      color={'draftYellow'}
+      backgroundColor="draftYellow"
       text={<FormattedMessage {...messages.draft} />}
     />
     <Button
